@@ -122,7 +122,7 @@ function loadUser(): boolean {
     try {
         obj = load(USER_FILENAME);
     } catch (err) {
-        console.log(err);
+        debug(err);
         return false;
     }
     if (!obj) {

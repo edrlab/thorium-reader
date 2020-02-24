@@ -19,6 +19,9 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
+import {
+    DEBUG_KEYBOARD, ensureKeyboardListenerIsInstalled, KEY_CODES, TKeyboardDocument,
+} from "readium-desktop/renderer/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
@@ -26,6 +29,12 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
 import SVG from "../../../common/components/SVG";
+
+interface TKeyboardDocumentSink extends TKeyboardDocument {
+    _keyboardSinkIsActive: boolean;
+
+    _keyboardSinkListenerIsInstalled: boolean;
+}
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -45,39 +54,6 @@ interface IState {
     menuOpen: boolean;
 }
 
-const _DEBUG_KEYS = false;
-
-const _keyOptionsFunctions = [];
-for (let i = 1; i <= 12; i++) {
-    _keyOptionsFunctions.push(`F${i}`);
-}
-const _keyOptionsNumbers = [];
-for (let i = 0; i <= 9; i++) {
-    _keyOptionsNumbers.push(`Digit${i}`);
-}
-const _keyOptionsNumpads = [];
-for (let i = 0; i <= 9; i++) {
-    _keyOptionsNumpads.push(`Numpad${i}`);
-}
-const _keyOptionsAlpha = [];
-for (let i = 0; i < 26; i++) {
-    const upper = String.fromCharCode(65 + i); // 97 is lowercase "a"
-    _keyOptionsAlpha.push(`Key${upper}`);
-}
-const _keyOptions = [].concat(
-    _keyOptionsFunctions,
-    _keyOptionsNumbers,
-    _keyOptionsAlpha,
-    ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"],
-    ["Space", "Enter", "Backspace", "Delete", "BracketRight", "BracketLeft"],
-    ["Slash", "Backslash", "IntlBackslash"],
-    ["Period", "Comma", "Quote", "Backquote", "Minus", "Equal", "Semicolon"],
-    ["CapsLock", "Insert", "PrintScreen"],
-    ["NumLock", "NumpadMultiply", "NumpadEqual", "NumpadSubtract", "NumpadDecimal", "NumpadEnter", "NumpadDivide"],
-    _keyOptionsNumpads,
-);
-// https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
-
 class KeyboardSettings extends React.Component<IProps, IState> {
 
     private selectRef: React.RefObject<HTMLSelectElement>;
@@ -94,47 +70,23 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this.openCloseMenu = this.openCloseMenu.bind(this);
 
         this.selectRef = React.createRef<HTMLSelectElement>();
+
+        const doc = document as TKeyboardDocumentSink;
+        doc._keyboardSinkListenerIsInstalled = false;
     }
 
     public componentDidMount() {
+        ensureKeyboardListenerIsInstalled();
 
-        if ((document as any)._KEY_DOCUMENT_LISTEN) {
-            return;
-        }
-        (document as any)._KEY_DOCUMENT_LISTEN = true;
+        const doc = document as TKeyboardDocumentSink;
+        doc._keyboardSinkListenerIsInstalled = true;
 
-        document.addEventListener("keydown", (ev) => {
-            if (!(document as any)._KEY_SINK_LISTEN) {
-                return;
-            }
-            if (_DEBUG_KEYS) {
-                console.log("editifyKeyboardShortcut sink KEY DOWN:", ev.code);
-            }
-
-            if (!ev.code) {
-                return;
-            }
-            // ev.preventDefault();
-
-            if (ev.code.startsWith("Shift")) {
-                (document as any)._KEY_SHIFT = true;
-            } else if (ev.code.startsWith("Control")) {
-                (document as any)._KEY_CONTROL = true;
-            } else if (ev.code.startsWith("Meta")) {
-                (document as any)._KEY_META = true;
-            } else if (ev.code.startsWith("Alt")) {
-                (document as any)._KEY_ALT = true;
-            }
-        }, {
-            once: false,
-            passive: false,
-            capture: true,
-        });
         document.addEventListener("keyup", (ev) => {
-            if (!(document as any)._KEY_SINK_LISTEN) {
+            if (!doc._keyboardSinkIsActive) {
                 return;
             }
-            if (_DEBUG_KEYS) {
+
+            if (DEBUG_KEYBOARD) {
                 console.log("editifyKeyboardShortcut sink KEY UP:", ev.code);
             }
             if (!ev.code) {
@@ -142,15 +94,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             }
             // ev.preventDefault();
 
-            if (ev.code.startsWith("Shift")) {
-                (document as any)._KEY_SHIFT = false;
-            } else if (ev.code.startsWith("Control")) {
-                (document as any)._KEY_CONTROL = false;
-            } else if (ev.code.startsWith("Meta")) {
-                (document as any)._KEY_META = false;
-            } else if (ev.code.startsWith("Alt")) {
-                (document as any)._KEY_ALT = false;
-            } else if (!ev.code.startsWith("Tab")) {
+            if (!ev.code.startsWith("Tab")) {
                 // if (this.selectRef?.current) {
                 //     this.selectRef.current.value = ev.code;
                 // }
@@ -159,12 +103,12 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.key = ev.code;
 
-                editKeyboardShortcutData.shift = (document as any)._KEY_SHIFT ? true : false;
-                editKeyboardShortcutData.control = (document as any)._KEY_CONTROL ? true : false;
-                editKeyboardShortcutData.meta = (document as any)._KEY_META ? true : false;
-                editKeyboardShortcutData.alt = (document as any)._KEY_ALT ? true : false;
+                editKeyboardShortcutData.shift = doc._keyModifierShift ? true : false;
+                editKeyboardShortcutData.control = doc._keyModifierControl ? true : false;
+                editKeyboardShortcutData.meta = doc._keyModifierMeta ? true : false;
+                editKeyboardShortcutData.alt = doc._keyModifierAlt ? true : false;
 
-                if (_DEBUG_KEYS) {
+                if (DEBUG_KEYBOARD) {
                     if (editKeyboardShortcutData.shift !== ev.shiftKey) {
                         console.log("editifyKeyboardShortcut sink SHIFT differs?");
                     }
@@ -371,7 +315,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.alt = !editKeyboardShortcutData.alt;
-                if (_DEBUG_KEYS) {
+                if (DEBUG_KEYBOARD) {
                     console.log("editifyKeyboardShortcut ALT:");
                     console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 }
@@ -393,7 +337,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.shift = !editKeyboardShortcutData.shift;
-                if (_DEBUG_KEYS) {
+                if (DEBUG_KEYBOARD) {
                     console.log("editifyKeyboardShortcut SHIFT:");
                     console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 }
@@ -415,7 +359,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.control = !editKeyboardShortcutData.control;
-                if (_DEBUG_KEYS) {
+                if (DEBUG_KEYBOARD) {
                     console.log("editifyKeyboardShortcut CTRL:");
                     console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 }
@@ -437,7 +381,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.meta = !editKeyboardShortcutData.meta;
-                if (_DEBUG_KEYS) {
+                if (DEBUG_KEYBOARD) {
                     console.log("editifyKeyboardShortcut META:");
                     console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 }
@@ -450,8 +394,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             htmlFor={`idcheckbox_${id}_META`}
         >META</label></>;
 
-        if (!_keyOptions.includes(def.key)) {
-            _keyOptions.push(def.key);
+        if (!KEY_CODES.includes(def.key)) {
+            KEY_CODES.push(def.key);
         }
 
         const keySelect =
@@ -461,7 +405,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.key = ev.target.value.toString();
-                if (_DEBUG_KEYS) {
+                if (DEBUG_KEYBOARD) {
                     console.log("editifyKeyboardShortcut select KEY:");
                     console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 }
@@ -469,15 +413,15 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                     editKeyboardShortcutData,
                 });
             }}
-            onBlur={_DEBUG_KEYS ? (ev) => {
+            onBlur={DEBUG_KEYBOARD ? (ev) => {
                 console.log("editifyKeyboardShortcut select BLUR:", ev.target.value.toString());
             } : null}
-            onFocus={_DEBUG_KEYS ? (ev) => {
+            onFocus={DEBUG_KEYBOARD ? (ev) => {
                 console.log("editifyKeyboardShortcut select FOCUS:", ev.target.value.toString());
             } : null}
             value={def.key}
         >
-            {_keyOptions.map((keyOption, idx) => {
+            {KEY_CODES.map((keyOption, idx) => {
                 return (
                     <option
                         key={`keyOption_${idx}`}
@@ -499,10 +443,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             // console.log("editifyKeyboardShortcut INPUT:", ev.target.value.toString());
             ev.preventDefault();
         }}
-        onBlur={_DEBUG_KEYS ? () => {
+        onBlur={DEBUG_KEYBOARD ? () => {
             console.log("editifyKeyboardShortcut sink react BLUR");
         } : null}
-        onFocus={_DEBUG_KEYS ? () => {
+        onFocus={DEBUG_KEYBOARD ? () => {
             console.log("editifyKeyboardShortcut sink react FOCUS");
         } : null}
         ref={(ref) => {
@@ -510,26 +454,20 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 (ref as any)._KEY_REF = true;
 
                 ref.addEventListener("focus", () => {
-                    if (_DEBUG_KEYS) {
+
+                    if (DEBUG_KEYBOARD) {
                         console.log("editifyKeyboardShortcut sink FOCUS");
                     }
-                    (document as any)._KEY_SINK_LISTEN = true;
-
-                    (document as any)._KEY_SHIFT = undefined;
-                    (document as any)._KEY_CONTROL = undefined;
-                    (document as any)._KEY_META = undefined;
-                    (document as any)._KEY_ALT = undefined;
+                    const doc = document as TKeyboardDocumentSink;
+                    doc._keyboardSinkIsActive = true;
                 });
                 ref.addEventListener("blur", () => {
-                    if (_DEBUG_KEYS) {
+
+                    if (DEBUG_KEYBOARD) {
                         console.log("editifyKeyboardShortcut sink BLUR");
                     }
-                    (document as any)._KEY_SINK_LISTEN = false;
-
-                    (document as any)._KEY_SHIFT = undefined;
-                    (document as any)._KEY_CONTROL = undefined;
-                    (document as any)._KEY_META = undefined;
-                    (document as any)._KEY_ALT = undefined;
+                    const doc = document as TKeyboardDocumentSink;
+                    doc._keyboardSinkIsActive = false;
                 });
             }
         }}
