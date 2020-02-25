@@ -37,7 +37,6 @@ export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
 
                 return (<i
                     key={"lang-" + index}
-                    title={lang}
                     className={styles.allowUserSelect}
                 >
                     {ll + note + suffix}

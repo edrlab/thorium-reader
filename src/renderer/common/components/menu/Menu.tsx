@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
@@ -50,7 +50,7 @@ export default class Menu extends React.Component<IProps, IState> {
         this.state = {
             contentStyle: {},
         };
-        this.menuId = "menu-" + uuid.v4();
+        this.menuId = "menu-" + uuidv4();
         this.focusMenuButton = this.focusMenuButton.bind(this);
         this.getBackFocusMenuButton = this.getBackFocusMenuButton.bind(this);
     }

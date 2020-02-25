@@ -17,7 +17,7 @@ import LibraryLayout from "readium-desktop/renderer/library/components/layout/Li
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType } from "readium-desktop/renderer/library/routing";
 import { Dispatch } from "redux";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { CatalogGridView } from "./GridView";
 import Header from "./Header";
@@ -36,8 +36,8 @@ interface IProps extends IBaseProps,
 }
 
 class Catalog extends React.Component<IProps, undefined> {
-    private catalogGetId = uuid.v4();
-    private publicationGetAllTagId = uuid.v4();
+    private catalogGetId = uuidv4();
+    private publicationGetAllTagId = uuidv4();
 
     public componentDidMount() {
         this.getFromApi();

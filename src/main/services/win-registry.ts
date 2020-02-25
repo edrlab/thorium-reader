@@ -10,7 +10,7 @@ import { injectable } from "inversify";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { onWindowMoveResize } from "readium-desktop/common/rectangle/window";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 // Warning: not an array with ordered indexes!
 // (cannot reliably iterate from 0 to N)
@@ -59,7 +59,7 @@ export class WinRegistry {
     public registerWindow(browserWindow: BrowserWindow, type: AppWindowType): AppWindow {
         const winId = browserWindow.id;
         const appWindow: AppWindow = {
-            identifier: uuid.v4(),
+            identifier: uuidv4(),
             type,
             browserWindow,
             browserWindowID: winId,

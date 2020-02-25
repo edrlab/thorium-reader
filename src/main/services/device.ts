@@ -12,7 +12,7 @@ import {
     ExcludeTimestampableWithPartialIdentifiable,
 } from "readium-desktop/main/db/repository/base";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { IDeviceIDManager } from "@r2-lcp-js/lsd/deviceid-manager";
 
@@ -61,7 +61,7 @@ export class DeviceIdManager implements IDeviceIDManager {
         debug(deviceId);
 
         if (!deviceId) {
-            deviceId = uuid.v4();
+            deviceId = uuidv4();
 
             const newDeviceConfigDocument: ExcludeTimestampableWithPartialIdentifiable<ConfigDocument<DeviceConfig>> = {
                 identifier: "device",

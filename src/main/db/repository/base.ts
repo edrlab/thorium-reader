@@ -6,12 +6,10 @@
 // ==LICENSE-END==
 
 import * as moment from "moment";
-import * as uuid from "uuid";
-
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
-
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
+import { v4 as uuidv4 } from "uuid";
 
 interface Index  {
     name: string;
@@ -41,7 +39,7 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         Promise<D> {
 
         if (!document.identifier) {
-            document.identifier = uuid.v4();
+            document.identifier = uuidv4();
         }
 
         let dbDoc: PouchDB.Core.PutDocument<D> = this.convertFromDocument(document);
