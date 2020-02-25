@@ -87,7 +87,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                         {
                             publication.publishers?.length ?
                             <>
-                                <span>{`${__("catalog.publisher")} : `}</span>
+                                <span>{`${__("catalog.publisher")}: `}</span>
                                 <i className={styles.allowUserSelect}>
                                     <FormatContributorWithLink
                                         contributors={publication.publishers}
@@ -103,7 +103,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             <>
                                 <span>
                                     {
-                                        `${__("catalog.lang")} : `
+                                        `${__("catalog.lang")}: `
                                     }
                                 </span>
                                 <FormatPublicationLanguage publication={publication} __={__} />
@@ -115,7 +115,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             <>
                                 <span>
                                     {
-                                        `${__("catalog.numberOfPages")} : `
+                                        `${__("catalog.numberOfPages")}: `
                                     }
                                 </span>
                                 <i className={styles.allowUserSelect}>
