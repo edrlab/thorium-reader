@@ -11,7 +11,7 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 import Toast from "./Toast";
@@ -48,7 +48,7 @@ export class ToastManager extends React.Component<IProps, IState> {
     public componentDidUpdate(oldProps: IProps) {
         const { toast } = this.props;
         if (toast !== oldProps.toast) {
-            const id = uuid.v4();
+            const id = uuidv4();
             const toastList = this.state.toastList;
             toastList[id] = toast;
             this.setState({toastList});
