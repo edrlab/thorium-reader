@@ -127,6 +127,23 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
                             </> : undefined
                         }
+                        {
+                            publication.workIdentifier ?
+                            <>
+                                <span>
+                                    {
+                                        `${__("catalog.id")}: `
+                                    }
+                                </span>
+                                <i className={styles.allowUserSelect}>
+                                    {
+                                        publication.workIdentifier
+                                    }
+                                </i>
+                                <br />
+
+                            </> : undefined
+                        }
                     </p>
 
                     <LcpInfo publicationLcp={publication} />
