@@ -16,7 +16,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
 import * as request from "request";
 import { tmpNameSync } from "tmp";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
@@ -70,7 +70,7 @@ export class Downloader {
             postfix: `${ext}`}); // .part
 
         // Create download
-        const identifier = uuid.v4();
+        const identifier = uuidv4();
         const download: Download = {
             identifier,
             srcUrl: url,
