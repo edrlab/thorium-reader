@@ -86,11 +86,19 @@ export const keyDownEventHandler = (ev: IKeyboardEvent, elementName?: string) =>
         if (elementName && _elementNameBlacklist.includes(elementName)) {
             return;
         }
+        const ev_: IKeyboardEvent = {
+            altKey: doc._keyModifierAlt, // ev.altKey
+            ctrlKey: doc._keyModifierControl, // ev.ctrlKey
+            metaKey: doc._keyModifierMeta, // ev.metaKey
+            shiftKey: doc._keyModifierShift, // ev.shiftKey
+
+            code: ev.code,
+        };
         for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
             if (keyboardShortcutPairing.up) {
                 continue; // this is KEY DOWN
             }
-            if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev)) {
+            if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev_)) {
 
                 if (DEBUG_KEYBOARD) {
                     console.log("keyboardShortcutMatch KEY DOWN:",
@@ -125,11 +133,19 @@ export const keyUpEventHandler = (ev: IKeyboardEvent, elementName?: string) => {
         if (elementName && _elementNameBlacklist.includes(elementName)) {
             return;
         }
+        const ev_: IKeyboardEvent = {
+            altKey: doc._keyModifierAlt, // ev.altKey
+            ctrlKey: doc._keyModifierControl, // ev.ctrlKey
+            metaKey: doc._keyModifierMeta, // ev.metaKey
+            shiftKey: doc._keyModifierShift, // ev.shiftKey
+
+            code: ev.code,
+        };
         for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
             if (!keyboardShortcutPairing.up) {
                 continue; // this is KEY UP
             }
-            if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev)) {
+            if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev_)) {
 
                 if (DEBUG_KEYBOARD) {
                     console.log("keyboardShortcutMatch KEY UP:",
@@ -166,15 +182,7 @@ export function ensureKeyboardListenerIsInstalled() {
     document.addEventListener("keydown", (ev: KeyboardEvent) => {
         const elementName = (ev.target as Element).nodeName;
 
-        const ev_: IKeyboardEvent = {
-            altKey: doc._keyModifierAlt, // ev.altKey
-            ctrlKey: doc._keyModifierControl, // ev.ctrlKey
-            metaKey: doc._keyModifierMeta, // ev.metaKey
-            shiftKey: doc._keyModifierShift, // ev.shiftKey
-
-            code: ev.code,
-        };
-        keyDownEventHandler(ev_, elementName);
+        keyDownEventHandler(ev, elementName);
     }, {
         once: false,
         passive: false,
@@ -183,15 +191,7 @@ export function ensureKeyboardListenerIsInstalled() {
     document.addEventListener("keyup", (ev: KeyboardEvent) => {
         const elementName = (ev.target as Element).nodeName;
 
-        const ev_: IKeyboardEvent = {
-            altKey: doc._keyModifierAlt, // ev.altKey
-            ctrlKey: doc._keyModifierControl, // ev.ctrlKey
-            metaKey: doc._keyModifierMeta, // ev.metaKey
-            shiftKey: doc._keyModifierShift, // ev.shiftKey
-
-            code: ev.code,
-        };
-        keyUpEventHandler(ev_, elementName);
+        keyUpEventHandler(ev, elementName);
     }, {
         once: false,
         passive: false,
