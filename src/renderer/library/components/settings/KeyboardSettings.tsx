@@ -94,7 +94,15 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             }
             // ev.preventDefault();
 
-            if (!ev.code.startsWith("Tab")) {
+            if (ev.code.startsWith("Shift")) {
+                // noop
+            } else if (ev.code.startsWith("Control")) {
+                // noop
+            } else if (ev.code.startsWith("Meta")) {
+                // noop
+            } else if (ev.code.startsWith("Alt")) {
+                // noop
+            } else if (!ev.code.startsWith("Tab")) {
                 // if (this.selectRef?.current) {
                 //     this.selectRef.current.value = ev.code;
                 // }
@@ -479,6 +487,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         keyboardShortcuts: state.keyboard.shortcuts,
+        locale: state.i18n.locale,
     };
 };
 

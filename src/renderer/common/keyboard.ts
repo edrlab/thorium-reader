@@ -19,7 +19,7 @@ export interface TKeyboardDocument extends TDocument {
     _keyboardListenerIsInstalled: boolean;
 }
 
-export const DEBUG_KEYBOARD = false;
+export const DEBUG_KEYBOARD = true;
 
 const _keyOptionsFunctions = [];
 for (let i = 1; i <= 12; i++) {
