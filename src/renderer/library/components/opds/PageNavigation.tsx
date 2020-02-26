@@ -8,7 +8,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { keyboardShortcutMatch } from "readium-desktop/common/keyboard";
 import { IOpdsResultView } from "readium-desktop/common/views/opds";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
@@ -17,6 +16,9 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import {
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { buildOpdsBrowserRouteWithLink } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { dispatchHistoryPush } from "readium-desktop/renderer/library/routing";
@@ -34,30 +36,31 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-// interface IState {
-//     keyboardShortcuts: TKeyboardShortcutsMapReadOnly;
-// }
-
 class PageNavigation extends React.Component<IProps, undefined> {
 
-    // constructor(props: IProps) {
-    //     super(props);
+    constructor(props: IProps) {
+        super(props);
 
-    //     this.state = {
-    //         keyboardShortcuts: undefined,
-    //     };
-    //     this.loadKeyboardShortcuts();
-    //     // this.loadKeyboardShortcuts = this.loadKeyboardShortcuts.bind(this);
-    // }
+        this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
+        this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
+    }
 
     public componentDidMount() {
-        // this.loadKeyboardShortcuts();
+        ensureKeyboardListenerIsInstalled();
 
-        document.addEventListener("keydown", this.handleKeyDown);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.library_opds_PageNavigationPrevious,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.library_opds_PageNavigationNext,
+            this.onKeyboardPageNavigationNext);
     }
 
     public componentWillUnmount() {
-        document.removeEventListener("keydown", this.handleKeyDown);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
     }
 
     public render() {
@@ -130,36 +133,27 @@ class PageNavigation extends React.Component<IProps, undefined> {
         );
     }
 
-    // private async loadKeyboardShortcuts() {
-    //     try {
-    //         const keyboardShortcuts = await apiAction("keyboard/getAll");
-    //         this.setState({ keyboardShortcuts });
-    //     } catch (e) {
-    //         console.error("Error to fetch api keyboard/getAll", e);
-    //     }
-    // }
-    private handleKeyDown = (e: KeyboardEvent) => {
+    private onKeyboardPageNavigationNext = () => {
+        this.onKeyboardPageNavigationPreviousNext(false);
+    }
+    private onKeyboardPageNavigationPrevious = () => {
+        this.onKeyboardPageNavigationPreviousNext(true);
+    }
+    private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
         const { pageLinks } = this.props;
 
-        const keyboardShortcutNext = this.props.keyboardShortcuts.library_opds_PageNavigationNext;
-        const keyboardShortcutPrevious = this.props.keyboardShortcuts.library_opds_PageNavigationPrevious;
-        const isNext = keyboardShortcutMatch(keyboardShortcutNext, e);
-        const isPrevious = keyboardShortcutMatch(keyboardShortcutPrevious, e);
+        const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
-        if (isNext || isPrevious) {
-            const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
-
-            if (pageLinks?.previous[0]?.url && isPrevious) { // TODO RTL
-                this.props.historyPush({
-                    ...this.props.location,
-                    pathname: buildRoute(pageLinks.previous[0]),
-                });
-            } else if (pageLinks?.next[0]?.url && isNext) { // TODO RTL
-                this.props.historyPush({
-                    ...this.props.location,
-                    pathname: buildRoute(pageLinks.next[0]),
-                });
-            }
+        if (pageLinks?.previous[0]?.url && isPrevious) { // TODO RTL
+            this.props.historyPush({
+                ...this.props.location,
+                pathname: buildRoute(pageLinks.previous[0]),
+            });
+        } else if (pageLinks?.next[0]?.url) { // TODO RTL
+            this.props.historyPush({
+                ...this.props.location,
+                pathname: buildRoute(pageLinks.next[0]),
+            });
         }
     }
 }

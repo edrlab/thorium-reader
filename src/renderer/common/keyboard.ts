@@ -7,6 +7,10 @@
 
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 
+import {
+    IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcutReadOnly,
+} from "readium-desktop/common/keyboard";
+
 type TDocument = typeof document;
 export interface TKeyboardDocument extends TDocument {
     _keyModifierShift: boolean;
@@ -56,6 +60,8 @@ export const KEY_CODES = [].concat(
 
 // because the shift/ctrl/alt/meta key modifier booleans on the DOM keyboard events are not reliable
 // (at least, as tested on Widows, for example when ALT is added to CTRL SHIFT with U, O and some other key codes)
+// Note that on MacOS, META seems to block the KEY UP event (DOWN okay),
+// making it impossible to detect this key modifier in the keyboard capture / event sink input control
 export function ensureKeyboardListenerIsInstalled() {
     const doc = document as TKeyboardDocument;
 
@@ -69,7 +75,13 @@ export function ensureKeyboardListenerIsInstalled() {
     doc._keyModifierMeta = false;
     doc._keyModifierAlt = false;
 
+    document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
+        document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
+    }, true);
+
     document.addEventListener("keydown", (ev) => {
+        document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
+
         if (DEBUG_KEYBOARD) {
             console.log("installKeyboardListener KEY DOWN:", ev.code);
         }
@@ -87,6 +99,29 @@ export function ensureKeyboardListenerIsInstalled() {
             doc._keyModifierMeta = true;
         } else if (ev.code.startsWith("Alt")) {
             doc._keyModifierAlt = true;
+        } else {
+            for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
+                if (keyboardShortcutPairing.up) {
+                    continue; // this is KEY DOWN
+                }
+                const ev_: IKeyboardEvent = {
+                    altKey: doc._keyModifierAlt, // ev.altKey
+                    ctrlKey: doc._keyModifierControl, // ev.ctrlKey
+                    metaKey: doc._keyModifierMeta, // ev.metaKey
+                    shiftKey: doc._keyModifierShift, // ev.shiftKey
+
+                    code: ev.code,
+                };
+                if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev_)) {
+
+                    if (DEBUG_KEYBOARD) {
+                        console.log("keyboardShortcutMatch KEY DOWN:",
+                            JSON.stringify(keyboardShortcutPairing.keyboardShortcut, null, 4));
+                    }
+                    keyboardShortcutPairing.callback();
+                    return; // execute first match only
+                }
+            }
         }
     }, {
         once: false,
@@ -110,10 +145,59 @@ export function ensureKeyboardListenerIsInstalled() {
             doc._keyModifierMeta = false;
         } else if (ev.code.startsWith("Alt")) {
             doc._keyModifierAlt = false;
+        } else {
+            for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
+                if (!keyboardShortcutPairing.up) {
+                    continue; // this is KEY UP
+                }
+                const ev_: IKeyboardEvent = {
+                    altKey: doc._keyModifierAlt, // ev.altKey
+                    ctrlKey: doc._keyModifierControl, // ev.ctrlKey
+                    metaKey: doc._keyModifierMeta, // ev.metaKey
+                    shiftKey: doc._keyModifierShift, // ev.shiftKey
+
+                    code: ev.code,
+                };
+                if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev_)) {
+
+                    if (DEBUG_KEYBOARD) {
+                        console.log("keyboardShortcutMatch KEY UP:",
+                            JSON.stringify(keyboardShortcutPairing.keyboardShortcut, null, 4));
+                    }
+                    keyboardShortcutPairing.callback();
+                    return; // execute first match only
+                }
+            }
         }
     }, {
         once: false,
         passive: false,
         capture: true,
     });
+}
+
+interface IKeyboardShortcutPairing {
+    up: boolean; // otherwise, assumes down
+    keyboardShortcut: TKeyboardShortcutReadOnly;
+    callback: () => void;
+}
+const _keyboardShortcutPairings: IKeyboardShortcutPairing[] = [];
+export function registerKeyboardListener(
+    up: boolean,
+    keyboardShortcut: TKeyboardShortcutReadOnly,
+    callback: () => void) {
+
+    _keyboardShortcutPairings.push({
+        up,
+        keyboardShortcut,
+        callback,
+    });
+}
+export function unregisterKeyboardListener(callback: () => void) {
+    const i = _keyboardShortcutPairings.findIndex((keyboardShortcutPairing, _index, _arr) => {
+        return keyboardShortcutPairing.callback === callback;
+    });
+    if (i >= 0) {
+        _keyboardShortcutPairings.splice(i, 1);
+    }
 }

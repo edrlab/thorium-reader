@@ -71,14 +71,14 @@ export type TKeyboardShortcutsMap = {
 export type TKeyboardShortcutReadOnly = Readonly<TKeyboardShortcut>;
 
 // IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN
-export interface KeyboardEvent {
+export interface IKeyboardEvent {
     readonly altKey: boolean;
     readonly ctrlKey: boolean;
     readonly metaKey: boolean;
     readonly shiftKey: boolean;
 
     readonly code: string;
-    readonly key: string;
+    // readonly key: string;
 }
 
 // DEPRECATED: if (ev.keyCode === 37 || ev.keyCode === 39) { // left / right
@@ -88,17 +88,17 @@ export interface KeyboardEvent {
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 //
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-export function keyboardShortcutMatch(ks: TKeyboardShortcut, e: KeyboardEvent): boolean {
+export function keyboardShortcutMatch(ks: TKeyboardShortcut, e: IKeyboardEvent): boolean {
     return ks.key === e.code // not e.key! (physical code, instead of logical key)
         && (ks.alt && e.altKey || !ks.alt && !e.altKey)
         && (ks.control && e.ctrlKey || !ks.control && !e.ctrlKey)
         && (ks.meta && e.metaKey || !ks.meta && !e.metaKey)
         && (ks.shift && e.shiftKey || !ks.shift && !e.shiftKey);
 }
-export function keyboardShortcutMatch_(ks: TKeyboardShortcut, e: TKeyboardShortcut): boolean {
-    return ks.key === e.key
-        && (ks.alt && e.alt || !ks.alt && !e.alt)
-        && (ks.control && e.control || !ks.control && !e.control)
-        && (ks.meta && e.meta || !ks.meta && !e.meta)
-        && (ks.shift && e.shift || !ks.shift && !e.shift);
-}
+// export function keyboardShortcutMatch_(ks: TKeyboardShortcut, e: TKeyboardShortcut): boolean {
+//     return ks.key === e.key
+//         && (ks.alt && e.alt || !ks.alt && !e.alt)
+//         && (ks.control && e.control || !ks.control && !e.control)
+//         && (ks.meta && e.meta || !ks.meta && !e.meta)
+//         && (ks.shift && e.shift || !ks.shift && !e.shift);
+// }

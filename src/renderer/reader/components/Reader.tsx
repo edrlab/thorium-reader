@@ -26,6 +26,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
+import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
@@ -171,7 +172,6 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
-    // keyboardShortcuts: TKeyboardShortcutsMapReadOnly;
 
     // publicationJsonUrl?: string;
     title?: string;
@@ -213,7 +213,6 @@ class Reader extends React.Component<IProps, IState> {
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
 
         this.state = {
-            // keyboardShortcuts: undefined,
             // publicationJsonUrl: "HTTP://URL",
             lcpHint: "LCP hint",
             title: "TITLE",
@@ -261,8 +260,6 @@ class Reader extends React.Component<IProps, IState> {
             currentLocation: undefined,
             bookmarks: undefined,
         };
-        // this.loadKeyboardShortcuts();
-        // this.loadKeyboardShortcuts = this.loadKeyboardShortcuts.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -281,7 +278,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
-        // this.loadKeyboardShortcuts();
+        ensureKeyboardListenerIsInstalled();
 
         // this.setState({
         //     publicationJsonUrl,
@@ -330,13 +327,6 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
         });
-
-        window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
-            window.document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
-        }, true);
-        window.document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
-            window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
-        }, true);
 
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
@@ -526,15 +516,6 @@ class Reader extends React.Component<IProps, IState> {
                 </div>
         );
     }
-
-    // private async loadKeyboardShortcuts() {
-    //     try {
-    //         const keyboardShortcuts = await apiAction("keyboard/getAll");
-    //         this.setState({ keyboardShortcuts });
-    //     } catch (e) {
-    //         console.error("Error to fetch api keyboard/getAll", e);
-    //     }
-    // }
 
     private displayPublicationInfo() {
         if (this.state.publicationView) {
