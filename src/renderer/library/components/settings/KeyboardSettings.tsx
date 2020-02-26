@@ -108,7 +108,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 // }
 
                 const editKeyboardShortcutData =
-                    JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
+                    JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData || {})) as TKeyboardShortcut;
                 editKeyboardShortcutData.key = ev.code;
 
                 editKeyboardShortcutData.shift = doc._keyModifierShift ? true : false;

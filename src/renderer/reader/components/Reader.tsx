@@ -9,7 +9,6 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
-import { keyboardShortcutMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
@@ -26,7 +25,10 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
-import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
+import {
+    ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
+    registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
@@ -44,7 +46,6 @@ import { Unsubscribe } from "redux";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
     IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_READIUMCSS,
-    IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
 } from "@r2-navigator-js/electron/common/events";
 import {
     colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
@@ -53,7 +54,7 @@ import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/que
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
-    setKeyDownEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
+    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
@@ -210,6 +211,11 @@ class Reader extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
+        this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
+        this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
+        this.onKeyboardSpineNavigationPrevious = this.onKeyboardSpineNavigationPrevious.bind(this);
+        this.onKeyboardSpineNavigationNext = this.onKeyboardSpineNavigationNext.bind(this);
+
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
 
         this.state = {
@@ -279,6 +285,27 @@ class Reader extends React.Component<IProps, IState> {
 
     public async componentDidMount() {
         ensureKeyboardListenerIsInstalled();
+
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.reader_PageNavigationPrevious,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.reader_PageNavigationNext,
+            this.onKeyboardPageNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_SpineNavigationPrevious,
+            this.onKeyboardSpineNavigationPrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_SpineNavigationNext,
+            this.onKeyboardSpineNavigationNext);
+
+        setKeyDownEventHandler(keyDownEventHandler);
+        setKeyUpEventHandler(keyUpEventHandler);
 
         // this.setState({
         //     publicationJsonUrl,
@@ -383,37 +410,6 @@ class Reader extends React.Component<IProps, IState> {
             },
         };
 
-        const keyDownEventHandler = (ev: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => {
-
-            const keyboardShortcutNextPage = this.props.keyboardShortcuts.reader_PageNavigationNext;
-            const keyboardShortcutPreviousPage = this.props.keyboardShortcuts.reader_PageNavigationPrevious;
-            const keyboardShortcutNextSpine = this.props.keyboardShortcuts.reader_SpineNavigationNext;
-            const keyboardShortcutPreviousSpine = this.props.keyboardShortcuts.reader_SpineNavigationPrevious;
-            const isNextPage = keyboardShortcutMatch(keyboardShortcutNextPage, ev);
-            const isPreviousPage = keyboardShortcutMatch(keyboardShortcutPreviousPage, ev);
-            const isNextSpine = keyboardShortcutMatch(keyboardShortcutNextSpine, ev);
-            const isPreviousSpine = keyboardShortcutMatch(keyboardShortcutPreviousSpine, ev);
-
-            if (isNextPage || isPreviousPage || isNextSpine || isPreviousSpine) {
-                navLeftOrRight(isPreviousPage || isPreviousSpine, isNextSpine || isPreviousSpine);
-                if (isNextSpine || isPreviousSpine) {
-                    if (this.fastLinkRef?.current) {
-                        setTimeout(() => {
-                            if (this.fastLinkRef?.current) {
-                                this.fastLinkRef.current.focus();
-                            }
-                        }, 200);
-                    }
-                }
-            }
-        };
-        setKeyDownEventHandler(keyDownEventHandler);
-        window.document.addEventListener("keydown", (ev: KeyboardEvent) => {
-            if (this.state.shortcutEnable) {
-                keyDownEventHandler(ev);
-            }
-        });
-
         setReadingLocationSaver(this.handleReadingLocationChange);
 
         setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
@@ -438,6 +434,11 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
+        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationNext);
+
         if (this.unsubscribe) {
             this.unsubscribe();
         }
@@ -515,6 +516,42 @@ class Reader extends React.Component<IProps, IState> {
                     </div>
                 </div>
         );
+    }
+
+    private onKeyboardPageNavigationNext = () => {
+        this.onKeyboardPageNavigationPreviousNext(false);
+    }
+    private onKeyboardPageNavigationPrevious = () => {
+        this.onKeyboardPageNavigationPreviousNext(true);
+    }
+    private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
+        if (!this.state.shortcutEnable) {
+            return;
+        }
+
+        navLeftOrRight(isPrevious, false);
+    }
+
+    private onKeyboardSpineNavigationNext = () => {
+        this.onKeyboardSpineNavigationPreviousNext(false);
+    }
+    private onKeyboardSpineNavigationPrevious = () => {
+        this.onKeyboardSpineNavigationPreviousNext(true);
+    }
+    private onKeyboardSpineNavigationPreviousNext = (isPrevious: boolean) => {
+        if (!this.state.shortcutEnable) {
+            return;
+        }
+
+        navLeftOrRight(isPrevious, true);
+
+        if (this.fastLinkRef?.current) {
+            setTimeout(() => {
+                if (this.fastLinkRef?.current) {
+                    this.fastLinkRef.current.focus();
+                }
+            }, 200);
+        }
     }
 
     private displayPublicationInfo() {

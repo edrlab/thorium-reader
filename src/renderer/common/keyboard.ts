@@ -58,6 +58,90 @@ export const KEY_CODES = [].concat(
 );
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 
+const _elementNameBlacklist = ["INPUT"];
+
+export const keyDownEventHandler = (ev: IKeyboardEvent, elementName?: string) => {
+    const doc = document as TKeyboardDocument;
+
+    document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
+
+    if (DEBUG_KEYBOARD) {
+        console.log("installKeyboardListener KEY DOWN:", ev.code);
+    }
+
+    if (!ev.code) {
+        return;
+    }
+    // ev.preventDefault();
+
+    if (ev.code.startsWith("Shift")) {
+        doc._keyModifierShift = true;
+    } else if (ev.code.startsWith("Control")) {
+        doc._keyModifierControl = true;
+    } else if (ev.code.startsWith("Meta")) {
+        doc._keyModifierMeta = true;
+    } else if (ev.code.startsWith("Alt")) {
+        doc._keyModifierAlt = true;
+    } else {
+        if (elementName && _elementNameBlacklist.includes(elementName)) {
+            return;
+        }
+        for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
+            if (keyboardShortcutPairing.up) {
+                continue; // this is KEY DOWN
+            }
+            if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev)) {
+
+                if (DEBUG_KEYBOARD) {
+                    console.log("keyboardShortcutMatch KEY DOWN:",
+                        JSON.stringify(keyboardShortcutPairing.keyboardShortcut, null, 4));
+                }
+                keyboardShortcutPairing.callback();
+                return; // execute first match only
+            }
+        }
+    }
+};
+export const keyUpEventHandler = (ev: IKeyboardEvent, elementName?: string) => {
+    const doc = document as TKeyboardDocument;
+
+    if (DEBUG_KEYBOARD) {
+        console.log("installKeyboardListener KEY UP:", ev.code);
+    }
+    if (!ev.code) {
+        return;
+    }
+    // ev.preventDefault();
+
+    if (ev.code.startsWith("Shift")) {
+        doc._keyModifierShift = false;
+    } else if (ev.code.startsWith("Control")) {
+        doc._keyModifierControl = false;
+    } else if (ev.code.startsWith("Meta")) {
+        doc._keyModifierMeta = false;
+    } else if (ev.code.startsWith("Alt")) {
+        doc._keyModifierAlt = false;
+    } else {
+        if (elementName && _elementNameBlacklist.includes(elementName)) {
+            return;
+        }
+        for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
+            if (!keyboardShortcutPairing.up) {
+                continue; // this is KEY UP
+            }
+            if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev)) {
+
+                if (DEBUG_KEYBOARD) {
+                    console.log("keyboardShortcutMatch KEY UP:",
+                        JSON.stringify(keyboardShortcutPairing.keyboardShortcut, null, 4));
+                }
+                keyboardShortcutPairing.callback();
+                return; // execute first match only
+            }
+        }
+    }
+};
+
 // because the shift/ctrl/alt/meta key modifier booleans on the DOM keyboard events are not reliable
 // (at least, as tested on Widows, for example when ALT is added to CTRL SHIFT with U, O and some other key codes)
 // Note that on MacOS, META seems to block the KEY UP event (DOWN okay),
@@ -79,96 +163,35 @@ export function ensureKeyboardListenerIsInstalled() {
         document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
     }, true);
 
-    document.addEventListener("keydown", (ev) => {
-        document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
+    document.addEventListener("keydown", (ev: KeyboardEvent) => {
+        const elementName = (ev.target as Element).nodeName;
 
-        if (DEBUG_KEYBOARD) {
-            console.log("installKeyboardListener KEY DOWN:", ev.code);
-        }
+        const ev_: IKeyboardEvent = {
+            altKey: doc._keyModifierAlt, // ev.altKey
+            ctrlKey: doc._keyModifierControl, // ev.ctrlKey
+            metaKey: doc._keyModifierMeta, // ev.metaKey
+            shiftKey: doc._keyModifierShift, // ev.shiftKey
 
-        if (!ev.code) {
-            return;
-        }
-        // ev.preventDefault();
-
-        if (ev.code.startsWith("Shift")) {
-            doc._keyModifierShift = true;
-        } else if (ev.code.startsWith("Control")) {
-            doc._keyModifierControl = true;
-        } else if (ev.code.startsWith("Meta")) {
-            doc._keyModifierMeta = true;
-        } else if (ev.code.startsWith("Alt")) {
-            doc._keyModifierAlt = true;
-        } else {
-            for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
-                if (keyboardShortcutPairing.up) {
-                    continue; // this is KEY DOWN
-                }
-                const ev_: IKeyboardEvent = {
-                    altKey: doc._keyModifierAlt, // ev.altKey
-                    ctrlKey: doc._keyModifierControl, // ev.ctrlKey
-                    metaKey: doc._keyModifierMeta, // ev.metaKey
-                    shiftKey: doc._keyModifierShift, // ev.shiftKey
-
-                    code: ev.code,
-                };
-                if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev_)) {
-
-                    if (DEBUG_KEYBOARD) {
-                        console.log("keyboardShortcutMatch KEY DOWN:",
-                            JSON.stringify(keyboardShortcutPairing.keyboardShortcut, null, 4));
-                    }
-                    keyboardShortcutPairing.callback();
-                    return; // execute first match only
-                }
-            }
-        }
+            code: ev.code,
+        };
+        keyDownEventHandler(ev_, elementName);
     }, {
         once: false,
         passive: false,
         capture: true,
     });
-    document.addEventListener("keyup", (ev) => {
-        if (DEBUG_KEYBOARD) {
-            console.log("installKeyboardListener KEY UP:", ev.code);
-        }
-        if (!ev.code) {
-            return;
-        }
-        // ev.preventDefault();
+    document.addEventListener("keyup", (ev: KeyboardEvent) => {
+        const elementName = (ev.target as Element).nodeName;
 
-        if (ev.code.startsWith("Shift")) {
-            doc._keyModifierShift = false;
-        } else if (ev.code.startsWith("Control")) {
-            doc._keyModifierControl = false;
-        } else if (ev.code.startsWith("Meta")) {
-            doc._keyModifierMeta = false;
-        } else if (ev.code.startsWith("Alt")) {
-            doc._keyModifierAlt = false;
-        } else {
-            for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
-                if (!keyboardShortcutPairing.up) {
-                    continue; // this is KEY UP
-                }
-                const ev_: IKeyboardEvent = {
-                    altKey: doc._keyModifierAlt, // ev.altKey
-                    ctrlKey: doc._keyModifierControl, // ev.ctrlKey
-                    metaKey: doc._keyModifierMeta, // ev.metaKey
-                    shiftKey: doc._keyModifierShift, // ev.shiftKey
+        const ev_: IKeyboardEvent = {
+            altKey: doc._keyModifierAlt, // ev.altKey
+            ctrlKey: doc._keyModifierControl, // ev.ctrlKey
+            metaKey: doc._keyModifierMeta, // ev.metaKey
+            shiftKey: doc._keyModifierShift, // ev.shiftKey
 
-                    code: ev.code,
-                };
-                if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev_)) {
-
-                    if (DEBUG_KEYBOARD) {
-                        console.log("keyboardShortcutMatch KEY UP:",
-                            JSON.stringify(keyboardShortcutPairing.keyboardShortcut, null, 4));
-                    }
-                    keyboardShortcutPairing.callback();
-                    return; // execute first match only
-                }
-            }
-        }
+            code: ev.code,
+        };
+        keyUpEventHandler(ev_, elementName);
     }, {
         once: false,
         passive: false,
@@ -187,6 +210,10 @@ export function registerKeyboardListener(
     keyboardShortcut: TKeyboardShortcutReadOnly,
     callback: () => void) {
 
+    if (DEBUG_KEYBOARD) {
+        console.log("registerKeyboardListener:",
+            JSON.stringify(keyboardShortcut, null, 4));
+    }
     _keyboardShortcutPairings.push({
         up,
         keyboardShortcut,
@@ -198,6 +225,11 @@ export function unregisterKeyboardListener(callback: () => void) {
         return keyboardShortcutPairing.callback === callback;
     });
     if (i >= 0) {
+
+        if (DEBUG_KEYBOARD) {
+            console.log(`UNregisterKeyboardListener ${i}`,
+                JSON.stringify(_keyboardShortcutPairings[i].keyboardShortcut, null, 4));
+        }
         _keyboardShortcutPairings.splice(i, 1);
     }
 }
