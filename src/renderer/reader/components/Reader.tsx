@@ -496,6 +496,7 @@ class Reader extends React.Component<IProps, IState> {
                             readerOptionsProps={readerOptionsProps}
                             readerMenuProps={readerMenuProps}
                             displayPublicationInfo={this.displayPublicationInfo}
+                            currentLocation={this.state.currentLocation}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
