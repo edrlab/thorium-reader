@@ -22,6 +22,13 @@ export interface TKeyboardShortcut {
 // as the renderer process actually fetches data from apiAction("keyboard/getAll")
 // or from the shared keyboard state
 const _defaults_ = Object.freeze({
+    focus_search: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "KeyF",
+    }),
+
     library_opds_PageNavigationPrevious: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,

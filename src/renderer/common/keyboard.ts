@@ -131,6 +131,9 @@ export const keyUpEventHandler = (ev: IKeyboardEvent, elementName?: string) => {
         doc._keyModifierAlt = false;
     } else {
         if (elementName && _elementNameBlacklist.includes(elementName)) {
+            if (DEBUG_KEYBOARD) {
+                console.log("_elementNameBlacklist KEY UP:", ev.code);
+            }
             return;
         }
         const ev_: IKeyboardEvent = {
