@@ -12,6 +12,9 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as styles2 from "readium-desktop/renderer/assets/styles/myBooks.css";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import {
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import LibraryHeader from "./LibraryHeader";
@@ -42,9 +45,27 @@ interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapS
 }
 
 class LibraryLayout extends React.Component<IProps, undefined> {
+    private fastLinkRef: React.RefObject<HTMLAnchorElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.onKeyboardFocusMain = this.onKeyboardFocusMain.bind(this);
+
+        this.fastLinkRef = React.createRef<HTMLAnchorElement>();
+    }
+
+    public componentDidMount() {
+        ensureKeyboardListenerIsInstalled();
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.focus_main,
+            this.onKeyboardFocusMain);
+    }
+
+    public componentWillUnmount() {
+        unregisterKeyboardListener(this.onKeyboardFocusMain);
     }
 
     public render() {
@@ -69,17 +90,28 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         className={classNames(styles.main, styles2.main, this.props.mainClassName)}
                         role="main"
                     >
-                        <a id="main-content" aria-hidden tabIndex={-1}></a>
+                        <a
+                            ref={this.fastLinkRef}
+                            id="main-content"
+                            aria-hidden
+                            tabIndex={-1}></a>
                         { this.props.children }
                     </main>
                 </div>
             </HelmetProvider>
         );
     }
+
+    private onKeyboardFocusMain = () => {
+        if (this.fastLinkRef?.current) {
+            this.fastLinkRef.current.focus();
+        }
+    }
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
-        dialogOpen: state.dialog.open,
-    });
+    dialogOpen: state.dialog.open,
+    keyboardShortcuts: state.keyboard.shortcuts,
+});
 
 export default connect(mapStateToProps)(withRouter(LibraryLayout));

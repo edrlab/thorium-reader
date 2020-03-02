@@ -77,7 +77,7 @@ class Cover extends React.Component<IProps, undefined> {
             }
             return (
                 <img
-                    tabIndex={0}
+                    tabIndex={this.props.onKeyPress ? 0 : -1}
                     className={styles.cover_img}
                     onClick={this.props.onClick}
                     onKeyPress={this.props.onKeyPress}

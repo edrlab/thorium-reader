@@ -10,7 +10,8 @@ import * as React from "react";
 import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
 import {
-    TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutsMap, TKeyboardShortcutsMapReadOnly,
+    DEBUG_KEYBOARD, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutsMap,
+    TKeyboardShortcutsMapReadOnly,
 } from "readium-desktop/common/keyboard";
 import { keyboardActions } from "readium-desktop/common/redux/actions/";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
@@ -20,7 +21,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import {
-    DEBUG_KEYBOARD, ensureKeyboardListenerIsInstalled, KEY_CODES, TKeyboardDocument,
+    ensureKeyboardListenerIsInstalled, KEY_CODES, TKeyboardDocument,
 } from "readium-desktop/renderer/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";

@@ -8,7 +8,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 
 import {
-    IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcutReadOnly,
+    DEBUG_KEYBOARD, IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcutReadOnly,
 } from "readium-desktop/common/keyboard";
 
 type TDocument = typeof document;
@@ -22,8 +22,6 @@ export interface TKeyboardDocument extends TDocument {
 
     _keyboardListenerIsInstalled: boolean;
 }
-
-export const DEBUG_KEYBOARD = true;
 
 const _keyOptionsFunctions = [];
 for (let i = 1; i <= 12; i++) {
@@ -61,7 +59,19 @@ export const KEY_CODES = [].concat(
 const _elementNameBlacklist = ["INPUT"];
 
 export const keyDownEventHandler = (ev: IKeyboardEvent, elementName?: string) => {
+    keyDownEventHandler_(ev, elementName ? elementName : undefined, undefined);
+};
+const keyDownEventHandler_ = (ev: IKeyboardEvent, elName: string | undefined, element?: Element) => {
     const doc = document as TKeyboardDocument;
+    const elementName = element ? element.nodeName : elName;
+    const inputType = (element && elementName === "INPUT") ? element.getAttribute("type") : undefined;
+    const isBlackListed =
+        inputType === "search" ||
+        inputType === "text" ||
+        inputType === "range" ||
+        inputType === "radio" ||
+        inputType === "checkbox" ||
+        inputType === "password";
 
     document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
 
@@ -83,7 +93,13 @@ export const keyDownEventHandler = (ev: IKeyboardEvent, elementName?: string) =>
     } else if (ev.code.startsWith("Alt")) {
         doc._keyModifierAlt = true;
     } else {
-        if (elementName && _elementNameBlacklist.includes(elementName)) {
+        if (DEBUG_KEYBOARD) {
+            console.log("blacklist check KEY DOWN:", elementName, inputType);
+        }
+        if (isBlackListed || elementName && _elementNameBlacklist.includes(elementName)) {
+            if (DEBUG_KEYBOARD) {
+                console.log("_elementNameBlacklist KEY DOWN:", ev.code);
+            }
             return;
         }
         const ev_: IKeyboardEvent = {
@@ -111,7 +127,19 @@ export const keyDownEventHandler = (ev: IKeyboardEvent, elementName?: string) =>
     }
 };
 export const keyUpEventHandler = (ev: IKeyboardEvent, elementName?: string) => {
+    keyUpEventHandler_(ev, elementName ? elementName : undefined, undefined);
+};
+const keyUpEventHandler_ = (ev: IKeyboardEvent, elName: string | undefined, element?: Element) => {
     const doc = document as TKeyboardDocument;
+    const elementName = element ? element.nodeName : elName;
+    const inputType = (element && elementName === "INPUT") ? element.getAttribute("type") : undefined;
+    const isBlackListed =
+        inputType === "search" ||
+        inputType === "text" ||
+        inputType === "range" ||
+        inputType === "radio" ||
+        inputType === "checkbox" ||
+        inputType === "password";
 
     if (DEBUG_KEYBOARD) {
         console.log("installKeyboardListener KEY UP:", ev.code);
@@ -130,7 +158,10 @@ export const keyUpEventHandler = (ev: IKeyboardEvent, elementName?: string) => {
     } else if (ev.code.startsWith("Alt")) {
         doc._keyModifierAlt = false;
     } else {
-        if (elementName && _elementNameBlacklist.includes(elementName)) {
+        if (DEBUG_KEYBOARD) {
+            console.log("blacklist check KEY UP:", elementName, inputType);
+        }
+        if (isBlackListed || elementName && _elementNameBlacklist.includes(elementName)) {
             if (DEBUG_KEYBOARD) {
                 console.log("_elementNameBlacklist KEY UP:", ev.code);
             }
@@ -178,23 +209,38 @@ export function ensureKeyboardListenerIsInstalled() {
     doc._keyModifierMeta = false;
     doc._keyModifierAlt = false;
 
+    window.addEventListener("blur", () => {
+        if (DEBUG_KEYBOARD) {
+            console.log("window BLUR");
+        }
+        doc._keyModifierShift = false;
+        doc._keyModifierControl = false;
+        doc._keyModifierMeta = false;
+        doc._keyModifierAlt = false;
+    }, true);
+    window.addEventListener("focus", () => {
+        if (DEBUG_KEYBOARD) {
+            console.log("window FOCUS");
+        }
+        doc._keyModifierShift = false;
+        doc._keyModifierControl = false;
+        doc._keyModifierMeta = false;
+        doc._keyModifierAlt = false;
+    }, true);
+
     document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
         document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
     }, true);
 
     document.addEventListener("keydown", (ev: KeyboardEvent) => {
-        const elementName = (ev.target as Element).nodeName;
-
-        keyDownEventHandler(ev, elementName);
+        keyDownEventHandler_(ev, undefined, ev.target as Element);
     }, {
         once: false,
         passive: false,
         capture: true,
     });
     document.addEventListener("keyup", (ev: KeyboardEvent) => {
-        const elementName = (ev.target as Element).nodeName;
-
-        keyUpEventHandler(ev, elementName);
+        keyUpEventHandler_(ev, undefined, ev.target as Element);
     }, {
         once: false,
         passive: false,
