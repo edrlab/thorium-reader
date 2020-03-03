@@ -6,12 +6,12 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { all, call, takeEvery } from "redux-saga/effects";
 import { put } from "typed-redux-saga";
 
@@ -84,7 +84,7 @@ function* keyboardReloadWatcher() {
         debug(`Keyboard shortcuts reload JSON (defaults: ${action.payload.defaults}) => ${okay}`);
 
         const currentKeyboardShortcuts = keyboardShortcuts.getAll();
-        if (IS_DEV) {
+        if (DEBUG_KEYBOARD) {
             const jsonDiff = require("json-diff");
 
             const defaultKeyboardShortcuts = keyboardShortcuts.getAllDefaults();

@@ -13,6 +13,7 @@ import {
     DEBUG_KEYBOARD, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutsMap,
     TKeyboardShortcutsMapReadOnly,
 } from "readium-desktop/common/keyboard";
+import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
@@ -30,7 +31,6 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
 import SVG from "../../../common/components/SVG";
-import { ToastType } from 'readium-desktop/common/models/toast';
 
 interface TKeyboardDocumentSink extends TKeyboardDocument {
     _keyboardSinkIsActive: boolean;
