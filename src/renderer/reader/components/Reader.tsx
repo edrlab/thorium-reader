@@ -519,11 +519,11 @@ class Reader extends React.Component<IProps, IState> {
         };
 
         return (
-                <div>
+                <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
                     <a
                         ref={this.refToolbar}
                         id="main-toolbar"
-                        aria-hidden
+                        title={this.props.__("accessibility.toolbar")}
                         tabIndex={-1}></a>
                     <SkipLink
                         className={styles.skip_link}
@@ -557,11 +557,12 @@ class Reader extends React.Component<IProps, IState> {
                                 <main
                                     id="main"
                                     role="main"
+                                    aria-label={this.props.__("accessibility.mainContent")}
                                     className={styles.publication_viewport_container}>
                                     <a
                                         ref={this.fastLinkRef}
                                         id="main-content"
-                                        aria-hidden
+                                        title={this.props.__("accessibility.mainContent")}
                                         tabIndex={-1}></a>
                                     <div id="publication_viewport" className={styles.publication_viewport}> </div>
                                 </main>

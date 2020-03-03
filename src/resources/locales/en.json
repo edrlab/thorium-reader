@@ -5,9 +5,11 @@
         "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
         "leftSlideButton": "Slide the list to the left",
+        "mainContent": "main content",
         "rightSlideButton": "Slide the list to the right",
         "searchBook": "Search by title",
-        "skipLink": "Skip to content"
+        "skipLink": "Skip to content",
+        "toolbar": "toolbar"
     },
     "app": {
         "edit": {

@@ -5,9 +5,11 @@
         "homeMenu": "Startmenü",
         "importFile": "Importieren einer EPUB-Datei",
         "leftSlideButton": "Scrolle nach links unten",
+        "mainContent": "hauptinhalt",
         "rightSlideButton": "Scrolle nach rechts unten",
         "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
-        "skipLink": "Gehe zum Inhalt"
+        "skipLink": "Gehe zum Inhalt",
+        "toolbar": "symbolleiste"
     },
     "app": {
         "edit": {

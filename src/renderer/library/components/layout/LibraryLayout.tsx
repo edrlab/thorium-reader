@@ -14,6 +14,9 @@ import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as styles2 from "readium-desktop/renderer/assets/styles/myBooks.css";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
@@ -23,7 +26,7 @@ import LibraryHeader from "./LibraryHeader";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps {
+interface IBaseProps extends TranslatorProps {
     secondaryHeader?: React.ReactElement;
     title?: string;
     mainClassName?: string;
@@ -90,26 +93,27 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 
         return (
             <HelmetProvider>
-                <div>
-                    <Helmet>
-                        <title>{ helmetTitle }</title>
-                    </Helmet>
+                <Helmet>
+                    <title>{ helmetTitle }</title>
+                </Helmet>
+                <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
                     <a
                         ref={this.refToolbar}
                         id="main-toolbar"
-                        aria-hidden
+                        title={this.props.__("accessibility.toolbar")}
                         tabIndex={-1}></a>
                     <LibraryHeader />
                     { this.props.secondaryHeader }
                     <main
                         id="main"
-                        className={classNames(styles.main, styles2.main, this.props.mainClassName)}
                         role="main"
+                        aria-label={this.props.__("accessibility.mainContent")}
+                        className={classNames(styles.main, styles2.main, this.props.mainClassName)}
                     >
                         <a
                             ref={this.fastLinkRef}
                             id="main-content"
-                            aria-hidden
+                            title={this.props.__("accessibility.mainContent")}
                             tabIndex={-1}></a>
                         { this.props.children }
                     </main>
@@ -135,4 +139,4 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     keyboardShortcuts: state.keyboard.shortcuts,
 });
 
-export default connect(mapStateToProps)(withRouter(LibraryLayout));
+export default connect(mapStateToProps)(withRouter(withTranslator(LibraryLayout)));
