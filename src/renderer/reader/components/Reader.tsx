@@ -201,6 +201,7 @@ interface IState {
 
 class Reader extends React.Component<IProps, IState> {
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
+    private refToolbar: React.RefObject<HTMLAnchorElement>;
 
     // can be get back with withTranslator HOC
     // to remove
@@ -217,6 +218,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardSpineNavigationPrevious = this.onKeyboardSpineNavigationPrevious.bind(this);
         this.onKeyboardSpineNavigationNext = this.onKeyboardSpineNavigationNext.bind(this);
         this.onKeyboardFocusMain = this.onKeyboardFocusMain.bind(this);
+        this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
         this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
         this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
         this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
@@ -224,6 +226,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
 
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
+        this.refToolbar = React.createRef<HTMLAnchorElement>();
 
         this.state = {
             // publicationJsonUrl: "HTTP://URL",
@@ -315,6 +318,11 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.focus_main,
             this.onKeyboardFocusMain);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.focus_toolbar,
+            this.onKeyboardFocusToolbar);
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
@@ -476,6 +484,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
         unregisterKeyboardListener(this.onKeyboardSpineNavigationNext);
         unregisterKeyboardListener(this.onKeyboardFocusMain);
+        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
         unregisterKeyboardListener(this.onKeyboardFullScreen);
         unregisterKeyboardListener(this.onKeyboardBookmark);
         unregisterKeyboardListener(this.onKeyboardInfo);
@@ -519,6 +528,11 @@ class Reader extends React.Component<IProps, IState> {
                         this.state.readerConfig.night && styles.nightMode,
                         this.state.readerConfig.sepia && styles.sepiaMode,
                     )}>
+                        <a
+                            ref={this.refToolbar}
+                            id="main-toolbar"
+                            aria-hidden
+                            tabIndex={-1}></a>
                         <ReaderHeader
                             infoOpen={this.props.infoOpen}
                             menuOpen={this.state.menuOpen}
@@ -616,6 +630,19 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.fastLinkRef?.current) {
             this.fastLinkRef.current.focus();
+        }
+    }
+
+    private onKeyboardFocusToolbar = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusToolbar)");
+            }
+            return;
+        }
+
+        if (this.refToolbar?.current) {
+            this.refToolbar.current.focus();
         }
     }
 

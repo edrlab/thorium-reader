@@ -40,14 +40,17 @@ for (let i = 0; i < 26; i++) {
     const upper = String.fromCharCode(65 + i); // 97 is lowercase "a"
     _keyOptionsAlpha.push(`Key${upper}`);
 }
+const _keyOptionsArrows = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"];
+const _keyOptionsEnterReturnSpace = ["Space", "Enter", "Return"];
 
 // const, but can be augmented from client code when new Key codes are "discovered" (platform-specific detection)
 export const KEY_CODES = [].concat(
     _keyOptionsFunctions,
     _keyOptionsNumbers,
     _keyOptionsAlpha,
-    ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"],
-    ["Space", "Enter", "Backspace", "Delete", "BracketRight", "BracketLeft"],
+    _keyOptionsArrows,
+    _keyOptionsEnterReturnSpace,
+    ["Backspace", "Delete", "BracketRight", "BracketLeft"],
     ["Slash", "Backslash", "IntlBackslash"],
     ["Period", "Comma", "Quote", "Backquote", "Minus", "Equal", "Semicolon"],
     ["CapsLock", "Insert", "PrintScreen"],
@@ -56,27 +59,33 @@ export const KEY_CODES = [].concat(
 );
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 
-const _elementNameBlacklist = ["INPUT"];
+const _elementNameBlacklist: string[] = [];
 
-export const keyDownEventHandler = (ev: IKeyboardEvent, elementName?: string) => {
-    keyDownEventHandler_(ev, elementName ? elementName : undefined, undefined);
-};
-const keyDownEventHandler_ = (ev: IKeyboardEvent, elName: string | undefined, element?: Element) => {
+const keyDownUpEventHandler = (
+    ev: IKeyboardEvent,
+    elementName: string,
+    elementAttributes: {[name: string]: string},
+    internal: boolean = false,
+    keyDown: boolean,
+) => {
     const doc = document as TKeyboardDocument;
-    const elementName = element ? element.nodeName : elName;
-    const inputType = (element && elementName === "INPUT") ? element.getAttribute("type") : undefined;
+    const inputType = elementName === "INPUT" ? elementAttributes.type : undefined;
+    const isArrows = _keyOptionsArrows.includes(ev.code);
+    const isEnterReturnSpace = _keyOptionsEnterReturnSpace.includes(ev.code);
     const isBlackListed =
         inputType === "search" ||
         inputType === "text" ||
-        inputType === "range" ||
-        inputType === "radio" ||
-        inputType === "checkbox" ||
-        inputType === "password";
+        inputType === "password" ||
+        inputType === "range" && isArrows ||
+        inputType === "radio" && isArrows ||
+        inputType === "checkbox" && isEnterReturnSpace ||
+        inputType === "file" && isEnterReturnSpace;
 
     document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
 
     if (DEBUG_KEYBOARD) {
-        console.log("installKeyboardListener KEY DOWN:", ev.code);
+        console.log("installKeyboardListener KEY " +
+            (keyDown ? "DOWN" : "UP"), ev.code, internal ? "UI" : "WebView");
     }
 
     if (!ev.code) {
@@ -85,20 +94,22 @@ const keyDownEventHandler_ = (ev: IKeyboardEvent, elName: string | undefined, el
     // ev.preventDefault();
 
     if (ev.code.startsWith("Shift")) {
-        doc._keyModifierShift = true;
+        doc._keyModifierShift = keyDown;
     } else if (ev.code.startsWith("Control")) {
-        doc._keyModifierControl = true;
+        doc._keyModifierControl = keyDown;
     } else if (ev.code.startsWith("Meta")) {
-        doc._keyModifierMeta = true;
+        doc._keyModifierMeta = keyDown;
     } else if (ev.code.startsWith("Alt")) {
-        doc._keyModifierAlt = true;
+        doc._keyModifierAlt = keyDown;
     } else {
         if (DEBUG_KEYBOARD) {
-            console.log("blacklist check KEY DOWN:", elementName, inputType);
+            console.log("blacklist check KEY " +
+                (keyDown ? "DOWN" : "UP"), elementName, JSON.stringify(elementAttributes, null, 2));
         }
         if (isBlackListed || elementName && _elementNameBlacklist.includes(elementName)) {
             if (DEBUG_KEYBOARD) {
-                console.log("_elementNameBlacklist KEY DOWN:", ev.code);
+                console.log("_elementNameBlacklist KEY " +
+                    (keyDown ? "DOWN" : "UP"), ev.code);
             }
             return;
         }
@@ -111,13 +122,17 @@ const keyDownEventHandler_ = (ev: IKeyboardEvent, elName: string | undefined, el
             code: ev.code,
         };
         for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
-            if (keyboardShortcutPairing.up) {
-                continue; // this is KEY DOWN
+            if (keyDown && keyboardShortcutPairing.up) {
+                continue;
+            }
+            if (!keyDown && !keyboardShortcutPairing.up) {
+                continue;
             }
             if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev_)) {
 
                 if (DEBUG_KEYBOARD) {
-                    console.log("keyboardShortcutMatch KEY DOWN:",
+                    console.log("keyboardShortcutMatch KEY " +
+                        (keyDown ? "DOWN" : "UP"),
                         JSON.stringify(keyboardShortcutPairing.keyboardShortcut, null, 4));
                 }
                 keyboardShortcutPairing.callback();
@@ -126,70 +141,22 @@ const keyDownEventHandler_ = (ev: IKeyboardEvent, elName: string | undefined, el
         }
     }
 };
-export const keyUpEventHandler = (ev: IKeyboardEvent, elementName?: string) => {
-    keyUpEventHandler_(ev, elementName ? elementName : undefined, undefined);
+export const keyDownEventHandler = (
+    ev: IKeyboardEvent,
+    elementName: string,
+    elementAttributes: {[name: string]: string},
+    internal: boolean = false,
+) => {
+    keyDownUpEventHandler(ev, elementName, elementAttributes, internal, true);
 };
-const keyUpEventHandler_ = (ev: IKeyboardEvent, elName: string | undefined, element?: Element) => {
-    const doc = document as TKeyboardDocument;
-    const elementName = element ? element.nodeName : elName;
-    const inputType = (element && elementName === "INPUT") ? element.getAttribute("type") : undefined;
-    const isBlackListed =
-        inputType === "search" ||
-        inputType === "text" ||
-        inputType === "range" ||
-        inputType === "radio" ||
-        inputType === "checkbox" ||
-        inputType === "password";
 
-    if (DEBUG_KEYBOARD) {
-        console.log("installKeyboardListener KEY UP:", ev.code);
-    }
-    if (!ev.code) {
-        return;
-    }
-    // ev.preventDefault();
-
-    if (ev.code.startsWith("Shift")) {
-        doc._keyModifierShift = false;
-    } else if (ev.code.startsWith("Control")) {
-        doc._keyModifierControl = false;
-    } else if (ev.code.startsWith("Meta")) {
-        doc._keyModifierMeta = false;
-    } else if (ev.code.startsWith("Alt")) {
-        doc._keyModifierAlt = false;
-    } else {
-        if (DEBUG_KEYBOARD) {
-            console.log("blacklist check KEY UP:", elementName, inputType);
-        }
-        if (isBlackListed || elementName && _elementNameBlacklist.includes(elementName)) {
-            if (DEBUG_KEYBOARD) {
-                console.log("_elementNameBlacklist KEY UP:", ev.code);
-            }
-            return;
-        }
-        const ev_: IKeyboardEvent = {
-            altKey: doc._keyModifierAlt, // ev.altKey
-            ctrlKey: doc._keyModifierControl, // ev.ctrlKey
-            metaKey: doc._keyModifierMeta, // ev.metaKey
-            shiftKey: doc._keyModifierShift, // ev.shiftKey
-
-            code: ev.code,
-        };
-        for (const keyboardShortcutPairing of _keyboardShortcutPairings) {
-            if (!keyboardShortcutPairing.up) {
-                continue; // this is KEY UP
-            }
-            if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev_)) {
-
-                if (DEBUG_KEYBOARD) {
-                    console.log("keyboardShortcutMatch KEY UP:",
-                        JSON.stringify(keyboardShortcutPairing.keyboardShortcut, null, 4));
-                }
-                keyboardShortcutPairing.callback();
-                return; // execute first match only
-            }
-        }
-    }
+export const keyUpEventHandler = (
+    ev: IKeyboardEvent,
+    elementName: string,
+    elementAttributes: {[name: string]: string},
+    internal: boolean = false,
+) => {
+    keyDownUpEventHandler(ev, elementName, elementAttributes, internal, false);
 };
 
 // because the shift/ctrl/alt/meta key modifier booleans on the DOM keyboard events are not reliable
@@ -233,14 +200,34 @@ export function ensureKeyboardListenerIsInstalled() {
     }, true);
 
     document.addEventListener("keydown", (ev: KeyboardEvent) => {
-        keyDownEventHandler_(ev, undefined, ev.target as Element);
+        const elementName = (ev.target && (ev.target as Element).nodeName) ?
+            (ev.target as Element).nodeName : "";
+        const elementAttributes: {[name: string]: string} = {};
+        if (ev.target && (ev.target as Element).attributes) {
+            // tslint:disable-next-line: prefer-for-of
+            for (let i = 0; i < (ev.target as Element).attributes.length; i++) {
+                const attr = (ev.target as Element).attributes[i];
+                elementAttributes[attr.name] = attr.value;
+            }
+        }
+        keyDownEventHandler(ev, elementName, elementAttributes, true);
     }, {
         once: false,
         passive: false,
         capture: true,
     });
     document.addEventListener("keyup", (ev: KeyboardEvent) => {
-        keyUpEventHandler_(ev, undefined, ev.target as Element);
+        const elementName = (ev.target && (ev.target as Element).nodeName) ?
+            (ev.target as Element).nodeName : "";
+        const elementAttributes: {[name: string]: string} = {};
+        if (ev.target && (ev.target as Element).attributes) {
+            // tslint:disable-next-line: prefer-for-of
+            for (let i = 0; i < (ev.target as Element).attributes.length; i++) {
+                const attr = (ev.target as Element).attributes[i];
+                elementAttributes[attr.name] = attr.value;
+            }
+        }
+        keyUpEventHandler(ev, elementName, elementAttributes, true);
     }, {
         once: false,
         passive: false,

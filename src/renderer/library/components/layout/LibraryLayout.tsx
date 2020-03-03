@@ -46,13 +46,16 @@ interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapS
 
 class LibraryLayout extends React.Component<IProps, undefined> {
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
+    private refToolbar: React.RefObject<HTMLAnchorElement>;
 
     constructor(props: IProps) {
         super(props);
 
         this.onKeyboardFocusMain = this.onKeyboardFocusMain.bind(this);
+        this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
 
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
+        this.refToolbar = React.createRef<HTMLAnchorElement>();
     }
 
     public componentDidMount() {
@@ -62,10 +65,16 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.focus_main,
             this.onKeyboardFocusMain);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.focus_toolbar,
+            this.onKeyboardFocusToolbar);
     }
 
     public componentWillUnmount() {
         unregisterKeyboardListener(this.onKeyboardFocusMain);
+        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
     }
 
     public render() {
@@ -83,6 +92,11 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     <Helmet>
                         <title>{ helmetTitle }</title>
                     </Helmet>
+                    <a
+                        ref={this.refToolbar}
+                        id="main-toolbar"
+                        aria-hidden
+                        tabIndex={-1}></a>
                     <LibraryHeader />
                     { this.props.secondaryHeader }
                     <main
@@ -105,6 +119,11 @@ class LibraryLayout extends React.Component<IProps, undefined> {
     private onKeyboardFocusMain = () => {
         if (this.fastLinkRef?.current) {
             this.fastLinkRef.current.focus();
+        }
+    }
+    private onKeyboardFocusToolbar = () => {
+        if (this.refToolbar?.current) {
+            this.refToolbar.current.focus();
         }
     }
 }

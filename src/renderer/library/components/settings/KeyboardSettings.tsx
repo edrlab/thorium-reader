@@ -13,7 +13,7 @@ import {
     DEBUG_KEYBOARD, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutsMap,
     TKeyboardShortcutsMapReadOnly,
 } from "readium-desktop/common/keyboard";
-import { keyboardActions } from "readium-desktop/common/redux/actions/";
+import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import {
@@ -30,6 +30,7 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
 import SVG from "../../../common/components/SVG";
+import { ToastType } from 'readium-desktop/common/models/toast';
 
 interface TKeyboardDocumentSink extends TKeyboardDocument {
     _keyboardSinkIsActive: boolean;
@@ -134,6 +135,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                     console.log("editifyKeyboardShortcut sink KEY:");
                     console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 }
+
+                const kstring = this.stringifyKeyboardShortcut(editKeyboardShortcutData);
+                this.props.toast(
+                    `${this.props.translator.translate("settings.keyboard.keyboardShortcuts")} ${kstring}`);
 
                 this.setState({
                     editKeyboardShortcutData,
@@ -310,7 +315,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             (<span className={styles.keyboard_shortcuts_separator}>+</span>) :
             null}{key}</>;
     }
-    private stringifyKeyboardShortcut(_id: TKeyboardShortcutId, def: TKeyboardShortcut) {
+    private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
         return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? "ALT " : ""}${def.meta ? "META " : ""}${(def.shift || def.control || def.alt || def.meta) ? "+ " : ""}${def.key}`;
     }
     private editifyKeyboardShortcut(id: TKeyboardShortcutId, def: TKeyboardShortcut) {
@@ -442,12 +447,13 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             })}
         </select>
         ;
+        const kstring = this.stringifyKeyboardShortcut(def);
         const keySink = <input
         className={styles.keyboard_shortcuts_sink}
         type="text"
         value=""
         size={1}
-        title={this.stringifyKeyboardShortcut(id, def)}
+        title={kstring}
         onChange={(ev) => {
             // console.log("editifyKeyboardShortcut INPUT:", ev.target.value.toString());
             ev.preventDefault();
@@ -498,6 +504,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             (data: TKeyboardShortcutsMapReadOnly) => dispatch(keyboardActions.setShortcuts.build(data, true)),
         showKeyboardShortcuts: () => dispatch(keyboardActions.showShortcuts.build(true)),
         reloadKeyboardShortcuts: (defaults: boolean) => dispatch(keyboardActions.reloadShortcuts.build(defaults)),
+        toast: (str: string) => dispatch(toastActions.openRequest.build(ToastType.Success, str)),
     };
 };
 

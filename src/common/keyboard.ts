@@ -43,6 +43,12 @@ const _defaults_ = Object.freeze({
         shift: false,
         key: "F10",
     }),
+    focus_toolbar: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "KeyT",
+    }),
     // focus_cycle_landmarks: Object.freeze<TKeyboardShortcut>({
     //     alt: false,
     //     control: true,

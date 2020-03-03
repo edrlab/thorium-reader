@@ -15,6 +15,7 @@ import { Provider } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
@@ -22,7 +23,6 @@ import PageManager from "readium-desktop/renderer/library/components/PageManager
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 
 import DownloadsPanel from "./DownloadsPanel";
-import ToastManager from "./toast/ToastManager";
 
 export default class App extends React.Component<{}, undefined> {
 
