@@ -7,7 +7,7 @@
 
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
-export const DEBUG_KEYBOARD = true;
+export const DEBUG_KEYBOARD = false;
 
 export interface TKeyboardShortcut {
     alt?: boolean;
