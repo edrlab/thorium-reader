@@ -6,9 +6,16 @@
 // ==LICENSE-END==
 
 import { ICatalogApi } from "./interface/catalog.interface";
+import { IKeyboardApi } from "./interface/keyboardApi.interface";
 import { ILcpApi } from "./interface/lcpApi.interface";
 import { IOpdsApi } from "./interface/opdsApi.interface";
 import { IPublicationApi } from "./interface/publicationApi.interface";
 import { IReaderApi } from "./interface/readerApi.interface";
 
-export type TMethodApi = keyof ICatalogApi | keyof IPublicationApi | keyof IOpdsApi | keyof ILcpApi | keyof IReaderApi;
+export type TMethodApi =
+    keyof ICatalogApi |
+    keyof IPublicationApi |
+    keyof IOpdsApi |
+    keyof IKeyboardApi |
+    keyof ILcpApi |
+    keyof IReaderApi;

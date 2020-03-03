@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { ICatalogModuleApi } from "./interface/catalog.interface";
+import { IKeyboardModuleApi } from "./interface/keyboardApi.interface";
 import { ILcpModuleApi } from "./interface/lcpApi.interface";
 import { IOpdsModuleApi } from "./interface/opdsApi.interface";
 import { IPublicationModuleApi } from "./interface/publicationApi.interface";
@@ -15,6 +16,7 @@ export type TApiMethod =
     ICatalogModuleApi &
     ILcpModuleApi &
     IOpdsModuleApi &
+    IKeyboardModuleApi &
     IPublicationModuleApi &
     IReaderModuleApi;
 

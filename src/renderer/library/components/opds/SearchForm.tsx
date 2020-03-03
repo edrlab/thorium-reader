@@ -15,6 +15,9 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import {
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { SEARCH_TERM } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
@@ -45,7 +48,21 @@ class SearchForm extends React.Component<IProps, undefined> {
     constructor(props: IProps) {
         super(props);
 
+        this.onKeyboardFocusSearch = this.onKeyboardFocusSearch.bind(this);
         this.inputRef = React.createRef<HTMLInputElement>();
+    }
+
+    public componentDidMount() {
+        ensureKeyboardListenerIsInstalled();
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.focus_search,
+            this.onKeyboardFocusSearch);
+    }
+
+    public componentWillUnmount() {
+        unregisterKeyboardListener(this.onKeyboardFocusSearch);
     }
 
     public render(): React.ReactElement<{}> {
@@ -74,6 +91,14 @@ class SearchForm extends React.Component<IProps, undefined> {
         );
     }
 
+    private onKeyboardFocusSearch = () => {
+        if (!this.inputRef?.current) {
+            return;
+        }
+        this.inputRef.current.focus();
+        // this.inputRef.current.select();
+        this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
+    }
     private submitSearch = (e: TFormEvent) => {
         e.preventDefault();
         if (!this.inputRef?.current) {
@@ -112,6 +137,7 @@ class SearchForm extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     search: state.opds.browser.search,
     location: state.router.location,
+    keyboardShortcuts: state.keyboard.shortcuts,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({

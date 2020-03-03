@@ -11,7 +11,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
+import { TranslatorProps, withTranslator } from "../hoc/translator";
 
 import classNames = require("classnames");
 
@@ -61,10 +61,11 @@ export class Toast extends React.Component<IProps, IState> {
         if (this.ref?.current) {
             this.ref?.current.addEventListener("transitionend", this.handleTransitionEnd, false);
         }
+
         if (this.props.displaySystemNotification) {
             // TODO: application name should not be hard-coded!
             // tslint:disable-next-line: no-unused-expression
-            new Notification("Thorium Reader", {
+            new Notification("Thorium", {
                 body: this.props.message,
             });
         }
@@ -91,6 +92,11 @@ export class Toast extends React.Component<IProps, IState> {
             default:
                 break;
         }
+
+        if (this.props.displaySystemNotification) {
+            return (<></>);
+        }
+
         return (
             <div
                 ref={this.ref}
@@ -100,6 +106,9 @@ export class Toast extends React.Component<IProps, IState> {
                     toRemove && styles.toRemove,
                     typeClassName,
                 )}
+                aria-live="assertive"
+                aria-relevant="all"
+                role="alert"
             >
                 {
                 // icon && <SVG className={styles.icon} svg={icon} />

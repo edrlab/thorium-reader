@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
+import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
@@ -25,6 +26,10 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
+import {
+    ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
+    registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
@@ -42,7 +47,6 @@ import { Unsubscribe } from "redux";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
     IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_READIUMCSS,
-    IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
 } from "@r2-navigator-js/electron/common/events";
 import {
     colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
@@ -51,7 +55,7 @@ import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/que
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
-    setKeyDownEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
+    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
@@ -170,6 +174,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
+
     // publicationJsonUrl?: string;
     title?: string;
 
@@ -196,6 +201,7 @@ interface IState {
 
 class Reader extends React.Component<IProps, IState> {
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
+    private refToolbar: React.RefObject<HTMLAnchorElement>;
 
     // can be get back with withTranslator HOC
     // to remove
@@ -207,7 +213,20 @@ class Reader extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
+        this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
+        this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
+        this.onKeyboardSpineNavigationPrevious = this.onKeyboardSpineNavigationPrevious.bind(this);
+        this.onKeyboardSpineNavigationNext = this.onKeyboardSpineNavigationNext.bind(this);
+        this.onKeyboardFocusMain = this.onKeyboardFocusMain.bind(this);
+        this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
+        this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
+        this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
+        this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
+        this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
+        this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
+
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
+        this.refToolbar = React.createRef<HTMLAnchorElement>();
 
         this.state = {
             // publicationJsonUrl: "HTTP://URL",
@@ -275,6 +294,63 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
+        ensureKeyboardListenerIsInstalled();
+
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.reader_PageNavigationPrevious,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.reader_PageNavigationNext,
+            this.onKeyboardPageNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_SpineNavigationPrevious,
+            this.onKeyboardSpineNavigationPrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_SpineNavigationNext,
+            this.onKeyboardSpineNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.focus_main,
+            this.onKeyboardFocusMain);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.focus_toolbar,
+            this.onKeyboardFocusToolbar);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.toggle_fullscreen,
+            this.onKeyboardFullScreen);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.toggle_bookmark,
+            this.onKeyboardBookmark);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.info,
+            this.onKeyboardInfo);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_focus_settings,
+            this.onKeyboardFocusSettings);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_focus_navigation,
+            this.onKeyboardFocusNav);
+
+        setKeyDownEventHandler(keyDownEventHandler);
+        setKeyUpEventHandler(keyUpEventHandler);
 
         // this.setState({
         //     publicationJsonUrl,
@@ -323,13 +399,6 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
         });
-
-        window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
-            window.document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
-        }, true);
-        window.document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
-            window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
-        }, true);
 
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
@@ -386,39 +455,6 @@ class Reader extends React.Component<IProps, IState> {
             },
         };
 
-        const keyDownEventHandler = (ev: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => {
-            // DEPRECATED
-            // if (ev.keyCode === 37 || ev.keyCode === 39) { // left / right
-            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
-            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
-            const leftKey = ev.code === "ArrowLeft";
-            const rightKey = ev.code === "ArrowRight";
-            if (leftKey || rightKey) {
-                const noModifierKeys = !ev.ctrlKey && !ev.shiftKey && !ev.altKey && !ev.metaKey;
-                const spineNavModifierKeys = process.platform === "darwin" ? ev.ctrlKey && ev.shiftKey :
-                    ev.ctrlKey && ev.shiftKey && ev.altKey;
-                if (noModifierKeys || spineNavModifierKeys) {
-                    navLeftOrRight(leftKey, spineNavModifierKeys);
-                    if (spineNavModifierKeys) {
-                        if (this.fastLinkRef?.current) {
-                            setTimeout(() => {
-                                if (this.fastLinkRef?.current) {
-                                    this.fastLinkRef.current.focus();
-                                }
-                            }, 200);
-                        }
-                    }
-                }
-            }
-        };
-        setKeyDownEventHandler(keyDownEventHandler);
-        window.document.addEventListener("keydown", (ev: KeyboardEvent) => {
-            if (this.state.shortcutEnable) {
-                keyDownEventHandler(ev);
-            }
-        });
-
         setReadingLocationSaver(this.handleReadingLocationChange);
 
         setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
@@ -443,6 +479,18 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
+        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationNext);
+        unregisterKeyboardListener(this.onKeyboardFocusMain);
+        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
+        unregisterKeyboardListener(this.onKeyboardFullScreen);
+        unregisterKeyboardListener(this.onKeyboardBookmark);
+        unregisterKeyboardListener(this.onKeyboardInfo);
+        unregisterKeyboardListener(this.onKeyboardFocusSettings);
+        unregisterKeyboardListener(this.onKeyboardFocusNav);
+
         if (this.unsubscribe) {
             this.unsubscribe();
         }
@@ -470,6 +518,11 @@ class Reader extends React.Component<IProps, IState> {
 
         return (
                 <div>
+                    <a
+                        ref={this.refToolbar}
+                        id="main-toolbar"
+                        aria-hidden
+                        tabIndex={-1}></a>
                     <SkipLink
                         className={styles.skip_link}
                         anchorId="main-content"
@@ -503,9 +556,11 @@ class Reader extends React.Component<IProps, IState> {
                                     id="main"
                                     role="main"
                                     className={styles.publication_viewport_container}>
-                                    <a ref={this.fastLinkRef}
+                                    <a
+                                        ref={this.fastLinkRef}
                                         id="main-content"
-                                        aria-hidden tabIndex={-1}></a>
+                                        aria-hidden
+                                        tabIndex={-1}></a>
                                     <div id="publication_viewport" className={styles.publication_viewport}> </div>
                                 </main>
                             </div>
@@ -520,6 +575,115 @@ class Reader extends React.Component<IProps, IState> {
                     </div>
                 </div>
         );
+    }
+
+    private onKeyboardFullScreen = () => {
+        this.handleFullscreenClick();
+    }
+
+    private onKeyboardInfo = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardInfo)");
+            }
+            return;
+        }
+        this.displayPublicationInfo();
+    }
+
+    private onKeyboardFocusNav = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusNav)");
+            }
+            return;
+        }
+        this.handleMenuButtonClick();
+    }
+    private onKeyboardFocusSettings = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusSettings)");
+            }
+            return;
+        }
+        this.handleSettingsClick();
+    }
+
+    private onKeyboardBookmark = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardBookmark)");
+            }
+            return;
+        }
+        this.handleToggleBookmark();
+    }
+
+    private onKeyboardFocusMain = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusMain)");
+            }
+            return;
+        }
+
+        if (this.fastLinkRef?.current) {
+            this.fastLinkRef.current.focus();
+        }
+    }
+
+    private onKeyboardFocusToolbar = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusToolbar)");
+            }
+            return;
+        }
+
+        if (this.refToolbar?.current) {
+            this.refToolbar.current.focus();
+        }
+    }
+
+    private onKeyboardPageNavigationNext = () => {
+        this.onKeyboardPageNavigationPreviousNext(false);
+    }
+    private onKeyboardPageNavigationPrevious = () => {
+        this.onKeyboardPageNavigationPreviousNext(true);
+    }
+    private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardPageNavigationPreviousNext)");
+            }
+            return;
+        }
+
+        navLeftOrRight(isPrevious, false);
+    }
+
+    private onKeyboardSpineNavigationNext = () => {
+        this.onKeyboardSpineNavigationPreviousNext(false);
+    }
+    private onKeyboardSpineNavigationPrevious = () => {
+        this.onKeyboardSpineNavigationPreviousNext(true);
+    }
+    private onKeyboardSpineNavigationPreviousNext = (isPrevious: boolean) => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardSpineNavigationPreviousNext)");
+            }
+            return;
+        }
+
+        navLeftOrRight(isPrevious, true);
+
+        if (this.fastLinkRef?.current) {
+            setTimeout(() => {
+                this.onKeyboardFocusMain();
+            }, 200);
+        }
     }
 
     private displayPublicationInfo() {
@@ -717,9 +881,7 @@ class Reader extends React.Component<IProps, IState> {
         // (note that this means the focus is moved even when TOC items clicked with mouse, which is fine)
         if (this.fastLinkRef?.current) {
             setTimeout(() => {
-                if (this.fastLinkRef?.current) {
-                    this.fastLinkRef.current.focus();
-                }
+                this.onKeyboardFocusMain();
             }, 200);
         }
 
@@ -882,6 +1044,7 @@ class Reader extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         reader: state.reader.reader,
+        keyboardShortcuts: state.keyboard.shortcuts,
         mode: state.reader.mode,
         infoOpen: state.dialog.open &&
             state.dialog.type === DialogTypeName.PublicationInfoReader,

@@ -5,17 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// module typing
-type TCatalogApi = "catalog";
-type TPublicationApi = "publication";
-type TOpdsApi = "opds";
-type TKeyboardApi = "keyboardShortcuts";
-type TLcpApi = "lcp";
-type TReaderApi = "reader";
-export type TModuleApi =
-    TCatalogApi |
-    TPublicationApi |
-    TOpdsApi |
-    TKeyboardApi |
-    TLcpApi |
-    TReaderApi;
+import * as reloadShortcuts from "./reloadShortcuts";
+import * as setShortcuts from "./setShortcuts";
+import * as showShortcuts from "./showShortcuts";
+
+export {
+    setShortcuts,
+    showShortcuts,
+    reloadShortcuts,
+};

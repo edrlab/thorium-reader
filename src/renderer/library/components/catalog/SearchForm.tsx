@@ -13,6 +13,9 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import {
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { dispatchHistoryPush } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
@@ -31,15 +34,29 @@ interface IProps extends IBaseProps,
     ReturnType<typeof mapDispatchToProps> {
 }
 
-class Search extends React.Component<IProps, undefined> {
+class SearchForm extends React.Component<IProps, undefined> {
 
     private inputRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: IProps) {
         super(props);
 
+        this.onKeyboardFocusSearch = this.onKeyboardFocusSearch.bind(this);
         this.inputRef = React.createRef<HTMLInputElement>();
         this.search = this.search.bind(this);
+    }
+
+    public componentDidMount() {
+        ensureKeyboardListenerIsInstalled();
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.focus_search,
+            this.onKeyboardFocusSearch);
+    }
+
+    public componentWillUnmount() {
+        unregisterKeyboardListener(this.onKeyboardFocusSearch);
     }
 
     public render(): React.ReactElement<{}> {
@@ -60,7 +77,16 @@ class Search extends React.Component<IProps, undefined> {
         );
     }
 
-    public search(e: TFormEvent) {
+    private onKeyboardFocusSearch = () => {
+        if (!this.inputRef?.current) {
+            return;
+        }
+        this.inputRef.current.focus();
+        // this.inputRef.current.select();
+        this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
+    }
+
+    private search(e: TFormEvent) {
         e.preventDefault();
 
         const value = this.inputRef?.current?.value;
@@ -84,10 +110,11 @@ class Search extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    keyboardShortcuts: state.keyboard.shortcuts,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
     historyPush: dispatchHistoryPush(dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(Search));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SearchForm));
