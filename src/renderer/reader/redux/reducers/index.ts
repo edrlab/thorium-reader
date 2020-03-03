@@ -7,11 +7,13 @@
 
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
+import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { readerReducer } from "readium-desktop/renderer/reader/redux/reducers/reader";
 import { combineReducers } from "redux";
+
 import { IReaderRootState } from "../states";
 
 export const rootReducer = () => {
@@ -22,5 +24,6 @@ export const rootReducer = () => {
         win: winReducer,
         dialog: dialogReducer,
         toast: toastReducer,
+        keyboard: keyboardReducer,
     });
 };

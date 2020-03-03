@@ -89,8 +89,18 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
         if (this.props.infoOpen !== oldProps.infoOpen &&
             this.props.infoOpen === false &&
             this.infoMenuButtonRef?.current) {
-                this.infoMenuButtonRef.current.focus();
-            }
+            this.infoMenuButtonRef.current.focus();
+        }
+
+        if (this.props.menuOpen !== oldProps.menuOpen &&
+            this.props.menuOpen === true) {
+            this.focusNaviguationMenuButton();
+        }
+
+        if (this.props.settingsOpen !== oldProps.settingsOpen &&
+            this.props.settingsOpen === true) {
+            this.focusSettingMenuButton();
+        }
     }
 
     public render(): React.ReactElement<{}> {

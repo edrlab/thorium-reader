@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
+import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 // import { netReducer } from "readium-desktop/common/redux/reducers/net";
 // import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
@@ -13,6 +14,7 @@ import { readerReducer } from "readium-desktop/main/redux/reducers/reader";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { RootState } from "readium-desktop/main/redux/states";
 import { combineReducers } from "redux";
+
 import { lcpReducer } from "./lcp";
 
 export const rootReducer = combineReducers<RootState>({
@@ -23,4 +25,5 @@ export const rootReducer = combineReducers<RootState>({
     // update: updateReducer,
     app: appReducer,
     lcp: lcpReducer,
+    keyboard: keyboardReducer,
 });

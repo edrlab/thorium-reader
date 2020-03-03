@@ -10,10 +10,10 @@ import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ICommonRootState } from "readium-desktop/renderer/common/redux/states";
 import { v4 as uuidv4 } from "uuid";
 
-import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
+import { TranslatorProps, withTranslator } from "../hoc/translator";
 import Toast from "./Toast";
 
 // tslint:disable-next-line: no-empty-interface
@@ -68,7 +68,7 @@ export class ToastManager extends React.Component<IProps, IState> {
                                 key={id}
                                 close={ () => this.close(id) }
                                 type={toast.type}
-                                displaySystemNotification
+                                displaySystemNotification={false}
                             />;
                         case ToastType.Default:
                             return <Toast
@@ -76,7 +76,7 @@ export class ToastManager extends React.Component<IProps, IState> {
                                 key={id}
                                 close={ () => this.close(id) }
                                 type={toast.type}
-                                displaySystemNotification
+                                displaySystemNotification={false}
                             />;
                         case ToastType.Error:
                             return <Toast
@@ -84,7 +84,7 @@ export class ToastManager extends React.Component<IProps, IState> {
                                 key={id}
                                 close={ () => this.close(id) }
                                 type={toast.type}
-                                displaySystemNotification
+                                displaySystemNotification={false}
                             />;
                         default:
                             return (<></>);
@@ -102,7 +102,7 @@ export class ToastManager extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
+const mapStateToProps = (state: ICommonRootState, _props: IBaseProps) => {
     return {
         toast: state.toast,
     };

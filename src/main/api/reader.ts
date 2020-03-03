@@ -125,10 +125,16 @@ export class ReaderApi implements IReaderApi {
             name,
         };
         await this.locatorRepository.save(doc);
+
+        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+            `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("catalog.addTagsButton")})`));
     }
 
     public async deleteBookmark(identifier: string): Promise<void> {
         await this.locatorRepository.delete(identifier);
+
+        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+            `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("reader.marks.delete")})`));
     }
 
     public async clipboardCopy(

@@ -246,6 +246,18 @@
         }
     },
     "settings": {
+        "keyboard": {
+            "advancedMenu": "Menü",
+            "cancel": "Stornieren",
+            "edit": "Bearbeiten",
+            "editUserJson": "Benutzerdatei bearbeiten ...",
+            "hide": "Ausblenden",
+            "keyboardShortcuts": "Tastatürkürzel",
+            "loadUserJson": "Aus Benutzerdatei laden",
+            "resetDefaults": "Zurücksetzen (standard)",
+            "save": "Speichern",
+            "show": "Anzeigen"
+        },
         "language": {
             "languageChoice": "Sprachauswahl"
         }
