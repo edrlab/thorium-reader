@@ -68,7 +68,7 @@ export class ToastManager extends React.Component<IProps, IState> {
                                 key={id}
                                 close={ () => this.close(id) }
                                 type={toast.type}
-                                displaySystemNotification
+                                displaySystemNotification={false}
                             />;
                         case ToastType.Default:
                             return <Toast
@@ -76,7 +76,7 @@ export class ToastManager extends React.Component<IProps, IState> {
                                 key={id}
                                 close={ () => this.close(id) }
                                 type={toast.type}
-                                displaySystemNotification
+                                displaySystemNotification={false}
                             />;
                         case ToastType.Error:
                             return <Toast
@@ -84,7 +84,7 @@ export class ToastManager extends React.Component<IProps, IState> {
                                 key={id}
                                 close={ () => this.close(id) }
                                 type={toast.type}
-                                displaySystemNotification
+                                displaySystemNotification={false}
                             />;
                         default:
                             return (<></>);

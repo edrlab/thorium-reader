@@ -518,6 +518,11 @@ class Reader extends React.Component<IProps, IState> {
 
         return (
                 <div>
+                    <a
+                        ref={this.refToolbar}
+                        id="main-toolbar"
+                        aria-hidden
+                        tabIndex={-1}></a>
                     <SkipLink
                         className={styles.skip_link}
                         anchorId="main-content"
@@ -528,11 +533,6 @@ class Reader extends React.Component<IProps, IState> {
                         this.state.readerConfig.night && styles.nightMode,
                         this.state.readerConfig.sepia && styles.sepiaMode,
                     )}>
-                        <a
-                            ref={this.refToolbar}
-                            id="main-toolbar"
-                            aria-hidden
-                            tabIndex={-1}></a>
                         <ReaderHeader
                             infoOpen={this.props.infoOpen}
                             menuOpen={this.state.menuOpen}

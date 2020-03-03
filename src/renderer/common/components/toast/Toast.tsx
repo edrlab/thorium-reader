@@ -61,13 +61,14 @@ export class Toast extends React.Component<IProps, IState> {
         if (this.ref?.current) {
             this.ref?.current.addEventListener("transitionend", this.handleTransitionEnd, false);
         }
-        // if (this.props.displaySystemNotification) {
-        //     // TODO: application name should not be hard-coded!
-        //     // tslint:disable-next-line: no-unused-expression
-        //     new Notification("Thorium", {
-        //         body: this.props.message,
-        //     });
-        // }
+
+        if (this.props.displaySystemNotification) {
+            // TODO: application name should not be hard-coded!
+            // tslint:disable-next-line: no-unused-expression
+            new Notification("Thorium", {
+                body: this.props.message,
+            });
+        }
     }
 
     public componentWillRemove() {
@@ -92,10 +93,9 @@ export class Toast extends React.Component<IProps, IState> {
                 break;
         }
 
-        // TODO duplicate?
-        // if (this.props.displaySystemNotification) {
-        //     return (<></>);
-        // }
+        if (this.props.displaySystemNotification) {
+            return (<></>);
+        }
 
         return (
             <div
