@@ -10,6 +10,7 @@ import * as React from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as styles2 from "readium-desktop/renderer/assets/styles/myBooks.css";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import {
@@ -18,6 +19,8 @@ import {
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import LibraryHeader from "./LibraryHeader";
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -80,8 +83,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
     public render() {
         const { title } = this.props;
 
-        // FIXME add thorium from a constant
-        let helmetTitle = "Thorium";
+        let helmetTitle = capitalizedAppName;
         if (title) {
             helmetTitle += " - " + title;
         }

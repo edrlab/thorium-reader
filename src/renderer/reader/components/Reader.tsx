@@ -65,6 +65,8 @@ import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
 
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+
 // import {
 //     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 // } from "@r2-navigator-js/electron/common/sessions";
@@ -735,8 +737,9 @@ class Reader extends React.Component<IProps, IState> {
         if (r2Publication.Metadata && r2Publication.Metadata.Title) {
             const title = this.props.translator.translateContentField(r2Publication.Metadata.Title);
 
+            window.document.title = capitalizedAppName;
             if (title) {
-                window.document.title = "Thorium - " + title;
+                window.document.title = `${capitalizedAppName} - ${title}`;
                 this.setState({
                     title,
                 });
