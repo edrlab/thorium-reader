@@ -72,15 +72,16 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this.openCloseMenu = this.openCloseMenu.bind(this);
 
         this.selectRef = React.createRef<HTMLSelectElement>();
-
-        const doc = document as TKeyboardDocumentSink;
-        doc._keyboardSinkListenerIsInstalled = false;
     }
 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
 
         const doc = document as TKeyboardDocumentSink;
+        
+        if (doc._keyboardSinkListenerIsInstalled) {
+            return;
+        }
         doc._keyboardSinkListenerIsInstalled = true;
 
         document.addEventListener("keyup", (ev) => {
