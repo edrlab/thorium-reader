@@ -178,7 +178,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
 
     // publicationJsonUrl?: string;
-    title?: string;
+    // title?: string;
 
     publicationView: PublicationView | undefined;
     r2Publication: R2Publication | undefined;
@@ -233,7 +233,7 @@ class Reader extends React.Component<IProps, IState> {
         this.state = {
             // publicationJsonUrl: "HTTP://URL",
             lcpHint: "LCP hint",
-            title: "TITLE",
+            // title: "TITLE",
             lcpPass: "LCP pass",
             contentTableOpen: false,
             settingsOpen: false,
@@ -741,9 +741,9 @@ class Reader extends React.Component<IProps, IState> {
             window.document.title = capitalizedAppName;
             if (title) {
                 window.document.title = `${capitalizedAppName} - ${title}`;
-                this.setState({
-                    title,
-                });
+                // this.setState({
+                //     title,
+                // });
             }
         }
 

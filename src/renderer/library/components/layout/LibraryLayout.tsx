@@ -7,7 +7,6 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { Helmet, HelmetProvider } from "react-helmet-async";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
@@ -90,35 +89,31 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         if (title) {
             helmetTitle += " - " + title;
         }
+        window.document.title = helmetTitle;
 
         return (
-            <HelmetProvider>
-                <Helmet>
-                    <title>{ helmetTitle }</title>
-                </Helmet>
-                <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
+            <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
+                <a
+                    ref={this.refToolbar}
+                    id="main-toolbar"
+                    title={this.props.__("accessibility.toolbar")}
+                    tabIndex={-1}></a>
+                <LibraryHeader />
+                { this.props.secondaryHeader }
+                <main
+                    id="main"
+                    role="main"
+                    aria-label={this.props.__("accessibility.mainContent")}
+                    className={classNames(styles.main, styles2.main, this.props.mainClassName)}
+                >
                     <a
-                        ref={this.refToolbar}
-                        id="main-toolbar"
-                        title={this.props.__("accessibility.toolbar")}
+                        ref={this.fastLinkRef}
+                        id="main-content"
+                        title={this.props.__("accessibility.mainContent")}
                         tabIndex={-1}></a>
-                    <LibraryHeader />
-                    { this.props.secondaryHeader }
-                    <main
-                        id="main"
-                        role="main"
-                        aria-label={this.props.__("accessibility.mainContent")}
-                        className={classNames(styles.main, styles2.main, this.props.mainClassName)}
-                    >
-                        <a
-                            ref={this.fastLinkRef}
-                            id="main-content"
-                            title={this.props.__("accessibility.mainContent")}
-                            tabIndex={-1}></a>
-                        { this.props.children }
-                    </main>
-                </div>
-            </HelmetProvider>
+                    { this.props.children }
+                </main>
+            </div>
         );
     }
 

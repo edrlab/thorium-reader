@@ -355,7 +355,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!this.goToRef?.current?.value) {
             return;
         }
-        const pageNbr = (this.goToRef.current.value as string).trim().replace(/\s\s+/g, " ");
+        const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
         const foundPage = this.props.r2Publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});

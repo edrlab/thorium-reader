@@ -63,7 +63,10 @@ class Catalog extends React.Component<IProps, undefined> {
         const tags = this.props.apiData(this.publicationGetAllTagId)("publication/getAllTags");
 
         return (
-            <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
+            <LibraryLayout
+                title={__("header.books")}
+                secondaryHeader={secondaryHeader}
+            >
                 {
                     catalog?.data.result
                     && (
