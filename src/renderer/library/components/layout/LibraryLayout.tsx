@@ -94,10 +94,13 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         return (
             <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
                 <a
+                    role="region"
+                    className={styles2.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
                     title={this.props.__("accessibility.toolbar")}
-                    tabIndex={-1}></a>
+                    aria-label={this.props.__("accessibility.toolbar")}
+                    tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
                 <LibraryHeader />
                 { this.props.secondaryHeader }
                 <main
@@ -107,10 +110,13 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     className={classNames(styles.main, styles2.main, this.props.mainClassName)}
                 >
                     <a
+                        role="region"
+                        className={styles2.anchor_link}
                         ref={this.fastLinkRef}
                         id="main-content"
                         title={this.props.__("accessibility.mainContent")}
-                        tabIndex={-1}></a>
+                        aria-label={this.props.__("accessibility.mainContent")}
+                        tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
                     { this.props.children }
                 </main>
             </div>

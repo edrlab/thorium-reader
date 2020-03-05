@@ -521,10 +521,13 @@ class Reader extends React.Component<IProps, IState> {
         return (
                 <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
                     <a
+                        role="region"
+                        className={styles.anchor_link}
                         ref={this.refToolbar}
                         id="main-toolbar"
                         title={this.props.__("accessibility.toolbar")}
-                        tabIndex={-1}></a>
+                        aria-label={this.props.__("accessibility.toolbar")}
+                        tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
                     <SkipLink
                         className={styles.skip_link}
                         anchorId="main-content"
@@ -560,10 +563,13 @@ class Reader extends React.Component<IProps, IState> {
                                     aria-label={this.props.__("accessibility.mainContent")}
                                     className={styles.publication_viewport_container}>
                                     <a
+                                        role="region"
+                                        className={styles.anchor_link}
                                         ref={this.fastLinkRef}
                                         id="main-content"
                                         title={this.props.__("accessibility.mainContent")}
-                                        tabIndex={-1}></a>
+                                        aria-label={this.props.__("accessibility.mainContent")}
+                                        tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
                                     <div id="publication_viewport" className={styles.publication_viewport}> </div>
                                 </main>
                             </div>
