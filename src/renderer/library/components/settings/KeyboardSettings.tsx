@@ -78,7 +78,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         ensureKeyboardListenerIsInstalled();
 
         const doc = document as TKeyboardDocumentSink;
-        
+
         if (doc._keyboardSinkListenerIsInstalled) {
             return;
         }
