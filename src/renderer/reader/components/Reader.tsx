@@ -707,10 +707,6 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private goToLocator(locator: R2Locator) {
-        handleLinkLocator(locator);
-    }
-
     private async loadPublicationIntoViewport(
         publicationView: PublicationView,
         locator: R2Locator) {
@@ -867,28 +863,7 @@ class Reader extends React.Component<IProps, IState> {
         this.setState({visibleBookmarkList});
     }
 
-    // tslint:disable-next-line: max-line-length
-    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) {
-        if (event) {
-            event.preventDefault();
-        }
-        if (!url) {
-            return;
-        }
-
-        // DEPRECATED
-        // event.charCode === 13
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/charCode
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
-        // alternatively, could also use event.code === "Enter"
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
-        // if (event && event.key === "Enter") {
-        // }
-        // Screen readers have their own shortcut to activate hyperlinks (e.g. VoiceOver CTRL+OPT+SPACE),
-        // so we must not limit the focus behaviour to app-defined keyboard interaction (i.e. ENTER key)
-        // (note that this means the focus is moved even when TOC items clicked with mouse, which is fine)
+    private focusMainAreaLandmarkAndCloseMenu() {
         if (this.fastLinkRef?.current) {
             setTimeout(() => {
                 this.onKeyboardFocusMain();
@@ -900,6 +875,23 @@ class Reader extends React.Component<IProps, IState> {
                 this.handleMenuButtonClick();
             }, 100);
         }
+    }
+    private goToLocator(locator: R2Locator) {
+        this.focusMainAreaLandmarkAndCloseMenu();
+
+        handleLinkLocator(locator);
+    }
+
+    // tslint:disable-next-line: max-line-length
+    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) {
+        if (event) {
+            event.preventDefault();
+        }
+        if (!url) {
+            return;
+        }
+
+        this.focusMainAreaLandmarkAndCloseMenu();
 
         const newUrl = publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
