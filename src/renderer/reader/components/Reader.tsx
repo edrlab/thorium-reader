@@ -9,7 +9,7 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
-import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
+import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
@@ -297,59 +297,7 @@ class Reader extends React.Component<IProps, IState> {
 
     public async componentDidMount() {
         ensureKeyboardListenerIsInstalled();
-
-        registerKeyboardListener(
-            false, // listen for key down (not key up)
-            this.props.keyboardShortcuts.reader_PageNavigationPrevious,
-            this.onKeyboardPageNavigationPrevious);
-        registerKeyboardListener(
-            false, // listen for key down (not key up)
-            this.props.keyboardShortcuts.reader_PageNavigationNext,
-            this.onKeyboardPageNavigationNext);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.reader_SpineNavigationPrevious,
-            this.onKeyboardSpineNavigationPrevious);
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.reader_SpineNavigationNext,
-            this.onKeyboardSpineNavigationNext);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.focus_main,
-            this.onKeyboardFocusMain);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.focus_toolbar,
-            this.onKeyboardFocusToolbar);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.toggle_fullscreen,
-            this.onKeyboardFullScreen);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.toggle_bookmark,
-            this.onKeyboardBookmark);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.info,
-            this.onKeyboardInfo);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.reader_focus_settings,
-            this.onKeyboardFocusSettings);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.reader_focus_navigation,
-            this.onKeyboardFocusNav);
+        this.registerAllKeyboardListeners();
 
         setKeyDownEventHandler(keyDownEventHandler);
         setKeyUpEventHandler(keyUpEventHandler);
@@ -474,24 +422,19 @@ class Reader extends React.Component<IProps, IState> {
             .catch((error) => console.error("Error to fetch api publication/get", error));
     }
 
-    public async componentDidUpdate(_oldProps: IProps, oldState: IState) {
+    public async componentDidUpdate(oldProps: IProps, oldState: IState) {
         if (oldState.bookmarks !== this.state.bookmarks) {
             await this.checkBookmarks();
+        }
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            console.log("READER RELOAD KEYBOARD SHORTCUTS");
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
         }
     }
 
     public componentWillUnmount() {
-        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
-        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
-        unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
-        unregisterKeyboardListener(this.onKeyboardSpineNavigationNext);
-        unregisterKeyboardListener(this.onKeyboardFocusMain);
-        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
-        unregisterKeyboardListener(this.onKeyboardFullScreen);
-        unregisterKeyboardListener(this.onKeyboardBookmark);
-        unregisterKeyboardListener(this.onKeyboardInfo);
-        unregisterKeyboardListener(this.onKeyboardFocusSettings);
-        unregisterKeyboardListener(this.onKeyboardFocusNav);
+        this.unregisterAllKeyboardListeners();
 
         if (this.unsubscribe) {
             this.unsubscribe();
@@ -586,8 +529,112 @@ class Reader extends React.Component<IProps, IState> {
         );
     }
 
+    private registerAllKeyboardListeners() {
+
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigatePreviousPage,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigateNextPage,
+            this.onKeyboardPageNavigationNext);
+
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigatePreviousPageAlt,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigateNextPageAlt,
+            this.onKeyboardPageNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigatePreviousChapter,
+            this.onKeyboardSpineNavigationPrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigateNextChapter,
+            this.onKeyboardSpineNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigatePreviousChapterAlt,
+            this.onKeyboardSpineNavigationPrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigateNextChapterAlt,
+            this.onKeyboardSpineNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusMain,
+            this.onKeyboardFocusMain);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusToolbar,
+            this.onKeyboardFocusToolbar);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.ToggleReaderFullscreen,
+            this.onKeyboardFullScreen);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.ToggleBookmark,
+            this.onKeyboardBookmark);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.OpenReaderInfo,
+            this.onKeyboardInfo);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderSettings,
+            this.onKeyboardFocusSettings);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigation,
+            this.onKeyboardFocusNav);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.CloseReader,
+            this.onKeyboardCloseReader);
+    }
+
+    private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationNext);
+        unregisterKeyboardListener(this.onKeyboardFocusMain);
+        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
+        unregisterKeyboardListener(this.onKeyboardFullScreen);
+        unregisterKeyboardListener(this.onKeyboardBookmark);
+        unregisterKeyboardListener(this.onKeyboardInfo);
+        unregisterKeyboardListener(this.onKeyboardFocusSettings);
+        unregisterKeyboardListener(this.onKeyboardFocusNav);
+        unregisterKeyboardListener(this.onKeyboardCloseReader);
+    }
+
     private onKeyboardFullScreen = () => {
         this.handleFullscreenClick();
+    }
+
+    private onKeyboardCloseReader = () => {
+        // if (!this.state.shortcutEnable) {
+        //     if (DEBUG_KEYBOARD) {
+        //         console.log("!shortcutEnable (onKeyboardInfo)");
+        //     }
+        //     return;
+        // }
+        this.handleReaderClose();
     }
 
     private onKeyboardInfo = () => {

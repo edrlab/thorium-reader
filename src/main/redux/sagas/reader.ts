@@ -64,6 +64,27 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
                 },
             }]).popup({window: readerWindow});
         });
+
+        // Already done for primary library BrowserWindow
+        // readerWindow.webContents.on("did-finish-load", () => {
+        //     const {
+        //         default: installExtension,
+        //         REACT_DEVELOPER_TOOLS,
+        //         REDUX_DEVTOOLS,
+        //     } = require("electron-devtools-installer");
+
+        //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+        //         installExtension(extension)
+        //             .then((name: string) => debug("Added Extension: ", name))
+        //             .catch((err: Error) => debug("An error occurred: ", err));
+        //     });
+        // });
+
+        if (_VSCODE_LAUNCH !== "true") {
+            setTimeout(() => {
+                readerWindow.webContents.openDevTools({ mode: "detach" });
+            }, 2000);
+        }
     }
 
     const winRegistry = diMainGet("win-registry");
@@ -152,10 +173,6 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     }
 
     readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
-
-    if (IS_DEV && _VSCODE_LAUNCH !== "true") {
-        readerWindow.webContents.openDevTools({ mode: "detach" });
-    }
 
     setMenu(readerWindow, true);
 

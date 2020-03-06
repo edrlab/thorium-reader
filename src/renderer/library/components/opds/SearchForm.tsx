@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import { matchPath } from "react-router-dom";
+import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import {
@@ -54,15 +55,18 @@ class SearchForm extends React.Component<IProps, undefined> {
 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.focus_search,
-            this.onKeyboardFocusSearch);
+        this.registerAllKeyboardListeners();
     }
 
     public componentWillUnmount() {
-        unregisterKeyboardListener(this.onKeyboardFocusSearch);
+        this.unregisterAllKeyboardListeners();
+    }
+
+    public async componentDidUpdate(oldProps: IProps) {
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -89,6 +93,17 @@ class SearchForm extends React.Component<IProps, undefined> {
                 </button>
             </form>
         );
+    }
+
+    private registerAllKeyboardListeners() {
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusSearch,
+            this.onKeyboardFocusSearch);
+    }
+
+    private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardFocusSearch);
     }
 
     private onKeyboardFocusSearch = () => {

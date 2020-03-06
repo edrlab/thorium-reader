@@ -65,7 +65,9 @@ export async function createWindow() {
         });
 
         if (_VSCODE_LAUNCH !== "true") {
-            mainWindow.webContents.openDevTools({ mode: "detach" });
+            setTimeout(() => {
+                mainWindow.webContents.openDevTools({ mode: "detach" });
+            }, 2000);
         }
     }
 
