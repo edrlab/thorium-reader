@@ -7,9 +7,17 @@
 
 import { IAnalyticsApi } from "./interface/analyticsApi.interface";
 import { ICatalogApi } from "./interface/catalog.interface";
+import { IKeyboardApi } from "./interface/keyboardApi.interface";
 import { ILcpApi } from "./interface/lcpApi.interface";
 import { IOpdsApi } from "./interface/opdsApi.interface";
 import { IPublicationApi } from "./interface/publicationApi.interface";
 import { IReaderApi } from "./interface/readerApi.interface";
 
-export type TMethodApi = keyof ICatalogApi | keyof IPublicationApi | keyof IOpdsApi | keyof ILcpApi | keyof IReaderApi | keyof IAnalyticsApi;
+export type TMethodApi =
+    keyof ICatalogApi |
+    keyof IPublicationApi |
+    keyof IOpdsApi |
+    keyof IKeyboardApi |
+    keyof ILcpApi |
+    keyof IReaderApi |
+    keyof IAnalyticsApi ;

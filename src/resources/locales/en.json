@@ -5,9 +5,11 @@
         "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
         "leftSlideButton": "Slide the list to the left",
+        "mainContent": "main content",
         "rightSlideButton": "Slide the list to the right",
         "searchBook": "Search by title",
-        "skipLink": "Skip to content"
+        "skipLink": "Skip to content",
+        "toolbar": "toolbar"
     },
     "app": {
         "edit": {
@@ -41,7 +43,6 @@
             "lastAdditions": "Recently added"
         },
         "export": "Export",
-        "id": "Identifier",
         "lang": "Language",
         "moreInfo": "More Info",
         "myBooks": "My books",
@@ -81,7 +82,7 @@
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import those files :",
-        "importError": "an error occured, verify your file extension (.epub or .lcpl)",
+        "importError": "an error occured, verify your file extension (.epub / .lcpl / .audiobook)",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
@@ -247,6 +248,18 @@
         }
     },
     "settings": {
+        "keyboard": {
+            "advancedMenu": "Menu",
+            "cancel": "Cancel",
+            "edit": "Edit",
+            "editUserJson": "Edit user file...",
+            "hide": "Hide",
+            "keyboardShortcuts": "Keyboard shortcuts",
+            "loadUserJson": "Load from user file",
+            "resetDefaults": "Reset (load defaults)",
+            "save": "Save",
+            "show": "Show"
+        },
         "language": {
             "languageChoice": "Language choice"
         }

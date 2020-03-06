@@ -142,9 +142,14 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     if (locators.length > 0) {
         const locator = locators[0];
         const docHref = encodeURIComponent_RFC3986(Buffer.from(locator.locator.href).toString("base64"));
-        const docSelector =
-            encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.cssSelector).toString("base64"));
-        readerUrl += `&docHref=${docHref}&docSelector=${docSelector}`;
+        const docSelector = locator.locator.locations.cssSelector
+            ? encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.cssSelector).toString("base64"))
+            : undefined;
+        const docProgression = locator.locator.locations.progression
+            // tslint:disable-next-line: max-line-length
+            ? encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.progression.toString()).toString("base64"))
+            : undefined;
+        readerUrl += `&docHref=${docHref}&docSelector=${docSelector}&docProgression=${docProgression}`;
     }
 
     readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });

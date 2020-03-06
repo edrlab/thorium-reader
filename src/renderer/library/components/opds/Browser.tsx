@@ -39,7 +39,11 @@ class Browser extends React.Component<IProps, undefined> {
         const secondaryHeader = <Header/>;
 
         return (
-            <LibraryLayout secondaryHeader={secondaryHeader} mainClassName={styles.opdsBrowse}>
+            <LibraryLayout
+                title={this.props.__("header.catalogs")}
+                secondaryHeader={secondaryHeader}
+                mainClassName={styles.opdsBrowse}
+            >
                 <BreadCrumb
                     className={styles.opdsBrowseBreadcrumb}
                     breadcrumb={this.props.breadrumb}

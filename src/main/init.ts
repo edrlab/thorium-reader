@@ -13,15 +13,15 @@ import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { AnalyticsType } from "readium-desktop/common/models/analytics";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
-import {
-    i18nActions, /*netActions,*/ readerActions, /*updateActions,*/
-} from "readium-desktop/common/redux/actions";
+import { i18nActions, keyboardActions, readerActions } from "readium-desktop/common/redux/actions";
 // import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions/";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+
+import { keyboardShortcuts } from "./keyboard";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -96,6 +96,13 @@ const winOpenCallback = (appWindow: AppWindow) => {
         },
     } as syncIpc.EventPayload);
 
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
+        },
+    } as syncIpc.EventPayload);
+
     // // Send update info
     // webContents.send(syncIpc.CHANNEL, {
     //     type: syncIpc.EventType.MainAction,
@@ -164,8 +171,12 @@ const winCloseCallback = (appWindow: AppWindow) => {
 
 // Initialize application
 export function initApp() {
+
     const store = diMainGet("store");
     store.dispatch(appActions.initRequest.build());
+
+    keyboardShortcuts.init();
+    store.dispatch(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
 
     const configRepository: ConfigRepository<LocaleConfigValueType> = diMainGet("config-repository");
     const config = configRepository.get(LocaleConfigIdentifier);

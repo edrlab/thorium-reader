@@ -69,7 +69,7 @@ function* updateHeaderLinkWatcher(): SagaIterator {
 
             const httpRes = action.payload as ReturnPromiseType<TApiMethod["opds/browse"]>;
             const opdsResultView = httpRes.data;
-            debug("opdsResult:", opdsResultView);
+            // debug("opdsResult:", opdsResultView); large dump!
 
             if (httpRes.isSuccess && opdsResultView) {
 

@@ -111,12 +111,12 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: r2Publication && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1),
+                content: r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1),
                 disabled: !r2Publication.TOC || r2Publication.TOC.length === 0,
             },
             {
                 title: __("reader.marks.landmarks"),
-                content: r2Publication && r2Publication.Landmarks &&
+                content: r2Publication.Landmarks &&
                     this.renderLinkList(__("reader.marks.landmarks"), r2Publication.Landmarks),
                 disabled: !r2Publication.Landmarks || r2Publication.Landmarks.length === 0,
             },
@@ -355,7 +355,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!this.goToRef?.current?.value) {
             return;
         }
-        const pageNbr = (this.goToRef.current.value as string).trim().replace(/\s\s+/g, " ");
+        const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
         const foundPage = this.props.r2Publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});

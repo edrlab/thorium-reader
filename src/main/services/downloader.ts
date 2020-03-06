@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import * as fs from "fs";
 import { injectable } from "inversify";
-import * as path from "path";
 import { Download } from "readium-desktop/common/models/download";
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
@@ -17,8 +16,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
 import * as request from "request";
 import { tmpNameSync } from "tmp";
-import { URL } from "url";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
@@ -63,19 +61,16 @@ export class Downloader {
         this.downloads = {};
     }
 
-    public addDownload(url: string): Download {
-        // Get extension from url
-        const urlObj = new URL(url);
-        const ext = path.extname(urlObj.pathname);
+    public addDownload(url: string, ext: string): Download {
 
         // Create temporary file as destination file
         const dstPath = tmpNameSync({
             dir: this.dstRepositoryPath,
             prefix: "readium-desktop-",
-            postfix: `${ext}.part`});
+            postfix: `${ext}`}); // .part
 
         // Create download
-        const identifier = uuid.v4();
+        const identifier = uuidv4();
         const download: Download = {
             identifier,
             srcUrl: url,
@@ -164,13 +159,12 @@ export class Downloader {
 
                 // https://github.com/request/request/blob/212570b6971a732b8dd9f3c73354bcdda158a737/request.js#L419-L440
                 const contentLength = response.headers["content-length"];
-                const totalSize: number = typeof contentLength === "string" ?
-                                            parseInt(contentLength, 10) : contentLength;
+                const totalSize = contentLength ?
+                    (typeof contentLength === "string" ? parseInt(contentLength, 10) : contentLength) :
+                    Infinity;
 
-                let downloadedSize: number = 0;
-
-                // Progress in percent
-                let progress: number = 0;
+                let downloadedSize = 0;
+                let progress = 0;
 
                 response.on("data", (chunk) => {
                     // Write chunk
@@ -186,7 +180,8 @@ export class Downloader {
                         download.progress = progress;
                         download.downloadedSize = downloadedSize;
                         progressLastTime = currentTime;
-                        debug("Downloading ...", download, this.downloads);
+                        debug("Downloading ...", download);
+                        debug("Downloads:", this.downloads);
 
                         if (progressListener != null) {
                             progressListener.onProgress(download);
@@ -199,6 +194,11 @@ export class Downloader {
                     download.progress = 100;
                     download.status = DownloadStatus.Downloaded;
                     download.downloadedSize = downloadedSize;
+
+                    // cleanup queue
+                    this.downloads[identifier] = undefined;
+                    delete this.downloads[identifier];
+
                     outputStream.end(null, null, () => {
                         return resolve(download);
                     });
@@ -212,6 +212,11 @@ export class Downloader {
                 // keep existing (just in case error is half-way through download)
                 // download.progress = 0;
                 // download.downloadedSize = 0;
+
+                // cleanup queue
+                this.downloads[identifier] = undefined;
+                delete this.downloads[identifier];
+
                 outputStream.end(null, null, () => {
                     return reject(error);
                 });

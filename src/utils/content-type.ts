@@ -18,6 +18,8 @@ export enum ContentType {
     Xhtml = "application/xml+xhtml",
     Html = "text/html",
     Epub = "application/epub+zip",
+    AudioBook = "application/audiobook+json",
+    AudioBookPacked = "application/audiobook+zip",
     Lcp = "application/vnd.readium.lcp.license.v1.0+json",
     Lsd = "application/vnd.readium.license.status.v1.0+json",
 }

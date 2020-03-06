@@ -44,9 +44,13 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
             <ul>
                 {
                 downloadState.downloads.map((dl, i) => {
+                    let progress = dl.progress;
+                    if (isNaN(progress)) {
+                        progress = 0;
+                    }
                     return <li key={i}>
-                        <span className={styles.percent}>{dl.progress}%</span>
-                        <progress max="100" value={dl.progress}>{dl.progress}</progress>
+                        <span className={styles.percent}>{progress}%</span>
+                        <progress max="100" value={progress}>{progress}</progress>
                         <span className={styles.title}>{dl.title ? dl.title : dl.url}</span>
                     </li>;
                 })

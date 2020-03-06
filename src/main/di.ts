@@ -42,12 +42,15 @@ import { LcpManager } from "readium-desktop/main/services/lcp";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
-import { _NODE_ENV, _POUCHDB_ADAPTER_NAME } from "readium-desktop/preprocessor-directives";
+import {
+    _APP_NAME, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
+} from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
 
 import { Server } from "@r2-streamer-js/http/server";
 
 import { AnalyticsApi } from "./api/analytics";
+import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
@@ -55,6 +58,8 @@ import { exec } from "child_process";
 
 //TODO - get rid of these when moving db generation to another file 
 import * as uuid from "uuid";
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
@@ -426,7 +431,7 @@ container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConst
 // Bind services
 container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
-const deviceIdManager = new DeviceIdManager("Thorium", configRepository);
+const deviceIdManager = new DeviceIdManager(capitalizedAppName, configRepository);
 container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
     deviceIdManager,
 );
@@ -440,6 +445,7 @@ container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSin
 container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
 container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
 container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
+container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 container.bind<AnalyticsApi>(diSymbolTable["analytics-api"]).to(AnalyticsApi).inSingletonScope();
@@ -478,6 +484,7 @@ interface IGet {
     (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): PublicationApi;
     (s: "opds-api"): OpdsApi;
+    (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;
     (s: "action-serializer"): ActionSerializer;

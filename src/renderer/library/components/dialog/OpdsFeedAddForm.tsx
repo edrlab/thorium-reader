@@ -104,7 +104,7 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
         const title = this.state.name;
         const url = this.state.url;
         apiAction("opds/addFeed", { title, url }).catch((err) => {
-            console.error("Error to fetch api opds/findAllFeeds", err);
+            console.error("Error to fetch api opds/addFeed", err);
         });
         this.props.closeDialog();
     }

@@ -9,7 +9,15 @@
 type TCatalogApi = "catalog";
 type TPublicationApi = "publication";
 type TOpdsApi = "opds";
+type TKeyboardApi = "keyboardShortcuts";
 type TLcpApi = "lcp";
 type TReaderApi = "reader";
 type TAnalyticsApi = "analytics";
-export type TModuleApi = TCatalogApi | TPublicationApi | TOpdsApi | TLcpApi | TReaderApi | TAnalyticsApi;
+export type TModuleApi =
+    TCatalogApi |
+    TPublicationApi |
+    TOpdsApi |
+    TKeyboardApi |
+    TLcpApi |
+    TReaderApi |
+    TAnalyticsApi;
