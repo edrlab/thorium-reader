@@ -75,6 +75,8 @@ export class PublicationListElement extends React.Component<IProps, IState> {
             formatedPublishedYear = "" + moment(pub.publishedAt).year();
         }
 
+        const authors = formatContributorToString(pub.authors, translator);
+
         return (
             <>
                 <div className={styles.publicationLine}>
@@ -82,7 +84,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                         type="button"
                         aria-expanded={this.state.menuOpen}
                         aria-controls={this.menuId}
-                        title={pub.title}
+                        title={`${pub.title} - ${authors}`}
                         onClick={this.toggleMenu}
                         ref={this.buttonRef}
                     >
@@ -100,9 +102,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                         <div className={styles.list_book_title}>
                             <p className={styles.book_title}>{pub.title}</p>
                             <p className={`${styles.book_author} ${styles.lightgrey}`}>
-                                {
-                                    formatContributorToString(pub.authors, translator)
-                                }
+                                {authors}
                             </p>
                         </div>
                         <p className={styles.infos_sup}>
