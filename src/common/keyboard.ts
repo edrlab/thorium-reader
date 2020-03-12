@@ -180,13 +180,13 @@ const _defaults_ = Object.freeze({
         alt: false,
         control: true,
         shift: false,
-        key: "PageDown",
+        key: "PageUp",
     }),
     NavigateNextChapterAlt: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: false,
-        key: "PageUp",
+        key: "PageDown",
     }),
 });
 export const _defaults = sortObject(_defaults_);
