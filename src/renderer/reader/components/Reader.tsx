@@ -54,8 +54,8 @@ import {
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
-    isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
-    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
+    isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssUpdate, setEpubReadingSystemInfo,
+    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
@@ -292,7 +292,7 @@ class Reader extends React.Component<IProps, IState> {
         this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
 
-        setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
+        // setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
     }
 
     public async componentDidMount() {
@@ -345,7 +345,8 @@ class Reader extends React.Component<IProps, IState> {
 
                 // readiumCssOnOff() API only once navigator ready
                 if (this.state.r2Publication) {
-                    readiumCssOnOff();
+                    // readiumCssOnOff();
+                    readiumCssUpdate(computeReadiumCssJsonMessage());
                 }
             }
         });
@@ -859,6 +860,7 @@ class Reader extends React.Component<IProps, IState> {
             true,
             clipboardInterceptor,
             sessionInfoStr,
+            computeReadiumCssJsonMessage(),
         );
     }
 
