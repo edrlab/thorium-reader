@@ -107,12 +107,15 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!r2Publication) {
             return <></>;
         }
-
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1),
-                disabled: !r2Publication.TOC || r2Publication.TOC.length === 0,
+                content:
+                    (r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1)) ||
+                    (r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
+                disabled:
+                    (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
+                    (!r2Publication.Spine || r2Publication.Spine.length === 0),
             },
             {
                 title: __("reader.marks.landmarks"),
@@ -150,6 +153,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private renderLinkList(label: string, links: Link[]): JSX.Element {
+        // console.log(label, JSON.stringify(links, null, 4));
+
         return <ul
             aria-label={label}
             className={styles.chapters_content}
@@ -190,6 +195,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+        // console.log(label, JSON.stringify(links, null, 4));
+
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
 
