@@ -6,18 +6,22 @@ declare namespace typed_i18n {
   readonly "homeMenu": string,
   readonly "importFile": string,
   readonly "leftSlideButton": string,
+  readonly "mainContent": string,
   readonly "rightSlideButton": string,
   readonly "searchBook": string,
-  readonly "skipLink": string
+  readonly "skipLink": string,
+  readonly "toolbar": string
 };
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.homeMenu", __?: {}): string;
   (_: "accessibility.importFile", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.mainContent", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
+  (_: "accessibility.toolbar", __?: {}): string;
   (_: "app", __?: {}): {
   readonly "edit": {
     readonly "copy": string,

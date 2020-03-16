@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
 export const DEBUG_KEYBOARD = false;
@@ -30,20 +32,20 @@ const _defaults_ = Object.freeze({
     //     shift: false,
     //     key: "F1",
     // }),
-    info: Object.freeze<TKeyboardShortcut>({
+    OpenReaderInfo: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: false,
         key: "KeyI",
     }),
 
-    focus_main: Object.freeze<TKeyboardShortcut>({
+    FocusMain: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: false,
         key: "F10",
     }),
-    focus_toolbar: Object.freeze<TKeyboardShortcut>({
+    FocusToolbar: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: false,
@@ -56,89 +58,135 @@ const _defaults_ = Object.freeze({
     //     key: "F6",
     // }),
 
-    reader_focus_navigation: Object.freeze<TKeyboardShortcut>({
+    FocusReaderNavigation: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: false,
         key: "KeyN",
     }),
-    reader_focus_settings: Object.freeze<TKeyboardShortcut>({
+    FocusReaderSettings: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: false,
         key: "KeyS",
     }),
 
-    toggle_bookmark: Object.freeze<TKeyboardShortcut>({
+    ToggleBookmark: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: false,
         key: "KeyB",
     }),
 
-    toggle_fullscreen: Object.freeze<TKeyboardShortcut>({
+    ToggleReaderFullscreen: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: false,
         key: "F11",
     }),
 
-    focus_search: Object.freeze<TKeyboardShortcut>({
+    FocusSearch: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: false,
         key: "KeyF",
     }),
-    // search_next: Object.freeze<TKeyboardShortcut>({
+    // SearchNext: Object.freeze<TKeyboardShortcut>({
     //     alt: false,
     //     control: false,
     //     shift: false,
     //     key: "F3",
     // }),
-    // search_previous: Object.freeze<TKeyboardShortcut>({
+    // SearchPrevious: Object.freeze<TKeyboardShortcut>({
     //     alt: false,
     //     control: false,
     //     shift: true,
     //     key: "F3",
     // }),
 
-    library_opds_PageNavigationPrevious: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousOPDSPage: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: true,
         key: "ArrowLeft",
     }),
-    library_opds_PageNavigationNext: Object.freeze<TKeyboardShortcut>({
+    NavigateNextOPDSPage: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: true,
         key: "ArrowRight",
     }),
 
-    reader_PageNavigationPrevious: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousOPDSPageAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "Comma",
+    }),
+    NavigateNextOPDSPageAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "Period",
+    }),
+
+    CloseReader: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "KeyW",
+    }),
+
+    NavigatePreviousPage: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: false,
         shift: false,
         key: "ArrowLeft",
     }),
-    reader_PageNavigationNext: Object.freeze<TKeyboardShortcut>({
+    NavigateNextPage: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: false,
         shift: false,
         key: "ArrowRight",
     }),
 
-    reader_SpineNavigationPrevious: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousPageAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Comma",
+    }),
+    NavigateNextPageAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Period",
+    }),
+
+    NavigatePreviousChapter: Object.freeze<TKeyboardShortcut>({
         alt: process && process.platform !== "darwin",
         control: true,
         shift: true,
         key: "ArrowLeft",
     }),
-    reader_SpineNavigationNext: Object.freeze<TKeyboardShortcut>({
+    NavigateNextChapter: Object.freeze<TKeyboardShortcut>({
         alt: process && process.platform !== "darwin",
         control: true,
         shift: true,
         key: "ArrowRight",
+    }),
+
+    NavigatePreviousChapterAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "PageUp",
+    }),
+    NavigateNextChapterAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "PageDown",
     }),
 });
 export const _defaults = sortObject(_defaults_);
@@ -174,17 +222,31 @@ export function keyboardShortcutMatch(ks: TKeyboardShortcut, e: IKeyboardEvent):
         && (ks.control && e.ctrlKey || !ks.control && !e.ctrlKey)
         && (ks.meta && e.metaKey || !ks.meta && !e.metaKey)
         && (ks.shift && e.shiftKey || !ks.shift && !e.shiftKey);
-    if (DEBUG_KEYBOARD) {
-        console.log(`K1: ${ks.shift} ${ks.control} ${ks.alt} ${ks.meta} ${ks.key}`);
-        console.log(`K2: ${e.shiftKey} ${e.ctrlKey} ${e.altKey} ${e.metaKey} ${e.code}`);
-        console.log(`MATCH: ${match}`);
-    }
+    // if (DEBUG_KEYBOARD) {
+    //     console.log(`K1: ${ks.shift} ${ks.control} ${ks.alt} ${ks.meta} ${ks.key}`);
+    //     console.log(`K2: ${e.shiftKey} ${e.ctrlKey} ${e.altKey} ${e.metaKey} ${e.code}`);
+    //     console.log(`MATCH: ${match}`);
+    // }
     return match;
 }
-// export function keyboardShortcutMatch_(ks: TKeyboardShortcut, e: TKeyboardShortcut): boolean {
-//     return ks.key === e.key
-//         && (ks.alt && e.alt || !ks.alt && !e.alt)
-//         && (ks.control && e.control || !ks.control && !e.control)
-//         && (ks.meta && e.meta || !ks.meta && !e.meta)
-//         && (ks.shift && e.shift || !ks.shift && !e.shift);
-// }
+function keyboardShortcutMatch_(ks1: TKeyboardShortcut, ks2: TKeyboardShortcut): boolean {
+    return ks1.key === ks2.key
+        && (ks1.alt && ks2.alt || !ks1.alt && !ks2.alt)
+        && (ks1.control && ks2.control || !ks1.control && !ks2.control)
+        && (ks1.meta && ks2.meta || !ks1.meta && !ks2.meta)
+        && (ks1.shift && ks2.shift || !ks1.shift && !ks2.shift);
+}
+export function keyboardShortcutsMatch(
+    kss1: TKeyboardShortcutsMapReadOnly,
+    kss2: TKeyboardShortcutsMapReadOnly): boolean {
+
+    const ids = ObjectKeys(kss1);
+    for (const id of ids) {
+        const ks1 = kss1[id];
+        const ks2 = kss2[id];
+        if (!keyboardShortcutMatch_(ks1, ks2)) {
+            return false;
+        }
+    }
+    return true;
+}

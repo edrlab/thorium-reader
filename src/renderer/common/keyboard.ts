@@ -256,16 +256,23 @@ export function registerKeyboardListener(
         callback,
     });
 }
-export function unregisterKeyboardListener(callback: () => void) {
+function keyboardShortcutPairingsFindIndex(callback: () => void): number {
     const i = _keyboardShortcutPairings.findIndex((keyboardShortcutPairing, _index, _arr) => {
         return keyboardShortcutPairing.callback === callback;
     });
-    if (i >= 0) {
-
-        if (DEBUG_KEYBOARD) {
-            console.log(`UNregisterKeyboardListener ${i}`,
-                JSON.stringify(_keyboardShortcutPairings[i].keyboardShortcut, null, 4));
+    return i;
+}
+export function unregisterKeyboardListener(callback: () => void) {
+    while (true) {
+        const i = keyboardShortcutPairingsFindIndex(callback);
+        if (i >= 0) {
+            if (DEBUG_KEYBOARD) {
+                console.log(`UNregisterKeyboardListener ${i}`,
+                    JSON.stringify(_keyboardShortcutPairings[i].keyboardShortcut, null, 4));
+            }
+            _keyboardShortcutPairings.splice(i, 1);
+        } else {
+            break;
         }
-        _keyboardShortcutPairings.splice(i, 1);
     }
 }

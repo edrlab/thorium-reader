@@ -34,7 +34,9 @@ class Opds extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
-            <LibraryLayout title={__("header.catalogs")}>
+            <LibraryLayout
+                title={__("header.catalogs")}
+            >
                 <OpdsAddForm />
                 <FeedList />
             </LibraryLayout>

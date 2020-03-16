@@ -13,7 +13,9 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import { TranslatorProps } from "readium-desktop/renderer/common/components/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
@@ -66,6 +68,7 @@ class FeedList extends React.Component<IProps, IState> {
         if (!this.state.feedsResult) {
             return <></>;
         }
+        const { __ } = this.props;
         return (
             <section className={styles.opds_list}>
                 <ul>
@@ -87,13 +90,13 @@ class FeedList extends React.Component<IProps, IState> {
                                 <button
                                     onClick={(e) => this.deleteFeed(e, item)}
                                 >
-                                    <SVG svg={DeleteIcon} />
+                                    <SVG svg={DeleteIcon} title={__("catalog.delete")} />
                                 </button>
                             </li>
                         );
                     })}
-                    {[...Array(6).keys()].map((__, _index) => {
-                        return <div key={"array-" + __}></div>;
+                    {[...Array(6).keys()].map((n, _index) => {
+                        return <div key={"array-" + n}></div>;
                     })}
                 </ul>
             </section>
@@ -131,4 +134,4 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedList);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(FeedList));

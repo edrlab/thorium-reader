@@ -40,7 +40,9 @@ import { LcpManager } from "readium-desktop/main/services/lcp";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
-import { _NODE_ENV, _POUCHDB_ADAPTER_NAME } from "readium-desktop/preprocessor-directives";
+import {
+    _APP_NAME, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
+} from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
 
 import { Server } from "@r2-streamer-js/http/server";
@@ -49,6 +51,8 @@ import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
@@ -205,7 +209,7 @@ container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConst
 // Bind services
 container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
-const deviceIdManager = new DeviceIdManager("Thorium", configRepository);
+const deviceIdManager = new DeviceIdManager(capitalizedAppName, configRepository);
 container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
     deviceIdManager,
 );

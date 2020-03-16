@@ -5,9 +5,11 @@
         "homeMenu": "Menu principal",
         "importFile": "Importer un fichier epub",
         "leftSlideButton": "Faire défiler la liste vers la gauche",
+        "mainContent": "contenu principal",
         "rightSlideButton": "Faire défiler la liste vers la droite",
         "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
-        "skipLink": "Aller au contenu"
+        "skipLink": "Aller au contenu",
+        "toolbar": "barre d'outils"
     },
     "app": {
         "edit": {

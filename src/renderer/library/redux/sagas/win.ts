@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { i18nActions } from "readium-desktop/common/redux/actions/";
+import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions/";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { SagaIterator } from "redux-saga";
@@ -17,6 +17,7 @@ function* winInitWatcher(): SagaIterator {
     yield all({
         win: take(winActions.initRequest.ID),
         i18n: take(i18nActions.setLocale.ID),
+        keyboard: take(keyboardActions.setShortcuts.ID),
     });
 
     yield put(winActions.initSuccess.build());

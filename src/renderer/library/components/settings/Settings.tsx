@@ -31,7 +31,9 @@ class Settings extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <>
-                <LibraryLayout title={__("header.settings")}>
+                <LibraryLayout
+                    title={__("header.settings")}
+                >
                     <LanguageSettings></LanguageSettings>
                     <KeyboardSettings></KeyboardSettings>
                 </LibraryLayout>

@@ -26,15 +26,13 @@ export default class App extends React.Component<{}, undefined> {
         const store = diReaderGet("store");
         const translator = diReaderGet("translator");
         return (
-            <TranslatorContext.Provider value={translator}>
-                <Provider store={store}>
-                    <div>
-                        <Reader />
-                        <DialogManager />
-                        <ToastManager />
-                    </div>
-                </Provider>
-            </TranslatorContext.Provider>
+            <Provider store={store}>
+                <TranslatorContext.Provider value={translator}>
+                    <Reader />
+                    <DialogManager />
+                    <ToastManager />
+                </TranslatorContext.Provider>
+            </Provider>
         );
     }
 }

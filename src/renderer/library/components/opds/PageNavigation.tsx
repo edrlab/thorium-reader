@@ -8,6 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IOpdsResultView } from "readium-desktop/common/views/opds";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
@@ -47,20 +48,18 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
-
-        registerKeyboardListener(
-            false, // listen for key down (not key up)
-            this.props.keyboardShortcuts.library_opds_PageNavigationPrevious,
-            this.onKeyboardPageNavigationPrevious);
-        registerKeyboardListener(
-            false, // listen for key down (not key up)
-            this.props.keyboardShortcuts.library_opds_PageNavigationNext,
-            this.onKeyboardPageNavigationNext);
+        this.registerAllKeyboardListeners();
     }
 
     public componentWillUnmount() {
-        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
-        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
+        this.unregisterAllKeyboardListeners();
+    }
+
+    public async componentDidUpdate(oldProps: IProps) {
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
+        }
     }
 
     public render() {
@@ -131,6 +130,31 @@ class PageNavigation extends React.Component<IProps, undefined> {
                 }
             </div>
         );
+    }
+
+    private registerAllKeyboardListeners() {
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigatePreviousOPDSPage,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigateNextOPDSPage,
+            this.onKeyboardPageNavigationNext);
+
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigatePreviousOPDSPageAlt,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigateNextOPDSPageAlt,
+            this.onKeyboardPageNavigationNext);
+    }
+
+    private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
     }
 
     private onKeyboardPageNavigationNext = () => {
