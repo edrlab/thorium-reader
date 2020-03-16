@@ -674,7 +674,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.handleToggleBookmark();
+        this.handleToggleBookmark(true);
     }
 
     private onKeyboardFocusMain = () => {
@@ -873,7 +873,6 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-//        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
         apiAction("reader/setLastReadingLocation", queryParams.pubId, loc.locator)
             .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
 
@@ -944,47 +943,47 @@ class Reader extends React.Component<IProps, IState> {
 
         const newUrl = publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
-
-        // Example to pass a specific cssSelector:
-        // (for example to restore a bookmark)
-        // const locator: Locator = {
-        //     href: url,
-        //     locations: {
-        //         cfi: undefined,
-        //         cssSelector: CSSSELECTOR,
-        //         position: undefined,
-        //         progression: undefined,
-        //     }
-        // };
-        // handleLinkLocator(locator);
-
-        // Example to save a bookmark:
-        // const loc: LocatorExtended = getCurrentReadingLocation();
-        // Note: there is additional useful info about pagination
-        // which can be used to report progress info to the user
-        // if (loc.paginationInfo !== null) =>
-        // loc.paginationInfo.totalColumns (N = 1+)
-        // loc.paginationInfo.currentColumn [0, (N-1)]
-        // loc.paginationInfo.isTwoPageSpread (true|false)
-        // loc.paginationInfo.spreadIndex [0, (N/2)]
     }
 
-    private async handleToggleBookmark() {
-        await this.checkBookmarks();
-        if (this.state.visibleBookmarkList.length > 0) {
+    private async handleToggleBookmark(fromKeyboard?: boolean) {
+
+        await this.checkBookmarks(); // updates this.state.visibleBookmarkList
+xxxxx
+        // CTRL-B "fromKeyboard" always adds (even if there are "visible" bookmarks in the current viewport)
+        const deleteAllVisibleBookmarks = this.state.visibleBookmarkList.length > 0 &&
+            !fromKeyboard &&
+            (this.state.currentLocation && !this.state.currentLocation.audioPlaybackInfo);
+
+        const addCurrentLocationToBookmarks = this.state.currentLocation &&
+            (!deleteAllVisibleBookmarks ||
+            (this.state.currentLocation.locator));
+
+        if (deleteAllVisibleBookmarks) {
             for (const bookmark of this.state.visibleBookmarkList) {
-//                this.props.deleteBookmark(bookmark.identifier);
                 try {
                     await apiAction("reader/deleteBookmark", bookmark.identifier);
                 } catch (e) {
                     console.error("Error to fetch api reader/deleteBookmark", e);
                 }
             }
-        } else if (this.state.currentLocation) {
-            const locator = this.state.currentLocation.locator;
-//            this.props.addBookmark(queryParams.pubId, locator);
+        }
+
+        if (addCurrentLocationToBookmarks) {
+
+            let name: string | undefined;
+            if (this.state.currentLocation.locator?.text?.highlight) {
+                name = this.state.currentLocation.locator.text.highlight;
+            } else if (this.state.currentLocation.selectionInfo?.cleanText) {
+                name = this.state.currentLocation.selectionInfo.cleanText;
+            }
+            for (const bookmark of this.state.visibleBookmarkList) {
+                if (name && bookmark.name === name &&
+                    this.state.currentLocation.locator) {
+                    return;
+                }
+            }
             try {
-                await apiAction("reader/addBookmark", queryParams.pubId, locator);
+                await apiAction("reader/addBookmark", queryParams.pubId, this.state.currentLocation.locator, name);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }

@@ -118,13 +118,13 @@ export class ReaderApi implements IReaderApi {
         name?: string,
     ): Promise<void> {
 
-        const doc = {
+        const loc = {
             publicationIdentifier,
             locatorType: LocatorType.Bookmark,
             locator: Object.assign({}, locator),
             name,
         };
-        await this.locatorRepository.save(doc);
+        await this.locatorRepository.save(loc);
 
         this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
             `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("catalog.addTagsButton")})`));

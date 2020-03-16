@@ -40,7 +40,7 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
             bookmarkToUpdate: undefined,
         };
 
-        this.submiteBookmark = this.submiteBookmark.bind(this);
+        this.submitBookmark = this.submitBookmark.bind(this);
     }
 
     public componentDidMount() {
@@ -54,7 +54,7 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
         const defaultName = bookmark.name ? bookmark.name : "";
 
         return (
-            <form onSubmit={this.submiteBookmark}>
+            <form onSubmit={this.submitBookmark}>
                 <input
                     onBlur={this.props.close}
                     ref={this.inputRef}
@@ -65,7 +65,7 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
         );
     }
 
-    private submiteBookmark(e: TFormEvent) {
+    private submitBookmark(e: TFormEvent) {
         e.preventDefault();
         if (!this.inputRef?.current) {
             return;
