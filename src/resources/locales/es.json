@@ -5,9 +5,11 @@
         "homeMenu": "Menú principal",
         "importFile": "Importar publicación",
         "leftSlideButton": "Desplazar lista a la izquierda",
+        "mainContent": "Contenido principal",
         "rightSlideButton": "Desplazar lista a la derecha",
         "searchBook": "Buscar por título",
-        "skipLink": "Pasar al contenido"
+        "skipLink": "Pasar al contenido",
+        "toolbar": "Barra de herramientas"
     },
     "app": {
         "edit": {
@@ -246,6 +248,18 @@
         }
     },
     "settings": {
+        "keyboard": {
+            "advancedMenu": "Menú",
+            "cancel": "Cancelar",
+            "edit": "Editar",
+            "editUserJson": "Editar archivo de usuario",
+            "hide": "Esconder",
+            "keyboardShortcuts": "Atajos de teclado",
+            "loadUserJson": "Cargar (archivo de usuario)",
+            "resetDefaults": "Restablecer (valores predeterminados)",
+            "save": "Salvar",
+            "show": "Espectáculo"
+        },
         "language": {
             "languageChoice": "Elección de idioma"
         }
