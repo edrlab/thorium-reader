@@ -1015,6 +1015,10 @@ input[type=radio] + label {
   }
 }
 
+.currentPage {
+  font-size: 80%;
+  font-weight: normal;
+}
 .goToPage {
   text-align: center;
   & .title {

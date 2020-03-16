@@ -21,6 +21,7 @@ import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
 import { Unsubscribe } from "redux";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { IReaderMenuProps } from "./options-values";
@@ -31,6 +32,7 @@ import UpdateBookmarkForm from "./UpdateBookmarkForm";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     focusNaviguationMenu: () => void;
+    currentLocation: LocatorExtended;
 }
 
 // IProps may typically extend:
@@ -323,6 +325,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const error = this.state.pageError;
         return <div className={styles.goToPage}>
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
+
             <form onSubmit={this.handleSubmitPage}>
                 <input
                     ref={this.goToRef}
@@ -350,6 +353,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     { __("reader.navigation.goToError") }
                 </p>
             }
+            {this.props.currentLocation?.epubPage &&
+            <p className={styles.currentPage}>({this.props.currentLocation.epubPage})</p>}
+
         </div>;
     }
 
