@@ -158,11 +158,22 @@
         "shelf": "Étagère"
     },
     "publication": {
+        "audio": {
+            "tracks": "Pistes"
+        },
         "cancelledLcp": "Ce livre ne peut être lu car la licence lcp a été annulée.",
         "certificateRevoked": "Certificat révoqué",
         "certificateSignatureInvalid": "Signature de certificat invalide",
         "cover": {
             "img": "image de couverture"
+        },
+        "duration": {
+            "and": "et",
+            "days": "jour(s)",
+            "hours": "heure(s)",
+            "minutes": "minute(s)",
+            "seconds": "seconde(s)",
+            "title": "Durées"
         },
         "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
         "lcpEnd": "Fin",
@@ -178,18 +189,7 @@
         "revokedLcp": "Ce livre ne peut être lu car la licence lcp a été révoquée.",
         "seeLess": "Voir moins",
         "seeMore": "Voir plus",
-        "userKeyCheckInvalid": "Mot de passe incorrect",
-        "duration": {
-          "title": "Durées",
-          "days": "jour(s)",
-          "minutes": "minute(s)",
-          "hours": "heure(s)",
-          "seconds": "seconde(s)",
-          "and": "et"
-        },
-        "audio": {
-          "tracks": "Pistes"
-        }
+        "userKeyCheckInvalid": "Mot de passe incorrect"
     },
     "reader": {
         "footerInfo": {

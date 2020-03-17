@@ -158,11 +158,22 @@
         "shelf": ""
     },
     "publication": {
+        "audio": {
+            "tracks": "Spuren"
+        },
         "cancelledLcp": "",
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
         "cover": {
             "img": "Titelbild"
+        },
+        "duration": {
+            "and": "und",
+            "days": "tage",
+            "hours": "std",
+            "minutes": "protokoll",
+            "seconds": "sekunden",
+            "title": "Dauer"
         },
         "expiredLcp": "",
         "lcpEnd": "",
@@ -178,18 +189,7 @@
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
         "seeMore": "Mehr Infos",
-        "userKeyCheckInvalid": "",
-        "duration": {
-          "title": "Dauer",
-          "days": "tage",
-          "minutes": "protokoll",
-          "hours": "std",
-          "seconds": "sekunden",
-          "and": "und"
-        },
-        "audio": {
-          "tracks": "Spuren"
-        }
+        "userKeyCheckInvalid": ""
     },
     "reader": {
         "footerInfo": {
