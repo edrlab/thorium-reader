@@ -178,7 +178,18 @@
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
         "seeMore": "Mehr Infos",
-        "userKeyCheckInvalid": ""
+        "userKeyCheckInvalid": "",
+        "duration": {
+          "title": "Dauer",
+          "days": "tage",
+          "minutes": "protokoll",
+          "hours": "std",
+          "seconds": "sekunden",
+          "and": "und"
+        },
+        "audio": {
+          "tracks": "Spuren"
+        }
     },
     "reader": {
         "footerInfo": {

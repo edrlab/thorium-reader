@@ -180,15 +180,15 @@
         "seeMore": "See more",
         "userKeyCheckInvalid": "Passphrase is incorrect",
         "duration": {
-          "title": "duration",
-          "days": "days",
-          "minutes": "minutes",
-          "hours": "hours",
-          "seconds": "seconds",
-          "and": "and"
+          "title": "Durations",
+          "days": "day(s)",
+          "minutes": "minute(s)",
+          "hours": "hour(s)",
+          "seconds": "second(s)",
+          "and": "et"
         },
         "audio": {
-          "tracks": "tracks"
+          "tracks": "Tracks"
         }
     },
     "reader": {
