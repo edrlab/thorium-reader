@@ -381,7 +381,16 @@ declare namespace typed_i18n {
   readonly "revokedLcp": string,
   readonly "seeLess": string,
   readonly "seeMore": string,
-  readonly "userKeyCheckInvalid": string
+  readonly "userKeyCheckInvalid": string,
+  readonly "duration": {
+    readonly "title": string,
+    readonly "days": string,
+    readonly "minutes": string,
+    readonly "hours": string,
+    readonly "seconds": string,
+    readonly "and": string
+  },
+  readonly "audio": { readonly "tracks": string }
 };
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
@@ -403,6 +412,22 @@ declare namespace typed_i18n {
   (_: "publication.seeLess", __?: {}): string;
   (_: "publication.seeMore", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
+  (_: "publication.duration", __?: {}): {
+  readonly "title": string,
+  readonly "days": string,
+  readonly "minutes": string,
+  readonly "hours": string,
+  readonly "seconds": string,
+  readonly "and": string
+};
+  (_: "publication.duration.title", __?: {}): string;
+  (_: "publication.duration.days", __?: {}): string;
+  (_: "publication.duration.minutes", __?: {}): string;
+  (_: "publication.duration.hours", __?: {}): string;
+  (_: "publication.duration.seconds", __?: {}): string;
+  (_: "publication.duration.and", __?: {}): string;
+  (_: "publication.audio", __?: {}): { readonly "tracks": string };
+  (_: "publication.audio.tracks", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "footerInfo": {
     readonly "lessInfo": string,

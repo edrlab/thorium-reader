@@ -19,6 +19,13 @@ export interface CustomCoverView {
     bottomColor: string;
 }
 
+export interface ITimeDuration {
+    days: number;
+    hours: number;
+    seconds: number;
+    minutes: number;
+}
+
 export interface PublicationView extends Identifiable {
     title: string;
     authors: string[];
@@ -30,6 +37,9 @@ export interface PublicationView extends Identifiable {
     publishedAt?: string; // ISO8601
     cover?: CoverView;
     customCover?: CustomCoverView;
+
+    duration: ITimeDuration;
+    nbOfTracks: number;
 
     lcp?: LcpInfo;
     lcpRightsCopies?: number;

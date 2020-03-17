@@ -7,9 +7,10 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { Translator } from "readium-desktop/common/services/translator";
+import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
+import { ITimeDuration } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
 import Cover from "../../Cover";
@@ -29,6 +30,41 @@ export interface IProps {
     onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
 }
 
+const Duration = (props: {
+    duration: ITimeDuration;
+    __: I18nTyped;
+}) => {
+
+    const { duration, __ } = props;
+
+    let sentence = "";
+    sentence += duration?.days ? `${duration.days} ${__("publication.duration.days")} ` : "";
+    sentence += duration?.hours ? `${duration.hours} ${__("publication.duration.hours")} ` : "";
+    sentence += duration?.minutes ? `${duration.minutes} ${__("publication.duration.minutes")} ` : "";
+    sentence += sentence ? `${__("publication.duration.and")} ` : "";
+    sentence += duration?.seconds ? `${duration.seconds} ${__("publication.duration.seconds")}` : "";
+
+    sentence = sentence.trim();
+
+    const isDefined = sentence.length > 0;
+
+    return (isDefined ?
+        <>
+            <span>
+                {
+                    `${__("publication.duration.title")}: `
+                }
+            </span>
+            <i className={styles.allowUserSelect}>
+                {
+                    sentence
+                }
+            </i>
+            <br />
+        </>
+        : <></>);
+};
+
 export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
     // tslint:disable-next-line: max-line-length
@@ -47,7 +83,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             }
                             onKeyPress={
                                 (e: React.KeyboardEvent<HTMLImageElement>) =>
-                                        e.key === "Enter" && toggleCoverZoomCb(coverZoom)
+                                    e.key === "Enter" && toggleCoverZoomCb(coverZoom)
                             }
                         >
                         </Cover>
@@ -86,27 +122,27 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                     <p>
                         {
                             publication.publishers?.length ?
-                            <>
-                                <span>{`${__("catalog.publisher")}: `}</span>
-                                <i className={styles.allowUserSelect}>
-                                    <FormatContributorWithLink
-                                        contributors={publication.publishers}
-                                        translator={translator}
-                                        onClickLinkCb={onClikLinkCb}
-                                    />
-                                </i>
-                                <br />
-                            </> : undefined
+                                <>
+                                    <span>{`${__("catalog.publisher")}: `}</span>
+                                    <i className={styles.allowUserSelect}>
+                                        <FormatContributorWithLink
+                                            contributors={publication.publishers}
+                                            translator={translator}
+                                            onClickLinkCb={onClikLinkCb}
+                                        />
+                                    </i>
+                                    <br />
+                                </> : undefined
                         }
                         {
                             publication.languages?.length ?
-                            <>
-                                <span>
-                                    {
-                                        `${__("catalog.lang")}: `
-                                    }
-                                </span>
-                                <FormatPublicationLanguage publication={publication} __={__} />
+                                <>
+                                    <span>
+                                        {
+                                            `${__("catalog.lang")}: `
+                                        }
+                                    </span>
+                                    <FormatPublicationLanguage publication={publication} __={__} />
                                 <br />
                             </> : undefined
                         }
@@ -126,6 +162,24 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                                 <br />
 
                             </> : undefined
+                        }
+                        <Duration __={__} duration={publication.duration}></Duration>
+                        {
+                            publication.nbOfTracks ?
+                                <>
+                                    <span>
+                                        {
+                                            `${__("publication.audio.tracks")}: `
+                                        }
+                                    </span>
+                                    <i className={styles.allowUserSelect}>
+                                        {
+                                            publication.nbOfTracks
+                                        }
+                                    </i>
+                                    <br />
+
+                                </> : undefined
                         }
                     </p>
 

@@ -178,7 +178,18 @@
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
-        "userKeyCheckInvalid": "Passphrase is incorrect"
+        "userKeyCheckInvalid": "Passphrase is incorrect",
+        "duration": {
+          "title": "duration",
+          "days": "days",
+          "minutes": "minutes",
+          "hours": "hours",
+          "seconds": "seconds",
+          "and": "and"
+        },
+        "audio": {
+          "tracks": "tracks"
+        }
     },
     "reader": {
         "footerInfo": {
