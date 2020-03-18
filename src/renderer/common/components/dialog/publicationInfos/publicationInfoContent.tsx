@@ -46,10 +46,9 @@ const Duration = (props: {
 
     sentence = sentence.trim();
 
-    const isDefined = sentence.length > 0;
-
-    return (isDefined ?
-        <>
+    return (
+        sentence
+        ? <>
             <span>
                 {
                     `${__("publication.duration.title")}: `
