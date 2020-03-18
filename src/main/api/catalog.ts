@@ -88,10 +88,10 @@ export class CatalogApi implements ICatalogApi {
         const isAudiobook = (item: PublicationView) =>
             item.RDFType && /http[s]?:\/\/schema\.org\/Audiobook$/.test(item.RDFType);
 
-        const lastAdded = lastAddedPublicationViews.slice().filter((item) => !isAudiobook(item));
-        const lastRead = lastReadPublicationViews.slice().filter((item) => !isAudiobook(item));
-        const audiobooks = lastAddedPublicationViews.slice().filter(isAudiobook);
-        const lastAudiobooks = lastReadPublicationViews.slice().filter(isAudiobook);
+        const lastAdded = lastAddedPublicationViews.filter((item) => !isAudiobook(item));
+        const lastRead = lastReadPublicationViews.filter((item) => !isAudiobook(item));
+        const audiobooks = lastAddedPublicationViews.filter(isAudiobook);
+        const lastAudiobooks = lastReadPublicationViews.filter(isAudiobook);
 
         // Dynamic entries
         let entries: CatalogEntryView[] = [
