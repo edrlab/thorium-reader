@@ -65,7 +65,7 @@ export class PublicationViewConverter {
 
             duration: r2Publication.Metadata.Duration &&
                 this.convertSecondToDaysHoursMinutes(r2Publication.Metadata.Duration),
-            nbOfTracks: r2Publication.Metadata.AdditionalJSON?.tracks as number,
+            nbOfTracks: r2Publication.Metadata.AdditionalJSON?.tracks as number | undefined,
 
             // doc: r2Publiction.Metadata,
 

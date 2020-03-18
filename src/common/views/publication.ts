@@ -38,8 +38,8 @@ export interface PublicationView extends Identifiable {
     cover?: CoverView;
     customCover?: CustomCoverView;
 
-    duration: ITimeDuration;
-    nbOfTracks: number;
+    duration?: ITimeDuration;
+    nbOfTracks?: number;
 
     lcp?: LcpInfo;
     lcpRightsCopies?: number;
