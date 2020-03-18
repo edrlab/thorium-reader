@@ -416,9 +416,9 @@ class Reader extends React.Component<IProps, IState> {
         ], this.findBookmarks);
 
         apiAction("publication/get", queryParams.pubId, false)
-            .then((publicationView) => {
+            .then(async (publicationView) => {
                 this.setState({publicationView});
-                this.loadPublicationIntoViewport(publicationView, locator);
+                await this.loadPublicationIntoViewport(publicationView, locator);
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
     }
@@ -668,14 +668,14 @@ class Reader extends React.Component<IProps, IState> {
         this.handleSettingsClick();
     }
 
-    private onKeyboardBookmark = () => {
+    private onKeyboardBookmark = async () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardBookmark)");
             }
             return;
         }
-        this.handleToggleBookmark();
+        await this.handleToggleBookmark();
     }
 
     private onKeyboardFocusMain = () => {
