@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import classnames from "classnames";
-import * as queryString from "query-string";
 import * as React from "react";
+import { connect } from "react-redux";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
@@ -24,6 +24,7 @@ import { Unsubscribe } from "redux";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
+import { IReaderRootState } from "../redux/states";
 import { IReaderMenuProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
@@ -40,7 +41,7 @@ interface IBaseProps extends TranslatorProps, IReaderMenuProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -78,7 +79,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             "reader/deleteBookmark",
             "reader/updateBookmark",
         ], () => {
-            apiAction("reader/findBookmarks", queryString.parse(location.search).pubId as string)
+            apiAction("reader/findBookmarks", this.props.pubId)
             .then((bookmarks) => this.setState({bookmarks}))
             .catch((error) => console.error("Error to fetch api reader/findBookmark", error));
         });
@@ -384,4 +385,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(ReaderMenu);
+const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
+    return {
+        pubId: state.reader.reader.publicationIdentifier,
+    };
+};
+
+export default connect(mapStateToProps)(withTranslator(ReaderMenu));
