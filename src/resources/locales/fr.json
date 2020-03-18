@@ -168,11 +168,6 @@
             "img": "image de couverture"
         },
         "duration": {
-            "and": "et",
-            "days": "jour(s)",
-            "hours": "heure(s)",
-            "minutes": "minute(s)",
-            "seconds": "seconde(s)",
             "title": "Durées"
         },
         "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",

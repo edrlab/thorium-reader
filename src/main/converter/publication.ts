@@ -74,15 +74,18 @@ export class PublicationViewConverter {
     }
 
     private convertSecondToDaysHoursMinutes(seconds: number): ITimeDuration {
-        const days = Math.floor(seconds / (60 * 60 * 24));
-        seconds %= 60 * 60 * 24;
-        const hours = Math.floor(seconds / (60 * 60));
-        seconds %= 60 * 60;
-        const minutes = Math.floor(seconds / 60);
-        seconds %= 60;
+
+        const secondsPerMinute = 60;
+        const minutesPerHours = 60;
+        const secondsPerHour = minutesPerHours * secondsPerMinute;
+
+        const hours = Math.floor(seconds / secondsPerHour);
+        seconds %= secondsPerHour;
+
+        const minutes = Math.floor(seconds / secondsPerMinute);
+        seconds %= secondsPerMinute;
 
         return {
-            days,
             hours,
             minutes,
             seconds,

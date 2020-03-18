@@ -37,14 +37,13 @@ const Duration = (props: {
 
     const { duration, __ } = props;
 
-    let sentence = "";
-    sentence += duration?.days ? `${duration.days} ${__("publication.duration.days")} ` : "";
-    sentence += duration?.hours ? `${duration.hours} ${__("publication.duration.hours")} ` : "";
-    sentence += duration?.minutes ? `${duration.minutes} ${__("publication.duration.minutes")} ` : "";
-    sentence += sentence ? `${__("publication.duration.and")} ` : "";
-    sentence += duration?.seconds ? `${duration.seconds} ${__("publication.duration.seconds")}` : "";
+    if (!duration) {
+        return <></>;
+    }
 
-    sentence = sentence.trim();
+    const { hours = 0, minutes = 0, seconds = 0 } = duration;
+
+    const sentence = `${hours > 0 ? (hours.toString().padStart(2, "0") + ":") : ``}${minutes > 0 ? (minutes.toString().padStart(2, "0") + ":") : `00:`}${seconds > 0 ? (seconds.toString().padStart(2, "0")) : `00`}`;
 
     return (
         sentence

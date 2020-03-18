@@ -168,11 +168,6 @@
             "img": "Titelbild"
         },
         "duration": {
-            "and": "und",
-            "days": "tage",
-            "hours": "std",
-            "minutes": "protokoll",
-            "seconds": "sekunden",
             "title": "Dauer"
         },
         "expiredLcp": "",

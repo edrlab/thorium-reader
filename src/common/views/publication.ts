@@ -20,7 +20,6 @@ export interface CustomCoverView {
 }
 
 export interface ITimeDuration {
-    days: number;
     hours: number;
     seconds: number;
     minutes: number;
