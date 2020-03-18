@@ -39,8 +39,10 @@
         "description": "Description",
         "emptyTagList": "You have no tagged ebook.",
         "entry": {
+            "continueAudiobooks": "Hör wieder auf",
             "continueReading": "Resume reading",
-            "lastAdditions": "Recently added"
+            "lastAdditions": "Recently added",
+            "lastAudiobooks": "letzte Hörbücher"
         },
         "export": "Export",
         "lang": "Language",

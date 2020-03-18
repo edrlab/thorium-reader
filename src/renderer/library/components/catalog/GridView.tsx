@@ -67,54 +67,62 @@ export class CatalogGridView extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const entriesEmpty = this.props.catalogEntries.filter((entry) => {
-            return entry.publicationViews.length > 0;
-        }).length === 0;
+        const CatalogEntriesIsEmpty = this.props.catalogEntries.filter(
+            (entry) => entry.totalCount > 0,
+        ).length === 0;
 
         return (
             <>
-                { this.props.catalogEntries.map((entry, EntryIndex: number) => {
-                    return entry.publicationViews.length > 0 ? (
-                        <section key={ EntryIndex }>
-                        {
+                {
+                    this.props.catalogEntries.map(
+                        (entry, EntryIndex: number) =>
+                            entry.totalCount > 0
+                                ? (
+                                    <section key={EntryIndex}>
+                                        {
 
-                            EntryIndex <= 1 ? (
-                            <div className={ styles.title }>
-                                <h2>{ entry.title }</h2>
-                            </div>
-                            ) :
-                            (<></>)
-                        }
-                        {
-                            EntryIndex <= 1 ? (
-                                <Slider
-                                    className={ styles.slider }
-                                    content={ entry.publicationViews.map((pub) =>
-                                        <PublicationCard
-                                            key={ pub.identifier }
-                                            publicationViewMaybeOpds={ pub }
-                                        />,
-                                    )}
-                                />
-                            ) :
-                            (<></>)
-                        }
+                                            <div className={styles.title}>
+                                                <h2>{entry.title}</h2>
+                                            </div>
+                                        }
+                                        {
+                                            <Slider
+                                                className={styles.slider}
+                                                content={entry.publicationViews.map((pub) =>
+                                                    <PublicationCard
+                                                        key={pub.identifier}
+                                                        publicationViewMaybeOpds={pub}
+                                                    />,
+                                                )}
+                                            />
+                                        }
 
-                        </section>
-                    ) : <div key={ EntryIndex } aria-hidden="true" style={{display: "none"}}></div>;
-                })}
-                { this.state.tabTags.length > 0 &&
-                    <TagLayout
-                    tags={this.state.tabTags}
-                    content={
-                        <SortMenu
-                            onClickAlphaSort={this.sortByAlpha}
-                            onClickCountSort={this.sortbyCount}
-                        />}
-                    />
+                                    </section>
+                                )
+                                : <div
+                                    key={EntryIndex}
+                                    aria-hidden="true"
+                                    style={{ display: "none" }}
+                                >
+                                </div>,
+                    )
                 }
-                { this.state.tabTags.length === 0 && entriesEmpty &&
-                    <NoPublicationInfo />
+                {
+                    this.state.tabTags.length > 0
+                        ? <TagLayout
+                            tags={this.state.tabTags}
+                            content={
+                                <SortMenu
+                                    onClickAlphaSort={this.sortByAlpha}
+                                    onClickCountSort={this.sortbyCount}
+                                />}
+                        />
+                        : <></>
+                }
+                {
+                    this.state.tabTags.length === 0 && CatalogEntriesIsEmpty
+                        ? <NoPublicationInfo />
+                        : <></>
                 }
                 <AboutThoriumButton />
             </>

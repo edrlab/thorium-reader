@@ -31,6 +31,8 @@ export interface PublicationView extends Identifiable {
     cover?: CoverView;
     customCover?: CustomCoverView;
 
+    RDFType: string;
+
     lcp?: LcpInfo;
     lcpRightsCopies?: number;
 

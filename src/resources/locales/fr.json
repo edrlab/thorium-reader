@@ -39,8 +39,10 @@
         "description": "Description",
         "emptyTagList": "Les livres ne contiennent pas de tags.",
         "entry": {
+            "continueAudiobooks": "Ecoute en cours",
             "continueReading": "Reprendre la lecture",
-            "lastAdditions": "Derniers ajouts"
+            "lastAdditions": "Derniers ajouts",
+            "lastAudiobooks": "Derniers livres audio"
         },
         "export": "Exporter",
         "lang": "Langue",

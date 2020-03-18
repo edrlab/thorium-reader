@@ -85,17 +85,35 @@ export class CatalogApi implements ICatalogApi {
             }
         }
 
+        const isAudiobook = (item: PublicationView) =>
+            item.RDFType && /http[s]?:\/\/schema\.org\/Audiobook$/.test(item.RDFType);
+
+        const lastAdded = lastAddedPublicationViews.slice().filter((item) => !isAudiobook(item));
+        const lastRead = lastReadPublicationViews.slice().filter((item) => !isAudiobook(item));
+        const audiobooks = lastAddedPublicationViews.slice().filter(isAudiobook);
+        const lastAudiobooks = lastReadPublicationViews.slice().filter(isAudiobook);
+
         // Dynamic entries
         let entries: CatalogEntryView[] = [
             {
                 title: __("catalog.entry.continueReading"),
-                totalCount: lastReadPublicationViews.length,
-                publicationViews: lastReadPublicationViews,
+                totalCount: lastRead.length,
+                publicationViews: lastRead,
             },
             {
                 title: __("catalog.entry.lastAdditions"),
-                totalCount: lastAddedPublicationViews.length,
-                publicationViews: lastAddedPublicationViews,
+                totalCount: lastAdded.length,
+                publicationViews: lastAdded,
+            },
+            {
+                title: __("catalog.entry.continueAudiobooks"),
+                totalCount: lastAudiobooks.length,
+                publicationViews: lastAudiobooks,
+            },
+            {
+                title: __("catalog.entry.lastAudiobooks"),
+                totalCount: audiobooks.length,
+                publicationViews: audiobooks,
             },
         ];
 

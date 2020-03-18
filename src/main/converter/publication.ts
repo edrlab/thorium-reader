@@ -61,7 +61,9 @@ export class PublicationViewConverter {
             lcp: document.lcp,
             lcpRightsCopies: document.lcpRightsCopies,
 
-            // doc: r2Publication.Metadata,
+            RDFType: r2Publication.Metadata.RDFType,
+
+            // doc: r2Publiction.Metadata,
 
             r2PublicationBase64,
         };
