@@ -18,7 +18,7 @@ import { extractParamFromOpdsRoutePathname } from "./route";
 
 export const dispatchOpdsLink =
     (dispatch: TDispatch) =>
-        (ln: IOpdsLinkView, location: TLocation, title?: string | undefined) => {
+        async (ln: IOpdsLinkView, location: TLocation, title?: string | undefined) => {
 
             dispatch(dialogActions.closeRequest.build());
 
@@ -45,6 +45,6 @@ export const dispatchOpdsLink =
                     // state: {} // we preserve the existing route state
                 });
             } else {
-                shell.openExternal(ln.url);
+                await shell.openExternal(ln.url);
             }
         };

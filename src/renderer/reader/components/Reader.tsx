@@ -416,9 +416,9 @@ class Reader extends React.Component<IProps, IState> {
         ], this.findBookmarks);
 
         apiAction("publication/get", queryParams.pubId, false)
-            .then((publicationView) => {
+            .then(async (publicationView) => {
                 this.setState({publicationView});
-                this.loadPublicationIntoViewport(publicationView, locator);
+                await this.loadPublicationIntoViewport(publicationView, locator);
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
     }
@@ -460,6 +460,7 @@ class Reader extends React.Component<IProps, IState> {
             handleIndexChange: this.handleIndexChange.bind(this),
             setSettings: this.setSettings,
             toggleMenu: this.handleSettingsClick,
+            r2Publication: this.state.r2Publication,
         };
 
         return (
@@ -498,6 +499,7 @@ class Reader extends React.Component<IProps, IState> {
                             readerOptionsProps={readerOptionsProps}
                             readerMenuProps={readerMenuProps}
                             displayPublicationInfo={this.displayPublicationInfo}
+                            currentLocation={this.state.currentLocation}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
@@ -667,14 +669,14 @@ class Reader extends React.Component<IProps, IState> {
         this.handleSettingsClick();
     }
 
-    private onKeyboardBookmark = () => {
+    private onKeyboardBookmark = async () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardBookmark)");
             }
             return;
         }
-        this.handleToggleBookmark(true);
+        await this.handleToggleBookmark(true);
     }
 
     private onKeyboardFocusMain = () => {

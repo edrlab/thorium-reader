@@ -4,7 +4,7 @@
     "quotemark": [true, "double"],
     "no-string-literal": true,
     "no-reference": false,
-    "no-floating-promises": false,
+    "no-floating-promises": true,
     "promise-function-async": true,
     "await-promise": true,
     "no-unused-expression": true,

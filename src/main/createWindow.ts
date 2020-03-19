@@ -89,18 +89,18 @@ export async function createWindow() {
 
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
-    mainWindow.loadURL(rendererBaseUrl);
+    await mainWindow.loadURL(rendererBaseUrl);
 
     setMenu(mainWindow, false);
 
     // Redirect link to an external browser
-    const handleRedirect = (event: Event, url: string) => {
+    const handleRedirect = async (event: Event, url: string) => {
         if (url === mainWindow.webContents.getURL()) {
             return;
         }
 
         event.preventDefault();
-        shell.openExternal(url);
+        await shell.openExternal(url);
     };
 
     mainWindow.webContents.on("will-navigate", handleRedirect);
