@@ -89,8 +89,6 @@ export async function createWindow() {
 
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
-    await mainWindow.loadURL(rendererBaseUrl);
-
     setMenu(mainWindow, false);
 
     // Redirect link to an external browser
@@ -114,6 +112,10 @@ export async function createWindow() {
     mainWindow.on("closed", () => {
         // note that winRegistry still contains a reference to mainWindow, so won't necessarily be garbage-collected
         mainWindow = null;
+    });
+
+    process.nextTick(async () => {
+        await mainWindow.loadURL(rendererBaseUrl);
     });
 }
 

@@ -56,18 +56,19 @@ export function apiActionFactory(storeCb: () => Store<any>) {
                     });
                 });
 
-                await promise.then((result) => {
+                try {
+                    const result = await promise;
                     resolve(result);
-                }).catch((error) => {
+                } catch (error) {
                     reject(error);
-                }).finally(() => {
+                } finally {
                     if (storeUnsubscribe) {
                         storeUnsubscribe();
                     }
                     if (timeoutId) {
                         clearTimeout(timeoutId);
                     }
-                });
+                }
             });
     };
 }
