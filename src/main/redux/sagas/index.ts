@@ -12,12 +12,12 @@ import * as api from "./api";
 import * as app from "./app";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
+// import { netStatusWatcher } from "./net";
+import * as keyboard from "./keyboard";
 import * as persist from "./persist";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
-
-// import { netStatusWatcher } from "./net";
 
 // import { updateStatusWatcher } from "./update";
 
@@ -33,6 +33,8 @@ function* appInitSuccessWatcher() {
 
         // Streamer
         call(streamer.watchers),
+
+        call(keyboard.watchers),
 
         // Update checker
         // call(updateStatusWatcher),

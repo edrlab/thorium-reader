@@ -9,9 +9,8 @@ import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
-    apiActions, dialogActions, downloadActions, i18nActions, lcpActions, readerActions,
-    toastActions,
-    watchdogActions,
+    apiActions, dialogActions, downloadActions, i18nActions, keyboardActions, lcpActions,
+    readerActions, toastActions, watchdogActions,
 } from "readium-desktop/common/redux/actions";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
@@ -46,6 +45,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.userKeyCheckRequest.ID,
 
     i18nActions.setLocale.ID,
+
+    keyboardActions.setShortcuts.ID,
+    keyboardActions.showShortcuts.ID,
+    keyboardActions.reloadShortcuts.ID,
 
     // updateActions.latestVersion.ID,
 

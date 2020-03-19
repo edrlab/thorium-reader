@@ -152,8 +152,25 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     yield put(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
 
-    if (IS_DEV && _VSCODE_LAUNCH !== "true") {
-        readerWindow.webContents.openDevTools({ mode: "detach" });
+    // Already done for primary library BrowserWindow
+    // readerWindow.webContents.on("did-finish-load", () => {
+    //     const {
+    //         default: installExtension,
+    //         REACT_DEVELOPER_TOOLS,
+    //         REDUX_DEVTOOLS,
+    //     } = require("electron-devtools-installer");
+
+    //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+    //         installExtension(extension)
+    //             .then((name: string) => debug("Added Extension: ", name))
+    //             .catch((err: Error) => debug("An error occurred: ", err));
+    //     });
+    // });
+
+    if (_VSCODE_LAUNCH !== "true") {
+        setTimeout(() => {
+            readerWindow.webContents.openDevTools({ mode: "detach" });
+        }, 2000);
     }
 
     setMenu(readerWindow, true);

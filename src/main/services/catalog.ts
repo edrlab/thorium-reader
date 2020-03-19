@@ -30,7 +30,7 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { ContentType } from "readium-desktop/utils/content-type";
 import { Store } from "redux";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
@@ -446,7 +446,7 @@ export class CatalogService {
         const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
 
         const pubDocument: PublicationDocumentWithoutTimestampable = {
-            identifier: uuid.v4(),
+            identifier: uuidv4(),
             resources: {
                 r2PublicationBase64,
                 r2LCPBase64: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()

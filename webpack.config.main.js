@@ -156,6 +156,7 @@ if (nodeEnv !== "production") {
     config.devtool = "source-map";
 } else {
     config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^electron-devtools-installer$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^json-diff$/ }));
 }
 
 module.exports = config;

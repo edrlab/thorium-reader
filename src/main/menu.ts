@@ -7,7 +7,11 @@
 
 import { BrowserWindow, Menu, MenuItem, webContents } from "electron";
 import { diMainGet } from "readium-desktop/main/di";
-import { _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV } from "readium-desktop/preprocessor-directives";
+import {
+    _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV,
+} from "readium-desktop/preprocessor-directives";
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 let _darwinApplicationMenuAlreadySet = false; // application-wide menu, not dependent on individual BrowserWindows
 
@@ -149,7 +153,7 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
     const translator = diMainGet("translator");
     const template: Electron.MenuItemConstructorOptions[] = [
         {
-            label: "Thorium",
+            label: capitalizedAppName,
             submenu: [
                 {
                     role: "togglefullscreen",

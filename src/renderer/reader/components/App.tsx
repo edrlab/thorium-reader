@@ -9,6 +9,7 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { Provider } from "react-redux";
+import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import DialogManager from "readium-desktop/renderer/reader/components/dialog/DialogManager";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
@@ -25,14 +26,13 @@ export default class App extends React.Component<{}, undefined> {
         const store = diReaderGet("store");
         const translator = diReaderGet("translator");
         return (
-            <TranslatorContext.Provider value={translator}>
-                <Provider store={store}>
-                    <div>
-                        <Reader />
-                        <DialogManager />
-                    </div>
-                </Provider>
-            </TranslatorContext.Provider>
+            <Provider store={store}>
+                <TranslatorContext.Provider value={translator}>
+                    <Reader />
+                    <DialogManager />
+                    <ToastManager />
+                </TranslatorContext.Provider>
+            </Provider>
         );
     }
 }

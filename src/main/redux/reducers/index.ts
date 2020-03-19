@@ -7,6 +7,7 @@
 
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
+import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 // import { netReducer } from "readium-desktop/common/redux/reducers/net";
 // import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
@@ -63,4 +64,5 @@ export const rootReducer = combineReducers<RootState>({
                 },
             ),
     }),
+    keyboard: keyboardReducer,
 });

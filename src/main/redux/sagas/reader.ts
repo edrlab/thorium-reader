@@ -208,7 +208,6 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
         // a toast message is dispalyed inside fct
 
-        debug("ERROR to open, this publication:", publicationIdentifier, err);
     }
 
     if (manifestUrl) {

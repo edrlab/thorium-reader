@@ -2,6 +2,21 @@
 @import "./focus.css";
 @import "./variable.css";
 
+.anchor_link {
+	position: absolute;
+	display: block;
+	width: 1px;
+	height: 1px;
+	top: 0px;
+	left: 0px;
+	opacity: 0.6;
+	background: transparent;
+	overflow: hidden;
+	color: transparent;
+	padding: 0;
+	margin: 0;
+}
+
 :root {
   user-select: none;
   --sideButtonColor: rgb(130, 130, 130, 0.5);
@@ -1000,6 +1015,10 @@ input[type=radio] + label {
   }
 }
 
+.currentPage {
+  font-size: 80%;
+  font-weight: normal;
+}
 .goToPage {
   text-align: center;
   & .title {

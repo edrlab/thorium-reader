@@ -11,13 +11,13 @@ import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Store, Unsubscribe } from "redux";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export function apiActionFactory(storeCb: () => Store<any>) {
     return async <T extends TApiMethodName>(apiPath: T, ...requestData: Parameters<TApiMethod[T]>) => {
         return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
             const store = storeCb();
-            const requestId = uuid.v4();
+            const requestId = uuidv4();
             const splitPath = apiPath.split("/");
             const moduleId = splitPath[0] as TModuleApi;
             const methodId = splitPath[1] as TMethodApi;

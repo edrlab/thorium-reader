@@ -12,12 +12,12 @@ import { apiActions } from "readium-desktop/common/redux/actions";
 import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/common/redux/states/api";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Dispatch } from "redux";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { ICommonRootState } from "../../../../common/redux/states/renderer/commonRootState";
 
 export function apiDispatch(dispatch: Dispatch) {
-    return (requestId: string = uuid.v4()) =>
+    return (requestId: string = uuidv4()) =>
         <T extends TApiMethodName>(apiPath: T) => {
             const splitPath = apiPath.split("/");
             const moduleId = splitPath[0] as TModuleApi;

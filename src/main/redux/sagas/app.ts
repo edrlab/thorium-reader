@@ -9,7 +9,9 @@ import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { error } from "readium-desktop/common/error";
+import { keyboardActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
+import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 import { appActions, winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
@@ -60,7 +62,11 @@ function* appInitWatcher() {
 
     yield call(mainApp);
 
+    yield call(keyboardShortcuts.init);
+
     yield put(appActions.initSuccess.build());
+
+    yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
 
     yield put(winActions.library.openRequest.build());
 }

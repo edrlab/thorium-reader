@@ -36,6 +36,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const webContents = readerWin.webContents;
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
+    const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
 
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
@@ -47,6 +48,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 identifier,
             },
             reader: reader?.reduxState,
+            keyboard,
         },
     } as readerIpc.EventPayload);
 

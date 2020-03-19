@@ -7,6 +7,7 @@
 
 import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
+import { KeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 // import { NetState } from "readium-desktop/common/redux/states/net";
@@ -41,4 +42,5 @@ export interface RootState {
     publication: {
         lastReadingQueue: TPQueueState;
     };
+    keyboard: KeyboardState;
 }

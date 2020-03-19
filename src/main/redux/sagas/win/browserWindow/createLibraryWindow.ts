@@ -76,7 +76,9 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         });
 
         if (_VSCODE_LAUNCH !== "true") {
-            libWindow.webContents.openDevTools({ mode: "detach" });
+            setTimeout(() => {
+                libWindow.webContents.openDevTools({ mode: "detach" });
+            }, 2000);
         }
     }
 

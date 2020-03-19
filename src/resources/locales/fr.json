@@ -5,9 +5,11 @@
         "homeMenu": "Menu principal",
         "importFile": "Importer un fichier epub",
         "leftSlideButton": "Faire défiler la liste vers la gauche",
+        "mainContent": "contenu principal",
         "rightSlideButton": "Faire défiler la liste vers la droite",
         "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
-        "skipLink": "Aller au contenu"
+        "skipLink": "Aller au contenu",
+        "toolbar": "barre d'outils"
     },
     "app": {
         "edit": {
@@ -199,7 +201,7 @@
             "annotations": "Annotations",
             "bookmarks": "Marque-pages",
             "delete": "Supprimer",
-            "edit": "Editer",
+            "edit": "Éditer",
             "landmarks": "Repères",
             "toc": "Table des matières"
         },
@@ -263,6 +265,18 @@
         }
     },
     "settings": {
+        "keyboard": {
+            "advancedMenu": "Menu",
+            "cancel": "Annuler",
+            "edit": "Éditer",
+            "editUserJson": "Éditer le fichier ...",
+            "hide": "Masquer",
+            "keyboardShortcuts": "Raccourcis clavier",
+            "loadUserJson": "Charger  le fichier",
+            "resetDefaults": "Réinitialiser (défaut)",
+            "save": "Sauvergarder",
+            "show": "Afficher"
+        },
         "language": {
             "languageChoice": "Choix de la langue"
         }

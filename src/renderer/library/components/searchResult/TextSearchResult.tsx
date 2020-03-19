@@ -89,10 +89,13 @@ export class TextSearchResult extends React.Component<IProps, IState> {
         const secondaryHeader = <Header/>;
 
         return (
-            <LibraryLayout secondaryHeader={secondaryHeader}>
+            <LibraryLayout
+                title={`${__("catalog.myBooks")} / ${title}`}
+                secondaryHeader={secondaryHeader}
+            >
                 <div>
                     <BreadCrumb
-                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title as string }]}
+                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}
                     />
                     {this.state.publicationViews ?
                         (displayType === DisplayType.Grid ?

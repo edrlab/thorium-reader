@@ -7,6 +7,7 @@
 
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
+import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import {
     IReaderRootState, IReaderStateReader,
@@ -31,5 +32,6 @@ export const rootReducer = () => {
         win: winReducer,
         dialog: dialogReducer,
         toast: toastReducer,
+        keyboard: keyboardReducer,
     });
 };

@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { dialog } from "electron";
 import { error } from "readium-desktop/common/error";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { i18nActions } from "readium-desktop/common/redux/actions";
+import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -52,6 +52,14 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         type: syncIpc.EventType.MainAction,
         payload: {
             action: i18nActions.setLocale.build(state.i18n.locale),
+        },
+    } as syncIpc.EventPayload);
+
+    // Send keyboard shortcuts
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
         },
     } as syncIpc.EventPayload);
 

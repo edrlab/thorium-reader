@@ -6,20 +6,27 @@
 // // ==LICENSE-END=
 
 // import * as debug_ from "debug";
+// import { app, protocol } from "electron";
+// import * as path from "path";
+// import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 // import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 // import { ReaderMode } from "readium-desktop/common/models/reader";
 // import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
-// import { i18nActions, readerActions } from "readium-desktop/common/redux/actions";
+// import { i18nActions, keyboardActions, readerActions } from "readium-desktop/common/redux/actions";
 // // import { NetStatus } from "readium-desktop/common/redux/states/net";
+// import { AvailableLanguages } from "readium-desktop/common/services/translator";
+// import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 // import { diMainGet } from "readium-desktop/main/di";
-// import { streamerActions } from "readium-desktop/main/redux/actions/";
+// import { appActions, streamerActions } from "readium-desktop/main/redux/actions/";
+// import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+
+// import { keyboardShortcuts } from "./keyboard";
 
 // // Logger
-// const debug = debug_("readium-desktop:main:init");
-// debug("_");
+// const debug = debug_("readium-desktop:main");
 
 // // Callback called when a window is opened
-// export const winOpenCallback = (appWindow: AppWindow) => {
+// const winOpenCallback = (appWindow: AppWindow) => {
 //     // Send information to the new window
 
 //     const store = diMainGet("store");
@@ -88,6 +95,14 @@
 //         },
 //     } as syncIpc.EventPayload);
 
+//     // Send keyboard shortcuts
+//     webContents.send(syncIpc.CHANNEL, {
+//         type: syncIpc.EventType.MainAction,
+//         payload: {
+//             action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
+//         },
+//     } as syncIpc.EventPayload);
+
 //     // // Send update info
 //     // webContents.send(syncIpc.CHANNEL, {
 //     //     type: syncIpc.EventType.MainAction,
@@ -104,7 +119,7 @@
 // };
 
 // // Callback called when a window is closed
-// export const winCloseCallback = (appWindow: AppWindow) => {
+// const winCloseCallback = (appWindow: AppWindow) => {
 //     const store = diMainGet("store");
 
 //     const winRegistry = diMainGet("win-registry");
@@ -153,3 +168,45 @@
 //         libraryWindow.browserWindow.show(); // focuses as well
 //     }
 // };
+
+// // Initialize application
+// export function initApp() {
+
+//     const store = diMainGet("store");
+//     store.dispatch(appActions.initRequest.build());
+
+//     keyboardShortcuts.init();
+//     store.dispatch(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
+
+//     const configRepository: ConfigRepository<LocaleConfigValueType> = diMainGet("config-repository");
+//     const config = configRepository.get(LocaleConfigIdentifier);
+//     config.then((i18nLocale) => {
+//         if (i18nLocale && i18nLocale.value && i18nLocale.value.locale) {
+//             store.dispatch(i18nActions.setLocale.build(i18nLocale.value.locale));
+//             debug(`set the locale ${i18nLocale.value.locale}`);
+//         } else {
+//             debug(`error on configRepository.get("i18n")): ${i18nLocale}`);
+//         }
+//     }).catch(async () => {
+//         const loc = app.getLocale().split("-")[0];
+//         const langCodes = ObjectKeys(AvailableLanguages);
+//         const lang = langCodes.find((l) => l === loc) || "en";
+//         store.dispatch(i18nActions.setLocale.build(lang));
+//         debug(`create i18n key in configRepository with ${lang} locale`);
+//     });
+
+//     const winRegistry = diMainGet("win-registry");
+//     winRegistry.registerOpenCallback(winOpenCallback);
+//     winRegistry.registerCloseCallback(winCloseCallback);
+//     app.setAppUserModelId("io.github.edrlab.thorium");
+// }
+
+// export function registerProtocol() {
+//     protocol.registerFileProtocol("store", (request, callback) => {
+//         // Extract publication item relative url
+//         const relativeUrl = request.url.substr(6);
+//         const pubStorage = diMainGet("publication-storage");
+//         const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
+//         callback(filePath);
+//     });
+// }

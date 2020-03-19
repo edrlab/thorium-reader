@@ -13,6 +13,7 @@ import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
 function* winInitWatcher(): SagaIterator {
+
     yield take(winActions.initRequest.ID);
 
     yield put(winActions.initSuccess.build());

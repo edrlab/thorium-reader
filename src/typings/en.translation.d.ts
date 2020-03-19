@@ -6,18 +6,22 @@ declare namespace typed_i18n {
   readonly "homeMenu": string,
   readonly "importFile": string,
   readonly "leftSlideButton": string,
+  readonly "mainContent": string,
   readonly "rightSlideButton": string,
   readonly "searchBook": string,
-  readonly "skipLink": string
+  readonly "skipLink": string,
+  readonly "toolbar": string
 };
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.homeMenu", __?: {}): string;
   (_: "accessibility.importFile", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.mainContent", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
+  (_: "accessibility.toolbar", __?: {}): string;
   (_: "app", __?: {}): {
   readonly "edit": {
     readonly "copy": string,
@@ -640,7 +644,43 @@ declare namespace typed_i18n {
   (_: "reader.svg", __?: {}): { readonly "left": string, readonly "right": string };
   (_: "reader.svg.left", __?: {}): string;
   (_: "reader.svg.right", __?: {}): string;
-  (_: "settings", __?: {}): { readonly "language": { readonly "languageChoice": string } };
+  (_: "settings", __?: {}): {
+  readonly "keyboard": {
+    readonly "advancedMenu": string,
+    readonly "cancel": string,
+    readonly "edit": string,
+    readonly "editUserJson": string,
+    readonly "hide": string,
+    readonly "keyboardShortcuts": string,
+    readonly "loadUserJson": string,
+    readonly "resetDefaults": string,
+    readonly "save": string,
+    readonly "show": string
+  },
+  readonly "language": { readonly "languageChoice": string }
+};
+  (_: "settings.keyboard", __?: {}): {
+  readonly "advancedMenu": string,
+  readonly "cancel": string,
+  readonly "edit": string,
+  readonly "editUserJson": string,
+  readonly "hide": string,
+  readonly "keyboardShortcuts": string,
+  readonly "loadUserJson": string,
+  readonly "resetDefaults": string,
+  readonly "save": string,
+  readonly "show": string
+};
+  (_: "settings.keyboard.advancedMenu", __?: {}): string;
+  (_: "settings.keyboard.cancel", __?: {}): string;
+  (_: "settings.keyboard.edit", __?: {}): string;
+  (_: "settings.keyboard.editUserJson", __?: {}): string;
+  (_: "settings.keyboard.hide", __?: {}): string;
+  (_: "settings.keyboard.keyboardShortcuts", __?: {}): string;
+  (_: "settings.keyboard.loadUserJson", __?: {}): string;
+  (_: "settings.keyboard.resetDefaults", __?: {}): string;
+  (_: "settings.keyboard.save", __?: {}): string;
+  (_: "settings.keyboard.show", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
   (_: "settings.language.languageChoice", __?: {}): string
 }

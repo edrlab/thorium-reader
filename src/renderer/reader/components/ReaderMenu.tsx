@@ -21,6 +21,7 @@ import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
 import { Unsubscribe } from "redux";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { IReaderMenuProps } from "./options-values";
@@ -31,6 +32,7 @@ import UpdateBookmarkForm from "./UpdateBookmarkForm";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     focusNaviguationMenu: () => void;
+    currentLocation: LocatorExtended;
 }
 
 // IProps may typically extend:
@@ -107,12 +109,15 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!r2Publication) {
             return <></>;
         }
-
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1),
-                disabled: !r2Publication.TOC || r2Publication.TOC.length === 0,
+                content:
+                    (r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1)) ||
+                    (r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
+                disabled:
+                    (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
+                    (!r2Publication.Spine || r2Publication.Spine.length === 0),
             },
             {
                 title: __("reader.marks.landmarks"),
@@ -150,6 +155,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private renderLinkList(label: string, links: Link[]): JSX.Element {
+        // console.log(label, JSON.stringify(links, null, 4));
+
         return <ul
             aria-label={label}
             className={styles.chapters_content}
@@ -190,6 +197,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+        // console.log(label, JSON.stringify(links, null, 4));
+
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
 
@@ -316,6 +325,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const error = this.state.pageError;
         return <div className={styles.goToPage}>
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
+
             <form onSubmit={this.handleSubmitPage}>
                 <input
                     ref={this.goToRef}
@@ -343,6 +353,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     { __("reader.navigation.goToError") }
                 </p>
             }
+            {this.props.currentLocation?.epubPage &&
+            <p className={styles.currentPage}>({this.props.currentLocation.epubPage})</p>}
+
         </div>;
     }
 
@@ -355,7 +368,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!this.goToRef?.current?.value) {
             return;
         }
-        const pageNbr = (this.goToRef.current.value as string).trim().replace(/\s\s+/g, " ");
+        const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
         const foundPage = this.props.r2Publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});
