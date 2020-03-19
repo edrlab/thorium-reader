@@ -164,7 +164,8 @@ else {
     baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/"
 }
 
-PouchDBAuth.plugin(require('pouchdb-find'))
+var PouchDBFind = require("pouchdb-find")
+PouchDBAuth.plugin(PouchDBFind.default ? PouchDBFind.default : PouchDBFind);
 
 let analyticsLoginInfoDb = new PouchDBAuth(path.join(rootDbPath, "couchdb-info"));
 //var couchGeneratorBaseUrl = "http://couch-user-generator.brett.dev.simpleconnections.ca/"
@@ -269,6 +270,7 @@ var syncDatabase = function (password : string, docToUpdate : any = null, dbToUp
             }
             )
             .then((res : any) => {
+                analyticsDbAuth.close()
                 console.log(`statusCode: ${res.statusCode}`)
             })
             .catch((error : any) => {
