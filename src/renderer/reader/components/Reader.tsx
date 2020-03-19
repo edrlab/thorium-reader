@@ -460,6 +460,7 @@ class Reader extends React.Component<IProps, IState> {
             handleIndexChange: this.handleIndexChange.bind(this),
             setSettings: this.setSettings,
             toggleMenu: this.handleSettingsClick,
+            r2Publication: this.state.r2Publication,
         };
 
         return (
