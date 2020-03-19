@@ -8,10 +8,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
+
+if (IS_DEV) {
+    console.log("automatic reload doesn't work. saga can't be synchronised with the main process");
+    // TODO
+    // fix it with IS_DEV info
+}
 
 function* winInitWatcher(): SagaIterator {
     yield all({
