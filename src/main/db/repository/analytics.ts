@@ -10,6 +10,9 @@ import * as PouchDB from "pouchdb-core";
 import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 import { injectable } from "inversify";
 import { AnalyticsDocument } from "../document/analytics";
+import {
+    _APP_NAME, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
+} from "readium-desktop/preprocessor-directives";
 
 const PUBLICATION_INDEX = "publication_index";
 const CREATED_AT_INDEX = "created_at_index";
@@ -42,7 +45,6 @@ export class AnalyticsRepository extends BaseRepository<AnalyticsDocument> {
         super(db, "locator", indexes);
 
     }
-
 
     protected convertToDocument(dbDoc: PouchDB.Core.Document<AnalyticsDocument>): AnalyticsDocument {
         return Object.assign(

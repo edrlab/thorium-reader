@@ -54,7 +54,6 @@ import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
-import { exec } from "child_process";
 
 //TODO - get rid of these when moving db generation to another file 
 import * as uuid from "uuid";
@@ -155,24 +154,34 @@ const analyticsDb = new PouchDB<AnalyticsDocument>(
 
 const analyticsRepository = new AnalyticsRepository(analyticsDb);
 
-const PouchDBAuth = require("pouchdb-node").default;
+var baseUrl = ""
+if (_NODE_ENV === "development") {
+    var PouchDBAuth = require("pouchdb-node")
+    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/"
+}
+else {
+    var PouchDBAuth = require("pouchdb-node").default
+    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/"
+}
 
-const analyticsLoginInfoDb = new PouchDBAuth(path.join(rootDbPath, "couchdb-info"), {skip_setup: true}).default;
+PouchDBAuth.plugin(require('pouchdb-find'))
+
+let analyticsLoginInfoDb = new PouchDBAuth(path.join(rootDbPath, "couchdb-info"));
 //var couchGeneratorBaseUrl = "http://couch-user-generator.brett.dev.simpleconnections.ca/"
 
-var couchGeneratorBaseUrl = "http://couchdb-device-init.azurewebsites.net/"
-var couchDbUrl = "http://metrics.ekitabu.com:5984/"
+//var couchGeneratorBaseUrl = "http://couchdb-device-init.azurewebsites.net/"
+//var couchDbUrl = "http://metrics.ekitabu.com:5984/"
+
 
 async function getCouchPassword(username : string, handlePassword : any , docToUpdate : any = null, dbToUpdate : any = null) 
 {
     try {
-        //console.log(' get couch password function')
 
         const http = require('http');
         
         var password = 'no password set'
-        http.get(couchGeneratorBaseUrl + '?dvuuid=' + username, (response : any) => {
-
+        var url = baseUrl + "register/" + username
+        http.get(url, (response : any) => {
             let data = '';
 
             // A chunk of data has been recieved.
@@ -182,11 +191,9 @@ async function getCouchPassword(username : string, handlePassword : any , docToU
             
             // The whole response has been received. Print out the result.
             return response.on('end', () => {
-                //console.log("response was")
-                //console.log(data)
                 const parsedData = JSON.parse(data)
-                password = parsedData.password
-                handlePassword(username,password, docToUpdate,dbToUpdate)
+                password = parsedData.apiToken
+                handlePassword(password, docToUpdate,dbToUpdate)
             }).on("error", (err : any) => {
             console.log("The Error Message: " + err.message);
             })
@@ -197,74 +204,103 @@ async function getCouchPassword(username : string, handlePassword : any , docToU
     }    
     catch {
         console.log("error in the async")
-
     }
 }
 
-var syncDatabase = function (username : string, password : string, docToUpdate : any = null, dbToUpdate : any = null) {
-    //console.log('sync the database')
-    //console.log("username : " + username)
-    //console.log("password : " + password)
-
-    //console.log("database name")
-    //console.log('analyticsDb_' + username)
-    var analyticsRemoteDb = new PouchDBAuth(couchDbUrl + 'analyticsdb_' + username, 
-    {
-        auth: {
-            username: username,
-            password: password 
-        }
-    })
-
+var syncDatabase = function (password : string, docToUpdate : any = null, dbToUpdate : any = null) {
+    console.log('sync database')
     if (docToUpdate && dbToUpdate)
     {
-        //console.log("updating the database with the password above")
         docToUpdate["password"] = password
         dbToUpdate.put(docToUpdate)
     }
-    var analyticsDbAuth = new PouchDBAuth(path.join(rootDbPath, "analytics"), {skip_setup: true});
+    var analyticsDbAuth = new PouchDBAuth(path.join(rootDbPath, "analytics_sync"));
 
     //TODO - handle when there is an error or issue
-    analyticsDbAuth.sync(analyticsDb, {live: true, retry: true}).on('error', console.log.bind(console));
-    analyticsDbAuth.sync(analyticsRemoteDb, {live: true, retry: true}).on('error', console.log.bind(console));
+    analyticsDbAuth.sync(analyticsDb, {live: false, retry: false}
+    ).on('complete', function () {
+        console.log('internal sync done')
+        // ################
+        //  SYNC ANALYTICS
+        // ################
+        analyticsDbAuth.find({
+            selector:  {analyticsType : {$exists : true}},
+          }).then(function (result: any) {
+
+        console.log('find analytics done')
+            const axios = require('axios')
+            axios.post(baseUrl + "event/push", {
+                result
+            },
+             {
+                headers: {
+                'Content-Type': 'application/json',
+                "X-AUTH-TOKEN" : password,
+                }
+            }
+            )
+            .then((res : any) => {
+                console.log(`statusCode: ${res.statusCode}`)
+            })
+            .catch((error : any) => {
+                console.error(error)
+            })
+        }).catch(function (error : any){
+            console.log(error)
+        })
+
+        // ################
+        // SYNC DEVICE INFO
+        // ################
+        analyticsDbAuth.find({
+            selector:  {username : {$exists : true}},
+          }).then(function (result: any) {
+
+        console.log('came across device info')
+            const axios = require('axios')
+            axios.post(baseUrl + "device/info", {
+                result
+            },
+            {
+                headers: {
+                'Content-Type': 'application/json',
+                "X-AUTH-TOKEN" : password,
+                }
+            }
+            )
+            .then((res : any) => {
+                console.log(`statusCode: ${res.statusCode}`)
+            })
+            .catch((error : any) => {
+                console.error(error)
+            })
+
+
+        }).catch(function (error : any){
+            console.log(error)
+        })
+
+
+    }).on('error', console.log.bind(console));
 }
 
 const os = require("os")
 
-var analyticsDbAuth = new PouchDBAuth(path.join(rootDbPath, "analytics"), {skip_setup: true});
+var analyticsDbAuth = new PouchDBAuth(path.join(rootDbPath, "analytics_sync"), {skip_setup: true});
 analyticsDbAuth.get("deviceInfo").then(function(){
-    //console.log("device info we have so far is")
-    //console.log(doc)
-}).catch(function(err : any) {
+}).catch(function() {
     //if OS is win32
-    //console.log("no device info yet")
-    exec("wmic os get SerialNumber", function (error, stdout) {
-        //console.log('serial number')
-        //console.log(stdout)
-        //console.log(error)
-        if (err.reason == "missing") {
-            var serial = stdout
-            if (error) {
-               serial = ""
-            }
-            var doc = {
-            "_id" : "deviceInfo",
-            "username":  os.userInfo().username,
-            "cpus" : os.cpus(),
-            "net-info": os.networkInterfaces(),
-            "platform" :os.platform(),
-            "platform-version": os.release(),
-            "ram": os.totalmem(),
-            "architecture": os.arch(),
-            "serial": serial
-            }
-
-            analyticsDbAuth.put(doc)
-        }
-    }).on("error", (err : any) => {
-            console.log("The Error Message: " + err.message);
-            })
-
+    var doc = {
+        "_id" : "deviceInfo",
+        "username":  os.userInfo().username,
+        "cpus" : os.cpus(),
+        "netinfo": os.networkInterfaces(),
+        "platform" :os.platform(),
+        "platformversion": os.release(),
+        "ram": os.totalmem(),
+        "architecture": os.arch(),
+    }
+    analyticsDbAuth.put(doc)
 })
 
 if (analyticsLoginInfoDb != null ) {
@@ -274,13 +310,12 @@ if (analyticsLoginInfoDb != null ) {
 
         if (doc["password"] == "")
         {
-            //console.log("no password get a password")
             getCouchPassword(username, syncDatabase, doc, analyticsLoginInfoDb)
         }
         else {
-            //console.log('time to sync with a real username and password')
+            console.log('time to sync with a real username and password')
             const password = doc["password"]
-            syncDatabase(username,password)
+            syncDatabase(password)
         }
     }).catch(function(err : any) {
         if (err.reason == "missing") {
@@ -290,68 +325,12 @@ if (analyticsLoginInfoDb != null ) {
             "username": username,
             "password": ""
             };
-            analyticsLoginInfoDb.put(doc)
-
             getCouchPassword(username, syncDatabase, doc, analyticsLoginInfoDb)
         }
     })
 }
 
 
-//console.log("username is")
-//console.log(os.userInfo().username)
-
-//console.log("os cpu is")
-//console.log(os.cpus())
-
-//console.log("mac address is")
-//console.log(os.networkInterfaces())
-
-//console.log("os platform")
-//console.log(os.platform())
-
-//console.log("os is ")
-//console.log(os.release())
-
-//console.log("ram is")
-//console.log(os.totalmem())
-
-//console.log("arch is")
-//console.log(os.arch())
-
-//if OS is win32
-
-//exec("wmic os get SerialNumber", function (error, stdout) {
-    //console.log('serial number')
-    //console.log(stdout)
-    //console.log(error)
-//})
-
-
-/*function makeid(length : number) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-       result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
- }
-var doc = {
-    "_id": makeid(10),
-    "name": "Mittens",
-    "occupation": "kitten",
-    "age": 3,
-    "hobbies": [
-        "playing with balls of yarn",
-        "chasing laser pointers",
-        "lookin' hella cute"
-    ]
-};
-
-analyticsDbAuth.put(doc)
-
-*/
 
 
 // Lcp secret db
