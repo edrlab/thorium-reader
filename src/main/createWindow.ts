@@ -115,7 +115,7 @@ export async function createWindow() {
     });
 
     process.nextTick(async () => {
-        mainWindow.loadURL(rendererBaseUrl);
+        await mainWindow.loadURL(rendererBaseUrl);
     });
 }
 
