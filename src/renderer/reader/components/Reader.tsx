@@ -67,6 +67,25 @@ import optionsValues, {
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
+function formatTime(seconds: number): string {
+    const secondsPerMinute = 60;
+    const minutesPerHours = 60;
+    const secondsPerHour = minutesPerHours * secondsPerMinute;
+    let remainingSeconds = seconds;
+    const nHours = Math.floor(remainingSeconds / secondsPerHour);
+    remainingSeconds -= (nHours * secondsPerHour);
+    if (remainingSeconds < 0) {
+        remainingSeconds = 0;
+    }
+    const nMinutes = Math.floor(remainingSeconds / secondsPerMinute);
+    remainingSeconds -= (nMinutes * secondsPerMinute);
+    if (remainingSeconds < 0) {
+        remainingSeconds = 0;
+    }
+    remainingSeconds = Math.floor(remainingSeconds);
+    return `${nHours > 0 ? (nHours.toString().padStart(2, "0") + ":") : ``}${nMinutes > 0 ? (nMinutes.toString().padStart(2, "0") + ":") : `00:`}${remainingSeconds > 0 ? (remainingSeconds.toString().padStart(2, "0")) : `00`}`;
+}
+
 // import {
 //     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 // } from "@r2-navigator-js/electron/common/sessions";
@@ -494,7 +513,7 @@ class Reader extends React.Component<IProps, IState> {
                             handleFullscreenClick={this.handleFullscreenClick}
                             handleReaderDetach={this.handleReaderDetach}
                             handleReaderClose={this.handleReaderClose}
-                            toggleBookmark={ this.handleToggleBookmark }
+                            toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
                             isOnBookmark={this.state.visibleBookmarkList.length > 0}
                             readerOptionsProps={readerOptionsProps}
                             readerMenuProps={readerMenuProps}
@@ -949,7 +968,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private async handleToggleBookmark(fromKeyboard?: boolean) {
 
-        if (!this.state.currentLocation) {
+        if (!this.state.currentLocation || !this.state.currentLocation.locator) {
             return;
         }
 
@@ -964,12 +983,16 @@ class Reader extends React.Component<IProps, IState> {
             // CTRL-B (keyboard interaction) and audiobooks:
             // do not toggle: never delete, just add current reading location to bookmarks
             !fromKeyboard &&
-            !this.state.currentLocation.audioPlaybackInfo
+            !this.state.currentLocation.audioPlaybackInfo &&
+            (!this.state.currentLocation.locator.text?.highlight ||
 
             // "toggle" only if visible bookmark == current reading location
-            // && this.state.visibleBookmarkList[0].locator.href === this.state.currentLocation.locator.href
+            this.state.visibleBookmarkList[0].locator.href === this.state.currentLocation.locator.href &&
             // tslint:disable-next-line: max-line-length
-            // && this.state.visibleBookmarkList[0].locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector
+            this.state.visibleBookmarkList[0].locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector &&
+            // tslint:disable-next-line: max-line-length
+            this.state.visibleBookmarkList[0].locator.text?.highlight === this.state.currentLocation.locator.text.highlight
+            )
         ;
 
         if (deleteAllVisibleBookmarks) {
@@ -991,9 +1014,13 @@ class Reader extends React.Component<IProps, IState> {
                 const identical =
                     b.locator.href === this.state.currentLocation.locator.href &&
                     (b.locator.locations.progression === this.state.currentLocation.locator.locations.progression ||
-                    b.locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector);
+                        b.locator.locations.cssSelector && this.state.currentLocation.locator.locations.cssSelector &&
+                        b.locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector) &&
+                    b.locator.text?.highlight === this.state.currentLocation.locator.text?.highlight;
+
                 return identical;
-            });
+            }) &&
+            (this.state.currentLocation.audioPlaybackInfo || this.state.currentLocation.locator.text?.highlight);
 
         if (addCurrentLocationToBookmarks) {
 
@@ -1002,6 +1029,12 @@ class Reader extends React.Component<IProps, IState> {
                 name = this.state.currentLocation.locator.text.highlight;
             } else if (this.state.currentLocation.selectionInfo?.cleanText) {
                 name = this.state.currentLocation.selectionInfo.cleanText;
+            } else if (this.state.currentLocation.audioPlaybackInfo) {
+                const percent = Math.floor(100 * this.state.currentLocation.audioPlaybackInfo.globalProgression);
+                // this.state.currentLocation.audioPlaybackInfo.globalTime /
+                // this.state.currentLocation.audioPlaybackInfo.globalDuration
+                const timestamp = formatTime(this.state.currentLocation.audioPlaybackInfo.globalTime);
+                name = `${timestamp} (${percent}%)`;
             }
             try {
                 await apiAction("reader/addBookmark", queryParams.pubId, this.state.currentLocation.locator, name);
