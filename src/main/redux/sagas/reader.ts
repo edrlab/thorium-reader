@@ -172,7 +172,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
         readerUrl += `&docHref=${docHref}&docSelector=${docSelector}&docProgression=${docProgression}`;
     }
 
-    readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
+    await readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
 
     setMenu(readerWindow, true);
 
