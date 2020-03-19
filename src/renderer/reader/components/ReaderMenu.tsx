@@ -275,7 +275,35 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const { __ } = this.props;
         if (this.props.r2Publication && this.state.bookmarks) {
             const { bookmarkToUpdate } = this.state;
-            return this.state.bookmarks.map((bookmark, i) =>
+            return this.state.bookmarks.sort((a, b) => {
+                if (!a.locator || !b.locator) {
+                    return 0;
+                }
+                if (!a.locator.locations || !b.locator.locations) {
+                    return 0;
+                }
+                const aLink = this.props.r2Publication.Spine.find((link) => {
+                    return link.Href === a.locator.href;
+                });
+                const aLinkIndex = this.props.r2Publication.Spine.indexOf(aLink);
+                const bLink = this.props.r2Publication.Spine.find((link) => {
+                    return link.Href === b.locator.href;
+                });
+                const bLinkIndex = this.props.r2Publication.Spine.indexOf(bLink);
+                if (aLinkIndex > bLinkIndex) {
+                    return 1;
+                }
+                if (aLinkIndex < bLinkIndex) {
+                    return -1;
+                }
+                // aLinkIndex === bLinkIndex
+                if (a.locator.locations.progression > b.locator.locations.progression) {
+                    return 1;
+                } else if (a.locator.locations.progression < b.locator.locations.progression) {
+                    return -1;
+                }
+                return 0;
+            }).map((bookmark, i) =>
                 <div
                     className={styles.bookmarks_line}
                     key={i}

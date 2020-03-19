@@ -67,6 +67,25 @@ import optionsValues, {
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
+function formatTime(seconds: number): string {
+    const secondsPerMinute = 60;
+    const minutesPerHours = 60;
+    const secondsPerHour = minutesPerHours * secondsPerMinute;
+    let remainingSeconds = seconds;
+    const nHours = Math.floor(remainingSeconds / secondsPerHour);
+    remainingSeconds -= (nHours * secondsPerHour);
+    if (remainingSeconds < 0) {
+        remainingSeconds = 0;
+    }
+    const nMinutes = Math.floor(remainingSeconds / secondsPerMinute);
+    remainingSeconds -= (nMinutes * secondsPerMinute);
+    if (remainingSeconds < 0) {
+        remainingSeconds = 0;
+    }
+    remainingSeconds = Math.floor(remainingSeconds);
+    return `${nHours > 0 ? (nHours.toString().padStart(2, "0") + ":") : ``}${nMinutes > 0 ? (nMinutes.toString().padStart(2, "0") + ":") : `00:`}${remainingSeconds > 0 ? (remainingSeconds.toString().padStart(2, "0")) : `00`}`;
+}
+
 // import {
 //     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 // } from "@r2-navigator-js/electron/common/sessions";
@@ -494,7 +513,7 @@ class Reader extends React.Component<IProps, IState> {
                             handleFullscreenClick={this.handleFullscreenClick}
                             handleReaderDetach={this.handleReaderDetach}
                             handleReaderClose={this.handleReaderClose}
-                            toggleBookmark={ this.handleToggleBookmark }
+                            toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
                             isOnBookmark={this.state.visibleBookmarkList.length > 0}
                             readerOptionsProps={readerOptionsProps}
                             readerMenuProps={readerMenuProps}
@@ -676,7 +695,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
-        await this.handleToggleBookmark();
+        await this.handleToggleBookmark(true);
     }
 
     private onKeyboardFocusMain = () => {
@@ -875,7 +894,6 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-//        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
         apiAction("reader/setLastReadingLocation", queryParams.pubId, loc.locator)
             .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
 
@@ -946,47 +964,80 @@ class Reader extends React.Component<IProps, IState> {
 
         const newUrl = publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
-
-        // Example to pass a specific cssSelector:
-        // (for example to restore a bookmark)
-        // const locator: Locator = {
-        //     href: url,
-        //     locations: {
-        //         cfi: undefined,
-        //         cssSelector: CSSSELECTOR,
-        //         position: undefined,
-        //         progression: undefined,
-        //     }
-        // };
-        // handleLinkLocator(locator);
-
-        // Example to save a bookmark:
-        // const loc: LocatorExtended = getCurrentReadingLocation();
-        // Note: there is additional useful info about pagination
-        // which can be used to report progress info to the user
-        // if (loc.paginationInfo !== null) =>
-        // loc.paginationInfo.totalColumns (N = 1+)
-        // loc.paginationInfo.currentColumn [0, (N-1)]
-        // loc.paginationInfo.isTwoPageSpread (true|false)
-        // loc.paginationInfo.spreadIndex [0, (N/2)]
     }
 
-    private async handleToggleBookmark() {
-        await this.checkBookmarks();
-        if (this.state.visibleBookmarkList.length > 0) {
+    private async handleToggleBookmark(fromKeyboard?: boolean) {
+
+        if (!this.state.currentLocation || !this.state.currentLocation.locator) {
+            return;
+        }
+
+        await this.checkBookmarks(); // updates this.state.visibleBookmarkList
+
+        const deleteAllVisibleBookmarks =
+
+            // "toggle" only if there is a single bookmark in the content visible inside the viewport
+            // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
+            this.state.visibleBookmarkList.length === 1 &&
+
+            // CTRL-B (keyboard interaction) and audiobooks:
+            // do not toggle: never delete, just add current reading location to bookmarks
+            !fromKeyboard &&
+            !this.state.currentLocation.audioPlaybackInfo &&
+            (!this.state.currentLocation.locator.text?.highlight ||
+
+            // "toggle" only if visible bookmark == current reading location
+            this.state.visibleBookmarkList[0].locator.href === this.state.currentLocation.locator.href &&
+            // tslint:disable-next-line: max-line-length
+            this.state.visibleBookmarkList[0].locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector &&
+            // tslint:disable-next-line: max-line-length
+            this.state.visibleBookmarkList[0].locator.text?.highlight === this.state.currentLocation.locator.text.highlight
+            )
+        ;
+
+        if (deleteAllVisibleBookmarks) {
             for (const bookmark of this.state.visibleBookmarkList) {
-//                this.props.deleteBookmark(bookmark.identifier);
                 try {
                     await apiAction("reader/deleteBookmark", bookmark.identifier);
                 } catch (e) {
                     console.error("Error to fetch api reader/deleteBookmark", e);
                 }
             }
-        } else if (this.state.currentLocation) {
-            const locator = this.state.currentLocation.locator;
-//            this.props.addBookmark(queryParams.pubId, locator);
+
+            // we do not add the current reading location to bookmarks (just toggle)
+            return;
+        }
+
+        const addCurrentLocationToBookmarks =
+            !this.state.visibleBookmarkList.length ||
+            !this.state.visibleBookmarkList.find((b) => {
+                const identical =
+                    b.locator.href === this.state.currentLocation.locator.href &&
+                    (b.locator.locations.progression === this.state.currentLocation.locator.locations.progression ||
+                        b.locator.locations.cssSelector && this.state.currentLocation.locator.locations.cssSelector &&
+                        b.locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector) &&
+                    b.locator.text?.highlight === this.state.currentLocation.locator.text?.highlight;
+
+                return identical;
+            }) &&
+            (this.state.currentLocation.audioPlaybackInfo || this.state.currentLocation.locator.text?.highlight);
+
+        if (addCurrentLocationToBookmarks) {
+
+            let name: string | undefined;
+            if (this.state.currentLocation.locator?.text?.highlight) {
+                name = this.state.currentLocation.locator.text.highlight;
+            } else if (this.state.currentLocation.selectionInfo?.cleanText) {
+                name = this.state.currentLocation.selectionInfo.cleanText;
+            } else if (this.state.currentLocation.audioPlaybackInfo) {
+                const percent = Math.floor(100 * this.state.currentLocation.audioPlaybackInfo.globalProgression);
+                // this.state.currentLocation.audioPlaybackInfo.globalTime /
+                // this.state.currentLocation.audioPlaybackInfo.globalDuration
+                const timestamp = formatTime(this.state.currentLocation.audioPlaybackInfo.globalTime);
+                name = `${timestamp} (${percent}%)`;
+            }
             try {
-                await apiAction("reader/addBookmark", queryParams.pubId, locator);
+                await apiAction("reader/addBookmark", queryParams.pubId, this.state.currentLocation.locator, name);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }
