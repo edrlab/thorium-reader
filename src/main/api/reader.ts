@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { clipboard } from "electron";
+import { app, clipboard } from "electron";
 import { inject, injectable } from "inversify";
 import { IReaderApi } from "readium-desktop/common/api/interface/readerApi.interface";
 import { LocatorType } from "readium-desktop/common/models/locator";
@@ -126,15 +126,19 @@ export class ReaderApi implements IReaderApi {
         };
         await this.locatorRepository.save(loc);
 
-        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-            `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("catalog.addTagsButton")})`));
+        if (app.accessibilitySupportEnabled) {
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+                `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("catalog.addTagsButton")})`));
+        }
     }
 
     public async deleteBookmark(identifier: string): Promise<void> {
         await this.locatorRepository.delete(identifier);
 
-        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-            `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("reader.marks.delete")})`));
+        if (app.accessibilitySupportEnabled) {
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+                `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("reader.marks.delete")})`));
+        }
     }
 
     public async clipboardCopy(
