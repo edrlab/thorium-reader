@@ -949,16 +949,28 @@ class Reader extends React.Component<IProps, IState> {
 
     private async handleToggleBookmark(fromKeyboard?: boolean) {
 
-        await this.checkBookmarks(); // updates this.state.visibleBookmarkList
-xxxxx
-        // CTRL-B "fromKeyboard" always adds (even if there are "visible" bookmarks in the current viewport)
-        const deleteAllVisibleBookmarks = this.state.visibleBookmarkList.length > 0 &&
-            !fromKeyboard &&
-            (this.state.currentLocation && !this.state.currentLocation.audioPlaybackInfo);
+        if (!this.state.currentLocation) {
+            return;
+        }
 
-        const addCurrentLocationToBookmarks = this.state.currentLocation &&
-            (!deleteAllVisibleBookmarks ||
-            (this.state.currentLocation.locator));
+        await this.checkBookmarks(); // updates this.state.visibleBookmarkList
+
+        const deleteAllVisibleBookmarks =
+
+            // "toggle" only if there is a single bookmark in the content visible inside the viewport
+            // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
+            this.state.visibleBookmarkList.length === 1 &&
+
+            // CTRL-B (keyboard interaction) and audiobooks:
+            // do not toggle: never delete, just add current reading location to bookmarks
+            !fromKeyboard &&
+            !this.state.currentLocation.audioPlaybackInfo
+
+            // "toggle" only if visible bookmark == current reading location
+            // && this.state.visibleBookmarkList[0].locator.href === this.state.currentLocation.locator.href
+            // tslint:disable-next-line: max-line-length
+            // && this.state.visibleBookmarkList[0].locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector
+        ;
 
         if (deleteAllVisibleBookmarks) {
             for (const bookmark of this.state.visibleBookmarkList) {
@@ -968,7 +980,20 @@ xxxxx
                     console.error("Error to fetch api reader/deleteBookmark", e);
                 }
             }
+
+            // we do not add the current reading location to bookmarks (just toggle)
+            return;
         }
+
+        const addCurrentLocationToBookmarks =
+            !this.state.visibleBookmarkList.length ||
+            !this.state.visibleBookmarkList.find((b) => {
+                const identical =
+                    b.locator.href === this.state.currentLocation.locator.href &&
+                    (b.locator.locations.progression === this.state.currentLocation.locator.locations.progression ||
+                    b.locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector);
+                return identical;
+            });
 
         if (addCurrentLocationToBookmarks) {
 
@@ -977,12 +1002,6 @@ xxxxx
                 name = this.state.currentLocation.locator.text.highlight;
             } else if (this.state.currentLocation.selectionInfo?.cleanText) {
                 name = this.state.currentLocation.selectionInfo.cleanText;
-            }
-            for (const bookmark of this.state.visibleBookmarkList) {
-                if (name && bookmark.name === name &&
-                    this.state.currentLocation.locator) {
-                    return;
-                }
             }
             try {
                 await apiAction("reader/addBookmark", queryParams.pubId, this.state.currentLocation.locator, name);
