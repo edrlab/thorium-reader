@@ -229,7 +229,7 @@
     "@types/request": "^2.48.4",
     "@types/tmp": "^0.1.0",
     "@types/urijs": "^1.19.7",
-    "@types/uuid": "^7.0.1",
+    "@types/uuid": "^7.0.2",
     "@types/xmldom": "^0.1.29",
     "@types/yargs": "^15.0.4",
     "@types/yauzl": "^2.9.1",
