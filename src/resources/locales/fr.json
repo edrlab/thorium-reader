@@ -158,11 +158,17 @@
         "shelf": "Étagère"
     },
     "publication": {
+        "audio": {
+            "tracks": "Pistes"
+        },
         "cancelledLcp": "Ce livre ne peut être lu car la licence lcp a été annulée.",
         "certificateRevoked": "Certificat révoqué",
         "certificateSignatureInvalid": "Signature de certificat invalide",
         "cover": {
             "img": "image de couverture"
+        },
+        "duration": {
+            "title": "Durée"
         },
         "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
         "lcpEnd": "Fin",

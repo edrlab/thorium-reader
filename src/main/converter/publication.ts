@@ -7,7 +7,9 @@
 
 import { injectable } from "inversify";
 import * as moment from "moment";
-import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
+import {
+    CoverView, ITimeDuration, PublicationView,
+} from "readium-desktop/common/views/publication";
 import {
     convertContributorArrayToStringArray,
 } from "readium-desktop/main/converter/tools/localisation";
@@ -61,9 +63,32 @@ export class PublicationViewConverter {
             lcp: document.lcp,
             lcpRightsCopies: document.lcpRightsCopies,
 
-            // doc: r2Publication.Metadata,
+            duration: r2Publication.Metadata.Duration &&
+                this.convertSecondToDaysHoursMinutes(r2Publication.Metadata.Duration),
+            nbOfTracks: r2Publication.Metadata.AdditionalJSON?.tracks as number | undefined,
+
+            // doc: r2Publiction.Metadata,
 
             r2PublicationBase64,
+        };
+    }
+
+    private convertSecondToDaysHoursMinutes(seconds: number): ITimeDuration {
+
+        const secondsPerMinute = 60;
+        const minutesPerHours = 60;
+        const secondsPerHour = minutesPerHours * secondsPerMinute;
+
+        const hours = Math.floor(seconds / secondsPerHour);
+        seconds %= secondsPerHour;
+
+        const minutes = Math.floor(seconds / secondsPerMinute);
+        seconds %= secondsPerMinute;
+
+        return {
+            hours,
+            minutes,
+            seconds,
         };
     }
 }

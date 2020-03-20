@@ -158,11 +158,17 @@
         "shelf": ""
     },
     "publication": {
+        "audio": {
+            "tracks": "Spuren"
+        },
         "cancelledLcp": "",
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
         "cover": {
             "img": "Titelbild"
+        },
+        "duration": {
+            "title": "Dauer"
         },
         "expiredLcp": "",
         "lcpEnd": "",
