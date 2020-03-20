@@ -168,7 +168,7 @@
             "img": "cover image"
         },
         "duration": {
-            "title": "Durations"
+            "title": "Duration"
         },
         "expiredLcp": "This book can't be read because the LCP license has expired.",
         "lcpEnd": "End",
