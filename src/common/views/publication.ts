@@ -37,6 +37,7 @@ export interface PublicationView extends Identifiable {
     cover?: CoverView;
     customCover?: CustomCoverView;
 
+    RDFType?: string;
     duration?: ITimeDuration;
     nbOfTracks?: number;
 

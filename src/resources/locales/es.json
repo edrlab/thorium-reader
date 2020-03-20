@@ -40,7 +40,9 @@
         "emptyTagList": "No tienes libros etiquetados.",
         "entry": {
             "continueReading": "Reanudar lectura",
-            "lastAdditions": "Añadidos recientemente"
+            "continueReadingAudioBooks": "Reanudar escuchando",
+            "lastAdditions": "Añadidos recientemente",
+            "lastAdditionsAudioBooks": "Audiolibros agregados recientemente"
         },
         "export": "Exportar",
         "lang": "Idioma",

@@ -40,7 +40,9 @@
         "emptyTagList": "Les livres ne contiennent pas de tags.",
         "entry": {
             "continueReading": "Reprendre la lecture",
-            "lastAdditions": "Derniers ajouts"
+            "continueReadingAudioBooks": "Reprendre l'écoute",
+            "lastAdditions": "Récemment ajouté",
+            "lastAdditionsAudioBooks": "Livres audio récemment ajoutés"
         },
         "export": "Exporter",
         "lang": "Langue",

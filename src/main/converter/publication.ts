@@ -63,6 +63,7 @@ export class PublicationViewConverter {
             lcp: document.lcp,
             lcpRightsCopies: document.lcpRightsCopies,
 
+            RDFType: r2Publication.Metadata.RDFType,
             duration: r2Publication.Metadata.Duration &&
                 this.convertSecondToDaysHoursMinutes(r2Publication.Metadata.Duration),
             nbOfTracks: r2Publication.Metadata.AdditionalJSON?.tracks as number | undefined,

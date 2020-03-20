@@ -40,7 +40,9 @@
         "emptyTagList": "Es gibt keine Tags in Ihren Büchern.",
         "entry": {
             "continueReading": "Lesen Sie weiter",
-            "lastAdditions": "Neueste Ergänzungen"
+            "continueReadingAudioBooks": "Hören Sie weiter zu",
+            "lastAdditions": "Kürzlich hinzugefügt",
+            "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher"
         },
         "export": "Export",
         "lang": "Sprache",
