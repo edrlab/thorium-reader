@@ -99,7 +99,7 @@ let config = Object.assign({}, {
                 test: /\.tsx?$/,
             },
             {
-                loader: "file-loader?name=assets/[name].[hash].[ext]",
+                loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
                 options: {
                     esModule: false,
                 },
@@ -112,7 +112,7 @@ let config = Object.assign({}, {
             },
             {
                 exclude: /src/,
-                loader: "file-loader?name=assets/[name].[hash].[ext]",
+                loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
                 options: {
                     esModule: false,
                     outputPath: "fonts"

@@ -372,10 +372,12 @@ declare namespace typed_i18n {
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "publication", __?: {}): {
+  readonly "audio": { readonly "tracks": string },
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
   readonly "cover": { readonly "img": string },
+  readonly "duration": { readonly "title": string },
   readonly "expiredLcp": string,
   readonly "lcpEnd": string,
   readonly "lcpRightsCopy": string,
@@ -392,11 +394,15 @@ declare namespace typed_i18n {
   readonly "seeMore": string,
   readonly "userKeyCheckInvalid": string
 };
+  (_: "publication.audio", __?: {}): { readonly "tracks": string };
+  (_: "publication.audio.tracks", __?: {}): string;
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
   (_: "publication.cover", __?: {}): { readonly "img": string };
   (_: "publication.cover.img", __?: {}): string;
+  (_: "publication.duration", __?: {}): { readonly "title": string };
+  (_: "publication.duration.title", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
