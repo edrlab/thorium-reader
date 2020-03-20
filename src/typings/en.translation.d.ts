@@ -64,9 +64,9 @@ declare namespace typed_i18n {
   readonly "emptyTagList": string,
   readonly "entry": {
     readonly "continueReading": string,
+    readonly "continueReadingAudioBooks": string,
     readonly "lastAdditions": string,
-    readonly "continueAudiobooks": string,
-    readonly "lastAudiobooks": string
+    readonly "lastAdditionsAudioBooks": string
   },
   readonly "export": string,
   readonly "lang": string,
@@ -118,14 +118,14 @@ declare namespace typed_i18n {
   (_: "catalog.emptyTagList", __?: {}): string;
   (_: "catalog.entry", __?: {}): {
   readonly "continueReading": string,
+  readonly "continueReadingAudioBooks": string,
   readonly "lastAdditions": string,
-  readonly "continueAudiobooks": string,
-  readonly "lastAudiobooks": string
+  readonly "lastAdditionsAudioBooks": string
 };
   (_: "catalog.entry.continueReading", __?: {}): string;
+  (_: "catalog.entry.continueReadingAudioBooks", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
-  (_: "catalog.entry.continueAudiobooks", __?: {}): string;
-  (_: "catalog.entry.lastAudiobooks", __?: {}): string;
+  (_: "catalog.entry.lastAdditionsAudioBooks", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
