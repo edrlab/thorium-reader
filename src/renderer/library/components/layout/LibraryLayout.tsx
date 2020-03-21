@@ -9,6 +9,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as styles2 from "readium-desktop/renderer/assets/styles/myBooks.css";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
@@ -65,21 +66,18 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.focus_main,
-            this.onKeyboardFocusMain);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.focus_toolbar,
-            this.onKeyboardFocusToolbar);
+        this.registerAllKeyboardListeners();
     }
 
     public componentWillUnmount() {
-        unregisterKeyboardListener(this.onKeyboardFocusMain);
-        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
+        this.unregisterAllKeyboardListeners();
+    }
+
+    public async componentDidUpdate(oldProps: IProps) {
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
+        }
     }
 
     public render() {
@@ -121,6 +119,23 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                 </main>
             </div>
         );
+    }
+
+    private registerAllKeyboardListeners() {
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusMain,
+            this.onKeyboardFocusMain);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusToolbar,
+            this.onKeyboardFocusToolbar);
+    }
+
+    private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardFocusMain);
+        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
     }
 
     private onKeyboardFocusMain = () => {

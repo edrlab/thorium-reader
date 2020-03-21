@@ -151,7 +151,7 @@ export class PublicationApi implements IPublicationApi {
 
     public async exportPublication(publicationView: PublicationView): Promise<void> {
         if (publicationView) {
-            this.catalogService.exportPublication(publicationView);
+            await this.catalogService.exportPublication(publicationView);
         }
     }
 }

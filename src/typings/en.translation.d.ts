@@ -64,7 +64,9 @@ declare namespace typed_i18n {
   readonly "emptyTagList": string,
   readonly "entry": {
     readonly "continueReading": string,
-    readonly "lastAdditions": string
+    readonly "continueReadingAudioBooks": string,
+    readonly "lastAdditions": string,
+    readonly "lastAdditionsAudioBooks": string
   },
   readonly "export": string,
   readonly "lang": string,
@@ -114,9 +116,16 @@ declare namespace typed_i18n {
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
   (_: "catalog.emptyTagList", __?: {}): string;
-  (_: "catalog.entry", __?: {}): { readonly "continueReading": string, readonly "lastAdditions": string };
+  (_: "catalog.entry", __?: {}): {
+  readonly "continueReading": string,
+  readonly "continueReadingAudioBooks": string,
+  readonly "lastAdditions": string,
+  readonly "lastAdditionsAudioBooks": string
+};
   (_: "catalog.entry.continueReading", __?: {}): string;
+  (_: "catalog.entry.continueReadingAudioBooks", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
+  (_: "catalog.entry.lastAdditionsAudioBooks", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
@@ -363,10 +372,12 @@ declare namespace typed_i18n {
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "publication", __?: {}): {
+  readonly "audio": { readonly "tracks": string },
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
   readonly "cover": { readonly "img": string },
+  readonly "duration": { readonly "title": string },
   readonly "expiredLcp": string,
   readonly "lcpEnd": string,
   readonly "lcpRightsCopy": string,
@@ -383,11 +394,15 @@ declare namespace typed_i18n {
   readonly "seeMore": string,
   readonly "userKeyCheckInvalid": string
 };
+  (_: "publication.audio", __?: {}): { readonly "tracks": string };
+  (_: "publication.audio.tracks", __?: {}): string;
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
   (_: "publication.cover", __?: {}): { readonly "img": string };
   (_: "publication.cover.img", __?: {}): string;
+  (_: "publication.duration", __?: {}): { readonly "title": string };
+  (_: "publication.duration.title", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;

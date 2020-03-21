@@ -15,58 +15,60 @@ import { v4 as uuidv4 } from "uuid";
 
 export function apiActionFactory(storeCb: () => Store<any>) {
     return async <T extends TApiMethodName>(apiPath: T, ...requestData: Parameters<TApiMethod[T]>) => {
-        return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
-            const store = storeCb();
-            const requestId = uuidv4();
-            const splitPath = apiPath.split("/");
-            const moduleId = splitPath[0] as TModuleApi;
-            const methodId = splitPath[1] as TMethodApi;
-            let storeUnsubscribe: Unsubscribe | undefined;
-            let timeoutId: number | undefined;
+        return new Promise<ReturnPromiseType<TApiMethod[T]>>(
+            async (resolve, reject) => {
+                const store = storeCb();
+                const requestId = uuidv4();
+                const splitPath = apiPath.split("/");
+                const moduleId = splitPath[0] as TModuleApi;
+                const methodId = splitPath[1] as TMethodApi;
+                let storeUnsubscribe: Unsubscribe | undefined;
+                let timeoutId: number | undefined;
 
-            store.dispatch(
-                apiActions.request.build(
-                    requestId,
-                    moduleId,
-                    methodId,
-                    requestData,
-                ),
-            );
+                store.dispatch(
+                    apiActions.request.build(
+                        requestId,
+                        moduleId,
+                        methodId,
+                        requestData,
+                    ),
+                );
 
-            const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
-                storeUnsubscribe = store.subscribe(() => {
-                    const state = store.getState();
-                    const lastTime = (state.api[requestId]?.lastTime) || 0;
+                const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
+                    storeUnsubscribe = store.subscribe(() => {
+                        const state = store.getState();
+                        const lastTime = (state.api[requestId]?.lastTime) || 0;
 
-                    if (state.api[requestId]?.data.time > lastTime) {
-                        const data = { ...state.api[requestId].data };
-                        store.dispatch(apiActions.clean.build(requestId));
-                        if (data.error) {
-                            rejectSubscribe(data.errorMessage);
-                            return;
+                        if (state.api[requestId]?.data.time > lastTime) {
+                            const data = { ...state.api[requestId].data };
+                            store.dispatch(apiActions.clean.build(requestId));
+                            if (data.error) {
+                                rejectSubscribe(data.errorMessage);
+                                return;
+                            }
+                            resolveSubscribe(data.result);
                         }
-                        resolveSubscribe(data.result);
-                    }
-                    // handle promise<void>
-                    timeoutId = window.setTimeout(() => {
-                        timeoutId = undefined;
-                        rejectSubscribe("API Timeout");
-                    }, 5000);
+                        // handle promise<void>
+                        timeoutId = window.setTimeout(() => {
+                            timeoutId = undefined;
+                            rejectSubscribe("API Timeout");
+                        }, 5000);
+                    });
                 });
-            });
 
-            promise.then((result) => {
-                resolve(result);
-            }).catch((error) => {
-                reject(error);
-            }).finally(() => {
-                if (storeUnsubscribe) {
-                    storeUnsubscribe();
-                }
-                if (timeoutId) {
-                    clearTimeout(timeoutId);
+                try {
+                    const result = await promise;
+                    resolve(result);
+                } catch (error) {
+                    reject(error);
+                } finally {
+                    if (storeUnsubscribe) {
+                        storeUnsubscribe();
+                    }
+                    if (timeoutId) {
+                        clearTimeout(timeoutId);
+                    }
                 }
             });
-        });
     };
 }

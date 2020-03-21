@@ -28,6 +28,8 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
@@ -58,6 +60,7 @@ interface IBaseProps extends TranslatorProps {
     displayPublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
     readerOptionsProps: IReaderOptionsProps;
+    currentLocation: LocatorExtended;
 }
 
 // IProps may typically extend:
@@ -192,6 +195,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                 <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
                             </button>
                             <ReaderMenu {...this.props.readerMenuProps}
+                                currentLocation={this.props.currentLocation}
                                 focusNaviguationMenu={this.focusNaviguationMenuButton}/>
                             </li>
                             <li  className={styles.blue}>

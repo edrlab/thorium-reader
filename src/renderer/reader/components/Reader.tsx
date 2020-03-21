@@ -9,7 +9,7 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
-import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
+import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
@@ -54,10 +54,9 @@ import {
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
-    isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
-    ttsListen, ttsNext, ttsPause, ttsPlay, ttsPrevious, ttsResume,
-    TTSStateEnum, ttsStop,
-    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
+    isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssUpdate, setEpubReadingSystemInfo,
+    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, ttsListen, ttsNext,
+    ttsPause, ttsPlay, ttsPrevious, ttsResume, TTSStateEnum, ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
@@ -68,6 +67,25 @@ import optionsValues, {
 } from "./options-values";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+
+function formatTime(seconds: number): string {
+    const secondsPerMinute = 60;
+    const minutesPerHours = 60;
+    const secondsPerHour = minutesPerHours * secondsPerMinute;
+    let remainingSeconds = seconds;
+    const nHours = Math.floor(remainingSeconds / secondsPerHour);
+    remainingSeconds -= (nHours * secondsPerHour);
+    if (remainingSeconds < 0) {
+        remainingSeconds = 0;
+    }
+    const nMinutes = Math.floor(remainingSeconds / secondsPerMinute);
+    remainingSeconds -= (nMinutes * secondsPerMinute);
+    if (remainingSeconds < 0) {
+        remainingSeconds = 0;
+    }
+    remainingSeconds = Math.floor(remainingSeconds);
+    return `${nHours > 0 ? (nHours.toString().padStart(2, "0") + ":") : ``}${nMinutes > 0 ? (nMinutes.toString().padStart(2, "0") + ":") : `00:`}${remainingSeconds > 0 ? (remainingSeconds.toString().padStart(2, "0")) : `00`}`;
+}
 
 // import {
 //     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
@@ -308,64 +326,12 @@ class Reader extends React.Component<IProps, IState> {
         this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
 
-        setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
+        // setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
     }
 
     public async componentDidMount() {
         ensureKeyboardListenerIsInstalled();
-
-        registerKeyboardListener(
-            false, // listen for key down (not key up)
-            this.props.keyboardShortcuts.reader_PageNavigationPrevious,
-            this.onKeyboardPageNavigationPrevious);
-        registerKeyboardListener(
-            false, // listen for key down (not key up)
-            this.props.keyboardShortcuts.reader_PageNavigationNext,
-            this.onKeyboardPageNavigationNext);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.reader_SpineNavigationPrevious,
-            this.onKeyboardSpineNavigationPrevious);
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.reader_SpineNavigationNext,
-            this.onKeyboardSpineNavigationNext);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.focus_main,
-            this.onKeyboardFocusMain);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.focus_toolbar,
-            this.onKeyboardFocusToolbar);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.toggle_fullscreen,
-            this.onKeyboardFullScreen);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.toggle_bookmark,
-            this.onKeyboardBookmark);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.info,
-            this.onKeyboardInfo);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.reader_focus_settings,
-            this.onKeyboardFocusSettings);
-
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.reader_focus_navigation,
-            this.onKeyboardFocusNav);
+        this.registerAllKeyboardListeners();
 
         setKeyDownEventHandler(keyDownEventHandler);
         setKeyUpEventHandler(keyUpEventHandler);
@@ -413,7 +379,8 @@ class Reader extends React.Component<IProps, IState> {
 
                 // readiumCssOnOff() API only once navigator ready
                 if (this.state.r2Publication) {
-                    readiumCssOnOff();
+                    // readiumCssOnOff();
+                    readiumCssUpdate(computeReadiumCssJsonMessage());
                 }
             }
         });
@@ -483,10 +450,9 @@ class Reader extends React.Component<IProps, IState> {
         ], this.findBookmarks);
 
         apiAction("publication/get", queryParams.pubId, false)
-            .then((publicationView) => {
+            .then(async (publicationView) => {
                 this.setState({publicationView});
-                this.loadPublicationIntoViewport(publicationView, locator);
-                console.error("fetch api publication/get", null)
+                await this.loadPublicationIntoViewport(publicationView, locator);
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
 
@@ -497,24 +463,19 @@ class Reader extends React.Component<IProps, IState> {
         this.setState({ttsState : newTtsState});
     }
 
-    public async componentDidUpdate(_oldProps: IProps, oldState: IState) {
+    public async componentDidUpdate(oldProps: IProps, oldState: IState) {
         if (oldState.bookmarks !== this.state.bookmarks) {
             await this.checkBookmarks();
+        }
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            console.log("READER RELOAD KEYBOARD SHORTCUTS");
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
         }
     }
 
     public componentWillUnmount() {
-        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
-        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
-        unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
-        unregisterKeyboardListener(this.onKeyboardSpineNavigationNext);
-        unregisterKeyboardListener(this.onKeyboardFocusMain);
-        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
-        unregisterKeyboardListener(this.onKeyboardFullScreen);
-        unregisterKeyboardListener(this.onKeyboardBookmark);
-        unregisterKeyboardListener(this.onKeyboardInfo);
-        unregisterKeyboardListener(this.onKeyboardFocusSettings);
-        unregisterKeyboardListener(this.onKeyboardFocusNav);
+        this.unregisterAllKeyboardListeners();
 
         if (this.unsubscribe) {
             this.unsubscribe();
@@ -539,6 +500,7 @@ class Reader extends React.Component<IProps, IState> {
             handleIndexChange: this.handleIndexChange.bind(this),
             setSettings: this.setSettings,
             toggleMenu: this.handleSettingsClick,
+            r2Publication: this.state.r2Publication,
         };
 
         return (
@@ -578,12 +540,13 @@ class Reader extends React.Component<IProps, IState> {
                             handleFullscreenClick={this.handleFullscreenClick}
                             handleReaderDetach={this.handleReaderDetach}
                             handleReaderClose={this.handleReaderClose}
-                            toggleBookmark={ this.handleToggleBookmark }
+                            toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
                             ttsState={this.state.ttsState}
                             isOnBookmark={this.state.visibleBookmarkList.length > 0}
                             readerOptionsProps={readerOptionsProps}
                             readerMenuProps={readerMenuProps}
                             displayPublicationInfo={this.displayPublicationInfo}
+                            currentLocation={this.state.currentLocation}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
@@ -616,8 +579,112 @@ class Reader extends React.Component<IProps, IState> {
         );
     }
 
+    private registerAllKeyboardListeners() {
+
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigatePreviousPage,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigateNextPage,
+            this.onKeyboardPageNavigationNext);
+
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigatePreviousPageAlt,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigateNextPageAlt,
+            this.onKeyboardPageNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigatePreviousChapter,
+            this.onKeyboardSpineNavigationPrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigateNextChapter,
+            this.onKeyboardSpineNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigatePreviousChapterAlt,
+            this.onKeyboardSpineNavigationPrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigateNextChapterAlt,
+            this.onKeyboardSpineNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusMain,
+            this.onKeyboardFocusMain);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusToolbar,
+            this.onKeyboardFocusToolbar);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.ToggleReaderFullscreen,
+            this.onKeyboardFullScreen);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.ToggleBookmark,
+            this.onKeyboardBookmark);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.OpenReaderInfo,
+            this.onKeyboardInfo);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderSettings,
+            this.onKeyboardFocusSettings);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigation,
+            this.onKeyboardFocusNav);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.CloseReader,
+            this.onKeyboardCloseReader);
+    }
+
+    private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationNext);
+        unregisterKeyboardListener(this.onKeyboardFocusMain);
+        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
+        unregisterKeyboardListener(this.onKeyboardFullScreen);
+        unregisterKeyboardListener(this.onKeyboardBookmark);
+        unregisterKeyboardListener(this.onKeyboardInfo);
+        unregisterKeyboardListener(this.onKeyboardFocusSettings);
+        unregisterKeyboardListener(this.onKeyboardFocusNav);
+        unregisterKeyboardListener(this.onKeyboardCloseReader);
+    }
+
     private onKeyboardFullScreen = () => {
         this.handleFullscreenClick();
+    }
+
+    private onKeyboardCloseReader = () => {
+        // if (!this.state.shortcutEnable) {
+        //     if (DEBUG_KEYBOARD) {
+        //         console.log("!shortcutEnable (onKeyboardInfo)");
+        //     }
+        //     return;
+        // }
+        this.handleReaderClose();
     }
 
     private onKeyboardInfo = () => {
@@ -649,14 +716,14 @@ class Reader extends React.Component<IProps, IState> {
         this.handleSettingsClick();
     }
 
-    private onKeyboardBookmark = () => {
+    private onKeyboardBookmark = async () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardBookmark)");
             }
             return;
         }
-        this.handleToggleBookmark();
+        await this.handleToggleBookmark(true);
     }
 
     private onKeyboardFocusMain = () => {
@@ -842,6 +909,7 @@ class Reader extends React.Component<IProps, IState> {
             true,
             clipboardInterceptor,
             sessionInfoStr,
+            computeReadiumCssJsonMessage(),
         );
     }
 
@@ -854,7 +922,6 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-//        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
         apiAction("reader/setLastReadingLocation", queryParams.pubId, loc.locator)
             .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
 
@@ -925,47 +992,80 @@ class Reader extends React.Component<IProps, IState> {
 
         const newUrl = publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
-
-        // Example to pass a specific cssSelector:
-        // (for example to restore a bookmark)
-        // const locator: Locator = {
-        //     href: url,
-        //     locations: {
-        //         cfi: undefined,
-        //         cssSelector: CSSSELECTOR,
-        //         position: undefined,
-        //         progression: undefined,
-        //     }
-        // };
-        // handleLinkLocator(locator);
-
-        // Example to save a bookmark:
-        // const loc: LocatorExtended = getCurrentReadingLocation();
-        // Note: there is additional useful info about pagination
-        // which can be used to report progress info to the user
-        // if (loc.paginationInfo !== null) =>
-        // loc.paginationInfo.totalColumns (N = 1+)
-        // loc.paginationInfo.currentColumn [0, (N-1)]
-        // loc.paginationInfo.isTwoPageSpread (true|false)
-        // loc.paginationInfo.spreadIndex [0, (N/2)]
     }
 
-    private async handleToggleBookmark() {
-        await this.checkBookmarks();
-        if (this.state.visibleBookmarkList.length > 0) {
+    private async handleToggleBookmark(fromKeyboard?: boolean) {
+
+        if (!this.state.currentLocation || !this.state.currentLocation.locator) {
+            return;
+        }
+
+        await this.checkBookmarks(); // updates this.state.visibleBookmarkList
+
+        const deleteAllVisibleBookmarks =
+
+            // "toggle" only if there is a single bookmark in the content visible inside the viewport
+            // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
+            this.state.visibleBookmarkList.length === 1 &&
+
+            // CTRL-B (keyboard interaction) and audiobooks:
+            // do not toggle: never delete, just add current reading location to bookmarks
+            !fromKeyboard &&
+            !this.state.currentLocation.audioPlaybackInfo &&
+            (!this.state.currentLocation.locator.text?.highlight ||
+
+            // "toggle" only if visible bookmark == current reading location
+            this.state.visibleBookmarkList[0].locator.href === this.state.currentLocation.locator.href &&
+            // tslint:disable-next-line: max-line-length
+            this.state.visibleBookmarkList[0].locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector &&
+            // tslint:disable-next-line: max-line-length
+            this.state.visibleBookmarkList[0].locator.text?.highlight === this.state.currentLocation.locator.text.highlight
+            )
+        ;
+
+        if (deleteAllVisibleBookmarks) {
             for (const bookmark of this.state.visibleBookmarkList) {
-//                this.props.deleteBookmark(bookmark.identifier);
                 try {
                     await apiAction("reader/deleteBookmark", bookmark.identifier);
                 } catch (e) {
                     console.error("Error to fetch api reader/deleteBookmark", e);
                 }
             }
-        } else if (this.state.currentLocation) {
-            const locator = this.state.currentLocation.locator;
-//            this.props.addBookmark(queryParams.pubId, locator);
+
+            // we do not add the current reading location to bookmarks (just toggle)
+            return;
+        }
+
+        const addCurrentLocationToBookmarks =
+            !this.state.visibleBookmarkList.length ||
+            !this.state.visibleBookmarkList.find((b) => {
+                const identical =
+                    b.locator.href === this.state.currentLocation.locator.href &&
+                    (b.locator.locations.progression === this.state.currentLocation.locator.locations.progression ||
+                        b.locator.locations.cssSelector && this.state.currentLocation.locator.locations.cssSelector &&
+                        b.locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector) &&
+                    b.locator.text?.highlight === this.state.currentLocation.locator.text?.highlight;
+
+                return identical;
+            }) &&
+            (this.state.currentLocation.audioPlaybackInfo || this.state.currentLocation.locator.text?.highlight);
+
+        if (addCurrentLocationToBookmarks) {
+
+            let name: string | undefined;
+            if (this.state.currentLocation.locator?.text?.highlight) {
+                name = this.state.currentLocation.locator.text.highlight;
+            } else if (this.state.currentLocation.selectionInfo?.cleanText) {
+                name = this.state.currentLocation.selectionInfo.cleanText;
+            } else if (this.state.currentLocation.audioPlaybackInfo) {
+                const percent = Math.floor(100 * this.state.currentLocation.audioPlaybackInfo.globalProgression);
+                // this.state.currentLocation.audioPlaybackInfo.globalTime /
+                // this.state.currentLocation.audioPlaybackInfo.globalDuration
+                const timestamp = formatTime(this.state.currentLocation.audioPlaybackInfo.globalTime);
+                name = `${timestamp} (${percent}%)`;
+            }
             try {
-                await apiAction("reader/addBookmark", queryParams.pubId, locator);
+                await apiAction("reader/addBookmark", queryParams.pubId, this.state.currentLocation.locator, name);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }

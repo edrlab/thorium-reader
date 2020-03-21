@@ -96,6 +96,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
         },
     } as syncIpc.EventPayload);
 
+    // Send keyboard shortcuts
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
