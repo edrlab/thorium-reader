@@ -6,8 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/index";
-
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/baseline-pause-24px.svg";
@@ -28,7 +26,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { LocatorExtended, TTSStateEnum } from "@r2-navigator-js/electron/renderer/index";
 
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";

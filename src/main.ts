@@ -9,16 +9,14 @@ import * as debug_ from "debug";
 import { app, ipcMain } from "electron";
 import * as path from "path";
 import { syncIpc } from "readium-desktop/common/ipc";
+import { AnalyticsType } from "readium-desktop/common/models/analytics";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { cli } from "readium-desktop/main/cli/process";
 import { createWindow } from "readium-desktop/main/createWindow";
 import { diMainGet } from "readium-desktop/main/di";
 import { initApp, registerProtocol } from "readium-desktop/main/init";
-import {
-    _PACKAGING, _VSCODE_LAUNCH,
-} from "readium-desktop/preprocessor-directives";
+import { _PACKAGING, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
 
-import { AnalyticsType } from "readium-desktop/common/models/analytics";
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
@@ -65,14 +63,14 @@ function main() {
     initSessions();
 
     // Quit when all windows are closed.
-    app.on("window-all-closed", () => {
-        //save closeApp event
+    app.on("window-all-closed", async () => {
+        // save closeApp event
         const analyticsRepository = diMainGet("analytics-repository");
         const doc = {
             analyticsType: AnalyticsType.CloseApp,
-            publicationIdentifier : ""
-        }
-        analyticsRepository.save(doc);
+            publicationIdentifier: "",
+        };
+        await analyticsRepository.save(doc);
         // At the moment, there are no menu items to revive / re-open windows,
         // so let's terminate the app on MacOS too.
         // if (process.platform !== "darwin") {

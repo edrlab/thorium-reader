@@ -5,14 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as PouchDB from "pouchdb-core";
-
-import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 import { injectable } from "inversify";
-import { AnalyticsDocument } from "../document/analytics";
+import * as PouchDB from "pouchdb-core";
 import {
     _APP_NAME, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
 } from "readium-desktop/preprocessor-directives";
+
+import { AnalyticsDocument } from "../document/analytics";
+import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 const PUBLICATION_INDEX = "publication_index";
 const CREATED_AT_INDEX = "created_at_index";

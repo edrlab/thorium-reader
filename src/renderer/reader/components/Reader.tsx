@@ -251,7 +251,6 @@ class Reader extends React.Component<IProps, IState> {
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
         this.refToolbar = React.createRef<HTMLAnchorElement>();
 
-
         this.state = {
             // publicationJsonUrl: "HTTP://URL",
             lcpHint: "LCP hint",
@@ -456,7 +455,11 @@ class Reader extends React.Component<IProps, IState> {
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
 
-        apiAction("analytics/openBook", queryParams.pubId);
+        apiAction("analytics/openBook", queryParams.pubId)
+            .then(async () => {
+                return;
+            })
+            .catch((error) => console.error("Error to fetch api analytics/openBook", error));
     }
 
     public setTTSState(newTtsState: TTSStateEnum) {
@@ -1094,7 +1097,11 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleAudioClick() {
-        apiAction("analytics/playTts", queryParams.pubId);
+        apiAction("analytics/playTts", queryParams.pubId)
+            .then(async () => {
+                return;
+            })
+            .catch((error) => console.error("Error to fetch api analytics/playTts", error));
         ttsPlay();
     }
     private handlePauseClick() {
@@ -1117,7 +1124,6 @@ class Reader extends React.Component<IProps, IState> {
         const store = diReaderGet("store");
         store.dispatch(readerActions.configSetRequest.build(this.state.readerConfig));
     }
-
 
     private handleSettingChange(
         event: TChangeEventOnInput | TChangeEventOnSelect | undefined,

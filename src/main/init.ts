@@ -10,8 +10,8 @@ import { app, protocol } from "electron";
 import * as path from "path";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { ReaderMode } from "readium-desktop/common/models/reader";
 import { AnalyticsType } from "readium-desktop/common/models/analytics";
+import { ReaderMode } from "readium-desktop/common/models/reader";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { i18nActions, keyboardActions, readerActions } from "readium-desktop/common/redux/actions";
 // import { NetStatus } from "readium-desktop/common/redux/states/net";
@@ -196,13 +196,17 @@ export function initApp() {
         debug(`create i18n key in configRepository with ${lang} locale`);
     });
 
-    //save openApp event
+    // save openApp event
     const analyticsRepository = diMainGet("analytics-repository");
     const doc = {
         analyticsType: AnalyticsType.OpenApp,
-        publicationIdentifier : ""
-    }
-    analyticsRepository.save(doc);
+        publicationIdentifier: "",
+    };
+    analyticsRepository.save(doc).then(() => {
+        return;
+    }).catch((err) => {
+        debug(err);
+    });
 
     const winRegistry = diMainGet("win-registry");
     winRegistry.registerOpenCallback(winOpenCallback);

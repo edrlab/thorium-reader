@@ -7,9 +7,12 @@
 
 import "reflect-metadata";
 
+import axios from "axios";
 import { app } from "electron";
 import * as fs from "fs";
+import * as http from "http";
 import { Container } from "inversify";
+import * as os from "os";
 import * as path from "path";
 import * as PouchDBCore from "pouchdb-core";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
@@ -21,12 +24,12 @@ import { PublicationApi } from "readium-desktop/main/api/publication";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { AnalyticsDocument } from "readium-desktop/main/db/document/analytics";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { LcpSecretDocument } from "readium-desktop/main/db/document/lcp-secret";
 import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-import { AnalyticsDocument } from "readium-desktop/main/db/document/analytics";
 import { AnalyticsRepository } from "readium-desktop/main/db/repository/analytics";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
@@ -46,6 +49,7 @@ import {
     _APP_NAME, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
 } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
+import { v4 as uuidv4 } from "uuid";
 
 import { Server } from "@r2-streamer-js/http/server";
 
@@ -54,9 +58,6 @@ import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
-
-//TODO - get rid of these when moving db generation to another file 
-import * as uuid from "uuid";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -154,186 +155,164 @@ const analyticsDb = new PouchDB<AnalyticsDocument>(
 
 const analyticsRepository = new AnalyticsRepository(analyticsDb);
 
-var baseUrl = ""
+let PouchDBAuth: any | undefined;
+let baseUrl = "";
 if (_NODE_ENV === "development") {
-    var PouchDBAuth = require("pouchdb-node")
-    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/"
+    // tslint:disable-next-line:no-var-requires
+    PouchDBAuth = require("pouchdb-node");
+    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/";
+} else {
+    // tslint:disable-next-line:no-var-requires
+    PouchDBAuth = require("pouchdb-node").default;
+    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/";
 }
-else {
-    var PouchDBAuth = require("pouchdb-node").default
-    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/"
-}
+PouchDBAuth.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
 
-var PouchDBFind = require("pouchdb-find")
-PouchDBAuth.plugin(PouchDBFind.default ? PouchDBFind.default : PouchDBFind);
+const analyticsLoginInfoDb = new PouchDBAuth(path.join(rootDbPath, "couchdb-info"));
+// let couchGeneratorBaseUrl = "http://couch-user-generator.brett.dev.simpleconnections.ca/"
 
-let analyticsLoginInfoDb = new PouchDBAuth(path.join(rootDbPath, "couchdb-info"));
-//var couchGeneratorBaseUrl = "http://couch-user-generator.brett.dev.simpleconnections.ca/"
+// let couchGeneratorBaseUrl = "http://couchdb-device-init.azurewebsites.net/"
+// let couchDbUrl = "http://metrics.ekitabu.com:5984/"
 
-//var couchGeneratorBaseUrl = "http://couchdb-device-init.azurewebsites.net/"
-//var couchDbUrl = "http://metrics.ekitabu.com:5984/"
-
-
-async function getCouchPassword(username : string, handlePassword : any , docToUpdate : any = null, dbToUpdate : any = null) 
-{
+async function getCouchPassword(
+    username: string,
+    handlePassword: any,
+    docToUpdate: any = null,
+    dbToUpdate: any = null,
+) {
     try {
-
-        const http = require('http');
-        
-        var password = 'no password set'
-        var url = baseUrl + "register/" + username
-        http.get(url, (response : any) => {
-            let data = '';
+        let password = "no password set";
+        const url = baseUrl + "register/" + username;
+        http.get(url, (response: any) => {
+            let data = "";
 
             // A chunk of data has been recieved.
-            response.on('data', (chunk : any) => {
+            response.on("data", (chunk: any) => {
                 data += chunk;
             });
-            
-            // The whole response has been received. Print out the result.
-            return response.on('end', () => {
-                const parsedData = JSON.parse(data)
-                password = parsedData.apiToken
-                handlePassword(password, docToUpdate,dbToUpdate)
-            }).on("error", (err : any) => {
-            console.log("The Error Message: " + err.message);
-            })
 
-        }).on("error", (err : any) => {
+            // The whole response has been received. Print out the result.
+            return response.on("end", () => {
+                const parsedData = JSON.parse(data);
+                password = parsedData.apiToken;
+                handlePassword(password, docToUpdate, dbToUpdate);
+            }).on("error", (err: any) => {
+                console.log("The Error Message: " + err.message);
+            });
+        }).on("error", (err: any) => {
             console.log("The Error Message: " + err.message);
-        })    
-    }    
-    catch {
-        console.log("error in the async")
+        });
+    } catch {
+        console.log("error in the async");
     }
 }
 
-var syncDatabase = function (password : string, docToUpdate : any = null, dbToUpdate : any = null) {
-    console.log('sync database')
-    if (docToUpdate && dbToUpdate)
-    {
-        docToUpdate["password"] = password
-        dbToUpdate.put(docToUpdate)
+const syncDatabase = (password: string, docToUpdate: any = null, dbToUpdate: any = null) => {
+    console.log("sync database");
+    if (docToUpdate && dbToUpdate) {
+        docToUpdate.password = password;
+        dbToUpdate.put(docToUpdate);
     }
-    var analyticsDbAuth = new PouchDBAuth(path.join(rootDbPath, "analytics_sync"));
+    const analyticsDbAuth = new PouchDBAuth(path.join(rootDbPath, "analytics_sync"));
 
-    //TODO - handle when there is an error or issue
-    analyticsDbAuth.sync(analyticsDb, {live: false, retry: false}
-    ).on('complete', function () {
-        console.log('internal sync done')
+    // TODO - handle when there is an error or issue
+    analyticsDbAuth.sync(analyticsDb, {live: false, retry: false}).on("complete", () => {
+        console.log("internal sync done");
         // ################
         //  SYNC ANALYTICS
         // ################
         analyticsDbAuth.find({
             selector:  {analyticsType : {$exists : true}},
-          }).then(function (result: any) {
+        }).then((result: any) => {
 
-        console.log('find analytics done')
-            const axios = require('axios')
+            console.log("find analytics done");
             axios.post(baseUrl + "event/push", {
-                result
+                result,
             },
-             {
+            {
                 headers: {
-                'Content-Type': 'application/json',
-                "X-AUTH-TOKEN" : password,
-                }
-            }
-            )
-            .then((res : any) => {
-                console.log(`statusCode: ${res.statusCode}`)
-            })
-            .catch((error : any) => {
-                console.error(error)
-            })
-        }).catch(function (error : any){
-            console.log(error)
-        })
+                    "Content-Type": "application/json",
+                    "X-AUTH-TOKEN" : password,
+                },
+            }).then((res: any) => {
+                console.log(`statusCode: ${res.statusCode}`);
+            }).catch((error: any) => {
+                console.error(error);
+            });
+        }).catch((error: any) => {
+            console.log(error);
+        });
 
         // ################
         // SYNC DEVICE INFO
         // ################
         analyticsDbAuth.find({
             selector:  {username : {$exists : true}},
-          }).then(function (result: any) {
+        }).then((result: any) => {
 
-        console.log('came across device info')
-            const axios = require('axios')
+            console.log("came across device info");
+
             axios.post(baseUrl + "device/info", {
-                result
-            },
-            {
+                result,
+            }, {
                 headers: {
-                'Content-Type': 'application/json',
-                "X-AUTH-TOKEN" : password,
-                }
-            }
-            )
-            .then((res : any) => {
-                analyticsDbAuth.close()
-                console.log(`statusCode: ${res.statusCode}`)
-            })
-            .catch((error : any) => {
-                console.error(error)
-            })
+                    "Content-Type": "application/json",
+                    "X-AUTH-TOKEN" : password,
+                },
+            }).then((res: any) => {
+                analyticsDbAuth.close();
+                console.log(`statusCode: ${res.statusCode}`);
+            }).catch((error: any) => {
+                console.error(error);
+            });
+        }).catch((error: any) => {
+            console.log(error);
+        });
+    }).on("error", console.log.bind(console));
+};
 
-
-        }).catch(function (error : any){
-            console.log(error)
-        })
-
-
-    }).on('error', console.log.bind(console));
-}
-
-const os = require("os")
-
-var analyticsDbAuth = new PouchDBAuth(path.join(rootDbPath, "analytics_sync"), {skip_setup: true});
-analyticsDbAuth.get("deviceInfo").then(function(){
-}).catch(function() {
-    //if OS is win32
-    var doc = {
-        "_id" : "deviceInfo",
-        "username":  os.userInfo().username,
-        "cpus" : os.cpus(),
-        "netinfo": os.networkInterfaces(),
-        "platform" :os.platform(),
-        "platformversion": os.release(),
-        "ram": os.totalmem(),
-        "architecture": os.arch(),
-    }
-    analyticsDbAuth.put(doc)
-})
+const analyticsDbAuth2 = new PouchDBAuth(path.join(rootDbPath, "analytics_sync"), {skip_setup: true});
+analyticsDbAuth2.get("deviceInfo").then(() => {
+    return;
+}).catch(() => {
+    // if OS is win32
+    const doc = {
+        _id: "deviceInfo",
+        username:  os.userInfo().username,
+        cpus: os.cpus(),
+        netinfo: os.networkInterfaces(),
+        platform: os.platform(),
+        platformversion: os.release(),
+        ram: os.totalmem(),
+        architecture: os.arch(),
+    };
+    analyticsDbAuth2.put(doc);
+});
 
 if (analyticsLoginInfoDb != null ) {
-    analyticsLoginInfoDb.get("loginInfo").then(function(doc : any){
+    analyticsLoginInfoDb.get("loginInfo").then(async (doc: any) => {
 
-        const username = doc['username']
+        const username = doc.username;
 
-        if (doc["password"] == "")
-        {
-            getCouchPassword(username, syncDatabase, doc, analyticsLoginInfoDb)
+        if (!doc.password) {
+            await getCouchPassword(username, syncDatabase, doc, analyticsLoginInfoDb);
+        } else {
+            console.log("time to sync with a real username and password");
+            const password = doc.password;
+            syncDatabase(password);
         }
-        else {
-            console.log('time to sync with a real username and password')
-            const password = doc["password"]
-            syncDatabase(password)
-        }
-    }).catch(function(err : any) {
-        if (err.reason == "missing") {
-            var username = uuid.v4()
-            var doc = {
-            "_id" : "loginInfo",
-            "username": username,
-            "password": ""
+    }).catch(async (err: any) => {
+        if (err.reason === "missing") {
+            const username = uuidv4();
+            const doc = {
+                _id: "loginInfo",
+                username,
+                password: "",
             };
-            getCouchPassword(username, syncDatabase, doc, analyticsLoginInfoDb)
+            await getCouchPassword(username, syncDatabase, doc, analyticsLoginInfoDb);
         }
-    })
+    });
 }
-
-
-
 
 // Lcp secret db
 const lcpSecretDb = new PouchDB<LcpSecretDocument>(

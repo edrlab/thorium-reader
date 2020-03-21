@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { AnalyticsType } from "readium-desktop/common/models/analytics";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
-import { AnalyticsType } from "readium-desktop/common/models/analytics";
 
 export interface AnalyticsDocument extends Identifiable, Timestampable {
     analyticsType: AnalyticsType;
