@@ -7,6 +7,7 @@
 
 import { clipboard } from "electron";
 import { inject, injectable } from "inversify";
+import { IReaderApi } from "readium-desktop/common/api/interface/readerApi.interface";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
@@ -22,37 +23,6 @@ import { Store } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
-
-export interface IReaderApi {
-    setLastReadingLocation: (publicationIdentifier: string, locator: R2Locator) => Promise<LocatorView>;
-    getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorView>;
-    findBookmarks: (publicationIdentifier: string) => Promise<LocatorView[]>;
-    updateBookmark: (
-        identifier: string,
-        publicationIdentifier: string,
-        locator: R2Locator,
-        name?: string,
-    ) => Promise<void>;
-    addBookmark: (
-        publicationIdentifier: string,
-        locator: R2Locator,
-        name?: string,
-    ) => Promise<void>;
-    deleteBookmark: (identifier: string) => Promise<void>;
-    clipboardCopy: (
-        publicationIdentifier: string,
-        clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => Promise<boolean>;
-}
-
-export interface IReaderModuleApi {
-    "reader/setLastReadingLocation": IReaderApi["setLastReadingLocation"];
-    "reader/getLastReadingLocation": IReaderApi["getLastReadingLocation"];
-    "reader/findBookmarks": IReaderApi["findBookmarks"];
-    "reader/updateBookmark": IReaderApi["updateBookmark"];
-    "reader/addBookmark": IReaderApi["addBookmark"];
-    "reader/deleteBookmark": IReaderApi["deleteBookmark"];
-    "reader/clipboardCopy": IReaderApi["clipboardCopy"];
-}
 
 @injectable()
 export class ReaderApi implements IReaderApi {
@@ -155,10 +125,16 @@ export class ReaderApi implements IReaderApi {
             name,
         };
         await this.locatorRepository.save(doc);
+
+        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+            `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("catalog.addTagsButton")})`));
     }
 
     public async deleteBookmark(identifier: string): Promise<void> {
         await this.locatorRepository.delete(identifier);
+
+        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+            `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("reader.marks.delete")})`));
     }
 
     public async clipboardCopy(

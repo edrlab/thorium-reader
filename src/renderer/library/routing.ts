@@ -16,7 +16,7 @@ import Opds from "./components/opds/Opds";
 import AllPublicationPage from "./components/searchResult/AllPublicationPage";
 import TagSearchResult from "./components/searchResult/TagSearchResult";
 import TextSearchResult from "./components/searchResult/TextSearchResult";
-import LanguageSettings from "./components/settings/LanguageSettings";
+import Settings from "./components/settings/Settings";
 
 interface Route {
     path: string;
@@ -54,15 +54,15 @@ const _routes = {
         exact: true,
         component: Browser,
     } as Route,
-    "/settings/languages": {
-        path: "/settings/languages",
-        exact: false,
-        component: LanguageSettings,
-    } as Route,
+    // "/settings/languages": {
+    //     path: "/settings/languages",
+    //     exact: false,
+    //     component: LanguageSettings,
+    // } as Route,
     "/settings": {
         path: "/settings",
         exact: false,
-        component: LanguageSettings,
+        component: Settings,
     } as Route,
     "/library/search/text": {
         // ILibrarySearchText

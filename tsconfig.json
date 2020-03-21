@@ -4,6 +4,7 @@
       {
         "name": "tslint-language-service",
         "alwaysShowRuleFailuresAsWarnings": false,
+        "allowSyntheticDefaultImports": true,
         "ignoreDefinitionFiles": true,
         "configFile": "./tslint.json",
         "disableNoUnusedVariableRule": false

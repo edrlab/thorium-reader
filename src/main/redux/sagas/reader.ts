@@ -10,6 +10,7 @@ import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { AnalyticsType } from "readium-desktop/common/models/analytics";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowBounds } from "readium-desktop/common/rectangle/window";
@@ -141,9 +142,14 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     if (locators.length > 0) {
         const locator = locators[0];
         const docHref = encodeURIComponent_RFC3986(Buffer.from(locator.locator.href).toString("base64"));
-        const docSelector =
-            encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.cssSelector).toString("base64"));
-        readerUrl += `&docHref=${docHref}&docSelector=${docSelector}`;
+        const docSelector = locator.locator.locations.cssSelector
+            ? encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.cssSelector).toString("base64"))
+            : undefined;
+        const docProgression = locator.locator.locations.progression
+            // tslint:disable-next-line: max-line-length
+            ? encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.progression.toString()).toString("base64"))
+            : undefined;
+        readerUrl += `&docHref=${docHref}&docSelector=${docSelector}&docProgression=${docProgression}`;
     }
 
     readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
@@ -224,6 +230,16 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 
     // Notify the streamer that a publication has been closed
     yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
+
+    //for some reason the "yield" call is the only way this gets saved, but also stops the book from closing
+    const analyticsRepository = diMainGet("analytics-repository");
+    const doc = {
+        publicationIdentifier,
+        analyticsType: AnalyticsType.CloseBook
+    }
+    console.log(doc)
+    console.log(analyticsRepository)
+    analyticsRepository.save(doc);
 
     // Wait for the publication to be closed
     const streamerAction = yield take([

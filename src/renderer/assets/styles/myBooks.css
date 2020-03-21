@@ -1,5 +1,19 @@
 @import "./focus-mixin.css";
 
+.anchor_link {
+	position: absolute;
+	display: block;
+	width: 1px;
+	height: 1px;
+	top: 0px;
+	left: 0px;
+	opacity: 0.6;
+	background: transparent;
+	overflow: hidden;
+	color: transparent;
+	padding: 0;
+	margin: 0;
+}
 .main {
     height: calc(100vh - 7.75rem);
     width: calc(100% - 120px);

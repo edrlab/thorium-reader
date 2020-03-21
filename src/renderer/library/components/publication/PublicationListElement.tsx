@@ -25,7 +25,7 @@ import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -62,7 +62,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
         this.toggleMenu = this.toggleMenu.bind(this);
         this.focusButton = this.focusButton.bind(this);
 
-        this.menuId = "menu-" + uuid.v4();
+        this.menuId = "menu-" + uuidv4();
     }
 
     public render(): React.ReactElement<{}>  {

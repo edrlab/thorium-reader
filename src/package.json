@@ -1,6 +1,6 @@
 {
   "name": "EDRLab.ThoriumReader",
-  "version": "1.1.2-alpha.1",
+  "version": "1.1.3-alpha.1",
   "description": "Desktop application to read ebooks",
   "keywords": [
     "readium",
@@ -8,7 +8,7 @@
   ],
   "main": "./main.js",
   "scripts": {
-    "postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=7.1.4 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
+    "postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=8.0.0 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\""
   },
@@ -35,10 +35,10 @@
   "homepage": "https://github.com/edrlab/readium-desktop",
   "dependencies": {
     "bindings": "^1.5.0",
-    "leveldown": "^5.4.1",
-    "mathjax": "^3.0.0",
-    "pouchdb-adapter-leveldb": "^7.1.1",
-    "yargs": "^15.0.2"
+    "leveldown": "^5.5.1",
+    "mathjax": "^3.0.1",
+    "pouchdb-adapter-leveldb": "^7.2.1",
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
   },

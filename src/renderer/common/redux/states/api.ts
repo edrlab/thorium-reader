@@ -5,8 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
+import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
 import { CodeError } from "readium-desktop/common/errors";
-import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 
 // FIXME what is the purpose of this interface ?
 // interface PageState<T> {

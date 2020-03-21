@@ -6,6 +6,7 @@ const preprocessorDirectives = require("./webpack.config-preprocessor-directives
 
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
+console.log(`MAIN nodeEnv: ${nodeEnv}`);
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
 
@@ -161,6 +162,7 @@ if (nodeEnv !== "production") {
     config.devtool = "source-map";
 } else {
     config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^electron-devtools-installer$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^json-diff$/ }));
 }
 
 module.exports = config;

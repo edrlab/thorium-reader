@@ -10,26 +10,20 @@ import { AppState, AppStatus } from "readium-desktop/main/redux/states/app";
 
 const initialState: AppState = {
     status: AppStatus.Unknown,
-    publicationFileLocks: {},
 };
 
 export function appReducer(
     state: AppState = initialState,
-    action: appActions.initSuccess.TAction | appActions.publicationFileLock.TAction,
+    action: appActions.initSuccess.TAction,
 ): AppState {
     switch (action.type) {
         case appActions.initSuccess.ID:
-            return Object.assign({}, state, {
-                status: AppStatus.Initialized,
-            });
-        case appActions.publicationFileLock.ID:
-            return Object.assign({}, state, {
-                publicationFileLocks: Object.assign(
-                    {},
-                    state.publicationFileLocks,
-                    action.payload.publicationFileLocks,
-                ),
-            });
+            return {
+                ...state,
+                ...{
+                    status: AppStatus.Initialized,
+                },
+            };
         default:
             return state;
     }
