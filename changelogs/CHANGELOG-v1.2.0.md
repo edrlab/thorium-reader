@@ -30,10 +30,13 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `v1.1.0`:
 https://github.com/readium/readium-desktop/compare/v1.1.0...v1.2.0
 
-=> **60** GitHub Pull Requests or high-level Git commits.
+=> **63** GitHub Pull Requests or high-level Git commits.
 
 Here is the complete list of commits, ordered by descending date:
 
+* [(_)](https://github.com/readium/readium-desktop/commit/51e5fa17dedd00dccf9dd701bc9d3a08e11fda02) __fix(audiobooks):__ the list view was not displaying all publications (grid view did), follow-up to PR [#974](https://github.com/readium/readium-desktop/pull/974)
+* [(_)](https://github.com/readium/readium-desktop/commit/a351f38635ce3d425d08a32a72768168133eafbe) __fix(GUI):__ bottom interactive progress bar now correctly handles mouse clicks offset (percentage progression into individual spine items, text and audiobooks)
+* [(_)](https://github.com/readium/readium-desktop/commit/39e4c38059dae8c45036f72855c490b739cadeab) __chore(release):__ added draft version 1.2.0 changelog [skip ci]
 * [(_)](https://github.com/readium/readium-desktop/commit/0687ddfcd2ad4ee2b988204c1f66cf2d7c6c5b6f) __chore(NPM):__ package updates, including latest r2-shared-js
 * [(_)](https://github.com/readium/readium-desktop/commit/15d05387816c7eb2019d9b6451ce55b31a6fa2d9) __feat(audiobooks):__ separation of "reading" vs. "listening" in local bookshelf display (PR [#974](https://github.com/readium/readium-desktop/pull/974) Fixes [#941](https://github.com/readium/readium-desktop/issues/941))
 * [(_)](https://github.com/readium/readium-desktop/commit/292874f1fa4f77a4ce477d49f087ddbd1a68043c) __feat(audiobooks):__ publication info modal popup dialog now displays duration and number of tracks (PR [#973](https://github.com/readium/readium-desktop/pull/973) Fixes [#940](https://github.com/readium/readium-desktop/issues/940))
