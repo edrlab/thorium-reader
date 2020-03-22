@@ -67,18 +67,17 @@ export class CatalogGridView extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const CatalogEntriesIsEmpty = this.props.catalogEntries.filter(
+        const catalogEntriesIsEmpty = this.props.catalogEntries.filter(
             (entry) => entry.totalCount > 0,
         ).length === 0;
 
         return (
             <>
                 {
-                    this.props.catalogEntries.map(
-                        (entry, EntryIndex: number) =>
+                    this.props.catalogEntries.map((entry, entryIndex: number) =>
                             entry.totalCount > 0
                                 ? (
-                                    <section key={EntryIndex}>
+                                    <section key={entryIndex}>
                                         {
 
                                             <div className={styles.title}>
@@ -100,7 +99,7 @@ export class CatalogGridView extends React.Component<IProps, IState> {
                                     </section>
                                 )
                                 : <div
-                                    key={EntryIndex}
+                                    key={entryIndex}
                                     aria-hidden="true"
                                     style={{ display: "none" }}
                                 >
@@ -120,7 +119,7 @@ export class CatalogGridView extends React.Component<IProps, IState> {
                         : <></>
                 }
                 {
-                    this.state.tabTags.length === 0 && CatalogEntriesIsEmpty
+                    this.state.tabTags.length === 0 && catalogEntriesIsEmpty
                         ? <NoPublicationInfo />
                         : <></>
                 }
