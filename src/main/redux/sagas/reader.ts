@@ -55,13 +55,45 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     });
 
     if (IS_DEV) {
-        readerWindow.webContents.on("context-menu", (_ev, params) => {
+        const wc = readerWindow.webContents;
+        wc.on("context-menu", (_ev, params) => {
             const { x, y } = params;
+            const openDevToolsAndInspect = () => {
+                const devToolsOpened = () => {
+                    wc.off("devtools-opened", devToolsOpened);
+                    wc.inspectElement(x, y);
+
+                    setTimeout(() => {
+                        if (wc.isDevToolsOpened()) {
+                            wc.devToolsWebContents.focus();
+                        }
+                    }, 500);
+                };
+                wc.on("devtools-opened", devToolsOpened);
+                wc.openDevTools({ activate: true, mode: "detach" });
+            };
             Menu.buildFromTemplate([{
-                label: "Inspect element",
                 click: () => {
-                    readerWindow.webContents.inspectElement(x, y);
+                    const wasOpened = wc.isDevToolsOpened();
+                    if (!wasOpened) {
+                        openDevToolsAndInspect();
+                    } else {
+                        if (!wc.isDevToolsFocused()) {
+                            // wc.toggleDevTools();
+                            wc.closeDevTools();
+
+                            setImmediate(() => {
+                                openDevToolsAndInspect();
+                            });
+                        } else {
+                            // this should never happen,
+                            // as the right-click context menu occurs with focus
+                            // in BrowserWindow / WebView's WebContents
+                            wc.inspectElement(x, y);
+                        }
+                    }
                 },
+                label: "Inspect element",
             }]).popup({window: readerWindow});
         });
 
@@ -82,7 +114,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
 
         if (_VSCODE_LAUNCH !== "true") {
             setTimeout(() => {
-                readerWindow.webContents.openDevTools({ mode: "detach" });
+                readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
             }, 2000);
         }
     }

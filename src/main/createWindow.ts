@@ -40,13 +40,46 @@ export async function createWindow() {
     });
 
     if (IS_DEV) {
-        mainWindow.webContents.on("context-menu", (_ev, params) => {
+        const wc = mainWindow.webContents;
+        wc.on("context-menu", (_ev, params) => {
             const { x, y } = params;
+            const openDevToolsAndInspect = () => {
+                const devToolsOpened = () => {
+                    wc.off("devtools-opened", devToolsOpened);
+                    wc.inspectElement(x, y);
+
+                    setTimeout(() => {
+                        if (wc.isDevToolsOpened()) {
+                            wc.devToolsWebContents.focus();
+                        }
+                    }, 500);
+                };
+                wc.on("devtools-opened", devToolsOpened);
+                wc.openDevTools({ activate: true, mode: "detach" });
+            };
             Menu.buildFromTemplate([{
-                label: "Inspect element",
                 click: () => {
-                    mainWindow.webContents.inspectElement(x, y);
+                    const wasOpened = wc.isDevToolsOpened();
+                    if (!wasOpened) {
+                        openDevToolsAndInspect();
+                    } else {
+                        if (!wc.isDevToolsFocused()) {
+                            // wc.toggleDevTools();
+                            wc.closeDevTools();
+
+                            setImmediate(() => {
+                                openDevToolsAndInspect();
+                            });
+                        } else {
+                            // right-click context menu normally occurs when focus
+                            // is in BrowserWindow / WebView's WebContents,
+                            // but some platforms (e.g. MacOS) allow mouse interaction
+                            // when the window is in the background.
+                            wc.inspectElement(x, y);
+                        }
+                    }
                 },
+                label: "Inspect element",
             }]).popup({window: mainWindow});
         });
 
@@ -66,7 +99,7 @@ export async function createWindow() {
 
         if (_VSCODE_LAUNCH !== "true") {
             setTimeout(() => {
-                mainWindow.webContents.openDevTools({ mode: "detach" });
+                mainWindow.webContents.openDevTools({ activate: true, mode: "detach" });
             }, 2000);
         }
     }
