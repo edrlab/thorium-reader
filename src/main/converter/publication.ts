@@ -64,8 +64,9 @@ export class PublicationViewConverter {
             lcpRightsCopies: document.lcpRightsCopies,
 
             RDFType: r2Publication.Metadata.RDFType,
-            duration: r2Publication.Metadata.Duration &&
-                this.convertSecondToDaysHoursMinutes(r2Publication.Metadata.Duration),
+            duration: r2Publication.Metadata.Duration
+                ? this.convertSecondToHMS(r2Publication.Metadata.Duration)
+                : undefined,
             nbOfTracks: r2Publication.Metadata.AdditionalJSON?.tracks as number | undefined,
 
             // doc: r2Publiction.Metadata,
@@ -74,7 +75,7 @@ export class PublicationViewConverter {
         };
     }
 
-    private convertSecondToDaysHoursMinutes(seconds: number): ITimeDuration {
+    private convertSecondToHMS(seconds: number): ITimeDuration {
 
         const secondsPerMinute = 60;
         const minutesPerHours = 60;
