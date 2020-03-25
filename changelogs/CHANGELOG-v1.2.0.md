@@ -2,7 +2,7 @@
 
 ## Summary
 
-Version `1.2.0` was released on **xxx March 2020**.
+Version `1.2.0` was released on **25 March 2020**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
@@ -10,7 +10,7 @@ This release includes the following (notable) new features, improvements and bug
 * There is now a keyboard-accessible (tab / shift-tab) hidden link at the beginning of publication documents in order to redirect focus (notably, screen reader cursor) to the currently-linked reading location (for example TOC heading, bookmark destination, etc.)
 * Fixed accessibility-related keyboard focus issues: hyperlinks inside publication documents (notably: visual temporary outlining of link target), TOC heading links and bookmark destinations (landing point above the main frame now with clearer label, tested with several screen readers, which do not navigate into the frame's keyboard focus consistently).
 * Fix for keyboard-accessible cover images in the bookshelf (local library and remote publication catalogs), and for some UI elements which were not labelled correctly (e.g. the "delete" cross icon in OPDS catalogs)
-* Support for AudioBooks (Packaged Readium Web Pub Manifest format): separation of publication types in the local bookshelf, handling of time bookmarks, display of audio metadata (duration, number of tracks), support for audiobooks without TOC Table Of Contents (instead: audio files in reading order, with "chapter" description label / title), application of ReadiumCSS styling (font size and family, color theme) etc.
+* Preliminary support for AudioBooks (Packaged Readium Web Pub Manifest format): separation of publication types in the local bookshelf, handling of time bookmarks, display of audio metadata (duration, number of tracks), support for audiobooks without TOC Table Of Contents (instead: audio files in reading order, with "chapter" description label / title), application of ReadiumCSS styling (font size and family, color theme) etc. TODOs: https://github.com/readium/readium-desktop/issues?q=is%3Aissue+is%3Aopen+label%3Aaudiobooks
 * Spanish translation (in addition to existing English, French and German)
 * Bookmarks list in the navigation panel are now ordered (as per the linear reading progression of the publication)
 * Bookmarking now supports text selection (automatically sets the bookmark description / label), and multiple bookmarks per page spread can be created
@@ -30,10 +30,14 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `v1.1.0`:
 https://github.com/readium/readium-desktop/compare/v1.1.0...v1.2.0
 
-=> **63** GitHub Pull Requests or high-level Git commits.
+=> **68** GitHub Pull Requests or high-level Git commits.
 
 Here is the complete list of commits, ordered by descending date:
-
+* [(_)](https://github.com/readium/readium-desktop/commit/1051a1e6bd109df95471f35f575765e5f23c059d) __chore(NPM):__ package updates, including Electron 8.2.0 (slightly newer Chromium + bugfixes + feature update)
+* [(_)](https://github.com/readium/readium-desktop/commit/8cff266811e967b1b731f058da4e18ecf745795a) __fix(minor):__ code typo, function name (PR [#981](https://github.com/readium/readium-desktop/pull/981)) [skip ci]
+* [(_)](https://github.com/readium/readium-desktop/commit/f23409688171cab117797d82e53f9784f67dac1f) __fix(dev):__ devtools context menu now ensures focus on web inspector window (same strategy used in r2-navigator-js for the "inspect element" at x,y coordinates in embedded webview)
+* [(_)](https://github.com/readium/readium-desktop/commit/2dd301792d53927959e83984957a58eed0a4d9e4) __chore(NPM):__ package updates (including r2-navigator-js), minor fix to HTML templates for reader and library windows (prompted by WebPack plugin update)
+* [(_)](https://github.com/readium/readium-desktop/commit/d2c86af6f5cd3e2b8e6f0321b6f709038194b091) __chore(release):__ changelog update [skip ci]
 * [(_)](https://github.com/readium/readium-desktop/commit/51e5fa17dedd00dccf9dd701bc9d3a08e11fda02) __fix(audiobooks):__ the list view was not displaying all publications (grid view did), follow-up to PR [#974](https://github.com/readium/readium-desktop/pull/974)
 * [(_)](https://github.com/readium/readium-desktop/commit/a351f38635ce3d425d08a32a72768168133eafbe) __fix(GUI):__ bottom interactive progress bar now correctly handles mouse clicks offset (percentage progression into individual spine items, text and audiobooks)
 * [(_)](https://github.com/readium/readium-desktop/commit/39e4c38059dae8c45036f72855c490b739cadeab) __chore(release):__ added draft version 1.2.0 changelog [skip ci]
