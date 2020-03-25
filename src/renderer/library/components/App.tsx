@@ -12,6 +12,7 @@ import * as path from "path";
 import * as React from "react";
 import Dropzone from "react-dropzone";
 import { Provider } from "react-redux";
+import { acceptedExtension } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
@@ -39,9 +40,7 @@ export default class App extends React.Component<{}, undefined> {
                 {
                     files: acceptedFiles.filter((file) => {
                             const ext = path.extname(file.path);
-                            return (/\.epub[3]?$/.test(ext) ||
-                                /\.audiobook$/.test(ext) ||
-                                ext === ".lcpl");
+                            return acceptedExtension(ext);
                     })
                         .map((file) => {
                             return {

@@ -84,7 +84,7 @@
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
         "import": "¿Seguro que quieres importar estos ficheros?",
-        "importError": "Se ha producido un error, comprueba la extensión de tu fichero (.epub / .lcpl / .audiobook)",
+        "importError": "Se ha producido un error, comprueba la extensión de tu fichero (.epub / .lcpl / .audiobook / .lpf)",
         "no": "No",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
