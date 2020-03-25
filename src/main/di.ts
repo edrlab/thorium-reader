@@ -33,10 +33,10 @@ import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { initStore } from "readium-desktop/main/redux/store/memory";
-import { CatalogService } from "readium-desktop/main/services/catalog";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { Downloader } from "readium-desktop/main/services/downloader";
 import { LcpManager } from "readium-desktop/main/services/lcp";
+import { PublicationService } from "readium-desktop/main/services/publication";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
@@ -216,7 +216,7 @@ container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantVa
 
 // Create lcp manager
 container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingletonScope();
-container.bind<CatalogService>(diSymbolTable["catalog-service"]).to(CatalogService).inSingletonScope();
+container.bind<PublicationService>(diSymbolTable["publication-service"]).to(PublicationService).inSingletonScope();
 container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
@@ -256,7 +256,7 @@ interface IGet {
     (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;
     (s: "lcp-manager"): LcpManager;
-    (s: "catalog-service"): CatalogService;
+    (s: "publication-service"): PublicationService;
     (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): PublicationApi;
     (s: "opds-api"): OpdsApi;
