@@ -36,18 +36,19 @@ export default class App extends React.Component<{}, undefined> {
     public onDrop(acceptedFiles: File[]) {
         const store = diLibraryGet("store");
         store.dispatch(
-            dialogActions.openRequest.build(DialogTypeName.FileImport,
+            dialogActions.openRequest.build(
+                DialogTypeName.FileImport,
                 {
-                    files: acceptedFiles.filter((file) => {
-                            const ext = path.extname(file.path);
-                            return acceptedExtension(ext);
-                    })
-                        .map((file) => {
-                            return {
+                    files: acceptedFiles
+                        .filter(
+                            (file) => acceptedExtension(path.extname(file.path)),
+                        )
+                        .map(
+                            (file) => ({
                                 name: file.name,
                                 path: file.path,
-                            };
-                        }),
+                            }),
+                        ),
                 },
             ));
     }
