@@ -15,6 +15,7 @@ This release includes the following (notable) new features, improvements and bug
 * Bookmarks list in the navigation panel are now ordered (as per the linear reading progression of the publication)
 * Bookmarking now supports text selection (automatically sets the bookmark description / label), and multiple bookmarks per page spread can be created
 * In the "goto page" feature (navigation panel), the nearest preceding EPUB pagebreak is shown to provide information about the current reading context
+* The bottom interactive "reading progress" bar now correctly handles mouse clicks offset (percentage progression into individual spine items, text and audiobooks)
 * Fixed significant performance issues in publication documents, which were due to how Chromium renders HTML (including Readium CSS), and prioritizes paint requests for large documents textures (e.g. GPU 2D/3D accelerated selections/annotations, but also weird edge cases with night and sepia modes)
 * OPDS browsing improvments, notably: support for facets (to be continued)
 * Fixed bug due to HTTP response logging (there was no safeguard for the error case of offline / network down conditions)
