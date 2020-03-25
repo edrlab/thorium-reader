@@ -30,9 +30,11 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `v1.1.0`:
 https://github.com/readium/readium-desktop/compare/v1.1.0...v1.2.0
 
-=> **68** GitHub Pull Requests or high-level Git commits.
+=> **70** GitHub Pull Requests or high-level Git commits.
 
 Here is the complete list of commits, ordered by descending date:
+* [(_)](https://github.com/readium/readium-desktop/commit/91047e0c12e4814d806da5c428b54baa750bce5f) __chore(release):__ version bump 1.2.0 [skip ci]
+* [(_)](https://github.com/readium/readium-desktop/commit/874ec7c1a0a2b33acb42cb13df0f68f923baf160) __chore(release):__ changelog update
 * [(_)](https://github.com/readium/readium-desktop/commit/1051a1e6bd109df95471f35f575765e5f23c059d) __chore(NPM):__ package updates, including Electron 8.2.0 (slightly newer Chromium + bugfixes + feature update)
 * [(_)](https://github.com/readium/readium-desktop/commit/8cff266811e967b1b731f058da4e18ecf745795a) __fix(minor):__ code typo, function name (PR [#981](https://github.com/readium/readium-desktop/pull/981)) [skip ci]
 * [(_)](https://github.com/readium/readium-desktop/commit/f23409688171cab117797d82e53f9784f67dac1f) __fix(dev):__ devtools context menu now ensures focus on web inspector window (same strategy used in r2-navigator-js for the "inspect element" at x,y coordinates in embedded webview)
