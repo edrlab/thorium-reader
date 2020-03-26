@@ -47,7 +47,11 @@ const debug = debug_("readium-desktop:renderer:library:publication-info");
 class PublicationInfo extends React.Component<IProps> {
 
     public render() {
-        const { publication, toggleCoverZoom, closeDialog, coverZoom } = this.props;
+        const { publication, toggleCoverZoom, closeDialog, coverZoom, open } = this.props;
+
+        if (!open) {
+            return <></>;
+        }
 
         return (
             <PublicationInfoManager

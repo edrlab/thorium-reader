@@ -6,6 +6,7 @@ export const diSymbolTable = {
     "translator": Symbol("translator"),
     "downloader": Symbol("downloader"),
     "publication-repository": Symbol("publication-repository"),
+    "analytics-repository": Symbol("analytics-repository"),
     "opds-feed-repository": Symbol("opds-feed-repository"),
     "locator-repository": Symbol("locator-repository"),
     "config-repository": Symbol("config-repository"),
@@ -22,7 +23,9 @@ export const diSymbolTable = {
     "catalog-api": Symbol("catalog-api"),
     "publication-api": Symbol("publication-api"),
     "opds-api": Symbol("opds-api"),
+    "keyboard-api": Symbol("keyboard-api"),
     "lcp-api": Symbol("lcp-api"),
     "reader-api": Symbol("reader-api"),
+    "analytics-api": Symbol("analytics-api"),
     "action-serializer": Symbol("action-serializer"),
 };

@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
+import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
@@ -25,6 +26,10 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
+import {
+    ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
+    registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
@@ -42,21 +47,17 @@ import { Unsubscribe } from "redux";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
     IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_READIUMCSS,
-    IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
 } from "@r2-navigator-js/electron/common/events";
 import {
     colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
-import {
-    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "@r2-navigator-js/electron/common/sessions";
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
-    setKeyDownEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
     ttsListen, ttsNext, ttsPause, ttsPlay, ttsPrevious, ttsResume,
     TTSStateEnum, ttsStop,
+    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
@@ -65,6 +66,12 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+
+// import {
+//     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+// } from "@r2-navigator-js/electron/common/sessions";
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
@@ -147,9 +154,10 @@ const queryParams = getURLQueryParams();
 const lcpHint = queryParams.lcpHint;
 // pub is undefined when loaded in dependency injection by library webview.
 // Dependency injection is shared between all the renderer view
-const publicationJsonUrl = queryParams.pub?.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
-    ? convertCustomSchemeToHttpUrl(queryParams.pub)
-    : queryParams.pub;
+const publicationJsonUrl = queryParams.pub;
+// ?.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
+//     ? convertCustomSchemeToHttpUrl(queryParams.pub)
+//     : queryParams.pub;
 
 // const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
 // const pathBase64 = decodeURIComponent(pathBase64Raw);
@@ -170,8 +178,9 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
-    publicationJsonUrl?: string;
-    title?: string;
+
+    // publicationJsonUrl?: string;
+    // title?: string;
 
     publicationView: PublicationView | undefined;
     r2Publication: R2Publication | undefined;
@@ -197,6 +206,7 @@ interface IState {
 
 class Reader extends React.Component<IProps, IState> {
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
+    private refToolbar: React.RefObject<HTMLAnchorElement>;
 
     // can be get back with withTranslator HOC
     // to remove
@@ -208,13 +218,26 @@ class Reader extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
+        this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
+        this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
+        this.onKeyboardSpineNavigationPrevious = this.onKeyboardSpineNavigationPrevious.bind(this);
+        this.onKeyboardSpineNavigationNext = this.onKeyboardSpineNavigationNext.bind(this);
+        this.onKeyboardFocusMain = this.onKeyboardFocusMain.bind(this);
+        this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
+        this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
+        this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
+        this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
+        this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
+        this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
+
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
+        this.refToolbar = React.createRef<HTMLAnchorElement>();
 
 
         this.state = {
-            publicationJsonUrl: "HTTP://URL",
+            // publicationJsonUrl: "HTTP://URL",
             lcpHint: "LCP hint",
-            title: "TITLE",
+            // title: "TITLE",
             lcpPass: "LCP pass",
             contentTableOpen: false,
             settingsOpen: false,
@@ -289,10 +312,67 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
+        ensureKeyboardListenerIsInstalled();
 
-        this.setState({
-            publicationJsonUrl,
-        });
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.reader_PageNavigationPrevious,
+            this.onKeyboardPageNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.reader_PageNavigationNext,
+            this.onKeyboardPageNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_SpineNavigationPrevious,
+            this.onKeyboardSpineNavigationPrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_SpineNavigationNext,
+            this.onKeyboardSpineNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.focus_main,
+            this.onKeyboardFocusMain);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.focus_toolbar,
+            this.onKeyboardFocusToolbar);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.toggle_fullscreen,
+            this.onKeyboardFullScreen);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.toggle_bookmark,
+            this.onKeyboardBookmark);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.info,
+            this.onKeyboardInfo);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_focus_settings,
+            this.onKeyboardFocusSettings);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.reader_focus_navigation,
+            this.onKeyboardFocusNav);
+
+        setKeyDownEventHandler(keyDownEventHandler);
+        setKeyUpEventHandler(keyUpEventHandler);
+
+        // this.setState({
+        //     publicationJsonUrl,
+        // });
 
         if (lcpHint) {
             this.setState({
@@ -338,13 +418,6 @@ class Reader extends React.Component<IProps, IState> {
             }
         });
 
-        window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
-            window.document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
-        }, true);
-        window.document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
-            window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
-        }, true);
-
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
         // but narrow it down specically to a reader window instance (not application-wide)
@@ -356,11 +429,36 @@ class Reader extends React.Component<IProps, IState> {
 
         let docHref: string = queryParams.docHref;
         let docSelector: string = queryParams.docSelector;
+        let docProgression: string = queryParams.docProgression;
 
-        if (docHref && docSelector) {
+        if (docHref) {
             // Decode base64
             docHref = window.atob(docHref);
-            docSelector = window.atob(docSelector);
+        }
+        if (docSelector) {
+            // Decode base64
+            try {
+                docSelector = window.atob(docSelector);
+            } catch (err) {
+                console.log(docSelector);
+                console.log(err);
+                docSelector = undefined;
+            }
+        }
+        let progression: number | undefined;
+        if (docProgression) {
+            // Decode base64
+            try {
+                docProgression = window.atob(docProgression);
+            } catch (err) {
+                console.log(docProgression);
+                console.log(err);
+                docProgression = undefined;
+            }
+            // percentage number
+            if (docProgression) {
+                progression = parseFloat(docProgression);
+            }
         }
 
         // Note that CFI, etc. can optionally be restored too,
@@ -371,42 +469,9 @@ class Reader extends React.Component<IProps, IState> {
                 cfi: undefined,
                 cssSelector: docSelector,
                 position: undefined,
-                progression: undefined,
+                progression,
             },
         };
-
-        const keyDownEventHandler = (ev: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => {
-            // DEPRECATED
-            // if (ev.keyCode === 37 || ev.keyCode === 39) { // left / right
-            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
-            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
-            const leftKey = ev.code === "ArrowLeft";
-            const rightKey = ev.code === "ArrowRight";
-            if (leftKey || rightKey) {
-                const noModifierKeys = !ev.ctrlKey && !ev.shiftKey && !ev.altKey && !ev.metaKey;
-                const spineNavModifierKeys = process.platform === "darwin" ? ev.ctrlKey && ev.shiftKey :
-                    ev.ctrlKey && ev.shiftKey && ev.altKey;
-                if (noModifierKeys || spineNavModifierKeys) {
-                    navLeftOrRight(leftKey, spineNavModifierKeys);
-                    if (spineNavModifierKeys) {
-                        if (this.fastLinkRef?.current) {
-                            setTimeout(() => {
-                                if (this.fastLinkRef?.current) {
-                                    this.fastLinkRef.current.focus();
-                                }
-                            }, 200);
-                        }
-                    }
-                }
-            }
-        };
-        setKeyDownEventHandler(keyDownEventHandler);
-        window.document.addEventListener("keydown", (ev: KeyboardEvent) => {
-            if (this.state.shortcutEnable) {
-                keyDownEventHandler(ev);
-            }
-        });
 
         setReadingLocationSaver(this.handleReadingLocationChange);
 
@@ -424,6 +489,8 @@ class Reader extends React.Component<IProps, IState> {
                 console.error("fetch api publication/get", null)
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
+
+        apiAction("analytics/openBook", queryParams.pubId);
     }
 
     public setTTSState(newTtsState: TTSStateEnum) {
@@ -437,6 +504,18 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
+        unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardSpineNavigationNext);
+        unregisterKeyboardListener(this.onKeyboardFocusMain);
+        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
+        unregisterKeyboardListener(this.onKeyboardFullScreen);
+        unregisterKeyboardListener(this.onKeyboardBookmark);
+        unregisterKeyboardListener(this.onKeyboardInfo);
+        unregisterKeyboardListener(this.onKeyboardFocusSettings);
+        unregisterKeyboardListener(this.onKeyboardFocusNav);
+
         if (this.unsubscribe) {
             this.unsubscribe();
         }
@@ -463,7 +542,15 @@ class Reader extends React.Component<IProps, IState> {
         };
 
         return (
-                <div>
+                <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
+                    <a
+                        role="region"
+                        className={styles.anchor_link}
+                        ref={this.refToolbar}
+                        id="main-toolbar"
+                        title={this.props.__("accessibility.toolbar")}
+                        aria-label={this.props.__("accessibility.toolbar")}
+                        tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
                     <SkipLink
                         className={styles.skip_link}
                         anchorId="main-content"
@@ -503,10 +590,16 @@ class Reader extends React.Component<IProps, IState> {
                                 <main
                                     id="main"
                                     role="main"
+                                    aria-label={this.props.__("accessibility.mainContent")}
                                     className={styles.publication_viewport_container}>
-                                    <a ref={this.fastLinkRef}
+                                    <a
+                                        role="region"
+                                        className={styles.anchor_link}
+                                        ref={this.fastLinkRef}
                                         id="main-content"
-                                        aria-hidden tabIndex={-1}></a>
+                                        title={this.props.__("accessibility.mainContent")}
+                                        aria-label={this.props.__("accessibility.mainContent")}
+                                        tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
                                     <div id="publication_viewport" className={styles.publication_viewport}> </div>
                                 </main>
                             </div>
@@ -523,6 +616,115 @@ class Reader extends React.Component<IProps, IState> {
         );
     }
 
+    private onKeyboardFullScreen = () => {
+        this.handleFullscreenClick();
+    }
+
+    private onKeyboardInfo = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardInfo)");
+            }
+            return;
+        }
+        this.displayPublicationInfo();
+    }
+
+    private onKeyboardFocusNav = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusNav)");
+            }
+            return;
+        }
+        this.handleMenuButtonClick();
+    }
+    private onKeyboardFocusSettings = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusSettings)");
+            }
+            return;
+        }
+        this.handleSettingsClick();
+    }
+
+    private onKeyboardBookmark = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardBookmark)");
+            }
+            return;
+        }
+        this.handleToggleBookmark();
+    }
+
+    private onKeyboardFocusMain = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusMain)");
+            }
+            return;
+        }
+
+        if (this.fastLinkRef?.current) {
+            this.fastLinkRef.current.focus();
+        }
+    }
+
+    private onKeyboardFocusToolbar = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusToolbar)");
+            }
+            return;
+        }
+
+        if (this.refToolbar?.current) {
+            this.refToolbar.current.focus();
+        }
+    }
+
+    private onKeyboardPageNavigationNext = () => {
+        this.onKeyboardPageNavigationPreviousNext(false);
+    }
+    private onKeyboardPageNavigationPrevious = () => {
+        this.onKeyboardPageNavigationPreviousNext(true);
+    }
+    private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardPageNavigationPreviousNext)");
+            }
+            return;
+        }
+
+        navLeftOrRight(isPrevious, false);
+    }
+
+    private onKeyboardSpineNavigationNext = () => {
+        this.onKeyboardSpineNavigationPreviousNext(false);
+    }
+    private onKeyboardSpineNavigationPrevious = () => {
+        this.onKeyboardSpineNavigationPreviousNext(true);
+    }
+    private onKeyboardSpineNavigationPreviousNext = (isPrevious: boolean) => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardSpineNavigationPreviousNext)");
+            }
+            return;
+        }
+
+        navLeftOrRight(isPrevious, true);
+
+        if (this.fastLinkRef?.current) {
+            setTimeout(() => {
+                this.onKeyboardFocusMain();
+            }, 200);
+        }
+    }
+
     private displayPublicationInfo() {
         if (this.state.publicationView) {
             // TODO: subscribe to Redux action type == CloseRequest
@@ -533,10 +735,6 @@ class Reader extends React.Component<IProps, IState> {
             });
             this.props.displayPublicationInfo(this.state.publicationView.identifier);
         }
-    }
-
-    private goToLocator(locator: R2Locator) {
-        handleLinkLocator(locator);
     }
 
     private async loadPublicationIntoViewport(
@@ -572,11 +770,12 @@ class Reader extends React.Component<IProps, IState> {
         if (r2Publication.Metadata && r2Publication.Metadata.Title) {
             const title = this.props.translator.translateContentField(r2Publication.Metadata.Title);
 
+            window.document.title = capitalizedAppName;
             if (title) {
-                window.document.title = "Thorium - " + title;
-                this.setState({
-                    title,
-                });
+                window.document.title = `${capitalizedAppName} - ${title}`;
+                // this.setState({
+                //     title,
+                // });
             }
         }
 
@@ -606,6 +805,34 @@ class Reader extends React.Component<IProps, IState> {
                     .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
             };
 
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        const sessionInfoJson: any = {
+            id: "0000-1110-222",
+            test: 1,
+            other: true,
+            obj: {
+                "sub-key": null,
+            },
+        };
+        console.log(sessionInfoJson);
+        const sessionInfoStr = JSON.stringify(sessionInfoJson, null, 4);
+        console.log(sessionInfoStr);
+        console.log(Buffer.from(sessionInfoStr).toString("base64"));
+
         installNavigatorDOM(
             r2Publication,
             publicationJsonUrl,
@@ -614,6 +841,7 @@ class Reader extends React.Component<IProps, IState> {
             locator,
             true,
             clipboardInterceptor,
+            sessionInfoStr,
         );
     }
 
@@ -665,6 +893,25 @@ class Reader extends React.Component<IProps, IState> {
         this.setState({visibleBookmarkList});
     }
 
+    private focusMainAreaLandmarkAndCloseMenu() {
+        if (this.fastLinkRef?.current) {
+            setTimeout(() => {
+                this.onKeyboardFocusMain();
+            }, 200);
+        }
+
+        if (this.state.menuOpen) {
+            setTimeout(() => {
+                this.handleMenuButtonClick();
+            }, 100);
+        }
+    }
+    private goToLocator(locator: R2Locator) {
+        this.focusMainAreaLandmarkAndCloseMenu();
+
+        handleLinkLocator(locator);
+    }
+
     // tslint:disable-next-line: max-line-length
     private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) {
         if (event) {
@@ -674,32 +921,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // DEPRECATED
-        // event.charCode === 13
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/charCode
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
-        // alternatively, could also use event.code === "Enter"
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
-        // if (event && event.key === "Enter") {
-        // }
-        // Screen readers have their own shortcut to activate hyperlinks (e.g. VoiceOver CTRL+OPT+SPACE),
-        // so we must not limit the focus behaviour to app-defined keyboard interaction (i.e. ENTER key)
-        // (note that this means the focus is moved even when TOC items clicked with mouse, which is fine)
-        if (this.fastLinkRef?.current) {
-            setTimeout(() => {
-                if (this.fastLinkRef?.current) {
-                    this.fastLinkRef.current.focus();
-                }
-            }, 200);
-        }
-
-        if (this.state.menuOpen) {
-            setTimeout(() => {
-                this.handleMenuButtonClick();
-            }, 100);
-        }
+        this.focusMainAreaLandmarkAndCloseMenu();
 
         const newUrl = publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
@@ -772,6 +994,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleAudioClick() {
+        apiAction("analytics/playTts", queryParams.pubId);
         ttsPlay();
     }
     private handlePauseClick() {
@@ -874,6 +1097,7 @@ class Reader extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         reader: state.reader.reader,
+        keyboardShortcuts: state.keyboard.shortcuts,
         mode: state.reader.mode,
         infoOpen: state.dialog.open &&
             state.dialog.type === DialogTypeName.PublicationInfoReader,

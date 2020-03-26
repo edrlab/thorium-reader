@@ -10,6 +10,7 @@ import { History } from "history";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { importReducer } from "readium-desktop/common/redux/reducers/import";
+import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 // import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 // import { updateReducer } from "readium-desktop/common/redux/reducers/update";
@@ -25,7 +26,7 @@ import { combineReducers } from "redux";
 
 import { ILibraryRootState } from "../states";
 
-export const rootReducer = (history: History) => {
+export const rootReducer = (history: History<IRouterLocationState>) => {
     return combineReducers<ILibraryRootState>({
         i18n: i18nReducer,
         opds: combineReducers({
@@ -45,5 +46,6 @@ export const rootReducer = (history: History) => {
         toast: toastReducer,
         download: downloadReducer,
         history: historyReducer,
+        keyboard: keyboardReducer,
 });
 };

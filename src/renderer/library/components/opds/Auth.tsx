@@ -183,9 +183,9 @@ class OPDSAuth extends React.Component<IProps, IState> {
                         });
                     }
                 })
-                    .catch((err) => {
-                        console.error("Error to fetch api opds/oauth", err);
-                    });
+                .catch((err) => {
+                    console.error("Error to fetch api opds/oauth", err);
+                });
             }, (err) => {
                 debug(err);
             });

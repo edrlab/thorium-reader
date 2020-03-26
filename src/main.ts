@@ -18,6 +18,7 @@ import {
     _PACKAGING, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
 
+import { AnalyticsType } from "readium-desktop/common/models/analytics";
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
@@ -65,6 +66,13 @@ function main() {
 
     // Quit when all windows are closed.
     app.on("window-all-closed", () => {
+        //save closeApp event
+        const analyticsRepository = diMainGet("analytics-repository");
+        const doc = {
+            analyticsType: AnalyticsType.CloseApp,
+            publicationIdentifier : ""
+        }
+        analyticsRepository.save(doc);
         // At the moment, there are no menu items to revive / re-open windows,
         // so let's terminate the app on MacOS too.
         // if (process.platform !== "darwin") {

@@ -5,16 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ICatalogModuleApi } from "./catalog";
-import { ILcpModuleApi } from "./lcp";
-import { IOpdsModuleApi } from "./opds";
-import { IPublicationModuleApi } from "./publication";
-import { IReaderModuleApi } from "./reader";
+import { ICatalogModuleApi } from "./interface/catalog.interface";
+import { IKeyboardModuleApi } from "./interface/keyboardApi.interface";
+import { ILcpModuleApi } from "./interface/lcpApi.interface";
+import { IOpdsModuleApi } from "./interface/opdsApi.interface";
+import { IPublicationModuleApi } from "./interface/publicationApi.interface";
+import { IReaderModuleApi } from "./interface/readerApi.interface";
+import { IAnalyticsModuleApi } from "./interface/analyticsApi.interface";
 
 export type TApiMethod =
+    IAnalyticsModuleApi &
     ICatalogModuleApi &
     ILcpModuleApi &
     IOpdsModuleApi &
+    IKeyboardModuleApi &
     IPublicationModuleApi &
     IReaderModuleApi;
 

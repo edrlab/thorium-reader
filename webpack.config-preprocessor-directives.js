@@ -8,6 +8,7 @@ const portReader = process.env.PORT_READER || "8191";
 
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
+console.log(`PREPROCESSOR nodeEnv: ${nodeEnv}`);
 const isDev = nodeEnv === "development";
 
 const isVisualStudioCodeLaunch = process.env.VSCODE_LAUNCH || "false";

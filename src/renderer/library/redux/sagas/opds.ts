@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
-import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
@@ -69,7 +69,7 @@ function* updateHeaderLinkWatcher(): SagaIterator {
 
             const httpRes = action.payload as ReturnPromiseType<TApiMethod["opds/browse"]>;
             const opdsResultView = httpRes.data;
-            debug("opdsResult:", opdsResultView);
+            // debug("opdsResult:", opdsResultView); large dump!
 
             if (httpRes.isSuccess && opdsResultView) {
 

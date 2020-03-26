@@ -30,6 +30,7 @@ const nodeExternals = require("./nodeExternals");
 
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
+console.log(`LIBRARY nodeEnv: ${nodeEnv}`);
 
 let externals = {
     "bindings": "bindings",
@@ -53,7 +54,7 @@ if (nodeEnv !== "production") {
         externals = [
             nodeExternals(
                 {
-                    processName: "RENDERER",
+                    processName: "LIBRARY",
                     alias: aliases,
                     // whitelist: ["pouchdb-core"],
                 }
@@ -64,7 +65,7 @@ if (nodeEnv !== "production") {
     }
 }
 
-console.log("WEBPACK externals (RENDERER):");
+console.log("WEBPACK externals (LIBRARY):");
 console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
@@ -114,6 +115,7 @@ let config = Object.assign({}, {
                 loader: "file-loader?name=assets/[name].[hash].[ext]",
                 options: {
                     esModule: false,
+                    outputPath: "fonts"
                 },
                 test: /\.(woff|woff2|ttf|eot|svg)$/,
             },
@@ -146,7 +148,7 @@ let config = Object.assign({}, {
             filename: "index_library.html",
         }),
         new MiniCssExtractPlugin({
-            filename: "styles_app.css",
+            filename: "styles_library.css",
         }),
         preprocessorDirectives.definePlugin,
     ],
@@ -203,7 +205,12 @@ if (nodeEnv !== "production") {
     config.module.rules.push({
         test: /\.css$/,
         use: [
-            MiniCssExtractPlugin.loader,
+            {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                    // publicPath: "./styling", // preprocessorDirectives.rendererLibraryBaseUrl,
+                },
+            },
             {
                 loader: "css-loader",
                 options: {

@@ -5,7 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { apiActions, i18nActions, readerActions } from "readium-desktop/common/redux/actions";
+import {
+    apiActions, i18nActions, keyboardActions, readerActions,
+} from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
 // Actions that can be synchronized
@@ -21,6 +23,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.fullScreenRequest.ID,
 
     i18nActions.setLocale.ID,
+
+    keyboardActions.setShortcuts.ID,
+    keyboardActions.showShortcuts.ID,
+    keyboardActions.reloadShortcuts.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);
