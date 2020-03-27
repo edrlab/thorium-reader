@@ -202,7 +202,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
             // tslint:disable-next-line: max-line-length
             ? encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.progression.toString()).toString("base64"))
             : undefined;
-        readerUrl += `&docHref=${docHref}&docSelector=${docSelector}&docProgression=${docProgression}`;
+        readerUrl += `&docHref=${docHref}&docSelector=${docSelector ? docSelector : ""}&docProgression=${docProgression ? docProgression : ""}`;
     }
 
     setMenu(readerWindow, true);
