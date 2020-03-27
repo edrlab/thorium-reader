@@ -5,13 +5,24 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-export const acceptedExtensionArray = [
-    ".lcpl", ".epub", ".epub3", ".audiobook", ".lpf",
-];
+import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
+
+export const acceptedExtensionObject = {
+    lcpLicence: ".lcpl",
+    epub2: ".epub",
+    epub3: ".epub3",
+    audiobook: ".audiobook",
+    w3cAudiobook: ".lpf",
+};
+
+export const acceptedExtensionArray = ObjectValues(acceptedExtensionObject);
 
 export const acceptedExtension = (ext: string) =>
-    acceptedExtensionArray.reduce(
+    ObjectKeys(acceptedExtensionObject).reduce(
         (pv, cv) =>
-            pv || (new RegExp(`\\${cv}$`)).test(ext),
+            pv || isAcceptedExtension(cv, ext),
             false,
     );
+
+export const isAcceptedExtension = (key: keyof typeof acceptedExtensionObject, ext: string) =>
+    (new RegExp(`\\${acceptedExtensionObject[key]}$`)).test(ext);
