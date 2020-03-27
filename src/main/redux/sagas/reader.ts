@@ -43,6 +43,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
         minHeight: 600,
         webPreferences: {
             allowRunningInsecureContent: false,
+            backgroundThrottling: false,
             contextIsolation: false,
             devTools: IS_DEV,
             nodeIntegration: true,

@@ -31,6 +31,7 @@ export async function createWindow() {
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
+            backgroundThrottling: true,
             devTools: IS_DEV,
             nodeIntegration: true, // Required to use IPC
             webSecurity: true,
