@@ -24,6 +24,7 @@ import { v4 as uuidV4 } from "uuid";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
+import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
@@ -283,66 +284,6 @@ function convertW3CpublicationLinksToReadiumManifestLink(ressources: JsonMap) {
     }
 
     return linkArray;
-}
-
-function iso8601DurationsToSeconds(iso8601: string) {
-    // https://en.wikipedia.org/wiki/ISO_8601#Durations
-
-    const regexp = new RegExp("^P((\\d+)?Y)?((\\d+)?M)?((\\d+)?D)?(T)((\\d+)?H)?((\\d+)?M)?((\\d+)?S)?");
-
-    const isValid = regexp.test(iso8601);
-
-    let totalSecond = -1;
-
-    if (isValid) {
-        const time = 60;
-        const minute = time;
-        const hour = time * minute;
-        const day = 24 * hour;
-        const month = 30.416666666666668 * day; // average of days
-        const year = 12 * month;
-
-        const data = regexp.exec(iso8601);
-
-        if (data?.length) {
-
-            [totalSecond] = data.reduce(
-                (pv, cv, index) => {
-                    if (!index) {
-                        return pv;
-                    }
-
-                    let [_totalSecond, _timeFlag, _lastSecond] = pv;
-
-                    switch (cv) {
-                        case "Y":
-                            _totalSecond += _lastSecond * year;
-                            break;
-                        case "M":
-                            _totalSecond += _timeFlag ? _lastSecond * month : _lastSecond * minute;
-                            break;
-                        case "D":
-                            _totalSecond += _lastSecond * day;
-                            break;
-                        case "H":
-                            _totalSecond += _lastSecond * hour;
-                            break;
-                        case "S":
-                            _totalSecond += _lastSecond;
-                            break;
-                        case "T":
-                            _timeFlag = 1;
-                            break;
-                        default:
-                            _lastSecond = parseInt(cv, 10);
-                    }
-
-                    return [_totalSecond, _timeFlag, _lastSecond];
-                }, [0, 0, 0]);
-        }
-    }
-
-    return totalSecond;
 }
 
 export async function lpfToAudiobookConverter(lpfPath: string): Promise<string> {
