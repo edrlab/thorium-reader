@@ -16,7 +16,6 @@ import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import { streamToBufferPromise } from "r2-utils-js/dist/es6-es2015/src/_utils/stream/BufferUtils";
 import { IStreamAndLength } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zip";
 import { injectBufferInZip } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zipInjector";
-// import { pipeWith } from "ramda";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { JsonMap } from "readium-desktop/typings/json";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
