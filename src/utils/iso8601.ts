@@ -8,6 +8,7 @@
 export function iso8601DurationsToSeconds(iso8601: string): number {
     // https://en.wikipedia.org/wiki/ISO_8601#Durations
 
+    // https://regex101.com/r/qtDvmT/1
     const regexp = new RegExp("^P((\\d+)Y)?((\\d+)M)?((\\d+)D)?T((\\d+)H)?((\\d+)M)?((\\d+)S)?$");
 
     const isValid = regexp.test(iso8601);
