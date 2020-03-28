@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "fs";
-// import { remove } from "fs-extra";
+import { remove } from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import * as path from "path";
@@ -121,7 +121,7 @@ export class PublicationService {
                     publicationDocument = await this.importEpubFile(epubFilePath, hash, lcpHashedPassphrase);
 
                     if (isLPF) {
-                        // await remove(epubFilePath);
+                        await remove(epubFilePath);
                     }
                 }
                 this.store.dispatch(

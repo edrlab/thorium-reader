@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import { copy, ensureDir/*, move*/ } from "fs-extra";
+import { copy, ensureDir, move } from "fs-extra";
 import * as moment from "moment";
 import { basename, extname, join } from "path";
 import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
@@ -95,7 +95,7 @@ async function injectManifestToZip(audiobookPath: string, manifest: Buffer) {
             });
     });
 
-    // await move(audiobookPathTmp, audiobookPath, { overwrite: true });
+    await move(audiobookPathTmp, audiobookPath, { overwrite: true });
 }
 
 function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap) {
@@ -301,5 +301,5 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<string> 
     const manifestBuffer = Buffer.from(JSON.stringify(readiumManifest));
     await injectManifestToZip(lpfRenameInAudiobookPath, manifestBuffer);
 
-    return lpfPath; // lpfRenameInAudiobookPath;
+    return lpfRenameInAudiobookPath;
 }
