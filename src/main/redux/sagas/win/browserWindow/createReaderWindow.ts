@@ -12,14 +12,13 @@ import {
     trackBrowserWindow,
 } from "r2-navigator-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
 import { callTyped, putTyped } from "readium-desktop/common/redux/typed-saga";
-import { saveReaderWindowInDi } from "readium-desktop/main/di";
+import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import {
     _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-import { put } from "redux-saga/effects";
 
-import { winActions } from "../../../actions";
+import { winActions } from "readium-desktop/main/redux/actions";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
@@ -89,6 +88,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
                 label: "Inspect element",
             }]).popup({window: readerWindow});
         });
+
     }
 
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
@@ -183,7 +183,17 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     yield* callTyped(() => readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" }));
 
-    yield put(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
+    yield* putTyped(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
+    if (IS_DEV) {
+
+        readerWindow.webContents.on("did-finish-load", () => {
+
+            // the dispatching of 'openSuccess' action must be in the 'did-finish-load' event
+            // because webpack-dev-server automaticaly refresh the window.
+            const store = diMainGet("store");
+            store.dispatch(winActions.reader.openSucess.build(readerWindow, identifier));
+        });
+    }
 
     // Already done for primary library BrowserWindow
     // readerWindow.webContents.on("did-finish-load", () => {

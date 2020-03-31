@@ -8,39 +8,39 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions/";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { SagaIterator } from "redux-saga";
-import { all, call, put, take } from "redux-saga/effects";
-
-if (IS_DEV) {
-    console.log("automatic reload doesn't work. saga can't be synchronised with the main process");
-    // TODO
-    // fix it with IS_DEV info
-}
+import { all, call, fork, put, take, takeLeading } from "redux-saga/effects";
 
 function* winInitWatcher(): SagaIterator {
-    yield all({
-        win: take(winActions.initRequest.ID),
-        i18n: take(i18nActions.setLocale.ID),
-        keyboard: take(keyboardActions.setShortcuts.ID),
+
+    yield fork(function*() {
+        while (true) {
+            yield all({
+                win: take(winActions.initRequest.ID),
+                i18n: take(i18nActions.setLocale.ID),
+                keyboard: take(keyboardActions.setShortcuts.ID),
+            });
+            yield put(winActions.initSuccess.build());
+        }
     });
 
-    yield put(winActions.initSuccess.build());
 }
 
 function* winStartWatcher(): SagaIterator {
 
-    yield take(winActions.initSuccess.ID);
+    yield takeLeading(winActions.initSuccess.ID, () => {
 
-    // starting point to mounting React to the DOM
-    ReactDOM.render(
-        React.createElement(
-            diLibraryGet("react-library-app"),
-            null),
-        document.getElementById("app"),
-    );
+        // starting point to mounting React to the DOM
+        ReactDOM.render(
+            React.createElement(
+                diLibraryGet("react-library-app"),
+                null),
+            document.getElementById("app"),
+        );
+    });
+
 }
 
 export function* watchers() {

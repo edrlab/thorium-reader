@@ -10,7 +10,7 @@ import { BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
 import { defaultRectangle } from "readium-desktop/common/rectangle/window";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { saveLibraryWindowInDi } from "readium-desktop/main/di";
+import { diMainGet, saveLibraryWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -107,6 +107,13 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
                     .then((name: string) => debug("Added Extension: ", name))
                     .catch((err: Error) => debug("An error occurred: ", err));
             });
+
+            // the dispatching of 'openSuccess' action must be in the 'did-finish-load' event
+            // because webpack-dev-server automaticaly refresh the window.
+            const store = diMainGet("store");
+            const identifier = store.getState().win.session.library.identifier;
+            store.dispatch(winActions.library.openSucess.build(libWindow, identifier));
+
         });
 
         if (_VSCODE_LAUNCH !== "true") {
@@ -125,7 +132,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     );
     const readersArray = ObjectValues(readers);
     if (readersArray.length === 1) {
-            libWindow.hide();
+        libWindow.hide();
     }
 
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
@@ -142,8 +149,11 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     // the promise will resolve when the page has finished loading (see did-finish-load)
     // and rejects if the page fails to load (see did-fail-load).
 
-    const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
-    yield put(winActions.library.openSucess.build(libWindow, identifier));
+    if (!IS_DEV) {
+        // see 'did-finish-load' otherwise
+        const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
+        yield put(winActions.library.openSucess.build(libWindow, identifier));
+    }
 
     setMenu(libWindow, false);
 
