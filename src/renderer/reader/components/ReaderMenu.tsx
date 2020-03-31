@@ -8,6 +8,7 @@
 import classnames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
@@ -24,7 +25,6 @@ import { Unsubscribe } from "redux";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
-import { IReaderRootState } from "../redux/states";
 import { IReaderMenuProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
@@ -415,7 +415,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
-        pubId: state.reader.reader.publicationIdentifier,
+        pubId: state.reader.info.publicationIdentifier,
     };
 };
 
