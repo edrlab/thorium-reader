@@ -931,6 +931,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         const locator = this.state.currentLocation.locator;
+        const visibleBookmark = this.state.visibleBookmarkList;
 
         await this.checkBookmarks(); // updates this.state.visibleBookmarkList
 
@@ -938,7 +939,7 @@ class Reader extends React.Component<IProps, IState> {
 
             // "toggle" only if there is a single bookmark in the content visible inside the viewport
             // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
-            this.state.visibleBookmarkList.length === 1 &&
+            visibleBookmark.length === 1 &&
 
             // CTRL-B (keyboard interaction) and audiobooks:
             // do not toggle: never delete, just add current reading location to bookmarks
@@ -947,15 +948,14 @@ class Reader extends React.Component<IProps, IState> {
             (!locator.text?.highlight ||
 
             // "toggle" only if visible bookmark == current reading location
-            this.state.visibleBookmarkList[0].locator.href === locator.href &&
-            this.state.visibleBookmarkList[0].locator.locations.cssSelector === locator.locations.cssSelector &&
-            this.state.visibleBookmarkList[0].locator.text?.highlight === locator.text.highlight
+            visibleBookmark[0].locator.href === locator.href &&
+            visibleBookmark[0].locator.locations.cssSelector === locator.locations.cssSelector &&
+            visibleBookmark[0].locator.text?.highlight === locator.text.highlight
             )
         ;
 
         if (deleteAllVisibleBookmarks) {
-            for (const bookmark of this.state.visibleBookmarkList) {
-                //                this.props.deleteBookmark(bookmark.identifier);
+            for (const bookmark of visibleBookmark) {
                 try {
                     await apiAction("reader/deleteBookmark", bookmark.identifier);
                 } catch (e) {
@@ -966,34 +966,26 @@ class Reader extends React.Component<IProps, IState> {
             // we do not add the current reading location to bookmarks (just toggle)
             return;
         }
-        // } else if (this.state.currentLocation) {
-        //     //            this.props.addBookmark(queryParams.pubId, locator);
-        //     try {
-        //         await apiAction("reader/addBookmark", this.props.pubId, locator);
-
-        //     // we do not add the current reading location to bookmarks (just toggle)
-        //     return;
-        // }
 
         const addCurrentLocationToBookmarks =
-            !this.state.visibleBookmarkList.length ||
-            !this.state.visibleBookmarkList.find((b) => {
+            !visibleBookmark.length ||
+            !visibleBookmark.find((b) => {
                 const identical =
-                    b.locator.href === this.state.currentLocation.locator.href &&
-                    (b.locator.locations.progression === this.state.currentLocation.locator.locations.progression ||
-                        b.locator.locations.cssSelector && this.state.currentLocation.locator.locations.cssSelector &&
-                        b.locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector) &&
-                    b.locator.text?.highlight === this.state.currentLocation.locator.text?.highlight;
+                    b.locator.href === locator.href &&
+                    (b.locator.locations.progression === locator.locations.progression ||
+                        b.locator.locations.cssSelector && locator.locations.cssSelector &&
+                        b.locator.locations.cssSelector === locator.locations.cssSelector) &&
+                    b.locator.text?.highlight === locator.text?.highlight;
 
                 return identical;
             }) &&
-            (this.state.currentLocation.audioPlaybackInfo || this.state.currentLocation.locator.text?.highlight);
+            (this.state.currentLocation.audioPlaybackInfo || locator.text?.highlight);
 
         if (addCurrentLocationToBookmarks) {
 
             let name: string | undefined;
-            if (this.state.currentLocation.locator?.text?.highlight) {
-                name = this.state.currentLocation.locator.text.highlight;
+            if (locator?.text?.highlight) {
+                name = locator.text.highlight;
             } else if (this.state.currentLocation.selectionInfo?.cleanText) {
                 name = this.state.currentLocation.selectionInfo.cleanText;
             } else if (this.state.currentLocation.audioPlaybackInfo) {
@@ -1003,8 +995,9 @@ class Reader extends React.Component<IProps, IState> {
                 const timestamp = formatTime(this.state.currentLocation.audioPlaybackInfo.globalTime);
                 name = `${timestamp} (${percent}%)`;
             }
+
             try {
-                await apiAction("reader/addBookmark", this.props.pubId, this.state.currentLocation.locator, name);
+                await apiAction("reader/addBookmark", this.props.pubId, locator, name);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }
