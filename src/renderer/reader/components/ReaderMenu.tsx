@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import classnames from "classnames";
-import * as queryString from "query-string";
 import * as React from "react";
+import { connect } from "react-redux";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
@@ -24,6 +24,7 @@ import { Unsubscribe } from "redux";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
+import { IReaderRootState } from "../redux/states";
 import { IReaderMenuProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
@@ -40,7 +41,7 @@ interface IBaseProps extends TranslatorProps, IReaderMenuProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -78,7 +79,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             "reader/deleteBookmark",
             "reader/updateBookmark",
         ], () => {
-            apiAction("reader/findBookmarks", queryString.parse(location.search).pubId as string)
+            apiAction("reader/findBookmarks", this.props.pubId)
             .then((bookmarks) => this.setState({bookmarks}))
             .catch((error) => console.error("Error to fetch api reader/findBookmark", error));
         });
@@ -274,7 +275,35 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const { __ } = this.props;
         if (this.props.r2Publication && this.state.bookmarks) {
             const { bookmarkToUpdate } = this.state;
-            return this.state.bookmarks.map((bookmark, i) =>
+            return this.state.bookmarks.sort((a, b) => {
+                if (!a.locator || !b.locator) {
+                    return 0;
+                }
+                if (!a.locator.locations || !b.locator.locations) {
+                    return 0;
+                }
+                const aLink = this.props.r2Publication.Spine.find((link) => {
+                    return link.Href === a.locator.href;
+                });
+                const aLinkIndex = this.props.r2Publication.Spine.indexOf(aLink);
+                const bLink = this.props.r2Publication.Spine.find((link) => {
+                    return link.Href === b.locator.href;
+                });
+                const bLinkIndex = this.props.r2Publication.Spine.indexOf(bLink);
+                if (aLinkIndex > bLinkIndex) {
+                    return 1;
+                }
+                if (aLinkIndex < bLinkIndex) {
+                    return -1;
+                }
+                // aLinkIndex === bLinkIndex
+                if (a.locator.locations.progression > b.locator.locations.progression) {
+                    return 1;
+                } else if (a.locator.locations.progression < b.locator.locations.progression) {
+                    return -1;
+                }
+                return 0;
+            }).map((bookmark, i) =>
                 <div
                     className={styles.bookmarks_line}
                     key={i}
@@ -384,4 +413,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(ReaderMenu);
+const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
+    return {
+        pubId: state.reader.reader.publicationIdentifier,
+    };
+};
+
+export default connect(mapStateToProps)(withTranslator(ReaderMenu));

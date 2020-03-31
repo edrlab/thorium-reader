@@ -17,6 +17,7 @@ import {
 } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { formatTime } from "readium-desktop/common/utils/time";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -413,9 +414,9 @@ class Reader extends React.Component<IProps, IState> {
         ], this.findBookmarks);
 
         apiAction("publication/get", pubId, false)
-            .then((publicationView) => {
+            .then(async (publicationView) => {
                 this.setState({ publicationView });
-                this.loadPublicationIntoViewport(publicationView, locator);
+                await this.loadPublicationIntoViewport(publicationView, locator);
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
 
@@ -459,6 +460,7 @@ class Reader extends React.Component<IProps, IState> {
             handleIndexChange: this.handleIndexChange.bind(this),
             setSettings: this.setSettings,
             toggleMenu: this.handleSettingsClick,
+            r2Publication: this.state.r2Publication,
         };
 
         return (
@@ -492,7 +494,7 @@ class Reader extends React.Component<IProps, IState> {
                         handleFullscreenClick={this.handleFullscreenClick}
                         handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
-                        toggleBookmark={this.handleToggleBookmark}
+                        toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
                         isOnBookmark={this.state.visibleBookmarkList.length > 0}
                         readerOptionsProps={readerOptionsProps}
                         readerMenuProps={readerMenuProps}
@@ -525,6 +527,7 @@ class Reader extends React.Component<IProps, IState> {
                     currentLocation={this.state.currentLocation}
                     r2Publication={this.state.r2Publication}
                     handleLinkClick={this.handleLinkClick}
+                    goToLocator={this.goToLocator}
                 />
             </div>
         );
@@ -667,14 +670,14 @@ class Reader extends React.Component<IProps, IState> {
         this.handleSettingsClick();
     }
 
-    private onKeyboardBookmark = () => {
+    private onKeyboardBookmark = async () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardBookmark)");
             }
             return;
         }
-        this.handleToggleBookmark();
+        await this.handleToggleBookmark(true);
     }
 
     private onKeyboardFocusMain = () => {
@@ -919,34 +922,38 @@ class Reader extends React.Component<IProps, IState> {
 
         const newUrl = this.state.publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
-
-        // Example to pass a specific cssSelector:
-        // (for example to restore a bookmark)
-        // const locator: Locator = {
-        //     href: url,
-        //     locations: {
-        //         cfi: undefined,
-        //         cssSelector: CSSSELECTOR,
-        //         position: undefined,
-        //         progression: undefined,
-        //     }
-        // };
-        // handleLinkLocator(locator);
-
-        // Example to save a bookmark:
-        // const loc: LocatorExtended = getCurrentReadingLocation();
-        // Note: there is additional useful info about pagination
-        // which can be used to report progress info to the user
-        // if (loc.paginationInfo !== null) =>
-        // loc.paginationInfo.totalColumns (N = 1+)
-        // loc.paginationInfo.currentColumn [0, (N-1)]
-        // loc.paginationInfo.isTwoPageSpread (true|false)
-        // loc.paginationInfo.spreadIndex [0, (N/2)]
     }
 
-    private async handleToggleBookmark() {
-        await this.checkBookmarks();
-        if (this.state.visibleBookmarkList.length > 0) {
+    private async handleToggleBookmark(fromKeyboard?: boolean) {
+
+        if ( !this.state.currentLocation?.locator) {
+            return;
+        }
+
+        const locator = this.state.currentLocation.locator;
+
+        await this.checkBookmarks(); // updates this.state.visibleBookmarkList
+
+        const deleteAllVisibleBookmarks =
+
+            // "toggle" only if there is a single bookmark in the content visible inside the viewport
+            // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
+            this.state.visibleBookmarkList.length === 1 &&
+
+            // CTRL-B (keyboard interaction) and audiobooks:
+            // do not toggle: never delete, just add current reading location to bookmarks
+            !fromKeyboard &&
+            !this.state.currentLocation.audioPlaybackInfo &&
+            (!locator.text?.highlight ||
+
+            // "toggle" only if visible bookmark == current reading location
+            this.state.visibleBookmarkList[0].locator.href === locator.href &&
+            this.state.visibleBookmarkList[0].locator.locations.cssSelector === locator.locations.cssSelector &&
+            this.state.visibleBookmarkList[0].locator.text?.highlight === locator.text.highlight
+            )
+        ;
+
+        if (deleteAllVisibleBookmarks) {
             for (const bookmark of this.state.visibleBookmarkList) {
                 //                this.props.deleteBookmark(bookmark.identifier);
                 try {
@@ -955,11 +962,49 @@ class Reader extends React.Component<IProps, IState> {
                     console.error("Error to fetch api reader/deleteBookmark", e);
                 }
             }
-        } else if (this.state.currentLocation) {
-            const locator = this.state.currentLocation.locator;
-            //            this.props.addBookmark(queryParams.pubId, locator);
+
+            // we do not add the current reading location to bookmarks (just toggle)
+            return;
+        }
+        // } else if (this.state.currentLocation) {
+        //     //            this.props.addBookmark(queryParams.pubId, locator);
+        //     try {
+        //         await apiAction("reader/addBookmark", this.props.pubId, locator);
+
+        //     // we do not add the current reading location to bookmarks (just toggle)
+        //     return;
+        // }
+
+        const addCurrentLocationToBookmarks =
+            !this.state.visibleBookmarkList.length ||
+            !this.state.visibleBookmarkList.find((b) => {
+                const identical =
+                    b.locator.href === this.state.currentLocation.locator.href &&
+                    (b.locator.locations.progression === this.state.currentLocation.locator.locations.progression ||
+                        b.locator.locations.cssSelector && this.state.currentLocation.locator.locations.cssSelector &&
+                        b.locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector) &&
+                    b.locator.text?.highlight === this.state.currentLocation.locator.text?.highlight;
+
+                return identical;
+            }) &&
+            (this.state.currentLocation.audioPlaybackInfo || this.state.currentLocation.locator.text?.highlight);
+
+        if (addCurrentLocationToBookmarks) {
+
+            let name: string | undefined;
+            if (this.state.currentLocation.locator?.text?.highlight) {
+                name = this.state.currentLocation.locator.text.highlight;
+            } else if (this.state.currentLocation.selectionInfo?.cleanText) {
+                name = this.state.currentLocation.selectionInfo.cleanText;
+            } else if (this.state.currentLocation.audioPlaybackInfo) {
+                const percent = Math.floor(100 * this.state.currentLocation.audioPlaybackInfo.globalProgression);
+                // this.state.currentLocation.audioPlaybackInfo.globalTime /
+                // this.state.currentLocation.audioPlaybackInfo.globalDuration
+                const timestamp = formatTime(this.state.currentLocation.audioPlaybackInfo.globalTime);
+                name = `${timestamp} (${percent}%)`;
+            }
             try {
-                await apiAction("reader/addBookmark", this.props.pubId, locator);
+                await apiAction("reader/addBookmark", this.props.pubId, this.state.currentLocation.locator, name);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }

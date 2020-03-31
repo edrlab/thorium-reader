@@ -47,7 +47,7 @@ export async function cliImport(filePath: string[] | string) {
     const filePathArray = isArray(filePath) ? filePath : [filePath];
 
     for (const fp of filePathArray) {
-        const catalogService = diMainGet("catalog-service");
+        const catalogService = diMainGet("publication-service");
         if (!await catalogService.importEpubOrLcplFile(fp)) {
             returnValue = false;
         }

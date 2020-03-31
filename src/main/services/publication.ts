@@ -52,7 +52,7 @@ import { LcpManager } from "./lcp";
 const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
-export class CatalogService {
+export class PublicationService {
     @inject(diSymbolTable["lcp-secret-repository"])
     private readonly lcpSecretRepository!: LcpSecretRepository;
 
@@ -87,26 +87,51 @@ export class CatalogService {
         const ext = path.extname(filePath);
         const isLCPLicense = ext === ".lcpl"; // || (ext === ".part" && isLcpFile);
         try {
+
             const hash = isLCPLicense ? undefined : await extractCrc32OnZip(filePath);
             const publicationArray = hash ? await this.publicationRepository.findByHashId(hash) : undefined;
-            if (publicationArray && publicationArray.length) {
+
+            if (publicationArray?.length) {
+
                 debug("importEpubOrLcplFile", publicationArray, hash);
                 publicationDocument = publicationArray[0];
-                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                    this.translator.translate("message.import.alreadyImport", { title: publicationDocument.title })));
+                this.store.dispatch(
+                    toastActions.openRequest.build(
+                        ToastType.Success,
+                        this.translator.translate(
+                            "message.import.alreadyImport", { title: publicationDocument.title },
+                        ),
+                    ),
+                );
             } else {
+
                 if (isLCPLicense) {
                     publicationDocument = await this.importLcplFile(filePath, lcpHashedPassphrase);
+
                 } else if (/\.epub[3]?$/.test(ext) || /\.audiobook$/.test(ext)) { //  || (ext === ".part" && !isLcpFile)
                     publicationDocument = await this.importEpubFile(filePath, hash, lcpHashedPassphrase);
+
                 }
-                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                    this.translator.translate("message.import.success", { title: publicationDocument.title })));
+                this.store.dispatch(
+                    toastActions.openRequest.build(
+                        ToastType.Success,
+                        this.translator.translate(
+                            "message.import.success", { title: publicationDocument.title },
+                        ),
+                    ),
+                );
             }
         } catch (error) {
+
             debug("importEpubOrLcplFile (hash + import) fail with :" + filePath, error);
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                this.translator.translate("message.import.fail", { path: filePath })));
+            this.store.dispatch(
+                toastActions.openRequest.build(
+                    ToastType.Error,
+                    this.translator.translate(
+                        "message.import.fail", { path: filePath },
+                    ),
+                ),
+            );
         }
         return publicationDocument;
     }
@@ -218,8 +243,14 @@ export class CatalogService {
                 },
             );
         } catch (err) {
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                this.translator.translate("message.download.error", { title, err: `[${err}]` })));
+            this.store.dispatch(
+                toastActions.openRequest.build(
+                    ToastType.Error,
+                    this.translator.translate(
+                        "message.download.error", { title, err: `[${err}]` },
+                    ),
+                ),
+            );
 
             this.store.dispatch(downloadActions.error.build(download.srcUrl));
             throw err;
@@ -332,7 +363,11 @@ export class CatalogService {
                 }
                 if (res) {
                     const msg = this.lcpManager.convertUnlockPublicationResultToString(res);
-                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error, msg));
+                    this.store.dispatch(
+                        toastActions.openRequest.build(
+                            ToastType.Error, msg,
+                        ),
+                    );
                     throw new Error(`[${msg}] (${filePath})`);
                 }
             }
@@ -347,7 +382,11 @@ export class CatalogService {
                     // LICENSE_SIGNATURE_DATE_INVALID = 111
                     // LICENSE_SIGNATURE_INVALID = 112
                     const msg = this.lcpManager.convertUnlockPublicationResultToString(err);
-                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error, msg));
+                    this.store.dispatch(
+                        toastActions.openRequest.build(
+                            ToastType.Error, msg,
+                        ),
+                    );
                     throw new Error(`[${msg}] (${filePath})`);
                 }
             }
@@ -416,15 +455,22 @@ export class CatalogService {
         await this.lcpManager.injectLcplIntoZip(download.dstPath, r2LCP);
         const hash = await extractCrc32OnZip(download.dstPath);
         const publicationArray = await this.publicationRepository.findByHashId(hash);
-        if (publicationArray && publicationArray.length) {
+        if (publicationArray?.length) {
+
             debug("importLcplFile", publicationArray, hash);
             const pubDocument = publicationArray[0];
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                this.translator.translate("message.import.alreadyImport", { title: pubDocument.title })));
+            this.store.dispatch(
+                toastActions.openRequest.build(
+                    ToastType.Success,
+                    this.translator.translate(
+                        "message.import.alreadyImport", { title: pubDocument.title },
+                    ),
+                ),
+            );
             return pubDocument;
         }
 
-        const publicationDocument = await this.importEpubFile(download.dstPath, undefined, lcpHashedPassphrase);
+        const publicationDocument = await this.importEpubFile(download.dstPath, hash, lcpHashedPassphrase);
         return publicationDocument;
         // return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
     }
@@ -458,14 +504,14 @@ export class CatalogService {
             files: [],
             coverFile: null,
             customCover: null,
-            hash: hash ? hash : (hash === null ? undefined : await extractCrc32OnZip(filePath)),
+            hash: hash ? hash : await extractCrc32OnZip(filePath),
 
             lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
             lcpRightsCopies: 0,
         };
         this.lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
 
-        debug(pubDocument.hash);
+        debug(`publication document ID=${pubDocument.identifier} HASH=${pubDocument.hash}`);
 
         // Store publication on filesystem
         debug("[START] Store publication on filesystem", filePath);

@@ -915,25 +915,34 @@ input[type=radio] + label {
 	cursor: pointer;
 }
 
+/*
 #current {
 	position: relative;
 }
+*/
 
 #chapters_markers {
 	display: flex;
 	position: absolute;
 	width:100%;
-	height:15px;
-	margin-top:-2.5px;
+	height:16px;
+	margin-top:-3px;
 	top:0;
 
   &.more_information > span {
     border-right: 1px solid #929292;
+
+    &.currentSpineItem {
+      outline-color: grey;
+      outline-offset: 0px;
+      outline-style: solid;
+      outline-width: 1px;
+    }
   }
 
   & > span {
     flex-grow: 1;
-    padding: 2.5px 0;
+    padding: 3px 0;
 
     & > span {
       display: block;
@@ -950,7 +959,7 @@ input[type=radio] + label {
 
 #arrow_box {
 	position: absolute;
-  width: 190px;
+  width: 450px;
 	height: auto;
 	padding: 10px 0 5px 0;
 	margin: -76px 0 0 0;
@@ -987,6 +996,12 @@ input[type=radio] + label {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-weight: bold;
+
+    & em {
+      font-size: 80%;
+      font-weight: normal;
+    }
   }
 
   & p {

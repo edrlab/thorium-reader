@@ -33,46 +33,40 @@ export class CatalogListView extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const entriesEmpty = this.props.catalogEntries.filter((entry) => {
-            return entry.publicationViews.length > 0;
+        const catalogEntriesIsEmpty = this.props.catalogEntries.filter((entry) => {
+            return entry.totalCount > 0;
         }).length === 0;
         return (
             <>
             {
                 this.props.catalogEntries.map((entry, entryIndex: number) => {
-                    return entry.publicationViews.length > 0 ? (
+                    return entry.totalCount > 0 ? (
                         <section key={ entryIndex }>
                         {
-                            entryIndex <= 1 ? (
-                                <div className={styles.title}>
-                                    <h2>{ entry.title }</h2>
-                                </div>
-                            ) :
-                            (<></>)
+                            <div className={styles.title}>
+                                <h2>{ entry.title }</h2>
+                            </div>
                         }
                         {
-                            entryIndex <= 1 ? (
-                                <ul>
-                                    { entry.publicationViews.map((pub, i: number) => {
-                                        return (
-                                            <li className={styles.block_book_list} key={ i }>
-                                                <PublicationListElement
-                                                    publicationViewMaybeOpds={pub}
-                                                    menuContent={<CatalogMenu publicationView={pub}/>}
-                                                />
-                                            </li>
-                                        );
-                                    })
-                                    }
-                                </ul>
-                            ) :
-                            (<></>)
+                            <ul>
+                                { entry.publicationViews.map((pub, i: number) => {
+                                    return (
+                                        <li className={styles.block_book_list} key={ i }>
+                                            <PublicationListElement
+                                                publicationViewMaybeOpds={pub}
+                                                menuContent={<CatalogMenu publicationView={pub}/>}
+                                            />
+                                        </li>
+                                    );
+                                })
+                                }
+                            </ul>
                         }
                         </section>
                     ) : <div key={ entryIndex } aria-hidden="true" style={{display: "none"}}></div>;
             })
             }
-            { entriesEmpty &&
+            { catalogEntriesIsEmpty &&
                 <NoPublicationInfo />
             }
             </>

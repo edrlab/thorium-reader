@@ -64,10 +64,15 @@
 
 //     // Send reader information
 //     // even for library view , just it's undefined
+//     const readerActionsOpenSuccess = readerActions.openSuccess.build(state.reader.readers[appWindow.identifier]);
+//     if (readerActionsOpenSuccess?.payload?.reader?.browserWindow) {
+//         // IPC cannot serialize Javascript objects (breaking change in Electron 9+)
+//         delete readerActionsOpenSuccess.payload.reader.browserWindow;
+//     }
 //     webContents.send(syncIpc.CHANNEL, {
 //         type: syncIpc.EventType.MainAction,
 //         payload: {
-//             action: readerActions.openSuccess.build(state.reader.readers[appWindow.identifier]),
+//             action: readerActionsOpenSuccess,
 //         },
 //     } as syncIpc.EventPayload);
 

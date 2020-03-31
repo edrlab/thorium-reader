@@ -40,7 +40,9 @@
         "emptyTagList": "No tienes libros etiquetados.",
         "entry": {
             "continueReading": "Reanudar lectura",
-            "lastAdditions": "Añadidos recientemente"
+            "continueReadingAudioBooks": "Reanudar escuchando",
+            "lastAdditions": "Añadidos recientemente",
+            "lastAdditionsAudioBooks": "Audiolibros agregados recientemente"
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -158,11 +160,17 @@
         "shelf": "Estante"
     },
     "publication": {
+        "audio": {
+            "tracks": "Pistas"
+        },
         "cancelledLcp": "Este libro no se puede leer porque la licencia LCP se ha cancelado.",
         "certificateRevoked": "El certificado está revocado",
         "certificateSignatureInvalid": "La firma del certificado no es válida",
         "cover": {
             "img": "Imagen de portada"
+        },
+        "duration": {
+            "title": "Duración"
         },
         "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
         "lcpEnd": "Fin",

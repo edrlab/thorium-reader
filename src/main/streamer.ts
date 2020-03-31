@@ -173,7 +173,7 @@ const staticOptions = {
 };
 const MATHJAX_URL_PATH = "math-jax";
 streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(mathJaxPath, staticOptions));
-const transformer = (_publication: R2Publication, _link: Link, str: string): string => {
+const transformer = (_publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
 
     const store = diMainGet("store");
     // TODO

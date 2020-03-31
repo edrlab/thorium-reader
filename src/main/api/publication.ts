@@ -14,8 +14,8 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
-import { CatalogService } from "readium-desktop/main/services/catalog";
 import { LcpManager } from "readium-desktop/main/services/lcp";
+import { PublicationService } from "readium-desktop/main/services/publication";
 import { Store } from "redux";
 import { isArray } from "util";
 
@@ -34,8 +34,8 @@ export class PublicationApi implements IPublicationApi {
     @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
 
-    @inject(diSymbolTable["catalog-service"])
-    private readonly catalogService!: CatalogService;
+    @inject(diSymbolTable["publication-service"])
+    private readonly publicationService!: PublicationService;
 
     @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
@@ -53,7 +53,7 @@ export class PublicationApi implements IPublicationApi {
     }
 
     public async delete(identifier: string): Promise<void> {
-        await this.catalogService.deletePublication(identifier);
+        await this.publicationService.deletePublication(identifier);
 
         // dispatch action to update publication/lastReadingQueue reducer
         this.store.dispatch(publicationActions.deletePublication.build(identifier));
@@ -103,7 +103,7 @@ export class PublicationApi implements IPublicationApi {
 
             let publicationDocument;
             try {
-                publicationDocument = await this.catalogService.importPublicationFromLink(
+                publicationDocument = await this.publicationService.importPublicationFromLink(
                     link,
                     r2OpdsPublicationBase64,
                 );
@@ -130,7 +130,7 @@ export class PublicationApi implements IPublicationApi {
         }
 
         const publicationDocumentPromises = filePathArray.map(
-            (filePath) => this.catalogService.importEpubOrLcplFile(filePath),
+            (filePath) => this.publicationService.importEpubOrLcplFile(filePath),
         );
         const publicationDocumentPromisesAll = await PromiseAllSettled(publicationDocumentPromises);
 
@@ -161,7 +161,7 @@ export class PublicationApi implements IPublicationApi {
 
     public async exportPublication(publicationView: PublicationView): Promise<void> {
         if (publicationView) {
-            this.catalogService.exportPublication(publicationView);
+            await this.publicationService.exportPublication(publicationView);
         }
     }
 }

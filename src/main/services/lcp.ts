@@ -322,7 +322,7 @@ export class LcpManager {
                 }
                 if (renewLink.Type !== ContentType.Lsd) {
                     if (renewLink.Type === ContentType.Html) {
-                        shell.openExternal(renewLink.Href);
+                        await shell.openExternal(renewLink.Href);
                         return newPubDocument;
                     }
                     debug(`renewLink.Type: ${renewLink.Type}`);
@@ -430,7 +430,7 @@ export class LcpManager {
                 }
                 if (returnLink.Type !== ContentType.Lsd) {
                     if (returnLink.Type === ContentType.Html || returnLink.Type === ContentType.Xhtml) {
-                        shell.openExternal(returnLink.Href);
+                        await shell.openExternal(returnLink.Href);
                         return newPubDocument;
                     }
                     debug(`returnLink.Type: ${returnLink.Type}`);

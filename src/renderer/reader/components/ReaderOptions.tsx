@@ -64,11 +64,14 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, readerConfig, toggleMenu } = this.props;
+        const { __, readerConfig, toggleMenu, r2Publication } = this.props;
 
         if (!readerConfig) {
             return <></>;
         }
+
+        const isAudioBook = r2Publication?.Metadata?.RDFType &&
+            /http[s]?:\/\/schema\.org\/Audiobook$/.test(r2Publication.Metadata.RDFType);
 
         const sections: SectionData[] = [
             {
@@ -80,22 +83,27 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                 content: this.textContent(),
             },
             {
-                title: __("reader.settings.display"),
-                content: this.displayContent(),
-            },
-            {
-                title: __("reader.settings.spacing"),
-                content: this.spacingContent(),
-            },
-            {
-                title: "MathML",
-                content: this.mathJax(),
-            },
-            {
                 title: __("reader.settings.save.title"),
                 content: this.saveConfig(),
             },
         ];
+
+        if (!isAudioBook) {
+            sections.push(...[
+                {
+                    title: __("reader.settings.display"),
+                    content: this.displayContent(),
+                },
+                {
+                    title: __("reader.settings.spacing"),
+                    content: this.spacingContent(),
+                },
+                {
+                    title: "MathML",
+                    content: this.mathJax(),
+                },
+            ]);
+        }
 
         return (
             <SideMenu

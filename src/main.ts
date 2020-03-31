@@ -55,6 +55,8 @@ const main = async (flushSession: boolean = false) => {
     // protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions
     initSessions();
 
+    app.allowRendererProcessReuse = true;
+
     try {
         const store = await createStoreFromDi();
 
@@ -89,6 +91,7 @@ const main = async (flushSession: boolean = false) => {
 };
 
 if (_VSCODE_LAUNCH === "true") {
+    // tslint:disable-next-line: no-floating-promises
     main();
 } else {
     cli(main);

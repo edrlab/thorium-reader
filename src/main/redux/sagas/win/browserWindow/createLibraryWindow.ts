@@ -42,6 +42,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
+            backgroundThrottling: true,
             devTools: IS_DEV,
             nodeIntegration: true, // Required to use IPC
             webSecurity: true,
@@ -51,13 +52,46 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     });
 
     if (IS_DEV) {
-        libWindow.webContents.on("context-menu", (_ev, params) => {
+        const wc = libWindow.webContents;
+        wc.on("context-menu", (_ev, params) => {
             const { x, y } = params;
+            const openDevToolsAndInspect = () => {
+                const devToolsOpened = () => {
+                    wc.off("devtools-opened", devToolsOpened);
+                    wc.inspectElement(x, y);
+
+                    setTimeout(() => {
+                        if (wc.isDevToolsOpened()) {
+                            wc.devToolsWebContents.focus();
+                        }
+                    }, 500);
+                };
+                wc.on("devtools-opened", devToolsOpened);
+                wc.openDevTools({ activate: true, mode: "detach" });
+            };
             Menu.buildFromTemplate([{
-                label: "Inspect element",
                 click: () => {
-                    libWindow.webContents.inspectElement(x, y);
+                    const wasOpened = wc.isDevToolsOpened();
+                    if (!wasOpened) {
+                        openDevToolsAndInspect();
+                    } else {
+                        if (!wc.isDevToolsFocused()) {
+                            // wc.toggleDevTools();
+                            wc.closeDevTools();
+
+                            setImmediate(() => {
+                                openDevToolsAndInspect();
+                            });
+                        } else {
+                            // right-click context menu normally occurs when focus
+                            // is in BrowserWindow / WebView's WebContents,
+                            // but some platforms (e.g. MacOS) allow mouse interaction
+                            // when the window is in the background.
+                            wc.inspectElement(x, y);
+                        }
+                    }
                 },
+                label: "Inspect element",
             }]).popup({window: libWindow});
         });
 
@@ -77,7 +111,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
         if (_VSCODE_LAUNCH !== "true") {
             setTimeout(() => {
-                libWindow.webContents.openDevTools({ mode: "detach" });
+                libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
             }, 2000);
         }
     }
@@ -114,13 +148,13 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     setMenu(libWindow, false);
 
     // Redirect link to an external browser
-    const handleRedirect = (event: Event, url: string) => {
+    const handleRedirect = async (event: Event, url: string) => {
         if (url === libWindow.webContents.getURL()) {
             return;
         }
 
         event.preventDefault();
-        shell.openExternal(url);
+        await shell.openExternal(url);
     };
 
     libWindow.webContents.on("will-navigate", handleRedirect);
