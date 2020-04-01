@@ -10,6 +10,9 @@ import { app } from "electron";
 import * as Ramda from "ramda";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { LocatorType } from "readium-desktop/common/models/locator";
+import {
+    LocatorExtendedWithLocatorOnly,
+} from "readium-desktop/common/redux/states/locatorInitialState";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
@@ -71,7 +74,7 @@ async function absorbLocatorRepositoryToReduxState() {
                 },
                 reduxState: {
                     config: readerConfigInitialState,
-                    locator: locator.locator,
+                    locator: LocatorExtendedWithLocatorOnly(locator.locator),
                     info: {
                         publicationIdentifier: locator.publicationIdentifier,
                         manifestUrl: undefined,

@@ -8,14 +8,15 @@
 import {
     IEventPayload_R2_EVENT_CLIPBOARD_COPY,
 } from "r2-navigator-js/dist/es6-es2015/src/electron/common/events";
+import { ReaderMode } from "readium-desktop/common/models/reader";
 import { LocatorView } from "readium-desktop/common/views/locator";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
-import { ReaderMode } from "readium-desktop/common/models/reader";
 
 export interface IReaderApi {
     // setLastReadingLocation: (publicationIdentifier: string, locator: R2Locator) => Promise<LocatorView>;
-    // getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorView>;
+    getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorExtended | undefined>;
     findBookmarks: (publicationIdentifier: string) => Promise<LocatorView[]>;
     updateBookmark: (
         identifier: string,
@@ -37,7 +38,7 @@ export interface IReaderApi {
 
 export interface IReaderModuleApi {
     // "reader/setLastReadingLocation": IReaderApi["setLastReadingLocation"];
-    // "reader/getLastReadingLocation": IReaderApi["getLastReadingLocation"];
+    "reader/getLastReadingLocation": IReaderApi["getLastReadingLocation"];
     "reader/findBookmarks": IReaderApi["findBookmarks"];
     "reader/updateBookmark": IReaderApi["updateBookmark"];
     "reader/addBookmark": IReaderApi["addBookmark"];

@@ -22,6 +22,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 @injectable()
@@ -71,18 +72,23 @@ export class ReaderApi implements IReaderApi {
     //     return this.locatorViewConverter.convertDocumentToView(savedDoc);
     // }
 
-    // public async getLastReadingLocation(publicationIdentifier: string): Promise<LocatorView> {
-    //     const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-    //         publicationIdentifier,
-    //         LocatorType.LastReadingLocation,
-    //     );
+    public async getLastReadingLocation(publicationIdentifier: string): Promise<LocatorExtended | undefined> {
+        // const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
+        //     publicationIdentifier,
+        //     LocatorType.LastReadingLocation,
+        // );
 
-    //     if (docs.length === 0) {
-    //         return null;
-    //     }
+        // if (docs.length === 0) {
+        //     return null;
+        // }
 
-    //     return this.locatorViewConverter.convertDocumentToView(docs[0]);
-    // }
+        // return this.locatorViewConverter.convertDocumentToView(docs[0]);
+
+        const state = this.store.getState();
+        const locator = state.win.registry.reader[publicationIdentifier]?.reduxState.locator;
+
+        return locator;
+    }
 
     public async findBookmarks(publicationIdentifier: string): Promise<LocatorView[]> {
         const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(

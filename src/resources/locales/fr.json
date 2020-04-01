@@ -192,6 +192,9 @@
         "licenseOutOfDate": "License expirée",
         "licenseSignatureDateInvalid": "Date de signature de license invalide",
         "licenseSignatureInvalid": "Signature de license invalide",
+        "progression": {
+            "title": "Progression"
+        },
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
         "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retournée.",

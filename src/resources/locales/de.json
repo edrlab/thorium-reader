@@ -192,6 +192,9 @@
         "licenseOutOfDate": "",
         "licenseSignatureDateInvalid": "",
         "licenseSignatureInvalid": "",
+        "progression": {
+            "title": "Fortschreiten"
+        },
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "",

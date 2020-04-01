@@ -180,6 +180,9 @@
         "licenseOutOfDate": "La licencia está desactualizada",
         "licenseSignatureDateInvalid": "La fecha de la firma de la licencia no es válida",
         "licenseSignatureInvalid": "La firma de la licencia no es válida",
+        "progression": {
+            "title": "Progresión"
+        },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro no se puede leer porque la licencia LCP se ha devuelto.",

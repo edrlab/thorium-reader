@@ -413,6 +413,7 @@ declare namespace typed_i18n {
   readonly "certificateSignatureInvalid": string,
   readonly "cover": { readonly "img": string },
   readonly "duration": { readonly "title": string },
+  readonly "progression": { readonly "title": string },
   readonly "expiredLcp": string,
   readonly "lcpEnd": string,
   readonly "lcpRightsCopy": string,
@@ -438,6 +439,8 @@ declare namespace typed_i18n {
   (_: "publication.cover.img", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };
   (_: "publication.duration.title", __?: {}): string;
+  (_: "publication.progression", __?: {}): { readonly "title": string };
+  (_: "publication.progression.title", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;

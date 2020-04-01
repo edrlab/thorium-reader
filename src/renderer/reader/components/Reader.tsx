@@ -416,7 +416,7 @@ class Reader extends React.Component<IProps, IState> {
         apiAction("publication/get", pubId, false)
             .then(async (publicationView) => {
                 this.setState({ publicationView });
-                await this.loadPublicationIntoViewport(publicationView, locator);
+                await this.loadPublicationIntoViewport(publicationView, locator.locator);
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
 
@@ -854,7 +854,7 @@ class Reader extends React.Component<IProps, IState> {
         //        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
         // apiAction("reader/setLastReadingLocation", this.props.pubId, loc.locator)
         //     .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
-        this.props.setLocator(loc.locator);
+        this.props.setLocator(loc);
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
@@ -1147,7 +1147,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 },
             ));
         },
-        setLocator: (locator: R2Locator) => {
+        setLocator: (locator: LocatorExtended) => {
             dispatch(readerLocalActionSetLocator.build(locator));
         },
         setConfig: (config: ReaderConfig) => {

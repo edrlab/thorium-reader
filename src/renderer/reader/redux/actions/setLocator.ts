@@ -5,16 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Locator } from "@r2-shared-js/models/locator";
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "READER_SET_LOCATOR_IN_RENDERER";
 
 // tslint:disable-next-line: no-empty-interface
-interface IPayload extends Locator {
+interface IPayload extends LocatorExtended {
 }
 
-export function build(locator: Locator):
+export function build(locator: LocatorExtended):
     Action<typeof ID, IPayload> {
 
     return {

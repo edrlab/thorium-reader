@@ -9,9 +9,8 @@ import classNames from "classnames";
 import * as React from "react";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import { formatTime_ } from "readium-desktop/common/utils/time";
+import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
-import { ITimeDuration } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
 import Cover from "../../Cover";
@@ -20,6 +19,9 @@ import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
+
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { apiAction } from "readium-desktop/renderer/library/apiAction";
 
 export interface IProps {
     publication: TPublication;
@@ -32,7 +34,7 @@ export interface IProps {
 }
 
 const Duration = (props: {
-    duration: ITimeDuration;
+    duration: number;
     __: I18nTyped;
 }) => {
 
@@ -42,26 +44,64 @@ const Duration = (props: {
         return <></>;
     }
 
-    const { hours = 0, minutes = 0, seconds = 0 } = duration;
-
-    const sentence = formatTime_(hours, minutes, seconds);
+    const sentence = formatTime(duration);
 
     return (
         sentence
-        ? <>
-            <span>
-                {
-                    `${__("publication.duration.title")}: `
-                }
-            </span>
-            <i className={styles.allowUserSelect}>
-                {
-                    sentence
-                }
-            </i>
-            <br />
-        </>
-        : <></>);
+            ? <>
+                <span>
+                    {
+                        `${__("publication.duration.title")}: `
+                    }
+                </span>
+                <i className={styles.allowUserSelect}>
+                    {
+                        sentence
+                    }
+                </i>
+                <br />
+            </>
+            : <></>);
+};
+
+const Progression = (props: {
+    pubId: string;
+    __: I18nTyped;
+}) => {
+
+    const { __ } = props;
+    const [locatorExt, setLocatorExt] = React.useState<LocatorExtended>(undefined);
+
+    React.useEffect(() => {
+        apiAction("reader/getLastReadingLocation", props.pubId)
+            .then((_locator) => setLocatorExt(_locator))
+            .catch((err) => console.error("Error to fetch api reader/getLastReadingLocation", err));
+    }, [locatorExt]);
+
+    if (locatorExt?.locator?.locations?.progression && locatorExt?.audioPlaybackInfo) {
+
+        const percent = Math.round(locatorExt.locator.locations.position * 100);
+        const time = Math.round(locatorExt.audioPlaybackInfo.globalTime);
+        const duration = Math.round(locatorExt.audioPlaybackInfo.globalDuration);
+        const sentence = `${percent}% (${formatTime(time)} / ${formatTime(duration)})`;
+
+        return (
+            <>
+                <span>
+                    {
+                        `${__("publication.progression.title")}: `
+                    }
+                </span>
+                <i className={styles.allowUserSelect}>
+                    {
+                        sentence
+                    }
+                </i>
+                <br />
+            </>
+        );
+    }
+    return (<></>);
 };
 
 export const PublicationInfoContent: React.FC<IProps> = (props) => {
@@ -142,27 +182,34 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                                         }
                                     </span>
                                     <FormatPublicationLanguage publication={publication} __={__} />
-                                <br />
-                            </> : undefined
+                                    <br />
+                                </> : undefined
                         }
                         {
                             publication.numberOfPages ?
-                            <>
-                                <span>
-                                    {
-                                        `${__("catalog.numberOfPages")}: `
-                                    }
-                                </span>
-                                <i className={styles.allowUserSelect}>
-                                    {
-                                        publication.numberOfPages
-                                    }
-                                </i>
-                                <br />
+                                <>
+                                    <span>
+                                        {
+                                            `${__("catalog.numberOfPages")}: `
+                                        }
+                                    </span>
+                                    <i className={styles.allowUserSelect}>
+                                        {
+                                            publication.numberOfPages
+                                        }
+                                    </i>
+                                    <br />
 
-                            </> : undefined
+                                </> : undefined
                         }
-                        <Duration __={__} duration={publication.duration}></Duration>
+                        <Duration
+                            __={__}
+                            duration={publication.duration}
+                        />
+                        <Progression
+                            __={__}
+                            pubId={publication.identifier}
+                        />
                         {
                             publication.nbOfTracks ?
                                 <>
