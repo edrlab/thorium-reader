@@ -32,7 +32,8 @@ declare namespace typed_i18n {
     readonly "title": string,
     readonly "undo": string
   },
-  readonly "quit": string
+  readonly "quit": string,
+  readonly "hide": string
 };
   (_: "app.edit", __?: {}): {
   readonly "copy": string,
@@ -50,6 +51,7 @@ declare namespace typed_i18n {
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
   (_: "app.edit.undo", __?: {}): string; (_: "app.quit", __?: {}): string;
+  (_: "app.hide", __?: {}): string;
   (_: "catalog", __?: {}): {
   readonly "about": { readonly "button": string, readonly "title": string },
   readonly "addBookToLib": string,

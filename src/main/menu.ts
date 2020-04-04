@@ -172,6 +172,7 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                 },
                 {
                     role: "hide",
+                    label: translator.translate("app.hide", { appName: capitalizedAppName }),
                 },
                 {
                     role: "hideothers",
@@ -193,7 +194,7 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                     role: "quit",
                     // accelerator: "Command+Q",
                     // click: () => { app.quit(); },
-                    label: translator.translate("app.quit"),
+                    label: translator.translate("app.quit", { appName: capitalizedAppName }),
                 },
             ] as Electron.MenuItemConstructorOptions[],
         },

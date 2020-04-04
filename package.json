@@ -72,7 +72,7 @@
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
   "build": {
-    "productName": "thorium",
+    "productName": "Thorium",
     "appId": "io.github.edrlab.thorium",
     "dmg": {
       "contents": [

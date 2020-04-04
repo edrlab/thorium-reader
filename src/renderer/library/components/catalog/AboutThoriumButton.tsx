@@ -9,12 +9,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { TDispatch } from "readium-desktop/typings/redux";
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -37,7 +39,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <section id={styles.aboutThoriumButton}>
-                <h2>{__("catalog.about.title")}</h2>
+                <h2>{__("catalog.about.title", { appName: capitalizedAppName })}</h2>
                 <p>{`v${_APP_VERSION}`}</p>
                 <button onClick={this.props.displayPublicationInfo}>
                     {__("catalog.about.button")}
