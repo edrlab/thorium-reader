@@ -21,12 +21,13 @@
             "title": "Édition",
             "undo": "Annuler"
         },
-        "quit": "Quitter Thorium"
+        "hide": "Cacher {{appName}}",
+        "quit": "Quitter {{appName}}"
     },
     "catalog": {
         "about": {
             "button": "Plus d'informations",
-            "title": "A propos de Thorium"
+            "title": "A propos de {{appName}}"
         },
         "addBookToLib": "Importer",
         "addTags": "Ajouter un tag",

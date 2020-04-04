@@ -79,10 +79,14 @@ function computeReadiumCssJsonMessage(
     debug("######");
     // debug(r2Publication.findFromInternal("zip"));
     debug(sessionInfo);
-    const sessionInfoStr = Buffer.from(sessionInfo, "base64").toString("utf-8");
-    debug(sessionInfoStr);
-    const sessionInfoJson = JSON.parse(sessionInfoStr);
-    debug(sessionInfoJson);
+    // safeguard, just in case this applies to some unprocessed iframes,
+    // i.e. not the original installNavigatorDOM() call
+    if (sessionInfo) {
+        const sessionInfoStr = Buffer.from(sessionInfo, "base64").toString("utf-8");
+        debug(sessionInfoStr);
+        const sessionInfoJson = JSON.parse(sessionInfoStr);
+        debug(sessionInfoJson);
+    }
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
@@ -171,7 +175,7 @@ const staticOptions = {
 };
 const MATHJAX_URL_PATH = "math-jax";
 streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(mathJaxPath, staticOptions));
-const transformer = (_publication: R2Publication, _link: Link, str: string): string => {
+const transformer = (_publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
 
     const store = diMainGet("store");
     const settings = store.getState().reader.config;

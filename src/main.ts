@@ -63,6 +63,8 @@ debug(process.versions);
 function main() {
     initSessions();
 
+    app.allowRendererProcessReuse = true;
+
     // Quit when all windows are closed.
     app.on("window-all-closed", () => {
         // At the moment, there are no menu items to revive / re-open windows,

@@ -21,12 +21,13 @@
             "title": "Bearbeiten",
             "undo": "Rückgängig"
         },
-        "quit": "Beenden"
+        "hide": "Ausblenden {{appName}}",
+        "quit": "Beenden {{appName}}"
     },
     "catalog": {
         "about": {
-            "button": "",
-            "title": ""
+            "button": "Mehr Informationen",
+            "title": "Über {{appName}}"
         },
         "addBookToLib": "Import",
         "addTags": "Ein Tag hinzufügen",

@@ -21,12 +21,13 @@
             "title": "Edit",
             "undo": "Undo"
         },
-        "quit": "Quit Thorium"
+        "hide": "Hide {{appName}}",
+        "quit": "Quit {{appName}}"
     },
     "catalog": {
         "about": {
             "button": "More information",
-            "title": "About Thorium"
+            "title": "About {{appName}}"
         },
         "addBookToLib": "Import",
         "addTags": "Add a tag",
