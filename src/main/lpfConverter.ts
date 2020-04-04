@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app } from "electron";
 import { copy, ensureDir, move } from "fs-extra";
 import * as moment from "moment";
+import * as os from "os";
 import { basename, extname, join } from "path";
 import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { Metadata } from "r2-shared-js/dist/es6-es2015/src/models/metadata";
@@ -18,25 +18,28 @@ import { IStreamAndLength } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zip
 import { injectBufferInZip } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zipInjector";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { JsonMap } from "readium-desktop/typings/json";
+import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { v4 as uuidV4 } from "uuid";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
-import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
 
 async function copyAndRenameLpfFile(lpfPath: string): Promise<string> {
 
-    const userPath = app.getPath("userData");
-    const dirPath = join(userPath, "lpfconverter");
+    const rand = Math.floor(Math.random() * 1000);
+    const tmpPathName = `${_APP_NAME}-lpfconverter`;
+    const tmpPath = os.tmpdir();
+    const dirPath = join(tmpPath, tmpPathName);
     const lpfBasename = basename(lpfPath);
-    const audiobookBasename = `${lpfBasename}${acceptedExtensionObject.audiobook}`;
+    const audiobookBasename = `${lpfBasename}.${rand}${acceptedExtensionObject.audiobook}`;
     const audiobookPath = join(dirPath, audiobookBasename);
 
-    debug(`USERPATH=${userPath} LPFPATH=${lpfPath} AUDIOBOOKPATH=${audiobookPath}`);
+    debug(`TMPPATH=${tmpPath} LPFPATH=${lpfPath} AUDIOBOOKPATH=${audiobookPath}`);
 
     // Ensures that the directory exists.
     await ensureDir(dirPath);
@@ -187,8 +190,8 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
         }
     }
     {
-        const ressources = w3cManifest.resources as JsonMap;
-        const links = convertW3CpublicationLinksToReadiumManifestLink(ressources);
+        const resources = w3cManifest.resources as JsonMap;
+        const links = convertW3CpublicationLinksToReadiumManifestLink(resources);
         if (links.length) {
             publication.Links = links;
         }
@@ -238,7 +241,12 @@ function convertW3CpublicationLinksToReadiumManifestLink(ressources: JsonMap) {
                                 link.TypeLink = "audio/wav";
                                 break;
                             case ".opus":
+                            case ".ogg":
+                            case ".oga":
                                 link.TypeLink = "audio/ogg";
+                                break;
+                            case ".m4a":
+                                link.TypeLink = "audio/m4a";
                                 break;
                             default:
                                 link.TypeLink = ""; // typeLink required
@@ -297,7 +305,7 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<string> 
 
     const readiumManifest = w3cPublicationManifestToReadiumPublicationManifest(w3cManifest);
 
-    const manifestBuffer = Buffer.from(JSON.stringify(readiumManifest));
+    const manifestBuffer = Buffer.from(JSON.stringify(readiumManifest, null, 4));
     await injectManifestToZip(lpfRenameInAudiobookPath, manifestBuffer);
 
     return lpfRenameInAudiobookPath;

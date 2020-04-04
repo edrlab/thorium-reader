@@ -9,7 +9,7 @@ import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-valu
 
 export const acceptedExtensionObject = {
     lcpLicence: ".lcpl",
-    epub2: ".epub",
+    epub: ".epub",
     epub3: ".epub3",
     audiobook: ".audiobook",
     w3cAudiobook: ".lpf",
