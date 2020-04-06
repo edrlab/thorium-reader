@@ -9,6 +9,7 @@ import { dialog } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
+import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ContentType } from "readium-desktop/utils/content-type";
@@ -78,14 +79,14 @@ export class PublicationStorage {
         const root = this.buildPublicationPath(identifier);
         const pathEpub = path.join(
             root,
-            `book.epub`,
+            `book${acceptedExtensionObject.epub}`,
         );
         if (fs.existsSync(pathEpub)) {
             return pathEpub;
         }
         return path.join(
             root,
-            `book.audiobook`,
+            `book${acceptedExtensionObject.audiobook}`,
         );
     }
 
@@ -114,9 +115,9 @@ export class PublicationStorage {
         srcPath: string,
     ): Promise<File> {
         const extension = path.extname(srcPath);
-        const isAudioBook = /\.audiobook$/.test(extension);
-        const ext = isAudioBook ? "audiobook" : "epub";
-        const filename = `book.${ext}`;
+        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension);
+        const ext = isAudioBook ? acceptedExtensionObject.audiobook : acceptedExtensionObject.epub;
+        const filename = `book${ext}`;
         const dstPath = path.join(
             this.buildPublicationPath(identifier),
             filename,

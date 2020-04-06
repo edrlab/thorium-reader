@@ -12,7 +12,7 @@ import { remove } from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import * as path from "path";
-import { isAcceptedExtension } from "readium-desktop/common/extension";
+import { acceptedExtensionObject, isAcceptedExtension } from "readium-desktop/common/extension";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -167,7 +167,10 @@ export class PublicationService {
             throw new Error(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
         }
 
-        const ext = isLcpFile ? ".lcpl" : (isEpubFile ? ".epub" : (isAudioBookPacked ? ".audiobook" : ".unknown"));
+        const ext = isLcpFile ? acceptedExtensionObject.lcpLicence :
+            (isEpubFile ? acceptedExtensionObject.epub :
+            (isAudioBookPacked ? acceptedExtensionObject.audiobook :
+            ".unknown"));
         // start the download service
         const download = this.downloader.addDownload(link.url, ext);
 
@@ -412,7 +415,9 @@ export class PublicationService {
                 if (link.Rel === "publication") {
                     const isEpubFile = link.Type === ContentType.Epub;
                     const isAudioBookPacked = link.Type === ContentType.AudioBookPacked;
-                    const ext = isEpubFile ? ".epub" : (isAudioBookPacked ? ".audiobook" : ".unknown");
+                    const ext = isEpubFile ? acceptedExtensionObject.epub :
+                        (isAudioBookPacked ? acceptedExtensionObject.audiobook :
+                        ".unknown");
 
                     download = this.downloader.addDownload(link.Href, ext);
                     title = link.Title ?? download.srcUrl;

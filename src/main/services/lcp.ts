@@ -10,6 +10,8 @@ import { shell } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
+import * as path from "path";
+import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions/";
@@ -22,6 +24,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/content-type";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
@@ -69,13 +72,16 @@ export class LcpManager {
 
     public async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
 
+        const extension = path.extname(epubPath);
+        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension);
+
         const epubPathTMP = epubPath + ".tmplcpl";
         await new Promise((resolve, reject) => {
             injectBufferInZip(
                 epubPath,
                 epubPathTMP,
                 Buffer.from(lcpStr, "utf8"),
-                "META-INF/license.lcpl",
+                (!isAudioBook ? "META-INF/" : "") + "license.lcpl",
                 (e: any) => {
                     debug("injectLcplIntoZip_ - injectBufferInZip ERROR!");
                     debug(e);
@@ -904,6 +910,11 @@ export class LcpManager {
                     resolve();
                 }
             };
+            // Uncomment this to bypass LSD checks (just in case of huge network timeouts during tests)
+            if (IS_DEV && process.env.LCP_SKIP_LSD) {
+                await callback(undefined);
+                return;
+            }
             try {
                 await launchStatusDocumentProcessing(
                     r2Publication.LCP,
