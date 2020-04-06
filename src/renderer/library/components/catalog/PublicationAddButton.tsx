@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -38,17 +39,17 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <div className={ styles.addEpubButton }>
+            <div className={styles.addEpubButton}>
                 <input
                     id="epubInput"
                     type="file"
                     aria-label={__("accessibility.importFile")}
-                    onChange={ this.importFile }
+                    onChange={this.importFile}
                     multiple
-                    accept=".lcpl, .epub, .epub3, .audiobook"
+                    accept={acceptedExtensionArray.join(", ")}
                 />
                 <label htmlFor="epubInput">
-                    <SVG svg={ PlusIcon } title={__("header.importTitle")}/>
+                    <SVG svg={PlusIcon} title={__("header.importTitle")} />
                 </label>
             </div>
         );
