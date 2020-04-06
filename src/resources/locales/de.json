@@ -21,6 +21,7 @@
             "title": "Bearbeiten",
             "undo": "Rückgängig"
         },
+        "hide": "Ausblenden {{appName}}",
         "quit": "Beenden",
         "session": {
             "exit": {
@@ -37,8 +38,8 @@
     },
     "catalog": {
         "about": {
-            "button": "",
-            "title": ""
+            "button": "Mehr Informationen",
+            "title": "Über {{appName}}"
         },
         "addBookToLib": "Import",
         "addTags": "Ein Tag hinzufügen",

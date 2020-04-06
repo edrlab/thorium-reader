@@ -32,6 +32,7 @@ declare namespace typed_i18n {
     readonly "title": string,
     readonly "undo": string
   },
+  readonly "hide": string,
   readonly "quit": string,
   readonly "session": {
     readonly "exit": {
@@ -58,7 +59,8 @@ declare namespace typed_i18n {
   (_: "app.edit.redo", __?: {}): string;
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
-  (_: "app.edit.undo", __?: {}): string; (_: "app.quit", __?: {}): string;
+  (_: "app.edit.undo", __?: {}): string; (_: "app.hide", __?: {}): string;
+  (_: "app.quit", __?: {}): string;
   (_: "app.session", __?: {}): {
   readonly "exit": {
     readonly "askBox": {
@@ -413,7 +415,6 @@ declare namespace typed_i18n {
   readonly "certificateSignatureInvalid": string,
   readonly "cover": { readonly "img": string },
   readonly "duration": { readonly "title": string },
-  readonly "progression": { readonly "title": string },
   readonly "expiredLcp": string,
   readonly "lcpEnd": string,
   readonly "lcpRightsCopy": string,
@@ -422,6 +423,7 @@ declare namespace typed_i18n {
   readonly "licenseOutOfDate": string,
   readonly "licenseSignatureDateInvalid": string,
   readonly "licenseSignatureInvalid": string,
+  readonly "progression": { readonly "title": string },
   readonly "renewButton": string,
   readonly "returnButton": string,
   readonly "returnedLcp": string,
@@ -439,8 +441,6 @@ declare namespace typed_i18n {
   (_: "publication.cover.img", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };
   (_: "publication.duration.title", __?: {}): string;
-  (_: "publication.progression", __?: {}): { readonly "title": string };
-  (_: "publication.progression.title", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
@@ -449,6 +449,8 @@ declare namespace typed_i18n {
   (_: "publication.licenseOutOfDate", __?: {}): string;
   (_: "publication.licenseSignatureDateInvalid", __?: {}): string;
   (_: "publication.licenseSignatureInvalid", __?: {}): string;
+  (_: "publication.progression", __?: {}): { readonly "title": string };
+  (_: "publication.progression.title", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;
   (_: "publication.returnButton", __?: {}): string;
   (_: "publication.returnedLcp", __?: {}): string;

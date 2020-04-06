@@ -59,7 +59,7 @@ function computeReadiumCssJsonMessage(
     sessionInfo: string | undefined,
 ): IEventPayload_R2_EVENT_READIUMCSS {
 
-    const winId = Buffer.from(sessionInfo, "base64").toString("utf-8");
+    const winId = Buffer.from(sessionInfo || "", "base64").toString("utf-8");
     debug("winId:", winId);
 
     let settings: ReaderConfig;
