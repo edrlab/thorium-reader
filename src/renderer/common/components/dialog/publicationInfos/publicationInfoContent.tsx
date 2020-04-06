@@ -69,14 +69,14 @@ const Progression = (props: {
     __: I18nTyped;
 }) => {
 
-    const { __ } = props;
+    const { __, pubId } = props;
     const [locatorExt, setLocatorExt] = React.useState<LocatorExtended>(undefined);
 
     React.useEffect(() => {
-        apiAction("reader/getLastReadingLocation", props.pubId)
+        apiAction("reader/getLastReadingLocation", pubId)
             .then((_locator) => setLocatorExt(_locator))
             .catch((err) => console.error("Error to fetch api reader/getLastReadingLocation", err));
-    }, [locatorExt]);
+    }, [pubId]);
 
     if (locatorExt?.locator?.locations?.progression && locatorExt?.audioPlaybackInfo) {
 
