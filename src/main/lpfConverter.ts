@@ -138,11 +138,11 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
                 !metadataPropertyExceptionInW3cManifest.includes(key),
         );
         if (additionalKey.length) {
-           publication.Metadata.AdditionalJSON = {};
-           additionalKey.forEach(
-               (key) =>
-                   publication.Metadata.AdditionalJSON[key] = w3cManifest[key],
-           );
+            publication.Metadata.AdditionalJSON = {};
+            additionalKey.forEach(
+            (key) =>
+                publication.Metadata.AdditionalJSON[key] = w3cManifest[key],
+            );
         }
     }
     {
