@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
@@ -35,6 +36,16 @@ class NoPublicationInfo extends React.Component<IProps, undefined> {
                     <p>{__("catalog.noPublicationHelpL1")}</p>
                     <p>{__("catalog.noPublicationHelpL2")}</p>
                     <p>{__("catalog.noPublicationHelpL3")}</p>
+                    <p>{__("catalog.noPublicationHelpL4")}</p>
+                    {
+                        acceptedExtensionArray.map(
+                            (ext) => <span>
+                                {
+                                    ext
+                                }
+                            </span>,
+                        )
+                    }
                 </div>
             </>
         );

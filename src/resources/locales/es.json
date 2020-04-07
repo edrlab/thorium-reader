@@ -49,9 +49,10 @@
         "lang": "Idioma",
         "moreInfo": "Más información",
         "myBooks": "Mis libros",
-        "noPublicationHelpL1": "Suelta ficheros EPUB en esta ventana",
+        "noPublicationHelpL1": "Dejar la publicación",
         "noPublicationHelpL2": "o usa el botón \"+\" de arriba.",
         "noPublicationHelpL3": "Se admiten ficheros protegidos LCP.",
+        "noPublicationHelpL4": "Extensiones soportadas:",
         "numberOfPages": "Número de páginas",
         "opds": {
             "info": {
