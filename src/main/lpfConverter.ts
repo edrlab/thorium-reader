@@ -140,8 +140,8 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
         if (additionalKey.length) {
             publication.Metadata.AdditionalJSON = {};
             additionalKey.forEach(
-            (key) =>
-                publication.Metadata.AdditionalJSON[key] = w3cManifest[key],
+                (key) =>
+                    publication.Metadata.AdditionalJSON[key] = w3cManifest[key],
             );
         }
     }
