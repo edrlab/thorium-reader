@@ -85,7 +85,7 @@
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
         "import": "Wil je deze bestanden echt importeren :",
-        "importError": "er is een fout opgetreden, controleerje bestandsextensie (.epub / .lcpl / .audiobook)",
+        "importError": "er is een fout opgetreden, controleerje bestandsextensie ({{acceptedExtension}})",
         "no": "Nee",
         "renew": "Wil je de licentie voor deze publicatie echt vernieuwen?",
         "return": "Wil je de licentie voor deze publicatie echt inleveren?",
