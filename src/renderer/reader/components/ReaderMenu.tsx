@@ -189,7 +189,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                 }
                             data-href={link.Href}
                         >
-                            <span>{link.Title}</span>
+                            <span>{link.Title ? link.Title : `#${i} ${link.Href}`}</span>
                         </a>
                     </li>
                 );
@@ -234,7 +234,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                         }
                                     data-href={link.Href}
                                 >
-                                    <span>{link.Title}</span>
+                                    <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
                                 </a>
                             </div>
 
@@ -261,7 +261,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                         }
                                     data-href={link.Href}
                                 >
-                                    <span>{link.Title}</span>
+                                    <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
                                 </a>
                             </div>
                         )}
