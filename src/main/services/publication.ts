@@ -163,14 +163,16 @@ export class PublicationService {
         const isLcpFile = link.type === ContentType.Lcp;
         const isEpubFile = link.type === ContentType.Epub;
         const isAudioBookPacked = link.type === ContentType.AudioBookPacked;
-        if (!isLcpFile && !isEpubFile && !isAudioBookPacked) {
+        const isAudioBookPackedLcp = link.type === ContentType.AudioBookPackedLcp;
+        if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp) {
             throw new Error(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
         }
 
         const ext = isLcpFile ? acceptedExtensionObject.lcpLicence :
             (isEpubFile ? acceptedExtensionObject.epub :
             (isAudioBookPacked ? acceptedExtensionObject.audiobook :
-            ".unknown"));
+                (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
+                    ".unknown")));
         // start the download service
         const download = this.downloader.addDownload(link.url, ext);
 
@@ -415,9 +417,11 @@ export class PublicationService {
                 if (link.Rel === "publication") {
                     const isEpubFile = link.Type === ContentType.Epub;
                     const isAudioBookPacked = link.Type === ContentType.AudioBookPacked;
+                    const isAudioBookPackedLcp = link.Type === ContentType.AudioBookPackedLcp;
                     const ext = isEpubFile ? acceptedExtensionObject.epub :
                         (isAudioBookPacked ? acceptedExtensionObject.audiobook :
-                        ".unknown");
+                            (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
+                                ".unknown"));
 
                     download = this.downloader.addDownload(link.Href, ext);
                     title = link.Title ?? download.srcUrl;

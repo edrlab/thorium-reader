@@ -73,7 +73,9 @@ export class LcpManager {
     public async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
 
         const extension = path.extname(epubPath);
-        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension);
+        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension) ||
+            new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`).test(extension) ||
+            new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
 
         const epubPathTMP = epubPath + ".tmplcpl";
         await new Promise((resolve, reject) => {

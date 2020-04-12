@@ -68,7 +68,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const { moreInfo } = this.state;
 
-        const spineTitle = currentLocation.locator.title;
+        const spineTitle = currentLocation.locator.title || currentLocation.locator.href;
         let afterCurrentLocation = false;
 
         return !this.props.fullscreen && (
