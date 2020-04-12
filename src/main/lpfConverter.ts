@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { copy, ensureDir, move } from "fs-extra";
+import { contentType } from "mime-types";
 import * as moment from "moment";
 import * as os from "os";
 import { basename, extname, join } from "path";
@@ -17,14 +18,14 @@ import { streamToBufferPromise } from "r2-utils-js/dist/es6-es2015/src/_utils/st
 import { IStreamAndLength } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zip";
 import { injectBufferInZip } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zipInjector";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
+import { deepClone } from "readium-desktop/utils/deepClone";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { v4 as uuidV4 } from "uuid";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
-import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
@@ -100,108 +101,108 @@ async function injectManifestToZip(audiobookPath: string, manifest: Buffer) {
     await move(audiobookPathTmp, audiobookPath, { overwrite: true });
 }
 
+const getAndDeleteKeyInObject = <O = any>(obj: O) => (key: keyof typeof obj) => {
+    const tmp = obj[key];
+    delete obj[key];
+    return tmp;
+};
+
 function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap) {
+
+    const pop = getAndDeleteKeyInObject(w3cManifest);
 
     const publication = new R2Publication();
 
     publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
+    pop("@context");
+
     publication.Metadata = new Metadata();
 
-    if (w3cManifest.conformsTo !== "https://www.w3/org/TR/audiobooks/") {
-        debug(`not an audiobook W3C publication manifest. conformsTo=${w3cManifest.conformsTo}`);
-
-        publication.Metadata.RDFType = "https://schema.org/CreativeWork";
-    } else {
-        publication.Metadata.RDFType = "https://schema.org/Audiobook";
-    }
-
-    publication.Metadata.Identifier = `${w3cManifest.id || ""}` || `${w3cManifest.url || ""}` || uuidV4();
-
     {
-        // Every metadata property found in the W3C manifest is copied as-is into the Readium manifest,
-        // with the following exceptions:
+        const conformsTo = pop("conformsTo");
+        if (conformsTo !== "https://www.w3/org/TR/audiobooks/") {
+            debug(`not an audiobook W3C publication manifest. conformsTo=${w3cManifest.conformsTo}`);
 
-        const metadataPropertyExceptionInW3cManifest = [
-            "@context",
-            "conformsTo",
-            "name",
-            "duration",
-            "inLanguage",
-            "datePublished",
-            "dateModified",
-            "resources",
-            "readingOrder",
-        ];
-
-        const additionalKey = Object.keys(w3cManifest).filter(
-            (key) =>
-                !metadataPropertyExceptionInW3cManifest.includes(key),
-        );
-        if (additionalKey.length) {
-            publication.Metadata.AdditionalJSON = {};
-            additionalKey.forEach(
-                (key) =>
-                    publication.Metadata.AdditionalJSON[key] = w3cManifest[key],
-            );
+            publication.Metadata.RDFType = "https://schema.org/CreativeWork";
+        } else {
+            publication.Metadata.RDFType = "https://schema.org/Audiobook";
         }
     }
     {
-        const name = w3cManifest.name;
+
+        publication.Metadata.Identifier = `${pop("id") || ""}` || `${pop("url") || ""}` || uuidV4();
+    }
+    {
+
+        interface IW3cName {
+            language?: string;
+            value?: string;
+        }
+
+        const name = pop("name");
         if (typeof name === "string") {
             publication.Metadata.Title = `${w3cManifest.name}`;
 
         } else if (typeof name === "object") {
-            const nameArray = Array.isArray(name) ? name : [name];
-            const titleObj = nameArray.reduce(
-                (pv: any, cv: any) =>
-                    cv.value && cv.language ? pv[`${cv.language}`] = `${cv.value}` : pv,
-                {});
-            if (ObjectKeys(titleObj).length) {
-                publication.Metadata.Title = titleObj;
+            const nameObjArray = (Array.isArray(name) ? name : [name]) as IW3cName[];
+            const nameMap = nameObjArray.reduce(
+                (pv, cv: IW3cName) =>
+                    cv.value && cv.language ? pv.set(`${cv.language}`, `${cv.value}`) : pv,
+                new Map<string, string>());
+            if (nameMap.size) {
+                publication.Metadata.Title = Object.fromEntries(nameMap);
             }
 
         }
     }
     {
-        const language = w3cManifest.inLanguage;
-        if (typeof language === "string") {
-            publication.Metadata.Language = [language];
+        const language = pop("inLanguage");
+        const langArray = (Array.isArray(language) ? language : [language]);
+        const langArrayFiltered = langArray.filter((l) => typeof l === "string") as string[];
+        if (langArrayFiltered.length) {
+            publication.Metadata.Language = langArrayFiltered;
         }
     }
     {
-        const raw = `${w3cManifest.datePublished || ""}`;
+        const raw = `${pop("datePublished") || ""}`;
         const date = moment(raw);
         if (date.isValid()) {
             publication.Metadata.PublicationDate = date.toDate();
         }
     }
     {
-        const raw = `${w3cManifest.dateModified || ""}`;
+        const raw = `${pop("dateModified") || ""}`;
         const date = moment(raw);
         if (date.isValid()) {
             publication.Metadata.Modified = date.toDate();
         }
     }
     {
-        const iso8601 = `${w3cManifest.duration || ""}`;
+        const iso8601 = `${pop("duration") || ""}`;
         const second = iso8601DurationsToSeconds(iso8601);
         if (second > 0) {
             publication.Metadata.Duration = second;
         }
     }
     {
-        const resources = w3cManifest.resources as JsonMap;
+        const resources = pop("resources") as JsonMap;
         const links = convertW3CpublicationLinksToReadiumManifestLink(resources);
         if (links.length) {
             publication.Links = links;
         }
     }
     {
-        const readingOrder = w3cManifest.readingOrder as JsonMap;
+        const readingOrder = pop("readingOrder") as JsonMap;
         const links = convertW3CpublicationLinksToReadiumManifestLink(readingOrder);
         if (links.length) {
             publication.Spine = links;
             // https://github.com/readium/r2-shared-js/blob/develop/src/models/publication.ts#L63
+        }
+    }
+    {
+
+        if (Object.keys(w3cManifest).length) {
+            publication.Metadata.AdditionalJSON = deepClone(w3cManifest);
         }
     }
 
@@ -233,24 +234,7 @@ function convertW3CpublicationLinksToReadiumManifestLink(ressources: JsonMap) {
 
                     } else {
                         const ext = extname(link.Href);
-                        switch (ext) {
-                            case ".mp3":
-                                link.TypeLink = "audio/mpeg";
-                                break;
-                            case ".wav":
-                                link.TypeLink = "audio/wav";
-                                break;
-                            case ".opus":
-                            case ".ogg":
-                            case ".oga":
-                                link.TypeLink = "audio/ogg";
-                                break;
-                            case ".m4a":
-                                link.TypeLink = "audio/m4a";
-                                break;
-                            default:
-                                link.TypeLink = ""; // typeLink required
-                        }
+                        link.TypeLink = contentType(ext) || ""; // typeLink required;
                     }
                 }
                 {
