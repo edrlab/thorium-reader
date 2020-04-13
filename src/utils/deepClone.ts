@@ -5,12 +5,30 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export const deepClone = (_o: any): any =>
-        _o && typeof _o === "object"
-            ? Array.isArray(_o)
-                ? _o.map((_value) => deepClone(_value))
-                : Object.fromEntries(
-                    Object.entries(_o).map(
-                        ([_key, _value]) =>
-                            [_key, deepClone(_value)]))
-            : _o;
+/**
+ *
+ * deep clone the value passed in parameter
+ * @param o anything: array, object, litteral, null, undefined
+ * @returns cloned value
+ *
+ * @description clone Map and Set with their default copy constructor (not a real deep copy)
+ */
+export const deepClone = (o: any): any =>
+    o && typeof o === "object"
+        ? Array.isArray(o)
+            ? o.map((value) => deepClone(value))
+            : o instanceof Date
+                ? new Date(o)
+                : o instanceof Map // not a real deep copy
+                    ? new Map(o)
+                    : o instanceof Set // not a real deep copy
+                        ? new Set(o)
+                        : [
+                            ...Object.keys(o),
+                            ...Object.getOwnPropertySymbols(o),
+                        ].reduce(
+                            (obj, key) => ({
+                                ...obj,
+                                [key]: deepClone(o[key]),
+                            }), {})
+        : o;

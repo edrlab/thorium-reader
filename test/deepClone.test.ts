@@ -135,12 +135,14 @@ test("should clone object with `date` value", () => {
     // @ts-ignore
     const object: any = { key: new Date() };
 
-    const expected = { key: {}};
+    const expected = object;
     const actual = deepClone(object);
+    const clone = JSON.parse(JSON.stringify(object));
     const test = isCloned(expected, actual);
 
     console.log(actual.key, typeof actual.key, actual.key instanceof Date);
     console.log(object.key, typeof object.key, object.key instanceof Date);
+    console.log(clone.key, typeof clone.key, clone.key instanceof Date);
 
     expect(expected).toStrictEqual(actual);
     expect(test).toBe(true);
@@ -164,6 +166,52 @@ test("should clone object with `all` value", () => {
     const expected = object;
     const actual = deepClone(object);
     const test = isCloned(expected, actual);
+
+    expect(expected).toEqual(actual);
+    expect(test).toBe(true);
+});
+
+test("should clone object with `all` value", () => {
+
+    const object: any = {
+        a: null,
+        b: undefined,
+        c: true,
+        d: 12,
+        e: "hi",
+        f: [1, 2, { b: 4 }],
+        g: [1, 2, { b: 4 }],
+        [Symbol("abc")]: 3,
+        m: new Map([[1, 2]]),
+        nm: new Map([[1, new Map([[2, 3]])]]),
+        s: new Set([1, 2]),
+        ns: new Set([{ a: 1 }, 2]),
+        [123]: { [123]: ["k", false] },
+        $: new Date(),
+        // @ts-ignore
+        [new Map([["@", "#"]])]: () => 3,
+        go(where = "house") {
+          return `where: ${where}`;
+        },
+        any: {
+          f1: {
+            f2: {
+              f3: {
+                f4: Symbol("abc"),
+              },
+            },
+          },
+        },
+      };
+
+    const expected = object;
+    const actual = deepClone(object);
+    const test = isCloned(expected, actual);
+
+    console.log((object.nm as Map<number, Map<number, number>>).get(1));
+    console.log(
+        (actual.nm as Map<number, Map<number, number>>).get(1)
+        === (object.nm as Map<number, Map<number, number>>).get(1));
 
     expect(expected).toEqual(actual);
     expect(test).toBe(true);
