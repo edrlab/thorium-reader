@@ -5,21 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-const fromEntries = (it: Array<[string, any]>): any =>
-    it.reduce<any>(
-        (pv, [_key, _value]) =>
-            pv[_key] = typeof _value === "object" ? fromEntries(_value) : _value,
-        {});
+const objFromEntries = Object.fromEntries;
 
-const ObjFromEntries = Object.fromEntries || fromEntries;
+export const deepClone = (o: any): any => {
 
-export const deepClone = (o: unknown): any => {
+    const match = (_o: any): any =>
+        _o && typeof _o === "object"
+            ? Array.isArray(_o)
+                ? _cloneArr(_o)
+                : objFromEntries(_cloneObj(Object.entries(_o)))
+            : _o;
 
-    const _clone = (_o: unknown): Array<[string, unknown]> =>
-        Object.entries(_o).map<[string, unknown]>(
-            ([_key, _value]) =>
-                typeof _value === "object" ? [_key, _clone(_value)] : [_key, _value]);
+    const _cloneArr = (_a: any[]): any[] => _a.map((_value) => match(_value));
 
-    const entries = _clone(o);
-    return ObjFromEntries(entries);
+    const _cloneObj = (_o: Array<[string, any]>): Array<[string, any]> =>
+        _o.map(([_key, _value]) => [_key, match(_value)]);
+
+    return match(o);
 };
