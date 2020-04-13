@@ -20,7 +20,6 @@ import { injectBufferInZip } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zi
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
-import { deepClone } from "readium-desktop/utils/deepClone";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { v4 as uuidV4 } from "uuid";
 
@@ -202,7 +201,7 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
     {
 
         if (Object.keys(w3cManifest).length) {
-            publication.Metadata.AdditionalJSON = deepClone(w3cManifest);
+            publication.Metadata.AdditionalJSON = w3cManifest;
         }
     }
 
