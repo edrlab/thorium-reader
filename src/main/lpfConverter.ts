@@ -275,13 +275,14 @@ function convertW3CpublicationLinksToReadiumManifestLink(ressources: JsonMap) {
                         link.Duration = second;
                     }
                 }
-                {
-                    const alternate = ressource.alternate;
-                    const children = convertW3CpublicationLinksToReadiumManifestLink(alternate);
-                    if (children.length) {
-                        link.Children = children;
-                    }
-                }
+                // not yet implemented in r2-shared
+                // {
+                //     const alternate = ressource.alternate;
+                //     const children = convertW3CpublicationLinksToReadiumManifestLink(alternate);
+                //     if (children.length) {
+                //         link.Alternate = children;
+                //     }
+                // }
 
                 linkArray.push(link);
             });
