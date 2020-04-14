@@ -11,22 +11,22 @@ import { contentType } from "mime-types";
 import * as moment from "moment";
 import * as os from "os";
 import { basename, extname, join } from "path";
-import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
-import { Metadata } from "r2-shared-js/dist/es6-es2015/src/models/metadata";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
-import { streamToBufferPromise } from "r2-utils-js/dist/es6-es2015/src/_utils/stream/BufferUtils";
-import { IStreamAndLength } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zip";
-import { injectBufferInZip } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zipInjector";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { v4 as uuidV4 } from "uuid";
 
+import { TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { Metadata } from "@r2-shared-js/models/metadata";
+import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+import { Subject } from "@r2-shared-js/models/metadata-subject";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { Link } from "@r2-shared-js/models/publication-link";
+import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
+import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
-import { IStringMap } from "r2-shared-js/dist/es6-es2015/src/models/metadata-multilang";
-import { Subject } from "r2-shared-js/dist/es6-es2015/src/models/metadata-subject";
+import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
