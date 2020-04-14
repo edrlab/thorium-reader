@@ -55,8 +55,6 @@
     "skipLibCheck": false,
     "module": "commonjs",
     "lib": [
-      "es2019",
-      "es2018",
       "es2017",
       "es6",
       "dom",
