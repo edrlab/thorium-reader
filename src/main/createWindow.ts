@@ -100,7 +100,9 @@ export async function createWindow() {
 
         if (_VSCODE_LAUNCH !== "true") {
             setTimeout(() => {
-                mainWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+                if (!mainWindow.isDestroyed()) {
+                    mainWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+                }
             }, 2000);
         }
     }

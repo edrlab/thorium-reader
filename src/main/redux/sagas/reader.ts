@@ -115,7 +115,9 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
 
         if (_VSCODE_LAUNCH !== "true") {
             setTimeout(() => {
-                readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+                if (!readerWindow.isDestroyed()) {
+                    readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+                }
             }, 2000);
         }
     }
