@@ -65,6 +65,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return (<></>);
         }
 
+        const isAudioBook = r2Publication?.Metadata?.RDFType &&
+            /http[s]?:\/\/schema\.org\/Audiobook$/.test(r2Publication.Metadata.RDFType);
+
         const { __ } = this.props;
         const { moreInfo } = this.state;
 
@@ -73,6 +76,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         return !this.props.fullscreen && (
             <div className={styles.reader_footer}>
+                {!isAudioBook &&
                 <div className={styles.arrows}>
                     <button onClick={() => this.props.navLeftOrRight(true)}>
                         <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
@@ -81,7 +85,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
                     </button>
                 </div>
-                <div className={styles.track_reading_wrapper}>
+                }
+                <div className={classNames(styles.track_reading_wrapper,
+                    isAudioBook ? styles.track_reading_wrapper_noArrows : undefined)}>
+
                     { // <div id={styles.current}></div>
                     <div id={styles.track_reading}>
                         <div id={styles.chapters_markers}
