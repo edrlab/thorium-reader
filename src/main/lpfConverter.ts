@@ -25,6 +25,8 @@ import { v4 as uuidV4 } from "uuid";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
+import { IStringMap } from "r2-shared-js/dist/es6-es2015/src/models/metadata-multilang";
+import { Subject } from "r2-shared-js/dist/es6-es2015/src/models/metadata-subject";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
@@ -128,36 +130,51 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
         }
     }
     {
-
         publication.Metadata.Identifier = `${pop("id") || ""}` || `${pop("url") || ""}` || uuidV4();
     }
     {
-
         interface IW3cName {
             language?: string;
             value?: string;
         }
 
         const name = pop("name");
-        if (typeof name === "string") {
-            publication.Metadata.Title = `${w3cManifest.name}`;
-
-        } else if (typeof name === "object") {
+        if (typeof name === "object") {
             const nameObjArray = (Array.isArray(name) ? name : [name]) as IW3cName[];
-            const nameMap = nameObjArray.reduce(
+            const nameObj = nameObjArray.reduce(
                 (pv, cv: IW3cName) =>
-                    cv.value && cv.language ? pv.set(`${cv.language}`, `${cv.value}`) : pv,
-                new Map<string, string>());
-            if (nameMap.size) {
-                publication.Metadata.Title = Object.fromEntries(nameMap);
-            }
+                    cv.language ? { ...pv, [cv.language]: `${cv.value || ""}` } : pv,
+                {} as IStringMap);
+            publication.Metadata.Title = nameObj; // required
+        } else {
+            const nameStr = `${name || ""}`;
+            publication.Metadata.Title = nameStr; // required
+        }
+    }
+    {
+        const value = `${pop("dcterms:description") || ""}`;
+        if (value) {
+            publication.Metadata.Description = value;
+        }
+    }
+    {
+        const value = pop("dcterms:subject");
+        const valueArray = (Array.isArray(value) ? value : [value]) as any[];
+        const subjectArray = valueArray.reduce<Subject[]>((pv, str) => {
+            const sub = new Subject();
 
+            sub.Name = `${str || ""}`;
+
+            return sub.Name ? [...pv, sub] : pv;
+        }, new Array<Subject>());
+        if (subjectArray.length) {
+            publication.Metadata.Subject = subjectArray;
         }
     }
     {
         const language = pop("inLanguage");
         const langArray = (Array.isArray(language) ? language : [language]);
-        const langArrayFiltered = langArray.filter((l) => typeof l === "string") as string[];
+        const langArrayFiltered = langArray.filter((l) => l && typeof l === "string") as string[];
         if (langArrayFiltered.length) {
             publication.Metadata.Language = langArrayFiltered;
         }
