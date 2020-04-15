@@ -17,7 +17,7 @@ import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { v4 as uuidV4 } from "uuid";
 
-import { AnyJson, TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Metadata } from "@r2-shared-js/models/metadata";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Subject } from "@r2-shared-js/models/metadata-subject";
@@ -137,7 +137,9 @@ interface IW3cEntities {
     identifier?: string[] | string;
 }
 
-function convertW3cEntitiesToReadiumManifestContributors(entitiesRaw: AnyJson): Contributor[] {
+function convertW3cEntitiesToReadiumManifestContributors(
+    entitiesRaw: IW3cEntities | IW3cEntities[] | string,
+): Contributor[] {
 
     const entitiesArray = (Array.isArray(entitiesRaw) ? entitiesRaw : [entitiesRaw]) as Array<IW3cEntities | string>;
     const contributorArray = entitiesArray
@@ -184,7 +186,9 @@ interface IW3cLinkedResources {
     alternate?: IW3cLinkedResources | IW3cLinkedResources[];
 }
 
-function convertW3CpublicationLinksToReadiumManifestLink(lnRaw: JsonMap): Link[] {
+function convertW3CpublicationLinksToReadiumManifestLink(
+    lnRaw: IW3cLinkedResources | IW3cLinkedResources[] | string,
+): Link[] {
 
     const linkArray = (Array.isArray(lnRaw) ? lnRaw : [lnRaw]) as Array<IW3cLinkedResources | string>;
     const linkMap = linkArray
@@ -236,14 +240,13 @@ function convertW3CpublicationLinksToReadiumManifestLink(lnRaw: JsonMap): Link[]
                             rwpmLink.Duration = second;
                         }
                     }
-                    // not yet implemented in r2-shared
-                    // {
-                    //     const alternate = w3cLink.alternate;
-                    //     const children = convertW3CpublicationLinksToReadiumManifestLink(alternate);
-                    //     if (children.length) {
-                    //         RWPMlink.Alternate = children;
-                    //     }
-                    // }
+                    {
+                        const alternate = w3cLink.alternate;
+                        const children = convertW3CpublicationLinksToReadiumManifestLink(alternate);
+                        if (children.length) {
+                            rwpmLink.Alternate = children;
+                        }
+                    }
                 } else {
 
                     rwpmLink.Href = `${w3cLink || ""}`;
