@@ -157,59 +157,40 @@ const analyticsRepository = new AnalyticsRepository(analyticsDb);
 var baseUrl = ""
 if (_NODE_ENV === "development") {
     var PouchDBAuth = require("pouchdb-node")
-    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/"
+    baseUrl = "https://ereader-analytics-api.azurewebsites.net/"
+    //baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/"
 }
 else {
     var PouchDBAuth = require("pouchdb-node").default
-    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/"
+    baseUrl = "https://ereader-analytics-api.azurewebsites.net/"
 }
 
 var PouchDBFind = require("pouchdb-find")
 PouchDBAuth.plugin(PouchDBFind.default ? PouchDBFind.default : PouchDBFind);
 
 let analyticsLoginInfoDb = new PouchDBAuth(path.join(rootDbPath, "couchdb-info"));
-//var couchGeneratorBaseUrl = "http://couch-user-generator.brett.dev.simpleconnections.ca/"
-
-//var couchGeneratorBaseUrl = "http://couchdb-device-init.azurewebsites.net/"
-//var couchDbUrl = "http://metrics.ekitabu.com:5984/"
-
 
 async function getCouchPassword(username : string, handlePassword : any , docToUpdate : any = null, dbToUpdate : any = null) 
 {
     try {
-
-        const http = require('http');
-        
         var password = 'no password set'
         var url = baseUrl + "register/" + username
-        http.get(url, (response : any) => {
-            let data = '';
-
-            // A chunk of data has been recieved.
-            response.on('data', (chunk : any) => {
-                data += chunk;
-            });
-            
-            // The whole response has been received. Print out the result.
-            return response.on('end', () => {
-                const parsedData = JSON.parse(data)
-                password = parsedData.apiToken
-                handlePassword(password, docToUpdate,dbToUpdate)
-            }).on("error", (err : any) => {
-            console.log("The Error Message: " + err.message);
-            })
-
-        }).on("error", (err : any) => {
-            console.log("The Error Message: " + err.message);
-        })    
+        const axios = require('axios')
+        axios.get(url)
+        .then((res : any) => {
+            password = res.data.apiToken
+            handlePassword(password, docToUpdate,dbToUpdate)
+        })
+        .catch((error : any) => {
+            console.error(error)
+        })
     }    
-    catch {
-        console.log("error in the async")
+    catch(e) {
+        console.log(e)
     }
 }
 
 var syncDatabase = function (password : string, docToUpdate : any = null, dbToUpdate : any = null) {
-    console.log('sync database')
     if (docToUpdate && dbToUpdate)
     {
         docToUpdate["password"] = password
@@ -220,7 +201,6 @@ var syncDatabase = function (password : string, docToUpdate : any = null, dbToUp
     //TODO - handle when there is an error or issue
     analyticsDbAuth.sync(analyticsDb, {live: false, retry: false}
     ).on('complete', function () {
-        console.log('internal sync done')
         // ################
         //  SYNC ANALYTICS
         // ################
@@ -228,7 +208,6 @@ var syncDatabase = function (password : string, docToUpdate : any = null, dbToUp
             selector:  {analyticsType : {$exists : true}},
           }).then(function (result: any) {
 
-        console.log('find analytics done')
             const axios = require('axios')
             axios.post(baseUrl + "event/push", {
                 result
@@ -257,7 +236,6 @@ var syncDatabase = function (password : string, docToUpdate : any = null, dbToUp
             selector:  {username : {$exists : true}},
           }).then(function (result: any) {
 
-        console.log('came across device info')
             const axios = require('axios')
             axios.post(baseUrl + "device/info", {
                 result
@@ -315,7 +293,6 @@ if (analyticsLoginInfoDb != null ) {
             getCouchPassword(username, syncDatabase, doc, analyticsLoginInfoDb)
         }
         else {
-            console.log('time to sync with a real username and password')
             const password = doc["password"]
             syncDatabase(password)
         }
