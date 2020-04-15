@@ -1,6 +1,6 @@
 {
-  "name": "EDRLab.ThoriumReader",
-  "version": "1.1.3-alpha.1",
+  "name": "Ekitabu.Ereader",
+  "version": "4.4.0-beta",
   "description": "Desktop application to read ebooks",
   "keywords": [
     "readium",
