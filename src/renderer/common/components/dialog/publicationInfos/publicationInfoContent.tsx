@@ -9,6 +9,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
+import { formatTime_ } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 import { ITimeDuration } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
@@ -43,7 +44,7 @@ const Duration = (props: {
 
     const { hours = 0, minutes = 0, seconds = 0 } = duration;
 
-    const sentence = `${hours > 0 ? (hours.toString().padStart(2, "0") + ":") : ``}${minutes > 0 ? (minutes.toString().padStart(2, "0") + ":") : `00:`}${seconds > 0 ? (seconds.toString().padStart(2, "0")) : `00`}`;
+    const sentence = formatTime_(hours, minutes, seconds);
 
     return (
         sentence

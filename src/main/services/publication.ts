@@ -8,9 +8,11 @@
 import * as debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "fs";
+import { remove } from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import * as path from "path";
+import { acceptedExtensionObject, isAcceptedExtension } from "readium-desktop/common/extension";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -39,6 +41,7 @@ import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser
 
 import { getTagsFromOpdsPublication } from "../converter/tools/getTags";
 import { extractCrc32OnZip } from "../crc";
+import { lpfToAudiobookConverter } from "../lpfConverter";
 import { RootState } from "../redux/states";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
@@ -47,10 +50,10 @@ import { WinRegistry } from "./win-registry";
 // import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 // Logger
-const debug = debug_("readium-desktop:main#services/catalog");
+const debug = debug_("readium-desktop:main#services/publication");
 
 @injectable()
-export class CatalogService {
+export class PublicationService {
     @inject(diSymbolTable["lcp-secret-repository"])
     private readonly lcpSecretRepository!: LcpSecretRepository;
 
@@ -83,28 +86,64 @@ export class CatalogService {
         let publicationDocument: PublicationDocument | undefined;
 
         const ext = path.extname(filePath);
-        const isLCPLicense = ext === ".lcpl"; // || (ext === ".part" && isLcpFile);
+        const isLCPLicense = isAcceptedExtension("lcpLicence", ext); // || (ext === ".part" && isLcpFile);
+        const isLPF = isAcceptedExtension("w3cAudiobook", ext);
         try {
+
             const hash = isLCPLicense ? undefined : await extractCrc32OnZip(filePath);
             const publicationArray = hash ? await this.publicationRepository.findByHashId(hash) : undefined;
-            if (publicationArray && publicationArray.length) {
+
+            if (publicationArray?.length) {
+
                 debug("importEpubOrLcplFile", publicationArray, hash);
                 publicationDocument = publicationArray[0];
-                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                    this.translator.translate("message.import.alreadyImport", { title: publicationDocument.title })));
+                this.store.dispatch(
+                    toastActions.openRequest.build(
+                        ToastType.Success,
+                        this.translator.translate(
+                            "message.import.alreadyImport", { title: publicationDocument.title },
+                        ),
+                    ),
+                );
             } else {
+
                 if (isLCPLicense) {
                     publicationDocument = await this.importLcplFile(filePath, lcpHashedPassphrase);
-                } else if (/\.epub[3]?$/.test(ext) || /\.audiobook$/.test(ext)) { //  || (ext === ".part" && !isLcpFile)
-                    publicationDocument = await this.importEpubFile(filePath, hash, lcpHashedPassphrase);
+
+                } else  {
+                    let epubFilePath = filePath;
+                    if (isLPF) {
+                        // convert .lpf to .audiobook
+
+                        epubFilePath = await lpfToAudiobookConverter(filePath);
+                    }
+
+                    publicationDocument = await this.importEpubFile(epubFilePath, hash, lcpHashedPassphrase);
+
+                    if (isLPF) {
+                        await remove(epubFilePath);
+                    }
                 }
-                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                    this.translator.translate("message.import.success", { title: publicationDocument.title })));
+                this.store.dispatch(
+                    toastActions.openRequest.build(
+                        ToastType.Success,
+                        this.translator.translate(
+                            "message.import.success", { title: publicationDocument.title },
+                        ),
+                    ),
+                );
             }
         } catch (error) {
+
             debug("importEpubOrLcplFile (hash + import) fail with :" + filePath, error);
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                this.translator.translate("message.import.fail", { path: filePath })));
+            this.store.dispatch(
+                toastActions.openRequest.build(
+                    ToastType.Error,
+                    this.translator.translate(
+                        "message.import.fail", { path: filePath },
+                    ),
+                ),
+            );
         }
         return publicationDocument;
     }
@@ -124,11 +163,16 @@ export class CatalogService {
         const isLcpFile = link.type === ContentType.Lcp;
         const isEpubFile = link.type === ContentType.Epub;
         const isAudioBookPacked = link.type === ContentType.AudioBookPacked;
-        if (!isLcpFile && !isEpubFile && !isAudioBookPacked) {
+        const isAudioBookPackedLcp = link.type === ContentType.AudioBookPackedLcp;
+        if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp) {
             throw new Error(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
         }
 
-        const ext = isLcpFile ? ".lcpl" : (isEpubFile ? ".epub" : (isAudioBookPacked ? ".audiobook" : ".unknown"));
+        const ext = isLcpFile ? acceptedExtensionObject.lcpLicence :
+            (isEpubFile ? acceptedExtensionObject.epub :
+            (isAudioBookPacked ? acceptedExtensionObject.audiobook :
+                (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
+                    ".unknown")));
         // start the download service
         const download = this.downloader.addDownload(link.url, ext);
 
@@ -216,8 +260,14 @@ export class CatalogService {
                 },
             );
         } catch (err) {
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                this.translator.translate("message.download.error", { title, err: `[${err}]` })));
+            this.store.dispatch(
+                toastActions.openRequest.build(
+                    ToastType.Error,
+                    this.translator.translate(
+                        "message.download.error", { title, err: `[${err}]` },
+                    ),
+                ),
+            );
 
             this.store.dispatch(downloadActions.error.build(download.srcUrl));
             throw err;
@@ -329,7 +379,11 @@ export class CatalogService {
                 }
                 if (res) {
                     const msg = this.lcpManager.convertUnlockPublicationResultToString(res);
-                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error, msg));
+                    this.store.dispatch(
+                        toastActions.openRequest.build(
+                            ToastType.Error, msg,
+                        ),
+                    );
                     throw new Error(`[${msg}] (${filePath})`);
                 }
             }
@@ -344,7 +398,11 @@ export class CatalogService {
                     // LICENSE_SIGNATURE_DATE_INVALID = 111
                     // LICENSE_SIGNATURE_INVALID = 112
                     const msg = this.lcpManager.convertUnlockPublicationResultToString(err);
-                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error, msg));
+                    this.store.dispatch(
+                        toastActions.openRequest.build(
+                            ToastType.Error, msg,
+                        ),
+                    );
                     throw new Error(`[${msg}] (${filePath})`);
                 }
             }
@@ -359,7 +417,11 @@ export class CatalogService {
                 if (link.Rel === "publication") {
                     const isEpubFile = link.Type === ContentType.Epub;
                     const isAudioBookPacked = link.Type === ContentType.AudioBookPacked;
-                    const ext = isEpubFile ? ".epub" : (isAudioBookPacked ? ".audiobook" : ".unknown");
+                    const isAudioBookPackedLcp = link.Type === ContentType.AudioBookPackedLcp;
+                    const ext = isEpubFile ? acceptedExtensionObject.epub :
+                        (isAudioBookPacked ? acceptedExtensionObject.audiobook :
+                            (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
+                                ".unknown"));
 
                     download = this.downloader.addDownload(link.Href, ext);
                     title = link.Title ?? download.srcUrl;
@@ -413,15 +475,22 @@ export class CatalogService {
         await this.lcpManager.injectLcplIntoZip(download.dstPath, r2LCP);
         const hash = await extractCrc32OnZip(download.dstPath);
         const publicationArray = await this.publicationRepository.findByHashId(hash);
-        if (publicationArray && publicationArray.length) {
+        if (publicationArray?.length) {
+
             debug("importLcplFile", publicationArray, hash);
             const pubDocument = publicationArray[0];
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                this.translator.translate("message.import.alreadyImport", { title: pubDocument.title })));
+            this.store.dispatch(
+                toastActions.openRequest.build(
+                    ToastType.Success,
+                    this.translator.translate(
+                        "message.import.alreadyImport", { title: pubDocument.title },
+                    ),
+                ),
+            );
             return pubDocument;
         }
 
-        const publicationDocument = await this.importEpubFile(download.dstPath, undefined, lcpHashedPassphrase);
+        const publicationDocument = await this.importEpubFile(download.dstPath, hash, lcpHashedPassphrase);
         return publicationDocument;
         // return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
     }
@@ -455,14 +524,14 @@ export class CatalogService {
             files: [],
             coverFile: null,
             customCover: null,
-            hash: hash ? hash : (hash === null ? undefined : await extractCrc32OnZip(filePath)),
+            hash: hash ? hash : await extractCrc32OnZip(filePath),
 
             lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
             lcpRightsCopies: 0,
         };
         this.lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
 
-        debug(pubDocument.hash);
+        debug(`publication document ID=${pubDocument.identifier} HASH=${pubDocument.hash}`);
 
         // Store publication on filesystem
         debug("[START] Store publication on filesystem", filePath);
