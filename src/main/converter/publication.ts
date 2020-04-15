@@ -49,7 +49,7 @@ export class PublicationViewConverter {
 
         return {
             identifier: document.identifier, // preserve Identifiable identifier
-            title: document.title,
+            title: document.title || "-", // default title
             authors,
             description: r2Publication.Metadata.Description,
             languages: r2Publication.Metadata.Language,
