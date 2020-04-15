@@ -77,6 +77,6 @@ deploy:
 
 artifacts:
   - path: release\*.exe
-    name: Thorium
+    name: eKitabu eReader
 
 test: off
