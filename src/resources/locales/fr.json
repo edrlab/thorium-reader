@@ -21,12 +21,13 @@
             "title": "Édition",
             "undo": "Annuler"
         },
-        "quit": "Quitter Thorium"
+        "hide": "Cacher {{appName}}",
+        "quit": "Quitter {{appName}}"
     },
     "catalog": {
         "about": {
             "button": "Plus d'informations",
-            "title": "A propos de Thorium"
+            "title": "A propos de {{appName}}"
         },
         "addBookToLib": "Importer",
         "addTags": "Ajouter un tag",
@@ -84,7 +85,7 @@
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
         "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub / .lcpl / .audiobook)",
+        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier ({{acceptedExtension}})",
         "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",

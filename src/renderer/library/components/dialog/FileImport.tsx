@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
@@ -42,12 +43,18 @@ class FileImport extends React.Component<IProps, undefined> {
             return (<></>);
         }
 
-        const { files, closeDialog} = this.props;
+        const { files, closeDialog } = this.props;
         return (
             <Dialog open={true} close={closeDialog} id={styles.add_dialog}>
                 {
                     (!files || files.length === 0) ?
-                        (<div> {this.props.__("dialog.importError")}</div>) :
+                        (<div>
+                            {
+                                this.props.__("dialog.importError", {
+                                    acceptedExtension: acceptedExtensionArray.join(" | "),
+                                })
+                            }
+                        </div>) :
                         (
                             <>
                                 <div>

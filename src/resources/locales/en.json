@@ -21,12 +21,13 @@
             "title": "Edit",
             "undo": "Undo"
         },
-        "quit": "Quit Thorium"
+        "hide": "Hide {{appName}}",
+        "quit": "Quit {{appName}}"
     },
     "catalog": {
         "about": {
             "button": "More information",
-            "title": "About Thorium"
+            "title": "About {{appName}}"
         },
         "addBookToLib": "Import",
         "addTags": "Add a tag",
@@ -84,7 +85,7 @@
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import those files :",
-        "importError": "an error occured, verify your file extension (.epub / .lcpl / .audiobook)",
+        "importError": "an error occured, verify your file extension ({{acceptedExtension}})",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",

@@ -38,7 +38,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
                         for (const wc of webContents.getAllWebContents()) {
                             if (wc.hostWebContents) {
                                 // wc.hostWebContents.id === readerWindow.webContents.id
-                                wc.openDevTools({ mode: "detach" });
+                                wc.openDevTools({ activate: true, mode: "detach" });
                             }
                         }
                     },
@@ -100,7 +100,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
                 click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
                     const arr = BrowserWindow.getAllWindows();
                     arr.forEach((bww) => {
-                        bww.webContents.openDevTools({ mode: "detach" });
+                        bww.webContents.openDevTools({ activate: true, mode: "detach" });
                     });
                 },
             },
@@ -111,7 +111,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
                     for (const wc of webContents.getAllWebContents()) {
                         if (wc.hostWebContents) {
                             // wc.hostWebContents.id === readerWindow.webContents.id
-                            wc.openDevTools({ mode: "detach" });
+                            wc.openDevTools({ activate: true, mode: "detach" });
                         }
                     }
                 },
@@ -125,7 +125,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
                 click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
                     const arr = BrowserWindow.getAllWindows();
                     arr.forEach((bww) => {
-                        bww.webContents.openDevTools({ mode: "detach" });
+                        bww.webContents.openDevTools({ activate: true, mode: "detach" });
                         setTimeout(() => {
                             bww.webContents.send("AXE_A11Y", {});
                         }, 300);
@@ -172,6 +172,7 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                 },
                 {
                     role: "hide",
+                    label: translator.translate("app.hide", { appName: capitalizedAppName }),
                 },
                 {
                     role: "hideothers",
@@ -193,7 +194,7 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                     role: "quit",
                     // accelerator: "Command+Q",
                     // click: () => { app.quit(); },
-                    label: translator.translate("app.quit"),
+                    label: translator.translate("app.quit", { appName: capitalizedAppName }),
                 },
             ] as Electron.MenuItemConstructorOptions[],
         },

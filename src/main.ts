@@ -62,6 +62,8 @@ debug(process.versions);
 function main() {
     initSessions();
 
+    app.allowRendererProcessReuse = true;
+
     // Quit when all windows are closed.
     app.on("window-all-closed", async () => {
         // save closeApp event

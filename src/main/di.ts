@@ -10,7 +10,6 @@ import "reflect-metadata";
 import axios from "axios";
 import { app } from "electron";
 import * as fs from "fs";
-import * as http from "http";
 import { Container } from "inversify";
 import * as os from "os";
 import * as path from "path";
@@ -38,10 +37,10 @@ import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { initStore } from "readium-desktop/main/redux/store/memory";
-import { CatalogService } from "readium-desktop/main/services/catalog";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { Downloader } from "readium-desktop/main/services/downloader";
 import { LcpManager } from "readium-desktop/main/services/lcp";
+import { PublicationService } from "readium-desktop/main/services/publication";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
@@ -160,11 +159,13 @@ let baseUrl = "";
 if (_NODE_ENV === "development") {
     // tslint:disable-next-line:no-var-requires
     PouchDBAuth = require("pouchdb-node");
-    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/";
+    baseUrl = "https://ereader-analytics-api.azurewebsites.net/";
+    // baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/";
 } else {
     // tslint:disable-next-line:no-var-requires
     PouchDBAuth = require("pouchdb-node").default;
-    baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/";
+    baseUrl = "https://ereader-analytics-api.azurewebsites.net/";
+    // baseUrl = "http://ereader-analytics-api.brett.dev.simpleconnections.ca/";
 }
 PouchDBAuth.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
 
@@ -183,32 +184,20 @@ async function getCouchPassword(
     try {
         let password = "no password set";
         const url = baseUrl + "register/" + username;
-        http.get(url, (response: any) => {
-            let data = "";
-
-            // A chunk of data has been recieved.
-            response.on("data", (chunk: any) => {
-                data += chunk;
-            });
-
-            // The whole response has been received. Print out the result.
-            return response.on("end", () => {
-                const parsedData = JSON.parse(data);
-                password = parsedData.apiToken;
-                handlePassword(password, docToUpdate, dbToUpdate);
-            }).on("error", (err: any) => {
-                console.log("The Error Message: " + err.message);
-            });
-        }).on("error", (err: any) => {
-            console.log("The Error Message: " + err.message);
+        axios.get(url)
+        .then((res) => {
+            password = res.data.apiToken;
+            handlePassword(password, docToUpdate, dbToUpdate);
+        })
+        .catch((error) => {
+            console.log(error);
         });
-    } catch {
-        console.log("error in the async");
+    } catch (e) {
+        console.log(e);
     }
 }
 
 const syncDatabase = (password: string, docToUpdate: any = null, dbToUpdate: any = null) => {
-    console.log("sync database");
     if (docToUpdate && dbToUpdate) {
         docToUpdate.password = password;
         dbToUpdate.put(docToUpdate);
@@ -217,7 +206,6 @@ const syncDatabase = (password: string, docToUpdate: any = null, dbToUpdate: any
 
     // TODO - handle when there is an error or issue
     analyticsDbAuth.sync(analyticsDb, {live: false, retry: false}).on("complete", () => {
-        console.log("internal sync done");
         // ################
         //  SYNC ANALYTICS
         // ################
@@ -225,7 +213,6 @@ const syncDatabase = (password: string, docToUpdate: any = null, dbToUpdate: any
             selector:  {analyticsType : {$exists : true}},
         }).then((result: any) => {
 
-            console.log("find analytics done");
             axios.post(baseUrl + "event/push", {
                 result,
             },
@@ -297,7 +284,6 @@ if (analyticsLoginInfoDb != null ) {
         if (!doc.password) {
             await getCouchPassword(username, syncDatabase, doc, analyticsLoginInfoDb);
         } else {
-            console.log("time to sync with a real username and password");
             const password = doc.password;
             syncDatabase(password);
         }
@@ -398,7 +384,7 @@ container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantVa
 
 // Create lcp manager
 container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingletonScope();
-container.bind<CatalogService>(diSymbolTable["catalog-service"]).to(CatalogService).inSingletonScope();
+container.bind<PublicationService>(diSymbolTable["publication-service"]).to(PublicationService).inSingletonScope();
 container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
@@ -440,7 +426,7 @@ interface IGet {
     (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;
     (s: "lcp-manager"): LcpManager;
-    (s: "catalog-service"): CatalogService;
+    (s: "publication-service"): PublicationService;
     (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): PublicationApi;
     (s: "opds-api"): OpdsApi;

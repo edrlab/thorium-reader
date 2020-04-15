@@ -16,6 +16,7 @@ import {
     ReaderConfigStringsAdjustables,
 } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
+import { formatTime } from "readium-desktop/common/utils/time";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -67,25 +68,6 @@ import optionsValues, {
 } from "./options-values";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
-
-function formatTime(seconds: number): string {
-    const secondsPerMinute = 60;
-    const minutesPerHours = 60;
-    const secondsPerHour = minutesPerHours * secondsPerMinute;
-    let remainingSeconds = seconds;
-    const nHours = Math.floor(remainingSeconds / secondsPerHour);
-    remainingSeconds -= (nHours * secondsPerHour);
-    if (remainingSeconds < 0) {
-        remainingSeconds = 0;
-    }
-    const nMinutes = Math.floor(remainingSeconds / secondsPerMinute);
-    remainingSeconds -= (nMinutes * secondsPerMinute);
-    if (remainingSeconds < 0) {
-        remainingSeconds = 0;
-    }
-    remainingSeconds = Math.floor(remainingSeconds);
-    return `${nHours > 0 ? (nHours.toString().padStart(2, "0") + ":") : ``}${nMinutes > 0 ? (nMinutes.toString().padStart(2, "0") + ":") : `00:`}${remainingSeconds > 0 ? (remainingSeconds.toString().padStart(2, "0")) : `00`}`;
-}
 
 // import {
 //     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
@@ -576,6 +558,7 @@ class Reader extends React.Component<IProps, IState> {
                             currentLocation={this.state.currentLocation}
                             r2Publication={this.state.r2Publication}
                             handleLinkClick={this.handleLinkClick}
+                            goToLocator={this.goToLocator}
                         />
                     </div>
                 </div>

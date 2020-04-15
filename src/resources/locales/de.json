@@ -21,12 +21,13 @@
             "title": "Bearbeiten",
             "undo": "Rückgängig"
         },
-        "quit": "Beenden"
+        "hide": "Ausblenden {{appName}}",
+        "quit": "Beenden {{appName}}"
     },
     "catalog": {
         "about": {
-            "button": "",
-            "title": ""
+            "button": "Mehr Informationen",
+            "title": "Über {{appName}}"
         },
         "addBookToLib": "Import",
         "addTags": "Ein Tag hinzufügen",
@@ -84,7 +85,7 @@
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung (.epub / .lcpl / .audiobook).",
+        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
         "no": "Nein",
         "renew": "",
         "return": "",
