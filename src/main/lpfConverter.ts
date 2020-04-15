@@ -23,6 +23,7 @@ import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Subject } from "@r2-shared-js/models/metadata-subject";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
+import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
@@ -143,7 +144,9 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
             const nameObjArray = (Array.isArray(name) ? name : [name]) as IW3cName[];
             const nameObj = nameObjArray.reduce(
                 (pv, cv: IW3cName) =>
-                    cv.language ? { ...pv, [cv.language]: `${cv.value || ""}` } : pv,
+                    cv.language
+                        ? { ...pv, [cv.language]: `${cv.value || ""}` }
+                        : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv.value || ""}` },
                 {} as IStringMap);
             publication.Metadata.Title = nameObj; // required
         } else {
@@ -204,7 +207,7 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
         const resources = pop("resources") as JsonMap;
         const links = convertW3CpublicationLinksToReadiumManifestLink(resources);
         if (links.length) {
-            publication.Links = links;
+            publication.Resources = links;
         }
     }
     {
