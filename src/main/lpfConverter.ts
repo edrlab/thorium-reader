@@ -17,7 +17,7 @@ import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { v4 as uuidV4 } from "uuid";
 
-import { TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { AnyJson, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Metadata } from "@r2-shared-js/models/metadata";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Subject } from "@r2-shared-js/models/metadata-subject";
@@ -28,6 +28,7 @@ import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
+import { Contributor } from "r2-shared-js/dist/es6-es2015/src/models/metadata-contributor";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
@@ -103,15 +104,165 @@ async function injectManifestToZip(audiobookPath: string, manifest: Buffer) {
     await move(audiobookPathTmp, audiobookPath, { overwrite: true });
 }
 
-const getAndDeleteKeyInObject = <O = any>(obj: O) => (key: keyof typeof obj) => {
-    const tmp = obj[key];
-    delete obj[key];
-    return tmp;
-};
+interface IW3cLocalizableString {
+    language?: string;
+    value?: string;
+    direction?: string;
+}
+
+function convertW3cLocalisableStringToReadiumManifestTitle(
+    titleRaw: IW3cLocalizableString[] | IW3cLocalizableString | string,
+): string | IStringMap {
+
+    const titleObjArray = (Array.isArray(titleRaw) ? titleRaw : [titleRaw]) as Array<IW3cLocalizableString | string>;
+    const titleObj = titleObjArray.reduce<IStringMap>(
+        (pv, cv) =>
+            typeof cv === "object"
+                ? cv.language
+                    ? { ...pv, [cv.language]: `${cv.value || ""}` }
+                    : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv.value || ""}` }
+                : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv || ""}` },
+        {});
+    return Object.keys(titleObj).length > 1
+        ? titleObj
+        : titleObj[BCP47_UNKNOWN_LANG];
+
+}
+
+interface IW3cEntities {
+    type?: string[] | string;
+    name?: IW3cLocalizableString[] | IW3cLocalizableString | string;
+    id?: string;
+    url?: string;
+    identifier?: string[] | string;
+}
+
+function convertW3cEntitiesToReadiumManifestContributors(entitiesRaw: AnyJson): Contributor[] {
+
+    const entitiesArray = (Array.isArray(entitiesRaw) ? entitiesRaw : [entitiesRaw]) as Array<IW3cEntities | string>;
+    const contributorArray = entitiesArray
+        .filter((e) => e)
+        .map<Contributor>((entity) => {
+            const contributor = new Contributor();
+
+            if (typeof entity === "object") {
+                {
+                    const value = convertW3cLocalisableStringToReadiumManifestTitle(entity.name);
+                    contributor.Name = value; // required
+                }
+                {
+                    const value = (Array.isArray(entity.type) ? entity.type : [entity.type]);
+                    const valueFiltered = value.filter((v) => v && typeof v === "string");
+                    contributor.Role = valueFiltered;
+
+                }
+                {
+                    const value = `${entity.id || ""}` || `${entity.url || ""}` || `${entity.identifier || ""}`;
+                    contributor.Identifier = value;
+                }
+
+            } else {
+                contributor.Name = `${entity || ""}`;
+
+            }
+
+            return contributor;
+        });
+
+    return contributorArray;
+}
+
+interface IW3cLinkedResources {
+    type?: string | string[];
+    url?: string;
+    encodingFormat?: string;
+    name?: IW3cLocalizableString[] | IW3cLocalizableString | string;
+    description?: IW3cLocalizableString[] | IW3cLocalizableString | string;
+    rel?: string | string[];
+    integrity?: string;
+    duration?: string;
+    alternate?: IW3cLinkedResources | IW3cLinkedResources[];
+}
+
+function convertW3CpublicationLinksToReadiumManifestLink(lnRaw: JsonMap): Link[] {
+
+    const linkArray = (Array.isArray(lnRaw) ? lnRaw : [lnRaw]) as Array<IW3cLinkedResources | string>;
+    const linkMap = linkArray
+        .filter((l) => l)
+        .map<Link>(
+            (w3cLink) => {
+                const rwpmLink = new Link();
+
+                if (typeof w3cLink === "object") {
+
+                    {
+                        const url = w3cLink.url;
+                        rwpmLink.Href = `${url}`;
+                    }
+                    {
+                        const encodingformat = w3cLink.encodingFormat;
+                        if (typeof encodingformat === "string") {
+                            rwpmLink.TypeLink = encodingformat;
+
+                        } else {
+                            const ext = extname(rwpmLink.Href);
+                            rwpmLink.TypeLink = contentType(ext) || ""; // typeLink required;
+                        }
+                    }
+                    {
+                        const raw = w3cLink.name;
+                        const titleStringOrMap = convertW3cLocalisableStringToReadiumManifestTitle(raw);
+                        const title = typeof titleStringOrMap === "object"
+                            ? titleStringOrMap[BCP47_UNKNOWN_LANG]
+                            || titleStringOrMap[Object.keys(titleStringOrMap)[0]]
+                            || ""
+                            : titleStringOrMap;
+                        if (title) {
+                            rwpmLink.Title = title;
+                        }
+                    }
+                    {
+                        const raw = w3cLink.rel;
+                        const rawArray = Array.isArray(raw) ? raw : [raw];
+                        const rel = rawArray.filter((_rel) => typeof _rel === "string");
+                        if (rel.length) {
+                            rwpmLink.Rel = rel;
+                        }
+                    }
+                    {
+                        const iso8601 = `${w3cLink.duration || ""}`;
+                        const second = iso8601DurationsToSeconds(iso8601);
+                        if (second > 0) {
+                            rwpmLink.Duration = second;
+                        }
+                    }
+                    // not yet implemented in r2-shared
+                    // {
+                    //     const alternate = w3cLink.alternate;
+                    //     const children = convertW3CpublicationLinksToReadiumManifestLink(alternate);
+                    //     if (children.length) {
+                    //         RWPMlink.Alternate = children;
+                    //     }
+                    // }
+                } else {
+
+                    rwpmLink.Href = `${w3cLink || ""}`;
+                }
+
+                return rwpmLink;
+            });
+
+    return linkMap;
+}
 
 function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap) {
 
-    const pop = getAndDeleteKeyInObject(w3cManifest);
+    const pop = ((obj: any) =>
+        (key: keyof typeof obj) => {
+            const tmp = obj[key];
+            delete obj[key];
+            return tmp;
+        })(w3cManifest);
 
     const publication = new R2Publication();
 
@@ -131,28 +282,12 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
         }
     }
     {
-        publication.Metadata.Identifier = `${pop("id") || ""}` || `${pop("url") || ""}` || uuidV4();
+        const value = `${pop("id") || ""}` || `${pop("url") || ""}` || uuidV4();
+        publication.Metadata.Identifier = value;
     }
     {
-        interface IW3cName {
-            language?: string;
-            value?: string;
-        }
-
-        const name = pop("name");
-        if (typeof name === "object") {
-            const nameObjArray = (Array.isArray(name) ? name : [name]) as IW3cName[];
-            const nameObj = nameObjArray.reduce(
-                (pv, cv: IW3cName) =>
-                    cv.language
-                        ? { ...pv, [cv.language]: `${cv.value || ""}` }
-                        : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv.value || ""}` },
-                {} as IStringMap);
-            publication.Metadata.Title = nameObj; // required
-        } else {
-            const nameStr = `${name || ""}`;
-            publication.Metadata.Title = nameStr; // required
-        }
+        const title = pop("name");
+        publication.Metadata.Title = convertW3cLocalisableStringToReadiumManifestTitle(title) || ""; // required
     }
     {
         const value = `${pop("dcterms:description") || ""}`;
@@ -219,6 +354,21 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
         }
     }
     {
+        const raw = pop("readBy");
+        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
+        publication.Metadata.Narrator = contrib;
+    }
+    {
+        const raw = pop("author");
+        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
+        publication.Metadata.Author = contrib;
+    }
+    {
+        const raw = pop("publisher");
+        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
+        publication.Metadata.Publisher = contrib;
+    }
+    {
 
         if (Object.keys(w3cManifest).length) {
             publication.Metadata.AdditionalJSON = w3cManifest;
@@ -228,73 +378,6 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
     const publicationJson = TaJsonSerialize<R2Publication>(publication);
 
     return publicationJson;
-}
-
-function convertW3CpublicationLinksToReadiumManifestLink(ressources: JsonMap) {
-
-    const linkArray = new Array<Link>();
-
-    if (Array.isArray(ressources)) {
-
-        ressources.forEach(
-            (ressource: any) => {
-                const link = new Link();
-
-                {
-                    const url = ressource.url;
-                    if (typeof url === "string") {
-                        link.Href = url;
-                    }
-                }
-                {
-                    const encodingFormat = ressource.encodingFormat;
-                    if (typeof encodingFormat === "string") {
-                        link.TypeLink = encodingFormat;
-
-                    } else {
-                        const ext = extname(link.Href);
-                        link.TypeLink = contentType(ext) || ""; // typeLink required;
-                    }
-                }
-                {
-                    const raw = ressource.name;
-                    const name = Array.isArray(raw) ? raw[0] : raw;
-                    if (typeof name === "string") {
-                        link.Title = name;
-                    }
-                }
-                {
-                    const raw = ressource.rel;
-                    const rawArray = Array.isArray(raw) ? raw : [raw];
-                    const rel = rawArray.filter((_rel) => typeof _rel === "string");
-                    if (rel.length) {
-                        link.Rel = rel;
-                    }
-                }
-                {
-                    const iso8601 = `${ressource.duration || ""}`;
-                    const second = iso8601DurationsToSeconds(iso8601);
-                    if (second > 0) {
-                        link.Duration = second;
-                    }
-                }
-                // not yet implemented in r2-shared
-                // {
-                //     const alternate = ressource.alternate;
-                //     const children = convertW3CpublicationLinksToReadiumManifestLink(alternate);
-                //     if (children.length) {
-                //         link.Alternate = children;
-                //     }
-                // }
-
-                linkArray.push(link);
-            });
-
-    } else {
-        debug("no resources found");
-    }
-
-    return linkArray;
 }
 
 export async function lpfToAudiobookConverter(lpfPath: string): Promise<string> {
