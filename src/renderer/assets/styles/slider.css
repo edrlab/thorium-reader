@@ -13,8 +13,12 @@
     top: 0;
     left: 0;
 
+    & > * {
+        margin-right: 15px;
+    }
+
     & > *:not(:first-child) {
-        margin: 0 15px;
+        margin-left: 15px;
     }
 }
 

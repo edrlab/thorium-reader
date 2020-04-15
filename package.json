@@ -15,6 +15,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf release",
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
+    "testFile": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache ",
     "__postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=8.2.0 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\"",
@@ -186,6 +187,7 @@
     "inversify": "^5.0.1",
     "inversify-inject-decorators": "^3.1.0",
     "jsondown": "^1.0.0",
+    "mime-types": "^2.1.26",
     "mathjax": "^3.0.5",
     "node-fetch": "^2.6.0",
     "opds-feed-parser": "0.0.18",
@@ -234,6 +236,7 @@
     "@types/fs-extra": "^8.1.0",
     "@types/glob": "^7.1.1",
     "@types/jest": "^24.9.1",
+    "@types/mime-types": "^2.1.0",
     "@types/node": "^12.12.35",
     "@types/pouchdb-core": "^7.0.5",
     "@types/react": "^16.9.34",

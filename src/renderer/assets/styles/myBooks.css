@@ -26,7 +26,9 @@
 		display: flex;
 		justify-content: space-between;
 		padding-top: 40px;
-		padding-bottom: 35px;
+		padding-bottom: 5px;
+		margin-bottom: 15px;
+		border-bottom: 3px solid #f1f1f1;
 
 		& a {
 			display: flex;
