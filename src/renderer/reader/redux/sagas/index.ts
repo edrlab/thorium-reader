@@ -9,10 +9,12 @@ import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/re
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 import { all, call } from "redux-saga/effects";
 
+import * as i18n from "./i18n";
 import * as winInit from "./win";
 
 export function* rootSaga() {
     yield all([
+        call(i18n.watchers),
         call(winInit.watchers),
         call(publicationInfoReaderAndLib.watchers),
         call(publicationInfoSyncTag.watchers),
