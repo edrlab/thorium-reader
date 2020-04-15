@@ -21,7 +21,7 @@
             "title": "Editar",
             "undo": "Deshacer"
         },
-        "hide": "Hide {{appName}}",
+        "hide": "Ocultar {{appName}}",
         "quit": "Salir de {{appName}}"
     },
     "catalog": {
@@ -41,9 +41,9 @@
         "emptyTagList": "No tienes libros etiquetados.",
         "entry": {
             "continueReading": "Reanudar lectura",
-            "continueReadingAudioBooks": "Reanudar escuchando",
+            "continueReadingAudioBooks": "Reanudar reproducción",
             "lastAdditions": "Añadidos recientemente",
-            "lastAdditionsAudioBooks": "Audiolibros agregados recientemente"
+            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente"
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -262,15 +262,15 @@
             "cancel": "Cancelar",
             "edit": "Editar",
             "editUserJson": "Editar archivo de usuario",
-            "hide": "Esconder",
+            "hide": "Ocultar",
             "keyboardShortcuts": "Atajos de teclado",
-            "loadUserJson": "Cargar (archivo de usuario)",
-            "resetDefaults": "Restablecer (valores predeterminados)",
-            "save": "Salvar",
-            "show": "Espectáculo"
+            "loadUserJson": "Cargar archivo de usuario",
+            "resetDefaults": "Restablecer valores predeterminados",
+            "save": "Guardar",
+            "show": "Mostrar"
         },
         "language": {
-            "languageChoice": "Elección de idioma"
+            "languageChoice": "Selección de idioma"
         }
     }
 }
