@@ -77,6 +77,7 @@ declare namespace typed_i18n {
   readonly "noPublicationHelpL1": string,
   readonly "noPublicationHelpL2": string,
   readonly "noPublicationHelpL3": string,
+  readonly "noPublicationHelpL4": string,
   readonly "numberOfPages": string,
   readonly "opds": {
     readonly "info": {
@@ -135,6 +136,7 @@ declare namespace typed_i18n {
   (_: "catalog.noPublicationHelpL1", __?: {}): string;
   (_: "catalog.noPublicationHelpL2", __?: {}): string;
   (_: "catalog.noPublicationHelpL3", __?: {}): string;
+  (_: "catalog.noPublicationHelpL4", __?: {}): string;
   (_: "catalog.numberOfPages", __?: {}): string;
   (_: "catalog.opds", __?: {}): {
   readonly "info": {
