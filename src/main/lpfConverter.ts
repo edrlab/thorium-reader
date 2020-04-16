@@ -6,17 +6,16 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { copyFile, promises as fsp } from "fs";
+import { promises as fsp } from "fs";
 import * as moment from "moment";
 import * as os from "os";
-import { basename, extname, join } from "path";
+import { basename, dirname, extname, join } from "path";
 import { Contributor } from "r2-shared-js/dist/es6-es2015/src/models/metadata-contributor";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
-import { promisify } from "util";
 import { v4 as uuidV4 } from "uuid";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
@@ -30,7 +29,6 @@ import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
-import { COPYFILE_FICLONE } from "constants";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
@@ -52,15 +50,7 @@ async function copyAndRenameLpfFile(lpfPath: string): Promise<string> {
     const audiobookBasename = `${lpfBasename}${acceptedExtensionObject.audiobook}`;
     const audiobookPath = join(dirPath, audiobookBasename);
 
-    debug(`TMPPATH=${tmpPath} LPFPATH=${lpfPath} AUDIOBOOKPATH=${audiobookPath}`);
-
-    try {
-        // move the lpf file to a temporary directory
-        // https://github.com/nodejs/node/issues/24521
-        await promisify(copyFile)(lpfPath, audiobookPath, COPYFILE_FICLONE);
-    } catch (err) {
-        return Promise.reject(`copy lpf to tmp dir : ${err}`);
-    }
+    debug(`LPFPATH=${lpfPath} AUDIOBOOKPATH=${audiobookPath}`);
 
     return audiobookPath;
 }
@@ -92,14 +82,13 @@ async function openAndExtractPublicationFromLpf(lpfPath: string): Promise<NodeJS
     }
 }
 
-async function injectManifestToZip(audiobookPath: string, manifest: Buffer) {
+async function injectManifestToZip(sourcePath: string, destinationPath: string, manifest: Buffer) {
 
-    const audiobookPathTmp = `${audiobookPath}.zip`;
     const manifestEntryPath = "manifest.json";
     await new Promise((resolve, reject) => {
         injectBufferInZip(
-            audiobookPath,
-            audiobookPathTmp,
+            sourcePath,
+            destinationPath,
             manifest,
             manifestEntryPath,
             (err) => {
@@ -109,14 +98,6 @@ async function injectManifestToZip(audiobookPath: string, manifest: Buffer) {
             () => resolve(),
         );
     });
-
-    try {
-        // overwrite audiobookPath
-        await fsp.rename(audiobookPathTmp, audiobookPath);
-    } catch (err) {
-        await Promise.reject(`can't move with overwrite .zip to .audiobook : ${err}`);
-        return;
-    }
 }
 
 interface IW3cLocalizableString {
@@ -292,7 +273,7 @@ interface Iw3cPublicationManifest {
     "publisher"?: string | IW3cEntities | IW3cEntities[];
 }
 
-function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: Iw3cPublicationManifest) {
+export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: Iw3cPublicationManifest) {
 
     const pop = ((obj: Iw3cPublicationManifest) =>
         (key: keyof typeof obj) => {
@@ -417,11 +398,14 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: Iw3cPub
     return publicationJson;
 }
 
-export async function lpfToAudiobookConverter(lpfPath: string): Promise<string> {
+//
+// API
+//
+export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string, () => Promise<void>]> {
 
-    const lpfRenameInAudiobookPath = await copyAndRenameLpfFile(lpfPath);
+    const audiobookPath = await copyAndRenameLpfFile(lpfPath);
 
-    const stream = await openAndExtractPublicationFromLpf(lpfRenameInAudiobookPath);
+    const stream = await openAndExtractPublicationFromLpf(lpfPath);
 
     const buffer = await streamToBufferPromise(stream);
     const rawData = buffer.toString("utf8");
@@ -430,7 +414,16 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<string> 
     const readiumManifest = w3cPublicationManifestToReadiumPublicationManifest(w3cManifest);
 
     const manifestBuffer = Buffer.from(JSON.stringify(readiumManifest, null, 4));
-    await injectManifestToZip(lpfRenameInAudiobookPath, manifestBuffer);
+    await injectManifestToZip(lpfPath, audiobookPath, manifestBuffer);
 
-    return lpfRenameInAudiobookPath;
+    const cleanFct = async () => {
+        try {
+            await fsp.unlink(audiobookPath);
+            await fsp.rmdir(dirname(audiobookPath));
+        } catch (err) {
+            // ignore
+        }
+    };
+
+    return [audiobookPath, cleanFct];
 }
