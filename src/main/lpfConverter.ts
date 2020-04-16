@@ -6,14 +6,17 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { copy, ensureDir, move } from "fs-extra";
+import { copyFile, promises as fsp } from "fs";
 import * as moment from "moment";
 import * as os from "os";
 import { basename, extname, join } from "path";
+import { Contributor } from "r2-shared-js/dist/es6-es2015/src/models/metadata-contributor";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
+import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
+import { promisify } from "util";
 import { v4 as uuidV4 } from "uuid";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
@@ -27,8 +30,7 @@ import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
-import { Contributor } from "r2-shared-js/dist/es6-es2015/src/models/metadata-contributor";
-import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
+import { COPYFILE_FICLONE_FORCE } from "constants";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
@@ -45,11 +47,15 @@ async function copyAndRenameLpfFile(lpfPath: string): Promise<string> {
 
     debug(`TMPPATH=${tmpPath} LPFPATH=${lpfPath} AUDIOBOOKPATH=${audiobookPath}`);
 
-    // Ensures that the directory exists.
-    await ensureDir(dirPath);
+    try {
+        // Asynchronously creates a unique temporary directory.
+        await fsp.mkdtemp(dirPath);
 
-    // move the lpf file to a temporary directory
-    await copy(lpfPath, audiobookPath, { overwrite: true });
+        // move the lpf file to a temporary directory
+        await promisify(copyFile)(lpfPath, audiobookPath, COPYFILE_FICLONE_FORCE);
+    } catch (err) {
+        return Promise.reject(`copy lpf to tmp dir : ${err}`);
+    }
 
     return audiobookPath;
 }
@@ -91,17 +97,21 @@ async function injectManifestToZip(audiobookPath: string, manifest: Buffer) {
             audiobookPathTmp,
             manifest,
             manifestEntryPath,
-            (e: any) => {
-                debug("injectManifestToZip - injectBufferInZip ERROR!");
-                debug(e);
-                reject(e);
+            (err) => {
+                debug("injectManifestToZip - injectBufferInZip ERROR!", err);
+                reject(`'injectBufferInZip' : ${err}`);
             },
-            () => {
-                resolve();
-            });
+            () => resolve(),
+            );
     });
 
-    await move(audiobookPathTmp, audiobookPath, { overwrite: true });
+    try {
+        // overwrite audiobookPath
+        await fsp.rename(audiobookPathTmp, audiobookPath);
+    } catch (err) {
+        await Promise.reject(`can't move with overwrite .zip to .audiobook : ${err}`);
+        return;
+    }
 }
 
 interface IW3cLocalizableString {
@@ -258,9 +268,28 @@ function convertW3CpublicationLinksToReadiumManifestLink(
     return linkMap;
 }
 
-function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap) {
+interface Iw3cPublicationManifest {
+    "@context"?: string;
+    "conformsTo"?: string;
+    "id"?: string;
+    "url"?: string;
+    "name"?: string | IW3cLocalizableString | IW3cLocalizableString[];
+    "dcterms:description"?: string;
+    "dcterms:subject"?: any;
+    "inLanguage"?: any;
+    "datePublished"?: string;
+    "dateModified"?: string;
+    "duration"?: string;
+    "resources"?: string | IW3cLinkedResources | IW3cLinkedResources[];
+    "readingOrder"?: string | IW3cLinkedResources | IW3cLinkedResources[];
+    "readBy"?: string | IW3cEntities | IW3cEntities[];
+    "author"?: string | IW3cEntities | IW3cEntities[];
+    "publisher"?: string | IW3cEntities | IW3cEntities[];
+}
 
-    const pop = ((obj: any) =>
+function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: Iw3cPublicationManifest) {
+
+    const pop = ((obj: Iw3cPublicationManifest) =>
         (key: keyof typeof obj) => {
             const tmp = obj[key];
             delete obj[key];
@@ -372,9 +401,9 @@ function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: JsonMap
         publication.Metadata.Publisher = contrib;
     }
     {
-
+        // save all other properties
         if (Object.keys(w3cManifest).length) {
-            publication.Metadata.AdditionalJSON = w3cManifest;
+            publication.Metadata.AdditionalJSON = w3cManifest as JsonMap;
         }
     }
 
@@ -391,7 +420,7 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<string> 
 
     const buffer = await streamToBufferPromise(stream);
     const rawData = buffer.toString("utf8");
-    const w3cManifest = JSON.parse(rawData) as JsonMap;
+    const w3cManifest = JSON.parse(rawData) as Iw3cPublicationManifest;
 
     const readiumManifest = w3cPublicationManifestToReadiumPublicationManifest(w3cManifest);
 
