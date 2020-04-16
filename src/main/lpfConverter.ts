@@ -30,29 +30,34 @@ import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
-import { COPYFILE_FICLONE_FORCE } from "constants";
+import { COPYFILE_FICLONE } from "constants";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
 
 async function copyAndRenameLpfFile(lpfPath: string): Promise<string> {
 
-    const rand = Math.floor(Math.random() * 1000);
-    const tmpPathName = `${_APP_NAME}-lpfconverter`;
+    const tmpPathName = `${_APP_NAME}-lpfconverter-`;
     const tmpPath = os.tmpdir();
-    const dirPath = join(tmpPath, tmpPathName);
+
+    let dirPath: string;
+    try {
+        // creates a unique temporary directory
+        dirPath = await fsp.mkdtemp(join(tmpPath, tmpPathName));
+    } catch (err) {
+        return Promise.reject(`creates a unique temporary directory : ${err}`);
+    }
+
     const lpfBasename = basename(lpfPath);
-    const audiobookBasename = `${lpfBasename}.${rand}${acceptedExtensionObject.audiobook}`;
+    const audiobookBasename = `${lpfBasename}${acceptedExtensionObject.audiobook}`;
     const audiobookPath = join(dirPath, audiobookBasename);
 
     debug(`TMPPATH=${tmpPath} LPFPATH=${lpfPath} AUDIOBOOKPATH=${audiobookPath}`);
 
     try {
-        // Asynchronously creates a unique temporary directory.
-        await fsp.mkdtemp(dirPath);
-
         // move the lpf file to a temporary directory
-        await promisify(copyFile)(lpfPath, audiobookPath, COPYFILE_FICLONE_FORCE);
+        // https://github.com/nodejs/node/issues/24521
+        await promisify(copyFile)(lpfPath, audiobookPath, COPYFILE_FICLONE);
     } catch (err) {
         return Promise.reject(`copy lpf to tmp dir : ${err}`);
     }
@@ -102,7 +107,7 @@ async function injectManifestToZip(audiobookPath: string, manifest: Buffer) {
                 reject(`'injectBufferInZip' : ${err}`);
             },
             () => resolve(),
-            );
+        );
     });
 
     try {
