@@ -172,9 +172,10 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                             {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                             >
                                 <button
-                                className={styles.menu_button}
-                                onClick={this.props.handleSettingsClick.bind(this)}
-                                ref={this.settingsMenuButtonRef}
+                                    aria-pressed={this.props.settingsOpen}
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleSettingsClick.bind(this)}
+                                    ref={this.settingsMenuButtonRef}
                                 >
                                     <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
                                 </button>
@@ -185,6 +186,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                             {...(this.props.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                             >
                                 <button
+                                    aria-pressed={this.props.menuOpen}
                                     className={styles.menu_button}
                                     onClick={this.props.handleMenuClick.bind(this)}
                                     ref={this.navigationMenuButtonRef}
@@ -197,9 +199,10 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                             </li>
                             <li  className={styles.blue}>
                                 <button
-                                className={styles.menu_button}
-                                onClick={this.props.handleFullscreenClick}
-                                ref={this.enableFullscreenRef}
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleFullscreenClick}
+                                    ref={this.enableFullscreenRef}
+                                    aria-pressed={this.props.fullscreen}
                                 >
                                 <SVG svg={FullscreenIcon} title={ __("reader.navigation.fullscreenTitle")}/>
                                 </button>
