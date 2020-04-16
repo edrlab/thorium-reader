@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import { copy, ensureDir, move } from "fs-extra";
-import { contentType } from "mime-types";
 import * as moment from "moment";
 import * as os from "os";
 import { basename, extname, join } from "path";
@@ -29,6 +28,7 @@ import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 import { Contributor } from "r2-shared-js/dist/es6-es2015/src/models/metadata-contributor";
+import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
 // Logger
 const debug = debug_("readium-desktop:main#lpfConverter");
@@ -210,7 +210,7 @@ function convertW3CpublicationLinksToReadiumManifestLink(
 
                         } else {
                             const ext = extname(rwpmLink.Href);
-                            rwpmLink.TypeLink = contentType(ext) || ""; // typeLink required;
+                            rwpmLink.TypeLink = findMimeTypeWithExtension(ext) || ""; // typeLink required;
                         }
                     }
                     {
