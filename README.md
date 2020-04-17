@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="20%" height="20%" src="resources/icon.png">
+</p>
+
 # Thorium Reader
 
 Thorium Reader is an easy to use EPUB reading application for Windows 10/10S, MacOS and Linux. After importing e-books from a directory or OPDS feed, you'll be able to read on any screen size, customize layout settings, navigate via the table of contents or page list, set bookmarks ... A great care is taken to ensure the accessibility of the application for visual impaired people using NVDA, JAWS or Narrator.
