@@ -110,18 +110,24 @@ function convertW3cLocalisableStringToReadiumManifestTitle(
     titleRaw: IW3cLocalizableString[] | IW3cLocalizableString | string,
 ): string | IStringMap {
 
-    const titleObjArray = (Array.isArray(titleRaw) ? titleRaw : [titleRaw]) as Array<IW3cLocalizableString | string>;
-    const titleObj = titleObjArray.reduce<IStringMap>(
-        (pv, cv) =>
-            typeof cv === "object"
-                ? cv.language
-                    ? { ...pv, [cv.language]: `${cv.value || ""}` }
-                    : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv.value || ""}` }
-                : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv || ""}` },
-        {});
-    return Object.keys(titleObj).length > 1
-        ? titleObj
-        : titleObj[BCP47_UNKNOWN_LANG];
+    if (titleRaw) {
+
+        const titleObjArray = (
+            Array.isArray(titleRaw) ? titleRaw : [titleRaw]
+        ) as Array<IW3cLocalizableString | string>;
+        const titleObj = titleObjArray.reduce<IStringMap>(
+            (pv, cv) =>
+                typeof cv === "object"
+                    ? cv.language
+                        ? { ...pv, [cv.language]: `${cv.value || ""}` }
+                        : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv.value || ""}` }
+                    : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv || ""}` },
+            {});
+        return Object.keys(titleObj).length > 1
+            ? titleObj
+            : titleObj[BCP47_UNKNOWN_LANG];
+    }
+    return undefined;
 
 }
 
@@ -146,7 +152,7 @@ function convertW3cEntitiesToReadiumManifestContributors(
             if (typeof entity === "object") {
                 {
                     const value = convertW3cLocalisableStringToReadiumManifestTitle(entity.name);
-                    contributor.Name = value; // required
+                    contributor.Name = value || ""; // required
                 }
                 {
                     const value = (Array.isArray(entity.type) ? entity.type : [entity.type]);
@@ -271,12 +277,17 @@ interface Iw3cPublicationManifest {
     "readBy"?: string | IW3cEntities | IW3cEntities[];
     "author"?: string | IW3cEntities | IW3cEntities[];
     "publisher"?: string | IW3cEntities | IW3cEntities[];
+    "accessMode"?: string | string[];
+    "accessModeSufficient"?: any | any[];
+    "accessibilityFeature"?: string | string[];
+    "accessibilityHazard"?: string | string[];
+    "accessibilitySummary"?: string | IW3cLocalizableString | IW3cLocalizableString[];
 }
 
 export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: Iw3cPublicationManifest) {
 
     const pop = ((obj: Iw3cPublicationManifest) =>
-        (key: keyof typeof obj) => {
+        <Key extends keyof typeof obj>(key: Key): Iw3cPublicationManifest[Key] => {
             const tmp = obj[key];
             delete obj[key];
             return tmp;
@@ -315,7 +326,7 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
     }
     {
         const value = pop("dcterms:subject");
-        const valueArray = (Array.isArray(value) ? value : [value]) as any[];
+        const valueArray = (Array.isArray(value) ? value : [value]);
         const subjectArray = valueArray.reduce<Subject[]>((pv, str) => {
             const sub = new Subject();
 
@@ -330,7 +341,7 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
     {
         const language = pop("inLanguage");
         const langArray = (Array.isArray(language) ? language : [language]);
-        const langArrayFiltered = langArray.filter((l) => l && typeof l === "string") as string[];
+        const langArrayFiltered = langArray.filter((l) => typeof l === "string");
         if (langArrayFiltered.length) {
             publication.Metadata.Language = langArrayFiltered;
         }
@@ -357,14 +368,14 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
         }
     }
     {
-        const resources = pop("resources") as JsonMap;
+        const resources = pop("resources");
         const links = convertW3CpublicationLinksToReadiumManifestLink(resources);
         if (links.length) {
             publication.Resources = links;
         }
     }
     {
-        const readingOrder = pop("readingOrder") as JsonMap;
+        const readingOrder = pop("readingOrder");
         const links = convertW3CpublicationLinksToReadiumManifestLink(readingOrder);
         if (links.length) {
             publication.Spine = links;
@@ -374,17 +385,73 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
     {
         const raw = pop("readBy");
         const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
-        publication.Metadata.Narrator = contrib;
+        if (contrib.length) {
+            publication.Metadata.Narrator = contrib;
+        }
     }
     {
         const raw = pop("author");
         const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
-        publication.Metadata.Author = contrib;
+        if (contrib.length) {
+            publication.Metadata.Author = contrib;
+        }
     }
     {
         const raw = pop("publisher");
         const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
-        publication.Metadata.Publisher = contrib;
+        if (contrib) {
+            publication.Metadata.Publisher = contrib;
+        }
+    }
+    {
+        const raw = pop("accessMode");
+        const rawArray = (Array.isArray(raw) ? raw : [raw]);
+        const rawArrayFiltered = rawArray.filter((l) => typeof l === "string");
+        if (rawArrayFiltered.length) {
+            publication.Metadata.AccessMode = rawArrayFiltered;
+        }
+    }
+    {
+        const raw = pop("accessModeSufficient");
+        const rawArray = (Array.isArray(raw) ? raw : [raw]);
+        const rawArrayFormated = rawArray
+            .reduce(
+                (pv, cv) => [
+                    ...pv,
+                    Array.isArray(cv?.itemListElement)
+                        ? cv.itemListElement.join(",")
+                        : undefined,
+                ], [])
+            .filter((f: any) => f);
+
+        if (rawArrayFormated.length) {
+            publication.Metadata.AccessModeSufficient = rawArrayFormated;
+        }
+    }
+    {
+        const raw = pop("accessibilityFeature");
+        const rawArray = (Array.isArray(raw) ? raw : [raw]);
+        const rawArrayFiltered = rawArray.filter((l) => typeof l === "string");
+        if (rawArrayFiltered.length) {
+            publication.Metadata.AccessibilityFeature = rawArrayFiltered;
+        }
+    }
+    {
+        const raw = pop("accessibilityHazard");
+        const rawArray = (Array.isArray(raw) ? raw : [raw]);
+        const rawArrayFiltered = rawArray.filter((l) => typeof l === "string");
+        if (rawArrayFiltered.length) {
+            publication.Metadata.AccessibilityHazard = rawArrayFiltered;
+        }
+    }
+    {
+        const raw = pop("accessibilitySummary");
+        const loc = convertW3cLocalisableStringToReadiumManifestTitle(raw);
+        if (loc) {
+            const locMap = (Array.isArray(loc) ? loc : { und: loc }) as IStringMap;
+            const summary = Object.values(locMap);
+            publication.Metadata.AccessibilitySummary = summary;
+        }
     }
     {
         // save all other properties
