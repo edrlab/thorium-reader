@@ -99,7 +99,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             this.state.displayKeyboardShortcuts ?
                                 styles.keyboard_shortcuts_button_active : null)
                     }
-                    onClick={() => this.onClickKeyboardShortcutsShowHide()}>
+                    onClick={() => this.onClickKeyboardShortcutsShowHide()}
+
+                    aria-pressed={this.state.displayKeyboardShortcuts}
+                    >
                     {this.state.displayKeyboardShortcuts ? __("settings.keyboard.hide") : __("settings.keyboard.show")}
                 </button>
                 {(this.state.displayKeyboardShortcuts && !this.state.editKeyboardShortcutId) &&

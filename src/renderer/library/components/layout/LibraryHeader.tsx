@@ -95,6 +95,7 @@ class Header extends React.Component<IProps, undefined> {
         let styleClasses = [];
         const pathname = this.props.location.pathname;
 
+        let active = false;
         for (const matchRoute of item.matchRoutes) {
             if (
                 pathname.startsWith(matchRoute)
@@ -103,6 +104,7 @@ class Header extends React.Component<IProps, undefined> {
                     || matchRoute !== "/"
                 )
             ) {
+                active = true;
                 styleClasses.push(styles.active);
                 break;
             }
@@ -128,6 +130,9 @@ class Header extends React.Component<IProps, undefined> {
                 <Link
                     to={nextLocation}
                     replace={true}
+
+                    aria-pressed={active}
+                    role={"button"}
                 >
                     {
                         translate("header." + item.label)
