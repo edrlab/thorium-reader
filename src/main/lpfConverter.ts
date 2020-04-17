@@ -10,7 +10,6 @@ import { promises as fsp } from "fs";
 import * as moment from "moment";
 import * as os from "os";
 import { basename, dirname, extname, join } from "path";
-import { Contributor } from "r2-shared-js/dist/es6-es2015/src/models/metadata-contributor";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
@@ -20,6 +19,7 @@ import { v4 as uuidV4 } from "uuid";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Metadata } from "@r2-shared-js/models/metadata";
+import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Subject } from "@r2-shared-js/models/metadata-subject";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
