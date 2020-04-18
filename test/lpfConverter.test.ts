@@ -7,7 +7,7 @@ const manifest = {
     "@context": "https://readium.org/webpub-manifest/context.jsonld",
     "metadata": {
         "accessMode": "auditory",
-        "accessModeSufficient": ["auditory", "test,no trailing comma"],
+        "accessModeSufficient": [["auditory"], ["test", "no trailing comma"]],
         "@type": "https://schema.org/Audiobook",
         "title": {
             en: "Audiotest 2",

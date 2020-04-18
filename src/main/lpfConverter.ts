@@ -413,16 +413,16 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
     }
     {
         const raw = pop("accessModeSufficient");
-        const rawArray = (Array.isArray(raw) ? raw : [raw]);
+        const rawArray = (Array.isArray(raw) ? raw : [raw]) as Array<{itemListElement: string[]}>;
         const rawArrayFormated = rawArray
-            .reduce(
+            .reduce<string[][]>(
                 (pv, cv) => [
                     ...pv,
                     Array.isArray(cv?.itemListElement)
-                        ? cv.itemListElement.join(",")
+                        ? cv.itemListElement.filter((f) => typeof f === "string")
                         : undefined,
                 ], [])
-            .filter((f: any) => f);
+            .filter((f) => f?.length);
 
         if (rawArrayFormated.length) {
             publication.Metadata.AccessModeSufficient = rawArrayFormated;
@@ -448,9 +448,7 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
         const raw = pop("accessibilitySummary");
         const loc = convertW3cLocalisableStringToReadiumManifestTitle(raw);
         if (loc) {
-            const locMap = (Array.isArray(loc) ? loc : { und: loc }) as IStringMap;
-            const summary = Object.values(locMap);
-            publication.Metadata.AccessibilitySummary = summary;
+            publication.Metadata.AccessibilitySummary = loc;
         }
     }
     {
