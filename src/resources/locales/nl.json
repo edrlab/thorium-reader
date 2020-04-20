@@ -49,9 +49,10 @@
         "lang": "Taal",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
-        "noPublicationHelpL1": "Sleep EPUB bestanden in dit venster",
+        "noPublicationHelpL1": "De publicatie afgeven",
         "noPublicationHelpL2": "of gebruik \"+\" knop hier boven.",
         "noPublicationHelpL3": "LCP beveiligde bestanden zijn ondersteund.",
+        "noPublicationHelpL4": "Ondersteunde uitbreidingen:",
         "numberOfPages": "Aantal pagina's",
         "opds": {
             "info": {
@@ -85,7 +86,7 @@
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
         "import": "Wil je deze bestanden echt importeren :",
-        "importError": "er is een fout opgetreden, controleerje bestandsextensie (.epub / .lcpl / .audiobook)",
+        "importError": "er is een fout opgetreden, controleerje bestandsextensie ({{acceptedExtension}})",
         "no": "Nee",
         "renew": "Wil je de licentie voor deze publicatie echt vernieuwen?",
         "return": "Wil je de licentie voor deze publicatie echt inleveren?",

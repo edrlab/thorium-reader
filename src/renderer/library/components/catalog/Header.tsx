@@ -55,6 +55,9 @@ class Header extends React.Component<IProps, undefined> {
                     replace={true}
                     style={(displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
                     title={__("header.gridTitle")}
+
+                    aria-pressed={displayType === DisplayType.Grid}
+                    role={"button"}
                 >
                     <SVG svg={GridIcon} ariaHidden/>
                 </Link>
@@ -68,6 +71,9 @@ class Header extends React.Component<IProps, undefined> {
                     replace={true}
                     style={displayType !== DisplayType.List ? {fill: "grey"} : {}}
                     title={__("header.listTitle")}
+
+                    aria-pressed={displayType === DisplayType.List}
+                    role={"button"}
                 >
                     <SVG svg={ListIcon} ariaHidden/>
                 </Link>

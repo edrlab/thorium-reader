@@ -61,9 +61,10 @@
         "lang": "Langue",
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
-        "noPublicationHelpL1": "Déposez vos fichiers EPUB dans cette fenêtre",
+        "noPublicationHelpL1": "Déposer la publication",
         "noPublicationHelpL2": "ou bien utilisez le bouton \"+\" ci-dessus.",
         "noPublicationHelpL3": "Les fichiers protégés par LCP sont pris en charge.",
+        "noPublicationHelpL4": "Extensions prises en charge :",
         "numberOfPages": "Nombre de pages",
         "opds": {
             "info": {
@@ -97,7 +98,7 @@
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
         "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub / .lcpl / .audiobook)",
+        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier ({{acceptedExtension}})",
         "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",

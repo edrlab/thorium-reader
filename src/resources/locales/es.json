@@ -21,7 +21,7 @@
             "title": "Editar",
             "undo": "Deshacer"
         },
-        "hide": "Hide {{appName}}",
+        "hide": "Ocultar {{appName}}",
         "quit": "Salir de {{appName}}"
     },
     "catalog": {
@@ -41,17 +41,18 @@
         "emptyTagList": "No tienes libros etiquetados.",
         "entry": {
             "continueReading": "Reanudar lectura",
-            "continueReadingAudioBooks": "Reanudar escuchando",
+            "continueReadingAudioBooks": "Reanudar reproducción",
             "lastAdditions": "Añadidos recientemente",
-            "lastAdditionsAudioBooks": "Audiolibros agregados recientemente"
+            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente"
         },
         "export": "Exportar",
         "lang": "Idioma",
         "moreInfo": "Más información",
         "myBooks": "Mis libros",
-        "noPublicationHelpL1": "Suelta ficheros EPUB en esta ventana",
+        "noPublicationHelpL1": "Dejar la publicación",
         "noPublicationHelpL2": "o usa el botón \"+\" de arriba.",
         "noPublicationHelpL3": "Se admiten ficheros protegidos LCP.",
+        "noPublicationHelpL4": "Extensiones soportadas:",
         "numberOfPages": "Número de páginas",
         "opds": {
             "info": {
@@ -85,7 +86,7 @@
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
         "import": "¿Seguro que quieres importar estos ficheros?",
-        "importError": "Se ha producido un error, comprueba la extensión de tu fichero (.epub / .lcpl / .audiobook)",
+        "importError": "Se ha producido un error, comprueba la extensión de tu fichero ({{acceptedExtension}})",
         "no": "No",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
@@ -265,15 +266,15 @@
             "cancel": "Cancelar",
             "edit": "Editar",
             "editUserJson": "Editar archivo de usuario",
-            "hide": "Esconder",
+            "hide": "Ocultar",
             "keyboardShortcuts": "Atajos de teclado",
-            "loadUserJson": "Cargar (archivo de usuario)",
-            "resetDefaults": "Restablecer (valores predeterminados)",
-            "save": "Salvar",
-            "show": "Espectáculo"
+            "loadUserJson": "Cargar archivo de usuario",
+            "resetDefaults": "Restablecer valores predeterminados",
+            "save": "Guardar",
+            "show": "Mostrar"
         },
         "language": {
-            "languageChoice": "Elección de idioma"
+            "languageChoice": "Selección de idioma"
         }
     }
 }

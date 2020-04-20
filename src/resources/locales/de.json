@@ -61,9 +61,10 @@
         "lang": "Sprache",
         "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
-        "noPublicationHelpL1": "EPUB-Dateien in dieses Fenster ziehen",
+        "noPublicationHelpL1": "Geben Sie die Publikation ab",
         "noPublicationHelpL2": "oder über den Button \"+\" hinzufügen.",
         "noPublicationHelpL3": "LCP-geschützte Dateien werden unterstützt.",
+        "noPublicationHelpL4": "Unterstützte Erweiterungen:",
         "numberOfPages": "Seitenzahl",
         "opds": {
             "info": {
@@ -97,7 +98,7 @@
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung (.epub / .lcpl / .audiobook).",
+        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
         "no": "Nein",
         "renew": "",
         "return": "",

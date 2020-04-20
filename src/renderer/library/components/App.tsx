@@ -12,6 +12,7 @@ import * as path from "path";
 import * as React from "react";
 import Dropzone from "react-dropzone";
 import { Provider } from "react-redux";
+import { acceptedExtension } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
@@ -35,20 +36,19 @@ export default class App extends React.Component<{}, undefined> {
     public onDrop(acceptedFiles: File[]) {
         const store = diLibraryGet("store");
         store.dispatch(
-            dialogActions.openRequest.build(DialogTypeName.FileImport,
+            dialogActions.openRequest.build(
+                DialogTypeName.FileImport,
                 {
-                    files: acceptedFiles.filter((file) => {
-                            const ext = path.extname(file.path);
-                            return (/\.epub[3]?$/.test(ext) ||
-                                /\.audiobook$/.test(ext) ||
-                                ext === ".lcpl");
-                    })
-                        .map((file) => {
-                            return {
+                    files: acceptedFiles
+                        .filter(
+                            (file) => acceptedExtension(path.extname(file.path)),
+                        )
+                        .map(
+                            (file) => ({
                                 name: file.name,
                                 path: file.path,
-                            };
-                        }),
+                            }),
+                        ),
                 },
             ));
     }

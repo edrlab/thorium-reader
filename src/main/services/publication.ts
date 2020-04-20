@@ -8,9 +8,11 @@
 import * as debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "fs";
+import { remove } from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import * as path from "path";
+import { acceptedExtensionObject, isAcceptedExtension } from "readium-desktop/common/extension";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -40,6 +42,7 @@ import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser
 import { getTagsFromOpdsPublication } from "../converter/tools/getTags";
 import { extractCrc32OnZip } from "../crc";
 import { getLibraryWindowFromDi } from "../di";
+import { lpfToAudiobookConverter } from "../lpfConverter";
 import { RootState } from "../redux/states";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
@@ -49,7 +52,7 @@ import { LcpManager } from "./lcp";
 // import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 // Logger
-const debug = debug_("readium-desktop:main#services/catalog");
+const debug = debug_("readium-desktop:main#services/publication");
 
 @injectable()
 export class PublicationService {
@@ -85,7 +88,8 @@ export class PublicationService {
         let publicationDocument: PublicationDocument | undefined;
 
         const ext = path.extname(filePath);
-        const isLCPLicense = ext === ".lcpl"; // || (ext === ".part" && isLcpFile);
+        const isLCPLicense = isAcceptedExtension("lcpLicence", ext); // || (ext === ".part" && isLcpFile);
+        const isLPF = isAcceptedExtension("w3cAudiobook", ext);
         try {
 
             const hash = isLCPLicense ? undefined : await extractCrc32OnZip(filePath);
@@ -108,9 +112,19 @@ export class PublicationService {
                 if (isLCPLicense) {
                     publicationDocument = await this.importLcplFile(filePath, lcpHashedPassphrase);
 
-                } else if (/\.epub[3]?$/.test(ext) || /\.audiobook$/.test(ext)) { //  || (ext === ".part" && !isLcpFile)
-                    publicationDocument = await this.importEpubFile(filePath, hash, lcpHashedPassphrase);
+                } else  {
+                    let epubFilePath = filePath;
+                    if (isLPF) {
+                        // convert .lpf to .audiobook
 
+                        epubFilePath = await lpfToAudiobookConverter(filePath);
+                    }
+
+                    publicationDocument = await this.importEpubFile(epubFilePath, hash, lcpHashedPassphrase);
+
+                    if (isLPF) {
+                        await remove(epubFilePath);
+                    }
                 }
                 this.store.dispatch(
                     toastActions.openRequest.build(
@@ -151,11 +165,16 @@ export class PublicationService {
         const isLcpFile = link.type === ContentType.Lcp;
         const isEpubFile = link.type === ContentType.Epub;
         const isAudioBookPacked = link.type === ContentType.AudioBookPacked;
-        if (!isLcpFile && !isEpubFile && !isAudioBookPacked) {
+        const isAudioBookPackedLcp = link.type === ContentType.AudioBookPackedLcp;
+        if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp) {
             throw new Error(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
         }
 
-        const ext = isLcpFile ? ".lcpl" : (isEpubFile ? ".epub" : (isAudioBookPacked ? ".audiobook" : ".unknown"));
+        const ext = isLcpFile ? acceptedExtensionObject.lcpLicence :
+            (isEpubFile ? acceptedExtensionObject.epub :
+            (isAudioBookPacked ? acceptedExtensionObject.audiobook :
+                (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
+                    ".unknown")));
         // start the download service
         const download = this.downloader.addDownload(link.url, ext);
 
@@ -401,7 +420,11 @@ export class PublicationService {
                 if (link.Rel === "publication") {
                     const isEpubFile = link.Type === ContentType.Epub;
                     const isAudioBookPacked = link.Type === ContentType.AudioBookPacked;
-                    const ext = isEpubFile ? ".epub" : (isAudioBookPacked ? ".audiobook" : ".unknown");
+                    const isAudioBookPackedLcp = link.Type === ContentType.AudioBookPackedLcp;
+                    const ext = isEpubFile ? acceptedExtensionObject.epub :
+                        (isAudioBookPacked ? acceptedExtensionObject.audiobook :
+                            (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
+                                ".unknown"));
 
                     download = this.downloader.addDownload(link.Href, ext);
                     title = link.Title ?? download.srcUrl;

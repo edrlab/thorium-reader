@@ -9,6 +9,7 @@ import { dialog } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
+import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ContentType } from "readium-desktop/utils/content-type";
@@ -73,20 +74,40 @@ export class PublicationStorage {
         rmDirSync(this.buildPublicationPath(identifier));
     }
 
+    // TODO: fs.existsSync() is really costly,
+    // and getPublicationEpubPath() is called many times!
     public getPublicationEpubPath(identifier: string): string {
 
         const root = this.buildPublicationPath(identifier);
         const pathEpub = path.join(
             root,
-            `book.epub`,
+            `book${acceptedExtensionObject.epub}`,
         );
         if (fs.existsSync(pathEpub)) {
             return pathEpub;
         }
-        return path.join(
+        const pathAudioBook = path.join(
             root,
-            `book.audiobook`,
+            `book${acceptedExtensionObject.audiobook}`,
         );
+        if (fs.existsSync(pathAudioBook)) {
+            return pathAudioBook;
+        }
+        const pathAudioBookLcp = path.join(
+            root,
+            `book${acceptedExtensionObject.audiobookLcp}`,
+        );
+        if (fs.existsSync(pathAudioBookLcp)) {
+            return pathAudioBookLcp;
+        }
+        const pathAudioBookLcpAlt = path.join(
+            root,
+            `book${acceptedExtensionObject.audiobookLcpAlt}`,
+        );
+        if (fs.existsSync(pathAudioBookLcpAlt)) {
+            return pathAudioBookLcpAlt;
+        }
+        throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
     public copyPublicationToPath(publicationView: PublicationView, destinationPath: string) {
@@ -114,9 +135,18 @@ export class PublicationStorage {
         srcPath: string,
     ): Promise<File> {
         const extension = path.extname(srcPath);
-        const isAudioBook = /\.audiobook$/.test(extension);
-        const ext = isAudioBook ? "audiobook" : "epub";
-        const filename = `book.${ext}`;
+        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension);
+        const isAudioBookLcp = new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`).test(extension);
+        const isAudioBookLcpAlt = new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
+        // beware: analog to getPublicationEpubPath()!
+        const ext = isAudioBook ? acceptedExtensionObject.audiobook :
+            (isAudioBookLcp ? acceptedExtensionObject.audiobookLcp :
+                (isAudioBookLcpAlt ? acceptedExtensionObject.audiobookLcpAlt :
+                    acceptedExtensionObject.epub));
+        // const ext = (isAudioBook || isAudioBookLcp || isAudioBookLcpAlt) ?
+        //     acceptedExtensionObject.audiobook : acceptedExtensionObject.epub;
+
+        const filename = `book${ext}`;
         const dstPath = path.join(
             this.buildPublicationPath(identifier),
             filename,
@@ -128,7 +158,9 @@ export class PublicationStorage {
                 resolve({
                     url: `store://${identifier}/${filename}`,
                     ext,
-                    contentType: isAudioBook ? ContentType.AudioBookPacked : ContentType.Epub,
+                    contentType: isAudioBook ? ContentType.AudioBookPacked :
+                        ((isAudioBookLcp || isAudioBookLcpAlt) ? ContentType.AudioBookPackedLcp :
+                            ContentType.Epub),
                     size: getFileSize(dstPath),
                 });
             };
