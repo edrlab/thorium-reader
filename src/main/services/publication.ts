@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "fs";
-import { remove } from "fs-extra";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import * as path from "path";
@@ -112,16 +111,18 @@ export class PublicationService {
 
                 } else  {
                     let epubFilePath = filePath;
+                    let cleanFct: () => void;
+
                     if (isLPF) {
                         // convert .lpf to .audiobook
-
-                        epubFilePath = await lpfToAudiobookConverter(filePath);
+                        [epubFilePath, cleanFct] = await lpfToAudiobookConverter(filePath);
                     }
 
                     publicationDocument = await this.importEpubFile(epubFilePath, hash, lcpHashedPassphrase);
 
-                    if (isLPF) {
-                        await remove(epubFilePath);
+                    if (cleanFct) {
+                        // not useful to wait promise-resolved here
+                        cleanFct();
                     }
                 }
                 this.store.dispatch(
