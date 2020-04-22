@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { dialog } from "electron";
+import { app, dialog } from "electron";
 import { error } from "readium-desktop/common/error";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
@@ -15,9 +15,9 @@ import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readiu
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
-import { all, call, takeLeading } from "redux-saga/effects";
+import { eventChannel } from "redux-saga";
+import { all, call, put, take, takeLeading } from "redux-saga/effects";
 
-import { appActivate } from "../app";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
 import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
 
@@ -25,6 +25,27 @@ import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession
 const filename_ = "readium-desktop:main:redux:sagas:win:library";
 const debug = debug_(filename_);
 debug("_");
+
+// On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
+// windows open.
+function* appActivate() {
+
+    const appActivateChannel = eventChannel<void>(
+        (emit) => {
+
+            const handler = () => emit();
+            app.on("activate", handler);
+
+            return () => {
+                app.removeListener("activate", handler);
+            };
+        },
+    );
+
+    yield take(appActivateChannel);
+
+    yield put(winActions.library.openRequest.build());
+}
 
 function* winOpen(action: winActions.library.openSucess.TAction) {
 

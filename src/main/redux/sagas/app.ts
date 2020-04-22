@@ -13,7 +13,6 @@ import { keyboardActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 import { appActions, winActions } from "readium-desktop/main/redux/actions";
-import { eventChannel } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
 // Logger
@@ -67,27 +66,6 @@ function* appInitWatcher() {
     yield put(appActions.initSuccess.build());
 
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
-
-    yield put(winActions.library.openRequest.build());
-}
-
-// On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
-// windows open.
-export function* appActivate() {
-
-    const appActivateChannel = eventChannel<void>(
-        (emit) => {
-
-            const handler = () => emit();
-            app.on("activate", handler);
-
-            return () => {
-                app.removeListener("activate", handler);
-            };
-        },
-    );
-
-    yield take(appActivateChannel);
 
     yield put(winActions.library.openRequest.build());
 }
