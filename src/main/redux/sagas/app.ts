@@ -8,18 +8,14 @@
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
-import { error } from "readium-desktop/common/error";
-import { keyboardActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
-import { keyboardShortcuts } from "readium-desktop/main/keyboard";
-import { appActions, winActions } from "readium-desktop/main/redux/actions";
-import { all, call, put, take } from "redux-saga/effects";
+import { call } from "redux-saga/effects";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
 
-function* mainApp() {
+export function* init() {
 
     app.setAppUserModelId("io.github.edrlab.thorium");
 
@@ -54,30 +50,4 @@ function* mainApp() {
         },
     );
 
-}
-
-function* appInitWatcher() {
-    yield take(appActions.initRequest.ID);
-
-    yield call(mainApp);
-
-    yield call(keyboardShortcuts.init);
-
-    yield put(appActions.initSuccess.build());
-
-    yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
-
-    yield put(winActions.library.openRequest.build());
-}
-
-export function* watchers() {
-    try {
-
-        yield all([
-            call(appInitWatcher),
-        ]);
-
-    } catch (err) {
-        error(filename_, err);
-    }
 }

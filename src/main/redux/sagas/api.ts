@@ -9,10 +9,11 @@ import * as debug_ from "debug";
 import { CodeError } from "readium-desktop/common/codeError.class";
 import { error } from "readium-desktop/common/error";
 import { apiActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:api";
@@ -31,7 +32,7 @@ function* processRequest(requestAction: apiActions.request.TAction) {
     const { api } = requestAction.meta;
 
     try {
-        const apiModule = diMainGet(getSymbolName(api.moduleId));
+        const apiModule = yield call(() => diMainGet(getSymbolName(api.moduleId)));
         const apiMethod = apiModule[api.methodId].bind(apiModule);
 
         debug(api.moduleId, api.methodId, requestAction.payload);
@@ -43,25 +44,16 @@ function* processRequest(requestAction: apiActions.request.TAction) {
 
         yield put(apiActions.result.build(api, result));
     } catch (error) {
-        debug(error);
+        debug("API-ERROR", error);
         yield put(apiActions.result.build(api, new CodeError("API-ERROR", error.message)));
     }
 }
 
-function* requestWatcher() {
-    yield all([
-        yield takeEvery(apiActions.request.ID, processRequest),
-    ]);
-}
+export function spawn() {
 
-export function* watchers() {
-
-    try {
-        yield all([
-            call(requestWatcher),
-        ]);
-
-    } catch (err) {
-        error(filename_, err);
-    }
+    return takeSpawnEvery(
+        apiActions.request.ID,
+        processRequest,
+        (e) => error(filename_, e),
+    );
 }

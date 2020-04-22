@@ -5,68 +5,72 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { all, call, take } from "redux-saga/effects";
+import * as debug_ from "debug";
+import { app as appElectron, dialog } from "electron";
+import { error } from "readium-desktop/common/error";
+import { keyboardActions } from "readium-desktop/common/redux/actions";
+import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
+import { keyboardShortcuts } from "readium-desktop/main/keyboard";
+import { all, call, put, take } from "redux-saga/effects";
 
-import { appActions } from "../actions";
+import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as app from "./app";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
-// import { netStatusWatcher } from "./net";
 import * as keyboard from "./keyboard";
 import * as persist from "./persist";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
 
+// import { netStatusWatcher } from "./net";
 // import { updateStatusWatcher } from "./update";
 
-function* appInitSuccessWatcher() {
-
-    yield take(appActions.initSuccess.ID);
-
-    yield all([
-        call(api.watchers),
-
-        // Net
-        // call(netStatusWatcher),
-
-        // Streamer
-        call(streamer.watchers),
-
-        call(keyboard.watchers),
-
-        // Update checker
-        // call(updateStatusWatcher),
-
-        // Reader
-        call(win.reader.watchers),
-
-        call(win.library.watchers),
-
-        call(win.session.library.watchers),
-        call(win.session.reader.watchers),
-
-        call(ipc.watchers),
-
-        call(reader.watchers),
-
-        // data persist to FS
-        call(persist.watchers),
-
-    ]);
-}
+// Logger
+const filename_ = "readium-desktop:main:saga:app";
+const debug = debug_(filename_);
 
 export function* rootSaga() {
-    yield all([
 
-        // App
-        call(app.watchers),
+    // main entry
+    yield take(appActions.initRequest.ID);
 
-        call(appInitSuccessWatcher),
+    yield i18n.spawn();
 
-        // I18N
-        call(i18n.watchers),
+    try {
+        yield all([
+            call(app.init),
+            call(keyboardShortcuts.init),
+        ]);
 
-    ]);
+    } catch (e) {
+        const code = 1;
+        dialog.showErrorBox("Application init Error", `main rootSaga: ${e}\n\nEXIT CODE ${code}`);
+        debug("CRITICAL ERROR => EXIT");
+        debug(e);
+        appElectron.exit(code);
+    }
+
+    // send initSucess first
+    yield put(appActions.initSuccess.build());
+
+    // yield spawnLeading(i18n.watchers, (e) => error("main:rootSaga:i18n", e));
+
+    yield api.spawn();
+    // yield spawnLeading(api.watchers, (e) => error("main:rootSaga:api", e));
+    yield spawnLeading(streamer.watchers, (e) => error("main:rootSaga:streamer", e));
+    yield spawnLeading(keyboard.watchers, (e) => error("main:rootSaga:keyboard", e));
+    yield spawnLeading(win.reader.watchers, (e) => error("main:rootSaga:win:reader", e));
+    yield spawnLeading(win.library.watchers, (e) => error("main:rootSaga:win:library", e));
+    yield spawnLeading(win.session.library.watchers, (e) => error("main:rootSaga:win:session:library", e));
+    yield spawnLeading(win.session.reader.watchers, (e) => error("main:rootSaga:win:session:reader", e));
+    yield spawnLeading(ipc.watchers, (e) => error("main:rootSaga:ipc", e));
+    yield spawnLeading(reader.watchers, (e) => error("main:rootSaga:reader", e));
+    yield spawnLeading(persist.watchers, (e) => error("main:rootSaga:persist", e));
+
+    // dispatch at the end
+    yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
+
+    yield put(winActions.library.openRequest.build());
 }

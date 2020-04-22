@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ActionPattern, call, ForkEffect, spawn, take } from "redux-saga/effects";
+import { ActionPattern, call, fork, ForkEffect, spawn, take } from "redux-saga/effects";
 
 // tslint:disable-next-line: no-empty
 const noop = () => { };
 
-export function takeSpawnLeading<P extends ActionPattern>(
+export function takeSpawnEvery<P extends ActionPattern>(
     pattern: P,
     worker: (...args: any[]) => any,
     cbErr: (e: any) => void = noop,
@@ -18,11 +18,13 @@ export function takeSpawnLeading<P extends ActionPattern>(
     return spawn(function*() {
         while (true) {
             const action = yield take(pattern);
-            try {
-                yield call(worker, action);
-            } catch (e) {
-                cbErr(e);
-            }
+            yield fork(function*() {
+                try {
+                    yield call(worker, action);
+                } catch (e) {
+                    cbErr(e);
+                }
+            });
         }
     });
 }
