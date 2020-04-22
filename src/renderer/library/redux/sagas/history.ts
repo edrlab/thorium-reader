@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { routerActions, winActions } from "readium-desktop/renderer/library/redux/actions";
 import { all, call, put } from "redux-saga/effects";
 

@@ -12,7 +12,7 @@ import { error } from "readium-desktop/common/error";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";

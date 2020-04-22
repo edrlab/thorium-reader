@@ -11,7 +11,7 @@ import * as path from "path";
 import {
     trackBrowserWindow,
 } from "r2-navigator-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
-import { callTyped, putTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped, putTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import {

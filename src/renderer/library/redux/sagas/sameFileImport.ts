@@ -7,7 +7,7 @@
 
 import { ToastType } from "readium-desktop/common/models/toast";
 import { importActions, toastActions } from "readium-desktop/common/redux/actions";
-import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { selectTyped, takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";

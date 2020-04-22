@@ -11,7 +11,7 @@ import { error } from "readium-desktop/common/error";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { lcpActions, toastActions } from "readium-desktop/common/redux/actions/";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { streamerActions } from "readium-desktop/main/redux/actions";

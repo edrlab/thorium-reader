@@ -8,7 +8,7 @@
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { dialogActions } from "readium-desktop/common/redux/actions/";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { SagaIterator } from "redux-saga";
 import { all, call, put } from "redux-saga/effects";
 

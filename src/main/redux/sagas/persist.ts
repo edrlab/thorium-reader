@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { app } from "electron";
 import { error } from "readium-desktop/common/error";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";

@@ -10,7 +10,7 @@ import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { error } from "readium-desktop/common/error";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
-import { selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";

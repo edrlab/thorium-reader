@@ -10,7 +10,7 @@ import { app, dialog } from "electron";
 import { error } from "readium-desktop/common/error";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -203,6 +203,8 @@ function* closedLibraryWatcher() {
     } catch (err) {
         error(filename_ + ":closedLibraryWatcher", err);
     }
+
+    // yield takeSpawnLeading(winActions.library.closed.ID, appActivate);
 }
 
 export function* watchers() {

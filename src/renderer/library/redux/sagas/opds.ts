@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { selectTyped, takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";

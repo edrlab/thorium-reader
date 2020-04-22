@@ -10,7 +10,7 @@ import { ipcMain } from "electron";
 import { error } from "readium-desktop/common/error";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
-import { callTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
 import { eventChannel } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";

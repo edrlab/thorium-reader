@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 import { all, call, takeEvery } from "redux-saga/effects";
