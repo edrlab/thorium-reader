@@ -23,7 +23,7 @@ import * as win from "./win";
 
 function* appInitSuccessWatcher() {
 
-    yield take(appActions.initRequest.ID);
+    yield take(appActions.initSuccess.ID);
 
     yield all([
         call(api.watchers),
