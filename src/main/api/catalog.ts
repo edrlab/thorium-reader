@@ -23,6 +23,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { Store } from "redux";
 
+import { publicationActions } from "../redux/actions";
 import { RootState } from "../redux/states";
 
 export const CATALOG_CONFIG_ID = "catalog";
@@ -99,6 +100,8 @@ export class CatalogApi implements ICatalogApi {
                 } catch (err) {
                     // ignore
                     debug("ERR on LastReadPublication getter", err);
+                    debug("dispatch publicationActions.deletePublication", pubId);
+                    this.store.dispatch(publicationActions.deletePublication.build(pubId));
                 }
             }
         };
