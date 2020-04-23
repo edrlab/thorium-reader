@@ -67,9 +67,15 @@ export function* rootSaga() {
 
     yield streamer.saga();
     // yield spawnLeading(streamer.watchers, (e) => error("main:rootSaga:streamer", e));
-    yield spawnLeading(keyboard.watchers, (e) => error("main:rootSaga:keyboard", e));
-    yield spawnLeading(win.reader.watchers, (e) => error("main:rootSaga:win:reader", e));
-    yield spawnLeading(win.library.watchers, (e) => error("main:rootSaga:win:library", e));
+
+    yield keyboard.watchers();
+    // yield spawnLeading(keyboard.watchers, (e) => error("main:rootSaga:keyboard", e));
+
+    yield win.reader.watchers();
+    // yield spawnLeading(win.reader.watchers, (e) => error("main:rootSaga:win:reader", e));
+
+    yield win.library.watchers();
+    // yield spawnLeading(win.library.watchers, (e) => error("main:rootSaga:win:library", e));
     yield spawnLeading(win.session.library.watchers, (e) => error("main:rootSaga:win:session:library", e));
     yield spawnLeading(win.session.reader.watchers, (e) => error("main:rootSaga:win:session:reader", e));
     yield spawnLeading(ipc.watchers, (e) => error("main:rootSaga:ipc", e));

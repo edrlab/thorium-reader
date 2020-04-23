@@ -10,13 +10,14 @@ import { app, dialog } from "electron";
 import { error } from "readium-desktop/common/error";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { eventChannel } from "redux-saga";
-import { all, call, put, take, takeLeading } from "redux-saga/effects";
+import { all, put, take } from "redux-saga/effects";
 
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
 import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
@@ -178,38 +179,32 @@ function* winClose(_action: winActions.library.closed.TAction) {
     library.destroy();
 }
 
-function* openLibraryWatcher() {
-
-    try {
-
-        yield all([
-            takeLeading(winActions.library.openRequest.ID, createLibraryWindow),
-            takeLeading(winActions.library.openRequest.ID, checkReaderWindowInSession),
-            takeLeading(winActions.library.openSucess.ID, winOpen),
-        ]);
-    } catch (err) {
-        error(filename_ + ":openLibraryWatcher", err);
-    }
-}
-
-function* closedLibraryWatcher() {
-
-    try {
-
-        yield all([
-            takeLeading(winActions.library.closed.ID, appActivate),
-            takeLeading(winActions.library.closed.ID, winClose),
-    ]);
-    } catch (err) {
-        error(filename_ + ":closedLibraryWatcher", err);
-    }
-
-    // yield takeSpawnLeading(winActions.library.closed.ID, appActivate);
-}
-
-export function* watchers() {
-    yield all([
-        call(openLibraryWatcher),
-        call(closedLibraryWatcher),
+export function watchers() {
+    return all([
+        takeSpawnLeading(
+            winActions.library.openRequest.ID,
+            createLibraryWindow,
+            (e) => error(filename_ + ":createLibraryWindow", e),
+        ),
+        takeSpawnLeading(
+            winActions.library.openRequest.ID,
+            checkReaderWindowInSession,
+            (e) => error(filename_ + ":checkReaderWindowInSession", e),
+        ),
+        takeSpawnLeading(
+            winActions.library.openSucess.ID,
+            winOpen,
+            (e) => error(filename_ + ":winOpen", e),
+        ),
+        takeSpawnLeading(
+            winActions.library.closed.ID,
+            appActivate,
+            (e) => error(filename_ + ":appActivate", e),
+        ),
+        takeSpawnLeading(
+            winActions.library.closed.ID,
+            winClose,
+            (e) => error(filename_ + ":winClose", e),
+        ),
     ]);
 }

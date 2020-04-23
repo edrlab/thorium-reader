@@ -10,6 +10,7 @@ import { error } from "readium-desktop/common/error";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
@@ -18,7 +19,7 @@ import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { all, put } from "redux-saga/effects";
 
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
 
@@ -154,30 +155,22 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
 }
 
-function* openReaderWatcher() {
-    try {
-        yield all([
-            takeEvery(winActions.reader.openRequest.ID, createReaderWindow),
-            takeEvery(winActions.reader.openSucess.ID, winOpen),
-        ]);
-    } catch (err) {
-        error(filename_ + ":openReaderWatcher", err);
-    }
-}
-
-function* closedReaderWatcher() {
-    try {
-        yield all([
-            takeEvery(winActions.reader.closed.ID, winClose),
-        ]);
-    } catch (err) {
-        error(filename_ + ":closedReaderWatcher", err);
-    }
-}
-
-export function* watchers() {
-    yield all([
-        call(openReaderWatcher),
-        call(closedReaderWatcher),
+export function watchers() {
+    return all([
+        takeSpawnEvery(
+            winActions.reader.openRequest.ID,
+            createReaderWindow,
+            (e) => error(filename_ + ":createReaderWindow", e),
+        ),
+        takeSpawnEvery(
+            winActions.reader.openSucess.ID,
+            winOpen,
+            (e) => error(filename_ + ":winOpen", e),
+        ),
+        takeSpawnEvery(
+            winActions.reader.closed.ID,
+            winClose,
+            (e) => error(filename_ + ":winClose", e),
+        ),
     ]);
 }
