@@ -36,7 +36,7 @@ export function* rootSaga() {
     // main entry
     yield take(appActions.initRequest.ID);
 
-    yield i18n.spawn();
+    yield i18n.saga();
 
     try {
         yield all([
@@ -62,9 +62,11 @@ export function* rootSaga() {
 
     // yield spawnLeading(i18n.watchers, (e) => error("main:rootSaga:i18n", e));
 
-    yield api.spawn();
+    yield api.saga();
     // yield spawnLeading(api.watchers, (e) => error("main:rootSaga:api", e));
-    yield spawnLeading(streamer.watchers, (e) => error("main:rootSaga:streamer", e));
+
+    yield streamer.saga();
+    // yield spawnLeading(streamer.watchers, (e) => error("main:rootSaga:streamer", e));
     yield spawnLeading(keyboard.watchers, (e) => error("main:rootSaga:keyboard", e));
     yield spawnLeading(win.reader.watchers, (e) => error("main:rootSaga:win:reader", e));
     yield spawnLeading(win.library.watchers, (e) => error("main:rootSaga:win:library", e));

@@ -44,7 +44,7 @@ function* setLocale(action: i18nActions.setLocale.TAction) {
     ]);
 }
 
-export function spawn() {
+export function saga() {
 
     return takeSpawnLeading(
         i18nActions.setLocale.ID,

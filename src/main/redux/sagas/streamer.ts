@@ -8,12 +8,14 @@
 import * as debug_ from "debug";
 import * as portfinder from "portfinder";
 import { error } from "readium-desktop/common/error";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { SagaIterator } from "redux-saga";
-import { all, call, put, takeEvery, takeLeading } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
 
 import { Server } from "@r2-streamer-js/http/server";
 
@@ -38,7 +40,7 @@ function* startRequest(): SagaIterator {
 
     try {
 
-        const streamerUrl = yield* callTyped(startStreamer, streamer);
+        const streamerUrl = yield* callTyped(() => startStreamer(streamer));
         yield put(streamerActions.startSuccess.build(streamerUrl));
     } catch (error) {
 
@@ -53,7 +55,7 @@ function* stopRequest(): SagaIterator {
 
     try {
 
-        yield call(streamer.stop);
+        yield call(() => streamer.stop);
         yield put(streamerActions.stopSuccess.build());
     } catch (error) {
 
@@ -100,40 +102,22 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
     yield put(streamerActions.publicationCloseSuccess.build(pubId));
 }
 
-function* publicationCloseRequestWatcher() {
-    try {
-        yield all([
-            yield takeEvery(streamerActions.publicationCloseRequest.ID, publicationCloseRequest),
-        ]);
-    } catch (err) {
-        error(filename_ + ":publicationCloseRequestWatcher", err);
-    }
-}
-
-function* stopRequestWatcher() {
-    try {
-        yield all([
-            yield takeLeading(streamerActions.stopRequest.ID, stopRequest),
-        ]);
-    } catch (err) {
-        error(filename_ + ":stopRequestWatcher", err);
-    }
-}
-
-function* startRequestWatcher() {
-    try {
-        yield all([
-            yield takeLeading(streamerActions.startRequest.ID, startRequest),
-        ]);
-    } catch (err) {
-        error(filename_ + ":startRequestWatcher", err);
-    }
-}
-
-export function* watchers() {
-    yield all([
-        call(stopRequestWatcher),
-        call(startRequestWatcher),
-        call(publicationCloseRequestWatcher),
+export function saga() {
+    return all([
+        takeSpawnEvery(
+            streamerActions.publicationCloseRequest.ID,
+            publicationCloseRequest,
+            (e) => error(`${filename_}:publicationCloseRequest`, e),
+        ),
+        takeSpawnLeading(
+            streamerActions.startRequest.ID,
+            startRequest,
+            (e) => error(`${filename_}:startRequest`, e),
+        ),
+        takeSpawnLeading(
+            streamerActions.startRequest.ID,
+            stopRequest,
+            (e) => error(`${filename_}:stopRequest`, e),
+        ),
     ]);
 }

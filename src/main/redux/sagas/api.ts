@@ -49,7 +49,7 @@ function* processRequest(requestAction: apiActions.request.TAction) {
     }
 }
 
-export function spawn() {
+export function saga() {
 
     return takeSpawnEvery(
         apiActions.request.ID,
