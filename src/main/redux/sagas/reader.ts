@@ -21,8 +21,7 @@ import {
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
-
-import { streamerOpenPublicationAndReturnManifestUrl } from "./streamer";
+import { streamerOpenPublicationAndReturnManifestUrl } from "./publication/openPublication";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";

@@ -13,7 +13,7 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
-import { all, call, takeLeading } from "redux-saga/effects";
+import { all, call } from "redux-saga/effects";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:i18n";

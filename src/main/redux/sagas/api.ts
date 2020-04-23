@@ -44,7 +44,7 @@ function* processRequest(requestAction: apiActions.request.TAction) {
 
         yield put(apiActions.result.build(api, result));
     } catch (error) {
-        debug("API-ERROR", error);
+        debug("API-ERROR", error, "requestAction: ", requestAction);
         yield put(apiActions.result.build(api, new CodeError("API-ERROR", error.message)));
     }
 }

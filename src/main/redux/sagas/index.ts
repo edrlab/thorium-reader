@@ -46,7 +46,12 @@ export function* rootSaga() {
 
     } catch (e) {
         const code = 1;
-        dialog.showErrorBox("Application init Error", `main rootSaga: ${e}\n\nEXIT CODE ${code}`);
+        try {
+            dialog.showErrorBox("Application init Error", `main rootSaga: ${e}\n\nEXIT CODE ${code}`);
+        } catch {
+            // ignore
+        }
+
         debug("CRITICAL ERROR => EXIT");
         debug(e);
         appElectron.exit(code);

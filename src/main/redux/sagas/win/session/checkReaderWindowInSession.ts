@@ -14,7 +14,7 @@ import { IWinSessionReaderState } from "readium-desktop/main/redux/states/win/se
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { fork, put } from "redux-saga/effects";
 
-import { streamerOpenPublicationAndReturnManifestUrl } from "../../streamer";
+import { streamerOpenPublicationAndReturnManifestUrl } from "../../publication/openPublication";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:checkReaderWindowSession");
