@@ -9,6 +9,8 @@ import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import * as Ramda from "ramda";
 import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { toastActions } from "readium-desktop/common/redux/actions";
 import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -123,7 +125,21 @@ export class CatalogApi implements ICatalogApi {
                     findIndex((lastDoc) => lastDoc.identifier === doc.identifier) < 0;
 
                 if (notInReading) {
-                    lastAddedPublicationViews.push(this.publicationViewConverter.convertDocumentToView(doc));
+                    try {
+                        const pub = this.publicationViewConverter.convertDocumentToView(doc);
+                        lastAddedPublicationViews.push(pub);
+                    } catch (e) {
+                        debug("Error in convertDocumentToView doc=", doc);
+                        this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc.title || ""));
+
+                        debug(`${doc.identifier} => ${doc.title} should be removed`);
+                        try {
+                           // tslint:disable-next-line: no-floating-promises
+                           this.publicationRepository.delete(doc.identifier);
+                        } catch {
+                            // ignore
+                        }
+                    }
                 }
 
                 ++i;
