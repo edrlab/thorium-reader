@@ -34,7 +34,7 @@ function* browsePublication() {
     if (!linkIterator.done) {
         const link = linkIterator.value as IOpdsLinkView;
         if (link) {
-            yield* apiSaga("opds/browse", REQUEST_ID, link.url);
+            yield apiSaga("opds/browse", REQUEST_ID, link.url);
         }
     }
 }

@@ -51,7 +51,7 @@ function* sameFileImportWatcher() {
 
         } else {
 
-            yield* apiSaga("publication/importOpdsPublicationLink",
+            yield apiSaga("publication/importOpdsPublicationLink",
                 REQUEST_ID,
                 link,
                 r2OpdsPublicationBase64,
