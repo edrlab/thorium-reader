@@ -30,8 +30,8 @@ export function* rootSaga() {
         watchdog.saga(),
         publicationInfoOpds.saga(),
 
-        call(i18n.watchers),
-        call(lcp.watchers),
+        i18n.saga(),
+        lcp.saga(),
         call(opds.watchers),
         call(winInit.watchers),
         call(publicationInfoReaderAndLib.watchers),

@@ -101,6 +101,8 @@ function* updateHeaderLinkWatcher(): SagaIterator {
 
 function* setSearchLinkInHeader(): SagaIterator {
 
+    // TODO
+    // Should be an infinite loop here
     const action = yield* takeTyped(apiActions.result.build);
     const { requestId } = action.meta.api;
     let returnUrl: string;

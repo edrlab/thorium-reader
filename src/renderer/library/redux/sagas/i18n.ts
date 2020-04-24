@@ -6,11 +6,13 @@
 // ==LICENSE-END==
 
 import { i18nActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
-import { all, call, takeEvery } from "redux-saga/effects";
+import { call } from "redux-saga/effects";
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
-    const translator = diLibraryGet("translator");
+    const translator = yield* callTyped(() => diLibraryGet("translator"));
 
     const translatorSetLocale = async () =>
         await translator.setLocale(action.payload.locale);
@@ -18,12 +20,9 @@ function* setLocale(action: i18nActions.setLocale.TAction) {
     yield call(translatorSetLocale);
 }
 
-function* localeWatcher() {
-    yield takeEvery(i18nActions.setLocale.build, setLocale);
-}
-
-export function* watchers() {
-    yield all([
-        call(localeWatcher),
-    ]);
+export function saga() {
+    return takeSpawnEvery(
+        i18nActions.setLocale.ID,
+        setLocale,
+    );
 }
