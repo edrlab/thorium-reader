@@ -7,20 +7,20 @@
 
 import * as debug_ from "debug";
 import { ipcMain } from "electron";
-import { error } from "readium-desktop/common/error";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
 import { eventChannel } from "redux-saga";
-import { all, call, put, take } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:ipc";
 const debug = debug_(filename_);
 debug("_");
 
-function* ipcSyncChannel() {
+function getIpcChannel() {
 
     const channel = eventChannel<syncIpc.EventPayload>(
         (emit) => {
@@ -40,29 +40,28 @@ function* ipcSyncChannel() {
         },
     );
 
-    while (42) {
-
-        const ipcData: syncIpc.EventPayload = yield take(channel);
-
-        const actionSerializer = yield* callTyped(() => diMainGet("action-serializer"));
-
-        yield put({
-            ...actionSerializer.deserialize(ipcData.payload.action),
-            ...{
-                sender: ipcData.sender,
-            },
-        } as ActionWithSender);
-    }
+    return channel;
 }
 
-export function* watchers() {
-    try {
+function* ipcSyncChannel(ipcData: syncIpc.EventPayload) {
 
-        yield all([
-            call(ipcSyncChannel),
-        ]);
+    const actionSerializer = yield* callTyped(() => diMainGet("action-serializer"));
 
-    } catch (err) {
-        error(filename_, err);
-    }
+    yield put({
+        ...actionSerializer.deserialize(ipcData.payload.action),
+        ...{
+            sender: ipcData.sender,
+        },
+    } as ActionWithSender);
+}
+
+export function saga() {
+
+    const ipcChannel = getIpcChannel();
+
+    return takeSpawnEveryChannel(
+        ipcChannel,
+        ipcSyncChannel,
+        (e) => debug("redux IPC sync channel error", e),
+    );
 }

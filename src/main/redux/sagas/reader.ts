@@ -12,6 +12,8 @@ import { error } from "readium-desktop/common/error";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
@@ -20,7 +22,8 @@ import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
-import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
+
 import { streamerOpenPublicationAndReturnManifestUrl } from "./publication/openPublication";
 
 // Logger
@@ -199,15 +202,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
     debug(`readerOpenRequest:action:${JSON.stringify(action)}`);
 
     const publicationIdentifier = action.payload.publicationIdentifier;
-    let manifestUrl: string;
-    try {
-
-        manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
-    } catch (err) {
-
-        // a toast message is dispalyed inside fct
-
-    }
+    const manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
 
     if (manifestUrl) {
 
@@ -253,12 +248,15 @@ function* readerCloseRequestFromPublication(action: readerActions.closeRequestFr
 }
 
 function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TAction) {
+
     yield call(readerCloseRequest, action.sender.identifier);
 
-    const libWin: Electron.BrowserWindow = yield callTyped(() => getLibraryWindowFromDi());
+    const libWin = getLibraryWindowFromDi();
     if (libWin) {
 
-        const winBound = yield* selectTyped((state: RootState) => state.win.session.library.windowBound);
+        const winBound = yield* selectTyped(
+            (state: RootState) => state.win.session.library.windowBound,
+        );
         libWin.setBounds(winBound);
 
         if (libWin.isMinimized()) {
@@ -266,6 +264,8 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
         }
 
         libWin.show(); // focuses as well
+    } else {
+        debug("no library windows found in readerCLoseRequestFromIdentifier function !");
     }
 }
 
@@ -276,7 +276,10 @@ function* readerCloseRequest(identifier?: string) {
     for (const key in readers) {
         if (identifier && readers[key]?.identifier === identifier) {
             // Notify the streamer that a publication has been closed
-            yield put(streamerActions.publicationCloseRequest.build(readers[key].publicationIdentifier));
+            yield put(
+                streamerActions.publicationCloseRequest.build(
+                    readers[key].publicationIdentifier,
+                ));
         }
     }
 
@@ -308,69 +311,37 @@ function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
     yield put(winActions.session.setReduxState.build(identifier, reduxState));
 }
 
-function* readerCloseRequestWatcher() {
-    try {
-
-        yield all([
-            yield takeEvery(readerActions.closeRequestFromPublication.ID, readerCloseRequestFromPublication),
-            yield takeEvery(readerActions.closeRequest.ID, readerCLoseRequestFromIdentifier),
-        ]);
-    } catch (err) {
-        error(filename_ + ":readerCloseRequestWatcher", err);
-    }
-}
-
-// OPEN READER ENTRY POINT
-function* readerOpenRequestWatcher() {
-    try {
-
-        yield all([
-            yield takeEvery(readerActions.openRequest.ID, readerOpenRequest),
-        ]);
-    } catch (err) {
-        error(filename_ + ":readerOpenRequestWatcher", err);
-    }
-}
-
-function* readerDetachRequestWatcher() {
-    try {
-
-        yield all([
-            yield takeLeading(readerActions.detachModeRequest.ID, readerDetachRequest),
-        ]);
-    } catch (err) {
-        error(filename_ + ":readerDetachRequestWatcher", err);
-    }
-}
-
-function* readerFullscreenRequestWatcher() {
-    try {
-
-        yield all([
-            yield takeLeading(readerActions.fullScreenRequest.ID, readerFullscreenRequest),
-        ]);
-    } catch (err) {
-        error(filename_ + ":readerFullscreenRequestWatcher", err);
-    }
-}
-
-function* readerSetReduxStateWatcher() {
-    try {
-
-        yield all([
-            yield takeEvery(readerActions.setReduxState.ID, readerSetReduxState),
-        ]);
-    } catch (err) {
-        error(filename_ + ":readerSetReduxStateWatcher", err);
-    }
-}
-
-export function* watchers() {
-    yield all([
-        call(readerOpenRequestWatcher),
-        call(readerCloseRequestWatcher),
-        call(readerDetachRequestWatcher),
-        call(readerFullscreenRequestWatcher),
-        call(readerSetReduxStateWatcher),
+export function saga() {
+    return all([
+        takeSpawnEvery(
+            readerActions.closeRequestFromPublication.ID,
+            readerCloseRequestFromPublication,
+            (e) => error(filename_ + ":readerCloseRequestFromPublication", e),
+        ),
+        takeSpawnEvery(
+            readerActions.closeRequest.ID,
+            readerCLoseRequestFromIdentifier,
+            (e) => error(filename_ + ":readerCLoseRequestFromIdentifier", e),
+        ),
+        takeSpawnEvery(
+            readerActions.openRequest.ID,
+            readerOpenRequest,
+            (e) => error(filename_ + ":readerOpenRequest", e),
+        ),
+        takeSpawnLeading(
+            readerActions.detachModeRequest.ID,
+            readerDetachRequest,
+            (e) => error(filename_ + ":readerDetachRequest", e),
+        ),
+        takeSpawnLeading(
+            readerActions.fullScreenRequest.ID,
+            readerFullscreenRequest,
+            (e) => error(filename_ + ":readerFullscreenRequest", e),
+        ),
+        takeSpawnEvery(
+            readerActions.setReduxState.ID,
+            readerSetReduxState,
+            (e) => error(filename_ + ":readerSetReduxState", e),
+        ),
     ]);
 }

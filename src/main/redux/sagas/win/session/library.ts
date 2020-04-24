@@ -7,16 +7,19 @@
 
 import * as debug_ from "debug";
 import { error } from "readium-desktop/common/error";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { eventChannel } from "redux-saga";
-import { all, debounce, put, take, takeLeading } from "redux-saga/effects";
+import { eventChannel, Task } from "redux-saga";
+import { cancel, debounce, fork, put, take } from "redux-saga/effects";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:session:library";
 const debug = debug_(filename_);
 debug("_");
 
-function* libraryClosed(action: winActions.session.registerLibrary.TAction) {
+function* libraryClosureManagement(action: winActions.session.registerLibrary.TAction) {
+
+    const moveOrResizeTask: Task = yield fork(libraryMoveOrResizeObserver, action);
 
     const library = action.payload.win;
     const channel = eventChannel<boolean>(
@@ -34,12 +37,18 @@ function* libraryClosed(action: winActions.session.registerLibrary.TAction) {
         },
     );
 
+    // waiting for library window to close
     yield take(channel);
+
+    // cancel moveAndResizeObserver
+    yield cancel(moveOrResizeTask);
+
+    // dispatch closure action
     yield put(winActions.session.unregisterLibrary.build());
     yield put(winActions.library.closed.build());
 }
 
-function* libraryMovedOrResized(action: winActions.session.registerLibrary.TAction) {
+function* libraryMoveOrResizeObserver(action: winActions.session.registerLibrary.TAction) {
 
     const library = action.payload.win;
     const id = action.payload.identifier;
@@ -62,20 +71,19 @@ function* libraryMovedOrResized(action: winActions.session.registerLibrary.TActi
 
     yield debounce(DEBOUNCE_TIME, channel, function*() {
 
-        const winBound = library.getBounds();
-        yield put(winActions.session.setBound.build(id, winBound));
+        try {
+            const winBound = library.getBounds();
+            yield put(winActions.session.setBound.build(id, winBound));
+        } catch (e) {
+            debug("set library bound error", e);
+        }
     });
 }
 
-export function* watchers() {
-
-    try {
-
-        yield all([
-            takeLeading(winActions.session.registerLibrary.ID, libraryClosed),
-            takeLeading(winActions.session.registerLibrary.ID, libraryMovedOrResized),
-        ]);
-    } catch (err) {
-        error(filename_, err);
-    }
+export function saga() {
+    return takeSpawnLeading(
+        winActions.session.registerLibrary.ID,
+        libraryClosureManagement,
+        (e) => error(filename_ + ":libraryClosureManagement", e),
+    );
 }

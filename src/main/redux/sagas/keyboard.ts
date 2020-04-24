@@ -66,7 +66,7 @@ function* keyboardReload(action: keyboardActions.reloadShortcuts.TAction) {
     }
 }
 
-export function watchers() {
+export function saga() {
     return all([
         takeSpawnEvery(
             keyboardActions.setShortcuts.ID,

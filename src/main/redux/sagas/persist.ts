@@ -7,14 +7,13 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import { error } from "readium-desktop/common/error";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import { eventChannel } from "redux-saga";
-import { cancel, debounce, take } from "redux-saga/effects";
+import { eventChannel, Task } from "redux-saga";
+import { call, cancel, debounce, spawn, take } from "redux-saga/effects";
 
 const DEBOUNCE_TIME = 1000;
 
@@ -42,13 +41,7 @@ const persistStateToFs = async (nextState: RootState) => {
     debug("end of persist reduxState in disk");
 };
 
-function* needToPersistState() {
-
-    const nextState = yield* selectTyped<(store: RootState) => RootState>((store) => store);
-    yield* callTyped(() => persistStateToFs(nextState));
-}
-
-function* windowAllClosedEventChannel() {
+function getWindowAllClosedEventChannel() {
 
     const channel = eventChannel<boolean>(
         (emit) => {
@@ -66,25 +59,39 @@ function* windowAllClosedEventChannel() {
     return channel;
 }
 
-export function* watchers() {
+function* needToPersistState() {
 
     try {
 
-        const debounceTask = yield debounce(DEBOUNCE_TIME, winActions.persistRequest.ID, needToPersistState);
-
-        // wait untill all windows are closed to continue
-        const channel = yield* callTyped(windowAllClosedEventChannel);
-        yield take(channel);
-
-        yield cancel(debounceTask);
-
-        // persist the winState now and exit 0 the app
-        const nextState = yield* selectTyped<(store: RootState) => RootState>((store) => store);
-        yield* callTyped(() => persistStateToFs(nextState));
-
-        yield* callTyped(() => app.exit(0));
-
-    } catch (err) {
-        error(filename_, err);
+        const nextState = yield* selectTyped((store: RootState) => store);
+        yield call(() => persistStateToFs(nextState));
+    } catch (e) {
+        debug("error persist state in user filesystem", e);
     }
+}
+
+function* windowaAllClosedEventManager() {
+
+    const allClosedEventChannel = yield* callTyped(getWindowAllClosedEventChannel);
+
+    const debounceTask: Task = yield debounce(
+        DEBOUNCE_TIME,
+        winActions.persistRequest.ID,
+        needToPersistState,
+    );
+
+    // wait untill all windows are closed to continue
+    yield take(allClosedEventChannel);
+
+    // cancel persistence
+    yield cancel(debounceTask);
+
+    // persist the winState now and exit 0 the app
+    yield call(needToPersistState);
+
+    yield call(() => app.exit(0));
+}
+
+export function saga() {
+    return spawn(windowaAllClosedEventManager);
 }

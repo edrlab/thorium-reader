@@ -179,7 +179,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
     library.destroy();
 }
 
-export function watchers() {
+export function saga() {
     return all([
         takeSpawnLeading(
             winActions.library.openRequest.ID,

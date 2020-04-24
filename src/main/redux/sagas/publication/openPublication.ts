@@ -26,7 +26,7 @@ const debug = debug_(filename_);
 
 export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
-    const publicationRepository = diMainGet("publication-repository");
+    const publicationRepository = yield* callTyped(() => diMainGet("publication-repository"));
 
     // Get publication
     let publicationDocument: PublicationDocument = null;
@@ -51,9 +51,9 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
     //     yield put(appActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
     // }
 
-    const translator = diMainGet("translator");
-    const lcpManager = diMainGet("lcp-manager");
-    const publicationViewConverter = diMainGet("publication-view-converter");
+    const lcpManager = yield* callTyped(() => diMainGet("lcp-manager"));
+    const publicationViewConverter = yield* callTyped(() => diMainGet("publication-view-converter"));
+    const translator = yield* callTyped(() => diMainGet("translator"));
 
     if (publicationDocument.lcp) {
         try {
@@ -64,10 +64,12 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
             debug("ERROR on call lcpManager.checkPublicationLicenseUpdate", error);
         }
 
-        if (publicationDocument.lcp && publicationDocument.lcp.lsd && publicationDocument.lcp.lsd.lsdStatus &&
+        if (
+            publicationDocument.lcp && publicationDocument.lcp.lsd && publicationDocument.lcp.lsd.lsdStatus &&
             publicationDocument.lcp.lsd.lsdStatus.status &&
             publicationDocument.lcp.lsd.lsdStatus.status !== StatusEnum.Ready &&
-            publicationDocument.lcp.lsd.lsdStatus.status !== StatusEnum.Active) {
+            publicationDocument.lcp.lsd.lsdStatus.status !== StatusEnum.Active
+        ) {
 
             const msg = publicationDocument.lcp.lsd.lsdStatus.status === StatusEnum.Expired ?
                 translator.translate("publication.expiredLcp") : (
@@ -119,7 +121,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         }
     }
 
-    const pubStorage = diMainGet("publication-storage");
+    const pubStorage = yield* callTyped(() => diMainGet("publication-storage"));
     const epubPath = pubStorage.getPublicationEpubPath(publicationDocument.identifier);
     // const epubPath = path.join(
     //     pubStorage.getRootPath(),
@@ -129,7 +131,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     // Start streamer if it's not already started
     const status = yield* selectTyped((s: RootState) => s.streamer.status);
-    const streamer = diMainGet("streamer");
+    const streamer = yield* callTyped(() => diMainGet("streamer"));
 
     if (status === StreamerStatus.Stopped) {
         // Streamer is stopped, start it

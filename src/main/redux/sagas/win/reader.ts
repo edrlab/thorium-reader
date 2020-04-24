@@ -155,7 +155,7 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
 }
 
-export function watchers() {
+export function saga() {
     return all([
         takeSpawnEvery(
             winActions.reader.openRequest.ID,

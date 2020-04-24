@@ -7,11 +7,32 @@
 
 import { ActionPattern, call, fork, ForkEffect, spawn, take } from "redux-saga/effects";
 
+import { TakeableChannel } from "redux-saga";
+
 // tslint:disable-next-line: no-empty
 const noop = () => { };
 
-export function takeSpawnEvery<P extends ActionPattern>(
-    pattern: P,
+export function takeSpawnEvery(
+    pattern: ActionPattern,
+    worker: (...args: any[]) => any,
+    cbErr: (e: any) => void = noop,
+): ForkEffect<never> {
+    return spawn(function*() {
+        while (true) {
+            const action = yield take(pattern);
+            yield fork(function*() {
+                try {
+                    yield call(worker, action);
+                } catch (e) {
+                    cbErr(e);
+                }
+            });
+        }
+    });
+}
+
+export function takeSpawnEveryChannel(
+    pattern: TakeableChannel<any>,
     worker: (...args: any[]) => any,
     cbErr: (e: any) => void = noop,
 ): ForkEffect<never> {
