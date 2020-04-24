@@ -121,7 +121,7 @@ function* checkOpdsPublicationWatcher(action: dialogActions.openRequest.TAction)
 
             yield race({
                 a: call(updateOpdsInfoWithEntryLink, publication.entryLinks),
-                b: delay(5000),
+                b: take(dialogActions.closeRequest.ID),
             });
         }
     }
