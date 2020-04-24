@@ -19,12 +19,13 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 //     CatalogConfig, CatalogEntry, ConfigDocument,
 // } from "readium-desktop/main/db/document/config";
 // import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { Store } from "redux";
 
+import { PublicationRepository } from "../db/repository/publication";
 import { publicationActions } from "../redux/actions";
 import { RootState } from "../redux/states";
+import { PublicationService } from "../services/publication";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
@@ -35,6 +36,9 @@ const debug = debug_("readium-desktop:main:api:catalog");
 export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
+
+    @inject(diSymbolTable["publication-service"])
+    private readonly publicationService!: PublicationService;
 
     // @inject(diSymbolTable["config-repository"])
     // private readonly configRepository!: ConfigRepository<CatalogConfig>;
@@ -91,16 +95,14 @@ export class CatalogApi implements ICatalogApi {
                 const [, pubId] = lastReading[i];
 
                 try {
-                    const publication = await this.publicationRepository.get(pubId);
-
-                    lastReadPublicationViews.push(
-                        this.publicationViewConverter.convertDocumentToView(publication),
-                    );
-
-                } catch (err) {
+                    const pub = await this.publicationService.getPublication(pubId);
+                    lastReadPublicationViews.push(pub);
+                } catch (e) {
                     // ignore
-                    debug("ERR on LastReadPublication getter", err);
-                    debug("dispatch publicationActions.deletePublication", pubId);
+
+                    // TODO toastInfo?
+
+                    // dispatch action to update publication/lastReadingQueue reducer
                     this.store.dispatch(publicationActions.deletePublication.build(pubId));
                 }
             }
@@ -138,7 +140,7 @@ export class CatalogApi implements ICatalogApi {
                         debug(`${doc.identifier} => ${doc.title} should be removed`);
                         try {
                            // tslint:disable-next-line: no-floating-promises
-                           this.publicationRepository.delete(doc.identifier);
+                           this.publicationService.deletePublication(doc.identifier);
                         } catch {
                             // ignore
                         }
