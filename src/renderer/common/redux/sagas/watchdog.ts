@@ -5,20 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import { watchdogActions } from "readium-desktop/common/redux/actions";
-// import { call, delay, put } from "redux-saga/effects";
+// https://en.wikipedia.org/wiki/Watchdog_timer
+// WIP
 
-// can be enabled to capture the watchdog from the renderers in the main process
-
-// function* watchdog() {
-
-//     yield delay(1000);
-
-//     yield put(watchdogActions.watchdog.build());
-// }
-
-export function* watchers() {
-    // while (42) {
-    //     yield call(watchdog);
-    // }
+export function saga() {
+    // not yet used
 }
