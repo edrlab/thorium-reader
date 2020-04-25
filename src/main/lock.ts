@@ -16,7 +16,10 @@ import { cli } from "./cli/process";
 const debug = debug_("readium-desktop:main:lock");
 
 export function lockInstance() {
-    const gotTheLock = app.requestSingleInstanceLock();
+    // https://www.electronjs.org/docs/api/process#processmas-readonly
+    // https://github.com/electron/electron/issues/15958
+    // <key>LSMultipleInstancesProhibited</key>
+    const gotTheLock = process.mas ? true : app.requestSingleInstanceLock();
 
     if (gotTheLock) {
 

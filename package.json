@@ -17,6 +17,7 @@
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
     "testFile": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache ",
     "__postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=8.2.3 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
+    "patchElectronBuilder": "node ./scripts/replace-in-file.js \"node_modules/app-builder-lib/out/electron/electronMac.js\" \"helperPlist.CFBundleIdentifier = helperBundleIdentifier;\" \"helperPlist.CFBundleIdentifier = `${helperBundleIdentifier}.${postfix.replace(/[^a-z0-9]/gim,'')}`;\"",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\"",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
@@ -46,8 +47,8 @@
     "package:win": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64 --publish never",
     "prepackage:linux": "npm run package:build",
     "package:linux": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --linux --x64 --publish never",
-    "prepackage:mac": "npm run package:build",
-    "package:mac": "electron-builder --mac --x64 --publish never",
+    "_prepackage:mac": "npm run package:build",
+    "package:mac": "cross-env SKIP_NOTARIZE=1 DEBUG=* electron-builder --mac --x64 --publish never",
     "prepackage:all": "npm run package:build",
     "package:all": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -mwl --x64 --publish never",
     "cli:help": "electron . --help",
@@ -81,23 +82,6 @@
   "build": {
     "productName": "Thorium",
     "appId": "io.github.edrlab.thorium",
-    "afterSign": "scripts/notarize.js",
-    "dmg": {
-      "sign": false,
-      "contents": [
-        {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 130,
-          "y": 150,
-          "type": "file"
-        }
-      ]
-    },
     "files": [
       "node_modules/",
       "external-assets/",
@@ -173,14 +157,41 @@
       },
       "executableName": "thorium"
     },
+    "afterSign": "./scripts/notarize.js",
     "mac": {
       "category": "public.app-category.developer-tools",
-      "target": "dmg",
+      "target": [
+        "mas"
+      ],
       "type": "distribution",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "./scripts/entitlements.mac.plist",
-      "entitlementsInherit": "./scripts/entitlements.mac.plist"
+      "entitlementsInherit": "./scripts/entitlements.mac.plist",
+      "bundleVersion": 20200426,
+      "icon": "./resources/icon.png"
+    },
+    "dmg": {
+      "sign": false,
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mas": {
+      "hardenedRuntime": false,
+      "entitlements": "./scripts/entitlements.mac.mas.plist",
+      "entitlementsInherit": "./scripts/entitlements.mac.mas.inherit.plist",
+      "provisioningProfile": "./prod.provisionprofile"
     },
     "appx": {
       "displayName": "Thorium Reader",
