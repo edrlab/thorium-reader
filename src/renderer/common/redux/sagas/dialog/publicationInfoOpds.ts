@@ -6,38 +6,21 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
+import { dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { call, delay, put, race, take } from "redux-saga/effects";
-
-import { apiSaga } from "../api";
+import { opdsBrowse } from "../opdsBrowse";
 
 // Test URL : http://readium2.herokuapp.com/opds-v1-v2-convert/http%3A%2F%2Fmanybooks.net%2Fopds%2Fnew_titles.php
+
+const REQUEST_ID = "PUBINFO_OPDS_REQUEST_ID";
 
 // Logger
 const filename_ = "readium-desktop:renderer:redux:saga:publication-info-opds";
 const debug = debug_(filename_);
-
-function* opdsBrowse(link: string) {
-    const REQUEST_ID = "PUBINFO_OPDS_REQUEST_ID";
-
-    debug("opds-browse", link);
-    yield apiSaga("opds/browse", REQUEST_ID, link);
-    while (true) {
-        const action: apiActions.result.TAction = yield take(apiActions.result.build);
-
-        const { requestId } = action.meta.api;
-        if (requestId === REQUEST_ID) {
-            debug("opds-browse action-received", action);
-            return action;
-        }
-    }
-}
 
 // Triggered when the publication data are available from the API
 function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
@@ -48,11 +31,15 @@ function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
         if (link?.url) {
             const { b: action } = yield* raceTyped({
                 a: delay(5000),
-                b: call(opdsBrowse, link.url),
+                b: call(opdsBrowse, link.url, REQUEST_ID),
             });
+
+            if (!action) {
+                continue;
+            }
+
             const actionError = action.error;
-            const httpRes = action.payload as
-                ReturnPromiseType<TApiMethod["opds/browse"]>;
+            const httpRes = action.payload;
 
             const opdsResultView = httpRes?.data;
             debug("Payload: ", opdsResultView);

@@ -32,7 +32,8 @@ export function* rootSaga() {
 
         i18n.saga(),
         lcp.saga(),
-        call(opds.watchers),
+        opds.saga(),
+
         call(winInit.watchers),
         call(publicationInfoReaderAndLib.watchers),
         call(sameFileImport.watchers),
