@@ -6,8 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
-import { all, call } from "redux-saga/effects";
+import { all, take } from "redux-saga/effects";
 
 import * as publicationInfoOpds from "../../../common/redux/sagas/dialog/publicationInfoOpds";
 import * as publicationInfoReaderAndLib from "../../../common/redux/sagas/dialog/publicationInfoReaderAndLib";
@@ -26,7 +27,12 @@ debug("_");
 
 export function* rootSaga() {
 
+    yield winInit.saga(),
+
+    yield take(winActions.initSuccess.ID);
+
     yield all([
+
         watchdog.saga(),
         publicationInfoOpds.saga(),
 
@@ -34,18 +40,10 @@ export function* rootSaga() {
         lcp.saga(),
         opds.saga(),
 
-        call(winInit.watchers),
-        call(publicationInfoReaderAndLib.watchers),
-        call(sameFileImport.watchers),
-        call(history.watchers),
-        call(publicationInfoSyncTags.watchers),
+        publicationInfoReaderAndLib.saga(),
+
+        sameFileImport.saga(),
+        history.saga(),
+        publicationInfoSyncTags.saga(),
     ]);
-
-    // try {
-
-    //     yield all([
-    //     ]);
-    // } catch (err) {
-    //     error(filename_, err);
-    // }
 }

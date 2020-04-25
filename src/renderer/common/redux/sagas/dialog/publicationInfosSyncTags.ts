@@ -7,16 +7,16 @@
 
 import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
-import { error } from "readium-desktop/common/error";
+// import { error } from "readium-desktop/common/error";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";
-import { all, call, put, takeEvery } from "redux-saga/effects";
-
-import { ICommonRootState } from "../../../../../common/redux/states/renderer/commonRootState";
+import { call, put, race, take } from "redux-saga/effects";
 
 // Logger
 const filename_ = "readium-desktop:renderer:redux:saga:publication-info-syncTags";
@@ -54,20 +54,24 @@ function* apiResult(action: apiActions.result.TAction) {
 }
 
 function* dialogOpened(_action: dialogActions.openRequest.TAction) {
-    yield takeEvery(apiActions.result.build, apiResult);
-}
 
-function* dialogOpenWatcher() {
-    yield takeEvery(dialogActions.openRequest.build, dialogOpened);
-}
+    while (true) {
+        const { api, can } = yield race({
+            api: take(apiActions.result.ID),
+            can: take(dialogActions.closeRequest.ID),
+        });
 
-export function* watchers() {
-    try {
+        if (can) {
+            return ;
+        }
 
-        yield all([
-            call(dialogOpenWatcher),
-        ]);
-    } catch (err) {
-        error(filename_, err);
+        yield call(apiResult, api);
     }
+}
+
+export function saga() {
+    return takeSpawnEvery(
+        dialogActions.openRequest.ID,
+        dialogOpened,
+    );
 }
