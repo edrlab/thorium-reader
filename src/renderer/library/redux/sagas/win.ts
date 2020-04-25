@@ -7,43 +7,14 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions/";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
-import { all, put, spawn, take, takeLeading } from "redux-saga/effects";
 
-function winInitSaga() {
-    return spawn(function*() {
-        while (true) {
-            yield all({
-                win: take(winActions.initRequest.ID),
-                i18n: take(i18nActions.setLocale.ID),
-                keyboard: take(keyboardActions.setShortcuts.ID),
-            });
-            yield put(winActions.initSuccess.build());
-        }
-    });
-
-}
-
-function winStartSaga() {
-    return takeLeading(
-        winActions.initSuccess.ID,
-        () => {
-
-            // starting point to mounting React to the DOM
-            ReactDOM.render(
-                React.createElement(
-                    diLibraryGet("react-library-app"),
-                    null),
-                document.getElementById("app"),
-            );
-        });
-}
-
-export function saga() {
-    return all([
-        winStartSaga(),
-        winInitSaga(),
-    ]);
+export function render() {
+    // starting point to mounting React to the DOM
+    ReactDOM.render(
+        React.createElement(
+            diLibraryGet("react-library-app"),
+            null),
+        document.getElementById("app"),
+    );
 }

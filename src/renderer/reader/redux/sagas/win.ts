@@ -7,33 +7,14 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
-import { SagaIterator } from "redux-saga";
-import { all, call, fork, put, take } from "redux-saga/effects";
 
-function* winInitWatcher(): SagaIterator {
-
-    yield fork(function*() {
-        while (true) {
-
-            yield take(winActions.initRequest.ID);
-
-            yield put(winActions.initSuccess.build());
-
-            // starting point to mounting React to the DOM
-            ReactDOM.render(
-                React.createElement(
-                    diReaderGet("react-reader-app"),
-                    null),
-                document.getElementById("app"),
-            );
-        }
-    });
-}
-
-export function* watchers() {
-    yield all([
-        call(winInitWatcher),
-    ]);
+export function render() {
+    // starting point to mounting React to the DOM
+    ReactDOM.render(
+        React.createElement(
+            diReaderGet("react-reader-app"),
+            null),
+        document.getElementById("app"),
+    );
 }

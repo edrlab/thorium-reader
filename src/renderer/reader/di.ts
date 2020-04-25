@@ -9,6 +9,7 @@ import "reflect-metadata";
 
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
 import { initStore } from "readium-desktop/renderer/reader/redux/store/memory";
 import { Store } from "redux";
@@ -20,13 +21,14 @@ import { diReaderSymbolTable as diSymbolTable } from "./diSymbolTable";
 // Create container used for dependency injection
 const container = new Container();
 
-const createStoreFromDi = (preloadedState: Partial<IReaderRootState>) => {
+const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
 
     const store = initStore(preloadedState);
 
     container.bind<Store<IReaderRootState>>(diSymbolTable.store).toConstantValue(store);
 
-    translator.setLocale(store.getState().i18n.locale);
+    const locale = store.getState().i18n.locale;
+    await translator.setLocale(locale);
 
     return store;
 };
@@ -37,11 +39,15 @@ container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator)
 
 container.bind<typeof App>(diSymbolTable["react-reader-app"]).toConstantValue(App);
 
+// Create action serializer
+container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
+
 // local interface to force type return
 interface IGet {
     (s: "store"): Store<IReaderRootState>;
     (s: "translator"): Translator;
     (s: "react-reader-app"): typeof App;
+    (s: "action-serializer"): ActionSerializer;
 }
 
 // export function to get back depedency from container

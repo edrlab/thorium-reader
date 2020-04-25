@@ -5,15 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import * as debug_ from "debug";
 import { ipcRenderer } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
-import { actionSerializer } from "readium-desktop/renderer/common/actionSerializer";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { eventChannel } from "redux-saga";
-import { all, call, put, take } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 
-function* ipcSyncChannel() {
+import { diReaderGet } from "../../di";
+
+// Logger
+const filename_ = "readium-desktop:renderer:reader:saga:ipc";
+const debug = debug_(filename_);
+debug("_");
+
+function getIpcSyncChannel() {
 
     const channel = eventChannel<syncIpc.EventPayload>(
         (emit) => {
@@ -33,24 +41,28 @@ function* ipcSyncChannel() {
         },
     );
 
-    while (42) {
-
-        const ipcData: syncIpc.EventPayload = yield take(channel);
-
-        yield put({
-            ...actionSerializer.deserialize(ipcData.payload.action),
-            ...{
-                sender: ipcData.sender,
-            },
-        } as ActionWithSender);
-    }
+    return channel;
 }
 
-export function* watchers() {
+function* ipcSyncChannel(ipcData: syncIpc.EventPayload) {
 
-    yield take(winActions.initSuccess.ID);
+    const actionSerializer = yield* callTyped(() => diReaderGet("action-serializer"));
 
-    yield all([
-        call(ipcSyncChannel),
-    ]);
+    yield put({
+        ...actionSerializer.deserialize(ipcData.payload.action),
+        ...{
+            sender: ipcData.sender,
+        },
+    } as ActionWithSender);
+}
+
+export function saga() {
+
+    const ipcChannel = getIpcSyncChannel();
+
+    return takeSpawnEveryChannel(
+        ipcChannel,
+        ipcSyncChannel,
+        (e) => debug("redux IPC sync channel error", e),
+    );
 }

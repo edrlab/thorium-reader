@@ -6,10 +6,11 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { error } from "readium-desktop/common/error";
+// import { error } from "readium-desktop/common/error";
+import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
-import { all, call } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
 import * as watchdog from "../../../common/redux/sagas/watchdog";
 import * as i18n from "./i18n";
@@ -23,17 +24,18 @@ debug("_");
 
 export function* rootSaga() {
 
-    try {
-        yield all([
-            publicationInfoReaderAndLib.saga(),
-            publicationInfoSyncTag.saga(),
-            watchdog.saga(),
+    yield take(winActions.initRequest.ID);
 
-            call(winInit.watchers),
-            call(ipc.watchers),
-            call(i18n.watchers),
-        ]);
-    } catch (err) {
-        error(filename_, err);
-    }
+    yield put(winActions.initSuccess.build());
+
+    yield call(winInit.render);
+
+    yield all([
+        publicationInfoReaderAndLib.saga(),
+        publicationInfoSyncTag.saga(),
+        watchdog.saga(),
+
+        ipc.saga(),
+        i18n.saga(),
+    ]);
 }

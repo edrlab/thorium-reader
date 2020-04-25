@@ -6,9 +6,10 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
-import { all, take } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
 import * as publicationInfoOpds from "../../../common/redux/sagas/dialog/publicationInfoOpds";
 import * as publicationInfoReaderAndLib from "../../../common/redux/sagas/dialog/publicationInfoReaderAndLib";
@@ -27,9 +28,15 @@ debug("_");
 
 export function* rootSaga() {
 
-    yield winInit.saga(),
+    yield all({
+        win: take(winActions.initRequest.ID),
+        i18n: take(i18nActions.setLocale.ID),
+        keyboard: take(keyboardActions.setShortcuts.ID),
+    });
 
-    yield take(winActions.initSuccess.ID);
+    yield put(winActions.initSuccess.build());
+
+    yield call(winInit.render);
 
     yield all([
 

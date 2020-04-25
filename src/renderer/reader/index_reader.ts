@@ -11,6 +11,7 @@ import "react-dropdown/style.css";
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { error } from "readium-desktop/common/error";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
@@ -71,10 +72,12 @@ ipcRenderer.on(readerIpc.CHANNEL,
             case readerIpc.EventType.request:
                 // Initialize window
 
-                const store = createStoreFromDi(data.payload);
-
-                store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
-
+                createStoreFromDi(data.payload)
+                    .then(
+                        (store) =>
+                            store.dispatch(winActions.initRequest.build(data.payload.win.identifier)),
+                    )
+                    .catch((e) => error("index_reader", e));
                 // // starting the ipc sync with redux
                 // ipcRenderer.on(syncIpc.CHANNEL, ipcSyncHandler);
                 break;
