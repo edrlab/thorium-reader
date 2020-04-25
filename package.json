@@ -38,12 +38,18 @@
     "vscode:launch:hot": "cross-env DEBUG=r2:*,readium-desktop:* NODE_ENV=development VSCODE_LAUNCH=true npm run build:dev:main",
     "prepackage:build": "npm run clean",
     "package:build": "cross-env PACKAGING=1 npm run build:prod",
-    "package:pack-only": "npm run package:build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --dir --publish never",
-    "package": "npm run package:build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --publish never",
-    "package:win": "npm run package:build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64 --publish never",
-    "package:linux": "npm run package:build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --linux --x64 --publish never",
-    "package:mac": "npm run package:build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --x64 --publish never",
-    "package:all": "npm run package:build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -mwl --x64 --publish never",
+    "prepackage:pack-only": "npm run package:build",
+    "package:pack-only": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --dir --publish never",
+    "prepackage": "npm run package:build",
+    "package": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --publish never",
+    "prepackage:win": "npm run package:build",
+    "package:win": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64 --publish never",
+    "prepackage:linux": "npm run package:build",
+    "package:linux": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --linux --x64 --publish never",
+    "prepackage:mac": "npm run package:build",
+    "package:mac": "electron-builder --mac --x64 --publish never",
+    "prepackage:all": "npm run package:build",
+    "package:all": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -mwl --x64 --publish never",
     "cli:help": "electron . --help",
     "cli": "electron .",
     "i18n-sort": "node ./scripts/locales-sort.js",
@@ -76,7 +82,9 @@
   "build": {
     "productName": "Thorium",
     "appId": "io.github.edrlab.thorium",
+    "afterSign": "scripts/notarize.js",
     "dmg": {
+      "sign": false,
       "contents": [
         {
           "x": 410,
@@ -110,7 +118,7 @@
     ],
     "asarUnpack": [
       "**/*.node",
-      "!**/lcp.node"
+      "**/lcp.node"
     ],
     "directories": {
       "buildResources": "resources",
@@ -167,7 +175,13 @@
       "executableName": "thorium"
     },
     "mac": {
-      "target": "default"
+      "category": "public.app-category.developer-tools",
+      "target": "dmg",
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "./scripts/entitlements.mac.plist",
+      "entitlementsInherit": "./scripts/entitlements.mac.plist"
     },
     "appx": {
       "displayName": "Thorium Reader",
@@ -259,6 +273,7 @@
     "electron": "^8.2.3",
     "electron-builder": "^22.5.1",
     "electron-devtools-installer": "^3.0.0",
+    "electron-notarize": "^0.3.0",
     "file-loader": "^6.0.0",
     "git-rev-sync": "^2.0.0",
     "html-loader": "^1.1.0",

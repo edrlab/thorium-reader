@@ -123,6 +123,10 @@ button {
   margin-top: 1rem;
   margin-bottom: 5rem;
 }
+.content_root_fullscreen {
+  margin-top: -50px;
+  margin-bottom: 0.5rem;
+}
 
 /* ========== READER ==========*/
 
@@ -433,6 +437,19 @@ button {
         padding:0;
         margin: 0;
         height:30px;
+      }
+    }
+  }
+}
+
+.main_navigation_fullscreen {
+  & > ul, & ul.menu_option {
+    margin-right: 20px;
+    & > li {
+      & > .menu_button {
+        border-right: 1px solid #c1c1c1;
+        border-bottom: 1px solid #c1c1c1;
+        background-color: var(--reader-secondaryColor);
       }
     }
   }
@@ -893,7 +910,7 @@ input[type=radio] + label {
         fill: #C1C1C1;;
       }
     }
-
+    
     & .track_reading_wrapper {
       padding: 1rem 8rem 1rem 5rem;
       bottom: 0;
@@ -902,6 +919,18 @@ input[type=radio] + label {
     & .track_reading_wrapper_noArrows {
       padding: 1rem 5rem 1rem 5rem;
     }
+}
+
+.reader_footer_fullscreen {
+  background-color: transparent;
+  pointer-events: none;
+
+  & .arrows {
+    background-color: var(--reader-mainColor);
+    pointer-events: all;
+    margin-bottom: 30px;
+    margin-right: 20px;
+  }
 }
 
 #track_reading {

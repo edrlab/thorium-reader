@@ -501,7 +501,8 @@ class Reader extends React.Component<IProps, IState> {
                         displayPublicationInfo={this.displayPublicationInfo}
                         currentLocation={this.state.currentLocation}
                     />
-                    <div className={styles.content_root}>
+                    <div className={classNames(styles.content_root,
+                            this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
                         <div className={styles.reader}>
                             <main
                                 id="main"

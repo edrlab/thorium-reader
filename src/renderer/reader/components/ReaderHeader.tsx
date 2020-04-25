@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as classNames from "classnames";
 import * as React from "react";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
@@ -108,7 +109,8 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
 
         return (
             <nav
-                className={styles.main_navigation}
+                className={classNames(styles.main_navigation,
+                    this.props.fullscreen ? styles.main_navigation_fullscreen : undefined)}
                 role="navigation"
                 aria-label={ __("accessibility.homeMenu")}
                 {...(this.props.fullscreen && {style: {

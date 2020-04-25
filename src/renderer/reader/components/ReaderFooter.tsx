@@ -74,8 +74,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const spineTitle = currentLocation.locator.title || currentLocation.locator.href;
         let afterCurrentLocation = false;
 
-        return !this.props.fullscreen && (
-            <div className={styles.reader_footer}>
+        return (
+            <div className={classNames(styles.reader_footer,
+                this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}>
                 {!isAudioBook &&
                 <div className={styles.arrows}>
                     <button onClick={() => this.props.navLeftOrRight(true)}>
@@ -86,6 +87,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                     </button>
                 </div>
                 }
+                {!this.props.fullscreen &&
                 <div className={classNames(styles.track_reading_wrapper,
                     isAudioBook ? styles.track_reading_wrapper_noArrows : undefined)}>
 
@@ -174,6 +176,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         {moreInfo ? __("reader.footerInfo.lessInfo") : __("reader.footerInfo.moreInfo")}
                     </span>
                 </div>
+                }
             </div>
         );
     }
