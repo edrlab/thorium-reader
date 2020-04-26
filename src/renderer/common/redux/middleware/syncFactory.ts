@@ -8,9 +8,9 @@
 import { ipcRenderer } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
-import { actionSerializer } from "readium-desktop/renderer/common/actionSerializer";
+import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
-import { ICommonRootState } from "../../../../common/redux/states/renderer/commonRootState";
 
 export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
 
@@ -33,7 +33,7 @@ export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
                 ipcRenderer.send(syncIpc.CHANNEL, {
                     type: syncIpc.EventType.RendererAction,
                     payload: {
-                        action: actionSerializer.serialize(action),
+                        action: ActionSerializer.serialize(action),
                     },
                     sender: {
                         type: SenderType.Renderer,

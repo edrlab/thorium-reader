@@ -13,7 +13,7 @@ import { Action } from "../models/redux";
 
 @injectable()
 export class ActionSerializer {
-    public serialize(action: Action<string, any>): Action<string, any> {
+    public static serialize(action: Action<string, any>): Action<string, any> {
         if (action.error && action.payload instanceof CodeError) {
             return Object.assign(
                 {},
@@ -27,7 +27,7 @@ export class ActionSerializer {
         }
     }
 
-    public deserialize(json: Action<string, any>): Action<string, any> {
+    public static deserialize(json: Action<string, any>): Action<string, any> {
         if (json.error &&
             json.payload &&
             json.payload.class &&

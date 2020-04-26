@@ -10,8 +10,7 @@ import { ipcMain } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
-import { diMainGet } from "readium-desktop/main/di";
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { eventChannel } from "redux-saga";
 import { put } from "redux-saga/effects";
 
@@ -45,10 +44,8 @@ function getIpcChannel() {
 
 function* ipcSyncChannel(ipcData: syncIpc.EventPayload) {
 
-    const actionSerializer = yield* callTyped(() => diMainGet("action-serializer"));
-
     yield put({
-        ...actionSerializer.deserialize(ipcData.payload.action),
+        ...ActionSerializer.deserialize(ipcData.payload.action),
         ...{
             sender: ipcData.sender,
         },

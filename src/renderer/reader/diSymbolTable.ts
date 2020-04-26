@@ -9,5 +9,4 @@ export const diReaderSymbolTable = {
     "store": Symbol("store"),
     "translator": Symbol("translator"),
     "react-reader-app": Symbol("react-reader-app"),
-    "action-serializer": Symbol("action-serializer"),
 };

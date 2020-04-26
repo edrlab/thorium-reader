@@ -9,7 +9,6 @@ import "reflect-metadata";
 
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
 import { initStore } from "readium-desktop/renderer/reader/redux/store/memory";
 import { Store } from "redux";
@@ -39,15 +38,11 @@ container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator)
 
 container.bind<typeof App>(diSymbolTable["react-reader-app"]).toConstantValue(App);
 
-// Create action serializer
-container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
-
 // local interface to force type return
 interface IGet {
     (s: "store"): Store<IReaderRootState>;
     (s: "translator"): Translator;
     (s: "react-reader-app"): typeof App;
-    (s: "action-serializer"): ActionSerializer;
 }
 
 // export function to get back depedency from container

@@ -12,7 +12,6 @@ import * as fs from "fs";
 import { Container } from "inversify";
 import * as path from "path";
 import * as PouchDBCore from "pouchdb-core";
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogApi } from "readium-desktop/main/api/catalog";
 import { LcpApi } from "readium-desktop/main/api/lcp";
@@ -232,9 +231,6 @@ container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSin
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 
-// Create action serializer
-container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
-
 const saveLibraryWindowInDi =
     (libWin: BrowserWindow) =>
         container.bind<BrowserWindow>("WIN_REGISTRY_LIBRARY").toConstantValue(libWin);
@@ -280,7 +276,6 @@ interface IGet {
     (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;
-    (s: "action-serializer"): ActionSerializer;
     // minor overload type used in api.ts/LN32
     (s: keyof typeof diSymbolTable): any;
 }

@@ -12,7 +12,8 @@ import {
     apiActions, dialogActions, downloadActions, i18nActions, keyboardActions, lcpActions,
     readerActions, toastActions, watchdogActions,
 } from "readium-desktop/common/redux/actions";
-import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
+import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { RootState } from "../states";
@@ -83,9 +84,6 @@ export const reduxSyncMiddleware: Middleware
                 // this bug become a feature with a hack in publicationInfo in reader
                 // thanks to this broadcast we can listen on publication tag and make a live refresh
 
-                // Get action serializer
-                const actionSerializer = diMainGet("action-serializer");
-
                 const browserWin: Map<string, Electron.BrowserWindow> = new Map();
 
                 const libId = store.getState().win.session.library.identifier;
@@ -125,7 +123,7 @@ export const reduxSyncMiddleware: Middleware
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
-                                        action: actionSerializer.serialize(action),
+                                        action: ActionSerializer.serialize(action),
                                     },
                                     sender: {
                                         type: SenderType.Main,
