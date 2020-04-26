@@ -19,12 +19,14 @@ import { combineReducers } from "redux";
 import { publicationActions } from "../actions";
 import { lcpReducer } from "./lcp";
 import { readerDefaultConfigReducer } from "./reader/defaultConfig";
+import { sessionReducer } from "./session";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
 import { winModeReducer } from "./win/winModeReducer";
 
 export const rootReducer = combineReducers<RootState>({
+    session: sessionReducer,
     streamer: streamerReducer,
     i18n: i18nReducer,
     reader: combineReducers({

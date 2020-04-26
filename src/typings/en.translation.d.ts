@@ -679,7 +679,12 @@ declare namespace typed_i18n {
     readonly "save": string,
     readonly "show": string
   },
-  readonly "language": { readonly "languageChoice": string }
+  readonly "language": { readonly "languageChoice": string },
+  readonly "session": {
+    readonly "title": string,
+    readonly "yes": string,
+    readonly "no": string
+  }
 };
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
@@ -704,7 +709,11 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.save", __?: {}): string;
   (_: "settings.keyboard.show", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
-  (_: "settings.language.languageChoice", __?: {}): string
+  (_: "settings.language.languageChoice", __?: {}): string;
+  (_: "settings.session", __?: {}): { readonly "title": string, readonly "yes": string, readonly "no": string };
+  (_: "settings.session.title", __?: {}): string;
+  (_: "settings.session.yes", __?: {}): string;
+  (_: "settings.session.no", __?: {}): string
 }
 }
 export = typed_i18n;

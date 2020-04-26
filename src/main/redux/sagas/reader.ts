@@ -210,6 +210,16 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             (state: RootState) => state.win.registry.reader[publicationIdentifier]?.reduxState,
         );
 
+        const sessionIsEnabled = yield* selectTyped(
+            (state: RootState) => state.session.state,
+        );
+        if (!sessionIsEnabled) {
+            const reduxDefaultConfig = yield* selectTyped(
+                (state: RootState) => state.reader.defaultConfig,
+            );
+            reduxState.config = reduxDefaultConfig;
+        }
+
         const winBound = yield* callTyped(getWinBound, publicationIdentifier);
 
         // const readers = yield* selectTyped(

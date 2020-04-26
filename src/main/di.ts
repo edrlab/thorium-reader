@@ -48,6 +48,7 @@ import { Server } from "@r2-streamer-js/http/server";
 
 import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
+import { SessionApi } from "./api/session";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 
@@ -230,6 +231,7 @@ container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope(
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
+container.bind<SessionApi>(diSymbolTable["session-api"]).to(SessionApi).inSingletonScope();
 
 const saveLibraryWindowInDi =
     (libWin: BrowserWindow) =>

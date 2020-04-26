@@ -292,6 +292,11 @@
         },
         "language": {
             "languageChoice": "Language choice"
+        },
+        "session": {
+          "title": "Save session",
+          "yes": "Enable",
+          "no": "Disable"
         }
     }
 }

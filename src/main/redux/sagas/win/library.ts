@@ -133,27 +133,34 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
     if (readersArray.length) {
 
-        const value = yield* callTyped(
-            async () => {
+        let value = 0; // window.close() // not saved session by default
 
-                const translator = diMainGet("translator");
+        const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
+        if (sessionIsEnabled) {
 
-                return dialog.showMessageBox(
-                    library,
-                    {
-                        type: "question",
-                        buttons: [
-                            translator.translate("app.session.exit.askBox.button.no"),
-                            translator.translate("app.session.exit.askBox.button.yes"),
-                        ],
-                        defaultId: 1,
-                        title: translator.translate("app.session.exit.askBox.title"),
-                        message: translator.translate("app.session.exit.askBox.message"),
-                    },
-                );
-            },
-        );
-        debug("result:", value.response);
+            const messageValue = yield* callTyped(
+                async () => {
+
+                    const translator = diMainGet("translator");
+
+                    return dialog.showMessageBox(
+                        library,
+                        {
+                            type: "question",
+                            buttons: [
+                                translator.translate("app.session.exit.askBox.button.no"),
+                                translator.translate("app.session.exit.askBox.button.yes"),
+                            ],
+                            defaultId: 1,
+                            title: translator.translate("app.session.exit.askBox.title"),
+                            message: translator.translate("app.session.exit.askBox.message"),
+                        },
+                    );
+                },
+            );
+            debug("result:", messageValue.response);
+            value = messageValue.response;
+        }
 
         for (const key in readers) {
             if (readers[key]) {
@@ -161,7 +168,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                 try {
                     const readerWin = yield* callTyped(() => getReaderWindowFromDi(readers[key].identifier));
 
-                    if (value.response === 1) {
+                    if (value === 1) {
                         // force quit the reader windows to keep session in next startup
                         readerWin.destroy();
                     } else {

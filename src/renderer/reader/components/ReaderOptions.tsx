@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Font } from "readium-desktop/common/models/font";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import * as AutoIcon from "readium-desktop/renderer/assets/icons/auto.svg";
 import * as ColumnIcon from "readium-desktop/renderer/assets/icons/colonne.svg";
@@ -36,6 +36,7 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
+import { ToastType } from "readium-desktop/common/models/toast";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
@@ -550,12 +551,16 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         setDefaultConfig: (...config: Parameters<typeof readerActions.configSetDefault.build>) => {
-            dispatch(readerActions.configSetDefault.build(...config));
 
             if (config.length === 0) {
 
+                dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                 dispatch(readerLocalActionSetConfig.build(readerConfigInitialState));
+            } else {
+                dispatch(readerActions.configSetDefault.build(...config));
             }
+
+            dispatch(toastActions.openRequest.build(ToastType.Success, "👍"));
         },
     };
 };

@@ -31,11 +31,13 @@ export function* rootSaga() {
     yield call(winInit.render);
 
     yield all([
+        i18n.saga(),
+        ipc.saga(),
+
         publicationInfoReaderAndLib.saga(),
         publicationInfoSyncTag.saga(),
+
         watchdog.saga(),
 
-        ipc.saga(),
-        i18n.saga(),
     ]);
 }

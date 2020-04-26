@@ -28,6 +28,8 @@ debug("_");
 
 export function* rootSaga() {
 
+    yield i18n.saga();
+
     yield all({
         win: take(winActions.initRequest.ID),
         i18n: take(i18nActions.setLocale.ID),
@@ -40,10 +42,8 @@ export function* rootSaga() {
 
     yield all([
 
-        watchdog.saga(),
         publicationInfoOpds.saga(),
 
-        i18n.saga(),
         lcp.saga(),
         opds.saga(),
 
@@ -52,5 +52,7 @@ export function* rootSaga() {
         sameFileImport.saga(),
         history.saga(),
         publicationInfoSyncTags.saga(),
+
+        watchdog.saga(),
     ]);
 }
