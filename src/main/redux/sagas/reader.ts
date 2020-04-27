@@ -8,14 +8,15 @@
 import * as debug_ from "debug";
 import { screen } from "electron";
 import * as ramda from "ramda";
-import { error } from "readium-desktop/common/error";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { SenderType } from "readium-desktop/common/models/sync";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
-import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { error } from "readium-desktop/main/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
@@ -23,6 +24,7 @@ import {
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take } from "redux-saga/effects";
+import { types } from "util";
 
 import { streamerOpenPublicationAndReturnManifestUrl } from "./publication/openPublication";
 
@@ -202,7 +204,28 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
     debug(`readerOpenRequest:action:${JSON.stringify(action)}`);
 
     const publicationIdentifier = action.payload.publicationIdentifier;
-    const manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
+
+    let manifestUrl: string;
+    try {
+        manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
+
+    } catch (e) {
+
+        const translator = yield* callTyped(
+            () => diMainGet("translator"));
+
+        if (types.isNativeError(e)) {
+            // disable "Error: "
+            e.name = "";
+        }
+
+        yield put(
+            toastActions.openRequest.build(
+                ToastType.Error,
+                translator.translate("message.open.error", {err: e.toString()}),
+            ),
+        );
+    }
 
     if (manifestUrl) {
 

@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { error } from "readium-desktop/common/error";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { error } from "readium-desktop/main/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel, Task } from "redux-saga";
 import { cancel, debounce, fork, put, take } from "redux-saga/effects";

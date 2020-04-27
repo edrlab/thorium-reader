@@ -6,10 +6,8 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { error } from "readium-desktop/common/error";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { lcpActions, toastActions } from "readium-desktop/common/redux/actions/";
+import { lcpActions } from "readium-desktop/common/redux/actions/";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
@@ -26,21 +24,21 @@ const debug = debug_(filename_);
 
 export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
-    const publicationRepository = yield* callTyped(() => diMainGet("publication-repository"));
+    const publicationRepository = yield* callTyped(
+        () => diMainGet("publication-repository"));
+    const translator = yield* callTyped(
+        () => diMainGet("translator"));
 
     // Get publication
     let publicationDocument: PublicationDocument = null;
-    try {
-        // tslint:disable-next-line: max-line-length
-        publicationDocument = yield* callTyped(() => publicationRepository.get(pubId));
-    } catch (error) {
-        throw error;
-    }
+    publicationDocument = yield* callTyped(
+        () => publicationRepository.get(pubId));
 
-    const publicationFileLocks = yield* selectTyped((s: RootState) => s.lcp.publicationFileLocks);
+    const publicationFileLocks = yield* selectTyped(
+        (s: RootState) => s.lcp.publicationFileLocks);
 
     if (publicationFileLocks[pubId]) {
-        throw error;
+        throw new Error("lcp publication locked");
     }
     // no need to lock here, because once the streamer server accesses the ZIP file and streams resources,
     // it's like a giant no-go to inject LCP license (which is why readers are closed before LSD updates)
@@ -51,9 +49,10 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
     //     yield put(appActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
     // }
 
-    const lcpManager = yield* callTyped(() => diMainGet("lcp-manager"));
-    const publicationViewConverter = yield* callTyped(() => diMainGet("publication-view-converter"));
-    const translator = yield* callTyped(() => diMainGet("translator"));
+    const lcpManager = yield* callTyped(
+        () => diMainGet("lcp-manager"));
+    const publicationViewConverter = yield* callTyped(
+        () => diMainGet("publication-view-converter"));
 
     if (publicationDocument.lcp) {
         try {
@@ -81,8 +80,6 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                                         translator.translate("publication.returnedLcp") :
                                         translator.translate("publication.expiredLcp")
                                 )));
-
-            yield put(toastActions.openRequest.build(ToastType.Error, msg));
 
             throw new Error(msg);
         }

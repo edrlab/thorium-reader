@@ -7,12 +7,12 @@
 
 import * as debug_ from "debug";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
-import { error } from "readium-desktop/common/error";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
+import { error } from "readium-desktop/main/error";
 import { all, call } from "redux-saga/effects";
 
 // Logger

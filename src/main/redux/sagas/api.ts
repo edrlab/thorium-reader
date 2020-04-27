@@ -7,11 +7,11 @@
 
 import * as debug_ from "debug";
 import { CodeError } from "readium-desktop/common/codeError.class";
-import { error } from "readium-desktop/common/error";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { error } from "readium-desktop/main/error";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { call, put } from "redux-saga/effects";
 

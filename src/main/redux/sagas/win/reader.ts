@@ -6,13 +6,13 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { error } from "readium-desktop/common/error";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { error } from "readium-desktop/main/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {

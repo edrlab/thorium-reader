@@ -138,6 +138,9 @@
             "alreadyImport": "{{- title}} was already imported",
             "fail": "The import of {{- path}} failed. Verify that the file is valid",
             "success": "The import of {{- title}} is finished."
+        },
+        "open": {
+            "error": "The publication can't be opened : {{- err}}"
         }
     },
     "opds": {
@@ -298,5 +301,12 @@
           "yes": "Enable",
           "no": "Disable"
         }
+    },
+    "error": {
+      "errorBox": {
+        "title": "Internal {{- appName}} Error",
+        "message": "An error has occurred in {{- filename}}",
+        "error": "Error message:"
+      }
     }
 }

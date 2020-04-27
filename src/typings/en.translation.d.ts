@@ -315,7 +315,8 @@ declare namespace typed_i18n {
     readonly "alreadyImport": string,
     readonly "fail": string,
     readonly "success": string
-  }
+  },
+  readonly "open": { readonly "error": string }
 };
   (_: "message.download", __?: {}): {
   readonly "error": string,
@@ -333,6 +334,8 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.open", __?: {}): { readonly "error": string };
+  (_: "message.open.error", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
     readonly "addButton": string,
@@ -713,7 +716,22 @@ declare namespace typed_i18n {
   (_: "settings.session", __?: {}): { readonly "title": string, readonly "yes": string, readonly "no": string };
   (_: "settings.session.title", __?: {}): string;
   (_: "settings.session.yes", __?: {}): string;
-  (_: "settings.session.no", __?: {}): string
+  (_: "settings.session.no", __?: {}): string;
+  (_: "error", __?: {}): {
+  readonly "errorBox": {
+    readonly "title": string,
+    readonly "message": string,
+    readonly "error": string
+  }
+};
+  (_: "error.errorBox", __?: {}): {
+  readonly "title": string,
+  readonly "message": string,
+  readonly "error": string
+};
+  (_: "error.errorBox.title", __?: {}): string;
+  (_: "error.errorBox.message", __?: {}): string;
+  (_: "error.errorBox.error", __?: {}): string
 }
 }
 export = typed_i18n;

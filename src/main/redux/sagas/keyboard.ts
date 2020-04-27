@@ -8,15 +8,14 @@
 import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
+import { error } from "readium-desktop/main/error";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 import { all } from "redux-saga/effects";
 import { put } from "typed-redux-saga";
-
-import { error } from "readium-desktop/common/error";
-import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 
 const filename_ = "readium-desktop:main:redux:sagas:keyboard";
 const debug = debug_(filename_);
