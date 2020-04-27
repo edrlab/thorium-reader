@@ -125,7 +125,7 @@ const publication = {
         "https://schema.org",
         "https://www.w3.org/ns/pub-context",
     ],
-    "conformsTo": "https://www.w3/org/TR/audiobooks/",
+    "conformsTo": "https://www.w3.org/TR/audiobooks/",
     "type": "Audiobook",
     "dateModified": "2020-03-23T16:58:27.372+02:00",
     "id": "urn:uuid:6b1c1997-d8c9-43a5-9b4b-b9d8b9c7771a",
