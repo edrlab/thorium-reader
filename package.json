@@ -168,7 +168,7 @@
       "gatekeeperAssess": false,
       "entitlements": "./scripts/entitlements.mac.plist",
       "entitlementsInherit": "./scripts/entitlements.mac.plist",
-      "bundleVersion": 20200426,
+      "bundleVersion": 20200427,
       "icon": "./resources/icon.png"
     },
     "dmg": {
@@ -189,6 +189,7 @@
     },
     "mas": {
       "hardenedRuntime": false,
+      "gatekeeperAssess": false,
       "entitlements": "./scripts/entitlements.mac.mas.plist",
       "entitlementsInherit": "./scripts/entitlements.mac.mas.inherit.plist",
       "provisioningProfile": "./prod.provisionprofile"
