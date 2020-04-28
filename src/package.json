@@ -36,7 +36,7 @@
   "dependencies": {
     "bindings": "^1.5.0",
     "leveldown": "^5.6.0",
-    "mathjax": "^3.0.1",
+    "mathjax": "^3.0.5",
     "pouchdb-adapter-leveldb": "^7.2.1",
     "yargs": "^15.3.1"
   },

@@ -18,6 +18,9 @@ import * as request from "request";
 import { tmpNameSync } from "tmp";
 import { v4 as uuidv4 } from "uuid";
 
+// import * as os from "os";
+// import * as path from "path";
+
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
 
@@ -43,18 +46,20 @@ export class Downloader {
     // inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
-    // Path where files are downloaded
-    private dstRepositoryPath: string;
+    // Path/folder where files are downloaded, relative to:
+    // os.tmpdir()
+    // app.getPath("temp")
+    // private downloadFolder: string | null | undefined;
 
     // List of downloads
     private downloads: DownloadRegistry;
 
     public constructor(
-        dstRepositoryPath: string,
+        // downloadFolder: string | null | undefined,
         configRepository: ConfigRepository<AccessTokenMap>, // INJECTED!
         store: Store<RootState>, // INJECTED!
         ) {
-        this.dstRepositoryPath = dstRepositoryPath;
+        // this.downloadFolder = downloadFolder;
         this.configRepository = configRepository;
         this.store = store;
 
@@ -65,7 +70,7 @@ export class Downloader {
 
         // Create temporary file as destination file
         const dstPath = tmpNameSync({
-            dir: this.dstRepositoryPath,
+            // dir: this.downloadFolder || path.join(os.tmpdir(), "r2-downloads"),
             prefix: "readium-desktop-",
             postfix: `${ext}`}); // .part
 

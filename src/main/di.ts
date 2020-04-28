@@ -172,7 +172,7 @@ container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSin
 container.bind<Translator>(diSymbolTable.translator).to(Translator).inSingletonScope();
 
 // Create downloader
-const downloader = new Downloader(app.getPath("temp"), configRepository, store);
+const downloader = new Downloader(configRepository, store);
 container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
 
 // Create repositories
