@@ -7,13 +7,15 @@
 
 import * as debug_ from "debug";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
+import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 import { all, call, put, take } from "redux-saga/effects";
 
+import * as watchdog from "../../../../common/redux/sagas/watchdog";
 import * as publicationInfoOpds from "../../../common/redux/sagas/dialog/publicationInfoOpds";
 import * as publicationInfoReaderAndLib from "../../../common/redux/sagas/dialog/publicationInfoReaderAndLib";
-import * as watchdog from "../../../common/redux/sagas/watchdog";
+import { diLibraryGet } from "../../di";
 import * as history from "./history";
 import * as i18n from "./i18n";
 import * as lcp from "./lcp";
@@ -53,6 +55,8 @@ export function* rootSaga() {
         history.saga(),
         publicationInfoSyncTags.saga(),
 
-        watchdog.saga(),
     ]);
+
+    const translator = yield* callTyped(() => diLibraryGet("translator"));
+    yield watchdog.sagaSlave(translator);
 }

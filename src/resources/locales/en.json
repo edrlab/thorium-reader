@@ -307,6 +307,10 @@
         "title": "Internal {{- appName}} Error",
         "message": "An error has occurred in {{- filename}}",
         "error": "Error message:"
+      },
+      "watchdog": {
+        "title": "{{- appName }} doesn't respond",
+        "message": "{{- appName }} takes time to respond, be patient"
       }
     }
 }

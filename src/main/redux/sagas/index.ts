@@ -11,6 +11,7 @@ import { keyboardActions } from "readium-desktop/common/redux/actions";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 import { all, call, put, take } from "redux-saga/effects";
 
+import * as watchdog from "../../../common/redux/sagas/watchdog";
 import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as app from "./app";
@@ -97,4 +98,7 @@ export function* rootSaga() {
 
     // enjoy the app !
     yield put(winActions.library.openRequest.build());
+
+    // watchdog
+    yield watchdog.sagaMaster();
 }
