@@ -302,12 +302,12 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
 
     {
         const conformsTo = pop("conformsTo");
-        if (conformsTo !== "https://www.w3/org/TR/audiobooks/") {
+        if (conformsTo === "https://www.w3.org/TR/audiobooks/") {
+            publication.Metadata.RDFType = "https://schema.org/Audiobook";
+        } else {
             debug(`not an audiobook W3C publication manifest. conformsTo=${w3cManifest.conformsTo}`);
 
             publication.Metadata.RDFType = "https://schema.org/CreativeWork";
-        } else {
-            publication.Metadata.RDFType = "https://schema.org/Audiobook";
         }
     }
     {

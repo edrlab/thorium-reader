@@ -50,6 +50,14 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
+// so that "tmp" can cleanup on process exit?
+// SIGTERM?
+// in Electron: before-quit App event
+// process.on("SIGINT", () => {
+//     console.log("SIGINT ... process.exit()");
+//     process.exit();
+// });
+
 const main = async (flushSession: boolean = false) => {
 
     // protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions

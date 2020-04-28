@@ -168,7 +168,7 @@ const createStoreFromDi = async () => {
     container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
 
     // Create downloader
-    const downloader = new Downloader(app.getPath("temp"), configRepository, store);
+    const downloader = new Downloader(configRepository, store);
     container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
 
     return store;
