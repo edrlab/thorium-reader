@@ -6,15 +6,13 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 // import { error } from "readium-desktop/common/error";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 import { all, call, put, take } from "redux-saga/effects";
 
-import * as watchdog from "../../../../common/redux/sagas/watchdog";
-import { diReaderGet } from "../../di";
+import * as watchdog from "../../../common/redux/sagas/watchdog";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as winInit from "./win";
@@ -39,8 +37,7 @@ export function* rootSaga() {
         publicationInfoReaderAndLib.saga(),
         publicationInfoSyncTag.saga(),
 
-    ]);
+        watchdog.saga(),
 
-    const translator = yield* callTyped(() => diReaderGet("translator"));
-    yield watchdog.sagaSlave(translator);
+    ]);
 }

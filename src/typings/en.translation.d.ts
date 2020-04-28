@@ -722,10 +722,6 @@ declare namespace typed_i18n {
     readonly "title": string,
     readonly "message": string,
     readonly "error": string
-  },
-  readonly "watchdog": {
-    readonly "title": string,
-    readonly "message": string
   }
 };
   (_: "error.errorBox", __?: {}): {
@@ -735,10 +731,7 @@ declare namespace typed_i18n {
 };
   (_: "error.errorBox.title", __?: {}): string;
   (_: "error.errorBox.message", __?: {}): string;
-  (_: "error.errorBox.error", __?: {}): string;
-  (_: "error.watchdog", __?: {}): { readonly "title": string, readonly "message": string };
-  (_: "error.watchdog.title", __?: {}): string;
-  (_: "error.watchdog.message", __?: {}): string
+  (_: "error.errorBox.error", __?: {}): string
 }
 }
 export = typed_i18n;

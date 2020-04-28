@@ -60,8 +60,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     downloadActions.progress.ID,
     downloadActions.success.ID,
     downloadActions.error.ID,
-
-    watchdogActions.watchdog.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware
