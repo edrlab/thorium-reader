@@ -13,7 +13,6 @@ import { all, call, put, take } from "redux-saga/effects";
 
 import * as publicationInfoOpds from "../../../common/redux/sagas/dialog/publicationInfoOpds";
 import * as publicationInfoReaderAndLib from "../../../common/redux/sagas/dialog/publicationInfoReaderAndLib";
-import * as watchdog from "../../../common/redux/sagas/watchdog";
 import * as history from "./history";
 import * as i18n from "./i18n";
 import * as lcp from "./lcp";
@@ -53,6 +52,5 @@ export function* rootSaga() {
         history.saga(),
         publicationInfoSyncTags.saga(),
 
-        watchdog.saga(),
     ]);
 }

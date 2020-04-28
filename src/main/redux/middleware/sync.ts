@@ -10,7 +10,7 @@ import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
     apiActions, dialogActions, downloadActions, i18nActions, keyboardActions, lcpActions,
-    readerActions, toastActions, watchdogActions,
+    readerActions, toastActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -67,9 +67,7 @@ export const reduxSyncMiddleware: Middleware
         (next: Dispatch<ActionWithSender>) =>
             ((action: ActionWithSender) => {
 
-                if (action.type !== watchdogActions.watchdog.ID) {
-                    debug("### action type", action.type);
-                }
+                debug("### action type", action.type);
 
                 // Test if the action must be sent to the rendeder processes
                 if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {

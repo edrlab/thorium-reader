@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, i18nActions, keyboardActions, readerActions, watchdogActions,
+    apiActions, i18nActions, keyboardActions, readerActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -24,7 +24,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     i18nActions.setLocale.ID,
 
-    watchdogActions.watchdog.ID,
     keyboardActions.setShortcuts.ID,
     keyboardActions.showShortcuts.ID,
     keyboardActions.reloadShortcuts.ID,
