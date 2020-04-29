@@ -95,7 +95,7 @@ let config = Object.assign({}, {
         rules: [
             {
                 exclude: /node_modules/,
-                loaders: ["react-hot-loader/webpack", "awesome-typescript-loader"],
+                loaders: ["awesome-typescript-loader"],
                 test: /\.tsx?$/,
             },
             {
