@@ -42,6 +42,7 @@ debug("opds-converter");
 
 const supportedFileTypeLinkArray = [
     ContentType.AudioBookPacked,
+    ContentType.AudioBookPackedLcp,
     ContentType.Epub,
     ContentType.Lcp,
 ];

@@ -31,6 +31,7 @@ export async function createWindow() {
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
+            backgroundThrottling: true,
             devTools: IS_DEV,
             nodeIntegration: true, // Required to use IPC
             webSecurity: true,
@@ -40,13 +41,46 @@ export async function createWindow() {
     });
 
     if (IS_DEV) {
-        mainWindow.webContents.on("context-menu", (_ev, params) => {
+        const wc = mainWindow.webContents;
+        wc.on("context-menu", (_ev, params) => {
             const { x, y } = params;
+            const openDevToolsAndInspect = () => {
+                const devToolsOpened = () => {
+                    wc.off("devtools-opened", devToolsOpened);
+                    wc.inspectElement(x, y);
+
+                    setTimeout(() => {
+                        if (wc.isDevToolsOpened() && wc.devToolsWebContents) {
+                            wc.devToolsWebContents.focus();
+                        }
+                    }, 500);
+                };
+                wc.on("devtools-opened", devToolsOpened);
+                wc.openDevTools({ activate: true, mode: "detach" });
+            };
             Menu.buildFromTemplate([{
-                label: "Inspect element",
                 click: () => {
-                    mainWindow.webContents.inspectElement(x, y);
+                    const wasOpened = wc.isDevToolsOpened();
+                    if (!wasOpened) {
+                        openDevToolsAndInspect();
+                    } else {
+                        if (!wc.isDevToolsFocused()) {
+                            // wc.toggleDevTools();
+                            wc.closeDevTools();
+
+                            setImmediate(() => {
+                                openDevToolsAndInspect();
+                            });
+                        } else {
+                            // right-click context menu normally occurs when focus
+                            // is in BrowserWindow / WebView's WebContents,
+                            // but some platforms (e.g. MacOS) allow mouse interaction
+                            // when the window is in the background.
+                            wc.inspectElement(x, y);
+                        }
+                    }
                 },
+                label: "Inspect element",
             }]).popup({window: mainWindow});
         });
 
@@ -65,7 +99,11 @@ export async function createWindow() {
         });
 
         if (_VSCODE_LAUNCH !== "true") {
-            mainWindow.webContents.openDevTools({ mode: "detach" });
+            setTimeout(() => {
+                if (!mainWindow.isDestroyed()) {
+                    mainWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+                }
+            }, 2000);
         }
     }
 
@@ -87,18 +125,16 @@ export async function createWindow() {
 
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
-    mainWindow.loadURL(rendererBaseUrl);
-
     setMenu(mainWindow, false);
 
     // Redirect link to an external browser
-    const handleRedirect = (event: Event, url: string) => {
+    const handleRedirect = async (event: Event, url: string) => {
         if (url === mainWindow.webContents.getURL()) {
             return;
         }
 
         event.preventDefault();
-        shell.openExternal(url);
+        await shell.openExternal(url);
     };
 
     mainWindow.webContents.on("will-navigate", handleRedirect);
@@ -112,6 +148,10 @@ export async function createWindow() {
     mainWindow.on("closed", () => {
         // note that winRegistry still contains a reference to mainWindow, so won't necessarily be garbage-collected
         mainWindow = null;
+    });
+
+    process.nextTick(async () => {
+        await mainWindow.loadURL(rendererBaseUrl);
     });
 }
 

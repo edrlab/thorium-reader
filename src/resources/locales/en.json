@@ -5,9 +5,11 @@
         "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
         "leftSlideButton": "Slide the list to the left",
+        "mainContent": "main content",
         "rightSlideButton": "Slide the list to the right",
         "searchBook": "Search by title",
-        "skipLink": "Skip to content"
+        "skipLink": "Skip to content",
+        "toolbar": "toolbar"
     },
     "app": {
         "edit": {
@@ -19,12 +21,13 @@
             "title": "Edit",
             "undo": "Undo"
         },
-        "quit": "Quit Thorium"
+        "hide": "Hide {{appName}}",
+        "quit": "Quit {{appName}}"
     },
     "catalog": {
         "about": {
             "button": "More information",
-            "title": "About Thorium"
+            "title": "About {{appName}}"
         },
         "addBookToLib": "Import",
         "addTags": "Add a tag",
@@ -38,16 +41,19 @@
         "emptyTagList": "You have no tagged ebook.",
         "entry": {
             "continueReading": "Resume reading",
-            "lastAdditions": "Recently added"
+            "continueReadingAudioBooks": "Resume listening",
+            "lastAdditions": "Recently added",
+            "lastAdditionsAudioBooks": "Recently added audiobooks"
         },
         "export": "Export",
         "id": "Identifier",
         "lang": "Language",
         "moreInfo": "More Info",
         "myBooks": "My books",
-        "noPublicationHelpL1": "Drop EPUB files in this window",
+        "noPublicationHelpL1": "Drop a publication here",
         "noPublicationHelpL2": "or use the \"+\" button above.",
         "noPublicationHelpL3": "LCP protected files are supported.",
+        "noPublicationHelpL4": "Supported extensions:",
         "numberOfPages": "Number of pages",
         "opds": {
             "info": {
@@ -81,7 +87,7 @@
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import those files :",
-        "importError": "an error occured, verify your file extension (.epub / .lcpl / .audiobook)",
+        "importError": "an error occured, verify your file extension ({{acceptedExtension}})",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
@@ -157,11 +163,17 @@
         "shelf": "Shelf"
     },
     "publication": {
+        "audio": {
+            "tracks": "Tracks"
+        },
         "cancelledLcp": "This book can't be read because the LCP license has been cancelled.",
         "certificateRevoked": "Certificate is revoked",
         "certificateSignatureInvalid": "Certificate signature is invalid",
         "cover": {
             "img": "cover image"
+        },
+        "duration": {
+            "title": "Duration"
         },
         "expiredLcp": "This book can't be read because the LCP license has expired.",
         "lcpEnd": "End",
@@ -247,6 +259,18 @@
         }
     },
     "settings": {
+        "keyboard": {
+            "advancedMenu": "Menu",
+            "cancel": "Cancel",
+            "edit": "Edit",
+            "editUserJson": "Edit user file...",
+            "hide": "Hide",
+            "keyboardShortcuts": "Keyboard shortcuts",
+            "loadUserJson": "Load from user file",
+            "resetDefaults": "Reset (load defaults)",
+            "save": "Save",
+            "show": "Show"
+        },
         "language": {
             "languageChoice": "Language choice"
         }

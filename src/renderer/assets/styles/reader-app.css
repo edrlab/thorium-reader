@@ -2,6 +2,21 @@
 @import "./focus.css";
 @import "./variable.css";
 
+.anchor_link {
+	position: absolute;
+	display: block;
+	width: 1px;
+	height: 1px;
+	top: 0px;
+	left: 0px;
+	opacity: 0.6;
+	background: transparent;
+	overflow: hidden;
+	color: transparent;
+	padding: 0;
+	margin: 0;
+}
+
 :root {
   user-select: none;
   --sideButtonColor: rgb(130, 130, 130, 0.5);
@@ -107,6 +122,10 @@ button {
   align-items: stretch;
   margin-top: 1rem;
   margin-bottom: 5rem;
+}
+.content_root_fullscreen {
+  margin-top: -50px;
+  margin-bottom: 0.5rem;
 }
 
 /* ========== READER ==========*/
@@ -418,6 +437,19 @@ button {
         padding:0;
         margin: 0;
         height:30px;
+      }
+    }
+  }
+}
+
+.main_navigation_fullscreen {
+  & > ul, & ul.menu_option {
+    margin-right: 20px;
+    & > li {
+      & > .menu_button {
+        border-right: 1px solid #c1c1c1;
+        border-bottom: 1px solid #c1c1c1;
+        background-color: var(--reader-secondaryColor);
       }
     }
   }
@@ -878,12 +910,27 @@ input[type=radio] + label {
         fill: #C1C1C1;;
       }
     }
-
+    
     & .track_reading_wrapper {
-          padding: 1rem 8rem 1rem 5rem;
-          bottom: 0;
-          margin-top: 1rem;
+      padding: 1rem 8rem 1rem 5rem;
+      bottom: 0;
+      margin-top: 1rem;
     }
+    & .track_reading_wrapper_noArrows {
+      padding: 1rem 5rem 1rem 5rem;
+    }
+}
+
+.reader_footer_fullscreen {
+  background-color: transparent;
+  pointer-events: none;
+
+  & .arrows {
+    background-color: var(--reader-mainColor);
+    pointer-events: all;
+    margin-bottom: 30px;
+    margin-right: 20px;
+  }
 }
 
 #track_reading {
@@ -900,25 +947,34 @@ input[type=radio] + label {
 	cursor: pointer;
 }
 
+/*
 #current {
 	position: relative;
 }
+*/
 
 #chapters_markers {
 	display: flex;
 	position: absolute;
 	width:100%;
-	height:15px;
-	margin-top:-2.5px;
+	height:16px;
+	margin-top:-3px;
 	top:0;
 
   &.more_information > span {
     border-right: 1px solid #929292;
+
+    &.currentSpineItem {
+      outline-color: grey;
+      outline-offset: 0px;
+      outline-style: solid;
+      outline-width: 1px;
+    }
   }
 
   & > span {
     flex-grow: 1;
-    padding: 2.5px 0;
+    padding: 3px 0;
 
     & > span {
       display: block;
@@ -935,7 +991,7 @@ input[type=radio] + label {
 
 #arrow_box {
 	position: absolute;
-  width: 190px;
+  width: 450px;
 	height: auto;
 	padding: 10px 0 5px 0;
 	margin: -76px 0 0 0;
@@ -972,6 +1028,12 @@ input[type=radio] + label {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-weight: bold;
+
+    & em {
+      font-size: 80%;
+      font-weight: normal;
+    }
   }
 
   & p {
@@ -1000,6 +1062,10 @@ input[type=radio] + label {
   }
 }
 
+.currentPage {
+  font-size: 80%;
+  font-weight: normal;
+}
 .goToPage {
   text-align: center;
   & .title {

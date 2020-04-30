@@ -33,21 +33,26 @@ import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { initStore } from "readium-desktop/main/redux/store/memory";
-import { CatalogService } from "readium-desktop/main/services/catalog";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { Downloader } from "readium-desktop/main/services/downloader";
 import { LcpManager } from "readium-desktop/main/services/lcp";
+import { PublicationService } from "readium-desktop/main/services/publication";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
-import { _NODE_ENV, _POUCHDB_ADAPTER_NAME } from "readium-desktop/preprocessor-directives";
+import {
+    _APP_NAME, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
+} from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
 
 import { Server } from "@r2-streamer-js/http/server";
 
+import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
@@ -167,7 +172,7 @@ container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSin
 container.bind<Translator>(diSymbolTable.translator).to(Translator).inSingletonScope();
 
 // Create downloader
-const downloader = new Downloader(app.getPath("temp"), configRepository, store);
+const downloader = new Downloader(null, configRepository, store);
 container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
 
 // Create repositories
@@ -204,20 +209,21 @@ container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConst
 // Bind services
 container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
-const deviceIdManager = new DeviceIdManager("Thorium", configRepository);
+const deviceIdManager = new DeviceIdManager(capitalizedAppName, configRepository);
 container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
     deviceIdManager,
 );
 
 // Create lcp manager
 container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingletonScope();
-container.bind<CatalogService>(diSymbolTable["catalog-service"]).to(CatalogService).inSingletonScope();
+container.bind<PublicationService>(diSymbolTable["publication-service"]).to(PublicationService).inSingletonScope();
 container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
 container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
 container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
 container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
+container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 
@@ -250,10 +256,11 @@ interface IGet {
     (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;
     (s: "lcp-manager"): LcpManager;
-    (s: "catalog-service"): CatalogService;
+    (s: "publication-service"): PublicationService;
     (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): PublicationApi;
     (s: "opds-api"): OpdsApi;
+    (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;
     (s: "action-serializer"): ActionSerializer;

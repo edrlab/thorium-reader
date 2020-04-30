@@ -7,7 +7,11 @@
 
 import { BrowserWindow, Menu, MenuItem, webContents } from "electron";
 import { diMainGet } from "readium-desktop/main/di";
-import { _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV } from "readium-desktop/preprocessor-directives";
+import {
+    _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV,
+} from "readium-desktop/preprocessor-directives";
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 let _darwinApplicationMenuAlreadySet = false; // application-wide menu, not dependent on individual BrowserWindows
 
@@ -34,7 +38,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
                         for (const wc of webContents.getAllWebContents()) {
                             if (wc.hostWebContents) {
                                 // wc.hostWebContents.id === readerWindow.webContents.id
-                                wc.openDevTools({ mode: "detach" });
+                                wc.openDevTools({ activate: true, mode: "detach" });
                             }
                         }
                     },
@@ -96,7 +100,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
                 click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
                     const arr = BrowserWindow.getAllWindows();
                     arr.forEach((bww) => {
-                        bww.webContents.openDevTools({ mode: "detach" });
+                        bww.webContents.openDevTools({ activate: true, mode: "detach" });
                     });
                 },
             },
@@ -107,7 +111,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
                     for (const wc of webContents.getAllWebContents()) {
                         if (wc.hostWebContents) {
                             // wc.hostWebContents.id === readerWindow.webContents.id
-                            wc.openDevTools({ mode: "detach" });
+                            wc.openDevTools({ activate: true, mode: "detach" });
                         }
                     }
                 },
@@ -121,7 +125,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
                 click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
                     const arr = BrowserWindow.getAllWindows();
                     arr.forEach((bww) => {
-                        bww.webContents.openDevTools({ mode: "detach" });
+                        bww.webContents.openDevTools({ activate: true, mode: "detach" });
                         setTimeout(() => {
                             bww.webContents.send("AXE_A11Y", {});
                         }, 300);
@@ -149,7 +153,7 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
     const translator = diMainGet("translator");
     const template: Electron.MenuItemConstructorOptions[] = [
         {
-            label: "Thorium",
+            label: capitalizedAppName,
             submenu: [
                 {
                     role: "togglefullscreen",
@@ -168,6 +172,7 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                 },
                 {
                     role: "hide",
+                    label: translator.translate("app.hide", { appName: capitalizedAppName }),
                 },
                 {
                     role: "hideothers",
@@ -189,7 +194,7 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                     role: "quit",
                     // accelerator: "Command+Q",
                     // click: () => { app.quit(); },
-                    label: translator.translate("app.quit"),
+                    label: translator.translate("app.quit", { appName: capitalizedAppName }),
                 },
             ] as Electron.MenuItemConstructorOptions[],
         },

@@ -43,6 +43,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
         minHeight: 600,
         webPreferences: {
             allowRunningInsecureContent: false,
+            backgroundThrottling: false,
             contextIsolation: false,
             devTools: IS_DEV,
             nodeIntegration: true,
@@ -55,15 +56,70 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     });
 
     if (IS_DEV) {
-        readerWindow.webContents.on("context-menu", (_ev, params) => {
+        const wc = readerWindow.webContents;
+        wc.on("context-menu", (_ev, params) => {
             const { x, y } = params;
+            const openDevToolsAndInspect = () => {
+                const devToolsOpened = () => {
+                    wc.off("devtools-opened", devToolsOpened);
+                    wc.inspectElement(x, y);
+
+                    setTimeout(() => {
+                        if (wc.isDevToolsOpened() && wc.devToolsWebContents) {
+                            wc.devToolsWebContents.focus();
+                        }
+                    }, 500);
+                };
+                wc.on("devtools-opened", devToolsOpened);
+                wc.openDevTools({ activate: true, mode: "detach" });
+            };
             Menu.buildFromTemplate([{
-                label: "Inspect element",
                 click: () => {
-                    readerWindow.webContents.inspectElement(x, y);
+                    const wasOpened = wc.isDevToolsOpened();
+                    if (!wasOpened) {
+                        openDevToolsAndInspect();
+                    } else {
+                        if (!wc.isDevToolsFocused()) {
+                            // wc.toggleDevTools();
+                            wc.closeDevTools();
+
+                            setImmediate(() => {
+                                openDevToolsAndInspect();
+                            });
+                        } else {
+                            // this should never happen,
+                            // as the right-click context menu occurs with focus
+                            // in BrowserWindow / WebView's WebContents
+                            wc.inspectElement(x, y);
+                        }
+                    }
                 },
+                label: "Inspect element",
             }]).popup({window: readerWindow});
         });
+
+        // Already done for primary library BrowserWindow
+        // readerWindow.webContents.on("did-finish-load", () => {
+        //     const {
+        //         default: installExtension,
+        //         REACT_DEVELOPER_TOOLS,
+        //         REDUX_DEVTOOLS,
+        //     } = require("electron-devtools-installer");
+
+        //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+        //         installExtension(extension)
+        //             .then((name: string) => debug("Added Extension: ", name))
+        //             .catch((err: Error) => debug("An error occurred: ", err));
+        //     });
+        // });
+
+        if (_VSCODE_LAUNCH !== "true") {
+            setTimeout(() => {
+                if (!readerWindow.isDestroyed()) {
+                    readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+                }
+            }, 2000);
+        }
     }
 
     const winRegistry = diMainGet("win-registry");
@@ -148,16 +204,14 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
             // tslint:disable-next-line: max-line-length
             ? encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.progression.toString()).toString("base64"))
             : undefined;
-        readerUrl += `&docHref=${docHref}&docSelector=${docSelector}&docProgression=${docProgression}`;
-    }
-
-    readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
-
-    if (IS_DEV && _VSCODE_LAUNCH !== "true") {
-        readerWindow.webContents.openDevTools({ mode: "detach" });
+        readerUrl += `&docHref=${docHref}&docSelector=${docSelector ? docSelector : ""}&docProgression=${docProgression ? docProgression : ""}`;
     }
 
     setMenu(readerWindow, true);
+
+    process.nextTick(async () => {
+        await readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
+    });
 
     return reader;
 }

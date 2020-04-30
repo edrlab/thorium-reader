@@ -12,16 +12,17 @@ import * as path from "path";
 import * as React from "react";
 import Dropzone from "react-dropzone";
 import { Provider } from "react-redux";
+import { acceptedExtension } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
+import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
 import PageManager from "readium-desktop/renderer/library/components/PageManager";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 
 import DownloadsPanel from "./DownloadsPanel";
-import ToastManager from "./toast/ToastManager";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -35,31 +36,25 @@ export default class App extends React.Component<{}, undefined> {
     public onDrop(acceptedFiles: File[]) {
         const store = diLibraryGet("store");
         store.dispatch(
-            dialogActions.openRequest.build(DialogTypeName.FileImport,
+            dialogActions.openRequest.build(
+                DialogTypeName.FileImport,
                 {
-                    files: acceptedFiles.filter((file) => {
-                            const ext = path.extname(file.path);
-                            return (/\.epub[3]?$/.test(ext) ||
-                                /\.audiobook$/.test(ext) ||
-                                ext === ".lcpl");
-                    })
-                        .map((file) => {
-                            return {
+                    files: acceptedFiles
+                        .filter(
+                            (file) => acceptedExtension(path.extname(file.path)),
+                        )
+                        .map(
+                            (file) => ({
                                 name: file.name,
                                 path: file.path,
-                            };
-                        }),
+                            }),
+                        ),
                 },
             ));
     }
 
     public async componentDidMount() {
-        window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
-            window.document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
-        }, true);
-        window.document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
-            window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
-        }, true);
+        ensureKeyboardListenerIsInstalled();
     }
 
     public render(): React.ReactElement<{}> {
@@ -71,37 +66,35 @@ export default class App extends React.Component<{}, undefined> {
             <Provider store={store} >
                 <TranslatorContext.Provider value={translator}>
                     <ConnectedRouter history={history}>
-                        <div className={styles.root}>
-                            <Dropzone
-                                onDrop={this.onDrop}
-                            >
-                                {({ getRootProps, getInputProps }) => {
-                                    const rootProps = getRootProps({ onClick: (e) => e.stopPropagation() });
-                                    rootProps.tabIndex = -1;
-                                    // FIXME : css in code
-                                    return <div
-                                        {...rootProps}
-                                        style={{
-                                            position: "absolute",
-                                            overflow: "hidden",
-                                            top: 0,
-                                            bottom: 0,
-                                            left: 0,
-                                            right: 0,
-                                        }}
-                                    >
-                                        <DownloadsPanel />
-                                        <input aria-hidden {
-                                            ...getInputProps({ onClick: (evt) => evt.preventDefault() })
-                                        }
-                                        />
-                                        <PageManager />
-                                        <DialogManager />
-                                        <ToastManager />
-                                    </div>;
-                                }}
-                            </Dropzone>
-                        </div>
+                        <Dropzone
+                            onDrop={this.onDrop}
+                        >
+                            {({ getRootProps, getInputProps }) => {
+                                const rootProps = getRootProps({ onClick: (e) => e.stopPropagation() });
+                                rootProps.tabIndex = -1;
+                                // FIXME : css in code
+                                return <div
+                                    {...rootProps}
+                                    style={{
+                                        position: "absolute",
+                                        overflow: "hidden",
+                                        top: 0,
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                    }}
+                                >
+                                    <DownloadsPanel />
+                                    <input aria-hidden {
+                                        ...getInputProps({ onClick: (evt) => evt.preventDefault() })
+                                    }
+                                    />
+                                    <PageManager />
+                                    <DialogManager />
+                                    <ToastManager />
+                                </div>;
+                            }}
+                        </Dropzone>
                     </ConnectedRouter>
                 </TranslatorContext.Provider>
             </Provider>

@@ -1,0 +1,277 @@
+{
+    "accessibility": {
+        "bookMenu": "Menu",
+        "closeDialog": "Sluiten",
+        "homeMenu": "Leesweergave menu",
+        "importFile": "Importeer een publicatie",
+        "leftSlideButton": "Schuif lijst naar links",
+        "mainContent": "hoofd inhoud",
+        "rightSlideButton": "Schuif lijst naar rechts",
+        "searchBook": "Zoek op titel",
+        "skipLink": "Ga naar inhoud",
+        "toolbar": "werkbalk"
+    },
+    "app": {
+        "edit": {
+            "copy": "Kopieer",
+            "cut": "Knip",
+            "paste": "Plak",
+            "redo": "Opnieuw",
+            "selectAll": "Alles selecteren",
+            "title": "Wijzig",
+            "undo": "Ongedaan maken"
+        },
+        "hide": "Verbergen",
+        "quit": "Verlaat Thorium"
+    },
+    "catalog": {
+        "about": {
+            "button": "Meer informatie",
+            "title": "Over Thorium"
+        },
+        "addBookToLib": "Voeg toe",
+        "addTags": "Voeg een label toe",
+        "addTagsButton": "Voeg toe",
+        "allBooks": "Alle boeken",
+        "bookInfo": "Over dit boek",
+        "delete": "Verwijder",
+        "deleteBook": "Verwijder",
+        "deleteTag": "Verwijder label",
+        "description": "Beschrijving",
+        "emptyTagList": "Je hebt geen boeken met een label",
+        "entry": {
+            "continueReading": "Ga door met lezen",
+            "continueReadingAudioBooks": "Ga door met luisteren",
+            "lastAdditions": "Recent toegevoegd",
+            "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken"
+        },
+        "export": "Exporteer",
+        "lang": "Taal",
+        "moreInfo": "Meer Informatie",
+        "myBooks": "Mijn boeken",
+        "noPublicationHelpL1": "De publicatie afgeven",
+        "noPublicationHelpL2": "of gebruik \"+\" knop hier boven.",
+        "noPublicationHelpL3": "LCP beveiligde bestanden zijn ondersteund.",
+        "noPublicationHelpL4": "Ondersteunde uitbreidingen:",
+        "numberOfPages": "Aantal pagina's",
+        "opds": {
+            "info": {
+                "availableSince": "Sinds",
+                "availableState": {
+                    "available": "Beschikbaar",
+                    "ready": "Klaar",
+                    "reserved": "Gereserveerd",
+                    "unavailable": "Niet beschikbaar",
+                    "unknown": "Onbekend"
+                },
+                "availableUntil": "Tot",
+                "copyAvalaible": "Aantal beschikbaar",
+                "copyTotal": "Aantal exemplaren",
+                "holdPosition": "Je reserveringen",
+                "holdTotal": "Gereserveerd",
+                "numberOfItems": "Aantal items",
+                "priveValue": "Prijs",
+                "state": "Status"
+            }
+        },
+        "publisher": "Uitgever",
+        "readBook": "Gelezen",
+        "released": "Uitgegeven op",
+        "sort": "Sorteer op",
+        "tagCount": "Label aantal",
+        "tags": "Labels"
+    },
+    "dialog": {
+        "closeModalWindow": "Sluit dit modale venster",
+        "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
+        "deletePublication": "Wil je deze publicatie echt verwijderen ?",
+        "import": "Wil je deze bestanden echt importeren :",
+        "importError": "er is een fout opgetreden, controleerje bestandsextensie ({{acceptedExtension}})",
+        "no": "Nee",
+        "renew": "Wil je de licentie voor deze publicatie echt vernieuwen?",
+        "return": "Wil je de licentie voor deze publicatie echt inleveren?",
+        "yes": "Ja"
+    },
+    "header": {
+        "allBooks": "Alle boeken",
+        "books": "Mijn boeken",
+        "catalogs": "Catalogi",
+        "downloads": "Downloads",
+        "gridTitle": "Rasterweergave",
+        "home": "Boekenplank menu",
+        "homeTitle": "home",
+        "importTitle": "Voeg een publicatie toe",
+        "listTitle": "Lijst weergave",
+        "refreshTitle": "laad opnieuw",
+        "searchPlaceholder": "Zoeken",
+        "searchTitle": "Begin met zoeken",
+        "settings": "Instellingen"
+    },
+    "library": {
+        "lcp": {
+            "cancel": "Annuleer",
+            "hint": "(Hint : {{hint}})",
+            "password": "Wachtwoordzin",
+            "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
+            "submit": "Verzend"
+        }
+    },
+    "message": {
+        "download": {
+            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]",
+            "start": "Het downloaden van {{- title}} is gestart.",
+            "success": "Het downloaden van {{- title}} is gereed."
+        },
+        "import": {
+            "alreadyImport": "{{- title}} is al toegevoegd",
+            "fail": "Het toevoegen van {{- path}} is mislukt. Controleer de juistheid van het bestand",
+            "success": "Het toevoegen van {{- title}} is gelukt."
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Voeg toe",
+            "name": "Naam :",
+            "namePlaceholder": "Naam",
+            "title": "Voeg een OPDS feed toe",
+            "url": "Link :",
+            "urlPlaceholder": "Link"
+        },
+        "addMenu": "Voeg OPDS feed toe",
+        "back": "Terug",
+        "breadcrumbRoot": "Catalogi",
+        "empty": "Geen publicatie gevonden",
+        "firstPage": "Eerste",
+        "lastPage": "Laatste",
+        "menu": {
+            "aboutBook": "Over dit boek",
+            "addExtract": "Voeg de samenvatting toe",
+            "goBuyBook": "Koop dit boek",
+            "goLoanBook": "Leen dit boek",
+            "goSubBook": "Abonneer"
+        },
+        "network": {
+            "error": "Het is niet mogelijk om toegang te krijgen tot de OPDS feed",
+            "noInternet": "Geen Internet",
+            "noInternetMessage": "Probeer : controleer de netwerkkabel, modem, router or wifi",
+            "reject": "Sorry, er is een onverwachte fout opgetreden bij het verwerken van de OPDS feed",
+            "timeout": "Er was een network timeout, probeer het later nog eens"
+        },
+        "next": "Volgende",
+        "previous": "Vorige",
+        "shelf": "Plank"
+    },
+    "publication": {
+        "audio": {
+            "tracks": "Tracks"
+        },
+        "cancelledLcp": "Dit boek kan niet worden gelezen omdat de LCP licentie is geannuleerd.",
+        "certificateRevoked": "Certificaat is ingetrokken",
+        "certificateSignatureInvalid": "Certificaat handtekening is ongeldig",
+        "cover": {
+            "img": "cover afbeelding"
+        },
+        "duration": {
+            "title": "Duur"
+        },
+        "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
+        "lcpEnd": "Einde",
+        "lcpRightsCopy": "Toegestaan aantal te kopiëren karakters",
+        "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
+        "lcpStart": "Start",
+        "licenseOutOfDate": "Licentie is verlopen",
+        "licenseSignatureDateInvalid": "Datum in de Licentie handtekening is iongeldig",
+        "licenseSignatureInvalid": "Licentie handtekening is ongeldig",
+        "renewButton": "Vernieuw",
+        "returnButton": "Lever in",
+        "returnedLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie is ingeleverd.",
+        "revokedLcp": "Dit boek kan niet gelezen worden omdat LCP licenstie is ingetrokken.",
+        "seeLess": "Toon minder",
+        "seeMore": "Toon meer",
+        "userKeyCheckInvalid": "Wachtwoordzin is niet correct"
+    },
+    "reader": {
+        "footerInfo": {
+            "lessInfo": "minder informatie",
+            "moreInfo": "meer informatie"
+        },
+        "marks": {
+            "annotations": "Annotaties",
+            "bookmarks": "Bladwijzers",
+            "delete": "Verwijder",
+            "edit": "Wijzig",
+            "landmarks": "structuur elementen",
+            "toc": "Inhoudsopgave"
+        },
+        "navigation": {
+            "backHomeTitle": "terug naar de boekenplank",
+            "bookmarkTitle": "bladwijzer",
+            "detachWindowTitle": "maak het venster los",
+            "fullscreenTitle": "gebruik volledig scherm",
+            "goTo": "Ga naar",
+            "goToError": "Deze paginaovergang bestaat niet",
+            "goToPlaceHolder": "Voer een paginanummer in",
+            "goToTitle": "Ga naar pagina",
+            "infoTitle": "informatie",
+            "openTableOfContentsTitle": "navigatie",
+            "quitFullscreenTitle": "verlaat volledig scherm modus",
+            "readBookTitle": "begin met het lezen van het boek",
+            "settingsTitle": "instellingen"
+        },
+        "settings": {
+            "column": {
+                "auto": "Automatisch",
+                "one": "1 kol",
+                "oneTitle": "een kolom",
+                "title": "Kolommen",
+                "two": "2 kol",
+                "twoTitle": "twee kolommen"
+            },
+            "display": "Weergave",
+            "disposition": {
+                "title": "Indeling"
+            },
+            "font": "Lettertype",
+            "fontSize": "Letter grootte",
+            "justification": "Uitlijning",
+            "justify": "Uitvullen",
+            "letterSpacing": "Letter afstand",
+            "lineSpacing": "Regelafstand",
+            "margin": "Marge",
+            "paginated": "Als pagina's",
+            "scrolled": "Doorlopend",
+            "spacing": "Afstand",
+            "text": "Tekst",
+            "theme": {
+                "name": {
+                    "Neutral": "Neutraal",
+                    "Night": "Nacht",
+                    "Sepia": "Sepia"
+                },
+                "title": "Thema"
+            },
+            "wordSpacing": "Woord afstand"
+        },
+        "svg": {
+            "left": "Links",
+            "right": "Rechts"
+        }
+    },
+    "settings": {
+        "keyboard": {
+            "advancedMenu": "Menu",
+            "cancel": "Annuleer",
+            "edit": "Wijzig",
+            "editUserJson": "Wijzig gebruikersbestand...",
+            "hide": "Verberg",
+            "keyboardShortcuts": "Toetsenbord shortcuts",
+            "loadUserJson": "Haal uit gebruikersbestand",
+            "resetDefaults": "Terug (naar oorspronkelijke instellingen)",
+            "save": "Bewaar",
+            "show": "Toon"
+        },
+        "language": {
+            "languageChoice": "Taal keuze"
+        }
+    }
+}

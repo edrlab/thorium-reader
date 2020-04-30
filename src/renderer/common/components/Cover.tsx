@@ -75,14 +75,16 @@ class Cover extends React.Component<IProps, undefined> {
             } else {
                 defaultUrl = thumbnailUrl || coverUrl;
             }
+
             return (
                 <img
-                    tabIndex={0}
+                    tabIndex={this.props.onKeyPress ? 0 : -1}
                     className={styles.cover_img}
                     onClick={this.props.onClick}
                     onKeyPress={this.props.onKeyPress}
                     role="presentation"
-                    alt={this.props.__("publication.cover.img")}
+                    alt={this.props.onKeyPress ? this.props.__("publication.cover.img") : ""}
+                    aria-hidden={this.props.onKeyPress ? undefined : true}
                     src={defaultUrl}
                 />
             );

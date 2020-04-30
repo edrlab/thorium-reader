@@ -5,7 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
+import { formatTime } from "readium-desktop/common/utils/time";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
@@ -18,6 +20,7 @@ import {
 } from "readium-desktop/typings/react";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 // tslint:disable-next-line: no-empty-interface
@@ -26,6 +29,7 @@ interface IBaseProps extends TranslatorProps {
     fullscreen: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
+    goToLocator: (locator: R2Locator) => void;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
 }
@@ -61,14 +65,19 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return (<></>);
         }
 
+        const isAudioBook = r2Publication?.Metadata?.RDFType &&
+            /http[s]?:\/\/schema\.org\/Audiobook$/.test(r2Publication.Metadata.RDFType);
+
         const { __ } = this.props;
         const { moreInfo } = this.state;
 
-        const spineTitle = currentLocation.locator.title;
+        const spineTitle = currentLocation.locator.title || currentLocation.locator.href;
         let afterCurrentLocation = false;
 
-        return !this.props.fullscreen && (
-            <div className={styles.reader_footer}>
+        return (
+            <div className={classNames(styles.reader_footer,
+                this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}>
+                {!isAudioBook &&
                 <div className={styles.arrows}>
                     <button onClick={() => this.props.navLeftOrRight(true)}>
                         <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
@@ -77,44 +86,87 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
                     </button>
                 </div>
-                <div className={styles.track_reading_wrapper}>
-                    { currentLocation &&
-                        <div id={styles.track_reading}>
-                            <div id={styles.current}></div>
-                                <div id={styles.chapters_markers}
-                                    className={moreInfo ? styles.more_information : undefined}>
-                                    { r2Publication.Spine.map((value, index) => {
-                                        const atCurrentLocation = currentLocation.locator.href === value.Href;
-                                        if (atCurrentLocation) {
-                                            afterCurrentLocation = true;
-                                        }
-                                        return (
-                                            <span
-                                                onClick={(e) => this.props.handleLinkClick(e, value.Href)}
-                                                key={index}
-                                            >
-                                                { atCurrentLocation ? <span style={this.getProgressionStyle()}></span>
-                                                : !afterCurrentLocation && <span></span>}
-                                            </span>
-                                        );
-                                    })}
-                                </div>
-                                { moreInfo &&
-                                    <div
-                                        id={styles.arrow_box}
-                                        style={this.getStyle(this.getArrowBoxStyle)}
-                                    >
-                                        <span>{ spineTitle }</span>
-                                        <p>
-                                            { this.getProgression() }
-                                        </p>
-                                        <span
-                                            style={this.getStyle(this.getArrowStyle)}
-                                            className={styles.after}
-                                        />
-                                    </div>
+                }
+                {!this.props.fullscreen &&
+                <div className={classNames(styles.track_reading_wrapper,
+                    isAudioBook ? styles.track_reading_wrapper_noArrows : undefined)}>
+
+                    { // <div id={styles.current}></div>
+                    <div id={styles.track_reading}>
+                        <div id={styles.chapters_markers}
+                            className={moreInfo ? styles.more_information : undefined}>
+                            { r2Publication.Spine.map((link, index) => {
+                                const atCurrentLocation = currentLocation.locator.href === link.Href;
+                                if (atCurrentLocation) {
+                                    afterCurrentLocation = true;
                                 }
+                                return (
+                                    <span
+                                        onClick={(e) => {
+                                            const el = e.nativeEvent.target as HTMLElement;
+                                            let left = el.offsetLeft;
+                                            if (!left) {
+                                                left = 0;
+                                            }
+                                            let p = el.offsetParent as HTMLElement;
+                                            while (p) {
+                                                const l = p.offsetLeft;
+                                                left += (l ? l : 0);
+                                                p = p.offsetParent as HTMLElement;
+                                            }
+                                            const deltaX = e.clientX - left;
+                                            let element = el;
+                                            let w: number | undefined;
+                                            while (element && element.classList) {
+                                                if (element.classList.contains("progressChunkSpineItem")) {
+                                                    w = element.offsetWidth;
+                                                    break;
+                                                }
+                                                element = element.parentNode as HTMLElement;
+                                            }
+                                            if (!w) {
+                                                w = element.offsetWidth;
+                                            }
+                                            const percent = deltaX / w;
+
+                                            const loc: R2Locator = {
+                                                href: link.Href,
+                                                locations: {
+                                                    progression: percent,
+                                                },
+                                            };
+                                            this.props.goToLocator(loc);
+                                            // this.props.handleLinkClick(e, link.Href);
+                                        }}
+                                        key={index}
+                                        className={
+                                            classNames(
+                                                "progressChunkSpineItem",
+                                                atCurrentLocation ? styles.currentSpineItem : undefined)
+                                        }
+                                    >
+                                        { atCurrentLocation ? <span style={this.getProgressionStyle()}></span>
+                                        : !afterCurrentLocation && <span></span>}
+                                    </span>
+                                );
+                            })}
                         </div>
+                        { moreInfo &&
+                        <div
+                            id={styles.arrow_box}
+                            style={this.getStyle(this.getArrowBoxStyle)}
+                        >
+                            <span title={spineTitle}><em>{`(${(r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href)) + 1}/${r2Publication.Spine.length}) `}</em> {` ${spineTitle}`}</span>
+                            <p>
+                                { this.getProgression() }
+                            </p>
+                            <span
+                                style={this.getStyle(this.getArrowStyle)}
+                                className={styles.after}
+                            />
+                        </div>
+                        }
+                    </div>
                     }
 
                     <span
@@ -124,6 +176,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         {moreInfo ? __("reader.footerInfo.lessInfo") : __("reader.footerInfo.moreInfo")}
                     </span>
                 </div>
+                }
             </div>
         );
     }
@@ -134,8 +187,12 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return {};
         }
 
+        let progression = currentLocation.locator.locations.progression;
+        if (progression >= 0.9) {
+            progression = 1;
+        }
         return {
-            width: currentLocation.locator.locations.progression * 100 + "%",
+            width: `${progression * 100}%`,
         };
     }
 
@@ -150,18 +207,26 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             spineItemId = r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href);
         }
         const onePourcent = 100 / r2Publication.Spine.length;
-        const progression = currentLocation.locator.locations.progression;
+        let progression = currentLocation.locator.locations.progression;
+        if (progression >= 0.9) {
+            progression = 1;
+        }
         return ((onePourcent * spineItemId) + (onePourcent * progression));
     }
 
     private getProgression(): string {
         const { currentLocation } = this.props;
-        const { paginationInfo } = currentLocation;
+        if (!currentLocation) {
+            return "";
+        }
 
-        if (paginationInfo) {
-            return `Page ${paginationInfo.currentColumn + 1} / ${paginationInfo.totalColumns}`;
+        const percent = Math.round(currentLocation.locator.locations.progression * 100);
+        if (currentLocation.paginationInfo) {
+            return `${percent}% (${currentLocation.paginationInfo.currentColumn + 1} / ${currentLocation.paginationInfo.totalColumns})`;
+        } else if (currentLocation.audioPlaybackInfo) {
+            return `${percent}% (${formatTime(currentLocation.audioPlaybackInfo.localTime)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration)})`;
         } else {
-            return `${Math.round(currentLocation.locator.locations.progression * 100)}%`;
+            return `${percent}%`;
         }
     }
 
@@ -184,7 +249,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     }
 
     private getArrowBoxStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {
-        return `calc(${arrowBoxPosition}% + ${(multiplicator * (190 * (rest / 100) - 30 * rest / 100))}px)`;
+        return `calc(${arrowBoxPosition}% + ${(multiplicator * (450 * (rest / 100) - 30 * rest / 100))}px)`;
     }
 
     private getArrowStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {

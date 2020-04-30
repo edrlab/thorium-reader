@@ -5,9 +5,11 @@
         "homeMenu": "Menu principal",
         "importFile": "Importer un fichier epub",
         "leftSlideButton": "Faire défiler la liste vers la gauche",
+        "mainContent": "contenu principal",
         "rightSlideButton": "Faire défiler la liste vers la droite",
         "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
-        "skipLink": "Aller au contenu"
+        "skipLink": "Aller au contenu",
+        "toolbar": "barre d'outils"
     },
     "app": {
         "edit": {
@@ -19,12 +21,13 @@
             "title": "Édition",
             "undo": "Annuler"
         },
-        "quit": "Quitter Thorium"
+        "hide": "Cacher {{appName}}",
+        "quit": "Quitter {{appName}}"
     },
     "catalog": {
         "about": {
             "button": "Plus d'informations",
-            "title": "A propos de Thorium"
+            "title": "A propos de {{appName}}"
         },
         "addBookToLib": "Importer",
         "addTags": "Ajouter un tag",
@@ -38,16 +41,19 @@
         "emptyTagList": "Les livres ne contiennent pas de tags.",
         "entry": {
             "continueReading": "Reprendre la lecture",
-            "lastAdditions": "Derniers ajouts"
+            "continueReadingAudioBooks": "Reprendre l'écoute",
+            "lastAdditions": "Récemment ajouté",
+            "lastAdditionsAudioBooks": "Livres audio récemment ajoutés"
         },
         "export": "Exporter",
         "id": "Identifiant",
         "lang": "Langue",
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
-        "noPublicationHelpL1": "Déposez vos fichiers EPUB dans cette fenêtre",
+        "noPublicationHelpL1": "Déposer la publication",
         "noPublicationHelpL2": "ou bien utilisez le bouton \"+\" ci-dessus.",
         "noPublicationHelpL3": "Les fichiers protégés par LCP sont pris en charge.",
+        "noPublicationHelpL4": "Extensions prises en charge :",
         "numberOfPages": "Nombre de pages",
         "opds": {
             "info": {
@@ -81,7 +87,7 @@
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
         "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub / .lcpl / .audiobook)",
+        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier ({{acceptedExtension}})",
         "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
@@ -157,11 +163,17 @@
         "shelf": "Étagère"
     },
     "publication": {
+        "audio": {
+            "tracks": "Pistes"
+        },
         "cancelledLcp": "Ce livre ne peut être lu car la licence lcp a été annulée.",
         "certificateRevoked": "Certificat révoqué",
         "certificateSignatureInvalid": "Signature de certificat invalide",
         "cover": {
             "img": "image de couverture"
+        },
+        "duration": {
+            "title": "Durée"
         },
         "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
         "lcpEnd": "Fin",
@@ -188,7 +200,7 @@
             "annotations": "Annotations",
             "bookmarks": "Marque-pages",
             "delete": "Supprimer",
-            "edit": "Editer",
+            "edit": "Éditer",
             "landmarks": "Repères",
             "toc": "Table des matières"
         },
@@ -247,6 +259,18 @@
         }
     },
     "settings": {
+        "keyboard": {
+            "advancedMenu": "Menu",
+            "cancel": "Annuler",
+            "edit": "Éditer",
+            "editUserJson": "Éditer le fichier ...",
+            "hide": "Masquer",
+            "keyboardShortcuts": "Raccourcis clavier",
+            "loadUserJson": "Charger  le fichier",
+            "resetDefaults": "Réinitialiser (défaut)",
+            "save": "Sauvergarder",
+            "show": "Afficher"
+        },
         "language": {
             "languageChoice": "Choix de la langue"
         }

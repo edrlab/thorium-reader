@@ -14,7 +14,6 @@ import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
@@ -34,35 +33,29 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 class LanguageSettings extends React.Component<IProps, undefined> {
 
-    constructor(props: IProps) {
-        super(props);
-    }
-
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
             <>
-                <LibraryLayout title={__("header.settings")}>
-                    <div className={styles.section_title}>{ __("settings.language.languageChoice")}</div>
-                    <form className={styles.languages_list}>
-                            { ObjectKeys(AvailableLanguages).map((lang, i) =>
-                                <div key={i}>
-                                    <input
-                                        id={"radio-" + lang}
-                                        type="radio"
-                                        lang={lang}
-                                        name="language"
-                                        onChange={() => this.props.setLocale(lang)}
-                                        checked={this.props.locale === lang}
-                                    />
-                                    <label htmlFor={"radio-" + lang}>
-                                        { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
-                                        { AvailableLanguages[lang] }
-                                    </label>
-                                </div>,
-                            )}
-                    </form>
-                </LibraryLayout>
+            <h3>{ __("settings.language.languageChoice")}</h3>
+            <form className={styles.languages_list}>
+                    { ObjectKeys(AvailableLanguages).map((lang, i) =>
+                        <div key={i}>
+                            <input
+                                id={"radio-" + lang}
+                                type="radio"
+                                lang={lang}
+                                name="language"
+                                onChange={() => this.props.setLocale(lang)}
+                                checked={this.props.locale === lang}
+                            />
+                            <label htmlFor={"radio-" + lang}>
+                                { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
+                                { AvailableLanguages[lang] }
+                            </label>
+                        </div>,
+                    )}
+            </form>
             </>
         );
     }

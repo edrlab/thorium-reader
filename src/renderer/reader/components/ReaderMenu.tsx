@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import classnames from "classnames";
-import * as queryString from "query-string";
 import * as React from "react";
+import { connect } from "react-redux";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
@@ -21,8 +21,10 @@ import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
 import { Unsubscribe } from "redux";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
+import { IReaderRootState } from "../redux/states";
 import { IReaderMenuProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
@@ -31,6 +33,7 @@ import UpdateBookmarkForm from "./UpdateBookmarkForm";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     focusNaviguationMenu: () => void;
+    currentLocation: LocatorExtended;
 }
 
 // IProps may typically extend:
@@ -38,7 +41,7 @@ interface IBaseProps extends TranslatorProps, IReaderMenuProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -76,7 +79,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             "reader/deleteBookmark",
             "reader/updateBookmark",
         ], () => {
-            apiAction("reader/findBookmarks", queryString.parse(location.search).pubId as string)
+            apiAction("reader/findBookmarks", this.props.pubId)
             .then((bookmarks) => this.setState({bookmarks}))
             .catch((error) => console.error("Error to fetch api reader/findBookmark", error));
         });
@@ -107,12 +110,15 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!r2Publication) {
             return <></>;
         }
-
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1),
-                disabled: !r2Publication.TOC || r2Publication.TOC.length === 0,
+                content:
+                    (r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1)) ||
+                    (r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
+                disabled:
+                    (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
+                    (!r2Publication.Spine || r2Publication.Spine.length === 0),
             },
             {
                 title: __("reader.marks.landmarks"),
@@ -150,6 +156,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private renderLinkList(label: string, links: Link[]): JSX.Element {
+        // console.log(label, JSON.stringify(links, null, 4));
+
         return <ul
             aria-label={label}
             className={styles.chapters_content}
@@ -181,7 +189,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                 }
                             data-href={link.Href}
                         >
-                            <span>{link.Title}</span>
+                            <span>{link.Title ? link.Title : `#${i} ${link.Href}`}</span>
                         </a>
                     </li>
                 );
@@ -190,6 +198,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+        // console.log(label, JSON.stringify(links, null, 4));
+
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
 
@@ -224,7 +234,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                         }
                                     data-href={link.Href}
                                 >
-                                    <span>{link.Title}</span>
+                                    <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
                                 </a>
                             </div>
 
@@ -251,7 +261,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                         }
                                     data-href={link.Href}
                                 >
-                                    <span>{link.Title}</span>
+                                    <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
                                 </a>
                             </div>
                         )}
@@ -265,7 +275,35 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const { __ } = this.props;
         if (this.props.r2Publication && this.state.bookmarks) {
             const { bookmarkToUpdate } = this.state;
-            return this.state.bookmarks.map((bookmark, i) =>
+            return this.state.bookmarks.sort((a, b) => {
+                if (!a.locator || !b.locator) {
+                    return 0;
+                }
+                if (!a.locator.locations || !b.locator.locations) {
+                    return 0;
+                }
+                const aLink = this.props.r2Publication.Spine.find((link) => {
+                    return link.Href === a.locator.href;
+                });
+                const aLinkIndex = this.props.r2Publication.Spine.indexOf(aLink);
+                const bLink = this.props.r2Publication.Spine.find((link) => {
+                    return link.Href === b.locator.href;
+                });
+                const bLinkIndex = this.props.r2Publication.Spine.indexOf(bLink);
+                if (aLinkIndex > bLinkIndex) {
+                    return 1;
+                }
+                if (aLinkIndex < bLinkIndex) {
+                    return -1;
+                }
+                // aLinkIndex === bLinkIndex
+                if (a.locator.locations.progression > b.locator.locations.progression) {
+                    return 1;
+                } else if (a.locator.locations.progression < b.locator.locations.progression) {
+                    return -1;
+                }
+                return 0;
+            }).map((bookmark, i) =>
                 <div
                     className={styles.bookmarks_line}
                     key={i}
@@ -316,6 +354,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const error = this.state.pageError;
         return <div className={styles.goToPage}>
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
+
             <form onSubmit={this.handleSubmitPage}>
                 <input
                     ref={this.goToRef}
@@ -343,6 +382,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     { __("reader.navigation.goToError") }
                 </p>
             }
+            {this.props.currentLocation?.epubPage &&
+            <p className={styles.currentPage}>({this.props.currentLocation.epubPage})</p>}
+
         </div>;
     }
 
@@ -355,7 +397,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!this.goToRef?.current?.value) {
             return;
         }
-        const pageNbr = (this.goToRef.current.value as string).trim().replace(/\s\s+/g, " ");
+        const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
         const foundPage = this.props.r2Publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});
@@ -371,4 +413,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(ReaderMenu);
+const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
+    return {
+        pubId: state.reader.reader.publicationIdentifier,
+    };
+};
+
+export default connect(mapStateToProps)(withTranslator(ReaderMenu));

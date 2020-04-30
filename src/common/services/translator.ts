@@ -9,11 +9,15 @@ import { injectable } from "inversify";
 
 import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
+import * as esCatalog from "readium-desktop/resources/locales/es.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
+import * as nlCatalog from "readium-desktop/resources/locales/nl.json";
 
 import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
 import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
+import * as esLang from "readium-desktop/resources/locale-names/esLang.json";
 import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
+import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
 
 // -----------------------------------------------------------
@@ -80,6 +84,12 @@ i18nextInstance.init({
         de: {
             translation: deCatalog,
         },
+        es: {
+            translation: esCatalog,
+        },
+        nl: {
+            translation: nlCatalog,
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
@@ -104,6 +114,8 @@ i18nextInstance.init({
 i18nextInstance.addResourceBundle("en", "translation", enLang, true);
 i18nextInstance.addResourceBundle("fr", "translation", frLang, true);
 i18nextInstance.addResourceBundle("de", "translation", deLang, true);
+i18nextInstance.addResourceBundle("es", "translation", esLang, true);
+i18nextInstance.addResourceBundle("nl", "translation", nlLang, true);
 
 const i18nextInstanceEN = i18nextInstance.cloneInstance();
 i18nextInstanceEN.changeLanguage("en").then((_t) => {
@@ -119,6 +131,8 @@ export const AvailableLanguages = {
     en: "English",
     fr: "Français",
     de: "Deutsch",
+    es: "Español",
+    nl: "Dutch",
 };
 
 interface LocalizedContent {

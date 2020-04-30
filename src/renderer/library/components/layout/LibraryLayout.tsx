@@ -7,17 +7,26 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { Helmet, HelmetProvider } from "react-helmet-async";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as styles2 from "readium-desktop/renderer/assets/styles/myBooks.css";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import {
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import LibraryHeader from "./LibraryHeader";
 
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps {
+interface IBaseProps extends TranslatorProps {
     secondaryHeader?: React.ReactElement;
     title?: string;
     mainClassName?: string;
@@ -42,44 +51,108 @@ interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapS
 }
 
 class LibraryLayout extends React.Component<IProps, undefined> {
+    private fastLinkRef: React.RefObject<HTMLAnchorElement>;
+    private refToolbar: React.RefObject<HTMLAnchorElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.onKeyboardFocusMain = this.onKeyboardFocusMain.bind(this);
+        this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
+
+        this.fastLinkRef = React.createRef<HTMLAnchorElement>();
+        this.refToolbar = React.createRef<HTMLAnchorElement>();
+    }
+
+    public componentDidMount() {
+        ensureKeyboardListenerIsInstalled();
+        this.registerAllKeyboardListeners();
+    }
+
+    public componentWillUnmount() {
+        this.unregisterAllKeyboardListeners();
+    }
+
+    public async componentDidUpdate(oldProps: IProps) {
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
+        }
     }
 
     public render() {
         const { title } = this.props;
 
-        // FIXME add thorium from a constant
-        let helmetTitle = "Thorium";
+        let helmetTitle = capitalizedAppName;
         if (title) {
             helmetTitle += " - " + title;
         }
+        window.document.title = helmetTitle;
 
         return (
-            <HelmetProvider>
-                <div>
-                    <Helmet>
-                        <title>{ helmetTitle }</title>
-                    </Helmet>
-                    <LibraryHeader />
-                    { this.props.secondaryHeader }
-                    <main
-                        id="main"
-                        className={classNames(styles.main, styles2.main, this.props.mainClassName)}
-                        role="main"
-                    >
-                        <a id="main-content" aria-hidden tabIndex={-1}></a>
-                        { this.props.children }
-                    </main>
-                </div>
-            </HelmetProvider>
+            <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
+                <a
+                    role="region"
+                    className={styles2.anchor_link}
+                    ref={this.refToolbar}
+                    id="main-toolbar"
+                    title={this.props.__("accessibility.toolbar")}
+                    aria-label={this.props.__("accessibility.toolbar")}
+                    tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
+                <LibraryHeader />
+                { this.props.secondaryHeader }
+                <main
+                    id="main"
+                    role="main"
+                    aria-label={this.props.__("accessibility.mainContent")}
+                    className={classNames(styles.main, styles2.main, this.props.mainClassName)}
+                >
+                    <a
+                        role="region"
+                        className={styles2.anchor_link}
+                        ref={this.fastLinkRef}
+                        id="main-content"
+                        title={this.props.__("accessibility.mainContent")}
+                        aria-label={this.props.__("accessibility.mainContent")}
+                        tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
+                    { this.props.children }
+                </main>
+            </div>
         );
+    }
+
+    private registerAllKeyboardListeners() {
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusMain,
+            this.onKeyboardFocusMain);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusToolbar,
+            this.onKeyboardFocusToolbar);
+    }
+
+    private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardFocusMain);
+        unregisterKeyboardListener(this.onKeyboardFocusToolbar);
+    }
+
+    private onKeyboardFocusMain = () => {
+        if (this.fastLinkRef?.current) {
+            this.fastLinkRef.current.focus();
+        }
+    }
+    private onKeyboardFocusToolbar = () => {
+        if (this.refToolbar?.current) {
+            this.refToolbar.current.focus();
+        }
     }
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
-        dialogOpen: state.dialog.open,
-    });
+    dialogOpen: state.dialog.open,
+    keyboardShortcuts: state.keyboard.shortcuts,
+});
 
-export default connect(mapStateToProps)(withRouter(LibraryLayout));
+export default connect(mapStateToProps)(withRouter(withTranslator(LibraryLayout)));

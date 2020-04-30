@@ -6,18 +6,22 @@ declare namespace typed_i18n {
   readonly "homeMenu": string,
   readonly "importFile": string,
   readonly "leftSlideButton": string,
+  readonly "mainContent": string,
   readonly "rightSlideButton": string,
   readonly "searchBook": string,
-  readonly "skipLink": string
+  readonly "skipLink": string,
+  readonly "toolbar": string
 };
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.homeMenu", __?: {}): string;
   (_: "accessibility.importFile", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.mainContent", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
+  (_: "accessibility.toolbar", __?: {}): string;
   (_: "app", __?: {}): {
   readonly "edit": {
     readonly "copy": string,
@@ -28,6 +32,7 @@ declare namespace typed_i18n {
     readonly "title": string,
     readonly "undo": string
   },
+  readonly "hide": string,
   readonly "quit": string
 };
   (_: "app.edit", __?: {}): {
@@ -45,7 +50,8 @@ declare namespace typed_i18n {
   (_: "app.edit.redo", __?: {}): string;
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
-  (_: "app.edit.undo", __?: {}): string; (_: "app.quit", __?: {}): string;
+  (_: "app.edit.undo", __?: {}): string; (_: "app.hide", __?: {}): string;
+  (_: "app.quit", __?: {}): string;
   (_: "catalog", __?: {}): {
   readonly "about": { readonly "button": string, readonly "title": string },
   readonly "addBookToLib": string,
@@ -60,7 +66,9 @@ declare namespace typed_i18n {
   readonly "emptyTagList": string,
   readonly "entry": {
     readonly "continueReading": string,
-    readonly "lastAdditions": string
+    readonly "continueReadingAudioBooks": string,
+    readonly "lastAdditions": string,
+    readonly "lastAdditionsAudioBooks": string
   },
   readonly "export": string,
   readonly "id": string,
@@ -70,6 +78,7 @@ declare namespace typed_i18n {
   readonly "noPublicationHelpL1": string,
   readonly "noPublicationHelpL2": string,
   readonly "noPublicationHelpL3": string,
+  readonly "noPublicationHelpL4": string,
   readonly "numberOfPages": string,
   readonly "opds": {
     readonly "info": {
@@ -111,16 +120,25 @@ declare namespace typed_i18n {
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
   (_: "catalog.emptyTagList", __?: {}): string;
-  (_: "catalog.entry", __?: {}): { readonly "continueReading": string, readonly "lastAdditions": string };
+  (_: "catalog.entry", __?: {}): {
+  readonly "continueReading": string,
+  readonly "continueReadingAudioBooks": string,
+  readonly "lastAdditions": string,
+  readonly "lastAdditionsAudioBooks": string
+};
   (_: "catalog.entry.continueReading", __?: {}): string;
+  (_: "catalog.entry.continueReadingAudioBooks", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
-  (_: "catalog.export", __?: {}): string; (_: "catalog.id", __?: {}): string;
+  (_: "catalog.entry.lastAdditionsAudioBooks", __?: {}): string;
+  (_: "catalog.export", __?: {}): string;
+  (_: "catalog.id", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
   (_: "catalog.noPublicationHelpL1", __?: {}): string;
   (_: "catalog.noPublicationHelpL2", __?: {}): string;
   (_: "catalog.noPublicationHelpL3", __?: {}): string;
+  (_: "catalog.noPublicationHelpL4", __?: {}): string;
   (_: "catalog.numberOfPages", __?: {}): string;
   (_: "catalog.opds", __?: {}): {
   readonly "info": {
@@ -360,10 +378,12 @@ declare namespace typed_i18n {
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "publication", __?: {}): {
+  readonly "audio": { readonly "tracks": string },
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
   readonly "cover": { readonly "img": string },
+  readonly "duration": { readonly "title": string },
   readonly "expiredLcp": string,
   readonly "lcpEnd": string,
   readonly "lcpRightsCopy": string,
@@ -380,11 +400,15 @@ declare namespace typed_i18n {
   readonly "seeMore": string,
   readonly "userKeyCheckInvalid": string
 };
+  (_: "publication.audio", __?: {}): { readonly "tracks": string };
+  (_: "publication.audio.tracks", __?: {}): string;
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
   (_: "publication.cover", __?: {}): { readonly "img": string };
   (_: "publication.cover.img", __?: {}): string;
+  (_: "publication.duration", __?: {}): { readonly "title": string };
+  (_: "publication.duration.title", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
@@ -588,7 +612,43 @@ declare namespace typed_i18n {
   (_: "reader.svg", __?: {}): { readonly "left": string, readonly "right": string };
   (_: "reader.svg.left", __?: {}): string;
   (_: "reader.svg.right", __?: {}): string;
-  (_: "settings", __?: {}): { readonly "language": { readonly "languageChoice": string } };
+  (_: "settings", __?: {}): {
+  readonly "keyboard": {
+    readonly "advancedMenu": string,
+    readonly "cancel": string,
+    readonly "edit": string,
+    readonly "editUserJson": string,
+    readonly "hide": string,
+    readonly "keyboardShortcuts": string,
+    readonly "loadUserJson": string,
+    readonly "resetDefaults": string,
+    readonly "save": string,
+    readonly "show": string
+  },
+  readonly "language": { readonly "languageChoice": string }
+};
+  (_: "settings.keyboard", __?: {}): {
+  readonly "advancedMenu": string,
+  readonly "cancel": string,
+  readonly "edit": string,
+  readonly "editUserJson": string,
+  readonly "hide": string,
+  readonly "keyboardShortcuts": string,
+  readonly "loadUserJson": string,
+  readonly "resetDefaults": string,
+  readonly "save": string,
+  readonly "show": string
+};
+  (_: "settings.keyboard.advancedMenu", __?: {}): string;
+  (_: "settings.keyboard.cancel", __?: {}): string;
+  (_: "settings.keyboard.edit", __?: {}): string;
+  (_: "settings.keyboard.editUserJson", __?: {}): string;
+  (_: "settings.keyboard.hide", __?: {}): string;
+  (_: "settings.keyboard.keyboardShortcuts", __?: {}): string;
+  (_: "settings.keyboard.loadUserJson", __?: {}): string;
+  (_: "settings.keyboard.resetDefaults", __?: {}): string;
+  (_: "settings.keyboard.save", __?: {}): string;
+  (_: "settings.keyboard.show", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
   (_: "settings.language.languageChoice", __?: {}): string
 }

@@ -126,4 +126,5 @@ export interface IReaderOptionsProps {
         name: keyof ReaderConfigStringsAdjustables) => void;
     setSettings: (settings: ReaderConfig) => void;
     toggleMenu: () => void;
+    r2Publication: R2Publication | undefined;
 }
