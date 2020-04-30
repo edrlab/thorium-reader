@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { app } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import { Download } from "readium-desktop/common/models/download";
@@ -17,9 +18,6 @@ import { Store } from "redux";
 import * as request from "request";
 import { tmpNameSync } from "tmp";
 import { v4 as uuidv4 } from "uuid";
-
-// import * as os from "os";
-// import * as path from "path";
 
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
@@ -49,17 +47,17 @@ export class Downloader {
     // Path/folder where files are downloaded, relative to:
     // os.tmpdir()
     // app.getPath("temp")
-    // private downloadFolder: string | null | undefined;
+    private downloadFolder: string | null | undefined;
 
     // List of downloads
     private downloads: DownloadRegistry;
 
     public constructor(
-        // downloadFolder: string | null | undefined,
+        downloadFolder: string | null | undefined,
         configRepository: ConfigRepository<AccessTokenMap>, // INJECTED!
         store: Store<RootState>, // INJECTED!
         ) {
-        // this.downloadFolder = downloadFolder;
+        this.downloadFolder = downloadFolder;
         this.configRepository = configRepository;
         this.store = store;
 
@@ -68,9 +66,9 @@ export class Downloader {
 
     public addDownload(url: string, ext: string): Download {
 
-        // Create temporary file as destination file
-        const dstPath = tmpNameSync({
-            // dir: this.downloadFolder || path.join(os.tmpdir(), "r2-downloads"),
+        // TODO: "any" because out of date TypeScript typings for "tmp" package :(
+        const dstPath = (tmpNameSync as any)({
+            tmpdir: this.downloadFolder || app.getPath("temp"), // os.tmpdir(),
             prefix: "readium-desktop-",
             postfix: `${ext}`}); // .part
 
@@ -123,6 +121,7 @@ export class Downloader {
             const configDoc = await this.configRepository.get("oauth");
             savedAccessTokens = configDoc.value;
         } catch (err) {
+            debug("oauth");
             debug(err);
         }
         const domain = download.srcUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
