@@ -48,6 +48,7 @@
     "package:linux": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --linux --x64 --publish never",
     "prepackage:mac": "npm run package:build",
     "package:mac": "electron-builder --mac --x64 --publish never",
+    "package:mac:skip-notarize": "cross-env SKIP_NOTARIZE=1 npm run package:mac",
     "prepackage:all": "npm run package:build",
     "package:all": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -mwl --x64 --publish never",
     "cli:help": "electron . --help",
