@@ -45,5 +45,5 @@ export function iso8601DurationsToSeconds(iso8601: string): number {
         }
     }
 
-    return totalSecond;
+    return Math.round(totalSecond);
 }
