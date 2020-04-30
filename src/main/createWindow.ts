@@ -50,7 +50,7 @@ export async function createWindow() {
                     wc.inspectElement(x, y);
 
                     setTimeout(() => {
-                        if (wc.isDevToolsOpened()) {
+                        if (wc.isDevToolsOpened() && wc.devToolsWebContents) {
                             wc.devToolsWebContents.focus();
                         }
                     }, 500);

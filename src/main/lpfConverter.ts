@@ -261,8 +261,9 @@ function convertW3CpublicationLinksToReadiumManifestLink(
 }
 
 interface Iw3cPublicationManifest {
-    "@context"?: string;
-    "conformsTo"?: string;
+    "type"?: string | string[];
+    "@context"?: string | string[];
+    "conformsTo"?: string | string[];
     "id"?: string;
     "url"?: string;
     "name"?: string | IW3cLocalizableString | IW3cLocalizableString[];
@@ -295,19 +296,37 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
 
     const publication = new R2Publication();
 
-    publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
-    pop("@context");
+    {
+        publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
+
+        const context = pop("@context");
+        const contextArray = Array.isArray(context) ? context : [context];
+        const validContext = contextArray.includes("https://www.w3.org/ns/pub-context");
+        if (!validContext) {
+            debug("context from W3C publication not valid !", context);
+        }
+    }
 
     publication.Metadata = new Metadata();
 
     {
         const conformsTo = pop("conformsTo");
-        if (conformsTo !== "https://www.w3/org/TR/audiobooks/") {
+        const conformsToArray = Array.isArray(conformsTo) ? conformsTo : [conformsTo];
+        const validConformsTo = conformsToArray.includes("https://www.w3.org/TR/audiobooks/");
+
+        const type = pop("type") || "";
+        const typeArray = Array.isArray(type) ? type : [type];
+        const validTypeUpper = typeArray
+            .map((s) => typeof s === "string" && s.toUpperCase())
+            .filter((s) => s);
+        const validType = validTypeUpper.includes("AUDIO") || validTypeUpper.includes("AUDIOBOOK");
+
+        if (validConformsTo || validType) {
+            publication.Metadata.RDFType = "https://schema.org/Audiobook";
+        } else {
             debug(`not an audiobook W3C publication manifest. conformsTo=${w3cManifest.conformsTo}`);
 
             publication.Metadata.RDFType = "https://schema.org/CreativeWork";
-        } else {
-            publication.Metadata.RDFType = "https://schema.org/Audiobook";
         }
     }
     {
