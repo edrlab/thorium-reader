@@ -139,8 +139,8 @@ export class CatalogApi implements ICatalogApi {
 
                         debug(`${doc.identifier} => ${doc.title} should be removed`);
                         try {
-                           // tslint:disable-next-line: no-floating-promises
-                           this.publicationService.deletePublication(doc.identifier);
+                            // tslint:disable-next-line: no-floating-promises
+                            this.publicationService.deletePublication(doc.identifier);
                         } catch {
                             // ignore
                         }

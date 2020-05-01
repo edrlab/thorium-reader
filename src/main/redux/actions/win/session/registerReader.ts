@@ -38,28 +38,20 @@ export function build(
     const store = diMainGet("store");
     const readerConfigDefault = store.getState().reader.defaultConfig;
 
-    if (!reduxStateReader) {
-        reduxStateReader = {
+    reduxStateReader = {
+        ...{
             config: readerConfigDefault,
+            locator: locatorInitialState,
+        },
+        ...reduxStateReader,
+        ...{
             info: {
                 filesystemPath,
                 manifestUrl,
                 publicationIdentifier,
             },
-            locator: locatorInitialState,
-        };
-    } else {
-        reduxStateReader = {
-            ...reduxStateReader,
-            ...{
-                info: {
-                    filesystemPath,
-                    manifestUrl,
-                    publicationIdentifier,
-                },
-            },
-        };
-    }
+        },
+    };
 
     return {
         type: ID,

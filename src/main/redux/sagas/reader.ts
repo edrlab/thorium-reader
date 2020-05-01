@@ -15,6 +15,7 @@ import { readerActions, toastActions } from "readium-desktop/common/redux/action
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
@@ -230,7 +231,8 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
     if (manifestUrl) {
 
         const reduxState = yield* selectTyped(
-            (state: RootState) => state.win.registry.reader[publicationIdentifier]?.reduxState,
+            (state: RootState) =>
+                state.win.registry.reader[publicationIdentifier]?.reduxState || {} as IReaderStateReader,
         );
 
         const sessionIsEnabled = yield* selectTyped(
