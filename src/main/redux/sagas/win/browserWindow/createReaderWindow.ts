@@ -56,7 +56,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
                     wc.inspectElement(x, y);
 
                     setTimeout(() => {
-                        if (wc.isDevToolsOpened()) {
+                        if (wc.isDevToolsOpened() && wc.devToolsWebContents) {
                             wc.devToolsWebContents.focus();
                         }
                     }, 500);

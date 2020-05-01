@@ -180,7 +180,7 @@ export class PublicationService {
             (isEpubFile ? acceptedExtensionObject.epub :
             (isAudioBookPacked ? acceptedExtensionObject.audiobook :
                 (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
-                    ".unknown")));
+                    ""))); // downloader will try HTTP response headers
         // start the download service
         const download = this.downloader.addDownload(link.url, ext);
 
@@ -465,7 +465,7 @@ export class PublicationService {
                     const ext = isEpubFile ? acceptedExtensionObject.epub :
                         (isAudioBookPacked ? acceptedExtensionObject.audiobook :
                             (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
-                                ".unknown"));
+                                "")); // downloader will try HTTP response headers
 
                     download = this.downloader.addDownload(link.Href, ext);
                     title = link.Title ?? download.srcUrl;

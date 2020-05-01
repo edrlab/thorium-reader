@@ -8,8 +8,8 @@
 export function iso8601DurationsToSeconds(iso8601: string): number {
     // https://en.wikipedia.org/wiki/ISO_8601#Durations
 
-    // https://regex101.com/r/qtDvmT/1
-    const regexp = new RegExp("^P((\\d+)Y)?((\\d+)M)?((\\d+)D)?T((\\d+)H)?((\\d+)M)?((\\d+)S)?$");
+    // https://regex101.com/r/qtDvmT/2
+    const regexp = new RegExp("^P((\\d+|\\d+.\\d+)Y)?((\\d+|\\d+.\\d+)M)?((\\d+|\\d+.\\d+)D)?T((\\d+|\\d+.\\d+)H)?((\\d+|\\d+.\\d+)M)?((\\d+|\\d+.\\d+)S)?$");
 
     const isValid = regexp.test(iso8601);
 
@@ -30,20 +30,20 @@ export function iso8601DurationsToSeconds(iso8601: string): number {
             let i = 2;
 
             totalSecond = 0;
-            totalSecond += data[i] ? parseInt(data[i], 10) * year : 0;
+            totalSecond += data[i] ? parseFloat(data[i]) * year : 0;
             i += 2;
-            totalSecond += data[i] ? parseInt(data[i], 10) * month : 0;
+            totalSecond += data[i] ? parseFloat(data[i]) * month : 0;
             i += 2;
-            totalSecond += data[i] ? parseInt(data[i], 10) * day : 0;
+            totalSecond += data[i] ? parseFloat(data[i]) * day : 0;
             i += 2;
-            totalSecond += data[i] ? parseInt(data[i], 10) * hour : 0;
+            totalSecond += data[i] ? parseFloat(data[i]) * hour : 0;
             i += 2;
-            totalSecond += data[i] ? parseInt(data[i], 10) * minute : 0;
+            totalSecond += data[i] ? parseFloat(data[i]) * minute : 0;
             i += 2;
-            totalSecond += data[i] ? parseInt(data[i], 10) : 0;
+            totalSecond += data[i] ? parseFloat(data[i]) : 0;
 
         }
     }
 
-    return totalSecond;
+    return Math.round(totalSecond);
 }

@@ -15,6 +15,8 @@ export interface Download extends Downloadable, Identifiable {
     // Url of the downloaded
     dstPath: string;
 
+    extension: string | undefined;
+
     // Error message if status is failed
     error?: string;
 }
