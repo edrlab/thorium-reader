@@ -27,6 +27,7 @@ export const reduxPersistMiddleware: Middleware
                         !ramda.equals(prevState.win, nextState.win)
                     ||  !ramda.equals(prevState.publication, nextState.publication)
                     ||  !ramda.equals(prevState.reader, nextState.reader)
+                    ||  !ramda.equals(prevState.session, nextState.session)
                 ) {
 
                     // dispatch a new round in middleware
