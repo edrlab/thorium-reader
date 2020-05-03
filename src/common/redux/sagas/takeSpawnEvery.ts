@@ -5,9 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ActionPattern, call, fork, ForkEffect, spawn, take } from "redux-saga/effects";
-
 import { TakeableChannel } from "redux-saga";
+import { ActionPattern, call, fork, ForkEffect, spawn, take } from "redux-saga/effects";
 
 // tslint:disable-next-line: no-empty
 const noop = () => { };
