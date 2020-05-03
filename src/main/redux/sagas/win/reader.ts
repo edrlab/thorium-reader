@@ -107,8 +107,10 @@ function* winClose(action: winActions.reader.closed.TAction) {
                 );
 
             yield put(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));
-        }
 
+            // not yet used
+            // yield put(readerActions.closeSuccess.build(identifier));
+        }
     }
 
     {

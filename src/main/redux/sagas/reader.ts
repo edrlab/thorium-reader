@@ -337,7 +337,6 @@ function* readerCloseRequest(identifier?: string) {
         readerWindow.close();
     }
 
-    yield put(readerActions.closeSuccess.build(identifier));
 }
 
 function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
