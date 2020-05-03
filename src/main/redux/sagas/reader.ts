@@ -121,15 +121,22 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
 
 function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
-    const readerWinId = action.sender?.type === SenderType.Renderer && action.sender?.identifier;
-    const readerWin = readerWinId && getReaderWindowFromDi(readerWinId);
-
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
     if (libWin) {
 
-        const libBound = yield* callTyped(getWinBound, undefined);
-        libWin.setBounds(libBound);
+        // try-catch to do not trigger an error message when the winbound is not handle by the os
+        let libBound: Electron.Rectangle;
+        try {
+            // get an bound with offset
+            libBound = yield* callTyped(getWinBound, undefined);
+            if (libBound) {
+                libWin.setBounds(libBound);
+            }
+        } catch (e) {
+
+            debug("cannot set libBound", libBound, e);
+        }
 
         // this should never occur, but let's do it for certainty
         if (libWin.isMinimized()) {
@@ -138,13 +145,19 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
         libWin.show(); // focuses as well
     }
 
-    if (readerWin) {
+    const readerWinId = action.sender?.identifier;
+    if (readerWinId && action.sender?.type === SenderType.Renderer) {
 
-        // this should never occur, but let's do it for certainty
-        if (readerWin.isMinimized()) {
-            readerWin.restore();
+        const readerWin = getReaderWindowFromDi(readerWinId);
+
+        if (readerWin) {
+
+            // this should never occur, but let's do it for certainty
+            if (readerWin.isMinimized()) {
+                readerWin.restore();
+            }
+            readerWin.show(); // focuses as well
         }
-        readerWin.show(); // focuses as well
     }
 
     yield put(readerActions.detachModeSuccess.build());
