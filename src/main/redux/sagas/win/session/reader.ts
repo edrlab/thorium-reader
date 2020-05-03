@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { error } from "readium-desktop/main/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel, Task } from "redux-saga";
@@ -77,7 +77,7 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
 }
 
 export function saga() {
-    return takeSpawnLeading(
+    return takeSpawnEvery(
         winActions.session.registerReader.ID,
         readerClosureManagement,
         (e) => error(filename_ + ":readerClosureManagement", e),
