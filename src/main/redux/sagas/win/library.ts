@@ -17,8 +17,9 @@ import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { eventChannel } from "redux-saga";
-import { all, put, take } from "redux-saga/effects";
+import { all, call, delay, put, spawn, take } from "redux-saga/effects";
 
+import { IWinSessionReaderState } from "../../states/win/session/reader";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
 import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
 
@@ -31,10 +32,10 @@ debug("_");
 // windows open.
 function* appActivate() {
 
-    const appActivateChannel = eventChannel<void>(
+    const appActivateChannel = eventChannel<boolean>(
         (emit) => {
 
-            const handler = () => emit();
+            const handler = () => emit(true);
             app.on("activate", handler);
 
             return () => {
@@ -127,63 +128,96 @@ function* winClose(_action: winActions.library.closed.TAction) {
     debug(`library -> winClose`);
 
     const library = getLibraryWindowFromDi();
+    let value = 0; // window.close() // not saved session by default
 
-    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-    const readersArray = ObjectValues(readers);
+    {
 
-    if (readersArray.length) {
+        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+        const readersArray = ObjectValues(readers);
+        debug("reader:", readersArray);
 
-        let value = 0; // window.close() // not saved session by default
+        if (readersArray.length) {
 
-        const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
-        if (sessionIsEnabled) {
+            const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
+            debug(sessionIsEnabled ? "session enabled destroy reader" : "session not enabled close reader");
+            if (sessionIsEnabled) {
 
-            const messageValue = yield* callTyped(
-                async () => {
+                const messageValue = yield* callTyped(
+                    async () => {
 
-                    const translator = diMainGet("translator");
+                        const translator = diMainGet("translator");
 
-                    return dialog.showMessageBox(
-                        library,
-                        {
-                            type: "question",
-                            buttons: [
-                                translator.translate("app.session.exit.askBox.button.no"),
-                                translator.translate("app.session.exit.askBox.button.yes"),
-                            ],
-                            defaultId: 1,
-                            title: translator.translate("app.session.exit.askBox.title"),
-                            message: translator.translate("app.session.exit.askBox.message"),
-                        },
-                    );
-                },
-            );
-            debug("result:", messageValue.response);
-            value = messageValue.response;
-        }
-
-        for (const key in readers) {
-            if (readers[key]) {
-
-                try {
-                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(readers[key].identifier));
-
-                    if (value === 1) {
-                        // force quit the reader windows to keep session in next startup
-                        readerWin.destroy();
-                    } else {
-                        readerWin.close();
-                    }
-                } catch (_err) {
-                    // ignore
-                }
+                        return dialog.showMessageBox(
+                            library,
+                            {
+                                type: "question",
+                                buttons: [
+                                    translator.translate("app.session.exit.askBox.button.no"),
+                                    translator.translate("app.session.exit.askBox.button.yes"),
+                                ],
+                                defaultId: 1,
+                                title: translator.translate("app.session.exit.askBox.title"),
+                                message: translator.translate("app.session.exit.askBox.message"),
+                            },
+                        );
+                    },
+                );
+                debug("result:", messageValue.response);
+                value = messageValue.response;
             }
+
+            yield all(
+                readersArray.map(
+                    (reader, index) => {
+                        return call(function*() {
+
+                            if (!reader) {
+                                return;
+                            }
+                            try {
+                                const readerWin = yield* callTyped(() => getReaderWindowFromDi(reader.identifier));
+
+                                if (value === 1) {
+                                    // force quit the reader windows to keep session in next startup
+                                    debug("destroy reader", index);
+                                    readerWin.destroy();
+                                } else {
+                                    debug("close reader", index);
+                                    readerWin.close();
+
+                                }
+                            } catch (_err) {
+                                // ignore
+                            }
+
+                        });
+                    },
+                ),
+            );
+
         }
     }
 
-    // end of cycle
-    // closed the library
-    library.destroy();
+    if (value === 1) {
+
+        // closed the library and thorium
+        library.destroy();
+    } else {
+
+        yield spawn(function*() {
+
+            let readersArray: IWinSessionReaderState[];
+
+            do {
+                yield delay(50);
+                const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+                readersArray = ObjectValues(readers);
+
+            } while (readersArray.length);
+
+            library.destroy();
+        });
+    }
 }
 
 export function saga() {
