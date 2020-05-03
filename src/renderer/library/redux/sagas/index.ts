@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
+import {
+    i18nActions, keyboardActions,
+} from "readium-desktop/common/redux/actions";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 import { all, call, put, take } from "redux-saga/effects";
@@ -16,6 +18,7 @@ import * as publicationInfoReaderAndLib from "../../../common/redux/sagas/dialog
 import * as history from "./history";
 import * as i18n from "./i18n";
 import * as lcp from "./lcp";
+import * as load from "./load";
 import * as opds from "./opds";
 import * as sameFileImport from "./sameFileImport";
 import * as winInit from "./win";
@@ -52,5 +55,8 @@ export function* rootSaga() {
         history.saga(),
         publicationInfoSyncTags.saga(),
 
+        load.saga(),
+
     ]);
+
 }

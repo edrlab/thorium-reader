@@ -9,6 +9,7 @@ import { RouterState } from "connected-react-router";
 import { ImportState } from "readium-desktop/common/redux/states/import";
 import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
+import { ILoadState } from "readium-desktop/renderer/common/redux/states/load";
 
 import { IRouterLocationState } from "../../routing";
 import { DownloadState } from "./download";
@@ -28,4 +29,5 @@ export interface ILibraryRootState extends ICommonRootState {
     download: DownloadState;
     history: THistoryState;
     updateCatalog: number;
+    load: ILoadState;
 }

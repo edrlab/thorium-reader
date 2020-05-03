@@ -23,6 +23,7 @@ import PageManager from "readium-desktop/renderer/library/components/PageManager
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 
 import DownloadsPanel from "./DownloadsPanel";
+import LoaderMainLoad from "./LoaderMainLoad";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -91,6 +92,7 @@ export default class App extends React.Component<{}, undefined> {
                                     />
                                     <PageManager />
                                     <DialogManager />
+                                    <LoaderMainLoad />
                                     <ToastManager />
                                 </div>;
                             }}
