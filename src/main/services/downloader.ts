@@ -9,11 +9,13 @@ import * as debug_ from "debug";
 import { app } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
+import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { Download } from "readium-desktop/common/models/download";
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { RootState } from "readium-desktop/main/redux/states";
+import { ContentType } from "readium-desktop/utils/content-type";
 import { Store } from "redux";
 import * as request from "request";
 import { tmpNameSync } from "tmp";
@@ -70,7 +72,7 @@ export class Downloader {
         const dstPath = (tmpNameSync as any)({
             tmpdir: this.downloadFolder || app.getPath("temp"), // os.tmpdir(),
             prefix: "readium-desktop-",
-            postfix: `${ext}`}); // .part
+            postfix: ext ? `${ext}` : undefined});
 
         // Create download
         const identifier = uuidv4();
@@ -78,6 +80,7 @@ export class Downloader {
             identifier,
             srcUrl: url,
             dstPath,
+            extension: ext ? ext : undefined,
             progress: 0,
             downloadedSize: 0,
             status: DownloadStatus.Init,
@@ -96,9 +99,6 @@ export class Downloader {
         // Retrieve download
         const download = this.downloads[identifier];
         download.status = DownloadStatus.Downloading;
-
-        // Do not pipe request directly to this stream to void blocking issues
-        const outputStream = fs.createWriteStream(download.dstPath);
 
         // Last time we poll the request progress
         let progressLastTime = new Date();
@@ -146,6 +146,10 @@ export class Downloader {
         const requestStream = request(requestOptions);
 
         return new Promise<Download>((resolve, reject) => {
+
+            // Do not pipe request directly to this stream to void blocking issues
+            let outputStream: fs.WriteStream | undefined;
+
             requestStream.on("response", (response) => {
                 if (response.statusCode < 200 || response.statusCode > 299) {
                     // Unable to download the resource
@@ -153,12 +157,36 @@ export class Downloader {
                     download.progress = 0;
                     download.downloadedSize = 0;
                     debug("Error while downloading resource", download, response.statusCode);
-                    outputStream.end(null, null, () => {
-                        reject("Error while downloading resource: " + response.statusCode);
-                    });
+                    // outputStream.end(null, null, () => {
+                    //     reject("Error while downloading resource: " + response.statusCode);
+                    // });
                     return;
                 }
+                if (!download.extension) {
+                    const contentType = response.headers["content-type"];
+                    const contentDisposition = response.headers["content-disposition"];
+                    // attachment; filename=a2c99eb2-f52f-4d20-8078-6a94b531c50e.epub
 
+                    const isLcpFile = contentType === ContentType.Lcp ||
+                        contentDisposition && contentDisposition.endsWith(acceptedExtensionObject.lcpLicence);
+
+                    const isEpubFile = contentType === ContentType.Epub ||
+                        contentDisposition && contentDisposition.endsWith(acceptedExtensionObject.epub);
+
+                    const isAudioBookPacked = contentType === ContentType.AudioBookPacked ||
+                        contentDisposition && contentDisposition.endsWith(acceptedExtensionObject.audiobook);
+
+                    const isAudioBookPackedLcp = contentType === ContentType.AudioBookPackedLcp ||
+                        contentDisposition && contentDisposition.endsWith(acceptedExtensionObject.audiobookLcp);
+
+                    const ext = isLcpFile ? acceptedExtensionObject.lcpLicence :
+                        (isEpubFile ? acceptedExtensionObject.epub :
+                        (isAudioBookPacked ? acceptedExtensionObject.audiobook :
+                            (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
+                                ".unknown-ext")));
+                    download.dstPath += ext;
+                }
+                outputStream = fs.createWriteStream(download.dstPath);
                 download.status = DownloadStatus.Downloading;
 
                 // https://github.com/request/request/blob/212570b6971a732b8dd9f3c73354bcdda158a737/request.js#L419-L440
@@ -171,8 +199,9 @@ export class Downloader {
                 let progress = 0;
 
                 response.on("data", (chunk) => {
-                    // Write chunk
-                    outputStream.write(chunk);
+                    if (outputStream) {
+                        outputStream.write(chunk);
+                    }
 
                     // Download progress
                     downloadedSize += chunk.length;
@@ -194,7 +223,6 @@ export class Downloader {
                 });
 
                 response.on("end", () => {
-                    // Download finished
                     download.progress = 100;
                     download.status = DownloadStatus.Downloaded;
                     download.downloadedSize = downloadedSize;
@@ -202,16 +230,16 @@ export class Downloader {
                     // cleanup queue
                     this.downloads[identifier] = undefined;
                     delete this.downloads[identifier];
-
-                    outputStream.end(null, null, () => {
-                        return resolve(download);
-                    });
+                    if (outputStream) {
+                        outputStream.end(null, null, () => {
+                            return resolve(download);
+                        });
+                    }
                 });
             });
 
-            // Catch errors
             requestStream.on("error", (error) => {
-                // Download error
+
                 download.status = DownloadStatus.Failed;
                 // keep existing (just in case error is half-way through download)
                 // download.progress = 0;
@@ -221,9 +249,11 @@ export class Downloader {
                 this.downloads[identifier] = undefined;
                 delete this.downloads[identifier];
 
-                outputStream.end(null, null, () => {
-                    return reject(error);
-                });
+                if (outputStream) {
+                    outputStream.end(null, null, () => {
+                        return reject(error);
+                    });
+                }
             });
         });
     }

@@ -124,8 +124,8 @@ button {
   margin-bottom: 5rem;
 }
 .content_root_fullscreen {
-  margin-top: -50px;
-  margin-bottom: 0.5rem;
+  margin-top: -20px;
+  margin-bottom: 30px;
 }
 
 /* ========== READER ==========*/
@@ -928,7 +928,7 @@ input[type=radio] + label {
   & .arrows {
     background-color: var(--reader-mainColor);
     pointer-events: all;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     margin-right: 20px;
   }
 }

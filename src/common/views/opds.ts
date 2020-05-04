@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { OPDSAvailabilityEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-availability";
-import { OPDSCurrencyEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-price";
+import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
+import { OPDSCurrencyEnum } from "@r2-opds-js/opds/opds2/opds2-price";
 
 import { Identifiable } from "../models/identifiable";
 import { IHttpGetResult } from "../utils/http";
