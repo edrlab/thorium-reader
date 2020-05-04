@@ -25,7 +25,7 @@
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build:prod && cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "tslint --project tsconfig.json -c tslint.json './src/**/*.ts' './src/**/*.tsx' './test/**/*.ts' './test/**/*.tsx'",
-    "lint:editorconfig": "eclint check '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*'",
+    "lint:editorconfig": "eclint check '**/*' '!*.provisionprofile' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer:library-reader": "concurrently --kill-others \"npm run start:dev:renderer:library\" \"npm run start:dev:renderer:reader\"",
     "start:dev:renderer:library": "webpack-dev-server --config webpack.config.renderer-library.js",
@@ -47,7 +47,7 @@
     "package:win": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64 --publish never",
     "prepackage:linux": "npm run package:build",
     "package:linux": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --linux --x64 --publish never",
-    "prepackage:mac": "npm run package:build",
+    "__prepackage:mac": "npm run package:build",
     "package:mac": "electron-builder --mac --x64 --publish never",
     "package:mac:skip-notarize": "cross-env SKIP_NOTARIZE=1 DEBUG=* npm run package:mac",
     "prepackage:all": "npm run package:build",
@@ -164,12 +164,11 @@
       "target": [
         "mas"
       ],
-      "type": "distribution",
+      "type": "development",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "./scripts/entitlements.mac.plist",
       "entitlementsInherit": "./scripts/entitlements.mac.plist",
-      "bundleVersion": 20200427,
       "icon": "./resources/icon.png"
     },
     "dmg": {
@@ -193,7 +192,7 @@
       "gatekeeperAssess": false,
       "entitlements": "./scripts/entitlements.mac.mas.plist",
       "entitlementsInherit": "./scripts/entitlements.mac.mas.inherit.plist",
-      "provisioningProfile": "./prod.provisionprofile"
+      "provisioningProfile": "./dev.provisionprofile"
     },
     "appx": {
       "displayName": "Thorium Reader",
@@ -283,6 +282,7 @@
     "electron-builder": "^22.6.0",
     "electron-devtools-installer": "^3.0.0",
     "electron-notarize": "^0.3.0",
+    "electron-osx-sign": "^0.4.15",
     "file-loader": "^6.0.0",
     "git-rev-sync": "^2.0.0",
     "html-loader": "^1.1.0",
