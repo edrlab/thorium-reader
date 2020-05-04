@@ -5,11 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import {
-    IEventPayload_R2_EVENT_CLIPBOARD_COPY,
-} from "r2-navigator-js/dist/es6-es2015/src/electron/common/events";
 import { LocatorView } from "readium-desktop/common/views/locator";
 
+import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 export interface IReaderApi {
