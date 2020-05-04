@@ -82,7 +82,7 @@
   "homepage": "https://github.com/edrlab/readium-desktop",
   "build": {
     "productName": "Thorium",
-    "appId": "io.github.edrlab.thorium",
+    "appId": "org.edrlab.thorium",
     "files": [
       "node_modules/",
       "external-assets/",
@@ -169,6 +169,8 @@
       "gatekeeperAssess": false,
       "entitlements": "./scripts/entitlements.mac.plist",
       "entitlementsInherit": "./scripts/entitlements.mac.plist",
+      "bundleVersion": "202005041",
+      "bundleShortVersion": "202005041",
       "icon": "./resources/icon.png"
     },
     "dmg": {

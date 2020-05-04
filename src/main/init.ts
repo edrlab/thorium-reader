@@ -203,7 +203,7 @@ export function initApp() {
     const winRegistry = diMainGet("win-registry");
     winRegistry.registerOpenCallback(winOpenCallback);
     winRegistry.registerCloseCallback(winCloseCallback);
-    app.setAppUserModelId("io.github.edrlab.thorium");
+    app.setAppUserModelId("org.edrlab.thorium");
 }
 
 export function registerProtocol() {

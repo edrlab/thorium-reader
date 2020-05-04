@@ -36,7 +36,7 @@
 <true/>
 <key>com.apple.security.application-groups</key>
 <array>
-<string>TEAMID.io.github.edrlab.thorium</string>
+<string>TEAMID.org.edrlab.thorium</string>
 </array>
 <key>com.apple.security.device.usb</key>
 <true/>
