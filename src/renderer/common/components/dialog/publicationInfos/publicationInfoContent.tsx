@@ -21,7 +21,7 @@ import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
+import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 
 export interface IProps {
     publication: TPublication;
