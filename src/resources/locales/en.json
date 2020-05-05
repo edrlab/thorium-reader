@@ -104,6 +104,13 @@
         "return": "Do you really want to return the licence for this publication?",
         "yes": "Yes"
     },
+    "error": {
+        "errorBox": {
+            "error": "Error message:",
+            "message": "An error has occurred in {{- filename}}",
+            "title": "Internal {{- appName}} Error"
+        }
+    },
     "header": {
         "allBooks": "All books",
         "books": "My Books",
@@ -297,16 +304,9 @@
             "languageChoice": "Language choice"
         },
         "session": {
-          "title": "Save session",
-          "yes": "Enable",
-          "no": "Disable"
+            "no": "Disable",
+            "title": "Save session",
+            "yes": "Enable"
         }
-    },
-    "error": {
-      "errorBox": {
-        "title": "Internal {{- appName}} Error",
-        "message": "An error has occurred in {{- filename}}",
-        "error": "Error message:"
-      }
     }
 }
