@@ -5,8 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
+
+import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 export const getTagsFromOpdsPublication = (r2OpdsPublication: OPDSPublication | undefined) => {
     let tags: string[];
