@@ -7,11 +7,15 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { ReactReduxContext } from "react-redux";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import { apiActionFactory } from "readium-desktop/renderer/common/apiAction";
+
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import Cover from "../../Cover";
 import { FormatContributorWithLink } from "./FormatContributorWithLink";
@@ -19,9 +23,6 @@ import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
-
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
-import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 
 export interface IProps {
     publication: TPublication;
@@ -71,6 +72,10 @@ const Progression = (props: {
 
     const { __, pubId } = props;
     const [locatorExt, setLocatorExt] = React.useState<LocatorExtended>(undefined);
+
+    const store = React.useContext(ReactReduxContext);
+
+    const apiAction = apiActionFactory(() => store.store);
 
     React.useEffect(() => {
         apiAction("reader/getLastReadingLocation", pubId)
