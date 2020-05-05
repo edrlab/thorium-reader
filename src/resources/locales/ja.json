@@ -204,7 +204,7 @@
         },
         "navigation": {
             "backHomeTitle": "本棚に戻る",
-            "bookmarkTitle": "しおり",
+            "bookmarkTitle": "しおりを挟む",
             "detachWindowTitle": "画面の切り離し",
             "fullscreenTitle": "全画面表示",
             "goTo": "移動",
