@@ -169,8 +169,8 @@
       "gatekeeperAssess": false,
       "entitlements": "./scripts/entitlements.mac.plist",
       "entitlementsInherit": "./scripts/entitlements.mac.plist",
-      "bundleVersion": "202005041",
-      "bundleShortVersion": "202005041",
+      "bundleVersion": "202005042",
+      "bundleShortVersion": "202005042",
       "icon": "./resources/icon.png"
     },
     "dmg": {
