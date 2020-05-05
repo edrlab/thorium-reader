@@ -22,7 +22,19 @@
             "undo": "Deshacer"
         },
         "hide": "Ocultar {{appName}}",
-        "quit": "Salir de {{appName}}"
+        "quit": "Salir de {{appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "",
+                        "yes": ""
+                    },
+                    "message": "",
+                    "title": ""
+                }
+            }
+        }
     },
     "catalog": {
         "about": {
@@ -92,6 +104,13 @@
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
         "yes": "Sí"
     },
+    "error": {
+        "errorBox": {
+            "error": "",
+            "message": "",
+            "title": ""
+        }
+    },
     "header": {
         "allBooks": "Todos los libros",
         "books": "Mis libros",
@@ -126,6 +145,9 @@
             "alreadyImport": "{{- title}} ya estaba importado",
             "fail": "La importación de {{- path}} falló. Comprueba que el fichero es válido",
             "success": "La importación de {{- title}} ha finalizado."
+        },
+        "open": {
+            "error": ""
         }
     },
     "opds": {
@@ -242,6 +264,11 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "paginated": "Paginado",
+            "save": {
+                "apply": "",
+                "reset": "",
+                "title": ""
+            },
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
             "text": "Texto",
@@ -275,6 +302,11 @@
         },
         "language": {
             "languageChoice": "Selección de idioma"
+        },
+        "session": {
+            "no": "",
+            "title": "",
+            "yes": ""
         }
     }
 }

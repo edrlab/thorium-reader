@@ -104,6 +104,13 @@
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
         "yes": "Oui"
     },
+    "error": {
+        "errorBox": {
+            "error": "Message d'erreur:",
+            "message": "Une erreur est survenue dans le fichier {{- filename}}",
+            "title": "Erreur interne {{- appName}}"
+        }
+    },
     "header": {
         "allBooks": "Tous les livres",
         "books": "Mes Livres",
@@ -138,6 +145,9 @@
             "alreadyImport": "{{- title}} est déja importé",
             "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
             "success": "L'import de {{- title}} est terminé."
+        },
+        "open": {
+            "error": "La publication ne peut pas etre ouverte : {{- err}}"
         }
     },
     "opds": {
@@ -292,6 +302,11 @@
         },
         "language": {
             "languageChoice": "Choix de la langue"
+        },
+        "session": {
+            "no": "Désactiver",
+            "title": "Sauvegarder la session",
+            "yes": "Activer"
         }
     }
 }
