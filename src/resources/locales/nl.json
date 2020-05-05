@@ -21,8 +21,8 @@
             "title": "Wijzig",
             "undo": "Ongedaan maken"
         },
-        "hide": "Verbergen",
-        "quit": "Verlaat Thorium",
+        "hide": "Verbergen {{- appName}}",
+        "quit": "Verlaat {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {

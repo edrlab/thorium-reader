@@ -21,8 +21,8 @@
             "title": "Editar",
             "undo": "Deshacer"
         },
-        "hide": "Ocultar {{appName}}",
-        "quit": "Salir de {{appName}}",
+        "hide": "Ocultar {{- appName}}",
+        "quit": "Salir de {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {

@@ -21,8 +21,8 @@
             "title": "Édition",
             "undo": "Annuler"
         },
-        "hide": "Cacher {{appName}}",
-        "quit": "Quitter Thorium",
+        "hide": "Masquer {{- appName}}",
+        "quit": "Quitter {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {

@@ -21,8 +21,8 @@
             "title": "Bearbeiten",
             "undo": "Rückgängig"
         },
-        "hide": "Ausblenden {{appName}}",
-        "quit": "Beenden",
+        "hide": "Ausblenden {{- appName}}",
+        "quit": "Beenden {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {

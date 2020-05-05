@@ -21,8 +21,8 @@
             "title": "Edit",
             "undo": "Undo"
         },
-        "hide": "Hide {{appName}}",
-        "quit": "Quit Thorium",
+        "hide": "Hide {{- appName}}",
+        "quit": "Quit {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
@@ -39,7 +39,7 @@
     "catalog": {
         "about": {
             "button": "More information",
-            "title": "About {{appName}}"
+            "title": "About {{- appName}}"
         },
         "addBookToLib": "Import",
         "addTags": "Add a tag",
