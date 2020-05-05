@@ -191,7 +191,9 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
             // the dispatching of 'openSuccess' action must be in the 'did-finish-load' event
             // because webpack-dev-server automaticaly refresh the window.
             const store = diMainGet("store");
-            store.dispatch(winActions.reader.openSucess.build(readerWindow, identifier));
+
+            store.dispatch(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
+
         });
     }
 
