@@ -9,12 +9,13 @@ import * as debug_ from "debug";
 import { app } from "electron";
 import * as express from "express";
 import * as path from "path";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { diMainGet } from "readium-desktop/main/di";
 import { _NODE_MODULE_RELATIVE_URL, _PACKAGING } from "readium-desktop/preprocessor-directives";
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
 import {
-    colCountEnum, readiumCSSDefaults, textAlignEnum,
+    colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
@@ -23,7 +24,6 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import { Transformers } from "@r2-shared-js/transform/transformer";
 import { TransformerHTML } from "@r2-shared-js/transform/transformer-html";
 import { Server } from "@r2-streamer-js/http/server";
-import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 const debug = debug_("readium-desktop:main#streamer");
 
@@ -85,8 +85,7 @@ function computeReadiumCssJsonMessage(
         settings = store.getState().reader.defaultConfig;
     }
 
-    // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
-    const cssJson = {
+    const cssJson: IReadiumCSS = {
 
         a11yNormalize: readiumCSSDefaults.a11yNormalize,
 
