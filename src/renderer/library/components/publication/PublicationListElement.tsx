@@ -12,7 +12,7 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsContributorView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
@@ -67,7 +67,15 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}>  {
         const pub = this.props.publicationViewMaybeOpds;
-        const formatedPublishers = pub.publishers.join(", ");
+        const publishers = pub.publishers as Array<string | IOpdsContributorView>;
+        const formatedPublishers = publishers.reduce(
+            (pv, cv) => {
+            let str: string;
+            if ((cv as IOpdsContributorView)?.name) {
+                str = `${pv}${(cv as IOpdsContributorView).name}`;
+            }
+            return str ? `${str},` : pv;
+        }, "");
         let formatedPublishedYear = "";
         const { translator } = this.props;
 
