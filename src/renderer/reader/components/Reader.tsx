@@ -10,6 +10,7 @@ import * as path from "path";
 import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";
+import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
@@ -48,15 +49,7 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { Unsubscribe } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import {
-    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_READIUMCSS,
-} from "@r2-navigator-js/electron/common/events";
-import {
-    colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
-} from "@r2-navigator-js/electron/common/readium-css-settings";
-// import {
-//     convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, /* READIUM2_ELECTRON_HTTP_PROTOCOL,*/
-// } from "@r2-navigator-js/electron/common/sessions";
+import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssUpdate, setEpubReadingSystemInfo,
@@ -88,68 +81,6 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 //     secure: true,
 //     supportFetchAPI: true,
 // });
-
-// TODO: centralize this code, currently duplicated
-// see src/main/streamer.js
-export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayload_R2_EVENT_READIUMCSS => {
-
-    const cssJson: IReadiumCSS = {
-
-        a11yNormalize: readiumCSSDefaults.a11yNormalize,
-
-        backgroundColor: readiumCSSDefaults.backgroundColor,
-
-        bodyHyphens: readiumCSSDefaults.bodyHyphens,
-
-        colCount: settings.colCount === "1" ? colCountEnum.one :
-            (settings.colCount === "2" ? colCountEnum.two : colCountEnum.auto),
-
-        darken: settings.darken,
-
-        font: settings.font,
-
-        fontSize: settings.fontSize,
-
-        invert: settings.invert,
-
-        letterSpacing: settings.letterSpacing,
-
-        ligatures: readiumCSSDefaults.ligatures,
-
-        lineHeight: settings.lineHeight,
-
-        night: settings.night,
-
-        pageMargins: settings.pageMargins,
-
-        paged: settings.paged,
-
-        paraIndent: readiumCSSDefaults.paraIndent,
-
-        paraSpacing: settings.paraSpacing,
-
-        sepia: settings.sepia,
-
-        noFootnotes: settings.noFootnotes,
-
-        textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
-            (settings.align === textAlignEnum.right ? textAlignEnum.right :
-            (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
-            (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
-
-        textColor: readiumCSSDefaults.textColor,
-
-        typeScale: readiumCSSDefaults.typeScale,
-
-        wordSpacing: settings.wordSpacing,
-
-        mathJax: settings.enableMathJax,
-
-        reduceMotion: readiumCSSDefaults.reduceMotion,
-    };
-    const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
-    return jsonMsg;
-};
 
 // const queryParams = getURLQueryParams();
 // const lcpHint = queryParams.lcpHint;

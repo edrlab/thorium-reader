@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import { readiumCssUpdate } from "r2-navigator-js/dist/es6-es2015/src/electron/renderer";
+import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 
-import { computeReadiumCssJsonMessage } from "../../components/Reader";
 import { readerLocalActionSetConfig } from "../actions";
 
 function updateCss(action: readerLocalActionSetConfig.TAction) {
