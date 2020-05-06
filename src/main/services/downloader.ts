@@ -69,7 +69,7 @@ export class Downloader {
     public addDownload(url: string, ext: string): Download {
 
         // TODO: "any" because out of date TypeScript typings for "tmp" package :(
-        const dstPath = (tmpNameSync as any)({
+        const dstPath = tmpNameSync({
             tmpdir: this.downloadFolder || app.getPath("temp"), // os.tmpdir(),
             prefix: "readium-desktop-",
             postfix: ext ? `${ext}` : undefined});
