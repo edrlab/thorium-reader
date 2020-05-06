@@ -24,7 +24,6 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import fontList from "readium-desktop/utils/fontList";
 
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
-import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 
 import optionsValues, { IReaderOptionsProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
@@ -136,7 +135,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         type="radio"
                         name="theme"
                         onChange={() => this.handleChooseTheme(themeType.Without)}
-                        {...(withoutTheme && {checked: true})}
+                        checked={withoutTheme}
                     />
                     <label htmlFor={"radio-" + themeType.Without}>
                         {withoutTheme && <SVG svg={DoneIcon} ariaHidden/>}
@@ -149,7 +148,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         type="radio"
                         name="theme"
                         onChange={() => this.handleChooseTheme(themeType.Sepia)}
-                        {...(readerConfig.sepia && {checked: true})}
+                        checked={readerConfig.sepia}
                     />
                     <label htmlFor={"radio-" + themeType.Sepia}>
                         {readerConfig.sepia && <SVG svg={DoneIcon} ariaHidden/>}
@@ -162,7 +161,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         type="radio"
                         name="theme"
                         onChange={() => this.handleChooseTheme(themeType.Night)}
-                        {...(readerConfig.night && {checked: true})}
+                        checked={readerConfig.night}
                     />
                     <label htmlFor={"radio-" + themeType.Night}>
                         {readerConfig.night && <SVG svg={DoneIcon} ariaHidden/>}
@@ -451,20 +450,20 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private toggleMathJax() {
-        const readerConfig = this.props.readerConfig;
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
         readerConfig.enableMathJax = !readerConfig.enableMathJax;
         if (readerConfig.enableMathJax) {
             readerConfig.paged = false;
         }
         this.props.setSettings(readerConfig);
-        setTimeout(() => {
-            // window.location.reload();
-            reloadContent();
-        }, 300);
     }
 
     private handleChooseTheme(theme: themeType) {
-        const readerConfig = this.props.readerConfig;
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
         let sepia = false;
         let night = false;
 
@@ -483,14 +482,15 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     // round the value to the hundredth
-    private roundRemValue(value: string) {
+    private roundRemValue(value: string | undefined) {
         if (!value) {
-            return "";
+            return "0";
         }
 
-        const nbr = parseFloat(value.replace("rem", ""));
+        // TODO: other potential CSS units?
+        const nbr = parseFloat(value.replace("rem", "").replace("em", "").replace("px", ""));
         const roundNumber = (Math.round(nbr * 100) / 100);
-        return roundNumber + " rem";
+        return roundNumber;
     }
 
     private getButtonClassName(

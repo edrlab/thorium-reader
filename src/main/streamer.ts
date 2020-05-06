@@ -88,7 +88,6 @@ function computeReadiumCssJsonMessage(
         debug(sessionInfoJson);
     }
 
-    // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
 
         a11yNormalize: readiumCSSDefaults.a11yNormalize,

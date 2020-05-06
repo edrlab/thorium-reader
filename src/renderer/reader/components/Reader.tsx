@@ -86,11 +86,8 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 
 // TODO: centralize this code, currently duplicated
 // see src/main/streamer.js
-const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
-    const store = diReaderGet("store");
-    const settings = store.getState().reader.config;
+const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayload_R2_EVENT_READIUMCSS => {
 
-    // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
 
         a11yNormalize: readiumCSSDefaults.a11yNormalize,
@@ -197,9 +194,6 @@ interface IState {
     visibleBookmarkList: LocatorView[];
     currentLocation: LocatorExtended;
     bookmarks: LocatorView[] | undefined;
-
-    indexes: AdjustableSettingsNumber;
-    readerConfig: ReaderConfig;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -238,35 +232,7 @@ class Reader extends React.Component<IProps, IState> {
             lcpPass: "LCP pass",
             contentTableOpen: false,
             settingsOpen: false,
-            readerConfig: {
-                align: "auto",
-                colCount: "auto",
-                dark: false,
-                font: "DEFAULT",
-                fontSize: "100%",
-                invert: false,
-                lineHeight: undefined,
-                night: false,
-                paged: false,
-                readiumcss: true,
-                sepia: false,
-                wordSpacing: undefined,
-                paraSpacing: undefined,
-                letterSpacing: undefined,
-                pageMargins: undefined,
-                enableMathJax: false,
-                noFootnotes: false,
-                darken: false,
-            },
             shortcutEnable: true,
-            indexes: {
-                fontSize: 3,
-                pageMargins: 0,
-                wordSpacing: 0,
-                letterSpacing: 0,
-                paraSpacing: 0,
-                lineHeight: 0,
-            },
             landmarksOpen: false,
             landmarkTabOpen: 0,
 
@@ -313,44 +279,6 @@ class Reader extends React.Component<IProps, IState> {
                 lcpPass: this.state.lcpPass + " [" + lcpHint + "]",
             });
         }
-
-        // What is the point of this redux store subscribe ?
-        // the locale is already set
-        // Why an adaptation from redux settings to local state ?
-        const store = diReaderGet("store");
-        store.subscribe(() => {
-            const storeState = store.getState();
-            const readerConfig = storeState.reader.config;
-            if (readerConfig && readerConfig !== this.state.readerConfig) {
-
-                const indexes = this.state.indexes;
-                for (const key of ObjectKeys(this.state.indexes)) {
-                    let i = 0;
-                    for (const value of optionsValues[key]) {
-                        if (readerConfig[key] === value) {
-                            indexes[key] = i;
-                        }
-                        i++;
-                    }
-                }
-
-                if (readerConfig.enableMathJax !== this.state.readerConfig.enableMathJax) {
-
-                    setTimeout(() => {
-                        // window.location.reload();
-                        reloadContent();
-                    }, 300);
-                }
-
-                this.setState({readerConfig, indexes});
-
-                // readiumCssOnOff() API only once navigator ready
-                if (this.state.r2Publication) {
-                    // readiumCssOnOff();
-                    readiumCssUpdate(computeReadiumCssJsonMessage());
-                }
-            }
-        });
 
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
@@ -455,8 +383,8 @@ class Reader extends React.Component<IProps, IState> {
 
         const readerOptionsProps: IReaderOptionsProps = {
             open: this.state.settingsOpen,
-            indexes: this.state.indexes,
-            readerConfig: this.state.readerConfig,
+            indexes: this.props.indexes,
+            readerConfig: this.props.readerConfig,
             handleSettingChange: this.handleSettingChange.bind(this),
             handleIndexChange: this.handleIndexChange.bind(this),
             setSettings: this.setSettings,
@@ -481,8 +409,8 @@ class Reader extends React.Component<IProps, IState> {
                     />
                     <div className={classNames(
                         styles.root,
-                        this.state.readerConfig.night && styles.nightMode,
-                        this.state.readerConfig.sepia && styles.sepiaMode,
+                        this.props.readerConfig.night && styles.nightMode,
+                        this.props.readerConfig.sepia && styles.sepiaMode,
                     )}>
                         <ReaderHeader
                             infoOpen={this.props.infoOpen}
@@ -866,7 +794,7 @@ class Reader extends React.Component<IProps, IState> {
             true,
             clipboardInterceptor,
             sessionInfoStr,
-            computeReadiumCssJsonMessage(),
+            computeReadiumCssJsonMessage(this.props.readerConfig),
         );
     }
 
@@ -1050,9 +978,22 @@ class Reader extends React.Component<IProps, IState> {
         });
     }
 
-    private handleSettingsSave() {
+    private handleSettingsSave(readerConfig: ReaderConfig) {
         const store = diReaderGet("store");
-        store.dispatch(readerActions.configSetRequest.build(this.state.readerConfig));
+        store.dispatch(readerActions.configSetRequest.build(readerConfig));
+
+        if (this.state.r2Publication) {
+            readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
+
+            console.log("MATHJAX RELOAD?");
+            if (readerConfig.enableMathJax !== this.props.readerConfig.enableMathJax) {
+                console.log("MATHJAX RELOAD...");
+                setTimeout(() => {
+                    // window.location.reload();
+                    reloadContent();
+                }, 1000);
+            }
+        }
     }
 
     private handleSettingChange(
@@ -1069,7 +1010,8 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
 
-        const readerConfig = this.state.readerConfig;
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
 
         const typedName =
             name as (typeof value extends string ? keyof ReaderConfigStrings : keyof ReaderConfigBooleans);
@@ -1079,21 +1021,12 @@ class Reader extends React.Component<IProps, IState> {
 
         if (readerConfig.paged) {
             readerConfig.enableMathJax = false;
-
-            setTimeout(() => {
-                // window.location.reload();
-                reloadContent();
-            }, 300);
         }
 
-        this.setState({readerConfig});
-
-        this.handleSettingsSave();
+        this.handleSettingsSave(readerConfig);
     }
 
     private handleIndexChange(event: TChangeEventOnInput, name: keyof ReaderConfigStringsAdjustables) {
-        const indexes = this.state.indexes;
-        const readerConfig = this.state.readerConfig;
 
         let valueNum = event.target.valueAsNumber;
         if (typeof valueNum !== "number") {
@@ -1105,22 +1038,21 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
 
-        indexes[name] = valueNum;
-        this.setState({ indexes });
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
 
         readerConfig[name] = optionsValues[name][valueNum];
-        this.setState({ readerConfig });
 
-        this.handleSettingsSave();
+        this.handleSettingsSave(readerConfig);
     }
 
     private setSettings(readerConfig: ReaderConfig) {
+        // TODO: with TypeScript strictNullChecks this test condition should not be necessary!
         if (!readerConfig) {
             return;
         }
 
-        this.setState({ readerConfig });
-        this.handleSettingsSave();
+        this.handleSettingsSave(readerConfig);
     }
 
     private findBookmarks() {
@@ -1131,8 +1063,30 @@ class Reader extends React.Component<IProps, IState> {
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
+
+    const indexes: AdjustableSettingsNumber = {
+        fontSize: 3,
+        pageMargins: 0,
+        wordSpacing: 0,
+        letterSpacing: 0,
+        paraSpacing: 0,
+        lineHeight: 0,
+    };
+    for (const key of ObjectKeys(indexes)) {
+        let i = 0;
+        for (const value of optionsValues[key]) {
+            if (state.reader.config[key] === value) {
+                indexes[key] = i;
+                break;
+            }
+            i++;
+        }
+    }
+
     return {
         reader: state.reader.reader,
+        readerConfig: state.reader.config,
+        indexes,
         keyboardShortcuts: state.keyboard.shortcuts,
         mode: state.reader.mode,
         infoOpen: state.dialog.open &&

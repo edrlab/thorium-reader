@@ -14,6 +14,7 @@ import { ReaderState } from "readium-desktop/main/redux/states/reader";
 const initialState: ReaderState = {
     readers: {},
     mode: ReaderMode.Attached,
+    // See optionsValues (AdjustableSettingsStrings)
     config: {
         align: "auto",
         colCount: "auto",
@@ -27,10 +28,10 @@ const initialState: ReaderState = {
         readiumcss: true,
         sepia: false,
         enableMathJax: false,
-        pageMargins: undefined,
-        wordSpacing: undefined,
-        letterSpacing: undefined,
-        paraSpacing: undefined,
+        pageMargins: "0.5",
+        wordSpacing: "0",
+        letterSpacing: "0",
+        paraSpacing: "0",
         noFootnotes: undefined,
         darken: undefined,
     },

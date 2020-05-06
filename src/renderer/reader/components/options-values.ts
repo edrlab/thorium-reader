@@ -17,7 +17,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 export const fontSize: string[] = [
     "75%",
     "87.5%",
-    "100%",
+    "100%", // default
     "112.5%",
     "137.5%",
     "150%",
@@ -29,7 +29,8 @@ export const fontSize: string[] = [
 ];
 
 export const pageMargins: string[] = [
-    "0.5",
+    "0",
+    "0.5", // default
     "0.75",
     "1",
     "1.25",
@@ -39,7 +40,7 @@ export const pageMargins: string[] = [
 ];
 
 export const wordSpacing: string[] = [
-    "0",
+    "0", // default
     "0.0675rem",
     "0.125rem",
     "0.1875rem",
@@ -52,7 +53,7 @@ export const wordSpacing: string[] = [
 ];
 
 export const letterSpacing: string[] = [
-    "0",
+    "0", // default
     "0.0675rem",
     "0.125rem",
     "0.1875rem",
@@ -64,7 +65,7 @@ export const letterSpacing: string[] = [
 ];
 
 export const paraSpacing: string[] = [
-    "0",
+    "0", // default
     "0.5rem",
     "1rem",
     "1.25rem",
@@ -79,7 +80,7 @@ export const lineHeight: string[] = [
     "1.125",
     "1.25",
     "1.35",
-    "1.5",
+    "1.5", // default
     "1.65",
     "1.75",
     "2",
