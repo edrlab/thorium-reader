@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
 import { PromiseAllSettled, PromiseFulfilled } from "readium-desktop/common/utils/promise";
@@ -14,16 +15,16 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
-import { LcpManager } from "readium-desktop/main/services/lcp";
 import { PublicationService } from "readium-desktop/main/services/publication";
 import { isArray } from "util";
 
-// import * as debug_ from "debug";
 // Logger
-// const debug = debug_("readium-desktop:main#services/catalog");
+const debug = debug_("readium-desktop:main#services/catalog");
+debug("_");
 
 @injectable()
 export class PublicationApi implements IPublicationApi {
+
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
@@ -33,16 +34,12 @@ export class PublicationApi implements IPublicationApi {
     @inject(diSymbolTable["publication-service"])
     private readonly publicationService!: PublicationService;
 
-    @inject(diSymbolTable["lcp-manager"])
-    private readonly lcpManager!: LcpManager;
+    // @inject(diSymbolTable.store)
+    // private readonly store!: Store<RootState>;
 
     // called for publication info dialog modal box
     public async get(identifier: string, checkLcpLsd: boolean): Promise<PublicationView> {
-        let doc = await this.publicationRepository.get(identifier);
-        if (checkLcpLsd && doc.lcp) {
-            doc = await this.lcpManager.checkPublicationLicenseUpdate(doc);
-        }
-        return this.publicationViewConverter.convertDocumentToView(doc);
+        return await this.publicationService.getPublication(identifier, checkLcpLsd);
     }
 
     public async delete(identifier: string): Promise<void> {

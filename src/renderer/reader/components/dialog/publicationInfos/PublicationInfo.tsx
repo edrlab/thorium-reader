@@ -10,6 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import {
     PublicationInfoContent,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
@@ -19,7 +20,6 @@ import {
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { IReaderRootState } from "readium-desktop/renderer/reader/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import TagManager from "./TagManager";

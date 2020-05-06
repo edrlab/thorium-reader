@@ -10,16 +10,16 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "WIN_INIT_REQUEST";
 
 export interface Payload {
-    winId: string;
+    identifier: string;
 }
 
-export function build(winId: string):
+export function build(identifier: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            winId,
+            identifier,
         },
     };
 }

@@ -5,16 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
+// import { error } from "readium-desktop/common/error";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
-import { selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { call, put, race, take } from "redux-saga/effects";
 
-import { ICommonRootState } from "../../states";
+// Logger
+const filename_ = "readium-desktop:renderer:redux:saga:publication-info-syncTags";
+const debug = debug_(filename_);
+debug("_");
 
 function* apiResult(action: apiActions.result.TAction) {
 
@@ -47,15 +54,24 @@ function* apiResult(action: apiActions.result.TAction) {
 }
 
 function* dialogOpened(_action: dialogActions.openRequest.TAction) {
-    yield takeEvery(apiActions.result.build, apiResult);
+
+    while (true) {
+        const { api, can } = yield race({
+            api: take(apiActions.result.ID),
+            can: take(dialogActions.closeRequest.ID),
+        });
+
+        if (can) {
+            return ;
+        }
+
+        yield call(apiResult, api);
+    }
 }
 
-function* dialogOpenWatcher() {
-    yield takeEvery(dialogActions.openRequest.build, dialogOpened);
-}
-
-export function* watchers() {
-    yield all([
-        call(dialogOpenWatcher),
-    ]);
+export function saga() {
+    return takeSpawnEvery(
+        dialogActions.openRequest.ID,
+        dialogOpened,
+    );
 }

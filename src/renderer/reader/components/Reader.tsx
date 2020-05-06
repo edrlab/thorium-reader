@@ -7,15 +7,18 @@
 
 import * as classNames from "classnames";
 import * as path from "path";
+import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";
+import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
-    Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
-    ReaderConfigStringsAdjustables,
+    ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings, ReaderConfigStringsAdjustables,
+    ReaderMode,
 } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -36,23 +39,17 @@ import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
-import { IReaderRootState } from "readium-desktop/renderer/reader/redux/states";
 import {
     TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+// import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 import { Unsubscribe } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import {
-    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_READIUMCSS,
-} from "@r2-navigator-js/electron/common/events";
-import {
-    colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
-} from "@r2-navigator-js/electron/common/readium-css-settings";
-import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
+import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssUpdate, setEpubReadingSystemInfo,
@@ -62,6 +59,7 @@ import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
+import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
@@ -84,74 +82,11 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 //     supportFetchAPI: true,
 // });
 
-// TODO: centralize this code, currently duplicated
-// see src/main/streamer.js
-const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayload_R2_EVENT_READIUMCSS => {
-
-    const cssJson: IReadiumCSS = {
-
-        a11yNormalize: readiumCSSDefaults.a11yNormalize,
-
-        backgroundColor: readiumCSSDefaults.backgroundColor,
-
-        bodyHyphens: readiumCSSDefaults.bodyHyphens,
-
-        colCount: settings.colCount === "1" ? colCountEnum.one :
-            (settings.colCount === "2" ? colCountEnum.two : colCountEnum.auto),
-
-        darken: settings.darken,
-
-        font: settings.font,
-
-        fontSize: settings.fontSize,
-
-        invert: settings.invert,
-
-        letterSpacing: settings.letterSpacing,
-
-        ligatures: readiumCSSDefaults.ligatures,
-
-        lineHeight: settings.lineHeight,
-
-        night: settings.night,
-
-        pageMargins: settings.pageMargins,
-
-        paged: settings.paged,
-
-        paraIndent: readiumCSSDefaults.paraIndent,
-
-        paraSpacing: settings.paraSpacing,
-
-        sepia: settings.sepia,
-
-        noFootnotes: settings.noFootnotes,
-
-        textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
-            (settings.align === textAlignEnum.right ? textAlignEnum.right :
-            (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
-            (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
-
-        textColor: readiumCSSDefaults.textColor,
-
-        typeScale: readiumCSSDefaults.typeScale,
-
-        wordSpacing: settings.wordSpacing,
-
-        mathJax: settings.enableMathJax,
-
-        reduceMotion: readiumCSSDefaults.reduceMotion,
-    };
-    const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
-    return jsonMsg;
-};
-
-const queryParams = getURLQueryParams();
-const lcpHint = queryParams.lcpHint;
+// const queryParams = getURLQueryParams();
+// const lcpHint = queryParams.lcpHint;
 // pub is undefined when loaded in dependency injection by library webview.
 // Dependency injection is shared between all the renderer view
-const publicationJsonUrl = queryParams.pub;
-// ?.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
+// const publicationJsonUrl = queryParams.pub?.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
 //     ? convertCustomSchemeToHttpUrl(queryParams.pub)
 //     : queryParams.pub;
 
@@ -175,7 +110,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
 
-    // publicationJsonUrl?: string;
+    publicationJsonUrl?: string;
     // title?: string;
 
     publicationView: PublicationView | undefined;
@@ -194,6 +129,8 @@ interface IState {
     visibleBookmarkList: LocatorView[];
     currentLocation: LocatorExtended;
     bookmarks: LocatorView[] | undefined;
+
+    readerMode: ReaderMode;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -226,7 +163,7 @@ class Reader extends React.Component<IProps, IState> {
         this.refToolbar = React.createRef<HTMLAnchorElement>();
 
         this.state = {
-            // publicationJsonUrl: "HTTP://URL",
+            publicationJsonUrl: "HTTP://URL",
             lcpHint: "LCP hint",
             // title: "TITLE",
             lcpPass: "LCP pass",
@@ -244,6 +181,8 @@ class Reader extends React.Component<IProps, IState> {
             visibleBookmarkList: [],
             currentLocation: undefined,
             bookmarks: undefined,
+
+            readerMode: ReaderMode.Attached,
         };
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
@@ -266,6 +205,22 @@ class Reader extends React.Component<IProps, IState> {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
+        const store = diReaderGet("store");
+
+        const pubId = store.getState().reader.info.publicationIdentifier;
+        const locator = store.getState().reader.locator;
+        const manifestUrl = store.getState().reader.info.manifestUrl;
+        // const publicationJsonUrl = convertCustomSchemeToHttpUrl(
+        //     encodeURIComponent_RFC3986(
+        //         convertHttpUrlToCustomScheme(manifestUrl),
+        //     ),
+        // );
+        const publicationJsonUrl = manifestUrl;
+
+        this.setState({
+            publicationJsonUrl,
+        });
+
         setKeyDownEventHandler(keyDownEventHandler);
         setKeyUpEventHandler(keyUpEventHandler);
 
@@ -273,12 +228,12 @@ class Reader extends React.Component<IProps, IState> {
         //     publicationJsonUrl,
         // });
 
-        if (lcpHint) {
-            this.setState({
-                lcpHint,
-                lcpPass: this.state.lcpPass + " [" + lcpHint + "]",
-            });
-        }
+        // if (lcpHint) {
+        //     this.setState({
+        //         lcpHint,
+        //         lcpPass: this.state.lcpPass + " [" + lcpHint + "]",
+        //     });
+        // }
 
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
@@ -289,51 +244,26 @@ class Reader extends React.Component<IProps, IState> {
             });
         });
 
-        let docHref: string = queryParams.docHref;
-        let docSelector: string = queryParams.docSelector;
-        let docProgression: string = queryParams.docProgression;
+        // let docHref: string = queryParams.docHref;
+        // let docSelector: string = queryParams.docSelector;
 
-        if (docHref) {
-            // Decode base64
-            docHref = window.atob(docHref);
-        }
-        if (docSelector) {
-            // Decode base64
-            try {
-                docSelector = window.atob(docSelector);
-            } catch (err) {
-                console.log(docSelector);
-                console.log(err);
-                docSelector = undefined;
-            }
-        }
-        let progression: number | undefined;
-        if (docProgression) {
-            // Decode base64
-            try {
-                docProgression = window.atob(docProgression);
-            } catch (err) {
-                console.log(docProgression);
-                console.log(err);
-                docProgression = undefined;
-            }
-            // percentage number
-            if (docProgression) {
-                progression = parseFloat(docProgression);
-            }
-        }
+        // if (docHref && docSelector) {
+        //     // Decode base64
+        //     docHref = window.atob(docHref);
+        //     docSelector = window.atob(docSelector);
+        // }
 
         // Note that CFI, etc. can optionally be restored too,
         // but navigator currently uses cssSelector as the primary
-        const locator: R2Locator = {
-            href: docHref,
-            locations: {
-                cfi: undefined,
-                cssSelector: docSelector,
-                position: undefined,
-                progression,
-            },
-        };
+        // const locator: R2Locator = {
+        //     href: docHref,
+        //     locations: {
+        //         cfi: undefined,
+        //         cssSelector: docSelector,
+        //         position: undefined,
+        //         progression: undefined,
+        //     },
+        // };
 
         setReadingLocationSaver(this.handleReadingLocationChange);
 
@@ -344,12 +274,14 @@ class Reader extends React.Component<IProps, IState> {
             "reader/addBookmark",
         ], this.findBookmarks);
 
-        apiAction("publication/get", queryParams.pubId, false)
+        apiAction("publication/get", pubId, false)
             .then(async (publicationView) => {
-                this.setState({publicationView});
-                await this.loadPublicationIntoViewport(publicationView, locator);
+                this.setState({ publicationView });
+                await this.loadPublicationIntoViewport(publicationView, locator.locator);
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
+
+        this.getReaderMode();
     }
 
     public async componentDidUpdate(oldProps: IProps, oldState: IState) {
@@ -393,74 +325,73 @@ class Reader extends React.Component<IProps, IState> {
         };
 
         return (
-                <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
-                    <a
-                        role="region"
-                        className={styles.anchor_link}
-                        ref={this.refToolbar}
-                        id="main-toolbar"
-                        title={this.props.__("accessibility.toolbar")}
-                        aria-label={this.props.__("accessibility.toolbar")}
-                        tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
-                    <SkipLink
-                        className={styles.skip_link}
-                        anchorId="main-content"
-                        label={this.props.__("accessibility.skipLink")}
+            <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
+                <a
+                    role="region"
+                    className={styles.anchor_link}
+                    ref={this.refToolbar}
+                    id="main-toolbar"
+                    title={this.props.__("accessibility.toolbar")}
+                    aria-label={this.props.__("accessibility.toolbar")}
+                    tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
+                <SkipLink
+                    className={styles.skip_link}
+                    anchorId="main-content"
+                    label={this.props.__("accessibility.skipLink")}
+                />
+                <div className={classNames(
+                    styles.root,
+                    this.props.readerConfig.night && styles.nightMode,
+                    this.props.readerConfig.sepia && styles.sepiaMode,
+                )}>
+                    <ReaderHeader
+                        infoOpen={this.props.infoOpen}
+                        menuOpen={this.state.menuOpen}
+                        settingsOpen={this.state.settingsOpen}
+                        handleMenuClick={this.handleMenuButtonClick}
+                        handleSettingsClick={this.handleSettingsClick}
+                        fullscreen={this.state.fullscreen}
+                        mode={this.state.readerMode}
+                        handleFullscreenClick={this.handleFullscreenClick}
+                        handleReaderDetach={this.handleReaderDetach}
+                        handleReaderClose={this.handleReaderClose}
+                        toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
+                        isOnBookmark={this.state.visibleBookmarkList.length > 0}
+                        readerOptionsProps={readerOptionsProps}
+                        readerMenuProps={readerMenuProps}
+                        displayPublicationInfo={this.displayPublicationInfo}
+                        currentLocation={this.state.currentLocation}
                     />
-                    <div className={classNames(
-                        styles.root,
-                        this.props.readerConfig.night && styles.nightMode,
-                        this.props.readerConfig.sepia && styles.sepiaMode,
-                    )}>
-                        <ReaderHeader
-                            infoOpen={this.props.infoOpen}
-                            menuOpen={this.state.menuOpen}
-                            settingsOpen={this.state.settingsOpen}
-                            handleMenuClick={this.handleMenuButtonClick}
-                            handleSettingsClick={this.handleSettingsClick}
-                            fullscreen={this.state.fullscreen}
-                            mode={this.props.mode}
-                            handleFullscreenClick={this.handleFullscreenClick}
-                            handleReaderDetach={this.handleReaderDetach}
-                            handleReaderClose={this.handleReaderClose}
-                            toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
-                            isOnBookmark={this.state.visibleBookmarkList.length > 0}
-                            readerOptionsProps={readerOptionsProps}
-                            readerMenuProps={readerMenuProps}
-                            displayPublicationInfo={this.displayPublicationInfo}
-                            currentLocation={this.state.currentLocation}
-                        />
-                        <div className={classNames(styles.content_root,
+                    <div className={classNames(styles.content_root,
                             this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
-
-                            <div className={styles.reader}>
-                                <main
-                                    id="main"
-                                    role="main"
+                        <div className={styles.reader}>
+                            <main
+                                id="main"
+                                role="main"
+                                aria-label={this.props.__("accessibility.mainContent")}
+                                className={styles.publication_viewport_container}>
+                                <a
+                                    role="region"
+                                    className={styles.anchor_link}
+                                    ref={this.fastLinkRef}
+                                    id="main-content"
+                                    title={this.props.__("accessibility.mainContent")}
                                     aria-label={this.props.__("accessibility.mainContent")}
-                                    className={styles.publication_viewport_container}>
-                                    <a
-                                        role="region"
-                                        className={styles.anchor_link}
-                                        ref={this.fastLinkRef}
-                                        id="main-content"
-                                        title={this.props.__("accessibility.mainContent")}
-                                        aria-label={this.props.__("accessibility.mainContent")}
-                                        tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
-                                    <div id="publication_viewport" className={styles.publication_viewport}> </div>
-                                </main>
-                            </div>
+                                    tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
+                                <div id="publication_viewport" className={styles.publication_viewport}> </div>
+                            </main>
                         </div>
-                        <ReaderFooter
-                            navLeftOrRight={navLeftOrRight}
-                            fullscreen={this.state.fullscreen}
-                            currentLocation={this.state.currentLocation}
-                            r2Publication={this.state.r2Publication}
-                            handleLinkClick={this.handleLinkClick}
-                            goToLocator={this.goToLocator}
-                        />
                     </div>
                 </div>
+                <ReaderFooter
+                    navLeftOrRight={navLeftOrRight}
+                    fullscreen={this.state.fullscreen}
+                    currentLocation={this.state.currentLocation}
+                    r2Publication={this.state.r2Publication}
+                    handleLinkClick={this.handleLinkClick}
+                    goToLocator={this.goToLocator}
+                />
+            </div>
         );
     }
 
@@ -717,7 +648,7 @@ class Reader extends React.Component<IProps, IState> {
         const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
         const r2PublicationJson = JSON.parse(r2PublicationStr);
         const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
-        this.setState({r2Publication});
+        this.setState({ r2Publication });
 
         if (r2Publication.Metadata && r2Publication.Metadata.Title) {
             const title = this.props.translator.translateContentField(r2Publication.Metadata.Title);
@@ -736,8 +667,8 @@ class Reader extends React.Component<IProps, IState> {
             preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
         } else {
             preloadPath = "r2-navigator-js/dist/" +
-            "es6-es2015" +
-            "/src/electron/renderer/webview/preload.js";
+                "es6-es2015" +
+                "/src/electron/renderer/webview/preload.js";
 
             if (_RENDERER_READER_BASE_URL === "file://") {
                 // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
@@ -753,47 +684,22 @@ class Reader extends React.Component<IProps, IState> {
 
         const clipboardInterceptor = !publicationView.lcp ? undefined :
             (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
-                apiAction("reader/clipboardCopy", queryParams.pubId, clipboardData)
+                apiAction("reader/clipboardCopy", this.props.pubId, clipboardData)
                     .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
             };
 
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        const sessionInfoJson: any = {
-            id: "0000-1110-222",
-            test: 1,
-            other: true,
-            obj: {
-                "sub-key": null,
-            },
-        };
-        console.log(sessionInfoJson);
-        const sessionInfoStr = JSON.stringify(sessionInfoJson, null, 4);
-        console.log(sessionInfoStr);
-        console.log(Buffer.from(sessionInfoStr).toString("base64"));
+        const store = diReaderGet("store");
+        const winId = store.getState().win.identifier;
 
         installNavigatorDOM(
             r2Publication,
-            publicationJsonUrl,
+            this.state.publicationJsonUrl,
             "publication_viewport",
             preloadPath,
             locator,
             true,
             clipboardInterceptor,
-            sessionInfoStr,
+            winId,
             computeReadiumCssJsonMessage(this.props.readerConfig),
         );
     }
@@ -807,15 +713,16 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-        apiAction("reader/setLastReadingLocation", queryParams.pubId, loc.locator)
-            .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
-
+        //        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
+        // apiAction("reader/setLastReadingLocation", this.props.pubId, loc.locator)
+        //     .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
+        this.props.setLocator(loc);
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
         this.findBookmarks();
         this.saveReadingLocation(loc);
-        this.setState({currentLocation: getCurrentReadingLocation()});
+        this.setState({ currentLocation: getCurrentReadingLocation() });
         // No need to explicitly refresh the bookmarks status here,
         // as componentDidUpdate() will call the function after setState():
         // await this.checkBookmarks();
@@ -836,13 +743,13 @@ class Reader extends React.Component<IProps, IState> {
             if (!locator || locator.href === bookmark.locator.href) {
                 if (this.state.r2Publication) { // isLocatorVisible() API only once navigator ready
                     const isVisible = await isLocatorVisible(bookmark.locator);
-                    if ( isVisible ) {
+                    if (isVisible) {
                         visibleBookmarkList.push(bookmark);
                     }
                 }
             }
         }
-        this.setState({visibleBookmarkList});
+        this.setState({ visibleBookmarkList });
     }
 
     private focusMainAreaLandmarkAndCloseMenu() {
@@ -875,15 +782,18 @@ class Reader extends React.Component<IProps, IState> {
 
         this.focusMainAreaLandmarkAndCloseMenu();
 
-        const newUrl = publicationJsonUrl + "/../" + url;
+        const newUrl = this.state.publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
     }
 
     private async handleToggleBookmark(fromKeyboard?: boolean) {
 
-        if (!this.state.currentLocation || !this.state.currentLocation.locator) {
+        if ( !this.state.currentLocation?.locator) {
             return;
         }
+
+        const locator = this.state.currentLocation.locator;
+        const visibleBookmark = this.state.visibleBookmarkList;
 
         await this.checkBookmarks(); // updates this.state.visibleBookmarkList
 
@@ -891,25 +801,23 @@ class Reader extends React.Component<IProps, IState> {
 
             // "toggle" only if there is a single bookmark in the content visible inside the viewport
             // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
-            this.state.visibleBookmarkList.length === 1 &&
+            visibleBookmark.length === 1 &&
 
             // CTRL-B (keyboard interaction) and audiobooks:
             // do not toggle: never delete, just add current reading location to bookmarks
             !fromKeyboard &&
             !this.state.currentLocation.audioPlaybackInfo &&
-            (!this.state.currentLocation.locator.text?.highlight ||
+            (!locator.text?.highlight ||
 
             // "toggle" only if visible bookmark == current reading location
-            this.state.visibleBookmarkList[0].locator.href === this.state.currentLocation.locator.href &&
-            // tslint:disable-next-line: max-line-length
-            this.state.visibleBookmarkList[0].locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector &&
-            // tslint:disable-next-line: max-line-length
-            this.state.visibleBookmarkList[0].locator.text?.highlight === this.state.currentLocation.locator.text.highlight
+            visibleBookmark[0].locator.href === locator.href &&
+            visibleBookmark[0].locator.locations.cssSelector === locator.locations.cssSelector &&
+            visibleBookmark[0].locator.text?.highlight === locator.text.highlight
             )
         ;
 
         if (deleteAllVisibleBookmarks) {
-            for (const bookmark of this.state.visibleBookmarkList) {
+            for (const bookmark of visibleBookmark) {
                 try {
                     await apiAction("reader/deleteBookmark", bookmark.identifier);
                 } catch (e) {
@@ -922,24 +830,24 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         const addCurrentLocationToBookmarks =
-            !this.state.visibleBookmarkList.length ||
-            !this.state.visibleBookmarkList.find((b) => {
+            !visibleBookmark.length ||
+            !visibleBookmark.find((b) => {
                 const identical =
-                    b.locator.href === this.state.currentLocation.locator.href &&
-                    (b.locator.locations.progression === this.state.currentLocation.locator.locations.progression ||
-                        b.locator.locations.cssSelector && this.state.currentLocation.locator.locations.cssSelector &&
-                        b.locator.locations.cssSelector === this.state.currentLocation.locator.locations.cssSelector) &&
-                    b.locator.text?.highlight === this.state.currentLocation.locator.text?.highlight;
+                    b.locator.href === locator.href &&
+                    (b.locator.locations.progression === locator.locations.progression ||
+                        b.locator.locations.cssSelector && locator.locations.cssSelector &&
+                        b.locator.locations.cssSelector === locator.locations.cssSelector) &&
+                    b.locator.text?.highlight === locator.text?.highlight;
 
                 return identical;
             }) &&
-            (this.state.currentLocation.audioPlaybackInfo || this.state.currentLocation.locator.text?.highlight);
+            (this.state.currentLocation.audioPlaybackInfo || locator.text?.highlight);
 
         if (addCurrentLocationToBookmarks) {
 
             let name: string | undefined;
-            if (this.state.currentLocation.locator?.text?.highlight) {
-                name = this.state.currentLocation.locator.text.highlight;
+            if (locator?.text?.highlight) {
+                name = locator.text.highlight;
             } else if (this.state.currentLocation.selectionInfo?.cleanText) {
                 name = this.state.currentLocation.selectionInfo.cleanText;
             } else if (this.state.currentLocation.audioPlaybackInfo) {
@@ -949,8 +857,9 @@ class Reader extends React.Component<IProps, IState> {
                 const timestamp = formatTime(this.state.currentLocation.audioPlaybackInfo.globalTime);
                 name = `${timestamp} (${percent}%)`;
             }
+
             try {
-                await apiAction("reader/addBookmark", queryParams.pubId, this.state.currentLocation.locator, name);
+                await apiAction("reader/addBookmark", this.props.pubId, locator, name);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }
@@ -958,16 +867,17 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleReaderClose() {
-        this.props.closeReader(this.props.reader);
+        this.props.closeReader();
     }
 
     private handleReaderDetach() {
-        this.props.detachReader(this.props.reader);
+        this.props.detachReader();
+        this.setState({ readerMode: ReaderMode.Detached });
     }
 
     private handleFullscreenClick() {
         this.props.toggleFullscreen(!this.state.fullscreen);
-        this.setState({fullscreen: !this.state.fullscreen});
+        this.setState({ fullscreen: !this.state.fullscreen });
     }
 
     private handleSettingsClick() {
@@ -979,8 +889,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleSettingsSave(readerConfig: ReaderConfig) {
-        const store = diReaderGet("store");
-        store.dispatch(readerActions.configSetRequest.build(readerConfig));
+        this.props.setConfig(readerConfig);
 
         if (this.state.r2Publication) {
             readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
@@ -1010,13 +919,12 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
 
-        // TODO: smarter clone?
-        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+        const readerConfig = r.clone(this.props.readerConfig);
 
         const typedName =
             name as (typeof value extends string ? keyof ReaderConfigStrings : keyof ReaderConfigBooleans);
         const typedValue =
-                value as (typeof value extends string ? string : boolean);
+            value as (typeof value extends string ? string : boolean);
         readerConfig[typedName] = typedValue;
 
         if (readerConfig.paged) {
@@ -1038,8 +946,7 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
 
-        // TODO: smarter clone?
-        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+        const readerConfig = r.clone(this.props.readerConfig);
 
         readerConfig[name] = optionsValues[name][valueNum];
 
@@ -1056,9 +963,17 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private findBookmarks() {
-        apiAction("reader/findBookmarks", queryParams.pubId)
-            .then((bookmarks) => this.setState({bookmarks}))
+        apiAction("reader/findBookmarks", this.props.pubId)
+            .then((bookmarks) => this.setState({ bookmarks }))
             .catch((error) => console.error("Error to fetch api reader/findBookmarks", error));
+    }
+
+    // TODO
+    // replaced getMode API with an action broadcasted to every reader and catch by reducers
+    private getReaderMode = () => {
+        apiAction("reader/getMode")
+            .then((mode) => this.setState({ readerMode: mode }))
+            .catch((error) => console.error("Error to fetch api reader/getMode", error));
     }
 }
 
@@ -1084,13 +999,14 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     }
 
     return {
-        reader: state.reader.reader,
+        readerInfo: state.reader.info,
         readerConfig: state.reader.config,
         indexes,
         keyboardShortcuts: state.keyboard.shortcuts,
-        mode: state.reader.mode,
         infoOpen: state.dialog.open &&
             state.dialog.type === DialogTypeName.PublicationInfoReader,
+        pubId: state.reader.info.publicationIdentifier,
+        locator: state.reader.locator,
     };
 };
 
@@ -1103,11 +1019,11 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dispatch(readerActions.fullScreenRequest.build(false));
             }
         },
-        closeReader: (reader: ReaderModel) => {
-            dispatch(readerActions.closeRequest.build(reader, true));
+        closeReader: () => {
+            dispatch(readerActions.closeRequest.build());
         },
-        detachReader: (reader: ReaderModel) => {
-            dispatch(readerActions.detachModeRequest.build(reader));
+        detachReader: () => {
+            dispatch(readerActions.detachModeRequest.build());
         },
         displayPublicationInfo: (pubId: string) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
@@ -1115,6 +1031,12 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                     publicationIdentifier: pubId,
                 },
             ));
+        },
+        setLocator: (locator: LocatorExtended) => {
+            dispatch(readerLocalActionSetLocator.build(locator));
+        },
+        setConfig: (config: ReaderConfig) => {
+            dispatch(readerLocalActionSetConfig.build(config));
         },
     };
 };

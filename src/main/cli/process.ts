@@ -32,7 +32,8 @@ const gotTheLock = lockInstance();
 //  as it has already been executed by the "second instance" itself (see Yargs handlers).
 
 // main Fucntion variable
-let mainFct: () => void = () => ({});
+// tslint:disable-next-line: no-empty
+let mainFct: (flushSession: boolean) => (void | Promise<void>) = async () => {};
 
 // yargs configuration
 yargs
@@ -120,25 +121,32 @@ yargs
                 type: "string",
             })
         ,
-        (argv) => {
+        async (argv) => {
             // if it's the main instance
             if (gotTheLock) {
-                mainFct();
-                app.whenReady().then(async () => {
+
+                // flush session because user ask to read one publication
+                await Promise.all([mainFct(true)]);
+
+                try {
+
+                    await app.whenReady();
+
                     try {
                         if (!await openTitleFromCli(argv.title)) {
                             const errorMessage = `There is no publication title match for \"${argv.title}\"`;
                             throw new Error(errorMessage);
                         }
                     } catch (e) {
-                        debug("read error :", e);
+                        debug("$0 error :", e);
                         const errorTitle = "No publication to read";
                         dialog.showErrorBox(errorTitle, e.toString());
                         process.stderr.write(e.toString() + EOL);
                     }
-                }).catch(() => {
+
+                } catch (_err) {
                     // ignore
-                });
+                }
             } else {
                 app.exit(0);
             }
@@ -154,12 +162,26 @@ yargs
             })
                 .completion()
         ,
-        (argv) => {
+        async (argv) => {
             // if it's the main instance
             if (gotTheLock) {
-                mainFct();
+
+                // flush session if user want to read his book
+                await Promise.all(
+                    [
+                        mainFct(
+                            argv.path
+                                ? true
+                                : false,
+                        ),
+                    ],
+                );
+
                 if (argv.path) {
-                    app.whenReady().then(async () => {
+
+                    try {
+                        await app.whenReady();
+
                         try {
                             if (!await openFileFromCli(argv.path)) {
                                 const errorMessage = `Import failed for the publication path : ${argv.path}`;
@@ -171,11 +193,13 @@ yargs
                             dialog.showErrorBox(errorTitle, e.toString());
                             process.stderr.write(e.toString() + EOL);
                         }
-                    }).catch(() => {
+
+                    } catch (_err) {
                         // ignore
-                    });
+                    }
                 }
             } else {
+
                 app.exit(0);
             }
         },
@@ -193,12 +217,15 @@ yargs
  * @param main main function to exec
  * @param processArgv process.argv
  */
-export function cli(main: () => void, processArgv = process.argv) {
+export function cli(main: (flushSession: boolean) => void | Promise<void>, processArgv = process.argv) {
     mainFct = main;
+
     const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
         .slice((_PACKAGING === "0") ? 2 : 1);
+
     debug("processArgv", processArgv, "arg", argFormated);
+
     yargs.parse(argFormated);
 }
 

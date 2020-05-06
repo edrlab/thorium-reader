@@ -6,20 +6,19 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 export const ID = "STREAMER_PUBLICATION_CLOSE_SUCCESS";
 
 export interface Payload {
-    publicationDocument: PublicationDocument;
+    publicationIdentifier: string;
 }
-export function build(publicationDocument: PublicationDocument):
+export function build(publicationIdentifier: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            publicationDocument,
+            publicationIdentifier,
         },
     };
 }

@@ -13,15 +13,24 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { initStore } from "readium-desktop/renderer/reader/redux/store/memory";
 import { Store } from "redux";
 
+import { IReaderRootState } from "../../common/redux/states/renderer/readerRootState";
 import App from "./components/App";
 import { diReaderSymbolTable as diSymbolTable } from "./diSymbolTable";
-import { IReaderRootState } from "./redux/states";
 
 // Create container used for dependency injection
 const container = new Container();
 
-const store = initStore();
-container.bind<Store<IReaderRootState>>(diSymbolTable.store).toConstantValue(store);
+const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
+
+    const store = initStore(preloadedState);
+
+    container.bind<Store<IReaderRootState>>(diSymbolTable.store).toConstantValue(store);
+
+    const locale = store.getState().i18n.locale;
+    await translator.setLocale(locale);
+
+    return store;
+};
 
 // Create translator
 const translator = new Translator();
@@ -49,6 +58,7 @@ const {
 
 export {
     diGet as diReaderGet,
+    createStoreFromDi,
     lazyInject,
     lazyInjectNamed,
     lazyInjectTagged,

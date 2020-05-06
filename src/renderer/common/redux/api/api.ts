@@ -14,7 +14,7 @@ import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 
-import { ICommonRootState } from "../states";
+import { ICommonRootState } from "../../../../common/redux/states/renderer/commonRootState";
 
 export function apiDispatch(dispatch: Dispatch) {
     return (requestId: string = uuidv4()) =>

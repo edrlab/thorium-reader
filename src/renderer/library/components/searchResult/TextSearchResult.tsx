@@ -54,7 +54,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
         this.unsubscribe = apiSubscribe([
             "publication/import",
             "publication/delete",
-            "catalog/addEntry",
+            // "catalog/addEntry",
             "publication/updateTags",
         ], this.searchPublications);
     }

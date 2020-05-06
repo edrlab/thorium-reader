@@ -7,66 +7,90 @@
 
 import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
+// import { error } from "readium-desktop/common/error";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
-import { all, call, put } from "redux-saga/effects";
+import { all, call, delay, put, take } from "redux-saga/effects";
 
 import { apiSaga } from "../api";
 
 const REQUEST_ID = "PUBINFO_READER_AND_LIB_REQUEST_ID";
 
 // Logger
-const debug = debug_("readium-desktop:renderer:redux:saga:publication-info-readerAndLib");
+const filename_ = "readium-desktop:renderer:redux:saga:publication-info-readerAndLib";
+const debug = debug_(filename_);
 
 // Triggered when a publication-info-reader is asked
-function* checkReaderAndLibPublicationWatcher() {
-    while (true) {
-        const action  = yield* takeTyped(dialogActions.openRequest.build);
+function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction) {
+    if (
+        action.payload?.type === DialogTypeName.PublicationInfoReader
+        || action.payload?.type === DialogTypeName.PublicationInfoLib
+    ) {
 
-        if (action.payload?.type === DialogTypeName.PublicationInfoReader
-            || action.payload?.type === DialogTypeName.PublicationInfoLib) {
+        const dataPayload = (action.payload as
+            dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoReader>).data;
+        const id = dataPayload?.publicationIdentifier;
 
-            const dataPayload = (action.payload as
-                dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoReader>).data;
-            const id = dataPayload?.publicationIdentifier;
+        // dispatch to API a publication get request
+        if (id) {
 
-            // dispatch to API a publication get request
-            if (id) {
-                yield* apiSaga("publication/get", REQUEST_ID, id, true);
+            const { b: getAction } = yield* raceTyped({
+                a: delay(5000),
+                b: call(getApi, id),
+            });
+
+            if (!getAction) {
+                debug("timeout 5s");
+                return;
             }
-        }
 
-        yield call(updateReaderAndLibPublicationWatcher);
+            yield call(updateReaderAndLibPublication, getAction);
+        }
+    }
+}
+
+function* getApi(id: string) {
+
+    yield apiSaga("publication/get", REQUEST_ID, id, true);
+    while (true) {
+        const action:
+            apiActions.result.TAction<ReturnPromiseType<TApiMethod["publication/get"]>>
+            = yield take(apiActions.result.build);
+
+        const { requestId } = action.meta.api;
+        if (requestId === REQUEST_ID) {
+            return action;
+        }
     }
 }
 
 // Triggered when the publication data are available from the API
-function* updateReaderAndLibPublicationWatcher() {
-    const action = yield* takeTyped(apiActions.result.build);
-    const { requestId } = action.meta.api;
+function* updateReaderAndLibPublication(action: apiActions.result.TAction<PublicationView>) {
+    debug("reader publication from publicationInfo received");
 
-    if (requestId === REQUEST_ID) {
-        debug("reader publication from publicationInfo received");
+    const publicationView = action.payload;
 
-        const publicationView = action.payload as
-            ReturnPromiseType<TApiMethod["publication/get"]>;
+    if (publicationView) {
+        debug("opdsPublicationResult:", publicationView);
 
-        if (publicationView) {
-            debug("opdsPublicationResult:", publicationView);
+        const publication = publicationView;
 
-            const publication = publicationView;
-
-            yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoReader>({
-                publication,
-            }));
-        }
+        yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoReader>({
+            publication,
+        }));
     }
 }
 
-export function* watchers() {
-    yield all([
-        call(checkReaderAndLibPublicationWatcher),
+export function saga() {
+    return all([
+        takeSpawnLeading(
+            dialogActions.openRequest.ID,
+            checkReaderAndLibPublication,
+            (e) => debug(e),
+        ),
     ]);
 }

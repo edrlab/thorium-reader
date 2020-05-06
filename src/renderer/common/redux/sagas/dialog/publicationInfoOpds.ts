@@ -6,92 +6,59 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { dialogActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
+import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
-import { all, call, put } from "redux-saga/effects";
+import { call, delay, put, race, take } from "redux-saga/effects";
+import { opdsBrowse } from "../opdsBrowse";
 
-import { apiSaga } from "../api";
+// Test URL : http://readium2.herokuapp.com/opds-v1-v2-convert/http%3A%2F%2Fmanybooks.net%2Fopds%2Fnew_titles.php
 
 const REQUEST_ID = "PUBINFO_OPDS_REQUEST_ID";
 
 // Logger
-const debug = debug_("readium-desktop:renderer:redux:saga:publication-info-opds");
-
-// global access to opdsLInksView in iterator
-let linksIterator: IterableIterator<IOpdsLinkView>;
-
-// While a link is available dispatch API Redux
-function* browsePublication() {
-    const linkIterator = linksIterator.next();
-
-    // https://github.com/microsoft/TypeScript/issues/33353
-    if (!linkIterator.done) {
-        const link = linkIterator.value as IOpdsLinkView;
-        if (link) {
-            yield* apiSaga("opds/browse", REQUEST_ID, link.url);
-        }
-    }
-}
-
-// Triggered when a publication-info-opds is asked
-function* checkOpdsPublicationWatcher() {
-    while (true) {
-        const action = yield* takeTyped(dialogActions.openRequest.build);
-
-        if (action.payload?.type === DialogTypeName.PublicationInfoOpds) {
-
-            debug("Triggered publication-info-opds");
-
-            const dataPayload = (action.payload as
-                dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoOpds>).data;
-            const publication = dataPayload?.publication;
-
-            debug("publication entryLinksArray", publication.entryLinks);
-
-            // dispatch the publication to publication-info even not complete
-            yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoOpds>({
-                publication,
-                coverZoom: false,
-            }));
-
-            // find the entry url even if all data is already load in publication
-            if (publication && Array.isArray(publication.entryLinks) && publication.entryLinks[0]) {
-                linksIterator = publication.entryLinks.values();
-
-                yield* browsePublication();
-            }
-        }
-    }
-}
+const filename_ = "readium-desktop:renderer:redux:saga:publication-info-opds";
+const debug = debug_(filename_);
 
 // Triggered when the publication data are available from the API
-function* updateOpdsPublicationWatcher() {
-    while (true) {
-        const action = yield* takeTyped(apiActions.result.build);
-        const { requestId } = action.meta.api;
+function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
 
-        if (requestId === REQUEST_ID) {
-            debug("opds publication from publicationInfo received");
+    for (const link of links) {
+
+        debug("updateOpdsInfoWithEntryLink", link);
+        if (link?.url) {
+            const { b: action } = yield* raceTyped({
+                a: delay(5000),
+                b: call(opdsBrowse, link.url, REQUEST_ID),
+            });
+
+            if (!action) {
+                continue;
+            }
 
             const actionError = action.error;
-
-            const httpRes = action.payload as
-                ReturnPromiseType<TApiMethod["opds/browse"]>;
+            const httpRes = action.payload;
 
             const opdsResultView = httpRes?.data;
             debug("Payload: ", opdsResultView);
 
             const publication = opdsResultView.publications ? opdsResultView.publications[0] : undefined;
+            publication.authors = publication.authors
+                ? Array.isArray(publication.authors)
+                    ? publication.authors
+                    : [publication.authors]
+                : undefined;
 
-            if (!actionError
+            if (
+                !actionError
                 && httpRes.isSuccess
-                && publication && publication?.title
+                && publication?.title
                 && Array.isArray(publication.authors)
             ) {
+
+                debug("dispatch");
                 yield put(
                     dialogActions.updateRequest.build<DialogTypeName.PublicationInfoOpds>(
                         {
@@ -100,23 +67,57 @@ function* updateOpdsPublicationWatcher() {
                     ),
                 );
 
-            // could be 401 OPDS Authentication document,
-            // which we ignore in this case because should not occur with "entry" URLs (unlike "borrow", for example)
-            } else {
+                // could be 401 OPDS Authentication document,
+                // tslint:disable-next-line: max-line-length
+                // which we ignore in this case because should not occur with "entry" URLs (unlike "borrow", for example)
+                debug("opds publication from publicationInfo received");
 
-                if (actionError) {
-                    debug(httpRes);
-                }
+                break;
+            }
 
-                yield* browsePublication();
+            if (actionError) {
+                debug(httpRes);
             }
         }
     }
 }
 
-export function* watchers() {
-    yield all([
-        call(checkOpdsPublicationWatcher),
-        call(updateOpdsPublicationWatcher),
-    ]);
+// Triggered when a publication-info-opds is asked
+function* checkOpdsPublicationWatcher(action: dialogActions.openRequest.TAction) {
+
+    debug("dialog open");
+
+    if (action.payload?.type === DialogTypeName.PublicationInfoOpds) {
+
+        debug("Triggered publication-info-opds");
+
+        const dataPayload = (action.payload as
+            dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoOpds>).data;
+        const publication = dataPayload?.publication;
+
+        debug("publication entryLinksArray", publication.entryLinks);
+
+        // dispatch the publication to publication-info even not complete
+        yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoOpds>({
+            publication,
+            coverZoom: false,
+        }));
+
+        // find the entry url even if all data is already load in publication
+        if (publication && Array.isArray(publication.entryLinks) && publication.entryLinks[0]) {
+
+            yield race({
+                a: call(updateOpdsInfoWithEntryLink, publication.entryLinks),
+                b: take(dialogActions.closeRequest.ID),
+            });
+        }
+    }
+}
+
+export function saga() {
+    return takeSpawnLatest(
+        dialogActions.openRequest.ID,
+        checkOpdsPublicationWatcher,
+        (e) => debug(e),
+    );
 }

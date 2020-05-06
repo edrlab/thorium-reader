@@ -5,14 +5,49 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { SagaIterator } from "redux-saga";
-import { put, take } from "redux-saga/effects";
+import * as debug_ from "debug";
+import { app, protocol } from "electron";
+import * as path from "path";
+import { diMainGet } from "readium-desktop/main/di";
+import { call } from "redux-saga/effects";
 
-import { appActions } from "readium-desktop/main/redux/actions";
+// Logger
+const filename_ = "readium-desktop:main:saga:app";
+const debug = debug_(filename_);
 
-export function* appInitWatcher(): SagaIterator {
-    while (true) {
-        yield take(appActions.initRequest.ID);
-        yield put(appActions.initSuccess.build());
-    }
+export function* init() {
+
+    app.setAppUserModelId("io.github.edrlab.thorium");
+
+    // moved to saga/persist.ts
+    // app.on("window-all-closed", async () => {
+    //     // At the moment, there are no menu items to revive / re-open windows,
+    //     // so let's terminate the app on MacOS too.
+    //     // if (process.platform !== "darwin") {
+    //     //     app.quit();
+    //     // }
+
+    //     setTimeout(() => app.exit(0), 2000);
+    // });
+
+    app.on("accessibility-support-changed", (_ev, accessibilitySupportEnabled) => {
+        debug(`accessibilitySupportEnabled: ${accessibilitySupportEnabled}`);
+    });
+
+    yield call(() => app.whenReady());
+
+    debug("Main app ready");
+
+    // register file protocol to link locale file to renderer
+    protocol.registerFileProtocol("store",
+        (request, callback) => {
+
+            // Extract publication item relative url
+            const relativeUrl = request.url.substr(6);
+            const pubStorage = diMainGet("publication-storage");
+            const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
+            callback(filePath);
+        },
+    );
+
 }

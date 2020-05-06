@@ -6,5 +6,5 @@
 // ==LICENSE-END==
 
 export interface WinState {
-    winId?: string | undefined;
+    identifier: string | undefined;
 }

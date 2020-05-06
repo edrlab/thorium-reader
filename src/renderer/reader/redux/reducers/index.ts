@@ -9,18 +9,26 @@ import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
+import {
+    IReaderRootState, IReaderStateReader,
+} from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
-import { readerReducer } from "readium-desktop/renderer/reader/redux/reducers/reader";
 import { combineReducers } from "redux";
 
-import { IReaderRootState } from "../states";
+import { readerInfoReducer } from "./info";
+import { readerConfigReducer } from "./readerConfig";
+import { readerLocatorReducer } from "./readerLocator";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
         api: apiReducer,
         i18n: i18nReducer,
-        reader: readerReducer,
+        reader: combineReducers<IReaderStateReader>({ // dehydrated from main process registry (preloaded state)
+            config: readerConfigReducer,
+            info: readerInfoReducer,
+            locator: readerLocatorReducer,
+        }),
         win: winReducer,
         dialog: dialogReducer,
         toast: toastReducer,

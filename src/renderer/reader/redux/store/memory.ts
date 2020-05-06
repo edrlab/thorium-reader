@@ -5,22 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { reduxSyncMiddleware } from "readium-desktop/renderer/reader/redux/middleware/sync";
+import { rootReducer } from "readium-desktop/renderer/reader/redux/reducers";
+import { rootSaga } from "readium-desktop/renderer/reader/redux/sagas";
 import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 
-import { reduxSyncMiddleware } from "readium-desktop/renderer/reader/redux/middleware/sync";
-import { rootReducer } from "readium-desktop/renderer/reader/redux/reducers";
-import { rootSaga } from "readium-desktop/renderer/reader/redux/sagas";
-import { IReaderRootState } from "../states";
+import { reduxPersistMiddleware } from "../middleware/persistence";
 
-export function initStore(): Store<IReaderRootState> {
+export function initStore(preloadedState: Partial<IReaderRootState>): Store<IReaderRootState> {
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
         rootReducer(),
+        preloadedState,
         composeWithDevTools(
             applyMiddleware(
                 reduxSyncMiddleware,
+                reduxPersistMiddleware,
                 sagaMiddleware,
             ),
         ),

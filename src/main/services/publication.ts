@@ -38,13 +38,17 @@ import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 
+import { PublicationViewConverter } from "../converter/publication";
 import { getTagsFromOpdsPublication } from "../converter/tools/getTags";
 import { extractCrc32OnZip } from "../crc";
+import { getLibraryWindowFromDi } from "../di";
 import { lpfToAudiobookConverter } from "../lpfConverter";
+import { publicationActions } from "../redux/actions";
 import { RootState } from "../redux/states";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
-import { WinRegistry } from "./win-registry";
+
+// import { WinRegistry } from "./win-registry";
 
 // import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
@@ -74,8 +78,11 @@ export class PublicationService {
     @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
-    @inject(diSymbolTable["win-registry"])
-    private readonly winRegistry!: WinRegistry;
+    @inject(diSymbolTable["publication-view-converter"])
+    private readonly publicationViewConverter!: PublicationViewConverter;
+
+    // @inject(diSymbolTable["win-registry"])
+    // private readonly winRegistry!: WinRegistry;
 
     public async importEpubOrLcplFile(
         filePath: string,
@@ -308,9 +315,44 @@ export class PublicationService {
         return returnPublicationDocument;
     }
 
-    public async deletePublication(publicationIdentifier: string) {
+    public async getPublication(identifier: string, checkLcpLsd: boolean = false): Promise<PublicationView> {
 
-        this.store.dispatch(readerActions.closeRequestFromPublication.build(publicationIdentifier));
+        let doc: PublicationDocument;
+        try {
+            doc = await this.publicationRepository.get(identifier);
+        } catch (e) {
+            debug(`can't get ${identifier}`, e);
+            throw new Error(`publication not found`); // TODO translation
+        }
+
+        try {
+            if (checkLcpLsd && doc.lcp) {
+                doc = await this.lcpManager.checkPublicationLicenseUpdate(doc);
+            }
+        } catch (e) {
+            debug(`error on checkPublicationLicenseUpdate`, e);
+            throw new Error(`check lcp license in publication failed`); // TODO translation
+        }
+
+        try {
+            return this.publicationViewConverter.convertDocumentToView(doc);
+        } catch (e) {
+            debug("error on convertDocumentToView", e);
+
+            // tslint:disable-next-line: no-floating-promises
+            // this.deletePublication(identifier);
+
+            throw new Error(`${doc.title} is corrupted and should be removed`); // TODO translation
+        }
+    }
+
+    public async deletePublication(identifier: string) {
+
+        this.store.dispatch(readerActions.closeRequestFromPublication.build(identifier));
+
+        // dispatch action to update publication/lastReadingQueue reducer
+        this.store.dispatch(publicationActions.deletePublication.build(identifier));
+
         await new Promise((res, _rej) => {
             setTimeout(() => {
                 res();
@@ -318,22 +360,23 @@ export class PublicationService {
         });
 
         // Remove from database
-        await this.publicationRepository.delete(publicationIdentifier);
+        await this.publicationRepository.delete(identifier);
 
         // Remove from storage
-        this.publicationStorage.removePublication(publicationIdentifier);
+        this.publicationStorage.removePublication(identifier);
     }
 
     public async exportPublication(publicationView: PublicationView) {
 
-        const libraryAppWindow = this.winRegistry.getLibraryWindow();
+        const libraryAppWindow = getLibraryWindowFromDi();
 
         // Open a dialog to select a folder then copy the publication in it
         const res = await dialog.showOpenDialog(
-            libraryAppWindow ? libraryAppWindow.browserWindow : undefined,
+            libraryAppWindow ? libraryAppWindow : undefined,
             {
                 properties: ["openDirectory"],
             });
+
         if (!res.canceled) {
             if (res.filePaths && res.filePaths.length > 0) {
                 let destinationPath = res.filePaths[0];

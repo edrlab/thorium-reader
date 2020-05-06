@@ -11,6 +11,7 @@ import { ILcpModuleApi } from "./interface/lcpApi.interface";
 import { IOpdsModuleApi } from "./interface/opdsApi.interface";
 import { IPublicationModuleApi } from "./interface/publicationApi.interface";
 import { IReaderModuleApi } from "./interface/readerApi.interface";
+import { ISessionModuleApi } from "./interface/session.interface";
 
 export type TApiMethod =
     ICatalogModuleApi &
@@ -18,6 +19,7 @@ export type TApiMethod =
     IOpdsModuleApi &
     IKeyboardModuleApi &
     IPublicationModuleApi &
-    IReaderModuleApi;
+    IReaderModuleApi &
+    ISessionModuleApi;
 
 export type TApiMethodName = keyof TApiMethod;
