@@ -75,26 +75,28 @@ export default class AddTag extends React.Component<IProps, IState> {
 
         this.setState({ newTagName: "" });
 
-        const tagsName: string[] = [];
-        for (const tag of tags) {
-            if (typeof tag === "string") {
-                if (tag === tagName) {
-                    return;
+        if (tagName) {
+
+            const tagsName: string[] = [];
+            for (const tag of tags) {
+                if (typeof tag === "string") {
+                    if (tag === tagName) {
+                        return;
+                    } else {
+                        tagsName.push(tag);
+                    }
                 } else {
-                    tagsName.push(tag);
-                }
-            } else {
-                if (tag.name === tagName) {
-                    return;
-                } else {
-                    tagsName.push(tag.name);
+                    if (tag.name === tagName) {
+                        return;
+                    } else {
+                        tagsName.push(tag.name);
+                    }
                 }
             }
+
+            tagsName.push(tagName);
+            this.props.setTags(tagsName);
         }
-
-        tagsName.push(tagName);
-        this.props.setTags(tagsName);
-
     }
 
     private handleChangeName = (e: TChangeEventOnInput) => {
