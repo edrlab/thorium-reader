@@ -74,7 +74,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
             if ((cv as IOpdsContributorView)?.name) {
                 str = `${pv}${(cv as IOpdsContributorView).name}`;
             }
-            return str ? `${str},` : pv;
+            return str ? `${str}, ` : pv;
         }, "");
         let formatedPublishedYear = "";
         const { translator } = this.props;
