@@ -65,17 +65,18 @@ export class PublicationListElement extends React.Component<IProps, IState> {
         this.menuId = "menu-" + uuidv4();
     }
 
-    public render(): React.ReactElement<{}>  {
+    public render(): React.ReactElement<{}> {
         const pub = this.props.publicationViewMaybeOpds;
         const publishers = pub.publishers as Array<string | IOpdsContributorView>;
-        const formatedPublishers = publishers.reduce(
-            (pv, cv) => {
-            let str: string;
-            if ((cv as IOpdsContributorView)?.name) {
-                str = `${pv}${(cv as IOpdsContributorView).name}`;
-            }
-            return str ? `${str}, ` : pv;
-        }, "");
+        const formatedPublishers = publishers
+            .reduce(
+                (pv, cv) => {
+                    if ((cv as IOpdsContributorView)?.name) {
+                        return [...pv, `${pv}${(cv as IOpdsContributorView).name}`];
+                    }
+                    return cv && typeof cv === "string" ? [...pv, cv] : pv;
+                }, [])
+            .join(", ");
         let formatedPublishedYear = "";
         const { translator } = this.props;
 
