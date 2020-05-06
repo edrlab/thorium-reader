@@ -91,7 +91,7 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 
 // TODO: centralize this code, currently duplicated
 // see src/main/streamer.js
-const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayload_R2_EVENT_READIUMCSS => {
+export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayload_R2_EVENT_READIUMCSS => {
 
     const cssJson: IReadiumCSS = {
 
@@ -958,8 +958,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleSettingsSave(readerConfig: ReaderConfig) {
-        const store = diReaderGet("store");
-        store.dispatch(readerLocalActionSetConfig.build(readerConfig));
+        this.props.setConfig(readerConfig);
 
         if (this.state.r2Publication) {
             readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
@@ -989,8 +988,7 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
 
-        // TODO: smarter clone?
-        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+        const readerConfig = r.clone(this.props.readerConfig);
 
         const typedName =
             name as (typeof value extends string ? keyof ReaderConfigStrings : keyof ReaderConfigBooleans);

@@ -10,10 +10,11 @@ import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "READER_SET_CONFIG_IN_RENDERER";
 
-interface IPayload extends Partial<ReaderConfig> {
+// tslint:disable-next-line: no-empty-interface
+interface IPayload extends ReaderConfig {
 }
 
-export function build(readerConfig: Partial<ReaderConfig>):
+export function build(readerConfig: ReaderConfig):
     Action<typeof ID, IPayload> {
 
     return {
