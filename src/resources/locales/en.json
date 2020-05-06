@@ -265,9 +265,9 @@
             "margin": "Margin",
             "paginated": "Paginated",
             "save": {
-                "apply": "apply to default",
-                "reset": "reset to default",
-                "title": "save default config"
+                "apply": "save",
+                "reset": "reset",
+                "title": "Configuration"
             },
             "scrolled": "Scrollable",
             "spacing": "Spacing",

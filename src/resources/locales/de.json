@@ -265,9 +265,9 @@
             "margin": "Seitenränder",
             "paginated": "Seitendarstellung",
             "save": {
-                "apply": "",
-                "reset": "",
-                "title": ""
+                "apply": "Speichern",
+                "reset": "Zurücksetzen",
+                "title": "Aufbau"
             },
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",

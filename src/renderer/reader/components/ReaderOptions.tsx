@@ -83,10 +83,6 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                 title: __("reader.settings.text"),
                 content: this.textContent(),
             },
-            {
-                title: __("reader.settings.save.title"),
-                content: this.saveConfig(),
-            },
         ];
 
         if (!isAudioBook) {
@@ -105,6 +101,11 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                 },
             ]);
         }
+
+        sections.push({
+            title: __("reader.settings.save.title"),
+            content: this.saveConfig(),
+        });
 
         return (
             <SideMenu

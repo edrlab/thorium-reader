@@ -265,9 +265,9 @@
             "margin": "Marge",
             "paginated": "Paginé",
             "save": {
-                "apply": "appliquer la config",
-                "reset": "reset de la config",
-                "title": "sauvegarde de la config"
+                "apply": "Sauvegarder",
+                "reset": "Réinitialiser",
+                "title": "Configuration"
             },
             "scrolled": "Défilé",
             "spacing": "Espacement",
