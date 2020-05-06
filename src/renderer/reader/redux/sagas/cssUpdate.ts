@@ -5,9 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { readiumCssUpdate } from "r2-navigator-js/dist/es6-es2015/src/electron/renderer";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+
+import { readiumCssUpdate } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionSetConfig } from "../actions";
 

@@ -8,17 +8,15 @@
 import * as debug_ from "debug";
 import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
-import {
-    trackBrowserWindow,
-} from "r2-navigator-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
 import { callTyped, putTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
+import { winActions } from "readium-desktop/main/redux/actions";
 import {
     _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
-import { winActions } from "readium-desktop/main/redux/actions";
+import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
