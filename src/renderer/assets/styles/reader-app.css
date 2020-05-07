@@ -308,18 +308,27 @@ button {
     & ul.tts_toolbar {
       margin-left: auto;
       margin-right: auto;
+      display: flex;
 
       & > li {
-        border-right: 1px solid #c1c1c1;
-      }
-      & > li:first-child {
         border-left: 1px solid #c1c1c1;
+        border-right: 0;
       }
+      & > li:last-child {
+        display: flex;
+        align-items: center;
+      }
+
       & > li.button_audio {
         border: 0;
         & > button {
           opacity: 0.5;
         }
+      }
+      & > li > select {
+        padding: 0;
+        margin: 0;
+        margin-left: 1em;
       }
     }
 

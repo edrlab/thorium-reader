@@ -550,6 +550,7 @@ declare namespace typed_i18n {
     readonly "pause": string,
     readonly "play": string,
     readonly "previous": string,
+    readonly "speed": string,
     readonly "stop": string
   }
 };
@@ -698,6 +699,7 @@ declare namespace typed_i18n {
   readonly "pause": string,
   readonly "play": string,
   readonly "previous": string,
+  readonly "speed": string,
   readonly "stop": string
 };
   (_: "reader.tts.activate", __?: {}): string;
@@ -705,6 +707,7 @@ declare namespace typed_i18n {
   (_: "reader.tts.pause", __?: {}): string;
   (_: "reader.tts.play", __?: {}): string;
   (_: "reader.tts.previous", __?: {}): string;
+  (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "keyboard": {

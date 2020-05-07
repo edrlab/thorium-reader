@@ -53,7 +53,9 @@ interface IBaseProps extends TranslatorProps {
     handleTTSResume: () => void;
     handleTTSPrevious: () => void;
     handleTTSNext: () => void;
+    handleTTSPlaybackRate: (speed: string) => void;
     ttsState: TTSStateEnum;
+    ttsPlaybackRate: string;
 
     handleReaderClose: () => void;
     handleReaderDetach: () => void;
@@ -221,6 +223,22 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                 >
                                     <SVG svg={SkipNext} title={ __("reader.tts.next")}/>
                                 </button>
+                            </li>
+                            <li>
+                                <select title={ __("reader.tts.speed")}
+                                    onChange={(ev) => {
+                                        this.props.handleTTSPlaybackRate(ev.target.value.toString());
+                                    }}
+                                    value={this.props.ttsPlaybackRate}
+                                    >
+                                    <option value="2">2x</option>
+                                    <option value="1.75">1.75x</option>
+                                    <option value="1.5">1.5x</option>
+                                    <option value="1.25">1.25x</option>
+                                    <option value="1">1x</option>
+                                    <option value="0.75">0.75x</option>
+                                    <option value="0.5">0.5x</option>
+                                </select>
                             </li>
                             </>
                             }

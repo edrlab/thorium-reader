@@ -54,7 +54,7 @@ import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssUpdate, setEpubReadingSystemInfo,
     setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, ttsListen, ttsNext,
-    ttsPause, ttsPlay, ttsPrevious, ttsResume, TTSStateEnum, ttsStop,
+    ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, TTSStateEnum, ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
@@ -128,6 +128,7 @@ interface IState {
     menuOpen: boolean;
     fullscreen: boolean;
     ttsState: TTSStateEnum;
+    ttsPlaybackRate: string;
     visibleBookmarkList: LocatorView[];
     currentLocation: LocatorExtended;
     bookmarks: LocatorView[] | undefined;
@@ -185,6 +186,7 @@ class Reader extends React.Component<IProps, IState> {
             menuOpen: false,
             fullscreen: false,
             ttsState: TTSStateEnum.STOPPED,
+            ttsPlaybackRate: "1",
             visibleBookmarkList: [],
             currentLocation: undefined,
             bookmarks: undefined,
@@ -202,6 +204,7 @@ class Reader extends React.Component<IProps, IState> {
         this.handleTTSResume = this.handleTTSResume.bind(this);
         this.handleTTSPrevious = this.handleTTSPrevious.bind(this);
         this.handleTTSNext = this.handleTTSNext.bind(this);
+        this.handleTTSPlaybackRate = this.handleTTSPlaybackRate.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -372,6 +375,7 @@ class Reader extends React.Component<IProps, IState> {
                         handleTTSPrevious={this.handleTTSPrevious}
                         handleTTSNext={this.handleTTSNext}
                         handleTTSPause={this.handleTTSPause}
+                        handleTTSPlaybackRate={this.handleTTSPlaybackRate}
                         handleMenuClick={this.handleMenuButtonClick}
                         handleSettingsClick={this.handleSettingsClick}
                         fullscreen={this.state.fullscreen}
@@ -381,6 +385,7 @@ class Reader extends React.Component<IProps, IState> {
                         handleReaderClose={this.handleReaderClose}
                         toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
                         ttsState={this.state.ttsState}
+                        ttsPlaybackRate={this.state.ttsPlaybackRate}
                         isOnBookmark={this.state.visibleBookmarkList.length > 0}
                         readerOptionsProps={readerOptionsProps}
                         readerMenuProps={readerMenuProps}
@@ -954,7 +959,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleTTSPlay() {
-        ttsPlay();
+        ttsPlay(parseFloat(this.state.ttsPlaybackRate));
     }
     private handleTTSPause() {
         ttsPause();
@@ -970,6 +975,10 @@ class Reader extends React.Component<IProps, IState> {
     }
     private handleTTSPrevious() {
         ttsPrevious();
+    }
+    private handleTTSPlaybackRate(speed: string) {
+        ttsPlaybackRate(parseFloat(speed));
+        this.setState({ttsPlaybackRate: speed});
     }
 
     private handleSettingsSave(readerConfig: ReaderConfig) {

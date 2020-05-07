@@ -292,6 +292,7 @@
             "pause": "Pause Text To Speech",
             "play": "Play Text To Speech",
             "previous": "Previous Text To Speech",
+            "speed": "Text To Speech playback rate",
             "stop": "Stop Text To Speech"
         }
     },
