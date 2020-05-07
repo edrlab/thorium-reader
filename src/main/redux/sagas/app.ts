@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
-import { diMainGet } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { call } from "redux-saga/effects";
 
 // Logger
@@ -50,4 +50,12 @@ export function* init() {
         },
     );
 
+    // track command-q or ctrl-q
+    app.on("before-quit", (e) => {
+
+        e.preventDefault();
+
+        const libraryWin = getLibraryWindowFromDi();
+        libraryWin.close();
+    });
 }
