@@ -124,7 +124,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
 
         return (
 
-            <div className={styles.line_tab_content}>
+            <div className={classNames(styles.line_tab_content, styles.config_save)}>
 
                 <button
                     onClick={() => this.props.setDefaultConfig(readerConfig)}
