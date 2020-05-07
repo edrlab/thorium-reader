@@ -285,6 +285,14 @@
         "svg": {
             "left": "Gauche",
             "right": "Droite"
+        },
+        "tts": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "stop": ""
         }
     },
     "settings": {

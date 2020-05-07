@@ -9,6 +9,12 @@ import * as classNames from "classnames";
 import * as React from "react";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
+import * as PauseIcon from "readium-desktop/renderer/assets/icons/baseline-pause-24px.svg";
+import * as PlayIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg";
+import * as SkipNext from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
+import * as SkipPrevious from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
+import * as StopIcon from "readium-desktop/renderer/assets/icons/baseline-stop-24px.svg";
+import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
@@ -22,7 +28,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { LocatorExtended, TTSStateEnum } from "@r2-navigator-js/electron/renderer/index";
 
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
@@ -40,6 +46,15 @@ interface IBaseProps extends TranslatorProps {
     handleSettingsClick: () => void;
     fullscreen: boolean;
     handleFullscreenClick: () => void;
+
+    handleTTSPlay: () => void;
+    handleTTSPause: () => void;
+    handleTTSStop: () => void;
+    handleTTSResume: () => void;
+    handleTTSPrevious: () => void;
+    handleTTSNext: () => void;
+    ttsState: TTSStateEnum;
+
     handleReaderClose: () => void;
     handleReaderDetach: () => void;
     toggleBookmark: () => void;
@@ -107,6 +122,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
+        const showAudioToolbar = this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo;
         return (
             <nav
                 className={classNames(styles.main_navigation,
@@ -118,7 +134,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                     boxShadow: "none",
                 }})}
             >
-                <ul>
+                <ul className={showAudioToolbar ? undefined : styles.noAudio}>
                     { !this.props.fullscreen ? <>
                         { (this.props.mode === ReaderMode.Attached) ? (
                             <li>
@@ -150,6 +166,66 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                 </button>
                             </li>
                             ) : (<></>)
+                        }
+                        {showAudioToolbar ?
+                        <ul className={styles.tts_toolbar}>
+                            {this.props.ttsState === TTSStateEnum.STOPPED ?
+                            <li className={styles.button_audio}>
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleTTSPlay}
+                                >
+                                    <SVG svg={AudioIcon} title={ __("reader.tts.activate")}/>
+                                </button>
+                            </li>
+                            : <>
+                            <li >
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleTTSStop}
+                                >
+                                    <SVG svg={StopIcon} title={ __("reader.tts.stop")}/>
+                                </button>
+                            </li>
+                            <li >
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleTTSPrevious}
+                                >
+                                    <SVG svg={SkipPrevious} title={ __("reader.tts.previous")}/>
+                                </button>
+                            </li>
+                            { this.props.ttsState === TTSStateEnum.PLAYING ?
+                            <li >
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleTTSPause}
+                                >
+                                    <SVG svg={PauseIcon} title={ __("reader.tts.pause")}/>
+                                </button>
+                            </li>
+                            :
+                            <li >
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleTTSResume}
+                                >
+                                    <SVG svg={PlayIcon} title={ __("reader.tts.play")}/>
+                                </button>
+                            </li>
+                            }
+                            <li >
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleTTSNext}
+                                >
+                                    <SVG svg={SkipNext} title={ __("reader.tts.next")}/>
+                                </button>
+                            </li>
+                            </>
+                            }
+                        </ul>
+                        : <></>
                         }
                         <ul className={styles.menu_option}>
                             <li

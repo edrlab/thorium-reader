@@ -285,6 +285,14 @@
         "svg": {
             "left": "Left",
             "right": "Right"
+        },
+        "tts": {
+            "activate": "Activate Text To Speech",
+            "next": "Next Text To Speech",
+            "pause": "Pause Text To Speech",
+            "play": "Play Text To Speech",
+            "previous": "Previous Text To Speech",
+            "stop": "Stop Text To Speech"
         }
     },
     "settings": {

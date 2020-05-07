@@ -53,7 +53,8 @@ import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssUpdate, setEpubReadingSystemInfo,
-    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver,
+    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, ttsListen, ttsNext,
+    ttsPause, ttsPlay, ttsPrevious, ttsResume, TTSStateEnum, ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
@@ -126,6 +127,7 @@ interface IState {
     landmarkTabOpen: number;
     menuOpen: boolean;
     fullscreen: boolean;
+    ttsState: TTSStateEnum;
     visibleBookmarkList: LocatorView[];
     currentLocation: LocatorExtended;
     bookmarks: LocatorView[] | undefined;
@@ -144,8 +146,12 @@ class Reader extends React.Component<IProps, IState> {
 
     private unsubscribe: Unsubscribe;
 
+    private ttsWasPlayingBeforeNavigate: boolean;
+
     constructor(props: IProps) {
         super(props);
+
+        this.ttsWasPlayingBeforeNavigate = false;
 
         this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
         this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
@@ -178,12 +184,24 @@ class Reader extends React.Component<IProps, IState> {
 
             menuOpen: false,
             fullscreen: false,
+            ttsState: TTSStateEnum.STOPPED,
             visibleBookmarkList: [],
             currentLocation: undefined,
             bookmarks: undefined,
 
             readerMode: ReaderMode.Attached,
         };
+
+        ttsListen((ttss: TTSStateEnum) => {
+            this.setState({ttsState: ttss});
+        });
+
+        this.handleTTSPlay = this.handleTTSPlay.bind(this);
+        this.handleTTSPause = this.handleTTSPause.bind(this);
+        this.handleTTSStop = this.handleTTSStop.bind(this);
+        this.handleTTSResume = this.handleTTSResume.bind(this);
+        this.handleTTSPrevious = this.handleTTSPrevious.bind(this);
+        this.handleTTSNext = this.handleTTSNext.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -348,6 +366,12 @@ class Reader extends React.Component<IProps, IState> {
                         infoOpen={this.props.infoOpen}
                         menuOpen={this.state.menuOpen}
                         settingsOpen={this.state.settingsOpen}
+                        handleTTSPlay={this.handleTTSPlay}
+                        handleTTSResume={this.handleTTSResume}
+                        handleTTSStop={this.handleTTSStop}
+                        handleTTSPrevious={this.handleTTSPrevious}
+                        handleTTSNext={this.handleTTSNext}
+                        handleTTSPause={this.handleTTSPause}
                         handleMenuClick={this.handleMenuButtonClick}
                         handleSettingsClick={this.handleSettingsClick}
                         fullscreen={this.state.fullscreen}
@@ -356,6 +380,7 @@ class Reader extends React.Component<IProps, IState> {
                         handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
                         toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
+                        ttsState={this.state.ttsState}
                         isOnBookmark={this.state.visibleBookmarkList.length > 0}
                         readerOptionsProps={readerOptionsProps}
                         readerMenuProps={readerMenuProps}
@@ -384,7 +409,7 @@ class Reader extends React.Component<IProps, IState> {
                     </div>
                 </div>
                 <ReaderFooter
-                    navLeftOrRight={navLeftOrRight}
+                    navLeftOrRight={this.navLeftOrRight_.bind(this)}
                     fullscreen={this.state.fullscreen}
                     currentLocation={this.state.currentLocation}
                     r2Publication={this.state.r2Publication}
@@ -393,6 +418,10 @@ class Reader extends React.Component<IProps, IState> {
                 />
             </div>
         );
+    }
+
+    public setTTSState(ttss: TTSStateEnum) {
+        this.setState({ttsState : ttss});
     }
 
     private registerAllKeyboardListeners() {
@@ -582,7 +611,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        navLeftOrRight(isPrevious, false);
+        this.navLeftOrRight_(isPrevious, false);
     }
 
     private onKeyboardSpineNavigationNext = () => {
@@ -599,7 +628,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        navLeftOrRight(isPrevious, true);
+        this.navLeftOrRight_(isPrevious, true);
 
         if (this.fastLinkRef?.current) {
             setTimeout(() => {
@@ -720,12 +749,20 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
+
         this.findBookmarks();
         this.saveReadingLocation(loc);
         this.setState({ currentLocation: getCurrentReadingLocation() });
         // No need to explicitly refresh the bookmarks status here,
         // as componentDidUpdate() will call the function after setState():
         // await this.checkBookmarks();
+
+        if (this.ttsWasPlayingBeforeNavigate) {
+            this.ttsWasPlayingBeforeNavigate = false;
+            setTimeout(() => {
+                this.handleTTSPlay();
+            }, 100);
+        }
     }
 
     // check if a bookmark is on the screen
@@ -765,9 +802,36 @@ class Reader extends React.Component<IProps, IState> {
             }, 100);
         }
     }
+
+    private ensureTTSStateDuringNavigation() {
+        const wasPlaying = this.state.ttsState === TTSStateEnum.PLAYING;
+        // const wasPaused = this.state.ttsState === TTSStateEnum.PAUSED;
+
+        this.handleTTSStop();
+        this.setState({ ttsState: TTSStateEnum.STOPPED }); // because not emmitted when switching docs
+
+        this.ttsWasPlayingBeforeNavigate = wasPlaying;
+    }
+
+    private navLeftOrRight_(left: boolean, spineNav?: boolean) {
+        const wasPlaying = this.state.ttsState === TTSStateEnum.PLAYING;
+        const wasPaused = this.state.ttsState === TTSStateEnum.PAUSED;
+        // this.ensureTTSStateDuringNavigation();
+        if (wasPaused || wasPlaying) {
+            if (left) {
+                this.handleTTSPrevious();
+            } else {
+                this.handleTTSNext();
+            }
+        } else {
+            navLeftOrRight(left, spineNav);
+        }
+    }
+
     private goToLocator(locator: R2Locator) {
         this.focusMainAreaLandmarkAndCloseMenu();
 
+        this.ensureTTSStateDuringNavigation();
         handleLinkLocator(locator);
     }
 
@@ -782,6 +846,7 @@ class Reader extends React.Component<IProps, IState> {
 
         this.focusMainAreaLandmarkAndCloseMenu();
 
+        this.ensureTTSStateDuringNavigation();
         const newUrl = this.state.publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
     }
@@ -888,15 +953,32 @@ class Reader extends React.Component<IProps, IState> {
         });
     }
 
+    private handleTTSPlay() {
+        ttsPlay();
+    }
+    private handleTTSPause() {
+        ttsPause();
+    }
+    private handleTTSStop() {
+        ttsStop();
+    }
+    private handleTTSResume() {
+        ttsResume();
+    }
+    private handleTTSNext() {
+        ttsNext();
+    }
+    private handleTTSPrevious() {
+        ttsPrevious();
+    }
+
     private handleSettingsSave(readerConfig: ReaderConfig) {
         this.props.setConfig(readerConfig);
 
         if (this.state.r2Publication) {
             readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
 
-            console.log("MATHJAX RELOAD?");
             if (readerConfig.enableMathJax !== this.props.readerConfig.enableMathJax) {
-                console.log("MATHJAX RELOAD...");
                 setTimeout(() => {
                     // window.location.reload();
                     reloadContent();

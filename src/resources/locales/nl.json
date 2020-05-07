@@ -285,6 +285,14 @@
         "svg": {
             "left": "Links",
             "right": "Rechts"
+        },
+        "tts": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "stop": ""
         }
     },
     "settings": {

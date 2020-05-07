@@ -290,15 +290,37 @@ button {
 	-webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
 	-moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
 	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
-	min-width: 600px;
+  min-width: 600px;
 
-  & > ul, & ul.menu_option {
+  & > ul:not(.noAudio) {
+    display: flex;
+  }
+  
+  & > ul, & ul.menu_option, & ul.tts_toolbar {
     line-height: 0.9rem;
     padding: 0;
     margin: 0;
 
     & li {
       border-color: var(--reader-separatorColor);
+    }
+
+    & ul.tts_toolbar {
+      margin-left: auto;
+      margin-right: auto;
+
+      & > li {
+        border-right: 1px solid #c1c1c1;
+      }
+      & > li:first-child {
+        border-left: 1px solid #c1c1c1;
+      }
+      & > li.button_audio {
+        border: 0;
+        & > button {
+          opacity: 0.5;
+        }
+      }
     }
 
     & ul.menu_option {
@@ -336,6 +358,7 @@ button {
           height:30px;
         }
       }
+
       & > .active {
         color:black;
         border-bottom:3px solid black;
@@ -874,6 +897,14 @@ input[type=radio] + label {
 	text-align-last: center;
 	font-size: 0.8rem;
 	height:30px;
+}
+
+.line_tab_content.config_save button {
+  border: 1px solid black;
+  border-radius: 0.3em;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-right: 0.3em;
 }
 
 .out_of_screen {
