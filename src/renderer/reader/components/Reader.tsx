@@ -343,7 +343,11 @@ class Reader extends React.Component<IProps, IState> {
         };
 
         return (
-            <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
+            <div className={classNames(
+                    this.props.readerConfig.night && styles.nightMode,
+                    this.props.readerConfig.sepia && styles.sepiaMode,
+                )}
+                role="region" aria-label={this.props.__("accessibility.toolbar")}>
                 <a
                     role="region"
                     className={styles.anchor_link}
@@ -357,11 +361,7 @@ class Reader extends React.Component<IProps, IState> {
                     anchorId="main-content"
                     label={this.props.__("accessibility.skipLink")}
                 />
-                <div className={classNames(
-                    styles.root,
-                    this.props.readerConfig.night && styles.nightMode,
-                    this.props.readerConfig.sepia && styles.sepiaMode,
-                )}>
+                <div className={styles.root}>
                     <ReaderHeader
                         infoOpen={this.props.infoOpen}
                         menuOpen={this.state.menuOpen}
