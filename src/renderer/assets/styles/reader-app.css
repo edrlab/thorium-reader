@@ -900,11 +900,13 @@ input[type=radio] + label {
 }
 
 .line_tab_content.config_save button {
-  border: 1px solid black;
+  border: 1px solid var(--reader-fontColor);
+  color: var(--reader-fontColor);
+  padding: 0.5em;
   border-radius: 0.3em;
   font-size: 0.8em;
   font-weight: bold;
-  margin-right: 0.3em;
+  margin-right: 1em;
 }
 
 .out_of_screen {
