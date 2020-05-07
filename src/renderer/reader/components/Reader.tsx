@@ -51,6 +51,9 @@ import { Unsubscribe } from "redux";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import {
+    convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
+import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssUpdate, setEpubReadingSystemInfo,
     setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, ttsListen, ttsNext,
@@ -241,7 +244,9 @@ class Reader extends React.Component<IProps, IState> {
         //         convertHttpUrlToCustomScheme(manifestUrl),
         //     ),
         // );
-        const publicationJsonUrl = manifestUrl;
+        // const publicationJsonUrl = manifestUrl;
+        const publicationJsonUrl = manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
+            ? manifestUrl : convertHttpUrlToCustomScheme(manifestUrl);
 
         this.setState({
             publicationJsonUrl,
@@ -249,10 +254,6 @@ class Reader extends React.Component<IProps, IState> {
 
         setKeyDownEventHandler(keyDownEventHandler);
         setKeyUpEventHandler(keyUpEventHandler);
-
-        // this.setState({
-        //     publicationJsonUrl,
-        // });
 
         // if (lcpHint) {
         //     this.setState({
