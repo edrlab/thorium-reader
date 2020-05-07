@@ -115,7 +115,7 @@ export function saga() {
             (e) => error(`${filename_}:startRequest`, e),
         ),
         takeSpawnLeading(
-            streamerActions.startRequest.ID,
+            streamerActions.stopRequest.ID,
             stopRequest,
             (e) => error(`${filename_}:stopRequest`, e),
         ),

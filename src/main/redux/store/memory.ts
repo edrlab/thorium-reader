@@ -83,8 +83,7 @@ async function absorbLocatorRepositoryToReduxState() {
                 },
             };
 
-            // disable at the moment, beta test
-            // await locatorRepository.delete(locator.identifier);
+            await locatorRepository.delete(locator.identifier);
         }
     }
 
