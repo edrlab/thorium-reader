@@ -233,21 +233,21 @@ container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 container.bind<SessionApi>(diSymbolTable["session-api"]).to(SessionApi).inSingletonScope();
 
+let libraryWin: BrowserWindow;
+
 const saveLibraryWindowInDi =
-    (libWin: BrowserWindow) =>
-        container.bind<BrowserWindow>("WIN_REGISTRY_LIBRARY").toConstantValue(libWin);
+    (libWin: BrowserWindow) => (libraryWin = libWin, libraryWin);
 
 const getLibraryWindowFromDi =
-    () =>
-        container.get<BrowserWindow>("WIN_REGISTRY_LIBRARY");
+    () => libraryWin;
+
+const readerWinMap = new Map<string, BrowserWindow>();
 
 const saveReaderWindowInDi =
-    (readerWin: BrowserWindow, id: string) =>
-        container.bind<BrowserWindow>("WIN_REGISTRY_READER").toConstantValue(readerWin).whenTargetNamed(id);
+    (readerWin: BrowserWindow, id: string) => (readerWinMap.set(id, readerWin), readerWin);
 
 const getReaderWindowFromDi =
-    (id: string) =>
-        container.getNamed<BrowserWindow>("WIN_REGISTRY_READER", id);
+    (id: string) => readerWinMap.get(id);
 
 const getAllReaderWindowFromDi =
     () =>
