@@ -124,20 +124,19 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        const showAudioToolbar = this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo;
+        const showAudioTTSToolbar = this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo;
         return (
             <nav
                 className={classNames(styles.main_navigation,
-                    this.props.fullscreen ? styles.main_navigation_fullscreen : undefined)}
+                    this.props.fullscreen ? styles.main_navigation_fullscreen : undefined,
+                    showAudioTTSToolbar ? styles.hasTtsAudio : undefined,
+                    this.props.ttsState !== TTSStateEnum.STOPPED ? styles.ttsAudioActivated : undefined,
+                    )}
                 role="navigation"
                 aria-label={ __("accessibility.homeMenu")}
-                {...(this.props.fullscreen && {style: {
-                    backgroundColor: "transparent",
-                    boxShadow: "none",
-                }})}
             >
-                <ul className={showAudioToolbar ? undefined : styles.noAudio}>
-                    { !this.props.fullscreen ? <>
+                <ul>
+
                         { (this.props.mode === ReaderMode.Attached) ? (
                             <li>
                                 <button
@@ -169,7 +168,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                             </li>
                             ) : (<></>)
                         }
-                        {showAudioToolbar ?
+
                         <ul className={styles.tts_toolbar}>
                             {this.props.ttsState === TTSStateEnum.STOPPED ?
                             <li className={styles.button_audio}>
@@ -224,7 +223,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                     <SVG svg={SkipNext} title={ __("reader.tts.next")}/>
                                 </button>
                             </li>
-                            <li>
+                            <li className={styles.ttsSelectRate}>
                                 <select title={ __("reader.tts.speed")}
                                     onChange={(ev) => {
                                         this.props.handleTTSPlaybackRate(ev.target.value.toString());
@@ -243,8 +242,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                             </>
                             }
                         </ul>
-                        : <></>
-                        }
+
                         <ul className={styles.menu_option}>
                             <li
                                 {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
@@ -293,6 +291,19 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                 currentLocation={this.props.currentLocation}
                                 focusNaviguationMenu={this.focusNaviguationMenuButton}/>
                             </li>
+
+                            { this.props.fullscreen ?
+                            <li>
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleFullscreenClick}
+                                    ref={this.disableFullscreenRef}
+                                >
+                                    <SVG svg={QuitFullscreenIcon}
+                                        title={ __("reader.navigation.quitFullscreenTitle")}/>
+                                </button>
+                            </li>
+                            :
                             <li  className={styles.blue}>
                                 <button
                                     className={styles.menu_button}
@@ -303,6 +314,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                 <SVG svg={FullscreenIcon} title={ __("reader.navigation.fullscreenTitle")}/>
                                 </button>
                             </li>
+                            }
                         </ul>
                         {/*<li className={styles.right}>
                             <button
@@ -310,18 +322,11 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                             >
                                 <SVG svg={AudioIcon} title={ __("reader.navigation.readBookTitle")}/>
                             </button>
-                        </li>*/}
-                    </> :
-                    <li  className={styles.right}>
-                        <button
-                            className={styles.menu_button}
-                            onClick={this.props.handleFullscreenClick}
-                            ref={this.disableFullscreenRef}
-                        >
-                            <SVG svg={QuitFullscreenIcon} title={ __("reader.navigation.quitFullscreenTitle")}/>
-                        </button>
-                    </li>
-                }
+                        </li>
+
+                        { this.props.fullscreen ? <></> : () }
+                        */}
+
                 </ul>
             </nav>
         );

@@ -124,8 +124,8 @@ button {
   margin-bottom: 5rem;
 }
 .content_root_fullscreen {
-  margin-top: -20px;
-  margin-bottom: 30px;
+  margin-top: -10px;
+  margin-bottom: 60px;
 }
 
 /* ========== READER ==========*/
@@ -314,7 +314,7 @@ button {
         border-left: 1px solid #c1c1c1;
         border-right: 0;
       }
-      & > li:last-child {
+      & > li.ttsSelectRate {
         display: flex;
         align-items: center;
         width: 100px;
@@ -493,7 +493,45 @@ button {
   }
 }
 
+.main_navigation_fullscreen,
+.main_navigation {
+  &:not(.hasTtsAudio) {
+    & > ul > ul.tts_toolbar > li {
+      display: none;
+    }
+  }
+}
 .main_navigation_fullscreen {
+  & > ul > li:nth-child(1),
+  & > ul > li:nth-child(2),
+  & > ul > li:nth-child(3) {
+    display: none;
+  }
+  & > ul > ul:not(.tts_toolbar) > li:nth-child(1),
+  & > ul > ul:not(.tts_toolbar) > li:nth-child(2),
+  & > ul > ul:not(.tts_toolbar) > li:nth-child(3) {
+    display: none;
+  }
+  & > ul > ul.tts_toolbar {
+    margin-left: 0;
+  }
+  &:not(.hasTtsAudio) {
+
+    background-color: transparent;
+    box-shadow: none;
+
+    & > ul {
+      display: block;
+    }
+  }
+  &.hasTtsAudio:not(.ttsAudioActivated) {
+
+    background-color: transparent;
+    box-shadow: none;
+  }
+  /* & >  {
+    display: block;
+  }
   & > ul, & ul.menu_option {
     margin-right: 20px;
     & > li {
@@ -503,7 +541,7 @@ button {
         background-color: var(--reader-secondaryColor);
       }
     }
-  }
+  } */
 }
 
 .tab_content {
@@ -989,7 +1027,7 @@ input[type=radio] + label {
   & .arrows {
     background-color: var(--reader-mainColor);
     pointer-events: all;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     margin-right: 20px;
   }
 }

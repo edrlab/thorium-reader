@@ -137,6 +137,7 @@ interface IState {
 }
 
 class Reader extends React.Component<IProps, IState> {
+
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
     private refToolbar: React.RefObject<HTMLAnchorElement>;
 
@@ -148,6 +149,7 @@ class Reader extends React.Component<IProps, IState> {
     private unsubscribe: Unsubscribe;
 
     private ttsWasPlayingBeforeNavigate: boolean;
+    private ttsAutoContinuePlayTimeout: number | undefined;
 
     constructor(props: IProps) {
         super(props);
@@ -195,6 +197,9 @@ class Reader extends React.Component<IProps, IState> {
         };
 
         ttsListen((ttss: TTSStateEnum) => {
+            // if (ttss === TTSStateEnum.STOPPED) {
+            //     this.ttsWasPlayingBeforeNavigate = false;
+            // }
             this.setState({ttsState: ttss});
         });
 
@@ -764,9 +769,14 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.ttsWasPlayingBeforeNavigate) {
             this.ttsWasPlayingBeforeNavigate = false;
-            setTimeout(() => {
+
+            if (this.ttsAutoContinuePlayTimeout) {
+                clearTimeout(this.ttsAutoContinuePlayTimeout);
+            }
+            this.ttsAutoContinuePlayTimeout = window.setTimeout(() => {
+                this.ttsAutoContinuePlayTimeout = undefined;
                 this.handleTTSPlay();
-            }, 100);
+            }, 500);
         }
     }
 
@@ -808,27 +818,36 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private ensureTTSStateDuringNavigation() {
+    private ensureTTSStateDuringNavigation(): boolean {
         const wasPlaying = this.state.ttsState === TTSStateEnum.PLAYING;
-        // const wasPaused = this.state.ttsState === TTSStateEnum.PAUSED;
+        const wasPaused = this.state.ttsState === TTSStateEnum.PAUSED;
 
-        this.handleTTSStop();
-        this.setState({ ttsState: TTSStateEnum.STOPPED }); // because not emmitted when switching docs
+        if (wasPaused || wasPlaying) {
+            this.handleTTSStop();
+            this.setState({ ttsState: TTSStateEnum.STOPPED }); // because not emmitted when switching docs
+        }
 
-        this.ttsWasPlayingBeforeNavigate = wasPlaying;
+        this.ttsWasPlayingBeforeNavigate = this.ttsAutoContinuePlayTimeout ? true : wasPaused || wasPlaying;
+        return wasPaused || wasPlaying;
     }
 
     private navLeftOrRight_(left: boolean, spineNav?: boolean) {
         const wasPlaying = this.state.ttsState === TTSStateEnum.PLAYING;
         const wasPaused = this.state.ttsState === TTSStateEnum.PAUSED;
-        // this.ensureTTSStateDuringNavigation();
-        if (wasPaused || wasPlaying) {
-            if (left) {
-                this.handleTTSPrevious();
-            } else {
-                this.handleTTSNext();
-            }
+
+        if (this.ttsAutoContinuePlayTimeout || wasPaused || wasPlaying) {
+            // if (left) {
+            //     this.handleTTSPrevious();
+            // } else {
+            //     this.handleTTSNext();
+            // }
+            const wasStopped = this.ensureTTSStateDuringNavigation();
+            const timeout = wasStopped ? 500 : 0;
+            window.setTimeout(() => {
+                navLeftOrRight(left, true);
+            }, timeout);
         } else {
+            this.ttsWasPlayingBeforeNavigate = false;
             navLeftOrRight(left, spineNav);
         }
     }
@@ -836,8 +855,11 @@ class Reader extends React.Component<IProps, IState> {
     private goToLocator(locator: R2Locator) {
         this.focusMainAreaLandmarkAndCloseMenu();
 
-        this.ensureTTSStateDuringNavigation();
-        handleLinkLocator(locator);
+        const wasStopped = this.ensureTTSStateDuringNavigation();
+        const timeout = wasStopped ? 500 : 0;
+        window.setTimeout(() => {
+            handleLinkLocator(locator);
+        }, timeout);
     }
 
     // tslint:disable-next-line: max-line-length
@@ -851,9 +873,12 @@ class Reader extends React.Component<IProps, IState> {
 
         this.focusMainAreaLandmarkAndCloseMenu();
 
-        this.ensureTTSStateDuringNavigation();
+        const wasStopped = this.ensureTTSStateDuringNavigation();
         const newUrl = this.state.publicationJsonUrl + "/../" + url;
-        handleLinkUrl(newUrl);
+        const timeout = wasStopped ? 500 : 0;
+        window.setTimeout(() => {
+            handleLinkUrl(newUrl);
+        }, timeout);
     }
 
     private async handleToggleBookmark(fromKeyboard?: boolean) {
@@ -962,9 +987,17 @@ class Reader extends React.Component<IProps, IState> {
         ttsPlay(parseFloat(this.state.ttsPlaybackRate));
     }
     private handleTTSPause() {
+        this.ttsWasPlayingBeforeNavigate = false;
+        if (this.ttsAutoContinuePlayTimeout) {
+            clearTimeout(this.ttsAutoContinuePlayTimeout);
+        }
         ttsPause();
     }
     private handleTTSStop() {
+        this.ttsWasPlayingBeforeNavigate = false;
+        if (this.ttsAutoContinuePlayTimeout) {
+            clearTimeout(this.ttsAutoContinuePlayTimeout);
+        }
         ttsStop();
     }
     private handleTTSResume() {
