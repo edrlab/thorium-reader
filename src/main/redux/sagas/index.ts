@@ -61,6 +61,9 @@ export function* rootSaga() {
     // send initSucess first
     yield put(appActions.initSuccess.build());
 
+    // watch all electon exit event
+    yield app.exit();
+
     yield api.saga();
     // yield spawnLeading(api.watchers, (e) => error("main:rootSaga:api", e));
 

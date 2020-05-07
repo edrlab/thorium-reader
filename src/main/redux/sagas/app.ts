@@ -8,8 +8,19 @@
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
+import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
-import { call } from "redux-saga/effects";
+import { needToPersistState } from "readium-desktop/main/redux/sagas/persist.ts";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { all, call, race, spawn, take } from "redux-saga/effects";
+import { put } from "typed-redux-saga";
+
+import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
+
+import { streamerActions } from "../actions";
+import {
+    getBeforeQuitChannel, getQuitEventChannel, getWindowAllClosedEventChannel,
+} from "./getExitEventChannel";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -50,12 +61,101 @@ export function* init() {
         },
     );
 
-    // track command-q or ctrl-q
-    app.on("before-quit", (e) => {
+    app.on("will-quit", () => {
 
-        e.preventDefault();
+        debug("#####");
+        debug("will-quit");
+        debug("#####");
+    });
 
-        const libraryWin = getLibraryWindowFromDi();
-        libraryWin.close();
+}
+
+export function exit() {
+    return spawn(function*() {
+
+        const beforeQuitEventChannel = getBeforeQuitChannel();
+        const windowAllClosedEventChannel = getWindowAllClosedEventChannel();
+        const quitEventChannel = getQuitEventChannel();
+        let shouldExit: boolean = process.platform !== "darwin" || IS_DEV;
+
+        /*
+        // events order :
+        - before-quit
+        - window-all-closed
+        - quit
+        */
+
+        yield takeSpawnEveryChannel(
+            beforeQuitEventChannel,
+            (e: Electron.Event) => {
+
+                // track ctrl-q/command-q
+                shouldExit = true;
+
+                e.preventDefault();
+
+                const libraryWin = getLibraryWindowFromDi();
+                libraryWin.close();
+
+                debug("#####");
+                debug("#####");
+                debug("#####");
+
+                debug("before-quit");
+
+                debug("#####");
+                debug("#####");
+                debug("#####");
+            },
+        );
+
+        yield takeSpawnEveryChannel(
+            windowAllClosedEventChannel,
+            function*() {
+
+                debug("#####");
+                debug("#####");
+                debug("#####");
+
+                debug("window-all-closed");
+
+                debug("#####");
+                debug("#####");
+                debug("#####");
+
+                // clear session in r2-navigator
+                yield all([
+                    call(clearSessions),
+                    call(needToPersistState),
+                ]);
+
+                yield put(streamerActions.stopRequest.build());
+
+                yield race({
+                    a: take(streamerActions.stopSuccess.ID),
+                    b: take(streamerActions.stopError.ID),
+                });
+
+                if (shouldExit) {
+                    app.exit(0);
+                }
+            },
+        );
+
+        yield takeSpawnEveryChannel(
+            quitEventChannel,
+            function*() {
+
+                debug("#####");
+                debug("#####");
+                debug("#####");
+
+                debug("quit");
+
+                debug("#####");
+                debug("#####");
+                debug("#####");
+            },
+        );
     });
 }
