@@ -44,7 +44,7 @@ export function getQuitEventChannel() {
     return channel;
 }
 
-export function getBeforeQuitChannel() {
+export function getBeforeQuitEventChannel() {
 
     const channel = eventChannel<Electron.Event>(
         (emit) => {
