@@ -6,14 +6,12 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app } from "electron";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import { eventChannel, Task } from "redux-saga";
-import { call, cancel, debounce, spawn, take } from "redux-saga/effects";
+import { call, debounce  } from "redux-saga/effects";
 
 const DEBOUNCE_TIME = 1000;
 
@@ -42,25 +40,7 @@ const persistStateToFs = async (nextState: RootState) => {
     debug("end of persist reduxState in disk");
 };
 
-function getWindowAllClosedEventChannel() {
-
-    const channel = eventChannel<boolean>(
-        (emit) => {
-
-            const handler = () => emit(true);
-
-            app.on("window-all-closed", handler);
-
-            return () => {
-                app.removeListener("window-all-closed", handler);
-            };
-        },
-    );
-
-    return channel;
-}
-
-function* needToPersistState() {
+export function* needToPersistState() {
 
     try {
 
@@ -71,28 +51,10 @@ function* needToPersistState() {
     }
 }
 
-function* windowaAllClosedEventManager() {
-
-    const allClosedEventChannel = yield* callTyped(getWindowAllClosedEventChannel);
-
-    const debounceTask: Task = yield debounce(
+export function saga() {
+    return debounce(
         DEBOUNCE_TIME,
         winActions.persistRequest.ID,
         needToPersistState,
     );
-
-    // wait untill all windows are closed to continue
-    yield take(allClosedEventChannel);
-
-    // cancel persistence
-    yield cancel(debounceTask);
-
-    // persist the winState now and exit 0 the app
-    yield call(needToPersistState);
-
-    yield call(() => app.exit(0));
-}
-
-export function saga() {
-    return spawn(windowaAllClosedEventManager);
 }
