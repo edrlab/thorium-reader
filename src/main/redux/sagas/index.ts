@@ -6,14 +6,14 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app as appElectron, dialog } from "electron";
+import { app, dialog } from "electron";
 import { keyboardActions } from "readium-desktop/common/redux/actions";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 import { all, call, put, take } from "redux-saga/effects";
 
 import { appActions, winActions } from "../actions";
 import * as api from "./api";
-import * as app from "./app";
+import * as appSaga from "./app";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as keyboard from "./keyboard";
@@ -39,7 +39,7 @@ export function* rootSaga() {
 
     try {
         yield all([
-            call(app.init),
+            call(appSaga.init),
             call(keyboardShortcuts.init),
         ]);
 
@@ -54,15 +54,14 @@ export function* rootSaga() {
         debug("CRITICAL ERROR => EXIT");
         debug(e);
 
-        // see main/redux/saga/persist.ts#L92
-        appElectron.exit(code);
+        app.exit(code);
     }
 
     // send initSucess first
     yield put(appActions.initSuccess.build());
 
     // watch all electon exit event
-    yield app.exit();
+    yield appSaga.exit();
 
     yield api.saga();
     // yield spawnLeading(api.watchers, (e) => error("main:rootSaga:api", e));
