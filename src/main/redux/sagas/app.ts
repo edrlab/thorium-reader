@@ -19,8 +19,8 @@ import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 
 import { streamerActions } from "../actions";
 import {
-    getBeforeQuitChannel, getQuitEventChannel, getWindowAllClosedEventChannel,
-} from "./getExitEventChannel";
+    getBeforeQuitEventChannel, getQuitEventChannel, getWindowAllClosedEventChannel,
+} from "./getEventChannel";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -73,7 +73,7 @@ export function* init() {
 export function exit() {
     return spawn(function*() {
 
-        const beforeQuitEventChannel = getBeforeQuitChannel();
+        const beforeQuitEventChannel = getBeforeQuitEventChannel();
         const windowAllClosedEventChannel = getWindowAllClosedEventChannel();
         const quitEventChannel = getQuitEventChannel();
         let shouldExit: boolean = process.platform !== "darwin" || IS_DEV;
@@ -89,14 +89,6 @@ export function exit() {
             beforeQuitEventChannel,
             (e: Electron.Event) => {
 
-                // track ctrl-q/command-q
-                shouldExit = true;
-
-                e.preventDefault();
-
-                const libraryWin = getLibraryWindowFromDi();
-                libraryWin.close();
-
                 debug("#####");
                 debug("#####");
                 debug("#####");
@@ -106,6 +98,15 @@ export function exit() {
                 debug("#####");
                 debug("#####");
                 debug("#####");
+
+                // track ctrl-q/command-q
+                shouldExit = true;
+
+                e.preventDefault();
+
+                const libraryWin = getLibraryWindowFromDi();
+                libraryWin.close();
+
             },
         );
 
@@ -137,6 +138,7 @@ export function exit() {
                 });
 
                 if (shouldExit) {
+                    debug("EXIT NOW");
                     app.exit(0);
                 }
             },
