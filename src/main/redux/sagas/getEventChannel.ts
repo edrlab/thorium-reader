@@ -44,7 +44,7 @@ export function getQuitEventChannel() {
     return channel;
 }
 
-export function getBeforeQuitChannel() {
+export function getBeforeQuitEventChannel() {
 
     const channel = eventChannel<Electron.Event>(
         (emit) => {
@@ -55,6 +55,23 @@ export function getBeforeQuitChannel() {
 
             return () => {
                 app.removeListener("before-quit", handler);
+            };
+        },
+    );
+
+    return channel;
+}
+
+export function getAppActivateEventChannel() {
+
+    const channel = eventChannel<boolean>(
+        (emit) => {
+
+            const handler = () => emit(true);
+            app.on("activate", handler);
+
+            return () => {
+                app.removeListener("activate", handler);
             };
         },
     );
