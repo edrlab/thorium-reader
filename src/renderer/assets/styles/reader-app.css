@@ -124,8 +124,8 @@ button {
   margin-bottom: 5rem;
 }
 .content_root_fullscreen {
-  margin-top: -20px;
-  margin-bottom: 30px;
+  margin-top: -10px;
+  margin-bottom: 60px;
 }
 
 /* ========== READER ==========*/
@@ -290,15 +290,65 @@ button {
 	-webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
 	-moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
 	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
-	min-width: 600px;
+  min-width: 600px;
 
-  & > ul, & ul.menu_option {
+  & > ul:not(.noAudio) {
+    display: flex;
+  }
+  
+  & > ul, & ul.menu_option, & ul.tts_toolbar {
     line-height: 0.9rem;
     padding: 0;
     margin: 0;
 
     & li {
       border-color: var(--reader-separatorColor);
+    }
+
+    & ul.tts_toolbar {
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+
+      & > li {
+        border-left: 1px solid #c1c1c1;
+        border-right: 0;
+      }
+      & > li.ttsSelectRate {
+        display: flex;
+        align-items: center;
+        width: 100px;
+      }
+
+      & > li.button_audio {
+        border: 0;
+        & > button {
+          opacity: 0.5;
+        }
+      }
+
+      & > li > select {
+        padding: 0;
+        margin: 0;
+        margin-left: 1em;
+
+        text-align: center !important;
+
+        font-size: 0.9em !important;
+        width: 4em;
+
+        -webkit-appearance: none;
+        border: 1px solid #aaa;
+        border-radius: .4em;
+        box-sizing: border-box;
+        padding: .15em .15em .15em .3em;
+        background-color: transparent;
+
+        background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23aaa%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+        background-repeat: no-repeat, repeat;
+        background-position: right .3em top 50%, 0 0;
+        background-size: .7em auto, 100%;
+      }
     }
 
     & ul.menu_option {
@@ -336,6 +386,7 @@ button {
           height:30px;
         }
       }
+
       & > .active {
         color:black;
         border-bottom:3px solid black;
@@ -442,7 +493,45 @@ button {
   }
 }
 
+.main_navigation_fullscreen,
+.main_navigation {
+  &:not(.hasTtsAudio) {
+    & > ul > ul.tts_toolbar > li {
+      display: none;
+    }
+  }
+}
 .main_navigation_fullscreen {
+  & > ul > li:nth-child(1),
+  & > ul > li:nth-child(2),
+  & > ul > li:nth-child(3) {
+    display: none;
+  }
+  & > ul > ul:not(.tts_toolbar) > li:nth-child(1),
+  & > ul > ul:not(.tts_toolbar) > li:nth-child(2),
+  & > ul > ul:not(.tts_toolbar) > li:nth-child(3) {
+    display: none;
+  }
+  & > ul > ul.tts_toolbar {
+    margin-left: 0;
+  }
+  &:not(.hasTtsAudio) {
+
+    background-color: transparent;
+    box-shadow: none;
+
+    & > ul {
+      display: block;
+    }
+  }
+  &.hasTtsAudio:not(.ttsAudioActivated) {
+
+    background-color: transparent;
+    box-shadow: none;
+  }
+  /* & >  {
+    display: block;
+  }
   & > ul, & ul.menu_option {
     margin-right: 20px;
     & > li {
@@ -452,7 +541,7 @@ button {
         background-color: var(--reader-secondaryColor);
       }
     }
-  }
+  } */
 }
 
 .tab_content {
@@ -876,6 +965,16 @@ input[type=radio] + label {
 	height:30px;
 }
 
+.line_tab_content.config_save button {
+  border: 1px solid var(--reader-fontColor);
+  color: var(--reader-fontColor);
+  padding: 0.5em;
+  border-radius: 0.3em;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-right: 1em;
+}
+
 .out_of_screen {
 	float:left;
 	width:0px;
@@ -928,7 +1027,7 @@ input[type=radio] + label {
   & .arrows {
     background-color: var(--reader-mainColor);
     pointer-events: all;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     margin-right: 20px;
   }
 }
