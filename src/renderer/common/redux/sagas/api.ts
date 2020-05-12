@@ -20,7 +20,7 @@ import { put } from "redux-saga/effects";
  * @param requestId id string channel
  * @param requestData typed api parameter
  */
-export function* apiSaga<T extends TApiMethodName>(
+export function apiSaga<T extends TApiMethodName>(
     apiPath: T,
     requestId: string,
     ...requestData: Parameters<TApiMethod[T]>
@@ -28,5 +28,5 @@ export function* apiSaga<T extends TApiMethodName>(
     const splitPath = apiPath.split("/");
     const moduleId = splitPath[0] as TModuleApi;
     const methodId = splitPath[1] as TMethodApi;
-    yield put(apiActions.request.build(requestId, moduleId, methodId, requestData));
+    return put(apiActions.request.build(requestId, moduleId, methodId, requestData));
 }

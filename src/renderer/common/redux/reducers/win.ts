@@ -9,7 +9,7 @@ import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { WinState } from "readium-desktop/renderer/common/redux/states/win";
 
 const initialState: WinState = {
-    winId: undefined,
+    identifier: undefined,
 };
 
 export function winReducer(
@@ -20,7 +20,7 @@ export function winReducer(
         case winActions.initRequest.ID:
             return {
                 ...{
-                    winId: action.payload.winId,
+                    identifier: action.payload.identifier,
                 },
             };
         default:

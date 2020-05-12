@@ -829,7 +829,7 @@ export class LcpManager {
                 if (licenseUpdateJson) {
 
                     let atLeastOneReaderIsOpen = false;
-                    const readers = this.store.getState().reader?.readers;
+                    const readers = this.store.getState().win.session.reader;
                     if (readers) {
                         for (const reader of Object.values(readers)) {
                             if (reader.publicationIdentifier === publicationDocumentIdentifier) {

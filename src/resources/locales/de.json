@@ -21,8 +21,20 @@
             "title": "Bearbeiten",
             "undo": "Rückgängig"
         },
-        "hide": "Ausblenden {{appName}}",
-        "quit": "Beenden {{appName}}"
+        "hide": "Ausblenden {{- appName}}",
+        "quit": "Beenden {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nein",
+                        "yes": "Ja"
+                    },
+                    "message": "Möchten Sie die Sitzung speichern ?",
+                    "title": "Sitzung sichern"
+                }
+            }
+        }
     },
     "catalog": {
         "about": {
@@ -92,6 +104,13 @@
         "return": "",
         "yes": "Ja"
     },
+    "error": {
+        "errorBox": {
+            "error": "Fehlermeldung:",
+            "message": "In ist ein Fehler aufgetreten {{- filename}}",
+            "title": "interner {{- appName}} Leser"
+        }
+    },
     "header": {
         "allBooks": "Alle Bücher",
         "books": "Meine Bücher",
@@ -126,6 +145,9 @@
             "alreadyImport": "Der Import von {{- title}} Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
             "fail": "Der Import von {{- path}} ist fehlgeschlagen. Stellen Sie sicher, dass die Datei gültig ist.",
             "success": "Der Import von {{- title}} ist abgeschlossen."
+        },
+        "open": {
+            "error": "Die Publikation kann nicht geöffnet werden: {{- err}}"
         }
     },
     "opds": {
@@ -182,6 +204,9 @@
         "licenseOutOfDate": "",
         "licenseSignatureDateInvalid": "",
         "licenseSignatureInvalid": "",
+        "progression": {
+            "title": "Fortschreiten"
+        },
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "",
@@ -239,6 +264,11 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "paginated": "Seitendarstellung",
+            "save": {
+                "apply": "Speichern",
+                "reset": "Zurücksetzen",
+                "title": "Aufbau"
+            },
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
             "text": "Text",
@@ -255,6 +285,15 @@
         "svg": {
             "left": "",
             "right": ""
+        },
+        "tts": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "speed": "",
+            "stop": ""
         }
     },
     "settings": {
@@ -272,6 +311,11 @@
         },
         "language": {
             "languageChoice": "Sprachauswahl"
+        },
+        "session": {
+            "no": "Deaktivieren",
+            "title": "Sitzung speichern",
+            "yes": "aktivieren"
         }
     }
 }

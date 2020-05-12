@@ -8,11 +8,6 @@
 import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as moment from "moment";
-import { OPDSAvailabilityEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-availability";
-import { OPDSFacet } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-facet";
-import { OPDSGroup } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-group";
-import { OPDSCurrencyEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-price";
-import { Subject } from "r2-shared-js/dist/es6-es2015/src/models/metadata-subject";
 import {
     IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
     IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
@@ -25,9 +20,14 @@ import { ContentType } from "readium-desktop/utils/content-type";
 import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
+import { OPDSFacet } from "@r2-opds-js/opds/opds2/opds2-facet";
+import { OPDSGroup } from "@r2-opds-js/opds/opds2/opds2-group";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
+import { OPDSCurrencyEnum } from "@r2-opds-js/opds/opds2/opds2-price";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
+import { Subject } from "@r2-shared-js/models/metadata-subject";
 
 import { IOpdsContributorView, IOpdsFacetView } from "../../common/views/opds";
 import { fallback } from "./tools/fallback";

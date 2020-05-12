@@ -21,8 +21,20 @@
             "title": "Édition",
             "undo": "Annuler"
         },
-        "hide": "Cacher {{appName}}",
-        "quit": "Quitter {{appName}}"
+        "hide": "Masquer {{- appName}}",
+        "quit": "Quitter {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Non",
+                        "yes": "Oui"
+                    },
+                    "message": "Voulez-vous enregistrer la session ?",
+                    "title": "Sauvegarder la session"
+                }
+            }
+        }
     },
     "catalog": {
         "about": {
@@ -92,6 +104,13 @@
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
         "yes": "Oui"
     },
+    "error": {
+        "errorBox": {
+            "error": "Message d'erreur:",
+            "message": "Une erreur est survenue dans le fichier {{- filename}}",
+            "title": "Erreur interne {{- appName}}"
+        }
+    },
     "header": {
         "allBooks": "Tous les livres",
         "books": "Mes Livres",
@@ -126,6 +145,9 @@
             "alreadyImport": "{{- title}} est déja importé",
             "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
             "success": "L'import de {{- title}} est terminé."
+        },
+        "open": {
+            "error": "La publication ne peut pas etre ouverte : {{- err}}"
         }
     },
     "opds": {
@@ -182,6 +204,9 @@
         "licenseOutOfDate": "License expirée",
         "licenseSignatureDateInvalid": "Date de signature de license invalide",
         "licenseSignatureInvalid": "Signature de license invalide",
+        "progression": {
+            "title": "Progression"
+        },
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
         "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retournée.",
@@ -239,6 +264,11 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "paginated": "Paginé",
+            "save": {
+                "apply": "Sauvegarder",
+                "reset": "Réinitialiser",
+                "title": "Configuration"
+            },
             "scrolled": "Défilé",
             "spacing": "Espacement",
             "text": "Texte",
@@ -255,6 +285,15 @@
         "svg": {
             "left": "Gauche",
             "right": "Droite"
+        },
+        "tts": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "speed": "",
+            "stop": ""
         }
     },
     "settings": {
@@ -272,6 +311,11 @@
         },
         "language": {
             "languageChoice": "Choix de la langue"
+        },
+        "session": {
+            "no": "Désactiver",
+            "title": "Sauvegarder la session",
+            "yes": "Activer"
         }
     }
 }

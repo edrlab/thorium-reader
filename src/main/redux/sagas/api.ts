@@ -6,17 +6,18 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { CodeError } from "readium-desktop/common/errors";
+import { CodeError } from "readium-desktop/common/codeError.class";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { error } from "readium-desktop/main/error";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-import { SagaIterator } from "redux-saga";
-import { all, call, fork, put } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
 
 // Logger
-const debug = debug_("readium-desktop:main#redux/sagas/api");
+const filename_ = "readium-desktop:main:saga:api";
+const debug = debug_(filename_);
 
 const getSymbolName = (apiName: string) => {
     const keys = ObjectKeys(diSymbolTable);
@@ -27,11 +28,11 @@ const getSymbolName = (apiName: string) => {
     throw new Error("Wrong API name called " + apiName);
 };
 
-export function* processRequest(requestAction: apiActions.request.TAction): SagaIterator {
+function* processRequest(requestAction: apiActions.request.TAction) {
     const { api } = requestAction.meta;
 
     try {
-        const apiModule = diMainGet(getSymbolName(api.moduleId));
+        const apiModule = yield call(() => diMainGet(getSymbolName(api.moduleId)));
         const apiMethod = apiModule[api.methodId].bind(apiModule);
 
         debug(api.moduleId, api.methodId, requestAction.payload);
@@ -43,20 +44,16 @@ export function* processRequest(requestAction: apiActions.request.TAction): Saga
 
         yield put(apiActions.result.build(api, result));
     } catch (error) {
-        debug(error);
+        debug("API-ERROR", error, "requestAction: ", requestAction);
         yield put(apiActions.result.build(api, new CodeError("API-ERROR", error.message)));
     }
 }
 
-export function* requestWatcher() {
-    while (true) {
-        const action = yield* takeTyped(apiActions.request.build);
-        yield fork(processRequest, action);
-    }
-}
+export function saga() {
 
-export function* watchers() {
-    yield all([
-        call(requestWatcher),
-    ]);
+    return takeSpawnEvery(
+        apiActions.request.ID,
+        processRequest,
+        (e) => error(filename_, e),
+    );
 }

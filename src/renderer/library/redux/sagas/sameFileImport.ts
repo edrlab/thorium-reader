@@ -5,63 +5,70 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { importActions, toastActions } from "readium-desktop/common/redux/actions";
-import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { all, call, put } from "redux-saga/effects";
+import { all, put } from "redux-saga/effects";
 
 import { Download } from "../states/download";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 
-// FIXME : a lot of Downoload interface (ex: state and model)
+// Logger
+const filename_ = "readium-desktop:renderer:redux:saga:same-file-import";
+const debug = debug_(filename_);
+
+// FIXME : a lot of Download interface (ex: state and model)
 const findDownload = (dls: Download[], link: IOpdsLinkView) =>
     dls.find(
         (dl) => dl.url === link.url,
     );
 
-function* sameFileImportWatcher() {
-    while (true) {
-        const action = yield* takeTyped(importActions.verify.build);
+function* sameFileImport(action: importActions.verify.TAction) {
 
-        const { link, title, r2OpdsPublicationBase64 } = action.payload;
+    const { link, title, r2OpdsPublicationBase64 } = action.payload;
 
-        const downloads = yield* selectTyped(
-            (state: ILibraryRootState) => state.download?.downloads);
+    const downloads = yield* selectTyped(
+        (state: ILibraryRootState) => state.download?.downloads);
 
-        if (Array.isArray(downloads)
-            && findDownload(downloads, link)) {
+    if (Array.isArray(downloads)
+        && findDownload(downloads, link)) {
 
-            const translator = diLibraryGet("translator");
+        const translator = diLibraryGet("translator");
 
-            yield put(
-                toastActions.openRequest.build(
-                    ToastType.Success,
-                    translator.translate("message.import.alreadyImport",
-                        {
-                            title: title || "",
-                        },
-                    ),
+        yield put(
+            toastActions.openRequest.build(
+                ToastType.Success,
+                translator.translate("message.import.alreadyImport",
+                    {
+                        title: title || "",
+                    },
                 ),
-            );
+            ),
+        );
 
-        } else {
+    } else {
 
-            yield* apiSaga("publication/importOpdsPublicationLink",
-                REQUEST_ID,
-                link,
-                r2OpdsPublicationBase64,
-            );
-        }
+        yield apiSaga("publication/importOpdsPublicationLink",
+            REQUEST_ID,
+            link,
+            r2OpdsPublicationBase64,
+        );
     }
 }
 
-export function* watchers() {
-    yield all([
-        call(sameFileImportWatcher),
+export function saga() {
+    return all([
+        takeSpawnLeading(
+            importActions.verify.ID,
+            sameFileImport,
+            (e) => debug(e),
+        ),
     ]);
 }

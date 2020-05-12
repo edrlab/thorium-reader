@@ -7,6 +7,10 @@
 
 import { Font } from "readium-desktop/common/models/font";
 
+// UNCOMMENT THIS TO TRY webpack-loader-scope-checker.js (build-time error for library/reader code leakage)
+// import { diRendererSymbolTable } from "readium-desktop/renderer/library/diSymbolTable";
+// console.log(diRendererSymbolTable["react-library-app"]);
+
 const fontList: Font[] =
 [{
     id: "DEFAULT",

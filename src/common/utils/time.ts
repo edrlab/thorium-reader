@@ -6,23 +6,20 @@
 // ==LICENSE-END==
 
 export function formatTime(seconds: number): string {
+
+    seconds = Math.round(seconds);
+
     const secondsPerMinute = 60;
     const minutesPerHours = 60;
     const secondsPerHour = minutesPerHours * secondsPerMinute;
-    let remainingSeconds = seconds;
-    const nHours = Math.floor(remainingSeconds / secondsPerHour);
-    remainingSeconds -= (nHours * secondsPerHour);
-    if (remainingSeconds < 0) {
-        remainingSeconds = 0;
-    }
-    const nMinutes = Math.floor(remainingSeconds / secondsPerMinute);
-    remainingSeconds -= (nMinutes * secondsPerMinute);
-    if (remainingSeconds < 0) {
-        remainingSeconds = 0;
-    }
-    remainingSeconds = Math.floor(remainingSeconds);
 
-    return formatTime_(nHours, nMinutes, remainingSeconds);
+    const hours = Math.floor(seconds / secondsPerHour);
+    seconds %= secondsPerHour;
+
+    const minutes = Math.floor(seconds / secondsPerMinute);
+    seconds %= secondsPerMinute;
+
+    return formatTime_(hours, minutes, seconds);
 }
 
 export function formatTime_(nHours: number, nMinutes: number, nSeconds: number): string {

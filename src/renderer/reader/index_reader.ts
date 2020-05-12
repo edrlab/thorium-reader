@@ -11,13 +11,10 @@ import "react-dropdown/style.css";
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { EventPayload } from "readium-desktop/common/ipc/sync";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { readerIpc } from "readium-desktop/common/ipc";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { actionSerializer } from "readium-desktop/renderer/common/actionSerializer";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { diReaderGet } from "readium-desktop/renderer/reader/di";
+import { createStoreFromDi } from "readium-desktop/renderer/reader/di";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
@@ -51,32 +48,41 @@ if (IS_DEV) {
     }, 5000);
 }
 
-ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
-    switch (data.type) {
-        case winIpc.EventType.IdResponse:
-            // Initialize window
-            const store = diReaderGet("store");
-            store.dispatch(winActions.initRequest.build(data.payload.winId));
-            break;
-    }
-});
+// const ipcSyncHandler =
+//     (_0: any, data: syncIpc.EventPayload) => {
+//         switch (data.type) {
+//             case syncIpc.EventType.MainAction:
+//                 // Dispatch main action to renderer reducers
+//                 const store = diReaderGet("store");
+//                 store.dispatch(Object.assign(
+//                     {},
+//                     actionSerializer.deserialize(data.payload.action),
+//                     {
+//                         sender: data.sender,
+//                     },
+//                 ) as ActionWithSender);
+//                 break;
+//         }
+//     };
 
-// Request main process for a new id
-ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: EventPayload) => {
-    switch (data.type) {
-        case syncIpc.EventType.MainAction:
-            // Dispatch main action to renderer reducers
-            const store = diReaderGet("store");
-            store.dispatch(Object.assign(
-                {},
-                actionSerializer.deserialize(data.payload.action),
-                {
-                    sender: data.sender,
-                },
-            ) as ActionWithSender);
-            break;
-    }
-});
+ipcRenderer.on(readerIpc.CHANNEL,
+    (_0: any, data: readerIpc.EventPayload) => {
+        switch (data.type) {
+            case readerIpc.EventType.request:
+                // Initialize window
+
+                createStoreFromDi(data.payload)
+                    .then(
+                        (store) =>
+                            store.dispatch(winActions.initRequest.build(data.payload.win.identifier)),
+                    )
+                    .catch((e) => e);
+                    // TODO display error ?
+                // // starting the ipc sync with redux
+                // ipcRenderer.on(syncIpc.CHANNEL, ipcSyncHandler);
+                break;
+        }
+    });
 
 if (IS_DEV) {
     ipcRenderer.once("AXE_A11Y", () => {

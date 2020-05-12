@@ -12,6 +12,7 @@ import * as i18nActions from "./i18n/";
 import * as importActions from "./import/";
 import * as keyboardActions from "./keyboard/";
 import * as lcpActions from "./lcp/";
+import * as loadActions from "./load";
 import * as netActions from "./net/";
 import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
@@ -30,4 +31,5 @@ export {
     toastActions,
     downloadActions,
     keyboardActions,
+    loadActions,
 };

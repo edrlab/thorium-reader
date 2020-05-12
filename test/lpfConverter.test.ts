@@ -1,7 +1,8 @@
-import { initGlobalConverters_GENERIC } from "r2-shared-js/dist/es6-es2015/src/init-globals";
 import {
     w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/lpfConverter";
+
+import { initGlobalConverters_GENERIC } from "@r2-shared-js/init-globals";
 
 const manifest = {
     "@context": "https://readium.org/webpub-manifest/context.jsonld",

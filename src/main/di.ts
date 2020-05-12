@@ -7,12 +7,11 @@
 
 import "reflect-metadata";
 
-import { app } from "electron";
+import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
 import { Container } from "inversify";
 import * as path from "path";
 import * as PouchDBCore from "pouchdb-core";
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogApi } from "readium-desktop/main/api/catalog";
 import { LcpApi } from "readium-desktop/main/api/lcp";
@@ -36,8 +35,8 @@ import { initStore } from "readium-desktop/main/redux/store/memory";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { Downloader } from "readium-desktop/main/services/downloader";
 import { LcpManager } from "readium-desktop/main/services/lcp";
+// import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationService } from "readium-desktop/main/services/publication";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
 import {
@@ -49,9 +48,11 @@ import { Server } from "@r2-streamer-js/http/server";
 
 import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
+import { SessionApi } from "./api/session";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 
+export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
@@ -161,19 +162,23 @@ if (!fs.existsSync(publicationRepositoryPath)) {
 // Create container used for dependency injection
 const container = new Container();
 
-// Create store
-const store = initStore();
-container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
+const createStoreFromDi = async () => {
+    const store = await initStore(configRepository);
+
+    container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
+
+    // Create downloader
+    const downloader = new Downloader(null, configRepository, store);
+    container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
+
+    return store;
+};
 
 // Create window registry
-container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSingletonScope();
+// container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSingletonScope();
 
 // Create translator
 container.bind<Translator>(diSymbolTable.translator).to(Translator).inSingletonScope();
-
-// Create downloader
-const downloader = new Downloader(null, configRepository, store);
-container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
 
 // Create repositories
 container.bind<PublicationRepository>(diSymbolTable["publication-repository"]).toConstantValue(
@@ -226,22 +231,32 @@ container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope(
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
+container.bind<SessionApi>(diSymbolTable["session-api"]).to(SessionApi).inSingletonScope();
 
-// Create action serializer
-container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
+let libraryWin: BrowserWindow;
 
-//
-// end of create Depedency Injection Container
-//
+const saveLibraryWindowInDi =
+    (libWin: BrowserWindow) => (libraryWin = libWin, libraryWin);
 
-//
-// Overload container.get with our own type return
-//
+const getLibraryWindowFromDi =
+    () => libraryWin;
+
+const readerWinMap = new Map<string, BrowserWindow>();
+
+const saveReaderWindowInDi =
+    (readerWin: BrowserWindow, id: string) => (readerWinMap.set(id, readerWin), readerWin);
+
+const getReaderWindowFromDi =
+    (id: string) => readerWinMap.get(id);
+
+const getAllReaderWindowFromDi =
+    () =>
+        container.getAll<BrowserWindow>("WIN_REGISTRY_READER");
 
 // local interface to force type return
 interface IGet {
     (s: "store"): Store<RootState>;
-    (s: "win-registry"): WinRegistry;
+    // (s: "win-registry"): WinRegistry;
     (s: "translator"): Translator;
     (s: "downloader"): Downloader;
     (s: "publication-repository"): PublicationRepository;
@@ -263,7 +278,6 @@ interface IGet {
     (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;
-    (s: "action-serializer"): ActionSerializer;
     // minor overload type used in api.ts/LN32
     (s: keyof typeof diSymbolTable): any;
 }
@@ -274,4 +288,10 @@ const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(d
 
 export {
     diGet as diMainGet,
+    getLibraryWindowFromDi,
+    getReaderWindowFromDi,
+    saveLibraryWindowInDi,
+    saveReaderWindowInDi,
+    getAllReaderWindowFromDi,
+    createStoreFromDi,
 };

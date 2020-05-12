@@ -9,13 +9,12 @@ import * as debug_ from "debug";
 import { app } from "electron";
 import * as express from "express";
 import * as path from "path";
+import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { diMainGet } from "readium-desktop/main/di";
 import { _NODE_MODULE_RELATIVE_URL, _PACKAGING } from "readium-desktop/preprocessor-directives";
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
-import {
-    colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
-} from "@r2-navigator-js/electron/common/readium-css-settings";
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -50,104 +49,42 @@ if (_PACKAGING === "1") {
 rcssPath = rcssPath.replace(/\\/g, "/");
 debug("readium css path:", rcssPath);
 
-// TODO: centralize this code, currently duplicated
-// see src/renderer/components/reader/ReaderApp.jsx
-function computeReadiumCssJsonMessage(
+function computeReadiumCssJsonMessageInStreamer(
     _r2Publication: R2Publication,
     _link: Link | undefined,
     sessionInfo: string | undefined,
 ): IEventPayload_R2_EVENT_READIUMCSS {
 
-    const store = diMainGet("store");
-    const settings = store.getState().reader.config;
-    debug(settings);
+    const winId = Buffer.from(sessionInfo || "", "base64").toString("utf-8");
+    debug("winId:", winId);
 
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    // debug(r2Publication.findFromInternal("zip"));
-    debug(sessionInfo);
-    // safeguard, just in case this applies to some unprocessed iframes,
-    // i.e. not the original installNavigatorDOM() call
-    if (sessionInfo) {
-        const sessionInfoStr = Buffer.from(sessionInfo, "base64").toString("utf-8");
-        debug(sessionInfoStr);
-        const sessionInfoJson = JSON.parse(sessionInfoStr);
-        debug(sessionInfoJson);
+    let settings: ReaderConfig;
+    if (winId) {
+
+        const store = diMainGet("store");
+        const state = store.getState();
+
+        try {
+            settings = state.win.session.reader[winId].reduxState.config;
+
+            debug("PAGED: ", settings.paged, "colCount:", settings.colCount);
+
+        } catch (err) {
+            settings = state.reader.defaultConfig;
+
+            debug("settings from default config");
+            debug("ERROR", err);
+        }
+    } else {
+
+        const store = diMainGet("store");
+        settings = store.getState().reader.defaultConfig;
     }
 
-    // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
-    const cssJson: IReadiumCSS = {
-
-        a11yNormalize: readiumCSSDefaults.a11yNormalize,
-
-        backgroundColor: readiumCSSDefaults.backgroundColor,
-
-        bodyHyphens: readiumCSSDefaults.bodyHyphens,
-
-        colCount: settings.colCount === "1" ? colCountEnum.one :
-            (settings.colCount === "2" ? colCountEnum.two : colCountEnum.auto),
-
-        darken: settings.dark,
-
-        font: settings.font,
-
-        fontSize: settings.fontSize,
-
-        invert: settings.invert,
-
-        letterSpacing: settings.letterSpacing,
-
-        ligatures: readiumCSSDefaults.ligatures,
-
-        lineHeight: settings.lineHeight,
-
-        night: settings.night,
-
-        pageMargins: settings.pageMargins,
-
-        paged: settings.paged,
-
-        paraIndent: readiumCSSDefaults.paraIndent,
-
-        paraSpacing: settings.paraSpacing,
-
-        sepia: settings.sepia,
-
-        noFootnotes: settings.noFootnotes,
-
-        textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
-            (settings.align === textAlignEnum.right ? textAlignEnum.right :
-            (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
-            (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
-
-        textColor: readiumCSSDefaults.textColor,
-
-        typeScale: readiumCSSDefaults.typeScale,
-
-        wordSpacing: settings.wordSpacing,
-
-        mathJax: settings.enableMathJax,
-
-        reduceMotion: readiumCSSDefaults.reduceMotion,
-    };
-    const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
-    return jsonMsg;
+    return computeReadiumCssJsonMessage(settings);
 }
 
-setupReadiumCSS(streamer, rcssPath, computeReadiumCssJsonMessage);
+setupReadiumCSS(streamer, rcssPath, computeReadiumCssJsonMessageInStreamer);
 
 let mathJaxPath = "MathJax";
 if (_PACKAGING === "1") {
@@ -178,7 +115,9 @@ streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(mathJaxPath, staticOp
 const transformer = (_publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
 
     const store = diMainGet("store");
-    const settings = store.getState().reader.config;
+    // TODO
+    // Same comment that above
+    const settings = store.getState().reader.defaultConfig;
 
     if (settings.enableMathJax) {
         const url = `${streamer.serverUrl()}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`;

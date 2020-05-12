@@ -5,24 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Reader } from "readium-desktop/common/models/reader";
-import { Action } from "readium-desktop/common/models/redux";
+import { ActionWithSender, WithSender } from "readium-desktop/common/models/sync";
 
 export const ID = "READER_CLOSE_REQUEST";
 
+// tslint:disable-next-line: no-empty-interface
 export interface Payload {
-    reader: Reader;
-    gotoLibrary: boolean;
 }
 
-export function build(reader: Reader, gotoLibrary: boolean = false):
-    Action<typeof ID, Payload> {
+export function build():
+    Omit<ActionWithSender<typeof ID, Payload>, keyof WithSender> & Partial<WithSender> {
 
     return {
         type: ID,
         payload: {
-            reader,
-            gotoLibrary,
         },
     };
 }

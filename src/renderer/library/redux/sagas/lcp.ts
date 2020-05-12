@@ -8,29 +8,25 @@
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { dialogActions } from "readium-desktop/common/redux/actions/";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
-import { SagaIterator } from "redux-saga";
-import { all, call, put } from "redux-saga/effects";
+import { put, takeEvery } from "redux-saga/effects";
 
-function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
-    while (true) {
-        const action = yield* takeTyped(lcpActions.userKeyCheckRequest.build);
+function* lcpUserKeyCheckRequest(action: lcpActions.userKeyCheckRequest.TAction) {
+    const { hint, publicationView, message } = action.payload;
 
-        const { hint, publicationView, message } = action.payload;
-
-        // will call API.unlockPublicationWithPassphrase()
-        yield put(dialogActions.openRequest.build(DialogTypeName.LcpAuthentication,
-            {
-                publicationView,
-                hint,
-                message,
-            },
-        ));
-    }
+    // will call API.unlockPublicationWithPassphrase()
+    yield put(dialogActions.openRequest.build(
+        DialogTypeName.LcpAuthentication,
+        {
+            publicationView,
+            hint,
+            message,
+        },
+    ));
 }
 
-export function* watchers() {
-    yield all([
-        call(lcpUserKeyCheckRequestWatcher),
-    ]);
+export function saga() {
+    return takeEvery(
+        lcpActions.userKeyCheckRequest.ID,
+        lcpUserKeyCheckRequest,
+    );
 }

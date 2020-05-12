@@ -5,40 +5,98 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { all, call } from "redux-saga/effects";
+import * as debug_ from "debug";
+import { app, dialog } from "electron";
+import { keyboardActions } from "readium-desktop/common/redux/actions";
+import { keyboardShortcuts } from "readium-desktop/main/keyboard";
+import { all, call, put, take } from "redux-saga/effects";
 
+import { appActions, winActions } from "../actions";
 import * as api from "./api";
-import { appInitWatcher } from "./app";
+import * as appSaga from "./app";
 import * as i18n from "./i18n";
+import * as ipc from "./ipc";
 import * as keyboard from "./keyboard";
-// import { netStatusWatcher } from "./net";
+import * as persist from "./persist";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
+import * as win from "./win";
 
+// import { netStatusWatcher } from "./net";
 // import { updateStatusWatcher } from "./update";
 
+// Logger
+const filename_ = "readium-desktop:main:saga:app";
+const debug = debug_(filename_);
+
 export function* rootSaga() {
-    yield all([
-        call(api.watchers),
 
-        // I18N
-        call(i18n.watchers),
+    // main entry point
+    yield take(appActions.initRequest.ID);
 
-        // App
-        call(appInitWatcher),
+    yield i18n.saga();
+    // yield spawnLeading(i18n.watchers, (e) => error("main:rootSaga:i18n", e));
 
-        // Net
-        // call(netStatusWatcher),
+    try {
+        yield all([
+            call(appSaga.init),
+            call(keyboardShortcuts.init),
+        ]);
 
-        // Reader
-        call(reader.watchers),
+    } catch (e) {
+        const code = 1;
+        try {
+            dialog.showErrorBox("Application init Error", `main rootSaga: ${e}\n\nEXIT CODE ${code}`);
+        } catch {
+            // ignore
+        }
 
-        // Streamer
-        call(streamer.watchers),
+        debug("CRITICAL ERROR => EXIT");
+        debug(e);
 
-        call(keyboard.watchers),
+        app.exit(code);
+    }
 
-        // Update checker
-        // call(updateStatusWatcher),
-    ]);
+    // send initSucess first
+    yield put(appActions.initSuccess.build());
+
+    // watch all electon exit event
+    yield appSaga.exit();
+
+    yield api.saga();
+    // yield spawnLeading(api.watchers, (e) => error("main:rootSaga:api", e));
+
+    yield streamer.saga();
+    // yield spawnLeading(streamer.watchers, (e) => error("main:rootSaga:streamer", e));
+
+    yield keyboard.saga();
+    // yield spawnLeading(keyboard.watchers, (e) => error("main:rootSaga:keyboard", e));
+
+    yield win.reader.saga();
+    // yield spawnLeading(win.reader.watchers, (e) => error("main:rootSaga:win:reader", e));
+
+    yield win.library.saga();
+    // yield spawnLeading(win.library.watchers, (e) => error("main:rootSaga:win:library", e));
+
+    yield win.session.reader.saga();
+    // yield spawnLeading(win.session.library.watchers, (e) => error("main:rootSaga:win:session:library", e));
+
+    yield win.session.library.saga();
+    // yield spawnLeading(win.session.reader.watchers, (e) => error("main:rootSaga:win:session:reader", e));
+
+    yield ipc.saga();
+    // yield spawnLeading(ipc.watchers, (e) => error("main:rootSaga:ipc", e));
+
+    yield reader.saga();
+    // yield spawnLeading(reader.watchers, (e) => error("main:rootSaga:reader", e));
+
+    // halt entry point
+    yield persist.saga();
+    // yield spawnLeading(persist.watchers, (e) => error("main:rootSaga:persist", e));
+
+    // dispatch at the end
+    yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
+
+    // enjoy the app !
+    yield put(winActions.library.openRequest.build());
 }

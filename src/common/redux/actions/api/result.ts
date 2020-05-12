@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { CodeError } from "readium-desktop/common/errors";
+import { CodeError } from "readium-desktop/common/codeError.class";
 import { Action } from "readium-desktop/common/models/redux";
 
 import { Meta, MetaApi } from "./types";
@@ -29,4 +29,4 @@ export function build(api: MetaApi, payload: any):
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
-export type TAction = ReturnType<typeof build>;
+export type TAction<P = any> = Action<typeof ID, P, Meta>;

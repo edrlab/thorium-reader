@@ -5,23 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
+// import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "STREAMER_PUBLICATION_OPEN_REQUEST";
+// export const ID = "STREAMER_PUBLICATION_OPEN_REQUEST";
 
-export interface Payload {
-    publicationIdentifier: string;
-}
+// export interface Payload {
+//     publicationIdentifier: string;
+// }
 
-export function build(publicationIdentifier: string):
-    Action<typeof ID, Payload> {
+// export function build(publicationIdentifier: string):
+//     Action<typeof ID, Payload> {
 
-    return {
-        type: ID,
-        payload: {
-            publicationIdentifier,
-        },
-    };
-}
-build.toString = () => ID; // Redux StringableActionCreator
-export type TAction = ReturnType<typeof build>;
+//     return {
+//         type: ID,
+//         payload: {
+//             publicationIdentifier,
+//         },
+//     };
+// }
+// build.toString = () => ID; // Redux StringableActionCreator
+// export type TAction = ReturnType<typeof build>;

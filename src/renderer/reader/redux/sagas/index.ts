@@ -5,18 +5,39 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
+// import { error } from "readium-desktop/common/error";
+import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
-import { all, call } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
+import * as cssUpdate from "./cssUpdate";
 import * as i18n from "./i18n";
+import * as ipc from "./ipc";
 import * as winInit from "./win";
 
+// Logger
+const filename_ = "readium-desktop:renderer:reader:saga:index";
+const debug = debug_(filename_);
+debug("_");
+
 export function* rootSaga() {
+
+    yield take(winActions.initRequest.ID);
+
+    yield put(winActions.initSuccess.build());
+
+    yield call(winInit.render);
+
     yield all([
-        call(i18n.watchers),
-        call(winInit.watchers),
-        call(publicationInfoReaderAndLib.watchers),
-        call(publicationInfoSyncTag.watchers),
+        i18n.saga(),
+        ipc.saga(),
+
+        publicationInfoReaderAndLib.saga(),
+        publicationInfoSyncTag.saga(),
+
+        cssUpdate.saga(),
+
     ]);
 }

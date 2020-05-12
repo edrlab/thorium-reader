@@ -21,8 +21,20 @@
             "title": "Editar",
             "undo": "Deshacer"
         },
-        "hide": "Ocultar {{appName}}",
-        "quit": "Salir de {{appName}}"
+        "hide": "Ocultar {{- appName}}",
+        "quit": "Salir de {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "",
+                        "yes": ""
+                    },
+                    "message": "",
+                    "title": ""
+                }
+            }
+        }
     },
     "catalog": {
         "about": {
@@ -92,6 +104,13 @@
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
         "yes": "Sí"
     },
+    "error": {
+        "errorBox": {
+            "error": "",
+            "message": "",
+            "title": ""
+        }
+    },
     "header": {
         "allBooks": "Todos los libros",
         "books": "Mis libros",
@@ -126,6 +145,9 @@
             "alreadyImport": "{{- title}} ya estaba importado",
             "fail": "La importación de {{- path}} falló. Comprueba que el fichero es válido",
             "success": "La importación de {{- title}} ha finalizado."
+        },
+        "open": {
+            "error": ""
         }
     },
     "opds": {
@@ -182,6 +204,9 @@
         "licenseOutOfDate": "La licencia está desactualizada",
         "licenseSignatureDateInvalid": "La fecha de la firma de la licencia no es válida",
         "licenseSignatureInvalid": "La firma de la licencia no es válida",
+        "progression": {
+            "title": "Progresión"
+        },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro no se puede leer porque la licencia LCP se ha devuelto.",
@@ -239,6 +264,11 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "paginated": "Paginado",
+            "save": {
+                "apply": "",
+                "reset": "",
+                "title": ""
+            },
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
             "text": "Texto",
@@ -255,6 +285,15 @@
         "svg": {
             "left": "Izquierda",
             "right": "Derecha"
+        },
+        "tts": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "speed": "",
+            "stop": ""
         }
     },
     "settings": {
@@ -272,6 +311,11 @@
         },
         "language": {
             "languageChoice": "Selección de idioma"
+        },
+        "session": {
+            "no": "",
+            "title": "",
+            "yes": ""
         }
     }
 }

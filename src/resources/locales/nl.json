@@ -21,8 +21,20 @@
             "title": "Wijzig",
             "undo": "Ongedaan maken"
         },
-        "hide": "Verbergen",
-        "quit": "Verlaat Thorium"
+        "hide": "Verbergen {{- appName}}",
+        "quit": "Verlaat {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "",
+                        "yes": ""
+                    },
+                    "message": "",
+                    "title": ""
+                }
+            }
+        }
     },
     "catalog": {
         "about": {
@@ -92,6 +104,13 @@
         "return": "Wil je de licentie voor deze publicatie echt inleveren?",
         "yes": "Ja"
     },
+    "error": {
+        "errorBox": {
+            "error": "",
+            "message": "",
+            "title": ""
+        }
+    },
     "header": {
         "allBooks": "Alle boeken",
         "books": "Mijn boeken",
@@ -126,6 +145,9 @@
             "alreadyImport": "{{- title}} is al toegevoegd",
             "fail": "Het toevoegen van {{- path}} is mislukt. Controleer de juistheid van het bestand",
             "success": "Het toevoegen van {{- title}} is gelukt."
+        },
+        "open": {
+            "error": ""
         }
     },
     "opds": {
@@ -182,6 +204,9 @@
         "licenseOutOfDate": "Licentie is verlopen",
         "licenseSignatureDateInvalid": "Datum in de Licentie handtekening is iongeldig",
         "licenseSignatureInvalid": "Licentie handtekening is ongeldig",
+        "progression": {
+            "title": ""
+        },
         "renewButton": "Vernieuw",
         "returnButton": "Lever in",
         "returnedLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie is ingeleverd.",
@@ -239,6 +264,11 @@
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
             "paginated": "Als pagina's",
+            "save": {
+                "apply": "",
+                "reset": "",
+                "title": ""
+            },
             "scrolled": "Doorlopend",
             "spacing": "Afstand",
             "text": "Tekst",
@@ -255,6 +285,15 @@
         "svg": {
             "left": "Links",
             "right": "Rechts"
+        },
+        "tts": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "speed": "",
+            "stop": ""
         }
     },
     "settings": {
@@ -272,6 +311,11 @@
         },
         "language": {
             "languageChoice": "Taal keuze"
+        },
+        "session": {
+            "no": "",
+            "title": "",
+            "yes": ""
         }
     }
 }

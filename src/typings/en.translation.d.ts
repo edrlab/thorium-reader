@@ -33,7 +33,16 @@ declare namespace typed_i18n {
     readonly "undo": string
   },
   readonly "hide": string,
-  readonly "quit": string
+  readonly "quit": string,
+  readonly "session": {
+    readonly "exit": {
+      readonly "askBox": {
+        readonly "button": { readonly "no": string, readonly "yes": string },
+        readonly "message": string,
+        readonly "title": string
+      }
+    }
+  }
 };
   (_: "app.edit", __?: {}): {
   readonly "copy": string,
@@ -52,6 +61,32 @@ declare namespace typed_i18n {
   (_: "app.edit.title", __?: {}): string;
   (_: "app.edit.undo", __?: {}): string; (_: "app.hide", __?: {}): string;
   (_: "app.quit", __?: {}): string;
+  (_: "app.session", __?: {}): {
+  readonly "exit": {
+    readonly "askBox": {
+      readonly "button": { readonly "no": string, readonly "yes": string },
+      readonly "message": string,
+      readonly "title": string
+    }
+  }
+};
+  (_: "app.session.exit", __?: {}): {
+  readonly "askBox": {
+    readonly "button": { readonly "no": string, readonly "yes": string },
+    readonly "message": string,
+    readonly "title": string
+  }
+};
+  (_: "app.session.exit.askBox", __?: {}): {
+  readonly "button": { readonly "no": string, readonly "yes": string },
+  readonly "message": string,
+  readonly "title": string
+};
+  (_: "app.session.exit.askBox.button", __?: {}): { readonly "no": string, readonly "yes": string };
+  (_: "app.session.exit.askBox.button.no", __?: {}): string;
+  (_: "app.session.exit.askBox.button.yes", __?: {}): string;
+  (_: "app.session.exit.askBox.message", __?: {}): string;
+  (_: "app.session.exit.askBox.title", __?: {}): string;
   (_: "catalog", __?: {}): {
   readonly "about": { readonly "button": string, readonly "title": string },
   readonly "addBookToLib": string,
@@ -221,6 +256,21 @@ declare namespace typed_i18n {
   (_: "dialog.importError", __?: {}): string;
   (_: "dialog.no", __?: {}): string; (_: "dialog.renew", __?: {}): string;
   (_: "dialog.return", __?: {}): string; (_: "dialog.yes", __?: {}): string;
+  (_: "error", __?: {}): {
+  readonly "errorBox": {
+    readonly "error": string,
+    readonly "message": string,
+    readonly "title": string
+  }
+};
+  (_: "error.errorBox", __?: {}): {
+  readonly "error": string,
+  readonly "message": string,
+  readonly "title": string
+};
+  (_: "error.errorBox.error", __?: {}): string;
+  (_: "error.errorBox.message", __?: {}): string;
+  (_: "error.errorBox.title", __?: {}): string;
   (_: "header", __?: {}): {
   readonly "allBooks": string,
   readonly "books": string,
@@ -280,7 +330,8 @@ declare namespace typed_i18n {
     readonly "alreadyImport": string,
     readonly "fail": string,
     readonly "success": string
-  }
+  },
+  readonly "open": { readonly "error": string }
 };
   (_: "message.download", __?: {}): {
   readonly "error": string,
@@ -298,6 +349,8 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.open", __?: {}): { readonly "error": string };
+  (_: "message.open.error", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
     readonly "addButton": string,
@@ -390,6 +443,7 @@ declare namespace typed_i18n {
   readonly "licenseOutOfDate": string,
   readonly "licenseSignatureDateInvalid": string,
   readonly "licenseSignatureInvalid": string,
+  readonly "progression": { readonly "title": string },
   readonly "renewButton": string,
   readonly "returnButton": string,
   readonly "returnedLcp": string,
@@ -415,6 +469,8 @@ declare namespace typed_i18n {
   (_: "publication.licenseOutOfDate", __?: {}): string;
   (_: "publication.licenseSignatureDateInvalid", __?: {}): string;
   (_: "publication.licenseSignatureInvalid", __?: {}): string;
+  (_: "publication.progression", __?: {}): { readonly "title": string };
+  (_: "publication.progression.title", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;
   (_: "publication.returnButton", __?: {}): string;
   (_: "publication.returnedLcp", __?: {}): string;
@@ -469,6 +525,11 @@ declare namespace typed_i18n {
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "paginated": string,
+    readonly "save": {
+      readonly "apply": string,
+      readonly "reset": string,
+      readonly "title": string
+    },
     readonly "scrolled": string,
     readonly "spacing": string,
     readonly "text": string,
@@ -482,7 +543,16 @@ declare namespace typed_i18n {
     },
     readonly "wordSpacing": string
   },
-  readonly "svg": { readonly "left": string, readonly "right": string }
+  readonly "svg": { readonly "left": string, readonly "right": string },
+  readonly "tts": {
+    readonly "activate": string,
+    readonly "next": string,
+    readonly "pause": string,
+    readonly "play": string,
+    readonly "previous": string,
+    readonly "speed": string,
+    readonly "stop": string
+  }
 };
   (_: "reader.footerInfo", __?: {}): { readonly "lessInfo": string, readonly "moreInfo": string };
   (_: "reader.footerInfo.lessInfo", __?: {}): string;
@@ -548,6 +618,11 @@ declare namespace typed_i18n {
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "paginated": string,
+  readonly "save": {
+    readonly "apply": string,
+    readonly "reset": string,
+    readonly "title": string
+  },
   readonly "scrolled": string,
   readonly "spacing": string,
   readonly "text": string,
@@ -586,6 +661,14 @@ declare namespace typed_i18n {
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
+  (_: "reader.settings.save", __?: {}): {
+  readonly "apply": string,
+  readonly "reset": string,
+  readonly "title": string
+};
+  (_: "reader.settings.save.apply", __?: {}): string;
+  (_: "reader.settings.save.reset", __?: {}): string;
+  (_: "reader.settings.save.title", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
   (_: "reader.settings.spacing", __?: {}): string;
   (_: "reader.settings.text", __?: {}): string;
@@ -610,6 +693,22 @@ declare namespace typed_i18n {
   (_: "reader.svg", __?: {}): { readonly "left": string, readonly "right": string };
   (_: "reader.svg.left", __?: {}): string;
   (_: "reader.svg.right", __?: {}): string;
+  (_: "reader.tts", __?: {}): {
+  readonly "activate": string,
+  readonly "next": string,
+  readonly "pause": string,
+  readonly "play": string,
+  readonly "previous": string,
+  readonly "speed": string,
+  readonly "stop": string
+};
+  (_: "reader.tts.activate", __?: {}): string;
+  (_: "reader.tts.next", __?: {}): string;
+  (_: "reader.tts.pause", __?: {}): string;
+  (_: "reader.tts.play", __?: {}): string;
+  (_: "reader.tts.previous", __?: {}): string;
+  (_: "reader.tts.speed", __?: {}): string;
+  (_: "reader.tts.stop", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "keyboard": {
     readonly "advancedMenu": string,
@@ -623,7 +722,12 @@ declare namespace typed_i18n {
     readonly "save": string,
     readonly "show": string
   },
-  readonly "language": { readonly "languageChoice": string }
+  readonly "language": { readonly "languageChoice": string },
+  readonly "session": {
+    readonly "no": string,
+    readonly "title": string,
+    readonly "yes": string
+  }
 };
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
@@ -648,7 +752,11 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.save", __?: {}): string;
   (_: "settings.keyboard.show", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
-  (_: "settings.language.languageChoice", __?: {}): string
+  (_: "settings.language.languageChoice", __?: {}): string;
+  (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
+  (_: "settings.session.no", __?: {}): string;
+  (_: "settings.session.title", __?: {}): string;
+  (_: "settings.session.yes", __?: {}): string
 }
 }
 export = typed_i18n;

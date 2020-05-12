@@ -6,362 +6,74 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { BrowserWindow, Menu } from "electron";
-import * as path from "path";
-import { LocatorType } from "readium-desktop/common/models/locator";
-import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
-import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowBounds } from "readium-desktop/common/rectangle/window";
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
-import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { diMainGet } from "readium-desktop/main/di";
-import { setMenu } from "readium-desktop/main/menu";
-import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
+import { screen } from "electron";
+import * as ramda from "ramda";
+import { ReaderMode } from "readium-desktop/common/models/reader";
+import { SenderType } from "readium-desktop/common/models/sync";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { error } from "readium-desktop/main/error";
+import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
+    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
-import { SagaIterator } from "redux-saga";
+import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take } from "redux-saga/effects";
+import { types } from "util";
 
-import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
-import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { streamerOpenPublicationAndReturnManifestUrl } from "./publication/openPublication";
 
 // Logger
-const debug = debug_("readium-desktop:main:redux:sagas:reader");
+const filename_ = "readium-desktop:main:saga:reader";
+const debug = debug_(filename_);
+debug("_");
 
-async function openReader(publicationIdentifier: string, manifestUrl: string) {
-    debug("create readerWindow");
-    // Create reader window
-    const readerWindow = new BrowserWindow({
-        ...(await getWindowBounds()),
-        minWidth: 800,
-        minHeight: 600,
-        webPreferences: {
-            allowRunningInsecureContent: false,
-            backgroundThrottling: false,
-            contextIsolation: false,
-            devTools: IS_DEV,
-            nodeIntegration: true,
-            nodeIntegrationInWorker: false,
-            sandbox: false,
-            webSecurity: true,
-            webviewTag: true,
-        },
-        icon: path.join(__dirname, "assets/icons/icon.png"),
-    });
+// const READER_CONFIG_ID = "reader";
 
-    if (IS_DEV) {
-        const wc = readerWindow.webContents;
-        wc.on("context-menu", (_ev, params) => {
-            const { x, y } = params;
-            const openDevToolsAndInspect = () => {
-                const devToolsOpened = () => {
-                    wc.off("devtools-opened", devToolsOpened);
-                    wc.inspectElement(x, y);
+// export function* readerConfigSetRequestWatcher(): SagaIterator {
+//     while (true) {
+//         // Wait for save request
+//         const action = yield* takeTyped(readerActions.configSetRequest.build);
 
-                    setTimeout(() => {
-                        if (wc.isDevToolsOpened() && wc.devToolsWebContents) {
-                            wc.devToolsWebContents.focus();
-                        }
-                    }, 500);
-                };
-                wc.on("devtools-opened", devToolsOpened);
-                wc.openDevTools({ activate: true, mode: "detach" });
-            };
-            Menu.buildFromTemplate([{
-                click: () => {
-                    const wasOpened = wc.isDevToolsOpened();
-                    if (!wasOpened) {
-                        openDevToolsAndInspect();
-                    } else {
-                        if (!wc.isDevToolsFocused()) {
-                            // wc.toggleDevTools();
-                            wc.closeDevTools();
+//         const configValue = action.payload.config;
+//         const config: Omit<ConfigDocument<ReaderConfig>, keyof Timestampable> = {
+//             identifier: READER_CONFIG_ID,
+//             value: configValue,
+//         };
 
-                            setImmediate(() => {
-                                openDevToolsAndInspect();
-                            });
-                        } else {
-                            // this should never happen,
-                            // as the right-click context menu occurs with focus
-                            // in BrowserWindow / WebView's WebContents
-                            wc.inspectElement(x, y);
-                        }
-                    }
-                },
-                label: "Inspect element",
-            }]).popup({window: readerWindow});
-        });
+//         // Get reader settings
+//         const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
 
-        // Already done for primary library BrowserWindow
-        // readerWindow.webContents.on("did-finish-load", () => {
-        //     const {
-        //         default: installExtension,
-        //         REACT_DEVELOPER_TOOLS,
-        //         REDUX_DEVTOOLS,
-        //     } = require("electron-devtools-installer");
+//         try {
+//             yield call(() => configRepository.save(config));
+//             yield put(readerActions.configSetSuccess.build(configValue));
+//         } catch (error) {
+//             yield put(readerActions.configSetError.build(error));
+//         }
+//     }
+// }
 
-        //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
-        //         installExtension(extension)
-        //             .then((name: string) => debug("Added Extension: ", name))
-        //             .catch((err: Error) => debug("An error occurred: ", err));
-        //     });
-        // });
+// export function* readerConfigInitWatcher(): SagaIterator {
+//     // Wait for app initialization
+//     yield take(appActions.initSuccess.ID);
 
-        if (_VSCODE_LAUNCH !== "true") {
-            setTimeout(() => {
-                if (!readerWindow.isDestroyed()) {
-                    readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
-                }
-            }, 2000);
-        }
-    }
+//     const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
 
-    const winRegistry = diMainGet("win-registry");
-    const appWindows = winRegistry.getAllWindows();
+//     try {
+//         const readerConfigDoc = yield* callTyped(() => configRepository.get(READER_CONFIG_ID));
 
-    const thereIsOnlyTheLibraryWindow = appWindows.length === 1;
-
-    // Hide the only window (the library),
-    // as the new reader window will now take over
-    // (in other words: "detach" mode is disabled by default for new reader windows)
-    if (thereIsOnlyTheLibraryWindow) {
-        // Same as: appWindows[0]
-        const libraryAppWindow = winRegistry.getLibraryWindow();
-        if (libraryAppWindow) {
-            libraryAppWindow.browserWindow.hide();
-        }
-    }
-
-    const readerAppWindow = winRegistry.registerWindow(
-        readerWindow,
-        AppWindowType.Reader,
-        );
-
-    if (thereIsOnlyTheLibraryWindow) {
-        // onWindowMoveResize.detach() is called for reader windows that become ReaderMode.Detached
-        // (in which case the library window is shown again, and then its position takes precedence)
-        readerAppWindow.onWindowMoveResize.attach();
-    }
-
-    // Track it
-    trackBrowserWindow(readerWindow);
-
-    const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-    const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
-
-    // Create reader object
-    const reader: Reader = {
-        identifier: readerAppWindow.identifier,
-        publicationIdentifier,
-        manifestUrl,
-        filesystemPath: pathDecoded,
-        browserWindow: readerWindow,
-        browserWindowID: readerWindow.id,
-    };
-
-    // This triggers the origin-sandbox for localStorage, etc.
-    manifestUrl = convertHttpUrlToCustomScheme(manifestUrl);
-
-    // Load publication in reader window
-    const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
-
-    let readerUrl = _RENDERER_READER_BASE_URL;
-
-    const htmlPath = "index_reader.html";
-
-    if (readerUrl === "file://") {
-        // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-        readerUrl += path.normalize(path.join(__dirname, htmlPath));
-    } else {
-        // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-        readerUrl += htmlPath;
-    }
-
-    readerUrl = readerUrl.replace(/\\/g, "/");
-    readerUrl += `?pub=${encodedManifestUrl}&pubId=${publicationIdentifier}`;
-
-    // Get publication last reading location
-    const locatorRepository = diMainGet("locator-repository");
-    const locators = await locatorRepository
-        .findByPublicationIdentifierAndLocatorType(
-            publicationIdentifier,
-            LocatorType.LastReadingLocation,
-        );
-
-    if (locators.length > 0) {
-        const locator = locators[0];
-        const docHref = encodeURIComponent_RFC3986(Buffer.from(locator.locator.href).toString("base64"));
-        const docSelector = locator.locator.locations.cssSelector
-            ? encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.cssSelector).toString("base64"))
-            : undefined;
-        const docProgression = locator.locator.locations.progression
-            // tslint:disable-next-line: max-line-length
-            ? encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.progression.toString()).toString("base64"))
-            : undefined;
-        readerUrl += `&docHref=${docHref}&docSelector=${docSelector ? docSelector : ""}&docProgression=${docProgression ? docProgression : ""}`;
-    }
-
-    setMenu(readerWindow, true);
-
-    process.nextTick(async () => {
-        await readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
-    });
-
-    return reader;
-}
-
-export function* readerOpenRequestWatcher(): SagaIterator {
-    while (true) {
-        const action = yield* takeTyped(readerActions.openRequest.build);
-        const publicationIdentifier = action.payload.publicationIdentifier;
-
-        // Notify the streamer to create a manifest for this publication
-        yield put(streamerActions.publicationOpenRequest.build(publicationIdentifier));
-
-        // Wait for the publication to be opened
-        const streamerAction = yield take([
-            streamerActions.publicationOpenSuccess.ID,
-            streamerActions.publicationOpenError.ID,
-        ]);
-        const typedAction = streamerAction.error ?
-            streamerAction as streamerActions.publicationOpenError.TAction :
-            streamerAction as streamerActions.publicationOpenSuccess.TAction;
-
-        if (typedAction.error) {
-            // Failed to open publication
-            // FIXME: Put publication in meta to be FSA compliant
-            yield put(readerActions.openError.build(publicationIdentifier));
-            continue;
-        }
-
-        const manifestUrl = typedAction.payload.manifestUrl;
-        const reader = yield* callTyped(
-            () => openReader(publicationIdentifier, manifestUrl),
-        );
-
-        // Publication is opened in a new reader
-        yield put(readerActions.openSuccess.build(reader));
-    }
-}
-
-export function* readerCloseRequestWatcher(): SagaIterator {
-    while (true) {
-        const action = yield* takeTyped(readerActions.closeRequest.build);
-
-        const reader = action.payload.reader;
-        const gotoLibrary = action.payload.gotoLibrary;
-
-        yield call(() => closeReader(reader, gotoLibrary));
-    }
-}
-
-export function* closeReaderFromPublicationWatcher(): SagaIterator {
-    while (true) {
-        // tslint:disable-next-line: max-line-length
-        const action = yield* takeTyped(readerActions.closeRequestFromPublication.build);
-
-        const publicationIdentifier = action.payload.publicationIdentifier;
-
-        const readers = yield* selectTyped((s: RootState) => s.reader.readers);
-
-        for (const reader of Object.values(readers)) {
-            if (reader.publicationIdentifier === publicationIdentifier) {
-                yield call(() => closeReader(reader, false));
-            }
-        }
-    }
-}
-
-function* closeReader(reader: Reader, gotoLibrary: boolean) {
-    const publicationIdentifier = reader.publicationIdentifier;
-
-    // Notify the streamer that a publication has been closed
-    yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
-
-    // Wait for the publication to be closed
-    const streamerAction = yield take([
-        streamerActions.publicationCloseSuccess.ID,
-        streamerActions.publicationCloseError.ID,
-    ]);
-    const typedAction = streamerAction.error ?
-        streamerAction as streamerActions.publicationCloseError.TAction :
-        streamerAction as streamerActions.publicationCloseSuccess.TAction;
-
-    if (typedAction.error) {
-        // Failed to close publication
-        yield put(readerActions.closeError.build(reader));
-        return;
-    }
-
-    const winRegistry = diMainGet("win-registry");
-
-    if (gotoLibrary) {
-        const libraryAppWindow = winRegistry.getLibraryWindow();
-        if (libraryAppWindow) {
-            yield call(async () => {
-                libraryAppWindow.browserWindow.setBounds(await getWindowBounds(AppWindowType.Library));
-            });
-            if (libraryAppWindow.browserWindow.isMinimized()) {
-                libraryAppWindow.browserWindow.restore();
-            }
-            libraryAppWindow.browserWindow.show(); // focuses as well
-        }
-    }
-
-    const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
-    if (readerWindow) {
-        readerWindow.browserWindow.close();
-    }
-
-    yield put(readerActions.closeSuccess.build(reader));
-}
-
-const READER_CONFIG_ID = "reader";
-
-export function* readerConfigSetRequestWatcher(): SagaIterator {
-    while (true) {
-        // Wait for save request
-        const action = yield* takeTyped(readerActions.configSetRequest.build);
-
-        const configValue = action.payload.config;
-        const config: Omit<ConfigDocument<ReaderConfig>, keyof Timestampable> = {
-            identifier: READER_CONFIG_ID,
-            value: configValue,
-        };
-
-        // Get reader settings
-        const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
-
-        try {
-            yield call(() => configRepository.save(config));
-            yield put(readerActions.configSetSuccess.build(configValue));
-        } catch (error) {
-            yield put(readerActions.configSetError.build(error));
-        }
-    }
-}
-
-export function* readerConfigInitWatcher(): SagaIterator {
-    // Wait for app initialization
-    yield take(appActions.initSuccess.ID);
-
-    const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
-
-    try {
-        const readerConfigDoc = yield* callTyped(() => configRepository.get(READER_CONFIG_ID));
-
-        // Returns the first reader configuration available in database
-        yield put(readerActions.configSetSuccess.build(readerConfigDoc.value));
-    } catch (error) {
-        yield put(readerActions.configSetError.build(error));
-    }
-}
+//         // Returns the first reader configuration available in database
+//         yield put(readerActions.configSetSuccess.build(readerConfigDoc.value));
+//     } catch (error) {
+//         yield put(readerActions.configSetError.build(error));
+//     }
+// }
 
 // export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
 //     while (true) {
@@ -394,67 +106,289 @@ export function* readerConfigInitWatcher(): SagaIterator {
 //     }
 // }
 
-export function* readerFullscreenRequestWatcher(): SagaIterator {
-    while (true) {
-        // Wait for app initialization
-        const action = yield* takeTyped(readerActions.fullScreenRequest.build);
+function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TAction) {
 
-        // Get browser window
-        const sender = action.sender;
+    const sender = action.sender;
 
-        const winRegistry = diMainGet("win-registry");
-        const appWindow = winRegistry.getWindowByIdentifier(sender.winId);
-        if (appWindow) {
-            appWindow.browserWindow.setFullScreen(action.payload.full);
+    if (sender.identifier && sender.type === SenderType.Renderer) {
+
+        const readerWin = yield* callTyped(() => getReaderWindowFromDi(sender.identifier));
+        if (readerWin) {
+            readerWin.setFullScreen(action.payload.full);
         }
     }
 }
 
-export function* readerDetachRequestWatcher(): SagaIterator {
-    while (true) {
-        // Wait for a change mode request
-        const action = yield* takeTyped(readerActions.detachModeRequest.build);
+function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
-        const readerMode = action.payload.mode;
-        const reader = action.payload.reader;
+    const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
-        if (readerMode === ReaderMode.Detached) {
-            const winRegistry = diMainGet("win-registry");
+    if (libWin) {
 
-            const libraryAppWindow = winRegistry.getLibraryWindow();
-            if (libraryAppWindow) {
-                // this should never occur, but let's do it for certainty
-                if (libraryAppWindow.browserWindow.isMinimized()) {
-                    libraryAppWindow.browserWindow.restore();
-                }
-                libraryAppWindow.browserWindow.show(); // focuses as well
+        // try-catch to do not trigger an error message when the winbound is not handle by the os
+        let libBound: Electron.Rectangle;
+        try {
+            // get an bound with offset
+            libBound = yield* callTyped(getWinBound, undefined);
+            if (libBound) {
+                libWin.setBounds(libBound);
             }
+        } catch (e) {
 
-            const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
-            if (readerWindow) {
-                readerWindow.onWindowMoveResize.detach();
+            debug("cannot set libBound", libBound, e);
+        }
 
-                // this should never occur, but let's do it for certainty
-                if (readerWindow.browserWindow.isMinimized()) {
-                    readerWindow.browserWindow.restore();
-                }
-                readerWindow.browserWindow.show(); // focuses as well
+        // this should never occur, but let's do it for certainty
+        if (libWin.isMinimized()) {
+            libWin.restore();
+        }
+        libWin.show(); // focuses as well
+    }
+
+    const readerWinId = action.sender?.identifier;
+    if (readerWinId && action.sender?.type === SenderType.Renderer) {
+
+        const readerWin = getReaderWindowFromDi(readerWinId);
+
+        if (readerWin) {
+
+            // this should never occur, but let's do it for certainty
+            if (readerWin.isMinimized()) {
+                readerWin.restore();
+            }
+            readerWin.show(); // focuses as well
+        }
+    }
+
+    yield put(readerActions.detachModeSuccess.build());
+}
+
+function* getWinBound(publicationIdentifier: string) {
+
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+    const library = yield* selectTyped((state: RootState) => state.win.session.library);
+    const readerArray = ObjectValues(readers);
+
+    if (readerArray.length === 0) {
+        return library.windowBound;
+    }
+
+    let winBound = yield* selectTyped(
+        (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
+    );
+
+    const winBoundArray = [];
+    winBoundArray.push(library.windowBound);
+    readerArray.forEach(
+        (reader) => reader && winBoundArray.push(reader.windowBound));
+    const winBoundAlreadyTaken = !!winBoundArray.find((bound) => ramda.equals(winBound, bound));
+
+    if (
+        !winBound
+        || winBoundAlreadyTaken
+    ) {
+
+        if (readerArray.length) {
+
+            const displayArea = yield* callTyped(() => screen.getPrimaryDisplay().workAreaSize);
+
+            const winBoundWithOffset = winBoundArray.map(
+                (reader) => {
+                    reader.x += 100;
+                    reader.x %= displayArea.width - reader.width;
+                    reader.y += 100;
+                    reader.y %= displayArea.height - reader.height;
+
+                    return reader;
+                },
+            );
+
+            winBound = ramda.uniq(winBoundWithOffset)[0];
+
+        } else {
+            winBound = library.windowBound;
+        }
+    }
+
+    return winBound;
+}
+
+function* readerOpenRequest(action: readerActions.openRequest.TAction) {
+
+    debug(`readerOpenRequest:action:${JSON.stringify(action)}`);
+
+    const publicationIdentifier = action.payload.publicationIdentifier;
+
+    let manifestUrl: string;
+    try {
+        manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
+
+    } catch (e) {
+
+        const translator = yield* callTyped(
+            () => diMainGet("translator"));
+
+        if (types.isNativeError(e)) {
+            // disable "Error: "
+            e.name = "";
+        }
+
+        yield put(
+            toastActions.openRequest.build(
+                ToastType.Error,
+                translator.translate("message.open.error", {err: e.toString()}),
+            ),
+        );
+    }
+
+    if (manifestUrl) {
+
+        const reduxState = yield* selectTyped(
+            (state: RootState) =>
+                state.win.registry.reader[publicationIdentifier]?.reduxState || {} as IReaderStateReader,
+        );
+
+        const sessionIsEnabled = yield* selectTyped(
+            (state: RootState) => state.session.state,
+        );
+        if (!sessionIsEnabled) {
+            const reduxDefaultConfig = yield* selectTyped(
+                (state: RootState) => state.reader.defaultConfig,
+            );
+            reduxState.config = reduxDefaultConfig;
+        }
+
+        const winBound = yield* callTyped(getWinBound, publicationIdentifier);
+
+        // const readers = yield* selectTyped(
+        //     (state: RootState) => state.win.session.reader,
+        // );
+        // const readersArray = ObjectValues(readers);
+
+        const mode = yield* selectTyped((state: RootState) => state.mode);
+        if (mode === ReaderMode.Attached) {
+            try {
+                getLibraryWindowFromDi().hide();
+            } catch (_err) {
+                debug("library can't be loaded from di");
             }
         }
 
-        yield put(readerActions.detachModeSuccess.build(readerMode));
+        yield put(winActions.reader.openRequest.build(
+            publicationIdentifier,
+            manifestUrl,
+            winBound,
+            reduxState,
+        ));
+
     }
 }
 
-export function* watchers() {
-    yield all([
-        // call(readerBookmarkSaveRequestWatcher),
-        call(readerCloseRequestWatcher),
-        call(readerConfigInitWatcher),
-        call(readerConfigSetRequestWatcher),
-        call(readerOpenRequestWatcher),
-        call(readerFullscreenRequestWatcher),
-        call(readerDetachRequestWatcher),
-        call(closeReaderFromPublicationWatcher),
+function* readerCloseRequestFromPublication(action: readerActions.closeRequestFromPublication.TAction) {
+
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+
+    for (const key in readers) {
+        if (readers[key]?.publicationIdentifier === action.payload.publicationIdentifier) {
+            yield call(readerCloseRequest, readers[key].identifier);
+        }
+    }
+}
+
+function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TAction) {
+
+    yield call(readerCloseRequest, action.sender.identifier);
+
+    const libWin = getLibraryWindowFromDi();
+    if (libWin) {
+
+        const winBound = yield* selectTyped(
+            (state: RootState) => state.win.session.library.windowBound,
+        );
+        libWin.setBounds(winBound);
+
+        if (libWin.isMinimized()) {
+            libWin.restore();
+        }
+
+        libWin.show(); // focuses as well
+    } else {
+        debug("no library windows found in readerCLoseRequestFromIdentifier function !");
+    }
+}
+
+function* readerCloseRequest(identifier?: string) {
+
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+
+    for (const key in readers) {
+        if (identifier && readers[key]?.identifier === identifier) {
+            // Notify the streamer that a publication has been closed
+            yield put(
+                streamerActions.publicationCloseRequest.build(
+                    readers[key].publicationIdentifier,
+                ));
+        }
+    }
+
+    const streamerAction = yield take([
+        streamerActions.publicationCloseSuccess.ID,
+        streamerActions.publicationCloseError.ID,
+    ]);
+    const typedAction = streamerAction.error ?
+        streamerAction as streamerActions.publicationCloseError.TAction :
+        streamerAction as streamerActions.publicationCloseSuccess.TAction;
+
+    if (typedAction.error) {
+        // Failed to close publication
+        yield put(readerActions.closeError.build(identifier));
+        return;
+    }
+
+    const readerWindow = getReaderWindowFromDi(identifier);
+    if (readerWindow) {
+        readerWindow.close();
+    }
+
+}
+
+function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
+
+    const { identifier, reduxState } = action.payload;
+    yield put(winActions.session.setReduxState.build(identifier, reduxState));
+}
+
+export function saga() {
+    return all([
+        takeSpawnEvery(
+            readerActions.closeRequestFromPublication.ID,
+            readerCloseRequestFromPublication,
+            (e) => error(filename_ + ":readerCloseRequestFromPublication", e),
+        ),
+        takeSpawnEvery(
+            readerActions.closeRequest.ID,
+            readerCLoseRequestFromIdentifier,
+            (e) => error(filename_ + ":readerCLoseRequestFromIdentifier", e),
+        ),
+        takeSpawnEvery(
+            readerActions.openRequest.ID,
+            readerOpenRequest,
+            (e) => error(filename_ + ":readerOpenRequest", e),
+        ),
+        takeSpawnLeading(
+            readerActions.detachModeRequest.ID,
+            readerDetachRequest,
+            (e) => error(filename_ + ":readerDetachRequest", e),
+        ),
+        takeSpawnLeading(
+            readerActions.fullScreenRequest.ID,
+            readerFullscreenRequest,
+            (e) => error(filename_ + ":readerFullscreenRequest", e),
+        ),
+        takeSpawnEvery(
+            readerActions.setReduxState.ID,
+            readerSetReduxState,
+            (e) => error(filename_ + ":readerSetReduxState", e),
+        ),
     ]);
 }

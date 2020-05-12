@@ -12,10 +12,12 @@ type TOpdsApi = "opds";
 type TKeyboardApi = "keyboardShortcuts";
 type TLcpApi = "lcp";
 type TReaderApi = "reader";
+type TSessionApi = "session";
 export type TModuleApi =
     TCatalogApi |
     TPublicationApi |
     TOpdsApi |
     TKeyboardApi |
     TLcpApi |
-    TReaderApi;
+    TReaderApi |
+    TSessionApi;

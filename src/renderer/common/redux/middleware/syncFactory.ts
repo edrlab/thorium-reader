@@ -8,39 +8,40 @@
 import { ipcRenderer } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
-import { actionSerializer } from "readium-desktop/renderer/common/actionSerializer";
+import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
 
 export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
 
-    return (store: MiddlewareAPI<Dispatch<AnyAction>>) =>
-            (next: Dispatch<ActionWithSender>) =>
-                ((action: ActionWithSender) => {
+    return (store: MiddlewareAPI<Dispatch<AnyAction>, ICommonRootState>) =>
+        (next: Dispatch<ActionWithSender>) =>
+            ((action: ActionWithSender) => {
 
-                    // Does this action must be sent to the main process
-                    if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
-                        // Do not send
-                        return next(action);
-                    }
-
-                    if (action.sender && action.sender.type === SenderType.Main) {
-                        // Do not send in loop an action already sent by main process
-                        return next(action);
-                    }
-
-                    // Send this action to the main process
-                    ipcRenderer.send(syncIpc.CHANNEL, {
-                        type: syncIpc.EventType.RendererAction,
-                        payload: {
-                            action: actionSerializer.serialize(action),
-                        },
-                        sender: {
-                            type: SenderType.Renderer,
-                            winId: store.getState().win.winId,
-                        },
-                    } as syncIpc.EventPayload);
-
+                // Does this action must be sent to the main process
+                if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
+                    // Do not send
                     return next(action);
-                });
+                }
+
+                if (action.sender && action.sender.type === SenderType.Main) {
+                    // Do not send in loop an action already sent by main process
+                    return next(action);
+                }
+
+                // Send this action to the main process
+                ipcRenderer.send(syncIpc.CHANNEL, {
+                    type: syncIpc.EventType.RendererAction,
+                    payload: {
+                        action: ActionSerializer.serialize(action),
+                    },
+                    sender: {
+                        type: SenderType.Renderer,
+                        identifier: store.getState().win.identifier,
+                    },
+                } as syncIpc.EventPayload);
+
+                return next(action);
+            });
 
 }

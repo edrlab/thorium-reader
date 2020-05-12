@@ -10,7 +10,8 @@ import {
     IOpdsFeedView, IOpdsLinkView, THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
 
-export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url" | "type">>;
+// quite useless
+export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;
 
 export interface IOpdsApi {
     getFeed: (
