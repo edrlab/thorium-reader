@@ -24,6 +24,7 @@ import { LocatorView } from "readium-desktop/common/views/locator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
+    IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
@@ -40,19 +41,26 @@ import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFoote
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 import {
-    TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
-    TMouseEventOnSpan,
+    TChangeEventOnInput, TChangeEventOnSelect, TFormEvent, TKeyboardEventOnAnchor,
+    TMouseEventOnAnchor, TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { ContentType } from "readium-desktop/utils/content-type";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 // import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 import { Unsubscribe } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
+import { IHighlight, IHighlightDefinition } from "@r2-navigator-js/electron/common/highlight";
+import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
 import {
-    convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
+    convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
+import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector2";
+import {
+    highlightsClickListen, highlightsCreate, highlightsRemove, highlightsRemoveAll,
+} from "@r2-navigator-js/electron/renderer/highlight";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssUpdate, setEpubReadingSystemInfo,
@@ -60,6 +68,7 @@ import {
     ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, TTSStateEnum, ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
+import { convertRange } from "@r2-navigator-js/electron/renderer/webview/selection";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
@@ -69,6 +78,83 @@ import optionsValues, {
 } from "./options-values";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+
+const computeElementCFI = (node: Node): string | undefined => {
+
+    // TODO: handle character position inside text node
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+        return undefined;
+    }
+
+    let cfi = "";
+
+    let currentElement = node as Element;
+    while (currentElement.parentNode && currentElement.parentNode.nodeType === Node.ELEMENT_NODE) {
+
+        const currentElementParentChildren = (currentElement.parentNode as Element).children;
+        let currentElementIndex = -1;
+        for (let i = 0; i < currentElementParentChildren.length; i++) {
+            if (currentElement === currentElementParentChildren[i]) {
+                currentElementIndex = i;
+                break;
+            }
+        }
+        if (currentElementIndex >= 0) {
+            const cfiIndex = (currentElementIndex + 1) * 2;
+            cfi = cfiIndex +
+                (currentElement.id ? ("[" + currentElement.id + "]") : "") +
+                (cfi.length ? ("/" + cfi) : "");
+        }
+        currentElement = currentElement.parentNode as Element;
+    }
+
+    return "/" + cfi;
+};
+
+const _getCssSelectorOptions = {
+    className: (_str: string) => {
+        return true;
+    },
+    idName: (_str: string) => {
+        return true;
+    },
+    tagName: (_str: string) => {
+        return true;
+    },
+};
+const getCssSelector_ = (doc: Document) => (element: Element): string => {
+    try {
+        return uniqueCssSelector(element, doc, _getCssSelectorOptions);
+    } catch (err) {
+        console.log("uniqueCssSelector:");
+        console.log(err);
+        return "";
+    }
+};
+
+interface ISearchResult {
+    match: string;
+    index: number;
+    textBefore: string;
+    textAfter: string;
+    rangeInfo: IRangeInfo | undefined;
+}
+// https://github.com/lodash/lodash/blob/master/deburr.js
+// https://github.com/lodash/lodash/blob/master/.internal/deburrLetter.js
+// https://github.com/julmot/mark.js/blob/master/src/lib/regexpcreator.js#L297
+// https://github.com/walling/unorm
+// https://github.com/andrewrk/node-diacritics/blob/master/index.js
+// https://github.com/tyxla/remove-accents/blob/master/index.js
+// https://github.com/fedeguzman/remove-accents-diacritics/blob/master/index.js
+// https://github.com/kennygrant/sanitize/blob/master/sanitize.go#L216
+// tslint:disable-next-line
+const unicodeToAsciiMap = {"Ⱥ": "A", "Æ": "AE", "Ꜻ": "AV", "Ɓ": "B", "Ƀ": "B", "Ƃ": "B", "Ƈ": "C", "Ȼ": "C", "Ɗ": "D", "ǲ": "D", "ǅ": "D", "Đ": "D", "Ƌ": "D", "Ǆ": "DZ", "Ɇ": "E", "Ꝫ": "ET", "Ƒ": "F", "Ɠ": "G", "Ǥ": "G", "Ⱨ": "H", "Ħ": "H", "Ɨ": "I", "Ꝺ": "D", "Ꝼ": "F", "Ᵹ": "G", "Ꞃ": "R", "Ꞅ": "S", "Ꞇ": "T", "Ꝭ": "IS", "Ɉ": "J", "Ⱪ": "K", "Ꝃ": "K", "Ƙ": "K", "Ꝁ": "K", "Ꝅ": "K", "Ƚ": "L", "Ⱡ": "L", "Ꝉ": "L", "Ŀ": "L", "Ɫ": "L", "ǈ": "L", "Ł": "L", "Ɱ": "M", "Ɲ": "N", "Ƞ": "N", "ǋ": "N", "Ꝋ": "O", "Ꝍ": "O", "Ɵ": "O", "Ø": "O", "Ƣ": "OI", "Ɛ": "E", "Ɔ": "O", "Ȣ": "OU", "Ꝓ": "P", "Ƥ": "P", "Ꝕ": "P", "Ᵽ": "P", "Ꝑ": "P", "Ꝙ": "Q", "Ꝗ": "Q", "Ɍ": "R", "Ɽ": "R", "Ꜿ": "C", "Ǝ": "E", "Ⱦ": "T", "Ƭ": "T", "Ʈ": "T", "Ŧ": "T", "Ɐ": "A", "Ꞁ": "L", "Ɯ": "M", "Ʌ": "V", "Ꝟ": "V", "Ʋ": "V", "Ⱳ": "W", "Ƴ": "Y", "Ỿ": "Y", "Ɏ": "Y", "Ⱬ": "Z", "Ȥ": "Z", "Ƶ": "Z", "Œ": "OE", "ᴀ": "A", "ᴁ": "AE", "ʙ": "B", "ᴃ": "B", "ᴄ": "C", "ᴅ": "D", "ᴇ": "E", "ꜰ": "F", "ɢ": "G", "ʛ": "G", "ʜ": "H", "ɪ": "I", "ʁ": "R", "ᴊ": "J", "ᴋ": "K", "ʟ": "L", "ᴌ": "L", "ᴍ": "M", "ɴ": "N", "ᴏ": "O", "ɶ": "OE", "ᴐ": "O", "ᴕ": "OU", "ᴘ": "P", "ʀ": "R", "ᴎ": "N", "ᴙ": "R", "ꜱ": "S", "ᴛ": "T", "ⱻ": "E", "ᴚ": "R", "ᴜ": "U", "ᴠ": "V", "ᴡ": "W", "ʏ": "Y", "ᴢ": "Z", "ᶏ": "a", "ẚ": "a", "ⱥ": "a", "æ": "ae", "ꜻ": "av", "ɓ": "b", "ᵬ": "b", "ᶀ": "b", "ƀ": "b", "ƃ": "b", "ɵ": "o", "ɕ": "c", "ƈ": "c", "ȼ": "c", "ȡ": "d", "ɗ": "d", "ᶑ": "d", "ᵭ": "d", "ᶁ": "d", "đ": "d", "ɖ": "d", "ƌ": "d", "ı": "i", "ȷ": "j", "ɟ": "j", "ʄ": "j", "ǆ": "dz", "ⱸ": "e", "ᶒ": "e", "ɇ": "e", "ꝫ": "et", "ƒ": "f", "ᵮ": "f", "ᶂ": "f", "ɠ": "g", "ᶃ": "g", "ǥ": "g", "ⱨ": "h", "ɦ": "h", "ħ": "h", "ƕ": "hv", "ᶖ": "i", "ɨ": "i", "ꝺ": "d", "ꝼ": "f", "ᵹ": "g", "ꞃ": "r", "ꞅ": "s", "ꞇ": "t", "ꝭ": "is", "ʝ": "j", "ɉ": "j", "ⱪ": "k", "ꝃ": "k", "ƙ": "k", "ᶄ": "k", "ꝁ": "k", "ꝅ": "k", "ƚ": "l", "ɬ": "l", "ȴ": "l", "ⱡ": "l", "ꝉ": "l", "ŀ": "l", "ɫ": "l", "ᶅ": "l", "ɭ": "l", "ł": "l", "ſ": "s", "ẜ": "s", "ẝ": "s", "ɱ": "m", "ᵯ": "m", "ᶆ": "m", "ȵ": "n", "ɲ": "n", "ƞ": "n", "ᵰ": "n", "ᶇ": "n", "ɳ": "n", "ꝋ": "o", "ꝍ": "o", "ⱺ": "o", "ø": "o", "ƣ": "oi", "ɛ": "e", "ᶓ": "e", "ɔ": "o", "ᶗ": "o", "ȣ": "ou", "ꝓ": "p", "ƥ": "p", "ᵱ": "p", "ᶈ": "p", "ꝕ": "p", "ᵽ": "p", "ꝑ": "p", "ꝙ": "q", "ʠ": "q", "ɋ": "q", "ꝗ": "q", "ɾ": "r", "ᵳ": "r", "ɼ": "r", "ᵲ": "r", "ᶉ": "r", "ɍ": "r", "ɽ": "r", "ↄ": "c", "ꜿ": "c", "ɘ": "e", "ɿ": "r", "ʂ": "s", "ᵴ": "s", "ᶊ": "s", "ȿ": "s", "ɡ": "g", "ᴑ": "o", "ᴓ": "o", "ᴝ": "u", "ȶ": "t", "ⱦ": "t", "ƭ": "t", "ᵵ": "t", "ƫ": "t", "ʈ": "t", "ŧ": "t", "ᵺ": "th", "ɐ": "a", "ᴂ": "ae", "ǝ": "e", "ᵷ": "g", "ɥ": "h", "ʮ": "h", "ʯ": "h", "ᴉ": "i", "ʞ": "k", "ꞁ": "l", "ɯ": "m", "ɰ": "m", "ᴔ": "oe", "ɹ": "r", "ɻ": "r", "ɺ": "r", "ⱹ": "r", "ʇ": "t", "ʌ": "v", "ʍ": "w", "ʎ": "y", "ᶙ": "u", "ᵫ": "ue", "ꝸ": "um", "ⱴ": "v", "ꝟ": "v", "ʋ": "v", "ᶌ": "v", "ⱱ": "v", "ⱳ": "w", "ᶍ": "x", "ƴ": "y", "ỿ": "y", "ɏ": "y", "ʑ": "z", "ⱬ": "z", "ȥ": "z", "ᵶ": "z", "ᶎ": "z", "ʐ": "z", "ƶ": "z", "ɀ": "z", "œ": "oe", "ₓ": "x"} as any;
+const normalizeDiacriticsAndLigatures = (s: string) => {
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
+    return s.normalize("NFD").
+        replace(/[\u0300-\u036f]/g, "").
+        replace(/[^\u0000-\u007E]/g, (c) => unicodeToAsciiMap[c] || c);
+};
 
 // import {
 //     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
@@ -141,6 +227,8 @@ interface IState {
 
 class Reader extends React.Component<IProps, IState> {
 
+    private searchRef: React.RefObject<HTMLDivElement>;
+    private inputRef: React.RefObject<HTMLInputElement>;
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
     private refToolbar: React.RefObject<HTMLAnchorElement>;
 
@@ -153,6 +241,17 @@ class Reader extends React.Component<IProps, IState> {
 
     private ttsWasPlayingBeforeNavigate: boolean;
     private ttsAutoContinuePlayTimeout: number | undefined;
+
+    private pendingHighlights: {
+        href: string,
+        data: IHighlightDefinition[],
+    } = undefined;
+    private searchCache: {
+        [url: string]: {
+            document: Document,
+            charLength: number,
+        },
+    } = {};
 
     constructor(props: IProps) {
         super(props);
@@ -171,6 +270,8 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
 
+        this.searchRef = React.createRef<HTMLDivElement>();
+        this.inputRef = React.createRef<HTMLInputElement>();
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
         this.refToolbar = React.createRef<HTMLAnchorElement>();
 
@@ -414,6 +515,67 @@ class Reader extends React.Component<IProps, IState> {
                                     title={this.props.__("accessibility.mainContent")}
                                     aria-label={this.props.__("accessibility.mainContent")}
                                     tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
+
+                                <div style={{
+                                    position: "absolute",
+                                    display: "block",
+                                    boxSizing: "border-box",
+                                    padding: "3px",
+                                    margin: "0",
+                                    height: "auto",
+                                    maxHeight: "99%",
+                                    left: "3px",
+                                    right: "3px",
+                                    top: "0px",
+                                    border: "2px solid green",
+                                    background: "rgba(255,255,255,0.5)",
+                                    color: "black",
+                                    zIndex: 99999,
+                                    overflowY: "auto",
+                                    overflowX: "hidden",
+                                }}
+                                ref={this.searchRef}>
+                                    <form
+                                        onSubmit={this.submitSearch}
+                                        role="search"
+                                    >
+                                        <input
+                                            onFocus={() => {
+                                                const div = document.getElementById("SEARCH_RESULTS_LIST");
+                                                if (div) {
+                                                    div.style.display = "block";
+                                                }
+                                            }}
+                                            style={{
+                                                display: "inline-block",
+                                                boxSizing: "border-box",
+                                                padding: "2px",
+                                                margin: "0",
+                                                border: "1px solid magenta",
+                                                background: "white",
+                                                color: "blue",
+                                                width: "200px",
+                                            }}
+                                            ref={this.inputRef}
+                                            type="search"
+                                            aria-label={this.props.__("accessibility.searchBook")}
+                                            placeholder={this.props.__("header.searchPlaceholder")}
+                                        />
+                                        <button
+                                            style={{
+                                                display: "inline-block",
+                                                boxSizing: "border-box",
+                                                padding: "3px",
+                                                marginLeft: "3px",
+                                                border: "1px solid red",
+                                                background: "white",
+                                                color: "blue",
+                                                width: "160px",
+                                            }}>
+                                            {this.props.__("header.searchTitle")}
+                                        </button>
+                                    </form>
+                                </div>
                                 <div id="publication_viewport" className={styles.publication_viewport}> </div>
                             </main>
                         </div>
@@ -433,6 +595,22 @@ class Reader extends React.Component<IProps, IState> {
 
     public setTTSState(ttss: TTSStateEnum) {
         this.setState({ttsState : ttss});
+    }
+
+    private submitSearch = async (e: TFormEvent) => {
+        e.preventDefault();
+        if (!this.inputRef?.current) {
+            return;
+        }
+        let txt = this.inputRef.current.value;
+        if (!txt) {
+            return;
+        }
+        txt = txt.trim();
+        if (!txt) {
+            return;
+        }
+        await this.search(txt);
     }
 
     private registerAllKeyboardListeners() {
@@ -659,10 +837,307 @@ class Reader extends React.Component<IProps, IState> {
             this.props.displayPublicationInfo(this.state.publicationView.identifier);
         }
     }
+    private async ensureHighlights(loc: LocatorExtended) {
+        if (this.pendingHighlights && this.pendingHighlights.href === loc.locator.href) {
+            highlightsRemoveAll(this.pendingHighlights.href);
+            setTimeout(async () => {
+                await highlightsCreate(this.pendingHighlights.href, this.pendingHighlights.data);
+                this.pendingHighlights = undefined;
+            }, 500);
+        }
+    }
+    private async searchTextNode(searchInput: string, n: Node): Promise<ISearchResult[]> {
+        let text = n.nodeValue;
+        if (!text) {
+            return [];
+        }
+        // text = text.replace(/\n/g, " ").replace(/\s\s+/g, "").trim();
+        // if (!text.length) {
+        //     return [];
+        // }
+        text = normalizeDiacriticsAndLigatures(text);
+
+        searchInput = searchInput.replace(/\n/g, " ").replace(/\s\s+/g, "").trim();
+        if (!searchInput.length) {
+            return [];
+        }
+
+        const regexp = new RegExp(normalizeDiacriticsAndLigatures(searchInput), "gi");
+
+        const searchResults: ISearchResult[] = [];
+
+        const snippetLength = 20;
+
+        let matches: RegExpExecArray;
+        // tslint:disable-next-line: no-conditional-assignment
+        while (matches = regexp.exec(text)) {
+            console.log(matches);
+            console.log(JSON.stringify(matches, null, 4));
+            console.log(regexp.lastIndex);
+            console.log(matches.index);
+            console.log(matches[0].length);
+
+            let i = Math.max(0, matches.index - snippetLength);
+            let l = Math.min(snippetLength, matches.index);
+            const textBefore = text.substr(i, l);
+
+            i = regexp.lastIndex;
+            l = Math.min(snippetLength, text.length - i);
+            const textAfter = text.substr(i, l);
+
+            const range = new Range(); // document.createRange()
+            range.setStart(n, matches.index);
+            range.setEnd(n, matches.index + matches[0].length);
+            if (!(n.ownerDocument as any).getCssSelector) {
+                (n.ownerDocument as any).getCssSelector = getCssSelector_(n.ownerDocument);
+            }
+            const rangeInfo = convertRange(range, (n.ownerDocument as any).getCssSelector, computeElementCFI);
+
+            searchResults.push({
+                match: matches[0],
+                index: regexp.lastIndex,
+                textBefore,
+                textAfter,
+                rangeInfo,
+            });
+        }
+
+        return searchResults;
+    }
+    private async searchElement(searchInput: string, el: Element): Promise<ISearchResult[]> {
+        let searchResults: ISearchResult[] = [];
+        const children = Array.from(el.childNodes);
+        for (const child of children) {
+            if (child.nodeType === Node.ELEMENT_NODE) {
+                searchResults = searchResults.concat(await this.searchElement(searchInput, child as Element));
+            } else if (child.nodeType === Node.TEXT_NODE) {
+                searchResults = searchResults.concat(await this.searchTextNode(searchInput, child));
+            }
+        }
+        return searchResults;
+    }
+    private async searchDoc(searchInput: string, doc: Document): Promise<ISearchResult[]> {
+        return this.searchElement(searchInput, doc.body);
+    }
+
+    private async search(searchInput: string) {
+
+        console.log(`#### search: ${searchInput}`);
+
+        const time1 = process.hrtime();
+
+        const existingDiv = document.getElementById("SEARCH_RESULTS_LIST");
+        if (existingDiv && existingDiv.parentNode) {
+            existingDiv.parentNode.removeChild(existingDiv);
+        }
+        const divEl = document.createElement("div");
+        divEl.setAttribute("id", "SEARCH_RESULTS_LIST");
+        divEl.setAttribute("style", "display: block; background-color: white; color: black; border: 2px solid yellow; margin: 0; padding: 3px;");
+        const ulEl = document.createElement("ul");
+        ulEl.setAttribute("style", "margin: 0; padding: 0;");
+        divEl.appendChild(ulEl);
+        if (this.searchRef.current) {
+            this.searchRef.current.appendChild(divEl);
+        }
+
+        // console.log(this.state.publicationJsonUrl);
+        // let response: Response;
+        // try {
+        //     response = await fetch(this.state.publicationJsonUrl);
+        // } catch (e) {
+        //     console.log(e);
+        //     return;
+        // }
+        // if (!response.ok) {
+        //     console.log("BAD RESPONSE?!");
+        //     return;
+        // }
+        // let r2PublicationJson: any;
+        // try {
+        //     r2PublicationJson = await response.json();
+        // } catch (e) {
+        //     console.log(e);
+        //     return;
+        // }
+        // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+        const r2Publication = this.state.r2Publication;
+
+        if (!r2Publication.Spine) {
+            console.log("No spine.");
+            return;
+        }
+
+        for (const link of r2Publication.Spine) {
+            const url = new URL(link.Href, this.state.publicationJsonUrl);
+            const urlStr = url.toString();
+            console.log(urlStr);
+            const urlStr_ = urlStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
+                convertCustomSchemeToHttpUrl(urlStr) : urlStr;
+            console.log(urlStr_);
+            // const url_ = new URL(urlStr_);
+
+            if (!this.searchCache[urlStr]) {
+                let res: Response;
+                try {
+                    res = await fetch(urlStr);
+                } catch (e) {
+                    console.log(e);
+                    continue;
+                }
+                if (!res.ok) {
+                    console.log("BAD RESPONSE?!");
+                    continue;
+                }
+                let linkText: string;
+                try {
+                    linkText = await res.text();
+                } catch (e) {
+                    console.log(e);
+                    continue;
+                }
+
+                const xmlDom = (new DOMParser()).parseFromString(linkText, ContentType.TextXml);
+                this.searchCache[urlStr] = {
+                    document: xmlDom,
+                    charLength: linkText.length,
+                };
+                if (IS_DEV) {
+                    console.log(linkText.length);
+                    // const xmlTxt = (new XMLSerializer()).serializeToString(xmlDom);
+                    // console.log(xmlTxt.substr(0, 1000));
+                }
+            }
+            if (!this.searchCache[urlStr]) {
+                continue;
+            }
+
+            const searchResults = await this.searchDoc(searchInput, this.searchCache[urlStr].document);
+
+            const arr = url.pathname.split("/");
+            arr.splice(0, 1);
+            arr.splice(0, 1);
+            arr.splice(0, 1);
+            arr.splice(0, 1);
+            const p = arr.join("/");
+            if (!searchResults.length) {
+                const liEl = document.createElement("li");
+                // tslint:disable-next-line: max-line-length
+                // liEl.setAttribute("style", "display: block; background-color: white; color: black; border: 1px solid orange; margin: 0; padding: 3px;");
+                const spanEl1 = document.createElement("span");
+                spanEl1.setAttribute("style", "font-family: monospace; background-color: silver;");
+                const t1 = document.createTextNode(`${p}`);
+                spanEl1.appendChild(t1);
+                const spanEl2 = document.createElement("span");
+                spanEl2.setAttribute("style", "margin-left: 2em;");
+                const t2 = document.createTextNode(" ");
+                spanEl2.appendChild(t2);
+                liEl.appendChild(spanEl1);
+                liEl.appendChild(spanEl2);
+                ulEl.appendChild(liEl);
+            } else {
+                const subliEl = document.createElement("li");
+                const subspanEl1 = document.createElement("span");
+                subspanEl1.setAttribute("style", "font-family: monospace; background-color: silver;");
+                const subt1 = document.createTextNode(`${p}`);
+                subspanEl1.appendChild(subt1);
+                subliEl.appendChild(subspanEl1);
+                const allRangeInfos = searchResults.map((ri) => {
+                    return ri.rangeInfo;
+                });
+                for (const searchResult of searchResults) {
+                    const subulEl = document.createElement("ul");
+                    subulEl.setAttribute("style", "margin: 0; padding: 0; margin-left: 1em;");
+                    const liEl = document.createElement("li");
+                    liEl.setAttribute("style", "display: block; background-color: white; color: black; border: 1px solid orange; margin: 0; padding: 3px;");
+                    const aEl = document.createElement("a");
+                    aEl.setAttribute("href", "#");
+                    const t1 = document.createTextNode("LINK");
+                    aEl.appendChild(t1);
+                    (aEl as any).searchResultAllRangeInfos = allRangeInfos;
+                    (aEl as any).searchResultRangeInfo = searchResult.rangeInfo;
+                    (aEl as any).searchResultHref = p;
+                    aEl.addEventListener("click", (ev) => {
+                        ev.preventDefault();
+                        const rangeInfos = (ev.currentTarget as any).searchResultAllRangeInfos as IRangeInfo[];
+                        const rangeInfo = (ev.currentTarget as any).searchResultRangeInfo as IRangeInfo;
+                        const href = (ev.currentTarget as any).searchResultHref as string;
+                        console.log(JSON.stringify(rangeInfo, null, 4));
+                        const locator: R2Locator = {
+                            href,
+                            locations: {
+                                cssSelector: rangeInfo.startContainerElementCssSelector,
+                            },
+                        };
+                        console.log(JSON.stringify(locator, null, 4));
+
+                        const div = document.getElementById("SEARCH_RESULTS_LIST");
+                        if (div) {
+                            div.style.display = "none";
+                        }
+
+                        this.pendingHighlights = {
+                            href: locator.href,
+                            // data: [{
+                            //     selectionInfo: {
+                            //         cleanText: "",
+                            //         rawText: "",
+                            //         rangeInfo,
+                            //     },
+                            //     color: {
+                            //         red: 255,
+                            //         green: 255,
+                            //         blue: 0,
+                            //     },
+                            // }],
+                            data: rangeInfos.map((ri) => {
+                                return {
+                                    selectionInfo: {
+                                        cleanText: "",
+                                        rawText: "",
+                                        rangeInfo: ri,
+                                    },
+                                    color: {
+                                        red: 255,
+                                        green: 255,
+                                        blue: 0,
+                                    },
+                                };
+                            }),
+                        };
+                        handleLinkLocator(locator);
+                    });
+                    const spanEl2 = document.createElement("span");
+                    spanEl2.setAttribute("style", "font-family: serif; margin-left: 2em;");
+                    const t2b = document.createTextNode(`...${searchResult.textBefore}`);
+                    spanEl2.appendChild(t2b);
+                    const spanEl3 = document.createElement("span");
+                    spanEl3.setAttribute("style", "background-color: yellow");
+                    const t3 = document.createTextNode(`${searchResult.match}`);
+                    spanEl3.appendChild(t3);
+                    spanEl2.appendChild(spanEl3);
+                    const t2a = document.createTextNode(`${searchResult.textAfter}...`);
+                    spanEl2.appendChild(t2a);
+                    liEl.appendChild(aEl);
+                    liEl.appendChild(spanEl2);
+                    subulEl.appendChild(liEl);
+                    subliEl.appendChild(subulEl);
+                }
+
+                ulEl.appendChild(subliEl);
+            }
+        }
+
+        const diff1 = process.hrtime(time1);
+        console.log(`${diff1[0]} seconds + ${diff1[1]} nanoseconds`);
+    }
 
     private async loadPublicationIntoViewport(
         publicationView: PublicationView,
         locator: R2Locator) {
+
+        highlightsClickListen((href: string, highlight: IHighlight) => {
+            highlightsRemove(href, [highlight.id]);
+        });
 
         // let response: Response;
         // try {
@@ -779,6 +1254,8 @@ class Reader extends React.Component<IProps, IState> {
                 this.handleTTSPlay();
             }, 500);
         }
+
+        await this.ensureHighlights(loc);
     }
 
     // check if a bookmark is on the screen
