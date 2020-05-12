@@ -6,20 +6,21 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, dialog } from "electron";
+import { dialog } from "electron";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import { ObjectValues } from "readium-desktop/utils/object-keys-values";
-import { eventChannel } from "redux-saga";
-import { all, call, delay, put, spawn, take } from "redux-saga/effects";
+import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
+import { all, call, delay, put, spawn } from "redux-saga/effects";
 
 import { IWinSessionReaderState } from "../../states/win/session/reader";
+import { getAppActivateEventChannel } from "../getEventChannel";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
 import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
 
@@ -32,21 +33,34 @@ debug("_");
 // windows open.
 function* appActivate() {
 
-    const appActivateChannel = eventChannel<boolean>(
-        (emit) => {
+    const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
 
-            const handler = () => emit(true);
-            app.on("activate", handler);
+    // if there is no libWin, so must be recreated
+    if (libWinState.browserWindowId && libWinState.identifier) {
+        const libWin = getLibraryWindowFromDi();
 
-            return () => {
-                app.removeListener("activate", handler);
-            };
-        },
-    );
+        if (libWin.isMinimized()) {
+            libWin.restore();
+            libWin.show();
+        } else if (libWin.isVisible()) {
+            libWin.show();
+        } else {
 
-    yield take(appActivateChannel);
+            const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+            const readersArray = ObjectKeys(readers);
+            const readerWin = getReaderWindowFromDi(readersArray[0]);
 
-    yield put(winActions.library.openRequest.build());
+            if (readerWin.isMinimized()) {
+                readerWin.restore();
+            }
+            readerWin.show();
+        }
+
+    } else {
+
+        yield put(winActions.library.openRequest.build());
+    }
+
 }
 
 function* winOpen(action: winActions.library.openSucess.TAction) {
@@ -221,6 +235,9 @@ function* winClose(_action: winActions.library.closed.TAction) {
 }
 
 export function saga() {
+
+    const appActivateChannel = getAppActivateEventChannel();
+
     return all([
         takeSpawnLeading(
             winActions.library.openRequest.ID,
@@ -237,10 +254,10 @@ export function saga() {
             winOpen,
             (e) => error(filename_ + ":winOpen", e),
         ),
-        takeSpawnLeading(
-            winActions.library.closed.ID,
+        takeSpawnEveryChannel(
+            appActivateChannel,
             appActivate,
-            (e) => error(filename_ + ":appActivate", e),
+            (e) => error(filename_ + ":appActivateChannel", e),
         ),
         takeSpawnLeading(
             winActions.library.closed.ID,

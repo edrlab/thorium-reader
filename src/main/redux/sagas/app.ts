@@ -19,7 +19,8 @@ import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 
 import { streamerActions } from "../actions";
 import {
-    getBeforeQuitEventChannel, getQuitEventChannel, getWindowAllClosedEventChannel,
+    getBeforeQuitEventChannel, getQuitEventChannel, getShutdownEventChannel,
+    getWindowAllClosedEventChannel,
 } from "./getEventChannel";
 
 // Logger
@@ -74,6 +75,7 @@ export function exit() {
     return spawn(function*() {
 
         const beforeQuitEventChannel = getBeforeQuitEventChannel();
+        const shutdownEventChannel = getShutdownEventChannel();
         const windowAllClosedEventChannel = getWindowAllClosedEventChannel();
         const quitEventChannel = getQuitEventChannel();
         let shouldExit: boolean = process.platform !== "darwin" || IS_DEV;
@@ -84,6 +86,15 @@ export function exit() {
         - window-all-closed
         - quit
         */
+
+        const closeLibWinAndExit = () => {
+
+            // track ctrl-q/command-q
+            shouldExit = true;
+
+            const libraryWin = getLibraryWindowFromDi();
+            libraryWin.close();
+        };
 
         yield takeSpawnEveryChannel(
             beforeQuitEventChannel,
@@ -99,14 +110,30 @@ export function exit() {
                 debug("#####");
                 debug("#####");
 
-                // track ctrl-q/command-q
-                shouldExit = true;
+                e.preventDefault();
+
+                closeLibWinAndExit();
+
+            },
+        );
+
+        yield takeSpawnEveryChannel(
+            shutdownEventChannel,
+            (e: Electron.Event) => {
+
+                debug("#####");
+                debug("#####");
+                debug("#####");
+
+                debug("shutdown");
+
+                debug("#####");
+                debug("#####");
+                debug("#####");
 
                 e.preventDefault();
 
-                const libraryWin = getLibraryWindowFromDi();
-                libraryWin.close();
-
+                closeLibWinAndExit();
             },
         );
 

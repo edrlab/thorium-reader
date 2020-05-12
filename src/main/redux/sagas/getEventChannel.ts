@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { app } from "electron";
+import { app, powerMonitor } from "electron";
 import { eventChannel } from "redux-saga";
 
 export function getWindowAllClosedEventChannel() {
@@ -60,4 +60,39 @@ export function getBeforeQuitEventChannel() {
     );
 
     return channel;
+}
+
+export function getAppActivateEventChannel() {
+
+    const channel = eventChannel<boolean>(
+        (emit) => {
+
+            const handler = () => emit(true);
+            app.on("activate", handler);
+
+            return () => {
+                app.removeListener("activate", handler);
+            };
+        },
+    );
+
+    return channel;
+}
+
+export function getShutdownEventChannel() {
+
+    const channel = eventChannel<Electron.Event>(
+        (emit) => {
+
+            const handler = (e: Electron.Event) => emit(e);
+            powerMonitor.on("shutdown", handler);
+
+            return () => {
+                powerMonitor.removeListener("shutdown", handler);
+            };
+        },
+    );
+
+    return channel;
+
 }
