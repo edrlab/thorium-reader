@@ -85,12 +85,14 @@ export const reduxSyncMiddleware: Middleware
                 const browserWin: Map<string, Electron.BrowserWindow> = new Map();
 
                 const libId = store.getState().win.session.library.identifier;
-                try {
-                    const libWin = getLibraryWindowFromDi();
-                    browserWin.set(libId, libWin);
-                } catch (_err) {
-                    // ignore
-                    // library window may be not initialized in first
+                if (libId) {
+                    try {
+                        const libWin = getLibraryWindowFromDi();
+                        browserWin.set(libId, libWin);
+                    } catch (_err) {
+                        // ignore
+                        // library window may be not initialized in first
+                    }
                 }
 
                 const readers = store.getState().win.session.reader;
