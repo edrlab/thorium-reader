@@ -155,7 +155,9 @@ const normalizeDiacriticsAndLigatures = (s: string) => {
         replace(/[\u0300-\u036f]/g, "").
         replace(/[^\u0000-\u007E]/g, (c) => unicodeToAsciiMap[c] || c);
 };
-
+function cleanupStr(str: string) {
+    return str.replace(/\n/g, " ").replace(/\s\s+/g, "").trim();
+}
 // import {
 //     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 // } from "@r2-navigator-js/electron/common/sessions";
@@ -857,7 +859,7 @@ class Reader extends React.Component<IProps, IState> {
         // }
         text = normalizeDiacriticsAndLigatures(text);
 
-        searchInput = searchInput.replace(/\n/g, " ").replace(/\s\s+/g, "").trim();
+        searchInput = cleanupStr(searchInput);
         if (!searchInput.length) {
             return [];
         }
@@ -1108,14 +1110,14 @@ class Reader extends React.Component<IProps, IState> {
                     });
                     const spanEl2 = document.createElement("span");
                     spanEl2.setAttribute("style", "font-family: serif; margin-left: 2em;");
-                    const t2b = document.createTextNode(`...${searchResult.textBefore}`);
+                    const t2b = document.createTextNode(`...${cleanupStr(searchResult.textBefore)}`);
                     spanEl2.appendChild(t2b);
                     const spanEl3 = document.createElement("span");
                     spanEl3.setAttribute("style", "background-color: yellow");
-                    const t3 = document.createTextNode(`${searchResult.match}`);
+                    const t3 = document.createTextNode(`${cleanupStr(searchResult.match)}`);
                     spanEl3.appendChild(t3);
                     spanEl2.appendChild(spanEl3);
-                    const t2a = document.createTextNode(`${searchResult.textAfter}...`);
+                    const t2a = document.createTextNode(`${cleanupStr(searchResult.textAfter)}...`);
                     spanEl2.appendChild(t2a);
                     liEl.appendChild(aEl);
                     liEl.appendChild(spanEl2);
