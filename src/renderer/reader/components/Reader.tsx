@@ -156,7 +156,7 @@ const normalizeDiacriticsAndLigatures = (s: string) => {
         replace(/[^\u0000-\u007E]/g, (c) => unicodeToAsciiMap[c] || c);
 };
 function cleanupStr(str: string) {
-    return str.replace(/\n/g, " ").replace(/\s\s+/g, "").trim();
+    return str.replace(/\n/g, " ").replace(/\s\s+/g, " ").trim();
 }
 // import {
 //     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
@@ -853,7 +853,7 @@ class Reader extends React.Component<IProps, IState> {
         if (!text) {
             return [];
         }
-        // text = text.replace(/\n/g, " ").replace(/\s\s+/g, "").trim();
+        // text = text.replace(/\n/g, " ").replace(/\s\s+/g, " ").trim();
         // if (!text.length) {
         //     return [];
         // }
