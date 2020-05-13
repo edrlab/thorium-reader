@@ -20,6 +20,9 @@ declare module "*.png" {
     export default content;
 }
 
+declare module "json-diff";
+declare module "dom-seek";
+
 declare module "ping";
 
 declare module "yazl";

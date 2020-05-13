@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as classNames from "classnames";
+import * as jsonDiff from "json-diff";
 import * as path from "path";
 import * as r from "ramda";
 import * as React from "react";
@@ -55,7 +56,7 @@ import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron
 import { IHighlight, IHighlightDefinition } from "@r2-navigator-js/electron/common/highlight";
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
 import {
-    convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
+    convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector2";
 import {
@@ -78,6 +79,77 @@ import optionsValues, {
 } from "./options-values";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+
+// import * as domSeek from "dom-seek";
+// https://github.com/tilgovi/dom-seek/blob/master/src/index.js
+// function domSeek(iter: NodeIterator, where: number | Node) {
+//     if (iter.whatToShow !== NodeFilter.SHOW_TEXT) { // 4
+//         throw new Error("NodeIterator..whatToShow !== NodeFilter.SHOW_TEXT");
+//     }
+
+//     let count = 0;
+//     let node = iter.referenceNode;
+//     let predicates: {
+//         forward: () => boolean;
+//         backward: () => boolean;
+//     } = null;
+
+//     // is integer?
+//     if (typeof where === "number" && isFinite(where) && Math.floor(where) === where) {
+//         const n = where as number;
+
+//         const forward = () => count < n;
+//         const backward = () => count > n || !iter.pointerBeforeReferenceNode;
+
+//         predicates = {forward, backward};
+
+//     // is text node?
+//     } else if ((where as Node).nodeType === Node.TEXT_NODE) {
+//         const n = where as Node;
+
+//         // tslint:disable-next-line: no-bitwise
+//         const forward = node.compareDocumentPosition(n) & Node.DOCUMENT_POSITION_PRECEDING ? // 2
+//             () => false :
+//             () => node !== n;
+//         const backward = () => node !== n || !iter.pointerBeforeReferenceNode;
+
+//         predicates = {forward, backward};
+//     } else {
+//         throw new Error("'where' is neither integer nor text node?!");
+//     }
+
+//     while (predicates.forward()) {
+//         node = iter.nextNode();
+
+//         if (!node) {
+//             throw new Error("predicates.forward() !node");
+//         }
+
+//         const txt = normalizeDiacriticsAndLigatures(node.nodeValue);
+//         count += txt.length;
+//     }
+
+//     if (iter.nextNode()) {
+//         node = iter.previousNode();
+//     }
+
+//     while (predicates.backward()) {
+//         node = iter.previousNode();
+
+//         if (!node) {
+//             throw new Error("predicates.backward() !node");
+//         }
+
+//         const txt = normalizeDiacriticsAndLigatures(node.nodeValue);
+//         count -= txt.length;
+//     }
+
+//     if (iter.referenceNode.nodeType !== Node.TEXT_NODE) {
+//         throw new Error("iter.referenceNode.nodeType !== Node.TEXT_NODE");
+//     }
+
+//     return count;
+// }
 
 const computeElementCFI = (node: Node): string | undefined => {
 
@@ -134,7 +206,6 @@ const getCssSelector_ = (doc: Document) => (element: Element): string => {
 
 interface ISearchResult {
     match: string;
-    index: number;
     textBefore: string;
     textAfter: string;
     rangeInfo: IRangeInfo | undefined;
@@ -155,9 +226,15 @@ const normalizeDiacriticsAndLigatures = (s: string) => {
         replace(/[\u0300-\u036f]/g, "").
         replace(/[^\u0000-\u007E]/g, (c) => unicodeToAsciiMap[c] || c);
 };
-function cleanupStr(str: string) {
-    return str.replace(/\n/g, " ").replace(/\s\s+/g, " ").trim();
-}
+// const normalizeString = (s: string) => {
+//     return collapseWhitespaces(normalizeDiacriticsAndLigatures(s));
+// };
+const collapseWhitespaces = (str: string) => {
+    return str.replace(/\n/g, " ").replace(/\s\s+/g, " ");
+};
+const cleanupStr = (str: string) => {
+    return collapseWhitespaces(str).trim();
+};
 // import {
 //     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 // } from "@r2-navigator-js/electron/common/sessions";
@@ -857,7 +934,11 @@ class Reader extends React.Component<IProps, IState> {
         // if (!text.length) {
         //     return [];
         // }
+        const originalLength = text.length;
         text = normalizeDiacriticsAndLigatures(text);
+        if (text.length !== originalLength) {
+            console.log(`###{{{{!!!!! normalizeDiacriticsAndLigatures DIFF ${text.length} !== ${originalLength}`);
+        }
 
         searchInput = cleanupStr(searchInput);
         if (!searchInput.length) {
@@ -868,24 +949,27 @@ class Reader extends React.Component<IProps, IState> {
 
         const searchResults: ISearchResult[] = [];
 
-        const snippetLength = 20;
+        const snippetLength = 100;
+        const snippetLengthNormalized = 30;
 
         let matches: RegExpExecArray;
         // tslint:disable-next-line: no-conditional-assignment
         while (matches = regexp.exec(text)) {
-            console.log(matches);
-            console.log(JSON.stringify(matches, null, 4));
-            console.log(regexp.lastIndex);
-            console.log(matches.index);
-            console.log(matches[0].length);
+            // console.log(matches.input);
+            // // console.log(matches);
+            // // console.log(JSON.stringify(matches, null, 4));
+            // console.log(regexp.lastIndex);
+            // console.log(matches.index);
+            // console.log(matches[0].length);
 
             let i = Math.max(0, matches.index - snippetLength);
             let l = Math.min(snippetLength, matches.index);
-            const textBefore = text.substr(i, l);
+            let textBefore = collapseWhitespaces(text.substr(i, l));
+            textBefore = textBefore.substr(textBefore.length - snippetLengthNormalized);
 
             i = regexp.lastIndex;
             l = Math.min(snippetLength, text.length - i);
-            const textAfter = text.substr(i, l);
+            const textAfter = collapseWhitespaces(text.substr(i, l)).substr(0, snippetLengthNormalized);
 
             const range = new Range(); // document.createRange()
             range.setStart(n, matches.index);
@@ -896,8 +980,7 @@ class Reader extends React.Component<IProps, IState> {
             const rangeInfo = convertRange(range, (n.ownerDocument as any).getCssSelector, computeElementCFI);
 
             searchResults.push({
-                match: matches[0],
-                index: regexp.lastIndex,
+                match: collapseWhitespaces(matches[0]),
                 textBefore,
                 textAfter,
                 rangeInfo,
@@ -921,12 +1004,216 @@ class Reader extends React.Component<IProps, IState> {
     private async searchDoc(searchInput: string, doc: Document): Promise<ISearchResult[]> {
         return this.searchElement(searchInput, doc.body);
     }
+    private compareSearchResults(r1: ISearchResult[], r2: ISearchResult[]) {
+        console.log("Compare search results...");
+        let same = true;
+        for (let i = 0; i < Math.max(r1.length, r2.length); i++) {
+            const res1 = r1[i];
+            if (!res1) {
+                same = false;
+                break;
+            }
+            const res2 = r2[i];
+            if (!res2) {
+                same = false;
+                break;
+            }
+            if (res1.match !== res2.match) {
+                same = false;
+                break;
+            }
+            if (res1.textAfter !== res2.textAfter) {
+                same = false;
+                break;
+            }
+            if (res1.textBefore !== res2.textBefore) {
+                same = false;
+                break;
+            }
+            if (res1.rangeInfo.startContainerElementCssSelector !== res2.rangeInfo.startContainerElementCssSelector) {
+                same = false;
+                break;
+            }
+            if (res1.rangeInfo.startContainerChildTextNodeIndex !== res2.rangeInfo.startContainerChildTextNodeIndex) {
+                same = false;
+                break;
+            }
+            if (res1.rangeInfo.startOffset !== res2.rangeInfo.startOffset) {
+                same = false;
+                break;
+            }
+            if (res1.rangeInfo.endContainerElementCssSelector !== res2.rangeInfo.endContainerElementCssSelector) {
+                same = false;
+                break;
+            }
+            if (res1.rangeInfo.endContainerChildTextNodeIndex !== res2.rangeInfo.endContainerChildTextNodeIndex) {
+                same = false;
+                break;
+            }
+            if (res1.rangeInfo.endOffset !== res2.rangeInfo.endOffset) {
+                same = false;
+                break;
+            }
+        }
+        if (!same) {
+            console.log("€€€€€€€€€€");
+            console.log("€€€€€€€€€€");
+            console.log("€€€€€€€€€€");
+            console.log("€€€€€€€€€€");
+            console.log("€€€€€€€€€€");
+            console.log("€€€€€€€€€€ Search results not identical!");
+            console.log(jsonDiff.diffString({r: r1}, {r: r2}));
+        }
+    }
+    private async searchDocDomSeek(searchInput: string, doc: Document): Promise<ISearchResult[]> {
+        let text = doc.body.textContent;
+        if (!text) {
+            return [];
+        }
+        // text = text.replace(/\n/g, " ").replace(/\s\s+/g, " ").trim();
+        // if (!text.length) {
+        //     return [];
+        // }
+        const originalLength = text.length;
+        text = normalizeDiacriticsAndLigatures(text);
+        if (text.length !== originalLength) {
+            console.log(`###{{{{!!!!! normalizeDiacriticsAndLigatures DIFF ${text.length} !== ${originalLength}`);
+        }
+
+        searchInput = cleanupStr(searchInput);
+        if (!searchInput.length) {
+            return [];
+        }
+
+        const iter = doc.createNodeIterator(
+            doc.body,
+            NodeFilter.SHOW_TEXT,
+            {
+                acceptNode: (_node) => NodeFilter.FILTER_ACCEPT,
+            },
+            );
+
+        const regexp = new RegExp(normalizeDiacriticsAndLigatures(searchInput), "gi");
+
+        const searchResults: ISearchResult[] = [];
+
+        const snippetLength = 100;
+        const snippetLengthNormalized = 30;
+
+        // let consumed = 0;
+        let accumulated = 0;
+
+        let matches: RegExpExecArray;
+        // tslint:disable-next-line: no-conditional-assignment
+        while (matches = regexp.exec(text)) {
+            // console.log("matches.input: ", matches.input);
+            // // console.log(matches);
+            // // console.log(JSON.stringify(matches, null, 4));
+            // console.log("regexp.lastIndex: ", regexp.lastIndex);
+            // console.log("matches.index: ", matches.index);
+            // console.log("matches[0].length: ", matches[0].length);
+
+            let i = Math.max(0, matches.index - snippetLength);
+            let l = Math.min(snippetLength, matches.index);
+            let textBefore = collapseWhitespaces(text.substr(i, l));
+            textBefore = textBefore.substr(textBefore.length - snippetLengthNormalized);
+
+            i = regexp.lastIndex;
+            l = Math.min(snippetLength, text.length - i);
+            const textAfter = collapseWhitespaces(text.substr(i, l)).substr(0, snippetLengthNormalized);
+
+            const range = new Range(); // document.createRange()
+
+            let offset = matches.index;
+            while (accumulated <= offset) {
+                const nextNode = iter.nextNode();
+                accumulated += nextNode.nodeValue.length;
+            }
+            let localOffset = iter.referenceNode.nodeValue.length - (accumulated - offset);
+            // console.log("start accumulated: ", accumulated);
+            // console.log("start localNodeOffset: ", localOffset);
+            // console.log("start iter.referenceNode.nodeValue: ", iter.referenceNode.nodeValue);
+            // console.log("start iter.referenceNode.nodeValue.length: ", iter.referenceNode.nodeValue.length);
+            range.setStart(iter.referenceNode, localOffset);
+
+            offset = matches.index + matches[0].length;
+            while (accumulated <= offset) {
+                const nextNode = iter.nextNode();
+                accumulated += nextNode.nodeValue.length;
+            }
+            localOffset = iter.referenceNode.nodeValue.length - (accumulated - offset);
+            // console.log("end accumulated: ", accumulated);
+            // console.log("end localNodeOffset: ", localOffset);
+            // console.log("end iter.referenceNode.nodeValue: ", iter.referenceNode.nodeValue);
+            // console.log("end iter.referenceNode.nodeValue.length: ", iter.referenceNode.nodeValue.length);
+            range.setEnd(iter.referenceNode, localOffset);
+
+            // let moveForwardBy = matches.index - consumed;
+            // consumed += moveForwardBy;
+            // console.log("start moveForwardBy: ", moveForwardBy);
+            // let actualMovedForward = domSeek(iter, moveForwardBy);
+            // let remainderToMoveForward = moveForwardBy - actualMovedForward;
+            // console.log("start actualMovedForward: ", actualMovedForward);
+            // console.log("start remainderToMoveForward: ", remainderToMoveForward);
+            // console.log("start iter.referenceNode.nodeValue: ", iter.referenceNode.nodeValue);
+            // console.log("start iter.referenceNode.nodeValue.length: ", iter.referenceNode.nodeValue.length);
+            // // if (remainderToMoveForward) {
+            // //     const previousRef = iter.referenceNode;
+            // //     actualMovedForward = domSeek(iter, remainderToMoveForward);
+            // //     console.log("start actualMovedForward (2): ", actualMovedForward);
+            // //     if (previousRef !== iter.referenceNode) {
+            // //         console.log("start previousRef !== iter.referenceNode: ", iter.referenceNode.nodeValue);
+            // //     }
+            // // }
+            // range.setStart(iter.referenceNode, remainderToMoveForward);
+
+            // moveForwardBy = matches[0].length;
+            // consumed += moveForwardBy;
+            // console.log("end moveForwardBy: ", moveForwardBy);
+            // actualMovedForward = domSeek(iter, moveForwardBy);
+            // remainderToMoveForward = moveForwardBy - actualMovedForward;
+            // console.log("end actualMovedForward: ", actualMovedForward);
+            // console.log("end remainderToMoveForward: ", remainderToMoveForward);
+            // if (range.startContainer !== iter.referenceNode) {
+            //     console.log("end RANGE SPANS ACROSS NODES:");
+            //     console.log("end iter.referenceNode.nodeValue: ", iter.referenceNode.nodeValue);
+            //     console.log("end iter.referenceNode.nodeValue.length: ", iter.referenceNode.nodeValue.length);
+            // }
+            // // if (remainderToMoveForward) {
+            // //     const previousRef = iter.referenceNode;
+            // //     actualMovedForward = domSeek(iter, remainderToMoveForward);
+            // //     console.log("end actualMovedForward (2): ", actualMovedForward);
+            // //     if (previousRef !== iter.referenceNode) {
+            // //         console.log("end previousRef !== iter.referenceNode: ", iter.referenceNode.nodeValue);
+            // //     }
+            // // }
+            // range.setEnd(iter.referenceNode, range.startContainer === iter.referenceNode ?
+            //     range.startOffset + remainderToMoveForward : remainderToMoveForward);
+
+            // // should be equal
+            // console.log("consumed (1): ", consumed);
+            // consumed = regexp.lastIndex;
+            // console.log("consumed (2): ", consumed);
+
+            if (!(doc as any).getCssSelector) {
+                (doc as any).getCssSelector = getCssSelector_(doc);
+            }
+            const rangeInfo = convertRange(range, (doc as any).getCssSelector, computeElementCFI);
+
+            searchResults.push({
+                match: collapseWhitespaces(matches[0]),
+                textBefore,
+                textAfter,
+                rangeInfo,
+            });
+        }
+
+        return searchResults;
+    }
 
     private async search(searchInput: string) {
 
         console.log(`#### search: ${searchInput}`);
-
-        const time1 = process.hrtime();
 
         const existingDiv = document.getElementById("SEARCH_RESULTS_LIST");
         if (existingDiv && existingDiv.parentNode) {
@@ -969,13 +1256,20 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
+        // const totalTime1 = [0, 0];
+        // const totalTime2 = [0, 0];
+
+        const timeTotal = process.hrtime();
+
+        const bypass = true;
+
         for (const link of r2Publication.Spine) {
             const url = new URL(link.Href, this.state.publicationJsonUrl);
             const urlStr = url.toString();
-            console.log(urlStr);
-            const urlStr_ = urlStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
-                convertCustomSchemeToHttpUrl(urlStr) : urlStr;
-            console.log(urlStr_);
+            // console.log(urlStr);
+            // const urlStr_ = urlStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
+            //     convertCustomSchemeToHttpUrl(urlStr) : urlStr;
+            // console.log(urlStr_);
             // const url_ = new URL(urlStr_);
 
             if (!this.searchCache[urlStr]) {
@@ -1004,7 +1298,7 @@ class Reader extends React.Component<IProps, IState> {
                     charLength: linkText.length,
                 };
                 if (IS_DEV) {
-                    console.log(linkText.length);
+                    // console.log(linkText.length);
                     // const xmlTxt = (new XMLSerializer()).serializeToString(xmlDom);
                     // console.log(xmlTxt.substr(0, 1000));
                 }
@@ -1013,14 +1307,35 @@ class Reader extends React.Component<IProps, IState> {
                 continue;
             }
 
-            const searchResults = await this.searchDoc(searchInput, this.searchCache[urlStr].document);
-
             const arr = url.pathname.split("/");
             arr.splice(0, 1);
             arr.splice(0, 1);
             arr.splice(0, 1);
             arr.splice(0, 1);
             const p = arr.join("/");
+            console.log(p);
+
+            // const time1 = process.hrtime();
+            const searchResults1 = bypass ? [] : await this.searchDoc(searchInput, this.searchCache[urlStr].document);
+            // const diff1 = process.hrtime(time1);
+            // console.log(`${p} (1) __ ${diff1[0]} seconds + ${diff1[1]} nanoseconds`);
+            // totalTime1[0] += diff1[0];
+            // totalTime1[1] += diff1[1];
+
+            // const time2 = process.hrtime();
+            const searchResults2 =
+                await this.searchDocDomSeek(searchInput, this.searchCache[urlStr].document);
+            // const diff2 = process.hrtime(time2);
+            // console.log(`${p} (2) __ ${diff2[0]} seconds + ${diff2[1]} nanoseconds`);
+            // totalTime2[0] += diff2[0];
+            // totalTime2[1] += diff2[1];
+
+            if (!bypass) {
+                this.compareSearchResults(searchResults1, searchResults2);
+            }
+
+            const searchResults = searchResults2;
+
             if (!searchResults.length) {
                 const liEl = document.createElement("li");
                 // tslint:disable-next-line: max-line-length
@@ -1100,7 +1415,7 @@ class Reader extends React.Component<IProps, IState> {
                                     },
                                     color: {
                                         red: 255,
-                                        green: 255,
+                                        green: 0,
                                         blue: 0,
                                     },
                                 };
@@ -1110,14 +1425,14 @@ class Reader extends React.Component<IProps, IState> {
                     });
                     const spanEl2 = document.createElement("span");
                     spanEl2.setAttribute("style", "font-family: serif; margin-left: 2em;");
-                    const t2b = document.createTextNode(`...${cleanupStr(searchResult.textBefore)}`);
+                    const t2b = document.createTextNode(`...${searchResult.textBefore}`);
                     spanEl2.appendChild(t2b);
                     const spanEl3 = document.createElement("span");
                     spanEl3.setAttribute("style", "background-color: yellow");
-                    const t3 = document.createTextNode(`${cleanupStr(searchResult.match)}`);
+                    const t3 = document.createTextNode(`${searchResult.match}`);
                     spanEl3.appendChild(t3);
                     spanEl2.appendChild(spanEl3);
-                    const t2a = document.createTextNode(`${cleanupStr(searchResult.textAfter)}...`);
+                    const t2a = document.createTextNode(`${searchResult.textAfter}...`);
                     spanEl2.appendChild(t2a);
                     liEl.appendChild(aEl);
                     liEl.appendChild(spanEl2);
@@ -1129,8 +1444,15 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
 
-        const diff1 = process.hrtime(time1);
-        console.log(`${diff1[0]} seconds + ${diff1[1]} nanoseconds`);
+        const timeTotalElapsed = process.hrtime(timeTotal);
+        console.log(`__ TOTAL: ${timeTotalElapsed[0]} seconds + ${timeTotalElapsed[1]} nanoseconds`);
+
+        // console.log("_________________________________");
+        // if (!bypass) {
+        //     console.log(`__ TOTAL 1 ${totalTime1[0]} seconds + ${totalTime1[1]} nanoseconds`);
+        // }
+        // console.log(`__ TOTAL 2 ${totalTime2[0]} seconds + ${totalTime2[1]} nanoseconds`);
+        // console.log("_________________________________");
     }
 
     private async loadPublicationIntoViewport(
