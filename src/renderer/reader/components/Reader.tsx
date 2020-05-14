@@ -151,6 +151,15 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 //     return count;
 // }
 
+// https://github.com/lodash/lodash/blob/master/escapeRegExp.js
+const reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+const reHasRegExpChar = RegExp(reRegExpChar.source);
+function escapeRegExp(str: string) {
+    return (str && reHasRegExpChar.test(str))
+        ? str.replace(reRegExpChar, "\\$&")
+        : (str || "");
+}
+
 const computeElementCFI = (node: Node): string | undefined => {
 
     // TODO: handle character position inside text node
@@ -945,7 +954,7 @@ class Reader extends React.Component<IProps, IState> {
             return [];
         }
 
-        const regexp = new RegExp(normalizeDiacriticsAndLigatures(searchInput), "gi");
+        const regexp = new RegExp(escapeRegExp(normalizeDiacriticsAndLigatures(searchInput)).replace(/ /g, "\\s+"), "gim");
 
         const searchResults: ISearchResult[] = [];
 
@@ -1093,7 +1102,7 @@ class Reader extends React.Component<IProps, IState> {
             },
             );
 
-        const regexp = new RegExp(normalizeDiacriticsAndLigatures(searchInput), "gi");
+        const regexp = new RegExp(escapeRegExp(normalizeDiacriticsAndLigatures(searchInput)).replace(/ /g, "\\s+"), "gim");
 
         const searchResults: ISearchResult[] = [];
 
@@ -1264,6 +1273,9 @@ class Reader extends React.Component<IProps, IState> {
         const bypass = true;
 
         for (const link of r2Publication.Spine) {
+            if (!link.TypeLink || !link.TypeLink.includes("html")) {
+                continue;
+            }
             const url = new URL(link.Href, this.state.publicationJsonUrl);
             const urlStr = url.toString();
             // console.log(urlStr);
