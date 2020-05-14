@@ -165,7 +165,9 @@ export class ReaderApi implements IReaderApi {
 
         if (!publicationDocument.lcp ||
             !publicationDocument.lcp.rights ||
-            publicationDocument.lcp.rights.copy <= 0) {
+            publicationDocument.lcp.rights.copy === null ||
+            typeof publicationDocument.lcp.rights.copy === "undefined" ||
+            publicationDocument.lcp.rights.copy < 0) {
 
             clipboard.writeText(textToCopy, clipBoardType);
             return true;
