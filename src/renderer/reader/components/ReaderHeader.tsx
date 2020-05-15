@@ -28,7 +28,9 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { LocatorExtended, TTSStateEnum } from "@r2-navigator-js/electron/renderer/index";
+import {
+    LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
+} from "@r2-navigator-js/electron/renderer/index";
 
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
@@ -56,6 +58,17 @@ interface IBaseProps extends TranslatorProps {
     handleTTSPlaybackRate: (speed: string) => void;
     ttsState: TTSStateEnum;
     ttsPlaybackRate: string;
+
+    publicationHasMediaOverlays: boolean;
+    handleMediaOverlaysPlay: () => void;
+    handleMediaOverlaysPause: () => void;
+    handleMediaOverlaysStop: () => void;
+    handleMediaOverlaysResume: () => void;
+    handleMediaOverlaysPrevious: () => void;
+    handleMediaOverlaysNext: () => void;
+    handleMediaOverlaysPlaybackRate: (speed: string) => void;
+    mediaOverlaysState: MediaOverlaysStateEnum;
+    mediaOverlaysPlaybackRate: string;
 
     handleReaderClose: () => void;
     handleReaderDetach: () => void;
@@ -130,7 +143,11 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                 className={classNames(styles.main_navigation,
                     this.props.fullscreen ? styles.main_navigation_fullscreen : undefined,
                     showAudioTTSToolbar ? styles.hasTtsAudio : undefined,
-                    this.props.ttsState !== TTSStateEnum.STOPPED ? styles.ttsAudioActivated : undefined,
+                    (this.props.publicationHasMediaOverlays &&
+                    this.props.mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
+                    || !this.props.publicationHasMediaOverlays &&
+                    this.props.ttsState !== TTSStateEnum.STOPPED) ?
+                        styles.ttsAudioActivated : undefined,
                     )}
                 role="navigation"
                 aria-label={ __("accessibility.homeMenu")}
@@ -170,65 +187,131 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                         }
 
                         <ul className={styles.tts_toolbar}>
-                            {this.props.ttsState === TTSStateEnum.STOPPED ?
+                            {(this.props.publicationHasMediaOverlays &&
+                            this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED ||
+                            !this.props.publicationHasMediaOverlays &&
+                            this.props.ttsState === TTSStateEnum.STOPPED) ?
                             <li className={styles.button_audio}>
                                 <button
                                     className={styles.menu_button}
-                                    onClick={this.props.handleTTSPlay}
+                                    onClick={
+                                        this.props.publicationHasMediaOverlays ?
+                                        this.props.handleMediaOverlaysPlay :
+                                        this.props.handleTTSPlay
+                                    }
                                 >
-                                    <SVG svg={AudioIcon} title={ __("reader.tts.activate")}/>
+                                    <SVG svg={AudioIcon} title={
+                                    this.props.publicationHasMediaOverlays ?
+                                    __("reader.media-overlays.activate") :
+                                    __("reader.tts.activate")
+                                    }/>
                                 </button>
                             </li>
                             : <>
                             <li >
                                 <button
                                     className={styles.menu_button}
-                                    onClick={this.props.handleTTSStop}
+                                    onClick={
+                                        this.props.publicationHasMediaOverlays ?
+                                        this.props.handleMediaOverlaysStop :
+                                        this.props.handleTTSStop
+                                    }
                                 >
-                                    <SVG svg={StopIcon} title={ __("reader.tts.stop")}/>
+                                    <SVG svg={StopIcon} title={
+                                    this.props.publicationHasMediaOverlays ?
+                                    __("reader.media-overlays.stop") :
+                                    __("reader.tts.stop")
+                                    }/>
                                 </button>
                             </li>
                             <li >
                                 <button
                                     className={styles.menu_button}
-                                    onClick={this.props.handleTTSPrevious}
+                                    onClick={
+                                        this.props.publicationHasMediaOverlays ?
+                                        this.props.handleMediaOverlaysPrevious :
+                                        this.props.handleTTSPrevious
+                                    }
                                 >
-                                    <SVG svg={SkipPrevious} title={ __("reader.tts.previous")}/>
+                                    <SVG svg={SkipPrevious} title={
+                                    this.props.publicationHasMediaOverlays ?
+                                    __("reader.media-overlays.previous") :
+                                    __("reader.tts.previous")
+                                    }/>
                                 </button>
                             </li>
-                            { this.props.ttsState === TTSStateEnum.PLAYING ?
+                            {(this.props.publicationHasMediaOverlays &&
+                            this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
+                            !this.props.publicationHasMediaOverlays &&
+                            this.props.ttsState === TTSStateEnum.PLAYING) ?
                             <li >
                                 <button
                                     className={styles.menu_button}
-                                    onClick={this.props.handleTTSPause}
+                                    onClick={
+                                        this.props.publicationHasMediaOverlays ?
+                                        this.props.handleMediaOverlaysPause :
+                                        this.props.handleTTSPause
+                                    }
                                 >
-                                    <SVG svg={PauseIcon} title={ __("reader.tts.pause")}/>
+                                    <SVG svg={PauseIcon} title={
+                                    this.props.publicationHasMediaOverlays ?
+                                    __("reader.media-overlays.pause") :
+                                    __("reader.tts.pause")
+                                    }/>
                                 </button>
                             </li>
                             :
                             <li >
                                 <button
                                     className={styles.menu_button}
-                                    onClick={this.props.handleTTSResume}
+                                    onClick={
+                                        this.props.publicationHasMediaOverlays ?
+                                        this.props.handleMediaOverlaysResume :
+                                        this.props.handleTTSResume
+                                    }
                                 >
-                                    <SVG svg={PlayIcon} title={ __("reader.tts.play")}/>
+                                    <SVG svg={PlayIcon} title={
+                                    this.props.publicationHasMediaOverlays ?
+                                    __("reader.media-overlays.play") :
+                                    __("reader.tts.play")
+                                    }/>
                                 </button>
                             </li>
                             }
                             <li >
                                 <button
                                     className={styles.menu_button}
-                                    onClick={this.props.handleTTSNext}
+                                    onClick={
+                                        this.props.publicationHasMediaOverlays ?
+                                        this.props.handleMediaOverlaysNext :
+                                        this.props.handleTTSNext
+                                    }
                                 >
-                                    <SVG svg={SkipNext} title={ __("reader.tts.next")}/>
+                                    <SVG svg={SkipNext} title={
+                                    this.props.publicationHasMediaOverlays ?
+                                    __("reader.media-overlays.next") :
+                                    __("reader.tts.next")
+                                    }/>
                                 </button>
                             </li>
                             <li className={styles.ttsSelectRate}>
-                                <select title={ __("reader.tts.speed")}
+                                <select title={
+                                    this.props.publicationHasMediaOverlays ?
+                                    __("reader.media-overlays.speed") :
+                                    __("reader.tts.speed")
+                                    }
                                     onChange={(ev) => {
-                                        this.props.handleTTSPlaybackRate(ev.target.value.toString());
+                                        if (this.props.publicationHasMediaOverlays) {
+                                            this.props.handleMediaOverlaysPlaybackRate(ev.target.value.toString());
+                                        } else {
+                                            this.props.handleTTSPlaybackRate(ev.target.value.toString());
+                                        }
                                     }}
-                                    value={this.props.ttsPlaybackRate}
+                                    value={
+                                        this.props.publicationHasMediaOverlays ?
+                                        this.props.mediaOverlaysPlaybackRate :
+                                        this.props.ttsPlaybackRate
+                                    }
                                     >
                                     <option value="2">2x</option>
                                     <option value="1.75">1.75x</option>
