@@ -98,6 +98,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     title: "MathML",
                     content: this.mathJax(),
                 },
+                {
+                    title: __("reader.media-overlays.title"),
+                    content: this.mediaOverlaysEnableSkippability(),
+                },
             ]);
         }
 
@@ -148,6 +152,23 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
         );
     }
 
+    private mediaOverlaysEnableSkippability() {
+
+        const { readerConfig } = this.props;
+        return (
+            <div className={styles.mathml_section}>
+                <input
+                    id="mediaOverlaysEnableSkippabilityCheckBox"
+                    type="checkbox"
+                    checked={readerConfig.mediaOverlaysEnableSkippability}
+                    onChange={() => this.toggleMediaOverlaysEnableSkippability()}
+                />
+                <label htmlFor="mediaOverlaysEnableSkippabilityCheckBox">{
+                    this.props.__("reader.media-overlays.skip")
+                }</label>
+            </div>
+        );
+    }
     private mathJax() {
 
         const { readerConfig } = this.props;
@@ -159,7 +180,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     checked={readerConfig.enableMathJax}
                     onChange={() => this.toggleMathJax()}
                 />
-                <label htmlFor={"mathJaxCheckBox-"}>MathJax</label>
+                <label htmlFor="mathJaxCheckBox">MathJax</label>
             </div>
         );
     }
@@ -489,6 +510,13 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
         </>;
     }
 
+    private toggleMediaOverlaysEnableSkippability() {
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
+        readerConfig.mediaOverlaysEnableSkippability = !readerConfig.mediaOverlaysEnableSkippability;
+        this.props.setSettings(readerConfig);
+    }
     private toggleMathJax() {
         // TODO: smarter clone?
         const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
