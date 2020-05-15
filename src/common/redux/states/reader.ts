@@ -26,4 +26,5 @@ export const readerConfigInitialState: ReaderConfig = {
     paraSpacing: "0",
     noFootnotes: undefined,
     darken: undefined,
+    mediaOverlaysEnableSkippability: true,
 };

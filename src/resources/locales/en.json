@@ -297,12 +297,15 @@
         },
         "media-overlays": {
             "activate": "Activate Readaloud",
+            "escape": "Escape",
             "next": "Next Readaloud",
             "pause": "Pause Readaloud",
             "play": "Play Readaloud",
             "previous": "Previous Readaloud",
+            "skip": "Skippability",
             "speed": "Readaloud playback rate",
-            "stop": "Stop Readaloud"
+            "stop": "Stop Readaloud",
+            "title": "Readaloud"
         }
     },
     "settings": {

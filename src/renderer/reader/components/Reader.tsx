@@ -55,12 +55,12 @@ import {
 } from "@r2-navigator-js/electron/common/sessions";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
-    isLocatorVisible, LocatorExtended, mediaOverlaysListen, mediaOverlaysNext, mediaOverlaysPause,
-    mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
-    MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight, publicationHasMediaOverlays,
-    readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
-    setReadingLocationSaver, ttsListen, ttsNext, ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious,
-    ttsResume, TTSStateEnum, ttsStop,
+    isLocatorVisible, LocatorExtended, mediaOverlaysEnableSkippability, mediaOverlaysListen,
+    mediaOverlaysNext, mediaOverlaysPause, mediaOverlaysPlay, mediaOverlaysPlaybackRate,
+    mediaOverlaysPrevious, mediaOverlaysResume, MediaOverlaysStateEnum, mediaOverlaysStop,
+    navLeftOrRight, publicationHasMediaOverlays, readiumCssUpdate, setEpubReadingSystemInfo,
+    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, ttsListen, ttsNext,
+    ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, TTSStateEnum, ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
@@ -1142,6 +1142,8 @@ class Reader extends React.Component<IProps, IState> {
     private handleSettingsSave(readerConfig: ReaderConfig) {
         this.props.setConfig(readerConfig);
 
+        mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
+
         if (this.state.r2Publication) {
             readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
 
@@ -1246,6 +1248,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
             i++;
         }
     }
+
+    mediaOverlaysEnableSkippability(state.reader.config.mediaOverlaysEnableSkippability);
 
     return {
         readerInfo: state.reader.info,

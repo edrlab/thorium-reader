@@ -51,6 +51,7 @@ export interface ReaderConfigBooleans {
     enableMathJax: boolean;
     noFootnotes: boolean;
     darken: boolean;
+    mediaOverlaysEnableSkippability: boolean;
 }
 
 export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans {
