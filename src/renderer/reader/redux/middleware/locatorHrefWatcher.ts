@@ -5,23 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as ramda from "ramda";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
-import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
-const dispatchSetReduxState = (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) => {
+import { readerLocalActionLocatorHrefChanged } from "../actions";
 
-    const state = ramda.clone(store.getState());
+const dispatchHref = (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) => {
 
-    // disable highlight persistence
-    delete state.reader.highlight;
-
-    store.dispatch(readerActions.setReduxState.build(state.win.identifier, state.reader));
+    const state = store.getState();
+    const href = state.reader?.locator?.locator?.href;
+    if (href) {
+        store.dispatch(readerLocalActionLocatorHrefChanged.build(href));
+    }
 };
 
-export const reduxPersistMiddleware: Middleware
+export const locatorHrefWatcherMiddleware: Middleware
     = (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) =>
         (next: Dispatch<ActionWithSender>) =>
             (action: ActionWithSender) => {
@@ -32,8 +31,8 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                if (!ramda.equals(prevState.reader, nextState.reader)) {
-                    dispatchSetReduxState(store);
+                if (prevState?.reader?.locator?.locator?.href !== nextState?.reader?.locator?.locator?.href) {
+                    dispatchHref(store);
                 }
 
                 return returnValue;

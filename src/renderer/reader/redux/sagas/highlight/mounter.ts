@@ -20,45 +20,47 @@ import {
 
 export function* mountHighlight(href: string, handlerState: IHighlightHandlerState[]): SagaIterator {
 
-    // check if the highlight is not yet mounted
+    // check if the highlight uuid is not yet mounted
     const highlightMounterArray = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
     const filteredMountedArray = handlerState.filter(
-        ({ uuid }) =>
-            highlightMounterArray.findIndex(([uuidFind]) => uuid !== uuidFind) >= 0,
+        ({ uuid, href: hrefHandlerState }) =>
+            highlightMounterArray.findIndex(([uuidFind]) => uuid === uuidFind) < 0 // true if not present in mounter
+            && hrefHandlerState === href,
     );
 
-    const filterHrefArray = filteredMountedArray
-    .filter((v) => v?.href === href);
+    const defArray = filteredMountedArray.map((v) => v.def);
+    const uuidArray = filteredMountedArray.map((v) => v.uuid);
 
-    const defArray = filterHrefArray.map((v) => v.def);
-    const uuidArray = filterHrefArray.map((v) => v.uuid);
+    const mountedArray = yield* callTyped(highlightsCreate, href, defArray);
 
-    const mounted = yield* callTyped(highlightsCreate, href, defArray);
-    const mountedArray = zipWith(
+    const handlerMounted = zipWith(
         (uuid, ref) => ({
             uuid,
             ref,
         } as IHighlightMounterState),
         uuidArray,
-        mounted,
-    )
-        .filter((v) => v.ref);
+        mountedArray,
+    );
+    const filteredHandlerMounted = handlerMounted.filter((v) => v.ref);
 
-    yield put(readerLocalActionHighlights.mounter.mount.build(...mountedArray));
+    yield put(readerLocalActionHighlights.mounter.mount.build(...filteredHandlerMounted));
 }
 
 export function* unmountHightlight(href: string, baseState: IHighlightBaseState[]): SagaIterator {
 
-    // get highlight ids filtered on href and state uuid list
+    // filter on handler array with href and baseState uuid
     const highlightHandlerArray = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
-    const highlightHandlerFiltered = highlightHandlerArray.filter(
+    const filteredHighlightHandler = highlightHandlerArray.filter(
         ([uuid, handlerState]) =>
-            baseState.findIndex(({uuid: uuidFind}) => uuid === uuidFind) >= 0 && href === handlerState.href);
+            href === handlerState.href
+            && baseState.findIndex(({ uuid: uuidFind }) => uuid === uuidFind) >= 0,
+    );
 
+    // filter handler filtered with mounter uuid and map mounted highlight id
     const highlightMounterArray = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
     const filteredArray = highlightMounterArray.filter(
         ([uuid]) =>
-            highlightHandlerFiltered.findIndex(([uuidFind]) => uuid === uuidFind) >= 0,
+            filteredHighlightHandler.findIndex(([uuidFind]) => uuid === uuidFind) >= 0,
     )
         .map(([, ref]) => ref.id);
 

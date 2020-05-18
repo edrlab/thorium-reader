@@ -10,19 +10,8 @@ import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { all, call } from "redux-saga/effects";
 
-import { readerLocalActionHighlights, readerLocalActionSetLocator } from "../../actions";
+import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged } from "../../actions";
 import { mountHighlight, unmountHightlight } from "./mounter";
-
-function* mountHighlightsWatcher(action: readerLocalActionSetLocator.TAction) {
-    const href = yield* selectTyped((store: IReaderRootState) => store.reader?.locator?.locator?.href);
-    const newHref = action.payload?.locator?.href;
-
-    if (href !== newHref) {
-        const handlerStateMap = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler);
-        const handlerState = handlerStateMap.map(([, state]) => state);
-        yield call(mountHighlight, newHref, handlerState);
-    }
-}
 
 function* push(action: readerLocalActionHighlights.handler.push.TAction) {
     if (action.payload) {
@@ -40,18 +29,31 @@ function* pop(action: readerLocalActionHighlights.handler.pop.TAction) {
     }
 }
 
+function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
+
+    const { payload: { href } } = action;
+
+    const mounterState = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
+    const mounterUuid = mounterState.map(([uuid]) => ({ uuid }));
+    yield call(unmountHightlight, href, mounterUuid);
+
+    const handlerState = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
+    const handler = handlerState.map(([, state]) => state);
+    yield call(mountHighlight, href, handler);
+}
+
 export const saga = () =>
-all([
-    takeSpawnEvery(
-        readerLocalActionSetLocator.ID,
-        mountHighlightsWatcher,
-    ),
-    takeSpawnEvery(
-        readerLocalActionHighlights.handler.pop.ID,
-        pop,
-    ),
-    takeSpawnEvery(
-        readerLocalActionHighlights.handler.push.ID,
-        push,
-    ),
-]);
+    all([
+        takeSpawnEvery(
+            readerLocalActionHighlights.handler.pop.ID,
+            pop,
+        ),
+        takeSpawnEvery(
+            readerLocalActionHighlights.handler.push.ID,
+            push,
+        ),
+        takeSpawnEvery(
+            readerLocalActionLocatorHrefChanged.ID,
+            hrefChanged,
+        ),
+    ]);
