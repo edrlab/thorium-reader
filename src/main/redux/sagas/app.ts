@@ -7,6 +7,9 @@
 
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
+import installExtension, {
+    REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS,
+} from "electron-devtools-installer";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
@@ -49,6 +52,15 @@ export function* init() {
     yield call(() => app.whenReady());
 
     debug("Main app ready");
+
+    if (IS_DEV) {
+        try {
+            debug("INSTALL EXTENSION");
+            yield call(installExtension, [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]);
+        } catch (err) {
+            debug("INSTALL EXTENSION An error occurred: ", err);
+        }
+    }
 
     // register file protocol to link locale file to renderer
     protocol.registerFileProtocol("store",

@@ -195,21 +195,6 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         });
     }
 
-    // Already done for primary library BrowserWindow
-    // readerWindow.webContents.on("did-finish-load", () => {
-    //     const {
-    //         default: installExtension,
-    //         REACT_DEVELOPER_TOOLS,
-    //         REDUX_DEVTOOLS,
-    //     } = require("electron-devtools-installer");
-
-    //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
-    //         installExtension(extension)
-    //             .then((name: string) => debug("Added Extension: ", name))
-    //             .catch((err: Error) => debug("An error occurred: ", err));
-    //     });
-    // });
-
     if (_VSCODE_LAUNCH !== "true") {
         setTimeout(() => {
 

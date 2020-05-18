@@ -22,6 +22,7 @@ import { put } from "redux-saga/effects";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
+debug("_");
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
@@ -96,17 +97,6 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         });
 
         libWindow.webContents.on("did-finish-load", () => {
-            const {
-                default: installExtension,
-                REACT_DEVELOPER_TOOLS,
-                REDUX_DEVTOOLS,
-            } = require("electron-devtools-installer");
-
-            [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
-                installExtension(extension)
-                    .then((name: string) => debug("Added Extension: ", name))
-                    .catch((err: Error) => debug("An error occurred: ", err));
-            });
 
             // the dispatching of 'openSuccess' action must be in the 'did-finish-load' event
             // because webpack-dev-server automaticaly refresh the window.
