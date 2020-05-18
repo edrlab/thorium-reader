@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as pop from "./pop";
-import * as push from "./push";
+import * as unmount from "./pop";
+import * as mount from "./push";
 
 export {
-    push,
-    pop,
+    unmount,
+    mount,
 };

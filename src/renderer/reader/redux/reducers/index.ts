@@ -60,21 +60,21 @@ export const rootReducer = () => {
                     ),
                 mounter: mapReducer
                     <
-                        readerLocalActionHighlights.mounter.push.TAction,
-                        readerLocalActionHighlights.mounter.pop.TAction,
+                        readerLocalActionHighlights.mounter.mount.TAction,
+                        readerLocalActionHighlights.mounter.unmount.TAction,
                         string,
                         IHighlight
                     >(
                         {
                             push: {
-                                type: readerLocalActionHighlights.mounter.push.ID,
+                                type: readerLocalActionHighlights.mounter.mount.ID,
                                 selector: (action) =>
                                     action.payload?.map(
                                         (v) => [v.uuid, v.ref],
                                     ),
                             },
                             pop: {
-                                type: readerLocalActionHighlights.mounter.pop.ID,
+                                type: readerLocalActionHighlights.mounter.unmount.ID,
                                 selector: (action) =>
                                     action.payload?.map(
                                         (v) => [v.uuid, undefined],
