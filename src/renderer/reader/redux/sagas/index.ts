@@ -6,14 +6,12 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 // import { error } from "readium-desktop/common/error";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 import { all, call, put, take } from "redux-saga/effects";
 
-import { readerLocalActionSetLocator } from "../actions";
 import * as annotation from "./annotation";
 import * as cssUpdate from "./cssUpdate";
 import * as highlightHandler from "./highlight/handler";
@@ -45,11 +43,6 @@ export function* rootSaga() {
 
         highlightHandler.saga(),
         annotation.saga(),
-
-        takeSpawnEvery(
-            readerLocalActionSetLocator.ID,
-            () => console.log("fd"),
-        ),
 
     ]);
 }
