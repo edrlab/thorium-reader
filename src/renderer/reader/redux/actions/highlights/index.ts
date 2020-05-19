@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as click from "./click";
 import * as handler from "./handler/index";
 import * as mounter from "./mounter/index";
 
 export {
     handler,
     mounter,
+    click,
 };

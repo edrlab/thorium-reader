@@ -5,13 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IHighlight } from "r2-navigator-js/dist/es6-es2015/src/electron/common/highlight";
 import { zipWith } from "ramda";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { SagaIterator } from "redux-saga";
+import { eventChannel, SagaIterator } from "redux-saga";
 import { put } from "redux-saga/effects";
 
-import { highlightsCreate, highlightsRemove } from "@r2-navigator-js/electron/renderer";
+import {
+    highlightsClickListen, highlightsCreate, highlightsRemove,
+} from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionHighlights } from "../../actions";
 import {
@@ -71,4 +74,26 @@ export function* unmountHightlight(href: string, baseState: IHighlightBaseState[
     // navigator-js doesn't keep hightlight state beetween webview access
     yield put(readerLocalActionHighlights.mounter.unmount.build(...baseState));
 
+}
+
+export type THighlightClick = [string, IHighlight];
+
+export function getHightlightClickChannel() {
+    const channel = eventChannel<THighlightClick>(
+        (emit) => {
+
+            const handler = (href: string, highlight: IHighlight) => {
+                emit([href, highlight]);
+            };
+
+            highlightsClickListen(handler);
+
+            // tslint:disable-next-line: no-empty
+            return () => {
+                // no destrutor
+            };
+        },
+    );
+
+    return channel;
 }

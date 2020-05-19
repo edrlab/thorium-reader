@@ -5,13 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import {
+    takeSpawnEvery, takeSpawnEveryChannel,
+} from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { all, call } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
 
 import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged } from "../../actions";
-import { mountHighlight, unmountHightlight } from "./mounter";
+import {
+    getHightlightClickChannel, mountHighlight, THighlightClick, unmountHightlight,
+} from "./mounter";
 
 function* push(action: readerLocalActionHighlights.handler.push.TAction) {
     if (action.payload) {
@@ -42,8 +46,17 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
     yield call(mountHighlight, href, handler);
 }
 
-export const saga = () =>
-    all([
+function* dispatchClick(data: THighlightClick) {
+
+    const [href, ref] = data;
+
+    yield put(readerLocalActionHighlights.click.build({ href, ref }));
+}
+
+export const saga = () => {
+
+    const clickChannel = getHightlightClickChannel();
+    return all([
         takeSpawnEvery(
             readerLocalActionHighlights.handler.pop.ID,
             pop,
@@ -56,4 +69,9 @@ export const saga = () =>
             readerLocalActionLocatorHrefChanged.ID,
             hrefChanged,
         ),
+        takeSpawnEveryChannel(
+            clickChannel,
+            dispatchClick,
+        ),
     ]);
+};
