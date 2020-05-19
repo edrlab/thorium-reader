@@ -11,6 +11,7 @@ import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 export const LocatorExtendedWithLocatorOnly = (locator: R2Locator): LocatorExtended => ({
     audioPlaybackInfo: undefined,
     paginationInfo: undefined,
+    secondWebViewHref: undefined,
     selectionInfo: undefined,
     selectionIsNew: undefined,
     docInfo: undefined,
