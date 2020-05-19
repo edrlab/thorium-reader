@@ -5,12 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as readerLocalActionPicker from "./picker";
-import * as readerLocalActionSetConfig from "./setConfig";
-import * as readerLocalActionSetLocator from "./setLocator";
+import * as manager from "./picker";
 
 export {
-    readerLocalActionSetConfig,
-    readerLocalActionSetLocator,
-    readerLocalActionPicker,
+    manager,
 };

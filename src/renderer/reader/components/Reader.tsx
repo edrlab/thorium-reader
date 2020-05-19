@@ -70,6 +70,7 @@ import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redu
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
+import PickerManager from "./picker/PickerManager";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -443,6 +444,7 @@ class Reader extends React.Component<IProps, IState> {
                     />
                     <div className={classNames(styles.content_root,
                             this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
+                        <PickerManager></PickerManager>
                         <div className={styles.reader}>
                             <main
                                 id="main"

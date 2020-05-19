@@ -17,6 +17,7 @@ import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { combineReducers } from "redux";
 
 import { readerInfoReducer } from "./info";
+import { pickerReducer } from "./picker";
 import { readerConfigReducer } from "./readerConfig";
 import { readerLocatorReducer } from "./readerLocator";
 
@@ -29,6 +30,7 @@ export const rootReducer = () => {
             info: readerInfoReducer,
             locator: readerLocatorReducer,
         }),
+        picker: pickerReducer,
         win: winReducer,
         dialog: dialogReducer,
         toast: toastReducer,

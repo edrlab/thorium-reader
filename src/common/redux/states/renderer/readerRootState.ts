@@ -5,12 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { ReaderConfig, ReaderInfo } from "readium-desktop/common/models/reader";
 import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
+import { IPickerState } from "readium-desktop/renderer/reader/redux/state/picker";
+
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 export interface IReaderRootState extends ICommonRootState {
     reader: IReaderStateReader;
+    picker: IPickerState;
 }
 
 export interface IReaderStateReader {
