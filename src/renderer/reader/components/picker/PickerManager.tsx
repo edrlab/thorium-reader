@@ -28,8 +28,6 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
     pickerTop: number;
     pickerLeft: number;
-    deltaX: number;
-    deltaY: number;
 }
 
 class PickerManager extends React.Component<IProps, IState> {
@@ -43,8 +41,6 @@ class PickerManager extends React.Component<IProps, IState> {
         this.state = {
             pickerTop: 70,
             pickerLeft: 300,
-            deltaX: 0,
-            deltaY: 0,
         };
     }
 
@@ -111,8 +107,8 @@ class PickerManager extends React.Component<IProps, IState> {
         ev.target.addEventListener("mousemove", this.move as any);
         ev.target.addEventListener("mouseleave", this.stopMove as any);
 
-        this.left = ev.pageX;
         this.top = ev.pageY;
+        this.left = ev.pageX;
     }
 
     private stopMove = (ev: MouseEvent) => {
@@ -124,14 +120,12 @@ class PickerManager extends React.Component<IProps, IState> {
     private move = (evt: MouseEvent) => {
 
         this.setState({
-            deltaX: evt.pageX - this.left,
-            deltaY: evt.pageY - this.top,
-            pickerTop: this.state.pickerTop + this.state.deltaY,
-            pickerLeft: this.state.pickerLeft + this.state.deltaX,
+            pickerTop: this.state.pickerTop + evt.pageY - this.top,
+            pickerLeft: this.state.pickerLeft + evt.pageX - this.left,
         });
 
-        this.left = evt.pageX;
         this.top = evt.pageY;
+        this.left = evt.pageX;
     }
 }
 
