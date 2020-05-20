@@ -12,7 +12,9 @@ import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/re
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 import { all, call, put, take } from "redux-saga/effects";
 
+import * as annotation from "./annotation";
 import * as cssUpdate from "./cssUpdate";
+import * as highlightHandler from "./highlight/handler";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as winInit from "./win";
@@ -38,6 +40,9 @@ export function* rootSaga() {
         publicationInfoSyncTag.saga(),
 
         cssUpdate.saga(),
+
+        highlightHandler.saga(),
+        annotation.saga(),
 
     ]);
 }

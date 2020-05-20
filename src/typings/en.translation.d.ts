@@ -564,6 +564,18 @@ declare namespace typed_i18n {
     readonly "previous": string,
     readonly "speed": string,
     readonly "stop": string
+  },
+  readonly "media-overlays": {
+    readonly "activate": string,
+    readonly "escape": string,
+    readonly "next": string,
+    readonly "pause": string,
+    readonly "play": string,
+    readonly "previous": string,
+    readonly "skip": string,
+    readonly "speed": string,
+    readonly "stop": string,
+    readonly "title": string
   }
 };
   (_: "reader.footerInfo", __?: {}): { readonly "lessInfo": string, readonly "moreInfo": string };
@@ -743,6 +755,28 @@ declare namespace typed_i18n {
   (_: "reader.tts.previous", __?: {}): string;
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
+  (_: "reader.media-overlays", __?: {}): {
+  readonly "activate": string,
+  readonly "escape": string,
+  readonly "next": string,
+  readonly "pause": string,
+  readonly "play": string,
+  readonly "previous": string,
+  readonly "skip": string,
+  readonly "speed": string,
+  readonly "stop": string,
+  readonly "title": string
+};
+  (_: "reader.media-overlays.activate", __?: {}): string;
+  (_: "reader.media-overlays.escape", __?: {}): string;
+  (_: "reader.media-overlays.next", __?: {}): string;
+  (_: "reader.media-overlays.pause", __?: {}): string;
+  (_: "reader.media-overlays.play", __?: {}): string;
+  (_: "reader.media-overlays.previous", __?: {}): string;
+  (_: "reader.media-overlays.skip", __?: {}): string;
+  (_: "reader.media-overlays.speed", __?: {}): string;
+  (_: "reader.media-overlays.stop", __?: {}): string;
+  (_: "reader.media-overlays.title", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "keyboard": {
     readonly "advancedMenu": string,

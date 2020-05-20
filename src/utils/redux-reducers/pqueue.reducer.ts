@@ -7,7 +7,7 @@
 
 import { Action } from "redux";
 
-export interface ActionWithPayload<Type = string>
+interface ActionWithPayload<Type = string>
     extends Action<Type> {
 }
 
@@ -27,7 +27,7 @@ export interface IPQueueData
 > {
     push: IPQueueAction<TPushAction, Key, Value, ActionType>;
     pop: IPQueueAction<TPopAction, Key, Value, ActionType>;
-    sortFct: (a: IPQueueState<Key, Value>, b: IPQueueState<Key, Value>) => number;
+    sortFct?: (a: IPQueueState<Key, Value>, b: IPQueueState<Key, Value>) => number;
 }
 
 export type IPQueueState<Key, Value> = [Key, Value];
@@ -60,6 +60,7 @@ export function priorityQueueReducer
                 const selectorItem = data.push.selector(action as TPushAction);
                 if (selectorItem[1]) {
 
+                    // find same value
                     const index = newQueue.findIndex((item) => item[1] === selectorItem[1]);
                     if (index > -1) {
                         newQueue[index] = selectorItem;

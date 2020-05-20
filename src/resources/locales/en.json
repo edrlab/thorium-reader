@@ -306,6 +306,18 @@
             "previous": "Previous Text To Speech",
             "speed": "Text To Speech playback rate",
             "stop": "Stop Text To Speech"
+        },
+        "media-overlays": {
+            "activate": "Activate Readaloud",
+            "escape": "Escape",
+            "next": "Next Readaloud",
+            "pause": "Pause Readaloud",
+            "play": "Play Readaloud",
+            "previous": "Previous Readaloud",
+            "skip": "Skippability",
+            "speed": "Readaloud playback rate",
+            "stop": "Stop Readaloud",
+            "title": "Readaloud"
         }
     },
     "settings": {

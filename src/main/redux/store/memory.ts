@@ -80,6 +80,10 @@ async function absorbLocatorRepositoryToReduxState() {
                         manifestUrl: undefined,
                         filesystemPath: undefined,
                     },
+                    highlight: {
+                        handler: undefined,
+                        mounter: undefined,
+                    },
                 },
             };
 
