@@ -7,6 +7,7 @@
 
 import * as readerLocalActionHighlights from "./highlights";
 import * as readerLocalActionLocatorHrefChanged from "./locatorHrefChanged";
+import * as readerLocalActionPicker from "./picker";
 import * as readerLocalActionSetConfig from "./setConfig";
 import * as readerLocalActionSetLocator from "./setLocator";
 
@@ -15,4 +16,5 @@ export {
     readerLocalActionSetLocator,
     readerLocalActionHighlights,
     readerLocalActionLocatorHrefChanged,
+    readerLocalActionPicker,
 };

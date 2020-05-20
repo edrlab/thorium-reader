@@ -22,6 +22,7 @@ import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import { readerLocalActionHighlights } from "../actions";
 import { IHighlightHandlerState } from "../state/highlight";
 import { readerInfoReducer } from "./info";
+import { pickerReducer } from "./picker";
 import { readerConfigReducer } from "./readerConfig";
 import { readerLocatorReducer } from "./readerLocator";
 
@@ -84,6 +85,7 @@ export const rootReducer = () => {
                     ),
             }),
         }),
+        picker: pickerReducer,
         win: winReducer,
         dialog: dialogReducer,
         toast: toastReducer,

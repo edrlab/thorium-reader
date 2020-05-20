@@ -11,10 +11,13 @@ import { IHighlightHandlerState } from "readium-desktop/renderer/reader/redux/st
 import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
+import { IPickerState } from "readium-desktop/renderer/reader/redux/state/picker";
+
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 export interface IReaderRootState extends ICommonRootState {
     reader: IReaderStateReader;
+    picker: IPickerState;
 }
 
 export interface IReaderStateReader {
