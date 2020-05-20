@@ -295,7 +295,7 @@ button {
   & > ul:not(.noAudio) {
     display: flex;
   }
-  
+
   & > ul, & ul.menu_option, & ul.tts_toolbar {
     line-height: 0.9rem;
     padding: 0;
@@ -394,6 +394,19 @@ button {
       }
 
       & .bookmarkButton {
+        position: absolute;
+        left: -2000px;
+
+        &:checked + label.menu_button {
+          background-color: rgb(193, 193, 193);
+        }
+
+        &:focus + label.menu_button {
+          @mixin R2_MIXIN_FOCUS_OUTLINE;
+        }
+      }
+
+      & .magnifyingGlassButton {
         position: absolute;
         left: -2000px;
 
@@ -1009,7 +1022,7 @@ input[type=radio] + label {
         fill: #C1C1C1;;
       }
     }
-    
+
     & .track_reading_wrapper {
       padding: 1rem 8rem 1rem 5rem;
       bottom: 0;

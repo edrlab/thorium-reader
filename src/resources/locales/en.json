@@ -228,8 +228,20 @@
             "landmarks": "Landmarks",
             "toc": "Table of Contents"
         },
+        "media-overlays": {
+            "activate": "Activate Readaloud",
+            "next": "Next Readaloud",
+            "pause": "Pause Readaloud",
+            "play": "Play Readaloud",
+            "previous": "Previous Readaloud",
+            "skip": "Skippability",
+            "speed": "Readaloud playback rate",
+            "stop": "Stop Readaloud",
+            "title": "Readaloud"
+        },
         "navigation": {
             "backHomeTitle": "back to the bookshelf",
+            "magnifyingGlassButton": "search in publication",
             "bookmarkTitle": "bookmark",
             "detachWindowTitle": "detach the window",
             "fullscreenTitle": "open fullscreen mode",

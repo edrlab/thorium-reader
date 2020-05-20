@@ -491,8 +491,20 @@ declare namespace typed_i18n {
     readonly "landmarks": string,
     readonly "toc": string
   },
+  readonly "media-overlays": {
+    readonly "activate": string,
+    readonly "next": string,
+    readonly "pause": string,
+    readonly "play": string,
+    readonly "previous": string,
+    readonly "skip": string,
+    readonly "speed": string,
+    readonly "stop": string,
+    readonly "title": string
+  },
   readonly "navigation": {
     readonly "backHomeTitle": string,
+    readonly "magnifyingGlassButton": string,
     readonly "bookmarkTitle": string,
     readonly "detachWindowTitle": string,
     readonly "fullscreenTitle": string,
@@ -571,8 +583,29 @@ declare namespace typed_i18n {
   (_: "reader.marks.edit", __?: {}): string;
   (_: "reader.marks.landmarks", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
+  (_: "reader.media-overlays", __?: {}): {
+  readonly "activate": string,
+  readonly "next": string,
+  readonly "pause": string,
+  readonly "play": string,
+  readonly "previous": string,
+  readonly "skip": string,
+  readonly "speed": string,
+  readonly "stop": string,
+  readonly "title": string
+};
+  (_: "reader.media-overlays.activate", __?: {}): string;
+  (_: "reader.media-overlays.next", __?: {}): string;
+  (_: "reader.media-overlays.pause", __?: {}): string;
+  (_: "reader.media-overlays.play", __?: {}): string;
+  (_: "reader.media-overlays.previous", __?: {}): string;
+  (_: "reader.media-overlays.skip", __?: {}): string;
+  (_: "reader.media-overlays.speed", __?: {}): string;
+  (_: "reader.media-overlays.stop", __?: {}): string;
+  (_: "reader.media-overlays.title", __?: {}): string;
   (_: "reader.navigation", __?: {}): {
   readonly "backHomeTitle": string,
+  readonly "magnifyingGlassButton": string,
   readonly "bookmarkTitle": string,
   readonly "detachWindowTitle": string,
   readonly "fullscreenTitle": string,
@@ -587,6 +620,7 @@ declare namespace typed_i18n {
   readonly "settingsTitle": string
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
+  (_: "reader.navigation.magnifyingGlassButton", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;
   (_: "reader.navigation.fullscreenTitle", __?: {}): string;

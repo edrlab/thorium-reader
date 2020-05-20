@@ -228,9 +228,21 @@
             "landmarks": "Repères",
             "toc": "Table des matières"
         },
+        "media-overlays": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "skip": "",
+            "speed": "",
+            "stop": "",
+            "title": ""
+        },
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",
+            "magnifyingGlassButton": "recherche dans la publication",
             "detachWindowTitle": "détacher la fenêtre",
             "fullscreenTitle": "mode plein écran",
             "goTo": "Aller à",
