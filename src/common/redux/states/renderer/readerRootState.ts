@@ -14,10 +14,12 @@ import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import { IPickerState } from "readium-desktop/renderer/reader/redux/state/picker";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { ISearchState } from "readium-desktop/renderer/reader/redux/state/search";
 
 export interface IReaderRootState extends ICommonRootState {
     reader: IReaderStateReader;
     picker: IPickerState;
+    search: ISearchState;
 }
 
 export interface IReaderStateReader {

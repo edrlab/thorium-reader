@@ -10,9 +10,10 @@ import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import { readerLocalActionPicker } from "../../redux/actions";
+import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
 import AnnotationPicker from "./annotation";
 import SearchPicker from "./search";
+import { IPickerState } from "../../redux/state/picker";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -39,9 +40,23 @@ class PickerManager extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            pickerTop: 70,
-            pickerLeft: 300,
+            pickerTop: 0,
+            pickerLeft: 0,
         };
+
+    }
+
+    public componentDidUpdate(prevProps: IProps) {
+        const { picker: { open: o } } = prevProps;
+        const { picker: { open: n } } = this.props;
+
+        if (n !== o) {
+            this.setState({
+                pickerTop: 70,
+                pickerLeft: Math.round(window.innerWidth / 3),
+            });
+
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -91,7 +106,7 @@ class PickerManager extends React.Component<IProps, IState> {
                         top: "3px",
                         fontSize: "2ex",
                     }}
-                    onClick={() => this.props.closePicker()}
+                    onClick={() => this.props.closePicker(type)}
                 >
                     X
                 </button>
@@ -138,7 +153,12 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 const mapDispatchToProps = (dispatch: TDispatch) => ({
     // tslint:disable-next-line: max-line-length
     /* Exported variable 'mapDispatchToProps' has or is using name 'IPayload' from external module "/Users/Pierre/Documents/thorium/src/renderer/reader/redux/actions/picker/picker" but cannot be named.ts(4023) */
-    closePicker: () => (dispatch(readerLocalActionPicker.manager.build(false, "search")), 0),
+    closePicker: (type: IPickerState["type"]) => {
+        if (type === "search") {
+            dispatch(readerLocalActionSearch.cancel.build());
+        }
+        dispatch(readerLocalActionPicker.manager.build(false));
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PickerManager);

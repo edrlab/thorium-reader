@@ -137,6 +137,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 disabled: true,
             },
             {
+                title: __("reader.marks.search"),
+                content: <></>,
+                disabled: !this.props.searchEnable,
+            },
+            {
                 content: this.buildGoToPageSection(),
                 disabled: false,
                 notExtendable: true,
@@ -416,6 +421,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         pubId: state.reader.info.publicationIdentifier,
+        searchEnable: state.search.enable,
     };
 };
 

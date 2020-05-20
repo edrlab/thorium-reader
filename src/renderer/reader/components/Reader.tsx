@@ -66,7 +66,10 @@ import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
+import {
+    readerLocalActionPicker, readerLocalActionSearch, readerLocalActionSetConfig,
+    readerLocalActionSetLocator,
+} from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
@@ -437,6 +440,8 @@ class Reader extends React.Component<IProps, IState> {
                         handleReaderClose={this.handleReaderClose}
                         toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
                         isOnBookmark={this.state.visibleBookmarkList.length > 0}
+                        isOnSearch={this.props.searchEnable}
+                        toggleSearch={() => this.props.enableSearch(!this.props.searchEnable)}
                         readerOptionsProps={readerOptionsProps}
                         readerMenuProps={readerMenuProps}
                         displayPublicationInfo={this.displayPublicationInfo}
@@ -1262,17 +1267,26 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
             state.dialog.type === DialogTypeName.PublicationInfoReader,
         pubId: state.reader.info.publicationIdentifier,
         locator: state.reader.locator,
+        searchEnable: state.search.enable,
     };
 };
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        toggleFullscreen: (fullscreenOn: boolean) => {
-            if (fullscreenOn) {
-                dispatch(readerActions.fullScreenRequest.build(true));
+        enableSearch: (enable: boolean) => {
+            if (enable) {
+                dispatch(readerLocalActionSearch.enable.build());
+                dispatch(readerLocalActionPicker.manager.build(true, "search"));
             } else {
-                dispatch(readerActions.fullScreenRequest.build(false));
+                dispatch(readerLocalActionSearch.cancel.build());
+                dispatch(readerLocalActionPicker.manager.build(false));
             }
+        },
+        cancelSearch: () => {
+            dispatch(readerLocalActionSearch.cancel.build());
+        },
+        toggleFullscreen: (fullscreenOn: boolean) => {
+                dispatch(readerActions.fullScreenRequest.build(fullscreenOn));
         },
         closeReader: () => {
             dispatch(readerActions.closeRequest.build());

@@ -25,6 +25,7 @@ import { readerInfoReducer } from "./info";
 import { pickerReducer } from "./picker";
 import { readerConfigReducer } from "./readerConfig";
 import { readerLocatorReducer } from "./readerLocator";
+import { searchReducer } from "./search";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
@@ -85,6 +86,7 @@ export const rootReducer = () => {
                     ),
             }),
         }),
+        search: searchReducer,
         picker: pickerReducer,
         win: winReducer,
         dialog: dialogReducer,

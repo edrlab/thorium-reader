@@ -6,24 +6,20 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IPickerState } from "../../state/picker";
+import { ISearchState, searchDefaultState } from "../../state/search";
 
-export const ID = "READER_PICKER";
+export const ID = "READER_SEARCH_CANCEL";
 
-type TP = Pick<IPickerState, "open"> & Partial<IPickerState>;
 // tslint:disable-next-line: no-empty-interface
-interface IPayload extends TP {
+interface IPayload extends Partial<ISearchState> {
 }
 
-export function build(open: IPickerState["open"], type?: IPickerState["type"]):
+export function build():
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
-        payload: {
-            open,
-            type,
-        },
+        payload: searchDefaultState(),
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

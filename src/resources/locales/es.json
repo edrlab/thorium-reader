@@ -226,6 +226,7 @@
             "delete": "Eliminar",
             "edit": "Editar",
             "landmarks": "Puntos de referencia",
+            "search": "",
             "toc": "Tabla de contenido"
         },
         "media-overlays": {
@@ -249,6 +250,7 @@
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
             "infoTitle": "Información",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navegación",
             "quitFullscreenTitle": "Salir del modo pantalla completa",
             "readBookTitle": "Empezar a leer el libro",

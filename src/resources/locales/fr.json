@@ -226,6 +226,7 @@
             "delete": "Supprimer",
             "edit": "Éditer",
             "landmarks": "Repères",
+            "search": "",
             "toc": "Table des matières"
         },
         "media-overlays": {
@@ -242,7 +243,6 @@
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",
-            "magnifyingGlassButton": "recherche dans la publication",
             "detachWindowTitle": "détacher la fenêtre",
             "fullscreenTitle": "mode plein écran",
             "goTo": "Aller à",
@@ -250,6 +250,7 @@
             "goToPlaceHolder": "Entrer un numéro de page",
             "goToTitle": "Aller à la page",
             "infoTitle": "informations",
+            "magnifyingGlassButton": "recherche dans la publication",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quitter le mode plein écran",
             "readBookTitle": "lancer la lecture du livre",
