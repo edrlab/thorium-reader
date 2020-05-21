@@ -87,6 +87,11 @@ class PickerManager extends React.Component<IProps, IState> {
                 zIndex: 999,
             }}
                 onMouseDown={this.startMove}
+                onKeyUp={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                    if (e.key === "Escape") {
+                        this.props.closePicker(type);
+                    }
+                }}
             >
                 <span style={{
                     fontSize: "1ex",
@@ -102,8 +107,8 @@ class PickerManager extends React.Component<IProps, IState> {
                     {
 
                         type === "search"
-                        ? <SearchPicker></SearchPicker>
-                        : <AnnotationPicker></AnnotationPicker>
+                            ? <SearchPicker></SearchPicker>
+                            : <AnnotationPicker></AnnotationPicker>
                     }
                 </>
 
