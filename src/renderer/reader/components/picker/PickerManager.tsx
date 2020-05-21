@@ -8,12 +8,15 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
+import { IPickerState } from "../../redux/state/picker";
 import AnnotationPicker from "./annotation";
 import SearchPicker from "./search";
-import { IPickerState } from "../../redux/state/picker";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -23,7 +26,8 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: max-line-length
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps>, TranslatorProps {
 }
 
 interface IState {
@@ -61,6 +65,7 @@ class PickerManager extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { open, type } = this.props.picker;
+        const { __ } = this.props;
 
         if (!open) {
             return (<></>);
@@ -84,20 +89,23 @@ class PickerManager extends React.Component<IProps, IState> {
                 onMouseDown={this.startMove}
             >
                 <span style={{
-                    fontSize: "2ex",
+                    fontSize: "1ex",
                     margin: "10px",
                 }}>
                     {
                         type === "search"
-                            ? "Search: "
-                            : "Annotation: "
+                            ? __("reader.picker.searchTitle")
+                            : __("reader.picker.annotationTitle")
                     }
                 </span>
-                {
-                    type === "search"
+                <>
+                    {
+
+                        type === "search"
                         ? <SearchPicker></SearchPicker>
                         : <AnnotationPicker></AnnotationPicker>
-                }
+                    }
+                </>
 
                 <button
                     style={{
@@ -161,4 +169,4 @@ const mapDispatchToProps = (dispatch: TDispatch) => ({
     },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PickerManager);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PickerManager));

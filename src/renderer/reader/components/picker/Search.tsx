@@ -8,7 +8,14 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import { TDispatch } from "readium-desktop/typings/redux";
+
+import { readerLocalActionSearch } from "../../redux/actions";
+import LoaderSearch from "./LoaderSearch";
+import SearchFormPicker from "./SearchFormPicker";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -18,7 +25,7 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps>, TranslatorProps {
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -27,9 +34,37 @@ interface IState {
 
 class SearchPicker extends React.Component<IProps, IState> {
 
-    public render(): React.ReactElement<{}> {
+    public render() {
+
+        const { load, notFound, next, previous, __ } = this.props;
         return (
-            <></>
+            <div style={{
+                // margin: "10px",
+                display: "flex",
+                // flexDirection: "row",
+                // width: "300px",
+
+                // paddingBlock: "20px",
+            }}>
+                <SearchFormPicker></SearchFormPicker>
+                <button
+                    disabled={notFound}
+                    onClick={previous}
+                    aria-label={__("reader.picker.search.previous")}
+                >
+                    {"<"}
+                </button>
+                <button
+                    disabled={notFound}
+                    onClick={next}
+                    aria-label={__("reader.picker.search.next")}
+                >
+                    {">"}
+                </button>
+                {
+                    load && <LoaderSearch></LoaderSearch>
+                }
+            </div>
         );
 
     }
@@ -39,10 +74,18 @@ class SearchPicker extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         picker: state.picker,
+        load: state.search.state === "busy",
+        notFound: !state.search.foundArray?.length,
     };
 };
 
-const mapDispatchToProps = (_dispatch: TDispatch) => ({
+const mapDispatchToProps = (dispatch: TDispatch) => ({
+    next: () => {
+        dispatch(readerLocalActionSearch.next.build());
+    },
+    previous: () => {
+        dispatch(readerLocalActionSearch.previous.build());
+    }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPicker);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SearchPicker));

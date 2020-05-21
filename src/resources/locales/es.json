@@ -256,6 +256,16 @@
             "readBookTitle": "Empezar a leer el libro",
             "settingsTitle": "Opciones de configuración"
         },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "input": "",
+                "next": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
+        },
         "settings": {
             "column": {
                 "auto": "Automático",

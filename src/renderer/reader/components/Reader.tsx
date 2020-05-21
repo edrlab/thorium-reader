@@ -441,7 +441,6 @@ class Reader extends React.Component<IProps, IState> {
                         toggleBookmark={ async () => { await this.handleToggleBookmark(false); } }
                         isOnBookmark={this.state.visibleBookmarkList.length > 0}
                         isOnSearch={this.props.searchEnable}
-                        toggleSearch={() => this.props.enableSearch(!this.props.searchEnable)}
                         readerOptionsProps={readerOptionsProps}
                         readerMenuProps={readerMenuProps}
                         displayPublicationInfo={this.displayPublicationInfo}
@@ -1273,18 +1272,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        enableSearch: (enable: boolean) => {
-            if (enable) {
-                dispatch(readerLocalActionSearch.enable.build());
-                dispatch(readerLocalActionPicker.manager.build(true, "search"));
-            } else {
-                dispatch(readerLocalActionSearch.cancel.build());
-                dispatch(readerLocalActionPicker.manager.build(false));
-            }
-        },
-        cancelSearch: () => {
-            dispatch(readerLocalActionSearch.cancel.build());
-        },
         toggleFullscreen: (fullscreenOn: boolean) => {
                 dispatch(readerActions.fullScreenRequest.build(fullscreenOn));
         },

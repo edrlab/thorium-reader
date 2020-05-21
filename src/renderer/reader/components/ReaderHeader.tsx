@@ -16,7 +16,6 @@ import * as SkipPrevious from "readium-desktop/renderer/assets/icons/baseline-sk
 import * as StopIcon from "readium-desktop/renderer/assets/icons/baseline-stop-24px.svg";
 import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
-import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
 import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
@@ -38,6 +37,7 @@ import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
 
 import ReactDOM = require("react-dom");
+import HeaderSearch from "./header/headerSearch";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -75,7 +75,6 @@ interface IBaseProps extends TranslatorProps {
     handleReaderDetach: () => void;
     toggleBookmark: () => void;
     isOnBookmark: boolean;
-    toggleSearch: () => void;
     isOnSearch: boolean;
     displayPublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
@@ -331,22 +330,9 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
 
                         <ul className={styles.menu_option}>
                             <li
-                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                                {...(this.props.isOnSearch && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                             >
-                                <input
-                                    id="magnifyingGlassButton"
-                                    className={styles.magnifyingGlassButton}
-                                    type="checkbox"
-                                    checked={this.props.isOnSearch}
-                                    onChange={this.props.toggleSearch}
-                                    aria-label={ __("reader.navigation.magnifyingGlassButton")}
-                                />
-                                <label
-                                    htmlFor="magnifyingGlassButton"
-                                    className={styles.menu_button}
-                                >
-                                    <SVG svg={magnifyingGlass} title={ __("reader.navigation.magnifyingGlassButton")}/>
-                                </label>
+                                <HeaderSearch></HeaderSearch>
                             </li>
                             <li
                                 {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
