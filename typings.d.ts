@@ -22,6 +22,7 @@ declare module "*.png" {
 
 declare module "json-diff";
 declare module "dom-seek";
+declare module "mark.js";
 
 declare module "ping";
 

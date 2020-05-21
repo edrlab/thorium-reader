@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
-import * as Ramda from "ramda";
 import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
@@ -15,10 +14,6 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-// import {
-//     CatalogConfig, CatalogEntry, ConfigDocument,
-// } from "readium-desktop/main/db/document/config";
-// import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { Store } from "redux";
 
@@ -26,6 +21,12 @@ import { PublicationRepository } from "../db/repository/publication";
 import { publicationActions } from "../redux/actions";
 import { RootState } from "../redux/states";
 import { PublicationService } from "../services/publication";
+
+// import {
+//     CatalogConfig, CatalogEntry, ConfigDocument,
+// } from "readium-desktop/main/db/document/config";
+// import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+// import * as Ramda from "ramda";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
@@ -108,7 +109,10 @@ export class CatalogApi implements ICatalogApi {
             }
         };
 
-        await Promise.all(Ramda.times(pushPublication, 10));
+        // await Promise.all(Ramda.times(pushPublication, 10));
+        for (let i = 0; i < lastReading.length; i++) {
+            await pushPublication(i);
+        }
 
         // Last added pubs not already on last read list
         const lastAddedPublications = await this.publicationRepository.find({
@@ -121,8 +125,8 @@ export class CatalogApi implements ICatalogApi {
         {
             let i = 0;
             while (
-                lastAddedPublicationViews.length < 10
-                && i < lastAddedPublications.length
+                // lastAddedPublicationViews.length < 10 &&
+                i < lastAddedPublications.length
             ) {
 
                 const doc = lastAddedPublications[i];
