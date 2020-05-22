@@ -6,15 +6,16 @@
 // ==LICENSE-END==
 
 import { BrowserWindow, Rectangle } from "electron";
-import {
-    convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "r2-navigator-js/dist/es6-es2015/src/electron/common/sessions";
 import { Action } from "readium-desktop/common/models/redux";
 import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import * as uuid from "uuid";
+
+import {
+    convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
 
 export const ID = "WIN_SESSION_REGISTER_READER";
 

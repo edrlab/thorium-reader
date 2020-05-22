@@ -9,7 +9,6 @@ import "font-awesome/css/font-awesome.css";
 import "react-dropdown/style.css";
 
 import { ipcRenderer } from "electron";
-import { TaJsonDeserialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { readerIpc } from "readium-desktop/common/ipc";
@@ -17,6 +16,7 @@ import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { createStoreFromDi } from "readium-desktop/renderer/reader/di";
 
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
