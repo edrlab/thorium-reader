@@ -7,6 +7,7 @@
 
 import { ReaderInfo } from "readium-desktop/common/models/reader";
 
+// READONLY
 export function readerInfoReducer(
     state: ReaderInfo = null, // injected by preloaded state
 ): ReaderInfo {
