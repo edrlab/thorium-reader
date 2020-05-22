@@ -9,8 +9,11 @@ import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import * as uuid from "uuid";
+
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 export const ID = "WIN_SESSION_REGISTER_READER";
 
@@ -27,6 +30,8 @@ export interface Payload {
 export function build(
     win: BrowserWindow,
     publicationIdentifier: string,
+    r2Publication: R2Publication,
+    publicationView: PublicationView,
     manifestUrl: string,
     filesystemPath: string,
     winBound: Rectangle,
@@ -49,6 +54,8 @@ export function build(
                 filesystemPath,
                 manifestUrl,
                 publicationIdentifier,
+                r2Publication,
+                publicationView,
             },
         },
     };

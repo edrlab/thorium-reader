@@ -21,7 +21,6 @@ import { dialogActions, readerActions } from "readium-desktop/common/redux/actio
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { LocatorView } from "readium-desktop/common/views/locator";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
@@ -48,7 +47,6 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 // import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 import { Unsubscribe } from "redux";
 
-import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import {
     convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
@@ -64,7 +62,6 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
@@ -120,8 +117,6 @@ interface IState {
     publicationJsonUrl?: string;
     // title?: string;
 
-    publicationView: PublicationView | undefined;
-    r2Publication: R2Publication | undefined;
     r2PublicationHasMediaOverlays: boolean;
 
     lcpHint?: string;
@@ -196,8 +191,6 @@ class Reader extends React.Component<IProps, IState> {
             landmarksOpen: false,
             landmarkTabOpen: 0,
 
-            publicationView: undefined,
-            r2Publication: undefined,
             r2PublicationHasMediaOverlays: false,
 
             menuOpen: false,
@@ -264,19 +257,19 @@ class Reader extends React.Component<IProps, IState> {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
-        const store = diReaderGet("store");
+        // const store = diReaderGet("store");
 
-        const pubId = store.getState().reader.info.publicationIdentifier;
-        const locator = store.getState().reader.locator;
-        const manifestUrl = store.getState().reader.info.manifestUrl;
+        // const pubId = store.getState().reader.info.publicationIdentifier;
+        // const locator = store.getState().reader.locator;
+        // const manifestUrl = store.getState().reader.info.manifestUrl;
         // const publicationJsonUrl = convertCustomSchemeToHttpUrl(
         //     encodeURIComponent_RFC3986(
         //         convertHttpUrlToCustomScheme(manifestUrl),
         //     ),
         // );
         // const publicationJsonUrl = manifestUrl;
-        const publicationJsonUrl = manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
-            ? manifestUrl : convertHttpUrlToCustomScheme(manifestUrl);
+        const publicationJsonUrl = this.props.manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
+            ? this.props.manifestUrl : convertHttpUrlToCustomScheme(this.props.manifestUrl);
 
         this.setState({
             publicationJsonUrl,
@@ -331,12 +324,29 @@ class Reader extends React.Component<IProps, IState> {
             "reader/addBookmark",
         ], this.findBookmarks);
 
-        apiAction("publication/get", pubId, false)
-            .then(async (publicationView) => {
-                this.setState({ publicationView });
-                await this.loadPublicationIntoViewport(publicationView, locator.locator);
-            })
-            .catch((error) => console.error("Error to fetch api publication/get", error));
+        // console.log("$$$$$$$$$$$$$$$$");
+        // console.log("$$$$$$$$$$$$$$$$");
+        // console.log(this.props.publicationView);
+
+        // console.log("$$$$$$$$$$$$$$$$");
+
+        // apiAction("publication/get", this.props.publicationView.identifier, false)
+        //     .then(async (publicationView) => {
+        //         // this.setState({ publicationView });
+        //         // await this.loadPublicationIntoViewport(publicationView, locator.locator);
+
+        //         console.log("$$$$$$$$$$$$$$$$");
+        //         console.log("$$$$$$$$$$$$$$$$");
+        //         console.log(this.props.publicationView);
+        //         console.log(publicationView);
+        //         console.log(JSON.stringify(publicationView) === JSON.stringify(this.props.publicationView));
+
+        //         console.log("$$$$$$$$$$$$$$$$");
+
+        //     })
+        //     .catch((error) => console.error("Error to fetch api publication/get", error));
+
+        await this.loadPublicationIntoViewport();
 
         this.getReaderMode();
     }
@@ -364,7 +374,7 @@ class Reader extends React.Component<IProps, IState> {
 
         const readerMenuProps: IReaderMenuProps = {
             open: this.state.menuOpen,
-            r2Publication: this.state.r2Publication,
+            r2Publication: this.props.r2Publication,
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
@@ -378,7 +388,7 @@ class Reader extends React.Component<IProps, IState> {
             handleIndexChange: this.handleIndexChange.bind(this),
             setSettings: this.setSettings,
             toggleMenu: this.handleSettingsClick,
-            r2Publication: this.state.r2Publication,
+            r2Publication: this.props.r2Publication,
         };
 
         return (
@@ -466,7 +476,7 @@ class Reader extends React.Component<IProps, IState> {
                     navLeftOrRight={this.navLeftOrRight_.bind(this)}
                     fullscreen={this.state.fullscreen}
                     currentLocation={this.state.currentLocation}
-                    r2Publication={this.state.r2Publication}
+                    r2Publication={this.props.r2Publication}
                     handleLinkClick={this.handleLinkClick}
                     goToLocator={this.goToLocator}
                 />
@@ -696,20 +706,18 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private displayPublicationInfo() {
-        if (this.state.publicationView) {
+        if (this.props.publicationView) {
             // TODO: subscribe to Redux action type == CloseRequest
             // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
             // So instead we subscribe to DOM event "Thorium:DialogClose", but this is a short-term hack!
             this.setState({
                 shortcutEnable: false,
             });
-            this.props.displayPublicationInfo(this.state.publicationView.identifier);
+            this.props.displayPublicationInfo(this.props.publicationView.identifier);
         }
     }
 
-    private async loadPublicationIntoViewport(
-        publicationView: PublicationView,
-        locator: R2Locator) {
+    private async loadPublicationIntoViewport() {
 
         // let response: Response;
         // try {
@@ -732,16 +740,15 @@ class Reader extends React.Component<IProps, IState> {
         //     return;
         // }
         // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
-        const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
-        const r2PublicationJson = JSON.parse(r2PublicationStr);
-        const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+        // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
+        // const r2PublicationJson = JSON.parse(r2PublicationStr);
+        // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
         this.setState({
-            r2Publication,
-            r2PublicationHasMediaOverlays: publicationHasMediaOverlays(r2Publication),
+            r2PublicationHasMediaOverlays: publicationHasMediaOverlays(this.props.r2Publication),
         });
 
-        if (r2Publication.Metadata && r2Publication.Metadata.Title) {
-            const title = this.props.translator.translateContentField(r2Publication.Metadata.Title);
+        if (this.props.r2Publication.Metadata && this.props.r2Publication.Metadata.Title) {
+            const title = this.props.translator.translateContentField(this.props.r2Publication.Metadata.Title);
 
             window.document.title = capitalizedAppName;
             if (title) {
@@ -772,7 +779,7 @@ class Reader extends React.Component<IProps, IState> {
 
         preloadPath = preloadPath.replace(/\\/g, "/");
 
-        const clipboardInterceptor = !publicationView.lcp ? undefined :
+        const clipboardInterceptor = !this.props.publicationView.lcp ? undefined :
             (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
                 apiAction("reader/clipboardCopy", this.props.pubId, clipboardData)
                     .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
@@ -781,12 +788,18 @@ class Reader extends React.Component<IProps, IState> {
         const store = diReaderGet("store");
         const winId = store.getState().win.identifier;
 
+        console.log("$$$$$");
+        console.log("$$$$$");
+        console.log("$$$$$");
+        console.log("$$$$$");
+        console.log(this.props.locator);
+
         installNavigatorDOM(
-            r2Publication,
+            this.props.r2Publication,
             this.state.publicationJsonUrl,
             "publication_viewport",
             preloadPath,
-            locator,
+            this.props.locator.locator,
             true,
             clipboardInterceptor,
             winId,
@@ -859,7 +872,7 @@ class Reader extends React.Component<IProps, IState> {
             // calling into the webview via IPC is expensive,
             // let's filter out ahead of time based on document href
             if (!locator || locator.href === bookmark.locator.href) {
-                if (this.state.r2Publication) { // isLocatorVisible() API only once navigator ready
+                if (this.props.r2Publication) { // isLocatorVisible() API only once navigator ready
                     const isVisible = await isLocatorVisible(bookmark.locator);
                     if (isVisible) {
                         visibleBookmarkList.push(bookmark);
@@ -943,6 +956,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private goToLocator(locator: R2Locator) {
+
         this.focusMainAreaLandmarkAndCloseMenu();
 
         const wasStopped = this.state.r2PublicationHasMediaOverlays ?
@@ -1144,7 +1158,7 @@ class Reader extends React.Component<IProps, IState> {
 
         mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
 
-        if (this.state.r2Publication) {
+        if (this.props.r2Publication) {
             readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
 
             if (readerConfig.enableMathJax !== this.props.readerConfig.enableMathJax) {
@@ -1252,7 +1266,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     mediaOverlaysEnableSkippability(state.reader.config.mediaOverlaysEnableSkippability);
 
     return {
-        readerInfo: state.reader.info,
+        publicationView: state.reader.info.publicationView,
+        r2Publication: state.reader.info.r2Publication,
         readerConfig: state.reader.config,
         indexes,
         keyboardShortcuts: state.keyboard.shortcuts,
@@ -1260,6 +1275,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
             state.dialog.type === DialogTypeName.PublicationInfoReader,
         pubId: state.reader.info.publicationIdentifier,
         locator: state.reader.locator,
+        manifestUrl: state.reader.info.manifestUrl,
     };
 };
 
