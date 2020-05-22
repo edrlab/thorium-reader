@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
-import { TaJsonDeserialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { callTyped, putTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
@@ -18,7 +17,6 @@ import {
 } from "readium-desktop/preprocessor-directives";
 
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
@@ -96,14 +94,10 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     const publicationApi = yield* callTyped(() => diMainGet("publication-api"));
     const publicationView = yield* callTyped(() => publicationApi.get(publicationIdentifier, false));
-    const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
-    const r2PublicationJson = JSON.parse(r2PublicationStr);
-    const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
 
     const registerReaderAction = yield* putTyped(winActions.session.registerReader.build(
         readerWindow,
         publicationIdentifier,
-        r2Publication,
         publicationView,
         manifestUrl,
         pathDecoded,
