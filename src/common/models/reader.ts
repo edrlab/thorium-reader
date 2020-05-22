@@ -5,6 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { PublicationView } from "readium-desktop/common/views/publication";
+
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+
 export enum ReaderMode {
     Attached = "attached",
     Detached = "detached",
@@ -15,8 +19,11 @@ export enum ReaderMode {
  */
 export interface ReaderInfo {
     filesystemPath: string;
-    manifestUrl: string;
+    manifestUrlHttp: string;
+    manifestUrlR2Protocol: string;
     publicationIdentifier: string;
+    r2Publication: R2Publication;
+    publicationView: PublicationView;
 }
 
 /**
