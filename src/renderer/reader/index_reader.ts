@@ -16,12 +16,12 @@ import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { createStoreFromDi } from "readium-desktop/renderer/reader/di";
 
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
-
-// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 let devTron: any;
 let axe: any;
@@ -37,33 +37,11 @@ initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
 initGlobalConverters_GENERIC();
 
-// console.log(__dirname);
-// console.log((global as any).__dirname);
-// const lcpNativePluginPath = path.normalize(path.join((global as any).__dirname, "external-assets", "lcp.node"));
-// setLcpNativePluginPath(lcpNativePluginPath);
-
 if (IS_DEV) {
     setTimeout(() => {
         devTron.install();
     }, 5000);
 }
-
-// const ipcSyncHandler =
-//     (_0: any, data: syncIpc.EventPayload) => {
-//         switch (data.type) {
-//             case syncIpc.EventType.MainAction:
-//                 // Dispatch main action to renderer reducers
-//                 const store = diReaderGet("store");
-//                 store.dispatch(Object.assign(
-//                     {},
-//                     actionSerializer.deserialize(data.payload.action),
-//                     {
-//                         sender: data.sender,
-//                     },
-//                 ) as ActionWithSender);
-//                 break;
-//         }
-//     };
 
 ipcRenderer.on(readerIpc.CHANNEL,
     (_0: any, data: readerIpc.EventPayload) => {
@@ -71,13 +49,20 @@ ipcRenderer.on(readerIpc.CHANNEL,
             case readerIpc.EventType.request:
                 // Initialize window
 
+                // create an instance of r2Publication
+                const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf-8");
+                const r2PublicationJson = JSON.parse(r2PublicationStr);
+                const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+
+                data.payload.reader.info.r2Publication = r2Publication;
+
                 createStoreFromDi(data.payload)
                     .then(
                         (store) =>
                             store.dispatch(winActions.initRequest.build(data.payload.win.identifier)),
                     )
                     .catch((e) => e);
-                    // TODO display error ?
+                // TODO display error ?
                 // // starting the ipc sync with redux
                 // ipcRenderer.on(syncIpc.CHANNEL, ipcSyncHandler);
                 break;

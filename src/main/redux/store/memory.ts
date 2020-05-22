@@ -67,8 +67,8 @@ async function absorbLocatorRepositoryToReduxState() {
 
             registryReader[locator.publicationIdentifier] = {
                 windowBound: {
-                    width: 0,
-                    height: 0,
+                    width: 800,
+                    height: 600,
                     x: 0,
                     y: 0,
                 },
@@ -77,8 +77,11 @@ async function absorbLocatorRepositoryToReduxState() {
                     locator: LocatorExtendedWithLocatorOnly(locator.locator),
                     info: {
                         publicationIdentifier: locator.publicationIdentifier,
-                        manifestUrl: undefined,
+                        manifestUrlR2Protocol: undefined,
+                        manifestUrlHttp: undefined,
                         filesystemPath: undefined,
+                        r2Publication: undefined,
+                        publicationView: undefined,
                     },
                 },
             };

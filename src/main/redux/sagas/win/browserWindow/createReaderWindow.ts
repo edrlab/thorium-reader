@@ -92,9 +92,13 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
     const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
+    const publicationApi = yield* callTyped(() => diMainGet("publication-api"));
+    const publicationView = yield* callTyped(() => publicationApi.get(publicationIdentifier, false));
+
     const registerReaderAction = yield* putTyped(winActions.session.registerReader.build(
         readerWindow,
         publicationIdentifier,
+        publicationView,
         manifestUrl,
         pathDecoded,
         winBound,
@@ -104,43 +108,8 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     yield* callTyped(() => saveReaderWindowInDi(readerWindow, registerReaderAction.payload.identifier));
 
-    /*
-    // should be handled in library saga
-    const thereIsOnlyTheLibraryWindow = appWindows.length === 1;
-
-    // Hide the only window (the library),
-    // as the new reader window will now take over
-    // (in other words: "detach" mode is disabled by default for new reader windows)
-    if (thereIsOnlyTheLibraryWindow) {
-        // Same as: appWindows[0]
-        const libraryAppWindow = winRegistry.getLibraryWindow();
-        if (libraryAppWindow) {
-            libraryAppWindow.browserWindow.hide();
-        }
-    }
-
-    if (thereIsOnlyTheLibraryWindow) {
-        // onWindowMoveResize.detach() is called for reader windows that become ReaderMode.Detached
-        // (in which case the library window is shown again, and then its position takes precedence)
-        readerAppWindow.onWindowMoveResize.attach();
-    }
-    */
-
     // Track it
     trackBrowserWindow(readerWindow);
-
-    //
-    // TODO:
-    // remove query url -> sync by redux saga initialisation
-    //
-
-    // FIXME : It's always required to convert the manifestUrl ?
-    // otherwise should be disabled in Reader.tsx
-    // This triggers the origin-sandbox for localStorage, etc.
-    // manifestUrl = convertHttpUrlToCustomScheme(manifestUrl);
-
-    // Load publication in reader window
-    // const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
 
     let readerUrl = _RENDERER_READER_BASE_URL;
 
@@ -155,29 +124,6 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     }
 
     readerUrl = readerUrl.replace(/\\/g, "/");
-    /*
-    readerUrl += `?pub=${encodedManifestUrl}&pubId=${publicationIdentifier}`;
-    */
-    /*
-        should be removed replaced with redux preloaded state
-        no query url  be needed only redux state
-
-        // Get publication last reading location
-        const locatorRepository = diMainGet("locator-repository");
-        const locators = await locatorRepository
-            .findByPublicationIdentifierAndLocatorType(
-                publicationIdentifier,
-                LocatorType.LastReadingLocation,
-            );
-
-        if (locators.length > 0) {
-            const locator = locators[0];
-            const docHref = encodeURIComponent_RFC3986(Buffer.from(locator.locator.href).toString("base64"));
-            const docSelector =
-                encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.cssSelector).toString("base64"));
-            readerUrl += `&docHref=${docHref}&docSelector=${docSelector}`;
-        }
-    */
 
     yield* callTyped(() => readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" }));
 
@@ -194,21 +140,6 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
         });
     }
-
-    // Already done for primary library BrowserWindow
-    // readerWindow.webContents.on("did-finish-load", () => {
-    //     const {
-    //         default: installExtension,
-    //         REACT_DEVELOPER_TOOLS,
-    //         REDUX_DEVTOOLS,
-    //     } = require("electron-devtools-installer");
-
-    //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
-    //         installExtension(extension)
-    //             .then((name: string) => debug("Added Extension: ", name))
-    //             .catch((err: Error) => debug("An error occurred: ", err));
-    //     });
-    // });
 
     if (_VSCODE_LAUNCH !== "true") {
         setTimeout(() => {
