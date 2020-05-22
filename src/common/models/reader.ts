@@ -19,7 +19,8 @@ export enum ReaderMode {
  */
 export interface ReaderInfo {
     filesystemPath: string;
-    manifestUrl: string;
+    manifestUrlHttp: string;
+    manifestUrlR2Protocol: string;
     publicationIdentifier: string;
     r2Publication: R2Publication;
     publicationView: PublicationView;

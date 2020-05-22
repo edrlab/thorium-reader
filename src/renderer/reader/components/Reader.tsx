@@ -37,7 +37,6 @@ import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
-import { diReaderGet } from "readium-desktop/renderer/reader/di";
 import {
     TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -48,9 +47,6 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
-import {
-    convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "@r2-navigator-js/electron/common/sessions";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, mediaOverlaysEnableSkippability, mediaOverlaysListen,
@@ -70,37 +66,6 @@ import optionsValues, {
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-// import {
-//     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
-// } from "@r2-navigator-js/electron/common/sessions";
-
-// import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
-// registerProtocol();
-// import { webFrame } from "electron";
-// webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
-// webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
-//     allowServiceWorkers: false,
-//     bypassCSP: false,
-//     corsEnabled: true,
-//     secure: true,
-//     supportFetchAPI: true,
-// });
-
-// const queryParams = getURLQueryParams();
-// const lcpHint = queryParams.lcpHint;
-// pub is undefined when loaded in dependency injection by library webview.
-// Dependency injection is shared between all the renderer view
-// const publicationJsonUrl = queryParams.pub?.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
-//     ? convertCustomSchemeToHttpUrl(queryParams.pub)
-//     : queryParams.pub;
-
-// const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-// const pathBase64 = decodeURIComponent(pathBase64Raw);
-// const pathDecoded = window.atob(pathBase64);
-// const pathFileName = pathDecoded.substr(
-//     pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
-//     pathDecoded.length - 1);
-
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
@@ -113,14 +78,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
-
-    publicationJsonUrl?: string;
-    // title?: string;
-
     r2PublicationHasMediaOverlays: boolean;
-
-    lcpHint?: string;
-    lcpPass?: string;
 
     contentTableOpen: boolean;
     settingsOpen: boolean;
@@ -181,10 +139,6 @@ class Reader extends React.Component<IProps, IState> {
         this.refToolbar = React.createRef<HTMLAnchorElement>();
 
         this.state = {
-            publicationJsonUrl: "HTTP://URL",
-            lcpHint: "LCP hint",
-            // title: "TITLE",
-            lcpPass: "LCP pass",
             contentTableOpen: false,
             settingsOpen: false,
             shortcutEnable: true,
@@ -250,40 +204,14 @@ class Reader extends React.Component<IProps, IState> {
         this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
 
-        // setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
     }
 
     public async componentDidMount() {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
-        // const store = diReaderGet("store");
-
-        // const pubId = store.getState().reader.info.publicationIdentifier;
-        // const locator = store.getState().reader.locator;
-        // const manifestUrl = store.getState().reader.info.manifestUrl;
-        // const publicationJsonUrl = convertCustomSchemeToHttpUrl(
-        //     encodeURIComponent_RFC3986(
-        //         convertHttpUrlToCustomScheme(manifestUrl),
-        //     ),
-        // );
-        // const publicationJsonUrl = manifestUrl;
-        const publicationJsonUrl = this.props.manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
-            ? this.props.manifestUrl : convertHttpUrlToCustomScheme(this.props.manifestUrl);
-
-        this.setState({
-            publicationJsonUrl,
-        });
-
         setKeyDownEventHandler(keyDownEventHandler);
         setKeyUpEventHandler(keyUpEventHandler);
-
-        // if (lcpHint) {
-        //     this.setState({
-        //         lcpHint,
-        //         lcpPass: this.state.lcpPass + " [" + lcpHint + "]",
-        //     });
-        // }
 
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
@@ -294,27 +222,6 @@ class Reader extends React.Component<IProps, IState> {
             });
         });
 
-        // let docHref: string = queryParams.docHref;
-        // let docSelector: string = queryParams.docSelector;
-
-        // if (docHref && docSelector) {
-        //     // Decode base64
-        //     docHref = window.atob(docHref);
-        //     docSelector = window.atob(docSelector);
-        // }
-
-        // Note that CFI, etc. can optionally be restored too,
-        // but navigator currently uses cssSelector as the primary
-        // const locator: R2Locator = {
-        //     href: docHref,
-        //     locations: {
-        //         cfi: undefined,
-        //         cssSelector: docSelector,
-        //         position: undefined,
-        //         progression: undefined,
-        //     },
-        // };
-
         setReadingLocationSaver(this.handleReadingLocationChange);
 
         setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
@@ -323,28 +230,6 @@ class Reader extends React.Component<IProps, IState> {
             "reader/deleteBookmark",
             "reader/addBookmark",
         ], this.findBookmarks);
-
-        // console.log("$$$$$$$$$$$$$$$$");
-        // console.log("$$$$$$$$$$$$$$$$");
-        // console.log(this.props.publicationView);
-
-        // console.log("$$$$$$$$$$$$$$$$");
-
-        // apiAction("publication/get", this.props.publicationView.identifier, false)
-        //     .then(async (publicationView) => {
-        //         // this.setState({ publicationView });
-        //         // await this.loadPublicationIntoViewport(publicationView, locator.locator);
-
-        //         console.log("$$$$$$$$$$$$$$$$");
-        //         console.log("$$$$$$$$$$$$$$$$");
-        //         console.log(this.props.publicationView);
-        //         console.log(publicationView);
-        //         console.log(JSON.stringify(publicationView) === JSON.stringify(this.props.publicationView));
-
-        //         console.log("$$$$$$$$$$$$$$$$");
-
-        //     })
-        //     .catch((error) => console.error("Error to fetch api publication/get", error));
 
         await this.loadPublicationIntoViewport();
 
@@ -719,30 +604,6 @@ class Reader extends React.Component<IProps, IState> {
 
     private async loadPublicationIntoViewport() {
 
-        // let response: Response;
-        // try {
-        //     // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webframe
-        //     // queryParams.pub is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
-        //     // publicationJsonUrl is https://127.0.0.1:PORT
-        //     response = await fetch(publicationJsonUrl);
-        // } catch (e) {
-        //     console.log(e);
-        //     return;
-        // }
-        // if (!response.ok) {
-        //     console.log("BAD RESPONSE?!");
-        // }
-        // let r2PublicationJson: any;
-        // try {
-        //     r2PublicationJson = await response.json();
-        // } catch (e) {
-        //     console.log(e);
-        //     return;
-        // }
-        // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
-        // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
-        // const r2PublicationJson = JSON.parse(r2PublicationStr);
-        // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
         this.setState({
             r2PublicationHasMediaOverlays: publicationHasMediaOverlays(this.props.r2Publication),
         });
@@ -785,24 +646,15 @@ class Reader extends React.Component<IProps, IState> {
                     .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
             };
 
-        const store = diReaderGet("store");
-        const winId = store.getState().win.identifier;
-
-        console.log("$$$$$");
-        console.log("$$$$$");
-        console.log("$$$$$");
-        console.log("$$$$$");
-        console.log(this.props.locator);
-
         installNavigatorDOM(
             this.props.r2Publication,
-            this.state.publicationJsonUrl,
+            this.props.manifestUrlR2Protocol,
             "publication_viewport",
             preloadPath,
             this.props.locator.locator,
             true,
             clipboardInterceptor,
-            winId,
+            this.props.winId,
             computeReadiumCssJsonMessage(this.props.readerConfig),
         );
     }
@@ -816,9 +668,6 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-        //        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
-        // apiAction("reader/setLastReadingLocation", this.props.pubId, loc.locator)
-        //     .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
         this.props.setLocator(loc);
     }
 
@@ -982,7 +831,7 @@ class Reader extends React.Component<IProps, IState> {
         const wasStopped = this.state.r2PublicationHasMediaOverlays ?
             this.ensureMediaOverlaysStateDuringNavigation() :
             this.ensureTTSStateDuringNavigation();
-        const newUrl = this.state.publicationJsonUrl + "/../" + url;
+        const newUrl = this.props.manifestUrlR2Protocol + "/../" + url;
         const timeout = wasStopped ? 500 : 0;
         window.setTimeout(() => {
             handleLinkUrl(newUrl);
@@ -1275,7 +1124,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
             state.dialog.type === DialogTypeName.PublicationInfoReader,
         pubId: state.reader.info.publicationIdentifier,
         locator: state.reader.locator,
-        manifestUrl: state.reader.info.manifestUrl,
+        manifestUrlR2Protocol: state.reader.info.manifestUrlR2Protocol,
+        winId: state.win.identifier,
     };
 };
 

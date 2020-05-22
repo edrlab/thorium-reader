@@ -77,7 +77,8 @@ async function absorbLocatorRepositoryToReduxState() {
                     locator: LocatorExtendedWithLocatorOnly(locator.locator),
                     info: {
                         publicationIdentifier: locator.publicationIdentifier,
-                        manifestUrl: undefined,
+                        manifestUrlR2Protocol: undefined,
+                        manifestUrlHttp: undefined,
                         filesystemPath: undefined,
                         r2Publication: undefined,
                         publicationView: undefined,

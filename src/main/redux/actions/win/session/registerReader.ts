@@ -6,6 +6,9 @@
 // ==LICENSE-END==
 
 import { BrowserWindow, Rectangle } from "electron";
+import {
+    convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "r2-navigator-js/dist/es6-es2015/src/electron/common/sessions";
 import { Action } from "readium-desktop/common/models/redux";
 import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -43,6 +46,9 @@ export function build(
     const store = diMainGet("store");
     const readerConfigDefault = store.getState().reader.defaultConfig;
 
+    const manifestUrlR2Protocol = manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
+        ? manifestUrl : convertHttpUrlToCustomScheme(manifestUrl);
+
     reduxStateReader = {
         ...{
             config: readerConfigDefault,
@@ -52,7 +58,8 @@ export function build(
         ...{
             info: {
                 filesystemPath,
-                manifestUrl,
+                manifestUrlHttp: manifestUrl,
+                manifestUrlR2Protocol,
                 publicationIdentifier,
                 r2Publication,
                 publicationView,
