@@ -5,14 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IHighlightBaseState, IHighlightHandlerState } from "./highlight";
+import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
+
+import { IHighlightBaseState } from "./highlight";
+
+export interface ISearchResult {
+    rangeInfos: IRangeInfo;
+    textMatch: string;
+    textBefore: string;
+    textAfter: string;
+}
 
 export interface ISearchState {
     enable: boolean;
     state: "busy" | "idle";
     textSearch: string;
     focusUUId: IHighlightBaseState["uuid"];
-    foundArray: IHighlightHandlerState[];
+    foundArray: ISearchResult[];
 }
 
 export const searchDefaultState = (): ISearchState =>
