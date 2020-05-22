@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as classNames from "classnames";
-import * as jsonDiff from "json-diff";
 import * as markJS from "mark.js";
 import * as path from "path";
 import * as r from "ramda";
@@ -83,6 +82,8 @@ import optionsValues, {
 } from "./options-values";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+
+// import * as jsonDiff from "json-diff";
 
 // import * as domSeek from "dom-seek";
 // https://github.com/tilgovi/dom-seek/blob/master/src/index.js
@@ -2645,12 +2646,12 @@ const transliteratesPureDiacriticsEXTRA = {
     "ї": "і",
 } as { [str: string]: string };
 
-const normalizeDiacriticsAndLigatures = (s: string) => {
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
-    return s.normalize("NFD").
-        replace(/[\u0300-\u036f]/g, "").
-        replace(/[^\u0000-\u007E]/g, (c) => transliteratesSameLengths[c] || c);
-};
+// const normalizeDiacriticsAndLigatures = (s: string) => {
+//     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
+//     return s.normalize("NFD").
+//         replace(/[\u0300-\u036f]/g, "").
+//         replace(/[^\u0000-\u007E]/g, (c) => transliteratesSameLengths[c] || c);
+// };
 // const normalizeString = (s: string) => {
 //     return collapseWhitespaces(normalizeDiacriticsAndLigatures(s));
 // };
@@ -2759,8 +2760,9 @@ class Reader extends React.Component<IProps, IState> {
     } = undefined;
     private searchCache: {
         [url: string]: {
-            document: Document,
-            charLength: number,
+            source: string,
+            // document: Document,
+            // charLength: number,
         },
     } = {};
 
@@ -3401,148 +3403,152 @@ class Reader extends React.Component<IProps, IState> {
             }, 500);
         }
     }
-    private async searchTextNode(searchInput: string, n: Node): Promise<ISearchResult[]> {
-        let text = n.nodeValue;
-        if (!text) {
-            return [];
-        }
-        // text = text.replace(/\n/g, " ").replace(/\s\s+/g, " ").trim();
-        // if (!text.length) {
-        //     return [];
-        // }
-        const originalLength = text.length;
-        text = normalizeDiacriticsAndLigatures(text);
-        if (text.length !== originalLength) {
-            console.log(`###{{{{!!!!! normalizeDiacriticsAndLigatures DIFF ${text.length} !== ${originalLength}`);
-        }
 
-        searchInput = cleanupStr(searchInput);
-        if (!searchInput.length) {
-            return [];
-        }
+    // private async searchTextNode(searchInput: string, n: Node): Promise<ISearchResult[]> {
+    //     let text = n.nodeValue;
+    //     if (!text) {
+    //         return [];
+    //     }
+    //     // text = text.replace(/\n/g, " ").replace(/\s\s+/g, " ").trim();
+    //     // if (!text.length) {
+    //     //     return [];
+    //     // }
+    //     const originalLength = text.length;
+    //     text = normalizeDiacriticsAndLigatures(text);
+    //     if (text.length !== originalLength) {
+    //         console.log(`###{{{{!!!!! normalizeDiacriticsAndLigatures DIFF ${text.length} !== ${originalLength}`);
+    //     }
 
-        const regexp = new RegExp(escapeRegExp(normalizeDiacriticsAndLigatures(searchInput)).replace(/ /g, "\\s+"), "gim");
+    //     searchInput = cleanupStr(searchInput);
+    //     if (!searchInput.length) {
+    //         return [];
+    //     }
 
-        const searchResults: ISearchResult[] = [];
+    //     const regexp = new RegExp(
+        // escapeRegExp(normalizeDiacriticsAndLigatures(searchInput)).replace(/ /g, "\\s+"), "gim");
 
-        const snippetLength = 100;
-        const snippetLengthNormalized = 30;
+    //     const searchResults: ISearchResult[] = [];
 
-        let matches: RegExpExecArray;
-        // tslint:disable-next-line: no-conditional-assignment
-        while (matches = regexp.exec(text)) {
-            // console.log(matches.input);
-            // // console.log(matches);
-            // // console.log(JSON.stringify(matches, null, 4));
-            // console.log(regexp.lastIndex);
-            // console.log(matches.index);
-            // console.log(matches[0].length);
+    //     const snippetLength = 100;
+    //     const snippetLengthNormalized = 30;
 
-            let i = Math.max(0, matches.index - snippetLength);
-            let l = Math.min(snippetLength, matches.index);
-            let textBefore = collapseWhitespaces(text.substr(i, l));
-            textBefore = textBefore.substr(textBefore.length - snippetLengthNormalized);
+    //     let matches: RegExpExecArray;
+    //     // tslint:disable-next-line: no-conditional-assignment
+    //     while (matches = regexp.exec(text)) {
+    //         // console.log(matches.input);
+    //         // // console.log(matches);
+    //         // // console.log(JSON.stringify(matches, null, 4));
+    //         // console.log(regexp.lastIndex);
+    //         // console.log(matches.index);
+    //         // console.log(matches[0].length);
 
-            i = regexp.lastIndex;
-            l = Math.min(snippetLength, text.length - i);
-            const textAfter = collapseWhitespaces(text.substr(i, l)).substr(0, snippetLengthNormalized);
+    //         let i = Math.max(0, matches.index - snippetLength);
+    //         let l = Math.min(snippetLength, matches.index);
+    //         let textBefore = collapseWhitespaces(text.substr(i, l));
+    //         textBefore = textBefore.substr(textBefore.length - snippetLengthNormalized);
 
-            const range = new Range(); // document.createRange()
-            range.setStart(n, matches.index);
-            range.setEnd(n, matches.index + matches[0].length);
-            if (!(n.ownerDocument as any).getCssSelector) {
-                (n.ownerDocument as any).getCssSelector = getCssSelector_(n.ownerDocument);
-            }
-            const rangeInfo = convertRange(range, (n.ownerDocument as any).getCssSelector, computeElementCFI);
+    //         i = regexp.lastIndex;
+    //         l = Math.min(snippetLength, text.length - i);
+    //         const textAfter = collapseWhitespaces(text.substr(i, l)).substr(0, snippetLengthNormalized);
 
-            searchResults.push({
-                match: collapseWhitespaces(matches[0]),
-                textBefore,
-                textAfter,
-                rangeInfo,
-            });
-        }
+    //         const range = new Range(); // document.createRange()
+    //         range.setStart(n, matches.index);
+    //         range.setEnd(n, matches.index + matches[0].length);
+    //         if (!(n.ownerDocument as any).getCssSelector) {
+    //             (n.ownerDocument as any).getCssSelector = getCssSelector_(n.ownerDocument);
+    //         }
+    //         const rangeInfo = convertRange(range, (n.ownerDocument as any).getCssSelector, computeElementCFI);
 
-        return searchResults;
-    }
-    private async searchElement(searchInput: string, el: Element): Promise<ISearchResult[]> {
-        let searchResults: ISearchResult[] = [];
-        const children = Array.from(el.childNodes);
-        for (const child of children) {
-            if (child.nodeType === Node.ELEMENT_NODE) {
-                searchResults = searchResults.concat(await this.searchElement(searchInput, child as Element));
-            } else if (child.nodeType === Node.TEXT_NODE) {
-                searchResults = searchResults.concat(await this.searchTextNode(searchInput, child));
-            }
-        }
-        return searchResults;
-    }
-    private async searchDoc(searchInput: string, doc: Document): Promise<ISearchResult[]> {
-        return this.searchElement(searchInput, doc.body);
-    }
-    private compareSearchResults(r1: ISearchResult[], r2: ISearchResult[]) {
-        console.log("Compare search results...");
-        let same = true;
-        for (let i = 0; i < Math.max(r1.length, r2.length); i++) {
-            const res1 = r1[i];
-            if (!res1) {
-                same = false;
-                break;
-            }
-            const res2 = r2[i];
-            if (!res2) {
-                same = false;
-                break;
-            }
-            if (res1.match !== res2.match) {
-                same = false;
-                break;
-            }
-            if (res1.textAfter !== res2.textAfter) {
-                same = false;
-                break;
-            }
-            if (res1.textBefore !== res2.textBefore) {
-                same = false;
-                break;
-            }
-            if (res1.rangeInfo.startContainerElementCssSelector !== res2.rangeInfo.startContainerElementCssSelector) {
-                same = false;
-                break;
-            }
-            if (res1.rangeInfo.startContainerChildTextNodeIndex !== res2.rangeInfo.startContainerChildTextNodeIndex) {
-                same = false;
-                break;
-            }
-            if (res1.rangeInfo.startOffset !== res2.rangeInfo.startOffset) {
-                same = false;
-                break;
-            }
-            if (res1.rangeInfo.endContainerElementCssSelector !== res2.rangeInfo.endContainerElementCssSelector) {
-                same = false;
-                break;
-            }
-            if (res1.rangeInfo.endContainerChildTextNodeIndex !== res2.rangeInfo.endContainerChildTextNodeIndex) {
-                same = false;
-                break;
-            }
-            if (res1.rangeInfo.endOffset !== res2.rangeInfo.endOffset) {
-                same = false;
-                break;
-            }
-        }
-        if (!same) {
-            console.log("€€€€€€€€€€");
-            console.log("€€€€€€€€€€");
-            console.log("€€€€€€€€€€");
-            console.log("€€€€€€€€€€");
-            console.log("€€€€€€€€€€");
-            console.log("€€€€€€€€€€ Search results not identical!");
-            console.log(jsonDiff.diffString({r: r1}, {r: r2}));
-        }
-    }
+    //         searchResults.push({
+    //             match: collapseWhitespaces(matches[0]),
+    //             textBefore,
+    //             textAfter,
+    //             rangeInfo,
+    //         });
+    //     }
+
+    //     return searchResults;
+    // }
+    // private async searchElement(searchInput: string, el: Element): Promise<ISearchResult[]> {
+    //     let searchResults: ISearchResult[] = [];
+    //     const children = Array.from(el.childNodes);
+    //     for (const child of children) {
+    //         if (child.nodeType === Node.ELEMENT_NODE) {
+    //             searchResults = searchResults.concat(await this.searchElement(searchInput, child as Element));
+    //         } else if (child.nodeType === Node.TEXT_NODE) {
+    //             searchResults = searchResults.concat(await this.searchTextNode(searchInput, child));
+    //         }
+    //     }
+    //     return searchResults;
+    // }
+    // private async searchDoc(searchInput: string, doc: Document): Promise<ISearchResult[]> {
+    //     return this.searchElement(searchInput, doc.body);
+    // }
+    // private compareSearchResults(r1: ISearchResult[], r2: ISearchResult[]) {
+    //     console.log("Compare search results...");
+    //     let same = true;
+    //     for (let i = 0; i < Math.max(r1.length, r2.length); i++) {
+    //         const res1 = r1[i];
+    //         if (!res1) {
+    //             same = false;
+    //             break;
+    //         }
+    //         const res2 = r2[i];
+    //         if (!res2) {
+    //             same = false;
+    //             break;
+    //         }
+    //         if (res1.match !== res2.match) {
+    //             same = false;
+    //             break;
+    //         }
+    //         if (res1.textAfter !== res2.textAfter) {
+    //             same = false;
+    //             break;
+    //         }
+    //         if (res1.textBefore !== res2.textBefore) {
+    //             same = false;
+    //             break;
+    //         }
+    //         if (res1.rangeInfo.startContainerElementCssSelector !==
+    // res2.rangeInfo.startContainerElementCssSelector) {
+    //             same = false;
+    //             break;
+    //         }
+    //         if (res1.rangeInfo.startContainerChildTextNodeIndex !==
+    // res2.rangeInfo.startContainerChildTextNodeIndex) {
+    //             same = false;
+    //             break;
+    //         }
+    //         if (res1.rangeInfo.startOffset !== res2.rangeInfo.startOffset) {
+    //             same = false;
+    //             break;
+    //         }
+    //         if (res1.rangeInfo.endContainerElementCssSelector !== res2.rangeInfo.endContainerElementCssSelector) {
+    //             same = false;
+    //             break;
+    //         }
+    //         if (res1.rangeInfo.endContainerChildTextNodeIndex !== res2.rangeInfo.endContainerChildTextNodeIndex) {
+    //             same = false;
+    //             break;
+    //         }
+    //         if (res1.rangeInfo.endOffset !== res2.rangeInfo.endOffset) {
+    //             same = false;
+    //             break;
+    //         }
+    //     }
+    //     if (!same) {
+    //         console.log("€€€€€€€€€€");
+    //         console.log("€€€€€€€€€€");
+    //         console.log("€€€€€€€€€€");
+    //         console.log("€€€€€€€€€€");
+    //         console.log("€€€€€€€€€€");
+    //         console.log("€€€€€€€€€€ Search results not identical!");
+    //         console.log(jsonDiff.diffString({r: r1}, {r: r2}));
+    //     }
+    // }
     private async searchDocDomSeek(searchInput: string, doc: Document): Promise<ISearchResult[]> {
-        let text = doc.body.textContent;
+        const text = doc.body.textContent;
         if (!text) {
             return [];
         }
@@ -3551,7 +3557,7 @@ class Reader extends React.Component<IProps, IState> {
         //     return [];
         // }
         const originalLength = text.length;
-        text = normalizeDiacriticsAndLigatures(text);
+        // text = normalizeDiacriticsAndLigatures(text);
         if (text.length !== originalLength) {
             console.log(`###{{{{!!!!! normalizeDiacriticsAndLigatures DIFF ${text.length} !== ${originalLength}`);
         }
@@ -3569,7 +3575,8 @@ class Reader extends React.Component<IProps, IState> {
             },
             );
 
-        const regexp = new RegExp(escapeRegExp(normalizeDiacriticsAndLigatures(searchInput)).replace(/ /g, "\\s+"), "gim");
+        // normalizeDiacriticsAndLigatures(searchInput)
+        const regexp = new RegExp(escapeRegExp(searchInput).replace(/ /g, "\\s+"), "gim");
 
         const searchResults: ISearchResult[] = [];
 
@@ -3674,7 +3681,10 @@ class Reader extends React.Component<IProps, IState> {
             if (!(doc as any).getCssSelector) {
                 (doc as any).getCssSelector = getCssSelector_(doc);
             }
-            const rangeInfo = convertRange(range, (doc as any).getCssSelector, computeElementCFI);
+            const rangeInfo = convertRange(
+                range,
+                (doc as any).getCssSelector,
+                (_node: Node) => ""); // computeElementCFI
 
             searchResults.push({
                 match: collapseWhitespaces(matches[0]),
@@ -3741,7 +3751,7 @@ class Reader extends React.Component<IProps, IState> {
 
         // const timeTotal = process.hrtime();
 
-        const bypass = true;
+        // const bypass = true;
 
         for (const link of r2Publication.Spine) {
             if (!link.TypeLink || !link.TypeLink.includes("html")) {
@@ -3775,10 +3785,11 @@ class Reader extends React.Component<IProps, IState> {
                     continue;
                 }
 
-                const xmlDom = (new DOMParser()).parseFromString(linkText, ContentType.TextXml);
+                // const xmlDom = (new DOMParser()).parseFromString(linkText, ContentType.TextXml);
                 this.searchCache[urlStr] = {
-                    document: xmlDom,
-                    charLength: linkText.length,
+                    source: linkText,
+                    // document: xmlDom,
+                    // charLength: linkText.length,
                 };
                 if (IS_DEV) {
                     // console.log(linkText.length);
@@ -3799,7 +3810,25 @@ class Reader extends React.Component<IProps, IState> {
             console.log(p);
 
             // const time1 = process.hrtime();
-            const searchResults1 = bypass ? [] : await this.searchDoc(searchInput, this.searchCache[urlStr].document);
+            // // @ts-ignore
+            // const xmlDom1 = (new DOMParser()).parseFromString(
+            //     this.searchCache[urlStr].source,
+            //     ContentType.TextXml);
+            // const diff1 = process.hrtime(time1);
+            // console.log(
+            // `${p} XML PARSE (${this.searchCache[urlStr].source.length})
+            // __ ${diff1[0]} seconds + ${diff1[1]} nanoseconds`);
+
+            const time1b = process.hrtime();
+            const xmlDom = (new DOMParser()).parseFromString(
+                this.searchCache[urlStr].source,
+                ContentType.Html);
+            const diff1b = process.hrtime(time1b);
+            console.log(`${p} HTML PARSE (${this.searchCache[urlStr].source.length}) __ ${diff1b[0]} seconds + ${diff1b[1]} nanoseconds`);
+
+            // const time1 = process.hrtime();
+            // const searchResults1 = bypass ? [] :
+            // await this.searchDoc(searchInput, this.searchCache[urlStr].document);
             // const diff1 = process.hrtime(time1);
             // console.log(`${p} (1) __ ${diff1[0]} seconds + ${diff1[1]} nanoseconds`);
             // totalTime1[0] += diff1[0];
@@ -3807,7 +3836,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const time2 = process.hrtime();
             const searchResults2 =
-                await this.searchDocDomSeek(searchInput, this.searchCache[urlStr].document);
+                await this.searchDocDomSeek(searchInput, xmlDom);
             console.log("+++++++++++ DOM Seek done");
             console.log(searchResults2.length);
             totalN2 += searchResults2.length;
@@ -3819,9 +3848,9 @@ class Reader extends React.Component<IProps, IState> {
             totalTime2[0] += wholeSeconds;
             totalTime2[1] -= (wholeSeconds * nanoPerSecond);
 
-            if (!bypass) {
-                this.compareSearchResults(searchResults1, searchResults2);
-            }
+            // if (!bypass) {
+            //     this.compareSearchResults(searchResults1, searchResults2);
+            // }
 
             // For a fair comparison of MarkJS search algo, we must disable the DOM highlighting.
             // in node_modules/mark.js/dist/mark.js
@@ -3830,7 +3859,7 @@ class Reader extends React.Component<IProps, IState> {
             // and replace with "eachCb(null);"
             const time3 = process.hrtime();
             if (true) { // !bypass
-                const markJSInstance = new markJS(this.searchCache[urlStr].document.body);
+                const markJSInstance = new markJS(xmlDom.body);
                 await new Promise((res, _rej) => {
 
                     markJSInstance.mark(searchInput, {
