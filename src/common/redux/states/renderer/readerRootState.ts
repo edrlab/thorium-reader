@@ -16,6 +16,8 @@ import { IPickerState } from "readium-desktop/renderer/reader/redux/state/picker
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { ISearchState } from "readium-desktop/renderer/reader/redux/state/search";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
 export interface IReaderRootState extends ICommonRootState {
     reader: IReaderStateReader;
     picker: IPickerState;

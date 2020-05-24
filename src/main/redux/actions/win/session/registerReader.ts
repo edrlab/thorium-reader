@@ -9,8 +9,13 @@ import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import * as uuid from "uuid";
+
+import {
+    convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
 
 export const ID = "WIN_SESSION_REGISTER_READER";
 
@@ -27,6 +32,7 @@ export interface Payload {
 export function build(
     win: BrowserWindow,
     publicationIdentifier: string,
+    publicationView: PublicationView,
     manifestUrl: string,
     filesystemPath: string,
     winBound: Rectangle,
@@ -38,6 +44,9 @@ export function build(
     const store = diMainGet("store");
     const readerConfigDefault = store.getState().reader.defaultConfig;
 
+    const manifestUrlR2Protocol = manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
+        ? manifestUrl : convertHttpUrlToCustomScheme(manifestUrl);
+
     reduxStateReader = {
         ...{
             config: readerConfigDefault,
@@ -47,8 +56,11 @@ export function build(
         ...{
             info: {
                 filesystemPath,
-                manifestUrl,
+                manifestUrlHttp: manifestUrl,
+                manifestUrlR2Protocol,
                 publicationIdentifier,
+                r2Publication: undefined,
+                publicationView,
             },
         },
     };

@@ -8,17 +8,16 @@
 import * as ramda from "ramda";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IReaderRootState, IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
-const dispatchSetReduxState = (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) => {
+const dispatchSetReduxState = (
+    store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>,
+    readerState: Partial<IReaderStateReader>,
+) => {
 
-    const state = ramda.clone(store.getState());
-
-    // disable highlight persistence
-    delete state.reader.highlight;
-
-    store.dispatch(readerActions.setReduxState.build(state.win.identifier, state.reader));
+    const state = store.getState();
+    store.dispatch(readerActions.setReduxState.build(state.win.identifier, readerState));
 };
 
 export const reduxPersistMiddleware: Middleware
@@ -32,9 +31,16 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                if (!ramda.equals(prevState.reader, nextState.reader)) {
-                    dispatchSetReduxState(store);
+                if (!ramda.equals(prevState.reader.config, nextState.reader.config)) {
+
+                    dispatchSetReduxState(store, { config: nextState.reader.config });
+
+                } else if (!ramda.equals(prevState.reader.locator, nextState.reader.locator)) {
+
+                    dispatchSetReduxState(store, { locator: nextState.reader.locator });
                 }
+
+                // readerInfo is readOnly no need to persist
 
                 return returnValue;
             };

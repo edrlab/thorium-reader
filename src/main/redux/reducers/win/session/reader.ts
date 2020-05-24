@@ -90,7 +90,10 @@ export function winSessionReaderReducer(
                         [id]: {
                             ...state[id],
                             ...{
-                                reduxState: action.payload.reduxState,
+                                reduxState: {
+                                    ...state[id].reduxState,
+                                    ...action.payload.reduxState,
+                                },
                             },
                         },
                     },
