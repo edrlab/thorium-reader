@@ -228,6 +228,18 @@
             "landmarks": "structuur elementen",
             "toc": "Inhoudsopgave"
         },
+        "media-overlays": {
+            "activate": "",
+            "captions": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "skip": "",
+            "speed": "",
+            "stop": "",
+            "title": ""
+        },
         "navigation": {
             "backHomeTitle": "terug naar de boekenplank",
             "bookmarkTitle": "bladwijzer",

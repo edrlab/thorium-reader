@@ -228,6 +228,18 @@
             "landmarks": "Puntos de referencia",
             "toc": "Tabla de contenido"
         },
+        "media-overlays": {
+            "activate": "",
+            "captions": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "skip": "",
+            "speed": "",
+            "stop": "",
+            "title": ""
+        },
         "navigation": {
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",

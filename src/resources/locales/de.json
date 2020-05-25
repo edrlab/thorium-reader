@@ -228,6 +228,18 @@
             "landmarks": "Navigationspunkte",
             "toc": "Inhaltsverzeichnis"
         },
+        "media-overlays": {
+            "activate": "",
+            "captions": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "skip": "",
+            "speed": "",
+            "stop": "",
+            "title": ""
+        },
         "navigation": {
             "backHomeTitle": "Zurück zum Bücherregal",
             "bookmarkTitle": "Lesezeichen setzen",
