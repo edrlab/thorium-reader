@@ -7,44 +7,35 @@
 
 import { clone } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { all, cancel, fork, put, take, takeEvery, takeLatest } from "redux-saga/effects";
+import {
+    all, call, cancel, fork, join, put, take, takeEvery, takeLatest,
+} from "redux-saga/effects";
 
 import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions";
 import { IHighlightHandlerState } from "../state/highlight";
 import { ICacheXml, ISearchResult } from "../state/search";
 
 // DEMO
-const searchFct = (..._arg: any) => [] as ISearchResult[];
-
-function searchIterationFork(text: string, cacheArray: ICacheXml[]) {
-
-    const searchFork = cacheArray.map(
-        (v) =>
-            fork(function*() {
-                const res = yield* callTyped(() => searchFct(text, v.xml, v.href));
-                yield put(readerLocalActionSearch.found.build(res));
-            }),
-    );
-    return all(searchFork);
-}
-
-function* setCache(text: string, action: readerLocalActionSearch.setCache.TAction) {
-
-    yield searchIterationFork(text, action.payload.cacheArray);
-}
+const searchFct = async (..._arg: any) =>
+    new Promise<ISearchResult[]>((resolve) => setTimeout(() => resolve([]), 1000));
 
 function* searchRequest(action: readerLocalActionSearch.request.TAction) {
 
     const text = action.payload.textSearch;
     const cacheFromState = yield* selectTyped((state: IReaderRootState) => state.search.cacheArray);
 
-    // do search from cache array
-    yield searchIterationFork(text, cacheFromState);
+    const search = cacheFromState.map(
+        (v) =>
+            call(async () => {
+                return await searchFct(text, v.xml, v.href);
+            }),
+    );
 
-    // on any another setCache throw search in it
-    yield takeEvery(readerLocalActionSearch.setCache.ID, setCache, text);
+    const res = yield all(search);
+
+    yield put(readerLocalActionSearch.found.build(res));
 }
 
 function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = {
@@ -111,30 +102,44 @@ function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
     }
 }
 
-function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
+function* requestPublicationData() {
 
     const r2Manifest = yield* selectTyped((state: IReaderRootState) => state.reader.info.r2Publication);
     const manifestUrlR2Protocol = yield* selectTyped(
         (state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol,
     );
-
-    const requestFork = r2Manifest.Spine.map((ln) => fork(function*() {
+    const request = r2Manifest.Spine.map((ln) => call(async () => {
+        let ret: ICacheXml;
         try {
             const url = new URL(ln.Href, manifestUrlR2Protocol);
             const urlStr = url.toString();
-            const res = yield* callTyped(() => fetch(urlStr));
+            const res = await fetch(urlStr);
             if (res.ok) {
-                const text = yield* callTyped(() => res.text());
-                yield put(readerLocalActionSearch.setCache.build(text, ln.Href));
+                const text = await res.text();
+                ret = { href: ln.Href, xml: text };
             }
         } catch (e) {
             console.error("request", ln.Href, e);
         }
+
+        return ret;
     }));
 
-    const taskRequest = yield all(requestFork);
+    const result = yield all(request);
+    yield put(readerLocalActionSearch.setCache.build(...result));
+}
 
-    const taskSearch = yield takeLatest(readerLocalActionSearch.request.build, searchRequest);
+function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
+
+    const taskRequest = yield fork(requestPublicationData);
+
+    const taskSearch = yield takeLatest(readerLocalActionSearch.request.build,
+        function*(action: readerLocalActionSearch.request.TAction) {
+            yield join(taskRequest);
+
+            yield call(searchRequest, action);
+        },
+    );
 
     const taskFound = yield takeEvery(readerLocalActionSearch.found.build, searchFound);
 
@@ -183,7 +188,7 @@ function* searchCancel() {
 
     const { foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
 
-    const uuidArray = foundArray.map((v) => ({uuid: v.uuid}));
+    const uuidArray = foundArray.map((v) => ({ uuid: v.uuid }));
 
     yield put(readerLocalActionHighlights.handler.pop.build(...uuidArray));
 }

@@ -8,14 +8,11 @@
 import { ReaderConfig, ReaderInfo } from "readium-desktop/common/models/reader";
 import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { IHighlightHandlerState } from "readium-desktop/renderer/reader/redux/state/highlight";
+import { IPickerState } from "readium-desktop/renderer/reader/redux/state/picker";
+import { ISearchState } from "readium-desktop/renderer/reader/redux/state/search";
 import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
-import { IPickerState } from "readium-desktop/renderer/reader/redux/state/picker";
-
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
-import { ISearchState } from "readium-desktop/renderer/reader/redux/state/search";
-
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 export interface IReaderRootState extends ICommonRootState {

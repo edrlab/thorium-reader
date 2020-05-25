@@ -6,7 +6,8 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { ISearchState } from "../../state/search";
+
+import { ICacheXml, ISearchState } from "../../state/search";
 
 export const ID = "READER_SEARCH_SET_CACHE";
 
@@ -14,16 +15,13 @@ export const ID = "READER_SEARCH_SET_CACHE";
 interface IPayload extends Partial<ISearchState> {
 }
 
-export function build(xmlChapter: string, href: string):
+export function build(...data: ICacheXml[]):
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
         payload: {
-            cacheArray: [{
-                xml: xmlChapter,
-                href,
-            }],
+            cacheArray: data,
         },
     };
 }

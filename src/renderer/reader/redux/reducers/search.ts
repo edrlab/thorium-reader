@@ -26,29 +26,29 @@ export function searchReducer(
         case readerLocalActionSearch.setCache.ID:
         case readerLocalActionSearch.found.ID:
 
-            let found = state.foundArray;
-            if (action.payload.foundArray) {
-                found = [
-                    ...state.foundArray,
-                    ...action.payload.foundArray,
-                ];
-            }
+            // let found = state.foundArray;
+            // if (action.payload.foundArray) {
+            //     found = [
+            //         ...state.foundArray,
+            //         ...action.payload.foundArray,
+            //     ];
+            // }
 
-            let cache = state.cacheArray;
-            if (action.payload.cacheArray) {
-                cache = [
-                    ...state.cacheArray,
-                    ...action.payload.cacheArray,
-                ];
-            }
+            // let cache = state.cacheArray;
+            // if (action.payload.cacheArray) {
+            //     cache = [
+            //         ...state.cacheArray,
+            //         ...action.payload.cacheArray,
+            //     ];
+            // }
 
             return {
                 ...state,
-                ...{
-                    ...action.payload,
-                    foundArray: found,
-                    cacheArray: cache,
-                },
+                ...action.payload,
+                // ...{
+                //     foundArray: found,
+                //     cacheArray: cache,
+                // },
             };
         default:
             return state;

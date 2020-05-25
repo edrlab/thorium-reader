@@ -59,10 +59,7 @@ import {
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
-import {
-    readerLocalActionPicker, readerLocalActionSearch, readerLocalActionSetConfig,
-    readerLocalActionSetLocator,
-} from "../redux/actions";
+import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
