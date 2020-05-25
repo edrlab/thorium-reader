@@ -354,8 +354,8 @@ function* readerCloseRequest(identifier?: string) {
 
 function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
 
-    const { identifier, reduxState } = action.payload;
-    yield put(winActions.session.setReduxState.build(identifier, reduxState));
+    const { publicationIdentifier, reduxState } = action.payload;
+    yield put(winActions.session.setReduxState.build(publicationIdentifier, reduxState));
 }
 
 export function saga() {
