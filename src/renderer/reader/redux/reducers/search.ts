@@ -14,7 +14,8 @@ export function searchReducer(
     readerLocalActionSearch.request.TAction |
     readerLocalActionSearch.focus.TAction |
     readerLocalActionSearch.found.TAction |
-    readerLocalActionSearch.enable.TAction,
+    readerLocalActionSearch.enable.TAction |
+    readerLocalActionSearch.setCache.TAction,
 ): ISearchState {
 
     switch (action.type) {
@@ -22,11 +23,32 @@ export function searchReducer(
         case readerLocalActionSearch.cancel.ID:
         case readerLocalActionSearch.enable.ID:
         case readerLocalActionSearch.focus.ID:
+        case readerLocalActionSearch.setCache.ID:
         case readerLocalActionSearch.found.ID:
+
+            let found = state.foundArray;
+            if (action.payload.foundArray) {
+                found = [
+                    ...state.foundArray,
+                    ...action.payload.foundArray,
+                ];
+            }
+
+            let cache = state.cacheArray;
+            if (action.payload.cacheArray) {
+                cache = [
+                    ...state.cacheArray,
+                    ...action.payload.cacheArray,
+                ];
+            }
 
             return {
                 ...state,
-                ...action.payload,
+                ...{
+                    ...action.payload,
+                    foundArray: found,
+                    cacheArray: cache,
+                },
             };
         default:
             return state;

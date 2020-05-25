@@ -48,9 +48,17 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
 
 function* dispatchClick(data: THighlightClick) {
 
-    const [href, ref] = data;
+    const [, ref] = data;
 
-    yield put(readerLocalActionHighlights.click.build({ href, ref }));
+    const highlightMounterMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
+    const highlightFound = highlightMounterMap.find(([, v]) => v.id === ref.id);
+    const [uuid] = highlightFound;
+
+    const highlightHandlerMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
+    const handlerFound = highlightHandlerMap.find(([v]) => v === uuid);
+    const [, handlerState] = handlerFound;
+
+    yield put(readerLocalActionHighlights.click.build(handlerState));
 }
 
 export const saga = () => {

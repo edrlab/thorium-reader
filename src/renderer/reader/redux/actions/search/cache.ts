@@ -6,21 +6,25 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { ISearchState } from "../../state/search";
 
-import { IHighlightHandlerState } from "../../state/highlight";
-
-export const ID = "READER_HIGHLIGHT_CLICK";
+export const ID = "READER_SEARCH_SET_CACHE";
 
 // tslint:disable-next-line: no-empty-interface
-interface IPayload extends IHighlightHandlerState {
+interface IPayload extends Partial<ISearchState> {
 }
 
-export function build(data: IPayload):
+export function build(xmlChapter: string, href: string):
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
-        payload: data,
+        payload: {
+            cacheArray: [{
+                xml: xmlChapter,
+                href,
+            }],
+        },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

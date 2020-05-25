@@ -14,6 +14,13 @@ export interface ISearchResult {
     textMatch: string;
     textBefore: string;
     textAfter: string;
+    href: string;
+    uuid: string;
+}
+
+export interface ICacheXml {
+    xml: string;
+    href: string;
 }
 
 export interface ISearchState {
@@ -22,6 +29,7 @@ export interface ISearchState {
     textSearch: string;
     focusUUId: IHighlightBaseState["uuid"];
     foundArray: ISearchResult[];
+    cacheArray: ICacheXml[];
 }
 
 export const searchDefaultState = (): ISearchState =>
@@ -31,4 +39,5 @@ export const searchDefaultState = (): ISearchState =>
         textSearch: "",
         focusUUId: "",
         foundArray: [],
+        cacheArray: [],
     });
