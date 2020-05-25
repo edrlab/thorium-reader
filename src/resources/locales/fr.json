@@ -228,6 +228,18 @@
             "landmarks": "Repères",
             "toc": "Table des matières"
         },
+        "media-overlays": {
+            "activate": "",
+            "captions": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "skip": "",
+            "speed": "",
+            "stop": "",
+            "title": ""
+        },
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",

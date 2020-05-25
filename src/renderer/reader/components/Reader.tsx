@@ -58,12 +58,13 @@ import {
 } from "@r2-navigator-js/electron/renderer/highlight";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
-    isLocatorVisible, LocatorExtended, mediaOverlaysEnableSkippability, mediaOverlaysListen,
-    mediaOverlaysNext, mediaOverlaysPause, mediaOverlaysPlay, mediaOverlaysPlaybackRate,
-    mediaOverlaysPrevious, mediaOverlaysResume, MediaOverlaysStateEnum, mediaOverlaysStop,
-    navLeftOrRight, publicationHasMediaOverlays, readiumCssUpdate, setEpubReadingSystemInfo,
-    setKeyDownEventHandler, setKeyUpEventHandler, setReadingLocationSaver, ttsListen, ttsNext,
-    ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, TTSStateEnum, ttsStop,
+    isLocatorVisible, LocatorExtended, mediaOverlaysEnableCaptionsMode,
+    mediaOverlaysEnableSkippability, mediaOverlaysListen, mediaOverlaysNext, mediaOverlaysPause,
+    mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
+    MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight, publicationHasMediaOverlays,
+    readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
+    setReadingLocationSaver, ttsListen, ttsNext, ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious,
+    ttsResume, TTSStateEnum, ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { convertRange } from "@r2-navigator-js/electron/renderer/webview/selection";
@@ -4376,9 +4377,20 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleSettingsSave(readerConfig: ReaderConfig) {
-        this.props.setConfig(readerConfig);
+        const moWasPlaying = this.state.r2PublicationHasMediaOverlays &&
+            this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
 
         mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
+        mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
+
+        if (moWasPlaying) {
+            mediaOverlaysPause();
+            setTimeout(() => {
+                mediaOverlaysResume();
+            }, 300);
+        }
+
+        this.props.setConfig(readerConfig);
 
         if (this.props.r2Publication) {
             readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
@@ -4486,6 +4498,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     }
 
     mediaOverlaysEnableSkippability(state.reader.config.mediaOverlaysEnableSkippability);
+    mediaOverlaysEnableCaptionsMode(state.reader.config.mediaOverlaysEnableCaptionsMode);
 
     return {
         publicationView: state.reader.info.publicationView,

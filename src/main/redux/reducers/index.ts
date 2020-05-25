@@ -56,7 +56,7 @@ export const rootReducer = combineReducers<RootState>({
                     push: {
                         type: readerActions.setReduxState.ID,
                         selector: (action) =>
-                            [(new Date()).getTime(), action.payload.reduxState?.info?.publicationIdentifier],
+                            [(new Date()).getTime(), action.payload.publicationIdentifier],
                     },
                     pop: {
                         type: publicationActions.deletePublication.ID,
