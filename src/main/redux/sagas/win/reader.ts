@@ -135,7 +135,7 @@ function* winClose(action: winActions.reader.closed.TAction) {
                         libraryWindow.setBounds(readerWin.getBounds());
 
                     } catch (_err) {
-                        debug("can't load readerWin from di :", identifier);
+                        debug("Error loading readerwin", identifier, "and window bound assignment");
                     }
                 }
             }

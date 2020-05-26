@@ -130,6 +130,7 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
         try {
             // get an bound with offset
             libBound = yield* callTyped(getWinBound, undefined);
+
             if (libBound) {
                 libWin.setBounds(libBound);
             }
@@ -299,13 +300,23 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
 
     yield call(readerCloseRequest, action.sender.identifier);
 
-    const libWin = getLibraryWindowFromDi();
+    const libWin = yield* callTyped(() => getLibraryWindowFromDi());
+
     if (libWin) {
 
-        const winBound = yield* selectTyped(
-            (state: RootState) => state.win.session.library.windowBound,
-        );
-        libWin.setBounds(winBound);
+        let winBound: Electron.Rectangle;
+        try {
+            winBound = yield* selectTyped(
+                (state: RootState) => state.win.session.library.windowBound,
+            );
+
+            if (winBound) {
+                libWin.setBounds(winBound);
+            }
+        } catch (e) {
+
+            debug("cannot set libBound", winBound, e);
+        }
 
         if (libWin.isMinimized()) {
             libWin.restore();
