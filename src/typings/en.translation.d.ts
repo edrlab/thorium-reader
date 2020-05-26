@@ -555,6 +555,7 @@ declare namespace typed_i18n {
   },
   readonly "media-overlays": {
     readonly "activate": string,
+    readonly "captions": string,
     readonly "escape": string,
     readonly "next": string,
     readonly "pause": string,
@@ -723,6 +724,7 @@ declare namespace typed_i18n {
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.media-overlays", __?: {}): {
   readonly "activate": string,
+  readonly "captions": string,
   readonly "escape": string,
   readonly "next": string,
   readonly "pause": string,
@@ -734,6 +736,7 @@ declare namespace typed_i18n {
   readonly "title": string
 };
   (_: "reader.media-overlays.activate", __?: {}): string;
+  (_: "reader.media-overlays.captions", __?: {}): string;
   (_: "reader.media-overlays.escape", __?: {}): string;
   (_: "reader.media-overlays.next", __?: {}): string;
   (_: "reader.media-overlays.pause", __?: {}): string;

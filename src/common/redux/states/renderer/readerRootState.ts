@@ -13,6 +13,8 @@ import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
 export interface IReaderRootState extends ICommonRootState {
     reader: IReaderStateReader;
 }

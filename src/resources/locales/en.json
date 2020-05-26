@@ -228,6 +228,18 @@
             "landmarks": "Landmarks",
             "toc": "Table of Contents"
         },
+        "media-overlays": {
+            "activate": "Activate Readaloud",
+            "captions": "Captions mode",
+            "next": "Next Readaloud",
+            "pause": "Pause Readaloud",
+            "play": "Play Readaloud",
+            "previous": "Previous Readaloud",
+            "skip": "Skippability",
+            "speed": "Readaloud playback rate",
+            "stop": "Stop Readaloud",
+            "title": "Readaloud"
+        },
         "navigation": {
             "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
@@ -294,18 +306,6 @@
             "previous": "Previous Text To Speech",
             "speed": "Text To Speech playback rate",
             "stop": "Stop Text To Speech"
-        },
-        "media-overlays": {
-            "activate": "Activate Readaloud",
-            "escape": "Escape",
-            "next": "Next Readaloud",
-            "pause": "Pause Readaloud",
-            "play": "Play Readaloud",
-            "previous": "Previous Readaloud",
-            "skip": "Skippability",
-            "speed": "Readaloud playback rate",
-            "stop": "Stop Readaloud",
-            "title": "Readaloud"
         }
     },
     "settings": {
