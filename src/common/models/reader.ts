@@ -59,6 +59,7 @@ export interface ReaderConfigBooleans {
     noFootnotes: boolean;
     darken: boolean;
     mediaOverlaysEnableSkippability: boolean;
+    mediaOverlaysEnableCaptionsMode: boolean;
 }
 
 export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans {

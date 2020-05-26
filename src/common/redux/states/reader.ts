@@ -27,4 +27,5 @@ export const readerConfigInitialState: ReaderConfig = {
     noFootnotes: undefined,
     darken: undefined,
     mediaOverlaysEnableSkippability: true,
+    mediaOverlaysEnableCaptionsMode: false,
 };

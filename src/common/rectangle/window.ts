@@ -26,6 +26,24 @@ export const defaultRectangle = (): Rectangle => (
         x: Math.round(screen.getPrimaryDisplay().workAreaSize.width / 3),
         y: Math.round(screen.getPrimaryDisplay().workAreaSize.height / 3),
     });
+export const normalizeRectangle = (winBound: Rectangle) => {
+    const rect = defaultRectangle();
+
+    // note: 0 and NaN are falsy (as well as null and undefined),
+    // positive and negative numbers are truthy.
+    if (!winBound.x) {
+        winBound.x = rect.x;
+    }
+    if (!winBound.y) {
+        winBound.y = rect.y;
+    }
+    if (!winBound.width) {
+        winBound.width = rect.width;
+    }
+    if (!winBound.height) {
+        winBound.height = rect.height;
+    }
+};
 
 // export type t_savedWindowsRectangle = typeof savedWindowsRectangle;
 // export const savedWindowsRectangle = async (rectangle: Rectangle) => {

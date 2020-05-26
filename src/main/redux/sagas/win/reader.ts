@@ -8,6 +8,7 @@
 import * as debug_ from "debug";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
+import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -130,12 +131,16 @@ function* winClose(action: winActions.reader.closed.TAction) {
                     yield put(readerActions.attachModeRequest.build());
 
                 } else {
-                    try {
-                        const readerWin = getReaderWindowFromDi(identifier);
-                        libraryWindow.setBounds(readerWin.getBounds());
-
-                    } catch (_err) {
-                        debug("can't load readerWin from di :", identifier);
+                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(identifier));
+                    if (readerWin) {
+                        try {
+                            const winBound = readerWin.getBounds();
+                            debug("_______3 readerWin.getBounds()", winBound);
+                            normalizeRectangle(winBound);
+                            libraryWindow.setBounds(winBound);
+                        } catch (e) {
+                            debug("error libraryWindow.setBounds(readerWin.getBounds())", e);
+                        }
                     }
                 }
             }

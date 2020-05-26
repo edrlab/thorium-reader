@@ -17,7 +17,9 @@ const dispatchSetReduxState = (
 ) => {
 
     const state = store.getState();
-    store.dispatch(readerActions.setReduxState.build(state.win.identifier, readerState));
+    store.dispatch(
+        readerActions.setReduxState.build(state.reader.info.publicationIdentifier, readerState),
+    );
 };
 
 export const reduxPersistMiddleware: Middleware

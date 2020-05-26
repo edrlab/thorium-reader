@@ -231,6 +231,7 @@
         },
         "media-overlays": {
             "activate": "",
+            "captions": "",
             "next": "",
             "pause": "",
             "play": "",
