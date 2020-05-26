@@ -32,10 +32,10 @@ export const normalizeRectangle = (winBound: Rectangle) => {
     // note: 0 and NaN are falsy (as well as null and undefined),
     // positive and negative numbers are truthy.
     if (!winBound.x) {
-        winBound.x = rect.x;
+        winBound.x = 0; // rect.x can push window frame outside of visible viewport
     }
     if (!winBound.y) {
-        winBound.y = rect.y;
+        winBound.y = 0; // rect.y can push window frame outside of visible viewport
     }
     if (!winBound.width) {
         winBound.width = rect.width;

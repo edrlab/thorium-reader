@@ -51,29 +51,21 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
 
 export function* unmountHightlight(href: string, baseState: IHighlightBaseState[]): SagaIterator {
 
-    // filter on handler array with href and baseState uuid
-    const highlightHandlerArray = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
-    const filteredHighlightHandler = highlightHandlerArray.filter(
-        ([uuid, handlerState]) =>
-            href === handlerState.href
-            && baseState.findIndex(({ uuid: uuidFind }) => uuid === uuidFind) >= 0,
-    );
-
     // filter handler filtered with mounter uuid and map mounted highlight id
     const highlightMounterArray = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
-    const filteredArray = highlightMounterArray.filter(
-        ([uuid]) =>
-            filteredHighlightHandler.findIndex(([uuidFind]) => uuid === uuidFind) >= 0,
-    )
+    const filteredArray = highlightMounterArray
+        .filter(
+            ([uuid]) =>
+                baseState.findIndex(({ uuid: uuidFind }) => uuid === uuidFind) >= 0,
+        )
         .map(([, ref]) => ref.id);
 
     // remove hightlight mounted on the href webview
-    yield* callTyped(highlightsRemove, href, filteredArray);
+    yield* callTyped(() => highlightsRemove(href, filteredArray));
 
     // pull all hightlight from state (pop)
     // navigator-js doesn't keep hightlight state beetween webview access
     yield put(readerLocalActionHighlights.mounter.unmount.build(...baseState));
-
 }
 
 export type THighlightClick = [string, IHighlight];
