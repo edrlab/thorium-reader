@@ -5,37 +5,40 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { clone } from "ramda";
+import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { search } from "readium-desktop/utils/search/search";
+import { ISearchDocument, ISearchResult } from "readium-desktop/utils/search/search.interface";
 import {
     all, call, cancel, fork, join, put, take, takeEvery, takeLatest,
 } from "redux-saga/effects";
 
 import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions";
 import { IHighlightHandlerState } from "../state/highlight";
-import { ICacheXml, ISearchResult } from "../state/search";
 
 // DEMO
-const searchFct = async (..._arg: any) =>
-    new Promise<ISearchResult[]>((resolve) => setTimeout(() => resolve([]), 1000));
+// const searchFct = async (..._arg: any) =>
+//     new Promise<ISearchResult[]>((resolve) => setTimeout(() => resolve([]), 1000));
+
+const searchFct = search;
 
 function* searchRequest(action: readerLocalActionSearch.request.TAction) {
 
     const text = action.payload.textSearch;
     const cacheFromState = yield* selectTyped((state: IReaderRootState) => state.search.cacheArray);
 
-    const search = cacheFromState.map(
+    const searchMap = cacheFromState.map(
         (v) =>
             call(async () => {
-                return await searchFct(text, v.xml, v.href);
+                return await searchFct(text, v);
             }),
     );
 
-    const res = yield all(search);
+    const res = yield all(searchMap);
 
-    yield put(readerLocalActionSearch.found.build(res));
+    yield put(readerLocalActionSearch.found.build(flatten(res)));
 }
 
 function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = {
@@ -52,7 +55,7 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
             selectionInfo: {
                 cleanText: "",
                 rawText: v.textMatch,
-                rangeInfo: v.rangeInfos,
+                rangeInfo: v.rangeInfo,
             },
         },
     };
@@ -109,7 +112,7 @@ function* requestPublicationData() {
         (state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol,
     );
     const request = r2Manifest.Spine.map((ln) => call(async () => {
-        let ret: ICacheXml;
+        let ret: ISearchDocument;
         try {
             const url = new URL(ln.Href, manifestUrlR2Protocol);
             const urlStr = url.toString();
@@ -186,9 +189,10 @@ function searchNext() {
 
 function* searchCancel() {
 
-    const { foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
-
-    const uuidArray = foundArray.map((v) => ({ uuid: v.uuid }));
+    const handlerState = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
+    const uuidArray = handlerState
+        .filter(([, v]) => v.type === "search")
+        .map(([id]) => ({ uuid: id }));
 
     yield put(readerLocalActionHighlights.handler.pop.build(...uuidArray));
 }
