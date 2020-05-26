@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/main/redux/actions";
 import {
     IDictWinSessionReaderState,
@@ -84,16 +85,22 @@ export function winSessionReaderReducer(
             const id = action.payload.identifier;
 
             if (state[id]) {
+
+                const reduxState: IReaderStateReader = { ...state[id].reduxState };
+                Object.entries(action.payload.reduxState).forEach(([key, value]) => {
+                    if (value) {
+                        // @ts-ignore
+                        reduxState[key] = value;
+                    }
+                });
+
                 return {
                     ...state,
                     ...{
                         [id]: {
                             ...state[id],
                             ...{
-                                reduxState: {
-                                    ...state[id].reduxState,
-                                    ...action.payload.reduxState,
-                                },
+                                reduxState,
                             },
                         },
                     },
