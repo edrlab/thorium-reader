@@ -13,17 +13,17 @@ export const ID = "READER_SET_REDUXSTATE";
 
 export interface Payload {
     reduxState: Partial<IReaderStateReader>;
-    publicationIdentifier: string;
+    winId: string;
 }
 
-export function build(publicationIdentifier: string, reduxState: Payload["reduxState"]):
+export function build(winId: string, reduxState: Payload["reduxState"]):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             reduxState,
-            publicationIdentifier,
+            winId,
         },
     };
 }
