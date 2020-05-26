@@ -122,7 +122,6 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
 function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-
     if (libWin) {
 
         // try-catch to do not trigger an error message when the winbound is not handle by the os
@@ -130,12 +129,12 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
         try {
             // get an bound with offset
             libBound = yield* callTyped(getWinBound, undefined);
+            debug("getWinBound(undefined)", libBound);
             if (libBound) {
                 libWin.setBounds(libBound);
             }
         } catch (e) {
-
-            debug("cannot set libBound", libBound, e);
+            debug("error libWin.setBounds(libBound)", e);
         }
 
         // this should never occur, but let's do it for certainty
@@ -163,7 +162,7 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
     yield put(readerActions.detachModeSuccess.build());
 }
 
-function* getWinBound(publicationIdentifier: string) {
+function* getWinBound(publicationIdentifier: string | undefined) {
 
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
     const library = yield* selectTyped((state: RootState) => state.win.session.library);
@@ -173,9 +172,9 @@ function* getWinBound(publicationIdentifier: string) {
         return library.windowBound;
     }
 
-    let winBound = yield* selectTyped(
+    let winBound = (yield* selectTyped(
         (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
-    );
+    )) as Electron.Rectangle | undefined;
 
     const winBoundArray = [];
     winBoundArray.push(library.windowBound);
@@ -299,13 +298,18 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
 
     yield call(readerCloseRequest, action.sender.identifier);
 
-    const libWin = getLibraryWindowFromDi();
+    const libWin = yield* callTyped(() => getLibraryWindowFromDi());
     if (libWin) {
 
         const winBound = yield* selectTyped(
             (state: RootState) => state.win.session.library.windowBound,
         );
-        libWin.setBounds(winBound);
+        debug("state.win.session.library.windowBound", winBound);
+        try {
+            libWin.setBounds(winBound);
+        } catch (e) {
+            debug("error libWin.setBounds(winBound)", e);
+        }
 
         if (libWin.isMinimized()) {
             libWin.restore();

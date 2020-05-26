@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { error } from "readium-desktop/main/error";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -69,6 +70,8 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
 
         try {
             const winBound = reader.getBounds();
+            debug("_______1 reader.getBounds()", winBound);
+            normalizeRectangle(winBound);
             yield put(winActions.session.setBound.build(id, winBound));
         } catch (e) {
             debug("set reader bound error", id, e);
