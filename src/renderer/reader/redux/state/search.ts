@@ -13,7 +13,8 @@ export interface ISearchState {
     enable: boolean;
     state: "busy" | "idle";
     textSearch: string;
-    focusUUId: IHighlightBaseState["uuid"];
+    newFocusUUId: IHighlightBaseState["uuid"];
+    oldFocusUUId: IHighlightBaseState["uuid"];
     foundArray: ISearchResult[];
     cacheArray: ISearchDocument[];
 }
@@ -23,7 +24,8 @@ export const searchDefaultState = (): ISearchState =>
         enable: false,
         state: "idle",
         textSearch: "",
-        focusUUId: "",
+        newFocusUUId: "",
+        oldFocusUUId: "",
         foundArray: [],
         cacheArray: [],
     });

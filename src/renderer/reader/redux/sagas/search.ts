@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { handleLinkLocator } from "r2-navigator-js/dist/es6-es2015/src/electron/renderer";
 import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -15,8 +16,21 @@ import {
     all, call, cancel, fork, join, put, take, takeEvery, takeLatest,
 } from "redux-saga/effects";
 
+import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
+import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+
 import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions";
 import { IHighlightHandlerState } from "../state/highlight";
+
+function createLocatorLink(href: string, rangeInfo: IRangeInfo): R2Locator {
+
+    return {
+        href,
+        locations: {
+            cssSelector: rangeInfo.startContainerElementCssSelector,
+        },
+    };
+}
 
 // DEMO
 // const searchFct = async (..._arg: any) =>
@@ -68,33 +82,33 @@ function* searchFound(action: readerLocalActionSearch.found.TAction) {
         (v) => converterSearchResultToHighlightHandlerState(v),
     );
 
-    yield put(readerLocalActionHighlights.handler.push.build(...highlightHandlerState));
+    if (highlightHandlerState[0]) {
+
+        yield put(readerLocalActionHighlights.handler.push.build(...highlightHandlerState));
+        yield put(readerLocalActionSearch.focus.build(highlightHandlerState[0].uuid));
+    }
 }
 
 function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
-    const { focusUUId: newUUid } = action.payload;
+    const { newFocusUUId, oldFocusUUId } = action.payload;
 
-    const { focusUUId: oldUUid, foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
+    const { foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
 
-    const oldItem = foundArray.find((v) => v.uuid === oldUUid);
-    const newItem = foundArray.find((v) => v.uuid === newUUid);
+    const oldItem = foundArray.find((v) => v.uuid === oldFocusUUId);
+    const newItem = foundArray.find((v) => v.uuid === newFocusUUId);
 
-    if (oldItem && newItem) {
+    if (newItem && oldItem) {
         const oldItemClone = clone(oldItem);
         const newItemClone = clone(newItem);
 
         yield put(readerLocalActionHighlights.handler.pop.build(
-            { uuid: oldUUid },
-            { uuid: newUUid }),
+            { uuid: oldFocusUUId },
+            { uuid: newFocusUUId }),
         );
 
         yield put(
             readerLocalActionHighlights.handler.push.build(
-                converterSearchResultToHighlightHandlerState(oldItemClone, {
-                    red: 255,
-                    green: 0,
-                    blue: 0,
-                }),
+                converterSearchResultToHighlightHandlerState(oldItemClone),
                 converterSearchResultToHighlightHandlerState(newItemClone, {
                     red: 255,
                     green: 0,
@@ -102,6 +116,27 @@ function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
                 }),
             ),
         );
+
+        handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
+
+    } else if (newItem) {
+        const newItemClone = clone(newItem);
+
+        yield put(readerLocalActionHighlights.handler.pop.build(
+            { uuid: newFocusUUId }),
+        );
+
+        yield put(
+            readerLocalActionHighlights.handler.push.build(
+                converterSearchResultToHighlightHandlerState(newItemClone, {
+                    red: 255,
+                    green: 0,
+                    blue: 0,
+                }),
+            ),
+        );
+
+        handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
     }
 }
 
@@ -169,12 +204,18 @@ function* highlightClick(action: readerLocalActionHighlights.click.TAction) {
 }
 
 function* searchFocusPreviousOrNext(offset: number) {
-    const { focusUUId, foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
+    const { newFocusUUId, foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
 
-    const index = foundArray.findIndex((v) => v.uuid === focusUUId);
-    if (index > -1 && foundArray[index + offset]) {
-
-        const item = foundArray[index + offset];
+    const index = foundArray.findIndex((v) => v.uuid === newFocusUUId);
+    if (index > -1) {
+        let item: ISearchResult;
+        if (foundArray[index + offset]) {
+            item = foundArray[index + offset];
+        } else if ((index + offset) < 0) {
+            item = foundArray[foundArray.length - 1];
+        } else {
+            item = foundArray[0];
+        }
         yield put(readerLocalActionSearch.focus.build(item.uuid));
     }
 }
