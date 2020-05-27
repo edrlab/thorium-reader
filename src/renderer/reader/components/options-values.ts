@@ -111,6 +111,7 @@ export interface IReaderMenuProps {
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
     handleBookmarkClick: (locator: R2Locator) => void;
+    handleSearchClick: (locator: R2Locator) => void;
     toggleMenu: () => void;
 }
 

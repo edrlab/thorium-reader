@@ -479,16 +479,6 @@ declare namespace typed_i18n {
   (_: "publication.seeMore", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
-  readonly "picker": {
-    readonly "searchTitle": string,
-    readonly "annotationTitle": string,
-    readonly "search": {
-      readonly "input": string,
-      readonly "submit": string,
-      readonly "next": string,
-      readonly "previous": string
-    }
-  },
   readonly "footerInfo": {
     readonly "lessInfo": string,
     readonly "moreInfo": string
@@ -504,6 +494,7 @@ declare namespace typed_i18n {
   },
   readonly "media-overlays": {
     readonly "activate": string,
+    readonly "captions": string,
     readonly "next": string,
     readonly "pause": string,
     readonly "play": string,
@@ -528,6 +519,16 @@ declare namespace typed_i18n {
     readonly "quitFullscreenTitle": string,
     readonly "readBookTitle": string,
     readonly "settingsTitle": string
+  },
+  readonly "picker": {
+    readonly "annotationTitle": string,
+    readonly "search": {
+      readonly "input": string,
+      readonly "next": string,
+      readonly "previous": string,
+      readonly "submit": string
+    },
+    readonly "searchTitle": string
   },
   readonly "settings": {
     readonly "column": {
@@ -575,27 +576,8 @@ declare namespace typed_i18n {
     readonly "previous": string,
     readonly "speed": string,
     readonly "stop": string
-  },
-  readonly "media-overlays": {
-    readonly "activate": string,
-    readonly "captions": string,
-    readonly "escape": string,
-    readonly "next": string,
-    readonly "previous": string
   }
 };
-  (_: "reader.picker.searchTitle", __?: {}): string;
-  (_: "reader.picker.annotationTitle", __?: {}): string;
-  (_: "reader.picker.search", __?: {}): {
-  readonly "input": string,
-  readonly "submit": string,
-  readonly "next": string,
-  readonly "previous": string
-};
-  (_: "reader.picker.search.input", __?: {}): string;
-  (_: "reader.picker.search.submit", __?: {}): string;
-  (_: "reader.picker.search.next", __?: {}): string;
-  (_: "reader.picker.search.previous", __?: {}): string;
   (_: "reader.footerInfo", __?: {}): { readonly "lessInfo": string, readonly "moreInfo": string };
   (_: "reader.footerInfo.lessInfo", __?: {}): string;
   (_: "reader.footerInfo.moreInfo", __?: {}): string;
@@ -617,6 +599,7 @@ declare namespace typed_i18n {
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.media-overlays", __?: {}): {
   readonly "activate": string,
+  readonly "captions": string,
   readonly "next": string,
   readonly "pause": string,
   readonly "play": string,
@@ -627,6 +610,7 @@ declare namespace typed_i18n {
   readonly "title": string
 };
   (_: "reader.media-overlays.activate", __?: {}): string;
+  (_: "reader.media-overlays.captions", __?: {}): string;
   (_: "reader.media-overlays.next", __?: {}): string;
   (_: "reader.media-overlays.pause", __?: {}): string;
   (_: "reader.media-overlays.play", __?: {}): string;
@@ -665,6 +649,28 @@ declare namespace typed_i18n {
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;
   (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
+  (_: "reader.picker", __?: {}): {
+  readonly "annotationTitle": string,
+  readonly "search": {
+    readonly "input": string,
+    readonly "next": string,
+    readonly "previous": string,
+    readonly "submit": string
+  },
+  readonly "searchTitle": string
+};
+  (_: "reader.picker.annotationTitle", __?: {}): string;
+  (_: "reader.picker.search", __?: {}): {
+  readonly "input": string,
+  readonly "next": string,
+  readonly "previous": string,
+  readonly "submit": string
+};
+  (_: "reader.picker.search.input", __?: {}): string;
+  (_: "reader.picker.search.next", __?: {}): string;
+  (_: "reader.picker.search.previous", __?: {}): string;
+  (_: "reader.picker.search.submit", __?: {}): string;
+  (_: "reader.picker.searchTitle", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,
@@ -775,30 +781,6 @@ declare namespace typed_i18n {
   (_: "reader.tts.previous", __?: {}): string;
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
-  (_: "reader.media-overlays", __?: {}): {
-  readonly "activate": string,
-  readonly "captions": string,
-  readonly "escape": string,
-  readonly "next": string,
-  readonly "pause": string,
-  readonly "play": string,
-  readonly "previous": string,
-  readonly "skip": string,
-  readonly "speed": string,
-  readonly "stop": string,
-  readonly "title": string
-};
-  (_: "reader.media-overlays.activate", __?: {}): string;
-  (_: "reader.media-overlays.captions", __?: {}): string;
-  (_: "reader.media-overlays.escape", __?: {}): string;
-  (_: "reader.media-overlays.next", __?: {}): string;
-  (_: "reader.media-overlays.pause", __?: {}): string;
-  (_: "reader.media-overlays.play", __?: {}): string;
-  (_: "reader.media-overlays.previous", __?: {}): string;
-  (_: "reader.media-overlays.skip", __?: {}): string;
-  (_: "reader.media-overlays.speed", __?: {}): string;
-  (_: "reader.media-overlays.stop", __?: {}): string;
-  (_: "reader.media-overlays.title", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "keyboard": {
     readonly "advancedMenu": string,

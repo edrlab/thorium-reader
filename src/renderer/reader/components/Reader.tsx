@@ -263,6 +263,7 @@ class Reader extends React.Component<IProps, IState> {
             open: this.state.menuOpen,
             r2Publication: this.props.r2Publication,
             handleLinkClick: this.handleLinkClick,
+            handleSearchClick: this.goToLocator,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
         };

@@ -26,6 +26,7 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { IReaderMenuProps } from "./options-values";
+import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
@@ -138,7 +139,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             },
             {
                 title: __("reader.marks.search"),
-                content: <></>,
+                content: <ReaderMenuSearch handleSearchClick={this.props.handleSearchClick}></ReaderMenuSearch>,
                 disabled: !this.props.searchEnable,
             },
             {
