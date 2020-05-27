@@ -27,6 +27,13 @@ export const defaultRectangle = (): Rectangle => (
         y: Math.round(screen.getPrimaryDisplay().workAreaSize.height / 3),
     });
 export const normalizeRectangle = (winBound: Rectangle) => {
+
+    // TS strictNullChecks would flag this incoherent check ...
+    // ... but the "window bounds" code has been brittle so let's err on the side of caution
+    if (!winBound) {
+        return;
+    }
+
     const rect = defaultRectangle();
 
     // note: 0 and NaN are falsy (as well as null and undefined),
