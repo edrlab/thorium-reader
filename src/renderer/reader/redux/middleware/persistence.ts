@@ -18,7 +18,7 @@ const dispatchSetReduxState = (
 
     const state = store.getState();
     store.dispatch(
-        readerActions.setReduxState.build(state.reader.info.publicationIdentifier, readerState),
+        readerActions.setReduxState.build(state.win.identifier, readerState),
     );
 };
 
@@ -33,16 +33,24 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
+                const readerState: Partial<IReaderStateReader> = {};
+                let dispatchFlag = false;
                 if (!ramda.equals(prevState.reader.config, nextState.reader.config)) {
 
-                    dispatchSetReduxState(store, { config: nextState.reader.config });
+                    readerState.config = nextState.reader.config;
+                    dispatchFlag = true;
+                }
+                if (!ramda.equals(prevState.reader.locator, nextState.reader.locator)) {
 
-                } else if (!ramda.equals(prevState.reader.locator, nextState.reader.locator)) {
+                    readerState.locator = nextState.reader.locator;
+                    dispatchFlag = true;
+                }
+                if (dispatchFlag) {
 
-                    dispatchSetReduxState(store, { locator: nextState.reader.locator });
+                    dispatchSetReduxState(store, readerState);
                 }
 
-                // readerInfo is readOnly no need to persist
+                // readerInfo is readOnly no need to persist it
 
                 return returnValue;
             };
