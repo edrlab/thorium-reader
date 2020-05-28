@@ -38,9 +38,20 @@ interface IState {
 
 class SearchPicker extends React.Component<IProps, IState> {
 
+    private loadSeq: number;
+
     public render() {
 
         const { load, notFound, next, previous, __ } = this.props;
+
+        const found = this.props.foundNumber > 1
+            ? `${this.props.foundNumber} ${__("reader.picker.search.founds")}`
+            : (this.props.foundNumber === 0)
+                ? __("reader.picker.search.notFound")
+                : `${this.props.foundNumber} ${__("reader.picker.search.found")}`;
+
+        this.loadSeq = (this.loadSeq || 0) + 1;
+
         return (
             <div style={{
                 // margin: "10px",
@@ -68,6 +79,11 @@ class SearchPicker extends React.Component<IProps, IState> {
                 {
                     load && <LoaderSearch></LoaderSearch>
                 }
+                <span>
+                    {
+                        this.loadSeq > 2 && found
+                    }
+                </span>
             </div>
         );
 
@@ -76,10 +92,12 @@ class SearchPicker extends React.Component<IProps, IState> {
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
+
     return {
         picker: state.picker,
         load: state.search.state === "busy",
         notFound: !state.search.foundArray?.length,
+        foundNumber: state.search.foundArray?.length || 0,
     };
 };
 

@@ -262,6 +262,7 @@
             "search": {
                 "found": "result",
                 "founds": "results",
+                "notFound": "no result",
                 "input": "Search",
                 "next": "Next",
                 "previous": "Previous",
