@@ -87,7 +87,9 @@ function* searchFound(action: readerLocalActionSearch.found.TAction) {
     if (highlightHandlerState[0]) {
 
         yield put(readerLocalActionHighlights.handler.push.build(...highlightHandlerState));
-        yield put(readerLocalActionSearch.focus.build(highlightHandlerState[0].uuid));
+
+        // auto focus diable
+        // yield put(readerLocalActionSearch.focus.build(highlightHandlerState[0].uuid));
     }
 }
 
@@ -219,6 +221,8 @@ function* searchFocusPreviousOrNext(offset: number) {
             item = foundArray[0];
         }
         yield put(readerLocalActionSearch.focus.build(item.uuid));
+    } else {
+        yield put(readerLocalActionSearch.focus.build(foundArray[0]?.uuid || ""));
     }
 }
 
