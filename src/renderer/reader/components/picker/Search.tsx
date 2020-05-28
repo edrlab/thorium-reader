@@ -24,8 +24,12 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps>, TranslatorProps {
+// tslint:disable: no-empty-interface
+// tslint:disable: max-line-length
+interface IProps extends IBaseProps,
+    ReturnType<typeof mapStateToProps>,
+    ReturnType<typeof mapDispatchToProps>,
+    TranslatorProps {
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -85,7 +89,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => ({
     },
     previous: () => {
         dispatch(readerLocalActionSearch.previous.build());
-    }
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SearchPicker));

@@ -9,18 +9,18 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 
-import { readerLocalActionSearch, readerLocalActionPicker } from "../../redux/actions";
-import SVG from "readium-desktop/renderer/common/components/SVG";
+import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -36,7 +36,6 @@ interface IProps extends IBaseProps,
 }
 
 class HeaderSearch extends React.Component<IProps, undefined> {
-
 
     constructor(props: IProps) {
         super(props);
