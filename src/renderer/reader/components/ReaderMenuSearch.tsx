@@ -36,15 +36,24 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
 }
 
+let prevLinks: Link[];
+let searchTree: JSX.Element = <></>;
+
 class ReaderMenuSearch extends React.Component<IProps, IState> {
 
     public render() {
         const { __ } = this.props;
 
+        if (prevLinks !== this.props.links) {
+            searchTree = this.renderLinkTree(undefined, this.props.links, 1);
+            prevLinks = this.props.links;
+
+        }
+
         return (<>
             <span>{`${this.props.foundNumber} ${__("reader.picker.search.found")}`}</span>
             {
-                this.renderLinkTree(undefined, this.props.links, 1)
+                searchTree
             }
         </>);
     }
@@ -72,7 +81,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                         <span
                                             className={
                                                 link.Href
-                                                ? styles.subheading
+                                                    ? styles.subheading
                                                 : classnames(styles.subheading, styles.inert)
                                             }
                                             tabIndex={0}
