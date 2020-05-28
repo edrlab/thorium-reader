@@ -260,7 +260,8 @@
         "picker": {
             "annotationTitle": "Annotation :",
             "search": {
-                "found": "Found(s)",
+                "found": "result",
+                "founds": "results",
                 "input": "Search",
                 "next": "Next",
                 "previous": "Previous",

@@ -50,8 +50,12 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
 
         }
 
+        const found = this.props.foundNumber > 1
+        ? __("reader.picker.search.founds")
+        : __("reader.picker.search.found");
+
         return (<>
-            <span>{`${this.props.foundNumber} ${__("reader.picker.search.found")}`}</span>
+            <span>{`${this.props.foundNumber} ${found}`}</span>
             {
                 searchTree
             }
@@ -67,6 +71,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
             role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
             aria-label={label}
             className={styles.chapters_content}
+            style={{marginTop: "15px"}}
         >
             {
                 links?.map((link, i: number) => {
@@ -113,7 +118,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                             }
                                             data-href={link.Href}
                                         >
-                                            <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
+                                            <span dangerouslySetInnerHTML={{ __html: link.Title}}></span>
                                         </a>
                                     </div>
                                 )}
@@ -187,7 +192,7 @@ const computeLinks = () => {
                     const insertLink = new Link();
 
                     insertLink.Href = v.uuid;
-                    insertLink.Title = `...${v.textBefore} ${v.textMatch} ${v.textAfter}...`;
+                    insertLink.Title = `...${v.textBefore} <span style="background-color: coral">${v.textMatch}</span> ${v.textAfter}...`;
                     insertLink.TypeLink = "search";
 
                     findAndSetLink(links, v.href, insertLink);
