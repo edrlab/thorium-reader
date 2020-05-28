@@ -40,6 +40,8 @@ const searchFct = search;
 
 function* searchRequest(action: readerLocalActionSearch.request.TAction) {
 
+    yield call(clearSearch);
+
     const text = action.payload.textSearch;
     const cacheFromState = yield* selectTyped((state: IReaderRootState) => state.search.cacheArray);
 
@@ -228,14 +230,18 @@ function searchNext() {
     return searchFocusPreviousOrNext(+1);
 }
 
-function* searchCancel() {
-
+// TODO could be moved in highlight handler saga with an action
+function* clearSearch() {
     const handlerState = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
     const uuidArray = handlerState
         .filter(([, v]) => v.type === "search")
         .map(([id]) => ({ uuid: id }));
 
     yield put(readerLocalActionHighlights.handler.pop.build(...uuidArray));
+}
+
+function* searchCancel() {
+    yield call(clearSearch);
 }
 
 export const saga = () => {
