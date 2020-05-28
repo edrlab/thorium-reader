@@ -11,6 +11,7 @@ import * as ramda from "ramda";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
+import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -168,6 +169,9 @@ function* getWinBound(publicationIdentifier: string | undefined) {
     const library = yield* selectTyped((state: RootState) => state.win.session.library);
     const readerArray = ObjectValues(readers);
 
+    debug("library.windowBound", library.windowBound);
+    normalizeRectangle(library.windowBound);
+
     if (readerArray.length === 0) {
         return library.windowBound;
     }
@@ -176,33 +180,60 @@ function* getWinBound(publicationIdentifier: string | undefined) {
         (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
     )) as Electron.Rectangle | undefined;
 
+    debug("reader[publicationIdentifier]?.winBound", winBound);
+    if (winBound) {
+        normalizeRectangle(winBound);
+    }
+
     const winBoundArray = [];
     winBoundArray.push(library.windowBound);
-    readerArray.forEach(
-        (reader) => reader && winBoundArray.push(reader.windowBound));
-    const winBoundAlreadyTaken = !!winBoundArray.find((bound) => ramda.equals(winBound, bound));
+    readerArray.forEach((reader) => {
+        if (reader) {
+            debug("reader.windowBound", reader.windowBound);
+            normalizeRectangle(reader.windowBound);
+            winBoundArray.push(reader.windowBound);
+        }
+    });
+    const winBoundAlreadyTaken = !winBound || !!winBoundArray.find((bound) => ramda.equals(winBound, bound));
 
     if (
         !winBound
         || winBoundAlreadyTaken
     ) {
-
         if (readerArray.length) {
 
             const displayArea = yield* callTyped(() => screen.getPrimaryDisplay().workAreaSize);
+            debug("displayArea", displayArea);
 
             const winBoundWithOffset = winBoundArray.map(
-                (reader) => {
-                    reader.x += 100;
-                    reader.x %= displayArea.width - reader.width;
-                    reader.y += 100;
-                    reader.y %= displayArea.height - reader.height;
+                (rect) => {
+                    if (!rect.x) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
+                        rect.x = 0;
+                    }
+                    rect.x += 100;
+                    const wDiff = Math.abs(displayArea.width - rect.width);
+                    if (wDiff) {
+                        rect.x %= wDiff;
+                    }
 
-                    return reader;
+                    if (!rect.y) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
+                        rect.y = 0;
+                    }
+                    rect.y += 100;
+                    const hDiff = Math.abs(displayArea.height - rect.height);
+                    if (hDiff) {
+                        rect.y %= hDiff;
+                    }
+
+                    debug("rect", rect);
+                    return rect;
                 },
             );
+            debug("winBoundWithOffset", winBoundWithOffset);
 
             winBound = ramda.uniq(winBoundWithOffset)[0];
+            debug("winBound", winBound);
+            normalizeRectangle(winBound);
 
         } else {
             winBound = library.windowBound;
