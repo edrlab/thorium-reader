@@ -139,7 +139,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             },
             {
                 title: __("reader.marks.search"),
-                content: <ReaderMenuSearch handleSearchClick={this.props.handleSearchClick}></ReaderMenuSearch>,
+                content: this.props.searchEnable
+                    ? <ReaderMenuSearch></ReaderMenuSearch>
+                    : <></>,
                 disabled: !this.props.searchEnable,
             },
             {

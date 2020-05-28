@@ -16,8 +16,9 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ISearchResult } from "readium-desktop/utils/search/search.interface";
 
-import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Link } from "@r2-shared-js/models/publication-link";
+
+import { readerLocalActionSearch } from "../redux/actions";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -29,7 +30,6 @@ interface IBaseProps {
 // tslint:disable-next-line: no-empty-interface
 // tslint:disable-next-line: max-line-length
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps>, TranslatorProps {
-    handleSearchClick: (locator: R2Locator) => void;
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -39,8 +39,10 @@ interface IState {
 class ReaderMenuSearch extends React.Component<IProps, IState> {
 
     public render() {
+        const { __ } = this.props;
 
         return (<>
+            <span>{`${this.props.foundNumber} ${__("reader.picker.search.found")}`}</span>
             {
                 this.renderLinkTree(undefined, this.props.links, 1)
             }
@@ -53,76 +55,70 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         const useTree = false;
 
         return <ul
-                    role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
-                    aria-label={label}
-                    className={styles.chapters_content}
-                >
-            { links.map((link, i: number) => {
-                return (
-                    <li key={`${level}-${i}`}
-                        role={useTree ? "treeitem" : undefined}
-                        aria-expanded={useTree ? "true" : undefined}
-                    >
-                        {link.Children ? (
-                            <>
-                            <div role={"heading"} aria-level={level}>
-                                <a
-                                    className={
-                                        link.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
-                                    }
-                                    onClick=
-                                        {link.Href ? (e) => this.handleSearchClick(e, link.Href) : undefined}
-                                    tabIndex={0}
-                                    onKeyPress=
-                                        {
-                                            (e) => {
-                                                if (link.Href && e.key === "Enter") {
-                                                    this.handleSearchClick(e, link.Href);
-                                                }
+            role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
+            aria-label={label}
+            className={styles.chapters_content}
+        >
+            {
+                links?.map((link, i: number) => {
+                    return (
+                        <li key={`${level}-${i}`}
+                            role={useTree ? "treeitem" : undefined}
+                            aria-expanded={useTree ? "true" : undefined}
+                        >
+                            {link.Children?.length ? (
+                                <>
+                                    <div role={"heading"} aria-level={level}>
+                                        <span
+                                            className={
+                                                link.Href
+                                                ? styles.subheading
+                                                : classnames(styles.subheading, styles.inert)
                                             }
-                                        }
-                                    data-href={link.Href}
-                                >
-                                    <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
-                                </a>
-                            </div>
+                                            tabIndex={0}
+                                        >
+                                            <span>{link.Title}</span>
+                                        </span>
+                                    </div>
 
-                            {this.renderLinkTree(undefined, link.Children, level + 1)}
-                            </>
-                        ) : (
-                            <div role={"heading"} aria-level={level}>
-                                <a
-                                    className={
-                                        link.Href ?
-                                            classnames(styles.line, styles.active) :
-                                            classnames(styles.line, styles.active, styles.inert)
-                                    }
-                                    onClick=
-                                        {link.Href ? (e) => this.handleSearchClick(e, link.Href) : undefined}
-                                    tabIndex={0}
-                                    onKeyPress=
-                                        {
-                                            (e) => {
-                                                if (link.Href && e.key === "Enter") {
-                                                    this.handleSearchClick(e, link.Href);
+                                    {this.renderLinkTree(undefined, link.Children, level + 1)}
+                                </>
+                            ) : (
+                                    <div role={"heading"} aria-level={level}>
+                                        <a
+                                            className={
+                                                link.Href ?
+                                                    classnames(styles.line, styles.active) :
+                                                    classnames(styles.line, styles.active, styles.inert)
+                                            }
+                                            onClick=
+                                            {(e) => this.handleSearchClick(e, link.Href)}
+                                            tabIndex={0}
+                                            onKeyPress=
+                                            {
+                                                (e) => {
+                                                    if (link.Href && e.key === "Enter") {
+                                                        this.handleSearchClick(e, link.Href);
+                                                    }
                                                 }
                                             }
-                                        }
-                                    data-href={link.Href}
-                                >
-                                    <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
-                                </a>
-                            </div>
-                        )}
-                    </li>
-                );
-            })}
+                                            data-href={link.Href}
+                                        >
+                                            <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
+                                        </a>
+                                    </div>
+                                )}
+                        </li>
+                    );
+                },
+                )
+            }
         </ul>;
     }
 
     private handleSearchClick(e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>, href: string) {
         e.preventDefault();
-        this.props.handleSearchClick(JSON.parse(href));
+        this.props.focus(href);
     }
 }
 
@@ -148,24 +144,23 @@ const findAndSetLink = (host: Link[], searchHref: string, link: Link) => {
     }
 };
 
-const clearEmptyChildrenTree = (tree: Link[]): Link[] => {
-    return tree
-        .map((l) => {
-            if (l.Children?.length) {
-                l.Children = clearEmptyChildrenTree(l.Children);
-            } else if (l.Children?.length === 0 || typeof l.Children === "undefined") {
-                l = undefined;
+const clearTreeLink = (ln: Link | undefined): Link => {
 
-            // test node marked
-            } else if (typeof l.Children === "object" && !Array.isArray(l.Children)) {
-                l.Children = undefined;
-            }
-            return l;
-        })
-        .filter((l) => l);
+    if (ln?.Children?.length) {
+        ln.Children = ln.Children
+            .map((l) => clearTreeLink(l))
+            .reduce((pv, cv) => cv ? [...pv, cv] : pv, []);
+
+        if (ln.Children?.length) {
+            return ln;
+        }
+    } else if (ln?.TypeLink === "search") {
+        return ln;
+    }
+    return undefined;
 };
 
-function computeLinks() {
+const computeLinks = () => {
     let prevFound: ISearchResult[] = null;
     let prevToc: Link[] = null;
     let links: Link[];
@@ -180,39 +175,34 @@ function computeLinks() {
 
                 links = toc.map((l) => copyLink(l));
                 found.forEach((v) => {
-                    const l = new Link();
+                    const insertLink = new Link();
 
-                    l.Href = JSON.stringify(
-                        {
-                            href: l.Href,
-                            locations: {
-                                cssSelector: v.rangeInfo.startContainerElementCssSelector,
-                            },
-                        } as R2Locator,
-                    );
-                    l.Title = `${v.textBefore}${v.textMatch}${v.textAfter}`;
-                    // mark node for the cleanFunction
-                    l.Children = null;
+                    insertLink.Href = v.uuid;
+                    insertLink.Title = `...${v.textBefore} ${v.textMatch} ${v.textAfter}...`;
+                    insertLink.TypeLink = "search";
 
-                    findAndSetLink(links, v.href, l);
-                    clearEmptyChildrenTree(links);
+                    findAndSetLink(links, v.href, insertLink);
                 });
+                links = links
+                    .map((link) => clearTreeLink(link))
+                    .filter((link) => link);
             }
         }
         return links;
     };
-}
+};
 
 const fn = computeLinks();
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
     return {
         links: fn(state.search?.foundArray, state.reader?.info?.r2Publication?.TOC),
+        foundNumber: state.search.foundArray?.length || 0,
     };
 };
 
-const mapDispatchToProps = (_dispatch: TDispatch) => ({
-
+const mapDispatchToProps = (dispatch: TDispatch) => ({
+    focus: (uuid: string) => { dispatch(readerLocalActionSearch.focus.build(uuid)); },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderMenuSearch));

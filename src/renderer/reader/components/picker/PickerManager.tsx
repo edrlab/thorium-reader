@@ -82,9 +82,9 @@ class PickerManager extends React.Component<IProps, IState> {
                 height: 30,
                 top: this.state.pickerTop,
                 left: this.state.pickerLeft,
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
                 border: "1px solid gray",
-                zIndex: 999,
+                zIndex: 9,
             }}
                 onMouseDown={this.startMove}
                 onKeyUp={(e: React.KeyboardEvent<HTMLDivElement>) => {

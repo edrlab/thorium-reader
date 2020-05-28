@@ -526,7 +526,8 @@ declare namespace typed_i18n {
       readonly "input": string,
       readonly "next": string,
       readonly "previous": string,
-      readonly "submit": string
+      readonly "submit": string,
+      readonly "found": string
     },
     readonly "searchTitle": string
   },
@@ -655,7 +656,8 @@ declare namespace typed_i18n {
     readonly "input": string,
     readonly "next": string,
     readonly "previous": string,
-    readonly "submit": string
+    readonly "submit": string,
+    readonly "found": string
   },
   readonly "searchTitle": string
 };
@@ -664,12 +666,14 @@ declare namespace typed_i18n {
   readonly "input": string,
   readonly "next": string,
   readonly "previous": string,
-  readonly "submit": string
+  readonly "submit": string,
+  readonly "found": string
 };
   (_: "reader.picker.search.input", __?: {}): string;
   (_: "reader.picker.search.next", __?: {}): string;
   (_: "reader.picker.search.previous", __?: {}): string;
   (_: "reader.picker.search.submit", __?: {}): string;
+  (_: "reader.picker.search.found", __?: {}): string;
   (_: "reader.picker.searchTitle", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
