@@ -66,6 +66,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                     disabled={notFound}
                     onClick={previous}
                     aria-label={__("reader.picker.search.previous")}
+                    style={{ fontSize: "2ex" }}
                 >
                     {"<"}
                 </button>
@@ -73,13 +74,14 @@ class SearchPicker extends React.Component<IProps, IState> {
                     disabled={notFound}
                     onClick={next}
                     aria-label={__("reader.picker.search.next")}
+                    style={{ fontSize: "2ex" }}
                 >
                     {">"}
                 </button>
                 {
                     load && <LoaderSearch></LoaderSearch>
                 }
-                <span>
+                <span style={{fontSize: "2ex"}}>
                     {
                         this.loadSeq > 2 && found
                     }

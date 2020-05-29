@@ -83,8 +83,9 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                     aria-label={__("accessibility.searchBook")}
                     placeholder={__("reader.picker.search.input")}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({inputValue: e.target.value})}
+                    style={{ fontSize: "2ex" }}
                 />
-                <button disabled={!this.state.inputValue}>
+                <button disabled={!this.state.inputValue} style={{ fontSize: "2ex" }}>
                     {
                         __("reader.picker.search.submit")
                     }
