@@ -7,7 +7,7 @@
 
 import { convertRange } from "@r2-navigator-js/electron/renderer/webview/selection";
 
-import { nanoid } from "../nanoid";
+import { getCount } from "../counter";
 import { getCssSelector_ } from "./cssSelector";
 import { escapeRegExp } from "./regexp";
 import { ISearchResult } from "./search.interface";
@@ -149,7 +149,7 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
             textAfter,
             rangeInfo,
             href,
-            uuid: nanoid(),
+            uuid: getCount().toString(),
         });
     }
 
