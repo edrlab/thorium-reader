@@ -81,7 +81,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                 {
                     load && <LoaderSearch></LoaderSearch>
                 }
-                <span style={{fontSize: "2ex"}}>
+                <span style={{fontSize: "2ex"}} aria-live="polite">
                     {
                         this.loadSeq > 2 && found
                     }
