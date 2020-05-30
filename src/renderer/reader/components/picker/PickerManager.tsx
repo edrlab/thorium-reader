@@ -115,7 +115,7 @@ class PickerManager extends React.Component<IProps, IState> {
                 <button
                     style={{
                         position: "absolute",
-                        right: "10px",
+                        right: "5px",
                         top: "3px",
                         fontSize: "2ex",
                     }}
