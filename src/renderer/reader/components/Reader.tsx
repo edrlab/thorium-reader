@@ -58,13 +58,13 @@ import {
 } from "@r2-navigator-js/electron/renderer/highlight";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
-    isLocatorVisible, LocatorExtended, mediaOverlaysEnableCaptionsMode,
+    isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable, mediaOverlaysEnableCaptionsMode,
     mediaOverlaysEnableSkippability, mediaOverlaysListen, mediaOverlaysNext, mediaOverlaysPause,
     mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight, publicationHasMediaOverlays,
     readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
-    setReadingLocationSaver, ttsListen, ttsNext, ttsPause, ttsPlay, ttsPlaybackRate, ttsPrevious,
-    ttsResume, TTSStateEnum, ttsStop,
+    setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
+    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, TTSStateEnum, ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { convertRange } from "@r2-navigator-js/electron/renderer/webview/selection";
@@ -2734,10 +2734,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private unsubscribe: Unsubscribe;
 
-    private ttsWasPlayingBeforeNavigate: boolean;
-    private ttsAutoContinuePlayTimeout: number | undefined;
-    // private mediaOverlaysWasPlayingBeforeNavigate: boolean;
-    // private mediaOverlaysAutoContinuePlayTimeout: number | undefined;
+    private ttsOverlayEnableNeedsSync: boolean;
 
     private pendingHighlights: {
         href: string,
@@ -2754,8 +2751,7 @@ class Reader extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.ttsWasPlayingBeforeNavigate = false;
-        // this.mediaOverlaysWasPlayingBeforeNavigate = false;
+        this.ttsOverlayEnableNeedsSync = true;
 
         this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
         this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
@@ -2799,15 +2795,9 @@ class Reader extends React.Component<IProps, IState> {
         };
 
         ttsListen((ttss: TTSStateEnum) => {
-            // if (ttss === TTSStateEnum.STOPPED) {
-            //     this.ttsWasPlayingBeforeNavigate = false;
-            // }
             this.setState({ttsState: ttss});
         });
         mediaOverlaysListen((mos: MediaOverlaysStateEnum) => {
-            // if (mos === MediaOverlaysStateEnum.STOPPED) {
-            //     this.mediaOverlaysWasPlayingBeforeNavigate = false;
-            // }
             this.setState({mediaOverlaysState: mos});
         });
 
@@ -4023,7 +4013,7 @@ class Reader extends React.Component<IProps, IState> {
             this.props.manifestUrlR2Protocol,
             "publication_viewport",
             preloadPath,
-            this.props.locator.locator,
+            this.props.locator?.locator?.href ? this.props.locator.locator : undefined,
             true,
             clipboardInterceptor,
             this.props.winId,
@@ -4044,6 +4034,10 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
+        if (this.ttsOverlayEnableNeedsSync) {
+            ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
+        }
+        this.ttsOverlayEnableNeedsSync = false;
 
         this.findBookmarks();
         this.saveReadingLocation(loc);
@@ -4051,33 +4045,6 @@ class Reader extends React.Component<IProps, IState> {
         // No need to explicitly refresh the bookmarks status here,
         // as componentDidUpdate() will call the function after setState():
         // await this.checkBookmarks();
-
-        if (this.state.r2PublicationHasMediaOverlays) {
-
-            // if (this.mediaOverlaysWasPlayingBeforeNavigate) {
-            //     this.mediaOverlaysWasPlayingBeforeNavigate = false;
-
-            //     if (this.mediaOverlaysAutoContinuePlayTimeout) {
-            //         clearTimeout(this.mediaOverlaysAutoContinuePlayTimeout);
-            //     }
-            //     this.mediaOverlaysAutoContinuePlayTimeout = window.setTimeout(() => {
-            //         this.mediaOverlaysAutoContinuePlayTimeout = undefined;
-            //         this.handleMediaOverlaysPlay();
-            //     }, 500);
-            // }
-        } else {
-            if (this.ttsWasPlayingBeforeNavigate) {
-                this.ttsWasPlayingBeforeNavigate = false;
-
-                if (this.ttsAutoContinuePlayTimeout) {
-                    clearTimeout(this.ttsAutoContinuePlayTimeout);
-                }
-                this.ttsAutoContinuePlayTimeout = window.setTimeout(() => {
-                    this.ttsAutoContinuePlayTimeout = undefined;
-                    this.handleTTSPlay();
-                }, 500);
-            }
-        }
 
         await this.ensureHighlights(loc);
     }
@@ -4120,35 +4087,6 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private ensureTTSStateDuringNavigation(): boolean {
-        const wasPlaying = this.state.ttsState === TTSStateEnum.PLAYING;
-        const wasPaused = this.state.ttsState === TTSStateEnum.PAUSED;
-
-        if (wasPaused || wasPlaying) {
-            this.handleTTSStop();
-            this.setState({ ttsState: TTSStateEnum.STOPPED }); // because not emmitted when switching docs
-        }
-
-        this.ttsWasPlayingBeforeNavigate = this.ttsAutoContinuePlayTimeout ? true : wasPaused || wasPlaying;
-        return wasPaused || wasPlaying;
-    }
-
-    private ensureMediaOverlaysStateDuringNavigation(): boolean {
-        return false;
-        // const wasPlaying = this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
-        // const wasPaused = this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED;
-
-        // if (wasPaused || wasPlaying) {
-        //     this.handleMediaOverlaysStop();
-        //     // because not emmitted when switching docs
-        //     this.setState({ mediaOverlaysState: MediaOverlaysStateEnum.STOPPED });
-        // }
-
-        // // this.mediaOverlaysWasPlayingBeforeNavigate =
-        // //     this.mediaOverlaysAutoContinuePlayTimeout ? true : wasPaused || wasPlaying;
-        // return wasPaused || wasPlaying;
-    }
-
     private navLeftOrRight_(left: boolean, spineNav?: boolean) {
         const wasPlaying = this.state.r2PublicationHasMediaOverlays ?
             this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING :
@@ -4157,23 +4095,9 @@ class Reader extends React.Component<IProps, IState> {
             this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED :
             this.state.ttsState === TTSStateEnum.PAUSED;
 
-        if ((this.state.r2PublicationHasMediaOverlays ?
-                false /* this.mediaOverlaysAutoContinuePlayTimeout */ :
-                this.ttsAutoContinuePlayTimeout)
-            || wasPaused || wasPlaying) {
-            const wasStopped = this.state.r2PublicationHasMediaOverlays ?
-                this.ensureMediaOverlaysStateDuringNavigation() :
-                this.ensureTTSStateDuringNavigation();
-            const timeout = wasStopped ? 500 : 0;
-            window.setTimeout(() => {
-                navLeftOrRight(left, !this.state.r2PublicationHasMediaOverlays);
-            }, timeout);
+        if (wasPaused || wasPlaying) {
+            navLeftOrRight(left, !this.state.r2PublicationHasMediaOverlays);
         } else {
-            if (this.state.r2PublicationHasMediaOverlays) {
-                // this.mediaOverlaysWasPlayingBeforeNavigate = false;
-            } else {
-                this.ttsWasPlayingBeforeNavigate = false;
-            }
             navLeftOrRight(left, spineNav);
         }
     }
@@ -4182,13 +4106,7 @@ class Reader extends React.Component<IProps, IState> {
 
         this.focusMainAreaLandmarkAndCloseMenu();
 
-        const wasStopped = this.state.r2PublicationHasMediaOverlays ?
-            this.ensureMediaOverlaysStateDuringNavigation() :
-            this.ensureTTSStateDuringNavigation();
-        const timeout = wasStopped ? 500 : 0;
-        window.setTimeout(() => {
-            handleLinkLocator(locator);
-        }, timeout);
+        handleLinkLocator(locator);
     }
 
     // tslint:disable-next-line: max-line-length
@@ -4202,14 +4120,8 @@ class Reader extends React.Component<IProps, IState> {
 
         this.focusMainAreaLandmarkAndCloseMenu();
 
-        const wasStopped = this.state.r2PublicationHasMediaOverlays ?
-            this.ensureMediaOverlaysStateDuringNavigation() :
-            this.ensureTTSStateDuringNavigation();
         const newUrl = this.props.manifestUrlR2Protocol + "/../" + url;
-        const timeout = wasStopped ? 500 : 0;
-        window.setTimeout(() => {
-            handleLinkUrl(newUrl);
-        }, timeout);
+        handleLinkUrl(newUrl);
     }
 
     private async handleToggleBookmark(fromKeyboard?: boolean) {
@@ -4315,20 +4227,14 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleTTSPlay() {
+        ttsClickEnable(true);
         ttsPlay(parseFloat(this.state.ttsPlaybackRate));
     }
     private handleTTSPause() {
-        this.ttsWasPlayingBeforeNavigate = false;
-        if (this.ttsAutoContinuePlayTimeout) {
-            clearTimeout(this.ttsAutoContinuePlayTimeout);
-        }
         ttsPause();
     }
     private handleTTSStop() {
-        this.ttsWasPlayingBeforeNavigate = false;
-        if (this.ttsAutoContinuePlayTimeout) {
-            clearTimeout(this.ttsAutoContinuePlayTimeout);
-        }
+        ttsClickEnable(false);
         ttsStop();
     }
     private handleTTSResume() {
@@ -4346,20 +4252,14 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleMediaOverlaysPlay() {
+        mediaOverlaysClickEnable(true);
         mediaOverlaysPlay(parseFloat(this.state.mediaOverlaysPlaybackRate));
     }
     private handleMediaOverlaysPause() {
-        // this.mediaOverlaysWasPlayingBeforeNavigate = false;
-        // if (this.mediaOverlaysAutoContinuePlayTimeout) {
-        //     clearTimeout(this.mediaOverlaysAutoContinuePlayTimeout);
-        // }
         mediaOverlaysPause();
     }
     private handleMediaOverlaysStop() {
-        // this.mediaOverlaysWasPlayingBeforeNavigate = false;
-        // if (this.mediaOverlaysAutoContinuePlayTimeout) {
-        //     clearTimeout(this.mediaOverlaysAutoContinuePlayTimeout);
-        // }
+        mediaOverlaysClickEnable(false);
         mediaOverlaysStop();
     }
     private handleMediaOverlaysResume() {
@@ -4379,14 +4279,22 @@ class Reader extends React.Component<IProps, IState> {
     private handleSettingsSave(readerConfig: ReaderConfig) {
         const moWasPlaying = this.state.r2PublicationHasMediaOverlays &&
             this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
+        const ttsWasPlaying = this.state.ttsState !== TTSStateEnum.STOPPED;
 
         mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
         mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
+        ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
 
         if (moWasPlaying) {
             mediaOverlaysPause();
             setTimeout(() => {
                 mediaOverlaysResume();
+            }, 300);
+        }
+        if (ttsWasPlaying) {
+            ttsStop();
+            setTimeout(() => {
+                ttsPlay(parseFloat(this.state.ttsPlaybackRate));
             }, 300);
         }
 
@@ -4499,6 +4407,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
     mediaOverlaysEnableSkippability(state.reader.config.mediaOverlaysEnableSkippability);
     mediaOverlaysEnableCaptionsMode(state.reader.config.mediaOverlaysEnableCaptionsMode);
+
+    // too early in navigator lifecycle (READIUM2 context not instantiated)
+    // see this.ttsOverlayEnableNeedsSync
+    // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
 
     return {
         publicationView: state.reader.info.publicationView,

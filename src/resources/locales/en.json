@@ -230,7 +230,7 @@
         },
         "media-overlays": {
             "activate": "Activate Readaloud",
-            "captions": "Captions mode",
+            "captions": "Captions / clean view",
             "next": "Next Readaloud",
             "pause": "Pause Readaloud",
             "play": "Play Readaloud",

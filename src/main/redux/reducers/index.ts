@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { readerActions } from "readium-desktop/common/redux/actions";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 // import { netReducer } from "readium-desktop/common/redux/reducers/net";
@@ -16,7 +15,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers } from "redux";
 
-import { publicationActions } from "../actions";
+import { publicationActions, winActions } from "../actions";
 import { lcpReducer } from "./lcp";
 import { readerDefaultConfigReducer } from "./reader/defaultConfig";
 import { sessionReducer } from "./session";
@@ -49,12 +48,12 @@ export const rootReducer = combineReducers<RootState>({
     publication: combineReducers({
         lastReadingQueue: priorityQueueReducer
             <
-                readerActions.setReduxState.TAction,
+                winActions.session.setReduxState.TAction,
                 publicationActions.deletePublication.TAction
             >(
                 {
                     push: {
-                        type: readerActions.setReduxState.ID,
+                        type: winActions.session.setReduxState.ID,
                         selector: (action) =>
                             [(new Date()).getTime(), action.payload.publicationIdentifier],
                     },

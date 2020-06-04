@@ -534,8 +534,20 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
         const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
 
         readerConfig.mediaOverlaysEnableCaptionsMode = !readerConfig.mediaOverlaysEnableCaptionsMode;
+
+        // TTS and MO both use the same checkbox, for "Captions / clean view"
+        readerConfig.ttsEnableOverlayMode = !readerConfig.ttsEnableOverlayMode;
+
         this.props.setSettings(readerConfig);
     }
+    // private toggleTTSEnableOverlayMode() {
+    //     // TODO: smarter clone?
+    //     const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
+    //     readerConfig.ttsEnableOverlayMode = !readerConfig.ttsEnableOverlayMode;
+    //     this.props.setSettings(readerConfig);
+    // }
+
     private toggleMathJax() {
         // TODO: smarter clone?
         const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));

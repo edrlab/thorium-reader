@@ -26,6 +26,31 @@ export const defaultRectangle = (): Rectangle => (
         x: Math.round(screen.getPrimaryDisplay().workAreaSize.width / 3),
         y: Math.round(screen.getPrimaryDisplay().workAreaSize.height / 3),
     });
+export const normalizeRectangle = (winBound: Rectangle) => {
+
+    // TS strictNullChecks would flag this incoherent check ...
+    // ... but the "window bounds" code has been brittle so let's err on the side of caution
+    if (!winBound) {
+        return;
+    }
+
+    const rect = defaultRectangle();
+
+    // note: 0 and NaN are falsy (as well as null and undefined),
+    // positive and negative numbers are truthy.
+    if (!winBound.x) {
+        winBound.x = 0; // rect.x can push window frame outside of visible viewport
+    }
+    if (!winBound.y) {
+        winBound.y = 0; // rect.y can push window frame outside of visible viewport
+    }
+    if (!winBound.width) {
+        winBound.width = rect.width;
+    }
+    if (!winBound.height) {
+        winBound.height = rect.height;
+    }
+};
 
 // export type t_savedWindowsRectangle = typeof savedWindowsRectangle;
 // export const savedWindowsRectangle = async (rectangle: Rectangle) => {

@@ -28,4 +28,5 @@ export const readerConfigInitialState: ReaderConfig = {
     darken: undefined,
     mediaOverlaysEnableSkippability: true,
     mediaOverlaysEnableCaptionsMode: false,
+    ttsEnableOverlayMode: false,
 };
