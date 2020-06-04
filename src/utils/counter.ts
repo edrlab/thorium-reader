@@ -9,7 +9,7 @@ const counter = () => {
     let _counter = 0;
 
     return () => {
-        return Number.isSafeInteger(++_counter) ? counter : _counter = 1;
+        return Number.isSafeInteger(++_counter) ? _counter : _counter = 1;
     };
 };
 export const getCount = counter();
