@@ -234,6 +234,9 @@ export class Downloader {
                         outputStream.end(null, null, () => {
                             return resolve(download);
                         });
+                    } else {
+
+                        return reject("output stream error");
                     }
                 });
             });
@@ -253,6 +256,9 @@ export class Downloader {
                     outputStream.end(null, null, () => {
                         return reject(error);
                     });
+                } else {
+
+                    return reject(error);
                 }
             });
         });
