@@ -243,7 +243,7 @@
         "navigation": {
             "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
-            "detachWindowTitle": "detach the window",
+            "detachWindowTitle": "show library / bookshelf window",
             "fullscreenTitle": "open fullscreen mode",
             "goTo": "Go to",
             "goToError": "This page break does not exist",
