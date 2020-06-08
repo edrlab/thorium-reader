@@ -314,6 +314,10 @@ export class LcpManager {
                 "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
                 "User-Agent": "readium-desktop",
             };
+            // TODO - IDEALLY AS WELL:
+            // agentOptions: {
+            //     rejectUnauthorized: IS_DEV ? false : true,
+            // },
 
             const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
@@ -422,6 +426,10 @@ export class LcpManager {
                 "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
                 "User-Agent": "readium-desktop",
             };
+            // TODO - IDEALLY AS WELL:
+            // agentOptions: {
+            //     rejectUnauthorized: IS_DEV ? false : true,
+            // },
 
             const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
@@ -820,6 +828,10 @@ export class LcpManager {
             "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
             "User-Agent": "readium-desktop",
         };
+        // TODO - IDEALLY AS WELL:
+        // agentOptions: {
+        //     rejectUnauthorized: IS_DEV ? false : true,
+        // },
 
         return new Promise(async (resolve, reject) => {
             const callback = async (licenseUpdateJson: string | undefined) => {

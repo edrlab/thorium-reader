@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { diMainGet } from "readium-desktop/main/di";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
 import * as request from "request";
 import { Url } from "url";
@@ -69,6 +70,9 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
             method: "GET",
             encoding: undefined,
             headers,
+            agentOptions: {
+                rejectUnauthorized: IS_DEV ? false : true,
+            },
         },
     );
 

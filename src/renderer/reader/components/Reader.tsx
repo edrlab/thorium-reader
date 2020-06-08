@@ -4454,6 +4454,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         setConfig: (config: ReaderConfig) => {
             dispatch(readerLocalActionSetConfig.build(config));
+            dispatch(readerActions.configSetDefault.build(config));
         },
     };
 };
