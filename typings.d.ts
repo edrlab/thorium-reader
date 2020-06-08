@@ -25,7 +25,8 @@ declare module "ping";
 declare module "yazl";
 
 declare module "pouchdb-adapter-leveldb";
-declare module "readium-desktop/pouchdb/jsondown-adapter";
+declare module "pouchdb-adapter-node-websql";
+// declare module "readium-desktop/pouchdb/jsondown-adapter";
 
 declare module "*.css" {
     interface IClassNames {

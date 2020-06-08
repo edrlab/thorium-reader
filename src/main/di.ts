@@ -40,7 +40,7 @@ import { PublicationService } from "readium-desktop/main/services/publication";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
 import {
-    _APP_NAME, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
+    _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
 } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
 
@@ -83,7 +83,7 @@ if ((PouchDB  as any).default) {
 
 const rootDbPath = path.join(
     userDataPath,
-    (_NODE_ENV === "development") ? "db-dev" : "db",
+    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "db-dev-sqlite" : "db",
 );
 
 if (!fs.existsSync(rootDbPath)) {
@@ -146,7 +146,7 @@ const lcpSecretRepository = new LcpSecretRepository(lcpSecretDb);
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     userDataPath,
-    "publications",
+    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "publications-dev" : "publications",
 );
 
 if (!fs.existsSync(publicationRepositoryPath)) {

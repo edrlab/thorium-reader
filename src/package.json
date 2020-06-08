@@ -8,7 +8,7 @@
   ],
   "main": "./main.js",
   "scripts": {
-    "postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=8.2.3 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
+    "postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=8.3.1 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\""
   },
