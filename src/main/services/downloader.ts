@@ -140,6 +140,9 @@ export class Downloader {
                 method: "GET",
                 encoding: undefined,
                 headers,
+                agentOptions: {
+                    rejectUnauthorized: false,
+                },
             },
         );
 
