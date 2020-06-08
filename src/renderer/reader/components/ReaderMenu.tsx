@@ -140,7 +140,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             {
                 title: __("reader.marks.search"),
                 content: this.props.searchEnable
-                    ? <ReaderMenuSearch></ReaderMenuSearch>
+                    ? <ReaderMenuSearch
+                        focusMainAreaLandmarkAndCloseMenu={this.props.focusMainAreaLandmarkAndCloseMenu}
+                    ></ReaderMenuSearch>
                     : <></>,
                 disabled: !this.props.searchEnable,
             },

@@ -22,6 +22,7 @@ import { readerLocalActionSearch } from "../redux/actions";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
+    focusMainAreaLandmarkAndCloseMenu: () => void;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -106,13 +107,13 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                                     classnames(styles.line, styles.active, styles.inert)
                                             }
                                             onClick=
-                                            {(e) => this.handleSearchClick(e, link.Href)}
+                                            {(e) => this.handleSearchClick(e, link.Href, false)}
                                             tabIndex={0}
                                             onKeyPress=
                                             {
                                                 (e) => {
                                                     if (link.Href && e.key === "Enter") {
-                                                        this.handleSearchClick(e, link.Href);
+                                                        this.handleSearchClick(e, link.Href, true);
                                                     }
                                                 }
                                             }
@@ -130,9 +131,16 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         </ul>;
     }
 
-    private handleSearchClick(e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>, href: string) {
+    private handleSearchClick(
+        e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>,
+        href: string,
+        escape: boolean) {
+
         e.preventDefault();
         this.props.focus(href);
+        if (escape) {
+            this.props.focusMainAreaLandmarkAndCloseMenu();
+        }
     }
 }
 
@@ -192,7 +200,7 @@ const computeLinks = () => {
                     const insertLink = new Link();
 
                     insertLink.Href = v.uuid;
-                    insertLink.Title = `...${v.textBefore} <span style="background-color: coral">${v.textMatch}</span> ${v.textAfter}...`;
+                    insertLink.Title = `...${v.textBefore}<span style="background-color: coral">${v.textMatch}</span>${v.textAfter}...`;
                     insertLink.TypeLink = "search";
 
                     findAndSetLink(links, v.href, insertLink);
@@ -216,7 +224,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 };
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
-    focus: (uuid: string) => { dispatch(readerLocalActionSearch.focus.build(uuid)); },
+    focus: (uuid: string) => {
+        dispatch(readerLocalActionSearch.focus.build(uuid));
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderMenuSearch));
