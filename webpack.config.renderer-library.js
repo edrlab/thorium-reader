@@ -39,6 +39,7 @@ let externals = {
     leveldown: "leveldown",
     fsevents: "fsevents",
     conf: "conf",
+    sqlite3: "sqlite3",
 };
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {

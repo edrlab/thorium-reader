@@ -37,6 +37,8 @@ let externals = {
     "conf": "conf",
     "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",
     "electron-devtools-installer": "electron-devtools-installer",
+    "pouchdb-adapter-node-websql": "pouchdb-adapter-node-websql",
+    "sqlite3": "sqlite3",
 }
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
