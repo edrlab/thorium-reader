@@ -258,6 +258,7 @@ export class Downloader {
                     });
                 } else {
 
+                    debug("request error: ", error);
                     return reject(error);
                 }
             });
