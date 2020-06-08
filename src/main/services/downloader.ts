@@ -15,6 +15,7 @@ import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { RootState } from "readium-desktop/main/redux/states";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/content-type";
 import { Store } from "redux";
 import * as request from "request";
@@ -100,6 +101,8 @@ export class Downloader {
         const download = this.downloads[identifier];
         download.status = DownloadStatus.Downloading;
 
+        debug("DOWNLOAD process: ", download.srcUrl);
+
         // Last time we poll the request progress
         let progressLastTime = new Date();
 
@@ -121,7 +124,7 @@ export class Downloader {
             const configDoc = await this.configRepository.get("oauth");
             savedAccessTokens = configDoc.value;
         } catch (err) {
-            debug("oauth");
+            debug("oauth get");
             debug(err);
         }
         const domain = download.srcUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
@@ -140,6 +143,9 @@ export class Downloader {
                 method: "GET",
                 encoding: undefined,
                 headers,
+                agentOptions: {
+                    rejectUnauthorized: IS_DEV ? false : true,
+                },
             },
         );
 
@@ -157,10 +163,7 @@ export class Downloader {
                     download.progress = 0;
                     download.downloadedSize = 0;
                     debug("Error while downloading resource", download, response.statusCode);
-                    // outputStream.end(null, null, () => {
-                    //     reject("Error while downloading resource: " + response.statusCode);
-                    // });
-                    return;
+                    return reject("Error while downloading resource: " + response.statusCode);
                 }
                 if (!download.extension) {
                     const contentType = response.headers["content-type"];
@@ -232,13 +235,17 @@ export class Downloader {
                     delete this.downloads[identifier];
                     if (outputStream) {
                         outputStream.end(null, null, () => {
+                            outputStream = undefined;
                             return resolve(download);
                         });
+                    } else { // this should really never happen, but safeguard.
+                        return resolve(download);
                     }
                 });
             });
 
             requestStream.on("error", (error) => {
+                debug("requestStream error: ", error);
 
                 download.status = DownloadStatus.Failed;
                 // keep existing (just in case error is half-way through download)
@@ -251,8 +258,11 @@ export class Downloader {
 
                 if (outputStream) {
                     outputStream.end(null, null, () => {
+                        outputStream = undefined;
                         return reject(error);
                     });
+                } else {
+                    return reject(error);
                 }
             });
         });
