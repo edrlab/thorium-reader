@@ -34,6 +34,9 @@
                     "title": "Save session"
                 }
             }
+        },
+        "window": {
+            "showLibrary": "Show library / bookshelf"
         }
     },
     "catalog": {
