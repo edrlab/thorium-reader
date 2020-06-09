@@ -16,7 +16,7 @@
     "clean": "rimraf dist && rimraf release",
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
     "testFile": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache ",
-    "postinstall": "npm run rmLevelDownPrebuilds && npm run rmSQLite3Prebuilds && npm rebuild --runtime=electron --target=8.3.1 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
+    "postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=8.3.1 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmSQLite3Prebuilds": "rimraf \"./node_modules/sqlite3/lib/binding/\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\"",
