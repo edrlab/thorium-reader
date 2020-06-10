@@ -14,6 +14,7 @@ import { IOpdsLinkView, IOpdsResultView } from "readium-desktop/common/views/opd
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { RootState } from "readium-desktop/main/redux/states";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/content-type";
 import { Store } from "redux";
 import * as request from "request";
@@ -95,6 +96,7 @@ export class OpdsService {
             const configDoc = await this.configRepository.get("oauth");
             savedAccessTokens = configDoc.value;
         } catch (err) {
+            debug("oauth get");
             debug(err);
         }
 
@@ -352,6 +354,7 @@ export class OpdsService {
                         const configDoc = await this.configRepository.get("oauth");
                         savedAccessTokens = configDoc.value;
                     } catch (err) {
+                        debug("oauth get");
                         debug(err);
                     }
                     const accessTokens: AccessTokenMap = Object.assign(
@@ -365,6 +368,7 @@ export class OpdsService {
                             value: accessTokens,
                         });
                     } catch (err) {
+                        debug("oauth save");
                         debug(err);
                     }
 
@@ -391,6 +395,9 @@ export class OpdsService {
                     refresh_token: refreshToken,
                 },
                 headers,
+                agentOptions: {
+                    rejectUnauthorized: IS_DEV ? false : true,
+                },
                 method: "POST",
                 uri: oAuthUrl,
             })

@@ -28,7 +28,9 @@ import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take } from "redux-saga/effects";
 import { types } from "util";
 
-import { streamerOpenPublicationAndReturnManifestUrl } from "./publication/openPublication";
+import {
+    ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, streamerOpenPublicationAndReturnManifestUrl,
+} from "./publication/openPublication";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
@@ -255,20 +257,24 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     } catch (e) {
 
-        const translator = yield* callTyped(
-            () => diMainGet("translator"));
+        if (e.toString() !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
 
-        if (types.isNativeError(e)) {
-            // disable "Error: "
-            e.name = "";
+            const translator = yield* callTyped(
+                () => diMainGet("translator"));
+
+            if (types.isNativeError(e)) {
+                // disable "Error: "
+                e.name = "";
+            }
+
+            yield put(
+                toastActions.openRequest.build(
+                    ToastType.Error,
+                    translator.translate("message.open.error", { err: e.toString() }),
+                ),
+            );
         }
 
-        yield put(
-            toastActions.openRequest.build(
-                ToastType.Error,
-                translator.translate("message.open.error", {err: e.toString()}),
-            ),
-        );
     }
 
     if (manifestUrl) {

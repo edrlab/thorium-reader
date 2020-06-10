@@ -244,7 +244,7 @@
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",
-            "detachWindowTitle": "détacher la fenêtre",
+            "detachWindowTitle": "afficher la bibliothèque",
             "fullscreenTitle": "mode plein écran",
             "goTo": "Aller à",
             "goToError": "Cette page n'existe pas",

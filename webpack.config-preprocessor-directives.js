@@ -18,10 +18,12 @@ const isContinuousIntegrationDeploy = process.env.TRAVIS_OS_NAME_ ? true : false
 const skipLevelDown = isDev || isContinuousIntegrationDeploy;
 
 const pouchDbAdapterName = skipLevelDown ?
-    "jsondown" : "leveldb";
+    "websql" : // "jsondown"
+    "leveldb";
 
 const pouchDbAdapterPackage = skipLevelDown ?
-    "readium-desktop/pouchdb/jsondown-adapter" : "pouchdb-adapter-leveldb";
+    "pouchdb-adapter-node-websql" : ///"readium-desktop/pouchdb/jsondown-adapter" :
+    "pouchdb-adapter-leveldb";
 
 const rendererLibraryBaseUrl = isDev ?
     ("http://localhost:"+portApp+"/") : "file://";
