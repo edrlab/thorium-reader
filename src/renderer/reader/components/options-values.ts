@@ -112,6 +112,7 @@ export interface IReaderMenuProps {
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
     handleBookmarkClick: (locator: R2Locator) => void;
     toggleMenu: () => void;
+    focusMainAreaLandmarkAndCloseMenu: () => void;
 }
 
 export interface IReaderOptionsProps {

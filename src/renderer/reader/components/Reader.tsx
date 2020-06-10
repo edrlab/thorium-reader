@@ -255,6 +255,7 @@ class Reader extends React.Component<IProps, IState> {
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
+            focusMainAreaLandmarkAndCloseMenu: this.focusMainAreaLandmarkAndCloseMenu.bind(this),
         };
 
         const readerOptionsProps: IReaderOptionsProps = {
