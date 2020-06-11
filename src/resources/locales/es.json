@@ -34,6 +34,9 @@
                     "title": "Guardar sesión"
                 }
             }
+        },
+        "window": {
+            "showLibrary": ""
         }
     },
     "catalog": {
