@@ -452,6 +452,9 @@ export class LcpManager {
                 });
                 if (!returnLink) {
                     debug("!returnLink");
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
                 if (returnLink.Type !== ContentType.Lsd) {
@@ -460,6 +463,9 @@ export class LcpManager {
                         return newPubDocument;
                     }
                     debug(`returnLink.Type: ${returnLink.Type}`);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
 
@@ -516,6 +522,10 @@ export class LcpManager {
                     this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+                } else {
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                    ));
                 }
             }
 
