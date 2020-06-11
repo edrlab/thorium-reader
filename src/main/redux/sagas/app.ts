@@ -90,14 +90,12 @@ export function exit() {
         const exitNow = () => {
 
             // clean the db just before to quit
+            // tslint:disable-next-line: no-floating-promises
             compactDb()
-                .then(() => {
+                .finally(() => {
 
                     debug("EXIT NOW");
                     app.exit(0);
-                })
-                .catch(() => {
-                    // ignore
                 });
         };
 
