@@ -22,7 +22,22 @@
             "undo": "元に戻す"
         },
         "hide": "隠す {{appName}}",
-        "quit": "終了 {{appName}}"
+        "quit": "終了 {{appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "",
+                        "yes": ""
+                    },
+                    "message": "",
+                    "title": ""
+                }
+            }
+        },
+        "window": {
+            "showLibrary": ""
+        }
     },
     "catalog": {
         "about": {
@@ -52,6 +67,7 @@
         "noPublicationHelpL1": "この画面にEPUBファイルをドロップしてください。",
         "noPublicationHelpL2": "または，上にある\"+\"ボタンを押してください。",
         "noPublicationHelpL3": "LCPで保護されたファイルをサポートします。",
+        "noPublicationHelpL4": "",
         "numberOfPages": "ページ数",
         "opds": {
             "info": {
@@ -91,6 +107,13 @@
         "return": "このオンのライセンスを本当に返しますか？",
         "yes": "はい"
     },
+    "error": {
+        "errorBox": {
+            "error": "",
+            "message": "",
+            "title": ""
+        }
+    },
     "header": {
         "allBooks": "すべての本",
         "books": "わたしの本",
@@ -125,6 +148,9 @@
             "alreadyImport": "{{- title}}はすでに追加されていました。",
             "fail": "{{- path}}の追加に失敗しました。ファイルが正しいかを確認してください。",
             "success": "{{- title}}の追加が完了しました。"
+        },
+        "open": {
+            "error": ""
         }
     },
     "opds": {
@@ -181,6 +207,9 @@
         "licenseOutOfDate": "ライセンスは期限切れです",
         "licenseSignatureDateInvalid": "ライセンス署名の日付が無効です",
         "licenseSignatureInvalid": "ライセンス署名が無効です",
+        "progression": {
+            "title": ""
+        },
         "renewButton": "更新",
         "returnButton": "返却",
         "returnedLcp": "LCPライセンスが返却されたため，この本は読めません。",
@@ -201,6 +230,18 @@
             "edit": "編集",
             "landmarks": "構成",
             "toc": "目次"
+        },
+        "media-overlays": {
+            "activate": "",
+            "captions": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "skip": "",
+            "speed": "",
+            "stop": "",
+            "title": ""
         },
         "navigation": {
             "backHomeTitle": "本棚に戻る",
@@ -238,6 +279,11 @@
             "lineSpacing": "行の間隔",
             "margin": "縦列の余白",
             "paginated": "ページ型",
+            "save": {
+                "apply": "",
+                "reset": "",
+                "title": ""
+            },
             "scrolled": "スクロール型",
             "spacing": "余白",
             "text": "文字",
@@ -254,6 +300,15 @@
         "svg": {
             "left": "左",
             "right": "右"
+        },
+        "tts": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "speed": "",
+            "stop": ""
         }
     },
     "settings": {
@@ -271,6 +326,11 @@
         },
         "language": {
             "languageChoice": "言語の選択"
+        },
+        "session": {
+            "no": "",
+            "title": "",
+            "yes": ""
         }
     }
 }
