@@ -9,10 +9,10 @@ import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { compactDb, diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { needToPersistState } from "readium-desktop/main/redux/sagas/persist.ts";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { all, call, race, spawn, take } from "redux-saga/effects";
+import { call, fork, join, race, spawn, take } from "redux-saga/effects";
 import { put } from "typed-redux-saga";
 
 import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
@@ -78,7 +78,7 @@ export function exit() {
         const shutdownEventChannel = getShutdownEventChannel();
         const windowAllClosedEventChannel = getWindowAllClosedEventChannel();
         const quitEventChannel = getQuitEventChannel();
-        let shouldExit: boolean = process.platform !== "darwin" || IS_DEV;
+        let shouldExit = process.platform !== "darwin" || IS_DEV;
 
         /*
         // events order :
@@ -86,6 +86,20 @@ export function exit() {
         - window-all-closed
         - quit
         */
+
+        const exitNow = () => {
+
+            // clean the db just before to quit
+            compactDb()
+                .then(() => {
+
+                    debug("EXIT NOW");
+                    app.exit(0);
+                })
+                .catch(() => {
+                    // ignore
+                });
+        };
 
         const closeLibWinAndExit = () => {
 
@@ -96,9 +110,7 @@ export function exit() {
 
             if (process.platform === "darwin") {
                 if (libraryWin.isDestroyed()) {
-                    debug("EXIT NOW");
-                    app.exit(0);
-                    return ;
+                    return exitNow();
                 }
             }
 
@@ -160,10 +172,17 @@ export function exit() {
                 debug("#####");
 
                 // clear session in r2-navigator
-                yield all([
-                    call(clearSessions),
-                    call(needToPersistState),
-                ]);
+                const t1 = yield fork(function*() {
+                    try {
+                        yield call(clearSessions);
+                    } catch (e) {
+                        debug("ERROR to clearSessions", e);
+                    }
+                });
+                const t2 = yield fork(needToPersistState);
+
+                join(t1);
+                join(t2);
 
                 yield put(streamerActions.stopRequest.build());
 
@@ -173,8 +192,7 @@ export function exit() {
                 });
 
                 if (shouldExit) {
-                    debug("EXIT NOW");
-                    app.exit(0);
+                    exitNow();
                 }
             },
         );
