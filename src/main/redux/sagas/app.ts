@@ -165,8 +165,8 @@ export function exit() {
                 if (libraryWin.isDestroyed()) {
                     if (closeProcessLock.isLock) {
                         error(filename_, new Error(
-                            `close process not finishing
-                            ${_APP_NAME} tries to close properly, wait few seconds`));
+                            `closing process not completed
+                            ${_APP_NAME} tries to close properly, wait a few seconds`));
                     } else {
                         exitNow();
                     }

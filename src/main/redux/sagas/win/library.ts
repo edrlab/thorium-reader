@@ -37,7 +37,7 @@ function* appActivate() {
 
     if (closeProcessLock.isLock) {
 
-        error(filename_ + "appActivate", new Error("closeProcess not finishing"));
+        error(filename_ + "appActivate", new Error("closing process not completed"));
     } else {
 
         const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
