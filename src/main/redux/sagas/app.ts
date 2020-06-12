@@ -78,58 +78,61 @@ export function* init() {
 function* closeProcess() {
 
     closeProcessLock.lock();
+    try {
+        const [done] = yield* raceTyped([
+            all([
+                call(function*() {
 
-    const [done] = yield* raceTyped([
-        all([
-            call(function*() {
+                    try {
+                        // clear session in r2-navigator
+                        yield call(clearSessions);
+                        debug("Success to clearSession in r2-navigator");
+                    } catch (e) {
+                        debug("ERROR to clearSessions", e);
+                    }
+                }),
+                call(function*() {
 
-                try {
-                    // clear session in r2-navigator
-                    yield call(clearSessions);
-                    debug("Success to clearSession in r2-navigator");
-                } catch (e) {
-                    debug("ERROR to clearSessions", e);
-                }
-            }),
-            call(function*() {
+                    try {
+                        yield call(needToPersistState);
+                        debug("Success to persistState");
+                    } catch (e) {
+                        debug("ERROR to persistState", e);
+                    }
 
-                try {
-                    yield call(needToPersistState);
-                    debug("Success to persistState");
-                } catch (e) {
-                    debug("ERROR to persistState", e);
-                }
+                    try {
+                        // clean the db just before to quit
+                        yield call(compactDb);
+                        debug("Success to compactDb");
+                    } catch (e) {
+                        debug("ERROR to compactDb", e);
+                    }
+                }),
+                call(function*() {
 
-                try {
-                    // clean the db just before to quit
-                    yield call(compactDb);
-                    debug("Success to compactDb");
-                } catch (e) {
-                    debug("ERROR to compactDb", e);
-                }
-            }),
-            call(function*() {
+                    yield put(streamerActions.stopRequest.build());
 
-                yield put(streamerActions.stopRequest.build());
+                    const [success, failed] = yield race([
+                        take(streamerActions.stopSuccess.ID),
+                        take(streamerActions.stopError.ID),
+                    ]);
+                    if (success) {
+                        debug("Success to stop streamer");
+                    } else {
+                        debug("ERROR to stop streamer", failed);
+                    }
+                }),
+            ]),
+            delay(30000), // 30 seconds timeout to force quit
+        ]);
 
-                const [success, failed] = yield race([
-                    take(streamerActions.stopSuccess.ID),
-                    take(streamerActions.stopError.ID),
-                ]);
-                if (success) {
-                    debug("Success to stop streamer");
-                } else {
-                    debug("ERROR to stop streamer", failed);
-                }
-            }),
-        ]),
-        delay(30000), // 30 seconds timeout to force quit
-    ]);
+        if (!done) {
+            debug("close process takes time to finish -> Force quit with 30s timeout");
+        }
+    } finally {
 
-    if (!done) {
-        debug("close process takes time to finish -> Force quit with 30s timeout");
+        closeProcessLock.release();
     }
-    closeProcessLock.release();
 }
 
 export function exit() {
