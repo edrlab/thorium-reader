@@ -9,11 +9,15 @@ import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { compactDb, diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import {
+    closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
+} from "readium-desktop/main/di";
+import { error } from "readium-desktop/main/error";
 import { needToPersistState } from "readium-desktop/main/redux/sagas/persist.ts";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { call, fork, join, race, spawn, take } from "redux-saga/effects";
-import { put } from "typed-redux-saga";
+import { _APP_NAME, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { all, call, race, spawn, take } from "redux-saga/effects";
+import { delay, put } from "typed-redux-saga";
 
 import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 
@@ -71,6 +75,63 @@ export function* init() {
 
 }
 
+function* closeProcess() {
+
+    closeProcessLock.lock();
+
+    const [done] = yield* raceTyped([
+        all([
+            call(function*() {
+
+                try {
+                    // clear session in r2-navigator
+                    yield call(clearSessions);
+                    debug("Success to clearSession in r2-navigator");
+                } catch (e) {
+                    debug("ERROR to clearSessions", e);
+                }
+            }),
+            call(function*() {
+
+                try {
+                    yield call(needToPersistState);
+                    debug("Success to persistState");
+                } catch (e) {
+                    debug("ERROR to persistState", e);
+                }
+
+                try {
+                    // clean the db just before to quit
+                    yield call(compactDb);
+                    debug("Success to compactDb");
+                } catch (e) {
+                    debug("ERROR to compactDb", e);
+                }
+            }),
+            call(function*() {
+
+                yield put(streamerActions.stopRequest.build());
+
+                const [success, failed] = yield race([
+                    take(streamerActions.stopSuccess.ID),
+                    take(streamerActions.stopError.ID),
+                ]);
+                if (success) {
+                    debug("Success to stop streamer");
+                } else {
+                    debug("ERROR to stop streamer", failed);
+                }
+            }),
+        ]),
+        delay(30000), // 30 seconds timeout to force quit
+    ]);
+
+    if (!done) {
+        debug("close process takes time to finish -> Force quit with 30s timeout");
+    }
+    closeProcessLock.release();
+}
+
 export function exit() {
     return spawn(function*() {
 
@@ -89,14 +150,8 @@ export function exit() {
 
         const exitNow = () => {
 
-            // clean the db just before to quit
-            // tslint:disable-next-line: no-floating-promises
-            compactDb()
-                .finally(() => {
-
-                    debug("EXIT NOW");
-                    app.exit(0);
-                });
+            debug("EXIT NOW");
+            app.exit(0);
         };
 
         const closeLibWinAndExit = () => {
@@ -108,7 +163,14 @@ export function exit() {
 
             if (process.platform === "darwin") {
                 if (libraryWin.isDestroyed()) {
-                    return exitNow();
+                    if (closeProcessLock.isLock) {
+                        error(filename_, new Error(
+                            `close process not finishing
+                            ${_APP_NAME} tries to close properly, wait few seconds`));
+                    } else {
+                        exitNow();
+                    }
+                    return ;
                 }
             }
 
@@ -169,25 +231,7 @@ export function exit() {
                 debug("#####");
                 debug("#####");
 
-                // clear session in r2-navigator
-                const t1 = yield fork(function*() {
-                    try {
-                        yield call(clearSessions);
-                    } catch (e) {
-                        debug("ERROR to clearSessions", e);
-                    }
-                });
-                const t2 = yield fork(needToPersistState);
-
-                join(t1);
-                join(t2);
-
-                yield put(streamerActions.stopRequest.build());
-
-                yield race({
-                    a: take(streamerActions.stopSuccess.ID),
-                    b: take(streamerActions.stopError.ID),
-                });
+                yield call(closeProcess);
 
                 if (shouldExit) {
                     exitNow();
