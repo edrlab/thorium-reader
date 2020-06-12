@@ -94,53 +94,56 @@ function* searchFound(action: readerLocalActionSearch.found.TAction) {
 }
 
 function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
+
     const { newFocusUUId, oldFocusUUId } = action.payload;
+    if (newFocusUUId !== oldFocusUUId) {
 
-    const { foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
+        const { foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
 
-    const oldItem = foundArray.find((v) => v.uuid === oldFocusUUId);
-    const newItem = foundArray.find((v) => v.uuid === newFocusUUId);
+        const oldItem = foundArray.find((v) => v.uuid === oldFocusUUId);
+        const newItem = foundArray.find((v) => v.uuid === newFocusUUId);
 
-    if (newItem && oldItem) {
-        const oldItemClone = clone(oldItem);
-        const newItemClone = clone(newItem);
+        if (newItem && oldItem) {
+            const oldItemClone = clone(oldItem);
+            const newItemClone = clone(newItem);
 
-        yield put(readerLocalActionHighlights.handler.pop.build(
-            { uuid: oldFocusUUId },
-            { uuid: newFocusUUId }),
-        );
+            yield put(readerLocalActionHighlights.handler.pop.build(
+                { uuid: oldFocusUUId },
+                { uuid: newFocusUUId }),
+            );
 
-        yield put(
-            readerLocalActionHighlights.handler.push.build(
-                converterSearchResultToHighlightHandlerState(oldItemClone),
-                converterSearchResultToHighlightHandlerState(newItemClone, {
-                    red: 255,
-                    green: 0,
-                    blue: 0,
-                }),
-            ),
-        );
+            yield put(
+                readerLocalActionHighlights.handler.push.build(
+                    converterSearchResultToHighlightHandlerState(oldItemClone),
+                    converterSearchResultToHighlightHandlerState(newItemClone, {
+                        red: 255,
+                        green: 0,
+                        blue: 0,
+                    }),
+                ),
+            );
 
-        handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
+            handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
 
-    } else if (newItem) {
-        const newItemClone = clone(newItem);
+        } else if (newItem) {
+            const newItemClone = clone(newItem);
 
-        yield put(readerLocalActionHighlights.handler.pop.build(
-            { uuid: newFocusUUId }),
-        );
+            yield put(readerLocalActionHighlights.handler.pop.build(
+                { uuid: newFocusUUId }),
+            );
 
-        yield put(
-            readerLocalActionHighlights.handler.push.build(
-                converterSearchResultToHighlightHandlerState(newItemClone, {
-                    red: 255,
-                    green: 0,
-                    blue: 0,
-                }),
-            ),
-        );
+            yield put(
+                readerLocalActionHighlights.handler.push.build(
+                    converterSearchResultToHighlightHandlerState(newItemClone, {
+                        red: 255,
+                        green: 0,
+                        blue: 0,
+                    }),
+                ),
+            );
 
-        handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
+            handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
+        }
     }
 }
 
