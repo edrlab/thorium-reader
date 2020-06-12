@@ -27,13 +27,16 @@
             "exit": {
                 "askBox": {
                     "button": {
-                        "no": "",
-                        "yes": ""
+                        "no": "No",
+                        "yes": "Sí"
                     },
-                    "message": "",
-                    "title": ""
+                    "message": "¿Quieres guardar la sesión?",
+                    "title": "Guardar sesión"
                 }
             }
+        },
+        "window": {
+            "showLibrary": ""
         }
     },
     "catalog": {
@@ -61,10 +64,10 @@
         "lang": "Idioma",
         "moreInfo": "Más información",
         "myBooks": "Mis libros",
-        "noPublicationHelpL1": "Dejar la publicación",
+        "noPublicationHelpL1": "Suelta una publicación aquí",
         "noPublicationHelpL2": "o usa el botón \"+\" de arriba.",
         "noPublicationHelpL3": "Se admiten ficheros protegidos LCP.",
-        "noPublicationHelpL4": "Extensiones soportadas:",
+        "noPublicationHelpL4": "Extensiones admitidas:",
         "numberOfPages": "Número de páginas",
         "opds": {
             "info": {
@@ -106,9 +109,9 @@
     },
     "error": {
         "errorBox": {
-            "error": "",
-            "message": "",
-            "title": ""
+            "error": "Mensaje de error",
+            "message": "Se ha producido un error en {{- filename}}",
+            "title": "Error interno de {{- appName}}"
         }
     },
     "header": {
@@ -147,7 +150,7 @@
             "success": "La importación de {{- title}} ha finalizado."
         },
         "open": {
-            "error": ""
+            "error": "No se puede abrir la publicación: {{- err}}"
         }
     },
     "opds": {
@@ -229,16 +232,16 @@
             "toc": "Tabla de contenido"
         },
         "media-overlays": {
-            "activate": "",
-            "captions": "",
-            "next": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "skip": "",
-            "speed": "",
-            "stop": "",
-            "title": ""
+            "activate": "Activar lectura en voz alta",
+            "captions": "Texto sincronizado/presentación diáfana",
+            "next": "Siguiente lectura en voz alta",
+            "pause": "Pausar lectura en voz alta",
+            "play": "Reproducir lectura en voz alta",
+            "previous": "Anterior lectura en voz alta",
+            "skip": "Omitir información auxiliar",
+            "speed": "Velocidad de reproducción para lectura en voz alta",
+            "stop": "Detener lectura en voz alta",
+            "title": "Lectura en voz alta"
         },
         "navigation": {
             "backHomeTitle": "Volver a la biblioteca",
@@ -277,9 +280,9 @@
             "margin": "Margen",
             "paginated": "Paginado",
             "save": {
-                "apply": "",
-                "reset": "",
-                "title": ""
+                "apply": "Guardar",
+                "reset": "Restablecer",
+                "title": "Configuración"
             },
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
@@ -299,13 +302,13 @@
             "right": "Derecha"
         },
         "tts": {
-            "activate": "",
-            "next": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "speed": "",
-            "stop": ""
+            "activate": "Activar texto a voz",
+            "next": "Siguiente texto a voz",
+            "pause": "Pausar texto a voz",
+            "play": "Reproducir texto a voz",
+            "previous": "Anterior texto a voz",
+            "speed": "Velocidad de reproducción para texto a voz",
+            "stop": "Detener texto a voz"
         }
     },
     "settings": {
@@ -325,9 +328,9 @@
             "languageChoice": "Selección de idioma"
         },
         "session": {
-            "no": "",
-            "title": "",
-            "yes": ""
+            "no": "Deshabilitar",
+            "title": "Guardar sesión",
+            "yes": "Habilitar"
         }
     }
 }
