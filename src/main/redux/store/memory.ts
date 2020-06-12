@@ -23,19 +23,20 @@ import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync"
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { RootState } from "readium-desktop/main/redux/states";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware from "redux-saga";
-import { composeWithDevTools } from "remote-redux-devtools";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
 
+// import { composeWithDevTools } from "remote-redux-devtools";
+const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
+
 // Logger
 const debug = debug_("readium-desktop:main:store:memory");
-
-const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
 
 const defaultLocale = (): LocaleConfigValueType => {
     const loc = app.getLocale().split("-")[0];
@@ -191,20 +192,21 @@ export async function initStore(configRepository: ConfigRepository<any>): Promis
 
     const sagaMiddleware = createSagaMiddleware();
 
+    const mware = applyMiddleware(
+        reduxSyncMiddleware,
+        sagaMiddleware,
+        reduxPersistMiddleware,
+    );
+    const middleware = IS_DEV ? require("remote-redux-devtools").composeWithDevTools(
+        {
+            port: REDUX_REMOTE_DEVTOOLS_PORT,
+        },
+    )(mware) : mware;
+
     const store = createStore(
         rootReducer,
         preloadedState,
-        composeWithDevTools(
-            {
-                port: REDUX_REMOTE_DEVTOOLS_PORT,
-            },
-        )(
-            applyMiddleware(
-                reduxSyncMiddleware,
-                sagaMiddleware,
-                reduxPersistMiddleware,
-            ),
-        ),
+        middleware,
     );
 
     sagaMiddleware.run(rootSaga);

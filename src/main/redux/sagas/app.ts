@@ -93,6 +93,15 @@ export function exit() {
             shouldExit = true;
 
             const libraryWin = getLibraryWindowFromDi();
+
+            if (process.platform === "darwin") {
+                if (libraryWin.isDestroyed()) {
+                    debug("EXIT NOW");
+                    app.exit(0);
+                    return ;
+                }
+            }
+
             libraryWin.close();
         };
 
@@ -113,7 +122,6 @@ export function exit() {
                 e.preventDefault();
 
                 closeLibWinAndExit();
-
             },
         );
 

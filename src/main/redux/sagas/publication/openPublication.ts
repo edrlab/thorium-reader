@@ -22,6 +22,8 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 const filename_ = "readium-desktop:main:redux:sagas:publication:open";
 const debug = debug_(filename_);
 
+export const ERROR_MESSAGE_ON_USERKEYCHECKREQUEST = "ERROR_MESSAGE_ON_USERKEYCHECKREQUEST";
+
 export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     const publicationRepository = yield* callTyped(
@@ -106,7 +108,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                         message,
                     ));
 
-                    throw new Error(message);
+                    throw ERROR_MESSAGE_ON_USERKEYCHECKREQUEST;
                 } catch (error) {
 
                     throw error;
@@ -187,7 +189,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                         message,
                     ));
 
-                    throw new Error(message);
+                    throw ERROR_MESSAGE_ON_USERKEYCHECKREQUEST;
                 } catch (error) {
 
                     throw error;

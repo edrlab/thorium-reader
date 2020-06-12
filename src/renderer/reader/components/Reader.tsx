@@ -929,7 +929,12 @@ class Reader extends React.Component<IProps, IState> {
             }, 300);
         }
 
-        this.props.setConfig(readerConfig);
+        apiAction("session/isEnabled")
+            .then((isEnabled) => this.props.setConfig(readerConfig, isEnabled))
+            .catch((e) => {
+                console.error("Error to fetch api session/isEnabled", e);
+                this.props.setConfig(readerConfig, false);
+            });
 
         if (this.props.r2Publication) {
             readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
@@ -1080,9 +1085,13 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         setLocator: (locator: LocatorExtended) => {
             dispatch(readerLocalActionSetLocator.build(locator));
         },
-        setConfig: (config: ReaderConfig) => {
+        setConfig: (config: ReaderConfig, sessionEnabled: boolean) => {
             dispatch(readerLocalActionSetConfig.build(config));
-            dispatch(readerActions.configSetDefault.build(config));
+
+            if (!sessionEnabled) {
+
+                dispatch(readerActions.configSetDefault.build(config));
+            }
         },
     };
 };

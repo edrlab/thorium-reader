@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { app, powerMonitor } from "electron";
-import { eventChannel } from "redux-saga";
+import { channel as channelSaga, eventChannel } from "redux-saga";
 
 export function getWindowAllClosedEventChannel() {
 
@@ -62,22 +62,16 @@ export function getBeforeQuitEventChannel() {
     return channel;
 }
 
-export function getAppActivateEventChannel() {
+// cf src/main/menu.ts:186 - window click
+// global reference to this channel
+export const getAppActivateEventChannel = (() => {
+    const chan = channelSaga<boolean>();
 
-    const channel = eventChannel<boolean>(
-        (emit) => {
+    const handler = () => chan.put(true);
+    app.on("activate", handler);
 
-            const handler = () => emit(true);
-            app.on("activate", handler);
-
-            return () => {
-                app.removeListener("activate", handler);
-            };
-        },
-    );
-
-    return channel;
-}
+    return () => chan;
+})();
 
 export function getShutdownEventChannel() {
 

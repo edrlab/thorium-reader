@@ -34,6 +34,9 @@
                     "title": "Sauvegarder la session"
                 }
             }
+        },
+        "window": {
+            "showLibrary": "Afficher la bibliothèque"
         }
     },
     "catalog": {
