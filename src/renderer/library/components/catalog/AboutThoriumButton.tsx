@@ -39,7 +39,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <section id={styles.aboutThoriumButton}>
-                <h2>{__("catalog.about.title", { appName: capitalizedAppName })}</h2>
+                <h1>{__("catalog.about.title", { appName: capitalizedAppName })}</h1>
                 <p>{`v${_APP_VERSION}`}</p>
                 <button onClick={this.props.displayPublicationInfo}>
                     {__("catalog.about.button")}

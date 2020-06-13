@@ -48,7 +48,7 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
                     multiple
                     accept={acceptedExtensionArray.join(", ")}
                 />
-                <label htmlFor="epubInput">
+                <label htmlFor="epubInput" aria-hidden="true">
                     <SVG svg={PlusIcon} title={__("header.importTitle")} />
                 </label>
             </div>

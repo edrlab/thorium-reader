@@ -81,7 +81,7 @@ export class CatalogGridView extends React.Component<IProps, IState> {
                                         {
 
                                             <div className={styles.title}>
-                                                <h2>{entry.title}</h2>
+                                                <h1>{entry.title}</h1>
                                             </div>
                                         }
                                         {
