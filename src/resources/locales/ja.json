@@ -27,16 +27,16 @@
             "exit": {
                 "askBox": {
                     "button": {
-                        "no": "",
-                        "yes": ""
+                        "no": "いいえ",
+                        "yes": "はい"
                     },
-                    "message": "",
-                    "title": ""
+                    "message": "セッションを保存しますか？",
+                    "title": "セッションを保存"
                 }
             }
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "蔵書/本棚を表示"
         }
     },
     "catalog": {
@@ -67,7 +67,7 @@
         "noPublicationHelpL1": "この画面にEPUBファイルをドロップしてください。",
         "noPublicationHelpL2": "または，上にある\"+\"ボタンを押してください。",
         "noPublicationHelpL3": "LCPで保護されたファイルをサポートします。",
-        "noPublicationHelpL4": "",
+        "noPublicationHelpL4": "サポートされる拡張機能：",
         "numberOfPages": "ページ数",
         "opds": {
             "info": {
@@ -104,14 +104,14 @@
         "importError": "エラーが発生しました。拡張子を確認してください（{{acceptedExtension}}）",
         "no": "いいえ",
         "renew": "この本のライセンスを本当に新しくしますか？",
-        "return": "このオンのライセンスを本当に返しますか？",
+        "return": "この本のライセンスを本当に返しますか？",
         "yes": "はい"
     },
     "error": {
         "errorBox": {
-            "error": "",
-            "message": "",
-            "title": ""
+            "error": "エラーメッセージ：",
+            "message": "{{- filename}}で，エラーが発生しました",
+            "title": "内部 {{- appName}} エラー"
         }
     },
     "header": {
@@ -150,7 +150,7 @@
             "success": "{{- title}}の追加が完了しました。"
         },
         "open": {
-            "error": ""
+            "error": "出版物を開けません：{{- err}}"
         }
     },
     "opds": {
@@ -208,7 +208,7 @@
         "licenseSignatureDateInvalid": "ライセンス署名の日付が無効です",
         "licenseSignatureInvalid": "ライセンス署名が無効です",
         "progression": {
-            "title": ""
+            "title": "進捗"
         },
         "renewButton": "更新",
         "returnButton": "返却",
@@ -232,21 +232,21 @@
             "toc": "目次"
         },
         "media-overlays": {
-            "activate": "",
-            "captions": "",
-            "next": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "skip": "",
-            "speed": "",
-            "stop": "",
-            "title": ""
+            "activate": "本文の読み上げ機能を起動",
+            "captions": "字幕 / 明確な表示",
+            "next": "次の文に進み，読み上げる",
+            "pause": "本文の読み上げを一時停止",
+            "play": "本文の読み上げを再生",
+            "previous": "前の文に戻り，読み上げる",
+            "skip": "読み飛ばし機能",
+            "speed": "本文の読み上げの再生速度",
+            "stop": "本文の読み上げを停止",
+            "title": "本文の読み上げ"
         },
         "navigation": {
             "backHomeTitle": "本棚に戻る",
             "bookmarkTitle": "しおりを挟む",
-            "detachWindowTitle": "画面の切り離し",
+            "detachWindowTitle": "蔵書/本棚を表示",
             "fullscreenTitle": "全画面表示",
             "goTo": "移動",
             "goToError": "そのページは存在しません",
@@ -280,9 +280,9 @@
             "margin": "縦列の余白",
             "paginated": "ページ型",
             "save": {
-                "apply": "",
-                "reset": "",
-                "title": ""
+                "apply": "保存",
+                "reset": "リセット",
+                "title": "設定の構成"
             },
             "scrolled": "スクロール型",
             "spacing": "余白",
@@ -302,13 +302,13 @@
             "right": "右"
         },
         "tts": {
-            "activate": "",
-            "next": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "speed": "",
-            "stop": ""
+            "activate": "音声合成による読み上げ機能を起動",
+            "next": "次の文に進み，音声合成による読み上げを実行",
+            "pause": "音声合成による読み上げを一時停止",
+            "play": "音声合成に読み上げを実行",
+            "previous": "前の文に戻り，音声合成による読み上げを実行",
+            "speed": "音声合成による読み上げの速度",
+            "stop": "音声合成による読み上げを停止"
         }
     },
     "settings": {
@@ -328,9 +328,9 @@
             "languageChoice": "言語の選択"
         },
         "session": {
-            "no": "",
-            "title": "",
-            "yes": ""
+            "no": "無効にする",
+            "title": "セッションを保存",
+            "yes": "有効にする"
         }
     }
 }
