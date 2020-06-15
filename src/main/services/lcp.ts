@@ -330,6 +330,9 @@ export class LcpManager {
                 });
                 if (!renewLink) {
                     debug("!renewLink");
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
                 if (renewLink.Type !== ContentType.Lsd) {
@@ -338,6 +341,9 @@ export class LcpManager {
                         return newPubDocument;
                     }
                     debug(`renewLink.Type: ${renewLink.Type}`);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
 
@@ -375,7 +381,7 @@ export class LcpManager {
                         debug(r2Publication.LCP.LSD);
 
                     } catch (err) {
-                        debug(err);
+                        debug("Error processStatusDocument", err);
                     }
 
                     if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
@@ -402,6 +408,10 @@ export class LcpManager {
                     this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+                } else {
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
+                    ));
                 }
             }
 
@@ -442,6 +452,9 @@ export class LcpManager {
                 });
                 if (!returnLink) {
                     debug("!returnLink");
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
                 if (returnLink.Type !== ContentType.Lsd) {
@@ -450,6 +463,9 @@ export class LcpManager {
                         return newPubDocument;
                     }
                     debug(`returnLink.Type: ${returnLink.Type}`);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
 
@@ -506,6 +522,10 @@ export class LcpManager {
                     this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+                } else {
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                    ));
                 }
             }
 
