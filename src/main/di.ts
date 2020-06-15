@@ -13,6 +13,7 @@ import { Container } from "inversify";
 import * as path from "path";
 import * as PouchDBCore from "pouchdb-core";
 import { Translator } from "readium-desktop/common/services/translator";
+import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
 import { CatalogApi } from "readium-desktop/main/api/catalog";
 import { LcpApi } from "readium-desktop/main/api/lcp";
 import { OpdsApi } from "readium-desktop/main/api/opds";
@@ -156,6 +157,34 @@ if (!fs.existsSync(publicationRepositoryPath)) {
 // end of create database
 //
 
+// https://pouchdb.com/guides/compact-and-destroy.html
+const compactDb = async () => {
+    const res = await PromiseAllSettled([
+        publicationDb.compact(),
+        opdsDb.compact(),
+        configDb.compact(),
+        locatorDb.compact(),
+        lcpSecretDb.compact(),
+    ]);
+
+    const done = res.reduce((pv, cv) => pv && cv.status === "fulfilled", true);
+    if (!done) {
+        throw JSON.stringify(res);
+    }
+};
+
+const closeProcessLock = (() => {
+    let lock = false;
+
+    return {
+        get isLock() {
+            return lock;
+        },
+        lock: () => lock = true,
+        release: () => lock = false,
+    };
+})();
+
 //
 // Depedency Injection
 //
@@ -287,6 +316,8 @@ interface IGet {
 const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
 
 export {
+    closeProcessLock,
+    compactDb,
     diGet as diMainGet,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,
