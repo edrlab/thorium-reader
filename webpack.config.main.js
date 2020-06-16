@@ -183,7 +183,7 @@ config.plugins.push(
 
 if (!checkTypeScriptSkip) {
     config.plugins.push(new ForkTsCheckerWebpackPlugin({
-        measureCompilationTime: true,
+        // measureCompilationTime: true,
     }));
 }
 
