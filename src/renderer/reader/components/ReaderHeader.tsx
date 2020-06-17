@@ -337,12 +337,10 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                     checked={this.props.isOnBookmark}
                                     onChange={this.props.toggleBookmark}
                                     aria-label={ __("reader.navigation.bookmarkTitle")}
-									aria-hidden="true"
                                 />
                                 <label
                                     htmlFor="bookmarkButton"
                                     className={styles.menu_button}
-									aria-hidden="true"
                                 >
                                     <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
                                 </label>
