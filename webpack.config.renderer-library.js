@@ -217,7 +217,7 @@ let config = Object.assign(
 
 if (!checkTypeScriptSkip) {
     config.plugins.push(new ForkTsCheckerWebpackPlugin({
-        measureCompilationTime: true,
+        // measureCompilationTime: true,
     }));
 }
 
