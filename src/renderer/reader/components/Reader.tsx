@@ -48,6 +48,9 @@ import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import {
+    audioForward, audioPause, audioRewind, audioTogglePlayPause,
+} from "@r2-navigator-js/electron/renderer/audiobook";
+import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable, mediaOverlaysEnableCaptionsMode,
     mediaOverlaysEnableSkippability, mediaOverlaysListen, mediaOverlaysNext, mediaOverlaysPause,
@@ -509,7 +512,9 @@ class Reader extends React.Component<IProps, IState> {
             if (this.state.mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED) {
                 this.handleMediaOverlaysStop();
             }
-        } else if (!this.state.currentLocation.audioPlaybackInfo) {
+        } else if (this.state.currentLocation.audioPlaybackInfo) {
+            audioPause();
+        } else {
             if (this.state.ttsState !== TTSStateEnum.STOPPED) {
                 this.handleTTSStop();
             }
@@ -536,7 +541,9 @@ class Reader extends React.Component<IProps, IState> {
             } else if (this.state.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED) {
                 this.handleMediaOverlaysPlay();
             }
-        } else if (!this.state.currentLocation.audioPlaybackInfo) {
+        } else if (this.state.currentLocation.audioPlaybackInfo) {
+            audioTogglePlayPause();
+        } else {
             if (this.state.ttsState === TTSStateEnum.PLAYING) {
                 this.handleTTSPause();
             } else if (this.state.ttsState === TTSStateEnum.PAUSED) {
@@ -561,7 +568,9 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.state.r2PublicationHasMediaOverlays) {
             this.handleMediaOverlaysPrevious();
-        } else if (!this.state.currentLocation.audioPlaybackInfo) {
+        } else if (this.state.currentLocation.audioPlaybackInfo) {
+            audioRewind();
+        } else {
             this.handleTTSPrevious();
         }
     }
@@ -580,7 +589,9 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.state.r2PublicationHasMediaOverlays) {
             this.handleMediaOverlaysNext();
-        } else if (!this.state.currentLocation.audioPlaybackInfo) {
+        } else if (this.state.currentLocation.audioPlaybackInfo) {
+            audioForward();
+        } else {
             this.handleTTSNext();
         }
     }
