@@ -39,7 +39,7 @@
     "mathjax": "^3.0.5",
     "pouchdb-adapter-leveldb": "^7.2.1",
     "pouchdb-adapter-node-websql": "^7.0.0",
-    "yargs": "^15.3.1"
+    "yargs": "^15.4.0"
   },
   "devDependencies": {
   },
