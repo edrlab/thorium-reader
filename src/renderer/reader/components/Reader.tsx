@@ -57,6 +57,9 @@ import {
     highlightsClickListen, highlightsCreate, highlightsRemove, highlightsRemoveAll,
 } from "@r2-navigator-js/electron/renderer/highlight";
 import {
+    audioForward, audioPause, audioRewind, audioTogglePlayPause,
+} from "@r2-navigator-js/electron/renderer/audiobook";
+import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable, mediaOverlaysEnableCaptionsMode,
     mediaOverlaysEnableSkippability, mediaOverlaysListen, mediaOverlaysNext, mediaOverlaysPause,
@@ -2720,6 +2723,12 @@ interface IState {
     readerMode: ReaderMode;
 }
 
+// import { debounce } from "debounce";
+// const handleTTSPlayRaw = (that: Reader) => {
+//     that.handleTTSPlay_();
+// };
+// const handleTTSPlayDebounced = debounce(handleTTSPlayRaw, 500);
+
 class Reader extends React.Component<IProps, IState> {
 
     private searchRef: React.RefObject<HTMLDivElement>;
@@ -3063,6 +3072,10 @@ class Reader extends React.Component<IProps, IState> {
         this.setState({mediaOverlaysState : mos});
     }
 
+    public handleTTSPlay_() {
+        this.handleTTSPlay();
+    }
+
     private submitSearch = async (e: TFormEvent) => {
         e.preventDefault();
         if (!this.inputRef?.current) {
@@ -3156,6 +3169,23 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.CloseReader,
             this.onKeyboardCloseReader);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.AudioPlayPause,
+            this.onKeyboardAudioPlayPause);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.AudioPrevious,
+            this.onKeyboardAudioPrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.AudioNext,
+            this.onKeyboardAudioNext);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.AudioStop,
+            this.onKeyboardAudioStop);
     }
 
     private unregisterAllKeyboardListeners() {
@@ -3171,6 +3201,110 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFocusSettings);
         unregisterKeyboardListener(this.onKeyboardFocusNav);
         unregisterKeyboardListener(this.onKeyboardCloseReader);
+        unregisterKeyboardListener(this.onKeyboardAudioPlayPause);
+        unregisterKeyboardListener(this.onKeyboardAudioPrevious);
+        unregisterKeyboardListener(this.onKeyboardAudioNext);
+        unregisterKeyboardListener(this.onKeyboardAudioStop);
+    }
+
+    private onKeyboardAudioStop = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardAudioPlayPause)");
+            }
+            return;
+        }
+
+        if (!this.state.currentLocation) {
+            return;
+        }
+
+        if (this.state.r2PublicationHasMediaOverlays) {
+            if (this.state.mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED) {
+                this.handleMediaOverlaysStop();
+            }
+        } else if (this.state.currentLocation.audioPlaybackInfo) {
+            audioPause();
+        } else {
+            if (this.state.ttsState !== TTSStateEnum.STOPPED) {
+                this.handleTTSStop();
+            }
+        }
+    }
+
+    private onKeyboardAudioPlayPause = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardAudioPlayPause)");
+            }
+            return;
+        }
+
+        if (!this.state.currentLocation) {
+            return;
+        }
+
+        if (this.state.r2PublicationHasMediaOverlays) {
+            if (this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING) {
+                this.handleMediaOverlaysPause();
+            } else if (this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED) {
+                this.handleMediaOverlaysResume();
+            } else if (this.state.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED) {
+                this.handleMediaOverlaysPlay();
+            }
+        } else if (this.state.currentLocation.audioPlaybackInfo) {
+            audioTogglePlayPause();
+        } else {
+            if (this.state.ttsState === TTSStateEnum.PLAYING) {
+                this.handleTTSPause();
+            } else if (this.state.ttsState === TTSStateEnum.PAUSED) {
+                this.handleTTSResume();
+            } else if (this.state.ttsState === TTSStateEnum.STOPPED) {
+                this.handleTTSPlay();
+            }
+        }
+    }
+
+    private onKeyboardAudioPrevious = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardAudioPrevious)");
+            }
+            return;
+        }
+
+        if (!this.state.currentLocation) {
+            return;
+        }
+
+        if (this.state.r2PublicationHasMediaOverlays) {
+            this.handleMediaOverlaysPrevious();
+        } else if (this.state.currentLocation.audioPlaybackInfo) {
+            audioRewind();
+        } else {
+            this.handleTTSPrevious();
+        }
+    }
+
+    private onKeyboardAudioNext = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardAudioNext)");
+            }
+            return;
+        }
+
+        if (!this.state.currentLocation) {
+            return;
+        }
+
+        if (this.state.r2PublicationHasMediaOverlays) {
+            this.handleMediaOverlaysNext();
+        } else if (this.state.currentLocation.audioPlaybackInfo) {
+            audioForward();
+        } else {
+            this.handleTTSNext();
+        }
     }
 
     private onKeyboardFullScreen = () => {
@@ -4096,7 +4230,10 @@ class Reader extends React.Component<IProps, IState> {
             this.state.ttsState === TTSStateEnum.PAUSED;
 
         if (wasPaused || wasPlaying) {
-            navLeftOrRight(left, !this.state.r2PublicationHasMediaOverlays);
+            navLeftOrRight(left, false); // !this.state.r2PublicationHasMediaOverlays
+            // if (!this.state.r2PublicationHasMediaOverlays) {
+            //     handleTTSPlayDebounced(this);
+            // }
         } else {
             navLeftOrRight(left, spineNav);
         }
