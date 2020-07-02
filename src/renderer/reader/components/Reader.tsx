@@ -4057,7 +4057,7 @@ class Reader extends React.Component<IProps, IState> {
                                 };
                             }),
                         };
-                        handleLinkLocator(locator);
+                        handleLinkLocator(locator, undefined, rangeInfo);
                     });
                     const spanEl2 = document.createElement("span");
                     spanEl2.setAttribute("style", "font-family: serif; margin-left: 2em;");
