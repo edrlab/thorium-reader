@@ -55,7 +55,7 @@ export function* init() {
         (request, callback) => {
 
             // Extract publication item relative url
-            const relativeUrl = request.url.substr(6);
+            const relativeUrl = request.url.substr(6); // "store:/"
             const pubStorage = diMainGet("publication-storage");
             const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
             callback(filePath);

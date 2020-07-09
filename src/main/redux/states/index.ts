@@ -14,6 +14,7 @@ import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reduce
 // import { UpdateState } from "readium-desktop/common/redux/states/update";
 import { AppState } from "./app";
 import { ILcpState } from "./lcp";
+import { IServerState } from "./server";
 import { ISessionState } from "./session";
 import { StreamerState } from "./streamer";
 import { IDictWinRegistryReaderState } from "./win/registry/reader";
@@ -45,4 +46,5 @@ export interface RootState {
         lastReadingQueue: TPQueueState;
     };
     keyboard: KeyboardState;
+    server: IServerState;
 }

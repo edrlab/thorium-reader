@@ -61,6 +61,7 @@
             "lastAdditionsAudioBooks": "Recently added audiobooks"
         },
         "export": "Export",
+        "publishPublicationToServer": "publish the publication",
         "lang": "Language",
         "moreInfo": "More Info",
         "myBooks": "My books",
@@ -331,6 +332,12 @@
             "no": "Disable",
             "title": "Save session",
             "yes": "Enable"
+        },
+        "server": {
+          "title": "publication server url",
+          "url": "URL : ",
+          "urlPlaceHolder": "",
+          "submit": "set"
         }
     }
 }

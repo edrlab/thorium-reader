@@ -26,4 +26,5 @@ export const diSymbolTable = {
     "lcp-api": Symbol("lcp-api"),
     "reader-api": Symbol("reader-api"),
     "session-api": Symbol("session-api"),
+    "server-api": Symbol("server-api"),
 };
