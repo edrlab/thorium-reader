@@ -60,7 +60,7 @@ install:
 # asarUnpack
 #  - 'sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json'
 - npm ci
-- npm run rmLevelDownPrebuilds && npm run rmLevelDown
+#- npm run rmLevelDownPrebuilds && npm run rmLevelDownDeep
 #- rm -rf $HOME/.cache/
 #- rm -rf $HOME/.npm/
 #cache: false
