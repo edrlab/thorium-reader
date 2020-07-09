@@ -8,7 +8,7 @@
   ],
   "main": "./main.js",
   "scripts": {
-    "postinstall": "npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm run rmSQLite3Prebuilds && npm rebuild --runtime=electron --target=8.3.4 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmSQLite3Build && npm run rmLevelDownBuild",
+    "postinstall": "npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm run rmSQLite3Prebuilds && npm rebuild --runtime=electron --target=8.4.0 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmSQLite3Build && npm run rmLevelDownBuild",
     "rmLevelDownDeep": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\"",
     "rmSQLite3Prebuilds": "rimraf \"./node_modules/sqlite3/lib/binding/\"",
@@ -42,7 +42,7 @@
     "mathjax": "^3.0.5",
     "pouchdb-adapter-leveldb": "^7.2.1",
     "pouchdb-adapter-node-websql": "^7.0.0",
-    "sqlite3": "^4.2.0",
+    "sqlite3": "^5.0.0",
     "yargs": "^15.4.0"
   },
   "devDependencies": {

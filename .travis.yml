@@ -50,6 +50,7 @@ matrix:
 #     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 install:
 - npm --global install npm@latest && npm --version
+- npm --global install asar
 - node scripts/package-ci-patch.js package.json ${TRAVIS_BUILD_NUMBER} && cat package.json | grep -i VERSION && cat package.json
 - node scripts/package-ci-patch.js src/package.json ${TRAVIS_BUILD_NUMBER} && cat src/package.json | grep -i VERSION && cat src/package.json
 #  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" package.json && cat package.json | grep -i VERSION'
@@ -61,6 +62,7 @@ install:
 #  - 'sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json'
 - npm ci
 #- npm run rmLevelDownPrebuilds && npm run rmLevelDownDeep
+
 #- rm -rf $HOME/.cache/
 #- rm -rf $HOME/.npm/
 #cache: false
@@ -103,17 +105,27 @@ after_success:
   - 'pwd'
   - 'ls -als'
   - 'ls -als dist'
+  - 'ls -Rals dist/node_modules/leveldown'
+  - 'ls -Rals dist/node_modules/sqlite3'
   - 'ls -als release'
   - 'ls -als release/mac'
-  - 'ls -R release/mac/thorium.app/Contents/Resources/app.asar.unpacked'
+  - 'ls -Rals release/mac/thorium.app/Contents/Resources/app.asar.unpacked'
+  - 'asar l release/mac/thorium.app/Contents/Resources/app.asar | grep -i node_modules/leveldown'
+  - 'asar l release/mac/thorium.app/Contents/Resources/app.asar | grep -i node_modules/sqlite'
   - 'ls -als release/linux-unpacked'
   - 'ls -Rals release/linux-unpacked/resources/app.asar.unpacked'
+  - 'asar l release/linux-unpacked/resources/app.asar | grep -i node_modules/leveldown'
+  - 'asar l release/linux-unpacked/resources/app.asar | grep -i node_modules/sqlite'
   - 'ls -als release/win-unpacked'
   - 'ls -Rals release/win-unpacked/resources/app.asar.unpacked'
+  - 'asar l release/win-unpacked/resources/app.asar | grep -i node_modules/leveldown'
+  - 'asar l release/win-unpacked/resources/app.asar | grep -i node_modules/sqlite'
 after_failure:
   - 'pwd'
   - 'ls -als'
   - 'ls -als dist'
+  - 'ls -Rals dist/node_modules/leveldown'
+  - 'ls -Rals dist/node_modules/sqlite3'
   - 'ls -als release'
   - 'ls -als release/mac'
   - 'ls -Rals release/mac/thorium.app/Contents/Resources/app.asar.unpacked'
