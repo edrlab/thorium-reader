@@ -10,6 +10,7 @@ import { IServerState } from "../states/server";
 
 const initialState: IServerState = {
     url: "",
+    token: "DEFAULT_TOKEN",
 };
 
 export function serverReducer(
@@ -20,6 +21,7 @@ export function serverReducer(
         case serverActions.setUrl.ID:
             return {
                 url: action.payload.url,
+                token: action.payload.token,
             };
         default:
             return state;

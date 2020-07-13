@@ -335,8 +335,10 @@
         },
         "server": {
           "title": "publication server url",
-          "url": "URL : ",
+          "url": "url : ",
           "urlPlaceHolder": "",
+          "token": "token : ",
+          "tokenPlaceHolder": "DEFAULT_TOKEN",
           "submit": "set",
           "slashExpectedAtTheEnd": "\"/\" expected a the end"
         }

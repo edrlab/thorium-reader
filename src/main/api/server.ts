@@ -43,18 +43,19 @@ export class ServerApi implements IServerApi {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
-    public async getUrl(): Promise<string> {
-        const value = this.store.getState().server.url;
+    public async getUrl(): Promise<[string, string]> {
+        const url = this.store.getState().server.url;
+        const token = this.store.getState().server.token;
 
-        debug("server getUrl", value);
+        debug("server getUrl", url, token);
 
-        return value;
+        return [url, token];
     }
 
-    public async setUrl(value: string): Promise<void> {
-        this.store.dispatch(serverActions.setUrl.build(value));
+    public async setUrl(url: string, token: string): Promise<void> {
+        this.store.dispatch(serverActions.setUrl.build(url, token));
 
-        debug("server setUrl", value);
+        debug("server setUrl", url, token);
     }
 
     public async publishPublication(pub: PublicationView): Promise<void> {
@@ -87,13 +88,15 @@ export class ServerApi implements IServerApi {
 
     }
 
-    private async publishPublicationOnServer(pub: PublicationView, serverUrl: string): Promise<void> {
+    private async publishPublicationOnServer(pub: PublicationView, serverUrl: string)
+    : Promise<void> {
 
         debug("publish on server", serverUrl, pub.identifier);
 
         let coverUrlToPublish = ""; // set a default url
         let thumbnailUrlToPublish = "";
         let epubUrlToPublish = "";
+        let error = "";
 
         const storeUrl = urlResolve(serverUrl, "store");
         debug("storeurl", storeUrl);
@@ -117,6 +120,8 @@ export class ServerApi implements IServerApi {
             }
         } catch (e) {
             debug("can't get the cover URL", e);
+
+            error = e.toString();
         }
 
         try {
@@ -133,6 +138,8 @@ export class ServerApi implements IServerApi {
             }
         } catch (e) {
             debug("can't get the thumbnail URL", e);
+
+            error = e.toString();
         }
 
         try {
@@ -143,10 +150,12 @@ export class ServerApi implements IServerApi {
             }
         } catch (e) {
             debug("can't get the epub URL", e);
+
+            error = e.toString();
         }
 
         if (!epubUrlToPublish) {
-            throw new Error("can't publish the epub file in the publication server");
+            throw new Error(error);
         }
 
         const r2B64 = pub.r2PublicationBase64;
@@ -193,6 +202,8 @@ export class ServerApi implements IServerApi {
 
             try {
 
+                const token = this.store.getState().server.token || "";
+
                 const jsonBody = TaJsonSerialize(publication);
                 // const jsonStr = JSON.stringify(jsonBody);
 
@@ -201,6 +212,7 @@ export class ServerApi implements IServerApi {
                 request.post({
                     url: urlStr,
                     json: jsonBody,
+                    auth: { bearer: token },
                 }, (err, res) => {
                     if (err) {
                         debug("Error to post publication on server", err, res?.toJSON());
@@ -254,10 +266,15 @@ export class ServerApi implements IServerApi {
 
             try {
 
+                const token = this.store.getState().server.token || "";
+
                 stream
                     .pipe(
                         request.post(
-                            url.toString(),
+                            {
+                                url: url.toString(),
+                                auth: { bearer: token },
+                            },
                         ),
                     )
                     .on("response", (res) => {

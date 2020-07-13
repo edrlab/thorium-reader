@@ -11,14 +11,16 @@ export const ID = "SERVER_SET_URL";
 
 export interface Payload {
     url: string;
+    token: string;
 }
 
-export function build(value: string): Action<typeof ID, Payload> {
+export function build(url: string, token: string): Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            url: value,
+            url,
+            token,
         },
     };
 }

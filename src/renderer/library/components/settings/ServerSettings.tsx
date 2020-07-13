@@ -24,14 +24,20 @@ interface IProps extends IBaseProps {
 
 class SessionSettings extends React.Component<IProps, {
     url: string;
+    messageUrl: string;
     message: string;
+    messageToken: string;
+    token: string;
 }> {
 
     constructor(props: IProps) {
         super(props);
         this.state = {
             url: "",
+            messageUrl: "",
             message: "",
+            messageToken: "",
+            token: "DEFAULT_TOKEN",
         };
     }
 
@@ -42,38 +48,57 @@ class SessionSettings extends React.Component<IProps, {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        const { url } = this.state;
+        const { url, token } = this.state;
         return (
             <>
                 <h3>{__("settings.server.title")}</h3>
                 <form noValidate={true}>
-                    <label>{__("settings.server.url")}</label>
-                    <input
-                        style={{ width: "300px" }}
-                        onChange={(e) => this.setState({
-                            url: e.target.value,
-                        })}
-                        type="text"
-                        aria-label={__("settings.server.url")}
-                        placeholder={__("settings.server.urlPlaceHolder")}
-                        defaultValue={url}
-                    />
-                    <input
-                        style={{ width: "50px" }}
-                        disabled={!url}
-                        type="submit"
-                        value={__("settings.server.submit")}
-                        onClick={this.setUrl}
-                    />
+                    <div>
+                        <label>{__("settings.server.url")}</label>
+                        <input
+                            style={{ width: "300px" }}
+                            onChange={(e) => this.setState({
+                                url: e.target.value,
+                            })}
+                            type="text"
+                            aria-label={__("settings.server.url")}
+                            placeholder={__("settings.server.urlPlaceHolder")}
+                            defaultValue={url}
+                        />
+                        <h5>{this.state.messageUrl}</h5>
+                    </div>
+                    <div>
+                        <label>{__("settings.server.token")}</label>
+                        <input
+                            style={{ width: "280px" }}
+                            onChange={(e) => this.setState({
+                                token: e.target.value,
+                            })}
+                            type="text"
+                            aria-label={__("settings.server.token")}
+                            placeholder={__("settings.server.tokenPlaceHolder")}
+                            defaultValue={token}
+                        />
+                        <h5>{this.state.messageToken}</h5>
+                    </div>
+                    <div>
+                        <input
+                            style={{ width: "50px" }}
+                            disabled={!url}
+                            type="submit"
+                            value={__("settings.server.submit")}
+                            onClick={this.setUrl}
+                        />
+                        <h5>{this.state.message}</h5>
+                    </div>
                 </form>
-                <h5>{this.state.message}</h5>
             </>
         );
     }
 
     private getUrl = () => {
         apiAction("server/getUrl")
-            .then((url) => this.setState({ url }))
+            .then(([url, token]) => this.setState({ url, token }))
             .catch((error) => console.error("Error to fetch api server/getUrl", error));
     }
 
@@ -89,16 +114,16 @@ class SessionSettings extends React.Component<IProps, {
                 throw new Error(__("settings.server.slashExpectedAtTheEnd"));
             }
 
-            this.setState({ message: "✅"});
+            this.setState({ messageUrl: "", messageToken: "", message: "✅" });
 
             try {
-                await apiAction("server/setUrl", this.state.url);
+                await apiAction("server/setUrl", this.state.url, this.state.token);
             } catch {
                 this.getUrl();
-                this.setState({ message: "❌" });
+                throw new Error("not updated");
             }
         } catch (e) {
-            this.setState({ message: e.toString()});
+            this.setState({ messageUrl: e.toString(), messageToken: "❌" });
         }
     }
 }

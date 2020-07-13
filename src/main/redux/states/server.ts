@@ -7,4 +7,5 @@
 
 export interface IServerState {
     url: string;
+    token: string;
 }

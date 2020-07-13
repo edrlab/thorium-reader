@@ -8,8 +8,8 @@
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 export interface IServerApi {
-    setUrl: (url: string) => Promise<void>;
-    getUrl: () => Promise<string>;
+    setUrl: (url: string, token: string) => Promise<void>;
+    getUrl: () => Promise<[string, string]>;
     publishPublication: (pub: PublicationView) => Promise<void>;
 }
 
