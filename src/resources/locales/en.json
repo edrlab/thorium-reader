@@ -61,7 +61,7 @@
             "lastAdditionsAudioBooks": "Recently added audiobooks"
         },
         "export": "Export",
-        "publishPublicationToServer": "publish the publication",
+        "publishPublicationToServer": "Publish",
         "lang": "Language",
         "moreInfo": "More Info",
         "myBooks": "My books",
@@ -337,7 +337,14 @@
           "title": "publication server url",
           "url": "URL : ",
           "urlPlaceHolder": "",
-          "submit": "set"
+          "submit": "set",
+          "slashExpectedAtTheEnd": "\"/\" expected a the end"
         }
+    },
+    "toast": {
+      "publish": {
+        "uploadError": "Error to publish the publication on the publication server {{- error}}",
+        "uploadSucces": "{{- name}} is published on the publication server"
+      }
     }
 }

@@ -771,7 +771,8 @@ declare namespace typed_i18n {
     readonly "title": string,
     readonly "url": string,
     readonly "urlPlaceHolder": string,
-    readonly "submit": string
+    readonly "submit": string,
+    readonly "slashExpectedAtTheEnd": string
   }
 };
   (_: "settings.keyboard", __?: {}): {
@@ -806,12 +807,23 @@ declare namespace typed_i18n {
   readonly "title": string,
   readonly "url": string,
   readonly "urlPlaceHolder": string,
-  readonly "submit": string
+  readonly "submit": string,
+  readonly "slashExpectedAtTheEnd": string
 };
   (_: "settings.server.title", __?: {}): string;
   (_: "settings.server.url", __?: {}): string;
   (_: "settings.server.urlPlaceHolder", __?: {}): string;
-  (_: "settings.server.submit", __?: {}): string
+  (_: "settings.server.submit", __?: {}): string;
+  (_: "settings.server.slashExpectedAtTheEnd", __?: {}): string;
+  (_: "toast", __?: {}): {
+  readonly "publish": {
+    readonly "uploadError": string,
+    readonly "uploadSucces": string
+  }
+};
+  (_: "toast.publish", __?: {}): { readonly "uploadError": string, readonly "uploadSucces": string };
+  (_: "toast.publish.uploadError", __?: {}): string;
+  (_: "toast.publish.uploadSucces", __?: {}): string
 }
 }
 export = typed_i18n;

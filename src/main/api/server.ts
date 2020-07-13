@@ -14,9 +14,12 @@ import { IServerApi } from "readium-desktop/common/api/interface/server.interfac
 import { extensionToTypeLink } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
+import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { Store } from "redux";
 import * as request from "request";
+import { resolve as urlResolve } from "url";
 
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -37,6 +40,9 @@ export class ServerApi implements IServerApi {
     @inject(diSymbolTable["publication-storage"])
     private readonly pubStorage!: PublicationStorage;
 
+    @inject(diSymbolTable.translator)
+    private readonly translator!: Translator;
+
     public async getUrl(): Promise<string> {
         const value = this.store.getState().server.url;
 
@@ -53,15 +59,48 @@ export class ServerApi implements IServerApi {
 
     public async publishPublication(pub: PublicationView): Promise<void> {
 
-        const serverUrlString = this.store.getState().server.url;
-        debug("publish on server", serverUrlString, pub.identifier);
+        const __ = this.translator.translate;
+
+        try {
+            const serverUrlString = this.store.getState().server.url;
+
+            await this.publishPublicationOnServer(pub, serverUrlString);
+
+            this.store.dispatch(
+                toastActions.openRequest.build(
+                    ToastType.Success,
+                    __("toast.publish.uploadSucces", { name: pub.title || ""}),
+                ),
+            );
+
+        } catch (e) {
+            debug("ERROR to save the epub on the publication server");
+            debug("ERROR: ", e);
+
+            this.store.dispatch(
+                toastActions.openRequest.build(
+                    ToastType.Error,
+                    __("toast.publish.uploadError", { error: e.toString()}),
+                ),
+            );
+        }
+
+    }
+
+    private async publishPublicationOnServer(pub: PublicationView, serverUrl: string): Promise<void> {
+
+        debug("publish on server", serverUrl, pub.identifier);
 
         let coverUrlToPublish = ""; // set a default url
         let thumbnailUrlToPublish = "";
         let epubUrlToPublish = "";
 
-        const storeUrl = new URL(serverUrlString + "/store");
-        const publicationUrl = new URL(serverUrlString + "/publication");
+        const storeUrl = urlResolve(serverUrl, "store");
+        debug("storeurl", storeUrl);
+
+        const publicationUrl = urlResolve(serverUrl, "publication");
+        debug("publicationurl", publicationUrl.toString());
+
         const id = pub.identifier;
 
         try {
@@ -106,151 +145,171 @@ export class ServerApi implements IServerApi {
             debug("can't get the epub URL", e);
         }
 
-        try {
+        if (!epubUrlToPublish) {
+            throw new Error("can't publish the epub file in the publication server");
+        }
 
-            if (!epubUrlToPublish) {
-                throw new Error("can't publish the epub file in the publication server");
-            }
+        const r2B64 = pub.r2PublicationBase64;
+        const r2Buffer = Buffer.from(r2B64, "base64");
+        const r2BufferStr = r2Buffer.toString();
+        const r2BufferJson = JSON.parse(r2BufferStr);
+        const r2Pub = TaJsonDeserialize(r2BufferJson, R2Publication);
 
-            const r2B64 = pub.r2PublicationBase64;
-            const r2Buffer = Buffer.from(r2B64, "base64");
-            const r2Pub = TaJsonDeserialize(r2Buffer.toString(), R2Publication);
+        debug("r2pub", r2Pub);
 
-            const publication = new OPDSPublication();
+        const publication = new OPDSPublication();
 
-            publication.Metadata = r2Pub.Metadata;
+        publication.Metadata = r2Pub.Metadata;
 
-            if (thumbnailUrlToPublish) {
-                // @ts-ignore
-                publication.AddImage(thumbnailUrlToPublish, coverLink.TypeLink);
-            }
-            if (coverUrlToPublish) {
-                // @ts-ignore
-                publication.AddImage(coverUrlToPublish, coverLink.TypeLink);
-            }
-
-            const typelink = extensionToTypeLink[path.extname(epubUrlToPublish)] || "";
-            publication.AddLink_(epubUrlToPublish, typelink, "http://opds-spec.org/acquisition/open-access", "");
-
-            await this.publishOPDSPublicationToServer(publication, publicationUrl);
-
-            this.store.dispatch(
-                toastActions.openRequest.build(
-                    ToastType.Success,
-                    pub.title || "" + "is published on the publication server",
-                ),
-            );
-
-        } catch (e) {
-            debug("ERROR to save the epub in the publication server");
-            debug("ERROR: ", e);
-
-            this.store.dispatch(
-                toastActions.openRequest.build(
-                    ToastType.Error,
-                    "Error to publish the publication on the publication server" + e.toString(),
-                ),
+        if (thumbnailUrlToPublish) {
+            // no height and width
+            // @ts-ignore
+            publication.AddImage(
+                thumbnailUrlToPublish,
+                findMimeTypeWithExtension(path.extname(thumbnailUrlToPublish)) || "",
             );
         }
+        if (coverUrlToPublish) {
+            // no height and width
+            // @ts-ignore
+            publication.AddImage(
+                coverUrlToPublish,
+                findMimeTypeWithExtension(path.extname(coverUrlToPublish)) || "",
+            );
+        }
+
+        const typelink = extensionToTypeLink[path.extname(epubUrlToPublish)] || "";
+        publication.AddLink_(epubUrlToPublish, typelink, "http://opds-spec.org/acquisition/open-access", "");
+
+        await this.publishOPDSPublicationToServer(publication, publicationUrl);
+
     }
 
-    private async publishOPDSPublicationToServer(publication: OPDSPublication, url: URL): Promise<void> {
+    private async publishOPDSPublicationToServer(publication: OPDSPublication, urlStr: string): Promise<void> {
+
+        debug("publication", publication);
 
         return new Promise<void>((resolve, reject) => {
 
-            request.post(url.toString(), {
-                body: TaJsonSerialize(publication),
-            }, (err, res) => {
-                if (err) {
-                    debug("Error to post publication on server", err, res?.toJSON());
-                } else {
-                    const dataResponse = res.toJSON();
-                    const data = dataResponse.body;
-                    let dataStr = "";
+            try {
 
-                    if (Buffer.isBuffer(data)) {
-                        dataStr = data.toString();
-                    } else if (typeof data === "string") {
-                        dataStr = data;
+                const jsonBody = TaJsonSerialize(publication);
+                // const jsonStr = JSON.stringify(jsonBody);
+
+                debug("body json", jsonBody);
+
+                request.post({
+                    url: urlStr,
+                    json: jsonBody,
+                }, (err, res) => {
+                    if (err) {
+                        debug("Error to post publication on server", err, res?.toJSON());
                     } else {
-                        debug("can't read data", data);
-                    }
+                        const dataResponse = res.toJSON();
+                        const data = dataResponse.body;
+                        let json: any = {};
 
-                    try {
-                        const json = JSON.parse(dataStr);
+                        try {
+                            if (Buffer.isBuffer(data)) {
+                                json = JSON.parse(data.toString());
+                            } else if (typeof data === "string") {
+                                json = JSON.parse(data);
+                            } else if (typeof data === "object") {
+                                json = data;
+                            } else {
+                                debug("can't read data", data);
+                            }
 
-                        if (json.error) {
-                            debug("response error", json.error);
-                        } else {
-                            debug("request success, publication saved", json);
+                            if (json.error) {
+                                debug("response error", json.error);
+                            } else {
+                                debug("request success, publication saved", json);
 
-                            resolve();
-                            return;
+                                resolve();
+                                return;
+                            }
+                        } catch (e) {
+                            debug("error to parse the json in response to publication post");
                         }
-                    } catch (e) {
-                        debug("error to parse the json in response to publication post");
                     }
-                }
 
-                reject("post request error with the OPDSPublication");
-            });
+                    reject("post request error with the OPDSPublication");
+                });
+            } catch (e) {
 
+                reject(e);
+            }
         });
     }
 
-    private async publishFileAndReturnUrl(filePath: string, url: URL): Promise<string> {
+    private async publishFileAndReturnUrl(filePath: string, urlStr: string): Promise<string> {
 
         const stream = createReadStream(filePath);
 
         const filename = path.basename(filePath);
+        const url = new URL(urlStr);
         url.searchParams.append("filename", filename);
 
         return new Promise<string>((resolve, reject) => {
 
-            stream
-                .pipe(
-                    request.post(
-                        url.toString(),
-                    ),
-                )
-                .on("data", (data) => {
+            try {
 
-                    try {
+                stream
+                    .pipe(
+                        request.post(
+                            url.toString(),
+                        ),
+                    )
+                    .on("response", (res) => {
+                        debug("publishFile content-type", res.headers["content-type"]);
+                    })
+                    .on("data", (data) => {
 
-                        const dataString = Buffer.isBuffer(data) ? data.toString() : data;
-                        const json = JSON.parse(dataString);
+                        debug("publishFile data received", data);
 
-                        if (json.error) {
-                            debug("error on cover post response", json.error);
-                        } else if (json.url && typeof json.url === "string") {
-                            resolve(json.url);
+                        try {
 
-                            debug("coverUrlToPublish", json.url);
+                            const dataString = Buffer.isBuffer(data) ? data.toString() : data;
 
-                            return;
+                            debug("publishFile data string received", dataString);
+                            const json = JSON.parse(dataString);
+
+                            if (json.error) {
+                                debug("error on cover post response", json.error);
+                            } else if (json.url && typeof json.url === "string") {
+                                resolve(json.url);
+
+                                debug("store url", json.url);
+
+                                return;
+                            }
+                        } catch (e) {
+
+                            debug("cover post response error, not a json response", e);
                         }
-                    } catch (e) {
 
-                        debug("cover post response error, not a json response", e);
-                    }
+                        reject("post request error on /store route");
 
-                    reject("post request error on /store route");
+                    })
+                    .on("error", (e) => {
+                        reject("post request error on /store route");
+                        debug(filePath, e);
+                    })
+                    .on("end", () => {
+                        debug("end");
 
-                })
-                .on("error", (e) => {
-                    reject("post request error on /store route");
-                    debug(filePath, e);
-                })
-                .on("end", () => {
-                    debug("end");
+                        reject();
+                    })
+                    .on("close", () => {
+                        debug("close");
 
-                    reject();
-                })
-                .on("close", () => {
-                    debug("close");
+                        reject();
+                    });
 
-                    reject();
-                });
+            } catch (e) {
+
+                reject(e);
+            }
 
         });
     }

@@ -24,12 +24,14 @@ interface IProps extends IBaseProps {
 
 class SessionSettings extends React.Component<IProps, {
     url: string;
+    message: string;
 }> {
 
     constructor(props: IProps) {
         super(props);
         this.state = {
             url: "",
+            message: "",
         };
     }
 
@@ -44,7 +46,7 @@ class SessionSettings extends React.Component<IProps, {
         return (
             <>
                 <h3>{__("settings.server.title")}</h3>
-                <form onClick={this.setUrl}>
+                <form noValidate={true}>
                     <label>{__("settings.server.url")}</label>
                     <input
                         style={{ width: "300px" }}
@@ -61,8 +63,10 @@ class SessionSettings extends React.Component<IProps, {
                         disabled={!url}
                         type="submit"
                         value={__("settings.server.submit")}
+                        onClick={this.setUrl}
                     />
                 </form>
+                <h5>{this.state.message}</h5>
             </>
         );
     }
@@ -73,13 +77,28 @@ class SessionSettings extends React.Component<IProps, {
             .catch((error) => console.error("Error to fetch api server/getUrl", error));
     }
 
-    private setUrl = async () => {
+    private setUrl = async (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+        e.preventDefault();
+
+        const { __ } = this.props;
 
         try {
-            await apiAction("server/setUrl", this.state.url);
-        } catch {
+            const u = new URL(this.state.url);
 
-            this.getUrl();
+            if (u.pathname[u.pathname.length - 1] !== "/") {
+                throw new Error(__("settings.server.slashExpectedAtTheEnd"));
+            }
+
+            this.setState({ message: "✅"});
+
+            try {
+                await apiAction("server/setUrl", this.state.url);
+            } catch {
+                this.getUrl();
+                this.setState({ message: "❌" });
+            }
+        } catch (e) {
+            this.setState({ message: e.toString()});
         }
     }
 }
