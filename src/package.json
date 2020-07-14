@@ -44,7 +44,7 @@
     "pouchdb-adapter-leveldb": "^7.2.1",
     "pouchdb-adapter-node-websql": "^7.0.0",
     "sqlite3": "^5.0.0",
-    "yargs": "^15.4.0"
+    "yargs": "^15.4.1"
   },
   "devDependencies": {
   },
