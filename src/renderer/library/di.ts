@@ -19,6 +19,7 @@ import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { Store } from "redux";
 
 import App from "./components/App";
+import { testDivina } from "./divina";
 import { IRouterLocationState } from "./routing";
 
 // Create container used for dependency injection
@@ -55,6 +56,8 @@ const {
     lazyInjectTagged,
     lazyMultiInject,
 } = getDecorators(container);
+
+testDivina();
 
 export {
     diGet as diLibraryGet,
