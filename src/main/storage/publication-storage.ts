@@ -179,7 +179,9 @@ export class PublicationStorage {
                         ? ContentType.AudioBookPacked
                         : ((isAudioBookLcp || isAudioBookLcpAlt)
                             ? ContentType.AudioBookPackedLcp
-                            : ContentType.Epub
+                            : isDivina
+                                ? ContentType.Divina
+                                : ContentType.Epub
                         ),
                     size: getFileSize(dstPath),
                 });
