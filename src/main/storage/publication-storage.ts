@@ -180,7 +180,7 @@ export class PublicationStorage {
                         : ((isAudioBookLcp || isAudioBookLcpAlt)
                             ? ContentType.AudioBookPackedLcp
                             : isDivina
-                                ? ContentType.Divina
+                                ? ContentType.DivinaPacked
                                 : ContentType.Epub
                         ),
                     size: getFileSize(dstPath),

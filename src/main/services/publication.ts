@@ -170,6 +170,7 @@ export class PublicationService {
         const title = link.title || link.url;
         const isLcpFile = link.type === ContentType.Lcp;
         const isEpubFile = link.type === ContentType.Epub;
+        const isDivinaPacked = link.type === ContentType.DivinaPacked;
         const isAudioBookPacked = link.type === ContentType.AudioBookPacked;
         const isAudioBookPackedLcp = link.type === ContentType.AudioBookPackedLcp;
         if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp) {
@@ -179,8 +180,12 @@ export class PublicationService {
         const ext = isLcpFile ? acceptedExtensionObject.lcpLicence :
             (isEpubFile ? acceptedExtensionObject.epub :
             (isAudioBookPacked ? acceptedExtensionObject.audiobook :
-                (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
-                    ""))); // downloader will try HTTP response headers
+            // not acceptedExtensionObject.audiobookLcpAlt
+            (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp :
+            (isDivinaPacked ? acceptedExtensionObject.divina :
+            // downloader will try HTTP response headers
+            ""))));
+
         // start the download service
         const download = this.downloader.addDownload(link.url, ext);
 
@@ -460,12 +465,16 @@ export class PublicationService {
             for (const link of r2LCP.Links) {
                 if (link.Rel === "publication") {
                     const isEpubFile = link.Type === ContentType.Epub;
+                    const isDivinaPacked = link.Type === ContentType.DivinaPacked;
                     const isAudioBookPacked = link.Type === ContentType.AudioBookPacked;
                     const isAudioBookPackedLcp = link.Type === ContentType.AudioBookPackedLcp;
                     const ext = isEpubFile ? acceptedExtensionObject.epub :
                         (isAudioBookPacked ? acceptedExtensionObject.audiobook :
-                            (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
-                                "")); // downloader will try HTTP response headers
+                        // not acceptedExtensionObject.audiobookLcpAlt
+                        (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp :
+                        (isDivinaPacked ? acceptedExtensionObject.divina :
+                        // downloader will try HTTP response headers
+                        "")));
 
                     download = this.downloader.addDownload(link.Href, ext);
                     title = link.Title ?? download.srcUrl;
