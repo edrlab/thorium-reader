@@ -8,6 +8,18 @@ const preprocessorDirectives = require("./webpack.config-preprocessor-directives
 const nodeEnv = process.env.NODE_ENV || "development";
 console.log(`MAIN nodeEnv: ${nodeEnv}`);
 
+// https://github.com/edrlab/thorium-reader/issues/1097#issuecomment-643406149
+const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER
+    ? true
+    : false;
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => { return "ForkTsCheckerWebpackPlugin" };
+const checkTypeScriptSkip =
+    nodeEnv !== "production" ?
+    (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false)
+    : false
+    ;
+
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
 
 const aliases = {
@@ -30,16 +42,17 @@ const aliases = {
 // to minimize bundle size / bundler computations / compile times.
 
 let externals = {
-    "bindings": "bindings",
-    "leveldown": "leveldown",
-    "yargs": "yargs",
-    "fsevents": "fsevents",
-    "conf": "conf",
+    bindings: "bindings",
+    leveldown: "leveldown",
+    yargs: "yargs",
+    fsevents: "fsevents",
+    conf: "conf",
     "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",
     "electron-devtools-installer": "electron-devtools-installer",
+    "remote-redux-devtools": "remote-redux-devtools",
     "pouchdb-adapter-node-websql": "pouchdb-adapter-node-websql",
-    "sqlite3": "sqlite3",
-}
+    sqlite3: "sqlite3",
+};
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
     // //         "electron-config": "electron-config",
@@ -52,17 +65,14 @@ if (nodeEnv !== "production") {
     // externals = Object.assign(externals, depsKeysObj);
     // delete externals["pouchdb-core"];
 
-
     // if (process.env.WEBPACK === "bundle-external") {
     const nodeExternals = require("./nodeExternals");
     externals = [
-        nodeExternals(
-            {
-                processName: "MAIN",
-                alias: aliases,
-                // whitelist: ["pouchdb-core"],
-            }
-        ),
+        nodeExternals({
+            processName: "MAIN",
+            alias: aliases,
+            // whitelist: ["pouchdb-core"],
+        }),
     ];
     // } else {
     //     const nodeExternals = require("webpack-node-externals");
@@ -76,79 +86,109 @@ console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
 
+let config = Object.assign(
+    {},
+    {
+        entry: "./src/main.ts",
+        name: "main",
+        mode: nodeEnv,
+        output: {
+            filename: "main.js",
+            path: path.join(__dirname, "dist"),
 
+            // https://github.com/webpack/webpack/issues/1114
+            libraryTarget: "commonjs2",
+        },
+        target: "electron-main",
 
-let config = Object.assign({}, {
-    entry: "./src/main.ts",
-    name: "main",
-    mode: nodeEnv,
-    output: {
-        filename: "main.js",
-        path: path.join(__dirname, "dist"),
+        node: {
+            __dirname: false,
+            __filename: false,
+        },
 
-        // https://github.com/webpack/webpack/issues/1114
-        libraryTarget: "commonjs2",
-    },
-    target: "electron-main",
+        externals: externals,
 
-    node: {
-        __dirname: false,
-        __filename: false,
-    },
-
-    externals: externals,
-
-    resolve: {
-        // Add '.ts' as resolvable extensions.
-        extensions: [".ts", ".js", ".node"],
-        alias: aliases,
-    },
-
-    module: {
-        rules: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            { test: /\.tsx?$/, loaders: ["awesome-typescript-loader"] },
-            { test: /\.node$/, loaders: ["node-loader"] },
+        resolve: {
+            // Add '.ts' as resolvable extensions.
+            extensions: [".ts", ".js", ".node"],
+            alias: aliases,
+        },
+        stats: {
+            // warningsFilter: /export .* was not found in/,
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.tsx?$/,
+                    loader: useLegacyTypeScriptLoader
+                        ? "awesome-typescript-loader"
+                        : "ts-loader",
+                    options: {
+                        transpileOnly: true, // checkTypeScriptSkip
+                    },
+                },
+                { test: /\.node$/, loaders: ["node-loader"] },
+            ],
+        },
+        plugins: [
+            new CopyWebpackPlugin({ patterns: [
+                {
+                    from: path.join(
+                        __dirname,
+                        "src",
+                        "resources",
+                        "information"
+                    ),
+                    to: "assets/md/information",
+                },
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
+                {
+                    from: path.join(__dirname, "external-assets"),
+                    to: "external-assets",
+                },
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
+                {
+                    from: path.join(
+                        __dirname,
+                        "node_modules",
+                        "r2-navigator-js",
+                        "dist",
+                        "ReadiumCSS"
+                    ),
+                    to: "ReadiumCSS",
+                },
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
+                {
+                    from: path.join(__dirname, "node_modules", "mathjax"),
+                    to: "MathJax",
+                },
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
+                {
+                    from: path.join(__dirname, "resources"),
+                    to: "assets/icons",
+                },
+            ]}),
+            preprocessorDirectives.definePlugin,
         ],
-    },
-    plugins: [
-        new CopyWebpackPlugin([
-            {
-                from: path.join(__dirname, "src", "resources", "information"),
-                to: "assets/md/information",
-            }
-        ]),
-        new CopyWebpackPlugin([
-            {
-                from: path.join(__dirname, "external-assets"),
-                to: "external-assets",
-            }
-        ]),
-        new CopyWebpackPlugin([
-            {
-                from: path.join(__dirname, "node_modules", "r2-navigator-js", "dist", "ReadiumCSS"),
-                to: "ReadiumCSS",
-            }
-        ]),
-        new CopyWebpackPlugin([
-            {
-                from: path.join(__dirname, "node_modules", "mathjax"),
-                to: "MathJax",
-            }
-        ]),
-        new CopyWebpackPlugin([
-            {
-                from: path.join(__dirname, "resources"),
-                to: "assets/icons",
-            }
-        ]),
-        preprocessorDirectives.definePlugin
-    ],
-});
+    }
+);
 
-config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })); // jsondown (runtimejs, fatfs)
+config.plugins.push(
+    new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })
+); // jsondown (runtimejs, fatfs)
+
+if (!checkTypeScriptSkip) {
+    config.plugins.push(new ForkTsCheckerWebpackPlugin({
+        // measureCompilationTime: true,
+    }));
+}
 
 if (nodeEnv !== "production") {
+
     // Bundle absolute resource paths in the source-map,
     // so VSCode can match the source file.
     config.output.devtoolModuleFilenameTemplate = "[absolute-resource-path]";
@@ -157,8 +197,17 @@ if (nodeEnv !== "production") {
 
     config.devtool = "source-map";
 } else {
-    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^electron-devtools-installer$/ }));
-    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^json-diff$/ }));
+    config.plugins.push(
+        new webpack.IgnorePlugin({
+            resourceRegExp: /^electron-devtools-installer$/,
+        })
+    );
+    config.plugins.push(
+        new webpack.IgnorePlugin({ resourceRegExp: /^remote-redux-devtools$/ })
+    );
+    config.plugins.push(
+        new webpack.IgnorePlugin({ resourceRegExp: /^json-diff$/ })
+    );
 }
 
 module.exports = config;
