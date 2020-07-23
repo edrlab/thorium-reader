@@ -213,11 +213,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
-        ensureKeyboardListenerIsInstalled();
-        this.registerAllKeyboardListeners();
 
-        setKeyDownEventHandler(keyDownEventHandler);
-        setKeyUpEventHandler(keyUpEventHandler);
 
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
@@ -282,6 +278,11 @@ class Reader extends React.Component<IProps, IState> {
                 console.log("divinaPlayer not loaded");
             }
         } else {
+            ensureKeyboardListenerIsInstalled();
+            this.registerAllKeyboardListeners();
+
+            setKeyDownEventHandler(keyDownEventHandler);
+            setKeyUpEventHandler(keyUpEventHandler);
 
             setReadingLocationSaver(this.handleReadingLocationChange);
             setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
