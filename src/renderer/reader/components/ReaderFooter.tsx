@@ -32,6 +32,7 @@ interface IBaseProps extends TranslatorProps {
     goToLocator: (locator: R2Locator) => void;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
+    isDivina: boolean;
 }
 
 // IProps may typically extend:
@@ -59,9 +60,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { currentLocation, r2Publication } = this.props;
+        const { currentLocation, r2Publication, isDivina } = this.props;
 
-        if (!r2Publication || !currentLocation) {
+        if (!r2Publication || !currentLocation || isDivina) {
             return (<></>);
         }
 
