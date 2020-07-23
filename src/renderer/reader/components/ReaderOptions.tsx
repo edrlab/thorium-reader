@@ -86,8 +86,6 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         const sections: SectionData[] = [];
 
-        console.log(this.state.divinaReadingMode);
-
         if (isDivina) {
 
             sections.push(...[
