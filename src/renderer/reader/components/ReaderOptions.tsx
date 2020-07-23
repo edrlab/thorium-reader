@@ -5,12 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
+import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { Font } from "readium-desktop/common/models/font";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as AutoIcon from "readium-desktop/renderer/assets/icons/auto.svg";
 import * as ColumnIcon from "readium-desktop/renderer/assets/icons/colonne.svg";
 import * as Column2Icon from "readium-desktop/renderer/assets/icons/colonne2.svg";
@@ -30,12 +34,11 @@ import fontList from "readium-desktop/utils/fontList";
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
 import { readerLocalActionSetConfig } from "../redux/actions";
-import optionsValues, { IReaderOptionsProps } from "./options-values";
+import optionsValues, { IReaderOptionsProps, TdivinaReadingMode } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
-import { ToastType } from "readium-desktop/common/models/toast";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
@@ -46,7 +49,7 @@ interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 enum themeType {
@@ -55,16 +58,24 @@ enum themeType {
     Night,
 }
 
-export class ReaderOptions extends React.Component<IProps, undefined> {
+interface IState {
+    divinaReadingMode: TdivinaReadingMode | undefined;
+}
+
+export class ReaderOptions extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.state = {
+            divinaReadingMode: undefined,
+        };
 
         this.handleChooseTheme = this.handleChooseTheme.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, readerConfig, toggleMenu, r2Publication } = this.props;
+        const { __, readerConfig, toggleMenu, r2Publication, isDivina } = this.props;
 
         if (!readerConfig) {
             return <></>;
@@ -73,18 +84,34 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
         const isAudioBook = r2Publication?.Metadata?.RDFType &&
             /http[s]?:\/\/schema\.org\/Audiobook$/.test(r2Publication.Metadata.RDFType);
 
-        const sections: SectionData[] = [
-            {
-                title: __("reader.settings.theme.title"),
-                content: this.themeContent(),
-            },
-            {
-                title: __("reader.settings.text"),
-                content: this.textContent(),
-            },
-        ];
+        const sections: SectionData[] = [];
 
-        if (!isAudioBook) {
+        console.log(this.state.divinaReadingMode);
+
+        if (isDivina) {
+
+            sections.push(...[
+                {
+                    title: "readingMode",
+                    content: this.divinaSetReadingMode(),
+                },
+            ]);
+        } else {
+
+            sections.push(...[
+                {
+                    title: __("reader.settings.theme.title"),
+                    content: this.themeContent(),
+                },
+                {
+                    title: __("reader.settings.text"),
+                    content: this.textContent(),
+                },
+            ]);
+        }
+
+        if (!isAudioBook && !isDivina) {
+
             sections.push(...[
                 {
                     title: __("reader.settings.display"),
@@ -105,10 +132,13 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
             ]);
         }
 
-        sections.push({
-            title: __("reader.settings.save.title"),
-            content: this.saveConfig(),
-        });
+        if (!isDivina) {
+
+            sections.push({
+                title: __("reader.settings.save.title"),
+                content: this.saveConfig(),
+            });
+        }
 
         return (
             <SideMenu
@@ -197,6 +227,78 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
         );
     }
 
+    private divinaSetReadingMode() {
+
+        return (
+            <div id={styles.themes_list}>
+                <div>
+                    <input
+                        id={"radio-" + "double"}
+                        type="radio"
+                        name="theme"
+                        onChange={() => {
+                            this.props.handleDivinaReadingMode("double");
+                            this.setState({divinaReadingMode: "double"});
+                        }}
+                        checked={this.state.divinaReadingMode === "double"}
+                    />
+                    <label htmlFor={"radio-" + "double"}>
+                        {this.state.divinaReadingMode === "double" && <SVG svg={DoneIcon} ariaHidden />}
+                        { "double" }
+                    </label>
+                </div>
+                <div>
+                    <input
+                        id={"radio-" + "guided"}
+                        type="radio"
+                        name="theme"
+                        onChange={() => {
+                            this.props.handleDivinaReadingMode("guided");
+                            this.setState({divinaReadingMode: "guided"});
+                        }}
+                        checked={this.state.divinaReadingMode === "guided"}
+                    />
+                    <label htmlFor={"radio-" + "guided"}>
+                        {this.state.divinaReadingMode === "guided" && <SVG svg={DoneIcon} ariaHidden/>}
+                        {"guided"}
+                    </label>
+                </div>
+                <div>
+                    <input
+                        id={"radio-" + "scroll"}
+                        type="radio"
+                        name="theme"
+                        onChange={() => {
+                            this.props.handleDivinaReadingMode("scroll");
+                            this.setState({ divinaReadingMode: "scroll" });
+                        }}
+                        checked={this.state.divinaReadingMode === "scroll"}
+                    />
+                    <label htmlFor={"radio-" + "scroll"}>
+                        {this.state.divinaReadingMode === "scroll" && <SVG svg={DoneIcon} ariaHidden/>}
+                        {"scroll"}
+                    </label>
+                </div>
+                <div>
+                    <input
+                        id={"radio-" + "single"}
+                        type="radio"
+                        name="theme"
+                        onChange={() => {
+                            // this.props.handleDivinaReadingMode("single");
+                            this.setState({ divinaReadingMode: "single" });
+                        }}
+                        checked={this.state.divinaReadingMode === "single"}
+                    />
+                    <label htmlFor={"radio-" + "single"}>
+                        {this.state.divinaReadingMode === "single" && <SVG svg={DoneIcon} ariaHidden />}
+                        { "single" }
+                    </label>
+                </div>
+            </div>
+        );
+    }
+
     private themeContent() {
         const { __, readerConfig } = this.props;
         const withoutTheme = !readerConfig.sepia && !readerConfig.night;
@@ -212,7 +314,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     />
                     <label htmlFor={"radio-" + themeType.Without}>
                         {withoutTheme && <SVG svg={DoneIcon} ariaHidden />}
-                        { __("reader.settings.theme.name.Neutral")}
+                        {__("reader.settings.theme.name.Neutral")}
                     </label>
                 </div>
                 <div>
@@ -224,8 +326,8 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         checked={readerConfig.sepia}
                     />
                     <label htmlFor={"radio-" + themeType.Sepia}>
-                        {readerConfig.sepia && <SVG svg={DoneIcon} ariaHidden/>}
-                        { __("reader.settings.theme.name.Sepia")}
+                        {readerConfig.sepia && <SVG svg={DoneIcon} ariaHidden />}
+                        {__("reader.settings.theme.name.Sepia")}
                     </label>
                 </div>
                 <div>
@@ -237,8 +339,8 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         checked={readerConfig.night}
                     />
                     <label htmlFor={"radio-" + themeType.Night}>
-                        {readerConfig.night && <SVG svg={DoneIcon} ariaHidden/>}
-                        { __("reader.settings.theme.name.Night")}
+                        {readerConfig.night && <SVG svg={DoneIcon} ariaHidden />}
+                        {__("reader.settings.theme.name.Night")}
                     </label>
                 </div>
             </div>
@@ -625,4 +727,12 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(ReaderOptions));
+const mapStateToProps = (state: IReaderRootState) => {
+
+    const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
+    return {
+        isDivina,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderOptions));

@@ -67,8 +67,10 @@ import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
-    AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
+    AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
+
+// import { isDeepStrictEqual } from "util";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -214,7 +216,6 @@ class Reader extends React.Component<IProps, IState> {
 
     public async componentDidMount() {
 
-
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
         // but narrow it down specically to a reader window instance (not application-wide)
@@ -336,6 +337,7 @@ class Reader extends React.Component<IProps, IState> {
             setSettings: this.setSettings,
             toggleMenu: this.handleSettingsClick,
             r2Publication: this.props.r2Publication,
+            handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
         };
 
         return (
@@ -956,7 +958,12 @@ class Reader extends React.Component<IProps, IState> {
             // calling into the webview via IPC is expensive,
             // let's filter out ahead of time based on document href
             if (!locator || locator.href === bookmark.locator.href) {
-                if (this.props.r2Publication) { // isLocatorVisible() API only once navigator ready
+                if (this.props.isDivina) {
+                    const isVisible = bookmark.locator.href === this.props.locator.locator.href;
+                    if (isVisible) {
+                        visibleBookmarkList.push(bookmark);
+                    }
+                } else if (this.props.r2Publication) { // isLocatorVisible() API only once navigator ready
                     const isVisible = await isLocatorVisible(bookmark.locator);
                     if (isVisible) {
                         visibleBookmarkList.push(bookmark);
@@ -1001,9 +1008,17 @@ class Reader extends React.Component<IProps, IState> {
 
     private goToLocator(locator: R2Locator) {
 
-        this.focusMainAreaLandmarkAndCloseMenu();
+        if (this.props.isDivina) {
+            const index = parseInt(locator?.href, 10);
+            if (index) {
+                this.currentDivinaPlayer.goToPageWithIndex(index);
+            }
+        } else {
+            this.focusMainAreaLandmarkAndCloseMenu();
 
-        handleLinkLocator(locator);
+            handleLinkLocator(locator);
+        }
+
     }
 
     // tslint:disable-next-line: max-line-length
@@ -1015,90 +1030,125 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.focusMainAreaLandmarkAndCloseMenu();
+        if (this.props.isDivina) {
 
-        const newUrl = this.props.manifestUrlR2Protocol + "/../" + url;
-        handleLinkUrl(newUrl);
+            const newUrl = this.props.manifestUrlR2Protocol.split("/manifest.json")[1] + url;
+
+            this.currentDivinaPlayer.goTo(newUrl);
+
+        } else {
+            this.focusMainAreaLandmarkAndCloseMenu();
+            const newUrl = this.props.manifestUrlR2Protocol + "/../" + url;
+            handleLinkUrl(newUrl);
+
+        }
     }
 
     private async handleToggleBookmark(fromKeyboard?: boolean) {
 
-        if (!this.state.currentLocation?.locator) {
-            return;
-        }
-
-        const locator = this.state.currentLocation.locator;
         const visibleBookmark = this.state.visibleBookmarkList;
 
-        await this.checkBookmarks(); // updates this.state.visibleBookmarkList
+        if (this.props.isDivina) {
 
-        const deleteAllVisibleBookmarks =
+            const locator = this.props.locator?.locator;
+            const href = locator?.href;
+            const name = href;
+            if (href) {
 
-            // "toggle" only if there is a single bookmark in the content visible inside the viewport
-            // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
-            visibleBookmark.length === 1 &&
-
-            // CTRL-B (keyboard interaction) and audiobooks:
-            // do not toggle: never delete, just add current reading location to bookmarks
-            !fromKeyboard &&
-            !this.state.currentLocation.audioPlaybackInfo &&
-            (!locator.text?.highlight ||
-
-                // "toggle" only if visible bookmark == current reading location
-                visibleBookmark[0].locator.href === locator.href &&
-                visibleBookmark[0].locator.locations.cssSelector === locator.locations.cssSelector &&
-                visibleBookmark[0].locator.text?.highlight === locator.text.highlight
-            )
-            ;
-
-        if (deleteAllVisibleBookmarks) {
-            for (const bookmark of visibleBookmark) {
-                try {
-                    await apiAction("reader/deleteBookmark", bookmark.identifier);
-                } catch (e) {
-                    console.error("Error to fetch api reader/deleteBookmark", e);
+                const found = visibleBookmark.find(({ locator: { href: _href } }) => href === _href);
+                if (found) {
+                    try {
+                        await apiAction("reader/deleteBookmark", found.identifier);
+                    } catch (e) {
+                        console.error("Error to fetch api reader/deleteBookmark", e);
+                    }
+                } else {
+                    try {
+                        await apiAction("reader/addBookmark", this.props.pubId, locator, name);
+                    } catch (e) {
+                        console.error("Error to fetch api reader/addBookmark", e);
+                    }
                 }
             }
 
-            // we do not add the current reading location to bookmarks (just toggle)
-            return;
-        }
+        } else {
 
-        const addCurrentLocationToBookmarks =
-            !visibleBookmark.length ||
-            !visibleBookmark.find((b) => {
-                const identical =
-                    b.locator.href === locator.href &&
-                    (b.locator.locations.progression === locator.locations.progression ||
-                        b.locator.locations.cssSelector && locator.locations.cssSelector &&
-                        b.locator.locations.cssSelector === locator.locations.cssSelector) &&
-                    b.locator.text?.highlight === locator.text?.highlight;
-
-                return identical;
-            }) &&
-            (this.state.currentLocation.audioPlaybackInfo || locator.text?.highlight);
-
-        if (addCurrentLocationToBookmarks) {
-
-            let name: string | undefined;
-            if (locator?.text?.highlight) {
-                name = locator.text.highlight;
-            } else if (this.state.currentLocation.selectionInfo?.cleanText) {
-                name = this.state.currentLocation.selectionInfo.cleanText;
-            } else if (this.state.currentLocation.audioPlaybackInfo) {
-                const percent = Math.floor(100 * this.state.currentLocation.audioPlaybackInfo.globalProgression);
-                // this.state.currentLocation.audioPlaybackInfo.globalTime /
-                // this.state.currentLocation.audioPlaybackInfo.globalDuration
-                const timestamp = formatTime(this.state.currentLocation.audioPlaybackInfo.globalTime);
-                name = `${timestamp} (${percent}%)`;
+            if (!this.state.currentLocation?.locator) {
+                return;
             }
 
-            try {
+            const locator = this.state.currentLocation.locator;
+
+            await this.checkBookmarks(); // updates this.state.visibleBookmarkList
+
+            const deleteAllVisibleBookmarks =
+
+                // "toggle" only if there is a single bookmark in the content visible inside the viewport
+                // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
+                visibleBookmark.length === 1 &&
+
+                // CTRL-B (keyboard interaction) and audiobooks:
+                // do not toggle: never delete, just add current reading location to bookmarks
+                !fromKeyboard &&
+                !this.state.currentLocation.audioPlaybackInfo &&
+                (!locator.text?.highlight ||
+
+                    // "toggle" only if visible bookmark == current reading location
+                    visibleBookmark[0].locator.href === locator.href &&
+                    visibleBookmark[0].locator.locations.cssSelector === locator.locations.cssSelector &&
+                    visibleBookmark[0].locator.text?.highlight === locator.text.highlight
+                )
+                ;
+
+            if (deleteAllVisibleBookmarks) {
+                for (const bookmark of visibleBookmark) {
+                    try {
+                        await apiAction("reader/deleteBookmark", bookmark.identifier);
+                    } catch (e) {
+                        console.error("Error to fetch api reader/deleteBookmark", e);
+                    }
+                }
+
+                // we do not add the current reading location to bookmarks (just toggle)
+                return;
+            }
+
+            const addCurrentLocationToBookmarks =
+                !visibleBookmark.length ||
+                !visibleBookmark.find((b) => {
+                    const identical =
+                        b.locator.href === locator.href &&
+                        (b.locator.locations.progression === locator.locations.progression ||
+                            b.locator.locations.cssSelector && locator.locations.cssSelector &&
+                            b.locator.locations.cssSelector === locator.locations.cssSelector) &&
+                        b.locator.text?.highlight === locator.text?.highlight;
+
+                    return identical;
+                }) &&
+                (this.state.currentLocation.audioPlaybackInfo || locator.text?.highlight);
+
+            if (addCurrentLocationToBookmarks) {
+
+                let name: string | undefined;
+                if (locator?.text?.highlight) {
+                    name = locator.text.highlight;
+                } else if (this.state.currentLocation.selectionInfo?.cleanText) {
+                    name = this.state.currentLocation.selectionInfo.cleanText;
+                } else if (this.state.currentLocation.audioPlaybackInfo) {
+                    const percent = Math.floor(100 * this.state.currentLocation.audioPlaybackInfo.globalProgression);
+                    // this.state.currentLocation.audioPlaybackInfo.globalTime /
+                    // this.state.currentLocation.audioPlaybackInfo.globalDuration
+                    const timestamp = formatTime(this.state.currentLocation.audioPlaybackInfo.globalTime);
+                    name = `${timestamp} (${percent}%)`;
+                }
+
+                try {
                 await apiAction("reader/addBookmark", this.props.pubId, locator, name);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }
         }
+    }
     }
 
     private handleReaderClose() {
@@ -1260,6 +1310,13 @@ class Reader extends React.Component<IProps, IState> {
         readerConfig[name] = optionsValues[name][valueNum];
 
         this.handleSettingsSave(readerConfig);
+    }
+
+    private handleDivinaReadingMode(v: TdivinaReadingMode) {
+
+        if (this.currentDivinaPlayer) {
+            this.currentDivinaPlayer.setReadingMode(v);
+        }
     }
 
     private setSettings(readerConfig: ReaderConfig) {
