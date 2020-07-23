@@ -62,7 +62,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { currentLocation, r2Publication, isDivina } = this.props;
 
-        if (!r2Publication || !currentLocation || isDivina) {
+        if (!r2Publication || !currentLocation) {
             return (<></>);
         }
 
@@ -72,7 +72,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const { moreInfo } = this.state;
 
-        const spineTitle = currentLocation.locator.title || currentLocation.locator.href;
+        const spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
         let afterCurrentLocation = false;
 
         return (
@@ -97,47 +97,66 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         <div id={styles.chapters_markers}
                             className={moreInfo ? styles.more_information : undefined}>
                             { r2Publication.Spine.map((link, index) => {
-                                const atCurrentLocation = currentLocation.locator.href === link.Href;
+
+                                let atCurrentLocation = false;
+                                if (isDivina) {
+
+                                    atCurrentLocation = currentLocation.locator.href === index.toString();
+                                } else {
+
+                                    atCurrentLocation = currentLocation.locator.href === link.Href;
+                                }
                                 if (atCurrentLocation) {
                                     afterCurrentLocation = true;
                                 }
                                 return (
                                     <span
                                         onClick={(e) => {
-                                            const el = e.nativeEvent.target as HTMLElement;
-                                            let left = el.offsetLeft;
-                                            if (!left) {
-                                                left = 0;
-                                            }
-                                            let p = el.offsetParent as HTMLElement;
-                                            while (p) {
-                                                const l = p.offsetLeft;
-                                                left += (l ? l : 0);
-                                                p = p.offsetParent as HTMLElement;
-                                            }
-                                            const deltaX = e.clientX - left;
-                                            let element = el;
-                                            let w: number | undefined;
-                                            while (element && element.classList) {
-                                                if (element.classList.contains("progressChunkSpineItem")) {
-                                                    w = element.offsetWidth;
-                                                    break;
-                                                }
-                                                element = element.parentNode as HTMLElement;
-                                            }
-                                            if (!w) {
-                                                w = element.offsetWidth;
-                                            }
-                                            const percent = deltaX / w;
 
-                                            const loc: R2Locator = {
-                                                href: link.Href,
-                                                locations: {
-                                                    progression: percent,
-                                                },
-                                            };
-                                            this.props.goToLocator(loc);
-                                            // this.props.handleLinkClick(e, link.Href);
+                                            if (isDivina) {
+                                                const loc = {
+                                                    href: index.toString(),
+                                                    // progression generate in divina pagechange event
+                                                };
+                                                this.props.goToLocator(loc as any);
+
+                                            } else {
+
+                                                const el = e.nativeEvent.target as HTMLElement;
+                                                let left = el.offsetLeft;
+                                                if (!left) {
+                                                    left = 0;
+                                                }
+                                                let p = el.offsetParent as HTMLElement;
+                                                while (p) {
+                                                    const l = p.offsetLeft;
+                                                    left += (l ? l : 0);
+                                                    p = p.offsetParent as HTMLElement;
+                                                }
+                                                const deltaX = e.clientX - left;
+                                                let element = el;
+                                                let w: number | undefined;
+                                                while (element && element.classList) {
+                                                    if (element.classList.contains("progressChunkSpineItem")) {
+                                                        w = element.offsetWidth;
+                                                        break;
+                                                    }
+                                                    element = element.parentNode as HTMLElement;
+                                                }
+                                                if (!w) {
+                                                    w = element.offsetWidth;
+                                                }
+                                                const percent = deltaX / w;
+
+                                                const loc: R2Locator = {
+                                                    href: link.Href,
+                                                    locations: {
+                                                        progression: percent,
+                                                    },
+                                                };
+                                                this.props.goToLocator(loc);
+                                                // this.props.handleLinkClick(e, link.Href);
+                                            }
                                         }}
                                         key={index}
                                         className={
@@ -146,19 +165,19 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 atCurrentLocation ? styles.currentSpineItem : undefined)
                                         }
                                     >
-                                        { atCurrentLocation ? <span style={this.getProgressionStyle()}></span>
-                                        : !afterCurrentLocation && <span></span>}
+                                        {atCurrentLocation ? <span style={this.getProgressionStyle()}></span>
+                                            : !afterCurrentLocation && <span></span>}
                                     </span>
                                 );
                             })}
-                        </div>
-                        { moreInfo &&
-                        <div
-                            id={styles.arrow_box}
-                            style={this.getStyle(this.getArrowBoxStyle)}
-                        >
-                            <span title={spineTitle}><em>{`(${(r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href)) + 1}/${r2Publication.Spine.length}) `}</em> {` ${spineTitle}`}</span>
-                            <p>
+                            </div>
+                            {moreInfo &&
+                                <div
+                                    id={styles.arrow_box}
+                                    style={this.getStyle(this.getArrowBoxStyle)}
+                                >
+                                    <span title={spineTitle}><em>{`(${(r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href)) + 1}/${r2Publication.Spine.length}) `}</em> {` ${spineTitle}`}</span>
+                                    <p>
                                 { this.getProgression() }
                             </p>
                             <span
@@ -217,11 +236,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
     private getProgression(): string {
         const { currentLocation } = this.props;
+
         if (!currentLocation) {
             return "";
         }
 
         const percent = Math.round(currentLocation.locator.locations.progression * 100);
+
         if (currentLocation.paginationInfo) {
             return `${percent}% (${currentLocation.paginationInfo.currentColumn + 1} / ${currentLocation.paginationInfo.totalColumns})`;
         } else if (currentLocation.audioPlaybackInfo) {

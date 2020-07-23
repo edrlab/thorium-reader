@@ -430,7 +430,7 @@ class Reader extends React.Component<IProps, IState> {
                 <ReaderFooter
                     navLeftOrRight={this.navLeftOrRight_.bind(this)}
                     fullscreen={this.state.fullscreen}
-                    currentLocation={this.state.currentLocation}
+                    currentLocation={this.props.isDivina ? this.props.locator : this.state.currentLocation}
                     r2Publication={this.props.r2Publication}
                     handleLinkClick={this.handleLinkClick}
                     goToLocator={this.goToLocator}
@@ -989,20 +989,32 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private navLeftOrRight_(left: boolean, spineNav?: boolean) {
-        const wasPlaying = this.state.r2PublicationHasMediaOverlays ?
-            this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING :
-            this.state.ttsState === TTSStateEnum.PLAYING;
-        const wasPaused = this.state.r2PublicationHasMediaOverlays ?
-            this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED :
-            this.state.ttsState === TTSStateEnum.PAUSED;
 
-        if (wasPaused || wasPlaying) {
-            navLeftOrRight(left, false); // !this.state.r2PublicationHasMediaOverlays
-            // if (!this.state.r2PublicationHasMediaOverlays) {
-            //     handleTTSPlayDebounced(this);
-            // }
+        if (this.props.isDivina) {
+
+            if (this.currentDivinaPlayer) {
+                if (left) {
+                    this.currentDivinaPlayer.goLeft();
+                } else {
+                    this.currentDivinaPlayer.goRight();
+                }
+            }
         } else {
-            navLeftOrRight(left, spineNav);
+            const wasPlaying = this.state.r2PublicationHasMediaOverlays ?
+                this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING :
+                this.state.ttsState === TTSStateEnum.PLAYING;
+            const wasPaused = this.state.r2PublicationHasMediaOverlays ?
+                this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED :
+                this.state.ttsState === TTSStateEnum.PAUSED;
+
+            if (wasPaused || wasPlaying) {
+                navLeftOrRight(left, false); // !this.state.r2PublicationHasMediaOverlays
+                // if (!this.state.r2PublicationHasMediaOverlays) {
+                //     handleTTSPlayDebounced(this);
+                // }
+            } else {
+                navLeftOrRight(left, spineNav);
+            }
         }
     }
 
