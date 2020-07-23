@@ -285,7 +285,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         type="radio"
                         name="theme"
                         onChange={() => {
-                            // this.props.handleDivinaReadingMode("single");
+                            this.props.handleDivinaReadingMode("single");
                             this.setState({ divinaReadingMode: "single" });
                         }}
                         checked={this.state.divinaReadingMode === "single"}

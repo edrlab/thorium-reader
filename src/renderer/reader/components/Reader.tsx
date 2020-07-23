@@ -1383,6 +1383,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // see this.ttsOverlayEnableNeedsSync
     // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
 
+    // extension or @type ?
+    // const isDivina = this.props.r2Publication?.Metadata?.RDFType &&
+    //    (/http[s]?:\/\/schema\.org\/ComicStrip$/.test(this.props.r2Publication.Metadata.RDFType) ||
+    //    /http[s]?:\/\/schema\.org\/VisualNarrative$/.test(this.props.r2Publication.Metadata.RDFType));
     const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
 
     return {
