@@ -45,7 +45,7 @@ jobs:
     - name: non-PR action (build and package)
       if: ${{ github.event_name != 'pull_request' }}
       run: npm run package:win
-    - run: ls -alsR release
+    #- run: ls -alsR release
     - run: node scripts/release-github.js
     # - name: Upload Artifact
     #   if: ${{ github.event_name != 'pull_request' }}
