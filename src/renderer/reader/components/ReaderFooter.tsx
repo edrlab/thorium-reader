@@ -72,7 +72,15 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const { moreInfo } = this.state;
 
-        const spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
+        let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
+        if (isDivina) {
+            try {
+                spineTitle = (parseInt(spineTitle, 10) + 1).toString();
+            } catch (e) {
+                // ignore
+            }
+        }
+
         let afterCurrentLocation = false;
 
         return (
@@ -176,7 +184,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                     id={styles.arrow_box}
                                     style={this.getStyle(this.getArrowBoxStyle)}
                                 >
-                                    <span title={spineTitle}><em>{`(${(r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href)) + 1}/${r2Publication.Spine.length}) `}</em> {` ${spineTitle}`}</span>
+                                    <span title={spineTitle}><em>{`(${
+                                        isDivina ?
+                                        (parseInt(currentLocation.locator.href, 10) + 1).toString() :
+                                        ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator.href)) + 1).toString()
+                                        }/${
+                                            r2Publication.Spine.length
+                                        }) `}</em> {` ${spineTitle}`}</span>
                                     <p>
                                 { this.getProgression() }
                             </p>

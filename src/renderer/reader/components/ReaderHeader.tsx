@@ -138,7 +138,8 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        const showAudioTTSToolbar = this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo;
+        const showAudioTTSToolbar = (this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo) &&
+            !this.props.isDivina;
         return (
             <nav
                 className={classNames(styles.main_navigation,
@@ -364,6 +365,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                 <SVG svg={SettingsIcon} title={__("reader.navigation.settingsTitle")} />
                             </button>
                             <ReaderOptions {...this.props.readerOptionsProps}
+                                isDivina={this.props.isDivina}
                                 focusSettingMenuButton={this.focusSettingMenuButton} />
                         </li>
                         <li
@@ -380,6 +382,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                     title={__("reader.navigation.openTableOfContentsTitle")} />
                             </button>
                             <ReaderMenu {...this.props.readerMenuProps}
+                                isDivina={this.props.isDivina}
                                 currentLocation={this.props.currentLocation}
                                 focusNaviguationMenu={this.focusNaviguationMenuButton} />
                         </li>

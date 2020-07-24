@@ -5,10 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
-import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { Font } from "readium-desktop/common/models/font";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -42,6 +40,7 @@ import classNames = require("classnames");
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
+    isDivina: boolean;
 }
 
 // IProps may typically extend:
@@ -725,11 +724,15 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: IReaderRootState) => {
+const mapStateToProps = (_state: IReaderRootState) => {
 
-    const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
+    // TODO: extension or @type ?
+    // const isDivina = this.props.r2Publication?.Metadata?.RDFType &&
+    //    (/http[s]?:\/\/schema\.org\/ComicStrip$/.test(this.props.r2Publication.Metadata.RDFType) ||
+    //    /http[s]?:\/\/schema\.org\/VisualNarrative$/.test(this.props.r2Publication.Metadata.RDFType));
+    // const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
     return {
-        isDivina,
+        // isDivina,
     };
 };
 

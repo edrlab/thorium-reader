@@ -398,7 +398,7 @@ class Reader extends React.Component<IProps, IState> {
                         readerOptionsProps={readerOptionsProps}
                         readerMenuProps={readerMenuProps}
                         displayPublicationInfo={this.displayPublicationInfo}
-                        currentLocation={this.state.currentLocation}
+                        currentLocation={this.props.isDivina ? this.props.locator : this.state.currentLocation}
                         isDivina={this.props.isDivina}
                     />
                     <div className={classNames(styles.content_root,
@@ -1072,7 +1072,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const locator = this.props.locator?.locator;
             const href = locator?.href;
-            const name = href;
+            const name = (parseInt(href, 10) + 1).toString();
             if (href) {
 
                 const found = visibleBookmark.find(({ locator: { href: _href } }) => href === _href);
@@ -1391,7 +1391,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // see this.ttsOverlayEnableNeedsSync
     // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
 
-    // extension or @type ?
+    // TODO: extension or @type ?
     // const isDivina = this.props.r2Publication?.Metadata?.RDFType &&
     //    (/http[s]?:\/\/schema\.org\/ComicStrip$/.test(this.props.r2Publication.Metadata.RDFType) ||
     //    /http[s]?:\/\/schema\.org\/VisualNarrative$/.test(this.props.r2Publication.Metadata.RDFType));
