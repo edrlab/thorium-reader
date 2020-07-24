@@ -46,7 +46,7 @@ jobs:
 #      if: ${{ github.event_name != 'pull_request' }}
 #      run: npm run package:win
     #- run: ls -alsR release
-    - run: npm install -g @octokit/rest
+    - run: npm install @octokit/rest
     - run: node scripts/release-github.js
     # - name: Upload Artifact
     #   if: ${{ github.event_name != 'pull_request' }}
