@@ -18,9 +18,6 @@ jobs:
     steps:
     env:
       TRAVIS_OS_NAME_: windows
-      TRAVIS_TAG: latest-${{ env.TRAVIS_OS_NAME_ }}
-      # GH_TOKEN:
-      #   secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2-beta #actions/setup-node@v1
       with:
