@@ -21,7 +21,9 @@ jobs:
       # GH_TOKEN:
       #   secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
     steps:
-    - run: echo 'TRAVIS_OS_NAME_: ${{ env.TRAVIS_OS_NAME_ }}'
+    - run: echo 'TRAVIS_OS_NAME_:' $env.TRAVIS_OS_NAME_
+    - run: echo 'TRAVIS_OS_NAME_:' ${{ env.TRAVIS_OS_NAME_ }}
+    - run: echo "TRAVIS_OS_NAME_: ${{ env.TRAVIS_OS_NAME_ }}"
     - run: echo '::set-env name=TRAVIS_TAG::latest-${{ env.TRAVIS_OS_NAME_ }}'
     - run: echo 'TRAVIS_TAG: ${{ env.TRAVIS_TAG }}'
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
