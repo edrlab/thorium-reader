@@ -18,7 +18,7 @@ jobs:
     steps:
     env:
       TRAVIS_OS_NAME_: windows
-      TRAVIS_TAG: latest-$TRAVIS_OS_NAME_
+      TRAVIS_TAG: latest-${{ env.TRAVIS_OS_NAME_ }}
       # GH_TOKEN:
       #   secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
     - uses: actions/checkout@v2
@@ -39,8 +39,8 @@ jobs:
     - run: 'echo "GITHUB_RUN_ID: %GITHUB_RUN_ID%"'
     - run: 'echo "GITHUB_SHA: %GITHUB_SHA%"'
     - run: node --version && npm --version
-    - run: node scripts/package-ci-patch.js package.json $GITHUB_RUN_ID && cat package.json | grep -i VERSION && cat package.json
-    - run: node scripts/package-ci-patch.js src/package.json $GITHUB_RUN_ID && cat src/package.json | grep -i VERSION && cat src/package.json
+    - run: node scripts/package-ci-patch.js package.json ${{ env.GITHUB_RUN_ID }} && cat package.json | grep -i VERSION && cat package.json
+    - run: node scripts/package-ci-patch.js src/package.json ${{ env.GITHUB_RUN_ID }} && cat src/package.json | grep -i VERSION && cat src/package.json
     - run: npm ci
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
@@ -60,16 +60,16 @@ jobs:
     #   if: ${{ github.event_name != 'pull_request' }}
     #   uses: author/action-rollback@stable
     #   with:
-    #     tag: ${{ TRAVIS_TAG }}
+    #     tag: ${{ env.TRAVIS_TAG }}
     #     always_delete_tag: true
     # - name: GitHub Release
     #   if: ${{ github.event_name != 'pull_request' }}
     #   id: create_release
     #   uses: actions/create-release@v1
     #   with:
-    #     tag_name: ${{ TRAVIS_TAG }}
-    #     release_name: '[${{ TRAVIS_TAG }}] continuous test build (prerelease)'
-    #     body: 'GitHub Action build job: ${{ GITHUB_SERVER_URL }}/${{ GITHUB_REPOSITORY }}/actions/runs/${{ GITHUB_RUN_ID }}'
+    #     tag_name: ${{ env.TRAVIS_TAG }}
+    #     release_name: '[${{ env.TRAVIS_TAG }}] continuous test build (prerelease)'
+    #     body: 'GitHub Action build job: ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}/actions/runs/${{ env.GITHUB_RUN_ID }}'
     #     draft: false
     #     prerelease: true
     # - name: GitHub Release Assets
