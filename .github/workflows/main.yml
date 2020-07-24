@@ -21,34 +21,32 @@ jobs:
       # GH_TOKEN:
       #   secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
     steps:
-    - run: echo 'TRAVIS_OS_NAME_:' $TRAVIS_OS_NAME_
     - run: echo 'TRAVIS_OS_NAME_:' ${{ env.TRAVIS_OS_NAME_ }}
     - run: echo '::set-env name=TRAVIS_TAG::latest-${{ env.TRAVIS_OS_NAME_ }}'
-    - run: echo 'TRAVIS_TAG:' $TRAVIS_TAG
     - run: echo 'TRAVIS_TAG:' ${{ env.TRAVIS_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
-    #- uses: actions/checkout@v2
-    # - uses: actions/setup-node@v2-beta #actions/setup-node@v1
-    #   with:
-    #     node-version: '12'
-    #     #check-latest: true
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2-beta #actions/setup-node@v1
+      with:
+        node-version: '12'
+        #check-latest: true
     - run: node --version && npm --version
-    #- run: npm --global install npm@latest
-    #- run: npm --version
+    - run: npm --global install npm@latest
+    - run: npm --version
     # - run: npm --global install asar
-    #- run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
-    #- run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
-    # - run: npm ci
-    # - name: PR action (just build)
-    #   if: ${{ github.event_name == 'pull_request' }}
-    #   run: npm run build:prod
-    # - name: non-PR action (build and package)
-    #   if: ${{ github.event_name != 'pull_request' }}
-    #   run: npm run package:win
-    # - run: ls -alsR release
-    # - run: node scripts/release-github.js
+    - run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
+    - run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
+    - run: npm ci
+    - name: PR action (just build)
+      if: ${{ github.event_name == 'pull_request' }}
+      run: npm run build:prod
+    - name: non-PR action (build and package)
+      if: ${{ github.event_name != 'pull_request' }}
+      run: npm run package:win
+    - run: ls -alsR release
+    - run: node scripts/release-github.js
     # - name: Upload Artifact
     #   if: ${{ github.event_name != 'pull_request' }}
     #   uses: actions/upload-artifact@v2
