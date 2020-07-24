@@ -1,0 +1,336 @@
+{
+    "accessibility": {
+        "bookMenu": "Menu",
+        "closeDialog": "Fechar",
+        "homeMenu": "Menu de visualização de leitura",
+        "importFile": "Importar publicação",
+        "leftSlideButton": "Deslizar a lista para a esquerda",
+        "mainContent": "conteúdo principal",
+        "rightSlideButton": "Deslizar a lista para a direita",
+        "searchBook": "Busca por título",
+        "skipLink": "Ir para o conteúdo",
+        "toolbar": "barra de ferramentas"
+    },
+    "app": {
+        "edit": {
+            "copy": "Copiar",
+            "cut": "Cortar",
+            "paste": "Colar",
+            "redo": "Refazer",
+            "selectAll": "Selecionar tudo",
+            "title": "Editar",
+            "undo": "Desfazer"
+        },
+        "hide": "Ocultar {{- appName}}",
+        "quit": "Sair de {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Não",
+                        "yes": "Sim"
+                    },
+                    "message": "Você quer salvar a sessão?",
+                    "title": "Salvar sessão"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": "Mostrar biblioteca / estante"
+        }
+    },
+    "catalog": {
+        "about": {
+            "button": "Mais informação",
+            "title": "Sobre {{- appName}}"
+        },
+        "addBookToLib": "Importar",
+        "addTags": "Adicionar uma tag",
+        "addTagsButton": "Adicionar",
+        "allBooks": "Todos os livros",
+        "bookInfo": "Sobre este livro",
+        "delete": "Apagar",
+        "deleteBook": "Remover",
+        "deleteTag": "Apagar a tag",
+        "description": "Descrição",
+        "emptyTagList": "Você não tem livro marcado.",
+        "entry": {
+            "continueReading": "Retomar a leitura",
+            "continueReadingAudioBooks": "Retomar a escuta",
+            "lastAdditions": "Adicionado recentemente",
+            "lastAdditionsAudioBooks": "Audiolivros adicionados recentemente"
+        },
+        "export": "Exportar",
+        "lang": "Idioma",
+        "moreInfo": "Mais Informação",
+        "myBooks": "Meus livros",
+        "noPublicationHelpL1": "Solte uma publicação aqui",
+        "noPublicationHelpL2": "ou use o \"+\" botão acima.",
+        "noPublicationHelpL3": "Arquivos protegidos por LCP tâm suporte.",
+        "noPublicationHelpL4": "Extensões suportadas:",
+        "numberOfPages": "Número de páginas",
+        "opds": {
+            "info": {
+                "availableSince": "Desde",
+                "availableState": {
+                    "available": "Disponível",
+                    "ready": "Pronto",
+                    "reserved": "Reservado",
+                    "unavailable": "Indisponível",
+                    "unknown": "Desconhecido"
+                },
+                "availableUntil": "Até",
+                "copyAvalaible": "Número de disponíveis",
+                "copyTotal": "Número de cópias",
+                "holdPosition": "Sua posição de espera",
+                "holdTotal": "Reservado",
+                "numberOfItems": "Número de ítens",
+                "priveValue": "Preço",
+                "state": "Estado"
+            }
+        },
+        "publisher": "Editora",
+        "readBook": "Ler",
+        "released": "Pubolicado em",
+        "sort": "Ordenar por",
+        "tagCount": "Contagem de tags",
+        "tags": "Tags"
+    },
+    "dialog": {
+        "closeModalWindow": "Fechar esta janela modal",
+        "deleteFeed": "Deseja realmente excluir este catálogo?",
+        "deletePublication": "Deseja realmente excluir esta publicação?",
+        "import": "Deseja realmente importar estes arquivos:",
+        "importError": "ocorreu um erro, verifique sua extensão de arquivo ({{acceptedExtension}})",
+        "no": "Não",
+        "renew": "Deseja realmente renovar a licença para esta publicação?",
+        "return": "Deseja realmente devolver a licença para esta publicação?",
+        "yes": "Yes"
+    },
+    "error": {
+        "errorBox": {
+            "error": "Mensagem de erro:",
+            "message": "Um erro ocorreu em {{- filename}}",
+            "title": "Erro interno {{- appName}}"
+        }
+    },
+    "header": {
+        "allBooks": "Todos os livros",
+        "books": "Meus Livros",
+        "catalogs": "Catálogos",
+        "downloads": "Downloads",
+        "gridTitle": "Visualização em grade",
+        "home": "Menu Estante",
+        "homeTitle": "home",
+        "importTitle": "Importar uma publicação",
+        "listTitle": "Visualização em lista",
+        "refreshTitle": "recarregar",
+        "searchPlaceholder": "Buscar",
+        "searchTitle": "Iniciar uma busca",
+        "settings": "Configurações"
+    },
+    "library": {
+        "lcp": {
+            "cancel": "Cancelar",
+            "hint": "(Dica : {{hint}})",
+            "password": "Senha",
+            "sentence": "Esta publicação precisa de uma senha LCP para ser aberta: ",
+            "submit": "Enviar"
+        }
+    },
+    "message": {
+        "download": {
+            "error": "The download of {{- title}} has failed: [{{- err}}]",
+            "start": "The download of {{- title}} has begun.",
+            "success": "The download of {{- title}} is finished."
+        },
+        "import": {
+            "alreadyImport": "{{- title}} was already imported",
+            "fail": "The import of {{- path}} failed. Verify that the file is valid",
+            "success": "The import of {{- title}} is finished."
+        },
+        "open": {
+            "error": "The publication can't be opened : {{- err}}"
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Add",
+            "name": "Name :",
+            "namePlaceholder": "Name",
+            "title": "Add an OPDS feed",
+            "url": "Link :",
+            "urlPlaceholder": "Link"
+        },
+        "addMenu": "Add OPDS feed",
+        "back": "Back",
+        "breadcrumbRoot": "Catalogs",
+        "empty": "No publication found",
+        "firstPage": "First",
+        "lastPage": "Last",
+        "menu": {
+            "aboutBook": "About this book",
+            "addExtract": "Import the extract",
+            "goBuyBook": "Buy this book",
+            "goLoanBook": "Borrow this book",
+            "goSubBook": "Subscribe"
+        },
+        "network": {
+            "error": "Unable to access to opds feed",
+            "noInternet": "No internet",
+            "noInternetMessage": "Try : checking the network cable, modem, router or wifi",
+            "reject": "Sorry, there was an unexpected error when trying to process the OPDS feed",
+            "timeout": "There was a network timeout, please try again later"
+        },
+        "next": "Next",
+        "previous": "Previous",
+        "shelf": "Shelf"
+    },
+    "publication": {
+        "audio": {
+            "tracks": "Tracks"
+        },
+        "cancelledLcp": "This book can't be read because the LCP license has been cancelled.",
+        "certificateRevoked": "Certificate is revoked",
+        "certificateSignatureInvalid": "Certificate signature is invalid",
+        "cover": {
+            "img": "cover image"
+        },
+        "duration": {
+            "title": "Duration"
+        },
+        "expiredLcp": "This book can't be read because the LCP license has expired.",
+        "lcpEnd": "End",
+        "lcpRightsCopy": "Character copy",
+        "lcpRightsPrint": "Printer copy",
+        "lcpStart": "Start",
+        "licenseOutOfDate": "License is out of date",
+        "licenseSignatureDateInvalid": "License signature date is invalid",
+        "licenseSignatureInvalid": "License signature is invalid",
+        "progression": {
+            "title": "Progression"
+        },
+        "renewButton": "Renew",
+        "returnButton": "Return",
+        "returnedLcp": "This book can't be read because the LCP license has been returned.",
+        "revokedLcp": "This book can't be read because the LCP license has been revoked.",
+        "seeLess": "See less",
+        "seeMore": "See more",
+        "userKeyCheckInvalid": "Passphrase is incorrect"
+    },
+    "reader": {
+        "footerInfo": {
+            "lessInfo": "less information",
+            "moreInfo": "more information"
+        },
+        "marks": {
+            "annotations": "Annotations",
+            "bookmarks": "Bookmarks",
+            "delete": "Delete",
+            "edit": "Edit",
+            "landmarks": "Landmarks",
+            "toc": "Table of Contents"
+        },
+        "media-overlays": {
+            "activate": "Activate Readaloud",
+            "captions": "Captions / clean view",
+            "next": "Next Readaloud",
+            "pause": "Pause Readaloud",
+            "play": "Play Readaloud",
+            "previous": "Previous Readaloud",
+            "skip": "Skippability",
+            "speed": "Readaloud playback rate",
+            "stop": "Stop Readaloud",
+            "title": "Readaloud"
+        },
+        "navigation": {
+            "backHomeTitle": "back to the bookshelf",
+            "bookmarkTitle": "bookmark",
+            "detachWindowTitle": "show library / bookshelf window",
+            "fullscreenTitle": "open fullscreen mode",
+            "goTo": "Go to",
+            "goToError": "This page break does not exist",
+            "goToPlaceHolder": "Enter a page number",
+            "goToTitle": "Go to page",
+            "infoTitle": "information",
+            "openTableOfContentsTitle": "navigation",
+            "quitFullscreenTitle": "quit fullscreen mode",
+            "readBookTitle": "start reading the book",
+            "settingsTitle": "settings"
+        },
+        "settings": {
+            "column": {
+                "auto": "Automatic",
+                "one": "1 col",
+                "oneTitle": "one column",
+                "title": "Columns",
+                "two": "2 cols",
+                "twoTitle": "two columns"
+            },
+            "display": "Display",
+            "disposition": {
+                "title": "Layout"
+            },
+            "font": "Font",
+            "fontSize": "Font size",
+            "justification": "Alignment",
+            "justify": "Justify",
+            "letterSpacing": "Letter spacing",
+            "lineSpacing": "Line spacing",
+            "margin": "Margin",
+            "paginated": "Paginated",
+            "save": {
+                "apply": "save",
+                "reset": "reset",
+                "title": "Configuration"
+            },
+            "scrolled": "Scrollable",
+            "spacing": "Spacing",
+            "text": "Text",
+            "theme": {
+                "name": {
+                    "Neutral": "Neutral",
+                    "Night": "Night",
+                    "Sepia": "Sepia"
+                },
+                "title": "Theme"
+            },
+            "wordSpacing": "Word spacing"
+        },
+        "svg": {
+            "left": "Left",
+            "right": "Right"
+        },
+        "tts": {
+            "activate": "Activate Text To Speech",
+            "next": "Next Text To Speech",
+            "pause": "Pause Text To Speech",
+            "play": "Play Text To Speech",
+            "previous": "Previous Text To Speech",
+            "speed": "Text To Speech playback rate",
+            "stop": "Stop Text To Speech"
+        }
+    },
+    "settings": {
+        "keyboard": {
+            "advancedMenu": "Menu",
+            "cancel": "Cancel",
+            "edit": "Edit",
+            "editUserJson": "Edit user file...",
+            "hide": "Hide",
+            "keyboardShortcuts": "Keyboard shortcuts",
+            "loadUserJson": "Load from user file",
+            "resetDefaults": "Reset (load defaults)",
+            "save": "Save",
+            "show": "Show"
+        },
+        "language": {
+            "languageChoice": "Language choice"
+        },
+        "session": {
+            "no": "Disable",
+            "title": "Save session",
+            "yes": "Enable"
+        }
+    }
+}
