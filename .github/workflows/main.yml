@@ -33,18 +33,18 @@ jobs:
         node-version: '12'
         #check-latest: true
     - run: node --version && npm --version
-    - run: npm --global install npm@latest
+#    - run: npm --global install npm@latest
     - run: npm --version
     # - run: npm --global install asar
     - run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
     - run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
-    - run: npm ci
+#    - run: npm ci
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
       run: npm run build:prod
-    - name: non-PR action (build and package)
-      if: ${{ github.event_name != 'pull_request' }}
-      run: npm run package:win
+#    - name: non-PR action (build and package)
+#      if: ${{ github.event_name != 'pull_request' }}
+#      run: npm run package:win
     #- run: ls -alsR release
     - run: node scripts/release-github.js
     # - name: Upload Artifact

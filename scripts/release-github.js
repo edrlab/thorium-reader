@@ -216,7 +216,8 @@ try {
 }
 
 if (createReleaseRES) {
-    console.log("createReleaseRES: ", createReleaseRES.id);
+    console.log("createReleaseRES: ", createReleaseRES.upload_url);
+    console.log(JSON.stringify(createReleaseRES, null, 4));
     if (DEBUG) console.log(createReleaseRES);
 }
 
