@@ -216,12 +216,12 @@ try {
 }
 
 if (createReleaseRES) {
-    console.log("createReleaseRES: ", createReleaseRES.upload_url);
-    console.log(JSON.stringify(createReleaseRES, null, 4));
+    console.log("createReleaseRES:");
+    // console.log(JSON.stringify(createReleaseRES, null, 4));
     if (DEBUG) console.log(createReleaseRES);
 }
 
-if (createReleaseRES && createReleaseRES.id && process.env.GITHUB_SERVER_URL) {
+if (createReleaseRES && createReleaseRES.data && createReleaseRES.data.id && process.env.GITHUB_SERVER_URL) {
 
     const upload = async (filename, filepath) => {
 
@@ -232,7 +232,7 @@ if (createReleaseRES && createReleaseRES.id && process.env.GITHUB_SERVER_URL) {
             uploadReleaseAssetRES = await octokit.repos.uploadReleaseAsset({
                 owner,
                 repo,
-                release_id: createReleaseRES.id,
+                release_id: createReleaseRES.data.id,
                 name: filename,
                 data: await fs.readFile(filepath)
             });
@@ -262,10 +262,13 @@ if (createReleaseRES && createReleaseRES.id && process.env.GITHUB_SERVER_URL) {
             if (ent.isDirectory()) {
                 yield* getFiles(fullPath);
             } else {
-                if (!fullPath.endsWith('.exe') || !fullPath.endsWith('.AppImage') || !fullPath.endsWith('.deb') || !fullPath.endsWith('.dmg')) {
-                    continue;
+                if (fullPath.endsWith('.exe') ||
+                    fullPath.endsWith('.AppImage') ||
+                    fullPath.endsWith('.deb') ||
+                    fullPath.endsWith('.dmg')) {
+
+                    yield fullPath;
                 }
-                yield fullPath;
             }
         }
     }
