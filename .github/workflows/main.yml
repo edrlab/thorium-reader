@@ -9,7 +9,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
-  pack-linux:
+  pack-windows:
 #    if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
 #    if: "!contains(github.event.head_commit.message, 'skip ci')"
     # runs-on: ubuntu-latest # / ubuntu-18.04 ... or ubuntu-16.04, ubuntu-20.04
@@ -30,7 +30,7 @@ jobs:
     - run: npm --global install npm@latest
     - run: npm --version
     # - run: npm --global install asar
-    - run: set PATH=%APPDATA%\npm;%PATH%
+    #- run: set PATH=%APPDATA%\npm;%PATH%
     - run: 'echo "TRAVIS_OS_NAME_: %TRAVIS_OS_NAME_%"'
     - run: 'echo "TRAVIS_TAG 1: %TRAVIS_TAG%"'
     - run: 'set TRAVIS_TAG=latest-%TRAVIS_OS_NAME_%'
