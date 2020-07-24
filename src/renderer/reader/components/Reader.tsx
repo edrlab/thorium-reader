@@ -804,6 +804,14 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log("DIVINA !!");
 
+            // TODO: this seems like a terrible hack,
+            // why does R2 navigator need this internally, instead of declaring the styles in the app's DOM?
+            const publicationViewport = document.getElementById("publication_viewport");
+            if (publicationViewport) {
+                // tslint:disable-next-line: max-line-length
+                publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow: hidden;");
+            }
+
             const options = {
                 // Variables
                 allowsDestroy: true,
