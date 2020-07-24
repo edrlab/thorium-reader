@@ -18,7 +18,9 @@ jobs:
     steps:
     env:
       TRAVIS_OS_NAME_: windows
-      TRAVIS_TAG: ${{ TRAVIS_OS_NAME_ }}
+      # TRAVIS_TAG: latest-${{ TRAVIS_OS_NAME_ }}
+      # GH_TOKEN:
+      #   secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3 #${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2-beta #actions/setup-node@v1
       with:
@@ -30,7 +32,7 @@ jobs:
     # - run: npm --global install asar
     - run: set PATH=%APPDATA%\npm;%PATH%
     - run: 'echo "TRAVIS_OS_NAME_: %TRAVIS_OS_NAME_%"'
-    # - run: 'set TRAVIS_TAG=latest-%TRAVIS_OS_NAME_%'
+    - run: 'set TRAVIS_TAG=latest-%TRAVIS_OS_NAME_%'
     - run: 'echo "TRAVIS_TAG: %TRAVIS_TAG%"'
     - run: 'echo "GITHUB_RUN_NUMBER: %GITHUB_RUN_NUMBER%"'
     - run: 'echo "GITHUB_RUN_ID: %GITHUB_RUN_ID%"'
