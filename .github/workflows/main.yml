@@ -15,9 +15,12 @@ jobs:
     # runs-on: ubuntu-latest # / ubuntu-18.04 ... or ubuntu-16.04, ubuntu-20.04
     # runs-on: macos-latest # / macos-10.15
     runs-on: windows-2016 # ... or window-latest / windows-2019
-    steps:
     env:
       TRAVIS_OS_NAME_: windows
+      TRAVIS_TAG: latest-${{ env.TRAVIS_OS_NAME_ }}
+      # GH_TOKEN:
+      #   secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
+    steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2-beta #actions/setup-node@v1
       with:
