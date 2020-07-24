@@ -23,9 +23,10 @@ jobs:
     steps:
     - run: echo 'TRAVIS_OS_NAME_:' $env.TRAVIS_OS_NAME_
     - run: echo 'TRAVIS_OS_NAME_:' ${{ env.TRAVIS_OS_NAME_ }}
-    - run: echo "TRAVIS_OS_NAME_: ${{ env.TRAVIS_OS_NAME_ }}"
-    - run: echo '::set-env name=TRAVIS_TAG::latest-${{ env.TRAVIS_OS_NAME_ }}'
-    - run: echo 'TRAVIS_TAG: ${{ env.TRAVIS_TAG }}'
+    #- run: echo "TRAVIS_OS_NAME_: ${{ env.TRAVIS_OS_NAME_ }}"
+    - run: echo '::set-env name=TRAVIS_TAG::latest-'${{ env.TRAVIS_OS_NAME_ }}
+    - run: echo 'TRAVIS_TAG:' $env.TRAVIS_TAG
+    - run: echo 'TRAVIS_TAG:' ${{ env.TRAVIS_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
