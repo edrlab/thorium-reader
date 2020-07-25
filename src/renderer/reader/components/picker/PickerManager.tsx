@@ -15,8 +15,8 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
 import { IPickerState } from "../../redux/state/picker";
-import AnnotationPicker from "./annotation";
-import SearchPicker from "./search";
+import AnnotationPicker from "./Annotation";
+import SearchPicker from "./Search";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
