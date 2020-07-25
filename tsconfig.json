@@ -30,7 +30,7 @@
     "forceConsistentCasingInFileNames": false,
     "inlineSources": true,
     "inlineSourceMap": false,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "allowJs": false,
     "maxNodeModuleJsDepth": 0,
     "checkJs": false,
