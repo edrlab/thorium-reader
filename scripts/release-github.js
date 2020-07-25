@@ -273,7 +273,39 @@ if (createReleaseRES && createReleaseRES.data && createReleaseRES.data.id && pro
         }
     }
 
+    let doneEXE = false;
+    let doneAPPIMAGE = false;
+    let doneDEB = false;
+    let doneDMG = false;
     for await (const f of getFiles('release')) {
+        if (f.endsWith('.exe')) {
+            if (doneEXE) {
+                continue;
+            } else {
+                doneEXE = true;
+            }
+        }
+        if (f.endsWith('.AppImage')) {
+            if (doneAPPIMAGE) {
+                continue;
+            } else {
+                doneAPPIMAGE = true;
+            }
+        }
+        if (f.endsWith('.deb')) {
+            if (doneDEB) {
+                continue;
+            } else {
+                doneDEB = true;
+            }
+        }
+        if (f.endsWith('.dmg')) {
+            if (doneDMG) {
+                continue;
+            } else {
+                doneDMG = true;
+            }
+        }
         await upload(path.basename(f), f);
     }
 }
