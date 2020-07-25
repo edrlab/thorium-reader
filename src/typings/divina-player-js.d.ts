@@ -1,2 +1,1 @@
-
-declare module 'divina-player-js';
+declare module "divina-player-js";
