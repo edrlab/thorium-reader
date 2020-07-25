@@ -52,13 +52,13 @@ import { Unsubscribe } from "redux";
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import { IHighlight, IHighlightDefinition } from "@r2-navigator-js/electron/common/highlight";
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
+import {
+    audioForward, audioPause, audioRewind, audioTogglePlayPause,
+} from "@r2-navigator-js/electron/renderer/audiobook";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector2";
 import {
     highlightsClickListen, highlightsCreate, highlightsRemove, highlightsRemoveAll,
 } from "@r2-navigator-js/electron/renderer/highlight";
-import {
-    audioForward, audioPause, audioRewind, audioTogglePlayPause,
-} from "@r2-navigator-js/electron/renderer/audiobook";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable, mediaOverlaysEnableCaptionsMode,
