@@ -97,6 +97,7 @@ const cssLoaderConfig = [
         options: {
             importLoaders: 1,
             modules: true,
+            esModule: false,
         },
     },
     "postcss-loader",
