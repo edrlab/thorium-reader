@@ -288,7 +288,7 @@
     "electron-devtools-installer": "^3.1.1",
     "electron-notarize": "^1.0.0",
     "file-loader": "^6.0.0",
-    "fork-ts-checker-webpack-plugin": "^5.0.9",
+    "fork-ts-checker-webpack-plugin": "^5.0.11",
     "git-rev-sync": "^2.0.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
