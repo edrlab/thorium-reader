@@ -8,6 +8,7 @@ on:
     branches: [ develop ]
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  USE_HARD_LINKS: 'false'
 jobs:
   build:
 #    if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
@@ -17,6 +18,7 @@ jobs:
     # runs-on: windows-2016 # ... or window-latest / windows-2019
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-2016, macos-latest, ubuntu-latest]
         include:
