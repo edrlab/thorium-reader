@@ -1,0 +1,135 @@
+name: CI
+on:
+  push:
+    branches: [ develop ]
+    tags-ignore:
+      - '*'
+  pull_request:
+    branches: [ develop ]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  USE_HARD_LINKS: 'false'
+jobs:
+  build:
+#    if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
+    if: "github.event_name == 'pull_request' || !contains(github.event.head_commit.message, 'skip ci')"
+    # runs-on: ubuntu-latest # / ubuntu-18.04 ... or ubuntu-16.04, ubuntu-20.04
+    # runs-on: macos-latest # / macos-10.15
+    # runs-on: windows-2016 # ... or window-latest / windows-2019
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2016, macos-latest, ubuntu-latest]
+        include:
+          - os: windows-2016
+            osname: windows
+            packname: win
+          - os: macos-latest
+            osname: osx
+            packname: 'mac:skip-notarize'
+          - os: ubuntu-latest
+            osname: linux
+            packname: linux
+    env:
+      TRAVIS_OS_NAME_: ${{ matrix.osname }}
+    steps:
+    - run: echo 'TRAVIS_OS_NAME_:' ${{ env.TRAVIS_OS_NAME_ }}
+    - run: echo '::set-env name=TRAVIS_TAG::latest-${{ env.TRAVIS_OS_NAME_ }}'
+    - run: echo 'TRAVIS_TAG:' ${{ env.TRAVIS_TAG }}
+    - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
+    - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
+    - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2-beta #actions/setup-node@v1
+      with:
+        node-version: '12'
+        #check-latest: true
+    - run: node --version && npm --version
+    - run: npm --global install npm@latest
+    - run: npm --version
+    # - run: npm --global install asar
+    - run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
+    - run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
+    - run: npm ci
+    - name: PR action (just build)
+      if: ${{ github.event_name == 'pull_request' }}
+      run: npm run build:prod
+    - name: non-PR action (build and package)
+      if: ${{ github.event_name != 'pull_request' }}
+      run: npm run package:${{ matrix.packname }}
+    #- run: ls -alsR release
+    #- run: npm install @octokit/rest
+    - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts
+      if: ${{ github.event_name != 'pull_request' }}
+      run: node scripts/release-github.js
+    # - name: Upload Artifact
+    #   if: ${{ github.event_name != 'pull_request' }}
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: Thorium
+    #     path: ./release/*.exe
+    # - name: Delete Release
+    #   if: ${{ github.event_name != 'pull_request' }}
+    #   uses: author/action-rollback@stable
+    #   with:
+    #     tag: $TRAVIS_TAG
+    #     always_delete_tag: true
+    # - name: GitHub Release
+    #   if: ${{ github.event_name != 'pull_request' }}
+    #   id: create_release
+    #   uses: actions/create-release@v1
+    #   with:
+    #     tag_name: $TRAVIS_TAG
+    #     release_name: '[$TRAVIS_TAG] continuous test build (prerelease)'
+    #     body: 'GitHub Action build job: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID'
+    #     draft: false
+    #     prerelease: true
+    # - name: GitHub Release Assets
+    #   if: ${{ github.event_name != 'pull_request' }}
+    #   id: upload-release-asset
+    #   uses: actions/upload-release-asset@v1
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: ./release/*.exe
+    #     asset_name: Thorium.exe
+    #     asset_content_type: application/octet-stream
+    # - name: GitHub Script Release And Assets
+    #   if: ${{ github.event_name != 'pull_request' }}
+    #   env:
+    #     - GH_RELEASE_ID: ${{ steps.create_release.outputs.id }}
+    #   uses: actions/github-script@v2
+    #   with:
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    #     script: |
+    #       console.log('process.versions', process.versions, process.env.GH_RELEASE_ID);
+
+    #       const fs = require('fs').promises;
+
+    #       const { repo: { owner, repo }, sha } = context;
+
+    #       /*
+    #       const release = await github.repos.createRelease({
+    #         name: `[${process.env.TRAVIS_TAG}] continuous test build (prerelease)`,
+    #         body: `GitHub Action build job: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
+    #         owner,
+    #         repo,
+    #         tag_name: process.env.TRAVIS_TAG,
+    #         draft: false,
+    #         prerelease: true,
+    #         target_commitish: sha
+    #       });
+    #       */
+
+    #       for (let file of await fs.readdir('release')) {
+    #         if (!file.endsWith('.exe') || !file.endsWith('.AppImage') || !file.endsWith('.msi') || !file.endsWith('.deb') || !file.endsWith('.dmg')) {
+    #           continue;
+    #         }
+    #         await github.repos.uploadReleaseAsset({
+    #           owner,
+    #           repo,
+    #           release_id: process.env.GH_RELEASE_ID, // release.data.id,
+    #           name: file,
+    #           data: await fs.readFile(`./release/${file}`)
+    #         });
+    #       }
