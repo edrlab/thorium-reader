@@ -131,7 +131,7 @@ let config = Object.assign(
             ],
         },
         plugins: [
-            new CopyWebpackPlugin([
+            new CopyWebpackPlugin({ patterns: [
                 {
                     from: path.join(
                         __dirname,
@@ -141,14 +141,14 @@ let config = Object.assign(
                     ),
                     to: "assets/md/information",
                 },
-            ]),
-            new CopyWebpackPlugin([
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
                 {
                     from: path.join(__dirname, "external-assets"),
                     to: "external-assets",
                 },
-            ]),
-            new CopyWebpackPlugin([
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
                 {
                     from: path.join(
                         __dirname,
@@ -159,19 +159,19 @@ let config = Object.assign(
                     ),
                     to: "ReadiumCSS",
                 },
-            ]),
-            new CopyWebpackPlugin([
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
                 {
                     from: path.join(__dirname, "node_modules", "mathjax"),
                     to: "MathJax",
                 },
-            ]),
-            new CopyWebpackPlugin([
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
                 {
                     from: path.join(__dirname, "resources"),
                     to: "assets/icons",
                 },
-            ]),
+            ]}),
             preprocessorDirectives.definePlugin,
         ],
     }
