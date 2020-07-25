@@ -419,7 +419,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             } catch (e) {
                 // ignore error
             }
-            if (typeof page !== "undefined" &&
+            if (typeof page !== "undefined" && page >= 0 &&
                 this.props.r2Publication.Spine && this.props.r2Publication.Spine[page]) {
 
                 this.setState({pageError: false});

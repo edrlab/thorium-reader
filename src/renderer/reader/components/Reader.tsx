@@ -243,7 +243,7 @@ class Reader extends React.Component<IProps, IState> {
                             try {
 
                                 const index = parseInt(this.props.locator?.locator?.href, 10);
-                                if (index) {
+                                if (typeof index !== "undefined" && index >= 0) {
                                     console.log("index divina", index);
                                     this.currentDivinaPlayer.goToPageWithIndex(index);
                                 }
@@ -1030,7 +1030,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isDivina) {
             const index = parseInt(locator?.href, 10);
-            if (index) {
+            if (typeof index !== "undefined" && index >= 0) {
                 this.currentDivinaPlayer.goToPageWithIndex(index);
             }
         } else {
