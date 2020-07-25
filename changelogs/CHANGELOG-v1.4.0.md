@@ -2,7 +2,7 @@
 
 ## Summary
 
-Version `1.4.0` was released on **03 July 2020**.
+Version `1.4.0` was released on **25 July 2020**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 

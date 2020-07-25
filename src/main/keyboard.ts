@@ -63,7 +63,9 @@ const userFilePath = path.join(
 );
 
 function showFolder() {
-    shell.openItem(folderPath);
+    setTimeout(async () => {
+        await shell.openPath(folderPath);
+    }, 0);
 }
 function showDefaultFile() {
     shell.showItemInFolder(defaultsFilePath);
