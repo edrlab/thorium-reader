@@ -7,6 +7,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { formatTime } from "readium-desktop/common/utils/time";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
@@ -66,8 +67,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return (<></>);
         }
 
-        const isAudioBook = r2Publication?.Metadata?.RDFType &&
-            /http[s]?:\/\/schema\.org\/Audiobook$/.test(r2Publication.Metadata.RDFType);
+        const isAudioBook = isAudiobookFn(r2Publication);
 
         const { __ } = this.props;
         const { moreInfo } = this.state;

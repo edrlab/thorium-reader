@@ -37,6 +37,7 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
@@ -80,8 +81,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             return <></>;
         }
 
-        const isAudioBook = r2Publication?.Metadata?.RDFType &&
-            /http[s]?:\/\/schema\.org\/Audiobook$/.test(r2Publication.Metadata.RDFType);
+        const isAudioBook = isAudiobookFn(r2Publication);
 
         const sections: SectionData[] = [];
 

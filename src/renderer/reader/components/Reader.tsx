@@ -69,6 +69,7 @@ import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redu
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
+import { isDivinaFn } from "readium-desktop/common/isManifestType";
 
 // import { isDeepStrictEqual } from "util";
 
@@ -1391,11 +1392,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // see this.ttsOverlayEnableNeedsSync
     // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
 
-    // TODO: extension or @type ?
-    // const isDivina = this.props.r2Publication?.Metadata?.RDFType &&
-    //    (/http[s]?:\/\/schema\.org\/ComicStrip$/.test(this.props.r2Publication.Metadata.RDFType) ||
-    //    /http[s]?:\/\/schema\.org\/VisualNarrative$/.test(this.props.r2Publication.Metadata.RDFType));
-    const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
+    // extension or @type ?
+    // const isDivina = isDivinaFn(state.r2Publication);
+    // const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
+    const isDivina = isDivinaFn(state.reader.info.r2Publication);
 
     return {
         isDivina,
