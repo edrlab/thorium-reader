@@ -15,13 +15,15 @@ type TIsRdfType = Partial<Pick<PublicationView, "RDFType">> &
     Partial<Record<keyof Partial<Pick<R2Publication, "Metadata">>, TMetadataR2Publication>>;
 
 export const isAudiobookFn = (item: TIsRdfType | undefined) =>
-    (item?.RDFType && /http[s]?:\/\/schema\.org\/Audiobook$/.test(item?.RDFType)) ||
-    (item?.Metadata?.RDFType && /http[s]?:\/\/schema\.org\/Audiobook$/.test(item?.Metadata?.RDFType));
+    (item?.RDFType && /http[s]?:\/\/schema\.org\/Audiobook[\/]?$/.test(item?.RDFType)) ||
+    (item?.Metadata?.RDFType && /http[s]?:\/\/schema\.org\/Audiobook[\/]?$/.test(item?.Metadata?.RDFType));
 
 export const isDivinaFn = (item: TIsRdfType | undefined) =>
     (item?.Metadata?.RDFType &&
-    (/http[s]?:\/\/schema\.org\/ComicStrip$/.test(item?.Metadata?.RDFType) ||
-        /http[s]?:\/\/schema\.org\/VisualNarrative$/.test(item?.Metadata?.RDFType))) ||
+        (/http[s]?:\/\/schema\.org\/ComicStrip[\/]?$/.test(item?.Metadata?.RDFType) ||
+            /http[s]?:\/\/schema\.org\/ComicStory[\/]?$/.test(item?.Metadata?.RDFType) ||
+            /http[s]?:\/\/schema\.org\/VisualNarrative[\/]?$/.test(item?.Metadata?.RDFType))) ||
     (item?.RDFType &&
-    (/http[s]?:\/\/schema\.org\/ComicStrip$/.test(item?.RDFType) ||
-        /http[s]?:\/\/schema\.org\/VisualNarrative$/.test(item?.RDFType)));
+        (/http[s]?:\/\/schema\.org\/ComicStrip[\/]?$/.test(item?.RDFType) ||
+            /http[s]?:\/\/schema\.org\/ComicStory[\/]?$/.test(item?.RDFType) ||
+            /http[s]?:\/\/schema\.org\/VisualNarrative[\/]?$/.test(item?.RDFType)));
