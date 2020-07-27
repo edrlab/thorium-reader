@@ -12,7 +12,7 @@ import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
-import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { isDivinaFn } from "readium-desktop/common/isManifestType";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
@@ -69,7 +69,6 @@ import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redu
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
-import { isDivinaFn } from "readium-desktop/common/isManifestType";
 
 // import { isDeepStrictEqual } from "util";
 
