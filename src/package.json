@@ -42,7 +42,7 @@
     "bindings": "^1.5.0",
     "leveldown": "^5.6.0",
     "mathjax": "^3.0.5",
-    "pouchdb-adapter-leveldb": "^7.2.1",
+    "pouchdb-adapter-leveldb": "^7.2.2",
     "pouchdb-adapter-node-websql": "^7.0.0",
     "sqlite3": "^4.2.0",
     "yargs": "^15.4.1"
