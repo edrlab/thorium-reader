@@ -57,7 +57,7 @@ export class ToastManager extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { toastList } = this.state;
-        return <div className={styles.toastList}>
+        return <div className={styles.toastList} role="complementary">
             { Object.keys(toastList).map((id: string) => {
                 const toast = toastList[id];
                 if (toast) {

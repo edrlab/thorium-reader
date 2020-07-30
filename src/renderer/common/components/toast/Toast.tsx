@@ -60,7 +60,7 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        setTimeout(this.handleClose, 5000);
+        // setTimeout(this.handleClose, 5000);
         if (this.ref?.current) {
             this.ref?.current.addEventListener("transitionend", this.handleTransitionEnd, false);
         }
@@ -116,7 +116,7 @@ export class Toast extends React.Component<IProps, IState> {
                 // icon && <SVG className={styles.icon} svg={icon} />
                 }
                 <p>{ this.props.message }</p>
-                <button
+                <button aria-hidden="true"
                     onClick={() => this.handleClose()}
                     className={styles.closeButton}
                 >
