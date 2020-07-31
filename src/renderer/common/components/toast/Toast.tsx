@@ -108,15 +108,15 @@ export class Toast extends React.Component<IProps, IState> {
                     toRemove && styles.toRemove,
                     typeClassName,
                 )}
-                aria-live="assertive"
-                aria-relevant="all"
+                // aria-live="assertive"
+                // aria-relevant="all"
                 role="alert"
             >
                 {
                 // icon && <SVG className={styles.icon} svg={icon} />
                 }
                 <p>{ this.props.message }</p>
-                <button aria-hidden="true"
+                <button aria-label="close notification"
                     onClick={() => this.handleClose()}
                     className={styles.closeButton}
                 >
