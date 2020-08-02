@@ -80,7 +80,7 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, type } = this.props;
+        const { type } = this.props;
         const { willLeave, toRemove } = this.state;
 
         let typeClassName: string;
@@ -117,7 +117,7 @@ export class Toast extends React.Component<IProps, IState> {
                 }
                 <p>{ this.props.message }</p>
                 <button
-                    aria-label={ __("accessibility.closeNotification")}
+                    aria-label="Close notification"
                     onClick={() => this.handleClose()}
                     className={styles.closeButton}
                 >

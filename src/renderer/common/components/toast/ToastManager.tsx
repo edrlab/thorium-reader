@@ -56,7 +56,6 @@ export class ToastManager extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        // const { __ } = this.props;
         const { toastList } = this.state;
         return <div className={styles.toastList} role="region" aria-label="Notifications">
             { Object.keys(toastList).map((id: string) => {
