@@ -2,12 +2,10 @@
     "accessibility": {
         "bookMenu": "Menú",
         "closeDialog": "Cerrar",
-        "closeNotification": "Cerrar notificación",
         "homeMenu": "Menú principal",
         "importFile": "Importar publicación",
         "leftSlideButton": "Desplazar lista a la izquierda",
         "mainContent": "Contenido principal",
-        "notifications": "Notificaciones",
         "rightSlideButton": "Desplazar lista a la derecha",
         "searchBook": "Buscar por título",
         "skipLink": "Pasar al contenido",
