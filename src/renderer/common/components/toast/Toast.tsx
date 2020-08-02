@@ -80,7 +80,7 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { type } = this.props;
+        const { __, type } = this.props;
         const { willLeave, toRemove } = this.state;
 
         let typeClassName: string;
@@ -116,7 +116,8 @@ export class Toast extends React.Component<IProps, IState> {
                 // icon && <SVG className={styles.icon} svg={icon} />
                 }
                 <p>{ this.props.message }</p>
-                <button aria-label="close notification"
+                <button
+                    aria-label={ __("accessibility.closeNotification")}
                     onClick={() => this.handleClose()}
                     className={styles.closeButton}
                 >
