@@ -53,6 +53,7 @@ export async function httpGet<TData = any>(
     const signal = new AbortSignal();
 
     options.signal = signal;
+    options.method = "GET";
 
     let locale = "en-US";
     try {
