@@ -34,6 +34,18 @@ const _enableHot = false;
 const nodeEnv = process.env.NODE_ENV || "development";
 console.log(`READER nodeEnv: ${nodeEnv}`);
 
+// https://github.com/edrlab/thorium-reader/issues/1097#issuecomment-643406149
+const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER
+    ? true
+    : false;
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => { return "ForkTsCheckerWebpackPlugin" };
+const checkTypeScriptSkip =
+    nodeEnv !== "production" ?
+    (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false)
+    : false
+    ;
+
 let externals = {
     bindings: "bindings",
     leveldown: "leveldown",
@@ -85,6 +97,7 @@ const cssLoaderConfig = [
         options: {
             importLoaders: 1,
             modules: true,
+            esModule: false,
         },
     },
     "postcss-loader",
@@ -111,7 +124,9 @@ let config = Object.assign(
             extensions: [".ts", ".tsx", ".js", ".jsx"],
             alias: aliases,
         },
-
+        stats: {
+            // warningsFilter: /export .* was not found in/,
+        },
         module: {
             rules: [
                 {
@@ -129,8 +144,13 @@ let config = Object.assign(
                 },
                 {
                     exclude: /node_modules/,
-                    loaders: ["awesome-typescript-loader"],
                     test: /\.tsx?$/,
+                    loader: useLegacyTypeScriptLoader
+                        ? "awesome-typescript-loader"
+                        : "ts-loader",
+                    options: {
+                        transpileOnly: true, // checkTypeScriptSkip
+                    },
                 },
                 {
                     loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
@@ -184,7 +204,14 @@ let config = Object.assign(
     }
 );
 
+if (!checkTypeScriptSkip) {
+    config.plugins.push(new ForkTsCheckerWebpackPlugin({
+        // measureCompilationTime: true,
+    }));
+}
+
 if (nodeEnv !== "production") {
+
     const port = parseInt(preprocessorDirectives.portReader, 10);
     console.log("READER PORT: " + port);
     // Renderer config for DEV environment

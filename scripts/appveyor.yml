@@ -27,6 +27,7 @@ install:
   - ps: Install-Product node 12 x64
   - node --version && npm --version
   - npm --global install npm@latest
+  - npm --global install asar
   - set PATH=%APPDATA%\npm;%PATH%
   - node --version && npm --version
   - node scripts/package-ci-patch.js package.json %APPVEYOR_BUILD_NUMBER% && cat package.json | grep -i VERSION && cat package.json
@@ -52,9 +53,13 @@ build_script:
   - pwd
   - ls -als
   - ls -als dist
+  - ls -Rals dist/node_modules/leveldown || pwd
+  - ls -Rals dist/node_modules/sqlite3 || pwd
   - ls -als release || pwd
   - ls -als release/win-unpacked || pwd
   - ls -Rals release/win-unpacked/resources/app.asar.unpacked || pwd
+  - (asar l release/win-unpacked/resources/app.asar | grep -i node_modules/leveldown)  || pwd
+  - (asar l release/win-unpacked/resources/app.asar | grep -i node_modules/sqlite)  || pwd
   - ps: 'if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) { pwd } else { Get-ChildItem -File release | Rename-Item -NewName { $_.Name -replace " ","_" } }'
   - ls -als release || pwd
 

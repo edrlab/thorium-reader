@@ -19,7 +19,6 @@ debug("_");
 export function error(filename: string, err: any) {
 
     debug(err);
-    debug(err.stack);
 
     let errorMessage: string;
     if (types.isNativeError(err)) {

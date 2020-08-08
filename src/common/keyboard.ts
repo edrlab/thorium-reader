@@ -188,6 +188,31 @@ const _defaults_ = Object.freeze({
         shift: false,
         key: "PageDown",
     }),
+
+    AudioPlayPause: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit2",
+    }),
+    AudioPrevious: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit1",
+    }),
+    AudioNext: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit3",
+    }),
+    AudioStop: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit4",
+    }),
 });
 export const _defaults = sortObject(_defaults_);
 
