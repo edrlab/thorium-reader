@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as https from "https";
+import * as http from "https";
 import fetch from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
 import {
@@ -29,11 +30,26 @@ export async function request(
     };
     options.headers = headers;
 
-    if (!options.agent) {
-        const agent = new https.Agent({
+    // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
+    // this a nodeJs issues !
+    //
+    // const httpAgent = new http.Agent({
+    //     timeout: options.timeout || 30000,
+    // });
+    // options.agent = (parsedURL: URL) => {
+    //     if (parsedURL.protocol === "http:") {
+    //           return httpAgent;
+    //     } else {
+    //           return httpsAgent;
+    //     }
+    // };
+    if (!options.agent && url.toString().startsWith("https:")) {
+        const httpsAgent = new https.Agent({
+            timeout: options.timeout || 30000,
             rejectUnauthorized: IS_DEV ? false : true,
         });
-        options.agent = agent;
+        options.agent = httpsAgent;
+
     }
 
     const res = await fetch(url, options);
@@ -44,15 +60,16 @@ export async function request(
 export async function httpGet<TData = any>(
     url: string | URL,
     options: THttpOptions = {},
-    timeout = 30000,
     callback?: THttpGetCallback<TData>,
 ): Promise<IHttpGetResult<TData>> {
 
-    let result: IHttpGetResult<TData>;
+    let result: IHttpGetResult<TData> = {
+        isFailure: true,
+        isSuccess: false,
+        url,
+    };
 
-    const signal = new AbortSignal();
-
-    options.signal = signal;
+    // options.signal = new AbortSignal();
     options.method = "GET";
 
     let locale = "en-US";
@@ -63,17 +80,12 @@ export async function httpGet<TData = any>(
         // ignore
     }
 
-    let timeoutId: NodeJS.Timeout;
-    if (timeout) {
-        timeoutId = setTimeout(() => {
-            signal.dispatchEvent();
-        }, timeout);
-    }
-
     try {
         const response = await request(url, options, locale);
 
         result = {
+            isAbort: false,
+            isNetworkError: false,
             isTimeout: false,
             isFailure: !response.ok/*response.status < 200 || response.status >= 300*/,
             isSuccess: response.ok/*response.status >= 200 && response.status < 300*/,
@@ -88,18 +100,39 @@ export async function httpGet<TData = any>(
         };
     } catch (err) {
 
-        clearTimeout(timeoutId);
+        const errStr = err instanceof Error ? err.toString() : err;
 
         if (err.name === "AbortError") {
-            result =  {
-                isTimeout: true,
+            result = {
+                isAbort: true,
+                isNetworkError: false,
+                isTimeout: false,
                 isFailure: true,
                 isSuccess: false,
                 url,
             };
-        } else {
-            throw err;
+        } else if (errStr.includes("timeout")) { // err.name === "FetchError"
+            result = {
+                isAbort: false,
+                isNetworkError: true,
+                isTimeout: true,
+                isFailure: true,
+                isSuccess: false,
+                url,
+                statusMessage: errStr,
+            };
+        } else { // err.name === "FetchError"
+            result = {
+                isAbort: false,
+                isNetworkError: true,
+                isTimeout: false,
+                isFailure: true,
+                isSuccess: false,
+                url,
+                statusMessage: errStr,
+            };
         }
+
     } finally {
 
         if (callback) {
@@ -109,8 +142,6 @@ export async function httpGet<TData = any>(
             delete result.body;
             delete result.response;
         }
-
-        clearTimeout(timeoutId);
     }
 
     return result;
@@ -133,7 +164,7 @@ export class AbortSignal implements IAbortSignal {
     // }
 
     public addEventListener(_type: "abort", listener: (a: any[]) => any) {
-            this.listenerArray.push(listener);
+        this.listenerArray.push(listener);
     }
 
     public removeEventListener(_type: "abort", listener: (a: any[]) => any) {

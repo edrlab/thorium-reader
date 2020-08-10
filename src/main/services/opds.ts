@@ -67,8 +67,9 @@ export class OpdsService {
     private static async getOpenSearchUrl(opensearchLink: IOpdsLinkView): Promise<string | undefined> {
         const searchResult = await httpGet<string>(
             opensearchLink.url,
-            {},
-            10000,
+            {
+                timeout: 10000,
+            },
             async (searchData) => {
                 if (searchData.isFailure) {
                     searchData.data = undefined;
@@ -114,8 +115,8 @@ export class OpdsService {
                 headers: {
                     Authorization: accessToken ? `Bearer ${accessToken.authenticationToken}` : undefined,
                 },
+                timeout: 10000,
             },
-            10000,
             async (opdsFeedData) => {
 
                 let r2OpdsFeed: OPDSFeed | undefined;
