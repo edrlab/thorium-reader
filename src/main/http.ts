@@ -70,9 +70,22 @@ export async function httpGet<TData = any>(
         }, timeout);
     }
 
-    let response: THttpResponse;
     try {
-        response = await request(url, options, locale);
+        const response = await request(url, options, locale);
+
+        result = {
+            isTimeout: false,
+            isFailure: !response.ok/*response.status < 200 || response.status >= 300*/,
+            isSuccess: response.ok/*response.status >= 200 && response.status < 300*/,
+            url,
+            responseUrl: response.url,
+            statusCode: response.status,
+            statusMessage: response.statusText,
+            body: response.body,
+            response,
+            data: callback ? undefined : await response.json(),
+            contentType: response.headers.get("Content-Type"),
+        };
     } catch (err) {
 
         clearTimeout(timeoutId);
@@ -87,31 +100,18 @@ export async function httpGet<TData = any>(
         } else {
             throw err;
         }
+    } finally {
+
+        if (callback) {
+            result = await Promise.resolve(callback(result));
+
+            // remove for IPC sync
+            delete result.body;
+            delete result.response;
+        }
+
+        clearTimeout(timeoutId);
     }
-
-    result = {
-        isTimeout: false,
-        isFailure: !response.ok/*response.status < 200 || response.status >= 300*/,
-        isSuccess: response.ok/*response.status >= 200 && response.status < 300*/,
-        url,
-        responseUrl: response.url,
-        statusCode: response.status,
-        statusMessage: response.statusText,
-        body: response.body,
-        response,
-        data: callback ? undefined : await response.json(),
-        contentType: response.headers.get("Content-Type"),
-    };
-
-    if (callback) {
-        result = await Promise.resolve(callback(result));
-
-        // remove for IPC sync
-        delete result.body;
-        delete result.response;
-    }
-
-    clearTimeout(timeoutId);
 
     return result;
 }
