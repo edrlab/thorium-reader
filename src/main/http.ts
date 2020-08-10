@@ -6,14 +6,12 @@
 // ==LICENSE-END==
 
 import * as https from "https";
-import * as http from "https";
 import fetch from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { setTimeout } from "timers";
 
 import { diMainGet } from "./di";
 
@@ -30,6 +28,7 @@ export async function request(
     };
     options.headers = headers;
 
+    // https://github.com/node-fetch/node-fetch#custom-agent
     // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
     // this a nodeJs issues !
     //
