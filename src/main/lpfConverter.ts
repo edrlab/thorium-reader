@@ -477,6 +477,8 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
         }
     }
 
+    // TODO
+    // return R2Publication and not jsonMap |separation of concerns
     const publicationJson = TaJsonSerialize<R2Publication>(publication);
 
     return publicationJson;
