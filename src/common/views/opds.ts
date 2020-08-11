@@ -9,7 +9,7 @@ import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability"
 import { OPDSCurrencyEnum } from "@r2-opds-js/opds/opds2/opds2-price";
 
 import { Identifiable } from "../models/identifiable";
-import { IHttpGetResult } from "../utils/http";
+import { THttpGetResultAfterCallback } from "../utils/http";
 
 export interface IOpdsFeedView extends Identifiable {
     title: string;
@@ -133,4 +133,4 @@ export interface IOpdsNavigationLink {
     self: IOpdsLinkView[];
 }
 
-export type THttpGetOpdsResultView = IHttpGetResult<string, IOpdsResultView>;
+export type THttpGetOpdsResultView = THttpGetResultAfterCallback<IOpdsResultView>;
