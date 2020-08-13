@@ -156,6 +156,13 @@ export class PublicationService {
         return publicationDocument;
     }
 
+    // 13/08/2020
+    // r2OpdsPublicationBase64 is used to get :
+    // - the lcp_hashed_passphrase not parsed by the opds converter
+    // - and the tags string (re-parsed by a dedicated function whereas the opds converter alredy did it)
+    // I propose to parse the lcp_hashed_passphrase in the opds-converter and just not print it to user
+    // and then add the subject tag in parameter. or Better re-send all the PublicationView to the main.
+
     public async importPublicationFromLink(
         link: IOpdsLinkView,
         r2OpdsPublicationBase64: string,
