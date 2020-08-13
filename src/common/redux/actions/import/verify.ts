@@ -8,11 +8,13 @@
 import { Action } from "readium-desktop/common/models/redux";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 
-import { ImportState } from "../../states/import";
-
 export const ID = "IMPORT_VERIFICATION_REQUEST";
 
-export type Payload = ImportState;
+export interface Payload {
+    link: IOpdsLinkView;
+    r2OpdsPublicationBase64: string;
+    title: string;
+}
 
 export function build(
     link: IOpdsLinkView,
