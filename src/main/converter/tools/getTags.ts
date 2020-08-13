@@ -9,6 +9,9 @@ import { convertMultiLangStringToString } from "readium-desktop/main/converter/t
 
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
+// 13/08/20
+// USELESS function .. used only on publication importLink
+
 export const getTagsFromOpdsPublication = (r2OpdsPublication: OPDSPublication | undefined) => {
     let tags: string[];
     if (r2OpdsPublication?.Metadata?.Subject) {
