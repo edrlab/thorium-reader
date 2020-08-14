@@ -90,7 +90,7 @@ export class PublicationApi implements IPublicationApi {
 
             let publicationDocument;
             try {
-                publicationDocument = await this.publicationService.importPublicationFromLink(
+                publicationDocument = await this.publicationService.importFromLink(
                     link,
                     r2OpdsPublicationBase64,
                 );
@@ -117,7 +117,7 @@ export class PublicationApi implements IPublicationApi {
         }
 
         const publicationDocumentPromises = filePathArray.map(
-            (filePath) => this.publicationService.importEpubOrLcplFile(filePath),
+            (filePath) => this.publicationService.importFromFs(filePath),
         );
         const publicationDocumentPromisesAll = await PromiseAllSettled(publicationDocumentPromises);
 

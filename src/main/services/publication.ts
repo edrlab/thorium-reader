@@ -84,7 +84,7 @@ export class PublicationService {
     // @inject(diSymbolTable["win-registry"])
     // private readonly winRegistry!: WinRegistry;
 
-    public async importEpubOrLcplFile(
+    public async importFromFs(
         filePath: string,
         _isLcpFile?: boolean,
         lcpHashedPassphrase?: string): Promise<PublicationDocument | undefined> {
@@ -101,7 +101,7 @@ export class PublicationService {
 
             if (publicationArray?.length) {
 
-                debug("importEpubOrLcplFile", publicationArray, hash);
+                debug("importFromFs", publicationArray, hash);
                 publicationDocument = publicationArray[0];
                 this.store.dispatch(
                     toastActions.openRequest.build(
@@ -114,7 +114,7 @@ export class PublicationService {
             } else {
 
                 if (isLCPLicense) {
-                    publicationDocument = await this.importLcplFile(filePath, lcpHashedPassphrase);
+                    publicationDocument = await this.importLcplFromFS(filePath, lcpHashedPassphrase);
 
                 } else  {
                     let epubFilePath = filePath;
@@ -125,7 +125,7 @@ export class PublicationService {
                         [epubFilePath, cleanFct] = await lpfToAudiobookConverter(filePath);
                     }
 
-                    publicationDocument = await this.importEpubFile(epubFilePath, hash, lcpHashedPassphrase);
+                    publicationDocument = await this.importPublicationFromFS(epubFilePath, hash, lcpHashedPassphrase);
 
                     if (cleanFct) {
                         // not useful to wait promise-resolved here
@@ -143,7 +143,7 @@ export class PublicationService {
             }
         } catch (error) {
 
-            debug("importEpubOrLcplFile (hash + import) fail with :" + filePath, error);
+            debug("importFromFs (hash + import) fail with :" + filePath, error);
             this.store.dispatch(
                 toastActions.openRequest.build(
                     ToastType.Error,
@@ -163,7 +163,7 @@ export class PublicationService {
     // I propose to parse the lcp_hashed_passphrase in the opds-converter and just not print it to user
     // and then add the subject tag in parameter. or Better re-send all the PublicationView to the main.
 
-    public async importPublicationFromLink(
+    public async importFromLink(
         link: IOpdsLinkView,
         r2OpdsPublicationBase64: string,
     ): Promise<PublicationDocument | undefined> {
@@ -296,7 +296,7 @@ export class PublicationService {
         this.store.dispatch(downloadActions.success.build(download.srcUrl));
 
         // Import downloaded publication in catalog
-        let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile, lcpHashedPassphrase);
+        let publicationDocument = await this.importFromFs(download.dstPath, isLcpFile, lcpHashedPassphrase);
 
         if (publicationDocument) {
             const tags = getTagsFromOpdsPublication(r2OpdsPublication);
@@ -396,7 +396,7 @@ export class PublicationService {
         }
     }
 
-    private async importLcplFile(filePath: string, lcpHashedPassphrase?: string): Promise<PublicationDocument> {
+    private async importLcplFromFS(filePath: string, lcpHashedPassphrase?: string): Promise<PublicationDocument> {
         const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
         const lcpJson = JSON.parse(jsonStr);
         const r2LCP = TaJsonDeserialize<LCP>(lcpJson, LCP);
@@ -528,7 +528,7 @@ export class PublicationService {
         const publicationArray = await this.publicationRepository.findByHashId(hash);
         if (publicationArray?.length) {
 
-            debug("importLcplFile", publicationArray, hash);
+            debug("importLcplFromFS", publicationArray, hash);
             const pubDocument = publicationArray[0];
             this.store.dispatch(
                 toastActions.openRequest.build(
@@ -541,14 +541,14 @@ export class PublicationService {
             return pubDocument;
         }
 
-        const publicationDocument = await this.importEpubFile(download.dstPath, hash, lcpHashedPassphrase);
+        const publicationDocument = await this.importPublicationFromFS(download.dstPath, hash, lcpHashedPassphrase);
         return publicationDocument;
         // return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
     }
 
     // hash = null so that extractCrc32OnZip() is not unnecessarily invoked
     // hash = undefined so invoke extractCrc32OnZip()
-    private async importEpubFile(
+    private async importPublicationFromFS(
         filePath: string,
         hash?: string,
         lcpHashedPassphrase?: string): Promise<PublicationDocument> {
