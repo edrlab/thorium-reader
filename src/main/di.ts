@@ -50,6 +50,7 @@ import { Server } from "@r2-streamer-js/http/server";
 import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { SessionApi } from "./api/session";
+import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 
@@ -255,7 +256,10 @@ container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSin
 
 // API
 container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
-container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
+// container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
+
+container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi);
+
 container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
