@@ -32,14 +32,12 @@ function* processRequest(requestAction: apiActions.request.TAction) {
     const { api } = requestAction.meta;
 
     try {
-        const apiModule = yield call(() => diMainGet(getSymbolName(api.moduleId)));
-        const apiMethod = apiModule[api.methodId].bind(apiModule);
-
         debug(api.moduleId, api.methodId, requestAction.payload);
 
+        const apiModule = yield call(() => diMainGet(getSymbolName(api.moduleId)));
+
         const result = yield call(
-            apiMethod,
-            ...(requestAction.payload || []),
+            () => apiModule[api.methodId](...(requestAction.payload || [])),
         );
 
         yield put(apiActions.result.build(api, result));
