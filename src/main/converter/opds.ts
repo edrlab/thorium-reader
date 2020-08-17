@@ -75,20 +75,68 @@ export class OpdsFeedViewConverter {
 
     public convertOpdsPropertiesToView(properties: TProperties | undefined): IOPDSPropertiesView {
 
-        return properties && {
-            numberOfItems: properties.NumberOfItems || undefined,
-            priceValue: properties.Price?.Value || undefined,
-            priceCurrency: properties.Price?.Currency as OPDSCurrencyEnum || undefined,
-            holdTotal: properties.Holds?.Total || undefined,
-            holdPosition: properties.Holds?.Position || undefined,
-            copyTotal: properties.Copies?.Total || undefined,
-            copyAvailable: properties.Copies?.Available || undefined,
-            availabilityState: properties.Availability?.State as OPDSAvailabilityEnum || undefined,
-            availabilitySince: properties.Availability?.Since
-                && moment(properties.Availability.Since).toISOString() || undefined,
-            availabilityUntil: properties.Availability?.Until
-                && moment(properties.Availability.Until).toISOString() || undefined,
-        };
+        if (properties) {
+
+            const key = "lcp_hashed_passphrase";
+            const lcpHashedPassphraseObj = properties.AdditionalJSON[key];
+            let lcpHashedPassphrase: string;
+            if (typeof lcpHashedPassphraseObj === "string") {
+                const lcpHashedPassphraseHexOrB64 = lcpHashedPassphraseObj as string;
+                let isHex = false;
+                try {
+                    const low1 = lcpHashedPassphraseHexOrB64.toLowerCase();
+                    const buff = Buffer.from(low1, "hex");
+                    const str = buff.toString("hex");
+                    const low2 = str.toLowerCase();
+                    isHex = low1 === low2;
+                    if (!isHex) {
+                        debug(`OPDS lcp_hashed_passphrase should be HEX! (${lcpHashedPassphraseHexOrB64}) ${low1} !== ${low2}`);
+                    } else {
+                        debug(`OPDS lcp_hashed_passphrase is HEX: ${lcpHashedPassphraseHexOrB64}`);
+                    }
+                } catch (err) {
+                    debug(err); // ignore
+                }
+                if (isHex) {
+                    lcpHashedPassphrase = lcpHashedPassphraseHexOrB64;
+                } else {
+                    let isBase64 = false;
+                    try {
+                        const buff = Buffer.from(lcpHashedPassphraseHexOrB64, "base64");
+                        const str = buff.toString("hex");
+                        const b64 = Buffer.from(str, "hex").toString("base64");
+                        isBase64 = lcpHashedPassphraseHexOrB64 === b64;
+                        if (!isBase64) {
+                            debug(`OPDS lcp_hashed_passphrase is not BASE64?! (${lcpHashedPassphraseHexOrB64}) ${lcpHashedPassphraseHexOrB64} !== ${b64}`);
+                        } else {
+                            debug(`OPDS lcp_hashed_passphrase is BASE64! (${lcpHashedPassphraseHexOrB64})`);
+                        }
+                    } catch (err) {
+                        debug(err); // ignore
+                    }
+                    if (isBase64) {
+                        lcpHashedPassphrase = Buffer.from(lcpHashedPassphraseHexOrB64, "base64").toString("hex");
+                    }
+                }
+            }
+
+            return {
+                lcpHashedPassphrase,
+                numberOfItems: properties.NumberOfItems || undefined,
+                priceValue: properties.Price?.Value || undefined,
+                priceCurrency: properties.Price?.Currency as OPDSCurrencyEnum || undefined,
+                holdTotal: properties.Holds?.Total || undefined,
+                holdPosition: properties.Holds?.Position || undefined,
+                copyTotal: properties.Copies?.Total || undefined,
+                copyAvailable: properties.Copies?.Available || undefined,
+                availabilityState: properties.Availability?.State as OPDSAvailabilityEnum || undefined,
+                availabilitySince: properties.Availability?.Since
+                    && moment(properties.Availability.Since).toISOString() || undefined,
+                availabilityUntil: properties.Availability?.Until
+                    && moment(properties.Availability.Until).toISOString() || undefined,
+            };
+        }
+        return undefined;
     }
 
     public convertOpdsTagToView(subject: Subject, baseUrl: string): IOpdsTagView {

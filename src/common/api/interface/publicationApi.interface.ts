@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { SagaGenerator } from "typed-redux-saga";
 
@@ -31,7 +31,7 @@ export interface IPublicationApi {
     ) => SagaGenerator<string[]>;
     importFromLink: (
         link: IOpdsLinkView,
-        r2OpdsPublicationBase64: string,
+        pub: IOpdsPublicationView,
     ) => SagaGenerator<PublicationView>;
     importFromFs: (
         filePathArray: string | string[],

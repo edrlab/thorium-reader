@@ -58,8 +58,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <button
                                 onClick={() => verifyImport(
                                     ln,
-                                    opdsPublicationView.r2OpdsPublicationBase64,
-                                    opdsPublicationView.title,
+                                    opdsPublicationView,
                                 )}
                                 className={styles.lire}
                                 disabled={openAccessButtonIsDisabled()}
@@ -81,8 +80,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <button
                                 onClick={() => verifyImport(
                                     ln,
-                                    opdsPublicationView.r2OpdsPublicationBase64,
-                                    opdsPublicationView.title,
+                                    opdsPublicationView,
                                 )}
                                 className={styles.lire}
                                 disabled={sampleButtonIsDisabled()}

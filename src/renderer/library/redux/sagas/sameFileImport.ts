@@ -32,7 +32,7 @@ const findDownload = (dls: Download[], link: IOpdsLinkView) =>
 
 function* sameFileImport(action: importActions.verify.TAction) {
 
-    const { link, title, r2OpdsPublicationBase64 } = action.payload;
+    const { link, pub } = action.payload;
 
     const downloads = yield* selectTyped(
         (state: ILibraryRootState) => state.download?.downloads);
@@ -47,7 +47,7 @@ function* sameFileImport(action: importActions.verify.TAction) {
                 ToastType.Success,
                 translator.translate("message.import.alreadyImport",
                     {
-                        title: title || "",
+                        title: pub.title || "",
                     },
                 ),
             ),
@@ -58,7 +58,7 @@ function* sameFileImport(action: importActions.verify.TAction) {
         yield apiSaga("publication/importFromLink",
             REQUEST_ID,
             link,
-            r2OpdsPublicationBase64,
+            pub,
         );
     }
 }

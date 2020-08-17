@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { allTyped } from "readium-desktop/common/redux/sagas/typed-saga";
-import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { call } from "redux-saga/effects";
@@ -18,13 +18,13 @@ import { importFromLinkService } from "./importFromLink";
 
 export function* importFromLink(
     link: IOpdsLinkView,
-    r2OpdsPublicationBase64: string,
+    pub: IOpdsPublicationView,
 ): SagaGenerator<PublicationView | undefined> {
 
-    if (link?.url && r2OpdsPublicationBase64) {
+    if (link?.url && pub) {
 
         try {
-            const publicationDocument = yield* importFromLinkService(link, r2OpdsPublicationBase64);
+            const publicationDocument = yield* importFromLinkService(link, pub);
 
             if (!publicationDocument) {
                 throw new Error("publicationDocument not imported on db");

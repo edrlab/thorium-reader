@@ -98,6 +98,7 @@ export interface IOPDSPropertiesView {
     availabilityState?: OPDSAvailabilityEnum | undefined;
     availabilitySince?: string | undefined;
     availabilityUntil?: string | undefined;
+    lcpHashedPassphrase?: string | undefined;
 }
 
 export interface IOpdsBaseLinkView {
