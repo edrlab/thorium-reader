@@ -17,31 +17,31 @@ export interface IPublicationApi {
     ) => TGenerator<PublicationView>;
     delete: (
         identifier: string,
-    ) => Promise<void>;
+    ) => TGenerator<void>;
     findAll: (
     ) => TGenerator<PublicationView[]>;
     findByTag: (
         tag: string,
-    ) => Promise<PublicationView[]>;
+    ) => TGenerator<PublicationView[]>;
     updateTags: (
         identifier: string,
         tags: string[],
-    ) => Promise<PublicationView>;
+    ) => TGenerator<PublicationView>;
     getAllTags: (
-    ) => Promise<string[]>;
+    ) => TGenerator<string[]>;
     importOpdsPublicationLink: (
         link: IOpdsLinkView,
         r2OpdsPublicationBase64: string,
-    ) => Promise<PublicationView>;
+    ) => TGenerator<PublicationView>;
     import: (
         filePathArray: string | string[],
-    ) => Promise<PublicationView[]>;
+    ) => TGenerator<PublicationView[]>;
     search: (
         title: string,
-    ) => Promise<PublicationView[]>;
+    ) => TGenerator<PublicationView[]>;
     exportPublication: (
         publicationView: PublicationView,
-    ) => Promise<void>;
+    ) => TGenerator<void>;
 }
 
 export interface IPublicationModuleApi {

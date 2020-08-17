@@ -38,47 +38,47 @@ export class PublicationApi implements IPublicationApi {
     // private readonly store!: Store<RootState>;
 
     // called for publication info dialog modal box
-    public async get(identifier: string, checkLcpLsd: boolean): Promise<PublicationView> {
-        return await this.publicationService.getPublication(identifier, checkLcpLsd);
-    }
+    // public async get(identifier: string, checkLcpLsd: boolean): Promise<PublicationView> {
+    //     return await this.publicationService.getPublication(identifier, checkLcpLsd);
+    // }
 
-    public async delete(identifier: string): Promise<void> {
-        await this.publicationService.deletePublication(identifier);
-    }
+    // public async delete(identifier: string): Promise<void> {
+    //     await this.publicationService.deletePublication(identifier);
+    // }
 
-    public async findAll(): Promise<PublicationView[]> {
-        const docs = await this.publicationRepository.findAll();
-        return docs.map((doc) => {
-            return this.publicationViewConverter.convertDocumentToView(doc);
-        });
-    }
+    // public async findAll(): Promise<PublicationView[]> {
+    //     const docs = await this.publicationRepository.findAll();
+    //     return docs.map((doc) => {
+    //         return this.publicationViewConverter.convertDocumentToView(doc);
+    //     });
+    // }
 
-    public async findByTag(tag: string): Promise<PublicationView[]> {
-        const docs = await this.publicationRepository.findByTag(tag);
-        return docs.map((doc) => {
-            return this.publicationViewConverter.convertDocumentToView(doc);
-        });
-    }
+    // public async findByTag(tag: string): Promise<PublicationView[]> {
+    //     const docs = await this.publicationRepository.findByTag(tag);
+    //     return docs.map((doc) => {
+    //         return this.publicationViewConverter.convertDocumentToView(doc);
+    //     });
+    // }
 
-    public async updateTags(identifier: string, tags: string[]): Promise<PublicationView>  {
-        const doc = await this.publicationRepository.get(identifier);
-        const newDoc = Object.assign(
-            {},
-            doc,
-            { tags },
-        );
+    // public async updateTags(identifier: string, tags: string[]): Promise<PublicationView>  {
+    //     const doc = await this.publicationRepository.get(identifier);
+    //     const newDoc = Object.assign(
+    //         {},
+    //         doc,
+    //         { tags },
+    //     );
 
-        await this.publicationRepository.save(newDoc);
-        return this.get(identifier, false);
-    }
+    //     await this.publicationRepository.save(newDoc);
+    //     return this.get(identifier, false);
+    // }
 
     /**
      * List all tags defined in all pubs
      *
      */
-    public async getAllTags(): Promise<string[]> {
-        return this.publicationRepository.getAllTags();
-    }
+    // public async getAllTags(): Promise<string[]> {
+    //     return this.publicationRepository.getAllTags();
+    // }
 
     public async importOpdsPublicationLink(
         link: IOpdsLinkView | undefined,
@@ -135,20 +135,20 @@ export class PublicationApi implements IPublicationApi {
         return publicationViews;
     }
 
-    public async search(title: string): Promise<PublicationView[]> {
-        const titleFormated = title?.trim() || "";
+    // public async search(title: string): Promise<PublicationView[]> {
+    //     const titleFormated = title?.trim() || "";
 
-        const publicationDocuments = await this.publicationRepository.searchByTitle(titleFormated);
+    //     const publicationDocuments = await this.publicationRepository.searchByTitle(titleFormated);
 
-        const publicationViews = publicationDocuments.map((publicationDocument) =>
-            this.publicationViewConverter.convertDocumentToView(publicationDocument));
+    //     const publicationViews = publicationDocuments.map((publicationDocument) =>
+    //         this.publicationViewConverter.convertDocumentToView(publicationDocument));
 
-        return publicationViews;
-    }
+    //     return publicationViews;
+    // }
 
-    public async exportPublication(publicationView: PublicationView): Promise<void> {
-        if (publicationView) {
-            await this.publicationService.exportPublication(publicationView);
-        }
-    }
+    // public async exportPublication(publicationView: PublicationView): Promise<void> {
+    //     if (publicationView) {
+    //         await this.publicationService.exportPublication(publicationView);
+    //     }
+    // }
 }

@@ -9,10 +9,24 @@
 
 import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
 
+import { deletePublication } from "./delete";
+import { exportPublication } from "./export";
 import { findAll } from "./findAll";
+import { findByTag } from "./findByTag";
+import { getAllTags } from "./getAllTags";
+import { getPublication } from "./getPublication";
+import { search } from "./search";
+import { updateTags } from "./updateTags";
 
 const publicationApi: IPublicationApi = {
     findAll,
+    get: getPublication,
+    delete: deletePublication,
+    findByTag,
+    updateTags,
+    getAllTags,
+    search,
+    exportPublication,
 };
 
 export default publicationApi;
