@@ -7,18 +7,19 @@
 
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { TGenerator } from "readium-desktop/typings/api";
 
 export interface IPublicationApi {
     // get: (...a: [string]) => Promise<PublicationView> | void;
     get: (
         identifier: string,
         checkLcpLsd: boolean,
-    ) => Promise<PublicationView>;
+    ) => TGenerator<PublicationView>;
     delete: (
         identifier: string,
     ) => Promise<void>;
     findAll: (
-    ) => Promise<PublicationView[]>;
+    ) => TGenerator<PublicationView[]>;
     findByTag: (
         tag: string,
     ) => Promise<PublicationView[]>;

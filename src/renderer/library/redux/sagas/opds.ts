@@ -16,7 +16,7 @@ import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/opdsBrow
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
+import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { ContentType } from "readium-desktop/utils/content-type";
 import { call, put, take } from "redux-saga/effects";
 import { delay } from "typed-redux-saga";
@@ -110,7 +110,7 @@ function* getUrlApi(links: IOpdsLinkView[]) {
     yield apiSaga("opds/getUrlWithSearchLinks", SEARCH_OPDS_API_REQUEST_ID, links);
     while (true) {
         const action:
-            apiActions.result.TAction<ReturnPromiseType<TApiMethod["opds/getUrlWithSearchLinks"]>>
+            apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["opds/getUrlWithSearchLinks"]>>
             = yield take(apiActions.result.build);
 
         const { requestId } = action.meta.api;

@@ -5,18 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-function* findAll() {
+// import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
 
-    console.log("####");
-    console.log("####");
-    console.log("####");
-    console.log("HELLO WORLD");
+import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
 
-    console.log("####");
-    console.log("####");
-    console.log("####");
-}
+import { findAll } from "./findAll";
 
-export {
+const publicationApi: IPublicationApi = {
     findAll,
 };
+
+export default publicationApi;
