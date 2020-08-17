@@ -1,0 +1,74 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { diMainGet } from "readium-desktop/main/di";
+import { TGenerator } from "readium-desktop/typings/api";
+import { all, call } from "redux-saga/effects";
+import { isArray } from "util";
+
+import { importFromFsService } from "./importFromFs";
+import { importFromLinkService } from "./importFromLink";
+
+export function* importFromLink(
+    link: IOpdsLinkView,
+    pub: PublicationView,
+): TGenerator<PublicationView | undefined> {
+
+    if (link?.url && pub) {
+
+        try {
+            const publicationDocument = yield* importFromLinkService(link, pub);
+
+            if (!publicationDocument) {
+                throw new Error("publicationDocument not imported on db");
+            }
+
+            const publicationViewConverter = diMainGet("publication-view-converter");
+            return publicationViewConverter.convertDocumentToView(publicationDocument);
+
+        } catch (error) {
+            throw new Error(`importPublicationFromOpdsDoc error ${error}`);
+        }
+    }
+
+    return undefined;
+}
+
+export function* importFromFs(
+    filePath: string | string[],
+): TGenerator<PublicationView[] | undefined> {
+
+    const filePathArray = isArray(filePath) ? filePath : [filePath];
+
+    const publicationViewConverter = diMainGet("publication-view-converter");
+
+    const effects = filePathArray.map(
+        (fpath: string) =>
+            call(function*() {
+
+                try {
+
+                    if (fpath) {
+                        const pub = yield* importFromFsService(fpath);
+
+                        return publicationViewConverter.convertDocumentToView(pub);
+                    }
+                } catch {
+                    // ignore
+                }
+
+                return undefined;
+            }));
+
+    const pubView = (yield all(effects)) as PublicationView[];
+
+    const ret = pubView.filter((v) => v);
+
+    return ret;
+}

@@ -6,25 +6,16 @@
 // ==LICENSE-END==
 
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { TGenerator } from "readium-desktop/typings/api";
 
-import { getPublication } from "./getPublication";
+export function* importFromLinkService(
+    link: IOpdsLinkView,
+    pub: PublicationView,
+): TGenerator<PublicationDocument | undefined> {
 
-export function* updateTags(identifier: string, tags: string[]): TGenerator<PublicationView> {
-
-    const publicationRepository = diMainGet("publication-repository");
-
-    const doc = yield* callTyped(() => publicationRepository.get(identifier));
-    const newDoc = Object.assign(
-        {},
-        doc,
-        { tags },
-    );
-
-    yield* callTyped(() => publicationRepository.save(newDoc));
-    const pubView = yield* getPublication(identifier, false);
-
-    return pubView;
 }
+

@@ -80,60 +80,60 @@ export class PublicationApi implements IPublicationApi {
     //     return this.publicationRepository.getAllTags();
     // }
 
-    public async importOpdsPublicationLink(
-        link: IOpdsLinkView | undefined,
-        r2OpdsPublicationBase64: string | undefined,
-    ): Promise<PublicationView> {
-        let returnView: PublicationView;
+    // public async importOpdsPublicationLink(
+    //     link: IOpdsLinkView | undefined,
+    //     r2OpdsPublicationBase64: string | undefined,
+    // ): Promise<PublicationView> {
+    //     let returnView: PublicationView;
 
-        if (link?.url && r2OpdsPublicationBase64) {
+    //     if (link?.url && r2OpdsPublicationBase64) {
 
-            let publicationDocument;
-            try {
-                publicationDocument = await this.publicationService.importFromLink(
-                    link,
-                    r2OpdsPublicationBase64,
-                );
+    //         let publicationDocument;
+    //         try {
+    //             publicationDocument = await this.publicationService.importFromLink(
+    //                 link,
+    //                 r2OpdsPublicationBase64,
+    //             );
 
-                if (!publicationDocument) {
-                    throw new Error("publicationDocument not imported on db");
-                }
+    //             if (!publicationDocument) {
+    //                 throw new Error("publicationDocument not imported on db");
+    //             }
 
-                returnView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
+    //             returnView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
 
-            } catch (error) {
-                throw new Error(`importPublicationFromOpdsDoc error ${error}`);
-            }
+    //         } catch (error) {
+    //             throw new Error(`importPublicationFromOpdsDoc error ${error}`);
+    //         }
 
-        }
+    //     }
 
-        return returnView;
-    }
+    //     return returnView;
+    // }
 
-    public async import(filePathArray: string | string[]): Promise<PublicationView[]> {
+    // public async import(filePathArray: string | string[]): Promise<PublicationView[]> {
 
-        if (!isArray(filePathArray)) {
-            filePathArray = [filePathArray];
-        }
+    //     if (!isArray(filePathArray)) {
+    //         filePathArray = [filePathArray];
+    //     }
 
-        const publicationDocumentPromises = filePathArray.map(
-            (filePath) => this.publicationService.importFromFs(filePath),
-        );
-        const publicationDocumentPromisesAll = await PromiseAllSettled(publicationDocumentPromises);
+    //     const publicationDocumentPromises = filePathArray.map(
+    //         (filePath) => this.publicationService.importFromFs(filePath),
+    //     );
+    //     const publicationDocumentPromisesAll = await PromiseAllSettled(publicationDocumentPromises);
 
-        // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
-        const publicationDocumentPromisesAllResolved = publicationDocumentPromisesAll.filter(
-            (publicationDocumentPromise) =>
-                publicationDocumentPromise.status === "fulfilled" && publicationDocumentPromise.value,
-        ) as Array<PromiseFulfilled<PublicationDocument>>;
+    //     // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
+    //     const publicationDocumentPromisesAllResolved = publicationDocumentPromisesAll.filter(
+    //         (publicationDocumentPromise) =>
+    //             publicationDocumentPromise.status === "fulfilled" && publicationDocumentPromise.value,
+    //     ) as Array<PromiseFulfilled<PublicationDocument>>;
 
-        const publicationViews = publicationDocumentPromisesAllResolved.map(
-            (publicationDocumentWrapper) =>
-                this.publicationViewConverter.convertDocumentToView(publicationDocumentWrapper.value,
-        ));
+    //     const publicationViews = publicationDocumentPromisesAllResolved.map(
+    //         (publicationDocumentWrapper) =>
+    //             this.publicationViewConverter.convertDocumentToView(publicationDocumentWrapper.value,
+    //     ));
 
-        return publicationViews;
-    }
+    //     return publicationViews;
+    // }
 
     // public async search(title: string): Promise<PublicationView[]> {
     //     const titleFormated = title?.trim() || "";

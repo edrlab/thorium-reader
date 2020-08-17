@@ -29,11 +29,11 @@ export interface IPublicationApi {
     ) => TGenerator<PublicationView>;
     getAllTags: (
     ) => TGenerator<string[]>;
-    importOpdsPublicationLink: (
+    importFromLink: (
         link: IOpdsLinkView,
-        r2OpdsPublicationBase64: string,
+        pub: PublicationView,
     ) => TGenerator<PublicationView>;
-    import: (
+    importFromFs: (
         filePathArray: string | string[],
     ) => TGenerator<PublicationView[]>;
     search: (
@@ -51,8 +51,8 @@ export interface IPublicationModuleApi {
     "publication/findByTag": IPublicationApi["findByTag"];
     "publication/updateTags": IPublicationApi["updateTags"];
     "publication/getAllTags": IPublicationApi["getAllTags"];
-    "publication/importOpdsPublicationLink": IPublicationApi["importOpdsPublicationLink"];
-    "publication/import": IPublicationApi["import"];
+    "publication/importOpdsPublicationLink": IPublicationApi["importFromLink"];
+    "publication/import": IPublicationApi["importFromFs"];
     "publication/search": IPublicationApi["search"];
     "publication/exportPublication": IPublicationApi["exportPublication"];
 }

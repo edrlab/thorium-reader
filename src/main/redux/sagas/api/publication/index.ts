@@ -15,6 +15,7 @@ import { findAll } from "./findAll";
 import { findByTag } from "./findByTag";
 import { getAllTags } from "./getAllTags";
 import { getPublication } from "./getPublication";
+import { importFromFs, importFromLink } from "./import";
 import { search } from "./search";
 import { updateTags } from "./updateTags";
 
@@ -27,6 +28,8 @@ const publicationApi: IPublicationApi = {
     getAllTags,
     search,
     exportPublication,
+    importFromFs,
+    importFromLink,
 };
 
 export default publicationApi;
