@@ -55,7 +55,7 @@ function* sameFileImport(action: importActions.verify.TAction) {
 
     } else {
 
-        yield apiSaga("publication/importOpdsPublicationLink",
+        yield apiSaga("publication/importFromLink",
             REQUEST_ID,
             link,
             r2OpdsPublicationBase64,

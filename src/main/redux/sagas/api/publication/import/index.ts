@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { allTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { TGenerator } from "readium-desktop/typings/api";
-import { all, call } from "redux-saga/effects";
+import { call } from "redux-saga/effects";
+import { SagaGenerator } from "typed-redux-saga";
 import { isArray } from "util";
 
 import { importFromFsService } from "./importFromFs";
@@ -17,13 +18,13 @@ import { importFromLinkService } from "./importFromLink";
 
 export function* importFromLink(
     link: IOpdsLinkView,
-    pub: PublicationView,
-): TGenerator<PublicationView | undefined> {
+    r2OpdsPublicationBase64: string,
+): SagaGenerator<PublicationView | undefined> {
 
-    if (link?.url && pub) {
+    if (link?.url && r2OpdsPublicationBase64) {
 
         try {
-            const publicationDocument = yield* importFromLinkService(link, pub);
+            const publicationDocument = yield* importFromLinkService(link, r2OpdsPublicationBase64);
 
             if (!publicationDocument) {
                 throw new Error("publicationDocument not imported on db");
@@ -42,7 +43,7 @@ export function* importFromLink(
 
 export function* importFromFs(
     filePath: string | string[],
-): TGenerator<PublicationView[] | undefined> {
+): SagaGenerator<PublicationView[] | undefined> {
 
     const filePathArray = isArray(filePath) ? filePath : [filePath];
 
@@ -66,7 +67,7 @@ export function* importFromFs(
                 return undefined;
             }));
 
-    const pubView = (yield all(effects)) as PublicationView[];
+    const pubView = yield* allTyped(effects);
 
     const ret = pubView.filter((v) => v);
 

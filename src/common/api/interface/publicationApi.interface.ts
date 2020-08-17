@@ -7,41 +7,41 @@
 
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TGenerator } from "readium-desktop/typings/api";
+import { SagaGenerator } from "typed-redux-saga";
 
 export interface IPublicationApi {
     // get: (...a: [string]) => Promise<PublicationView> | void;
     get: (
         identifier: string,
         checkLcpLsd: boolean,
-    ) => TGenerator<PublicationView>;
+    ) => SagaGenerator<PublicationView>;
     delete: (
         identifier: string,
-    ) => TGenerator<void>;
+    ) => SagaGenerator<void>;
     findAll: (
-    ) => TGenerator<PublicationView[]>;
+    ) => SagaGenerator<PublicationView[]>;
     findByTag: (
         tag: string,
-    ) => TGenerator<PublicationView[]>;
+    ) => SagaGenerator<PublicationView[]>;
     updateTags: (
         identifier: string,
         tags: string[],
-    ) => TGenerator<PublicationView>;
+    ) => SagaGenerator<PublicationView>;
     getAllTags: (
-    ) => TGenerator<string[]>;
+    ) => SagaGenerator<string[]>;
     importFromLink: (
         link: IOpdsLinkView,
-        pub: PublicationView,
-    ) => TGenerator<PublicationView>;
+        r2OpdsPublicationBase64: string,
+    ) => SagaGenerator<PublicationView>;
     importFromFs: (
         filePathArray: string | string[],
-    ) => TGenerator<PublicationView[]>;
+    ) => SagaGenerator<PublicationView[]>;
     search: (
         title: string,
-    ) => TGenerator<PublicationView[]>;
+    ) => SagaGenerator<PublicationView[]>;
     exportPublication: (
         publicationView: PublicationView,
-    ) => TGenerator<void>;
+    ) => SagaGenerator<void>;
 }
 
 export interface IPublicationModuleApi {
@@ -51,8 +51,8 @@ export interface IPublicationModuleApi {
     "publication/findByTag": IPublicationApi["findByTag"];
     "publication/updateTags": IPublicationApi["updateTags"];
     "publication/getAllTags": IPublicationApi["getAllTags"];
-    "publication/importOpdsPublicationLink": IPublicationApi["importFromLink"];
-    "publication/import": IPublicationApi["importFromFs"];
+    "publication/importFromLink": IPublicationApi["importFromLink"];
+    "publication/importFromFs": IPublicationApi["importFromFs"];
     "publication/search": IPublicationApi["search"];
     "publication/exportPublication": IPublicationApi["exportPublication"];
 }

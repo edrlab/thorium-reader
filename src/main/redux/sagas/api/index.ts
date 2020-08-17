@@ -5,5 +5,5 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export * as publicationApi from "./publication";
+export * from "./publication";
 export * from "./api";

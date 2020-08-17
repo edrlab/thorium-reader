@@ -8,10 +8,10 @@
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { publicationActions } from "readium-desktop/main/redux/actions";
-import { TGenerator } from "readium-desktop/typings/api";
 import { call, delay, put } from "redux-saga/effects";
+import { SagaGenerator } from "typed-redux-saga";
 
-export function* deletePublication(identifier: string): TGenerator<void> {
+export function* deletePublication(identifier: string): SagaGenerator<void> {
 
         yield put(readerActions.closeRequestFromPublication.build(identifier));
 

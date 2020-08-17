@@ -19,7 +19,7 @@ import { importFromFs, importFromLink } from "./import";
 import { search } from "./search";
 import { updateTags } from "./updateTags";
 
-const publicationApi: IPublicationApi = {
+export const publicationApi: IPublicationApi = {
     findAll,
     get: getPublication,
     delete: deletePublication,
@@ -31,5 +31,3 @@ const publicationApi: IPublicationApi = {
     importFromFs,
     importFromLink,
 };
-
-export default publicationApi;

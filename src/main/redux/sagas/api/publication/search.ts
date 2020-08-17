@@ -8,9 +8,9 @@
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { TGenerator } from "readium-desktop/typings/api";
+import { SagaGenerator } from "typed-redux-saga";
 
-export function* search(title: string): TGenerator<PublicationView[]> {
+export function* search(title: string): SagaGenerator<PublicationView[]> {
     const titleFormated = title?.trim() || "";
 
     const publicationRepository = diMainGet("publication-repository");

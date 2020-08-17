@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// export interface IGenerator<TR> extends Generator<unknown, TR, unknown> {}
-export type TGenerator<T> = Generator<unknown, T>;
+import { SagaGenerator } from "typed-redux-saga";
 
-type TAny<T> = Promise<T> | TGenerator<T>;
+// export interface IGenerator<TR> extends Generator<unknown, TR, unknown> {}
+type TAny<T> = Promise<T> | SagaGenerator<T>;
 
 /**
  * Obtain the promise or generator return type of a function type
