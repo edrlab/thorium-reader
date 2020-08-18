@@ -259,16 +259,25 @@ export class OpdsService {
                     );
                 }
 
-                if (r2OpdsFeed) {
-                    // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
-                    opdsFeedData.data = this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
-                } else if (r2OpdsAuth) {
-                    opdsFeedData.data = this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, url);
-                } else if (r2OpdsPublication) {
-                    const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, url);
+                try {
+
+                    // modify each r2OpdsFeed.publications, and make relative URLs absolute with baseUrl(url)!
+                    if (r2OpdsFeed) {
+                        opdsFeedData.data = this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
+                    } else if (r2OpdsAuth) {
+                        opdsFeedData.data = this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, url);
+                    } else if (r2OpdsPublication) {
+                        const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, url);
+                        opdsFeedData.data = {
+                            title: pubView.title,
+                            publications: [pubView],
+                        } as IOpdsResultView;
+                    }
+                } catch {
+
                     opdsFeedData.data = {
-                        title: pubView.title,
-                        publications: [pubView],
+                        title: "",
+                        publications: [],
                     } as IOpdsResultView;
                 }
 
