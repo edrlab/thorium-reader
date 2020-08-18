@@ -56,7 +56,7 @@ export async function request(
     return res;
 }
 
-export async function httpGet<TData = any>(
+export async function httpGet<TData = undefined>(
     url: string | URL,
     options: THttpOptions = {},
     callback?: THttpGetCallback<TData>,
@@ -94,7 +94,7 @@ export async function httpGet<TData = any>(
             statusMessage: response.statusText,
             body: response.body,
             response,
-            data: callback ? undefined : await response.json(),
+            data: undefined,
             contentType: response.headers.get("Content-Type"),
         };
     } catch (err) {
