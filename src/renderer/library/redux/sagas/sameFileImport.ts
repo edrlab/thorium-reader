@@ -10,13 +10,10 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { importActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
-import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { all, put } from "redux-saga/effects";
-
-import { Download } from "../states/download";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 
@@ -24,21 +21,15 @@ const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 const filename_ = "readium-desktop:renderer:redux:saga:same-file-import";
 const debug = debug_(filename_);
 
-// FIXME : a lot of Download interface (ex: state and model)
-const findDownload = (dls: Download[], link: IOpdsLinkView) =>
-    dls.find(
-        (dl) => dl.url === link.url,
-    );
-
 function* sameFileImport(action: importActions.verify.TAction) {
 
     const { link, pub } = action.payload;
 
     const downloads = yield* selectTyped(
-        (state: ILibraryRootState) => state.download?.downloads);
+        (state: ILibraryRootState) => state.download);
 
     if (Array.isArray(downloads)
-        && findDownload(downloads, link)) {
+        && downloads.map(([{ downloadUrl }]) => downloadUrl).find((ln) => ln === link.url)) {
 
         const translator = diLibraryGet("translator");
 

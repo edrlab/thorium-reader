@@ -11,51 +11,103 @@ import { RequestInit } from "node-fetch";
 import { tmpdir } from "os";
 import * as path from "path";
 import { acceptedExtension } from "readium-desktop/common/extension";
-import { allTyped, callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { downloadActions } from "readium-desktop/common/redux/actions";
+import {
+    allTyped, callTyped, forkTyped, joinTyped, putTyped, raceTyped, takeTyped,
+} from "readium-desktop/common/redux/sagas/typed-saga";
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
-import { httpGet } from "readium-desktop/main/http";
+import { AbortSignal, httpGet } from "readium-desktop/main/http";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
-import { call } from "redux-saga/effects";
+import { END, eventChannel } from "redux-saga";
+import { call, cancelled, take } from "redux-saga/effects";
 import * as stream from "stream";
-import { SagaGenerator } from "typed-redux-saga";
+import { cancel, FixedTask, put, SagaGenerator } from "typed-redux-saga";
 import * as util from "util";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
 
-export function* downloader(linkHrefArray: string[], title?: string): SagaGenerator<string[]> {
+export function* downloader(linkHrefArray: string[], href?: string): SagaGenerator<string[]> {
 
     const id = Number(new Date());
 
     debug("Downloader ID=", id);
 
-    return yield* downloaderService(linkHrefArray, Number(new Date()), title);
+    try {
+        return yield* downloaderService(linkHrefArray, Number(new Date()), href);
+    } catch {
+        return [];
+    }
 }
 
-function* downloaderService(linkHrefArray: string[], id: number, title?: string): SagaGenerator<string[]> {
+function* downloaderService(linkHrefArray: string[], id: number, href?: string): SagaGenerator<string[]> {
 
-    const effects = linkHrefArray.map((href) => {
-        return call(function*() {
+    const abort = new AbortSignal();
 
-            debug("start to downloadService", href);
-            const data = yield* downloadLinkRequest(href);
+    const effects = linkHrefArray.map((ln) => {
+        return forkTyped(function*() {
 
-            debug("start to stream download");
-            const pathFile = yield* downloadLinkStream(data, id, title);
+            try {
 
-            debug("pathFile to return", pathFile);
-            return pathFile;
+                yield* putTyped(downloadActions.progress.build({
+                    downloadUrl: href,
+                    progress: 0,
+                    id,
+                    speed: 0,
+                    contentLengthHumanReadable: "",
+                }));
+
+                debug("start to downloadService", ln);
+                const data = yield* downloadLinkRequest(ln, abort);
+
+                debug("start to stream download");
+                const pathFile = yield* downloadLinkStream(data, id, href);
+
+                debug("pathFile to return", pathFile);
+                return pathFile;
+
+            } finally {
+
+                if (yield cancelled()) {
+
+                    abort.dispatchEvent();
+
+                    yield put(downloadActions.done.build(id));
+                }
+
+                // tslint:disable-next-line: no-unsafe-finally
+                return undefined;
+            }
+
         });
     });
 
-    const hrefArray = yield* allTyped(effects);
+    const tasks: Array<FixedTask<string>> = [];
+    for (const e of effects) {
+        const res = yield* e;
+        tasks.push(res);
+    }
+
+    yield* raceTyped({
+        abort: call(function*() {
+
+            yield take(downloadActions.abort.ID);
+
+            yield cancel(tasks);
+        }),
+        join: joinTyped(tasks),
+    });
+
+    const hrefArray = tasks.map((t) => t.isCancelled() ? undefined : t.result<string | undefined>());
+
+    debug("HrefArray return from downloader", hrefArray);
     return hrefArray;
 }
 
-function* downloadLinkRequest(linkHref: string): SagaGenerator<IHttpGetResult<undefined>> {
+function* downloadLinkRequest(linkHref: string, abort: AbortSignal): SagaGenerator<IHttpGetResult<undefined>> {
 
     let savedAccessTokens: AccessTokenMap = {};
     try {
@@ -71,6 +123,8 @@ function* downloadLinkRequest(linkHref: string): SagaGenerator<IHttpGetResult<un
     const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
 
     const options: RequestInit = {};
+    options.signal = abort;
+
     if (accessToken) {
         options.headers = {
             Authorization: `Bearer ${accessToken.authenticationToken}`,
@@ -172,15 +226,38 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
     let speed: number = 0;
     let pct = 0;
 
-    const intervale = setInterval(() => {
+    const channel = eventChannel<{speed: number, progression: number}>(
+        (emit) => {
 
-        speed = downloadedSpeed / 1024;
-        pct = Math.ceil(downloadedLength / contentLength * 100);
-        debug("speed: ", speed, "kb/s", "pct: ", pct, "%");
+            const iv = setInterval(() => {
 
-        downloadedSpeed = 0;
+                speed = downloadedSpeed / 1024;
+                pct = Math.ceil(downloadedLength / contentLength * 100);
+                debug("speed: ", speed, "kb/s", "pct: ", pct, "%");
 
-    }, 1000);
+                emit({
+                    speed,
+                    progression: pct,
+                });
+
+                downloadedSpeed = 0;
+
+            }, 1000);
+
+            readStream.on("end", () => {
+                debug("ReadStream end");
+
+                emit(END);
+            });
+
+            return () => {
+                clearInterval(iv);
+
+                pct = 100;
+                speed = 0;
+            };
+        },
+    );
 
     readStream.on("data", (chunk: Buffer) => {
 
@@ -188,20 +265,14 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
         downloadedLength += chunk.length;
     });
 
-    readStream.on("end", () => {
-        debug("ReadStream end");
-
-        clearInterval(intervale);
-        pct = 100;
-        speed = 0;
-    });
-
     readStream.on("close", () => {
         debug("ReadStream close");
     });
+
+    return channel;
 }
 
-function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, _title?: string): SagaGenerator<string> {
+function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, href?: string): SagaGenerator<string> {
 
     try {
         if (data?.isSuccess) {
@@ -212,6 +283,8 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, _title
             const contentLengthStr = data.response.headers.get("content-length") || "";
             const contentLength = parseInt(contentLengthStr, 10) || 0;
             const readStream = data.body;
+            const contentLengthHumanReadable = humanFileSize(contentLength);
+            debug("contentLength", contentLengthHumanReadable);
 
             const filename = downloadCreateFilename(contentType, contentDisposition);
             debug("Filename", filename);
@@ -222,17 +295,57 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, _title
 
             if (readStream) {
 
+                yield* putTyped(downloadActions.progress.build({
+                    downloadUrl: href,
+                    progress: 0,
+                    id,
+                    speed: 0,
+                    contentLengthHumanReadable,
+                }));
+
                 debug("filename doesn't exists, great!");
                 const writeStream = createWriteStream(pathFile);
                 const pipeline = util.promisify(stream.pipeline);
 
-                debug("contentLength", humanFileSize(contentLength));
-                downloadReadStreamProgression(readStream, contentLength);
+                const channel = downloadReadStreamProgression(readStream, contentLength);
 
-                yield call(() => pipeline(
-                    readStream,
-                    writeStream,
-                ));
+                yield* allTyped([
+                    call(() => pipeline(
+                        readStream,
+                        writeStream,
+                    )),
+                    call(function*() {
+
+                        try {
+
+                            while (true) {
+
+                                const status = yield* takeTyped(channel);
+
+                                yield put(downloadActions.progress.build({
+                                    downloadUrl: href,
+                                    progress: status.progression,
+                                    id,
+                                    speed: status.speed,
+                                    contentLengthHumanReadable,
+                                }));
+                            }
+
+                        } finally {
+                            // ignore
+                        }
+                    }),
+                ]);
+
+                // yield* putTyped(downloadActions.progress.build({
+                //     downloadUrl: href,
+                //     progress: 100,
+                //     id,
+                //     speed: 0,
+                //     contentLengthHumanReadable,
+                // }));
+
+                yield* putTyped(downloadActions.done.build(id));
 
                 return pathFile;
             } else {
@@ -244,8 +357,6 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, _title
         }
 
     } catch (err) {
-        // ignore
-
         debug(err, err.trace);
     }
 

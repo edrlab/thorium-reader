@@ -13,3 +13,5 @@ export { put as putTyped } from "typed-redux-saga";
 export { race as raceTyped } from "typed-redux-saga";
 export { actionChannel as actionChannelTyped } from "typed-redux-saga";
 export { all as allTyped } from "typed-redux-saga";
+export { join as joinTyped } from "typed-redux-saga";
+export { fork as forkTyped } from "typed-redux-saga";

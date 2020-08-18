@@ -217,16 +217,16 @@ const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => {
         breadcrumb: state.opds.browser.breadcrumb,
         location: state.router.location,
         openAccessButtonIsDisabled: () => {
-            return !!state.download.downloads.find(
-                (dl: { url: string; }) => props.opdsPublicationView.openAccessLinks.find(
-                    (ln) => ln.url === dl.url,
+            return !!state.download.find(
+                ([{downloadUrl}]) => props.opdsPublicationView.openAccessLinks.find(
+                    (ln) => ln.url === downloadUrl,
                 ),
             );
         },
         sampleButtonIsDisabled: () => {
-            return !!state.download.downloads.find(
-                (dl: { url: string; }) => props.opdsPublicationView.sampleOrPreviewLinks.find(
-                    (ln) => ln.url === dl.url,
+            return !!state.download.find(
+                ([{downloadUrl}]) => props.opdsPublicationView.sampleOrPreviewLinks.find(
+                    (ln) => ln.url === downloadUrl,
                 ),
             );
         },

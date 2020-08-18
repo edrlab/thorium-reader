@@ -8,20 +8,19 @@
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
 import * as moment from "moment";
+import * as path from "path";
 import { LCP } from "r2-lcp-js/dist/es6-es2015/src/parser/epub/lcp";
 import { TaJsonDeserialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
-import { acceptedExtensionObject } from "readium-desktop/common/extension";
-import { Download } from "readium-desktop/common/models/download";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
+import { toastActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { extractCrc32OnZip } from "readium-desktop/main/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { ContentType } from "readium-desktop/utils/content-type";
 import { call, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 
+import { downloader } from "../../../downloader";
 import { importPublicationFromFS } from "./importPublicationFromFs";
 
 // Logger
@@ -98,64 +97,67 @@ export function* importLcplFromFS(
         }
     }
 
-    // search the path of the epub file
-    const downloader = diMainGet("downloader");
-    let download: Download | undefined;
+    const title = path.basename(filePath);
+    const [downloadFilePath] = yield* downloader(r2LCP.Links.map((ln) => ln.Href), title);
 
-    let title: string | undefined;
-    if (r2LCP.Links) {
-        for (const link of r2LCP.Links) {
-            if (link.Rel === "publication") {
-                const isEpubFile = link.Type === ContentType.Epub;
-                const isAudioBookPacked = link.Type === ContentType.AudioBookPacked;
-                const isAudioBookPackedLcp = link.Type === ContentType.AudioBookPackedLcp;
-                const ext = isEpubFile ? acceptedExtensionObject.epub :
-                    (isAudioBookPacked ? acceptedExtensionObject.audiobook :
-                        (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
-                            "")); // downloader will try HTTP response headers
+    // // search the path of the epub file
+    // const downloader = diMainGet("downloader");
+    // let download: Download | undefined;
 
-                download = downloader.addDownload(link.Href, ext);
-                title = link.Title ?? download.srcUrl;
-            }
-        }
-    }
+    // let title: string | undefined;
+    // if (r2LCP.Links) {
+    //     for (const link of r2LCP.Links) {
+    //         if (link.Rel === "publication") {
+    //             const isEpubFile = link.Type === ContentType.Epub;
+    //             const isAudioBookPacked = link.Type === ContentType.AudioBookPacked;
+    //             const isAudioBookPackedLcp = link.Type === ContentType.AudioBookPackedLcp;
+    //             const ext = isEpubFile ? acceptedExtensionObject.epub :
+    //                 (isAudioBookPacked ? acceptedExtensionObject.audiobook :
+    //   (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
+    //                         "")); // downloader will try HTTP response headers
 
-    if (!download) {
-        throw new Error(`Unable to initiate download of LCP pub: ${filePath}`);
-    }
+    //             download = downloader.addDownload(link.Href, ext);
+    //             title = link.Title ?? download.srcUrl;
+    //         }
+    //     }
+    // }
 
-    // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
-    //     this.translator.translate("message.download.start", { title })));
+    // if (!download) {
+    //     throw new Error(`Unable to initiate download of LCP pub: ${filePath}`);
+    // }
 
-    yield put(downloadActions.request.build(download.srcUrl, title));
+    // // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
+    // //     this.translator.translate("message.download.start", { title })));
 
-    debug("[START] Download publication", filePath);
-    let newDownload: Download;
-    try {
-        newDownload = yield* callTyped(() => downloader.processDownload(
-            download.identifier,
-            {
-                onProgress: (dl: Download) => {
-                    debug("[PROGRESS] Downloading publication", dl.progress);
-                    const store = diMainGet("store");
-                    store.dispatch(downloadActions.progress.build(download.srcUrl, dl.progress));
-                },
-            },
-        ));
-    } catch (err) {
-        yield put(toastActions.openRequest.build(ToastType.Error,
-            translate("message.download.error", { title, err: `[${err}]` })));
+    // yield put(downloadActions.request.build(download.srcUrl, title));
 
-        yield put(downloadActions.error.build(download.srcUrl));
-        throw err;
-    }
+    // debug("[START] Download publication", filePath);
+    // let newDownload: Download;
+    // try {
+    //     newDownload = yield* callTyped(() => downloader.processDownload(
+    //         download.identifier,
+    //         {
+    //             onProgress: (dl: Download) => {
+    //                 debug("[PROGRESS] Downloading publication", dl.progress);
+    //                 const store = diMainGet("store");
+    //                 store.dispatch(downloadActions.progress.build(download.srcUrl, dl.progress));
+    //             },
+    //         },
+    //     ));
+    // } catch (err) {
+    //     yield put(toastActions.openRequest.build(ToastType.Error,
+    //         translate("message.download.error", { title, err: `[${err}]` })));
 
-    // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-    //     this.translator.translate("message.download.success", { title })));
+    //     yield put(downloadActions.error.build(download.srcUrl));
+    //     throw err;
+    // }
 
-    debug("[END] Download publication", filePath, newDownload);
+    // // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+    // //     this.translator.translate("message.download.success", { title })));
 
-    yield put(downloadActions.success.build(download.srcUrl));
+    // debug("[END] Download publication", filePath, newDownload);
+
+    // yield put(downloadActions.success.build(download.srcUrl));
 
     // inject LCP license into temporary downloaded file, so that we can check CRC
     // caveat: processStatusDocument() which is invoked later
@@ -164,27 +166,33 @@ export function* importLcplFromFS(
     // Plus, such already-existing EPUB in the local bookshelf may or may not
     // include the latest injected LCP license! (as it only gets updated during user interaction
     // such as when opening the publication information dialog, and of course when reading the EPUB)
-    yield call(() => lcpManager.injectLcplIntoZip(download.dstPath, r2LCP));
-    const hash = yield* callTyped(() => extractCrc32OnZip(download.dstPath));
-    const [pubDocument] = yield* callTyped(() => publicationRepository.findByHashId(hash));
 
-    debug("importLcplFromFS", pubDocument, hash);
-    if (pubDocument) {
+    if (downloadFilePath) {
 
-        yield put(
-            toastActions.openRequest.build(
-                ToastType.Success,
-                translate(
-                    "message.import.alreadyImport", { title: pubDocument.title },
+        yield call(() => lcpManager.injectLcplIntoZip(downloadFilePath, r2LCP));
+        const hash = yield* callTyped(() => extractCrc32OnZip(downloadFilePath));
+        const [pubDocument] = yield* callTyped(() => publicationRepository.findByHashId(hash));
+
+        debug("importLcplFromFS", pubDocument, hash);
+        if (pubDocument) {
+
+            yield put(
+                toastActions.openRequest.build(
+                    ToastType.Success,
+                    translate(
+                        "message.import.alreadyImport", { title: pubDocument.title },
+                    ),
                 ),
-            ),
-        );
-        return pubDocument;
+            );
+            return pubDocument;
+        }
+
+        const publicationDocument = yield* callTyped(
+            () => importPublicationFromFS(downloadFilePath, hash, lcpHashedPassphrase));
+
+        return publicationDocument;
+    } else {
+        throw new Error("downloadFilePath undefined");
     }
-
-    const publicationDocument = yield* callTyped(
-        () => importPublicationFromFS(download.dstPath, hash, lcpHashedPassphrase));
-
-    return publicationDocument;
     // return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
 }
