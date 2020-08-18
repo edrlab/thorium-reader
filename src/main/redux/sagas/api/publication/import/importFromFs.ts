@@ -38,12 +38,13 @@ export function* importFromFsService(
 
     try {
 
+        debug("importFromFsService");
+
         const hash = isLCPLicense ? undefined : yield* callTyped(() => extractCrc32OnZip(filePath));
         let [publicationDocument] = hash
             ? yield* callTyped(() => publicationRepository.findByHashId(hash))
-            : undefined;
+            : [];
 
-        debug("importFromFs", publicationDocument.title, hash);
         if (publicationDocument) {
 
             yield put(
