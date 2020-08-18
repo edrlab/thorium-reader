@@ -43,7 +43,7 @@ export function* importFromFsService(
             ? yield* callTyped(() => publicationRepository.findByHashId(hash))
             : undefined;
 
-        debug("importFromFs", publicationDocument, hash);
+        debug("importFromFs", publicationDocument.title, hash);
         if (publicationDocument) {
 
             yield put(
