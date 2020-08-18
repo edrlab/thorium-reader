@@ -83,86 +83,192 @@ function* downloadLinkRequest(linkHref: string): SagaGenerator<IHttpGetResult<un
     return data;
 }
 
+function* downloadCreatePathDir(id: string): SagaGenerator<string | undefined> {
+    // /tmp/thorium/download/{unixtimestamp}/name.ext
+
+    const tmpDir = tmpdir();
+    let pathDir = tmpDir;
+    try {
+        pathDir = path.resolve(tmpDir, _APP_NAME.toLowerCase(), "download", id);
+        yield call(() => fsp.mkdir(pathDir, { recursive: true }));
+
+    } catch (err) {
+        debug(err, err.trace);
+
+        try {
+            pathDir = path.resolve(tmpDir, id.toString());
+            yield call(() => fsp.mkdir(pathDir));
+        } catch (err) {
+            debug(err, err.trace, err.code);
+
+            if (err.code !== "EEXIST") {
+
+                throw new Error("Error to create directory: " + pathDir);
+            }
+
+        }
+    }
+    return pathDir;
+}
+
+function* downloadCreatePathFilename(pathDir: string, filename: string, rc = 0): SagaGenerator<string> {
+
+    const pathFile = path.resolve(pathDir, filename);
+    debug("PathFile", pathFile);
+    if (rc > 10) {
+        throw new Error("Error to create the filePath in download directory " + pathFile);
+    }
+
+    let pathFileIsntCreated = false;
+    try {
+        yield call(() => fsp.access(pathFile));
+
+    } catch {
+        pathFileIsntCreated = true;
+    }
+
+    if (pathFileIsntCreated) {
+        return pathFile;
+    } else {
+        filename = path.basename(filename, path.extname(filename)) +
+            "_" +
+            Math.round(Math.random() * 1000) +
+            path.extname(filename);
+
+        // recursion
+        return yield* downloadCreatePathFilename(pathDir, filename, rc + 1);
+    }
+}
+
+function downloadCreateFilename(contentType: string, contentDisposition: string): string {
+
+    const defExt = "unknown-ext";
+
+    let filename = "file." + defExt;
+    if (contentDisposition) {
+        const res = /filename=(\"(.*)\"|(.*))/g.exec(contentDisposition);
+        const filenameInCD = res ? res[2] || res[3] || "" : "";
+        if (acceptedExtension(path.extname(filenameInCD))) {
+            filename = filenameInCD;
+            return filename;
+        }
+    }
+    if (contentType) {
+        const typeValues = contentType.replace(/\s/g, "").split(";");
+        let [ext] = typeValues.map((v) => findExtWithMimeType(v)).filter((v) => v);
+        if (!ext) {
+            ext = defExt;
+        }
+        filename = "file." + ext;
+    }
+
+    return filename;
+}
+
+function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, contentLength: number) {
+
+    let downloadedLength: number = 0;
+    let downloadedSpeed: number = 0;
+    let speed: number = 0;
+    let pct = 0;
+
+    const intervale = setInterval(() => {
+
+        speed = downloadedSpeed / 1024;
+        pct = Math.ceil(downloadedLength / contentLength * 100);
+        debug("speed: ", speed, "kb/s", "pct: ", pct, "%");
+
+        downloadedSpeed = 0;
+
+    }, 1000);
+
+    readStream.on("data", (chunk: Buffer) => {
+
+        downloadedSpeed += chunk.length;
+        downloadedLength += chunk.length;
+    });
+
+    readStream.on("end", () => {
+        debug("ReadStream end");
+
+        clearInterval(intervale);
+        pct = 100;
+        speed = 0;
+    });
+
+    readStream.on("close", () => {
+        debug("ReadStream close");
+    });
+}
+
 function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, _title?: string): SagaGenerator<string> {
 
-    if (data) {
-        if (data.isSuccess) {
+    try {
+        if (data?.isSuccess) {
+
             // const url = data.responseUrl;
             const contentType = data.contentType;
-            const contentDisposition = data.response.headers.get("content-disposition");
-            const contentLengthStr = data.response.headers.get("content-length");
+            const contentDisposition = data.response.headers.get("content-disposition") || "";
+            const contentLengthStr = data.response.headers.get("content-length") || "";
             const contentLength = parseInt(contentLengthStr, 10) || 0;
             const readStream = data.body;
 
-            let filename = "";
-            if (contentDisposition) {
-                const [, filenameInCD] = /filename="(.*)"/g.exec(contentDisposition);
-                if (acceptedExtension(path.extname(filenameInCD))) {
-                    filename = filenameInCD;
-                }
-            } else {
-                const typeValues = contentType.replace(/\s/g, "").split(";");
-                let [ext] = typeValues.map((v) => findExtWithMimeType(v)).filter((v) => v);
-                if (!ext) {
-                    ext = "unknown-ext";
-                }
-                filename = "file." + ext;
-            }
-
+            const filename = downloadCreateFilename(contentType, contentDisposition);
             debug("Filename", filename);
 
-            const tmpDir = tmpdir();
-            // /tmp/thorium/download/{unixtimestamp}/name.ext
-            const pathDir = path.resolve(tmpDir, _APP_NAME.toLowerCase(), "download", id.toString());
-            yield call(() => fsp.mkdir(pathDir, { recursive: true }));
-
-            const pathFile = path.resolve(pathDir, filename);
+            const pathDir = yield* downloadCreatePathDir(id.toString());
+            const pathFile = yield* downloadCreatePathFilename(pathDir, filename);
             debug("PathFile", pathFile);
-            try {
-                let fileExist = true;
-                try {
-                    yield call(() => fsp.access(pathFile));
 
-                } catch {
-                    fileExist = false;
-                }
+            if (readStream) {
 
-                if (!fileExist) {
-                    debug("filename doesn't exists, great!");
-                    const writeStream = createWriteStream(pathFile);
-                    const pipeline = util.promisify(stream.pipeline);
+                debug("filename doesn't exists, great!");
+                const writeStream = createWriteStream(pathFile);
+                const pipeline = util.promisify(stream.pipeline);
 
-                    debug("contentLength", contentLength);
-                    let downloadedLength: number = 0;
-                    readStream.on("data", (chunk: Buffer) => {
+                debug("contentLength", humanFileSize(contentLength));
+                downloadReadStreamProgression(readStream, contentLength);
 
-                        downloadedLength += chunk.length;
-                        const pct = Math.ceil(downloadedLength / contentLength);
-                        debug("Downloading", chunk.length, pct);
-                    });
+                yield call(() => pipeline(
+                    readStream,
+                    writeStream,
+                ));
 
-                    yield call(() => pipeline(
-                        readStream,
-                        writeStream,
-                    ));
-
-                } else {
-                    debug("DOING SOMETHING");
-                    debug("filename already exists, damn!");
-                }
-
-            } catch (err) {
-                // ignore
-
-                debug(err, err.trace);
+                return pathFile;
+            } else {
+                debug("readStream not available");
             }
-            return pathFile;
+
         } else {
-            debug("httpGet ERROR", data.statusMessage, data.statusCode);
+            debug("httpGet ERROR", data?.statusMessage, data?.statusCode);
         }
-    } else {
-        debug("data result IhttpGet is undefined", data);
+
+    } catch (err) {
+        // ignore
+
+        debug(err, err.trace);
     }
 
     return undefined;
+}
+
+function humanFileSize(bytes: number, si = false, dp = 1) {
+    const thresh = si ? 1000 : 1024;
+
+    if (Math.abs(bytes) < thresh) {
+        return bytes + " B";
+    }
+
+    const units = si
+        ? ["kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+        : ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
+    let u = -1;
+    const r = 10 ** dp;
+
+    do {
+        bytes /= thresh;
+        ++u;
+    } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
+
+    return bytes.toFixed(dp) + " " + units[u];
 }
