@@ -102,8 +102,7 @@ async function absorbLocatorRepositoryToReduxState() {
 }
 
 export async function initStore(configRepository: ConfigRepository<any>)
-: Promise<[Store<RootState>, SagaMiddleware<object>]>
-{
+: Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
     let reduxStateWinRepository: ConfigDocument<Partial<RootState>>;
     let i18nStateRepository: ConfigDocument<LocaleConfigValueType>;

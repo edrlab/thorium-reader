@@ -14,4 +14,5 @@ type TAny<T> = Promise<T> | SagaGenerator<T>;
  * Obtain the promise or generator return type of a function type
  *
  */
-export type TReturnPromiseOrGeneratorType<T extends (...args: any) => any> = T extends (...args: any) => TAny<infer R> ? R : any;
+export type TReturnPromiseOrGeneratorType<T extends (...args: any) => any> =
+    T extends (...args: any) => TAny<infer R> ? R : any;
