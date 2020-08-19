@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { allTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { allTyped, callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
@@ -24,7 +24,7 @@ export function* importFromLink(
     if (link?.url && pub) {
 
         try {
-            const publicationDocument = yield* importFromLinkService(link, pub);
+            const publicationDocument = yield* callTyped(importFromLinkService, link, pub);
 
             if (!publicationDocument) {
                 throw new Error("publicationDocument not imported on db");
@@ -56,7 +56,7 @@ export function* importFromFs(
                 try {
 
                     if (fpath) {
-                        const pub = yield* importFromFsService(fpath);
+                        const pub = yield* callTyped(importFromFsService, fpath);
 
                         return publicationViewConverter.convertDocumentToView(pub);
                     }

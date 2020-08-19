@@ -41,65 +41,9 @@ export function* importFromLinkService(
         debug(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
     }
 
-    // const ext = isLcpFile ? acceptedExtensionObject.lcpLicence :
-    //     (isEpubFile ? acceptedExtensionObject.epub :
-    //         (isAudioBookPacked ? acceptedExtensionObject.audiobook :
-    //   (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
-    //                 ""))); // downloader will try HTTP response headers
-    // // start the download service
-
     debug("Start the download", link);
 
-    const resArray = yield* downloader([link.url], title);
-
-    debug("resArray", resArray);
-    const [downloadPath] = resArray;
-    debug("downloadPath:", downloadPath);
-
-    // const downloader = diMainGet("downloader");
-    // const download = downloader.addDownload(link.url, ext);
-
-    // // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
-    // //     this.translator.translate("message.download.start", { title })));
-
-    // // send to the front-end the signal of download
-    // yield put(downloadActions.request.build(download.srcUrl, title));
-
-    // // track download progress
-    // debug("[START] Download publication", link.url);
-    // let newDownload: Download;
-    // try {
-    //     newDownload = yield* callTyped(() => downloader.processDownload(
-    //         download.identifier,
-    //         {
-    //             onProgress: (dl: Download) => {
-    //                 debug("[PROGRESS] Downloading publication", dl.progress);
-    //                 const store = diMainGet("store");
-    //                 store.dispatch(downloadActions.progress.build(download.srcUrl, dl.progress));
-    //             },
-    //         },
-    //     ));
-    // } catch (err) {
-    //     const translate = diMainGet("translator").translate;
-    //     yield put(
-    //         toastActions.openRequest.build(
-    //             ToastType.Error,
-    //             translate(
-    //                 "message.download.error", { title, err: `[${err}]` },
-    //             ),
-    //         ),
-    //     );
-
-    //     yield put(downloadActions.error.build(download.srcUrl));
-    //     throw err;
-    // }
-
-    // // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-    // //     this.translator.translate("message.download.success", { title })));
-
-    // debug("[END] Download publication", link.url, newDownload);
-
-    // yield put(downloadActions.success.build(download.srcUrl));
+    const [downloadPath] = yield* callTyped(downloader, [link.url], title);
 
     if (downloadPath) {
 

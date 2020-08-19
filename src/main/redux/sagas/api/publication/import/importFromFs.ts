@@ -59,7 +59,7 @@ export function* importFromFsService(
         } else {
 
             if (isLCPLicense) {
-                publicationDocument = yield* importLcplFromFS(filePath, lcpHashedPassphrase);
+                publicationDocument = yield* callTyped(importLcplFromFS, filePath, lcpHashedPassphrase);
 
             } else {
                 let epubFilePath = filePath;

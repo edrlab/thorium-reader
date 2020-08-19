@@ -46,6 +46,7 @@ export function* downloader(linkHrefArray: string[], href?: string): SagaGenerat
             contentLengthHumanReadable: "",
         }));
 
+        // redux-saga : use call to execute sagaGenerator tasked (forked)
         const pathArray = yield* callTyped(downloaderService, linkHrefArray, Number(new Date()), href);
         debug("filePath Array to return from downloader", pathArray);
         return pathArray;
@@ -65,6 +66,14 @@ export function* downloader(linkHrefArray: string[], href?: string): SagaGenerat
 
     } finally {
 
+        if (yield cancelled()) {
+
+            yield* putTyped(toastActions.openRequest.build(
+                ToastType.Success,
+                "cancelled", // TODO translate
+            ));
+        }
+
         yield* putTyped(downloadActions.done.build(id));
     }
 }
@@ -77,6 +86,10 @@ function* downloaderService(linkHrefArray: string[], id: number, href?: string):
             const abort = new AbortSignal();
             try {
 
+                if (!ln) {
+                    return undefined;
+                }
+
                 debug("start to downloadService", ln);
                 const data = yield* downloadLinkRequest(ln, abort);
 
@@ -86,21 +99,12 @@ function* downloaderService(linkHrefArray: string[], id: number, href?: string):
                 debug("pathFile to return", pathFile);
                 return pathFile;
 
-            // } catch (err) {
+            } catch (err) {
 
-            //     debug("Error from downloaderService", err);
+                debug("Error from downloaderService", err);
 
-            //     if (!(yield cancelled())) {
+                throw err;
 
-            //         debug("throwing error");
-            //         // if (linkHrefArray.length === 1) {
-            //         throw err;
-            //         //   }
-            //     }
-
-            //     return undefined;
-
-            // } finally {
             } finally {
 
                 debug("downloaderService finally");
@@ -134,7 +138,7 @@ function* downloaderService(linkHrefArray: string[], id: number, href?: string):
 
     const hrefArray = tasks.map((t) => t.isCancelled() ? undefined : t.result<string | undefined>());
 
-    debug("HrefArray return from downloader", hrefArray);
+    debug("download path:", hrefArray);
     return hrefArray;
 }
 
