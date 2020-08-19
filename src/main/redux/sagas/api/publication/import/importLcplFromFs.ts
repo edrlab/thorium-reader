@@ -97,13 +97,7 @@ export function* importLcplFromFS(
         }
     }
 
-    const title = path.basename(filePath);
-    const [downloadFilePath] = yield* downloader(r2LCP.Links.map((ln) => ln.Href), title);
-
     // // search the path of the epub file
-    // const downloader = diMainGet("downloader");
-    // let download: Download | undefined;
-
     // let title: string | undefined;
     // if (r2LCP.Links) {
     //     for (const link of r2LCP.Links) {
@@ -122,42 +116,10 @@ export function* importLcplFromFS(
     //     }
     // }
 
-    // if (!download) {
-    //     throw new Error(`Unable to initiate download of LCP pub: ${filePath}`);
-    // }
+    const links: string[] = r2LCP?.Links?.reduce((pv, cv) => cv.Rel === "publication" ? [cv.Href] : pv, []) || [];
 
-    // // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
-    // //     this.translator.translate("message.download.start", { title })));
-
-    // yield put(downloadActions.request.build(download.srcUrl, title));
-
-    // debug("[START] Download publication", filePath);
-    // let newDownload: Download;
-    // try {
-    //     newDownload = yield* callTyped(() => downloader.processDownload(
-    //         download.identifier,
-    //         {
-    //             onProgress: (dl: Download) => {
-    //                 debug("[PROGRESS] Downloading publication", dl.progress);
-    //                 const store = diMainGet("store");
-    //                 store.dispatch(downloadActions.progress.build(download.srcUrl, dl.progress));
-    //             },
-    //         },
-    //     ));
-    // } catch (err) {
-    //     yield put(toastActions.openRequest.build(ToastType.Error,
-    //         translate("message.download.error", { title, err: `[${err}]` })));
-
-    //     yield put(downloadActions.error.build(download.srcUrl));
-    //     throw err;
-    // }
-
-    // // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-    // //     this.translator.translate("message.download.success", { title })));
-
-    // debug("[END] Download publication", filePath, newDownload);
-
-    // yield put(downloadActions.success.build(download.srcUrl));
+    const title = path.basename(filePath);
+    const [downloadFilePath] = yield* callTyped(downloader, links, title);
 
     // inject LCP license into temporary downloaded file, so that we can check CRC
     // caveat: processStatusDocument() which is invoked later
@@ -192,7 +154,7 @@ export function* importLcplFromFS(
 
         return publicationDocument;
     } else {
-        throw new Error("downloadFilePath undefined");
+        throw new Error("download path undefined");
     }
     // return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
 }
