@@ -82,7 +82,7 @@ export function* importFromFsService(
                 toastActions.openRequest.build(
                     ToastType.Success,
                     translate(
-                        "message.import.success", { title: publicationDocument.title },
+                        "message.import.success", { title: publicationDocument?.title },
                     ),
                 ),
             );

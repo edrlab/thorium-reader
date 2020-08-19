@@ -34,7 +34,7 @@ export function* importFromLink(
             return publicationViewConverter.convertDocumentToView(publicationDocument);
 
         } catch (error) {
-            throw new Error(`importPublicationFromOpdsDoc error ${error}`);
+            throw new Error(`importFromLink error ${error}`);
         }
     }
 

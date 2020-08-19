@@ -48,10 +48,12 @@ export function* importFromLinkService(
     //                 ""))); // downloader will try HTTP response headers
     // // start the download service
 
-    debug("Start the download", link.url);
+    debug("Start the download", link);
 
-    const [downloadPath] = yield* downloader([link.url], title);
+    const resArray = yield* downloader([link.url], title);
 
+    debug("resArray", resArray);
+    const [downloadPath] = resArray;
     debug("downloadPath:", downloadPath);
 
     // const downloader = diMainGet("downloader");

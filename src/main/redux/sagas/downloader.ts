@@ -11,7 +11,8 @@ import { RequestInit } from "node-fetch";
 import { tmpdir } from "os";
 import * as path from "path";
 import { acceptedExtension } from "readium-desktop/common/extension";
-import { downloadActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
 import {
     allTyped, callTyped, forkTyped, joinTyped, putTyped, raceTyped, takeTyped,
 } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -37,28 +38,44 @@ export function* downloader(linkHrefArray: string[], href?: string): SagaGenerat
     debug("Downloader ID=", id);
 
     try {
-        return yield* downloaderService(linkHrefArray, Number(new Date()), href);
-    } catch {
+        yield* putTyped(downloadActions.progress.build({
+            downloadUrl: href,
+            progress: 0,
+            id,
+            speed: 0,
+            contentLengthHumanReadable: "",
+        }));
+
+        const pathArray = yield* callTyped(downloaderService, linkHrefArray, Number(new Date()), href);
+        debug("filePath Array to return from downloader", pathArray);
+        return pathArray;
+
+    } catch (err) {
+
+        debug("Error from Downloader", err);
+
+        const translate = diMainGet("translator").translate;
+
+        yield* putTyped(toastActions.openRequest.build(
+            ToastType.Error,
+            translate("message.download.error", { title: path.basename(href), err: `[${err}]` }),
+        ));
+
         return [];
+
+    } finally {
+
+        yield* putTyped(downloadActions.done.build(id));
     }
 }
 
 function* downloaderService(linkHrefArray: string[], id: number, href?: string): SagaGenerator<string[]> {
 
-    const abort = new AbortSignal();
-
     const effects = linkHrefArray.map((ln) => {
         return forkTyped(function*() {
 
+            const abort = new AbortSignal();
             try {
-
-                yield* putTyped(downloadActions.progress.build({
-                    downloadUrl: href,
-                    progress: 0,
-                    id,
-                    speed: 0,
-                    contentLengthHumanReadable: "",
-                }));
 
                 debug("start to downloadService", ln);
                 const data = yield* downloadLinkRequest(ln, abort);
@@ -69,17 +86,31 @@ function* downloaderService(linkHrefArray: string[], id: number, href?: string):
                 debug("pathFile to return", pathFile);
                 return pathFile;
 
+            // } catch (err) {
+
+            //     debug("Error from downloaderService", err);
+
+            //     if (!(yield cancelled())) {
+
+            //         debug("throwing error");
+            //         // if (linkHrefArray.length === 1) {
+            //         throw err;
+            //         //   }
+            //     }
+
+            //     return undefined;
+
+            // } finally {
             } finally {
 
+                debug("downloaderService finally");
+
                 if (yield cancelled()) {
+                    debug("downloaderService cancelled -> abort");
 
                     abort.dispatchEvent();
-
-                    yield put(downloadActions.done.build(id));
                 }
 
-                // tslint:disable-next-line: no-unsafe-finally
-                return undefined;
             }
 
         });
@@ -274,93 +305,86 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
 
 function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, href?: string): SagaGenerator<string> {
 
-    try {
-        if (data?.isSuccess) {
+    if (data?.isSuccess) {
 
-            // const url = data.responseUrl;
-            const contentType = data.contentType;
-            const contentDisposition = data.response.headers.get("content-disposition") || "";
-            const contentLengthStr = data.response.headers.get("content-length") || "";
-            const contentLength = parseInt(contentLengthStr, 10) || 0;
-            const readStream = data.body;
-            const contentLengthHumanReadable = humanFileSize(contentLength);
-            debug("contentLength", contentLengthHumanReadable);
+        // const url = data.responseUrl;
+        const contentType = data.contentType;
+        const contentDisposition = data.response.headers.get("content-disposition") || "";
+        const contentLengthStr = data.response.headers.get("content-length") || "";
+        const contentLength = parseInt(contentLengthStr, 10) || 0;
+        const readStream = data.body;
+        const contentLengthHumanReadable = humanFileSize(contentLength);
+        debug("contentLength", contentLengthHumanReadable);
 
-            const filename = downloadCreateFilename(contentType, contentDisposition);
-            debug("Filename", filename);
+        const filename = downloadCreateFilename(contentType, contentDisposition);
+        debug("Filename", filename);
 
-            const pathDir = yield* downloadCreatePathDir(id.toString());
-            const pathFile = yield* downloadCreatePathFilename(pathDir, filename);
-            debug("PathFile", pathFile);
+        const pathDir = yield* downloadCreatePathDir(id.toString());
+        const pathFile = yield* downloadCreatePathFilename(pathDir, filename);
+        debug("PathFile", pathFile);
 
-            if (readStream) {
+        if (readStream) {
 
-                yield* putTyped(downloadActions.progress.build({
-                    downloadUrl: href,
-                    progress: 0,
-                    id,
-                    speed: 0,
-                    contentLengthHumanReadable,
-                }));
+            yield* putTyped(downloadActions.progress.build({
+                downloadUrl: href,
+                progress: 0,
+                id,
+                speed: 0,
+                contentLengthHumanReadable,
+            }));
 
-                debug("filename doesn't exists, great!");
-                const writeStream = createWriteStream(pathFile);
-                const pipeline = util.promisify(stream.pipeline);
+            debug("filename doesn't exists, great!");
+            const writeStream = createWriteStream(pathFile);
+            const pipeline = util.promisify(stream.pipeline);
 
-                const channel = downloadReadStreamProgression(readStream, contentLength);
+            const channel = downloadReadStreamProgression(readStream, contentLength);
 
-                yield* allTyped([
-                    call(() => pipeline(
-                        readStream,
-                        writeStream,
-                    )),
-                    call(function*() {
+            yield* allTyped([
+                call(() => pipeline(
+                    readStream,
+                    writeStream,
+                )),
+                call(function*() {
 
-                        try {
+                    try {
 
-                            while (true) {
+                        while (true) {
 
-                                const status = yield* takeTyped(channel);
+                            const status = yield* takeTyped(channel);
 
-                                yield put(downloadActions.progress.build({
-                                    downloadUrl: href,
-                                    progress: status.progression,
-                                    id,
-                                    speed: status.speed,
-                                    contentLengthHumanReadable,
-                                }));
-                            }
-
-                        } finally {
-                            // ignore
+                            yield put(downloadActions.progress.build({
+                                downloadUrl: href,
+                                progress: status.progression,
+                                id,
+                                speed: status.speed,
+                                contentLengthHumanReadable,
+                            }));
                         }
-                    }),
-                ]);
 
-                // yield* putTyped(downloadActions.progress.build({
-                //     downloadUrl: href,
-                //     progress: 100,
-                //     id,
-                //     speed: 0,
-                //     contentLengthHumanReadable,
-                // }));
+                    } finally {
+                        // ignore
+                    }
+                }),
+            ]);
 
-                yield* putTyped(downloadActions.done.build(id));
+            yield* putTyped(downloadActions.progress.build({
+                downloadUrl: href,
+                progress: 100,
+                id,
+                speed: 0,
+                contentLengthHumanReadable,
+            }));
 
-                return pathFile;
-            } else {
-                debug("readStream not available");
-            }
-
+            return pathFile;
         } else {
-            debug("httpGet ERROR", data?.statusMessage, data?.statusCode);
+            debug("readStream not available");
+            throw new Error("readStream not available");
         }
 
-    } catch (err) {
-        debug(err, err.trace);
+    } else {
+        debug("httpGet ERROR", data?.statusMessage, data?.statusCode);
+        throw new Error("http GET: " + data?.statusMessage + " (" + data?.statusCode + ")");
     }
-
-    return undefined;
 }
 
 function humanFileSize(bytes: number, si = false, dp = 1) {
