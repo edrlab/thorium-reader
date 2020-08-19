@@ -47,7 +47,7 @@ export function* downloader(linkHrefArray: string[], href?: string): SagaGenerat
         }));
 
         // redux-saga : use call to execute sagaGenerator tasked (forked)
-        const pathArray = yield* callTyped(downloaderService, linkHrefArray, Number(new Date()), href);
+        const pathArray = yield* callTyped(downloaderService, linkHrefArray, id, href);
         debug("filePath Array to return from downloader", pathArray);
         return pathArray;
 
@@ -74,6 +74,7 @@ export function* downloader(linkHrefArray: string[], href?: string): SagaGenerat
             ));
         }
 
+        debug("Download of ", href, "DONE");
         yield* putTyped(downloadActions.done.build(id));
     }
 }

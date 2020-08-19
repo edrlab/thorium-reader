@@ -24,7 +24,7 @@ import { downloader } from "../../../downloader";
 import { importPublicationFromFS } from "./importPublicationFromFs";
 
 // Logger
-const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationFromFs");
+const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationLcplFromFs");
 
 export function* importLcplFromFS(
     filePath: string,
@@ -135,7 +135,7 @@ export function* importLcplFromFS(
         const hash = yield* callTyped(() => extractCrc32OnZip(downloadFilePath));
         const [pubDocument] = yield* callTyped(() => publicationRepository.findByHashId(hash));
 
-        debug("importLcplFromFS", pubDocument, hash);
+        debug("importLcplFromFS", hash);
         if (pubDocument) {
 
             yield put(
