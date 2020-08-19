@@ -33,7 +33,6 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
-import { Downloader } from "readium-desktop/main/services/downloader";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 // import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
@@ -197,10 +196,6 @@ const createStoreFromDi = async () => {
     container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
     container.bind<SagaMiddleware>(diSymbolTable["saga-middleware"]).toConstantValue(sagaMiddleware);
 
-    // Create downloader
-    const downloader = new Downloader(null, configRepository, store);
-    container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
-
     return store;
 };
 
@@ -290,7 +285,6 @@ interface IGet {
     (s: "store"): Store<RootState>;
     // (s: "win-registry"): WinRegistry;
     (s: "translator"): Translator;
-    (s: "downloader"): Downloader;
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "locator-repository"): LocatorRepository;

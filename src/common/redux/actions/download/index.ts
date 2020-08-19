@@ -8,10 +8,8 @@
 import * as abort from "./abort";
 import * as done from "./done";
 import * as progress from "./progress";
-import * as request from "./request";
 
 export {
-    request,
     done,
     abort,
     progress,
