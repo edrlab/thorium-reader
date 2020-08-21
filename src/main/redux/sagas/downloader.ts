@@ -23,7 +23,6 @@ import { AbortSignal, httpGet } from "readium-desktop/main/http";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { mapGenerator } from "readium-desktop/utils/generator";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
-import { END } from "redux-saga";
 import { all, call, cancelled, delay, join, take } from "redux-saga/effects";
 import * as stream from "stream";
 import { cancel, FixedTask, SagaGenerator } from "typed-redux-saga";
@@ -386,8 +385,8 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number)
         const filename = downloadCreateFilename(contentType, contentDisposition);
         debug("Filename", filename);
 
-        const pathDir = yield* downloadCreatePathDir(id.toString());
-        const pathFile = yield* downloadCreatePathFilename(pathDir, filename);
+        const pathDir = yield* callTyped(downloadCreatePathDir, id.toString());
+        const pathFile = yield* callTyped(downloadCreatePathFilename, pathDir, filename);
         debug("PathFile", pathFile);
 
         if (readStream) {
