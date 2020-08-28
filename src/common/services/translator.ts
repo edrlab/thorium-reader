@@ -12,16 +12,16 @@ import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as esCatalog from "readium-desktop/resources/locales/es.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 import * as jaCatalog from "readium-desktop/resources/locales/ja.json";
-import * as nlCatalog from "readium-desktop/resources/locales/nl.json";
 import * as ltCatalog from "readium-desktop/resources/locales/lt.json";
+import * as nlCatalog from "readium-desktop/resources/locales/nl.json";
 
 import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
 import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
 import * as esLang from "readium-desktop/resources/locale-names/esLang.json";
 import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
 import * as jaLang from "readium-desktop/resources/locale-names/jaLang.json";
-import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
 import * as ltLang from "readium-desktop/resources/locale-names/ltLang.json";
+import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
 
 // -----------------------------------------------------------
