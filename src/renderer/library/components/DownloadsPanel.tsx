@@ -50,12 +50,12 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
                         progress = 0;
                     }
                     return <li key={id}>
+                        <span className={styles.title}><a onClick={() => abortDownload(id)}>X</a></span>
                         <span className={styles.percent}>{progress}%</span>
                         <progress max="100" value={progress}>{progress}</progress>
                         <span className={styles.title}>{dl.downloadUrl}</span>
                         <span className={styles.title}>{dl.contentLengthHumanReadable}</span>
                         <span className={styles.title}>{dl.speed + " Kb/s"}</span>
-                        <span className={styles.title}><a onClick={() => abortDownload(id)}>X</a></span>
 
                     </li>;
                 })
