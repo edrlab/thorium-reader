@@ -13,7 +13,8 @@ import * as esCatalog from "readium-desktop/resources/locales/es.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 import * as jaCatalog from "readium-desktop/resources/locales/ja.json";
 import * as nlCatalog from "readium-desktop/resources/locales/nl.json";
-import * as ptCatalog from "readium-desktop/resources/locales/pt.json";
+import * as ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
+import * as ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
 
 import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
 import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
@@ -97,8 +98,11 @@ i18nextInstance.init({
         ja: {
             translation: jaCatalog,
         },
-        pt: {
-            translation: ptCatalog,
+        pt-br: {
+            translation: ptBrCatalog,
+        },
+        pt-pt: {
+            translation: ptPtCatalog,
         },
     },
     // lng: undefined,
@@ -127,7 +131,8 @@ i18nextInstance.addResourceBundle("de", "translation", deLang, true);
 i18nextInstance.addResourceBundle("es", "translation", esLang, true);
 i18nextInstance.addResourceBundle("nl", "translation", nlLang, true);
 i18nextInstance.addResourceBundle("ja", "translation", jaLang, true);
-i18nextInstance.addResourceBundle("pt", "translation", ptLang, true);
+i18nextInstance.addResourceBundle("pt-br", "translation", ptBrLang, true);
+i18nextInstance.addResourceBundle("pt-pt", "translation", ptPtLang, true);
 
 const i18nextInstanceEN = i18nextInstance.cloneInstance();
 i18nextInstanceEN.changeLanguage("en").then((_t) => {
@@ -146,7 +151,8 @@ export const AvailableLanguages = {
     es: "Español",
     nl: "Dutch",
     ja: "日本語",
-    pt: "Português",
+    "pt-br": "Português Brasileiro",
+    "pt-pt": "Português",
 };
 
 interface LocalizedContent {
