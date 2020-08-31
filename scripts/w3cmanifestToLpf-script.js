@@ -1,4 +1,4 @@
-#! /usr/local/opt/node@12/bin/node
+#! node
 
 /** Media type for JSON */
 const json_content_type = 'application/json';
