@@ -16,6 +16,7 @@ const yazl = require("yazl");
 const { inflate } = require("zlib");
 const { publicEncrypt } = require("crypto");
 const fs = require("fs");
+const { promises } = require("dns");
 
 const progName = process.argv[1] || "";
 const argUrl = process.argv[2] || "";
@@ -26,6 +27,7 @@ const packageName = process.argv[3] || "package.lpf";
 
     let publicationData;
     let entryData;
+    let downloadStream;
 
     try {
         log(argUrl);
@@ -38,16 +40,16 @@ const packageName = process.argv[3] || "package.lpf";
         return;
     }
 
-    const url = argUrl;
+    const masterUrl = argUrl;
 
-    log("URL:", url);
+    log("URL:", masterUrl);
 
     log("fetching...");
 
     let isJson = false;
     try {
 
-        const response = await fetch(url);
+        const response = await fetch(masterUrl);
 
         log(response.ok);
         log(response.status);
@@ -74,7 +76,7 @@ const packageName = process.argv[3] || "package.lpf";
 
     } catch (e) {
 
-        error("error to fetch", url);
+        error("error to fetch", masterUrl);
         error(e);
     }
 
@@ -95,7 +97,7 @@ const packageName = process.argv[3] || "package.lpf";
                 log("download the pubication linked in the html");
 
 
-                const publicationUrl = resolve(url, href);
+                const publicationUrl = resolve(masterUrl, href);
                 log("publicationUrl", publicationUrl);
 
                 if (!publicationUrl.startsWith("about:blank")) {
@@ -123,7 +125,7 @@ const packageName = process.argv[3] || "package.lpf";
 
                     } catch (e) {
 
-                        error("error to fetch", url);
+                        error("error to fetch", masterUrl);
                         error(e);
                     }
 
@@ -145,6 +147,92 @@ const packageName = process.argv[3] || "package.lpf";
 
     //zip creation
 
+    const ressourcesArray = [];
+
+    if (publicationData) {
+
+        let json;
+        try {
+
+            json = JSON.parse(publicationData);
+        } catch (e) {
+            error("error to parse publication json");
+        }
+
+        const fn = (v) => {
+
+            let href;
+            if (typeof v === "string") {
+                href = v;
+            } else if (typeof v === "object") {
+                if (typeof v.url === "string") {
+                    href = v.url;
+                }
+            }
+
+            if (href) {
+
+                try {
+                    if (!href.startsWith("http")) {
+
+                        const resolvedUrl = resolve(masterUrl, href);
+                        const pathname = href;
+                        const pathnameAbsolute = pathname[0] === "/" ? pathname.slice(1) : pathname;
+
+                        log(pathnameAbsolute, resolvedUrl);
+                        ressourcesArray.push([pathnameAbsolute, resolvedUrl]);
+                    }
+
+                } catch (e) {
+                    error(v, ": bad url");
+                }
+            }
+        }
+
+        let readingOrder = Array.isArray(json.readingOrder) ? json.readingOrder : [json.readingOrder];
+        let ressources = Array.isArray(json.resources) ? json.resources : [json.resources];
+
+        if (ressources) {
+            ressources.forEach(fn);
+        } else {
+            log("no ressources");
+        }
+        if (readingOrder) {
+            readingOrder.forEach(fn);
+        } else {
+            log("no readingOrders");
+        }
+
+        // downloads all ressources
+
+        downloadStream = ressourcesArray.map(async ([pathName, href]) => {
+
+            if (pathName && href) {
+
+                try {
+
+                    const response = await fetch(href);
+
+                    if (response.ok) {
+
+                        return [pathName, response.body];
+
+                    } else {
+                        throw new Error("not ok", response.statusText);
+                    }
+                } catch (e) {
+                    error("error to fetch ", href, "from ressources");
+                    error(e);
+                }
+            }
+
+            return [];
+        });
+
+    } else {
+        error("no publication.json");
+    }
+
     try {
 
         const zipfile = new yazl.ZipFile();
@@ -160,9 +248,26 @@ const packageName = process.argv[3] || "package.lpf";
             zipfile.addBuffer(Buffer.from(entryData), "entry.html");
         }
 
-        if (!entryData && !publicationData) {
-            error("the lpf package will be empty");
+        if (downloadStream) {
+
+            let streamArray;
+            try {
+                streamArray = await Promise.all(downloadStream);
+            } catch (e) {
+                error(e);
+            }
+
+            streamArray.forEach(([pathName, stream]) => {
+                if (pathName && stream) {
+
+                    zipfile.addReadStream(stream, pathName);
+                }
+            })
         }
+
+        // if (!entryData && !publicationData) {
+        //     error("the lpf package will be empty");
+        // }
         // call end() after all the files have been added
         zipfile.end();
     } catch (e) {
