@@ -1,8 +1,8 @@
 Sobre o Thorium Reader
 =======================
 
-Importe e leia ebooks em formato EPUB no seu computador Windows 10, Linux ou MacOS. Uma grande experiência; uma estante de livro 
-locais com capacidade de pesquisas e marcações pessoais; propriedades de layout altamente customizaveis, com navegaçao simplificada 
+Importe e leia ebooks em formato EPUB no seu computador Windows 10, Linux ou MacOS. Uma grande experiência; uma estante de livro
+locais com capacidade de pesquisas e marcações pessoais; propriedades de layout altamente customizaveis, com navegaçao simplificada
 utilizando um sumário e lista de páginas, com barra de progresso de leitura, marcadores identificados, modo "Zen".
 
 * Aproveite ebooks complexos em EPUB 3, com layout fixo, com audio, video, animações e interatividade.
