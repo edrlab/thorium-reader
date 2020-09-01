@@ -6,18 +6,14 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { promises as fsp } from "fs";
 import * as moment from "moment";
-import * as os from "os";
-import { basename, dirname, extname, join } from "path";
-import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { extname } from "path";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { v4 as uuidV4 } from "uuid";
 
-import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
@@ -25,80 +21,9 @@ import { Subject } from "@r2-shared-js/models/metadata-subject";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
-import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
-import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
-import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
-import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 // Logger
-const debug = debug_("readium-desktop:main#lpfConverter");
-
-async function copyAndRenameLpfFile(lpfPath: string): Promise<string> {
-
-    const tmpPathName = `${_APP_NAME}-lpfconverter-`;
-    const tmpPath = os.tmpdir();
-
-    let dirPath: string;
-    try {
-        // creates a unique temporary directory
-        dirPath = await fsp.mkdtemp(join(tmpPath, tmpPathName));
-    } catch (err) {
-        return Promise.reject(`creates a unique temporary directory : ${err}`);
-    }
-
-    const lpfBasename = basename(lpfPath);
-    const audiobookBasename = `${lpfBasename}${acceptedExtensionObject.audiobook}`;
-    const audiobookPath = join(dirPath, audiobookBasename);
-
-    debug(`LPFPATH=${lpfPath} AUDIOBOOKPATH=${audiobookPath}`);
-
-    return audiobookPath;
-}
-
-async function openAndExtractPublicationFromLpf(lpfPath: string): Promise<NodeJS.ReadableStream> {
-
-    const publicationEntryPath = "publication.json";
-    const zip = await zipLoadPromise(lpfPath);
-
-    if (!zip.hasEntries()) {
-        return Promise.reject("LPF zip empty");
-    }
-
-    if (zip.hasEntry(publicationEntryPath)) {
-
-        let entryStream: IStreamAndLength;
-        try {
-            entryStream = await zip.entryStreamPromise(publicationEntryPath);
-
-        } catch (err) {
-            debug(err);
-            return Promise.reject(`Problem streaming LPF zip entry?! ${publicationEntryPath}`);
-        }
-
-        return entryStream.stream;
-
-    } else {
-        return Promise.reject("LPF zip 'publication.json' is missing");
-    }
-}
-
-async function injectManifestToZip(sourcePath: string, destinationPath: string, manifest: Buffer) {
-
-    const manifestEntryPath = "manifest.json";
-    await new Promise((resolve, reject) => {
-        injectBufferInZip(
-            sourcePath,
-            destinationPath,
-            manifest,
-            manifestEntryPath,
-            (err) => {
-                debug("injectManifestToZip - injectBufferInZip ERROR!", err);
-                reject(`'injectBufferInZip' : ${err}`);
-            },
-            () => resolve(),
-        );
-    });
-}
+const debug = debug_("readium-desktop:main#w3c/audiobooks/mapper");
 
 interface IW3cLocalizableString {
     language?: string;
@@ -260,7 +185,11 @@ function convertW3CpublicationLinksToReadiumManifestLink(
     return linkMap;
 }
 
-interface Iw3cPublicationManifest {
+//
+// API
+//
+
+export interface Iw3cPublicationManifest {
     "type"?: string | string[];
     "@context"?: string | string[];
     "conformsTo"?: string | string[];
@@ -285,7 +214,9 @@ interface Iw3cPublicationManifest {
     "accessibilitySummary"?: string | IW3cLocalizableString | IW3cLocalizableString[];
 }
 
-export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: Iw3cPublicationManifest) {
+export function w3cPublicationManifestToReadiumPublicationManifest(
+    w3cManifest: Iw3cPublicationManifest,
+): R2Publication {
 
     const pop = ((obj: Iw3cPublicationManifest) =>
         <Key extends keyof typeof obj>(key: Key): Iw3cPublicationManifest[Key] => {
@@ -477,37 +408,5 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
         }
     }
 
-    const publicationJson = TaJsonSerialize<R2Publication>(publication);
-
-    return publicationJson;
-}
-
-//
-// API
-//
-export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string, () => Promise<void>]> {
-
-    const audiobookPath = await copyAndRenameLpfFile(lpfPath);
-
-    const stream = await openAndExtractPublicationFromLpf(lpfPath);
-
-    const buffer = await streamToBufferPromise(stream);
-    const rawData = buffer.toString("utf8");
-    const w3cManifest = JSON.parse(rawData) as Iw3cPublicationManifest;
-
-    const readiumManifest = w3cPublicationManifestToReadiumPublicationManifest(w3cManifest);
-
-    const manifestBuffer = Buffer.from(JSON.stringify(readiumManifest, null, 4));
-    await injectManifestToZip(lpfPath, audiobookPath, manifestBuffer);
-
-    const cleanFct = async () => {
-        try {
-            await fsp.unlink(audiobookPath);
-            await fsp.rmdir(dirname(audiobookPath));
-        } catch (err) {
-            // ignore
-        }
-    };
-
-    return [audiobookPath, cleanFct];
+    return publication;
 }

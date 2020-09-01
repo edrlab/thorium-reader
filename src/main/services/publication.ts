@@ -42,9 +42,9 @@ import { PublicationViewConverter } from "../converter/publication";
 import { getTagsFromOpdsPublication } from "../converter/tools/getTags";
 import { extractCrc32OnZip } from "../crc";
 import { getLibraryWindowFromDi } from "../di";
-import { lpfToAudiobookConverter } from "../lpfConverter";
 import { publicationActions } from "../redux/actions";
 import { RootState } from "../redux/states";
+import { lpfToAudiobookConverter } from "../w3c/lpf/toAudiobook";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
 
