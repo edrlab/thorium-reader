@@ -22,7 +22,8 @@ import * as esLang from "readium-desktop/resources/locale-names/esLang.json";
 import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
 import * as jaLang from "readium-desktop/resources/locale-names/jaLang.json";
 import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
-import * as ptLang from "readium-desktop/resources/locale-names/ptLang.json";
+import * as pt-ptLang from "readium-desktop/resources/locale-names/pt-ptLang.json";
+import * as pt-brLang from "readium-desktop/resources/locale-names/pt-brLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
 
 // -----------------------------------------------------------
