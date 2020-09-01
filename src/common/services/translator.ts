@@ -22,8 +22,8 @@ import * as esLang from "readium-desktop/resources/locale-names/esLang.json";
 import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
 import * as jaLang from "readium-desktop/resources/locale-names/jaLang.json";
 import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
-import * as ptPtLang from "readium-desktop/resources/locale-names/ptPtLang.json";
 import * as ptBrLang from "readium-desktop/resources/locale-names/ptBrLang.json";
+import * as ptPtLang from "readium-desktop/resources/locale-names/ptPtLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
 
 // -----------------------------------------------------------
@@ -81,22 +81,22 @@ if (i18next.createInstance) {
 i18nextInstance.init({
     debug: false,
     resources: {
-        en: {
+        "en": {
             translation: enCatalog,
         },
-        fr: {
+        "fr": {
             translation: frCatalog,
         },
-        de: {
+        "de": {
             translation: deCatalog,
         },
-        es: {
+        "es": {
             translation: esCatalog,
         },
-        nl: {
+        "nl": {
             translation: nlCatalog,
         },
-        ja: {
+        "ja": {
             translation: jaCatalog,
         },
         "pt-br": {
@@ -146,12 +146,12 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 // src/utils/object-keys-values.ts
 // to benefit from compile-type TypeScript typesafe key enum
 export const AvailableLanguages = {
-    en: "English",
-    fr: "Français",
-    de: "Deutsch",
-    es: "Español",
-    nl: "Dutch",
-    ja: "日本語",
+    "en": "English",
+    "fr": "Français",
+    "de": "Deutsch",
+    "es": "Español",
+    "nl": "Dutch",
+    "ja": "日本語",
     "pt-br": "Português Brasileiro",
     "pt-pt": "Português",
 };
