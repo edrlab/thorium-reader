@@ -10,7 +10,6 @@ import { promises as fsp } from "fs";
 import * as os from "os";
 import { basename, join } from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
-import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
 import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
@@ -24,7 +23,7 @@ export async function copyAndMoveLpfToTmpWithNewExt(
     ext: string = acceptedExtensionObject.audiobook,
 ): Promise<string> {
 
-    const tmpPathName = `${_APP_NAME}-lpfconverter-`;
+    const tmpPathName = `lpfconverter`;
     const tmpPath = os.tmpdir();
 
     let dirPath: string;

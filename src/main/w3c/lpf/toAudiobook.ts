@@ -7,10 +7,9 @@
 
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
-import { JSDOM } from "jsdom";
+import { DOMWindow, JSDOM } from "jsdom";
 import { dirname } from "path";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
-import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 
@@ -47,6 +46,16 @@ async function extractConvertAndInjectManifest(
     await injectManifestToZip(lpfPath, audiobookPath, manifestBuffer);
 }
 
+function findManifestInHtmlEntryAndReturnBuffer(window: DOMWindow, id: string) {
+    const scriptEl: HTMLElement = window.document.getElementById(id);
+    if (scriptEl && scriptEl.innerHTML) {
+        const bufferManifest = Buffer.from(scriptEl.innerHTML);
+        return bufferManifest;
+    }
+
+    return undefined;
+}
+
 async function findManifestAndReturnBuffer(lpfPath: string): Promise<Buffer> {
 
     const publicationStream = await openAndExtractFileFromLpf(lpfPath);
@@ -72,11 +81,7 @@ async function findManifestAndReturnBuffer(lpfPath: string): Promise<Buffer> {
                     if (el) {
                         const url = el.hasAttribute("href") ? el.href : undefined;
                         if (url[0] === "#") {
-                            const scriptEl: HTMLScriptElement = window.document.querySelector("script" + url);
-                            if (scriptEl && scriptEl.innerText) {
-                                const bufferManifest = Buffer.from(scriptEl.innerText);
-                                return bufferManifest;
-                            }
+                            return findManifestInHtmlEntryAndReturnBuffer(window, url.slice(1));
 
                         } else {
 
@@ -128,4 +133,43 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string,
         }
     };
     return [audiobookPath, cleanFct];
+}
+
+// TEST
+if (require.main === module) {
+
+    const { window } = new JSDOM(`<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Entry point with embedded manifest</title>
+        <link rel="publication" href="#manifest" />
+        <script id='manifest' type='application/ld+json'>
+            {
+                "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
+                "type": "CreativeWork",
+                "name" : "My Wonderful Book",
+                "id" : "urn:isbn:1234567890",
+                "url": "https://example.org/book",
+                "conformsTo": "https://www.w3.org/TR/pub-manifest/",
+                "readingOrder": [
+                    "chapter1.html"
+                ],
+                "resources": [
+                    "./m4.2.5.01.html"
+                ]
+            }
+        </script>
+    </head>
+    <body>
+        <p>This is just a fake entry point.</p>
+    </body>
+    </html>
+    `);
+
+    const b = findManifestInHtmlEntryAndReturnBuffer(window, "manifest");
+
+    console.log("Buffer");
+    console.log(b);
+    console.log(b.toString());
+
 }
