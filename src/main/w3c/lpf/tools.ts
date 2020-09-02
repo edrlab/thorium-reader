@@ -68,9 +68,10 @@ export async function openAndExtractFileFromLpf(
 
         return entryStream.stream;
 
-    } else {
-        return Promise.reject("LPF zip " + fileEntryPath + "is missing");
     }
+        // return Promise.reject("LPF zip " + fileEntryPath + "is missing");
+
+    return undefined;
 }
 
 export async function injectManifestToZip(

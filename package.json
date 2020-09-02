@@ -63,7 +63,8 @@
     "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en fr de en nl --space 4 --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
     "i18n-check": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de en nl --space 4 --finalnewline --newkeysempty",
     "i18n-typed": "node ./scripts/locale-wrap.js \"src/resources/locales/en.json\" \"en.json\" && typed_i18n -i \"en.json\" -o src/typings -l typescript && rimraf \"en.json\"",
-    "redux-devtools": "redux-devtools --hostname=localhost --port=7770"
+    "redux-devtools": "redux-devtools --hostname=localhost --port=7770",
+    "execFile": "ts-node -r tsconfig-paths/register"
   },
   "repository": {
     "type": "git",
@@ -196,6 +197,7 @@
     }
   },
   "dependencies": {
+    "@types/jsdom": "^16.2.4",
     "classnames": "^2.2.6",
     "commonmark": "^0.29.1",
     "connected-react-router": "^6.8.0",
@@ -314,6 +316,7 @@
     "svg-sprite-loader": "^5.0.0",
     "ts-jest": "^24.3.0",
     "ts-loader": "^8.0.2",
+    "tsconfig-paths": "^3.9.0",
     "tslint": "5.*.*",
     "tslint-language-service": "^0.9.9",
     "typescript": "^4.0.2",

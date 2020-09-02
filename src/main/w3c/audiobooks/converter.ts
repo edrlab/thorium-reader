@@ -21,6 +21,7 @@ import { Subject } from "@r2-shared-js/models/metadata-subject";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
+import { htmlTocToLinkArray } from "./toc";
 
 // Logger
 const debug = debug_("readium-desktop:main#w3c/audiobooks/mapper");
@@ -101,7 +102,7 @@ function convertW3cEntitiesToReadiumManifestContributors(
     return contributorArray;
 }
 
-interface IW3cLinkedResources {
+export interface IW3cLinkedResources {
     type?: string | string[];
     url?: string;
     encodingFormat?: string;
@@ -214,9 +215,10 @@ export interface Iw3cPublicationManifest {
     "accessibilitySummary"?: string | IW3cLocalizableString | IW3cLocalizableString[];
 }
 
-export function w3cPublicationManifestToReadiumPublicationManifest(
+export async function w3cPublicationManifestToReadiumPublicationManifest(
     w3cManifest: Iw3cPublicationManifest,
-): R2Publication {
+    tocCallback: (uniqueRessources: Link[]) => HTMLElement | Promise<HTMLElement>,
+): Promise<R2Publication> {
 
     const pop = ((obj: Iw3cPublicationManifest) =>
         <Key extends keyof typeof obj>(key: Key): Iw3cPublicationManifest[Key] => {
@@ -401,6 +403,31 @@ export function w3cPublicationManifestToReadiumPublicationManifest(
             publication.Metadata.AccessibilitySummary = loc;
         }
     }
+
+    // TOC
+    {
+        const uniqueResources = [
+            ...(
+                Array.isArray(publication.Resources)
+                    ? publication.Resources
+                    : []),
+            ...(
+                Array.isArray(publication.Spine)
+                    ? publication.Spine
+                    : []),
+        ];
+
+        if (tocCallback) {
+            const tocElement = await Promise.resolve(tocCallback(uniqueResources));
+            if (tocElement) {
+                const toc = htmlTocToLinkArray(tocElement, uniqueResources);
+                if (Array.isArray(toc) && toc.length) {
+                    publication.TOC = toc;
+                }
+            }
+        }
+    }
+
     {
         // save all other properties
         if (Object.keys(w3cManifest).length) {
