@@ -14,7 +14,6 @@ const { JSDOM } = jsdom;
 const { resolve } = require("url");
 const yazl = require("yazl");
 const fs = require("fs");
-const { promises } = require("dns");
 
 const progName = process.argv[1] || "";
 const argUrl = process.argv[2] || "";
