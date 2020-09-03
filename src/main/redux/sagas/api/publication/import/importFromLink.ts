@@ -21,12 +21,12 @@ const debug = debug_("readium-desktop:main#saga/api/publication/importFromLinkSe
 
 export function* importFromLinkService(
     link: IOpdsLinkView,
-    pub: IOpdsPublicationView,
+    pub?: IOpdsPublicationView,
 ): SagaGenerator<PublicationDocument | undefined> {
 
     let returnPublicationDocument: PublicationDocument;
 
-    if (!(link?.url && pub)) {
+    if (!link?.url) {
         debug("Unable to get an acquisition url from opds publication", link);
         throw new Error("Unable to get acquisition url from opds publication");
     }
@@ -63,7 +63,7 @@ export function* importFromLinkService(
                         r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
                         r2LCPBase64: publicationDocument.resources.r2LCPBase64,
                         r2LSDBase64: publicationDocument.resources.r2LSDBase64,
-                        r2OpdsPublicationBase64: pub.r2OpdsPublicationBase64,
+                        r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
                     },
                     tags,
                 },

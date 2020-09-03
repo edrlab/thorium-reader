@@ -18,10 +18,10 @@ import { importFromLinkService } from "./importFromLink";
 
 export function* importFromLink(
     link: IOpdsLinkView,
-    pub: IOpdsPublicationView,
+    pub?: IOpdsPublicationView,
 ): SagaGenerator<PublicationView | undefined> {
 
-    if (link?.url && pub) {
+    if (link?.url) {
 
         try {
             const publicationDocument = yield* callTyped(importFromLinkService, link, pub);

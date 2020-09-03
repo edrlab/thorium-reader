@@ -31,7 +31,7 @@ export interface IPublicationApi {
     ) => SagaGenerator<string[]>;
     importFromLink: (
         link: IOpdsLinkView,
-        pub: IOpdsPublicationView,
+        pub?: IOpdsPublicationView,
     ) => SagaGenerator<PublicationView>;
     importFromFs: (
         filePathArray: string | string[],

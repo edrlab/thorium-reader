@@ -11,6 +11,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 
+import ImportLink from "./importLink";
 import KeyboardSettings from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
 import SessionSettings from "./SessionSettings";
@@ -38,6 +39,7 @@ class Settings extends React.Component<IProps, undefined> {
                     <LanguageSettings></LanguageSettings>
                     <SessionSettings></SessionSettings>
                     <KeyboardSettings></KeyboardSettings>
+                    <ImportLink></ImportLink>
                 </LibraryLayout>
             </>
         );
