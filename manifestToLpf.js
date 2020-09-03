@@ -92,7 +92,7 @@ const packageName = process.argv[3] || "package.lpf";
                 const href = elem.href;
                 log(href);
 
-                log("download the pubication linked in the html");
+                log("download the publication linked in the html");
 
 
                 const publicationUrl = resolve(masterUrl, href);
