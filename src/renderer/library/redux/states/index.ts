@@ -6,13 +6,14 @@
 // ==LICENSE-END==
 
 import { RouterState } from "connected-react-router";
-import { ImportState } from "readium-desktop/common/redux/states/import";
+import { downloadActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
 import { ILoadState } from "readium-desktop/renderer/common/redux/states/load";
+import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 import { IRouterLocationState } from "../../routing";
-import { DownloadState } from "./download";
+// import { DownloadState } from "./download";
 import { THistoryState } from "./history";
 import { IOpdsHeaderState, IOpdsSearchState } from "./opds";
 
@@ -25,8 +26,7 @@ export interface ILibraryRootState extends ICommonRootState {
         };
     };
     router: RouterState<IRouterLocationState>;
-    import: ImportState;
-    download: DownloadState;
+    download: TPQueueState<downloadActions.progress.Payload, number>;
     history: THistoryState;
     updateCatalog: number;
     load: ILoadState;

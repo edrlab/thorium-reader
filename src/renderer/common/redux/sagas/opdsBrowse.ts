@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
+import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { take } from "redux-saga/effects";
 
 import { apiSaga } from "./api";
@@ -17,7 +17,7 @@ import { apiSaga } from "./api";
 const filename_ = "readium-desktop:renderer:redux:saga:opds-browse";
 const debug = debug_(filename_);
 
-type TA = apiActions.result.TAction<ReturnPromiseType<TApiMethod["opds/browse"]>>;
+type TA = apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["opds/browse"]>>;
 
 export function* opdsBrowse(link: string, REQUEST_ID: string) {
 

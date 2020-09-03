@@ -5,14 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as error from "./error";
+import * as abort from "./abort";
+import * as done from "./done";
 import * as progress from "./progress";
-import * as request from "./request";
-import * as success from "./success";
 
 export {
-    request,
-    success,
-    error,
+    done,
+    abort,
     progress,
 };

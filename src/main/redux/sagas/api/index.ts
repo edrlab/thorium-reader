@@ -5,7 +5,5 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-/**
- * Obtain the promise return type of a function type
- */
-export type ReturnPromiseType<T extends (...args: any) => any> = T extends (...args: any) => Promise<infer R> ? R : any;
+export * from "./publication";
+export * from "./api";

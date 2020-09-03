@@ -17,7 +17,6 @@ import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
 import { CatalogApi } from "readium-desktop/main/api/catalog";
 import { LcpApi } from "readium-desktop/main/api/lcp";
 import { OpdsApi } from "readium-desktop/main/api/opds";
-import { PublicationApi } from "readium-desktop/main/api/publication";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -34,22 +33,22 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
-import { Downloader } from "readium-desktop/main/services/downloader";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 // import { WinRegistry } from "readium-desktop/main/services/win-registry";
-import { PublicationService } from "readium-desktop/main/services/publication";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
 import {
     _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
 } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
+import { SagaMiddleware } from "redux-saga";
 
 import { Server } from "@r2-streamer-js/http/server";
 
 import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { SessionApi } from "./api/session";
+import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 
@@ -192,13 +191,10 @@ const closeProcessLock = (() => {
 const container = new Container();
 
 const createStoreFromDi = async () => {
-    const store = await initStore(configRepository);
+    const [store, sagaMiddleware] = await initStore(configRepository);
 
     container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
-
-    // Create downloader
-    const downloader = new Downloader(null, configRepository, store);
-    container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
+    container.bind<SagaMiddleware>(diSymbolTable["saga-middleware"]).toConstantValue(sagaMiddleware);
 
     return store;
 };
@@ -250,12 +246,14 @@ container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantVa
 
 // Create lcp manager
 container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingletonScope();
-container.bind<PublicationService>(diSymbolTable["publication-service"]).to(PublicationService).inSingletonScope();
 container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
 container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
-container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
+// container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
+
+container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi);
+
 container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
@@ -287,7 +285,6 @@ interface IGet {
     (s: "store"): Store<RootState>;
     // (s: "win-registry"): WinRegistry;
     (s: "translator"): Translator;
-    (s: "downloader"): Downloader;
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "locator-repository"): LocatorRepository;
@@ -300,13 +297,13 @@ interface IGet {
     (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;
     (s: "lcp-manager"): LcpManager;
-    (s: "publication-service"): PublicationService;
     (s: "catalog-api"): CatalogApi;
-    (s: "publication-api"): PublicationApi;
+    (s: "publication-api"): typeof publicationApi;
     (s: "opds-api"): OpdsApi;
     (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;
+    (s: "saga-middleware"): SagaMiddleware;
     // minor overload type used in api.ts/LN32
     (s: keyof typeof diSymbolTable): any;
 }

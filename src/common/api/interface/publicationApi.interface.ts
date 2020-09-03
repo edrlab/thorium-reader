@@ -5,42 +5,43 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { SagaGenerator } from "typed-redux-saga";
 
 export interface IPublicationApi {
     // get: (...a: [string]) => Promise<PublicationView> | void;
     get: (
         identifier: string,
         checkLcpLsd: boolean,
-    ) => Promise<PublicationView>;
+    ) => SagaGenerator<PublicationView>;
     delete: (
         identifier: string,
-    ) => Promise<void>;
+    ) => SagaGenerator<void>;
     findAll: (
-    ) => Promise<PublicationView[]>;
+    ) => SagaGenerator<PublicationView[]>;
     findByTag: (
         tag: string,
-    ) => Promise<PublicationView[]>;
+    ) => SagaGenerator<PublicationView[]>;
     updateTags: (
         identifier: string,
         tags: string[],
-    ) => Promise<PublicationView>;
+    ) => SagaGenerator<PublicationView>;
     getAllTags: (
-    ) => Promise<string[]>;
-    importOpdsPublicationLink: (
+    ) => SagaGenerator<string[]>;
+    importFromLink: (
         link: IOpdsLinkView,
-        r2OpdsPublicationBase64: string,
-    ) => Promise<PublicationView>;
-    import: (
+        pub: IOpdsPublicationView,
+    ) => SagaGenerator<PublicationView>;
+    importFromFs: (
         filePathArray: string | string[],
-    ) => Promise<PublicationView[]>;
+    ) => SagaGenerator<PublicationView[]>;
     search: (
         title: string,
-    ) => Promise<PublicationView[]>;
+    ) => SagaGenerator<PublicationView[]>;
     exportPublication: (
         publicationView: PublicationView,
-    ) => Promise<void>;
+    ) => SagaGenerator<void>;
 }
 
 export interface IPublicationModuleApi {
@@ -50,8 +51,8 @@ export interface IPublicationModuleApi {
     "publication/findByTag": IPublicationApi["findByTag"];
     "publication/updateTags": IPublicationApi["updateTags"];
     "publication/getAllTags": IPublicationApi["getAllTags"];
-    "publication/importOpdsPublicationLink": IPublicationApi["importOpdsPublicationLink"];
-    "publication/import": IPublicationApi["import"];
+    "publication/importFromLink": IPublicationApi["importFromLink"];
+    "publication/importFromFs": IPublicationApi["importFromFs"];
     "publication/search": IPublicationApi["search"];
     "publication/exportPublication": IPublicationApi["exportPublication"];
 }

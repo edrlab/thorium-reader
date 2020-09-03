@@ -10,7 +10,6 @@ import { File } from "readium-desktop/common/models/file";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
-import { IHttpGetResult } from "readium-desktop/common/utils/http";
 
 export interface Resources {
     r2PublicationBase64?: string;
@@ -33,5 +32,3 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     hash: string;
 }
 export type PublicationDocumentWithoutTimestampable = Omit<PublicationDocument, keyof Timestampable>;
-
-export type THttpGetPublicationDocument = IHttpGetResult<string, PublicationDocument>;
