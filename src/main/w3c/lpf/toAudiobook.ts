@@ -9,8 +9,10 @@ import * as debug_ from "debug";
 import { promises as fsp } from "fs";
 import { DOMWindow, JSDOM } from "jsdom";
 import { dirname } from "path";
+import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 
 import {
@@ -34,14 +36,15 @@ async function extractConvertAndInjectManifest(
     const rawData = buffer.toString("utf8");
     const w3cManifest = JSON.parse(rawData) as Iw3cPublicationManifest;
 
-    const readiumManifest = await w3cPublicationManifestToReadiumPublicationManifest(
+    const publication = await w3cPublicationManifestToReadiumPublicationManifest(
         w3cManifest,
         async (uniqRessources: Link[]) => {
             return findHtmlTocInRessources(lpfPath, uniqRessources);
         },
     );
 
-    const manifestJson = JSON.stringify(readiumManifest, null, 4);
+    const publicationJson = TaJsonSerialize<R2Publication>(publication);
+    const manifestJson = JSON.stringify(publicationJson, null, 4);
     const manifestBuffer = Buffer.from(manifestJson);
     await injectManifestToZip(lpfPath, audiobookPath, manifestBuffer);
 }
@@ -80,8 +83,10 @@ async function findManifestAndReturnBuffer(lpfPath: string): Promise<Buffer> {
                     const el: HTMLLinkElement = window.document.querySelector("link[rel=\"publication\"]");
                     if (el) {
                         const url = el.hasAttribute("href") ? el.href : undefined;
-                        if (url[0] === "#") {
-                            return findManifestInHtmlEntryAndReturnBuffer(window, url.slice(1));
+                        debug("manifest url", url);
+                        const skip = "about:blank#";
+                        if (url.startsWith(skip)) {
+                            return findManifestInHtmlEntryAndReturnBuffer(window, url.slice(skip.length));
 
                         } else {
 
