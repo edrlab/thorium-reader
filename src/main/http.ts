@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import * as https from "https";
 import fetch from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
@@ -14,6 +15,9 @@ import {
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { diMainGet } from "./di";
+
+// Logger
+const debug = debug_("readium-desktop:main#saga/api/publication/importFromLinkService");
 
 export async function request(
     url: string | URL,
@@ -51,9 +55,14 @@ export async function request(
 
     }
 
-    const res = await fetch(url, options);
+    const response = await fetch(url, options);
 
-    return res;
+    debug(url);
+    debug(response.ok);
+    debug(response.status);
+    debug(response.statusText);
+
+    return response;
 }
 
 export async function httpGet<TData = undefined>(

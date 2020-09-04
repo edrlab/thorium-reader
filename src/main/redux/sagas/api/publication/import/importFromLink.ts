@@ -15,6 +15,7 @@ import { ContentType } from "readium-desktop/utils/content-type";
 import { SagaGenerator } from "typed-redux-saga";
 
 import { downloader } from "../../../downloader";
+import { packageFromLink } from "../packager/packageLink";
 import { importFromFsService } from "./importFromFs";
 
 // Logger
@@ -70,11 +71,17 @@ export function* importFromLinkService(
     }
 
     if (!link.type) {
-        const response = yield* callTyped(() => fetch(url));
-        const contentType = response?.headers?.get("Content-Type");
-        if (contentType) {
-            link.type = contentType;
-        } else {
+        try {
+            const response = yield* callTyped(() => fetch(url));
+            const contentType = response?.headers?.get("Content-Type");
+            if (contentType) {
+                link.type = contentType;
+            } else {
+                link.type = "";
+            }
+        } catch (e) {
+            debug("can't fetch url", url.toString());
+
             link.type = "";
         }
     }
@@ -95,7 +102,7 @@ export function* importFromLinkService(
     if (isHtml || isJson) {
         debug("the link need to be packaged");
 
-        const packagePath = yield* callTyped(packager, url);
+        const packagePath = yield* callTyped(packageFromLink, url, isHtml);
 
         return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString()}, pub);
 
