@@ -23,9 +23,9 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { Store } from "redux";
 
 import { PublicationRepository } from "../db/repository/publication";
+import { diMainGet } from "../di";
 import { publicationActions } from "../redux/actions";
 import { RootState } from "../redux/states";
-import { PublicationService } from "../services/publication";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
@@ -36,9 +36,6 @@ const debug = debug_("readium-desktop:main:api:catalog");
 export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
-
-    @inject(diSymbolTable["publication-service"])
-    private readonly publicationService!: PublicationService;
 
     // @inject(diSymbolTable["config-repository"])
     // private readonly configRepository!: ConfigRepository<CatalogConfig>;
@@ -95,7 +92,11 @@ export class CatalogApi implements ICatalogApi {
                 const [, pubId] = lastReading[i];
 
                 try {
-                    const pub = await this.publicationService.getPublication(pubId);
+                    // const pub = await this.publicationService.getPublication(pubId);
+                    const sagaMiddleware = diMainGet("saga-middleware");
+                    const pubApi = diMainGet("publication-api");
+                    const pub = await sagaMiddleware.run(pubApi.get, pubId, false).toPromise<PublicationView>();
+
                     lastReadPublicationViews.push(pub);
                 } catch (e) {
                     // ignore
@@ -140,7 +141,10 @@ export class CatalogApi implements ICatalogApi {
                         debug(`${doc.identifier} => ${doc.title} should be removed`);
                         try {
                             // tslint:disable-next-line: no-floating-promises
-                            this.publicationService.deletePublication(doc.identifier);
+                            // this.publicationService.deletePublication(doc.identifier);
+                            const sagaMiddleware = diMainGet("saga-middleware");
+                            const pubApi = diMainGet("publication-api");
+                            await sagaMiddleware.run(pubApi.delete, doc.identifier).toPromise();
                         } catch {
                             // ignore
                         }

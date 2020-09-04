@@ -1173,3 +1173,13 @@ export const findMimeTypeWithExtension = (ext: string): string | undefined => {
     // @ts-ignore
     return mimeTypes[ext] ?? undefined;
 };
+
+export const findExtWithMimeType = (type: string): string | undefined => {
+
+    const value = Object.entries(mimeTypes).find(([, mt]) => mt === type);
+    if (value) {
+        const [ext] = value;
+        return ext;
+    }
+    return undefined;
+};

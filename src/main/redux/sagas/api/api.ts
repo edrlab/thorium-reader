@@ -13,7 +13,7 @@ import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { error } from "readium-desktop/main/error";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-import { call, put } from "redux-saga/effects";
+import { call, cancelled, put } from "redux-saga/effects";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:api";
@@ -32,20 +32,24 @@ function* processRequest(requestAction: apiActions.request.TAction) {
     const { api } = requestAction.meta;
 
     try {
-        const apiModule = yield call(() => diMainGet(getSymbolName(api.moduleId)));
-        const apiMethod = apiModule[api.methodId].bind(apiModule);
-
         debug(api.moduleId, api.methodId, requestAction.payload);
 
+        const apiModule = yield call(() => diMainGet(getSymbolName(api.moduleId)));
+
         const result = yield call(
-            apiMethod,
-            ...(requestAction.payload || []),
+            () => apiModule[api.methodId](...(requestAction.payload || [])),
         );
 
         yield put(apiActions.result.build(api, result));
     } catch (error) {
         debug("API-ERROR", error, "requestAction: ", requestAction);
         yield put(apiActions.result.build(api, new CodeError("API-ERROR", error.message)));
+    } finally {
+        if (yield cancelled()) {
+            debug("API-CANCELLED", requestAction);
+
+            yield put(apiActions.result.build(api, new CodeError("API-CANCELLED")));
+        }
     }
 }
 

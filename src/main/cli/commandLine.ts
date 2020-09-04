@@ -5,53 +5,65 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { PublicationView } from "readium-desktop/common/views/publication";
+// TODO switch publication class api to redux saga api
+
+// import { readerActions } from "readium-desktop/common/redux/actions";
+// import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { URL } from "url";
-import { isArray } from "util";
+// import { isArray } from "util";
 
-function openReader(publicationView: PublicationView | PublicationView[]) {
-    if (isArray(publicationView)) {
-        publicationView = publicationView[0];
-    }
-    if (publicationView) {
-        const store = diMainGet("store");
-        // TODO
-        // FIXME
-        // Can't call readerActions.openRequest before appInit
-        // check the flow to throw appInit and openReader consecutively
-        // and need to exec main here before to call openReader
-        store.dispatch(readerActions.openRequest.build(publicationView.identifier));
-        return true;
-    }
+// function openReader(publicationView: PublicationView | PublicationView[]) {
+//     if (isArray(publicationView)) {
+//         publicationView = publicationView[0];
+//     }
+//     if (publicationView) {
+//         const store = diMainGet("store");
+//         // TODO
+//         // FIXME
+//         // Can't call readerActions.openRequest before appInit
+//         // check the flow to throw appInit and openReader consecutively
+//         // and need to exec main here before to call openReader
+//         store.dispatch(readerActions.openRequest.build(publicationView.identifier));
+//         return true;
+//     }
+//     return false;
+// }
+
+export async function openTitleFromCli(_title: string) {
+
+    // TODO
+    // use the redux saga AP
+    // const publicationApi = diMainGet("publication-api");
+    // const publicationViews = await publicationApi.search(title);
+    // return openReader(publicationViews);
     return false;
 }
 
-export async function openTitleFromCli(title: string) {
-    const publicationApi = diMainGet("publication-api");
-    const publicationViews = await publicationApi.search(title);
-    return openReader(publicationViews);
-}
-
 // used also in lock.ts on mac
-export async function openFileFromCli(filePath: string): Promise<boolean> {
-    const publicationApi = diMainGet("publication-api");
-    const publicationViews = await publicationApi.import(filePath);
-    return openReader(publicationViews);
+export async function openFileFromCli(_filePath: string): Promise<boolean> {
+    // TODO
+    // use the redux saga AP
+    // const publicationApi = diMainGet("publication-api");
+    // const publicationViews = await publicationApi.import(filePath);
+    // return openReader(publicationViews);
+    return false;
 }
 
-export async function cliImport(filePath: string[] | string) {
-    // import a publication from local path
-    let returnValue = true;
-    const filePathArray = isArray(filePath) ? filePath : [filePath];
+export async function cliImport(_filePath: string[] | string) {
+    // TODO
+    // use the redux saga API
 
-    for (const fp of filePathArray) {
-        const catalogService = diMainGet("publication-service");
-        if (!await catalogService.importEpubOrLcplFile(fp)) {
-            returnValue = false;
-        }
-    }
+    // import a publication from local path
+    const returnValue = true;
+    // const filePathArray = isArray(filePath) ? filePath : [filePath];
+
+    // for (const fp of filePathArray) {
+    //     const catalogService = diMainGet("publication-service");
+    //     if (!await catalogService.importFromFs(fp)) {
+    //         returnValue = false;
+    //     }
+    // }
     return returnValue;
 }
 

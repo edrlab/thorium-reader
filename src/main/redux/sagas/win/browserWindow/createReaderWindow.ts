@@ -17,6 +17,7 @@ import {
 } from "readium-desktop/preprocessor-directives";
 
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
+import { getPublication } from "../../api/publication/getPublication";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
@@ -92,8 +93,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
     const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
-    const publicationApi = yield* callTyped(() => diMainGet("publication-api"));
-    const publicationView = yield* callTyped(() => publicationApi.get(publicationIdentifier, false));
+    const publicationView = yield* getPublication(publicationIdentifier, false);
 
     const registerReaderAction = yield* putTyped(winActions.session.registerReader.build(
         readerWindow,
