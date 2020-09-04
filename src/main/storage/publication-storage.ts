@@ -99,7 +99,7 @@ export class PublicationStorage {
             `book${acceptedExtensionObject.webpub}`,
         );
         if (fs.existsSync(pathWebpub)) {
-            return pathAudioBook;
+            return pathWebpub;
         }
         const pathAudioBookLcp = path.join(
             root,

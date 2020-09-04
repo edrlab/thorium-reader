@@ -94,6 +94,7 @@ function* createZip(
 
     debug("creation of the zip package .webpub");
     const pathFile = yield* callTyped(downloadCreatePathDir, nanoid(8));
+    const packagePath = path.resolve(pathFile, "package.webpub");
 
     const p = async () => new Promise((resolve, reject) => {
 
@@ -101,7 +102,6 @@ function* createZip(
 
         const zipfile = new ZipFile();
 
-        const packagePath = path.resolve(pathFile, "package.webpub");
         const writeStream = createWriteStream(packagePath);
         zipfile.outputStream.pipe(writeStream)
             .on("close", () => {
@@ -121,6 +121,8 @@ function* createZip(
     });
 
     yield* callTyped(p);
+
+    return packagePath;
 
 }
 
@@ -224,7 +226,8 @@ export function* packageFromLink(
                 const manifestBuffer = Buffer.from(manifestString);
 
                 // create the .webpub zip package
-                yield* callTyped(createZip, manifestBuffer, resourcesHrefMap);
+                return yield* callTyped(createZip, manifestBuffer, resourcesHrefMap);
+
             } else {
                 debug("r2Publication is undefined");
             }
