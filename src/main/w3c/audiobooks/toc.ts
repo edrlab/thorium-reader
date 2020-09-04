@@ -356,7 +356,10 @@ export function htmlTocToLinkArray(tocElement: HTMLElement, uniqueResources: Lin
     return tocLink;
 }
 
-export async function findHtmlTocInRessources(lpfPath: string, uniqueResources: Link[]): Promise<HTMLElement> {
+export async function findHtmlTocInRessources(
+    uniqueResources: Link[],
+    fetcher: (fileName: string) => Promise<Buffer> | Buffer,
+    ): Promise<HTMLElement> {
 
     const ln = uniqueResources.find((l) => Array.isArray(l.Rel) ? l.Rel.includes("contents") : false);
 
@@ -364,8 +367,9 @@ export async function findHtmlTocInRessources(lpfPath: string, uniqueResources: 
 
         try {
 
-            const stream = await openAndExtractFileFromLpf(lpfPath, ln.Href);
-            const buffer = await streamToBufferPromise(stream);
+            // const stream = await openAndExtractFileFromLpf(lpfPath, ln.Href);
+            const buffer = await Promise.resolve(fetcher(ln.Href));
+            // const buffer = await streamToBufferPromise(stream);
             const text = buffer.toString("utf8");
 
             try {
