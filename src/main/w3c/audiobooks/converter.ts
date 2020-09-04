@@ -406,16 +406,7 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
 
     // TOC
     {
-        const uniqueResources = [
-            ...(
-                Array.isArray(publication.Resources)
-                    ? publication.Resources
-                    : []),
-            ...(
-                Array.isArray(publication.Spine)
-                    ? publication.Spine
-                    : []),
-        ];
+        const uniqueResources = getUniqueResourcesFromR2Publication(publication);
 
         if (tocCallback) {
             const tocElement = await Promise.resolve(tocCallback(uniqueResources));
@@ -436,4 +427,20 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
     }
 
     return publication;
+}
+
+export function getUniqueResourcesFromR2Publication(publication: R2Publication): Link[] {
+
+    const uniqueResources = [
+        ...(
+            Array.isArray(publication.Resources)
+                ? publication.Resources
+                : []),
+        ...(
+            Array.isArray(publication.Spine)
+                ? publication.Spine
+                : []),
+    ];
+
+    return uniqueResources;
 }

@@ -14,6 +14,12 @@ import {
 } from "readium-desktop/main/w3c/audiobooks/entry";
 import { SagaGenerator } from "typed-redux-saga";
 
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+
+import { manifestContext } from "./context";
+import { w3cPublicationManifestToReadiumPublicationManifest, getUniqueResourcesFromR2Publication } from "readium-desktop/main/w3c/audiobooks/converter";
+import { TaJsonSerialize, TaJsonDeserialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
+
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/packager/packageLink");
 
@@ -24,8 +30,31 @@ export function* packageFromLink(
     isHtml: boolean,
 ): SagaGenerator<TPath | undefined> {
 
-    const manifest = packageGetManifestBuffer(url, isHtml);
+    const manifest = yield* callTyped(packageGetManifestBuffer, url, isHtml);
     if (manifest) {
+
+        const manifestJson = JSON.parse(manifest.toString());
+        const [isR2, isW3] = manifestContext(manifestJson);
+
+        let r2Publication: R2Publication;
+        if (isW3) {
+
+            r2Publication = yield* callTyped(
+                w3cPublicationManifestToReadiumPublicationManifest,
+                manifestJson,
+                async (resources) => 
+            );
+        } else if (isR2) {
+
+            r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
+        }
+
+        if (r2Publication) {
+
+            const ressources = getUniqueResourcesFromR2Publication(r2Publication);
+
+            const hrefArray = ressources.map((l))
+        }
 
         // download ressources
 
