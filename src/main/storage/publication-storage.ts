@@ -75,6 +75,7 @@ export class PublicationStorage {
     }
 
     // TODO: fs.existsSync() is really costly,
+    // TODO : A disaster ! :)
     // and getPublicationEpubPath() is called many times!
     public getPublicationEpubPath(identifier: string): string {
 
@@ -91,6 +92,13 @@ export class PublicationStorage {
             `book${acceptedExtensionObject.audiobook}`,
         );
         if (fs.existsSync(pathAudioBook)) {
+            return pathAudioBook;
+        }
+        const pathWebpub = path.join(
+            root,
+            `book${acceptedExtensionObject.webpub}`,
+        );
+        if (fs.existsSync(pathWebpub)) {
             return pathAudioBook;
         }
         const pathAudioBookLcp = path.join(
@@ -138,11 +146,13 @@ export class PublicationStorage {
         const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension);
         const isAudioBookLcp = new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`).test(extension);
         const isAudioBookLcpAlt = new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
+        const isWebpub = new RegExp(`\\${acceptedExtensionObject.webpub}$`).test(extension);
         // beware: analog to getPublicationEpubPath()!
         const ext = isAudioBook ? acceptedExtensionObject.audiobook :
             (isAudioBookLcp ? acceptedExtensionObject.audiobookLcp :
                 (isAudioBookLcpAlt ? acceptedExtensionObject.audiobookLcpAlt :
-                    acceptedExtensionObject.epub));
+                    (isWebpub ? acceptedExtensionObject.webpub :
+                        acceptedExtensionObject.epub)));
         // const ext = (isAudioBook || isAudioBookLcp || isAudioBookLcpAlt) ?
         //     acceptedExtensionObject.audiobook : acceptedExtensionObject.epub;
 
@@ -160,7 +170,8 @@ export class PublicationStorage {
                     ext,
                     contentType: isAudioBook ? ContentType.AudioBookPacked :
                         ((isAudioBookLcp || isAudioBookLcpAlt) ? ContentType.AudioBookPackedLcp :
-                            ContentType.Epub),
+                            (isWebpub ? ContentType.webpubPacked :
+                                ContentType.Epub)),
                     size: getFileSize(dstPath),
                 });
             };

@@ -14,7 +14,7 @@ import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { extractCrc32OnZip } from "readium-desktop/main/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { lpfToAudiobookConverter } from "readium-desktop/main/lpfConverter";
+import { lpfToAudiobookConverter } from "readium-desktop/main/w3c/lpf/toAudiobook";
 import { call, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 

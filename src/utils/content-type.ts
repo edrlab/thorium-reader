@@ -22,6 +22,7 @@ export enum ContentType {
     AudioBook = "application/audiobook+json",
     AudioBookPacked = "application/audiobook+zip",
     AudioBookPackedLcp = "application/audiobook+lcp",
+    webpubPacked = "application/webpub+zip",
     Lcp = "application/vnd.readium.lcp.license.v1.0+json",
     Lsd = "application/vnd.readium.license.status.v1.0+json",
 }

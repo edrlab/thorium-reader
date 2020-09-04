@@ -12,6 +12,7 @@ export const acceptedExtensionObject = {
     epub: ".epub",
     epub3: ".epub3",
     audiobook: ".audiobook",
+    webpub: ".webpub",
     audiobookLcp: ".lcpa",
     audiobookLcpAlt: ".lcpaudiobook",
     // pdfLcp: ".lcpdf", // for illustration only, not actually implemented yet

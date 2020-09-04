@@ -155,6 +155,11 @@
         "mimeType": "application/audiobook+zip"
       },
       {
+        "ext": "webpub",
+        "role": "Viewer",
+        "mimeType": "application/webpub+zip"
+      },
+      {
         "ext": "lcpa",
         "role": "Viewer",
         "mimeType": "application/audiobook+lcp"
