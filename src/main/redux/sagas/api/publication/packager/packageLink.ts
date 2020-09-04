@@ -49,6 +49,105 @@ const fetcher = async (href: string) => {
     return undefined;
 };
 
+const copyAndSetHref = (lns: Link[], hrefMapToFind: string[][]) =>
+    lns.map(
+        (ln) => {
+
+            const href = ln.Href;
+            const found = hrefMapToFind.find(([, searchValue]) => searchValue === href);
+            if (found) {
+                const [, , replaceValue] = found;
+                ln.Href = replaceValue;
+            }
+
+            if (Array.isArray(ln.Children) && ln.Children.length) {
+                ln.Children = copyAndSetHref(ln.Children, hrefMapToFind);
+            }
+
+            return ln;
+        });
+
+const linksToArray = (lns: Link[]): string[] =>
+    lns.reduce(
+        (pv, cv) =>
+            cv.Href
+                ? [
+                    ...pv,
+                    cv.Href,
+                    ...(
+                        Array.isArray(cv.Children) && cv.Children.length
+                            ? linksToArray(cv.Children)
+                            : []
+                    ),
+                ]
+                : pv,
+        new Array<string>());
+
+function* createZip(
+    manifestBuffer: Buffer,
+    resourcesMap: string[][],
+) {
+
+    debug("creation of the zip package .webpub");
+    const path = yield* callTyped(downloadCreatePathDir, "packager");
+
+    debug("package path", path);
+
+    const zipfile = new ZipFile();
+
+    const packagePath = resolve(path, "package.webpub");
+    const writeStream = createWriteStream(packagePath);
+    zipfile.outputStream.pipe(writeStream)
+        .on("close", () => {
+            debug("package done");
+        });
+    zipfile.addBuffer(manifestBuffer, "manifest.json");
+
+    resourcesMap.forEach(([fsPath, , zipPath]) => {
+        zipfile.addFile(fsPath, zipPath);
+    });
+
+    zipfile.end();
+}
+
+function* downloadResources(
+    r2Publication: R2Publication,
+    title: string,
+) {
+    const uResources = getUniqueResourcesFromR2Publication(r2Publication);
+
+    const resourcesHref = [...new Set(linksToArray(uResources))];
+    const pathArray = yield* callTyped(downloader, resourcesHref, title);
+
+    const resourcesHrefMap = pathArray.map(
+        (dPath, idx) => [dPath, resourcesHref[idx], nanoid(8) + "/" + basename(dPath)],
+    );
+
+    return resourcesHrefMap;
+}
+
+function updateManifest(
+    r2Publication: R2Publication,
+    resourcesHrefMap: string[][],
+) {
+    {
+        const readingOrders = r2Publication.Spine;
+        if (Array.isArray(readingOrders)) {
+            r2Publication.Spine = copyAndSetHref(readingOrders, resourcesHrefMap);
+        }
+    }
+
+    {
+        const resources = r2Publication.Resources;
+        if (Array.isArray(resources)) {
+            r2Publication.Resources = copyAndSetHref(resources, resourcesHrefMap);
+        }
+    }
+
+    return r2Publication;
+
+}
+
 export function* packageFromLink(
     url: URL,
     isHtml: boolean,
@@ -57,104 +156,56 @@ export function* packageFromLink(
     const manifest = yield* callTyped(packageGetManifestBuffer, url, isHtml);
     if (manifest) {
 
-        const manifestJson = JSON.parse(manifest.toString());
-        const [isR2, isW3] = manifestContext(manifestJson);
-
         let r2Publication: R2Publication;
-        if (isW3) {
+        try {
 
-            r2Publication = yield* callTyped(
-                w3cPublicationManifestToReadiumPublicationManifest,
-                manifestJson,
-                async (resources) => findHtmlTocInRessources(resources, fetcher),
-            );
-        } else if (isR2) {
+            const manifestJson = JSON.parse(manifest.toString());
+            const [isR2, isW3] = manifestContext(manifestJson);
 
-            r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
+            if (isW3) {
+
+                debug("w3cManifest found");
+
+                r2Publication = yield* callTyped(
+                    w3cPublicationManifestToReadiumPublicationManifest,
+                    manifestJson,
+                    async (resources) => findHtmlTocInRessources(resources, fetcher),
+                );
+            } else if (isR2) {
+                debug("readium manifest found");
+
+                r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
+            }
+        } catch (e) {
+            debug("error to find or parse a manifest");
+            debug(e);
         }
 
-        if (r2Publication) {
+        try {
 
-            const uResources = getUniqueResourcesFromR2Publication(r2Publication);
+            if (r2Publication) {
+                debug("ready to package the r2Publication");
+                debug(r2Publication);
 
-            const linksToArray = (lns: Link[]): string[] =>
-                lns.reduce(
-                    (pv, cv) =>
-                        cv.Href
-                            ? [
-                                ...pv,
-                                cv.Href,
-                                ...(
-                                    Array.isArray(cv.Children) && cv.Children.length
-                                        ? linksToArray(cv.Children)
-                                        : []
-                                ),
-                            ]
-                            : pv,
-                    new Array<string>());
+                const resourcesHrefMap = yield* callTyped(
+                    downloadResources,
+                    r2Publication,
+                    url.toString(),
+                );
 
-            const resourcesHref = [...new Set(linksToArray(uResources))];
-            const pathArray = yield* callTyped(downloader, resourcesHref, url.toString());
+                r2Publication = updateManifest(r2Publication, resourcesHrefMap);
+                const manifestSerialize = TaJsonSerialize(r2Publication);
+                const manifestBuffer = Buffer.from(manifestSerialize);
 
-            const resourcesHrefMap = pathArray.map(
-                (dPath, idx) => [path, resourcesHref[idx], nanoid(8) + "/" + basename(dPath)],
-            );
-
-            const copyAndSetHref = (lns: Link[], hrefMapToFind: typeof resourcesHrefMap) =>
-                lns.map(
-                    (ln) => {
-
-                        const href = ln.Href;
-                        const found = hrefMapToFind.find(([, searchValue]) => searchValue === href);
-                        if (found) {
-                            const [, , replaceValue] = found;
-                            ln.Href = replaceValue;
-                        }
-
-                        if (Array.isArray(ln.Children) && ln.Children.length) {
-                            ln.Children = copyAndSetHref(ln.Children, hrefMapToFind);
-                        }
-
-                        return ln;
-                    });
-
-            {
-                const readingOrders = r2Publication.Spine;
-                if (Array.isArray(readingOrders)) {
-                    r2Publication.Spine = copyAndSetHref(readingOrders, resourcesHrefMap);
-                }
+                // create the .webpub zip package
+                yield* callTyped(createZip, manifestBuffer, resourcesHrefMap);
+            } else {
+                debug("r2Publication is undefined");
             }
-
-            {
-                const resources = r2Publication.Resources;
-                if (Array.isArray(resources)) {
-                    r2Publication.Resources = copyAndSetHref(resources, resourcesHrefMap);
-                }
-            }
-
-            const manifestSerialize = TaJsonSerialize(r2Publication);
-            const manifestBuffer = Buffer.from(manifestSerialize);
-
-            const path = yield* callTyped(downloadCreatePathDir, "packager");
-
-            const zipfile = new ZipFile();
-
-            const packagePath = resolve(path, "package.webpub");
-            const writeStream = createWriteStream(packagePath);
-            zipfile.outputStream.pipe(writeStream)
-                .on("close", () => {
-                    debug("done");
-                });
-            zipfile.addBuffer(manifestBuffer, "manifest.json");
-
-            resourcesHrefMap.forEach(([fsPath, , zipPath]) => {
-                zipfile.addFile(fsPath, zipPath);
-            });
-
-            zipfile.end();
+        } catch (e) {
+            debug("can't create the webpub ZIP", e);
         }
 
-        // create the .webpub zip package
     }
 
     return undefined;
