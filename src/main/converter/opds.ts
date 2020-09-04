@@ -45,6 +45,9 @@ const supportedFileTypeLinkArray = [
     ContentType.AudioBookPackedLcp,
     ContentType.Epub,
     ContentType.Lcp,
+    ContentType.AudioBook,
+    ContentType.Json,
+    ContentType.JsonLd,
 ];
 
 @injectable()

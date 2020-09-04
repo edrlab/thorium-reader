@@ -93,7 +93,9 @@ export function* importFromLinkService(
     const isAudioBookPacked = contentTypeArray.includes(ContentType.AudioBookPacked);
     const isAudioBookPackedLcp = contentTypeArray.includes(ContentType.AudioBookPackedLcp);
     const isHtml = contentTypeArray.includes(ContentType.Html);
-    const isJson = contentTypeArray.includes(ContentType.Json);
+    const isJson = contentTypeArray.includes(ContentType.Json)
+        || contentTypeArray.includes(ContentType.AudioBook)
+        || contentTypeArray.includes(ContentType.JsonLd);
 
     if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp) {
         debug(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
