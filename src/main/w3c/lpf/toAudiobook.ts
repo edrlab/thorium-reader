@@ -26,6 +26,13 @@ import {
 const debug = debug_("readium-desktop:main#w3c/lpf/audiobookConverter");
 debug("_");
 
+const fetcher = (lpfPath: string) =>
+    async (url: string) => {
+        const stream = await openAndExtractFileFromLpf(lpfPath, url);
+        const buffer = readStreamToBuffer(stream);
+        return buffer;
+    };
+
 async function extractConvertAndInjectManifest(
     lpfPath: string,
     audiobookPath: string,
@@ -35,10 +42,12 @@ async function extractConvertAndInjectManifest(
     const rawData = buffer.toString("utf8");
     const w3cManifest = JSON.parse(rawData) as Iw3cPublicationManifest;
 
+    const fetch = fetcher(lpfPath);
+
     const publication = await w3cPublicationManifestToReadiumPublicationManifest(
         w3cManifest,
         async (uniqRessources: Link[]) => {
-            return findHtmlTocInRessources(lpfPath, uniqRessources);
+            return findHtmlTocInRessources(uniqRessources, fetch);
         },
     );
 
@@ -60,17 +69,16 @@ export async function findManifestAndReturnBuffer(lpfPath: string) {
     }
 
     {
+
+        const fetch = fetcher(lpfPath);
+
         // extract the manifest from lpf html entry
         const htmlStream = await openAndExtractFileFromLpf(lpfPath, "index.html");
         const htmlBuffer = await readStreamToBuffer(htmlStream);
         if (htmlBuffer) {
             const publicationBuffer = await findManifestFromHtmlEntryAndReturnBuffer(
                 htmlBuffer,
-                async (url) => {
-                    const stream = await openAndExtractFileFromLpf(lpfPath, url);
-                    const buffer = readStreamToBuffer(stream);
-                    return buffer;
-                },
+                fetch,
             );
             return publicationBuffer;
         }
