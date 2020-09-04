@@ -16,9 +16,7 @@
 import * as debug_ from "debug";
 import { JSDOM } from "jsdom";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
-import { streamToBufferPromise } from "r2-utils-js/dist/es6-es2015/src/_utils/stream/BufferUtils";
 
-import { openAndExtractFileFromLpf } from "../lpf/tools";
 import { w3cPublicationManifestToReadiumPublicationManifest } from "./converter";
 
 export interface TocEntry {
