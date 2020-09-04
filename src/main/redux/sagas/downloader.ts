@@ -213,7 +213,7 @@ function* downloadLinkRequest(linkHref: string, abort: AbortSignal): SagaGenerat
     return data;
 }
 
-function* downloadCreatePathDir(id: string): SagaGenerator<string | undefined> {
+export function* downloadCreatePathDir(id: string): SagaGenerator<string | undefined> {
     // /tmp/thorium/download/{unixtimestamp}/name.ext
 
     const tmpDir = tmpdir();
