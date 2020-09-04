@@ -5,19 +5,44 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ok } from "assert";
 import * as debug_ from "debug";
-import fetch from "node-fetch";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
-import { SagaGenerator } from "typed-redux-saga";
 import { httpGet } from "readium-desktop/main/http";
+import {
+    findManifestFromHtmlEntryAndReturnBuffer,
+} from "readium-desktop/main/w3c/audiobooks/entry";
+import { SagaGenerator } from "typed-redux-saga";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/packager/packageLink");
 
+type TPath= string;
+
 export function* packageFromLink(
     url: URL,
     isHtml: boolean,
-): SagaGenerator<string | undefined> {
+): SagaGenerator<TPath | undefined> {
+
+    const manifest = packageGetManifestBuffer(url, isHtml);
+    if (manifest) {
+
+        // download ressources
+
+        // update manifest
+
+        // create the .webpub zip package
+    }
+
+    return undefined;
+}
+
+export function* packageGetManifestBuffer(
+    url: URL,
+    isHtml: boolean,
+): SagaGenerator<Buffer | undefined> {
+
+    let manifestBuffer: Buffer;
 
     try {
         const data = yield* callTyped(httpGet, url);
@@ -34,8 +59,28 @@ export function* packageFromLink(
 
         if (isHtml) {
 
-        } else {
+            const htmlBuffer = Buffer.from(rawData);
+            manifestBuffer = yield* callTyped(
+                findManifestFromHtmlEntryAndReturnBuffer,
+                htmlBuffer,
+                async (href: string) => {
 
+                    const res = await httpGet(href);
+
+                    try {
+                        ok(res.isSuccess, res.statusMessage);
+
+                        return await res.response.buffer();
+
+                    } catch (e) {
+                        debug("error to fetch", e);
+                    }
+                    return undefined;
+                },
+            );
+
+        } else {
+            manifestBuffer = Buffer.from(rawData);
         }
 
     } catch (e) {
@@ -43,4 +88,5 @@ export function* packageFromLink(
 
     }
 
+    return manifestBuffer;
 }
