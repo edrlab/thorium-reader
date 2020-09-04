@@ -11,8 +11,6 @@ indent_style = ignore
 indent_size = ignore
 
 [*.{js,ts,jsx,tsx}]
-indent_style = space
-indent_size = 4
 block_comment_start = /*
 block_comment = *
 block_comment_end = */

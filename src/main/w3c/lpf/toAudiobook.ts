@@ -16,9 +16,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import {
     Iw3cPublicationManifest, w3cPublicationManifestToReadiumPublicationManifest,
 } from "../audiobooks/converter";
-import {
-    findManifestFromHtmlEntryAndReturnBuffer, readStreamToBuffer,
-} from "../audiobooks/entry";
+import { findManifestFromHtmlEntryAndReturnBuffer, readStreamToBuffer } from "../audiobooks/entry";
 import { findHtmlTocInRessources } from "../audiobooks/toc";
 import {
     copyAndMoveLpfToTmpWithNewExt, injectManifestToZip, openAndExtractFileFromLpf,
@@ -55,21 +53,30 @@ export async function findManifestAndReturnBuffer(lpfPath: string) {
     {
         // extract the manifest from lpf
         const publicationStream = await openAndExtractFileFromLpf(lpfPath, "publication.json");
-        const publicationBuffer = await publicationStreamToBuffer(publicationStream);
+        const publicationBuffer = await readStreamToBuffer(publicationStream);
         if (publicationBuffer) {
             return publicationBuffer;
         }
     }
 
     {
-
+        // extract the manifest from lpf html entry
         const htmlStream = await openAndExtractFileFromLpf(lpfPath, "index.html");
-        const publicationBuffer = await findManifestFromHtmlEntryAndReturnBuffer(
-            htmlStream,
-            async (url) => openAndExtractFileFromLpf(lpfPath, url),
-        );
-        return publicationBuffer;
+        const htmlBuffer = await readStreamToBuffer(htmlStream);
+        if (htmlBuffer) {
+            const publicationBuffer = await findManifestFromHtmlEntryAndReturnBuffer(
+                htmlBuffer,
+                async (url) => {
+                    const stream = await openAndExtractFileFromLpf(lpfPath, url);
+                    const buffer = readStreamToBuffer(stream);
+                    return buffer;
+                },
+            );
+            return publicationBuffer;
+        }
     }
+
+    return undefined;
 }
 
 //
