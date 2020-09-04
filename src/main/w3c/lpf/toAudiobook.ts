@@ -7,17 +7,16 @@
 
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
-import { DOMWindow, JSDOM } from "jsdom";
 import { dirname } from "path";
 import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 
 import {
     Iw3cPublicationManifest, w3cPublicationManifestToReadiumPublicationManifest,
 } from "../audiobooks/converter";
+import { findManifestFromHtmlEntryAndReturnBuffer, readStreamToBuffer } from "../audiobooks/entry";
 import { findHtmlTocInRessources } from "../audiobooks/toc";
 import {
     copyAndMoveLpfToTmpWithNewExt, injectManifestToZip, openAndExtractFileFromLpf,
@@ -49,67 +48,31 @@ async function extractConvertAndInjectManifest(
     await injectManifestToZip(lpfPath, audiobookPath, manifestBuffer);
 }
 
-function findManifestInHtmlEntryAndReturnBuffer(window: DOMWindow, id: string) {
-    const scriptEl: HTMLElement = window.document.getElementById(id);
-    if (scriptEl && scriptEl.innerHTML) {
-        const bufferManifest = Buffer.from(scriptEl.innerHTML);
-        return bufferManifest;
+export async function findManifestAndReturnBuffer(lpfPath: string) {
+
+    {
+        // extract the manifest from lpf
+        const publicationStream = await openAndExtractFileFromLpf(lpfPath, "publication.json");
+        const publicationBuffer = await readStreamToBuffer(publicationStream);
+        if (publicationBuffer) {
+            return publicationBuffer;
+        }
     }
 
-    return undefined;
-}
-
-async function findManifestAndReturnBuffer(lpfPath: string): Promise<Buffer> {
-
-    const publicationStream = await openAndExtractFileFromLpf(lpfPath);
-    if (publicationStream) {
-
-        const buffer = await streamToBufferPromise(publicationStream);
-        return buffer;
-
-    } else {
-        try {
-
-            const htmlStream = await openAndExtractFileFromLpf(lpfPath, "index.html");
-            if (htmlStream) {
-
-                // extract the manifest from lpf
-                const htmlBuffer = await streamToBufferPromise(htmlStream);
-                const text = htmlBuffer.toString("utf8");
-
-                try {
-
-                    const { window } = new JSDOM(text);
-                    const el: HTMLLinkElement = window.document.querySelector("link[rel=\"publication\"]");
-                    if (el) {
-                        const url = el.hasAttribute("href") ? el.href : undefined;
-                        debug("manifest url", url);
-                        const skip = "about:blank#";
-                        if (url.startsWith(skip)) {
-                            return findManifestInHtmlEntryAndReturnBuffer(window, url.slice(skip.length));
-
-                        } else {
-
-                            const w3cManifestStream = await openAndExtractFileFromLpf(lpfPath, url);
-                            if (w3cManifestStream) {
-                                const bufferManifest = await streamToBufferPromise(publicationStream);
-                                return bufferManifest;
-
-                            } else {
-                                throw new Error("w3c manifest not found");
-                            }
-                        }
-                    }
-
-                } catch (e) {
-                    debug("error to parse html", e);
-                }
-
-            } else {
-                throw new Error("publication.json and/or index.html are missing");
-            }
-        } catch (e) {
-            debug("error to extract html from lpf", e);
+    {
+        // extract the manifest from lpf html entry
+        const htmlStream = await openAndExtractFileFromLpf(lpfPath, "index.html");
+        const htmlBuffer = await readStreamToBuffer(htmlStream);
+        if (htmlBuffer) {
+            const publicationBuffer = await findManifestFromHtmlEntryAndReturnBuffer(
+                htmlBuffer,
+                async (url) => {
+                    const stream = await openAndExtractFileFromLpf(lpfPath, url);
+                    const buffer = readStreamToBuffer(stream);
+                    return buffer;
+                },
+            );
+            return publicationBuffer;
         }
     }
 
@@ -127,6 +90,9 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string,
     if (manifestBuffer) {
 
         await extractConvertAndInjectManifest(lpfPath, audiobookPath, manifestBuffer);
+    } else {
+
+        debug("ERROR no manifest found in lpfPath");
     }
 
     const cleanFct = async () => {
@@ -138,43 +104,4 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string,
         }
     };
     return [audiobookPath, cleanFct];
-}
-
-// TEST
-if (require.main === module) {
-
-    const { window } = new JSDOM(`<!DOCTYPE html>
-    <html>
-    <head>
-        <title>Entry point with embedded manifest</title>
-        <link rel="publication" href="#manifest" />
-        <script id='manifest' type='application/ld+json'>
-            {
-                "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
-                "type": "CreativeWork",
-                "name" : "My Wonderful Book",
-                "id" : "urn:isbn:1234567890",
-                "url": "https://example.org/book",
-                "conformsTo": "https://www.w3.org/TR/pub-manifest/",
-                "readingOrder": [
-                    "chapter1.html"
-                ],
-                "resources": [
-                    "./m4.2.5.01.html"
-                ]
-            }
-        </script>
-    </head>
-    <body>
-        <p>This is just a fake entry point.</p>
-    </body>
-    </html>
-    `);
-
-    const b = findManifestInHtmlEntryAndReturnBuffer(window, "manifest");
-
-    console.log("Buffer");
-    console.log(b);
-    console.log(b.toString());
-
 }
