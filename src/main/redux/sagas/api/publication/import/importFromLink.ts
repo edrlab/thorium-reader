@@ -7,11 +7,14 @@
 
 import * as debug_ from "debug";
 import fetch from "node-fetch";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { toastActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { ContentType } from "readium-desktop/utils/content-type";
+import { put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 
 import { downloader } from "../../../downloader";
@@ -62,67 +65,83 @@ export function* importFromLinkService(
     pub?: IOpdsPublicationView,
 ): SagaGenerator<PublicationDocument | undefined> {
 
-    let url: URL;
     try {
-        url = new URL(link?.url);
-    } catch (e) {
-        debug("bad url", link, e);
-        throw new Error("Unable to get acquisition url from opds publication");
-    }
-
-    if (!link.type) {
+        let url: URL;
         try {
-            const response = yield* callTyped(() => fetch(url));
-            const contentType = response?.headers?.get("Content-Type");
-            if (contentType) {
-                link.type = contentType;
-            } else {
+            url = new URL(link?.url);
+        } catch (e) {
+            debug("bad url", link, e);
+            throw new Error("Unable to get acquisition url from opds publication");
+        }
+
+        if (!link.type) {
+            try {
+                const response = yield* callTyped(() => fetch(url));
+                const contentType = response?.headers?.get("Content-Type");
+                if (contentType) {
+                    link.type = contentType;
+                } else {
+                    link.type = "";
+                }
+            } catch (e) {
+                debug("can't fetch url", url.toString());
+
                 link.type = "";
             }
-        } catch (e) {
-            debug("can't fetch url", url.toString());
-
-            link.type = "";
         }
-    }
-    const contentTypeArray = link.type.replace(/\s/g, "").split(";");
+        const contentTypeArray = link.type.replace(/\s/g, "").split(";");
 
-    const title = link.title || link.url;
-    const isLcpFile = contentTypeArray.includes(ContentType.Lcp);
-    const isEpubFile = contentTypeArray.includes(ContentType.Epub);
-    const isAudioBookPacked = contentTypeArray.includes(ContentType.AudioBookPacked);
-    const isAudioBookPackedLcp = contentTypeArray.includes(ContentType.AudioBookPackedLcp);
-    const isHtml = contentTypeArray.includes(ContentType.Html);
-    const isJson = contentTypeArray.includes(ContentType.Json)
-        || contentTypeArray.includes(ContentType.AudioBook)
-        || contentTypeArray.includes(ContentType.JsonLd);
+        const title = link.title || link.url;
+        const isLcpFile = contentTypeArray.includes(ContentType.Lcp);
+        const isEpubFile = contentTypeArray.includes(ContentType.Epub);
+        const isAudioBookPacked = contentTypeArray.includes(ContentType.AudioBookPacked);
+        const isAudioBookPackedLcp = contentTypeArray.includes(ContentType.AudioBookPackedLcp);
+        const isHtml = contentTypeArray.includes(ContentType.Html);
+        const isJson = contentTypeArray.includes(ContentType.Json)
+            || contentTypeArray.includes(ContentType.AudioBook)
+            || contentTypeArray.includes(ContentType.JsonLd);
 
-    if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp) {
-        debug(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
-    }
+        debug(contentTypeArray, isHtml, isJson);
 
-    if (isHtml || isJson) {
-        debug("the link need to be packaged");
+        if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp) {
+            debug(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
+        }
 
-        const packagePath = yield* callTyped(packageFromLink, url.toString(), isHtml);
-        if (packagePath) {
+        if (isHtml || isJson) {
+            debug("the link need to be packaged");
 
-            return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString()}, pub);
+            const packagePath = yield* callTyped(packageFromLink, url.toString(), isHtml);
+            if (packagePath) {
+
+                return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString() }, pub);
+            } else {
+                return undefined;
+            }
+
         } else {
-            return undefined;
+            debug("Start the download", link);
+
+            const [downloadPath] = yield* callTyped(downloader, [link.url], title);
+            if (downloadPath) {
+
+                return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
+            }
+
         }
+    } catch (e) {
 
-    } else {
-        debug("Start the download", link);
-
-        const [downloadPath] = yield* callTyped(downloader, [link.url], title);
-        if (downloadPath) {
-
-            return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
-        }
-
+        const translate = diMainGet("translator").translate;
+        debug("importFromLink package fail", e);
+        yield put(
+            toastActions.openRequest.build(
+                ToastType.Error,
+                translate(
+                    "message.import.fail", { path: link?.url },
+                ),
+            ),
+        );
     }
 
-    debug("error to import", url.toString());
+    debug("error to import", link?.url);
     return undefined;
 }

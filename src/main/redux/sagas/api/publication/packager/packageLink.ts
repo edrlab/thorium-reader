@@ -142,7 +142,7 @@ function* downloadResources(
         (fsPath, idx) => [
             fsPath,
             resourcesHref[idx],
-            nanoid(8) + "/" + path.basename(resourcesHrefResolved[idx]),
+            nanoid(8) + "/" + path.basename(resourcesHrefResolved[idx]), // crc32 check failed // how to fix this ?
         ],
     );
 
@@ -176,7 +176,7 @@ export function* packageFromLink(
     isHtml: boolean,
 ): SagaGenerator<TPath | undefined> {
 
-    const manifest = yield* callTyped(packageGetManifestBuffer, href, isHtml);
+    const [manifest, manifestUrl] = yield* callTyped(packageGetManifestBuffer, href, isHtml);
     if (manifest) {
 
         const fetch = fetcher(href);
@@ -212,11 +212,14 @@ export function* packageFromLink(
                 debug("ready to package the r2Publication");
                 debug(r2Publication);
 
+                const manifestUrlAbsolutized = manifestUrl ? url.resolve(href, manifestUrl) : undefined;
+                debug("manifestUrl", manifestUrlAbsolutized);
+
                 const resourcesHrefMap = yield* callTyped(
                     downloadResources,
                     r2Publication,
                     href,
-                    href,
+                    manifestUrlAbsolutized || href,
                 );
 
                 r2Publication = updateManifest(r2Publication, resourcesHrefMap);
@@ -229,10 +232,10 @@ export function* packageFromLink(
                 return yield* callTyped(createZip, manifestBuffer, resourcesHrefMap);
 
             } else {
-                debug("r2Publication is undefined");
+                throw new Error("r2Publication parsing failed");
             }
         } catch (e) {
-            debug("can't create the webpub ZIP", e);
+            throw new Error("ERROR to package: " + e.toString());
         }
 
     }
@@ -243,9 +246,10 @@ export function* packageFromLink(
 export function* packageGetManifestBuffer(
     href: string,
     isHtml: boolean,
-): SagaGenerator<Buffer | undefined> {
+): SagaGenerator<[Buffer, string]> {
 
     let manifestBuffer: Buffer;
+    let manifestUrl: string;
 
     const fetch = fetcher(href);
 
@@ -265,7 +269,7 @@ export function* packageGetManifestBuffer(
         if (isHtml) {
 
             const htmlBuffer = Buffer.from(rawData);
-            manifestBuffer = yield* callTyped(
+            [manifestBuffer, manifestUrl] = yield* callTyped(
                 findManifestFromHtmlEntryAndReturnBuffer,
                 htmlBuffer,
                 fetch,
@@ -276,9 +280,9 @@ export function* packageGetManifestBuffer(
         }
 
     } catch (e) {
-        debug("can't fetch url", href);
+        throw new Error("can't fetch url " + href);
 
     }
 
-    return manifestBuffer;
+    return [manifestBuffer, manifestUrl];
 }

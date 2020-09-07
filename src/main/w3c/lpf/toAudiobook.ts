@@ -76,7 +76,7 @@ export async function findManifestAndReturnBuffer(lpfPath: string) {
         const htmlStream = await openAndExtractFileFromLpf(lpfPath, "index.html");
         const htmlBuffer = await readStreamToBuffer(htmlStream);
         if (htmlBuffer) {
-            const publicationBuffer = await findManifestFromHtmlEntryAndReturnBuffer(
+            const [publicationBuffer] = await findManifestFromHtmlEntryAndReturnBuffer(
                 htmlBuffer,
                 fetch,
             );

@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { DOMWindow, JSDOM } from "jsdom";
 
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
-import { deepEqual, ok } from "assert";
+import { deepEqual, deepStrictEqual, ok } from "assert";
 
 // Logger
 const debug = debug_("readium-desktop:main#w3c/audiobook/entry");
@@ -39,7 +39,7 @@ export function findPublicationUrlInHtmlEntry(window: DOMWindow): string {
 export async function findManifestFromHtmlEntryAndReturnBuffer(
     htmlBuffer: Buffer,
     fetcher: (fileName: string) => Promise<Buffer> | Buffer,
-) {
+): Promise<[Buffer, string]> {
 
     if (htmlBuffer) {
 
@@ -52,10 +52,10 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
             debug("manifest url", url);
 
             const skip = "about:blank";
-            if (url.startsWith(skip + "#")) {
-                return findManifestInHtmlWithIdAndReturnBuffer(window, url.slice(skip.length + 1));
+            if (url?.startsWith(skip + "#")) {
+                return [findManifestInHtmlWithIdAndReturnBuffer(window, url.slice(skip.length + 1)), undefined];
 
-            } else {
+            } else if (url) {
 
                 if (url.startsWith(skip)) {
                     url = url.slice(skip.length);
@@ -64,10 +64,12 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
                 // fetch the manifest from lpf or network
                 const buffer = await Promise.resolve(fetcher(url));
                 if (buffer) {
-                    return buffer;
+                    return [buffer, url];
                 } else {
                     throw new Error("w3c manifest not found");
                 }
+            } else {
+                debug("url is undefined");
             }
 
         } catch (e) {
@@ -75,7 +77,7 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
         }
 
     }
-    return undefined;
+    return [undefined, undefined];
 }
 
 export async function readStreamToBuffer(
@@ -144,7 +146,7 @@ if (require.main === module) {
 
         const manifestParsed = JSON.parse(manifestBuffer.toString());
 
-        const b = await findManifestFromHtmlEntryAndReturnBuffer(buff, () => manifestBuffer);
+        const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, () => manifestBuffer);
 
         const manifestFoundParsed = JSON.parse(b.toString());
 
@@ -204,8 +206,8 @@ if (require.main === module) {
 
         const manifestParsed = JSON.parse(manifestBuffer.toString());
 
-        const b = await findManifestFromHtmlEntryAndReturnBuffer(buff, (url) => {
-            deepEqual(url, "http://helloworld/");
+        const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, (url) => {
+            deepStrictEqual(url, "http://helloworld/");
 
             console.log("url", url, "return manifest");
             return manifestBuffer;
