@@ -108,11 +108,11 @@ function* downloaderServiceProcessChannelProgressLoop(
             (task) => task.isCancelled() ? undefined : task.result<TReturnDownloadLinkStream>(),
         );
 
-        const nbDownload = tasks.length;
-
         let progress = 0;
-        let speed = 0;
-        let contentLength = 0;
+
+        const contentLength = taskData.reduce((pv, cv) => cv ? pv + cv[1]()?.contentLength || 0 : pv, 0);
+        const speed = taskData.reduce((pv, cv) => cv ? pv + cv[1]()?.speed || 0 : pv, 0);
+
         for (const data of taskData) {
 
             if (data) {
@@ -122,9 +122,8 @@ function* downloaderServiceProcessChannelProgressLoop(
                 const status = channel();
 
                 if (status) {
-                    progress += status.progression / nbDownload;
-                    speed += status.speed;
-                    contentLength += status.contentLength;
+                    const subpart = status.contentLength / contentLength;
+                    progress += status.progression / subpart;
                 }
 
             }
@@ -417,7 +416,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number)
     } else {
 
         debug("httpGet ERROR", data?.statusMessage, data?.statusCode);
-        throw new Error("http GET: " + data?.statusMessage + " (" + data?.statusCode + ")");
+        throw new Error("http GET: " + data?.statusMessage + " (" + data?.statusCode + ")" + [data.url]);
     }
 }
 
