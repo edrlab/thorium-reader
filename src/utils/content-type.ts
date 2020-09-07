@@ -10,7 +10,7 @@ export enum ContentType {
     Xml = "application/xml",
     TextXml = "text/xml",
     Json = "application/json",
-    JsonLd = "application/json+ld",
+    JsonLd = "application/ld+json",
     Opds2 = "application/opds+json",
     Opds2Auth = "application/opds-authentication+json",
     Opds2Pub = "application/opds-publication+json",
