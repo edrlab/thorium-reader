@@ -102,16 +102,18 @@ function* downloaderServiceProcessChannelProgressLoop(
 ) {
 
     let previousProgress = 0;
+    let contentLengthTotal = 0;
     while (1) {
 
         const taskData = tasks.map(
             (task) => task.isCancelled() ? undefined : task.result<TReturnDownloadLinkStream>(),
         );
 
+        let contentLengthProgress = 0;
         let progress = 0;
+        let speed = 0;
 
-        const contentLength = taskData.reduce((pv, cv) => cv ? pv + cv[1]()?.contentLength || 0 : pv, 0);
-        const speed = taskData.reduce((pv, cv) => cv ? pv + cv[1]()?.speed || 0 : pv, 0);
+        debug("number of downloadTask:", taskData.filter((v) => v).length);
 
         for (const data of taskData) {
 
@@ -122,13 +124,18 @@ function* downloaderServiceProcessChannelProgressLoop(
                 const status = channel();
 
                 if (status) {
-                    const subpart = status.contentLength / contentLength;
-                    progress += status.progression / subpart;
+                    progress += status.contentLength / status.progression;
+                    speed += (status.speed || 0);
+                    contentLengthProgress += status.contentLength;
                 }
 
             }
         }
-        progress = progress > 100 ? 100 : Math.ceil(progress);
+
+        if (contentLengthTotal < contentLengthProgress) {
+            contentLengthTotal = contentLengthProgress;
+        }
+        progress = Math.ceil(contentLengthTotal / progress);
 
         if (previousProgress !== progress) {
             previousProgress = progress;
@@ -138,7 +145,7 @@ function* downloaderServiceProcessChannelProgressLoop(
                 progress,
                 id,
                 speed,
-                contentLengthHumanReadable: humanFileSize(contentLength),
+                contentLengthHumanReadable: humanFileSize(contentLengthTotal),
             }));
 
         }
@@ -416,7 +423,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number)
     } else {
 
         debug("httpGet ERROR", data?.statusMessage, data?.statusCode);
-        throw new Error("http GET: " + data?.statusMessage + " (" + data?.statusCode + ")" + [data.url]);
+        throw new Error("http GET: " + data?.statusMessage + " (" + data?.statusCode + ")" + " [" + data.url + "]");
     }
 }
 
