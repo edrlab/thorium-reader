@@ -11,7 +11,6 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { call } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
-import { isArray } from "util";
 
 import { importFromFsService } from "./importFromFs";
 import { importFromLinkService } from "./importFromLink";
@@ -45,7 +44,7 @@ export function* importFromFs(
     filePath: string | string[],
 ): SagaGenerator<PublicationView[] | undefined> {
 
-    const filePathArray = isArray(filePath) ? filePath : [filePath];
+    const filePathArray = Array.isArray(filePath) ? filePath : [filePath];
 
     const publicationViewConverter = diMainGet("publication-view-converter");
 
