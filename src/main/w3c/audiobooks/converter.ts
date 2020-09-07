@@ -203,6 +203,7 @@ export interface Iw3cPublicationManifest {
     "datePublished"?: string;
     "dateModified"?: string;
     "duration"?: string;
+    "links"?: string | IW3cLinkedResources | IW3cLinkedResources[];
     "resources"?: string | IW3cLinkedResources | IW3cLinkedResources[];
     "readingOrder"?: string | IW3cLinkedResources | IW3cLinkedResources[];
     "readBy"?: string | IW3cEntities | IW3cEntities[];
@@ -320,10 +321,13 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
         }
     }
     {
+        const links = pop("links");
         const resources = pop("resources");
-        const links = convertW3CpublicationLinksToReadiumManifestLink(resources);
-        if (links.length) {
-            publication.Resources = links;
+        const linksLinks = convertW3CpublicationLinksToReadiumManifestLink(resources);
+        const linksResources = convertW3CpublicationLinksToReadiumManifestLink(links);
+        const linksBoth = [ ...linksLinks, ...linksResources];
+        if (linksBoth.length) {
+            publication.Links = linksBoth;
         }
     }
     {
@@ -433,8 +437,8 @@ export function getUniqueResourcesFromR2Publication(publication: R2Publication):
 
     const uniqueResources = [
         ...(
-            Array.isArray(publication.Resources)
-                ? publication.Resources
+            Array.isArray(publication.Links)
+                ? publication.Links
                 : []),
         ...(
             Array.isArray(publication.Spine)

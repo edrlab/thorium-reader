@@ -161,9 +161,9 @@ function updateManifest(
     }
 
     {
-        const resources = r2Publication.Resources;
-        if (Array.isArray(resources)) {
-            r2Publication.Resources = copyAndSetHref(resources, resourcesHrefMap);
+        const links = r2Publication.Links;
+        if (Array.isArray(links)) {
+            r2Publication.Links = copyAndSetHref(links, resourcesHrefMap);
         }
     }
 
