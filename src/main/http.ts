@@ -183,7 +183,13 @@ export class AbortSignal implements IAbortSignal {
     }
 
     public dispatchEvent() {
-        this.listenerArray.forEach((v) => v());
+        this.listenerArray.forEach((l) => {
+            try {
+                l();
+            } catch (e) {
+                // ignore
+            }
+        });
         return this.aborted = true;
     }
 }
