@@ -147,8 +147,8 @@ export async function httpGet<TData = undefined>(
             result = await Promise.resolve(callback(result));
 
             // remove for IPC sync
-            delete result.body;
-            delete result.response;
+            result.body = undefined;
+            result.response = undefined;
         }
     }
 
