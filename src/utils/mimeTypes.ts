@@ -1163,6 +1163,12 @@ export const mimeTypes = {
     "movie": "video/x-sgi-movie",
     "smv": "video/x-smv",
     "ice": "x-conference/x-cooltalk",
+    "audiobook": "application/audiobook+zip",
+    "lpf": "application/lpf+zip",
+    "webpub": "application/webpub+zip",
+    "lcpl": "application/vnd.readium.lcp.license.v1.0+json",
+    "lcpa": "application/audiobook+lcp",
+    "lcpaudiobook": "application/audiobook+lcp",
 };
 
 export const findMimeTypeWithExtension = (ext: string): string | undefined => {

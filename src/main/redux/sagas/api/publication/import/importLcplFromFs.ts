@@ -97,64 +97,50 @@ export function* importLcplFromFS(
         }
     }
 
-    // // search the path of the epub file
-    // let title: string | undefined;
-    // if (r2LCP.Links) {
-    //     for (const link of r2LCP.Links) {
-    //         if (link.Rel === "publication") {
-    //             const isEpubFile = link.Type === ContentType.Epub;
-    //             const isAudioBookPacked = link.Type === ContentType.AudioBookPacked;
-    //             const isAudioBookPackedLcp = link.Type === ContentType.AudioBookPackedLcp;
-    //             const ext = isEpubFile ? acceptedExtensionObject.epub :
-    //                 (isAudioBookPacked ? acceptedExtensionObject.audiobook :
-    //   (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
-    //                         "")); // downloader will try HTTP response headers
+    const link = r2LCP?.Links?.reduce((pv, cv) => cv.Rel === "publication" ? cv : pv);
 
-    //             download = downloader.addDownload(link.Href, ext);
-    //             title = link.Title ?? download.srcUrl;
-    //         }
-    //     }
-    // }
+    if (link?.Href) {
 
-    const links: string[] = r2LCP?.Links?.reduce((pv, cv) => cv.Rel === "publication" ? [cv.Href] : pv, []) || [];
+        const title = link.Title || path.basename(filePath);
+        const [downloadFilePath] = yield* callTyped(downloader, [{ href: link.Href, type: link.Type }], title);
 
-    const title = path.basename(filePath);
-    const [downloadFilePath] = yield* callTyped(downloader, links, title);
+        // inject LCP license into temporary downloaded file, so that we can check CRC
+        // caveat: processStatusDocument() which is invoked later
+        // can potentially update LCP license with latest from server,
+        // so not a complete guarantee of match with an already-imported LCP EPUB.
+        // Plus, such already-existing EPUB in the local bookshelf may or may not
+        // include the latest injected LCP license! (as it only gets updated during user interaction
+        // such as when opening the publication information dialog, and of course when reading the EPUB)
 
-    // inject LCP license into temporary downloaded file, so that we can check CRC
-    // caveat: processStatusDocument() which is invoked later
-    // can potentially update LCP license with latest from server,
-    // so not a complete guarantee of match with an already-imported LCP EPUB.
-    // Plus, such already-existing EPUB in the local bookshelf may or may not
-    // include the latest injected LCP license! (as it only gets updated during user interaction
-    // such as when opening the publication information dialog, and of course when reading the EPUB)
+        // return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
+        if (downloadFilePath) {
 
-    if (downloadFilePath) {
+            yield call(() => lcpManager.injectLcplIntoZip(downloadFilePath, r2LCP));
+            const hash = yield* callTyped(() => extractCrc32OnZip(downloadFilePath));
+            const [pubDocument] = yield* callTyped(() => publicationRepository.findByHashId(hash));
 
-        yield call(() => lcpManager.injectLcplIntoZip(downloadFilePath, r2LCP));
-        const hash = yield* callTyped(() => extractCrc32OnZip(downloadFilePath));
-        const [pubDocument] = yield* callTyped(() => publicationRepository.findByHashId(hash));
+            debug("importLcplFromFS", hash);
+            if (pubDocument) {
 
-        debug("importLcplFromFS", hash);
-        if (pubDocument) {
-
-            yield put(
-                toastActions.openRequest.build(
-                    ToastType.Success,
-                    translate(
-                        "message.import.alreadyImport", { title: pubDocument.title },
+                yield put(
+                    toastActions.openRequest.build(
+                        ToastType.Success,
+                        translate(
+                            "message.import.alreadyImport", { title: pubDocument.title },
+                        ),
                     ),
-                ),
-            );
-            return pubDocument;
+                );
+                return pubDocument;
+            }
+
+            const publicationDocument = yield* callTyped(
+                () => importPublicationFromFS(downloadFilePath, hash, lcpHashedPassphrase));
+
+            return publicationDocument;
+        } else {
+            throw new Error("download path undefined");
         }
-
-        const publicationDocument = yield* callTyped(
-            () => importPublicationFromFS(downloadFilePath, hash, lcpHashedPassphrase));
-
-        return publicationDocument;
     } else {
-        throw new Error("download path undefined");
+        throw new Error("no download publication link");
     }
-    // return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
 }

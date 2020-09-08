@@ -33,7 +33,12 @@ const debug = debug_("readium-desktop:main#saga/downloader");
 
 type TDownloaderChannel = () => IDownloadProgression;
 
-export function* downloader(linkHrefArray: string[], href?: string): SagaGenerator<string[]> {
+export type IDownloaderLink = string | {
+    href: string,
+    type: string,
+};
+
+export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): SagaGenerator<string[]> {
 
     const id = Number(new Date());
 
@@ -113,7 +118,8 @@ function* downloaderServiceProcessChannelProgressLoop(
         let progress = 0;
         let speed = 0;
 
-        debug("number of downloadTask:", taskData.filter((v) => v).length);
+        const nbTasks = taskData.filter((v) => v).length;
+        debug("number of downloadTask:", nbTasks);
 
         for (const data of taskData) {
 
@@ -135,7 +141,7 @@ function* downloaderServiceProcessChannelProgressLoop(
         if (contentLengthTotal < contentLengthProgress) {
             contentLengthTotal = contentLengthProgress;
         }
-        progress = Math.ceil(contentLengthTotal / progress);
+        progress = Math.ceil(contentLengthTotal / progress) || 0;
 
         if (previousProgress !== progress) {
             previousProgress = progress;
@@ -154,7 +160,7 @@ function* downloaderServiceProcessChannelProgressLoop(
     }
 }
 
-function* downloaderService(linkHrefArray: string[], id: number, href?: string): SagaGenerator<string[]> {
+function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?: string): SagaGenerator<string[]> {
 
     const downloadProcessEffects = linkHrefArray.map((linkHref) => {
         return forkTyped(downloadLinkProcess, linkHref, id);
@@ -276,11 +282,23 @@ function* downloadCreatePathFilename(pathDir: string, filename: string, rc = 0):
     }
 }
 
-function downloadCreateFilename(contentType: string, contentDisposition: string): string {
+function downloadCreateFilename(contentType: string, contentDisposition: string, type?: string): string {
 
     const defExt = "unknown-ext";
 
     let filename = "file." + defExt;
+
+    if (type) {
+        contentType = type;
+    }
+    if (contentType) {
+        const typeValues = contentType.replace(/\s/g, "").split(";");
+        const [ext] = typeValues.map((v) => findExtWithMimeType(v)).filter((v) => v);
+        if (ext) {
+            filename = "file." + ext;
+            return filename;
+        }
+    }
     if (contentDisposition) {
         const res = /filename=(\"(.*)\"|(.*))/g.exec(contentDisposition);
         const filenameInCD = res ? res[2] || res[3] || "" : "";
@@ -288,14 +306,6 @@ function downloadCreateFilename(contentType: string, contentDisposition: string)
             filename = filenameInCD;
             return filename;
         }
-    }
-    if (contentType) {
-        const typeValues = contentType.replace(/\s/g, "").split(";");
-        let [ext] = typeValues.map((v) => findExtWithMimeType(v)).filter((v) => v);
-        if (!ext) {
-            ext = defExt;
-        }
-        filename = "file." + ext;
     }
 
     return filename;
@@ -376,7 +386,7 @@ type TReturnDownloadLinkStream = [
     Promise<void>,
     number,
 ];
-function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number)
+function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?: string)
     : SagaGenerator<TReturnDownloadLinkStream> {
 
     if (data?.isSuccess) {
@@ -388,7 +398,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number)
         const contentLength = parseInt(contentLengthStr, 10) || 0;
         const readStream = data.body;
 
-        const filename = downloadCreateFilename(contentType, contentDisposition);
+        const filename = downloadCreateFilename(contentType, contentDisposition, type);
         debug("Filename", filename);
 
         const pathDir = yield* callTyped(downloadCreatePathDir, id.toString());
@@ -428,7 +438,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number)
 }
 
 type TReturnDownloadLinkProcess = TReturnDownloadLinkStream | undefined;
-function* downloadLinkProcess(linkHref: string, id: number): SagaGenerator<TReturnDownloadLinkProcess> {
+function* downloadLinkProcess(linkHref: IDownloaderLink, id: number): SagaGenerator<TReturnDownloadLinkProcess> {
 
     if (linkHref) {
 
@@ -437,10 +447,12 @@ function* downloadLinkProcess(linkHref: string, id: number): SagaGenerator<TRetu
         try {
 
             debug("start to downloadService", linkHref);
-            const httpData = yield* downloadLinkRequest(linkHref, abort);
+            const url = typeof linkHref === "string" ? linkHref : linkHref.href;
+            const type = typeof linkHref === "string" ? undefined : linkHref.type;
+            const httpData = yield* downloadLinkRequest(url, abort);
 
             debug("start to stream download");
-            return yield* downloadLinkStream(httpData, id);
+            return yield* downloadLinkStream(httpData, id, type);
 
         } catch (err) {
 

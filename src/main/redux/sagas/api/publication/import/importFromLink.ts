@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import fetch from "node-fetch";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -74,21 +73,22 @@ export function* importFromLinkService(
             throw new Error("Unable to get acquisition url from opds publication");
         }
 
-        if (!link.type) {
-            try {
-                const response = yield* callTyped(() => fetch(url));
-                const contentType = response?.headers?.get("Content-Type");
-                if (contentType) {
-                    link.type = contentType;
-                } else {
-                    link.type = "";
-                }
-            } catch (e) {
-                debug("can't fetch url", url.toString());
+        // is it useful ?
+        // if (!link.type) {
+        //     try {
+        //         const response = yield* callTyped(() => fetch(url));
+        //         const contentType = response?.headers?.get("Content-Type");
+        //         if (contentType) {
+        //             link.type = contentType;
+        //         } else {
+        //             link.type = "";
+        //         }
+        //     } catch (e) {
+        //         debug("can't fetch url", url.toString());
 
-                link.type = "";
-            }
-        }
+        //         link.type = "";
+        //     }
+        // }
         const contentTypeArray = link.type.replace(/\s/g, "").split(";");
 
         const title = link.title || link.url;
@@ -121,9 +121,8 @@ export function* importFromLinkService(
         } else {
             debug("Start the download", link);
 
-            const [downloadPath] = yield* callTyped(downloader, [link.url], title);
+            const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
             if (downloadPath) {
-
                 return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
             }
 

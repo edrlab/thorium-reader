@@ -7,6 +7,7 @@
 
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 
+// cf src/utils/mimeTypes.ts
 export const acceptedExtensionObject = {
     lcpLicence: ".lcpl",
     epub: ".epub",

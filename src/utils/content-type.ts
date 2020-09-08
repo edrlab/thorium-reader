@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// cf src/utils/mimeTypes.ts
 export enum ContentType {
     AtomXml = "application/atom+xml",
     Xml = "application/xml",
