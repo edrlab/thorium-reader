@@ -449,10 +449,10 @@ function* downloadLinkProcess(linkHref: IDownloaderLink, id: number): SagaGenera
             debug("start to downloadService", linkHref);
             const url = typeof linkHref === "string" ? linkHref : linkHref.href;
             const type = typeof linkHref === "string" ? undefined : linkHref.type;
-            const httpData = yield* downloadLinkRequest(url, abort);
+            const httpData = yield* callTyped(downloadLinkRequest, url, abort);
 
             debug("start to stream download");
-            return yield* downloadLinkStream(httpData, id, type);
+            return yield* callTyped(downloadLinkStream, httpData, id, type);
 
         } catch (err) {
 
