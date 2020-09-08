@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { ok } from "assert";
+import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { createWriteStream } from "fs";
 import { nanoid } from "nanoid";
@@ -139,11 +140,16 @@ function* downloadResources(
     const pathArray = yield* callTyped(downloader, resourcesHrefResolved, title);
 
     const resourcesHrefMap = pathArray.map(
-        (fsPath, idx) => [
+        (fsPath, idx) => {
+
+            const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
+            return [
             fsPath,
             resourcesHref[idx],
-            nanoid(8) + "/" + path.basename(resourcesHrefResolved[idx]), // crc32 check failed // how to fix this ?
-        ],
+            hash + "/" + path.basename(resourcesHrefResolved[idx]), // crc32 check failed // how to fix this ?
+        ];
+
+        },
     );
 
     return resourcesHrefMap;
