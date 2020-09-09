@@ -7,9 +7,7 @@
 
 import { JsonMap } from "readium-desktop/typings/json";
 
-type TW3 = boolean;
-type TR2 = boolean;
-export function manifestContext(manifest: JsonMap): [TR2, TW3] {
+export function manifestContext(manifest: JsonMap): [r2: boolean, w3c: boolean] {
 
     if (manifest) {
         const context = manifest["@context"];

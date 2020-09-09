@@ -11,8 +11,6 @@ import * as debug_ from "debug";
 import { createWriteStream } from "fs";
 import { nanoid } from "nanoid";
 import * as path from "path";
-import { TaJsonDeserialize, TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { httpGet } from "readium-desktop/main/http";
 import {
@@ -26,15 +24,15 @@ import { SagaGenerator } from "typed-redux-saga";
 import * as url from "url";
 import { ZipFile } from "yazl";
 
+import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import { downloadCreatePathDir, downloader } from "../../../downloader";
 import { manifestContext } from "./context";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/packager/packageLink");
-
-type TPath = string;
 
 const fetcher = (baseUrl: string) => async (href: string) => {
 
@@ -177,76 +175,82 @@ function updateManifest(
 
 }
 
+function* BufferManifestToR2Publication(manifest: Buffer, href: string): SagaGenerator<R2Publication | undefined> {
+
+    let r2Publication: R2Publication;
+
+    const fetch = fetcher(href);
+
+    let manifestJson: any;
+    try {
+
+        const manifestStr = manifest.toString();
+        manifestJson = JSON.parse(manifestStr);
+
+    } catch (e) {
+
+        debug("error to parse manifest");
+        return undefined;
+    }
+
+    const [isR2, isW3] = manifestContext(manifestJson);
+
+    if (isW3) {
+        debug("w3cManifest found");
+
+        r2Publication = yield* callTyped(
+            w3cPublicationManifestToReadiumPublicationManifest,
+            manifestJson,
+            async (resources) => findHtmlTocInRessources(resources, fetch),
+        );
+
+    } else if (isR2) {
+        debug("readium manifest found");
+
+        r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
+    }
+
+    return r2Publication;
+}
+
 export function* packageFromLink(
     href: string,
     isHtml: boolean,
-): SagaGenerator<TPath | undefined> {
+): SagaGenerator<string | undefined> {
 
     const [manifest, manifestUrl] = yield* callTyped(packageGetManifestBuffer, href, isHtml);
-    if (manifest) {
-
-        const fetch = fetcher(href);
-
-        let r2Publication: R2Publication;
-        try {
-
-            const manifestJson = JSON.parse(manifest.toString());
-            const [isR2, isW3] = manifestContext(manifestJson);
-
-            if (isW3) {
-
-                debug("w3cManifest found");
-
-                r2Publication = yield* callTyped(
-                    w3cPublicationManifestToReadiumPublicationManifest,
-                    manifestJson,
-                    async (resources) => findHtmlTocInRessources(resources, fetch),
-                );
-            } else if (isR2) {
-                debug("readium manifest found");
-
-                r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
-            }
-        } catch (e) {
-            debug("error to find or parse a manifest");
-            debug(e);
-        }
-
-        try {
-
-            if (r2Publication) {
-                debug("ready to package the r2Publication");
-                debug(r2Publication);
-
-                const manifestUrlAbsolutized = manifestUrl ? url.resolve(href, manifestUrl) : undefined;
-                debug("manifestUrl", manifestUrlAbsolutized);
-
-                const resourcesHrefMap = yield* callTyped(
-                    downloadResources,
-                    r2Publication,
-                    href,
-                    manifestUrlAbsolutized || href,
-                );
-
-                r2Publication = updateManifest(r2Publication, resourcesHrefMap);
-
-                const manifestSerialize = TaJsonSerialize(r2Publication);
-                const manifestString = JSON.stringify(manifestSerialize);
-                const manifestBuffer = Buffer.from(manifestString);
-
-                // create the .webpub zip package
-                return yield* callTyped(createZip, manifestBuffer, resourcesHrefMap);
-
-            } else {
-                throw new Error("r2Publication parsing failed");
-            }
-        } catch (e) {
-            throw new Error("ERROR to package: " + e.toString());
-        }
-
+    if (!manifest) {
+        throw new Error("manifest not found from content link");
     }
 
-    return undefined;
+    const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, href);
+    if (!r2Publication) {
+        throw new Error("r2Publication parsing failed");
+    }
+
+    debug("ready to package the r2Publication");
+    debug(r2Publication);
+
+    const manifestUrlAbsolutized = manifestUrl ? url.resolve(href, manifestUrl) : undefined;
+    debug("manifestUrl", manifestUrlAbsolutized);
+
+    const resourcesHrefMap = yield* callTyped(
+        downloadResources,
+        r2Publication,
+        href,
+        manifestUrlAbsolutized || href,
+    );
+
+    const r2PublicationUpdated = updateManifest(r2Publication, resourcesHrefMap);
+
+    const manifestSerialize = TaJsonSerialize(r2PublicationUpdated);
+    const manifestString = JSON.stringify(manifestSerialize);
+    const manifestBuffer = Buffer.from(manifestString);
+
+    // create the .webpub zip package
+    const zipPath = yield* callTyped(createZip, manifestBuffer, resourcesHrefMap);
+
+    return zipPath;
 }
 
 export function* packageGetManifestBuffer(
@@ -259,19 +263,15 @@ export function* packageGetManifestBuffer(
 
     const fetch = fetcher(href);
 
-    try {
-        const data = yield* callTyped(httpGet, href);
-        const { response, isSuccess } = data;
+    const data = yield* callTyped(httpGet, href);
+    const { response, isFailure } = data;
 
-        let rawData: string;
-        if (isSuccess) {
-            rawData = yield* callTyped(() => response.text());
+    const rawData = yield* callTyped(() => response?.text());
+    if (isFailure) {
+        throw new Error("fetch error [" + href + "](" + response?.status + " " + response?.statusText + " " + rawData + "]");
+    }
 
-        } else {
-            debug("error to fetch", href, data);
-            throw new Error("error to fetch " + href);
-        }
-
+    if (rawData) {
         if (isHtml) {
 
             const htmlBuffer = Buffer.from(rawData);
@@ -284,10 +284,6 @@ export function* packageGetManifestBuffer(
         } else {
             manifestBuffer = Buffer.from(rawData);
         }
-
-    } catch (e) {
-        throw new Error("can't fetch url " + href);
-
     }
 
     return [manifestBuffer, manifestUrl];

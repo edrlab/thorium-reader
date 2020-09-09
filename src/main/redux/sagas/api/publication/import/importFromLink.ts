@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import fetch from "node-fetch";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -73,22 +74,21 @@ export function* importFromLinkService(
             throw new Error("Unable to get acquisition url from opds publication");
         }
 
-        // is it useful ?
-        // if (!link.type) {
-        //     try {
-        //         const response = yield* callTyped(() => fetch(url));
-        //         const contentType = response?.headers?.get("Content-Type");
-        //         if (contentType) {
-        //             link.type = contentType;
-        //         } else {
-        //             link.type = "";
-        //         }
-        //     } catch (e) {
-        //         debug("can't fetch url", url.toString());
+        if (!link.type) {
+            try {
+                const response = yield* callTyped(() => fetch(url));
+                const contentType = response?.headers?.get("Content-Type");
+                if (contentType) {
+                    link.type = contentType;
+                } else {
+                    link.type = "";
+                }
+            } catch (e) {
+                debug("can't fetch url to determine the type", url.toString());
 
-        //         link.type = "";
-        //     }
-        // }
+                link.type = "";
+            }
+        }
         const contentTypeArray = link.type.replace(/\s/g, "").split(";");
 
         const title = link.title || link.url;
@@ -112,10 +112,9 @@ export function* importFromLinkService(
 
             const packagePath = yield* callTyped(packageFromLink, url.toString(), isHtml);
             if (packagePath) {
-
                 return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString() }, pub);
             } else {
-                return undefined;
+                throw new Error("package zip path undefined");
             }
 
         } else {
@@ -124,6 +123,8 @@ export function* importFromLinkService(
             const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
             if (downloadPath) {
                 return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
+            } else {
+                throw new Error("download path undefined");
             }
 
         }
