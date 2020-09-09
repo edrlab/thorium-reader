@@ -58,7 +58,7 @@
     "prepackage:all": "npm run package:build",
     "package:all": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -mwl --x64 --publish never",
     "cli:help": "electron . --help",
-    "cli": "electron .",
+    "cli": "cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "i18n-sort": "node ./scripts/locales-sort.js",
     "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en fr de en nl --space 4 --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
     "i18n-check": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de en nl --space 4 --finalnewline --newkeysempty",

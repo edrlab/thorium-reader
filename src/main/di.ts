@@ -7,6 +7,7 @@
 
 import "reflect-metadata";
 
+import * as debug_ from "debug";
 import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
 import { Container } from "inversify";
@@ -51,6 +52,9 @@ import { SessionApi } from "./api/session";
 import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
+
+// Logger
+const debug = debug_("readium-desktop:main:di");
 
 export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
@@ -191,10 +195,14 @@ const closeProcessLock = (() => {
 const container = new Container();
 
 const createStoreFromDi = async () => {
+
+    debug("initStore");
     const [store, sagaMiddleware] = await initStore(configRepository);
+    debug("store loaded");
 
     container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
     container.bind<SagaMiddleware>(diSymbolTable["saga-middleware"]).toConstantValue(sagaMiddleware);
+    debug("container store and saga binded");
 
     return store;
 };
