@@ -61,7 +61,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
 
     } catch (err) {
 
-        debug("Error from Downloader", err);
+        debug(err.toString());
 
         const translate = diMainGet("translator").translate;
 
@@ -82,7 +82,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
             ));
         }
 
-        debug("Download of ", href, "DONE");
+        debug("download service closed for", id, href);
         yield* putTyped(downloadActions.done.build(id));
     }
 }
@@ -453,12 +453,6 @@ function* downloadLinkProcess(linkHref: IDownloaderLink, id: number): SagaGenera
 
             debug("start to stream download");
             return yield* callTyped(downloadLinkStream, httpData, id, type);
-
-        } catch (err) {
-
-            debug("Error from downloaderService", err);
-
-            throw err;
 
         } finally {
 

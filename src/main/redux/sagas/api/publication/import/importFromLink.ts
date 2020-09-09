@@ -113,8 +113,6 @@ export function* importFromLinkService(
             const packagePath = yield* callTyped(packageFromLink, url.toString(), isHtml);
             if (packagePath) {
                 return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString() }, pub);
-            } else {
-                throw new Error("package zip path undefined");
             }
 
         } else {
@@ -123,15 +121,13 @@ export function* importFromLinkService(
             const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
             if (downloadPath) {
                 return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
-            } else {
-                throw new Error("download path undefined");
             }
 
         }
     } catch (e) {
 
         const translate = diMainGet("translator").translate;
-        debug("importFromLink package fail", e);
+        debug("importFromLink failed", e.toString(), e.trace);
         yield put(
             toastActions.openRequest.build(
                 ToastType.Error,
