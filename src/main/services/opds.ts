@@ -8,8 +8,11 @@
 import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
+import { RequestInit } from "node-fetch";
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
-import { IOpdsLinkView, IOpdsResultView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
+import {
+    IOpdsLinkView, IOpdsResultView, THttpGetOpdsResultView,
+} from "readium-desktop/common/views/opds";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { httpGet } from "readium-desktop/main/http";
@@ -109,14 +112,18 @@ export class OpdsService {
         const domain = url.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
         const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
 
+        const options: RequestInit = {};
+        options.timeout = 10000;
+
+        if (accessToken) {
+            options.headers = {
+                Authorization: `Bearer ${accessToken.authenticationToken}`,
+            };
+            debug("new header with oauth", options.headers);
+        }
         const result = httpGet<IOpdsResultView>(
             url,
-            {
-                headers: {
-                    Authorization: accessToken ? `Bearer ${accessToken.authenticationToken}` : undefined,
-                },
-                timeout: 10000,
-            },
+            options,
             async (opdsFeedData) => {
 
                 let r2OpdsFeed: OPDSFeed | undefined;

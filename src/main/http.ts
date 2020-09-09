@@ -17,7 +17,7 @@ import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { diMainGet } from "./di";
 
 // Logger
-const debug = debug_("readium-desktop:main#saga/api/publication/importFromLinkService");
+const debug = debug_("readium-desktop:main/http");
 
 export async function request(
     url: string | URL,
@@ -58,6 +58,7 @@ export async function request(
     const response = await fetch(url, options);
 
     debug(url);
+    debug(options.headers);
     debug(response.ok);
     debug(response.status);
     debug(response.statusText);
