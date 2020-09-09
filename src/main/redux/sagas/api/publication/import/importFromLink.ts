@@ -136,7 +136,7 @@ export function* importFromLinkService(
             toastActions.openRequest.build(
                 ToastType.Error,
                 translate(
-                    "message.import.fail", { path: link?.url },
+                    "message.import.fail", { path: link?.url, err: e.toString() },
                 ),
             ),
         );

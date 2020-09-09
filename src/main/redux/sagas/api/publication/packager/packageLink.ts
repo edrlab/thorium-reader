@@ -269,6 +269,7 @@ export function* packageGetManifestBuffer(
     const rawData = yield* callTyped(() => response?.text());
     if (isFailure) {
         throw new Error("fetch error [" + href + "](" + response?.status + " " + response?.statusText + " " + rawData + "]");
+        // we can add a toast notification here like the downloader
     }
 
     if (rawData) {
