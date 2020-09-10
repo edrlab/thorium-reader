@@ -10,17 +10,18 @@ import { promises as fsp } from "fs";
 import { dirname } from "path";
 import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { readStreamToBuffer } from "readium-desktop/utils/stream";
+import { extractFileFromZip } from "readium-desktop/utils/zip";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import {
     Iw3cPublicationManifest, w3cPublicationManifestToReadiumPublicationManifest,
 } from "../audiobooks/converter";
-import { findManifestFromHtmlEntryAndReturnBuffer, readStreamToBuffer } from "../audiobooks/entry";
+import { findManifestFromHtmlEntryAndReturnBuffer } from "../audiobooks/entry";
 import { findHtmlTocInRessources } from "../audiobooks/toc";
-import {
-    copyAndMoveLpfToTmpWithNewExt, injectManifestToZip, openAndExtractFileFromLpf,
-} from "./tools";
+import { copyAndMoveLpfToTmpWithNewExt, injectManifestToZip } from "./tools";
 
 // Logger
 const debug = debug_("readium-desktop:main#w3c/lpf/audiobookConverter");
@@ -28,7 +29,7 @@ debug("_");
 
 const fetcher = (lpfPath: string) =>
     async (url: string) => {
-        const stream = await openAndExtractFileFromLpf(lpfPath, url);
+        const stream = await extractFileFromZip(lpfPath, url);
         const buffer = readStreamToBuffer(stream);
         return buffer;
     };
@@ -54,6 +55,7 @@ async function extractConvertAndInjectManifest(
     const publicationJson = TaJsonSerialize<R2Publication>(publication);
     const manifestJson = JSON.stringify(publicationJson, null, 4);
     const manifestBuffer = Buffer.from(manifestJson);
+
     await injectManifestToZip(lpfPath, audiobookPath, manifestBuffer);
 }
 
@@ -61,7 +63,7 @@ export async function findManifestAndReturnBuffer(lpfPath: string) {
 
     {
         // extract the manifest from lpf
-        const publicationStream = await openAndExtractFileFromLpf(lpfPath, "publication.json");
+        const publicationStream = await extractFileFromZip(lpfPath, "publication.json");
         const publicationBuffer = await readStreamToBuffer(publicationStream);
         if (publicationBuffer) {
             return publicationBuffer;
@@ -73,7 +75,7 @@ export async function findManifestAndReturnBuffer(lpfPath: string) {
         const fetch = fetcher(lpfPath);
 
         // extract the manifest from lpf html entry
-        const htmlStream = await openAndExtractFileFromLpf(lpfPath, "index.html");
+        const htmlStream = await extractFileFromZip(lpfPath, "index.html");
         const htmlBuffer = await readStreamToBuffer(htmlStream);
         if (htmlBuffer) {
             const [publicationBuffer] = await findManifestFromHtmlEntryAndReturnBuffer(
@@ -111,5 +113,12 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string,
             // ignore
         }
     };
-    return [audiobookPath, cleanFct];
+
+    if (IS_DEV) {
+
+        return [audiobookPath, async () => { /* no op */ }];
+    } else {
+
+        return [audiobookPath, cleanFct];
+    }
 }

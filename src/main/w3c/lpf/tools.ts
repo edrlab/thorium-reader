@@ -7,13 +7,12 @@
 
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
+import { nanoid } from "nanoid";
 import * as os from "os";
-import { basename, join } from "path";
-import { acceptedExtensionObject } from "readium-desktop/common/extension";
-
-import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
-import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
+import * as path from "path";
 import { injectBufferInZip } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zipInjector";
+import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
 // Logger
 const debug = debug_("readium-desktop:main#w3c/lpf/tools");
@@ -26,51 +25,24 @@ export async function copyAndMoveLpfToTmpWithNewExt(
     const tmpPathName = `lpfconverter`;
     const tmpPath = os.tmpdir();
 
-    let dirPath: string;
+    // creation of a unique temporary directory
+    let pathDir: string;
     try {
-        // creates a unique temporary directory
-        dirPath = await fsp.mkdtemp(join(tmpPath, tmpPathName));
-    } catch (err) {
-        return Promise.reject(`creates a unique temporary directory : ${err}`);
+        pathDir = path.resolve(tmpPath, _APP_NAME.toLowerCase(), tmpPathName, nanoid(8));
+        await fsp.mkdir(pathDir, { recursive: true });
+
+    } catch (e) {
+
+        pathDir = await fsp.mkdtemp(`${_APP_NAME.toLowerCase()}-${tmpPathName}`);
     }
 
-    const lpfBasename = basename(lpfPath);
+    const lpfBasename = path.basename(lpfPath);
     const newBasename = `${lpfBasename}${ext}`;
-    const newPath = join(dirPath, newBasename);
+    const newPath = path.resolve(pathDir, newBasename);
 
     debug(`LPFPATH=${lpfPath} COPYPATH=${newPath}`);
 
     return newPath;
-}
-
-export async function openAndExtractFileFromLpf(
-    lpfPath: string,
-    fileEntryPath = "publication.json",
-): Promise<NodeJS.ReadableStream> {
-
-    const zip = await zipLoadPromise(lpfPath);
-
-    if (!zip.hasEntries()) {
-        return Promise.reject("LPF zip empty");
-    }
-
-    if (zip.hasEntry(fileEntryPath)) {
-
-        let entryStream: IStreamAndLength;
-        try {
-            entryStream = await zip.entryStreamPromise(fileEntryPath);
-
-        } catch (err) {
-            debug(err);
-            return Promise.reject(`Problem streaming LPF zip entry?! ${fileEntryPath}`);
-        }
-
-        return entryStream.stream;
-
-    }
-        // return Promise.reject("LPF zip " + fileEntryPath + "is missing");
-
-    return undefined;
 }
 
 export async function injectManifestToZip(
