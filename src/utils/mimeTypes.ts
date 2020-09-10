@@ -1169,6 +1169,8 @@ export const mimeTypes = {
     "lcpl": "application/vnd.readium.lcp.license.v1.0+json",
     "lcpa": "application/audiobook+lcp",
     "lcpaudiobook": "application/audiobook+lcp",
+    "divina": "application/divina+zip",
+    "lcpdivina": "application/divina+lcp",
 };
 
 export const findMimeTypeWithExtension = (ext: string): string | undefined => {
