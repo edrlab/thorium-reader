@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import { DOMWindow, JSDOM } from "jsdom";
 
-import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { deepEqual, deepStrictEqual, ok } from "assert";
 
 // Logger
@@ -78,19 +77,6 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
 
     }
     return [undefined, undefined];
-}
-
-export async function readStreamToBuffer(
-    stream: NodeJS.ReadableStream,
-): Promise<Buffer> {
-
-    if (stream) {
-
-        const buffer = await streamToBufferPromise(stream);
-        return buffer;
-
-    }
-    return undefined;
 }
 
 // TEST
