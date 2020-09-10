@@ -33,7 +33,7 @@ export interface ToC {
 }
 
 // Logger
-const debug = debug_("readium-desktop:main#w3c/audiobooks/mapper");
+const debug = debug_("readium-desktop:main#w3c/audiobooks/toc");
 
 // will be mapped to R2Publicaiton Link[]
 
@@ -220,10 +220,16 @@ function extract_TOC(toc_element: HTMLElement, uniqueResources: Link[]): ToC {
                     current_toc_node.url = null;
 
                     try {
-                        const parsedUrl = new URL(url);
-                        parsedUrl.hash = "";
 
-                        if (uniqueResources.findIndex((l) => l.Href === parsedUrl.toString())) {
+                        let parsedUrl = url;
+                        if (/http[s]?:\/\//.test(url)) {
+
+                            const parsedUrlObj = new URL(url);
+                            parsedUrlObj.hash = "";
+                            parsedUrl = parsedUrlObj.toString();
+                        }
+
+                        if (uniqueResources.findIndex((l) => l.Href === parsedUrl)) {
                             current_toc_node.url = url;
                         } else {
                             debug(`The ToC reference "${url}" does not appear in the resources listed in the manifest.`);
@@ -365,8 +371,11 @@ export async function findHtmlTocInRessources(
 
         try {
 
-            // const stream = await openAndExtractFileFromLpf(lpfPath, ln.Href);
+            // const stream = await extractFileFromZip(lpfPath, ln.Href);
             const buffer = await Promise.resolve(fetcher(ln.Href));
+            if (!buffer) {
+                return undefined;
+            }
             // const buffer = await streamToBufferPromise(stream);
             const text = buffer.toString("utf8");
 
