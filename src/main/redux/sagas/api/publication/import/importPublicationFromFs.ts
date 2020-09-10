@@ -6,10 +6,15 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
-import {
-    PublicationParsePromise,
-} from "r2-shared-js/dist/es6-es2015/src/parser/publication-parser";
+import * as path from "path";
+import { LCP } from "r2-lcp-js/dist/es6-es2015/src/parser/epub/lcp";
+import { TaJsonDeserialize, TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
+import { EpubParsePromise } from "r2-shared-js/dist/es6-es2015/src/parser/epub";
+import { acceptedExtensionObject } from "readium-desktop/common/extension";
+// import { DivinaParsePromise } from "r2-shared-js/dist/es6-es2015/src/parser/divina";
+// import {
+//     PublicationParsePromise,
+// } from "r2-shared-js/dist/es6-es2015/src/parser/publication-parser";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { extractCrc32OnZip } from "readium-desktop/main/crc";
@@ -17,7 +22,11 @@ import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
+// import { CbzParsePromise } from "r2-shared-js/dist/es6-es2015/src/parser/cbz";
+import { extractFileFromZipToBuffer } from "readium-desktop/utils/zip";
 import { v4 as uuidv4 } from "uuid";
+
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationFromFs");
@@ -28,10 +37,82 @@ export async function importPublicationFromFS(
     lcpHashedPassphrase?: string,
 ): Promise<PublicationDocument> {
 
-    const r2Publication = await PublicationParsePromise(filePath);
-    // after PublicationParsePromise, cleanup zip handler
-    // (no need to fetch ZIP data beyond this point)
-    r2Publication.freeDestroy();
+    debug("importPublicationFromFS", filePath);
+
+    // const r2Publication = await PublicationParsePromise(filePath);
+    let r2Publication: R2Publication;
+
+    const { ext } = path.parse(filePath);
+    switch (ext) {
+
+        case acceptedExtensionObject.epub:
+        case acceptedExtensionObject.epub3:
+
+            debug("epub extension", ext);
+
+            r2Publication = await EpubParsePromise(filePath);
+
+            // after PublicationParsePromise, cleanup zip handler
+            // (no need to fetch ZIP data beyond this point)
+            r2Publication.freeDestroy();
+
+            break;
+
+        // case acceptedExtensionObject.cbz:
+            // r2Publication = await CbzParsePromise(filePath);
+            // break;
+
+        case acceptedExtensionObject.audiobook:
+        case acceptedExtensionObject.audiobookLcp:
+        case acceptedExtensionObject.audiobookLcpAlt:
+        case acceptedExtensionObject.divina:
+        case acceptedExtensionObject.webpub:
+
+            debug("extension of type readium publication", ext);
+
+            const manifest = await extractFileFromZipToBuffer(filePath, "manifest.json");
+            if (manifest) {
+                debug("r2Publication found in zip");
+
+                const manifestString = manifest.toString();
+                const manifestJson = JSON.parse(manifestString);
+                r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
+
+                // tslint:disable-next-line: max-line-length
+                // https://github.com/readium/r2-shared-js/blob/1aa1a1c10fe56ccb99ef0ed2c15a198c46600e7a/src/parser/divina.ts#L137
+                r2Publication.AddToInternal("type", ext.slice(1));
+
+                // lcp licence extraction
+
+                const lcpEntryName = "license.lcpl";
+                const lcpBuffer = await extractFileFromZipToBuffer(filePath, lcpEntryName);
+                if (lcpBuffer) {
+                    debug("lcp licence found in zip");
+
+                    const lcpString = lcpBuffer.toString();
+                    const lcpJson = JSON.parse(lcpString);
+                    const lcpl = TaJsonDeserialize(lcpJson, LCP);
+
+                    lcpl.ZipPath = lcpEntryName;
+                    lcpl.JsonSource = lcpString;
+                    lcpl.init();
+
+                    r2Publication.LCP = lcpl;
+                }
+            }
+
+            break;
+
+        default:
+
+            debug("extension not recognized", ext);
+            r2Publication = undefined;
+            break;
+    }
+
+    if (!r2Publication) {
+        throw new Error("publication manifest not defined");
+    }
 
     const r2PublicationJson = TaJsonSerialize(r2Publication);
     const r2PublicationStr = JSON.stringify(r2PublicationJson);
