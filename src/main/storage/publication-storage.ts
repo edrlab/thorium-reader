@@ -115,6 +115,13 @@ export class PublicationStorage {
         if (fs.existsSync(pathAudioBookLcpAlt)) {
             return pathAudioBookLcpAlt;
         }
+        const pathDivina = path.join(
+            root,
+            `book${acceptedExtensionObject.divina}`,
+        );
+        if (fs.existsSync(pathDivina)) {
+            return pathDivina;
+        }
         throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
@@ -142,19 +149,33 @@ export class PublicationStorage {
         identifier: string,
         srcPath: string,
     ): Promise<File> {
+
         const extension = path.extname(srcPath);
         const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension);
         const isAudioBookLcp = new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`).test(extension);
         const isAudioBookLcpAlt = new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
         const isWebpub = new RegExp(`\\${acceptedExtensionObject.webpub}$`).test(extension);
-        // beware: analog to getPublicationEpubPath()!
-        const ext = isAudioBook ? acceptedExtensionObject.audiobook :
-            (isAudioBookLcp ? acceptedExtensionObject.audiobookLcp :
-                (isAudioBookLcpAlt ? acceptedExtensionObject.audiobookLcpAlt :
-                    (isWebpub ? acceptedExtensionObject.webpub :
-                        acceptedExtensionObject.epub)));
-        // const ext = (isAudioBook || isAudioBookLcp || isAudioBookLcpAlt) ?
-        //     acceptedExtensionObject.audiobook : acceptedExtensionObject.epub;
+        const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`).test(extension);
+
+        const ext = isAudioBook
+            ? acceptedExtensionObject.audiobook
+            : (
+                isAudioBookLcp
+                    ? acceptedExtensionObject.audiobookLcp
+                    : (
+                        isAudioBookLcpAlt
+                            ? acceptedExtensionObject.audiobookLcpAlt
+                            : (
+                                isDivina
+                                    ? acceptedExtensionObject.divina
+                                    : (
+                                        isWebpub
+                                            ? acceptedExtensionObject.webpub
+                                            : acceptedExtensionObject.epub
+                                    )
+                            )
+                    )
+            );
 
         const filename = `book${ext}`;
         const dstPath = path.join(
@@ -168,10 +189,18 @@ export class PublicationStorage {
                 resolve({
                     url: `store://${identifier}/${filename}`,
                     ext,
-                    contentType: isAudioBook ? ContentType.AudioBookPacked :
-                        ((isAudioBookLcp || isAudioBookLcpAlt) ? ContentType.AudioBookPackedLcp :
-                            (isWebpub ? ContentType.webpubPacked :
-                                ContentType.Epub)),
+                    contentType:
+                        isAudioBook
+                            ? ContentType.AudioBookPacked
+                            : (
+                                (isAudioBookLcp || isAudioBookLcpAlt)
+                                    ? ContentType.AudioBookPackedLcp
+                                    : isDivina
+                                        ? ContentType.DivinaPacked
+                                        : isWebpub
+                                            ? ContentType.webpubPacked
+                                            : ContentType.Epub
+                            ),
                     size: getFileSize(dstPath),
                 });
             };

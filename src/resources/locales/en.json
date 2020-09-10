@@ -58,7 +58,9 @@
             "continueReading": "Resume reading",
             "continueReadingAudioBooks": "Resume listening",
             "lastAdditions": "Recently added",
-            "lastAdditionsAudioBooks": "Recently added audiobooks"
+            "lastAdditionsAudioBooks": "Recently added audiobooks",
+            "continueReadingDivina": "Resume divina",
+            "lastAdditionsDivina": "Recently added divina"
         },
         "export": "Export",
         "lang": "Language",
