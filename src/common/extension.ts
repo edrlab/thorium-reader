@@ -19,6 +19,7 @@ export const acceptedExtensionObject = {
     // pdfLcp: ".lcpdf", // for illustration only, not actually implemented yet
     w3cAudiobook: ".lpf",
     divina: ".divina",
+    // cbz: ".cbz",
 };
 
 export const acceptedExtensionArray = ObjectValues(acceptedExtensionObject);
