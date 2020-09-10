@@ -97,14 +97,16 @@ export function* importFromLinkService(
         const isAudioBookPacked = contentTypeArray.includes(ContentType.AudioBookPacked);
         const isAudioBookPackedLcp = contentTypeArray.includes(ContentType.AudioBookPackedLcp);
         const isHtml = contentTypeArray.includes(ContentType.Html);
+        const isDivinaPacked = contentTypeArray.includes(ContentType.DivinaPacked);
         const isJson = contentTypeArray.includes(ContentType.Json)
             || contentTypeArray.includes(ContentType.AudioBook)
-            || contentTypeArray.includes(ContentType.JsonLd);
+            || contentTypeArray.includes(ContentType.JsonLd)
+            || contentTypeArray.includes(ContentType.Divina);
 
         debug(contentTypeArray, isHtml, isJson);
 
-        if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp) {
-            debug(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
+        if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp && !isDivinaPacked) {
+            debug(`OPDS download link is not EPUB or AudioBook or Divina ! ${link.url} ${link.type}`);
         }
 
         if (isHtml || isJson) {
