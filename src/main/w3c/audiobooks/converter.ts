@@ -24,7 +24,7 @@ import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
 import { htmlTocToLinkArray } from "./toc";
 
 // Logger
-const debug = debug_("readium-desktop:main#w3c/audiobooks/mapper");
+const debug = debug_("readium-desktop:main#w3c/audiobooks/converter");
 
 interface IW3cLocalizableString {
     language?: string;
@@ -34,6 +34,7 @@ interface IW3cLocalizableString {
 
 function convertW3cLocalisableStringToReadiumManifestTitle(
     titleRaw: IW3cLocalizableString[] | IW3cLocalizableString | string,
+    defaultBcp47Language: string,
 ): string | IStringMap {
 
     if (titleRaw) {
@@ -41,17 +42,22 @@ function convertW3cLocalisableStringToReadiumManifestTitle(
         const titleObjArray = (
             Array.isArray(titleRaw) ? titleRaw : [titleRaw]
         ) as Array<IW3cLocalizableString | string>;
-        const titleObj = titleObjArray.reduce<IStringMap>(
-            (pv, cv) =>
-                typeof cv === "object"
-                    ? cv.language
-                        ? { ...pv, [cv.language]: `${cv.value || ""}` }
-                        : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv.value || ""}` }
-                    : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv || ""}` },
-            {});
-        return Object.keys(titleObj).length > 1
+
+        const titleObj = titleObjArray
+            .reduce(
+                (pv, cv) =>
+                    typeof cv === "object"
+                        ? cv.language
+                            ? { ...pv, [cv.language]: `${cv.value || ""}` }
+                            : { ...pv, [defaultBcp47Language]: `${cv.value || ""}` }
+                        : { ...pv, [defaultBcp47Language]: `${cv || ""}` },
+                {} as IStringMap);
+
+        const titleObjLength = Object.keys(titleObj).length;
+
+        return titleObjLength > 1
             ? titleObj
-            : titleObj[BCP47_UNKNOWN_LANG];
+            : titleObj[defaultBcp47Language];
     }
     return undefined;
 
@@ -67,6 +73,7 @@ interface IW3cEntities {
 
 function convertW3cEntitiesToReadiumManifestContributors(
     entitiesRaw: IW3cEntities | IW3cEntities[] | string,
+    defaultBcp47Language: string,
 ): Contributor[] {
 
     const entitiesArray = (Array.isArray(entitiesRaw) ? entitiesRaw : [entitiesRaw]) as Array<IW3cEntities | string>;
@@ -77,7 +84,7 @@ function convertW3cEntitiesToReadiumManifestContributors(
 
             if (typeof entity === "object") {
                 {
-                    const value = convertW3cLocalisableStringToReadiumManifestTitle(entity.name);
+                    const value = convertW3cLocalisableStringToReadiumManifestTitle(entity.name, defaultBcp47Language);
                     contributor.Name = value || ""; // required
                 }
                 {
@@ -116,6 +123,7 @@ export interface IW3cLinkedResources {
 
 function convertW3CpublicationLinksToReadiumManifestLink(
     lnRaw: IW3cLinkedResources | IW3cLinkedResources[] | string,
+    defaultBcp47Language: string,
 ): Link[] {
 
     const linkArray = (Array.isArray(lnRaw) ? lnRaw : [lnRaw]) as Array<IW3cLinkedResources | string>;
@@ -143,9 +151,10 @@ function convertW3CpublicationLinksToReadiumManifestLink(
                     }
                     {
                         const raw = w3cLink.name;
-                        const titleStringOrMap = convertW3cLocalisableStringToReadiumManifestTitle(raw);
+                        // tslint:disable-next-line: max-line-length
+                        const titleStringOrMap = convertW3cLocalisableStringToReadiumManifestTitle(raw, defaultBcp47Language);
                         const title = typeof titleStringOrMap === "object"
-                            ? titleStringOrMap[BCP47_UNKNOWN_LANG]
+                            ? titleStringOrMap[defaultBcp47Language]
                             || titleStringOrMap[Object.keys(titleStringOrMap)[0]]
                             || ""
                             : titleStringOrMap;
@@ -170,7 +179,8 @@ function convertW3CpublicationLinksToReadiumManifestLink(
                     }
                     {
                         const alternate = w3cLink.alternate;
-                        const children = convertW3CpublicationLinksToReadiumManifestLink(alternate);
+                        // tslint:disable-next-line: max-line-length
+                        const children = convertW3CpublicationLinksToReadiumManifestLink(alternate, defaultBcp47Language);
                         if (children.length) {
                             rwpmLink.Alternate = children;
                         }
@@ -190,9 +200,14 @@ function convertW3CpublicationLinksToReadiumManifestLink(
 // API
 //
 
+interface IW3cContext {
+    direction?: string;
+    language?: string;
+}
+
 export interface Iw3cPublicationManifest {
     "type"?: string | string[];
-    "@context"?: string | string[];
+    "@context"?: string | string[] | Array<string | IW3cContext>;
     "conformsTo"?: string | string[];
     "id"?: string;
     "url"?: string;
@@ -228,6 +243,10 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
             return tmp;
         })(w3cManifest);
 
+    let defaultBcp47Language = BCP47_UNKNOWN_LANG;
+    let defaultDirection; // undefined // auto mode
+    // https://github.com/readium/webpub-manifest/tree/master/contexts/default#reading-progression-direction
+
     const publication = new R2Publication();
 
     {
@@ -239,6 +258,27 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
         if (!validContext) {
             debug("context from W3C publication not valid !", context);
         }
+
+        // https://github.com/SafetyCulture/bcp47/blob/e1afa0b61f932462f46c87195c746b0aade467ac/src/index.js#L1
+        const BCP47ValidatorPattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i;
+        const directionArray = ["ltr", "rtl", "ttb", "btt"];
+
+        contextArray.forEach((value) => {
+
+            if (typeof value === "object") {
+                if (directionArray.includes(value.direction)) {
+                    defaultDirection = value.direction;
+                }
+                if (value.language) {
+                    if (BCP47ValidatorPattern.test(value.language)) {
+                        defaultBcp47Language = value.language;
+                    }
+                }
+            }
+        });
+
+        debug("default language =", defaultBcp47Language);
+        debug("default direction =", defaultDirection);
     }
 
     publication.Metadata = new Metadata();
@@ -269,7 +309,7 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
     }
     {
         const title = pop("name");
-        publication.Metadata.Title = convertW3cLocalisableStringToReadiumManifestTitle(title) || ""; // required
+        publication.Metadata.Title = convertW3cLocalisableStringToReadiumManifestTitle(title, defaultBcp47Language) || ""; // required
     }
     {
         const value = `${pop("dcterms:description") || ""}`;
@@ -321,10 +361,15 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
         }
     }
     {
+        if (defaultDirection) {
+            publication.Metadata.Direction = defaultDirection;
+        }
+    }
+    {
         const links = pop("links");
         const resources = pop("resources");
-        const linksLinks = convertW3CpublicationLinksToReadiumManifestLink(resources);
-        const linksResources = convertW3CpublicationLinksToReadiumManifestLink(links);
+        const linksLinks = convertW3CpublicationLinksToReadiumManifestLink(resources, defaultBcp47Language);
+        const linksResources = convertW3CpublicationLinksToReadiumManifestLink(links, defaultBcp47Language);
         const linksBoth = [ ...linksLinks, ...linksResources];
         if (linksBoth.length) {
             publication.Links = linksBoth;
@@ -332,7 +377,7 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
     }
     {
         const readingOrder = pop("readingOrder");
-        const links = convertW3CpublicationLinksToReadiumManifestLink(readingOrder);
+        const links = convertW3CpublicationLinksToReadiumManifestLink(readingOrder, defaultBcp47Language);
         if (links.length) {
             publication.Spine = links;
             // https://github.com/readium/r2-shared-js/blob/develop/src/models/publication.ts#L63
@@ -340,21 +385,21 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
     }
     {
         const raw = pop("readBy");
-        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
+        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw, defaultBcp47Language);
         if (contrib.length) {
             publication.Metadata.Narrator = contrib;
         }
     }
     {
         const raw = pop("author");
-        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
+        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw, defaultBcp47Language);
         if (contrib.length) {
             publication.Metadata.Author = contrib;
         }
     }
     {
         const raw = pop("publisher");
-        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
+        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw, defaultBcp47Language);
         if (contrib) {
             publication.Metadata.Publisher = contrib;
         }
@@ -402,7 +447,7 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
     }
     {
         const raw = pop("accessibilitySummary");
-        const loc = convertW3cLocalisableStringToReadiumManifestTitle(raw);
+        const loc = convertW3cLocalisableStringToReadiumManifestTitle(raw, defaultBcp47Language);
         if (loc) {
             publication.Metadata.AccessibilitySummary = loc;
         }
