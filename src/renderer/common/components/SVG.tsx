@@ -27,7 +27,7 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class SVG extends React.Component<IProps, undefined> {
+export default class SVG extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);

@@ -14,10 +14,11 @@ export interface TranslatorProps {
     translator?: Translator;
 }
 
-type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
+type TComponentConstructor<P, S> = React.ComponentClass<P, S> | React.StatelessComponent<P>;
 
-export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Props & TranslatorProps>) {
-    const WrapperComponent = class extends React.Component<Props & TranslatorProps, undefined> {
+// tslint:disable-next-line: max-line-length
+export function withTranslator<Props, State = {}>(WrappedComponent: TComponentConstructor<Props & TranslatorProps, State>) {
+    const WrapperComponent = class extends React.Component<Props & TranslatorProps, State> {
         public static displayName: string;
 
         public render() {

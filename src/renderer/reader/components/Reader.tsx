@@ -98,7 +98,7 @@ interface IState {
     mediaOverlaysPlaybackRate: string;
 
     visibleBookmarkList: LocatorView[];
-    currentLocation: LocatorExtended;
+    currentLocation?: LocatorExtended;
     bookmarks: LocatorView[] | undefined;
 
     readerMode: ReaderMode;
@@ -275,6 +275,10 @@ class Reader extends React.Component<IProps, IState> {
             toggleMenu: this.handleSettingsClick,
             r2Publication: this.props.r2Publication,
         };
+
+        if (!this.props.__) {
+            return <></>;
+        }
 
         return (
             <div className={classNames(

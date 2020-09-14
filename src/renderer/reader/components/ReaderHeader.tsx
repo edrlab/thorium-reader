@@ -134,8 +134,11 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
         }
     }
 
-    public render(): React.ReactElement<{}> {
+    public render() {
         const { __ } = this.props;
+        if (!__) {
+            return <></>;
+        }
 
         const showAudioTTSToolbar = this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo;
         return (

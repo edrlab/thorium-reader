@@ -18,7 +18,7 @@ interface IBaseProps extends TranslatorProps {
     open?: boolean;
     disabled?: boolean;
     content?: React.ReactElement | React.ReactElement[];
-    title: string;
+    title?: string;
     onClick: (id: number) => void;
     id: number;
 }
@@ -32,7 +32,7 @@ interface IProps extends IBaseProps {
 }
 
 interface IState {
-    style: React.CSSProperties;
+    style?: React.CSSProperties;
 }
 
 export class SideMenuSection extends React.Component<IProps, IState> {

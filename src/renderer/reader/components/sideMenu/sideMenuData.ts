@@ -7,7 +7,7 @@
 
 export interface SectionData {
     title?: string;
-    content: React.ReactElement | React.ReactElement[]; // JSX.Element;
+    content?: React.ReactElement | React.ReactElement[]; // JSX.Element;
     disabled?: boolean;
     notExtendable?: boolean;
 }

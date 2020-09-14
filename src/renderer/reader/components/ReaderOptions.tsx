@@ -55,7 +55,7 @@ enum themeType {
     Night,
 }
 
-export class ReaderOptions extends React.Component<IProps, undefined> {
+export class ReaderOptions extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);
@@ -66,7 +66,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __, readerConfig, toggleMenu, r2Publication } = this.props;
 
-        if (!readerConfig) {
+        if (!readerConfig || !__) {
             return <></>;
         }
 
@@ -125,6 +125,9 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     private saveConfig() {
 
         const { readerConfig, __ } = this.props;
+        if (!__) {
+            return <></>;
+        }
 
         return (
 
@@ -154,7 +157,11 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
 
     private mediaOverlays() {
 
-        const { readerConfig } = this.props;
+        const { readerConfig, __ } = this.props;
+        if (!__) {
+            return <></>;
+        }
+
         return (<>
             <div className={styles.mathml_section}>
                 <input
@@ -164,7 +171,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     onChange={() => this.toggleMediaOverlaysEnableCaptionsMode()}
                 />
                 <label htmlFor="mediaOverlaysEnableCaptionsModeCheckBox">{
-                    this.props.__("reader.media-overlays.captions")
+                    __("reader.media-overlays.captions")
                 }</label>
             </div>
             <div className={styles.mathml_section}>
@@ -175,7 +182,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     onChange={() => this.toggleMediaOverlaysEnableSkippability()}
                 />
                 <label htmlFor="mediaOverlaysEnableSkippabilityCheckBox">{
-                    this.props.__("reader.media-overlays.skip")
+                    __("reader.media-overlays.skip")
                 }</label>
             </div>
         </>);
@@ -198,7 +205,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private themeContent() {
-        const { __, readerConfig } = this.props;
+        const { readerConfig, __ } = this.props;
+        if (!__) {
+            return <></>;
+        }
         const withoutTheme = !readerConfig.sepia && !readerConfig.night;
         return (
             <div id={styles.themes_list}>
@@ -246,7 +256,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private textContent() {
-        const {__, readerConfig} = this.props;
+        const { readerConfig, __ } = this.props;
+        if (!__) {
+            return <></>;
+        }
 
         return <>
             <div className={styles.line_tab_content}>
@@ -293,7 +306,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private displayContent() {
-        const {__, readerConfig} = this.props;
+        const { readerConfig, __ } = this.props;
+        if (!__) {
+            return <></>;
+        }
         return <>
             <section className={styles.line_tab_content}>
             <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
@@ -385,8 +401,8 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         <label
                             htmlFor={"radio-" + styles.option_colonne}
                             className={this.getButtonClassName("colCount",
-                            !readerConfig.paged ? null : colCountEnum.auto,
-                            !readerConfig.paged && styles.disable)}
+                            !readerConfig.paged ? undefined : colCountEnum.auto,
+                            !readerConfig.paged ? undefined : styles.disable)}
                         >
                             <SVG svg={AutoIcon}/>
                             {__("reader.settings.column.auto")}
@@ -404,8 +420,8 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         <label
                             htmlFor={"radio-" + styles.option_colonne1}
                             className={this.getButtonClassName("colCount",
-                            !readerConfig.paged ? null : colCountEnum.one,
-                            !readerConfig.paged && styles.disable)}
+                            !readerConfig.paged ? undefined : colCountEnum.one,
+                            !readerConfig.paged ? undefined : styles.disable)}
                         >
                             <SVG svg={ColumnIcon} title={__("reader.settings.column.oneTitle")}/>
                             {__("reader.settings.column.one")}
@@ -423,8 +439,8 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         <label
                             htmlFor={"radio-" + styles.option_colonne2}
                             className={this.getButtonClassName("colCount",
-                                !readerConfig.paged ? null : colCountEnum.two,
-                                !readerConfig.paged && styles.disable)
+                                !readerConfig.paged ? undefined : colCountEnum.two,
+                                !readerConfig.paged ? undefined : styles.disable)
                             }
                         >
                             <SVG svg={Column2Icon} title={__("reader.settings.column.twoTitle")}/>
@@ -437,7 +453,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private spacingContent() {
-        const {__, readerConfig} = this.props;
+        const { readerConfig, __ } = this.props;
+        if (!__) {
+            return <></>;
+        }
         return <>
             <div className={styles.line_tab_content}>
                 <div className={styles.subheading}>
@@ -594,7 +613,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
 
     private getButtonClassName(
         propertyName: keyof ReaderConfig,
-        value: string | boolean,
+        value: string | boolean | undefined,
         additionalClassName?: string): string {
 
         const property = this.props.readerConfig[propertyName];
