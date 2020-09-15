@@ -489,6 +489,10 @@ export function getUniqueResourcesFromR2Publication(publication: R2Publication):
             Array.isArray(publication.Spine)
                 ? publication.Spine
                 : []),
+        ...(
+            Array.isArray(publication.Resources)
+                ? publication.Resources
+                : []),
     ];
 
     return uniqueResources;

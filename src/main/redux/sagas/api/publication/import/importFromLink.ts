@@ -101,7 +101,8 @@ export function* importFromLinkService(
         const isJson = contentTypeArray.includes(ContentType.Json)
             || contentTypeArray.includes(ContentType.AudioBook)
             || contentTypeArray.includes(ContentType.JsonLd)
-            || contentTypeArray.includes(ContentType.Divina);
+            || contentTypeArray.includes(ContentType.Divina)
+            || contentTypeArray.includes(ContentType.webpub);
 
         debug(contentTypeArray, isHtml, isJson);
 

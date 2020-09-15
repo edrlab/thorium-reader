@@ -171,6 +171,13 @@ function updateManifest(
         }
     }
 
+    {
+        const resources = r2Publication.Resources;
+        if (Array.isArray(resources)) {
+            r2Publication.Resources = copyAndSetHref(resources, resourcesHrefMap);
+        }
+    }
+
     return r2Publication;
 
 }
