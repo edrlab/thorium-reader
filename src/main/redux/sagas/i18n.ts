@@ -10,6 +10,7 @@ import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/c
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
@@ -22,26 +23,37 @@ debug("_");
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
 
-    const translator = yield* callTyped(() => diMainGet("translator"));
-    const configRepository: ConfigRepository<LocaleConfigValueType> = yield call(
-        () => diMainGet("config-repository"),
-    );
+    debug("$$$$$");
+    debug("i18n setLocale called", action.payload);
+    debug("$$$$$");
 
-    const configRepositorySave = () =>
-        configRepository.save({
-            identifier: LocaleConfigIdentifier,
-            value: {
-                locale: action.payload.locale,
-            },
-        });
+    const langKey = Object.keys(AvailableLanguages);
+    if (langKey.includes(action.payload.locale)) {
 
-    const translatorSetLocale = () =>
-        translator.setLocale(action.payload.locale);
+        const translator = yield* callTyped(() => diMainGet("translator"));
+        const configRepository: ConfigRepository<LocaleConfigValueType> = yield call(
+            () => diMainGet("config-repository"),
+        );
 
-    yield all([
-        call(configRepositorySave),
-        call(translatorSetLocale),
-    ]);
+        const configRepositorySave = () =>
+            configRepository.save({
+                identifier: LocaleConfigIdentifier,
+                value: {
+                    locale: action.payload.locale,
+                },
+            });
+
+        const translatorSetLocale = () =>
+            translator.setLocale(action.payload.locale);
+
+        yield all([
+            call(configRepositorySave),
+            call(translatorSetLocale),
+        ]);
+
+    } else {
+        debug("locale not defined!");
+    }
 }
 
 export function saga() {

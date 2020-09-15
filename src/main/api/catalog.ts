@@ -155,6 +155,8 @@ export class CatalogApi implements ICatalogApi {
                             // ignore
                         }
                     }
+
+                    debug(array.length);
                 }
             }
         };
