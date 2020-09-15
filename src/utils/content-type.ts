@@ -5,11 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// cf src/utils/mimeTypes.ts
 export enum ContentType {
     AtomXml = "application/atom+xml",
     Xml = "application/xml",
     TextXml = "text/xml",
     Json = "application/json",
+    JsonLd = "application/ld+json",
     Opds2 = "application/opds+json",
     Divina = "application/divina+json",
     DivinaPacked = "application/divina+zip",
@@ -24,6 +26,7 @@ export enum ContentType {
     AudioBook = "application/audiobook+json",
     AudioBookPacked = "application/audiobook+zip",
     AudioBookPackedLcp = "application/audiobook+lcp",
+    webpubPacked = "application/webpub+zip",
     Lcp = "application/vnd.readium.lcp.license.v1.0+json",
     Lsd = "application/vnd.readium.license.status.v1.0+json",
 }

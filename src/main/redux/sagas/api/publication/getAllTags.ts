@@ -5,10 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { diMainGet } from "readium-desktop/main/di";
 
-export interface ImportState {
-    link: IOpdsLinkView | undefined;
-    r2OpdsPublicationBase64: string | undefined;
-    title?: string | undefined;
+export function* getAllTags() {
+    const publicationRepository = diMainGet("publication-repository");
+
+    const tags = yield* callTyped(() => publicationRepository.getAllTags());
+
+    return tags;
 }

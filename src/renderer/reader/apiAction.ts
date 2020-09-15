@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { apiActionFactory } from "../common/apiAction";
+import { apiActionFactory } from "readium-desktop/renderer/common/apiAction";
 import { diReaderGet } from "./di";
 
 export const apiAction = apiActionFactory(() => diReaderGet("store"));

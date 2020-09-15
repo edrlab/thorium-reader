@@ -6,18 +6,14 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { promises as fsp } from "fs";
 import * as moment from "moment";
-import * as os from "os";
-import { basename, dirname, extname, join } from "path";
-import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { extname } from "path";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { v4 as uuidV4 } from "uuid";
 
-import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
@@ -25,80 +21,10 @@ import { Subject } from "@r2-shared-js/models/metadata-subject";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
-import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
-import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
-import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
-import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
+import { htmlTocToLinkArray } from "./toc";
 
 // Logger
-const debug = debug_("readium-desktop:main#lpfConverter");
-
-async function copyAndRenameLpfFile(lpfPath: string): Promise<string> {
-
-    const tmpPathName = `${_APP_NAME}-lpfconverter-`;
-    const tmpPath = os.tmpdir();
-
-    let dirPath: string;
-    try {
-        // creates a unique temporary directory
-        dirPath = await fsp.mkdtemp(join(tmpPath, tmpPathName));
-    } catch (err) {
-        return Promise.reject(`creates a unique temporary directory : ${err}`);
-    }
-
-    const lpfBasename = basename(lpfPath);
-    const audiobookBasename = `${lpfBasename}${acceptedExtensionObject.audiobook}`;
-    const audiobookPath = join(dirPath, audiobookBasename);
-
-    debug(`LPFPATH=${lpfPath} AUDIOBOOKPATH=${audiobookPath}`);
-
-    return audiobookPath;
-}
-
-async function openAndExtractPublicationFromLpf(lpfPath: string): Promise<NodeJS.ReadableStream> {
-
-    const publicationEntryPath = "publication.json";
-    const zip = await zipLoadPromise(lpfPath);
-
-    if (!zip.hasEntries()) {
-        return Promise.reject("LPF zip empty");
-    }
-
-    if (zip.hasEntry(publicationEntryPath)) {
-
-        let entryStream: IStreamAndLength;
-        try {
-            entryStream = await zip.entryStreamPromise(publicationEntryPath);
-
-        } catch (err) {
-            debug(err);
-            return Promise.reject(`Problem streaming LPF zip entry?! ${publicationEntryPath}`);
-        }
-
-        return entryStream.stream;
-
-    } else {
-        return Promise.reject("LPF zip 'publication.json' is missing");
-    }
-}
-
-async function injectManifestToZip(sourcePath: string, destinationPath: string, manifest: Buffer) {
-
-    const manifestEntryPath = "manifest.json";
-    await new Promise((resolve, reject) => {
-        injectBufferInZip(
-            sourcePath,
-            destinationPath,
-            manifest,
-            manifestEntryPath,
-            (err) => {
-                debug("injectManifestToZip - injectBufferInZip ERROR!", err);
-                reject(`'injectBufferInZip' : ${err}`);
-            },
-            () => resolve(),
-        );
-    });
-}
+const debug = debug_("readium-desktop:main#w3c/audiobooks/converter");
 
 interface IW3cLocalizableString {
     language?: string;
@@ -108,6 +34,7 @@ interface IW3cLocalizableString {
 
 function convertW3cLocalisableStringToReadiumManifestTitle(
     titleRaw: IW3cLocalizableString[] | IW3cLocalizableString | string,
+    defaultBcp47Language: string,
 ): string | IStringMap {
 
     if (titleRaw) {
@@ -115,17 +42,22 @@ function convertW3cLocalisableStringToReadiumManifestTitle(
         const titleObjArray = (
             Array.isArray(titleRaw) ? titleRaw : [titleRaw]
         ) as Array<IW3cLocalizableString | string>;
-        const titleObj = titleObjArray.reduce<IStringMap>(
-            (pv, cv) =>
-                typeof cv === "object"
-                    ? cv.language
-                        ? { ...pv, [cv.language]: `${cv.value || ""}` }
-                        : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv.value || ""}` }
-                    : { ...pv, [BCP47_UNKNOWN_LANG]: `${cv || ""}` },
-            {});
-        return Object.keys(titleObj).length > 1
+
+        const titleObj = titleObjArray
+            .reduce(
+                (pv, cv) =>
+                    typeof cv === "object"
+                        ? cv.language
+                            ? { ...pv, [cv.language]: `${cv.value || ""}` }
+                            : { ...pv, [defaultBcp47Language]: `${cv.value || ""}` }
+                        : { ...pv, [defaultBcp47Language]: `${cv || ""}` },
+                {} as IStringMap);
+
+        const titleObjLength = Object.keys(titleObj).length;
+
+        return titleObjLength > 1
             ? titleObj
-            : titleObj[BCP47_UNKNOWN_LANG];
+            : titleObj[defaultBcp47Language];
     }
     return undefined;
 
@@ -141,6 +73,7 @@ interface IW3cEntities {
 
 function convertW3cEntitiesToReadiumManifestContributors(
     entitiesRaw: IW3cEntities | IW3cEntities[] | string,
+    defaultBcp47Language: string,
 ): Contributor[] {
 
     const entitiesArray = (Array.isArray(entitiesRaw) ? entitiesRaw : [entitiesRaw]) as Array<IW3cEntities | string>;
@@ -151,7 +84,7 @@ function convertW3cEntitiesToReadiumManifestContributors(
 
             if (typeof entity === "object") {
                 {
-                    const value = convertW3cLocalisableStringToReadiumManifestTitle(entity.name);
+                    const value = convertW3cLocalisableStringToReadiumManifestTitle(entity.name, defaultBcp47Language);
                     contributor.Name = value || ""; // required
                 }
                 {
@@ -176,7 +109,7 @@ function convertW3cEntitiesToReadiumManifestContributors(
     return contributorArray;
 }
 
-interface IW3cLinkedResources {
+export interface IW3cLinkedResources {
     type?: string | string[];
     url?: string;
     encodingFormat?: string;
@@ -190,6 +123,7 @@ interface IW3cLinkedResources {
 
 function convertW3CpublicationLinksToReadiumManifestLink(
     lnRaw: IW3cLinkedResources | IW3cLinkedResources[] | string,
+    defaultBcp47Language: string,
 ): Link[] {
 
     const linkArray = (Array.isArray(lnRaw) ? lnRaw : [lnRaw]) as Array<IW3cLinkedResources | string>;
@@ -217,9 +151,10 @@ function convertW3CpublicationLinksToReadiumManifestLink(
                     }
                     {
                         const raw = w3cLink.name;
-                        const titleStringOrMap = convertW3cLocalisableStringToReadiumManifestTitle(raw);
+                        // tslint:disable-next-line: max-line-length
+                        const titleStringOrMap = convertW3cLocalisableStringToReadiumManifestTitle(raw, defaultBcp47Language);
                         const title = typeof titleStringOrMap === "object"
-                            ? titleStringOrMap[BCP47_UNKNOWN_LANG]
+                            ? titleStringOrMap[defaultBcp47Language]
                             || titleStringOrMap[Object.keys(titleStringOrMap)[0]]
                             || ""
                             : titleStringOrMap;
@@ -244,7 +179,8 @@ function convertW3CpublicationLinksToReadiumManifestLink(
                     }
                     {
                         const alternate = w3cLink.alternate;
-                        const children = convertW3CpublicationLinksToReadiumManifestLink(alternate);
+                        // tslint:disable-next-line: max-line-length
+                        const children = convertW3CpublicationLinksToReadiumManifestLink(alternate, defaultBcp47Language);
                         if (children.length) {
                             rwpmLink.Alternate = children;
                         }
@@ -260,9 +196,18 @@ function convertW3CpublicationLinksToReadiumManifestLink(
     return linkMap;
 }
 
-interface Iw3cPublicationManifest {
+//
+// API
+//
+
+interface IW3cContext {
+    direction?: string;
+    language?: string;
+}
+
+export interface Iw3cPublicationManifest {
     "type"?: string | string[];
-    "@context"?: string | string[];
+    "@context"?: string | string[] | Array<string | IW3cContext>;
     "conformsTo"?: string | string[];
     "id"?: string;
     "url"?: string;
@@ -273,6 +218,7 @@ interface Iw3cPublicationManifest {
     "datePublished"?: string;
     "dateModified"?: string;
     "duration"?: string;
+    "links"?: string | IW3cLinkedResources | IW3cLinkedResources[];
     "resources"?: string | IW3cLinkedResources | IW3cLinkedResources[];
     "readingOrder"?: string | IW3cLinkedResources | IW3cLinkedResources[];
     "readBy"?: string | IW3cEntities | IW3cEntities[];
@@ -285,7 +231,10 @@ interface Iw3cPublicationManifest {
     "accessibilitySummary"?: string | IW3cLocalizableString | IW3cLocalizableString[];
 }
 
-export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: Iw3cPublicationManifest) {
+export async function w3cPublicationManifestToReadiumPublicationManifest(
+    w3cManifest: Iw3cPublicationManifest,
+    tocCallback: (uniqueRessources: Link[]) => HTMLElement | Promise<HTMLElement>,
+): Promise<R2Publication> {
 
     const pop = ((obj: Iw3cPublicationManifest) =>
         <Key extends keyof typeof obj>(key: Key): Iw3cPublicationManifest[Key] => {
@@ -293,6 +242,10 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
             delete obj[key];
             return tmp;
         })(w3cManifest);
+
+    let defaultBcp47Language = BCP47_UNKNOWN_LANG;
+    let defaultDirection; // undefined // auto mode
+    // https://github.com/readium/webpub-manifest/tree/master/contexts/default#reading-progression-direction
 
     const publication = new R2Publication();
 
@@ -305,6 +258,27 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
         if (!validContext) {
             debug("context from W3C publication not valid !", context);
         }
+
+        // https://github.com/SafetyCulture/bcp47/blob/e1afa0b61f932462f46c87195c746b0aade467ac/src/index.js#L1
+        const BCP47ValidatorPattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i;
+        const directionArray = ["ltr", "rtl", "ttb", "btt"];
+
+        contextArray.forEach((value) => {
+
+            if (typeof value === "object") {
+                if (directionArray.includes(value.direction)) {
+                    defaultDirection = value.direction;
+                }
+                if (value.language) {
+                    if (BCP47ValidatorPattern.test(value.language)) {
+                        defaultBcp47Language = value.language;
+                    }
+                }
+            }
+        });
+
+        debug("default language =", defaultBcp47Language);
+        debug("default direction =", defaultDirection);
     }
 
     publication.Metadata = new Metadata();
@@ -335,7 +309,7 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
     }
     {
         const title = pop("name");
-        publication.Metadata.Title = convertW3cLocalisableStringToReadiumManifestTitle(title) || ""; // required
+        publication.Metadata.Title = convertW3cLocalisableStringToReadiumManifestTitle(title, defaultBcp47Language) || ""; // required
     }
     {
         const value = `${pop("dcterms:description") || ""}`;
@@ -387,15 +361,23 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
         }
     }
     {
+        if (defaultDirection) {
+            publication.Metadata.Direction = defaultDirection;
+        }
+    }
+    {
+        const links = pop("links");
         const resources = pop("resources");
-        const links = convertW3CpublicationLinksToReadiumManifestLink(resources);
-        if (links.length) {
-            publication.Resources = links;
+        const linksLinks = convertW3CpublicationLinksToReadiumManifestLink(resources, defaultBcp47Language);
+        const linksResources = convertW3CpublicationLinksToReadiumManifestLink(links, defaultBcp47Language);
+        const linksBoth = [ ...linksLinks, ...linksResources];
+        if (linksBoth.length) {
+            publication.Links = linksBoth;
         }
     }
     {
         const readingOrder = pop("readingOrder");
-        const links = convertW3CpublicationLinksToReadiumManifestLink(readingOrder);
+        const links = convertW3CpublicationLinksToReadiumManifestLink(readingOrder, defaultBcp47Language);
         if (links.length) {
             publication.Spine = links;
             // https://github.com/readium/r2-shared-js/blob/develop/src/models/publication.ts#L63
@@ -403,21 +385,21 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
     }
     {
         const raw = pop("readBy");
-        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
+        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw, defaultBcp47Language);
         if (contrib.length) {
             publication.Metadata.Narrator = contrib;
         }
     }
     {
         const raw = pop("author");
-        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
+        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw, defaultBcp47Language);
         if (contrib.length) {
             publication.Metadata.Author = contrib;
         }
     }
     {
         const raw = pop("publisher");
-        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw);
+        const contrib = convertW3cEntitiesToReadiumManifestContributors(raw, defaultBcp47Language);
         if (contrib) {
             publication.Metadata.Publisher = contrib;
         }
@@ -465,11 +447,27 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
     }
     {
         const raw = pop("accessibilitySummary");
-        const loc = convertW3cLocalisableStringToReadiumManifestTitle(raw);
+        const loc = convertW3cLocalisableStringToReadiumManifestTitle(raw, defaultBcp47Language);
         if (loc) {
             publication.Metadata.AccessibilitySummary = loc;
         }
     }
+
+    // TOC
+    {
+        const uniqueResources = getUniqueResourcesFromR2Publication(publication);
+
+        if (tocCallback) {
+            const tocElement = await Promise.resolve(tocCallback(uniqueResources));
+            if (tocElement) {
+                const toc = htmlTocToLinkArray(tocElement, uniqueResources);
+                if (Array.isArray(toc) && toc.length) {
+                    publication.TOC = toc;
+                }
+            }
+        }
+    }
+
     {
         // save all other properties
         if (Object.keys(w3cManifest).length) {
@@ -477,37 +475,21 @@ export function w3cPublicationManifestToReadiumPublicationManifest(w3cManifest: 
         }
     }
 
-    const publicationJson = TaJsonSerialize<R2Publication>(publication);
-
-    return publicationJson;
+    return publication;
 }
 
-//
-// API
-//
-export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string, () => Promise<void>]> {
+export function getUniqueResourcesFromR2Publication(publication: R2Publication): Link[] {
 
-    const audiobookPath = await copyAndRenameLpfFile(lpfPath);
+    const uniqueResources = [
+        ...(
+            Array.isArray(publication.Links)
+                ? publication.Links
+                : []),
+        ...(
+            Array.isArray(publication.Spine)
+                ? publication.Spine
+                : []),
+    ];
 
-    const stream = await openAndExtractPublicationFromLpf(lpfPath);
-
-    const buffer = await streamToBufferPromise(stream);
-    const rawData = buffer.toString("utf8");
-    const w3cManifest = JSON.parse(rawData) as Iw3cPublicationManifest;
-
-    const readiumManifest = w3cPublicationManifestToReadiumPublicationManifest(w3cManifest);
-
-    const manifestBuffer = Buffer.from(JSON.stringify(readiumManifest, null, 4));
-    await injectManifestToZip(lpfPath, audiobookPath, manifestBuffer);
-
-    const cleanFct = async () => {
-        try {
-            await fsp.unlink(audiobookPath);
-            await fsp.rmdir(dirname(audiobookPath));
-        } catch (err) {
-            // ignore
-        }
-    };
-
-    return [audiobookPath, cleanFct];
+    return uniqueResources;
 }

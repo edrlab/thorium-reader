@@ -146,7 +146,7 @@
         },
         "import": {
             "alreadyImport": "{{- title}} est déja importé",
-            "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
+            "fail": "L'importation de {{- path}} a échoué. {{- err}}",
             "success": "L'import de {{- title}} est terminé."
         },
         "open": {

@@ -100,8 +100,8 @@ class Catalog extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState) => ({
     apiData: apiState(state),
     refresh: apiRefreshToState(state)([
-        "publication/import",
-        "publication/importOpdsPublicationLink",
+        "publication/importFromFs",
+        "publication/importFromLink",
         "publication/delete",
         // "catalog/addEntry",
         "publication/updateTags",

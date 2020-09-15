@@ -22,8 +22,6 @@ declare module "*.png" {
 
 declare module "ping";
 
-declare module "yazl";
-
 declare module "pouchdb-adapter-leveldb";
 declare module "pouchdb-adapter-node-websql";
 // declare module "readium-desktop/pouchdb/jsondown-adapter";

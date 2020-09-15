@@ -9,13 +9,13 @@ import { TApiMethod, TApiMethodName } from "readium-desktop/common/api/api.type"
 import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
 import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
+import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { Store, Unsubscribe } from "redux";
 import { v4 as uuidv4 } from "uuid";
 
 export function apiActionFactory(storeCb: () => Store<any>) {
     return async <T extends TApiMethodName>(apiPath: T, ...requestData: Parameters<TApiMethod[T]>) => {
-        return new Promise<ReturnPromiseType<TApiMethod[T]>>(
+        return new Promise<TReturnPromiseOrGeneratorType<TApiMethod[T]>>(
             async (resolve, reject) => {
                 const store = storeCb();
                 const requestId = uuidv4();
@@ -34,7 +34,8 @@ export function apiActionFactory(storeCb: () => Store<any>) {
                     ),
                 );
 
-                const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
+                const promise = new Promise<TReturnPromiseOrGeneratorType<TApiMethod[T]>>(
+                    (resolveSubscribe, rejectSubscribe) => {
                     storeUnsubscribe = store.subscribe(() => {
                         const state = store.getState();
                         const lastTime = (state.api[requestId]?.lastTime) || 0;

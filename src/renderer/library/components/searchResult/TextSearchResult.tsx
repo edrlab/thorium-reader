@@ -52,7 +52,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
 
     public componentDidMount() {
         this.unsubscribe = apiSubscribe([
-            "publication/import",
+            "publication/importFromFs",
             "publication/delete",
             // "catalog/addEntry",
             "publication/updateTags",

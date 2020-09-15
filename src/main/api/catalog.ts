@@ -24,9 +24,9 @@ import { Store } from "redux";
 
 import { PublicationDocument } from "../db/document/publication";
 import { PublicationRepository } from "../db/repository/publication";
+import { diMainGet } from "../di";
 // import { publicationActions } from "../redux/actions";
 import { RootState } from "../redux/states";
-import { PublicationService } from "../services/publication";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
@@ -50,9 +50,6 @@ interface ICatalogCategories {
 export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
-
-    @inject(diSymbolTable["publication-service"])
-    private readonly publicationService!: PublicationService;
 
     // @inject(diSymbolTable["config-repository"])
     // private readonly configRepository!: ConfigRepository<CatalogConfig>;
@@ -149,7 +146,11 @@ export class CatalogApi implements ICatalogApi {
                         debug(`${doc.identifier} => ${doc.title} should be removed`);
                         try {
                             // tslint:disable-next-line: no-floating-promises
-                            this.publicationService.deletePublication(doc.identifier);
+                            // this.publicationService.deletePublication(doc.identifier);
+                            const sagaMiddleware = diMainGet("saga-middleware");
+                            const pubApi = diMainGet("publication-api");
+                            // tslint:disable-next-line: no-floating-promises
+                            sagaMiddleware.run(pubApi.delete, doc.identifier).toPromise();
                         } catch {
                             // ignore
                         }

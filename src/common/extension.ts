@@ -7,16 +7,19 @@
 
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 
+// cf src/utils/mimeTypes.ts
 export const acceptedExtensionObject = {
     lcpLicence: ".lcpl",
     epub: ".epub",
     epub3: ".epub3",
     audiobook: ".audiobook",
+    webpub: ".webpub",
     audiobookLcp: ".lcpa",
     audiobookLcpAlt: ".lcpaudiobook",
     // pdfLcp: ".lcpdf", // for illustration only, not actually implemented yet
     w3cAudiobook: ".lpf",
     divina: ".divina",
+    // cbz: ".cbz",
 };
 
 export const acceptedExtensionArray = ObjectValues(acceptedExtensionObject);

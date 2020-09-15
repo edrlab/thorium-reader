@@ -13,7 +13,7 @@ import { apiActions, dialogActions } from "readium-desktop/common/redux/actions"
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
+import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { all, call, delay, put, take } from "redux-saga/effects";
 
 import { apiSaga } from "../api";
@@ -58,7 +58,7 @@ function* getApi(id: string) {
     yield apiSaga("publication/get", REQUEST_ID, id, true);
     while (true) {
         const action:
-            apiActions.result.TAction<ReturnPromiseType<TApiMethod["publication/get"]>>
+            apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["publication/get"]>>
             = yield take(apiActions.result.build);
 
         const { requestId } = action.meta.api;

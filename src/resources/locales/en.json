@@ -148,7 +148,7 @@
         },
         "import": {
             "alreadyImport": "{{- title}} was already imported",
-            "fail": "The import of {{- path}} failed. Verify that the file is valid",
+            "fail": "The import of {{- path}} failed. {{- err}}",
             "success": "The import of {{- title}} is finished."
         },
         "open": {
