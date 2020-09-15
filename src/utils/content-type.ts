@@ -11,6 +11,8 @@ export enum ContentType {
     TextXml = "text/xml",
     Json = "application/json",
     Opds2 = "application/opds+json",
+    Divina = "application/divina+json",
+    DivinaPacked = "application/divina+zip",
     Opds2Auth = "application/opds-authentication+json",
     Opds2Pub = "application/opds-publication+json",
     OpenSearch = "application/opensearchdescription+xml",

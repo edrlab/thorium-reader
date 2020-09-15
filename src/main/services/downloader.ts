@@ -182,11 +182,16 @@ export class Downloader {
                     const isAudioBookPackedLcp = contentType === ContentType.AudioBookPackedLcp ||
                         contentDisposition && contentDisposition.endsWith(acceptedExtensionObject.audiobookLcp);
 
+                    const isDivinaPacked = contentType === ContentType.DivinaPacked ||
+                        contentDisposition && contentDisposition.endsWith(acceptedExtensionObject.divina);
+
                     const ext = isLcpFile ? acceptedExtensionObject.lcpLicence :
                         (isEpubFile ? acceptedExtensionObject.epub :
                         (isAudioBookPacked ? acceptedExtensionObject.audiobook :
-                            (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp : // not acceptedExtensionObject.audiobookLcpAlt
-                                ".unknown-ext")));
+                            // not acceptedExtensionObject.audiobookLcpAlt
+                        (isAudioBookPackedLcp ? acceptedExtensionObject.audiobookLcp :
+                        (isDivinaPacked ? acceptedExtensionObject.divina : ".unknown-ext"))));
+
                     download.dstPath += ext;
                 }
                 outputStream = fs.createWriteStream(download.dstPath);

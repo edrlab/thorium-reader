@@ -34,6 +34,7 @@ import UpdateBookmarkForm from "./UpdateBookmarkForm";
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     focusNaviguationMenu: () => void;
     currentLocation: LocatorExtended;
+    isDivina: boolean;
 }
 
 // IProps may typically extend:
@@ -350,6 +351,19 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!this.props.r2Publication) {
             return <></>;
         }
+
+        let currentPage = this.props.isDivina ?
+            this.props.currentLocation?.locator?.href :
+            this.props.currentLocation?.epubPage;
+        if (this.props.isDivina && currentPage) {
+            try {
+                const p = parseInt(currentPage, 10) + 1;
+                currentPage = p.toString();
+            } catch (e) {
+                // ignore
+            }
+        }
+
         const { __ } = this.props;
         const error = this.state.pageError;
         return <div className={styles.goToPage}>
@@ -361,13 +375,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     type="text"
                     aria-invalid={error}
                     onChange={() => this.setState({pageError: false})}
-                    disabled={!this.props.r2Publication.PageList}
+                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina)}
                     placeholder={__("reader.navigation.goToPlaceHolder")}
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
                     type="submit"
-                    disabled={!this.props.r2Publication.PageList}
+                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina)}
                 >
                     { __("reader.navigation.goTo") }
                 </button>
@@ -382,8 +396,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     { __("reader.navigation.goToError") }
                 </p>
             }
-            {this.props.currentLocation?.epubPage &&
-            <p className={styles.currentPage}>({this.props.currentLocation.epubPage})</p>}
+
+            <p className={styles.currentPage}>({currentPage})</p>
 
         </div>;
     }
@@ -398,11 +412,40 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             return;
         }
         const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
-        const foundPage = this.props.r2Publication.PageList.find((page) => page.Title === pageNbr);
-        if (foundPage) {
-            this.setState({pageError: false});
-            this.props.handleLinkClick(undefined, foundPage.Href);
+        if (this.props.isDivina) {
+            let page: number | undefined;
+            try {
+                page = parseInt(pageNbr, 10) - 1;
+            } catch (e) {
+                // ignore error
+            }
+            if (typeof page !== "undefined" && page >= 0 &&
+                this.props.r2Publication.Spine && this.props.r2Publication.Spine[page]) {
+
+                this.setState({pageError: false});
+
+                // this.props.handleLinkClick(undefined, pageNbr);
+                const loc = {
+                    href: page.toString(),
+                    // progression generate in divina pagechange event
+                };
+                this.props.handleBookmarkClick(loc as any);
+
+                return;
+            }
+
+            this.setState({refreshError: true});
         } else {
+            const foundPage = this.props.r2Publication.PageList ?
+                this.props.r2Publication.PageList.find((page) => page.Title === pageNbr) :
+                undefined;
+            if (foundPage) {
+                this.setState({pageError: false});
+                this.props.handleLinkClick(undefined, foundPage.Href);
+
+                return;
+            }
+
             this.setState({refreshError: true});
         }
     }
@@ -414,8 +457,15 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
+
+    // TODO: extension or @type ?
+    // const isDivina = this.props.r2Publication?.Metadata?.RDFType &&
+    //    (/http[s]?:\/\/schema\.org\/ComicStrip$/.test(this.props.r2Publication.Metadata.RDFType) ||
+    //    /http[s]?:\/\/schema\.org\/VisualNarrative$/.test(this.props.r2Publication.Metadata.RDFType));
+    // const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
     return {
         pubId: state.reader.info.publicationIdentifier,
+        // isDivina,
     };
 };
 

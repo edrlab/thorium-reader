@@ -114,6 +114,8 @@ export interface IReaderMenuProps {
     toggleMenu: () => void;
 }
 
+export type TdivinaReadingMode = "single" | "double" | "scroll" | "guided";
+
 export interface IReaderOptionsProps {
     indexes: AdjustableSettingsNumber;
     open: boolean;
@@ -128,4 +130,5 @@ export interface IReaderOptionsProps {
     setSettings: (settings: ReaderConfig) => void;
     toggleMenu: () => void;
     r2Publication: R2Publication | undefined;
+    handleDivinaReadingMode: (v: TdivinaReadingMode) => void;
 }
