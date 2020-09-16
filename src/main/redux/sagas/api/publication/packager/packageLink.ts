@@ -37,7 +37,7 @@ const debug = debug_("readium-desktop:main#saga/api/publication/packager/package
 const fetcher = (baseUrl: string) => async (href: string) => {
 
     debug("fetcher", href);
-    href = url.resolve(baseUrl, href);
+    href = url.resolve(baseUrl, decodeURIComponent(href));
 
     const res = await httpGet(href);
 
@@ -52,7 +52,7 @@ const fetcher = (baseUrl: string) => async (href: string) => {
     return undefined;
 };
 
-const copyAndSetHref = (lns: Link[], hrefMapToFind: string[][]) =>
+const copyAndSetHref = (lns: Link[], hrefMapToFind: TResources) =>
     lns.map(
         (ln) => {
 
@@ -125,19 +125,20 @@ function* createZip(
 
 }
 
+type TResources = Array<[fsPath: string, href: string, zipPath: string]>;
 function* downloadResources(
     r2Publication: R2Publication,
     title: string,
     baseUrl: string,
-) {
+): SagaGenerator<TResources> {
     const uResources = getUniqueResourcesFromR2Publication(r2Publication);
 
     const resourcesHref = [...new Set(linksToArray(uResources))];
-    const resourcesHrefResolved = resourcesHref.map((l) => url.resolve(baseUrl, l));
+    const resourcesHrefResolved = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
 
     const pathArray = yield* callTyped(downloader, resourcesHrefResolved, title);
 
-    const resourcesHrefMap = pathArray.map(
+    const resourcesHrefMap: TResources = pathArray.map(
         (fsPath, idx) => {
 
             const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
@@ -155,7 +156,7 @@ function* downloadResources(
 
 function updateManifest(
     r2Publication: R2Publication,
-    resourcesHrefMap: string[][],
+    resourcesHrefMap: TResources,
 ) {
     {
         const readingOrders = r2Publication.Spine;
