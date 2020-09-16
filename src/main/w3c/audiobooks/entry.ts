@@ -28,7 +28,7 @@ export function findPublicationUrlInHtmlEntry(window: DOMWindow): string {
 
     const el: HTMLLinkElement = window.document.querySelector("link[rel=\"publication\"]");
     if (el) {
-        const url = el.hasAttribute("href") ? el.href : undefined;
+        const url = el.hasAttribute("href") ? decodeURIComponent(el.href) : undefined;
         return url;
 
     }
