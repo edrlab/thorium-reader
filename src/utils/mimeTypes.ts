@@ -1171,6 +1171,7 @@ export const mimeTypes = {
     "lcpaudiobook": "application/audiobook+lcp",
     "divina": "application/divina+zip",
     "lcpdivina": "application/divina+lcp",
+    "lcpdf": "application/pdf+lcp",
 };
 
 export const findMimeTypeWithExtension = (ext: string): string | undefined => {
