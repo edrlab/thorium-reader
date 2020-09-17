@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import * as pdfjs from "pdfjs-dist";
+
+// https://github.com/mozilla/pdf.js/tree/master/examples/node
+import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
 
 // Logger
 const debug = debug_("readium-desktop:main/pdf/packager");

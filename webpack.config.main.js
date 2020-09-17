@@ -52,6 +52,11 @@ let externals = {
     "remote-redux-devtools": "remote-redux-devtools",
     "pouchdb-adapter-node-websql": "pouchdb-adapter-node-websql",
     sqlite3: "sqlite3",
+    //
+    // jsdom => ws =>
+    // bufferutil: "bufferutil",
+    // "utf-8-validate": "utf-8-validate",
+    //
 };
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
@@ -131,6 +136,19 @@ let config = Object.assign(
             ],
         },
         plugins: [
+            new CopyWebpackPlugin({ patterns: [
+                {
+                    from: path.join(
+                        __dirname,
+                        "node_modules",
+                        "pdfjs-dist",
+                        "es5",
+                        "build",
+                        "pdf.worker.js",
+                    ),
+                    to: ".",
+                },
+            ]}),
             new CopyWebpackPlugin({ patterns: [
                 {
                     from: path.join(
