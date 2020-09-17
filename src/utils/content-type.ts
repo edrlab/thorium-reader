@@ -24,6 +24,7 @@ export enum ContentType {
     Epub = "application/epub+zip",
     Lpf = "application/lpf+zip",
     AudioBook = "application/audiobook+json",
+    webpub = "application/webpub+json",
     AudioBookPacked = "application/audiobook+zip",
     AudioBookPackedLcp = "application/audiobook+lcp",
     webpubPacked = "application/webpub+zip",
