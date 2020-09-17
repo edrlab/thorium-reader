@@ -202,7 +202,6 @@
     }
   },
   "dependencies": {
-    "canvas": "^2.6.1",
     "classnames": "^2.2.6",
     "commonmark": "^0.29.2",
     "connected-react-router": "^6.8.0",

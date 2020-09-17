@@ -199,6 +199,10 @@ config.plugins.push(
     new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })
 ); // jsondown (runtimejs, fatfs)
 
+config.plugins.push(
+    new webpack.IgnorePlugin({ resourceRegExp: /^canvas$/ })
+); // pdfjs
+
 if (!checkTypeScriptSkip) {
     config.plugins.push(new ForkTsCheckerWebpackPlugin({
         // measureCompilationTime: true,
