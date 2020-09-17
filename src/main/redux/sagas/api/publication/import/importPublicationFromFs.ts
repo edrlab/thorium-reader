@@ -67,6 +67,7 @@ export async function importPublicationFromFS(
         case acceptedExtensionObject.audiobookLcpAlt:
         case acceptedExtensionObject.divina:
         case acceptedExtensionObject.webpub:
+        case acceptedExtensionObject.pdfLcp:
 
             debug("extension of type readium publication", ext);
 

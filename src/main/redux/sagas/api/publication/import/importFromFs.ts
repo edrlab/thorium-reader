@@ -14,6 +14,7 @@ import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { extractCrc32OnZip } from "readium-desktop/main/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
+import { pdfPackager } from "readium-desktop/main/pdf/packager";
 import { lpfToAudiobookConverter } from "readium-desktop/main/w3c/lpf/toAudiobook";
 import { call, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
@@ -29,18 +30,26 @@ export function* importFromFsService(
     lcpHashedPassphrase?: string,
 ): SagaGenerator<PublicationDocument> {
 
+    debug("importFromFsService", filePath);
+
     const publicationRepository = diMainGet("publication-repository");
     const translate = diMainGet("translator").translate;
 
     const ext = path.extname(filePath);
     const isLCPLicense = isAcceptedExtension("lcpLicence", ext); // || (ext === ".part" && isLcpFile);
     const isLPF = isAcceptedExtension("w3cAudiobook", ext);
+    const isPDF = isAcceptedExtension("pdf", ext);
+
+    debug("extension", ext);
+    debug("lcp/lpf/pdf", isLCPLicense, isLPF, isPDF);
+    debug(typeof ReadableStream === "undefined" || typeof Promise.allSettled === "undefined");
 
     try {
 
-        debug("importFromFsService");
-
-        const hash = isLCPLicense ? undefined : yield* callTyped(() => extractCrc32OnZip(filePath));
+        const hash =
+            isLCPLicense || isPDF
+            ? undefined
+                : yield* callTyped(() => extractCrc32OnZip(filePath));
         let [publicationDocument] = hash
             ? yield* callTyped(() => publicationRepository.findByHashId(hash))
             : [];
@@ -59,19 +68,29 @@ export function* importFromFsService(
         } else {
 
             if (isLCPLicense) {
+
+                debug("is a LCP licence need a importer");
                 publicationDocument = yield* callTyped(importLcplFromFS, filePath, lcpHashedPassphrase);
 
             } else {
-                let epubFilePath = filePath;
+                let publicationFilePath = filePath;
                 let cleanFct: () => void;
 
                 if (isLPF) {
+
+                    debug("is a LPF file need a converter");
                     // convert .lpf to .audiobook
-                    [epubFilePath, cleanFct] = yield* callTyped(() => lpfToAudiobookConverter(filePath));
+                    [publicationFilePath, cleanFct] = yield* callTyped(() => lpfToAudiobookConverter(filePath));
+
+                } else if (isPDF) {
+
+                    debug("is a PDF file need a converter");
+                    // convert .pdf to .webpub
+                    publicationFilePath = yield* callTyped(() => pdfPackager(filePath));
                 }
 
                 publicationDocument = yield* callTyped(
-                    () => importPublicationFromFS(epubFilePath, hash, lcpHashedPassphrase));
+                    () => importPublicationFromFS(publicationFilePath, hash, lcpHashedPassphrase));
 
                 if (cleanFct) {
                     yield call(() => cleanFct());
