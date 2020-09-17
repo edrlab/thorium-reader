@@ -29,7 +29,7 @@
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build:prod && cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "tslint --project tsconfig.json -c tslint.json './src/**/*.ts' './src/**/*.tsx' './test/**/*.ts' './test/**/*.tsx'",
-    "lint:editorconfig": "eclint check '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*' '!src/main/w3c/**'",
+    "lint:editorconfig": "eclint check '**/*.{js,ts}' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*' '!src/main/w3c/**'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer:library-reader": "concurrently --kill-others \"npm run start:dev:renderer:library\" \"npm run start:dev:renderer:reader\"",
     "start:dev:renderer:library": "webpack-dev-server --config webpack.config.renderer-library.js",
