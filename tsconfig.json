@@ -55,7 +55,6 @@
     "skipLibCheck": false,
     "module": "commonjs",
     "lib": [
-      "es2020.Promise",
       "es2017",
       "es6",
       "dom",

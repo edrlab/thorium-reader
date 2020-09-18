@@ -26,8 +26,6 @@ declare module "pouchdb-adapter-leveldb";
 declare module "pouchdb-adapter-node-websql";
 // declare module "readium-desktop/pouchdb/jsondown-adapter";
 
-declare module 'pdfjs-dist/es5/build/pdf.js';
-
 declare module "*.css" {
     interface IClassNames {
         [className: string]: string
