@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { promises as fsp } from "fs";
+import * as path from "path";
 // https://github.com/mozilla/pdf.js/tree/master/examples/node
 // import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
 import { PDFExtract, PDFExtractOptions } from "pdf.js-extract";
@@ -13,7 +15,8 @@ import { PDFExtract, PDFExtractOptions } from "pdf.js-extract";
 import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import * as path from "path";
+
+import { generatePdfCover } from "./cover";
 
 // Logger
 const debug = debug_("readium-desktop:main/pdf/packager");
@@ -122,8 +125,16 @@ async function pdfManifest(pdfPath: string): Promise<R2Publication> {
 
     const pageInfoOne = pages[0].pageInfo?.num === 1 ? pages[0].pageInfo : undefined;
     if (pageInfoOne) {
+        const { width, height } = pageInfoOne;
 
-        // a browserWin can be create here with width and height to generate pdf cover
+        const pngBuffer = await generatePdfCover(pdfPath, width, height);
+        debug(pngBuffer);
+
+        const pathName = await fsp.mkdtemp("cover");
+        debug("cover path", pathName);
+        await fsp.writeFile(path.resolve(pathName, "cover.png"), pngBuffer);
+
+        // where to save the buffer ?
     }
 
     return r2Publication;
