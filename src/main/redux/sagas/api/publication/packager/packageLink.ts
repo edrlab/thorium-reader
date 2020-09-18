@@ -86,6 +86,7 @@ const linksToArray = (lns: Link[]): string[] =>
                 : pv,
         new Array<string>());
 
+// TODO extract this function to used it for the pdf packager
 function* createZip(
     manifestBuffer: Buffer,
     resourcesMap: string[][],
