@@ -42,7 +42,7 @@ export function* importFromFsService(
 
     debug("extension", ext);
     debug("lcp/lpf/pdf", isLCPLicense, isLPF, isPDF);
-    debug(typeof ReadableStream === "undefined" || typeof Promise.allSettled === "undefined");
+    // debug(typeof ReadableStream === "undefined" || typeof Promise.allSettled === "undefined");
 
     try {
 

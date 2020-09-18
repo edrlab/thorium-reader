@@ -13,6 +13,7 @@ import { PDFExtract, PDFExtractOptions } from "pdf.js-extract";
 import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import * as path from "path";
 
 // Logger
 const debug = debug_("readium-desktop:main/pdf/packager");
@@ -45,8 +46,10 @@ async function pdfManifest(pdfPath: string): Promise<R2Publication> {
     const pdfInfo = data.pdfInfo;
 
     const r2Publication = new R2Publication();
+    const { name } = path.parse(pdfPath);
 
     if (info) {
+        debug(info);
 
         r2Publication.Metadata = new R2Metadata();
 
@@ -54,9 +57,7 @@ async function pdfManifest(pdfPath: string): Promise<R2Publication> {
             const title = info.Title;
             debug("title", title);
 
-            if (title) {
-                r2Publication.Metadata.Title = title;
-            }
+            r2Publication.Metadata.Title = title || name || "";
         }
 
         {
@@ -133,8 +134,8 @@ async function pdfManifest(pdfPath: string): Promise<R2Publication> {
 //
 export async function pdfPackager(pdfPath: string): Promise<string> {
 
-    const manifest = pdfManifest(pdfPath);
+    const manifest = await pdfManifest(pdfPath);
+    debug(manifest);
 
     return undefined;
-
 }
