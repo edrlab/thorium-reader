@@ -6,10 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { promises as fsp } from "fs";
 import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 
-import { createWebpubZip } from "../zip/create";
+import { createWebpubZip, TResourcesBUFFERCreateZip } from "../zip/create";
 import { pdfCover } from "./cover";
 import { pdfManifest } from "./manifest";
 
@@ -32,24 +31,26 @@ export async function pdfPackager(pdfPath: string): Promise<string> {
     debug(manifest);
 
     const pngBuffer = await pdfCover(pdfPath, manifest);
-    const pngName = manifest?.Resources[0]?.Href;
+    const pngName = manifest?.Resources[0]?.Href || "";
+    const coverResources: TResourcesBUFFERCreateZip =
+        pngBuffer
+            ? [
+                [pngBuffer, pngName],
+            ]
+            : [];
 
     debug("cover", pngName);
     debug(pngBuffer);
 
-    const pdfBuffer = await fsp.readFile(pdfPath);
-    const pdfName = manifest?.Spine[0]?.Href;
-
+    const pdfName = manifest?.Spine[0]?.Href || "";
     debug("pdf", pdfName);
-    debug(pdfBuffer);
 
     const webpubPath = await createWebpubZip(
         manifestBuf,
-        [],
         [
-            [pngBuffer, pngName],
-            [pdfBuffer, pdfName],
+            [pdfPath, pdfName],
         ],
+        coverResources,
         "pdf",
     );
 

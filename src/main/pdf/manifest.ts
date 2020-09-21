@@ -36,6 +36,74 @@ interface IInfo {
     ModDate?: string;
 }
 
+function pdfDateConverter(dateString: string): Date | undefined {
+
+    if (dateString) {
+
+        const regexp = /(D:|)(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/.exec(dateString);
+
+        const date = new Date();
+
+        {
+            const str = regexp[2];
+            if (str) {
+                const nb = parseInt(str, 10);
+                if (nb) {
+                    date.setFullYear(nb);
+                }
+            }
+        }
+        {
+            const str = regexp[3];
+            if (str) {
+                const nb = parseInt(str, 10);
+                if (nb) {
+                    date.setMonth(nb);
+                }
+            }
+        }
+        {
+            const str = regexp[4];
+            if (str) {
+                const nb = parseInt(str, 10);
+                if (nb) {
+                    date.setDate(nb);
+                }
+            }
+        }
+        {
+            const str = regexp[5];
+            if (str) {
+                const nb = parseInt(str, 10);
+                if (nb) {
+                    date.setHours(nb);
+                }
+            }
+        }
+        {
+            const str = regexp[6];
+            if (str) {
+                const nb = parseInt(str, 10);
+                if (nb) {
+                    date.setMinutes(nb);
+                }
+            }
+        }
+        {
+            const str = regexp[7];
+            if (str) {
+                const nb = parseInt(str, 10);
+                if (nb) {
+                    date.setSeconds(nb);
+                }
+            }
+        }
+        return date;
+    }
+
+    return undefined;
+}
+
 export async function pdfManifest(pdfPath: string): Promise<R2Publication> {
 
     const pdfExtract = new PDFExtract();
@@ -53,7 +121,10 @@ export async function pdfManifest(pdfPath: string): Promise<R2Publication> {
     if (info) {
         debug(info);
 
+        r2Publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
+
         r2Publication.Metadata = new R2Metadata();
+        r2Publication.Metadata.RDFType = "https://schema.org/Book";
 
         {
             const title = info.Title;
@@ -102,12 +173,25 @@ export async function pdfManifest(pdfPath: string): Promise<R2Publication> {
             if (creationDate) {
 
                 // date converter "D:20200513091016+02'00'" => utc date
+                const date = pdfDateConverter(creationDate);
+                if (date) {
+                    r2Publication.Metadata.PublicationDate = date;
+                }
             }
         }
 
         {
             const modDate = info.ModDate;
             debug("modificationDate", modDate);
+
+            if (modDate) {
+
+                // date converter "D:20200513091016+02'00'" => utc date
+                const date = pdfDateConverter(modDate);
+                if (date) {
+                    r2Publication.Metadata.Modified = date;
+                }
+            }
         }
 
         {

@@ -79,7 +79,7 @@ export function* importFromFsService(
                 if (isLPF) {
 
                     debug("is a LPF file need a converter");
-                    // convert .lpf to .audiobook
+                    // convert .lpf to .audiobook === .webpub
                     [publicationFilePath, cleanFct] = yield* callTyped(() => lpfToAudiobookConverter(filePath));
 
                 } else if (isPDF) {
