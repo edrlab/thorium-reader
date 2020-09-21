@@ -7,6 +7,9 @@
 
 import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
+import { promises as fsp } from "fs";
+import { createServer } from "http";
+import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 // Logger
 const debug = debug_("readium-desktop:main/pdf/cover");
@@ -14,21 +17,38 @@ const debug = debug_("readium-desktop:main/pdf/cover");
 export async function generatePdfCover(pdfPath: string, width: number, height: number): Promise<Buffer> {
 
     debug("generatePdfCover", pdfPath, width, height);
-
-    const win = new BrowserWindow({ width, height });
+    const win = new BrowserWindow({
+        width: Math.round(width),
+        height: Math.round(height),
+    });
 
     win.hide();
 
-    const url = `${pdfPath}#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`;
+    const data = await fsp.readFile(pdfPath);
+    const server = createServer((req, res) => {
+
+        debug("request incoming", req.url);
+
+        res.writeHead(200, {"Content-Type": mimeTypes.pdf});
+        res.write(data);
+        res.end();
+    });
+
+    server.listen(8765);
+
+    const url = `http://localhost:8765#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`;
     debug("pdf file url", url);
-    await win.loadFile(pdfPath);
+
+    await win.loadURL(url);
+
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 5000));
 
     const nativeImage = await win.capturePage();
 
     const pngBuffer = nativeImage.toPNG();
 
+    server.close();
     win.close();
 
     return pngBuffer;
-
 }
