@@ -8,8 +8,6 @@
 import { ok } from "assert";
 import * as crypto from "crypto";
 import * as debug_ from "debug";
-import { createWriteStream } from "fs";
-import { nanoid } from "nanoid";
 import * as path from "path";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { httpGet } from "readium-desktop/main/http";
@@ -20,15 +18,15 @@ import {
     findManifestFromHtmlEntryAndReturnBuffer,
 } from "readium-desktop/main/w3c/audiobooks/entry";
 import { findHtmlTocInRessources } from "readium-desktop/main/w3c/audiobooks/toc";
+import { createWebpubZip, TResourcesFSCreateZip } from "readium-desktop/main/zip/create";
 import { SagaGenerator } from "typed-redux-saga";
 import * as url from "url";
-import { ZipFile } from "yazl";
 
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
-import { downloadCreatePathDir, downloader } from "../../../downloader";
+import { downloader } from "../../../downloader";
 import { manifestContext } from "./context";
 
 // Logger
@@ -85,46 +83,6 @@ const linksToArray = (lns: Link[]): string[] =>
                 ]
                 : pv,
         new Array<string>());
-
-// TODO extract this function to used it for the pdf packager
-function* createZip(
-    manifestBuffer: Buffer,
-    resourcesMap: string[][],
-) {
-
-    debug("creation of the zip package .webpub");
-    const pathFile = yield* callTyped(downloadCreatePathDir, nanoid(8));
-    const packagePath = path.resolve(pathFile, "package.webpub");
-
-    const p = async () => new Promise((resolve, reject) => {
-
-        debug("package path", pathFile);
-
-        const zipfile = new ZipFile();
-
-        const writeStream = createWriteStream(packagePath);
-        zipfile.outputStream.pipe(writeStream)
-            .on("close", () => {
-
-                debug("package done");
-                resolve();
-            })
-            .on("error", (e: any) => reject(e));
-
-        zipfile.addBuffer(manifestBuffer, "manifest.json");
-
-        resourcesMap.forEach(([fsPath, , zipPath]) => {
-            zipfile.addFile(fsPath, zipPath);
-        });
-
-        zipfile.end();
-    });
-
-    yield* callTyped(p);
-
-    return packagePath;
-
-}
 
 type TResources = Array<[fsPath: string, href: string, zipPath: string]>;
 function* downloadResources(
@@ -257,9 +215,10 @@ export function* packageFromLink(
     const manifestBuffer = Buffer.from(manifestString);
 
     // create the .webpub zip package
-    const zipPath = yield* callTyped(createZip, manifestBuffer, resourcesHrefMap);
+    const resourcesCreateZip: TResourcesFSCreateZip = resourcesHrefMap.map(([fsPath, , zipPath]) => [fsPath, zipPath]);
+    const webpubPath = yield* callTyped(createWebpubZip, manifestBuffer, resourcesCreateZip, [], "packager");
 
-    return zipPath;
+    return webpubPath;
 }
 
 export function* packageGetManifestBuffer(

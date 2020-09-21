@@ -1,0 +1,156 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
+import * as debug_ from "debug";
+import * as path from "path";
+// https://github.com/mozilla/pdf.js/tree/master/examples/node
+// import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
+import { PDFExtract, PDFExtractOptions } from "pdf.js-extract";
+import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+import { mimeTypes } from "readium-desktop/utils/mimeTypes";
+
+import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
+import { Contributor } from "@r2-shared-js/models/metadata-contributor";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+
+// Logger
+const debug = debug_("readium-desktop:main/pdf/manifest");
+
+interface IInfo {
+    PDFFormatVersion?: string;
+    IsAcroFormPresent?: boolean;
+    IsCollectionPresent?: boolean;
+    IsLinearized?: boolean;
+    IsXFAPresent?: boolean;
+    Title?: string;
+    Subject?: string;
+    Keywords?: string;
+    Author?: string;
+    Creator?: string;
+    Producer?: string;
+    CreationDate?: string;
+    ModDate?: string;
+}
+
+export async function pdfManifest(pdfPath: string): Promise<R2Publication> {
+
+    const pdfExtract = new PDFExtract();
+
+    const options: PDFExtractOptions = {};
+    const data = await pdfExtract.extract(pdfPath, options);
+
+    const info = data.meta?.info as IInfo;
+    const pages = data.pages;
+    const pdfInfo = data.pdfInfo;
+
+    const r2Publication = new R2Publication();
+    const { name } = path.parse(pdfPath);
+
+    if (info) {
+        debug(info);
+
+        r2Publication.Metadata = new R2Metadata();
+
+        {
+            const title = info.Title;
+            debug("title", title);
+
+            r2Publication.Metadata.Title = title || name || "";
+        }
+
+        {
+            const subject = info.Subject;
+            debug("subject", subject);
+
+            if (subject) {
+                r2Publication.Metadata.Description = subject;
+            }
+        }
+
+        {
+            const author = info.Author;
+            debug("author", author);
+
+            if (author) {
+
+                const contributor = new Contributor();
+                contributor.Name = author;
+                r2Publication.Metadata.Author = [contributor];
+            }
+        }
+
+        {
+            const producer = info.Producer;
+            debug("producer", producer);
+
+            if (producer) {
+
+                const contributor = new Contributor();
+                contributor.Name = producer;
+                r2Publication.Metadata.Publisher = [contributor];
+            }
+        }
+
+        {
+            const creationDate = info.CreationDate;
+            debug("creationDate", creationDate);
+
+            if (creationDate) {
+
+                // date converter "D:20200513091016+02'00'" => utc date
+            }
+        }
+
+        {
+            const modDate = info.ModDate;
+            debug("modificationDate", modDate);
+        }
+
+        {
+            const numberOfPage = pdfInfo?.numPages || Array.isArray(pages) ? pages.length : undefined;
+            debug("number of page", numberOfPage);
+
+            if (numberOfPage) {
+
+                r2Publication.Metadata.NumberOfPages = numberOfPage;
+            }
+        }
+
+    }
+
+    {
+        const pageOne = pages[0];
+        const pageInfoOne = pageOne?.pageInfo?.num === 1 ? pageOne?.pageInfo : undefined;
+        if (pageInfoOne) {
+
+            const { width, height } = pageInfoOne;
+            const widthRounded = Math.round(width);
+            const heightRounded = Math.round(height);
+
+            const coverName = "cover.png";
+            const link = new Link();
+            link.AddRel("cover");
+            link.Href = coverName;
+            link.TypeLink = mimeTypes.png;
+            link.Height = heightRounded;
+            link.Width = widthRounded;
+
+            r2Publication.Resources = [link];
+        }
+    }
+    {
+        const pdfName = "publication.pdf";
+        const link = new Link();
+        link.Title = name;
+        link.Href = pdfName;
+        link.TypeLink = mimeTypes.pdf;
+
+        r2Publication.Spine = [link];
+    }
+
+    return r2Publication;
+}

@@ -7,146 +7,51 @@
 
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
-import * as path from "path";
-// https://github.com/mozilla/pdf.js/tree/master/examples/node
-// import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
-import { PDFExtract, PDFExtractOptions } from "pdf.js-extract";
+import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 
-import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
-import { Contributor } from "@r2-shared-js/models/metadata-contributor";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-
-import { generatePdfCover } from "./cover";
+import { createWebpubZip } from "../zip/create";
+import { pdfCover } from "./cover";
+import { pdfManifest } from "./manifest";
 
 // Logger
 const debug = debug_("readium-desktop:main/pdf/packager");
-
-interface IInfo {
-    PDFFormatVersion?: string;
-    IsAcroFormPresent?: boolean;
-    IsCollectionPresent?: boolean;
-    IsLinearized?: boolean;
-    IsXFAPresent?: boolean;
-    Title?: string;
-    Subject?: string;
-    Keywords?: string;
-    Author?: string;
-    Creator?: string;
-    Producer?: string;
-    CreationDate?: string;
-    ModDate?: string;
-}
-
-async function pdfManifest(pdfPath: string): Promise<R2Publication> {
-
-    const pdfExtract = new PDFExtract();
-
-    const options: PDFExtractOptions = {};
-    const data = await pdfExtract.extract(pdfPath, options);
-
-    const info = data.meta?.info as IInfo;
-    const pages = data.pages;
-    const pdfInfo = data.pdfInfo;
-
-    const r2Publication = new R2Publication();
-    const { name } = path.parse(pdfPath);
-
-    if (info) {
-        debug(info);
-
-        r2Publication.Metadata = new R2Metadata();
-
-        {
-            const title = info.Title;
-            debug("title", title);
-
-            r2Publication.Metadata.Title = title || name || "";
-        }
-
-        {
-            const subject = info.Subject;
-            debug("subject", subject);
-
-            if (subject) {
-                r2Publication.Metadata.Description = subject;
-            }
-        }
-
-        {
-            const author = info.Author;
-            debug("author", author);
-
-            if (author) {
-
-                const contributor = new Contributor();
-                contributor.Name = author;
-                r2Publication.Metadata.Author = [contributor];
-            }
-        }
-
-        {
-            const producer = info.Producer;
-            debug("producer", producer);
-
-            if (producer) {
-
-                const contributor = new Contributor();
-                contributor.Name = producer;
-                r2Publication.Metadata.Publisher = [contributor];
-            }
-        }
-
-        {
-            const creationDate = info.CreationDate;
-            debug("creationDate", creationDate);
-
-            if (creationDate) {
-
-                // date converter "D:20200513091016+02'00'" => utc date
-            }
-        }
-
-        {
-            const modDate = info.ModDate;
-            debug("modificationDate", modDate);
-        }
-
-        {
-            const numberOfPage = pdfInfo?.numPages || Array.isArray(pages) ? pages.length : undefined;
-            debug("number of page", numberOfPage);
-
-            if (numberOfPage) {
-
-                r2Publication.Metadata.NumberOfPages = numberOfPage;
-            }
-        }
-
-    }
-
-    const pageInfoOne = pages[0].pageInfo?.num === 1 ? pages[0].pageInfo : undefined;
-    if (pageInfoOne) {
-        const { width, height } = pageInfoOne;
-
-        const pngBuffer = await generatePdfCover(pdfPath, width, height);
-        debug(pngBuffer);
-
-        const pathName = await fsp.mkdtemp("cover");
-        debug("cover path", pathName);
-        await fsp.writeFile(path.resolve(pathName, "cover.png"), pngBuffer);
-
-        // where to save the buffer ?
-    }
-
-    return r2Publication;
-}
 
 //
 // API
 //
 export async function pdfPackager(pdfPath: string): Promise<string> {
 
+    debug("pdf packager", pdfPath);
+
     const manifest = await pdfManifest(pdfPath);
+    const manifestJson = TaJsonSerialize(manifest);
+    const manifestStr = JSON.stringify(manifestJson);
+    const manifestBuf = Buffer.from(manifestStr);
+
+    debug("manifest");
     debug(manifest);
 
-    return undefined;
+    const pngBuffer = await pdfCover(pdfPath, manifest);
+    const pngName = manifest?.Resources[0]?.Href;
+
+    debug("cover", pngName);
+    debug(pngBuffer);
+
+    const pdfBuffer = await fsp.readFile(pdfPath);
+    const pdfName = manifest?.Spine[0]?.Href;
+
+    debug("pdf", pdfName);
+    debug(pdfBuffer);
+
+    const webpubPath = await createWebpubZip(
+        manifestBuf,
+        [],
+        [
+            [pngBuffer, pngName],
+            [pdfBuffer, pdfName],
+        ],
+        "pdf",
+    );
+
+    return webpubPath;
 }

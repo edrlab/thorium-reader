@@ -11,10 +11,12 @@ import { promises as fsp } from "fs";
 import { createServer } from "http";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+
 // Logger
 const debug = debug_("readium-desktop:main/pdf/cover");
 
-export async function generatePdfCover(pdfPath: string, width: number, height: number): Promise<Buffer> {
+async function generatePdfCover(pdfPath: string, width: number, height: number): Promise<Buffer> {
 
     debug("generatePdfCover", pdfPath, width, height);
     const win = new BrowserWindow({
@@ -51,4 +53,20 @@ export async function generatePdfCover(pdfPath: string, width: number, height: n
     win.close();
 
     return pngBuffer;
+}
+
+export async function pdfCover(pdfPath: string, manifest: R2Publication) {
+
+    const resources = manifest.Resources;
+    if (Array.isArray(resources)) {
+
+        const { Width, Height, Rel } = manifest.Resources[0];
+        if (Rel.includes("cover")) {
+
+            const pngBuffer = await generatePdfCover(pdfPath, Width, Height);
+            return pngBuffer;
+        }
+    }
+
+    return undefined;
 }
