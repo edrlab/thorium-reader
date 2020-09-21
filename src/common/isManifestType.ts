@@ -30,7 +30,7 @@ export const isDivinaFn = (item: TIsRdfType | undefined) =>
             /http[s]?:\/\/schema\.org\/ComicStory[\/]?$/.test(item?.RDFType) ||
             /http[s]?:\/\/schema\.org\/VisualNarrative[\/]?$/.test(item?.RDFType)));
 
-export const isPdf = (publication: R2Publication) =>
+export const isPdfFn = (publication: R2Publication) =>
     (publication?.Metadata?.RDFType
         && (/http[s]?:\/\/schema\.org\/Book[\/]?$/.test(publication?.Metadata?.RDFType))
         && publication?.Spine
