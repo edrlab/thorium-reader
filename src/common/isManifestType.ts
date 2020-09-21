@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as path from "path";
+
 import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
@@ -27,3 +29,10 @@ export const isDivinaFn = (item: TIsRdfType | undefined) =>
         (/http[s]?:\/\/schema\.org\/ComicStrip[\/]?$/.test(item?.RDFType) ||
             /http[s]?:\/\/schema\.org\/ComicStory[\/]?$/.test(item?.RDFType) ||
             /http[s]?:\/\/schema\.org\/VisualNarrative[\/]?$/.test(item?.RDFType)));
+
+export const isPdf = (publication: R2Publication) =>
+    (publication?.Metadata?.RDFType
+        && (/http[s]?:\/\/schema\.org\/Book[\/]?$/.test(publication?.Metadata?.RDFType))
+        && publication?.Spine
+        && publication?.Spine[0]?.Href
+        && path.extname(publication.Spine[0]?.Href) === ".pdf");
