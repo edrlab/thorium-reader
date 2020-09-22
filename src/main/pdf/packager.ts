@@ -7,13 +7,15 @@
 
 import * as debug_ from "debug";
 import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
+import { tryCatch } from "readium-desktop/utils/tryCatch";
 
 import { createWebpubZip, TResourcesBUFFERCreateZip } from "../zip/create";
 import { pdfCover } from "./cover";
 import { pdfManifest } from "./manifest";
 
 // Logger
-const debug = debug_("readium-desktop:main/pdf/packager");
+const _filename = "readium-desktop:main/pdf/packager";
+const debug = debug_(_filename);
 
 //
 // API
@@ -30,7 +32,8 @@ export async function pdfPackager(pdfPath: string): Promise<string> {
     debug("manifest");
     debug(manifest);
 
-    const pngBuffer = await pdfCover(pdfPath, manifest);
+    const pdfCoverFn = () => pdfCover(pdfPath, manifest);
+    const pngBuffer = await tryCatch(pdfCoverFn, _filename);
     const pngName = manifest?.Resources[0]?.Href || "";
     const coverResources: TResourcesBUFFERCreateZip =
         pngBuffer

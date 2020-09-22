@@ -8,51 +8,66 @@
 import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
 import { promises as fsp } from "fs";
-import { createServer } from "http";
+import { createServer, Server } from "http";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main/pdf/cover");
+const PORT = 8765;
 
 async function generatePdfCover(pdfPath: string, width: number, height: number): Promise<Buffer> {
 
     debug("generatePdfCover", pdfPath, width, height);
-    const win = new BrowserWindow({
-        width: Math.round(width),
-        height: Math.round(height),
-    });
 
-    win.hide();
+    let server: Server;
+    let win: BrowserWindow;
 
-    const data = await fsp.readFile(pdfPath);
-    const server = createServer((req, res) => {
+    try {
+        win = new BrowserWindow({
+            width: Math.round(width),
+            height: Math.round(height),
+        });
 
-        debug("request incoming", req.url);
+        win.hide();
 
-        res.writeHead(200, {"Content-Type": mimeTypes.pdf});
-        res.write(data);
-        res.end();
-    });
+        const data = await fsp.readFile(pdfPath);
+        server = createServer((req, res) => {
 
-    server.listen(8765);
+            debug("request incoming", req.url);
 
-    const url = `http://localhost:8765#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`;
-    debug("pdf file url", url);
+            res.writeHead(200, { "Content-Type": mimeTypes.pdf });
+            res.write(data);
+            res.end();
+        });
 
-    await win.loadURL(url);
+        server.listen(PORT);
 
-    await new Promise<void>((resolve) => setTimeout(() => resolve(), 5000));
+        const url = `http://localhost:${PORT}#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`;
+        debug("pdf file url", url);
 
-    const nativeImage = await win.capturePage();
+        await win.loadURL(url);
 
-    const pngBuffer = nativeImage.toPNG();
+        await new Promise<void>((resolve) => setTimeout(() => resolve(), 5000));
 
-    server.close();
-    win.close();
+        const nativeImage = await win.capturePage();
 
-    return pngBuffer;
+        const pngBuffer = nativeImage.toPNG();
+
+        return pngBuffer;
+
+    } finally {
+
+        if (server) {
+            server.close();
+        }
+
+        if (win) {
+            win.close();
+        }
+
+    }
 }
 
 export async function pdfCover(pdfPath: string, manifest: R2Publication) {
