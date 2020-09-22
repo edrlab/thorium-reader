@@ -9,13 +9,13 @@ import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
 import { promises as fsp } from "fs";
 import { createServer, Server } from "http";
+import { getPortPromise } from "portfinder";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main/pdf/cover");
-const PORT = 8765;
 
 async function generatePdfCover(pdfPath: string, width: number, height: number): Promise<Buffer> {
 
@@ -42,9 +42,10 @@ async function generatePdfCover(pdfPath: string, width: number, height: number):
             res.end();
         });
 
-        server.listen(PORT);
+        const port = await getPortPromise();
+        server.listen(port);
 
-        const url = `http://127.0.0.1:${PORT}#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`;
+        const url = `http://127.0.0.1:${port}#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`;
         debug("pdf file url", url);
 
         await win.loadURL(url);
