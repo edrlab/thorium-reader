@@ -7,13 +7,8 @@
 
 import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
-import * as fs from "fs";
-import { createServer, Server } from "http";
-import { getPortPromise } from "portfinder";
-import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { pipeline } from "stream";
 
 // Logger
 const debug = debug_("readium-desktop:main/pdf/cover");
@@ -22,7 +17,6 @@ async function generatePdfCover(pdfPath: string, width: number, height: number):
 
     debug("generatePdfCover", pdfPath, width, height);
 
-    let server: Server;
     let win: BrowserWindow;
 
     try {
@@ -33,38 +27,7 @@ async function generatePdfCover(pdfPath: string, width: number, height: number):
 
         win.hide();
 
-        const stream = fs.createReadStream(pdfPath);
-        server = createServer((req, res) => {
-
-            try {
-
-                debug("request incoming", req.url);
-                debug(req.statusCode);
-                debug(req.statusMessage);
-                debug(req.headers);
-                // debug(req.rawHeaders);
-                debug(req.httpVersion);
-                debug(req.method);
-
-                res.writeHead(200, { "Content-Type": mimeTypes.pdf });
-
-                pipeline(stream, res, (err) => err && debug("pipeline", err));
-
-            } catch (e) {
-
-                debug("server request", e);
-                res.writeHead(500);
-                res.end();
-            }
-        });
-
-        const port = await getPortPromise();
-        server.listen(port);
-
-        const url = `http://127.0.0.1:${port}#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`;
-        debug("pdf file url", url);
-
-        await win.loadURL(url);
+        await win.loadURL(`file://${pdfPath}#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`);
 
         await new Promise<void>((resolve) => setTimeout(() => resolve(), 7000));
 
@@ -75,10 +38,6 @@ async function generatePdfCover(pdfPath: string, width: number, height: number):
         return pngBuffer;
 
     } finally {
-
-        if (server) {
-            server.close();
-        }
 
         if (win) {
             win.close();
