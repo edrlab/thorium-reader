@@ -5,15 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-type TCallBack = (...a: any[]) => any;
+import * as debug_ from "debug";
 
-export function eventBus() {
+const debug = debug_("readium-desktop:utils/eventBus");
+
+type TCallBack = (...a: any[]) => any;
+export interface IBusEvent {
+    subscribe: <TKey extends string, TFn extends TCallBack>(key: TKey, fn: TFn) => void;
+    dispatch: <TKey extends string, TArg extends any[]>(key: TKey, ...a: TArg) => void;
+    remove: <TKey extends string, TFn extends TCallBack>(fn: TFn, key?: TKey) => void;
+    removeKey: <TKey extends string>(key: TKey) => void;
+}
+
+export function eventBus(): IBusEvent {
 
     const eventObj: {
         [key: string]: Set<TCallBack>;
     } = {};
 
-    const on = (key: string, fn: TCallBack) => {
+    const subscribe = <TKey extends string, TFn extends TCallBack>(key: TKey, fn: TFn) => {
 
         if (eventObj[key]) {
             const set = eventObj[key];
@@ -27,47 +37,35 @@ export function eventBus() {
         }
     };
 
-    const dispatch = (key: string, ...a: any[]) => {
+    const dispatch = <TKey extends string, TArg extends any[]>(key: TKey, ...a: TArg) => {
 
-        const set = eventObj[key];
-        if (set) {
-
-            set.forEach((fn) => {
-                try {
-                    fn(...a);
-                } catch (e) {
-                    // ignore
-                }
-            });
-        }
+        eventObj[key]?.forEach((fn) => {
+            try {
+                fn(...a);
+            } catch (e) {
+                debug(e);
+            }
+        });
     };
 
-    const remove = (fn: TCallBack, key?: string) => {
+    const remove = <TKey extends string, TFn extends TCallBack>(fn: TFn, key?: TKey) => {
 
         if (fn) {
             if (key) {
-                const set = eventObj[key];
-                if (set) {
-                    set.delete(fn);
-                }
-
+                eventObj[key]?.delete(fn);
             } else {
-                Object.values(eventObj).forEach((set) => {
-                    if (set) {
-                        set.delete(fn);
-                    }
-                });
+                Object.values(eventObj).forEach((set) => set?.delete(fn));
             }
         }
     };
 
-    const removeKey = (key: string) => {
+    const removeKey = <TKey extends string>(key: TKey) => {
 
         delete eventObj[key];
     };
 
     return {
-        on,
+        subscribe,
         dispatch,
         remove,
         removeKey,
