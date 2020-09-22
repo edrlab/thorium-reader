@@ -7,12 +7,13 @@
 
 import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
-import { promises as fsp } from "fs";
+import * as fs from "fs";
 import { createServer, Server } from "http";
 import { getPortPromise } from "portfinder";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { pipeline } from "stream";
 
 // Logger
 const debug = debug_("readium-desktop:main/pdf/cover");
@@ -32,14 +33,29 @@ async function generatePdfCover(pdfPath: string, width: number, height: number):
 
         win.hide();
 
-        const data = await fsp.readFile(pdfPath);
+        const stream = fs.createReadStream(pdfPath);
         server = createServer((req, res) => {
 
-            debug("request incoming", req.url);
+            try {
 
-            res.writeHead(200, { "Content-Type": mimeTypes.pdf });
-            res.write(data);
-            res.end();
+                debug("request incoming", req.url);
+                debug(req.statusCode);
+                debug(req.statusMessage);
+                debug(req.headers);
+                // debug(req.rawHeaders);
+                debug(req.httpVersion);
+                debug(req.method);
+
+                res.writeHead(200, { "Content-Type": mimeTypes.pdf });
+
+                pipeline(stream, res, (err) => err && debug("pipeline", err));
+
+            } catch (e) {
+
+                debug("server request", e);
+                res.writeHead(500);
+                res.end();
+            }
         });
 
         const port = await getPortPromise();
@@ -50,7 +66,7 @@ async function generatePdfCover(pdfPath: string, width: number, height: number):
 
         await win.loadURL(url);
 
-        await new Promise<void>((resolve) => setTimeout(() => resolve(), 5000));
+        await new Promise<void>((resolve) => setTimeout(() => resolve(), 7000));
 
         const nativeImage = await win.capturePage();
 
