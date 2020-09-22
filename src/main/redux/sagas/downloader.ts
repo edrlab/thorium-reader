@@ -361,6 +361,12 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
 
                 pct = 100;
                 speed = 0;
+
+                emit({
+                    speed,
+                    progression: pct,
+                    contentLength,
+                });
             });
 
         },
