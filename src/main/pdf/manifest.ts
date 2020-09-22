@@ -60,7 +60,7 @@ function pdfDateConverter(dateString: string): Date | undefined {
             if (str) {
                 const nb = parseInt(str, 10);
                 if (nb) {
-                    date.setMonth(nb);
+                    date.setDate(nb);
                 }
             }
         }
@@ -69,7 +69,7 @@ function pdfDateConverter(dateString: string): Date | undefined {
             if (str) {
                 const nb = parseInt(str, 10);
                 if (nb) {
-                    date.setDate(nb);
+                    date.setMonth(nb);
                 }
             }
         }
