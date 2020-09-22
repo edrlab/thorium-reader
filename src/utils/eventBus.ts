@@ -29,9 +29,9 @@ export function eventBus() {
 
     const dispatch = (key: string, ...a: any[]) => {
 
-        if (eventObj[key]) {
+        const set = eventObj[key];
+        if (set) {
 
-            const set = eventObj[key];
             set.forEach((fn) => {
                 try {
                     fn(...a);
@@ -61,15 +61,15 @@ export function eventBus() {
         }
     };
 
-    const removeAll = (key: string) => {
+    const removeKey = (key: string) => {
 
-        eventObj[key] = new Set<TCallBack>();
+        delete eventObj[key];
     };
 
     return {
         on,
         dispatch,
         remove,
-        removeAll,
+        removeKey,
     };
 }
