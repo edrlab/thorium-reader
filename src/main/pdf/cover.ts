@@ -44,7 +44,7 @@ async function generatePdfCover(pdfPath: string, width: number, height: number):
 
         server.listen(PORT);
 
-        const url = `http://localhost:${PORT}#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`;
+        const url = `http://127.0.0.1:${PORT}#page=1&toolbar=0&statusbar=0&messages=0&navpanes=0&scrollbar=0&view=Fit`;
         debug("pdf file url", url);
 
         await win.loadURL(url);
