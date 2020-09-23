@@ -66,6 +66,7 @@ import {
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
+import { IEventBus } from "readium-desktop/utils/eventBus";
 import { pdfReaderMountingPoint } from "../pdfReader";
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
@@ -123,6 +124,7 @@ class Reader extends React.Component<IProps, IState> {
     private mainElRef: React.RefObject<HTMLDivElement>;
 
     private currentDivinaPlayer: any;
+    private pdfPlayerBusEvent: IEventBus;
 
     // can be get back wwith withTranslator HOC
     // to remove
@@ -227,7 +229,35 @@ class Reader extends React.Component<IProps, IState> {
             });
         });
 
-        if (this.props.isDivina) {
+        if (this.props.isPdf) {
+
+            await this.loadPublicationIntoViewport();
+
+            if (this.pdfPlayerBusEvent) {
+
+                const index = parseInt(this.props.locator?.locator?.href, 10) || 1;
+                console.log("pdf page index", index);
+                this.pdfPlayerBusEvent.dispatch("page", index);
+
+                this.pdfPlayerBusEvent.subscribe("page",
+                    ({ pageIndex, nbOfPages }: { pageIndex: number, nbOfPages: number }) => {
+                        const loc = {
+                            locator: {
+                                href: pageIndex.toString(),
+                                locations: {
+                                    position: pageIndex,
+                                    progression: pageIndex / nbOfPages,
+                                },
+                            },
+                        };
+                        console.log("pdf pageChange", pageIndex, nbOfPages);
+                        this.handleReadingLocationChange(loc as LocatorExtended);
+                    });
+            } else {
+                console.log("pdf bus event undefined");
+            }
+
+        } else if (this.props.isDivina) {
 
             await this.loadPublicationIntoViewport();
 
@@ -432,11 +462,13 @@ class Reader extends React.Component<IProps, IState> {
                 <ReaderFooter
                     navLeftOrRight={this.navLeftOrRight_.bind(this)}
                     fullscreen={this.state.fullscreen}
-                    currentLocation={this.props.isDivina ? this.props.locator : this.state.currentLocation}
+                    // tslint:disable-next-line: max-line-length
+                    currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                     r2Publication={this.props.r2Publication}
                     handleLinkClick={this.handleLinkClick}
                     goToLocator={this.goToLocator}
                     isDivina={this.props.isDivina}
+                    isPdf={this.props.isPdf}
                 />
             </div>
         );
@@ -825,9 +857,44 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log("pdf url", pdfUrl);
 
-            const bus = await pdfReaderMountingPoint(publicationViewport, pdfUrl);
+            this.pdfPlayerBusEvent = await pdfReaderMountingPoint(publicationViewport, pdfUrl);
 
-            bus.dispatch("page", 1);
+            this.pdfPlayerBusEvent.dispatch("page", 1);
+
+            this.pdfPlayerBusEvent.subscribe("page", (pageNumber: number) => {
+
+                console.log("pdfPlayer page changed", pageNumber);
+            });
+
+            this.pdfPlayerBusEvent.subscribe("scale", (scale: "fit" | "width" | "50" | "100" | "200") => {
+
+                console.log("pdfPlayer scale changed", scale);
+            });
+
+            this.pdfPlayerBusEvent.subscribe("view", (view: "scrollable" | "paginated") => {
+
+                console.log("pdfPlayer view changed", view);
+            });
+
+            this.pdfPlayerBusEvent.subscribe("column", (column: 1 | 2) => {
+
+                console.log("pdfPlayer column changed", column);
+            });
+
+            this.pdfPlayerBusEvent.subscribe("search", (search: string) => {
+
+                console.log("pdfPlayer search word changed", search);
+            });
+
+            this.pdfPlayerBusEvent.subscribe("search-next", () => {
+
+                console.log("pdfPlayer highlight next search word executed");
+            });
+
+            this.pdfPlayerBusEvent.subscribe("search-previous", () => {
+
+                console.log("pdfPlayer highlight previous search word executed");
+            });
 
         } else if (this.props.isDivina) {
 
