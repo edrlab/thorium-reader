@@ -895,6 +895,14 @@ class Reader extends React.Component<IProps, IState> {
                 console.log("pdfPlayer highlight previous search word executed");
             });
 
+            /* master subscribe */
+            this.pdfPlayerBusEvent.subscribe("page-next", () => {
+                console.log("pdfPlayer next page requested");
+            });
+            this.pdfPlayerBusEvent.subscribe("page-previous", () => {
+                console.log("pdfPlayer previous page requested");
+            });
+
         } else if (this.props.isDivina) {
 
             console.log("DIVINA !!");
