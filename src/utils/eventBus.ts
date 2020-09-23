@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import * as assert from "assert";
 import * as debug_ from "debug";
 
 const debug = debug_("readium-desktop:utils/eventBus");
@@ -24,7 +25,7 @@ export interface IEventBusMasterSlave {
 interface IEventObj {
     [key: string]: Set<TCallBack>;
 }
-type TCallBack<Param = any[], Ret = any> = (...a: Param[]) => Ret;
+type TCallBack<Param = any, Ret = any> = (...a: Param[]) => Ret;
 
 export function eventBus(): IEventBusMasterSlave {
 
@@ -97,4 +98,19 @@ export function eventBus(): IEventBusMasterSlave {
             removeKey: removeKey(false),
         },
     };
+}
+
+// TEST
+if (require.main === module) {
+
+    const bus = eventBus();
+
+    let bool: boolean;
+
+    bus.master.subscribe("test", (value: boolean) => bool = value);
+    bus.slave.dispatch("test", true);
+
+    debug(bool);
+
+    assert.ok(bool); // should be true
 }
