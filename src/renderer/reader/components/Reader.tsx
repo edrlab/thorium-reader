@@ -235,24 +235,25 @@ class Reader extends React.Component<IProps, IState> {
 
             if (this.pdfPlayerBusEvent) {
 
-                const index = parseInt(this.props.locator?.locator?.href, 10) || 1;
-                console.log("pdf page index", index);
-                this.pdfPlayerBusEvent.dispatch("page", index);
-
                 this.pdfPlayerBusEvent.subscribe("page",
-                    ({ pageIndex, nbOfPages }: { pageIndex: number, nbOfPages: number }) => {
+                    (pageIndex: number) => {
                         const loc = {
                             locator: {
                                 href: pageIndex.toString(),
                                 locations: {
                                     position: pageIndex,
-                                    progression: pageIndex / nbOfPages,
+                                    progression: pageIndex / this.props.r2Publication?.Metadata?.NumberOfPages,
                                 },
                             },
                         };
-                        console.log("pdf pageChange", pageIndex, nbOfPages);
+                        console.log("pdf pageChange", pageIndex);
                         this.handleReadingLocationChange(loc as LocatorExtended);
                     });
+
+                const index = parseInt(this.props.locator?.locator?.href, 10) || 1;
+                console.log("pdf page index", index);
+                this.pdfPlayerBusEvent.dispatch("page", index);
+
             } else {
                 console.log("pdf bus event undefined");
             }
@@ -859,8 +860,6 @@ class Reader extends React.Component<IProps, IState> {
 
             this.pdfPlayerBusEvent = await pdfReaderMountingPoint(publicationViewport, pdfUrl);
 
-            this.pdfPlayerBusEvent.dispatch("page", 1);
-
             this.pdfPlayerBusEvent.subscribe("page", (pageNumber: number) => {
 
                 console.log("pdfPlayer page changed", pageNumber);
@@ -1036,7 +1035,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleReadingLocationChange(loc: LocatorExtended) {
-        if (!this.props.isDivina && this.ttsOverlayEnableNeedsSync) {
+        if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
         }
         this.ttsOverlayEnableNeedsSync = false;
@@ -1062,7 +1061,7 @@ class Reader extends React.Component<IProps, IState> {
             // calling into the webview via IPC is expensive,
             // let's filter out ahead of time based on document href
             if (!locator || locator.href === bookmark.locator.href) {
-                if (this.props.isDivina) {
+                if (this.props.isDivina || this.props.isPdf) {
                     const isVisible = bookmark.locator.href === this.props.locator.locator.href;
                     if (isVisible) {
                         visibleBookmarkList.push(bookmark);
@@ -1094,7 +1093,13 @@ class Reader extends React.Component<IProps, IState> {
 
     private navLeftOrRight_(left: boolean, spineNav?: boolean) {
 
-        if (this.props.isDivina) {
+        if (this.props.isPdf) {
+            if (left) {
+                this.pdfPlayerBusEvent?.dispatch("page-previous");
+            } else {
+                this.pdfPlayerBusEvent?.dispatch("page-next");
+            }
+        } else if (this.props.isDivina) {
 
             if (this.currentDivinaPlayer) {
                 if (left) {
@@ -1124,9 +1129,16 @@ class Reader extends React.Component<IProps, IState> {
 
     private goToLocator(locator: R2Locator) {
 
-        if (this.props.isDivina) {
+        if (this.props.isPdf) {
+
             const index = parseInt(locator?.href, 10);
-            if (typeof index !== "undefined" && index >= 0) {
+            if (index) {
+                this.pdfPlayerBusEvent?.dispatch("page", index);
+            }
+
+        } else if (this.props.isDivina) {
+            const index = parseInt(locator?.href, 10);
+            if (index >= 0) {
                 this.currentDivinaPlayer.goToPageWithIndex(index);
             }
         } else {
@@ -1146,7 +1158,14 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        if (this.props.isDivina) {
+        if (this.props.isPdf) {
+
+            const index = parseInt(url, 10);
+            if (index) {
+                this.pdfPlayerBusEvent?.dispatch("page", index);
+            }
+
+        } else if (this.props.isDivina) {
 
             const newUrl = this.props.manifestUrlR2Protocol.split("/manifest.json")[1] + url;
 
@@ -1164,7 +1183,7 @@ class Reader extends React.Component<IProps, IState> {
 
         const visibleBookmark = this.state.visibleBookmarkList;
 
-        if (this.props.isDivina) {
+        if (this.props.isDivina || this.props.isPdf) {
 
             const locator = this.props.locator?.locator;
             const href = locator?.href;
