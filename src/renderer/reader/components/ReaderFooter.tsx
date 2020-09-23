@@ -55,7 +55,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.state =  {
+        this.state = {
             moreInfo: false,
         };
 
@@ -73,7 +73,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         const isAudioBook = isAudiobookFn(r2Publication);
 
-        const { __ } = this.props;
+        const { __ } = this.props;
         const { moreInfo } = this.state;
 
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
@@ -91,18 +91,18 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             <div className={classNames(styles.reader_footer,
                 this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}>
                 {!isAudioBook &&
-                <div className={styles.arrows}>
-                    <button onClick={() => this.props.navLeftOrRight(true)}>
-                        <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
-                    </button>
-                    <button onClick={() => this.props.navLeftOrRight(false)}>
-                        <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
-                    </button>
-                </div>
+                    <div className={styles.arrows}>
+                        <button onClick={() => this.props.navLeftOrRight(true)}>
+                            <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
+                        </button>
+                        <button onClick={() => this.props.navLeftOrRight(false)}>
+                            <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
+                        </button>
+                    </div>
                 }
                 {!this.props.fullscreen &&
-                <div className={classNames(styles.track_reading_wrapper,
-                    isAudioBook ? styles.track_reading_wrapper_noArrows : undefined)}>
+                    <div className={classNames(styles.track_reading_wrapper,
+                        isAudioBook ? styles.track_reading_wrapper_noArrows : undefined)}>
 
                         { // <div id={styles.current}></div>
                             <div id={styles.track_reading}>
@@ -111,11 +111,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                     {
                                         (isPdf
                                             // tslint:disable-next-line: max-line-length
-                                           ? Array.from({ length: r2Publication.Metadata.NumberOfPages || 1 }, (_v, i) => {
-                                               const link = new Link();
-                                               link.Href = i.toString();
-                                               return link;
-                                           })
+                                            ? Array.from({ length: r2Publication.Metadata.NumberOfPages || 1 }, (_v, i) => {
+                                                const link = new Link();
+                                                link.Href = i.toString();
+                                                return link;
+                                            })
                                             : r2Publication.Spine
                                         ).map((link, index) => {
 
@@ -197,15 +197,17 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 </span>
                                             );
                                         })}
-                            </div>
+                                </div>
                                 {moreInfo &&
                                     <div
                                         id={styles.arrow_box}
                                         style={this.getStyle(this.getArrowBoxStyle)}
                                     >
-                                        <span title={spineTitle}><em>{`(${isDivina ?
-                                                (parseInt(currentLocation.locator.href, 10) + 1).toString() :
-                                                ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator.href)) + 1).toString()
+                                        <span title={spineTitle}><em>{`(${isDivina || isPdf
+                                            ?
+                                            (parseInt(currentLocation.locator.href, 10) + 1).toString()
+                                            :
+                                            ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator.href)) + 1).toString()
                                             }/${r2Publication.Spine.length
                                             }) `}</em> {` ${spineTitle}`}</span>
                                         <p>
