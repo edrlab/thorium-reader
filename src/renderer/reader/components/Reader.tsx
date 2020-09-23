@@ -431,8 +431,10 @@ class Reader extends React.Component<IProps, IState> {
                         readerOptionsProps={readerOptionsProps}
                         readerMenuProps={readerMenuProps}
                         displayPublicationInfo={this.displayPublicationInfo}
-                        currentLocation={this.props.isDivina ? this.props.locator : this.state.currentLocation}
+                        // tslint:disable-next-line: max-line-length
+                        currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                         isDivina={this.props.isDivina}
+                        isPdf={this.props.isPdf}
                     />
                     <div className={classNames(styles.content_root,
                             this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>

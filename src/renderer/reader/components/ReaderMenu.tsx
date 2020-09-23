@@ -35,6 +35,7 @@ interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     focusNaviguationMenu: () => void;
     currentLocation: LocatorExtended;
     isDivina: boolean;
+    isPdf: boolean;
 }
 
 // IProps may typically extend:

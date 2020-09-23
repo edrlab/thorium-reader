@@ -42,6 +42,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
     isDivina: boolean;
+    isPdf: boolean;
 }
 
 // IProps may typically extend:

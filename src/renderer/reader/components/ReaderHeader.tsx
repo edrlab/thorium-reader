@@ -79,6 +79,7 @@ interface IBaseProps extends TranslatorProps {
     readerOptionsProps: IReaderOptionsProps;
     currentLocation: LocatorExtended;
     isDivina: boolean;
+    isPdf: boolean;
 }
 
 // IProps may typically extend:
@@ -139,7 +140,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
         const { __ } = this.props;
 
         const showAudioTTSToolbar = (this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo) &&
-            !this.props.isDivina;
+            !this.props.isDivina && !this.props.isPdf;
         return (
             <nav
                 className={classNames(styles.main_navigation,
@@ -366,6 +367,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                             </button>
                             <ReaderOptions {...this.props.readerOptionsProps}
                                 isDivina={this.props.isDivina}
+                                isPdf={this.props.isPdf}
                                 focusSettingMenuButton={this.focusSettingMenuButton} />
                         </li>
                         <li
@@ -383,6 +385,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                             </button>
                             <ReaderMenu {...this.props.readerMenuProps}
                                 isDivina={this.props.isDivina}
+                                isPdf={this.props.isPdf}
                                 currentLocation={this.props.currentLocation}
                                 focusNaviguationMenu={this.focusNaviguationMenuButton} />
                         </li>
