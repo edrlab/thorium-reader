@@ -10,11 +10,13 @@ import * as debug_ from "debug";
 
 const debug = debug_("readium-desktop:utils/eventBus");
 
+type TCallBack<Param = any, Ret = any> = (...a: Param[]) => Ret;
+
 export interface IEventBus {
-    subscribe: <TKey extends string, TFn extends TCallBack>(key: TKey, fn: TFn) => void;
-    dispatch: <TKey extends string, TArg extends any[]>(key: TKey, ...a: TArg) => void;
-    remove: <TKey extends string, TFn extends TCallBack>(fn: TFn, key?: TKey) => void;
-    removeKey: <TKey extends string>(key: TKey) => void;
+    subscribe: (key: any, fn: TCallBack) => void;
+    dispatch: (key: any, ...a: any[]) => void;
+    remove: (fn: TCallBack, key?: any) => void;
+    removeKey: (key: any) => void;
 }
 
 export interface IEventBusMasterSlave {
@@ -25,7 +27,6 @@ export interface IEventBusMasterSlave {
 interface IEventObj {
     [key: string]: Set<TCallBack>;
 }
-type TCallBack<Param = any, Ret = any> = (...a: Param[]) => Ret;
 
 export function eventBus(): IEventBusMasterSlave {
 

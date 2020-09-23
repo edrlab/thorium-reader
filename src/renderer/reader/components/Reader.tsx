@@ -66,8 +66,8 @@ import {
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
-import { IEventBus } from "readium-desktop/utils/eventBus";
-import { pdfReaderMountingPoint } from "../pdfReader";
+import { pdfReaderMountingPoint } from "../pdf/pdfReader";
+import { IEventBusPdfPlayerSlave } from "../pdf/pdfReader.type";
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
@@ -124,7 +124,7 @@ class Reader extends React.Component<IProps, IState> {
     private mainElRef: React.RefObject<HTMLDivElement>;
 
     private currentDivinaPlayer: any;
-    private pdfPlayerBusEvent: IEventBus;
+    private pdfPlayerBusEvent: IEventBusPdfPlayerSlave;
 
     // can be get back wwith withTranslator HOC
     // to remove

@@ -6,7 +6,9 @@
 // ==LICENSE-END
 
 import * as pdfJs from "pdfjs-dist";
-import { eventBus, IEventBus } from "readium-desktop/utils/eventBus";
+import { eventBus } from "readium-desktop/utils/eventBus";
+
+import { IEventBusPdfPlayerMaster, IEventBusPdfPlayerSlave } from "./pdfReader.type";
 
 // webpack.config.renderer-reader.js
 pdfJs.GlobalWorkerOptions.workerSrc = "./pdf.worker.js";
@@ -14,9 +16,9 @@ pdfJs.GlobalWorkerOptions.workerSrc = "./pdf.worker.js";
 export async function pdfReaderMountingPoint(
     rootElement: HTMLDivElement,
     pdfPath: string,
-): Promise<IEventBus> {
+): Promise<IEventBusPdfPlayerSlave> {
 
-    const { slave, master } = eventBus();
+    const { slave, master } = eventBus() as { master: IEventBusPdfPlayerMaster, slave: IEventBusPdfPlayerSlave};
 
     const canvas = document.createElement("canvas");
     rootElement.appendChild(canvas);
