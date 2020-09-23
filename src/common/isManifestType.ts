@@ -31,8 +31,8 @@ export const isDivinaFn = (item: TIsRdfType | undefined) =>
             /http[s]?:\/\/schema\.org\/VisualNarrative[\/]?$/.test(item?.RDFType)));
 
 export const isPdfFn = (publication: R2Publication) =>
-(publication?.Metadata?.RDFType
-    && (/http[s]?:\/\/schema\.org\/Book[\/]?$/.test(publication?.Metadata?.RDFType))
-    && publication?.Spine
-    && publication?.Spine[0]?.Href
-    && path.extname(publication.Spine[0]?.Href) === ".pdf");
+    (publication?.Metadata?.RDFType
+        && (/http[s]?:\/\/schema\.org\/Book[\/]?$/.test(publication?.Metadata?.RDFType))
+        && publication?.Spine
+        && publication?.Spine[0]?.Href
+        && path.extname(publication.Spine[0]?.Href) === ".pdf");

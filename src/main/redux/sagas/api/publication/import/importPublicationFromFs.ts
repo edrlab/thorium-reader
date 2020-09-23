@@ -23,7 +23,7 @@ import {
 } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 // import { CbzParsePromise } from "r2-shared-js/dist/es6-es2015/src/parser/cbz";
-import { extractFileFromZipToBuffer } from "readium-desktop/utils/zip";
+import { extractFileFromZipToBuffer } from "readium-desktop/main/zip/extract";
 import { v4 as uuidv4 } from "uuid";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -67,6 +67,7 @@ export async function importPublicationFromFS(
         case acceptedExtensionObject.audiobookLcpAlt:
         case acceptedExtensionObject.divina:
         case acceptedExtensionObject.webpub:
+        case acceptedExtensionObject.pdfLcp:
 
             debug("extension of type readium publication", ext);
 

@@ -10,9 +10,9 @@ import { promises as fsp } from "fs";
 import { dirname } from "path";
 import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+import { readStreamToBuffer } from "readium-desktop/main/stream/stream";
+import { extractFileFromZip } from "readium-desktop/main/zip/extract";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { readStreamToBuffer } from "readium-desktop/utils/stream";
-import { extractFileFromZip } from "readium-desktop/utils/zip";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 

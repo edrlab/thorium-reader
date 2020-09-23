@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import { createWriteStream, promises as fsp } from "fs";
 import { RequestInit } from "node-fetch";
-import { tmpdir } from "os";
 import * as path from "path";
 import { acceptedExtension } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -19,6 +18,7 @@ import {
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
+import { createTempDir } from "readium-desktop/main/fs/path";
 import { AbortSignal, httpGet } from "readium-desktop/main/http";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { mapGenerator } from "readium-desktop/utils/generator";
@@ -225,34 +225,6 @@ function* downloadLinkRequest(linkHref: string, abort: AbortSignal): SagaGenerat
     return data;
 }
 
-export function* downloadCreatePathDir(id: string): SagaGenerator<string | undefined> {
-    // /tmp/thorium/download/{unixtimestamp}/name.ext
-
-    const tmpDir = tmpdir();
-    let pathDir = tmpDir;
-    try {
-        pathDir = path.resolve(tmpDir, _APP_NAME.toLowerCase(), "download", id);
-        yield call(() => fsp.mkdir(pathDir, { recursive: true }));
-
-    } catch (err) {
-        debug(err, err.trace);
-
-        try {
-            pathDir = path.resolve(tmpDir, id.toString());
-            yield call(() => fsp.mkdir(pathDir));
-        } catch (err) {
-            debug(err, err.trace, err.code);
-
-            if (err.code !== "EEXIST") {
-
-                throw new Error("Error to create directory: " + pathDir);
-            }
-
-        }
-    }
-    return pathDir;
-}
-
 function* downloadCreatePathFilename(pathDir: string, filename: string, rc = 0): SagaGenerator<string> {
 
     const pathFile = path.resolve(pathDir, filename);
@@ -401,7 +373,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
         const filename = downloadCreateFilename(contentType, contentDisposition, type);
         debug("Filename", filename);
 
-        const pathDir = yield* callTyped(downloadCreatePathDir, id.toString());
+        const pathDir = yield* callTyped(createTempDir, id.toString());
         const pathFile = yield* callTyped(downloadCreatePathFilename, pathDir, filename);
         debug("PathFile", pathFile);
 

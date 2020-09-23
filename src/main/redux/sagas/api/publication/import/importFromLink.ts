@@ -7,15 +7,12 @@
 
 import * as debug_ from "debug";
 import fetch from "node-fetch";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { toastActions } from "readium-desktop/common/redux/actions";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { callTyped, raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { ContentType } from "readium-desktop/utils/content-type";
-import { put } from "redux-saga/effects";
-import { SagaGenerator } from "typed-redux-saga";
+import { delay, SagaGenerator } from "typed-redux-saga";
 
 import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
@@ -28,18 +25,23 @@ function* importLinkFromPath(
     downloadPath: string,
     link: IOpdsLinkView,
     pub?: IOpdsPublicationView,
-) {
+): SagaGenerator<[publicationDocument: PublicationDocument, alreadyImported: boolean]> {
 
-    let returnPublicationDocument: PublicationDocument;
     // Import downloaded publication in catalog
     const lcpHashedPassphrase = link?.properties?.lcpHashedPassphrase;
-    let publicationDocument = yield* importFromFsService(downloadPath, lcpHashedPassphrase);
 
-    if (publicationDocument) {
+    const { b: [publicationDocument, alreadyImported] } = yield* raceTyped({
+        a: delay(30000),
+        b: callTyped(importFromFsService, downloadPath, lcpHashedPassphrase),
+    });
+
+    let returnPublicationDocument = publicationDocument;
+    if (!alreadyImported && publicationDocument) {
+
         const tags = pub?.tags?.map((v) => v.name);
 
         // Merge with the original publication
-        publicationDocument = Object.assign(
+        const publicationDocumentAssigned = Object.assign(
             {},
             publicationDocument,
             {
@@ -54,93 +56,81 @@ function* importLinkFromPath(
         );
 
         const publicationRepository = diMainGet("publication-repository");
-        returnPublicationDocument = yield* callTyped(() => publicationRepository.save(publicationDocument));
+        returnPublicationDocument = yield* callTyped(() => publicationRepository.save(publicationDocumentAssigned));
+
     }
 
-    return returnPublicationDocument;
+    return [returnPublicationDocument, alreadyImported];
+
 }
 
 export function* importFromLinkService(
     link: IOpdsLinkView,
     pub?: IOpdsPublicationView,
-): SagaGenerator<PublicationDocument | undefined> {
+): SagaGenerator<[publicationDocument: PublicationDocument | undefined, alreadyImported: boolean]> {
 
+    let url: URL;
     try {
-        let url: URL;
-        try {
-            url = new URL(link?.url);
-        } catch (e) {
-            debug("bad url", link, e);
-            throw new Error("Unable to get acquisition url from opds publication");
-        }
-
-        if (!link.type) {
-            try {
-                const response = yield* callTyped(() => fetch(url));
-                const contentType = response?.headers?.get("Content-Type");
-                if (contentType) {
-                    link.type = contentType;
-                } else {
-                    link.type = "";
-                }
-            } catch (e) {
-                debug("can't fetch url to determine the type", url.toString());
-
-                link.type = "";
-            }
-        }
-        const contentTypeArray = link.type.replace(/\s/g, "").split(";");
-
-        const title = link.title || link.url;
-        const isLcpFile = contentTypeArray.includes(ContentType.Lcp);
-        const isEpubFile = contentTypeArray.includes(ContentType.Epub);
-        const isAudioBookPacked = contentTypeArray.includes(ContentType.AudioBookPacked);
-        const isAudioBookPackedLcp = contentTypeArray.includes(ContentType.AudioBookPackedLcp);
-        const isHtml = contentTypeArray.includes(ContentType.Html);
-        const isDivinaPacked = contentTypeArray.includes(ContentType.DivinaPacked);
-        const isJson = contentTypeArray.includes(ContentType.Json)
-            || contentTypeArray.includes(ContentType.AudioBook)
-            || contentTypeArray.includes(ContentType.JsonLd)
-            || contentTypeArray.includes(ContentType.Divina)
-            || contentTypeArray.includes(ContentType.webpub);
-
-        debug(contentTypeArray, isHtml, isJson);
-
-        if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp && !isDivinaPacked) {
-            debug(`OPDS download link is not EPUB or AudioBook or Divina ! ${link.url} ${link.type}`);
-        }
-
-        if (isHtml || isJson) {
-            debug("the link need to be packaged");
-
-            const packagePath = yield* callTyped(packageFromLink, url.toString(), isHtml);
-            if (packagePath) {
-                return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString() }, pub);
-            }
-
-        } else {
-            debug("Start the download", link);
-
-            const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
-            if (downloadPath) {
-                return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
-            }
-
-        }
+        url = new URL(link?.url);
     } catch (e) {
-
-        const translate = diMainGet("translator").translate;
-        debug("importFromLink failed", e.toString(), e.trace);
-        yield put(
-            toastActions.openRequest.build(
-                ToastType.Error,
-                translate(
-                    "message.import.fail", { path: link?.url, err: e.toString() },
-                ),
-            ),
-        );
+        debug("bad url", link, e);
+        throw new Error("Unable to get acquisition url from opds publication");
     }
 
-    debug("error to import", link?.url);
-    return undefined;
+    if (!link.type) {
+        try {
+            const response = yield* callTyped(() => fetch(url));
+            const contentType = response?.headers?.get("Content-Type");
+            if (contentType) {
+                link.type = contentType;
+            } else {
+                link.type = "";
+            }
+        } catch (e) {
+            debug("can't fetch url to determine the type", url.toString());
+
+            link.type = "";
+        }
+    }
+    const contentTypeArray = link.type.replace(/\s/g, "").split(";");
+
+    const title = link.title || link.url;
+    const isLcpFile = contentTypeArray.includes(ContentType.Lcp);
+    const isEpubFile = contentTypeArray.includes(ContentType.Epub);
+    const isAudioBookPacked = contentTypeArray.includes(ContentType.AudioBookPacked);
+    const isAudioBookPackedLcp = contentTypeArray.includes(ContentType.AudioBookPackedLcp);
+    const isHtml = contentTypeArray.includes(ContentType.Html);
+    const isDivinaPacked = contentTypeArray.includes(ContentType.DivinaPacked);
+    const isPdf = contentTypeArray.includes(ContentType.pdf);
+    const isJson = contentTypeArray.includes(ContentType.Json)
+        || contentTypeArray.includes(ContentType.AudioBook)
+        || contentTypeArray.includes(ContentType.JsonLd)
+        || contentTypeArray.includes(ContentType.Divina)
+        || contentTypeArray.includes(ContentType.webpub)
+        || contentTypeArray.includes(ContentType.lcppdf);
+
+    debug(contentTypeArray, isHtml, isJson);
+
+    if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp && !isDivinaPacked && !isPdf) {
+        debug(`OPDS download link is not EPUB or AudioBook or Divina or Pdf ! ${link.url} ${link.type}`);
+    }
+
+    if (isHtml || isJson) {
+        debug("the link need to be packaged");
+
+        const packagePath = yield* callTyped(packageFromLink, url.toString(), isHtml);
+        if (packagePath) {
+            return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString() }, pub);
+        }
+
+    } else {
+        debug("Start the download", link);
+
+        const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
+        if (downloadPath) {
+            return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
+        }
+    }
+
+    return [undefined, false];
 }

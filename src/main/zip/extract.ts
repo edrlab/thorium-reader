@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 
-import { readStreamToBuffer } from "./stream";
+import { readStreamToBuffer } from "../stream/stream";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/zip");
