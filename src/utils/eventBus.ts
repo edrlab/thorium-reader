@@ -9,65 +9,92 @@ import * as debug_ from "debug";
 
 const debug = debug_("readium-desktop:utils/eventBus");
 
-type TCallBack = (...a: any[]) => any;
-export interface IBusEvent {
+export interface IEventBus {
     subscribe: <TKey extends string, TFn extends TCallBack>(key: TKey, fn: TFn) => void;
     dispatch: <TKey extends string, TArg extends any[]>(key: TKey, ...a: TArg) => void;
     remove: <TKey extends string, TFn extends TCallBack>(fn: TFn, key?: TKey) => void;
     removeKey: <TKey extends string>(key: TKey) => void;
 }
 
-export function eventBus(): IBusEvent {
+export interface IEventBusMasterSlave {
+    master: IEventBus;
+    slave: IEventBus;
+}
 
-    const eventObj: {
-        [key: string]: Set<TCallBack>;
-    } = {};
+interface IEventObj {
+    [key: string]: Set<TCallBack>;
+}
+type TCallBack<Param = any[], Ret = any> = (...a: Param[]) => Ret;
 
-    const subscribe = <TKey extends string, TFn extends TCallBack>(key: TKey, fn: TFn) => {
+export function eventBus(): IEventBusMasterSlave {
 
-        if (eventObj[key]) {
-            const set = eventObj[key];
-            set.add(fn);
+    const eventMaster: IEventObj = {};
+    const eventSlave: IEventObj = {};
 
-        } else {
-            const set = new Set<TCallBack>();
-            set.add(fn);
-            eventObj[key] = set;
+    const subscribe = (isMaster: boolean) =>
+        <TKey extends string, TFn extends TCallBack>(key: TKey, fn: TFn) => {
 
-        }
-    };
+            const event = isMaster ? eventMaster : eventSlave;
 
-    const dispatch = <TKey extends string, TArg extends any[]>(key: TKey, ...a: TArg) => {
+            if (event[key]) {
+                const set = event[key];
+                set.add(fn);
 
-        eventObj[key]?.forEach((fn) => {
-            try {
-                fn(...a);
-            } catch (e) {
-                debug(e);
-            }
-        });
-    };
-
-    const remove = <TKey extends string, TFn extends TCallBack>(fn: TFn, key?: TKey) => {
-
-        if (fn) {
-            if (key) {
-                eventObj[key]?.delete(fn);
             } else {
-                Object.values(eventObj).forEach((set) => set?.delete(fn));
+                const set = new Set<TCallBack>();
+                set.add(fn);
+                event[key] = set;
+
             }
-        }
-    };
+        };
 
-    const removeKey = <TKey extends string>(key: TKey) => {
+    const dispatch = (isMaster: boolean) =>
+        <TKey extends string, TArg extends any[]>(key: TKey, ...a: TArg) => {
 
-        delete eventObj[key];
-    };
+            const event = isMaster ? eventSlave : eventMaster; // dispatch an event to opponent subscribe
+
+            event[key]?.forEach((fn) => {
+                try {
+                    fn(...a);
+                } catch (e) {
+                    debug(e);
+                }
+            });
+        };
+
+    const remove = (isMaster: boolean) =>
+        <TKey extends string, TFn extends TCallBack>(fn: TFn, key?: TKey) => {
+
+            const event = isMaster ? eventMaster : eventSlave;
+
+            if (fn) {
+                if (key) {
+                    event[key]?.delete(fn);
+                } else {
+                    Object.values(event).forEach((set) => set?.delete(fn));
+                }
+            }
+        };
+
+    const removeKey = (isMaster: boolean) =>
+        <TKey extends string>(key: TKey) => {
+
+            const event = isMaster ? eventMaster : eventSlave;
+            delete event[key];
+        };
 
     return {
-        subscribe,
-        dispatch,
-        remove,
-        removeKey,
+        master: {
+            subscribe: subscribe(true),
+            dispatch: dispatch(true),
+            remove: remove(true),
+            removeKey: removeKey(true),
+        },
+        slave: {
+            subscribe: subscribe(false),
+            dispatch: dispatch(false),
+            remove: remove(false),
+            removeKey: removeKey(false),
+        },
     };
 }
