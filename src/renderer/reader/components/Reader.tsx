@@ -12,7 +12,7 @@ import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
-import { isDivinaFn } from "readium-desktop/common/isManifestType";
+import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
@@ -44,6 +44,7 @@ import {
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 // import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 import { Unsubscribe } from "redux";
@@ -65,6 +66,7 @@ import {
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
+import { pdfReaderMountingPoint } from "../pdfReader";
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
@@ -800,7 +802,34 @@ class Reader extends React.Component<IProps, IState> {
 
     private async loadPublicationIntoViewport() {
 
-        if (this.props.isDivina) {
+        if (this.props.isPdf) {
+
+            console.log("PDF !!");
+            const publicationViewport = this.mainElRef.current;
+            if (publicationViewport) {
+                // tslint:disable-next-line: max-line-length
+                publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow-y: scroll; overflow-x: scroll;");
+            }
+
+            const readingOrder = this.props.r2Publication?.Spine;
+            let pdfUrl = this.props.manifestUrlR2Protocol;
+            if (Array.isArray(readingOrder)) {
+                const link = readingOrder[0];
+                if (link.TypeLink === mimeTypes.pdf) {
+
+                    pdfUrl = this.props.manifestUrlR2Protocol + "/../" + link.Href;
+                }
+            } else {
+                console.log("can't found pdf link");
+            }
+
+            console.log("pdf url", pdfUrl);
+
+            const bus = await pdfReaderMountingPoint(publicationViewport, pdfUrl);
+
+            bus.dispatch("page", 1);
+
+        } else if (this.props.isDivina) {
 
             console.log("DIVINA !!");
 
@@ -1395,9 +1424,11 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // const isDivina = isDivinaFn(state.r2Publication);
     // const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
     const isDivina = isDivinaFn(state.reader.info.r2Publication);
+    const isPdf = isPdfFn(state.reader.info.r2Publication);
 
     return {
         isDivina,
+        isPdf,
         lang: state.i18n.locale,
         publicationView: state.reader.info.publicationView,
         r2Publication: state.reader.info.r2Publication,
