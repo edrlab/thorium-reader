@@ -8,7 +8,8 @@
 import * as pdfJs from "pdfjs-dist";
 import { eventBus, IEventBus } from "readium-desktop/utils/eventBus";
 
-pdfJs.GlobalWorkerOptions.workerSrc = "./node_modules/pdfjs-dist/build/pdf.worker.js";
+// webpack.config.renderer-reader.js
+pdfJs.GlobalWorkerOptions.workerSrc = "./pdf.worker.js";
 
 export async function pdfReaderMountingPoint(
     rootElement: HTMLDivElement,
