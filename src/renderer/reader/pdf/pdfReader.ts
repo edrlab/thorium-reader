@@ -13,6 +13,24 @@ import { IEventBusPdfPlayerMaster, IEventBusPdfPlayerSlave } from "./pdfReader.t
 // webpack.config.renderer-reader.js
 pdfJs.GlobalWorkerOptions.workerSrc = "./pdf.worker.js";
 
+type TUnPromise<T extends any> =
+    T extends Promise<infer R> ? R : any;
+type TReturnPromise<T extends (...args: any) => any> =
+    T extends (...args: any) => Promise<infer R> ? R : any;
+type TUnArray<T extends any> =
+    T extends Array<infer R> ? R : any;
+type TGetDocument = ReturnType<typeof pdfJs.getDocument>;
+type TPdfDocumentProxy = TUnPromise<TGetDocument["promise"]>;
+type TOutlineRaw = TReturnPromise<TPdfDocumentProxy["getOutline"]>;
+type TOutlineUnArray = TUnArray<TOutlineRaw>;
+
+type TdestObj = { name?: string} | {num: number, gen: number};
+
+interface IOutline extends Partial<TOutlineUnArray> {
+    dest?: string | TdestObj[];
+    items?: IOutline[];
+}
+
 export async function pdfReaderMountingPoint(
     rootElement: HTMLDivElement,
     pdfPath: string,
@@ -27,6 +45,10 @@ export async function pdfReaderMountingPoint(
     canvas.height = rootElement.clientHeight;
 
     const pdf = await pdfJs.getDocument(pdfPath).promise;
+    const outline: IOutline[] = await pdf.getOutline();
+
+    console.log(outline);
+    console.log(await pdf.getDestination("p14"));
 
     master.subscribe("page", async (pageNumber: number) => {
 
