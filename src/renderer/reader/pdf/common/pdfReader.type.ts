@@ -1,4 +1,13 @@
-import { IEventBus } from "readium-desktop/utils/eventBus";
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END
+
+import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+
+import { IEventBus } from "./eventBus";
 
 export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "200";
 export type IPdfPlayerView = "scrollable" | "paginated";
@@ -14,17 +23,11 @@ export interface IPdfPlayerEvent {
     "search-previous": () => any;
     "page-next": () => any;
     "page-previous": () => any;
+    "ready": (toc?: Link[]) => any;
+    "start": (pdfPath: string) => any;
 }
 
-export interface IEventBusPdfPlayerSlave extends IEventBus {
-
-    subscribe: <TKey extends keyof IPdfPlayerEvent, TFn extends IPdfPlayerEvent[TKey]>(key: TKey, fn: TFn) => void;
-    dispatch: <TKey extends keyof IPdfPlayerEvent>(key: TKey, ...arg: Parameters<IPdfPlayerEvent[TKey]>) => void;
-    remove: <TKey extends keyof IPdfPlayerEvent>(fn: IPdfPlayerEvent[TKey], key?: TKey) => void;
-    removeKey: <TKey extends keyof IPdfPlayerEvent>(key: TKey) => void;
-}
-
-export interface IEventBusPdfPlayerMaster extends IEventBus {
+export interface IEventBusPdfPlayer extends IEventBus {
 
     subscribe: <TKey extends keyof IPdfPlayerEvent, TFn extends IPdfPlayerEvent[TKey]>(key: TKey, fn: TFn) => void;
     dispatch: <TKey extends keyof IPdfPlayerEvent>(key: TKey, ...arg: Parameters<IPdfPlayerEvent[TKey]>) => void;

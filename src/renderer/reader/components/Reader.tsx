@@ -66,12 +66,13 @@ import {
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
-import { pdfReaderMountingPoint } from "../pdf/pdfReader";
-import { IEventBusPdfPlayerSlave } from "../pdf/pdfReader.type";
+import { IEventBusPdfPlayer } from "../pdf/common/pdfReader.type";
+import { pdfMountWebview } from "../pdf/driver";
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
+import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 
 // import { isDeepStrictEqual } from "util";
 
@@ -124,7 +125,7 @@ class Reader extends React.Component<IProps, IState> {
     private mainElRef: React.RefObject<HTMLDivElement>;
 
     private currentDivinaPlayer: any;
-    private pdfPlayerBusEvent: IEventBusPdfPlayerSlave;
+    private pdfPlayerBusEvent: IEventBusPdfPlayer;
 
     // can be get back wwith withTranslator HOC
     // to remove
@@ -860,29 +861,30 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log("pdf url", pdfUrl);
 
-            this.pdfPlayerBusEvent = await pdfReaderMountingPoint(publicationViewport, pdfUrl);
+            let toc: Link[];
+            [this.pdfPlayerBusEvent, toc] = await pdfMountWebview(pdfUrl, publicationViewport);
 
-            this.pdfPlayerBusEvent.subscribe("page", (pageNumber: number) => {
+            this.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
 
                 console.log("pdfPlayer page changed", pageNumber);
             });
 
-            this.pdfPlayerBusEvent.subscribe("scale", (scale: "fit" | "width" | "50" | "100" | "200") => {
+            this.pdfPlayerBusEvent.subscribe("scale", (scale) => {
 
                 console.log("pdfPlayer scale changed", scale);
             });
 
-            this.pdfPlayerBusEvent.subscribe("view", (view: "scrollable" | "paginated") => {
+            this.pdfPlayerBusEvent.subscribe("view", (view) => {
 
                 console.log("pdfPlayer view changed", view);
             });
 
-            this.pdfPlayerBusEvent.subscribe("column", (column: 1 | 2) => {
+            this.pdfPlayerBusEvent.subscribe("column", (column) => {
 
                 console.log("pdfPlayer column changed", column);
             });
 
-            this.pdfPlayerBusEvent.subscribe("search", (search: string) => {
+            this.pdfPlayerBusEvent.subscribe("search", (search) => {
 
                 console.log("pdfPlayer search word changed", search);
             });

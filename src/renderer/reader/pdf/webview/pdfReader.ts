@@ -8,9 +8,8 @@
 import * as pdfJs from "pdfjs-dist";
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
-import { eventBus } from "readium-desktop/utils/eventBus";
 
-import { IEventBusPdfPlayerMaster, IEventBusPdfPlayerSlave } from "./pdfReader.type";
+import { IEventBusPdfPlayer } from "../common/pdfReader.type";
 
 // webpack.config.renderer-reader.js
 pdfJs.GlobalWorkerOptions.workerSrc = "./pdf.worker.js";
@@ -82,12 +81,13 @@ async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy): P
     return link;
 }
 
-export async function pdfReaderMountingPoint(
-    rootElement: HTMLDivElement,
-    pdfPath: string,
-): Promise<IEventBusPdfPlayerSlave> {
+type TToc = Link[];
 
-    const { slave, master } = eventBus() as { master: IEventBusPdfPlayerMaster, slave: IEventBusPdfPlayerSlave };
+export async function pdfReaderMountingPoint(
+    rootElement: HTMLElement,
+    pdfPath: string,
+    bus: IEventBusPdfPlayer,
+): Promise<TToc> {
 
     const canvas = document.createElement("canvas");
     rootElement.appendChild(canvas);
@@ -98,7 +98,7 @@ export async function pdfReaderMountingPoint(
     const pdf = await pdfJs.getDocument(pdfPath).promise;
 
     const outline: IOutline[] = await pdf.getOutline();
-    let toc: Link[] = [];
+    let toc: TToc = [];
 
     try {
         if (Array.isArray(outline)) {
@@ -107,7 +107,7 @@ export async function pdfReaderMountingPoint(
         }
     } catch (e) {
 
-        console.error("Error to converte outline to toc link");
+        console.error("Error to convert outline to toc link");
         console.error(e);
 
         toc = [];
@@ -118,7 +118,7 @@ export async function pdfReaderMountingPoint(
     // console.log(await pdf.getPageIndex((await pdf.getDestination("p14"))[0] as TdestForPageIndex));
     console.log("toc", toc);
 
-    master.subscribe("page", async (pageNumber: number) => {
+    bus.subscribe("page", async (pageNumber: number) => {
 
         const pdfPage = await pdf.getPage(pageNumber);
 
@@ -135,8 +135,8 @@ export async function pdfReaderMountingPoint(
             viewport,
         }).promise;
 
-        master.dispatch("page", pageNumber);
+        bus.dispatch("page", pageNumber);
     });
 
-    return slave;
+    return toc;
 }
