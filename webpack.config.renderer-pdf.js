@@ -130,19 +130,6 @@ let config = Object.assign(
         module: {
             rules: [
                 {
-                    test: /\.(jsx?|tsx?)$/,
-                    use: [
-                        {
-                            loader: path.resolve(
-                                "./scripts/webpack-loader-scope-checker.js"
-                            ),
-                            options: {
-                                forbid: "reader",
-                            },
-                        },
-                    ],
-                },
-                {
                     exclude: /node_modules/,
                     test: /\.tsx?$/,
                     loader: useLegacyTypeScriptLoader
@@ -151,39 +138,6 @@ let config = Object.assign(
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
                     },
-                },
-                {
-                    loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
-                    options: {
-                        esModule: false,
-                    },
-                    test: /\.(png|jpe?g|gif|ico)$/,
-                },
-                {
-                    exclude: /node_modules/,
-                    loader: "svg-sprite-loader",
-                    test: /\.svg$/,
-                },
-                {
-                    exclude: /src/,
-                    loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
-                    options: {
-                        esModule: false,
-                        outputPath: "fonts",
-                    },
-                    test: /\.(woff|woff2|ttf|eot|svg)$/,
-                },
-                {
-                    exclude: /node_modules/,
-                    test: /\.md$/,
-                    use: [
-                        {
-                            loader: "html-loader",
-                        },
-                        {
-                            loader: "markdown-loader",
-                        },
-                    ],
                 },
             ],
         },

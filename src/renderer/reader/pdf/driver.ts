@@ -62,6 +62,9 @@ export async function pdfMountWebview(
         },
     );
 
+    webview.addEventListener("console-message", (e) => {
+        console.log("pdf-webview", e.message);
+    });
     publicationViewport.append(webview);
 
     webview.addEventListener("did-finish-load", () => {

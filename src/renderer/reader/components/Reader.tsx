@@ -8,6 +8,7 @@
 import * as classNames from "classnames";
 import divinaPlayer from "divina-player-js";
 import * as path from "path";
+import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -72,7 +73,6 @@ import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redu
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 
 // import { isDeepStrictEqual } from "util";
 
@@ -863,6 +863,8 @@ class Reader extends React.Component<IProps, IState> {
 
             let toc: Link[];
             [this.pdfPlayerBusEvent, toc] = await pdfMountWebview(pdfUrl, publicationViewport);
+
+            console.log("toc", toc);
 
             this.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
 
