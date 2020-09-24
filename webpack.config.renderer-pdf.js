@@ -114,7 +114,7 @@ let config = Object.assign(
             // https://github.com/webpack/webpack/issues/1114
             libraryTarget: "commonjs2",
         },
-        target: "web",
+        target: "electron-renderer",
 
         mode: nodeEnv,
 

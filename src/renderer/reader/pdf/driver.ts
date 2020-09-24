@@ -1,4 +1,3 @@
-import { remote } from "electron";
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
@@ -6,12 +5,13 @@ import { remote } from "electron";
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
+import { remote } from "electron";
 import * as path from "path";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
-import { IS_DEV, _RENDERER_PDF_WEBVIEW_BASE_URL } from "readium-desktop/preprocessor-directives";
+import { _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { eventBus } from "./common/eventBus";
-import { IEventBusPdfPlayer} from "./common/pdfReader.type";
+import { IEventBusPdfPlayer } from "./common/pdfReader.type";
 
 // bridge between webview tx-rx communication and reader.tsx
 
@@ -36,7 +36,7 @@ export async function pdfMountWebview(
         // tslint:disable-next-line:max-line-length
     // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#3-enable-context-isolation-for-remote-content
     webview.setAttribute("webpreferences",
-        "nodeIntegration=0, nodeIntegrationInWorker=0, sandbox=0, javascript=1, " +
+        "nodeIntegration=1, nodeIntegrationInWorker=0, sandbox=0, javascript=1, " +
         "contextIsolation=0, webSecurity=1, allowRunningInsecureContent=0, enableRemoteModule=0");
     webview.addEventListener("dom-ready", () => {
         // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webcontents
