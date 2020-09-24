@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
+import * as path from "path";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+import { _RENDERER_PDF_WEBVIEW_BASE_URL } from "readium-desktop/preprocessor-directives";
 
 import { eventBus } from "./common/eventBus";
-import { IEventBusPdfPlayer } from "./common/pdfReader.type";
+import { IEventBusPdfPlayer} from "./common/pdfReader.type";
 
 // bridge between webview tx-rx communication and reader.tsx
 
@@ -18,7 +20,17 @@ export async function pdfMountWebview(
 ): Promise<[bus: IEventBusPdfPlayer, toc: Link[] | undefined]> {
 
     const webview = document.createElement("webview");
-    webview.src = "";
+
+    let rendererBaseUrl = _RENDERER_PDF_WEBVIEW_BASE_URL;
+    if (rendererBaseUrl === "file://") {
+        // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+        rendererBaseUrl += path.normalize(path.join(__dirname, "index_pdf.html"));
+    } else {
+        // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+        rendererBaseUrl += "index_pdf.html";
+    }
+    rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
+    webview.src = rendererBaseUrl;
 
     const bus: IEventBusPdfPlayer = eventBus(
         (key, ...a) => {
