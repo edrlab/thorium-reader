@@ -1,3 +1,4 @@
+import { remote } from "electron";
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
@@ -7,7 +8,7 @@
 
 import * as path from "path";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
-import { _RENDERER_PDF_WEBVIEW_BASE_URL } from "readium-desktop/preprocessor-directives";
+import { IS_DEV, _RENDERER_PDF_WEBVIEW_BASE_URL } from "readium-desktop/preprocessor-directives";
 
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer} from "./common/pdfReader.type";
@@ -31,6 +32,64 @@ export async function pdfMountWebview(
     }
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
     webview.src = rendererBaseUrl;
+
+        // tslint:disable-next-line:max-line-length
+    // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#3-enable-context-isolation-for-remote-content
+    webview.setAttribute("webpreferences",
+        "nodeIntegration=0, nodeIntegrationInWorker=0, sandbox=0, javascript=1, " +
+        "contextIsolation=0, webSecurity=1, allowRunningInsecureContent=0, enableRemoteModule=0");
+    webview.addEventListener("dom-ready", () => {
+        // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webcontents
+
+        webview.clearHistory();
+
+        if (IS_DEV) {
+            const wc = remote.webContents.fromId(webview.getWebContentsId());
+            // const wc = wv.getWebContents();
+
+            wc.on("context-menu", (_ev, params) => {
+                const { x, y } = params;
+                const openDevToolsAndInspect = () => {
+                    const devToolsOpened = () => {
+                        wc.off("devtools-opened", devToolsOpened);
+                        wc.inspectElement(x, y);
+
+                        setTimeout(() => {
+                            if (wc.devToolsWebContents && wc.isDevToolsOpened()) {
+                                wc.devToolsWebContents.focus();
+                            }
+                        }, 500);
+                    };
+                    wc.on("devtools-opened", devToolsOpened);
+                    wc.openDevTools({ activate: true, mode: "detach" });
+                };
+                remote.Menu.buildFromTemplate([{
+                    click: () => {
+                        const wasOpened = wc.isDevToolsOpened();
+                        if (!wasOpened) {
+                            openDevToolsAndInspect();
+                        } else {
+                            if (!wc.isDevToolsFocused()) {
+                                // wc.toggleDevTools();
+                                wc.closeDevTools();
+
+                                setImmediate(() => {
+                                    openDevToolsAndInspect();
+                                });
+                            } else {
+                                // right-click context menu normally occurs when focus
+                                // is in BrowserWindow / WebView's WebContents,
+                                // but some platforms (e.g. MacOS) allow mouse interaction
+                                // when the window is in the background.
+                                wc.inspectElement(x, y);
+                            }
+                        }
+                    },
+                    label: "Inspect element",
+                }]).popup({ window: remote.getCurrentWindow() });
+            });
+        }
+    });
 
     const bus: IEventBusPdfPlayer = eventBus(
         (key, ...a) => {
@@ -65,6 +124,7 @@ export async function pdfMountWebview(
     webview.addEventListener("console-message", (e) => {
         console.log("pdf-webview", e.message);
     });
+
     publicationViewport.append(webview);
 
     webview.addEventListener("did-finish-load", () => {
