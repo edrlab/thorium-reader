@@ -6,6 +6,8 @@
 // ==LICENSE-END
 
 import * as pdfJs from "pdfjs-dist";
+import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
+import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import { eventBus } from "readium-desktop/utils/eventBus";
 
 import { IEventBusPdfPlayerMaster, IEventBusPdfPlayerSlave } from "./pdfReader.type";
@@ -24,11 +26,60 @@ type TPdfDocumentProxy = TUnPromise<TGetDocument["promise"]>;
 type TOutlineRaw = TReturnPromise<TPdfDocumentProxy["getOutline"]>;
 type TOutlineUnArray = TUnArray<TOutlineRaw>;
 
-type TdestObj = { name?: string} | {num: number, gen: number};
+interface TdestForPageIndex { num: number; gen: number; }
+type TdestObj = { name?: string} | TdestForPageIndex | null;
 
 interface IOutline extends Partial<TOutlineUnArray> {
     dest?: string | TdestObj[];
     items?: IOutline[];
+}
+
+function destForPageIndexParse(destRaw: any | any[]): TdestForPageIndex | undefined {
+
+    const destArray = Array.isArray(destRaw) ? destRaw : [destRaw];
+
+    const destForPageIndex = destArray.reduce<TdestForPageIndex | undefined>(
+        (pv, cv: TdestForPageIndex) => (typeof cv?.gen === "number" && typeof cv?.num === "number") ? cv : pv,
+        undefined,
+    );
+
+    return destForPageIndex;
+}
+
+async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy): Promise<Link> {
+
+    const link = new Link();
+
+    if (outline.dest) {
+
+        const destRaw = outline.dest;
+        let destForPageIndex: TdestForPageIndex | undefined;
+
+        if (typeof destRaw === "string") {
+            const destArray = await pdf.getDestination(destRaw);
+
+            destForPageIndex = destForPageIndexParse(destArray);
+
+        } else if (typeof destRaw === "object") {
+            destForPageIndex = destForPageIndexParse(destRaw);
+        }
+
+        if (destForPageIndex) {
+            const page = await pdf.getPageIndex(destForPageIndex);
+            link.Href = page.toString();
+        }
+
+    }
+
+    link.Title = typeof outline.title === "string" ? outline.title : "";
+
+    if (Array.isArray(outline.items)) {
+
+        const itemsPromise = outline.items.map(async (item) => tocOutlineItemToLink(item, pdf));
+        link.Children = await Promise.all(itemsPromise);
+    }
+
+    return link;
 }
 
 export async function pdfReaderMountingPoint(
@@ -36,7 +87,7 @@ export async function pdfReaderMountingPoint(
     pdfPath: string,
 ): Promise<IEventBusPdfPlayerSlave> {
 
-    const { slave, master } = eventBus() as { master: IEventBusPdfPlayerMaster, slave: IEventBusPdfPlayerSlave};
+    const { slave, master } = eventBus() as { master: IEventBusPdfPlayerMaster, slave: IEventBusPdfPlayerSlave };
 
     const canvas = document.createElement("canvas");
     rootElement.appendChild(canvas);
@@ -45,16 +96,33 @@ export async function pdfReaderMountingPoint(
     canvas.height = rootElement.clientHeight;
 
     const pdf = await pdfJs.getDocument(pdfPath).promise;
-    const outline: IOutline[] = await pdf.getOutline();
 
-    console.log(outline);
-    console.log(await pdf.getDestination("p14"));
+    const outline: IOutline[] = await pdf.getOutline();
+    let toc: Link[] = [];
+
+    try {
+        if (Array.isArray(outline)) {
+            const tocPromise = outline.map((item) => tocOutlineItemToLink(item, pdf));
+            toc = await Promise.all(tocPromise);
+        }
+    } catch (e) {
+
+        console.error("Error to converte outline to toc link");
+        console.error(e);
+
+        toc = [];
+    }
+
+    console.log("outline", outline);
+    // console.log(await pdf.getDestination("p14"));
+    // console.log(await pdf.getPageIndex((await pdf.getDestination("p14"))[0] as TdestForPageIndex));
+    console.log("toc", toc);
 
     master.subscribe("page", async (pageNumber: number) => {
 
         const pdfPage = await pdf.getPage(pageNumber);
 
-        const viewportNoScale = pdfPage.getViewport({ scale: 1});
+        const viewportNoScale = pdfPage.getViewport({ scale: 1 });
         const scale = rootElement.clientWidth / viewportNoScale.width;
         const viewport = pdfPage.getViewport({ scale });
 
