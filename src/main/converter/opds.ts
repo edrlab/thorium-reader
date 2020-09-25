@@ -83,7 +83,7 @@ export class OpdsFeedViewConverter {
         if (properties) {
 
             const key = "lcp_hashed_passphrase";
-            const lcpHashedPassphraseObj = properties.AdditionalJSON[key];
+            const lcpHashedPassphraseObj = properties.AdditionalJSON ? properties.AdditionalJSON[key] : undefined;
             let lcpHashedPassphrase: string;
             if (typeof lcpHashedPassphraseObj === "string") {
                 const lcpHashedPassphraseHexOrB64 = lcpHashedPassphraseObj as string;
@@ -125,7 +125,15 @@ export class OpdsFeedViewConverter {
                 }
             }
 
+            const indirectAcquisitions = properties.IndirectAcquisitions ?
+                (Array.isArray(properties.IndirectAcquisitions) ?
+                    properties.IndirectAcquisitions : [properties.IndirectAcquisitions]) :
+                undefined;
+
             return {
+                indirectAcquisitionType: indirectAcquisitions.reduce<string>((pv, cv) => {
+                    return typeof cv?.TypeAcquisition === "string" ? cv.TypeAcquisition : pv;
+                }, undefined),
                 lcpHashedPassphrase,
                 numberOfItems: properties.NumberOfItems || undefined,
                 priceValue: properties.Price?.Value || undefined,

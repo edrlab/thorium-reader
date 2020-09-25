@@ -172,6 +172,16 @@
         "ext": "lcpaudiobook",
         "role": "Viewer",
         "mimeType": "application/audiobook+lcp"
+      },
+      {
+        "ext": "pdf",
+        "role": "Viewer",
+        "mimeType": "application/pdf"
+      },
+      {
+        "ext": "lcpdf",
+        "role": "Viewer",
+        "mimeType": "application/pdf+lcp"
       }
     ],
     "win": {
