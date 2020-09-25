@@ -131,7 +131,7 @@ export class OpdsFeedViewConverter {
                 undefined;
 
             return {
-                indirectAcquisitionType: indirectAcquisitions.reduce<string>((pv, cv) => {
+                indirectAcquisitionType: indirectAcquisitions?.reduce<string>((pv, cv) => {
                     return typeof cv?.TypeAcquisition === "string" ? cv.TypeAcquisition : pv;
                 }, undefined),
                 lcpHashedPassphrase,
