@@ -3,7 +3,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+// const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
@@ -200,18 +200,6 @@ let config = Object.assign(
             new MiniCssExtractPlugin({
                 filename: "styles_reader.css",
             }),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(
-                        __dirname,
-                        "node_modules",
-                        "pdfjs-dist",
-                        "build",
-                        "pdf.worker.js",
-                    ),
-                    to: ".",
-                },
-            ]}),
             preprocessorDirectives.definePlugin,
         ],
     }

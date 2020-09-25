@@ -1,5 +1,5 @@
 {
-  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.tsdk": "/Users/danielweck/Downloads/500GB/Code/readium-desktop/node_modules/typescript/lib",
   "typescript.tsserver.trace": "off",
   "files.exclude": {
     "**/.git": true,

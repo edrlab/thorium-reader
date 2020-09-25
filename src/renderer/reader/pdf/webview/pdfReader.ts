@@ -5,14 +5,79 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
+import { debounce } from "debounce";
+import * as path from "path";
 import * as pdfJs from "pdfjs-dist";
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+import {
+    _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL,
+} from "readium-desktop/preprocessor-directives";
+
+import {
+    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import { IEventBusPdfPlayer } from "../common/pdfReader.type";
 
+// import * as pdfJs from "pdfjs-dist/webpack";
+
 // webpack.config.renderer-reader.js
-pdfJs.GlobalWorkerOptions.workerSrc = "./pdf.worker.js";
+// pdfJs.GlobalWorkerOptions.workerSrc = "pdf.worker.js";
+// pdfJs.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js";
+// pdfJs.GlobalWorkerOptions.workerPort = new Worker("https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js");
+// const workerUrl = "https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js";
+
+const dirname = (global as any).__dirname || (document.location.pathname + "/../");
+
+let workerUrl = "index_pdf.worker.js";
+if (_PACKAGING === "1") {
+    workerUrl = "file://" + path.normalize(path.join(dirname, workerUrl));
+} else {
+    if (_RENDERER_PDF_WEBVIEW_BASE_URL === "file://") {
+        // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+        workerUrl = "file://" +
+            path.normalize(path.join(dirname, _DIST_RELATIVE_URL, workerUrl));
+    } else {
+        // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+        workerUrl = "file://" + path.normalize(path.join(process.cwd(), "dist", workerUrl));
+    }
+}
+workerUrl = workerUrl.replace(/\\/g, "/");
+
+pdfJs.GlobalWorkerOptions.workerPort = new Worker(window.URL.createObjectURL(
+    new Blob([`importScripts('${workerUrl}');`], { type: "application/javascript" })));
+
+// HTTP Content-Type is "text/plain" :(
+// pdfJs.GlobalWorkerOptions.workerSrc =
+// "https://raw.githubusercontent.com/mozilla/pdfjs-dist/v2.6.347/build/pdf.worker.min.js";
+
+// import * as path from "path";
+// let workerPath = "pdf.worker.js";
+// // if (_PACKAGING === "1") {
+// //     preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
+// // } else {
+// //     preloadPath = "index_pdf.js";
+
+// //     if (_RENDERER_READER_BASE_URL === "file://") {
+// //         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+// //         preloadPath = "file://" +
+// //             path.normalize(path.join((global as any).__dirname, _NODE_MODULE_RELATIVE_URL, preloadPath));
+// //     } else {
+// //         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+// //         preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath));
+// //     }
+// // }
+// workerPath = "file://" + path.normalize(path.join(process.cwd(), "dist", workerPath));
+// workerPath = workerPath.replace(/\\/g, "/");
+// pdfJs.GlobalWorkerOptions.workerSrc = workerPath;
+
+enum PdfDisplayMode {
+    fitPageWidth = "fitPageWidth",
+    fitWholePage = "fitWholePage",
+    originalDimensions = "originalDimensions",
+}
+let _DisplayMode = PdfDisplayMode.fitPageWidth;
 
 type TUnPromise<T extends any> =
     T extends Promise<infer R> ? R : any;
@@ -94,8 +159,15 @@ export async function pdfReaderMountingPoint(
 
     canvas.width = rootElement.clientWidth;
     canvas.height = rootElement.clientHeight;
+    canvas.setAttribute("style", "display: block; position: absolute; left: 0; top: 0;");
 
+    console.log("BEFORE pdfJs.getDocument", pdfPath);
+    if (pdfPath.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)) {
+        pdfPath = convertCustomSchemeToHttpUrl(pdfPath);
+    }
+    console.log("BEFORE pdfJs.getDocument ADJUSTED", pdfPath);
     const pdf = await pdfJs.getDocument(pdfPath).promise;
+    console.log("AFTER pdfJs.getDocument", pdfPath);
 
     const outline: IOutline[] = await pdf.getOutline();
     let toc: TToc = [];
@@ -118,17 +190,47 @@ export async function pdfReaderMountingPoint(
     // console.log(await pdf.getPageIndex((await pdf.getDestination("p14"))[0] as TdestForPageIndex));
     console.log("toc", toc);
 
-    bus.subscribe("page", async (pageNumber: number) => {
+    let _lastPageNumber = -1;
 
+    const displayPageNumber = async (pageNumber: number) => {
         const pdfPage = await pdf.getPage(pageNumber);
 
-        const viewportNoScale = pdfPage.getViewport({ scale: 1 });
-        const scale = rootElement.clientWidth / viewportNoScale.width;
+        // PDF is 72dpi
+        // CSS is 96dpi
+        const SCALE = 1;
+        const CSS_UNITS = 1; // 96 / 72;
+
+        const viewportNoScale = pdfPage.getViewport({ scale: SCALE });
+
+        const scaleW = rootElement.clientWidth / (viewportNoScale.width * CSS_UNITS);
+        const scaleH = rootElement.clientHeight / (viewportNoScale.height * CSS_UNITS);
+        const scale = _DisplayMode === PdfDisplayMode.fitPageWidth ? scaleW :
+            (_DisplayMode === PdfDisplayMode.fitWholePage ? Math.min(scaleW, scaleH) :
+            SCALE * 6); // PdfDisplayMode.originalDimensions
+        console.log("PDF viewport scales", scaleW, scaleH, scale);
+
         const viewport = pdfPage.getViewport({ scale });
 
         const canvas2d = canvas.getContext("2d");
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
+        canvas.width = viewport.width * CSS_UNITS;
+        canvas.height = viewport.height * CSS_UNITS;
+        canvas.style.left = _DisplayMode === PdfDisplayMode.fitPageWidth ? `0px` :
+            (_DisplayMode === PdfDisplayMode.fitWholePage ? `${(rootElement.clientWidth - (viewport.width * CSS_UNITS)) / 2}px` :
+            `0px`); // _DisplayMode === PdfDisplayMode.originalDimensions
+
+        if (_DisplayMode === PdfDisplayMode.fitPageWidth) {
+            canvas.ownerDocument.body.style.overflow = "hidden";
+            canvas.ownerDocument.body.style.overflowX = "hidden";
+            canvas.ownerDocument.body.style.overflowY = "auto";
+        } else if (_DisplayMode === PdfDisplayMode.fitWholePage) {
+            canvas.ownerDocument.body.style.overflow = "hidden";
+            canvas.ownerDocument.body.style.overflowX = "hidden";
+            canvas.ownerDocument.body.style.overflowY = "hidden";
+        } else { // _DisplayMode === PdfDisplayMode.originalDimensions
+            canvas.ownerDocument.body.style.overflow = "auto";
+            canvas.ownerDocument.body.style.overflowX = "auto";
+            canvas.ownerDocument.body.style.overflowY = "auto";
+        }
 
         await pdfPage.render({
             canvasContext: canvas2d,
@@ -136,6 +238,36 @@ export async function pdfReaderMountingPoint(
         }).promise;
 
         bus.dispatch("page", pageNumber);
+    };
+
+    const debouncedResize = debounce(async () => {
+        console.log("resize DEBOUNCED", rootElement.clientWidth, rootElement.clientHeight);
+        if (_lastPageNumber >= 0) {
+            await displayPageNumber(_lastPageNumber);
+        }
+    }, 500);
+
+    window.addEventListener("resize", async () => {
+        console.log("resize", rootElement.clientWidth, rootElement.clientHeight);
+        await debouncedResize();
+    });
+
+    canvas.addEventListener("dblclick", async () => {
+        if (_DisplayMode === PdfDisplayMode.fitPageWidth) {
+            _DisplayMode = PdfDisplayMode.fitWholePage;
+        } else if (_DisplayMode === PdfDisplayMode.fitWholePage) {
+            _DisplayMode = PdfDisplayMode.originalDimensions;
+        } else { // _DisplayMode === PdfDisplayMode.originalDimensions
+            _DisplayMode = PdfDisplayMode.fitPageWidth;
+        }
+        if (_lastPageNumber >= 0) {
+            await displayPageNumber(_lastPageNumber);
+        }
+    });
+
+    bus.subscribe("page", async (pageNumber: number) => {
+        _lastPageNumber = pageNumber;
+        await displayPageNumber(pageNumber);
     });
 
     return toc;

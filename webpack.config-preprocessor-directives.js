@@ -40,6 +40,9 @@ const isPackaging = process.env.PACKAGING || "0";
 const nodeModuleRelativeUrl = (isPackaging === "1") ?
     "node_modules" : "../node_modules";
 
+const distRelativeUrl = (isPackaging === "1") ?
+    "dist" : "../dist";
+
 const data = {
     __APP_VERSION__: JSON.stringify(version),
     __APP_NAME__: JSON.stringify(build.productName),
@@ -49,6 +52,7 @@ const data = {
     __NODE_ENV__: JSON.stringify(nodeEnv),
     __VSCODE_LAUNCH__: JSON.stringify(isVisualStudioCodeLaunch),
     __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
+    __DIST_RELATIVE_URL__: JSON.stringify(distRelativeUrl),
     __PACKAGING__: JSON.stringify(isPackaging),
     __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),

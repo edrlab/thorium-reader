@@ -8,7 +8,6 @@
 import * as classNames from "classnames";
 import divinaPlayer from "divina-player-js";
 import * as path from "path";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -66,6 +65,7 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import { IEventBusPdfPlayer } from "../pdf/common/pdfReader.type";
 import { pdfMountWebview } from "../pdf/driver";

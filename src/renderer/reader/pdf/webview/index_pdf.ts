@@ -25,7 +25,7 @@ function main() {
         (ev) => {
             ipcRenderer.on("pdf-eventbus", (event, message) => {
 
-                console.log("pdf-eventbus received", event, message);
+                console.log("ipcRenderer pdf-eventbus received", event, message);
 
                 const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
                 const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
@@ -40,6 +40,8 @@ function main() {
 
     bus.subscribe("start", async (pdfPath: string) => {
 
+        console.log("bus.subscribe start pdfPath", pdfPath);
+
         const toc = await pdfReaderMountingPoint(rootElement, pdfPath, bus);
 
         bus.dispatch("ready", toc);
@@ -48,4 +50,6 @@ function main() {
 
 }
 
-main();
+document.addEventListener("DOMContentLoaded", () => {
+    main();
+});

@@ -6,8 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
+
+import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 
 import { createWebpubZip, TResourcesBUFFERCreateZip } from "../zip/create";
 import { pdfCover } from "./cover";

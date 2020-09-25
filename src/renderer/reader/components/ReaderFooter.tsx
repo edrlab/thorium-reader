@@ -23,7 +23,7 @@ import {
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

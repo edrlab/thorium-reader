@@ -7,14 +7,7 @@
 
 import * as debug_ from "debug";
 import * as path from "path";
-import { LCP } from "r2-lcp-js/dist/es6-es2015/src/parser/epub/lcp";
-import { TaJsonDeserialize, TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
-import { EpubParsePromise } from "r2-shared-js/dist/es6-es2015/src/parser/epub";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
-// import { DivinaParsePromise } from "r2-shared-js/dist/es6-es2015/src/parser/divina";
-// import {
-//     PublicationParsePromise,
-// } from "r2-shared-js/dist/es6-es2015/src/parser/publication-parser";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { extractCrc32OnZip } from "readium-desktop/main/crc";
@@ -22,11 +15,19 @@ import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
-// import { CbzParsePromise } from "r2-shared-js/dist/es6-es2015/src/parser/cbz";
 import { extractFileFromZipToBuffer } from "readium-desktop/main/zip/extract";
 import { v4 as uuidv4 } from "uuid";
 
+import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+
+// import { CbzParsePromise } from "@r2-shared-js/parser/cbz";
+// import { DivinaParsePromise } from "@r2-shared-js/parser/divina";
+// import {
+//     PublicationParsePromise,
+// } from "@r2-shared-js/parser/publication-parser";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationFromFs");

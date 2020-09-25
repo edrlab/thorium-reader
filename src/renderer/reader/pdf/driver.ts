@@ -7,8 +7,11 @@
 
 import { remote } from "electron";
 import * as path from "path";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
-import { _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
+import {
+    _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
+} from "readium-desktop/preprocessor-directives";
+
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer } from "./common/pdfReader.type";
@@ -21,23 +24,34 @@ export async function pdfMountWebview(
 ): Promise<[bus: IEventBusPdfPlayer, toc: Link[] | undefined]> {
 
     const webview = document.createElement("webview");
+    webview.setAttribute("style",
+        "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
 
-    let rendererBaseUrl = _RENDERER_PDF_WEBVIEW_BASE_URL;
-    if (rendererBaseUrl === "file://") {
-        // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += path.normalize(path.join(__dirname, "index_pdf.html"));
+    let htmlPath = "index_pdf.html";
+    if (_PACKAGING === "1") {
+        htmlPath = "file://" + path.normalize(path.join((global as any).__dirname, htmlPath));
     } else {
-        // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += "index_pdf.html";
+        if (_RENDERER_PDF_WEBVIEW_BASE_URL === "file://") {
+            // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+            htmlPath = "file://" +
+                path.normalize(path.join((global as any).__dirname, _DIST_RELATIVE_URL, htmlPath));
+        } else {
+            // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+            htmlPath = "file://" + path.normalize(path.join(process.cwd(), "dist", htmlPath));
+        }
     }
-    rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
-    webview.src = rendererBaseUrl;
+    htmlPath = htmlPath.replace(/\\/g, "/");
 
-        // tslint:disable-next-line:max-line-length
+    // tslint:disable-next-line:max-line-length
     // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#3-enable-context-isolation-for-remote-content
-    webview.setAttribute("webpreferences",
-        "nodeIntegration=1, nodeIntegrationInWorker=0, sandbox=0, javascript=1, " +
-        "contextIsolation=0, webSecurity=1, allowRunningInsecureContent=0, enableRemoteModule=0");
+    // webview.setAttribute("webpreferences",
+    //     "nodeIntegration=1, nodeIntegrationInWorker=0, sandbox=0, javascript=1, " +
+    //     "contextIsolation=0, webSecurity=1, allowRunningInsecureContent=0, enableRemoteModule=0");
+    // webview.setAttribute("nodeIntegration", "");
+    // webview.setAttribute("disablewebsecurity", "");
+    // webview.setAttribute("webpreferences",
+    //     "sandbox=0, javascript=1, contextIsolation=0, webSecurity=0, allowRunningInsecureContent=1");
+
     webview.addEventListener("dom-ready", () => {
         // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webcontents
 
@@ -108,7 +122,7 @@ export async function pdfMountWebview(
                 if (channel === "pdf-eventbus") {
 
                     const message = event.args[0];
-                    console.log("pdf-eventbus received", event, message);
+                    console.log("ipc-message pdf-eventbus received", event, message);
 
                     const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
                     const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
@@ -129,8 +143,29 @@ export async function pdfMountWebview(
 
     webview.addEventListener("did-finish-load", () => {
 
+        console.log("did-finish-load bus.dispatch start pdfPath", pdfPath);
         bus.dispatch("start", pdfPath);
     });
+
+    let preloadPath = "index_pdf.js";
+    if (_PACKAGING === "1") {
+        preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
+    } else {
+        if (_RENDERER_PDF_WEBVIEW_BASE_URL === "file://") {
+            // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+            preloadPath = "file://" +
+                path.normalize(path.join((global as any).__dirname, _DIST_RELATIVE_URL, preloadPath));
+        } else {
+            // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+            preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", preloadPath));
+        }
+    }
+    preloadPath = preloadPath.replace(/\\/g, "/");
+
+    webview.setAttribute("preload", preloadPath);
+
+    // webview.src = rendererBaseUrl;
+    webview.setAttribute("src", htmlPath);
 
     const toc = await Promise.race([
         new Promise<void>((_r, reject) => setTimeout(() => reject("TIMEOUT"), 50000)),

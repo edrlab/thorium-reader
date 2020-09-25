@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import { IEventBus } from "./eventBus";
 

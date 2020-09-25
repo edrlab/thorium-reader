@@ -9,8 +9,6 @@ import * as debug_ from "debug";
 import { promises as fsp } from "fs";
 import * as moment from "moment";
 import * as path from "path";
-import { LCP } from "r2-lcp-js/dist/es6-es2015/src/parser/epub/lcp";
-import { TaJsonDeserialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -19,6 +17,9 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { diMainGet } from "readium-desktop/main/di";
 import { call, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
+
+import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 
 import { downloader } from "../../../downloader";
 import { importPublicationFromFS } from "./importPublicationFromFs";

@@ -30,7 +30,7 @@ export function eventBus(
 
     const event: IEventObj = {};
 
-    rx((key, arg) => {
+    rx((key, ...arg) => {
 
         if (event[key]) {
             const fns = event[key];
