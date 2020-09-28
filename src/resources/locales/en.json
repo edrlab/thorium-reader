@@ -273,6 +273,19 @@
                 "twoTitle": "two columns"
             },
             "display": "Display",
+            "pdfZoom": {
+              "title": "Zoom",
+              "name": {
+                "fit": "page fit",
+                "width": "page width",
+                "50": "50 %",
+                "100": "100 %",
+                "150": "150 %",
+                "200": "200 %",
+                "300": "300 %",
+                "500": "500 %"
+              }
+            },
             "disposition": {
                 "title": "Layout"
             },

@@ -357,15 +357,25 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             return <></>;
         }
 
-        let currentPage = this.props.isDivina ?
+        let currentPage = (this.props.isDivina || this.props.isPdf) ?
             this.props.currentLocation?.locator?.href :
             this.props.currentLocation?.epubPage;
-        if (this.props.isDivina && currentPage) {
-            try {
-                const p = parseInt(currentPage, 10) + 1;
-                currentPage = p.toString();
-            } catch (e) {
-                // ignore
+        if (currentPage) {
+
+            if (this.props.isDivina) {
+                try {
+                    const p = parseInt(currentPage, 10) + 1;
+                    currentPage = p.toString();
+                } catch (e) {
+                    // ignore
+                }
+            } else if (this.props.isPdf) {
+                try {
+                    const p = parseInt(currentPage, 10);
+                    currentPage = p.toString();
+                } catch (e) {
+                    // ignore
+                }
             }
         }
 
@@ -380,13 +390,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     type="text"
                     aria-invalid={error}
                     onChange={() => this.setState({pageError: false})}
-                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina)}
+                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)}
                     placeholder={__("reader.navigation.goToPlaceHolder")}
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
                     type="submit"
-                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina)}
+                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)}
                 >
                     { __("reader.navigation.goTo") }
                 </button>
@@ -417,15 +427,24 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             return;
         }
         const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
-        if (this.props.isDivina) {
+        if (this.props.isDivina || this.props.isPdf) {
             let page: number | undefined;
-            try {
-                page = parseInt(pageNbr, 10) - 1;
-            } catch (e) {
-                // ignore error
+
+            if (this.props.isDivina) {
+                try {
+                    page = parseInt(pageNbr, 10) - 1;
+                } catch (e) {
+                    // ignore error
+                }
+            } else if (this.props.isPdf) {
+                try {
+                    page = parseInt(pageNbr, 10);
+                } catch (e) {
+                    // ignore error
+                }
             }
             if (typeof page !== "undefined" && page >= 0 &&
-                this.props.r2Publication.Spine && this.props.r2Publication.Spine[page]) {
+                ((this.props.r2Publication.Spine && this.props.r2Publication.Spine[page]) || this.props.isPdf)) {
 
                 this.setState({pageError: false});
 

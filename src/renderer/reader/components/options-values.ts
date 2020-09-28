@@ -13,7 +13,7 @@ import {
 
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { TToc } from "../pdf/common/pdfReader.type";
+import { IEventBusPdfPlayer, IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
 
 export const fontSize: string[] = [
     "75%",
@@ -134,4 +134,7 @@ export interface IReaderOptionsProps {
     toggleMenu: () => void;
     r2Publication: R2Publication | undefined;
     handleDivinaReadingMode: (v: TdivinaReadingMode) => void;
+    pdfEventBus: IEventBusPdfPlayer;
+    isDivina: boolean;
+    isPdf: boolean;
 }

@@ -538,6 +538,19 @@ declare namespace typed_i18n {
       readonly "twoTitle": string
     },
     readonly "display": string,
+    readonly "pdfZoom": {
+      readonly "title": string,
+      readonly "name": {
+        readonly "fit": string,
+        readonly "width": string,
+        readonly "50pct": string,
+        readonly "100pct": string,
+        readonly "150pct": string,
+        readonly "200pct": string,
+        readonly "300pct": string,
+        readonly "500pct": string
+      }
+    },
     readonly "disposition": { readonly "title": string },
     readonly "font": string,
     readonly "fontSize": string,
@@ -655,6 +668,19 @@ declare namespace typed_i18n {
     readonly "twoTitle": string
   },
   readonly "display": string,
+  readonly "pdfZoom": {
+    readonly "title": string,
+    readonly "name": {
+      readonly "fit": string,
+      readonly "width": string,
+      readonly "50pct": string,
+      readonly "100pct": string,
+      readonly "150pct": string,
+      readonly "200pct": string,
+      readonly "300pct": string,
+      readonly "500pct": string
+    }
+  },
   readonly "disposition": { readonly "title": string },
   readonly "font": string,
   readonly "fontSize": string,
@@ -697,6 +723,38 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.column.twoTitle", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
+  (_: "reader.settings.pdfZoom", __?: {}): {
+  readonly "title": string,
+  readonly "name": {
+    readonly "fit": string,
+    readonly "width": string,
+    readonly "50pct": string,
+    readonly "100pct": string,
+    readonly "150pct": string,
+    readonly "200pct": string,
+    readonly "300pct": string,
+    readonly "500pct": string
+  }
+};
+  (_: "reader.settings.pdfZoom.title", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name", __?: {}): {
+  readonly "fit": string,
+  readonly "width": string,
+  readonly "50pct": string,
+  readonly "100pct": string,
+  readonly "150pct": string,
+  readonly "200pct": string,
+  readonly "300pct": string,
+  readonly "500pct": string
+};
+  (_: "reader.settings.pdfZoom.name.fit", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.width", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.50pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.100pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.150pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.200pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.300pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.500pct", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
   (_: "reader.settings.disposition.title", __?: {}): string;
   (_: "reader.settings.font", __?: {}): string;

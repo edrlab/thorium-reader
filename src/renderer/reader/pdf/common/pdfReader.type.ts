@@ -7,9 +7,9 @@
 
 import { IEventBus } from "./eventBus";
 
-export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "200";
-export type IPdfPlayerView = "scrollable" | "paginated";
-export type IPdfPlayerColumn = 1 | 2;
+export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "150" | "200" | "300" | "500";
+export type IPdfPlayerView = "scrolled" | "paginated";
+export type IPdfPlayerColumn = "auto" | "1" | "2";
 
 export interface IPdfPlayerEvent {
     "page": (pageNumber: number) => any;

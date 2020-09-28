@@ -9,6 +9,7 @@ import { debounce } from "debounce";
 import * as path from "path";
 import * as pdfJs from "pdfjs-dist";
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
+import { PageViewport } from "pdfjs-dist/types/display/display_utils";
 import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
@@ -17,7 +18,9 @@ import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
 
-import { IEventBusPdfPlayer, ILink, TToc } from "../common/pdfReader.type";
+import {
+    IEventBusPdfPlayer, ILink, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView, TToc,
+} from "../common/pdfReader.type";
 
 // import * as pdfJs from "pdfjs-dist/webpack";
 
@@ -70,13 +73,6 @@ pdfJs.GlobalWorkerOptions.workerPort = new Worker(window.URL.createObjectURL(
 // workerPath = "file://" + path.normalize(path.join(process.cwd(), "dist", workerPath));
 // workerPath = workerPath.replace(/\\/g, "/");
 // pdfJs.GlobalWorkerOptions.workerSrc = workerPath;
-
-enum PdfDisplayMode {
-    fitPageWidth = "fitPageWidth",
-    fitWholePage = "fitWholePage",
-    originalDimensions = "originalDimensions",
-}
-let _DisplayMode = PdfDisplayMode.fitPageWidth;
 
 type TUnPromise<T extends any> =
     T extends Promise<infer R> ? R : any;
@@ -151,6 +147,9 @@ export async function pdfReaderMountingPoint(
     rootElement: HTMLElement,
     pdfPath: string,
     bus: IEventBusPdfPlayer,
+    defaultView: IPdfPlayerView = "paginated",
+    defaultColumn: IPdfPlayerColumn = "1",
+    defaultScale: IPdfPlayerScale = "fit",
 ): Promise<TToc> {
 
     const canvas = document.createElement("canvas");
@@ -185,11 +184,16 @@ export async function pdfReaderMountingPoint(
     }
 
     console.log("outline", outline);
-    // console.log(await pdf.getDestination("p14"));
-    // console.log(await pdf.getPageIndex((await pdf.getDestination("p14"))[0] as TdestForPageIndex));
     console.log("toc", toc);
 
     let _lastPageNumber = -1;
+    let _scale: IPdfPlayerScale = defaultScale;
+    // tslint:disable-next-line:prefer-const
+    let _view: IPdfPlayerView = defaultView;
+    // tslint:disable-next-line:prefer-const
+    let _column: IPdfPlayerColumn = defaultColumn;
+
+    console.log(_view, _column); // not implemented
 
     const displayPageNumber = async (pageNumber: number) => {
         const pdfPage = await pdf.getPage(pageNumber);
@@ -203,40 +207,153 @@ export async function pdfReaderMountingPoint(
 
         const scaleW = rootElement.clientWidth / (viewportNoScale.width * CSS_UNITS);
         const scaleH = rootElement.clientHeight / (viewportNoScale.height * CSS_UNITS);
-        const scale = _DisplayMode === PdfDisplayMode.fitPageWidth ? scaleW :
-            (_DisplayMode === PdfDisplayMode.fitWholePage ? Math.min(scaleW, scaleH) :
-            SCALE * 6); // PdfDisplayMode.originalDimensions
-        console.log("PDF viewport scales", scaleW, scaleH, scale);
 
-        const viewport = pdfPage.getViewport({ scale });
+        let viewport: PageViewport;
+
+        switch (_scale) {
+
+            case "fit": {
+
+                const scale = scaleW;
+                viewport = pdfPage.getViewport({ scale });
+
+                canvas.width = viewport.width * CSS_UNITS;
+                canvas.height = viewport.height * CSS_UNITS;
+
+                canvas.style.left = "0px";
+
+                canvas.ownerDocument.body.style.overflow = "hidden";
+                canvas.ownerDocument.body.style.overflowX = "hidden";
+                canvas.ownerDocument.body.style.overflowY = "auto";
+                break;
+            }
+
+            case "width": {
+
+                const scale = Math.min(scaleW, scaleH);
+                viewport = pdfPage.getViewport({ scale });
+
+                canvas.width = viewport.width * CSS_UNITS;
+                canvas.height = viewport.height * CSS_UNITS;
+
+                canvas.style.left = `${(rootElement.clientWidth - (viewport.width * CSS_UNITS)) / 2}px`;
+
+                canvas.ownerDocument.body.style.overflow = "hidden";
+                canvas.ownerDocument.body.style.overflowX = "hidden";
+                canvas.ownerDocument.body.style.overflowY = "hidden";
+                break;
+
+            }
+
+            case "50": {
+
+                const scale = SCALE * 2;
+                viewport = pdfPage.getViewport({ scale });
+
+                canvas.width = viewport.width * CSS_UNITS;
+                canvas.height = viewport.height * CSS_UNITS;
+
+                canvas.style.left = "0px";
+
+                canvas.ownerDocument.body.style.overflow = "auto";
+                canvas.ownerDocument.body.style.overflowX = "auto";
+                canvas.ownerDocument.body.style.overflowY = "auto";
+                break;
+            }
+
+            case "100": {
+
+                const scale = SCALE * 4;
+                viewport = pdfPage.getViewport({ scale });
+
+                canvas.width = viewport.width * CSS_UNITS;
+                canvas.height = viewport.height * CSS_UNITS;
+
+                canvas.style.left = "0px";
+
+                canvas.ownerDocument.body.style.overflow = "auto";
+                canvas.ownerDocument.body.style.overflowX = "auto";
+                canvas.ownerDocument.body.style.overflowY = "auto";
+                break;
+
+            }
+
+            case "150": {
+
+                const scale = SCALE * 6;
+                viewport = pdfPage.getViewport({ scale });
+
+                canvas.width = viewport.width * CSS_UNITS;
+                canvas.height = viewport.height * CSS_UNITS;
+
+                canvas.style.left = "0px";
+
+                canvas.ownerDocument.body.style.overflow = "auto";
+                canvas.ownerDocument.body.style.overflowX = "auto";
+                canvas.ownerDocument.body.style.overflowY = "auto";
+                break;
+
+            }
+
+            case "200": {
+
+                const scale = SCALE * 8;
+                viewport = pdfPage.getViewport({ scale });
+
+                canvas.width = viewport.width * CSS_UNITS;
+                canvas.height = viewport.height * CSS_UNITS;
+
+                canvas.style.left = "0px";
+
+                canvas.ownerDocument.body.style.overflow = "auto";
+                canvas.ownerDocument.body.style.overflowX = "auto";
+                canvas.ownerDocument.body.style.overflowY = "auto";
+                break;
+
+            }
+
+            case "300": {
+
+                const scale = SCALE * 12;
+                viewport = pdfPage.getViewport({ scale });
+
+                canvas.width = viewport.width * CSS_UNITS;
+                canvas.height = viewport.height * CSS_UNITS;
+
+                canvas.style.left = "0px";
+
+                canvas.ownerDocument.body.style.overflow = "auto";
+                canvas.ownerDocument.body.style.overflowX = "auto";
+                canvas.ownerDocument.body.style.overflowY = "auto";
+                break;
+
+            }
+
+            case "500": {
+
+                const scale = SCALE * 16;
+                viewport = pdfPage.getViewport({ scale });
+
+                canvas.width = viewport.width * CSS_UNITS;
+                canvas.height = viewport.height * CSS_UNITS;
+
+                canvas.style.left = "0px";
+
+                canvas.ownerDocument.body.style.overflow = "auto";
+                canvas.ownerDocument.body.style.overflowX = "auto";
+                canvas.ownerDocument.body.style.overflowY = "auto";
+                break;
+
+            }
+        }
 
         const canvas2d = canvas.getContext("2d");
-        canvas.width = viewport.width * CSS_UNITS;
-        canvas.height = viewport.height * CSS_UNITS;
-        canvas.style.left = _DisplayMode === PdfDisplayMode.fitPageWidth ? `0px` :
-            (_DisplayMode === PdfDisplayMode.fitWholePage ? `${(rootElement.clientWidth - (viewport.width * CSS_UNITS)) / 2}px` :
-            `0px`); // _DisplayMode === PdfDisplayMode.originalDimensions
-
-        if (_DisplayMode === PdfDisplayMode.fitPageWidth) {
-            canvas.ownerDocument.body.style.overflow = "hidden";
-            canvas.ownerDocument.body.style.overflowX = "hidden";
-            canvas.ownerDocument.body.style.overflowY = "auto";
-        } else if (_DisplayMode === PdfDisplayMode.fitWholePage) {
-            canvas.ownerDocument.body.style.overflow = "hidden";
-            canvas.ownerDocument.body.style.overflowX = "hidden";
-            canvas.ownerDocument.body.style.overflowY = "hidden";
-        } else { // _DisplayMode === PdfDisplayMode.originalDimensions
-            canvas.ownerDocument.body.style.overflow = "auto";
-            canvas.ownerDocument.body.style.overflowX = "auto";
-            canvas.ownerDocument.body.style.overflowY = "auto";
-        }
 
         await pdfPage.render({
             canvasContext: canvas2d,
             viewport,
         }).promise;
 
-        bus.dispatch("page", pageNumber);
     };
 
     const debouncedResize = debounce(async () => {
@@ -251,22 +368,62 @@ export async function pdfReaderMountingPoint(
         await debouncedResize();
     });
 
-    canvas.addEventListener("dblclick", async () => {
-        if (_DisplayMode === PdfDisplayMode.fitPageWidth) {
-            _DisplayMode = PdfDisplayMode.fitWholePage;
-        } else if (_DisplayMode === PdfDisplayMode.fitWholePage) {
-            _DisplayMode = PdfDisplayMode.originalDimensions;
-        } else { // _DisplayMode === PdfDisplayMode.originalDimensions
-            _DisplayMode = PdfDisplayMode.fitPageWidth;
-        }
-        if (_lastPageNumber >= 0) {
-            await displayPageNumber(_lastPageNumber);
-        }
-    });
+    const pageNumberCheck = (pageNumber: number) => {
+        return pageNumber < 1 ? 1 : pageNumber;
+    };
 
     bus.subscribe("page", async (pageNumber: number) => {
-        _lastPageNumber = pageNumber;
-        await displayPageNumber(pageNumber);
+        _lastPageNumber = pageNumberCheck(pageNumber);
+
+        await displayPageNumber(_lastPageNumber);
+
+        bus.dispatch("page", _lastPageNumber);
+    });
+
+    bus.subscribe("page-next", async () => {
+        _lastPageNumber = pageNumberCheck(++_lastPageNumber);
+
+        await displayPageNumber(_lastPageNumber);
+
+        bus.dispatch("page", _lastPageNumber);
+    });
+
+    bus.subscribe("page-previous", async () => {
+        _lastPageNumber = pageNumberCheck(--_lastPageNumber);
+
+        await displayPageNumber(_lastPageNumber);
+
+        bus.dispatch("page", _lastPageNumber);
+    });
+
+    bus.subscribe("scale", async (scale) => {
+        _scale = scale;
+
+        console.log("scale", scale);
+        await displayPageNumber(_lastPageNumber);
+
+        bus.dispatch("scale", scale);
+    });
+
+    bus.subscribe("view", async (view) => {
+        _view = view;
+
+        console.log("view", view);
+
+        bus.dispatch("view", view);
+    });
+
+    bus.subscribe("column", (col) => {
+        _column = col;
+
+        console.log("col", col);
+
+        bus.dispatch("column", col);
+    });
+
+    bus.subscribe("search", (search) => {
+
+        console.log("search", search);
     });
 
     return toc;

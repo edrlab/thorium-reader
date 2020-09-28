@@ -7,7 +7,7 @@
 
 import { ipcRenderer } from "electron";
 import { eventBus } from "../common/eventBus";
-import { IEventBusPdfPlayer } from "../common/pdfReader.type";
+import { IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../common/pdfReader.type";
 import { pdfReaderMountingPoint } from "./pdfReader";
 
 function main() {
@@ -23,9 +23,14 @@ function main() {
             ipcRenderer.sendToHost("pdf-eventbus", data);
         },
         (ev) => {
-            ipcRenderer.on("pdf-eventbus", (event, message) => {
+            ipcRenderer.on("pdf-eventbus", (_event, message) => {
 
-                console.log("ipcRenderer pdf-eventbus received", event, message);
+                try {
+                    // tslint:disable-next-line: max-line-length
+                    console.log("ipcRenderer pdf-eventbus received", JSON.parse(message.key), JSON.parse(message.payload));
+                } catch (e) {
+                    console.log("ipcRenderer error to parse", e);
+                }
 
                 const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
                 const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
@@ -42,8 +47,18 @@ function main() {
 
         console.log("bus.subscribe start pdfPath", pdfPath);
 
-        const toc = await pdfReaderMountingPoint(rootElement, pdfPath, bus);
+        const defaultView: IPdfPlayerView = "paginated";
+        const defaultScale: IPdfPlayerScale = "fit";
+        const defaultCol: IPdfPlayerColumn = "1";
 
+        const toc = await pdfReaderMountingPoint(rootElement, pdfPath, bus, defaultView, defaultCol, defaultScale);
+
+        bus.subscribe("ready", () => {
+
+            bus.dispatch("scale", defaultScale);
+            bus.dispatch("view", defaultView);
+            bus.dispatch("column", defaultCol);
+        });
         bus.dispatch("ready", toc);
 
     });

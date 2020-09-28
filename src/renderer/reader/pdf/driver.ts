@@ -11,17 +11,15 @@ import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
-import { Link } from "@r2-shared-js/models/publication-link";
-
 import { eventBus } from "./common/eventBus";
-import { IEventBusPdfPlayer } from "./common/pdfReader.type";
+import { IEventBusPdfPlayer, TToc } from "./common/pdfReader.type";
 
 // bridge between webview tx-rx communication and reader.tsx
 
 export async function pdfMountWebview(
     pdfPath: string,
     publicationViewport: HTMLDivElement,
-): Promise<[bus: IEventBusPdfPlayer, toc: Link[] | undefined]> {
+): Promise<[bus: IEventBusPdfPlayer, toc: TToc | undefined]> {
 
     const webview = document.createElement("webview");
     webview.setAttribute("style",
@@ -122,7 +120,12 @@ export async function pdfMountWebview(
                 if (channel === "pdf-eventbus") {
 
                     const message = event.args[0];
-                    console.log("ipc-message pdf-eventbus received", event, message);
+                    try {
+                        // tslint:disable-next-line: max-line-length
+                        console.log("ipc-message pdf-eventbus received", JSON.parse(message.key), JSON.parse(message.payload));
+                    } catch (e) {
+                        console.log("ipc message pdf-eventbus received with parsing error", e);
+                    }
 
                     const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
                     const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
@@ -169,7 +172,7 @@ export async function pdfMountWebview(
 
     const toc = await Promise.race([
         new Promise<void>((_r, reject) => setTimeout(() => reject("TIMEOUT"), 50000)),
-        new Promise<Link[]>((resolve) => bus.subscribe("ready", (t) => resolve(t))),
+        new Promise<TToc>((resolve) => bus.subscribe("ready", (t) => resolve(t))),
     ]);
 
     if (Array.isArray(toc)) {

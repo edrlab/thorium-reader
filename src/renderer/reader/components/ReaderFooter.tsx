@@ -111,7 +111,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                     {
                                         (isPdf
                                             // tslint:disable-next-line: max-line-length
-                                            ? Array.from({ length: r2Publication.Metadata.NumberOfPages || 1 }, (_v, i) => {
+                                            ? Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, i) => {
                                                 const link = new Link();
                                                 link.Href = i.toString();
                                                 return link;
@@ -122,10 +122,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                             let atCurrentLocation = false;
                                             if (isDivina) {
 
-                                                atCurrentLocation = currentLocation.locator.href === index.toString();
+                                                atCurrentLocation = currentLocation.locator?.href === index.toString();
                                             } else {
 
-                                                atCurrentLocation = currentLocation.locator.href === link.Href;
+                                                atCurrentLocation = currentLocation.locator?.href === link.Href;
                                             }
                                             if (atCurrentLocation) {
                                                 afterCurrentLocation = true;
@@ -203,12 +203,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         id={styles.arrow_box}
                                         style={this.getStyle(this.getArrowBoxStyle)}
                                     >
-                                        <span title={spineTitle}><em>{`(${isDivina || isPdf
-                                            ?
-                                            (parseInt(currentLocation.locator.href, 10) + 1).toString()
-                                            :
-                                            ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator.href)) + 1).toString()
-                                            }/${r2Publication.Spine.length
+                                        <span title={spineTitle}><em>{`(${(isDivina)
+                                            ? (parseInt(currentLocation.locator?.href, 10) + 1).toString()
+                                            : isPdf ?
+                                                parseInt(currentLocation.locator?.href, 10).toString()
+                                                :
+                                                ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
+                                            }/${isPdf ? r2Publication.Metadata?.NumberOfPages : r2Publication.Spine.length
                                             }) `}</em> {` ${spineTitle}`}</span>
                                         <p>
                                             {this.getProgression()}
@@ -240,7 +241,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return {};
         }
 
-        let progression = currentLocation.locator.locations.progression;
+        let progression = currentLocation.locator.locations?.progression;
         if (progression >= 0.9) {
             progression = 1;
         }
@@ -250,17 +251,21 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     }
 
     private getArrowBoxPosition() {
-        const { currentLocation, r2Publication } = this.props;
+        const { currentLocation, r2Publication, isPdf } = this.props;
         if (!r2Publication || !currentLocation) {
             return undefined;
         }
 
         let spineItemId = 0;
         if (currentLocation) {
-            spineItemId = r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href);
+            if (isPdf) {
+                spineItemId = parseInt(currentLocation.locator?.href, 10) || 1;
+            } else {
+                spineItemId = r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator?.href);
+            }
         }
-        const onePourcent = 100 / r2Publication.Spine.length;
-        let progression = currentLocation.locator.locations.progression;
+        const onePourcent = 100 / (isPdf ? r2Publication.Metadata?.NumberOfPages || 1 : r2Publication.Spine?.length);
+        let progression = currentLocation.locator?.locations?.progression;
         if (progression >= 0.9) {
             progression = 1;
         }
@@ -274,7 +279,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return "";
         }
 
-        const percent = Math.round(currentLocation.locator.locations.progression * 100);
+        const percent = Math.round((currentLocation.locator.locations?.progression || 0) * 100);
 
         if (currentLocation.paginationInfo) {
             return `${percent}% (${currentLocation.paginationInfo.currentColumn + 1} / ${currentLocation.paginationInfo.totalColumns})`;

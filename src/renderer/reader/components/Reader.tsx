@@ -109,6 +109,9 @@ interface IState {
     bookmarks: LocatorView[] | undefined;
 
     readerMode: ReaderMode;
+
+    pdfPlayerBusEvent: IEventBusPdfPlayer;
+    pdfPlayerToc: TToc;
 }
 
 // import { debounce } from "debounce";
@@ -124,8 +127,6 @@ class Reader extends React.Component<IProps, IState> {
     private mainElRef: React.RefObject<HTMLDivElement>;
 
     private currentDivinaPlayer: any;
-    private pdfPlayerBusEvent: IEventBusPdfPlayer;
-    private pdfPlayerToc: TToc;
 
     // can be get back wwith withTranslator HOC
     // to remove
@@ -179,6 +180,9 @@ class Reader extends React.Component<IProps, IState> {
             bookmarks: undefined,
 
             readerMode: ReaderMode.Attached,
+
+            pdfPlayerBusEvent: undefined,
+            pdfPlayerToc: undefined,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -234,9 +238,9 @@ class Reader extends React.Component<IProps, IState> {
 
             await this.loadPublicationIntoViewport();
 
-            if (this.pdfPlayerBusEvent) {
+            if (this.state.pdfPlayerBusEvent) {
 
-                this.pdfPlayerBusEvent.subscribe("page",
+                this.state.pdfPlayerBusEvent.subscribe("page",
                     (pageIndex: number) => {
                         const loc = {
                             locator: {
@@ -253,7 +257,7 @@ class Reader extends React.Component<IProps, IState> {
 
                 const index = parseInt(this.props.locator?.locator?.href, 10) || 1;
                 console.log("pdf page index", index);
-                this.pdfPlayerBusEvent.dispatch("page", index);
+                this.state.pdfPlayerBusEvent.dispatch("page", index);
 
             } else {
                 console.log("pdf bus event undefined");
@@ -342,6 +346,11 @@ class Reader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
+
+        if (oldState.pdfPlayerBusEvent !== this.state.pdfPlayerBusEvent) {
+            this.state.pdfPlayerBusEvent.dispatch("ready");
+        }
+
     }
 
     public componentWillUnmount() {
@@ -360,7 +369,7 @@ class Reader extends React.Component<IProps, IState> {
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
-            pdfToc: this.pdfPlayerToc,
+            pdfToc: this.state.pdfPlayerToc,
             isPdf: this.props.isPdf,
         };
 
@@ -374,6 +383,9 @@ class Reader extends React.Component<IProps, IState> {
             toggleMenu: this.handleSettingsClick,
             r2Publication: this.props.r2Publication,
             handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
+            isDivina: this.props.isDivina,
+            isPdf: this.props.isPdf,
+            pdfEventBus: this.state.pdfPlayerBusEvent,
         };
 
         return (
@@ -801,6 +813,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         this.navLeftOrRight_(isPrevious, false);
+
     }
 
     private onKeyboardSpineNavigationNext = () => {
@@ -817,7 +830,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.navLeftOrRight_(isPrevious, true);
+        this.navLeftOrRight_(isPrevious, false);
 
         if (this.fastLinkRef?.current) {
             setTimeout(() => {
@@ -863,50 +876,55 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log("pdf url", pdfUrl);
 
-            [this.pdfPlayerBusEvent, this.pdfPlayerToc] = await pdfMountWebview(pdfUrl, publicationViewport);
+            const [pdfPlayerBusEvent, pdfPlayerToc] = await pdfMountWebview(pdfUrl, publicationViewport);
 
-            console.log("toc", this.pdfPlayerToc);
+            this.setState({
+                pdfPlayerToc,
+                pdfPlayerBusEvent,
+            });
 
-            this.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
+            console.log("toc", this.state.pdfPlayerToc);
+
+            this.state.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
 
                 console.log("pdfPlayer page changed", pageNumber);
             });
 
-            this.pdfPlayerBusEvent.subscribe("scale", (scale) => {
+            this.state.pdfPlayerBusEvent.subscribe("scale", (scale) => {
 
                 console.log("pdfPlayer scale changed", scale);
             });
 
-            this.pdfPlayerBusEvent.subscribe("view", (view) => {
+            this.state.pdfPlayerBusEvent.subscribe("view", (view) => {
 
                 console.log("pdfPlayer view changed", view);
             });
 
-            this.pdfPlayerBusEvent.subscribe("column", (column) => {
+            this.state.pdfPlayerBusEvent.subscribe("column", (column) => {
 
                 console.log("pdfPlayer column changed", column);
             });
 
-            this.pdfPlayerBusEvent.subscribe("search", (search) => {
+            this.state.pdfPlayerBusEvent.subscribe("search", (search) => {
 
                 console.log("pdfPlayer search word changed", search);
             });
 
-            this.pdfPlayerBusEvent.subscribe("search-next", () => {
+            this.state.pdfPlayerBusEvent.subscribe("search-next", () => {
 
                 console.log("pdfPlayer highlight next search word executed");
             });
 
-            this.pdfPlayerBusEvent.subscribe("search-previous", () => {
+            this.state.pdfPlayerBusEvent.subscribe("search-previous", () => {
 
                 console.log("pdfPlayer highlight previous search word executed");
             });
 
             /* master subscribe */
-            this.pdfPlayerBusEvent.subscribe("page-next", () => {
+            this.state.pdfPlayerBusEvent.subscribe("page-next", () => {
                 console.log("pdfPlayer next page requested");
             });
-            this.pdfPlayerBusEvent.subscribe("page-previous", () => {
+            this.state.pdfPlayerBusEvent.subscribe("page-previous", () => {
                 console.log("pdfPlayer previous page requested");
             });
 
@@ -1110,9 +1128,9 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
             if (left) {
-                this.pdfPlayerBusEvent?.dispatch("page-previous");
+                this.state.pdfPlayerBusEvent?.dispatch("page-previous");
             } else {
-                this.pdfPlayerBusEvent?.dispatch("page-next");
+                this.state.pdfPlayerBusEvent?.dispatch("page-next");
             }
         } else if (this.props.isDivina) {
 
@@ -1148,7 +1166,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const index = parseInt(locator?.href, 10);
             if (index) {
-                this.pdfPlayerBusEvent?.dispatch("page", index);
+                this.state.pdfPlayerBusEvent?.dispatch("page", index);
             }
 
         } else if (this.props.isDivina) {
@@ -1177,7 +1195,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const index = parseInt(url, 10);
             if (index) {
-                this.pdfPlayerBusEvent?.dispatch("page", index);
+                this.state.pdfPlayerBusEvent?.dispatch("page", index);
             }
 
         } else if (this.props.isDivina) {
