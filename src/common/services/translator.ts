@@ -114,7 +114,7 @@ i18nextInstance.init({
         },
         "it" : {
             translation: itCatalog,
-        }
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
