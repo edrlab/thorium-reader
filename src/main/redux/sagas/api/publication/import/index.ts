@@ -95,10 +95,15 @@ export function* importFromFs(
 
                 try {
 
-                    const { b: [publicationDocument, alreadyImported] } = yield* raceTyped({
-                        a: delay(30000),
-                        b: callTyped(importFromFsService, fpath),
-                    });
+                    // const { b: [publicationDocument, alreadyImported] } = yield* raceTyped({
+                    //     a: delay(30000),
+                    //     b: callTyped(importFromFsService, fpath),
+                    // });
+                    const data = yield* callTyped(importFromFsService, fpath);
+                    if (!data) {
+                        throw new Error("importFromFsService undefined");
+                    }
+                    const [publicationDocument, alreadyImported] = data;
 
                     if (!publicationDocument) {
                         throw new Error("publicationDocument not imported on db");

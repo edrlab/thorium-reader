@@ -34,7 +34,10 @@ export async function pdfPackager(pdfPath: string): Promise<string> {
     debug(manifest);
 
     const pdfCoverFn = () => pdfCover(pdfPath, manifest);
-    const pngBuffer = await tryCatch(pdfCoverFn, _filename);
+    const pngBuffer = await tryCatch(() => Promise.race([
+        new Promise<void>((_resolve, reject) => setTimeout(() => reject("TIMEOUT"), 20000)),
+        pdfCoverFn(),
+    ]), _filename);
     const pngName = manifest?.Resources[0]?.Href || "";
     const coverResources: TResourcesBUFFERCreateZip =
         pngBuffer
