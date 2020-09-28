@@ -157,17 +157,17 @@ export async function pdfManifest(pdfPath: string): Promise<R2Publication> {
             }
         }
 
-        {
-            const producer = info.Producer;
-            debug("producer", producer);
+        // {
+        //     const producer = info.Producer;
+        //     debug("producer", producer);
 
-            if (producer) {
+        //     if (producer) {
 
-                const contributor = new Contributor();
-                contributor.Name = producer;
-                r2Publication.Metadata.Publisher = [contributor];
-            }
-        }
+        //         const contributor = new Contributor();
+        //         contributor.Name = producer;
+        //         r2Publication.Metadata.Publisher = [contributor];
+        //     }
+        // }
 
         await tryCatch(() => {
             const creationDate = info.CreationDate;
