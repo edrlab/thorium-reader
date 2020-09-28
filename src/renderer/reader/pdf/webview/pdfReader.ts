@@ -16,9 +16,8 @@ import {
 import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
-import { Link } from "@r2-shared-js/models/publication-link";
 
-import { IEventBusPdfPlayer } from "../common/pdfReader.type";
+import { IEventBusPdfPlayer, ILink, TToc } from "../common/pdfReader.type";
 
 // import * as pdfJs from "pdfjs-dist/webpack";
 
@@ -110,9 +109,9 @@ function destForPageIndexParse(destRaw: any | any[]): TdestForPageIndex | undefi
     return destForPageIndex;
 }
 
-async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy): Promise<Link> {
+async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy): Promise<ILink> {
 
-    const link = new Link();
+    const link: ILink = {};
 
     if (outline.dest) {
 
@@ -129,8 +128,10 @@ async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy): P
         }
 
         if (destForPageIndex) {
-            const page = await pdf.getPageIndex(destForPageIndex);
-            link.Href = page.toString();
+            // tslint:disable-next-line: max-line-length
+            const page = (await pdf.getPageIndex(destForPageIndex) as unknown as number); // type error should be return a number zero based
+            const pageOffset = page + 1;
+            link.Href = pageOffset.toString();
         }
 
     }
@@ -145,8 +146,6 @@ async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy): P
 
     return link;
 }
-
-type TToc = Link[];
 
 export async function pdfReaderMountingPoint(
     rootElement: HTMLElement,

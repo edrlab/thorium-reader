@@ -25,6 +25,7 @@ import { Unsubscribe } from "redux";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
+import { TToc } from "../pdf/common/pdfReader.type";
 import { IReaderMenuProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
@@ -107,7 +108,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, r2Publication, toggleMenu } = this.props;
+        const { __, r2Publication, toggleMenu, pdfToc, isPdf } = this.props;
         const { bookmarks } = this.state;
         if (!r2Publication) {
             return <></>;
@@ -116,8 +117,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             {
                 title: __("reader.marks.toc"),
                 content:
-                    (r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1)) ||
-                    (r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
+                    (isPdf && pdfToc?.length && this.renderLinkTree(__("reader.marks.toc"), pdfToc, 1)) ||
+                    (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
+                    // tslint:disable-next-line: max-line-length
+                    (!isPdf && r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1)) ||
+                    (!isPdf && r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
                 disabled:
                     (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
                     (!r2Publication.Spine || r2Publication.Spine.length === 0),
@@ -199,7 +203,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         </ul>;
     }
 
-    private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+    private renderLinkTree(label: string | undefined, links: TToc, level: number): JSX.Element {
         // console.log(label, JSON.stringify(links, null, 4));
 
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(

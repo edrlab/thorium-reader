@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { Link } from "@r2-shared-js/models/publication-link";
-
 import { IEventBus } from "./eventBus";
 
 export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "200";
@@ -23,7 +21,7 @@ export interface IPdfPlayerEvent {
     "search-previous": () => any;
     "page-next": () => any;
     "page-previous": () => any;
-    "ready": (toc?: Link[]) => any;
+    "ready": (toc?: TToc) => any;
     "start": (pdfPath: string) => any;
 }
 
@@ -34,3 +32,13 @@ export interface IEventBusPdfPlayer extends IEventBus {
     remove: <TKey extends keyof IPdfPlayerEvent>(fn: IPdfPlayerEvent[TKey], key?: TKey) => void;
     removeKey: <TKey extends keyof IPdfPlayerEvent>(key: TKey) => void;
 }
+
+// extract from publication link class
+// import { Link } from "@r2-shared-js/models/publication-link";
+export interface ILink {
+    Href?: string;
+    Title?: string;
+    Children?: ILink[];
+}
+
+export type TToc = ILink[];

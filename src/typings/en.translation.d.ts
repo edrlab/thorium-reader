@@ -488,6 +488,7 @@ declare namespace typed_i18n {
   (_: "publication.seeMore", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
+  readonly "toc": { readonly "publicationNoToc": string },
   readonly "footerInfo": {
     readonly "lessInfo": string,
     readonly "moreInfo": string
@@ -575,6 +576,8 @@ declare namespace typed_i18n {
     readonly "stop": string
   }
 };
+  (_: "reader.toc", __?: {}): { readonly "publicationNoToc": string };
+  (_: "reader.toc.publicationNoToc", __?: {}): string;
   (_: "reader.footerInfo", __?: {}): { readonly "lessInfo": string, readonly "moreInfo": string };
   (_: "reader.footerInfo.lessInfo", __?: {}): string;
   (_: "reader.footerInfo.moreInfo", __?: {}): string;

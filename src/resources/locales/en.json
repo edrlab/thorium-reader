@@ -221,6 +221,9 @@
         "userKeyCheckInvalid": "Passphrase is incorrect"
     },
     "reader": {
+        "toc": {
+          "publicationNoToc": "this publication does not provide a table of contents"
+        },
         "footerInfo": {
             "lessInfo": "less information",
             "moreInfo": "more information"

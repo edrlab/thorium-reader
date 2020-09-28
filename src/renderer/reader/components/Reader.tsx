@@ -65,9 +65,8 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
-import { Link } from "@r2-shared-js/models/publication-link";
 
-import { IEventBusPdfPlayer } from "../pdf/common/pdfReader.type";
+import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMountWebview } from "../pdf/driver";
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
@@ -126,6 +125,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private currentDivinaPlayer: any;
     private pdfPlayerBusEvent: IEventBusPdfPlayer;
+    private pdfPlayerToc: TToc;
 
     // can be get back wwith withTranslator HOC
     // to remove
@@ -360,6 +360,8 @@ class Reader extends React.Component<IProps, IState> {
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
+            pdfToc: this.pdfPlayerToc,
+            isPdf: this.props.isPdf,
         };
 
         const readerOptionsProps: IReaderOptionsProps = {
@@ -861,10 +863,9 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log("pdf url", pdfUrl);
 
-            let toc: Link[];
-            [this.pdfPlayerBusEvent, toc] = await pdfMountWebview(pdfUrl, publicationViewport);
+            [this.pdfPlayerBusEvent, this.pdfPlayerToc] = await pdfMountWebview(pdfUrl, publicationViewport);
 
-            console.log("toc", toc);
+            console.log("toc", this.pdfPlayerToc);
 
             this.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
 
