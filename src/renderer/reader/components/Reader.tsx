@@ -242,12 +242,13 @@ class Reader extends React.Component<IProps, IState> {
 
                 this.state.pdfPlayerBusEvent.subscribe("page",
                     (pageIndex: number) => {
+                        const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
                         const loc = {
                             locator: {
                                 href: pageIndex.toString(),
                                 locations: {
                                     position: pageIndex,
-                                    progression: pageIndex / this.props.r2Publication?.Metadata?.NumberOfPages,
+                                    progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
                                 },
                             },
                         };

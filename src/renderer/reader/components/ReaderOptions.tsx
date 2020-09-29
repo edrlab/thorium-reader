@@ -377,7 +377,17 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     />
                     <label htmlFor={"radio-" + scale}>
                         {this.state.pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
-                        {__("reader.settings.pdfZoom.name." + scale as any)}
+                        {
+                        scale === "50" ? __("reader.settings.pdfZoom.name.50pct") :
+                        (scale === "100" ? __("reader.settings.pdfZoom.name.100pct") :
+                        (scale === "150" ? __("reader.settings.pdfZoom.name.150pct") :
+                        (scale === "200" ? __("reader.settings.pdfZoom.name.200pct") :
+                        (scale === "300" ? __("reader.settings.pdfZoom.name.300pct") :
+                        (scale === "500" ? __("reader.settings.pdfZoom.name.500pct") :
+                        (scale === "fit" ? __("reader.settings.pdfZoom.name.fit") :
+                        (scale === "width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
+                        // --("reader.settings.pdfZoom.name." + scale as any)
+                        }
                     </label>
                 </div>;
                 // TODO string inference typescript 4.1

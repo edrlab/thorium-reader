@@ -43,9 +43,8 @@ export function* importFromLink(
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Success,
-                    translate(
-                        "message.import.alreadyImport", { title: publicationView.title },
-                    ),
+                    translate("message.import.alreadyImport",
+                        { title: publicationView.title }),
                 ),
             );
 
@@ -53,9 +52,8 @@ export function* importFromLink(
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Success,
-                    translate(
-                        "message.import.success", { title: publicationView.title },
-                    ),
+                    translate("message.import.success",
+                        { title: publicationView.title }),
                 ),
             );
 
@@ -69,9 +67,8 @@ export function* importFromLink(
         yield put(
             toastActions.openRequest.build(
                 ToastType.Error,
-                translate(
-                    "message.import.fail", { path: link.url, err: e.toString() },
-                ),
+                translate("message.import.fail",
+                    { path: link.url, err: e.toString() }),
             ),
         );
     }
@@ -114,9 +111,8 @@ export function* importFromFs(
                         yield put(
                             toastActions.openRequest.build(
                                 ToastType.Success,
-                                translate(
-                                    "message.import.alreadyImport", { title: publicationView.title },
-                                ),
+                                translate("message.import.alreadyImport",
+                                    { title: publicationView.title }),
                             ),
                         );
 
@@ -124,9 +120,8 @@ export function* importFromFs(
                         yield put(
                             toastActions.openRequest.build(
                                 ToastType.Success,
-                                translate(
-                                    "message.import.success", { title: publicationView.title },
-                                ),
+                                translate("message.import.success",
+                                    { title: publicationView.title }),
                             ),
                         );
 
@@ -140,9 +135,8 @@ export function* importFromFs(
                     yield put(
                         toastActions.openRequest.build(
                             ToastType.Error,
-                            translate(
-                                "message.import.fail", { path: filePath },
-                            ),
+                            translate("message.import.fail",
+                                { path: filePath }),
                         ),
                     );
                 }

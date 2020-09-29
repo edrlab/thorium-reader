@@ -57,8 +57,12 @@
         "entry": {
             "continueReading": "Reanudar lectura",
             "continueReadingAudioBooks": "Reanudar reproducción",
+            "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Añadidos recientemente",
-            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente"
+            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente",
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -140,9 +144,7 @@
     },
     "message": {
         "download": {
-            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]",
-            "start": "La descarga de {{- title}} ha comenzado.",
-            "success": "La descarga de {{- title}} ha finalizado."
+            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} ya estaba importado",
@@ -279,6 +281,19 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "paginated": "Paginado",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "Guardar",
                 "reset": "Restablecer",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "Izquierda",
             "right": "Derecha"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "Activar texto a voz",

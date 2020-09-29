@@ -209,7 +209,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 parseInt(currentLocation.locator?.href, 10).toString()
                                                 :
                                                 ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
-                                            }/${isPdf ? r2Publication.Metadata?.NumberOfPages : r2Publication.Spine.length
+                                            }/${isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) : r2Publication.Spine.length
                                             }) `}</em> {` ${spineTitle}`}</span>
                                         <p>
                                             {this.getProgression()}

@@ -57,8 +57,12 @@
         "entry": {
             "continueReading": "Skaityti toliau",
             "continueReadingAudioBooks": "Klausyti toliau",
+            "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Paskiausiai pridėtos",
-            "lastAdditionsAudioBooks": "Paskiausiai pridėtos garsaknygės"
+            "lastAdditionsAudioBooks": "Paskiausiai pridėtos garsaknygės",
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Eksportuoti",
         "lang": "Kalba",
@@ -140,9 +144,7 @@
     },
     "message": {
         "download": {
-            "error": "{{- title}} atsiuntimas nepavyko: [{{- err}}]",
-            "start": "{{- title}} atsiuntimas pradėtas.",
-            "success": "{{- title}} atsiuntimas baigtas."
+            "error": "{{- title}} atsiuntimas nepavyko: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} jau importuotas",
@@ -279,6 +281,19 @@
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
             "paginated": "Skaidyti į puslapius",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "įrašyti",
                 "reset": "grįžti į pradinę būseną",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "Kairė",
             "right": "Dešinė"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "Aktyvuoti teksto įgarsinimą",

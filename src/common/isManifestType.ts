@@ -17,22 +17,27 @@ type TIsRdfType = Partial<Pick<PublicationView, "RDFType">> &
     Partial<Record<keyof Partial<Pick<R2Publication, "Metadata">>, TMetadataR2Publication>>;
 
 export const isAudiobookFn = (item: TIsRdfType | undefined) =>
-    (item?.RDFType && /http[s]?:\/\/schema\.org\/Audiobook[\/]?$/.test(item?.RDFType)) ||
-    (item?.Metadata?.RDFType && /http[s]?:\/\/schema\.org\/Audiobook[\/]?$/.test(item?.Metadata?.RDFType));
+    (item?.RDFType && /http[s]?:\/\/schema\.org\/Audiobook[\/]?$/.test(item.RDFType)) ||
+    (item?.Metadata?.RDFType && /http[s]?:\/\/schema\.org\/Audiobook[\/]?$/.test(item.Metadata.RDFType));
 
 export const isDivinaFn = (item: TIsRdfType | undefined) =>
     (item?.Metadata?.RDFType &&
-        (/http[s]?:\/\/schema\.org\/ComicStrip[\/]?$/.test(item?.Metadata?.RDFType) ||
-            /http[s]?:\/\/schema\.org\/ComicStory[\/]?$/.test(item?.Metadata?.RDFType) ||
-            /http[s]?:\/\/schema\.org\/VisualNarrative[\/]?$/.test(item?.Metadata?.RDFType))) ||
+        (/http[s]?:\/\/schema\.org\/ComicStrip[\/]?$/.test(item.Metadata.RDFType) ||
+            /http[s]?:\/\/schema\.org\/ComicStory[\/]?$/.test(item.Metadata.RDFType) ||
+            /http[s]?:\/\/schema\.org\/VisualNarrative[\/]?$/.test(item.Metadata.RDFType))) ||
     (item?.RDFType &&
-        (/http[s]?:\/\/schema\.org\/ComicStrip[\/]?$/.test(item?.RDFType) ||
-            /http[s]?:\/\/schema\.org\/ComicStory[\/]?$/.test(item?.RDFType) ||
-            /http[s]?:\/\/schema\.org\/VisualNarrative[\/]?$/.test(item?.RDFType)));
+        (/http[s]?:\/\/schema\.org\/ComicStrip[\/]?$/.test(item.RDFType) ||
+            /http[s]?:\/\/schema\.org\/ComicStory[\/]?$/.test(item.RDFType) ||
+            /http[s]?:\/\/schema\.org\/VisualNarrative[\/]?$/.test(item.RDFType)));
 
 export const isPdfFn = (publication: R2Publication) =>
-    (publication?.Metadata?.RDFType
-        && (/http[s]?:\/\/schema\.org\/Book[\/]?$/.test(publication?.Metadata?.RDFType))
-        && publication?.Spine
-        && publication?.Spine[0]?.Href
-        && path.extname(publication.Spine[0]?.Href) === ".pdf");
+    (
+        // LCP-PDF do not include this! :(
+        // publication?.Metadata?.RDFType
+        // && /http[s]?:\/\/schema\.org\/Book[\/]?$/.test(publication?.Metadata?.RDFType)
+        // &&
+        publication?.Spine
+        &&
+        (publication?.Spine[0]?.Href && path.extname(publication.Spine[0].Href) === ".pdf") ||
+        (publication?.Spine[0]?.TypeLink && publication.Spine[0].TypeLink === "application/pdf")
+    );
