@@ -2,6 +2,34 @@
 @import "./focus.css";
 @import "./variable.css";
 
+/* #annotation-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  opacity: 0.2;
+  line-height: 1.0;
+}
+
+#annotation-layer > section {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}
+
+#annotation-layer > .linkAnnotation > a {
+  position: absolute;
+  font-size: 1em;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+} */
+
 .anchor_link {
 	position: absolute;
 	display: block;
@@ -295,7 +323,7 @@ button {
   & > ul:not(.noAudio) {
     display: flex;
   }
-  
+
   & > ul, & ul.menu_option, & ul.tts_toolbar {
     line-height: 0.9rem;
     padding: 0;
@@ -1009,7 +1037,7 @@ input[type=radio] + label {
         fill: #C1C1C1;;
       }
     }
-    
+
     & .track_reading_wrapper {
       padding: 1rem 8rem 1rem 5rem;
       bottom: 0;

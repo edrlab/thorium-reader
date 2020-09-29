@@ -186,6 +186,10 @@ export async function pdfReaderMountingPoint(
     console.log("outline", outline);
     console.log("toc", toc);
 
+    // annotation div
+    // const annotationDiv = document.createElement("div");
+    // annotationDiv.setAttribute("id", "annotation-layer");
+
     let _lastPageNumber = -1;
     let _scale: IPdfPlayerScale = defaultScale;
     // tslint:disable-next-line:prefer-const
@@ -353,6 +357,45 @@ export async function pdfReaderMountingPoint(
             canvasContext: canvas2d,
             viewport,
         }).promise;
+
+        // const annotationData = await pdfPage.getAnnotations();
+
+        // const canvasOffsetLeft = canvas.offsetLeft;
+        // const canvasOffsetTop = canvas.offsetTop;
+        // const canvasHeight = canvas.height;
+        // const canvasWidth = canvas.width;
+
+        // tslint:disable-next-line: max-line-length
+        // annotationDiv.setAttribute("style", `left: ${canvasOffsetLeft}px; top: ${canvasOffsetTop}px; height: ${canvasHeight}px; width: ${canvasWidth}px;`);
+        // rootElement.appendChild(annotationDiv);
+
+        // pdfJs.AnnotationLayer.render({
+        //     viewport: viewport.clone({dontFlip: true}),
+        //     div: annotationDiv,
+        //     annotations: annotationData,
+        //     page: pdfPage,
+        //     linkService: {
+        //         getDestinationHash: (destination: any) => {
+        //             console.log("getDestinationHash", destination);
+        //             return "";
+        //         },
+        //         navigateTo: (destination: any) => {
+        //             console.log("navigateTo", destination);
+
+        //             // return void;
+        //         },
+        //         getAnchorUrl: (url: string) => {
+        //             console.log("getAnchorUrl", url);
+        //             return "";
+        //         },
+        //         executeNamedAction: (action: any) => {
+        //             console.log("executeNamedAction", action);
+        //             // return void;
+        //         },
+        //     },
+        //     downloadManager: undefined,
+        //     renderInteractiveForms: true,
+        // });
 
     };
 
