@@ -190,10 +190,6 @@ export async function pdfReaderMountingPoint(
     const annotationDiv = document.createElement("div");
     annotationDiv.setAttribute("id", "annotation-layer");
 
-    // text div
-    const textDiv = document.createElement("div");
-    textDiv.setAttribute("id", "text-layer");
-
     let _lastPageNumber = -1;
     let _scale: IPdfPlayerScale = defaultScale;
     // tslint:disable-next-line:prefer-const
@@ -371,7 +367,16 @@ export async function pdfReaderMountingPoint(
 
         // tslint:disable-next-line: max-line-length
         annotationDiv.setAttribute("style", `left: ${canvasOffsetLeft}px; top: ${canvasOffsetTop}px; height: ${canvasHeight}px; width: ${canvasWidth}px;`);
-        rootElement.appendChild(annotationDiv);
+
+        const textContent = await pdfPage.getTextContent();
+
+        // rendered in first for the span z index
+        await pdfJs.renderTextLayer({
+            textContent,
+            container: annotationDiv,
+            viewport,
+            textDivs: [],
+        }).promise;
 
         pdfJs.AnnotationLayer.render({
             viewport: viewport.clone({dontFlip: true}),
@@ -412,18 +417,7 @@ export async function pdfReaderMountingPoint(
             renderInteractiveForms: true,
         });
 
-        // tslint:disable-next-line: max-line-length
-        textDiv.setAttribute("style", `left: ${canvasOffsetLeft}px; top: ${canvasOffsetTop}px; height: ${canvasHeight}px; width: ${canvasWidth}px;`);
-        rootElement.appendChild(textDiv);
-
-        const textContent = await pdfPage.getTextContent();
-
-        await pdfJs.renderTextLayer({
-            textContent,
-            container: textDiv,
-            viewport,
-            textDivs: [],
-        }).promise;
+        rootElement.appendChild(annotationDiv);
 
     };
 
