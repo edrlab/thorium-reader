@@ -379,8 +379,19 @@ export async function pdfReaderMountingPoint(
                     console.log("getDestinationHash", destination);
                     return "";
                 },
-                navigateTo: (destination: any) => {
+                navigateTo: async (destination: any) => {
                     console.log("navigateTo", destination);
+
+                    const dest = destForPageIndexParse(destination);
+
+                    // tslint:disable-next-line: max-line-length
+                    const page = (await pdf.getPageIndex(dest) as unknown as number); // type error should be return a number zero based
+                    const pageOffset = page + 1;
+                    _lastPageNumber = pageNumberCheck(pageOffset);
+
+                    await displayPageNumber(_lastPageNumber);
+
+                    bus.dispatch("page", _lastPageNumber);
 
                     // return void;
                 },
