@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html id="pdf_html" style="overflow: hidden;">
 <style>
+
+  body {
+    background-color: white;
+  }
+
   #annotation-layer {
     position: absolute;
     left: 0;
@@ -27,6 +32,33 @@
     left: 0;
     width: 100%;
     height: 100%;
+  }
+
+  #text-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    opacity: 0.2;
+    line-height: 1;
+  }
+
+  #text-layer>span {
+    color: transparent;
+    position: absolute;
+    white-space: pre;
+    cursor: text;
+    transform-origin: 0% 0%;
+  }
+
+  #text-layer ::selection {
+    background: blue;
+  }
+
+  ::selection {
+    background: rgba(50, 50, 145, 30);
   }
 </style>
 

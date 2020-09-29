@@ -190,6 +190,10 @@ export async function pdfReaderMountingPoint(
     const annotationDiv = document.createElement("div");
     annotationDiv.setAttribute("id", "annotation-layer");
 
+    // text div
+    const textDiv = document.createElement("div");
+    textDiv.setAttribute("id", "text-layer");
+
     let _lastPageNumber = -1;
     let _scale: IPdfPlayerScale = defaultScale;
     // tslint:disable-next-line:prefer-const
@@ -407,6 +411,19 @@ export async function pdfReaderMountingPoint(
             downloadManager: undefined,
             renderInteractiveForms: true,
         });
+
+        // tslint:disable-next-line: max-line-length
+        textDiv.setAttribute("style", `left: ${canvasOffsetLeft}px; top: ${canvasOffsetTop}px; height: ${canvasHeight}px; width: ${canvasWidth}px;`);
+        rootElement.appendChild(textDiv);
+
+        const textContent = await pdfPage.getTextContent();
+
+        await pdfJs.renderTextLayer({
+            textContent,
+            container: textDiv,
+            viewport,
+            textDivs: [],
+        }).promise;
 
     };
 
