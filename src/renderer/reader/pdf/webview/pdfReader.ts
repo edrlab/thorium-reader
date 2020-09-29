@@ -125,7 +125,7 @@ async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy): P
 
         if (destForPageIndex) {
             // tslint:disable-next-line: max-line-length
-            const page = (await pdf.getPageIndex(destForPageIndex) as unknown as number); // type error should be return a number zero based
+            const page = (await pdf.getPageIndex(destForPageIndex) as unknown as number); // type error should return a number zero based
             const pageOffset = page + 1;
             link.Href = pageOffset.toString();
         }
@@ -189,6 +189,7 @@ export async function pdfReaderMountingPoint(
     // annotation div
     const annotationDiv = document.createElement("div");
     annotationDiv.setAttribute("id", "annotation-layer");
+    rootElement.appendChild(annotationDiv);
 
     let _lastPageNumber = -1;
     let _scale: IPdfPlayerScale = defaultScale;
@@ -367,6 +368,7 @@ export async function pdfReaderMountingPoint(
 
         // tslint:disable-next-line: max-line-length
         annotationDiv.setAttribute("style", `left: ${canvasOffsetLeft}px; top: ${canvasOffsetTop}px; height: ${canvasHeight}px; width: ${canvasWidth}px;`);
+        annotationDiv.innerHTML = "";
 
         const textContent = await pdfPage.getTextContent();
 
@@ -394,7 +396,7 @@ export async function pdfReaderMountingPoint(
                     const dest = destForPageIndexParse(destination);
 
                     // tslint:disable-next-line: max-line-length
-                    const page = (await pdf.getPageIndex(dest) as unknown as number); // type error should be return a number zero based
+                    const page = (await pdf.getPageIndex(dest) as unknown as number); // type error should return a number zero based
                     const pageOffset = page + 1;
                     _lastPageNumber = pageNumberCheck(pageOffset);
 
@@ -416,8 +418,6 @@ export async function pdfReaderMountingPoint(
             downloadManager: undefined,
             renderInteractiveForms: true,
         });
-
-        rootElement.appendChild(annotationDiv);
 
     };
 
