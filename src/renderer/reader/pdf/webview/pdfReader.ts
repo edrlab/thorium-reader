@@ -219,22 +219,6 @@ export async function pdfReaderMountingPoint(
 
             case "fit": {
 
-                const scale = scaleW;
-                viewport = pdfPage.getViewport({ scale });
-
-                canvas.width = viewport.width * CSS_UNITS;
-                canvas.height = viewport.height * CSS_UNITS;
-
-                canvas.style.left = "0px";
-
-                canvas.ownerDocument.body.style.overflow = "hidden";
-                canvas.ownerDocument.body.style.overflowX = "hidden";
-                canvas.ownerDocument.body.style.overflowY = "auto";
-                break;
-            }
-
-            case "width": {
-
                 const scale = Math.min(scaleW, scaleH);
                 viewport = pdfPage.getViewport({ scale });
 
@@ -246,6 +230,23 @@ export async function pdfReaderMountingPoint(
                 canvas.ownerDocument.body.style.overflow = "hidden";
                 canvas.ownerDocument.body.style.overflowX = "hidden";
                 canvas.ownerDocument.body.style.overflowY = "hidden";
+                break;
+
+            }
+
+            case "width": {
+
+                const scale = scaleW;
+                viewport = pdfPage.getViewport({ scale });
+
+                canvas.width = viewport.width * CSS_UNITS;
+                canvas.height = viewport.height * CSS_UNITS;
+
+                canvas.style.left = `0px`;
+
+                canvas.ownerDocument.body.style.overflow = "hidden";
+                canvas.ownerDocument.body.style.overflowX = "hidden";
+                canvas.ownerDocument.body.style.overflowY = "auto";
                 break;
 
             }
