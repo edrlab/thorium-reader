@@ -23,7 +23,14 @@ export async function computeFileHash(filePath: string) {
             if (data) {
                 algo.update(data);
             } else {
-                stream.destroy();
+                process.nextTick(() => {
+                    try {
+                        stream.destroy();
+                    } catch (err) {
+                        console.log(`ERROR CLOSING STREAM: ${filePath}`);
+                        console.log(err);
+                    }
+                });
 
                 const hash = algo.digest("hex");
                 resolve(hash);
