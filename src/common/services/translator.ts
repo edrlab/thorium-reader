@@ -106,10 +106,10 @@ i18nextInstance.init({
         "lt": {
             translation: ltCatalog,
         },
-        "pt-br": {
+        "pt-BR": {
             translation: ptBrCatalog,
         },
-        "pt-pt": {
+        "pt-PT": {
             translation: ptPtCatalog,
         },
         "it" : {
@@ -143,8 +143,8 @@ i18nextInstance.addResourceBundle("es", "translation", esLang, true);
 i18nextInstance.addResourceBundle("nl", "translation", nlLang, true);
 i18nextInstance.addResourceBundle("ja", "translation", jaLang, true);
 i18nextInstance.addResourceBundle("lt", "translation", ltLang, true);
-i18nextInstance.addResourceBundle("pt-br", "translation", ptBrLang, true);
-i18nextInstance.addResourceBundle("pt-pt", "translation", ptPtLang, true);
+i18nextInstance.addResourceBundle("pt-BR", "translation", ptBrLang, true);
+i18nextInstance.addResourceBundle("pt-PT", "translation", ptPtLang, true);
 i18nextInstance.addResourceBundle("it", "translation", itLang, true);
 
 const i18nextInstanceEN = i18nextInstance.cloneInstance();
@@ -165,8 +165,8 @@ export const AvailableLanguages = {
     "nl": "Dutch",
     "ja": "日本語",
     "lt": "Lietuvių",
-    "pt-br": "Português Brasileiro",
-    "pt-pt": "Português",
+    "pt-BR": "Português Brasileiro",
+    "pt-PT": "Português",
     "it": "Italiano",
 };
 
@@ -197,6 +197,7 @@ export class Translator {
                 i18nextInstance.changeLanguage(this.locale).then((_t) => {
                     resolve();
                 }).catch((err) => {
+                    console.log(err);
                     reject(err);
                 });
             } else {
