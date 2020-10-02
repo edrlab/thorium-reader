@@ -6,6 +6,7 @@
 // ==LICENSE-END
 
 import { debounce } from "debounce";
+import { shell } from "electron";
 import * as path from "path";
 import * as pdfJs from "pdfjs-dist";
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
@@ -433,6 +434,70 @@ export async function pdfReaderMountingPoint(
         console.log("resize", rootElement.clientWidth, rootElement.clientHeight);
         await debouncedResize();
     });
+
+    window.document.addEventListener("click", (ev: MouseEvent) => {
+
+        let currentElement = ev.target as Element;
+        let href: string | SVGAnimatedString | undefined;
+        let domHref: string | undefined;
+        while (currentElement && currentElement.nodeType === Node.ELEMENT_NODE) {
+            if (currentElement.tagName.toLowerCase() === "a") {
+
+                // includes SVG xlink:href, absolute URL
+                href = (currentElement as HTMLAnchorElement | SVGAElement).href;
+
+                // excludes SVG xlink:href, relative URL
+                domHref = currentElement.getAttribute("href");
+
+                console.log(`A LINK CLICK: ${href} (${domHref})`);
+                break;
+            }
+            currentElement = currentElement.parentNode as Element;
+        }
+
+        // href is not necessarily empty when the a@href DOM attribute is empty!
+        // (because automatic resolution to base URL absolute path to "index_pdf.html"!)
+        if (!href) {
+            return;
+        }
+
+        if ((href as SVGAnimatedString).animVal) {
+            href = (href as SVGAnimatedString).animVal;
+
+            if (!href) {
+                return;
+            }
+        } else if (!domHref) {
+            return;
+        }
+
+        const hrefStr = href as string;
+        console.log(`=============> PDF LINK: '${hrefStr}'`);
+
+        if (!hrefStr) {
+            return;
+        }
+
+        if (/^javascript:/.test(hrefStr)) {
+            return;
+        }
+
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        if (/^http[s]?:\/\//.test(hrefStr)) { // href.startsWith("https://")
+            // tslint:disable-next-line:no-floating-promises
+            (async () => {
+                try {
+                    await shell.openExternal(hrefStr);
+                } catch (err) {
+                    console.log(err);
+                }
+            })();
+        }
+
+        return;
+    }, true);
 
     const pageNumberCheck = (pageNumber: number) => {
         return pageNumber < 1 ? 1 : pageNumber;
