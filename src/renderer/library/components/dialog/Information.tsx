@@ -49,7 +49,8 @@ export class Information extends React.Component<IProps, undefined> {
             if (_PACKAGING === "0") {
                 folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
             }
-            const fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});
+            const fileContent = await promisify(readFile)(path.join(folderPath,
+                `${locale.toLowerCase()}.md`), {encoding: "utf8"});
             this.parsedMarkdown = (new commonmark.HtmlRenderer()).render((new commonmark.Parser()).parse(fileContent));
         } catch (__) {
             this.parsedMarkdown = "<h1>There is no information for your language</h1>";
