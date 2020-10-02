@@ -26,12 +26,16 @@ export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
         publicationLanguageArray = publication.languages.map(
             (lang: string, index: number) => {
 
+                // Note: "pt-PT" in the i18next ResourceBundle is not captured because key match reduced to "pt"
+                // Also: pt-pt vs. pt-PT case sensitivity
                 const l = lang.split("-")[0];
 
                 // because dynamic label does not pass typed i18n compilation
                 const translate = __ as (str: string) => string;
 
+                // The backticks is not captured by the i18n scan script (automatic detection of translate("...") calls)
                 const ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
+
                 const note = (lang !== ll) ? ` (${lang})` : "";
                 const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
 
