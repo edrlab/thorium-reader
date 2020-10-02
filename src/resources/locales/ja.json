@@ -57,8 +57,10 @@
         "entry": {
             "continueReading": "読書を再開",
             "continueReadingAudioBooks": "オーディオブックを再開",
+            "continueReadingDivina": "",
             "lastAdditions": "最近追加された出版物",
-            "lastAdditionsAudioBooks": "最近追加されたオーディオブック"
+            "lastAdditionsAudioBooks": "最近追加されたオーディオブック",
+            "lastAdditionsDivina": ""
         },
         "export": "書き出し",
         "lang": "言語",
@@ -140,9 +142,7 @@
     },
     "message": {
         "download": {
-            "error": "{{- title}}のダウンロードに失敗しました：［{{- err}}］",
-            "start": "{{- title}}のダウンロードが開始されました。",
-            "success": "{{- title}}のダウンロードが完了しました。"
+            "error": "{{- title}}のダウンロードに失敗しました：［{{- err}}］"
         },
         "import": {
             "alreadyImport": "{{- title}}はすでに追加されていました。",

@@ -57,8 +57,10 @@
         "entry": {
             "continueReading": "Reprendre la lecture",
             "continueReadingAudioBooks": "Reprendre l'écoute",
+            "continueReadingDivina": "",
             "lastAdditions": "Récemment ajouté",
-            "lastAdditionsAudioBooks": "Livres audio récemment ajoutés"
+            "lastAdditionsAudioBooks": "Livres audio récemment ajoutés",
+            "lastAdditionsDivina": ""
         },
         "export": "Exporter",
         "lang": "Langue",
@@ -140,9 +142,7 @@
     },
     "message": {
         "download": {
-            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]",
-            "start": "Le téléchargement de {{- title}} a commencé.",
-            "success": "Le téléchargement de {{- title}} est terminé."
+            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} est déja importé",

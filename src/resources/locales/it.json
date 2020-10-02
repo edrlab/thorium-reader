@@ -57,9 +57,9 @@
         "entry": {
             "continueReading": "Continua a leggere",
             "continueReadingAudioBooks": "Continua ad ascoltare",
+            "continueReadingDivina": "Continua divina",
             "lastAdditions": "Aggiunti di recente",
             "lastAdditionsAudioBooks": "Audiobooks aggiunti di recente",
-            "continueReadingDivina": "Continua divina",
             "lastAdditionsDivina": "Divina aggiunti di recente"
         },
         "export": "Esporta",
@@ -142,9 +142,7 @@
     },
     "message": {
         "download": {
-            "error": "Il download di {{- title}} è fallito: [{{- err}}]",
-            "start": "Il download di {{- title}} è iniziato.",
-            "success": "Il download di {{- title}} è finito."
+            "error": "Il download di {{- title}} è fallito: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} è già stato importato",
