@@ -8,14 +8,15 @@
 import { remote } from "electron";
 import * as path from "path";
 import {
-    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
-    IEventPayload_R2_EVENT_WEBVIEW_KEYUP, R2_EVENT_CLIPBOARD_COPY, R2_EVENT_WEBVIEW_KEYDOWN,
-    R2_EVENT_WEBVIEW_KEYUP,
-} from "r2-navigator-js/dist/es6-es2015/src/electron/common/events";
-import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import { keyDownEventHandler, keyUpEventHandler } from "readium-desktop/renderer/common/keyboard";
+
+import {
+    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
+    IEventPayload_R2_EVENT_WEBVIEW_KEYUP, R2_EVENT_CLIPBOARD_COPY, R2_EVENT_WEBVIEW_KEYDOWN,
+    R2_EVENT_WEBVIEW_KEYUP,
+} from "@r2-navigator-js/electron/common/events";
 
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer, TToc } from "./common/pdfReader.type";
