@@ -81,7 +81,7 @@ export class OpdsFeedViewConverter {
         if (properties) {
 
             const key = "lcp_hashed_passphrase";
-            const lcpHashedPassphraseObj = properties.AdditionalJSON[key];
+            const lcpHashedPassphraseObj = properties.AdditionalJSON ? properties.AdditionalJSON[key] : undefined;
             let lcpHashedPassphrase: string;
             if (typeof lcpHashedPassphraseObj === "string") {
                 const lcpHashedPassphraseHexOrB64 = lcpHashedPassphraseObj as string;
