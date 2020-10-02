@@ -7,11 +7,30 @@
 
 import * as crypto from "crypto";
 import * as debug_ from "debug";
+import * as fs from "fs";
 import * as yauzl from "yauzl";
 
 type TCrcFile = [string, number];
 
 const debug = debug_("readium-desktop:main/crc");
+
+export async function computeFileHash(filePath: string) {
+    return new Promise<string>((resolve, _reject) => {
+        const algo = crypto.createHash("sha1");
+        const stream = fs.createReadStream(filePath);
+        stream.on("readable", () => {
+            const data = stream.read();
+            if (data) {
+                algo.update(data);
+            } else {
+                stream.destroy();
+
+                const hash = algo.digest("hex");
+                resolve(hash);
+            }
+        });
+    });
+}
 
 export async function extractCrc32OnZip(filePath: string) {
     const fileArray: TCrcFile[] = [];
