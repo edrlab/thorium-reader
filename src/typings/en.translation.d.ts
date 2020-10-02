@@ -105,9 +105,9 @@ declare namespace typed_i18n {
   readonly "entry": {
     readonly "continueReading": string,
     readonly "continueReadingAudioBooks": string,
+    readonly "continueReadingDivina": string,
     readonly "lastAdditions": string,
     readonly "lastAdditionsAudioBooks": string,
-    readonly "continueReadingDivina": string,
     readonly "lastAdditionsDivina": string
   },
   readonly "export": string,
@@ -162,16 +162,16 @@ declare namespace typed_i18n {
   (_: "catalog.entry", __?: {}): {
   readonly "continueReading": string,
   readonly "continueReadingAudioBooks": string,
+  readonly "continueReadingDivina": string,
   readonly "lastAdditions": string,
   readonly "lastAdditionsAudioBooks": string,
-  readonly "continueReadingDivina": string,
   readonly "lastAdditionsDivina": string
 };
   (_: "catalog.entry.continueReading", __?: {}): string;
   (_: "catalog.entry.continueReadingAudioBooks", __?: {}): string;
+  (_: "catalog.entry.continueReadingDivina", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.entry.lastAdditionsAudioBooks", __?: {}): string;
-  (_: "catalog.entry.continueReadingDivina", __?: {}): string;
   (_: "catalog.entry.lastAdditionsDivina", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
@@ -330,11 +330,7 @@ declare namespace typed_i18n {
   (_: "library.lcp.sentence", __?: {}): string;
   (_: "library.lcp.submit", __?: {}): string;
   (_: "message", __?: {}): {
-  readonly "download": {
-    readonly "error": string,
-    readonly "start": string,
-    readonly "success": string
-  },
+  readonly "download": { readonly "error": string },
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
@@ -342,14 +338,8 @@ declare namespace typed_i18n {
   },
   readonly "open": { readonly "error": string }
 };
-  (_: "message.download", __?: {}): {
-  readonly "error": string,
-  readonly "start": string,
-  readonly "success": string
-};
+  (_: "message.download", __?: {}): { readonly "error": string };
   (_: "message.download.error", __?: {}): string;
-  (_: "message.download.start", __?: {}): string;
-  (_: "message.download.success", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,

@@ -57,8 +57,10 @@
         "entry": {
             "continueReading": "Reanudar lectura",
             "continueReadingAudioBooks": "Reanudar reproducción",
+            "continueReadingDivina": "",
             "lastAdditions": "Añadidos recientemente",
-            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente"
+            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente",
+            "lastAdditionsDivina": ""
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -140,9 +142,7 @@
     },
     "message": {
         "download": {
-            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]",
-            "start": "La descarga de {{- title}} ha comenzado.",
-            "success": "La descarga de {{- title}} ha finalizado."
+            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} ya estaba importado",
