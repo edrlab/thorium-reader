@@ -65,7 +65,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { currentLocation, r2Publication, isDivina, isPdf } = this.props;
 
-        console.log(r2Publication, currentLocation);
+        // console.log(r2Publication, currentLocation);
 
         if (!r2Publication || !currentLocation) {
             return (<></>);

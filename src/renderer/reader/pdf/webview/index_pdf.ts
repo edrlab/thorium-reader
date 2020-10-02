@@ -11,6 +11,76 @@ import { IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView }
 import { pdfReaderMountingPoint } from "./pdfReader";
 
 function main() {
+
+    function keyDownUpEventHandler(ev: KeyboardEvent, keyDown: boolean) {
+        const elementName = (ev.target && (ev.target as Element).nodeName) ?
+            (ev.target as Element).nodeName : "";
+        const elementAttributes: {[name: string]: string} = {};
+        if (ev.target && (ev.target as Element).attributes) {
+            // tslint:disable-next-line: prefer-for-of
+            for (let i = 0; i < (ev.target as Element).attributes.length; i++) {
+                const attr = (ev.target as Element).attributes[i];
+                elementAttributes[attr.name] = attr.value;
+            }
+        }
+        const payload = { // : IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, same as IEventPayload_R2_EVENT_WEBVIEW_KEYUP
+            altKey: ev.altKey,
+            code: ev.code,
+            ctrlKey: ev.ctrlKey,
+            elementAttributes,
+            elementName,
+            key: ev.key,
+            metaKey: ev.metaKey,
+            shiftKey: ev.shiftKey,
+        };
+        ipcRenderer.sendToHost(keyDown ? "R2_EVENT_WEBVIEW_KEYDOWN" : "R2_EVENT_WEBVIEW_KEYUP", payload);
+    }
+    window.document.addEventListener("keydown", (ev: KeyboardEvent) => {
+        keyDownUpEventHandler(ev, true);
+    }, {
+        capture: true,
+        once: false,
+        passive: false,
+    });
+    window.document.addEventListener("keyup", (ev: KeyboardEvent) => {
+        keyDownUpEventHandler(ev, false);
+    }, {
+        capture: true,
+        once: false,
+        passive: false,
+    });
+
+    window.document.body.addEventListener("copy", (evt: ClipboardEvent) => {
+        if (true) { // isClipboardIntercept? (if publication is LCP)
+            const selection = window.document.getSelection();
+            if (selection) {
+                const str = selection.toString();
+                if (str) {
+                    evt.preventDefault();
+
+                    setTimeout(() => {
+                        const payload = { // : IEventPayload_R2_EVENT_CLIPBOARD_COPY
+                            // locator: ...
+                            txt: str,
+                        };
+                        ipcRenderer.sendToHost("R2_EVENT_CLIPBOARD_COPY", payload);
+                        // if (evt.clipboardData) {
+                        //     evt.clipboardData.setData("text/plain", str);
+                        // }
+                    }, 500);
+                }
+            }
+        }
+    });
+
+    window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
+        window.document.documentElement.classList.add("ROOT_CLASS_KEYBOARD_INTERACT");
+    }, true);
+
+    window.document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
+        window.document.documentElement.classList.remove("ROOT_CLASS_KEYBOARD_INTERACT");
+    }, true);
+
     const rootElement = document.body;
 
     const bus: IEventBusPdfPlayer = eventBus(

@@ -87,8 +87,6 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             this.props.pdfEventBus.subscribe("view", this.setView);
             this.props.pdfEventBus.subscribe("column", this.setCol);
 
-        } else {
-            console.log("pdf event bus not loaded");
         }
     }
 

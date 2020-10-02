@@ -13,8 +13,12 @@
     right: 0;
     bottom: 0;
     overflow: hidden;
-    opacity: 0.2;
     line-height: 1.0;
+  }
+
+  #annotation-layer > span,
+  #annotation-layer > *:not(.linkAnnotation) {
+    opacity: 0.2;
   }
 
   #annotation-layer>section {
@@ -53,13 +57,60 @@
     transform-origin: 0% 0%;
   }
 
-  #annotation-layer ::selection {
-    background: blue;
-  }
+/* #annotation-layer ::selection {
+  background: blue;
+}
 
-  ::selection {
-    background: rgba(50, 50, 145, 30);
-  }
+::selection {
+  background: rgba(50, 50, 145, 30);
+} */
+
+:root[style] ::selection,
+:root ::selection {
+background: rgb(155, 179, 240) !important;
+/* color: black !important; */
+color: transparent !important;
+}
+/* 
+:root[style*="readium-night-on"] ::selection {
+background: rgb(100, 122, 177) !important;
+color: white !important;
+} */
+
+:root[style] *:focus,
+:root *:focus {
+    outline: none;
+}
+:root[style].ROOT_CLASS_KEYBOARD_INTERACT *.CSS_CLASS_NO_FOCUS_OUTLINE:focus:not(:target):not(.LINK_TARGET_CLASS),
+:root.ROOT_CLASS_KEYBOARD_INTERACT *.CSS_CLASS_NO_FOCUS_OUTLINE:focus:not(:target):not(.LINK_TARGET_CLASS) {
+    outline: none !important;
+}
+:root[style].ROOT_CLASS_KEYBOARD_INTERACT *:focus:not(:target):not(.LINK_TARGET_CLASS),
+:root.ROOT_CLASS_KEYBOARD_INTERACT *:focus:not(:target):not(.LINK_TARGET_CLASS) {
+    outline-color: blue !important;
+    outline-style: solid !important;
+    outline-width: 2px !important;
+    outline-offset: 2px !important;
+
+    opacity: 1 !important;
+}
+/*
+@keyframes readium2ElectronAnimation_FOCUS {
+    0% {
+    }
+    100% {
+        outline: inherit;
+    }
+}
+:root[style]:not(.ROOT_CLASS_KEYBOARD_INTERACT) *:focus,
+:root:not(.ROOT_CLASS_KEYBOARD_INTERACT) *:focus {
+    animation-name: readium2ElectronAnimation_FOCUS;
+    animation-duration: 3s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+*/
 </style>
 
 <head>

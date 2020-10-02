@@ -234,6 +234,9 @@ class Reader extends React.Component<IProps, IState> {
             });
         });
 
+        ensureKeyboardListenerIsInstalled();
+        this.registerAllKeyboardListeners();
+
         if (this.props.isPdf) {
 
             await this.loadPublicationIntoViewport();
@@ -318,16 +321,12 @@ class Reader extends React.Component<IProps, IState> {
                 console.log("divinaPlayer not loaded");
             }
         } else {
-            ensureKeyboardListenerIsInstalled();
-            this.registerAllKeyboardListeners();
-
             setKeyDownEventHandler(keyDownEventHandler);
             setKeyUpEventHandler(keyUpEventHandler);
 
             setReadingLocationSaver(this.handleReadingLocationChange);
             setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
             await this.loadPublicationIntoViewport();
-
         }
 
         this.unsubscribe = apiSubscribe([
@@ -854,9 +853,20 @@ class Reader extends React.Component<IProps, IState> {
 
     private async loadPublicationIntoViewport() {
 
+        if (this.props.r2Publication?.Metadata?.Title) {
+            const title = this.props.translator.translateContentField(this.props.r2Publication.Metadata.Title);
+
+            window.document.title = capitalizedAppName;
+            if (title) {
+                window.document.title = `${capitalizedAppName} - ${title}`;
+                // this.setState({
+                //     title,
+                // });
+            }
+        }
+
         if (this.props.isPdf) {
 
-            console.log("PDF !!");
             const publicationViewport = this.mainElRef.current;
             if (publicationViewport) {
                 // tslint:disable-next-line: max-line-length
@@ -877,7 +887,16 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log("pdf url", pdfUrl);
 
-            const [pdfPlayerBusEvent, pdfPlayerToc] = await pdfMountWebview(pdfUrl, publicationViewport);
+            const clipboardInterceptor = // !this.props.publicationView.lcp ? undefined :
+                (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
+                    apiAction("reader/clipboardCopy", this.props.pubId, clipboardData)
+                        .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
+                };
+
+            const [pdfPlayerBusEvent, pdfPlayerToc] = await pdfMountWebview(
+                pdfUrl,
+                publicationViewport,
+                clipboardInterceptor);
 
             this.setState({
                 pdfPlayerToc,
@@ -1003,18 +1022,6 @@ class Reader extends React.Component<IProps, IState> {
             this.setState({
                 r2PublicationHasMediaOverlays: publicationHasMediaOverlays(this.props.r2Publication),
             });
-
-            if (this.props.r2Publication.Metadata && this.props.r2Publication.Metadata.Title) {
-                const title = this.props.translator.translateContentField(this.props.r2Publication.Metadata.Title);
-
-                window.document.title = capitalizedAppName;
-                if (title) {
-                    window.document.title = `${capitalizedAppName} - ${title}`;
-                    // this.setState({
-                    //     title,
-                    // });
-                }
-            }
 
             let preloadPath = "preload.js";
             if (_PACKAGING === "1") {

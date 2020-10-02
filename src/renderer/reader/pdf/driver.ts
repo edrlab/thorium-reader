@@ -8,8 +8,14 @@
 import { remote } from "electron";
 import * as path from "path";
 import {
+    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
+    IEventPayload_R2_EVENT_WEBVIEW_KEYUP, R2_EVENT_CLIPBOARD_COPY, R2_EVENT_WEBVIEW_KEYDOWN,
+    R2_EVENT_WEBVIEW_KEYUP,
+} from "r2-navigator-js/dist/es6-es2015/src/electron/common/events";
+import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
+import { keyDownEventHandler, keyUpEventHandler } from "readium-desktop/renderer/common/keyboard";
 
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer, TToc } from "./common/pdfReader.type";
@@ -19,6 +25,7 @@ import { IEventBusPdfPlayer, TToc } from "./common/pdfReader.type";
 export async function pdfMountWebview(
     pdfPath: string,
     publicationViewport: HTMLDivElement,
+    clipboardInterceptor: (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => void,
 ): Promise<[bus: IEventBusPdfPlayer, toc: TToc | undefined]> {
 
     const webview = document.createElement("webview");
@@ -49,6 +56,26 @@ export async function pdfMountWebview(
     // webview.setAttribute("disablewebsecurity", "");
     // webview.setAttribute("webpreferences",
     //     "sandbox=0, javascript=1, contextIsolation=0, webSecurity=0, allowRunningInsecureContent=1");
+
+    webview.addEventListener("ipc-message", (event: Electron.IpcMessageEvent) => {
+        const wv = event.currentTarget as Electron.WebviewTag;
+        if (webview !== wv) {
+            console.log("Wrong PDF webview?!");
+            return;
+        }
+        if (event.channel === R2_EVENT_WEBVIEW_KEYDOWN) {
+            const payload = event.args[0] as IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN;
+            keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
+        } else if (event.channel === R2_EVENT_WEBVIEW_KEYUP) {
+            const payload = event.args[0] as IEventPayload_R2_EVENT_WEBVIEW_KEYUP;
+            keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
+        } else if (event.channel === R2_EVENT_CLIPBOARD_COPY) {
+            if (clipboardInterceptor) {
+                const payload = event.args[0] as IEventPayload_R2_EVENT_CLIPBOARD_COPY;
+                clipboardInterceptor(payload);
+            }
+        }
+    });
 
     webview.addEventListener("dom-ready", () => {
         // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webcontents
