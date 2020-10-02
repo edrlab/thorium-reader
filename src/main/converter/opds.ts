@@ -123,7 +123,15 @@ export class OpdsFeedViewConverter {
                 }
             }
 
+            const indirectAcquisitions = properties.IndirectAcquisitions ?
+                (Array.isArray(properties.IndirectAcquisitions) ?
+                    properties.IndirectAcquisitions : [properties.IndirectAcquisitions]) :
+                undefined;
+
             return {
+                indirectAcquisitionType: indirectAcquisitions?.reduce<string>((pv, cv) => {
+                    return typeof cv?.TypeAcquisition === "string" ? cv.TypeAcquisition : pv;
+                }, undefined),
                 lcpHashedPassphrase,
                 numberOfItems: properties.NumberOfItems || undefined,
                 priceValue: properties.Price?.Value || undefined,
