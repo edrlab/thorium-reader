@@ -831,7 +831,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.navLeftOrRight_(isPrevious, false);
+        this.navLeftOrRight_(isPrevious, true);
 
         if (this.fastLinkRef?.current) {
             setTimeout(() => {
