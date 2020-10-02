@@ -190,6 +190,7 @@ export class Translator {
                 i18nextInstance.changeLanguage(this.locale).then((_t) => {
                     resolve();
                 }).catch((err) => {
+                    console.log(err);
                     reject(err);
                 });
             } else {
