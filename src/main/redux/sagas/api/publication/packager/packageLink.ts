@@ -206,7 +206,7 @@ function* BufferManifestToR2Publication(manifest: Buffer, href: string): SagaGen
 
     } catch (e) {
 
-        debug("error to parse manifest");
+        debug("error to parse manifest", e, manifest);
         return undefined;
     }
 

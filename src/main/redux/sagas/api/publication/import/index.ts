@@ -11,6 +11,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { call } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
+import { importFromStringService } from "./importFromString";
 
 import { importFromFsService } from "./importFromFs";
 import { importFromLinkService } from "./importFromLink";
@@ -24,6 +25,30 @@ export function* importFromLink(
 
         try {
             const publicationDocument = yield* callTyped(importFromLinkService, link, pub);
+
+            if (!publicationDocument) {
+                throw new Error("publicationDocument not imported on db");
+            }
+
+            const publicationViewConverter = diMainGet("publication-view-converter");
+            return publicationViewConverter.convertDocumentToView(publicationDocument);
+
+        } catch (error) {
+            throw new Error(`importFromLink error ${error}`);
+        }
+    }
+
+    return undefined;
+}
+
+export function* importFromString(
+    manifest: string,
+): SagaGenerator<PublicationView | undefined> {
+
+    if (manifest) {
+
+        try {
+            const publicationDocument = yield* callTyped(importFromStringService, manifest);
 
             if (!publicationDocument) {
                 throw new Error("publicationDocument not imported on db");

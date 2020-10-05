@@ -33,6 +33,9 @@ export interface IPublicationApi {
         link: IOpdsLinkView,
         pub?: IOpdsPublicationView,
     ) => SagaGenerator<PublicationView>;
+    importFromString: (
+        manifest: string,
+    ) => SagaGenerator<PublicationView>;
     importFromFs: (
         filePathArray: string | string[],
     ) => SagaGenerator<PublicationView[]>;
@@ -53,6 +56,7 @@ export interface IPublicationModuleApi {
     "publication/getAllTags": IPublicationApi["getAllTags"];
     "publication/importFromLink": IPublicationApi["importFromLink"];
     "publication/importFromFs": IPublicationApi["importFromFs"];
+    "publication/importFromString": IPublicationApi["importFromString"];
     "publication/search": IPublicationApi["search"];
     "publication/exportPublication": IPublicationApi["exportPublication"];
 }

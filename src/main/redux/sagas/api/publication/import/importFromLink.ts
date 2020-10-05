@@ -36,7 +36,7 @@ function* importLinkFromPath(
     let publicationDocument = yield* importFromFsService(downloadPath, lcpHashedPassphrase);
 
     if (publicationDocument) {
-        const tags = pub?.tags?.map((v) => v.name);
+        const tags = pub?.tags?.map((v) => v.name) || [];
 
         // Merge with the original publication
         publicationDocument = Object.assign(
