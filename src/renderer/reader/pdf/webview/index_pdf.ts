@@ -13,8 +13,6 @@ import { pdfReaderMountingPoint } from "./pdfReader";
 
 function main() {
 
-
-
     const rootElement = document.body;
 
     const bus: IEventBusPdfPlayer = eventBus(
@@ -30,17 +28,16 @@ function main() {
             ipcRenderer.on("pdf-eventbus", (_event, message) => {
 
                 try {
-                    // tslint:disable-next-line: max-line-length
-                    console.log("ipcRenderer pdf-eventbus received", JSON.parse(message.key), JSON.parse(message.payload));
+
+                    const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
+                    const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
+                    console.log("ipcRenderer pdf-eventbus received", key, data);
+
+                    if (Array.isArray(data)) {
+                        ev(key, ...data);
+                    }
                 } catch (e) {
-                    console.log("ipcRenderer error to parse", e);
-                }
-
-                const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
-                const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
-
-                if (Array.isArray(data)) {
-                    ev(key, ...data);
+                    console.log("ipcRenderer pdf-eventbus received with parsing error", e);
                 }
 
             });

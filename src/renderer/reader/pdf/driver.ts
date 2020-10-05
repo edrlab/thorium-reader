@@ -141,18 +141,18 @@ export async function pdfMountWebview(
 
                     const message = event.args[0];
                     try {
-                        // tslint:disable-next-line: max-line-length
-                        console.log("ipc-message pdf-eventbus received", JSON.parse(message.key), JSON.parse(message.payload));
+
+                        const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
+                        const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
+                        console.log("ipc-message pdf-eventbus received", key, data);
+
+                        if (Array.isArray(data)) {
+                            ev(key, ...data);
+                        }
                     } catch (e) {
                         console.log("ipc message pdf-eventbus received with parsing error", e);
                     }
 
-                    const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
-                    const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
-
-                    if (Array.isArray(data)) {
-                        ev(key, ...data);
-                    }
                 }
             });
         },
