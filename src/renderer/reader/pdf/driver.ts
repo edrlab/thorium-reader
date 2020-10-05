@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { remote } from "electron";
+import { remote, shell, WillNavigateEvent } from "electron";
 import * as path from "path";
 import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
@@ -57,6 +57,18 @@ export async function pdfMountWebview(
     // webview.setAttribute("disablewebsecurity", "");
     // webview.setAttribute("webpreferences",
     //     "sandbox=0, javascript=1, contextIsolation=0, webSecurity=0, allowRunningInsecureContent=1");
+
+    // Redirect link to an external browser
+    const handleRedirect = async (event: WillNavigateEvent) => {
+        event.preventDefault(); // no effect
+        event.stopPropagation();
+
+        console.log("WillNavigate event:", event.type, event.url);
+        if (event.url) {
+            await shell.openExternal(event.url);
+        }
+    };
+    webview.addEventListener("will-navigate", handleRedirect);
 
     webview.addEventListener("ipc-message", (event: Electron.IpcMessageEvent) => {
         const wv = event.currentTarget as Electron.WebviewTag;

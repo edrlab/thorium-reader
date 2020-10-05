@@ -412,9 +412,38 @@ export async function pdfReaderMountingPoint(
                     console.log("getAnchorUrl", url);
                     return "";
                 },
-                executeNamedAction: (action: any) => {
+                executeNamedAction: async (action: any) => {
                     console.log("executeNamedAction", action);
                     // return void;
+
+                    switch (action) {
+                        case "GoBack":
+                          await pagePreviousAction();
+                          break;
+
+                        case "GoForward":
+                          await pageNextAction();
+                          break;
+
+                        case "NextPage":
+                          await pageNextAction();
+                          break;
+
+                        case "PrevPage":
+                          await pagePreviousAction();
+                          break;
+
+                        case "LastPage":
+                          await goToPageAction(pdf.numPages);
+                          break;
+
+                        case "FirstPage":
+                          await goToPageAction(1);
+                          break;
+
+                        default:
+                          break; // No action according to spec
+                      }
                 },
             },
             downloadManager: undefined,
@@ -435,97 +464,101 @@ export async function pdfReaderMountingPoint(
         await debouncedResize();
     });
 
-    window.document.addEventListener("click", (ev: MouseEvent) => {
+    // replace with event 'will-navigate' on webview, cf driver.ts
+    // window.document.addEventListener("click", (ev: MouseEvent) => {
 
-        let currentElement = ev.target as Element;
-        let href: string | SVGAnimatedString | undefined;
-        let domHref: string | undefined;
-        while (currentElement && currentElement.nodeType === Node.ELEMENT_NODE) {
-            if (currentElement.tagName.toLowerCase() === "a") {
+    //     let currentElement = ev.target as Element;
+    //     let href: string | SVGAnimatedString | undefined;
+    //     let domHref: string | undefined;
+    //     while (currentElement && currentElement.nodeType === Node.ELEMENT_NODE) {
+    //         if (currentElement.tagName.toLowerCase() === "a") {
 
-                // includes SVG xlink:href, absolute URL
-                href = (currentElement as HTMLAnchorElement | SVGAElement).href;
+    //             // includes SVG xlink:href, absolute URL
+    //             href = (currentElement as HTMLAnchorElement | SVGAElement).href;
 
-                // excludes SVG xlink:href, relative URL
-                domHref = currentElement.getAttribute("href");
+    //             // excludes SVG xlink:href, relative URL
+    //             domHref = currentElement.getAttribute("href");
 
-                console.log(`A LINK CLICK: ${href} (${domHref})`);
-                break;
-            }
-            currentElement = currentElement.parentNode as Element;
-        }
+    //             console.log(`A LINK CLICK: ${href} (${domHref})`);
+    //             break;
+    //         }
+    //         currentElement = currentElement.parentNode as Element;
+    //     }
 
-        // href is not necessarily empty when the a@href DOM attribute is empty!
-        // (because automatic resolution to base URL absolute path to "index_pdf.html"!)
-        if (!href) {
-            return;
-        }
+    //     // href is not necessarily empty when the a@href DOM attribute is empty!
+    //     // (because automatic resolution to base URL absolute path to "index_pdf.html"!)
+    //     if (!href) {
+    //         return;
+    //     }
 
-        if ((href as SVGAnimatedString).animVal) {
-            href = (href as SVGAnimatedString).animVal;
+    //     if ((href as SVGAnimatedString).animVal) {
+    //         href = (href as SVGAnimatedString).animVal;
 
-            if (!href) {
-                return;
-            }
-        } else if (!domHref) {
-            return;
-        }
+    //         if (!href) {
+    //             return;
+    //         }
+    //     } else if (!domHref) {
+    //         return;
+    //     }
 
-        const hrefStr = href as string;
-        console.log(`=============> PDF LINK: '${hrefStr}'`);
+    //     const hrefStr = href as string;
+    //     console.log(`=============> PDF LINK: '${hrefStr}'`);
 
-        if (!hrefStr) {
-            return;
-        }
+    //     if (!hrefStr) {
+    //         return;
+    //     }
 
-        if (/^javascript:/.test(hrefStr)) {
-            return;
-        }
+    //     if (/^javascript:/.test(hrefStr)) {
+    //         return;
+    //     }
 
-        ev.preventDefault();
-        ev.stopPropagation();
+    //     ev.preventDefault();
+    //     ev.stopPropagation();
 
-        if (/^http[s]?:\/\//.test(hrefStr)) { // href.startsWith("https://")
-            // tslint:disable-next-line:no-floating-promises
-            (async () => {
-                try {
-                    await shell.openExternal(hrefStr);
-                } catch (err) {
-                    console.log(err);
-                }
-            })();
-        }
+    //     if (/^http[s]?:\/\//.test(hrefStr)) { // href.startsWith("https://")
+    //         // tslint:disable-next-line:no-floating-promises
+    //         (async () => {
+    //             try {
+    //                 await shell.openExternal(hrefStr);
+    //             } catch (err) {
+    //                 console.log(err);
+    //             }
+    //         })();
+    //     }
 
-        return;
-    }, true);
+    //     return;
+    // }, true);
 
     const pageNumberCheck = (pageNumber: number) => {
         return pageNumber < 1 ? 1 : pageNumber;
     };
 
-    bus.subscribe("page", async (pageNumber: number) => {
+    const goToPageAction = async (pageNumber: number) => {
         _lastPageNumber = pageNumberCheck(pageNumber);
 
         await displayPageNumber(_lastPageNumber);
 
         bus.dispatch("page", _lastPageNumber);
-    });
+    };
+    bus.subscribe("page", goToPageAction);
 
-    bus.subscribe("page-next", async () => {
+    const pageNextAction = async () => {
         _lastPageNumber = pageNumberCheck(++_lastPageNumber);
 
         await displayPageNumber(_lastPageNumber);
 
         bus.dispatch("page", _lastPageNumber);
-    });
+    };
+    bus.subscribe("page-next", pageNextAction);
 
-    bus.subscribe("page-previous", async () => {
+    const pagePreviousAction = async () => {
         _lastPageNumber = pageNumberCheck(--_lastPageNumber);
 
         await displayPageNumber(_lastPageNumber);
 
         bus.dispatch("page", _lastPageNumber);
-    });
+    };
+    bus.subscribe("page-previous", pagePreviousAction);
 
     bus.subscribe("scale", async (scale) => {
         _scale = scale;
