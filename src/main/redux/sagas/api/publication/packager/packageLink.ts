@@ -134,19 +134,28 @@ function* downloadResources(
     const uResources = getUniqueResourcesFromR2Publication(r2Publication);
 
     const resourcesHref = [...new Set(linksToArray(uResources))];
-    const resourcesHrefResolved = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
 
-    const pathArray = yield* callTyped(downloader, resourcesHrefResolved, title);
+    const getPathArray = function*() {
 
+        if (baseUrl === "file://") {
+            return [resourcesHref, resourcesHref];
+        } else {
+            const a = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
+            const b = yield* callTyped(downloader, a, title);
+            return [b, a];
+        }
+    };
+
+    const [pathArray, resourcesHrefResolved] = yield* callTyped(getPathArray);
     const resourcesHrefMap: TResources = pathArray.map(
         (fsPath, idx) => {
 
             const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
             return [
-            fsPath,
-            resourcesHref[idx],
-            hash + "/" + path.basename(resourcesHrefResolved[idx]), // crc32 check failed // how to fix this ?
-        ];
+                fsPath,
+                resourcesHref[idx],
+                hash + "/" + path.basename(resourcesHrefResolved[idx]), // crc32 check failed // how to fix this ?
+            ];
 
         },
     );
@@ -228,8 +237,17 @@ export function* packageFromLink(
 
     const [manifest, manifestUrl] = yield* callTyped(packageGetManifestBuffer, href, isHtml);
     if (!manifest) {
-        throw new Error("manifest not found from content link");
+        throw new Error("manifest not found from content link " + href);
     }
+
+    return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl);
+}
+
+export function* packageFromManifestBuffer(
+    href: string, // 'file://' for local resources
+    manifest: Buffer,
+    manifestUrl?: string,
+) {
 
     const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, href);
     if (!r2Publication) {

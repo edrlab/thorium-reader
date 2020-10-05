@@ -111,22 +111,31 @@ export function* importFromLinkService(
         }
 
         if (isHtml || isJson) {
-            debug("the link need to be packaged");
-
-            const packagePath = yield* callTyped(packageFromLink, url.toString(), isHtml);
-            if (packagePath) {
-                return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString() }, pub);
-            }
-
-        } else {
-            debug("Start the download", link);
-
-            const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
-            if (downloadPath) {
-                return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
-            }
-
+            link = { url: url.toString() };
         }
+
+        const downloadMayBePackageLink = function*() {
+
+            if (isHtml || isJson) {
+                debug("the link need to be packaged");
+
+                return yield* callTyped(packageFromLink, url.toString(), isHtml);
+
+            } else {
+                debug("Start the download", link);
+
+                const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
+                return downloadPath;
+            }
+        };
+
+        const fileOrPackagePath = yield* callTyped(downloadMayBePackageLink);
+        if (fileOrPackagePath) {
+            return yield* callTyped(importLinkFromPath, fileOrPackagePath, link, pub);
+        } else {
+            debug("downloaded file path or package path is empty");
+        }
+
     } catch (e) {
 
         const translate = diMainGet("translator").translate;
