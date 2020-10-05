@@ -12,11 +12,7 @@ import {
 } from "readium-desktop/preprocessor-directives";
 import { keyDownEventHandler, keyUpEventHandler } from "readium-desktop/renderer/common/keyboard";
 
-import {
-    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
-    IEventPayload_R2_EVENT_WEBVIEW_KEYUP, R2_EVENT_CLIPBOARD_COPY, R2_EVENT_WEBVIEW_KEYDOWN,
-    R2_EVENT_WEBVIEW_KEYUP,
-} from "@r2-navigator-js/electron/common/events";
+import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer, TToc } from "./common/pdfReader.type";
@@ -70,24 +66,8 @@ export async function pdfMountWebview(
     };
     webview.addEventListener("will-navigate", handleRedirect);
 
-    webview.addEventListener("ipc-message", (event: Electron.IpcMessageEvent) => {
-        const wv = event.currentTarget as Electron.WebviewTag;
-        if (webview !== wv) {
-            console.log("Wrong PDF webview?!");
-            return;
-        }
-        if (event.channel === R2_EVENT_WEBVIEW_KEYDOWN) {
-            const payload = event.args[0] as IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN;
-            keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
-        } else if (event.channel === R2_EVENT_WEBVIEW_KEYUP) {
-            const payload = event.args[0] as IEventPayload_R2_EVENT_WEBVIEW_KEYUP;
-            keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
-        } else if (event.channel === R2_EVENT_CLIPBOARD_COPY) {
-            if (clipboardInterceptor) {
-                const payload = event.args[0] as IEventPayload_R2_EVENT_CLIPBOARD_COPY;
-                clipboardInterceptor(payload);
-            }
-        }
+    webview.addEventListener("console-message", (e) => {
+        console.log("pdf-webview", e.message);
     });
 
     webview.addEventListener("dom-ready", () => {
@@ -178,11 +158,13 @@ export async function pdfMountWebview(
         },
     );
 
-    webview.addEventListener("console-message", (e) => {
-        console.log("pdf-webview", e.message);
+    bus.subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
+    bus.subscribe("keydown", (payload) => {
+        keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
     });
-
-    publicationViewport.append(webview);
+    bus.subscribe("keyup", (payload) => {
+        keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
+    });
 
     webview.addEventListener("did-finish-load", () => {
 
@@ -209,6 +191,8 @@ export async function pdfMountWebview(
 
     // webview.src = rendererBaseUrl;
     webview.setAttribute("src", htmlPath);
+
+    publicationViewport.append(webview);
 
     const toc = await Promise.race([
         new Promise<void>((_r, reject) => setTimeout(() => reject("TIMEOUT"), 50000)),

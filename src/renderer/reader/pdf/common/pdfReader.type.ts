@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
+import { IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP } from "@r2-navigator-js/electron/common/events";
 import { IEventBus } from "./eventBus";
 
 export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "150" | "200" | "300" | "500";
@@ -23,6 +24,9 @@ export interface IPdfPlayerEvent {
     "page-previous": () => any;
     "ready": (toc?: TToc) => any;
     "start": (pdfPath: string) => any;
+    "copy": (text: string) => any;
+    "keydown": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => any;
+    "keyup": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYUP) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

@@ -418,32 +418,32 @@ export async function pdfReaderMountingPoint(
 
                     switch (action) {
                         case "GoBack":
-                          await pagePreviousAction();
-                          break;
+                            await pagePreviousAction();
+                            break;
 
                         case "GoForward":
-                          await pageNextAction();
-                          break;
+                            await pageNextAction();
+                            break;
 
                         case "NextPage":
-                          await pageNextAction();
-                          break;
+                            await pageNextAction();
+                            break;
 
                         case "PrevPage":
-                          await pagePreviousAction();
-                          break;
+                            await pagePreviousAction();
+                            break;
 
                         case "LastPage":
-                          await goToPageAction(pdf.numPages);
-                          break;
+                            await goToPageAction(pdf.numPages);
+                            break;
 
                         case "FirstPage":
-                          await goToPageAction(1);
-                          break;
+                            await goToPageAction(1);
+                            break;
 
                         default:
-                          break; // No action according to spec
-                      }
+                            break; // No action according to spec
+                    }
                 },
             },
             downloadManager: undefined,
