@@ -6,7 +6,6 @@
 // ==LICENSE-END
 
 import { debounce } from "debounce";
-import { shell } from "electron";
 import * as path from "path";
 import * as pdfJs from "pdfjs-dist";
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
