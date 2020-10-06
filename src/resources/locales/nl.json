@@ -252,6 +252,7 @@
             "goToError": "Deze paginaovergang bestaat niet",
             "goToPlaceHolder": "Voer een paginanummer in",
             "goToTitle": "Ga naar pagina",
+            "historyPrevious": "",
             "infoTitle": "informatie",
             "openTableOfContentsTitle": "navigatie",
             "quitFullscreenTitle": "verlaat volledig scherm modus",

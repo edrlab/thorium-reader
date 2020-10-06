@@ -252,6 +252,7 @@
             "goToError": "Este salto de página no existe",
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
+            "historyPrevious": "",
             "infoTitle": "Información",
             "openTableOfContentsTitle": "Navegación",
             "quitFullscreenTitle": "Salir del modo pantalla completa",

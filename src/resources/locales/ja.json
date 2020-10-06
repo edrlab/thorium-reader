@@ -252,6 +252,7 @@
             "goToError": "そのページは存在しません",
             "goToPlaceHolder": "移動先のページ番号",
             "goToTitle": "ページに移動",
+            "historyPrevious": "",
             "infoTitle": "本の情報",
             "openTableOfContentsTitle": "ナビゲーション",
             "quitFullscreenTitle": "全画面表示の終了",

@@ -515,7 +515,8 @@ declare namespace typed_i18n {
     readonly "openTableOfContentsTitle": string,
     readonly "quitFullscreenTitle": string,
     readonly "readBookTitle": string,
-    readonly "settingsTitle": string
+    readonly "settingsTitle": string,
+    readonly "historyPrevious": string
   },
   readonly "settings": {
     readonly "column": {
@@ -617,7 +618,8 @@ declare namespace typed_i18n {
   readonly "openTableOfContentsTitle": string,
   readonly "quitFullscreenTitle": string,
   readonly "readBookTitle": string,
-  readonly "settingsTitle": string
+  readonly "settingsTitle": string,
+  readonly "historyPrevious": string
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
@@ -632,6 +634,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;
   (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
+  (_: "reader.navigation.historyPrevious", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,

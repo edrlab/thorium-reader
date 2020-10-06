@@ -246,6 +246,7 @@ class Reader extends React.Component<IProps, IState> {
                                 if (typeof index !== "undefined" && index >= 0) {
                                     console.log("index divina", index);
                                     this.currentDivinaPlayer.goToPageWithIndex(index);
+                                    history.pushState(this.props.locator?.locator, "");
                                 }
                             } catch (e) {
                                 // ignore
@@ -297,6 +298,21 @@ class Reader extends React.Component<IProps, IState> {
         ], this.findBookmarks);
 
         this.getReaderMode();
+
+        window.onpopstate = (popState: PopStateEvent) => {
+            popState.preventDefault();
+            popState.stopPropagation();
+            popState.stopImmediatePropagation();
+
+            console.log("popstate", history.state, popState?.state);
+
+            if (typeof popState?.state === "object") {
+                this.goToLocator(popState.state);
+            }
+
+            history.pushState(history.state, "");
+
+        };
     }
 
     public async componentDidUpdate(oldProps: IProps, oldState: IState) {
@@ -308,6 +324,7 @@ class Reader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
+
     }
 
     public componentWillUnmount() {
@@ -912,18 +929,20 @@ class Reader extends React.Component<IProps, IState> {
                     apiAction("reader/clipboardCopy", this.props.pubId, clipboardData)
                         .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
                 };
-
+            const locator = this.props.locator?.locator?.href ? this.props.locator.locator : undefined;
             installNavigatorDOM(
                 this.props.r2Publication,
                 this.props.manifestUrlR2Protocol,
                 "publication_viewport",
                 preloadPath,
-                this.props.locator?.locator?.href ? this.props.locator.locator : undefined,
+                locator,
                 true,
                 clipboardInterceptor,
                 this.props.winId,
                 computeReadiumCssJsonMessage(this.props.readerConfig),
             );
+
+            history.pushState(locator, "");
         }
     }
 
@@ -945,12 +964,17 @@ class Reader extends React.Component<IProps, IState> {
         }
         this.ttsOverlayEnableNeedsSync = false;
 
+        if (!r.equals(loc?.locator, history.state)) {
+            history.pushState(loc.locator, "");
+        }
+
         this.findBookmarks();
         this.saveReadingLocation(loc);
         this.setState({ currentLocation: getCurrentReadingLocation() });
         // No need to explicitly refresh the bookmarks status here,
         // as componentDidUpdate() will call the function after setState():
         // await this.checkBookmarks();
+
     }
 
     // check if a bookmark is on the screen

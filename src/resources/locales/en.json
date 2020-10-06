@@ -256,7 +256,8 @@
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
-            "settingsTitle": "settings"
+            "settingsTitle": "settings",
+            "historyPrevious": "history previous"
         },
         "settings": {
             "column": {

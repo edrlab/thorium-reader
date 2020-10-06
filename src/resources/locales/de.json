@@ -252,6 +252,7 @@
             "goToError": "Diese Seite existiert nicht",
             "goToPlaceHolder": "Gehe zur Seite",
             "goToTitle": "Gehe zur Seite",
+            "historyPrevious": "",
             "infoTitle": "Informationen",
             "openTableOfContentsTitle": "Navigation",
             "quitFullscreenTitle": "Vollbildmodus beenden",
