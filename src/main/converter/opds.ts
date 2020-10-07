@@ -81,7 +81,7 @@ export class OpdsFeedViewConverter {
         if (properties) {
 
             const key = "lcp_hashed_passphrase";
-            const lcpHashedPassphraseObj = properties.AdditionalJSON[key];
+            const lcpHashedPassphraseObj = properties.AdditionalJSON ? properties.AdditionalJSON[key] : undefined;
             let lcpHashedPassphrase: string;
             if (typeof lcpHashedPassphraseObj === "string") {
                 const lcpHashedPassphraseHexOrB64 = lcpHashedPassphraseObj as string;
@@ -123,7 +123,15 @@ export class OpdsFeedViewConverter {
                 }
             }
 
+            const indirectAcquisitions = properties.IndirectAcquisitions ?
+                (Array.isArray(properties.IndirectAcquisitions) ?
+                    properties.IndirectAcquisitions : [properties.IndirectAcquisitions]) :
+                undefined;
+
             return {
+                indirectAcquisitionType: indirectAcquisitions?.reduce<string>((pv, cv) => {
+                    return typeof cv?.TypeAcquisition === "string" ? cv.TypeAcquisition : pv;
+                }, undefined),
                 lcpHashedPassphrase,
                 numberOfItems: properties.NumberOfItems || undefined,
                 priceValue: properties.Price?.Value || undefined,
@@ -142,9 +150,9 @@ export class OpdsFeedViewConverter {
         return undefined;
     }
 
-    public convertOpdsTagToView(subject: Subject, baseUrl: string): IOpdsTagView {
+    public convertOpdsTagToView(subject: Subject, baseUrl: string): IOpdsTagView | undefined {
 
-        return (subject.Name || subject.Code) && {
+        return (subject.Name || subject.Code) ? {
             name: convertMultiLangStringToString(subject.Name || subject.Code),
             link: this.convertFilterLinkToView(baseUrl, subject.Links || [], {
                 type: [
@@ -152,12 +160,12 @@ export class OpdsFeedViewConverter {
                     ContentType.Opds2,
                 ],
             }),
-        };
+        } : undefined;
     }
 
-    public convertOpdsContributorToView(contributor: Contributor, baseUrl: string): IOpdsContributorView {
+    public convertOpdsContributorToView(contributor: Contributor, baseUrl: string): IOpdsContributorView | undefined {
 
-        return (contributor.Name) && {
+        return (contributor.Name) ? {
             name: typeof contributor.Name === "object"
                 ? convertMultiLangStringToString(contributor.Name)
                 : contributor.Name,
@@ -167,7 +175,7 @@ export class OpdsFeedViewConverter {
                     ContentType.Opds2,
                 ],
             }),
-        };
+        } : undefined;
     }
 
     public convertLinkToView(
@@ -247,15 +255,15 @@ export class OpdsFeedViewConverter {
 
         const authors = metadata.Author?.map(
             (author) =>
-                this.convertOpdsContributorToView(author, baseUrl));
+                this.convertOpdsContributorToView(author, baseUrl)).filter((v) => v);
 
         const publishers = metadata.Publisher?.map(
             (publisher) =>
-                this.convertOpdsContributorToView(publisher, baseUrl));
+                this.convertOpdsContributorToView(publisher, baseUrl)).filter((v) => v);
 
         const tags = metadata.Subject?.map(
             (subject) =>
-                this.convertOpdsTagToView(subject, baseUrl));
+                this.convertOpdsTagToView(subject, baseUrl)).filter((v) => v);
 
         // CoverView object
         const coverLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Images, {

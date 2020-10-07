@@ -6,12 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 import SVG from "../../../common/components/SVG";
 
@@ -23,12 +26,14 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-class SessionSettings extends React.Component<IProps, {
+interface IState {
     sessionEnabled: boolean;
-}> {
+}
+
+class SessionSettings extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -106,4 +111,15 @@ class SessionSettings extends React.Component<IProps, {
     }
 }
 
-export default withTranslator(SessionSettings);
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
+    return {
+        locale: state.i18n.locale,
+    };
+};
+
+const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SessionSettings));

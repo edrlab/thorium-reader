@@ -71,7 +71,7 @@ export class OpdsService {
         const searchResult = await httpGet<string>(
             opensearchLink.url,
             {
-                timeout: 10000,
+                // timeout: 10000,
             },
             async (searchData) => {
                 if (searchData.isFailure) {
@@ -113,7 +113,7 @@ export class OpdsService {
         const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
 
         const options: RequestInit = {};
-        options.timeout = 10000;
+        // options.timeout = 10000;
 
         if (accessToken) {
             options.headers = {
@@ -280,7 +280,8 @@ export class OpdsService {
                             publications: [pubView],
                         } as IOpdsResultView;
                     }
-                } catch {
+                } catch (e) {
+                    debug("CATCH", e);
 
                     opdsFeedData.data = {
                         title: "",

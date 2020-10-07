@@ -11,6 +11,7 @@ import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as esCatalog from "readium-desktop/resources/locales/es.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
+import * as itCatalog from "readium-desktop/resources/locales/it.json";
 import * as jaCatalog from "readium-desktop/resources/locales/ja.json";
 import * as ltCatalog from "readium-desktop/resources/locales/lt.json";
 import * as nlCatalog from "readium-desktop/resources/locales/nl.json";
@@ -21,6 +22,7 @@ import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
 import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
 import * as esLang from "readium-desktop/resources/locale-names/esLang.json";
 import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
+import * as itLang from "readium-desktop/resources/locale-names/itLang.json";
 import * as jaLang from "readium-desktop/resources/locale-names/jaLang.json";
 import * as ltLang from "readium-desktop/resources/locale-names/ltLang.json";
 import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
@@ -104,11 +106,14 @@ i18nextInstance.init({
         "lt": {
             translation: ltCatalog,
         },
-        "pt-br": {
+        "pt-BR": {
             translation: ptBrCatalog,
         },
-        "pt-pt": {
+        "pt-PT": {
             translation: ptPtCatalog,
+        },
+        "it" : {
+            translation: itCatalog,
         },
     },
     // lng: undefined,
@@ -138,8 +143,9 @@ i18nextInstance.addResourceBundle("es", "translation", esLang, true);
 i18nextInstance.addResourceBundle("nl", "translation", nlLang, true);
 i18nextInstance.addResourceBundle("ja", "translation", jaLang, true);
 i18nextInstance.addResourceBundle("lt", "translation", ltLang, true);
-i18nextInstance.addResourceBundle("pt-br", "translation", ptBrLang, true);
-i18nextInstance.addResourceBundle("pt-pt", "translation", ptPtLang, true);
+i18nextInstance.addResourceBundle("pt-BR", "translation", ptBrLang, true);
+i18nextInstance.addResourceBundle("pt-PT", "translation", ptPtLang, true);
+i18nextInstance.addResourceBundle("it", "translation", itLang, true);
 
 const i18nextInstanceEN = i18nextInstance.cloneInstance();
 i18nextInstanceEN.changeLanguage("en").then((_t) => {
@@ -159,8 +165,9 @@ export const AvailableLanguages = {
     "nl": "Dutch",
     "ja": "日本語",
     "lt": "Lietuvių",
-    "pt-br": "Português Brasileiro",
-    "pt-pt": "Português",
+    "pt-BR": "Português Brasileiro",
+    "pt-PT": "Português",
+    "it": "Italiano",
 };
 
 interface LocalizedContent {
@@ -190,6 +197,7 @@ export class Translator {
                 i18nextInstance.changeLanguage(this.locale).then((_t) => {
                     resolve();
                 }).catch((err) => {
+                    console.log(err);
                     reject(err);
                 });
             } else {

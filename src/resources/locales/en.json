@@ -57,9 +57,9 @@
         "entry": {
             "continueReading": "Resume reading",
             "continueReadingAudioBooks": "Resume listening",
+            "continueReadingDivina": "Resume divina",
             "lastAdditions": "Recently added",
             "lastAdditionsAudioBooks": "Recently added audiobooks",
-            "continueReadingDivina": "Resume divina",
             "lastAdditionsDivina": "Recently added divina"
         },
         "export": "Export",
@@ -142,9 +142,7 @@
     },
     "message": {
         "download": {
-            "error": "The download of {{- title}} has failed: [{{- err}}]",
-            "start": "The download of {{- title}} has begun.",
-            "success": "The download of {{- title}} is finished."
+            "error": "The download of {{- title}} has failed: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} was already imported",

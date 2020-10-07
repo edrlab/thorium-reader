@@ -19,9 +19,11 @@ import { diMainGet } from "./di";
 // Logger
 const debug = debug_("readium-desktop:main/http");
 
+const DEFAULT_HTTP_TIMEOUT = 30000;
+
 export async function request(
     url: string | URL,
-    options: THttpOptions,
+    options: THttpOptions = {},
     locale = "en-US",
 ): Promise<THttpResponse> {
 
@@ -37,7 +39,7 @@ export async function request(
     // this a nodeJs issues !
     //
     // const httpAgent = new http.Agent({
-    //     timeout: options.timeout || 30000,
+    //     timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
     // });
     // options.agent = (parsedURL: URL) => {
     //     if (parsedURL.protocol === "http:") {
@@ -48,12 +50,12 @@ export async function request(
     // };
     if (!options.agent && url.toString().startsWith("https:")) {
         const httpsAgent = new https.Agent({
-            timeout: options.timeout || 30000,
+            timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
             rejectUnauthorized: IS_DEV ? false : true,
         });
         options.agent = httpsAgent;
-
     }
+    options.timeout = options.timeout || DEFAULT_HTTP_TIMEOUT;
 
     const response = await fetch(url, options);
 

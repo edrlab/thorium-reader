@@ -57,8 +57,10 @@
         "entry": {
             "continueReading": "Lesen Sie weiter",
             "continueReadingAudioBooks": "Hören Sie weiter zu",
+            "continueReadingDivina": "",
             "lastAdditions": "Kürzlich hinzugefügt",
-            "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher"
+            "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher",
+            "lastAdditionsDivina": ""
         },
         "export": "Export",
         "lang": "Sprache",
@@ -140,9 +142,7 @@
     },
     "message": {
         "download": {
-            "error": "Der Download von {{- title}} ist fehlgeschlagen: [{{- err}}]",
-            "start": "Der Download von {{- title}} hat begonnen",
-            "success": "Der Download von {{- title}} wurde abgeschlossen"
+            "error": "Der Download von {{- title}} ist fehlgeschlagen: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "Der Import von {{- title}} Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
