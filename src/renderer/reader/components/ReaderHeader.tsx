@@ -333,7 +333,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                     </ul>
 
                     <ul className={styles.menu_option}>
-                        {history.state && <li>
+                        {history.state && this.props.readerMenuProps.historyCounter() > 1 && <li>
                             <button
                                 className={styles.menu_button}
                                 onClick={() => {

@@ -120,6 +120,8 @@ class Reader extends React.Component<IProps, IState> {
     private refToolbar: React.RefObject<HTMLAnchorElement>;
     private mainElRef: React.RefObject<HTMLDivElement>;
 
+    private historyCounter: number;
+
     private currentDivinaPlayer: any;
 
     // can be get back wwith withTranslator HOC
@@ -133,6 +135,8 @@ class Reader extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.historyCounter = 0;
 
         this.ttsOverlayEnableNeedsSync = true;
 
@@ -247,6 +251,7 @@ class Reader extends React.Component<IProps, IState> {
                                     console.log("index divina", index);
                                     this.currentDivinaPlayer.goToPageWithIndex(index);
                                     history.pushState(this.props.locator?.locator, "");
+                                    ++this.historyCounter;
                                 }
                             } catch (e) {
                                 // ignore
@@ -310,7 +315,12 @@ class Reader extends React.Component<IProps, IState> {
                 this.goToLocator(popState.state);
             }
 
-            history.pushState(history.state, "");
+            --this.historyCounter;
+
+            if (this.historyCounter < 1) {
+                history.pushState(history.state, "");
+                ++this.historyCounter;
+            }
 
         };
     }
@@ -343,6 +353,7 @@ class Reader extends React.Component<IProps, IState> {
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
+            historyCounter: () => this.historyCounter,
         };
 
         const readerOptionsProps: IReaderOptionsProps = {
@@ -943,6 +954,7 @@ class Reader extends React.Component<IProps, IState> {
             );
 
             history.pushState(locator, "");
+            ++this.historyCounter;
         }
     }
 
@@ -966,6 +978,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (!r.equals(loc?.locator, history.state)) {
             history.pushState(loc.locator, "");
+            ++this.historyCounter;
         }
 
         this.findBookmarks();
