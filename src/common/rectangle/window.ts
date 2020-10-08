@@ -47,7 +47,7 @@ export const normalizeRectangle = (winBound: Rectangle): Rectangle => {
     };
 
     const visible = screen.getAllDisplays().some((display) => {
-        return windowWithinBounds(normalizeBound, display.workArea);
+        return windowWithinBounds(display.workArea, normalizeBound);
       });
 
     if (visible) {
