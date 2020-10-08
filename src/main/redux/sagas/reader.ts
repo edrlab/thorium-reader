@@ -182,20 +182,11 @@ function* getWinBound(publicationIdentifier: string | undefined) {
         (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
     )) as Electron.Rectangle | undefined;
 
-    debug("reader[publicationIdentifier]?.winBound", winBound);
-    if (winBound) {
-        normalizeRectangle(winBound);
-    }
+    winBound = normalizeRectangle(winBound);
+    debug(`reader[${publicationIdentifier}]?.winBound}`, winBound);
 
-    const winBoundArray = [];
+    const winBoundArray = readerArray.map((reader) => reader.windowBound);
     winBoundArray.push(library.windowBound);
-    readerArray.forEach((reader) => {
-        if (reader) {
-            debug("reader.windowBound", reader.windowBound);
-            normalizeRectangle(reader.windowBound);
-            winBoundArray.push(reader.windowBound);
-        }
-    });
     const winBoundAlreadyTaken = !winBound || !!winBoundArray.find((bound) => ramda.equals(winBound, bound));
 
     if (
@@ -233,12 +224,12 @@ function* getWinBound(publicationIdentifier: string | undefined) {
             );
             debug("winBoundWithOffset", winBoundWithOffset);
 
-            winBound = ramda.uniq(winBoundWithOffset)[0];
+            [winBound] = ramda.uniq(winBoundWithOffset);
             debug("winBound", winBound);
-            normalizeRectangle(winBound);
+            winBound = normalizeRectangle(winBound);
 
         } else {
-            winBound = library.windowBound;
+            winBound = normalizeRectangle(library.windowBound);
         }
     }
 
