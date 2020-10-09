@@ -827,24 +827,24 @@ class Reader extends React.Component<IProps, IState> {
                 language: this.props.lang,
             };
 
-            let manifestJson: any;
-            try {
+            // let manifestJson: any;
+            // try {
 
-                const manifestBuffer = Buffer.from(this.props.publicationView.r2PublicationBase64, "base64");
-                const manifestStr = manifestBuffer.toString();
-                manifestJson = JSON.parse(manifestStr);
-            } catch (e) {
-                console.log("divina manifest parsing error");
-            }
+            //     const manifestBuffer = Buffer.from(this.props.publicationView.r2PublicationBase64, "base64");
+            //     const manifestStr = manifestBuffer.toString();
+            //     manifestJson = JSON.parse(manifestStr);
+            // } catch (e) {
+            //     console.log("divina manifest parsing error");
+            // }
 
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
 
             const manifestUrl = this.props.manifestUrlR2Protocol;
-            const url = manifestUrl.split("/manifest.json")[0];
+            const [url] = manifestUrl.split("/manifest.json");
             console.log("divina url", url);
 
             // Load the divina from its folder path
-            this.currentDivinaPlayer.openDivinaFromJsonAndPath(manifestJson, url, url, options);
+            this.currentDivinaPlayer.openDivinaFromFolderPath(url, null, options);
 
             // Handle events emitted by the currentDivinaPlayer
             const eventEmitter = this.currentDivinaPlayer.eventEmitter;

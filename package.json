@@ -207,7 +207,7 @@
     "connected-react-router": "^6.8.0",
     "debounce": "^1.2.0",
     "debug": "^4.2.0",
-    "divina-player-js": "github:readium/divina-player-js#196cb002872a7c47698186d73115859f810e96c8",
+    "divina-player-js": "github:readium/divina-player-js#636f22b4bb41240348b69f9eb12a87995e309420",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.6",
     "i18next": "^19.7.0",
