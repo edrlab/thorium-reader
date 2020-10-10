@@ -34,6 +34,7 @@ interface IBaseProps extends TranslatorProps {
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
     isDivina: boolean;
+    divinaNumberOfPages: number;
 }
 
 // IProps may typically extend:
@@ -122,11 +123,14 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         onClick={(e) => {
 
                                             if (isDivina) {
-                                                const loc = {
-                                                    href: index.toString(),
-                                                    // progression generate in divina pagechange event
-                                                };
-                                                this.props.goToLocator(loc as any);
+                                                // const loc = {
+                                                //     href: index.toString(),
+                                                //     // progression generate in divina pagechange event
+                                                // };
+                                                // this.props.goToLocator(loc as any);
+                                                if (link?.Href) {
+                                                    this.props.handleLinkClick(e, link.Href);
+                                                }
 
                                             } else {
 
@@ -189,7 +193,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         (parseInt(currentLocation.locator.href, 10) + 1).toString() :
                                         ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator.href)) + 1).toString()
                                         }/${
-                                            r2Publication.Spine.length
+                                            isDivina
+                                            ? this.props.divinaNumberOfPages
+                                            : r2Publication.Spine.length
                                         }) `}</em> {` ${spineTitle}`}</span>
                                     <p>
                                 { this.getProgression() }

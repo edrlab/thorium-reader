@@ -230,65 +230,77 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             <div id={styles.themes_list}>
                 <div>
                     <input
+                        disabled={!this.props.divinaReadingModeSupported.includes("double")}
                         id={"radio-" + "double"}
                         type="radio"
                         name="theme"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("double");
-                            this.setState({divinaReadingMode: "double"});
                         }}
-                        checked={this.state.divinaReadingMode === "double"}
+                        checked={this.props.divinaReadingMode === "double"}
                     />
-                    <label htmlFor={"radio-" + "double"}>
+                    <label
+                        aria-disabled={!this.props.divinaReadingModeSupported.includes("double")}
+                        htmlFor={"radio-" + "double"}
+                    >
                         {this.state.divinaReadingMode === "double" && <SVG svg={DoneIcon} ariaHidden />}
                         { "double" }
                     </label>
                 </div>
                 <div>
                     <input
+                        disabled={!this.props.divinaReadingModeSupported.includes("guided")}
                         id={"radio-" + "guided"}
                         type="radio"
                         name="theme"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("guided");
-                            this.setState({divinaReadingMode: "guided"});
                         }}
-                        checked={this.state.divinaReadingMode === "guided"}
+                        checked={this.props.divinaReadingMode === "guided"}
                     />
-                    <label htmlFor={"radio-" + "guided"}>
-                        {this.state.divinaReadingMode === "guided" && <SVG svg={DoneIcon} ariaHidden/>}
+                    <label
+                        aria-disabled={!this.props.divinaReadingModeSupported.includes("guided")}
+                        htmlFor={"radio-" + "guided"}
+                    >
+                        {this.props.divinaReadingMode === "guided" && <SVG svg={DoneIcon} ariaHidden/>}
                         {"guided"}
                     </label>
                 </div>
                 <div>
                     <input
+                        disabled={!this.props.divinaReadingModeSupported.includes("scroll")}
                         id={"radio-" + "scroll"}
                         type="radio"
                         name="theme"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("scroll");
-                            this.setState({ divinaReadingMode: "scroll" });
                         }}
                         checked={this.state.divinaReadingMode === "scroll"}
                     />
-                    <label htmlFor={"radio-" + "scroll"}>
-                        {this.state.divinaReadingMode === "scroll" && <SVG svg={DoneIcon} ariaHidden/>}
+                    <label
+                        aria-disabled={!this.props.divinaReadingModeSupported.includes("scroll")}
+                        htmlFor={"radio-" + "scroll"}
+                    >
+                        {this.props.divinaReadingMode === "scroll" && <SVG svg={DoneIcon} ariaHidden/>}
                         {"scroll"}
                     </label>
                 </div>
                 <div>
                     <input
+                        disabled={!this.props.divinaReadingModeSupported.includes("single")}
                         id={"radio-" + "single"}
                         type="radio"
                         name="theme"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("single");
-                            this.setState({ divinaReadingMode: "single" });
                         }}
-                        checked={this.state.divinaReadingMode === "single"}
+                        checked={this.props.divinaReadingMode === "single"}
                     />
-                    <label htmlFor={"radio-" + "single"}>
-                        {this.state.divinaReadingMode === "single" && <SVG svg={DoneIcon} ariaHidden />}
+                    <label
+                        aria-disabled={!this.props.divinaReadingModeSupported.includes("single")}
+                        htmlFor={"radio-" + "single"}
+                    >
+                        {this.props.divinaReadingMode === "single" && <SVG svg={DoneIcon} ariaHidden />}
                         { "single" }
                     </label>
                 </div>
