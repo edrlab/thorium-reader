@@ -105,8 +105,12 @@ declare namespace typed_i18n {
   readonly "entry": {
     readonly "continueReading": string,
     readonly "continueReadingAudioBooks": string,
+    readonly "continueReadingDivina": string,
+    readonly "continueReadingPdf": string,
     readonly "lastAdditions": string,
-    readonly "lastAdditionsAudioBooks": string
+    readonly "lastAdditionsAudioBooks": string,
+    readonly "lastAdditionsDivina": string,
+    readonly "lastAdditionsPdf": string
   },
   readonly "export": string,
   readonly "lang": string,
@@ -160,13 +164,21 @@ declare namespace typed_i18n {
   (_: "catalog.entry", __?: {}): {
   readonly "continueReading": string,
   readonly "continueReadingAudioBooks": string,
+  readonly "continueReadingDivina": string,
+  readonly "continueReadingPdf": string,
   readonly "lastAdditions": string,
-  readonly "lastAdditionsAudioBooks": string
+  readonly "lastAdditionsAudioBooks": string,
+  readonly "lastAdditionsDivina": string,
+  readonly "lastAdditionsPdf": string
 };
   (_: "catalog.entry.continueReading", __?: {}): string;
   (_: "catalog.entry.continueReadingAudioBooks", __?: {}): string;
+  (_: "catalog.entry.continueReadingDivina", __?: {}): string;
+  (_: "catalog.entry.continueReadingPdf", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.entry.lastAdditionsAudioBooks", __?: {}): string;
+  (_: "catalog.entry.lastAdditionsDivina", __?: {}): string;
+  (_: "catalog.entry.lastAdditionsPdf", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
@@ -324,11 +336,7 @@ declare namespace typed_i18n {
   (_: "library.lcp.sentence", __?: {}): string;
   (_: "library.lcp.submit", __?: {}): string;
   (_: "message", __?: {}): {
-  readonly "download": {
-    readonly "error": string,
-    readonly "start": string,
-    readonly "success": string
-  },
+  readonly "download": { readonly "error": string },
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
@@ -336,14 +344,8 @@ declare namespace typed_i18n {
   },
   readonly "open": { readonly "error": string }
 };
-  (_: "message.download", __?: {}): {
-  readonly "error": string,
-  readonly "start": string,
-  readonly "success": string
-};
+  (_: "message.download", __?: {}): { readonly "error": string };
   (_: "message.download.error", __?: {}): string;
-  (_: "message.download.start", __?: {}): string;
-  (_: "message.download.success", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,
@@ -555,6 +557,19 @@ declare namespace typed_i18n {
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "paginated": string,
+    readonly "pdfZoom": {
+      readonly "name": {
+        readonly "100pct": string,
+        readonly "150pct": string,
+        readonly "200pct": string,
+        readonly "300pct": string,
+        readonly "500pct": string,
+        readonly "50pct": string,
+        readonly "fit": string,
+        readonly "width": string
+      },
+      readonly "title": string
+    },
     readonly "save": {
       readonly "apply": string,
       readonly "reset": string,
@@ -574,6 +589,7 @@ declare namespace typed_i18n {
     readonly "wordSpacing": string
   },
   readonly "svg": { readonly "left": string, readonly "right": string },
+  readonly "toc": { readonly "publicationNoToc": string },
   readonly "tts": {
     readonly "activate": string,
     readonly "next": string,
@@ -705,6 +721,19 @@ declare namespace typed_i18n {
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "paginated": string,
+  readonly "pdfZoom": {
+    readonly "name": {
+      readonly "100pct": string,
+      readonly "150pct": string,
+      readonly "200pct": string,
+      readonly "300pct": string,
+      readonly "500pct": string,
+      readonly "50pct": string,
+      readonly "fit": string,
+      readonly "width": string
+    },
+    readonly "title": string
+  },
   readonly "save": {
     readonly "apply": string,
     readonly "reset": string,
@@ -748,6 +777,38 @@ declare namespace typed_i18n {
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
+  (_: "reader.settings.pdfZoom", __?: {}): {
+  readonly "name": {
+    readonly "100pct": string,
+    readonly "150pct": string,
+    readonly "200pct": string,
+    readonly "300pct": string,
+    readonly "500pct": string,
+    readonly "50pct": string,
+    readonly "fit": string,
+    readonly "width": string
+  },
+  readonly "title": string
+};
+  (_: "reader.settings.pdfZoom.name", __?: {}): {
+  readonly "100pct": string,
+  readonly "150pct": string,
+  readonly "200pct": string,
+  readonly "300pct": string,
+  readonly "500pct": string,
+  readonly "50pct": string,
+  readonly "fit": string,
+  readonly "width": string
+};
+  (_: "reader.settings.pdfZoom.name.100pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.150pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.200pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.300pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.500pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.50pct", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.fit", __?: {}): string;
+  (_: "reader.settings.pdfZoom.name.width", __?: {}): string;
+  (_: "reader.settings.pdfZoom.title", __?: {}): string;
   (_: "reader.settings.save", __?: {}): {
   readonly "apply": string,
   readonly "reset": string,
@@ -780,6 +841,8 @@ declare namespace typed_i18n {
   (_: "reader.svg", __?: {}): { readonly "left": string, readonly "right": string };
   (_: "reader.svg.left", __?: {}): string;
   (_: "reader.svg.right", __?: {}): string;
+  (_: "reader.toc", __?: {}): { readonly "publicationNoToc": string };
+  (_: "reader.toc.publicationNoToc", __?: {}): string;
   (_: "reader.tts", __?: {}): {
   readonly "activate": string,
   readonly "next": string,

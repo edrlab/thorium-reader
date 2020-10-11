@@ -12,6 +12,7 @@ import { cli } from "readium-desktop/main/cli/process";
 import { createStoreFromDi } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { _PACKAGING, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
+import { Store } from "redux";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
@@ -21,6 +22,7 @@ import {
 } from "@r2-shared-js/init-globals";
 
 import { appActions } from "./main/redux/actions";
+import { RootState } from "./main/redux/states";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -58,15 +60,20 @@ setLcpNativePluginPath(lcpNativePluginPath);
 //     process.exit();
 // });
 
-const main = async (flushSession: boolean = false) => {
+const main = async (storeMayBePromise: Promise<Store<RootState>> | Store<RootState>, flushSession: boolean = false) => {
+
+    debug("main fct");
 
     // protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions
     initSessions();
 
     app.allowRendererProcessReuse = true;
 
+    const store = await Promise.resolve(storeMayBePromise);
+
+    debug("store loaded");
+
     try {
-        const store = await createStoreFromDi();
 
         if (flushSession) {
 
@@ -98,11 +105,13 @@ const main = async (flushSession: boolean = false) => {
     }
 };
 
+const storePromise = createStoreFromDi();
+
 if (_VSCODE_LAUNCH === "true") {
     // tslint:disable-next-line: no-floating-promises
-    main();
+    main(storePromise);
 } else {
-    cli(main);
+    cli(storePromise, main);
 }
 
 debug("Process version:", process.versions);

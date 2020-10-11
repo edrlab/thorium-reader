@@ -3,6 +3,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
@@ -88,8 +89,9 @@ const cssLoaderConfig = [
         loader: MiniCssExtractPlugin.loader,
         options: {
             // publicPath: "./styling", // preprocessorDirectives.rendererReaderBaseUrl,
-            hmr: _enableHot,
-            reloadAll: true,
+            // hmr: _enableHot,
+            // reloadAll: true,
+            esModule: false,
         },
     },
     {

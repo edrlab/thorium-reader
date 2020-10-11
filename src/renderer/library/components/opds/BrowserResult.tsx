@@ -49,7 +49,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     message={__("opds.network.noInternetMessage")}
                 />
             );
-        } else if (browserData?.error) {
+        } else if (browserData?.error) { // reject in opds api // network don't reject now
             content = (
                 <MessageOpdBrowserResult
                     title={__("opds.network.reject")}
@@ -164,7 +164,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 content = (
                     <MessageOpdBrowserResult
                         title={__("opds.network.error")}
-                        message={`${browserResult.statusCode || "unknow error code"} : ${browserResult.statusMessage || ""}`}
+                        message={`${browserResult.statusCode ? `${browserResult.statusCode} : ` : ""}${browserResult.statusMessage || ""}`}
                     />
                 );
             }

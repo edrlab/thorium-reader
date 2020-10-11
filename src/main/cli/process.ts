@@ -12,12 +12,14 @@ import { EOL } from "os";
 import * as path from "path";
 import { lockInstance } from "readium-desktop/main/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { Store } from "redux";
 import * as yargs from "yargs";
+import { RootState } from "../redux/states";
 
 import { cliImport, cliOpds, openFileFromCli, openTitleFromCli } from "./commandLine";
 
 // Logger
-const debug = debug_("readium-desktop:cli");
+const debug = debug_("readium-desktop:cli:process");
 
 // single Instance Lock
 const gotTheLock = lockInstance();
@@ -32,8 +34,13 @@ const gotTheLock = lockInstance();
 //  as it has already been executed by the "second instance" itself (see Yargs handlers).
 
 // main Fucntion variable
-// tslint:disable-next-line: no-empty
-let mainFct: (flushSession: boolean) => (void | Promise<void>) = async () => {};
+let mainFct: ((
+    storeMayBePromise: Promise<Store<RootState>> | Store<RootState>,
+    flushSession: boolean,
+    // tslint:disable-next-line: no-empty
+) => void | Promise<void>) = async () => { };
+
+let storePromise: Promise<Store<RootState>>;
 
 // yargs configuration
 yargs
@@ -47,10 +54,10 @@ yargs
                 describe: "title opds feed",
                 type: "string",
             })
-            .positional("url", {
-                describe: "url opds feed",
-                type: "string",
-            })
+                .positional("url", {
+                    describe: "url opds feed",
+                    type: "string",
+                })
         ,
         (argv) => {
             // if the app is not started or it's the second instance
@@ -81,23 +88,33 @@ yargs
             y.positional("path", {
                 describe: "absolute, relative or globbing path",
                 type: "string",
+                coerce: (arg) => path.resolve(arg),
             })
-            .example("import", "\"./myPath/**/*.epub\"")
-            .example("import", "\"/*.epub\"")
-            .example("import", "\"myPublication.epub\"")
+                .example("import", "\"./myPath/**/*.epub\"")
+                .example("import", "\"/*.epub\"")
+                .example("import", "\"myPublication.epub\"")
         ,
-        (argv) => {
+        async (argv) => {
             // if the app is not started or it's the second instance
             // The boolean app.isReady is true when the second-instance event handler is called
             // (as guaranteed by the Electron API
             // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
             if (!app.isReady() || !gotTheLock) {
+
                 const pathArray = glob.sync(argv.path, {
                     absolute: true,
                     realpath: true,
                 }) || [];
-                const promise = cliImport(pathArray);
-                promise.then((isValid) => {
+                const pathArrayResolved = pathArray.length ? pathArray : argv.path;
+
+                debug(pathArray, argv.path, pathArrayResolved);
+
+                // store is needed in cliImport
+                await storePromise;
+
+                try {
+                    const isValid = await cliImport(pathArrayResolved);
+
                     if (isValid) {
                         process.stdout.write("Publication(s) import done." + EOL);
                         app.exit(0);
@@ -105,11 +122,13 @@ yargs
                     }
                     process.stderr.write("No valid files, exit with code 1" + EOL);
                     app.exit(1);
-                }).catch((e) => {
+
+                } catch (e) {
+
                     debug("import error :", e);
                     process.stderr.write(e.toString() + EOL);
                     app.exit(1);
-                });
+                }
             }
         },
     )
@@ -125,8 +144,13 @@ yargs
             // if it's the main instance
             if (gotTheLock) {
 
+                debug("thorium read");
+                debug("loading main");
+                // const store = await storePromise;
+                // debug("store loaded and starting main");
+
                 // flush session because user ask to read one publication
-                await Promise.all([mainFct(true)]);
+                await Promise.all([mainFct(storePromise, true)]);
 
                 try {
 
@@ -166,16 +190,24 @@ yargs
             // if it's the main instance
             if (gotTheLock) {
 
+                debug("thorium $0");
+                debug("loading main");
+                // const store = await storePromise;
+                // debug("store loaded and starting main");
+
                 // flush session if user want to read his book
                 await Promise.all(
                     [
                         mainFct(
+                            storePromise,
                             argv.path
                                 ? true
                                 : false,
                         ),
                     ],
                 );
+
+                debug("main started");
 
                 if (argv.path) {
 
@@ -217,8 +249,16 @@ yargs
  * @param main main function to exec
  * @param processArgv process.argv
  */
-export function cli(main: (flushSession: boolean) => void | Promise<void>, processArgv = process.argv) {
+export function cli(
+    storeMayBePromise: Promise<Store<RootState>> | Store<RootState>,
+    main: (
+        storeMayBePromise: Promise<Store<RootState>> | Store<RootState>,
+        flushSession: boolean,
+    ) => void | Promise<void>,
+    processArgv = process.argv,
+) {
     mainFct = main;
+    storePromise = Promise.resolve(storeMayBePromise);
 
     const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
@@ -227,6 +267,7 @@ export function cli(main: (flushSession: boolean) => void | Promise<void>, proce
     debug("processArgv", processArgv, "arg", argFormated);
 
     yargs.parse(argFormated);
+
 }
 
 // arrow function to filter declared option in yargs

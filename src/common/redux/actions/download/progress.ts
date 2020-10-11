@@ -10,19 +10,19 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "DOWNLOAD_PROGRESS";
 
 export interface Payload {
-    url: string;
+    downloadUrl: string;
     progress: number; // integer [0, 100]
+    id: number; // unix timestamp
+    speed: number; // 44.3 Kb/s
+    contentLengthHumanReadable: string; // 1.4 Mb
 }
 
-export function build(url: string, progress: number):
+export function build(data: Payload):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
-        payload: {
-            url,
-            progress,
-        },
+        payload: data,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

@@ -13,6 +13,7 @@ import {
 
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
 
 export const fontSize: string[] = [
     "75%",
@@ -113,7 +114,11 @@ export interface IReaderMenuProps {
     handleBookmarkClick: (locator: R2Locator) => void;
     toggleMenu: () => void;
     focusMainAreaLandmarkAndCloseMenu: () => void;
+    pdfToc: TToc;
+    isPdf: boolean;
 }
+
+export type TdivinaReadingMode = "single" | "double" | "scroll" | "guided";
 
 export interface IReaderOptionsProps {
     indexes: AdjustableSettingsNumber;
@@ -129,4 +134,12 @@ export interface IReaderOptionsProps {
     setSettings: (settings: ReaderConfig) => void;
     toggleMenu: () => void;
     r2Publication: R2Publication | undefined;
+    handleDivinaReadingMode: (v: TdivinaReadingMode) => void;
+
+    divinaReadingMode: TdivinaReadingMode;
+    divinaReadingModeSupported: TdivinaReadingMode[];
+
+    pdfEventBus: IEventBusPdfPlayer;
+    isDivina: boolean;
+    isPdf: boolean;
 }

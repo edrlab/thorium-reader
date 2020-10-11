@@ -88,8 +88,9 @@ const cssLoaderConfig = [
         loader: MiniCssExtractPlugin.loader,
         options: {
             // publicPath: "./styling", // preprocessorDirectives.rendererReaderBaseUrl,
-            hmr: _enableHot,
-            reloadAll: true,
+            // hmr: _enableHot,
+            // reloadAll: true,
+            esModule: false,
         },
     },
     {

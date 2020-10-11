@@ -57,8 +57,12 @@
         "entry": {
             "continueReading": "Ga door met lezen",
             "continueReadingAudioBooks": "Ga door met luisteren",
+            "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Recent toegevoegd",
-            "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken"
+            "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken",
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Exporteer",
         "lang": "Taal",
@@ -140,9 +144,7 @@
     },
     "message": {
         "download": {
-            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]",
-            "start": "Het downloaden van {{- title}} is gestart.",
-            "success": "Het downloaden van {{- title}} is gereed."
+            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd",
@@ -293,6 +295,19 @@
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
             "paginated": "Als pagina's",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "",
                 "reset": "",
@@ -314,6 +329,9 @@
         "svg": {
             "left": "Links",
             "right": "Rechts"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "",

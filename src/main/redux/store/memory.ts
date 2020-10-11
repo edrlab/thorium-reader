@@ -15,7 +15,6 @@ import {
 } from "readium-desktop/common/redux/states/locatorInitialState";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
-import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
@@ -25,9 +24,10 @@ import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { RootState } from "readium-desktop/main/redux/states";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { PromiseAllSettled } from "readium-desktop/utils/promise";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { applyMiddleware, createStore, Store } from "redux";
-import createSagaMiddleware from "redux-saga";
+import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
@@ -105,7 +105,8 @@ async function absorbLocatorRepositoryToReduxState() {
     };
 }
 
-export async function initStore(configRepository: ConfigRepository<any>): Promise<Store<RootState>> {
+export async function initStore(configRepository: ConfigRepository<any>)
+: Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
     let reduxStateWinRepository: ConfigDocument<Partial<RootState>>;
     let i18nStateRepository: ConfigDocument<LocaleConfigValueType>;
@@ -211,5 +212,5 @@ export async function initStore(configRepository: ConfigRepository<any>): Promis
 
     sagaMiddleware.run(rootSaga);
 
-    return store as Store<RootState>;
+    return [store as Store<RootState>, sagaMiddleware];
 }

@@ -77,13 +77,17 @@ export class LcpManager {
             new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`).test(extension) ||
             new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
 
+        const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`).test(extension);
+
+        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
+
         const epubPathTMP = epubPath + ".tmplcpl";
         await new Promise((resolve, reject) => {
             injectBufferInZip(
                 epubPath,
                 epubPathTMP,
                 Buffer.from(lcpStr, "utf8"),
-                (!isAudioBook ? "META-INF/" : "") + "license.lcpl",
+                ((!isAudioBook && !isDivina && !isLcpPdf) ? "META-INF/" : "") + "license.lcpl",
                 (e: any) => {
                     debug("injectLcplIntoZip_ - injectBufferInZip ERROR!");
                     debug(e);
