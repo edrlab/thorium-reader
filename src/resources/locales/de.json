@@ -58,9 +58,11 @@
             "continueReading": "Lesen Sie weiter",
             "continueReadingAudioBooks": "Hören Sie weiter zu",
             "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Kürzlich hinzugefügt",
             "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher",
-            "lastAdditionsDivina": ""
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Export",
         "lang": "Sprache",
@@ -279,6 +281,19 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "paginated": "Seitendarstellung",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "Speichern",
                 "reset": "Zurücksetzen",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "",
             "right": ""
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "",

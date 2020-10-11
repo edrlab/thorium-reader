@@ -37,11 +37,10 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
-import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
-    isDivina: boolean;
 }
 
 // IProps may typically extend:
@@ -60,6 +59,9 @@ enum themeType {
 
 interface IState {
     divinaReadingMode: TdivinaReadingMode | undefined;
+    pdfScale: IPdfPlayerScale | undefined;
+    pdfView: IPdfPlayerView | undefined;
+    pdfCol: IPdfPlayerColumn | undefined;
 }
 
 export class ReaderOptions extends React.Component<IProps, IState> {
@@ -69,33 +71,56 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         this.state = {
             divinaReadingMode: undefined,
+            pdfScale: undefined,
+            pdfCol: undefined,
+            pdfView: undefined,
         };
 
         this.handleChooseTheme = this.handleChooseTheme.bind(this);
     }
 
-    public render(): React.ReactElement<{}> {
-        const { __, readerConfig, toggleMenu, r2Publication, isDivina } = this.props;
+    public componentDidUpdate() {
+
+        if (this.props.pdfEventBus) {
+
+            this.props.pdfEventBus.subscribe("scale", this.setScale);
+            this.props.pdfEventBus.subscribe("view", this.setView);
+            this.props.pdfEventBus.subscribe("column", this.setCol);
+
+        }
+    }
+
+    public componentWillUnmount() {
+
+        if (this.props.pdfEventBus) {
+            this.props.pdfEventBus.remove(this.setScale, "scale");
+            this.props.pdfEventBus.remove(this.setView, "view");
+            this.props.pdfEventBus.remove(this.setCol, "column");
+        }
+    }
+
+    public render() {
+        const { __, readerConfig, toggleMenu, isDivina, isPdf } = this.props;
 
         if (!readerConfig) {
             return <></>;
         }
 
-        const isAudioBook = isAudiobookFn(r2Publication);
+        const isEpub = !isDivina && !isPdf;
 
         const sections: SectionData[] = [];
 
         if (isDivina) {
 
-            sections.push(...[
-                {
+            sections.push({
                     title: "readingMode",
                     content: this.divinaSetReadingMode(),
-                },
-            ]);
-        } else {
+                });
+        }
 
-            sections.push(...[
+        if (isEpub) {
+
+            sections.push(
                 {
                     title: __("reader.settings.theme.title"),
                     content: this.themeContent(),
@@ -104,16 +129,31 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     title: __("reader.settings.text"),
                     content: this.textContent(),
                 },
-            ]);
+            );
         }
 
-        if (!isAudioBook && !isDivina) {
-
-            sections.push(...[
+        if (isPdf || isEpub) {
+            sections.push(
                 {
                     title: __("reader.settings.display"),
                     content: this.displayContent(),
                 },
+            );
+
+        }
+
+        if (isPdf) {
+            sections.push(
+                {
+                    title: __("reader.settings.pdfZoom.title"),
+                    content: this.pdfZoom(),
+                },
+            );
+        }
+
+        if (isEpub) {
+
+            sections.push(
                 {
                     title: __("reader.settings.spacing"),
                     content: this.spacingContent(),
@@ -126,15 +166,11 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     title: __("reader.media-overlays.title"),
                     content: this.mediaOverlays(),
                 },
-            ]);
-        }
-
-        if (!isDivina) {
-
-            sections.push({
-                title: __("reader.settings.save.title"),
-                content: this.saveConfig(),
-            });
+                {
+                    title: __("reader.settings.save.title"),
+                    content: this.saveConfig(),
+                },
+            );
         }
 
         return (
@@ -147,6 +183,33 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 focusMenuButton={this.props.focusSettingMenuButton}
             />
         );
+    }
+
+    private setScale = (scale: IPdfPlayerScale) => {
+
+        console.log("scale", scale);
+
+        this.setState({
+            pdfScale: scale,
+        });
+    }
+
+    private setView = (view: IPdfPlayerView) => {
+
+        console.log("view", view);
+
+        this.setState({
+            pdfView: view,
+        });
+    }
+
+    private setCol = (col: IPdfPlayerColumn) => {
+
+        console.log("col", col);
+
+        this.setState({
+            pdfCol: col,
+        });
     }
 
     private saveConfig() {
@@ -296,6 +359,52 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         );
     }
 
+    private pdfZoom() {
+
+        const { __ } = this.props;
+
+        const inputComponent = (scale: IPdfPlayerScale) => {
+
+            return <div>
+                    <input
+                        id={"radio-" + scale}
+                        type="radio"
+                        name={scale}
+                        onChange={() => this.props.pdfEventBus.dispatch("scale", scale)}
+                        checked={this.state.pdfScale === scale}
+                    />
+                    <label htmlFor={"radio-" + scale}>
+                        {this.state.pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
+                        {
+                        scale === "50" ? __("reader.settings.pdfZoom.name.50pct") :
+                        (scale === "100" ? __("reader.settings.pdfZoom.name.100pct") :
+                        (scale === "150" ? __("reader.settings.pdfZoom.name.150pct") :
+                        (scale === "200" ? __("reader.settings.pdfZoom.name.200pct") :
+                        (scale === "300" ? __("reader.settings.pdfZoom.name.300pct") :
+                        (scale === "500" ? __("reader.settings.pdfZoom.name.500pct") :
+                        (scale === "fit" ? __("reader.settings.pdfZoom.name.fit") :
+                        (scale === "width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
+                        // --("reader.settings.pdfZoom.name." + scale as any)
+                        }
+                    </label>
+                </div>;
+                // TODO string inference typescript 4.1
+        };
+
+        return (
+            <div id={styles.themes_list}>
+                {inputComponent("fit")}
+                {inputComponent("width")}
+                {inputComponent("50")}
+                {inputComponent("100")}
+                {inputComponent("150")}
+                {inputComponent("200")}
+                {inputComponent("300")}
+                {inputComponent("500")}
+            </div>
+        );
+    }
+
     private themeContent() {
         const { __, readerConfig } = this.props;
         const withoutTheme = !readerConfig.sepia && !readerConfig.night;
@@ -392,24 +501,31 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     }
 
     private displayContent() {
-        const {__, readerConfig} = this.props;
+        const {__, readerConfig, isPdf} = this.props;
+
         return <>
             <section className={styles.line_tab_content}>
-            <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
+                <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
                 <div className={styles.center_in_tab}>
                     <div className={styles.focus_element}>
                         <input
                             id={styles.scroll_option}
                             type="radio"
                             name="disposition"
-                            onChange={(e) => this.props.handleSettingChange(e, "paged", false)}
-                            checked={!readerConfig.paged}
+                            onChange={(e) => isPdf
+                                ? this.props.pdfEventBus.dispatch("view", "scrolled")
+                                : this.props.handleSettingChange(e, "paged", false)}
+                            checked={isPdf
+                                ? this.state.pdfView === "scrolled"
+                                : !readerConfig.paged}
                         />
                         <label
                             htmlFor={styles.scroll_option}
-                            className={this.getButtonClassName("paged", false)}
+                            className={isPdf
+                                ? this.getButtonClassNamePdf(this.state.pdfView === "scrolled")
+                                : this.getButtonClassName("paged", false)}
                         >
-                            <SVG svg={DefileIcon}/>
+                            <SVG svg={DefileIcon} />
                             {__("reader.settings.scrolled")}
                         </label>
                     </div>
@@ -418,20 +534,26 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             id={styles.page_option}
                             type="radio"
                             name="disposition"
-                            onChange={(e) => this.props.handleSettingChange(e, "paged", true)}
-                            checked={readerConfig.paged}
+                            onChange={(e) => isPdf
+                                ? this.props.pdfEventBus.dispatch("view", "paginated")
+                                : this.props.handleSettingChange(e, "paged", true)}
+                            checked={isPdf
+                                ? this.state.pdfView === "paginated"
+                                : readerConfig.paged}
                         />
                         <label
                             htmlFor={styles.page_option}
-                            className={this.getButtonClassName("paged", true)}
+                            className={isPdf
+                                ? this.getButtonClassNamePdf(this.state.pdfView === "paginated")
+                                : this.getButtonClassName("paged", true)}
                         >
-                            <SVG svg={PagineIcon}/>
+                            <SVG svg={PagineIcon} />
                             {__("reader.settings.paginated")}
                         </label>
                     </div>
                 </div>
             </section>
-            <section className={styles.line_tab_content}>
+            <section className={styles.line_tab_content} hidden={this.props.isPdf}>
                 <div className={styles.subheading}>{__("reader.settings.justification")}</div>
                 <div className={styles.center_in_tab}>
                     <div className={styles.focus_element}>
@@ -446,7 +568,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             htmlFor={"radio-" + styles.option_auto}
                             className={this.getButtonClassName("align", "auto")}
                         >
-                            <SVG svg={LeftIcon}/>
+                            <SVG svg={LeftIcon} />
                             {__("reader.settings.column.auto")}
                         </label>
                     </div>
@@ -462,7 +584,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             htmlFor={"radio-" + styles.option_justif}
                             className={this.getButtonClassName("align", "justify")}
                         >
-                            <SVG svg={JustifyIcon}/>
+                            <SVG svg={JustifyIcon} />
                             {__("reader.settings.justify")}
                         </label>
                     </div>
@@ -476,18 +598,23 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             id={"radio-" + styles.option_colonne}
                             type="radio"
                             name="column"
-                            {...(!readerConfig.paged && {disabled: true})}
-                            onChange={(e) =>
-                            this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
-                            checked={readerConfig.colCount === colCountEnum.auto}
+                            {...(!readerConfig.paged && { disabled: true })}
+                            onChange={(e) => isPdf
+                                ? this.props.pdfEventBus.dispatch("column", "auto")
+                                : this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
+                            checked={isPdf
+                                ? this.state.pdfCol === "auto"
+                                : readerConfig.colCount === colCountEnum.auto}
                         />
                         <label
                             htmlFor={"radio-" + styles.option_colonne}
-                            className={this.getButtonClassName("colCount",
-                            !readerConfig.paged ? null : colCountEnum.auto,
-                            !readerConfig.paged && styles.disable)}
+                            className={isPdf
+                                ? this.getButtonClassNamePdf(this.state.pdfCol === "auto")
+                                : this.getButtonClassName("colCount",
+                                    !readerConfig.paged ? null : colCountEnum.auto,
+                                    !readerConfig.paged && styles.disable)}
                         >
-                            <SVG svg={AutoIcon}/>
+                            <SVG svg={AutoIcon} />
                             {__("reader.settings.column.auto")}
                         </label>
                     </div>
@@ -497,16 +624,22 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             id={"radio-" + styles.option_colonne1}
                             type="radio"
                             name="column"
-                            onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
-                            checked={readerConfig.colCount === colCountEnum.one}
+                            onChange={(e) => isPdf
+                                ? this.props.pdfEventBus.dispatch("column", "1")
+                                : this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
+                            checked={isPdf
+                                ? this.state.pdfCol === "1"
+                                : readerConfig.colCount === colCountEnum.one}
                         />
                         <label
                             htmlFor={"radio-" + styles.option_colonne1}
-                            className={this.getButtonClassName("colCount",
-                            !readerConfig.paged ? null : colCountEnum.one,
-                            !readerConfig.paged && styles.disable)}
+                            className={isPdf
+                                ? this.getButtonClassNamePdf(this.state.pdfCol === "1")
+                                : this.getButtonClassName("colCount",
+                                    !readerConfig.paged ? null : colCountEnum.one,
+                                    !readerConfig.paged && styles.disable)}
                         >
-                            <SVG svg={ColumnIcon} title={__("reader.settings.column.oneTitle")}/>
+                            <SVG svg={ColumnIcon} title={__("reader.settings.column.oneTitle")} />
                             {__("reader.settings.column.one")}
                         </label>
                     </div>
@@ -516,17 +649,23 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             type="radio"
                             name="column"
                             {...(!readerConfig.paged && { disabled: true })}
-                            onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
-                            checked={readerConfig.colCount === colCountEnum.two}
+                            onChange={(e) => isPdf
+                                ? this.props.pdfEventBus.dispatch("column", "2")
+                                : this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
+                            checked={isPdf
+                                ? this.state.pdfCol === "2"
+                                : readerConfig.colCount === colCountEnum.two}
                         />
                         <label
                             htmlFor={"radio-" + styles.option_colonne2}
-                            className={this.getButtonClassName("colCount",
-                                !readerConfig.paged ? null : colCountEnum.two,
-                                !readerConfig.paged && styles.disable)
+                            className={isPdf
+                                ? this.getButtonClassNamePdf(this.state.pdfCol === "2")
+                                : this.getButtonClassName("colCount",
+                                    !readerConfig.paged ? null : colCountEnum.two,
+                                    !readerConfig.paged && styles.disable)
                             }
                         >
-                            <SVG svg={Column2Icon} title={__("reader.settings.column.twoTitle")}/>
+                            <SVG svg={Column2Icon} title={__("reader.settings.column.twoTitle")} />
                             {__("reader.settings.column.two")}
                         </label>
                     </div>
@@ -699,6 +838,19 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const property = this.props.readerConfig[propertyName];
         let classname = "";
         if (property === value) {
+            classname = styles.active;
+        } else {
+            classname = styles.notUsed;
+        }
+        return classNames(classname, additionalClassName);
+    }
+
+    private getButtonClassNamePdf(
+        test: boolean,
+        additionalClassName?: string): string {
+
+        let classname = "";
+        if (test) {
             classname = styles.active;
         } else {
             classname = styles.notUsed;

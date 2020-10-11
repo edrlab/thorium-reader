@@ -16,9 +16,11 @@ export const acceptedExtensionObject = {
     webpub: ".webpub",
     audiobookLcp: ".lcpa",
     audiobookLcpAlt: ".lcpaudiobook",
-    // pdfLcp: ".lcpdf", // for illustration only, not actually implemented yet
+    pdfLcp: ".lcpdf",
+    pdf: ".pdf",
     w3cAudiobook: ".lpf",
     divina: ".divina",
+
     // cbz: ".cbz",
 };
 

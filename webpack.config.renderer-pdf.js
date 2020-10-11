@@ -3,7 +3,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-// const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
@@ -33,7 +33,7 @@ const _enableHot = false;
 
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
-console.log(`READER nodeEnv: ${nodeEnv}`);
+console.log(`PDF nodeEnv: ${nodeEnv}`);
 
 // https://github.com/edrlab/thorium-reader/issues/1097#issuecomment-643406149
 const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER
@@ -69,7 +69,7 @@ if (nodeEnv !== "production") {
     if (process.env.WEBPACK === "bundle-external") {
         externals = [
             nodeExternals({
-                processName: "READER",
+                processName: "PDF",
                 alias: aliases,
                 // whitelist: ["pouchdb-core"],
             }),
@@ -79,7 +79,7 @@ if (nodeEnv !== "production") {
     }
 }
 
-console.log("WEBPACK externals (READER):");
+console.log("WEBPACK externals (PDF):");
 console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
@@ -107,17 +107,20 @@ const cssLoaderConfig = [
 let config = Object.assign(
     {},
     {
-        entry: "./src/renderer/reader/index_reader.ts",
-        name: "renderer index reader",
+        optimization: {
+            minimize: nodeEnv === "production",
+        },
+        entry: "./src/renderer/reader/pdf/webview/index_pdf.ts",
+        name: "renderer pdf webview index",
         output: {
-            filename: "index_reader.js",
+            filename: "index_pdf.js",
             path: path.join(__dirname, "dist"),
             // https://github.com/webpack/webpack/issues/1114
             libraryTarget: "commonjs2",
         },
         target: "electron-renderer",
 
-        mode: nodeEnv,
+        mode: "production", // nodeEnv,
 
         externals: externals,
 
@@ -153,53 +156,57 @@ let config = Object.assign(
                         transpileOnly: true, // checkTypeScriptSkip
                     },
                 },
-                {
-                    loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
-                    options: {
-                        esModule: false,
-                    },
-                    test: /\.(png|jpe?g|gif|ico)$/,
-                },
-                {
-                    exclude: /node_modules/,
-                    loader: "svg-sprite-loader",
-                    test: /\.svg$/,
-                },
-                {
-                    exclude: /src/,
-                    loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
-                    options: {
-                        esModule: false,
-                        outputPath: "fonts",
-                    },
-                    test: /\.(woff|woff2|ttf|eot|svg)$/,
-                },
             ],
         },
 
-        devServer: {
-            contentBase: __dirname,
-            hot: _enableHot,
-            watchContentBase: true,
-            watchOptions: {
-                ignored: [
-                    /dist/,
-                    /docs/,
-                    /scripts/,
-                    /test/,
-                    /node_modules/,
-                    /external-assets/,
-                ],
-            },
-        },
+        // devServer: {
+        //     contentBase: __dirname,
+        //     hot: _enableHot,
+        //     watchContentBase: true,
+        //     watchOptions: {
+        //         ignored: [
+        //             /dist/,
+        //             /docs/,
+        //             /scripts/,
+        //             /test/,
+        //             /node_modules/,
+        //             /external-assets/,
+        //         ],
+        //     },
+        // },
         plugins: [
-            new HtmlWebpackPlugin({
-                template: "./src/renderer/reader/index_reader.ejs",
-                filename: "index_reader.html",
-            }),
-            new MiniCssExtractPlugin({
-                filename: "styles_reader.css",
-            }),
+            // new HtmlWebpackPlugin({
+            //     template: "./src/renderer/reader/pdf/webview/index_pdf.ejs",
+            //     filename: "index_pdf.html",
+            // }),
+            new CopyWebpackPlugin({ patterns: [
+                {
+                    from: path.join(
+                        __dirname,
+                        "src",
+                        "renderer",
+                        "reader",
+                        "pdf",
+                        "webview",
+                        "index_pdf.ejs",
+                    ),
+                    to: "./index_pdf.html",
+                    toType: "file",
+                },
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
+                {
+                    from: path.join(
+                        __dirname,
+                        "node_modules",
+                        "pdfjs-dist",
+                        "build",
+                        nodeEnv === "production" ? "pdf.worker.min.js" : "pdf.worker.js",
+                    ),
+                    to: "./index_pdf.worker.js",
+                    toType: "file",
+                },
+            ]}),
             preprocessorDirectives.definePlugin,
         ],
     }
@@ -213,43 +220,44 @@ if (!checkTypeScriptSkip) {
 
 if (nodeEnv !== "production") {
 
-    const port = parseInt(preprocessorDirectives.portReader, 10);
-    console.log("READER PORT: " + port);
-    // Renderer config for DEV environment
-    config = Object.assign({}, config, {
-        // Enable sourcemaps for debugging webpack's output.
-        devtool: "inline-source-map",
+    // const port = parseInt(preprocessorDirectives.portPdfWebview, 10);
+    // console.log("PDF PORT: " + port);
 
-        devServer: {
-            contentBase: __dirname,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
-            hot: _enableHot,
-            watchContentBase: true,
-            watchOptions: {
-                ignored: [
-                    /dist/,
-                    /docs/,
-                    /scripts/,
-                    /test/,
-                    /node_modules/,
-                    /external-assets/,
-                ],
-            },
-            port,
-        },
-    });
+    // // Renderer config for DEV environment
+    // config = Object.assign({}, config, {
+    //     // Enable sourcemaps for debugging webpack's output.
+    //     devtool: "inline-source-map",
 
-    config.output.pathinfo = true;
+    //     devServer: {
+    //         contentBase: __dirname,
+    //         headers: {
+    //             "Access-Control-Allow-Origin": "*",
+    //         },
+    //         hot: _enableHot,
+    //         watchContentBase: true,
+    //         watchOptions: {
+    //             ignored: [
+    //                 /dist/,
+    //                 /docs/,
+    //                 /scripts/,
+    //                 /test/,
+    //                 /node_modules/,
+    //                 /external-assets/,
+    //             ],
+    //         },
+    //         port,
+    //     },
+    // });
 
-    config.output.publicPath = preprocessorDirectives.rendererReaderBaseUrl;
-    if (_enableHot) {
-        config.plugins.push(new webpack.HotModuleReplacementPlugin());
-    }
-    if (_enableHot) {
-        cssLoaderConfig.unshift("css-hot-loader");
-    }
+    // config.output.pathinfo = true;
+
+    // config.output.publicPath = preprocessorDirectives.rendererPdfWebviewBaseUrl;
+    // if (_enableHot) {
+    //     config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    // }
+    // if (_enableHot) {
+    //     cssLoaderConfig.unshift("css-hot-loader");
+    // }
     config.module.rules.push({
         test: /\.css$/,
         use: cssLoaderConfig,

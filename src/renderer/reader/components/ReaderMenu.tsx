@@ -25,6 +25,7 @@ import { Unsubscribe } from "redux";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
+import { TToc } from "../pdf/common/pdfReader.type";
 import { IReaderMenuProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
@@ -35,6 +36,7 @@ interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     focusNaviguationMenu: () => void;
     currentLocation: LocatorExtended;
     isDivina: boolean;
+    isPdf: boolean;
 }
 
 // IProps may typically extend:
@@ -106,7 +108,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, r2Publication, toggleMenu } = this.props;
+        const { __, r2Publication, toggleMenu, pdfToc, isPdf } = this.props;
         const { bookmarks } = this.state;
         if (!r2Publication) {
             return <></>;
@@ -115,8 +117,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             {
                 title: __("reader.marks.toc"),
                 content:
-                    (r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1)) ||
-                    (r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
+                    (isPdf && pdfToc?.length && this.renderLinkTree(__("reader.marks.toc"), pdfToc, 1)) ||
+                    (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
+                    // tslint:disable-next-line: max-line-length
+                    (!isPdf && r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1)) ||
+                    (!isPdf && r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
                 disabled:
                     (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
                     (!r2Publication.Spine || r2Publication.Spine.length === 0),
@@ -198,7 +203,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         </ul>;
     }
 
-    private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+    private renderLinkTree(label: string | undefined, links: TToc, level: number): JSX.Element {
         // console.log(label, JSON.stringify(links, null, 4));
 
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
@@ -352,15 +357,25 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             return <></>;
         }
 
-        let currentPage = this.props.isDivina ?
+        let currentPage = (this.props.isDivina || this.props.isPdf) ?
             this.props.currentLocation?.locator?.href :
             this.props.currentLocation?.epubPage;
-        if (this.props.isDivina && currentPage) {
-            try {
-                const p = parseInt(currentPage, 10) + 1;
-                currentPage = p.toString();
-            } catch (e) {
-                // ignore
+        if (currentPage) {
+
+            if (this.props.isDivina) {
+                try {
+                    const p = parseInt(currentPage, 10) + 1;
+                    currentPage = p.toString();
+                } catch (e) {
+                    // ignore
+                }
+            } else if (this.props.isPdf) {
+                try {
+                    const p = parseInt(currentPage, 10);
+                    currentPage = p.toString();
+                } catch (e) {
+                    // ignore
+                }
             }
         }
 
@@ -375,13 +390,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     type="text"
                     aria-invalid={error}
                     onChange={() => this.setState({pageError: false})}
-                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina)}
+                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)}
                     placeholder={__("reader.navigation.goToPlaceHolder")}
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
                     type="submit"
-                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina)}
+                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)}
                 >
                     { __("reader.navigation.goTo") }
                 </button>
@@ -412,15 +427,24 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             return;
         }
         const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
-        if (this.props.isDivina) {
+        if (this.props.isDivina || this.props.isPdf) {
             let page: number | undefined;
-            try {
-                page = parseInt(pageNbr, 10) - 1;
-            } catch (e) {
-                // ignore error
+
+            if (this.props.isDivina) {
+                try {
+                    page = parseInt(pageNbr, 10) - 1;
+                } catch (e) {
+                    // ignore error
+                }
+            } else if (this.props.isPdf) {
+                try {
+                    page = parseInt(pageNbr, 10);
+                } catch (e) {
+                    // ignore error
+                }
             }
             if (typeof page !== "undefined" && page >= 0 &&
-                this.props.r2Publication.Spine && this.props.r2Publication.Spine[page]) {
+                ((this.props.r2Publication.Spine && this.props.r2Publication.Spine[page]) || this.props.isPdf)) {
 
                 this.setState({pageError: false});
 
