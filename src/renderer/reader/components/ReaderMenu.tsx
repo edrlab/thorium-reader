@@ -25,7 +25,7 @@ import { Unsubscribe } from "redux";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
-import { TToc } from "../pdf/common/pdfReader.type";
+import { ILink, TToc } from "../pdf/common/pdfReader.type";
 import { IReaderMenuProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
@@ -161,6 +161,35 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         );
     }
 
+    // TODO: in EPUB3 the NavDoc is XHTML with its own "dir" and "lang" markup,
+    // but this information is lost when converting to ReadiumWebPubManifest
+    // (e.g. TOC is hierarchical list of "link" objects with "title" property for textual label,
+    // LANDMARKS is a list of the same link objects, etc.)
+    // For example, there is a test Arabic EPUB that has non-RTL French labels in the TOC,
+    // which are incorrectly displayed as RTL because of this isRTL() logic:
+    private isRTL(_link: ILink) {
+        // link.Dir??
+        // link.Lang??
+        // RWPM does not indicate this, so we fallback to publication-wide dir/lang metadata
+        let isRTL = false;
+        if (this.props.r2Publication?.Metadata?.Direction === "rtl") {
+            const lang = this.props.r2Publication?.Metadata?.Language ?
+                (Array.isArray(this.props.r2Publication.Metadata.Language) ?
+                    this.props.r2Publication.Metadata.Language :
+                    [this.props.r2Publication.Metadata.Language]) :
+                [] as string[];
+            isRTL = lang.reduce<boolean>((pv, cv) => {
+                const arOrHe = typeof cv === "string" ?
+                    // we test for Arabic and Hebrew,
+                    // in order to exclude Japanese Vertical Writing Mode which is also RTL!
+                    (cv.startsWith("ar") || cv.startsWith("he")) :
+                    false;
+                return pv || arOrHe;
+            }, false);
+        }
+        return isRTL;
+    }
+
     private renderLinkList(label: string, links: Link[]): JSX.Element {
         // console.log(label, JSON.stringify(links, null, 4));
 
@@ -170,6 +199,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             role={"list"}
         >
             { links.map((link, i: number) => {
+
+                const isRTL = this.isRTL(link);
+
                 return (
                     <li
                         key={i}
@@ -178,9 +210,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     >
                         <a
                             className={
-                                link.Href ?
-                                    classnames(styles.line, styles.active) :
-                                    classnames(styles.line, styles.active, styles.inert)
+                                classnames(styles.line,
+                                    styles.active,
+                                    link.Href ? " " : styles.inert,
+                                    isRTL ? styles.rtlDir : " ")
                             }
                             onClick=
                                 {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
@@ -195,7 +228,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                 }
                             data-href={link.Href}
                         >
-                            <span>{link.Title ? link.Title : `#${i} ${link.Href}`}</span>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{link.Title ? link.Title : `#${i} ${link.Href}`}</span>
                         </a>
                     </li>
                 );
@@ -215,6 +248,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     className={styles.chapters_content}
                 >
             { links.map((link, i: number) => {
+
+                const isRTL = this.isRTL(link);
+
                 return (
                     <li key={`${level}-${i}`}
                         role={useTree ? "treeitem" : undefined}
@@ -225,7 +261,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        link.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
+                                        classnames(styles.subheading,
+                                            link.Href ? " " : styles.inert,
+                                            isRTL ? styles.rtlDir : " ")
                                     }
                                     onClick=
                                         {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
@@ -240,7 +278,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                         }
                                     data-href={link.Href}
                                 >
-                                    <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
+                                    <span dir={isRTL ? "rtl" : "ltr"}>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
                                 </a>
                             </div>
 
@@ -250,9 +288,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        link.Href ?
-                                            classnames(styles.line, styles.active) :
-                                            classnames(styles.line, styles.active, styles.inert)
+                                        classnames(styles.line,
+                                            styles.active,
+                                            link.Href ? " " : styles.inert,
+                                            isRTL ? styles.rtlDir : " ")
                                     }
                                     onClick=
                                         {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
@@ -267,7 +306,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                         }
                                     data-href={link.Href}
                                 >
-                                    <span>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
+                                    <span dir={isRTL ? "rtl" : "ltr"}>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
                                 </a>
                             </div>
                         )}

@@ -617,6 +617,10 @@ button {
   }
 }
 
+.rtlDir {
+  text-align: right !important;
+}
+
 #chapter_settings_list {
   & .subheading {
     background-color: var(--reader-menuPartTitleColor);
