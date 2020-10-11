@@ -44,18 +44,20 @@ function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
             const opdsResultView = httpRes?.data;
             debug("Payload: ", opdsResultView);
 
-            const publication = opdsResultView.publications ? opdsResultView.publications[0] : undefined;
-            publication.authors = publication.authors
-                ? Array.isArray(publication.authors)
-                    ? publication.authors
-                    : [publication.authors]
-                : undefined;
+            const [publication] = opdsResultView.publications;
+            if (publication) {
+                publication.authors = publication.authors
+                    ? Array.isArray(publication.authors)
+                        ? publication.authors
+                        : [publication.authors]
+                    : undefined;
+            }
 
             if (
                 !actionError
                 && httpRes.isSuccess
                 && publication?.title
-                && Array.isArray(publication.authors)
+                && Array.isArray(publication?.authors)
             ) {
 
                 debug("dispatch");

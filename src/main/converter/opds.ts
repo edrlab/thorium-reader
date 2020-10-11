@@ -45,6 +45,11 @@ const supportedFileTypeLinkArray = [
     ContentType.AudioBookPackedLcp,
     ContentType.Epub,
     ContentType.Lcp,
+    ContentType.AudioBook,
+    ContentType.Json,
+    ContentType.JsonLd,
+    ContentType.pdf,
+    ContentType.lcppdf,
 ];
 
 @injectable()
@@ -75,25 +80,81 @@ export class OpdsFeedViewConverter {
 
     public convertOpdsPropertiesToView(properties: TProperties | undefined): IOPDSPropertiesView {
 
-        return properties && {
-            numberOfItems: properties.NumberOfItems || undefined,
-            priceValue: properties.Price?.Value || undefined,
-            priceCurrency: properties.Price?.Currency as OPDSCurrencyEnum || undefined,
-            holdTotal: properties.Holds?.Total || undefined,
-            holdPosition: properties.Holds?.Position || undefined,
-            copyTotal: properties.Copies?.Total || undefined,
-            copyAvailable: properties.Copies?.Available || undefined,
-            availabilityState: properties.Availability?.State as OPDSAvailabilityEnum || undefined,
-            availabilitySince: properties.Availability?.Since
-                && moment(properties.Availability.Since).toISOString() || undefined,
-            availabilityUntil: properties.Availability?.Until
-                && moment(properties.Availability.Until).toISOString() || undefined,
-        };
+        if (properties) {
+
+            const key = "lcp_hashed_passphrase";
+            const lcpHashedPassphraseObj = properties.AdditionalJSON ? properties.AdditionalJSON[key] : undefined;
+            let lcpHashedPassphrase: string;
+            if (typeof lcpHashedPassphraseObj === "string") {
+                const lcpHashedPassphraseHexOrB64 = lcpHashedPassphraseObj as string;
+                let isHex = false;
+                try {
+                    const low1 = lcpHashedPassphraseHexOrB64.toLowerCase();
+                    const buff = Buffer.from(low1, "hex");
+                    const str = buff.toString("hex");
+                    const low2 = str.toLowerCase();
+                    isHex = low1 === low2;
+                    if (!isHex) {
+                        debug(`OPDS lcp_hashed_passphrase should be HEX! (${lcpHashedPassphraseHexOrB64}) ${low1} !== ${low2}`);
+                    } else {
+                        debug(`OPDS lcp_hashed_passphrase is HEX: ${lcpHashedPassphraseHexOrB64}`);
+                    }
+                } catch (err) {
+                    debug(err); // ignore
+                }
+                if (isHex) {
+                    lcpHashedPassphrase = lcpHashedPassphraseHexOrB64;
+                } else {
+                    let isBase64 = false;
+                    try {
+                        const buff = Buffer.from(lcpHashedPassphraseHexOrB64, "base64");
+                        const str = buff.toString("hex");
+                        const b64 = Buffer.from(str, "hex").toString("base64");
+                        isBase64 = lcpHashedPassphraseHexOrB64 === b64;
+                        if (!isBase64) {
+                            debug(`OPDS lcp_hashed_passphrase is not BASE64?! (${lcpHashedPassphraseHexOrB64}) ${lcpHashedPassphraseHexOrB64} !== ${b64}`);
+                        } else {
+                            debug(`OPDS lcp_hashed_passphrase is BASE64! (${lcpHashedPassphraseHexOrB64})`);
+                        }
+                    } catch (err) {
+                        debug(err); // ignore
+                    }
+                    if (isBase64) {
+                        lcpHashedPassphrase = Buffer.from(lcpHashedPassphraseHexOrB64, "base64").toString("hex");
+                    }
+                }
+            }
+
+            const indirectAcquisitions = properties.IndirectAcquisitions ?
+                (Array.isArray(properties.IndirectAcquisitions) ?
+                    properties.IndirectAcquisitions : [properties.IndirectAcquisitions]) :
+                undefined;
+
+            return {
+                indirectAcquisitionType: indirectAcquisitions?.reduce<string>((pv, cv) => {
+                    return typeof cv?.TypeAcquisition === "string" ? cv.TypeAcquisition : pv;
+                }, undefined),
+                lcpHashedPassphrase,
+                numberOfItems: properties.NumberOfItems || undefined,
+                priceValue: properties.Price?.Value || undefined,
+                priceCurrency: properties.Price?.Currency as OPDSCurrencyEnum || undefined,
+                holdTotal: properties.Holds?.Total || undefined,
+                holdPosition: properties.Holds?.Position || undefined,
+                copyTotal: properties.Copies?.Total || undefined,
+                copyAvailable: properties.Copies?.Available || undefined,
+                availabilityState: properties.Availability?.State as OPDSAvailabilityEnum || undefined,
+                availabilitySince: properties.Availability?.Since
+                    && moment(properties.Availability.Since).toISOString() || undefined,
+                availabilityUntil: properties.Availability?.Until
+                    && moment(properties.Availability.Until).toISOString() || undefined,
+            };
+        }
+        return undefined;
     }
 
-    public convertOpdsTagToView(subject: Subject, baseUrl: string): IOpdsTagView {
+    public convertOpdsTagToView(subject: Subject, baseUrl: string): IOpdsTagView | undefined {
 
-        return (subject.Name || subject.Code) && {
+        return (subject.Name || subject.Code) ? {
             name: convertMultiLangStringToString(subject.Name || subject.Code),
             link: this.convertFilterLinkToView(baseUrl, subject.Links || [], {
                 type: [
@@ -101,12 +162,12 @@ export class OpdsFeedViewConverter {
                     ContentType.Opds2,
                 ],
             }),
-        };
+        } : undefined;
     }
 
-    public convertOpdsContributorToView(contributor: Contributor, baseUrl: string): IOpdsContributorView {
+    public convertOpdsContributorToView(contributor: Contributor, baseUrl: string): IOpdsContributorView | undefined {
 
-        return (contributor.Name) && {
+        return (contributor.Name) ? {
             name: typeof contributor.Name === "object"
                 ? convertMultiLangStringToString(contributor.Name)
                 : contributor.Name,
@@ -116,7 +177,7 @@ export class OpdsFeedViewConverter {
                     ContentType.Opds2,
                 ],
             }),
-        };
+        } : undefined;
     }
 
     public convertLinkToView(
@@ -196,15 +257,15 @@ export class OpdsFeedViewConverter {
 
         const authors = metadata.Author?.map(
             (author) =>
-                this.convertOpdsContributorToView(author, baseUrl));
+                this.convertOpdsContributorToView(author, baseUrl)).filter((v) => v);
 
         const publishers = metadata.Publisher?.map(
             (publisher) =>
-                this.convertOpdsContributorToView(publisher, baseUrl));
+                this.convertOpdsContributorToView(publisher, baseUrl)).filter((v) => v);
 
         const tags = metadata.Subject?.map(
             (subject) =>
-                this.convertOpdsTagToView(subject, baseUrl));
+                this.convertOpdsTagToView(subject, baseUrl)).filter((v) => v);
 
         // CoverView object
         const coverLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Images, {

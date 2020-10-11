@@ -57,8 +57,12 @@
         "entry": {
             "continueReading": "Reprendre la lecture",
             "continueReadingAudioBooks": "Reprendre l'écoute",
+            "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Récemment ajouté",
-            "lastAdditionsAudioBooks": "Livres audio récemment ajoutés"
+            "lastAdditionsAudioBooks": "Livres audio récemment ajoutés",
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Exporter",
         "lang": "Langue",
@@ -140,13 +144,11 @@
     },
     "message": {
         "download": {
-            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]",
-            "start": "Le téléchargement de {{- title}} a commencé.",
-            "success": "Le téléchargement de {{- title}} est terminé."
+            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} est déja importé",
-            "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
+            "fail": "L'importation de {{- path}} a échoué. {{- err}}",
             "success": "L'import de {{- title}} est terminé."
         },
         "open": {
@@ -279,6 +281,19 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "paginated": "Paginé",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "Sauvegarder",
                 "reset": "Réinitialiser",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "Gauche",
             "right": "Droite"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "",

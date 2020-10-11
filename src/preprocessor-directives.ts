@@ -14,8 +14,14 @@ export const _RENDERER_LIBRARY_BASE_URL = __RENDERER_LIBRARY_BASE_URL__;
 declare const __RENDERER_READER_BASE_URL__: string;
 export const _RENDERER_READER_BASE_URL = __RENDERER_READER_BASE_URL__;
 
+declare const __RENDERER_PDF_WEBVIEW_BASE_URL__: string;
+export const _RENDERER_PDF_WEBVIEW_BASE_URL = __RENDERER_PDF_WEBVIEW_BASE_URL__;
+
 declare const __NODE_MODULE_RELATIVE_URL__: string;
 export const _NODE_MODULE_RELATIVE_URL = __NODE_MODULE_RELATIVE_URL__;
+
+declare const __DIST_RELATIVE_URL__: string;
+export const _DIST_RELATIVE_URL = __DIST_RELATIVE_URL__;
 
 declare const __PACKAGING__: string;
 export const _PACKAGING = __PACKAGING__;

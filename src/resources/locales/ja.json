@@ -57,8 +57,12 @@
         "entry": {
             "continueReading": "読書を再開",
             "continueReadingAudioBooks": "オーディオブックを再開",
+            "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "最近追加された出版物",
-            "lastAdditionsAudioBooks": "最近追加されたオーディオブック"
+            "lastAdditionsAudioBooks": "最近追加されたオーディオブック",
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "書き出し",
         "lang": "言語",
@@ -140,9 +144,7 @@
     },
     "message": {
         "download": {
-            "error": "{{- title}}のダウンロードに失敗しました：［{{- err}}］",
-            "start": "{{- title}}のダウンロードが開始されました。",
-            "success": "{{- title}}のダウンロードが完了しました。"
+            "error": "{{- title}}のダウンロードに失敗しました：［{{- err}}］"
         },
         "import": {
             "alreadyImport": "{{- title}}はすでに追加されていました。",
@@ -279,6 +281,19 @@
             "lineSpacing": "行の間隔",
             "margin": "縦列の余白",
             "paginated": "ページ型",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "保存",
                 "reset": "リセット",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "左",
             "right": "右"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "音声合成による読み上げ機能を起動",

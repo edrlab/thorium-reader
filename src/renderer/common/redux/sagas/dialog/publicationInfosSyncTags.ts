@@ -14,7 +14,7 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
+import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";
 import { call, put, race, take } from "redux-saga/effects";
 
@@ -28,7 +28,8 @@ function* apiResult(action: apiActions.result.TAction) {
     // format the received API payload
     if (!action.error) {
         if (action.meta.api.methodId === "updateTags") {
-            const publicationView = action.payload as ReturnPromiseType<TApiMethod["publication/updateTags"]>;
+            const publicationView = action.payload as
+                TReturnPromiseOrGeneratorType<TApiMethod["publication/updateTags"]>;
             const tagsArray = publicationView.tags;
             const publicationFromDialog = (yield* selectTyped((state: ICommonRootState) =>
                 // tslint:disable-next-line: max-line-length

@@ -71,7 +71,7 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    import: apiDispatch(dispatch)()("publication/import"),
+    import: apiDispatch(dispatch)()("publication/importFromFs"),
 });
 
 export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationAddButton));

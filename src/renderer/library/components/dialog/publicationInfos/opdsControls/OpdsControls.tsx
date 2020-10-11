@@ -16,6 +16,8 @@ import {
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
+
 import OpdsLinkProperties from "./OpdsLinkProperties";
 
 // tslint:disable-next-line: no-empty-interface
@@ -42,6 +44,12 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             return <></>;
         }
 
+        // const r2OpdsPublicationStr =
+        //     Buffer.from(this.props.opdsPublicationView.r2OpdsPublicationBase64, "base64").toString("utf-8");
+        // const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
+        // // const r2OpdsPublication = TaJsonDeserialize<R2Publication>(r2OpdsPublicationJson, R2Publication);
+        // console.log(JSON.stringify(r2OpdsPublicationJson, null, 4));
+
         const {
             opdsPublicationView,
             verifyImport,
@@ -58,13 +66,14 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <button
                                 onClick={() => verifyImport(
                                     ln,
-                                    opdsPublicationView.r2OpdsPublicationBase64,
-                                    opdsPublicationView.title,
+                                    opdsPublicationView,
                                 )}
                                 className={styles.lire}
                                 disabled={openAccessButtonIsDisabled()}
                             >
-                                {__("catalog.addBookToLib")}
+                                {`${__("catalog.addBookToLib")}${ln.properties?.indirectAcquisitionType ?
+                                ` (${findExtWithMimeType(ln.properties.indirectAcquisitionType)})` :
+                                (ln.type ? ` (${findExtWithMimeType(ln.type)})` : "")}`}
                             </button>
                             <OpdsLinkProperties
                                 properties={ln.properties}
@@ -81,8 +90,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <button
                                 onClick={() => verifyImport(
                                     ln,
-                                    opdsPublicationView.r2OpdsPublicationBase64,
-                                    opdsPublicationView.title,
+                                    opdsPublicationView,
                                 )}
                                 className={styles.lire}
                                 disabled={sampleButtonIsDisabled()}
@@ -106,6 +114,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 key={`buyControl-${idx}`}
                             >
                                 <button
+                                    className={styles.lire}
                                     onClick={
                                         () => this.props.link(
                                             ln,
@@ -130,6 +139,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 key={`borrowControl-${idx}`}
                             >
                                 <button
+                                    className={styles.lire}
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
@@ -150,6 +160,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 key={`subscribeControl-${idx}`}
                             >
                                 <button
+                                    className={styles.lire}
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
@@ -219,16 +230,16 @@ const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => {
         breadcrumb: state.opds.browser.breadcrumb,
         location: state.router.location,
         openAccessButtonIsDisabled: () => {
-            return !!state.download.downloads.find(
-                (dl: { url: string; }) => props.opdsPublicationView.openAccessLinks.find(
-                    (ln) => ln.url === dl.url,
+            return !!state.download.find(
+                ([{downloadUrl}]) => props.opdsPublicationView.openAccessLinks.find(
+                    (ln) => ln.url === downloadUrl,
                 ),
             );
         },
         sampleButtonIsDisabled: () => {
-            return !!state.download.downloads.find(
-                (dl: { url: string; }) => props.opdsPublicationView.sampleOrPreviewLinks.find(
-                    (ln) => ln.url === dl.url,
+            return !!state.download.find(
+                ([{downloadUrl}]) => props.opdsPublicationView.sampleOrPreviewLinks.find(
+                    (ln) => ln.url === downloadUrl,
                 ),
             );
         },

@@ -57,8 +57,12 @@
         "entry": {
             "continueReading": "Lesen Sie weiter",
             "continueReadingAudioBooks": "Hören Sie weiter zu",
+            "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Kürzlich hinzugefügt",
-            "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher"
+            "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher",
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Export",
         "lang": "Sprache",
@@ -140,13 +144,11 @@
     },
     "message": {
         "download": {
-            "error": "Der Download von {{- title}} ist fehlgeschlagen: [{{- err}}]",
-            "start": "Der Download von {{- title}} hat begonnen",
-            "success": "Der Download von {{- title}} wurde abgeschlossen"
+            "error": "Der Download von {{- title}} ist fehlgeschlagen: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "Der Import von {{- title}} Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
-            "fail": "Der Import von {{- path}} ist fehlgeschlagen. Stellen Sie sicher, dass die Datei gültig ist.",
+            "fail": "Der Import von {{- path}} ist fehlgeschlagen. {{- err}}",
             "success": "Der Import von {{- title}} ist abgeschlossen."
         },
         "open": {
@@ -279,6 +281,19 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "paginated": "Seitendarstellung",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "Speichern",
                 "reset": "Zurücksetzen",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "",
             "right": ""
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "",

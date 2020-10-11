@@ -7,10 +7,9 @@
 
 import { connectRouter } from "connected-react-router";
 import { History } from "history";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { downloadActions, readerActions } from "readium-desktop/common/redux/actions";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
-import { importReducer } from "readium-desktop/common/redux/reducers/import";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 // import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
@@ -18,12 +17,13 @@ import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { loadReducer } from "readium-desktop/renderer/common/redux/reducers/load";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
-import { downloadReducer } from "readium-desktop/renderer/library/redux/reducers/download";
+// import { downloadReducer } from "readium-desktop/renderer/library/redux/reducers/download";
 import { historyReducer } from "readium-desktop/renderer/library/redux/reducers/history";
 import {
     opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer,
 } from "readium-desktop/renderer/library/redux/reducers/opds";
 import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers } from "redux";
 
 import { ILibraryRootState } from "../states";
@@ -44,9 +44,27 @@ export const rootReducer = (history: History<IRouterLocationState>) => {
         api: apiReducer,
         dialog: dialogReducer,
         router: connectRouter<IRouterLocationState>(history),
-        import: importReducer,
         toast: toastReducer,
-        download: downloadReducer,
+        download: priorityQueueReducer
+            <
+                downloadActions.progress.TAction,
+                downloadActions.done.TAction,
+                downloadActions.progress.Payload,
+                number
+            >(
+                {
+                    push: {
+                        type: downloadActions.progress.ID,
+                        selector: (action) =>
+                            [action.payload, action.payload.id],
+                    },
+                    pop: {
+                        type: downloadActions.done.ID,
+                        selector: (action) => [undefined, action.payload.id],
+                    },
+                    sortFct: (a, b) => b[1] - a[1],
+                },
+            ),
         history: historyReducer,
         // just to recall 'catalog/get' when readerActions.setReduxState is dispatched
         updateCatalog: (state: number = 0, action: readerActions.setReduxState.TAction) =>
