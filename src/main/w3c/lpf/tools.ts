@@ -10,9 +10,10 @@ import { promises as fsp } from "fs";
 import { nanoid } from "nanoid";
 import * as os from "os";
 import * as path from "path";
-import { injectBufferInZip } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zipInjector";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+
+import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 // Logger
 const debug = debug_("readium-desktop:main#w3c/lpf/tools");

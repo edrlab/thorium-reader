@@ -48,6 +48,8 @@ const supportedFileTypeLinkArray = [
     ContentType.AudioBook,
     ContentType.Json,
     ContentType.JsonLd,
+    ContentType.pdf,
+    ContentType.lcppdf,
 ];
 
 @injectable()

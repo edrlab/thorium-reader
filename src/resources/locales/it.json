@@ -58,9 +58,11 @@
             "continueReading": "Continua a leggere",
             "continueReadingAudioBooks": "Continua ad ascoltare",
             "continueReadingDivina": "Continua divina",
+            "continueReadingPdf": "",
             "lastAdditions": "Aggiunti di recente",
             "lastAdditionsAudioBooks": "Audiobooks aggiunti di recente",
-            "lastAdditionsDivina": "Divina aggiunti di recente"
+            "lastAdditionsDivina": "Divina aggiunti di recente",
+            "lastAdditionsPdf": ""
         },
         "export": "Esporta",
         "lang": "Lingua",
@@ -279,6 +281,19 @@
             "lineSpacing": "Spaziatura linee",
             "margin": "Margine",
             "paginated": "Impaginato",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "salva",
                 "reset": "ripristina",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "Sinistra",
             "right": "Destra"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "Attiva Testo a Voce",

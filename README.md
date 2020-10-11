@@ -4,7 +4,7 @@ Thorium Reader is an easy to use EPUB reading application for Windows 10/10S, Ma
 
 Free application. No ads. No private data flowing anywhere.
 
-This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit. 
+This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit.
 
 It is currently localized in following languages:
 - English

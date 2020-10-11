@@ -58,9 +58,11 @@
             "continueReading": "Reprendre la lecture",
             "continueReadingAudioBooks": "Reprendre l'écoute",
             "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Récemment ajouté",
             "lastAdditionsAudioBooks": "Livres audio récemment ajoutés",
-            "lastAdditionsDivina": ""
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Exporter",
         "lang": "Langue",
@@ -279,6 +281,19 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "paginated": "Paginé",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "Sauvegarder",
                 "reset": "Réinitialiser",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "Gauche",
             "right": "Droite"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "",

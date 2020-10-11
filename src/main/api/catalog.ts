@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
-import { isAudiobookFn, isDivinaFn } from "readium-desktop/common/isManifestType";
+import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { Translator } from "readium-desktop/common/services/translator";
@@ -21,6 +21,9 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 // import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { Store } from "redux";
+
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { PublicationDocument } from "../db/document/publication";
 import { PublicationRepository } from "../db/repository/publication";
@@ -44,6 +47,7 @@ interface ICatalogCategories {
     audio: ICatalogReadedOrAdded;
     divina: ICatalogReadedOrAdded;
     epub: ICatalogReadedOrAdded;
+    pdf: ICatalogReadedOrAdded;
 }
 
 @injectable()
@@ -82,6 +86,10 @@ export class CatalogApi implements ICatalogApi {
                 readed: epubReaded,
                 added: epubAdded,
             },
+            pdf: {
+                readed: pdfReaded,
+                added: pdfAdded,
+            },
         } = await this.getPublicationView();
 
         // Dynamic entries
@@ -115,6 +123,16 @@ export class CatalogApi implements ICatalogApi {
                 title: __("catalog.entry.lastAdditionsDivina"),
                 totalCount: divinaAdded.length,
                 publicationViews: divinaAdded,
+            },
+            {
+                title: __("catalog.entry.continueReadingPdf"),
+                totalCount: pdfReaded.length,
+                publicationViews: pdfReaded,
+            },
+            {
+                title: __("catalog.entry.lastAdditionsPdf"),
+                totalCount: pdfAdded.length,
+                publicationViews: pdfAdded,
             },
         ];
 
@@ -167,8 +185,21 @@ export class CatalogApi implements ICatalogApi {
 
             fillArrayPubView(obj.audio[key], doc, isAudiobookFn);
             fillArrayPubView(obj.divina[key], doc, isDivinaFn);
+            fillArrayPubView(obj.pdf[key], doc,
+                (view: PublicationView) => {
+                    const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+                    const r2PublicationJson = JSON.parse(r2PublicationStr);
+                    const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+                    return isPdfFn(r2Publication);
+                },
+            );
             fillArrayPubView(obj.epub[key], doc,
-                (view: PublicationView) => (!isAudiobookFn(view) && !isDivinaFn(view)),
+                (view: PublicationView) => {
+                    const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+                    const r2PublicationJson = JSON.parse(r2PublicationStr);
+                    const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+                    return !isAudiobookFn(view) && !isDivinaFn(view) && !isPdfFn(r2Publication);
+                },
             );
 
         };
@@ -201,6 +232,10 @@ export class CatalogApi implements ICatalogApi {
                     added: [],
                 },
                 epub: {
+                    readed: [],
+                    added: [],
+                },
+                pdf: {
                     readed: [],
                     added: [],
                 },
