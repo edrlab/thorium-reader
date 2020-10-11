@@ -213,7 +213,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 :
                                                 ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
                                             }/${isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
-                                          (isDivina
+                                            (isDivina
                                             ? this.props.divinaNumberOfPages
                                             : r2Publication.Spine.length)
                                             }) `}</em> {` ${spineTitle}`}</span>
