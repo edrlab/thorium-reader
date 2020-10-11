@@ -110,6 +110,10 @@ interface IState {
 
     readerMode: ReaderMode;
 
+    divinaReadingMode: TdivinaReadingMode;
+    divinaReadingModeSupported: TdivinaReadingMode[];
+    divinaNumberOfPages: number;
+
     pdfPlayerBusEvent: IEventBusPdfPlayer;
     pdfPlayerToc: TToc;
 }
@@ -180,6 +184,10 @@ class Reader extends React.Component<IProps, IState> {
             bookmarks: undefined,
 
             readerMode: ReaderMode.Attached,
+
+            divinaNumberOfPages: 0,
+            divinaReadingMode: "single",
+            divinaReadingModeSupported: [],
 
             pdfPlayerBusEvent: undefined,
             pdfPlayerToc: undefined,
@@ -273,12 +281,13 @@ class Reader extends React.Component<IProps, IState> {
 
             if (this.currentDivinaPlayer) {
 
+                this.currentDivinaPlayer.eventEmitter.on("pagechange", this.divinaSetLocation);
+
                 this.currentDivinaPlayer.eventEmitter.on(
                     "initialload",
                     () => {
 
                         console.log("divina loaded");
-
                         // nextTick update
                         setTimeout(() => {
 
@@ -293,24 +302,6 @@ class Reader extends React.Component<IProps, IState> {
                                 // ignore
                                 console.log("currentDivinaPlayer.goToPageWithIndex", e);
                             }
-
-                            this.currentDivinaPlayer.eventEmitter.on(
-                                "pagechange",
-                                ({ pageIndex, nbOfPages }: { pageIndex: number, nbOfPages: number }) => {
-                                    const loc = {
-                                        locator: {
-                                            href: pageIndex.toString(),
-                                            locations: {
-                                                position: pageIndex,
-                                                progression: pageIndex / nbOfPages,
-                                            },
-                                        },
-                                    };
-                                    console.log("pageChange", pageIndex, nbOfPages);
-                                    this.handleReadingLocationChange(loc as LocatorExtended);
-
-                                },
-                            );
 
                         }, 0);
 
@@ -383,6 +374,10 @@ class Reader extends React.Component<IProps, IState> {
             toggleMenu: this.handleSettingsClick,
             r2Publication: this.props.r2Publication,
             handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
+
+            divinaReadingMode: this.state.divinaReadingMode,
+            divinaReadingModeSupported: this.state.divinaReadingModeSupported,
+
             isDivina: this.props.isDivina,
             isPdf: this.props.isPdf,
             pdfEventBus: this.state.pdfPlayerBusEvent,
@@ -452,7 +447,7 @@ class Reader extends React.Component<IProps, IState> {
                         isPdf={this.props.isPdf}
                     />
                     <div className={classNames(styles.content_root,
-                            this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
+                        this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
                         <div className={styles.reader}>
                             <main
                                 id="main"
@@ -486,6 +481,7 @@ class Reader extends React.Component<IProps, IState> {
                     handleLinkClick={this.handleLinkClick}
                     goToLocator={this.goToLocator}
                     isDivina={this.props.isDivina}
+                    divinaNumberOfPages={this.state.divinaNumberOfPages}
                     isPdf={this.props.isPdf}
                 />
             </div>
@@ -851,6 +847,21 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
+    private divinaSetLocation = ({ pageIndex, nbOfPages }: { pageIndex: number, nbOfPages: number }) => {
+        const loc = {
+            locator: {
+                href: pageIndex.toString(),
+                locations: {
+                    position: pageIndex,
+                    progression: pageIndex / nbOfPages,
+                },
+            },
+        };
+        console.log("pageChange", pageIndex, nbOfPages);
+        this.handleReadingLocationChange(loc as LocatorExtended);
+
+    }
+
     private async loadPublicationIntoViewport() {
 
         if (this.props.r2Publication?.Metadata?.Title) {
@@ -1001,22 +1012,38 @@ class Reader extends React.Component<IProps, IState> {
             });
             eventEmitter.on("pagenavigatorscreation", (data: any) => {
                 console.log("Page navigators creation", data);
+
+                // Page navigators creation { readingModesArray: [ 'scroll' ], languagesArray: [ 'unspecified' ] }
+                this.setState({ divinaReadingModeSupported: data.readingModesArray });
             });
             eventEmitter.on("initialload", (data: any) => {
                 console.log("Initial load", data);
             });
             eventEmitter.on("languagechange", (data: any) => {
                 console.log("Language change", data);
+
+                // Language change { language: 'unspecified' }
             });
             eventEmitter.on("readingmodechange", (data: any) => {
                 console.log("Reading mode change", data);
+
+                // Reading mode change { readingMode: 'scroll', nbOfPages: 1 }
+                this.setState({ divinaReadingMode: data.readingMode, divinaNumberOfPages: data.nbOfPages });
+                const index = parseInt(this.props.locator?.locator?.href, 10);
+                if (typeof index === "number" && index >= 0) {
+                    console.log("index divina", index);
+                } else {
+                    this.divinaSetLocation({ pageIndex: 0, nbOfPages: data.nbOfPages });
+                }
             });
             eventEmitter.on("readingmodeupdate", (data: any) => {
                 console.log("Reading mode update", data);
+
+                this.setState({ divinaReadingMode: data.readingMode, divinaNumberOfPages: data.nbOfPages });
             });
-            // eventEmitter.on("pagechange", (data: any) => {
-            //     console.log("Page change", data);
-            // });
+            eventEmitter.on("pagechange", (data: any) => {
+                console.log("Page change", data);
+            });
 
         } else {
             this.setState({
@@ -1319,12 +1346,12 @@ class Reader extends React.Component<IProps, IState> {
                 }
 
                 try {
-                await apiAction("reader/addBookmark", this.props.pubId, locator, name);
-            } catch (e) {
-                console.error("Error to fetch api reader/addBookmark", e);
+                    await apiAction("reader/addBookmark", this.props.pubId, locator, name);
+                } catch (e) {
+                    console.error("Error to fetch api reader/addBookmark", e);
+                }
             }
         }
-    }
     }
 
     private handleReaderClose() {

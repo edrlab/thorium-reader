@@ -134,6 +134,10 @@ export interface IReaderOptionsProps {
     toggleMenu: () => void;
     r2Publication: R2Publication | undefined;
     handleDivinaReadingMode: (v: TdivinaReadingMode) => void;
+
+    divinaReadingMode: TdivinaReadingMode;
+    divinaReadingModeSupported: TdivinaReadingMode[];
+
     pdfEventBus: IEventBusPdfPlayer;
     isDivina: boolean;
     isPdf: boolean;
