@@ -270,7 +270,7 @@
                 "input": "text to find",
                 "next": "Next",
                 "previous": "Previous",
-                "submit": "Search"
+                "submit": "Find"
             },
             "searchTitle": "Search:"
         },
