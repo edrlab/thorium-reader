@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
@@ -24,6 +24,7 @@ import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/ac
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
+    shortcutEnable: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -120,6 +121,12 @@ class HeaderSearch extends React.Component<IProps, undefined> {
 
     private enableSearch = () => {
 
+        if (!this.props.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (enableSearch)");
+            }
+            return;
+        }
         this.props.enableSearch(!this.props.isOnSearch);
     }
 

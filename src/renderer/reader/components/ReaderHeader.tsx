@@ -42,6 +42,7 @@ import ReaderOptions from "./ReaderOptions";
 interface IBaseProps extends TranslatorProps {
     menuOpen: boolean;
     infoOpen: boolean;
+    shortcutEnable: boolean;
     mode?: ReaderMode;
     settingsOpen: boolean;
     handleMenuClick: () => void;
@@ -338,7 +339,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                         <li
                             {...(this.props.isOnSearch && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                         >
-                            <HeaderSearch></HeaderSearch>
+                            <HeaderSearch shortcutEnable={this.props.shortcutEnable}></HeaderSearch>
                         </li>
                         <li
                             {...(this.props.isOnBookmark &&

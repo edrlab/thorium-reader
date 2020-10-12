@@ -406,6 +406,7 @@ class Reader extends React.Component<IProps, IState> {
                 />
                 <div className={styles.root}>
                     <ReaderHeader
+                        shortcutEnable={this.state.shortcutEnable}
                         infoOpen={this.props.infoOpen}
                         menuOpen={this.state.menuOpen}
                         settingsOpen={this.state.settingsOpen}
