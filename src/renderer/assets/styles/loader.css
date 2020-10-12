@@ -17,8 +17,6 @@
 }
 
 .loader_search_picker {
-    & svg {
-        width: 1rem;
-    }
+    width: 24px;
+    align-self: center;
 }
-

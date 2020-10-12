@@ -8,9 +8,12 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
+import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionSearch } from "../../redux/actions";
@@ -64,22 +67,40 @@ class SearchPicker extends React.Component<IProps, IState> {
                     disabled={notFound}
                     onClick={previous}
                     aria-label={__("reader.picker.search.previous")}
-                    style={{ fontSize: "2ex" }}
+                    title={__("opds.previous")}
+                    style={{
+                        width: "30px",
+                        padding: "4px",
+                        margin: 0,
+                        color: notFound ? "grey" : "black",
+                        fill: notFound ? "grey" : "black",
+                    }}
                 >
-                    {"<"}
+                    <SVG svg={ArrowLeftIcon} />
                 </button>
                 <button
                     disabled={notFound}
                     onClick={next}
                     aria-label={__("reader.picker.search.next")}
-                    style={{ fontSize: "2ex" }}
+                    title={__("opds.next")}
+                    style={{
+                        width: "30px",
+                        padding: "4px",
+                        margin: 0,
+                        color: notFound ? "grey" : "black",
+                        fill: notFound ? "grey" : "black",
+                    }}
                 >
-                    {">"}
+                    <SVG svg={ArrowRightIcon} />
                 </button>
                 {
-                    load && <LoaderSearch></LoaderSearch>
+                    load &&
+                    <LoaderSearch></LoaderSearch>
                 }
-                <span style={{fontSize: "2ex"}} aria-live="polite">
+                <span style={{
+                    fontSize: "0.9em",
+                    alignSelf: "center",
+                }} aria-live="polite">
                     {
                         this.loadSeq > 2 && found
                     }

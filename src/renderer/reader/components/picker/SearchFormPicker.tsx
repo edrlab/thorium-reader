@@ -9,9 +9,11 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
@@ -80,15 +82,25 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
-                    aria-label={__("accessibility.searchBook")}
+                    aria-label={__("reader.navigation.magnifyingGlassButton")}
                     placeholder={__("reader.picker.search.input")}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({inputValue: e.target.value})}
-                    style={{ fontSize: "2ex" }}
+                    style={{
+                        fontSize: "1em",
+                        verticalAlign: "text-bottom",
+                    }}
                 />
-                <button disabled={!this.state.inputValue} style={{ fontSize: "2ex" }}>
-                    {
-                        __("reader.picker.search.submit")
-                    }
+
+                <button
+                    disabled={!this.state.inputValue}
+                    style={{
+                        width: "30px",
+                        padding: "4px",
+                        marginLeft: "0.4em",
+                        color: this.state.inputValue ? "black" : "grey",
+                        fill: this.state.inputValue ? "black" : "grey" }}>
+
+                    <SVG svg={magnifyingGlass} title={__("reader.picker.search.submit")} />
                 </button>
             </form>
         );

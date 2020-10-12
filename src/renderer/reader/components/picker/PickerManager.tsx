@@ -8,9 +8,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
@@ -30,38 +32,37 @@ interface IBaseProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps>, TranslatorProps {
 }
 
+// tslint:disable-next-line: no-empty-interface
 interface IState {
-    pickerTop: number;
-    pickerLeft: number;
+    // pickerTop: number;
+    // pickerLeft: number;
 }
 
 class PickerManager extends React.Component<IProps, IState> {
 
-    private left = 0;
-    private top = 0;
+    // private left = 0;
+    // private top = 0;
 
     constructor(props: IProps) {
         super(props);
 
-        this.state = {
-            pickerTop: 0,
-            pickerLeft: 0,
-        };
-
+        // this.state = {
+        //     pickerTop: 0,
+        //     pickerLeft: 0,
+        // };
     }
 
-    public componentDidUpdate(prevProps: IProps) {
-        const { picker: { open: o } } = prevProps;
-        const { picker: { open: n } } = this.props;
+    // public componentDidUpdate(prevProps: IProps) {
+    //     const { picker: { open: o } } = prevProps;
+    //     const { picker: { open: n } } = this.props;
 
-        if (n !== o) {
-            this.setState({
-                pickerTop: 70,
-                pickerLeft: Math.round(window.innerWidth / 3),
-            });
-
-        }
-    }
+    //     if (n !== o) {
+    //         this.setState({
+    //             pickerTop: 70,
+    //             pickerLeft: Math.round(window.innerWidth / 3),
+    //         });
+    //     }
+    // }
 
     public render(): React.ReactElement<{}> {
         const { open, type } = this.props.picker;
@@ -71,22 +72,36 @@ class PickerManager extends React.Component<IProps, IState> {
             return (<></>);
         }
 
+        // onMouseDown={this.startMove}
+        // top: this.state.pickerTop,
+        // left: this.state.pickerLeft,
+        // width: 500,
+        // height: 30,
+        // backgroundColor: "rgba(255, 255, 255, 0.8)",
         return (
-
+            // z-index 102 is just above top toolbar, below dialog
+            // (but index stacking results in overlay on top of side panels, so not viable)
             <div style={{
+                zIndex: 101,
                 position: "absolute",
+                left: "30px",
+                right: "30px",
+                top: "70px",
+                height: "40px",
+                padding: 0,
+                margin: 0,
+
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid #333333",
+                borderRadius: "6px",
+
                 display: "flex",
                 justifyContent: "left",
                 alignItems: "center",
-                width: 500,
-                height: 30,
-                top: this.state.pickerTop,
-                left: this.state.pickerLeft,
-                backgroundColor: "rgba(255, 255, 255, 0.8)",
-                border: "1px solid gray",
-                zIndex: 9,
+
+                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.3)",
             }}
-                onMouseDown={this.startMove}
                 onKeyUp={(e: React.KeyboardEvent<HTMLDivElement>) => {
                     if (e.key === "Escape") {
                         this.props.closePicker(type);
@@ -94,8 +109,13 @@ class PickerManager extends React.Component<IProps, IState> {
                 }}
             >
                 <span style={{
-                    fontSize: "1ex",
-                    margin: "10px",
+                    fontSize: "1em",
+                    backgroundColor: "transparent",
+                    color: "black",
+                    margin: 0,
+                    padding: 0,
+                    paddingLeft: "1em",
+                    paddingRight: "1em",
                 }}>
                     {
                         type === "search"
@@ -114,47 +134,50 @@ class PickerManager extends React.Component<IProps, IState> {
 
                 <button
                     style={{
-                        position: "absolute",
-                        right: "5px",
-                        top: "3px",
-                        fontSize: "2ex",
+                        width: "30px",
+                        marginLeft: "auto",
+                        marginRight: "0.4em",
+                        backgroundColor: "transparent",
+                        color: "black",
+                        fill: "black",
                     }}
+                    type="button"
+                    aria-label={__("accessibility.closeDialog")}
+                    title={__("accessibility.closeDialog")}
                     onClick={() => this.props.closePicker(type)}
                 >
-                    X
+                    <SVG svg={QuitIcon} />
                 </button>
-
             </div>
         );
-
     }
 
-    private startMove = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // private startMove = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 
-        ev.target.addEventListener("mouseup", this.stopMove as any);
-        ev.target.addEventListener("mousemove", this.move as any);
-        ev.target.addEventListener("mouseleave", this.stopMove as any);
+    //     ev.target.addEventListener("mouseup", this.stopMove as any);
+    //     ev.target.addEventListener("mousemove", this.move as any);
+    //     ev.target.addEventListener("mouseleave", this.stopMove as any);
 
-        this.top = ev.pageY;
-        this.left = ev.pageX;
-    }
+    //     this.top = ev.pageY;
+    //     this.left = ev.pageX;
+    // }
 
-    private stopMove = (ev: MouseEvent) => {
+    // private stopMove = (ev: MouseEvent) => {
 
-        ev.target.removeEventListener("mouseup", this.stopMove as any);
-        ev.target.removeEventListener("mousemove", this.move as any);
-    }
+    //     ev.target.removeEventListener("mouseup", this.stopMove as any);
+    //     ev.target.removeEventListener("mousemove", this.move as any);
+    // }
 
-    private move = (evt: MouseEvent) => {
+    // private move = (evt: MouseEvent) => {
 
-        this.setState({
-            pickerTop: this.state.pickerTop + evt.pageY - this.top,
-            pickerLeft: this.state.pickerLeft + evt.pageX - this.left,
-        });
+    //     this.setState({
+    //         pickerTop: this.state.pickerTop + evt.pageY - this.top,
+    //         pickerLeft: this.state.pickerLeft + evt.pageX - this.left,
+    //     });
 
-        this.top = evt.pageY;
-        this.left = evt.pageX;
-    }
+    //     this.top = evt.pageY;
+    //     this.left = evt.pageX;
+    // }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
