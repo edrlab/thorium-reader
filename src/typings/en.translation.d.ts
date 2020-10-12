@@ -694,7 +694,6 @@ declare namespace typed_i18n {
   readonly "previous": string,
   readonly "submit": string
 };
-  (_: "reader.picker.search.found", __?: {}): string;
   (_: "reader.picker.search.founds", __?: {}): string;
   (_: "reader.picker.search.notFound", __?: {}): string;
   (_: "reader.picker.search.input", __?: {}): string;

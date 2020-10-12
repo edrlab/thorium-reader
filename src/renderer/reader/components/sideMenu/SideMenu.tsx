@@ -76,6 +76,7 @@ export class SideMenu extends React.Component<IProps, IState> {
                                 content={section.content}
                                 onClick={this.handleClickSection}
                                 disabled={section.disabled}
+                                skipMaxHeight={section.skipMaxHeight}
                             />
                         : <li key={index}>
                             { section.content }

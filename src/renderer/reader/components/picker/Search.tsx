@@ -44,11 +44,9 @@ class SearchPicker extends React.Component<IProps, IState> {
 
         const { load, notFound, next, previous, __ } = this.props;
 
-        const found = this.props.foundNumber > 1
-            ? `${this.props.foundNumber} ${__("reader.picker.search.founds")}`
-            : (this.props.foundNumber === 0)
-                ? __("reader.picker.search.notFound")
-                : `${this.props.foundNumber} ${__("reader.picker.search.found")}`;
+        const found = this.props.foundNumber === 0 ?
+            __("reader.picker.search.notFound") :
+            __("reader.picker.search.founds", {nResults: this.props.foundNumber});
 
         this.loadSeq = (this.loadSeq || 0) + 1;
 

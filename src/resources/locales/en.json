@@ -263,17 +263,16 @@
             "settingsTitle": "settings"
         },
         "picker": {
-            "annotationTitle": "Annotation :",
+            "annotationTitle": "Annotations:",
             "search": {
-                "found": "result",
-                "founds": "results",
-                "notFound": "no result",
-                "input": "Search",
+                "founds": "{{- nResults}} match(es)",
+                "notFound": "not found",
+                "input": "text to find",
                 "next": "Next",
                 "previous": "Previous",
                 "submit": "Search"
             },
-            "searchTitle": "Search in publication :"
+            "searchTitle": "Search:"
         },
         "settings": {
             "column": {

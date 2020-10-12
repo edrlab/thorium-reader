@@ -151,6 +151,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     ></ReaderMenuSearch>
                     : <></>,
                 disabled: !this.props.searchEnable,
+                skipMaxHeight: true,
             },
             {
                 content: this.buildGoToPageSection(),

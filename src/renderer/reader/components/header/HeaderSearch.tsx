@@ -40,40 +40,57 @@ class HeaderSearch extends React.Component<IProps, undefined> {
     constructor(props: IProps) {
         super(props);
 
+        this.enableSearch = this.enableSearch.bind(this);
     }
 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
-        if (!this.props.isOnSearch) {
-
-            this.registerAllKeyboardListeners();
-        }
+        this.registerAllKeyboardListeners();
     }
 
     public componentWillUnmount() {
-
-        if (!this.props.isOnSearch) {
-
-            this.unregisterAllKeyboardListeners();
-        }
+        this.unregisterAllKeyboardListeners();
     }
 
     public async componentDidUpdate(oldProps: IProps) {
-        if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch) {
-            this.unregisterAllKeyboardListeners();
-        } else if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch === false) {
-            this.registerAllKeyboardListeners();
-        }
-
-        // keyboard binding refresh
-        if (
-            !keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)
-            && !this.props.isOnSearch
-        ) {
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
     }
+
+    // public componentDidMount() {
+    //     ensureKeyboardListenerIsInstalled();
+    //     if (!this.props.isOnSearch) {
+
+    //         this.registerAllKeyboardListeners();
+    //     }
+    // }
+
+    // public componentWillUnmount() {
+
+    //     if (!this.props.isOnSearch) {
+
+    //         this.unregisterAllKeyboardListeners();
+    //     }
+    // }
+
+    // public async componentDidUpdate(oldProps: IProps) {
+    //     if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch) {
+    //         this.unregisterAllKeyboardListeners();
+    //     } else if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch === false) {
+    //         this.registerAllKeyboardListeners();
+    //     }
+
+    //     // keyboard binding refresh
+    //     if (
+    //         !keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)
+    //         && !this.props.isOnSearch
+    //     ) {
+    //         this.unregisterAllKeyboardListeners();
+    //         this.registerAllKeyboardListeners();
+    //     }
+    // }
 
     public render() {
         const { __ } = this.props;
