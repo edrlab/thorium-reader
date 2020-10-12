@@ -125,6 +125,7 @@
       "styles_reader.css",
       "preload.js",
       "main.js",
+      "1.main.js",
       "package.json",
       "fonts"
     ],
