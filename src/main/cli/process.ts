@@ -10,7 +10,6 @@ import { app, dialog } from "electron";
 import * as glob from "glob";
 import { EOL } from "os";
 import * as path from "path";
-import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
 import { lockInstance } from "readium-desktop/main/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
@@ -231,7 +230,7 @@ yargs
                             }
                         });
 
-                        await PromiseAllSettled(promiseArray);
+                        await Promise.all(promiseArray);
 
                     } catch (_err) {
                         // ignore
