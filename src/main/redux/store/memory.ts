@@ -84,6 +84,10 @@ async function absorbLocatorRepositoryToReduxState() {
                         r2Publication: undefined,
                         publicationView: undefined,
                     },
+                    highlight: {
+                        handler: undefined,
+                        mounter: undefined,
+                    },
                 },
             };
 

@@ -295,7 +295,7 @@ button {
   & > ul:not(.noAudio) {
     display: flex;
   }
-  
+
   & > ul, & ul.menu_option, & ul.tts_toolbar {
     line-height: 0.9rem;
     padding: 0;
@@ -405,6 +405,19 @@ button {
           @mixin R2_MIXIN_FOCUS_OUTLINE;
         }
       }
+
+      & .magnifyingGlassButton {
+        position: absolute;
+        left: -2000px;
+
+        &:checked + label.menu_button {
+          background-color: rgb(193, 193, 193);
+        }
+
+        &:focus + label.menu_button {
+          @mixin R2_MIXIN_FOCUS_OUTLINE;
+        }
+      }
     }
 
     & .right {
@@ -502,14 +515,8 @@ button {
   }
 }
 .main_navigation_fullscreen {
-  & > ul > li:nth-child(1),
-  & > ul > li:nth-child(2),
-  & > ul > li:nth-child(3) {
-    display: none;
-  }
-  & > ul > ul:not(.tts_toolbar) > li:nth-child(1),
-  & > ul > ul:not(.tts_toolbar) > li:nth-child(2),
-  & > ul > ul:not(.tts_toolbar) > li:nth-child(3) {
+  & > ul:not(.showInFullScreen) > ul:not(.showInFullScreen) > li:not(.showInFullScreen),
+  & > ul:not(.showInFullScreen) > li:not(.showInFullScreen) {
     display: none;
   }
   & > ul > ul.tts_toolbar {
@@ -1013,7 +1020,7 @@ input[type=radio] + label {
         fill: #C1C1C1;;
       }
     }
-    
+
     & .track_reading_wrapper {
       padding: 1rem 8rem 1rem 5rem;
       bottom: 0;

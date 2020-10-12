@@ -231,6 +231,7 @@
             "delete": "Elimina",
             "edit": "Modifica",
             "landmarks": "Punti di riferimento",
+            "search": "",
             "toc": "Tabella dei contenuti"
         },
         "media-overlays": {
@@ -255,10 +256,23 @@
             "goToPlaceHolder": "Inserisci il numero della pagina",
             "goToTitle": "Vai alla pagina",
             "infoTitle": "informazione",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navigazione",
             "quitFullscreenTitle": "esci dalla modalità schermo intero",
             "readBookTitle": "inizia a leggere il libro",
             "settingsTitle": "impostazioni"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {

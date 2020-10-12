@@ -175,6 +175,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         return (
             <SideMenu
+                openedSection={this.props.openedSection}
                 className={styles.read_settings}
                 listClassName={styles.read_settings_list}
                 open={this.props.open}

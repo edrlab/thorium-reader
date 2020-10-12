@@ -21,6 +21,7 @@ interface IBaseProps extends TranslatorProps {
     title: string;
     onClick: (id: number) => void;
     id: number;
+    skipMaxHeight: boolean;
 }
 
 // IProps may typically extend:
@@ -82,6 +83,9 @@ export class SideMenuSection extends React.Component<IProps, IState> {
     }
 
     private getSectionStyle() {
+        if (this.props.skipMaxHeight) {
+            return;
+        }
         if (!this.sectionRef?.current) {
             return;
         }

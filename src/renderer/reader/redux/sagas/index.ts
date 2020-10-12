@@ -13,8 +13,10 @@ import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/s
 import { all, call, put, take } from "redux-saga/effects";
 
 import * as cssUpdate from "./cssUpdate";
+import * as highlightHandler from "./highlight/handler";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
+import * as search from "./search";
 import * as winInit from "./win";
 
 // Logger
@@ -39,5 +41,8 @@ export function* rootSaga() {
 
         cssUpdate.saga(),
 
+        highlightHandler.saga(),
+
+        search.saga(),
     ]);
 }

@@ -7,6 +7,7 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/baseline-pause-24px.svg";
@@ -32,16 +33,16 @@ import {
     LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
 
+import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
-
-import ReactDOM = require("react-dom");
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     menuOpen: boolean;
     infoOpen: boolean;
+    shortcutEnable: boolean;
     mode?: ReaderMode;
     settingsOpen: boolean;
     handleMenuClick: () => void;
@@ -74,6 +75,7 @@ interface IBaseProps extends TranslatorProps {
     handleReaderDetach: () => void;
     toggleBookmark: () => void;
     isOnBookmark: boolean;
+    isOnSearch: boolean;
     displayPublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
     readerOptionsProps: IReaderOptionsProps;
@@ -158,7 +160,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                 <ul>
 
                     {(this.props.mode === ReaderMode.Attached) ? (
-                        <li>
+                        <li className={classNames(styles.showInFullScreen)}>
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleReaderClose}
@@ -189,7 +191,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                     ) : (<></>)
                     }
 
-                    <ul className={styles.tts_toolbar}>
+                    <ul className={classNames(styles.tts_toolbar, styles.showInFullScreen)}>
                         {(this.props.publicationHasMediaOverlays &&
                             this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED ||
                             !this.props.publicationHasMediaOverlays &&
@@ -335,6 +337,11 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
 
                     <ul className={styles.menu_option}>
                         <li
+                            {...(this.props.isOnSearch && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                        >
+                            <HeaderSearch shortcutEnable={this.props.shortcutEnable}></HeaderSearch>
+                        </li>
+                        <li
                             {...(this.props.isOnBookmark &&
                                 { style: { backgroundColor: "rgb(193, 193, 193)" } })}
                         >
@@ -391,9 +398,9 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                         </li>
 
                         {this.props.fullscreen ?
-                            <li>
+                            <li className={classNames(styles.showInFullScreen)}>
                                 <button
-                                    className={styles.menu_button}
+                                    className={classNames(styles.menu_button)}
                                     onClick={this.props.handleFullscreenClick}
                                     ref={this.disableFullscreenRef}
                                 >
@@ -402,9 +409,9 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                 </button>
                             </li>
                             :
-                            <li className={styles.blue}>
+                            <li className={classNames(styles.showInFullScreen, styles.blue)}>
                                 <button
-                                    className={styles.menu_button}
+                                    className={classNames(styles.menu_button)}
                                     onClick={this.props.handleFullscreenClick}
                                     ref={this.enableFullscreenRef}
                                     aria-pressed={this.props.fullscreen}

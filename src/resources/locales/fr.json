@@ -231,6 +231,7 @@
             "delete": "Supprimer",
             "edit": "Éditer",
             "landmarks": "Repères",
+            "search": "",
             "toc": "Table des matières"
         },
         "media-overlays": {
@@ -255,10 +256,23 @@
             "goToPlaceHolder": "Entrer un numéro de page",
             "goToTitle": "Aller à la page",
             "infoTitle": "informations",
+            "magnifyingGlassButton": "recherche dans la publication",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quitter le mode plein écran",
             "readBookTitle": "lancer la lecture du livre",
             "settingsTitle": "préférences"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {

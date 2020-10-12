@@ -72,6 +72,7 @@ import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redu
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
+import PickerManager from "./picker/PickerManager";
 
 // import { isDeepStrictEqual } from "util";
 
@@ -116,6 +117,9 @@ interface IState {
 
     pdfPlayerBusEvent: IEventBusPdfPlayer;
     pdfPlayerToc: TToc;
+
+    openedSectionSettings: number | undefined;
+    openedSectionMenu: number | undefined;
 }
 
 // import { debounce } from "debounce";
@@ -191,6 +195,9 @@ class Reader extends React.Component<IProps, IState> {
 
             pdfPlayerBusEvent: undefined,
             pdfPlayerToc: undefined,
+
+            openedSectionSettings: undefined,
+            openedSectionMenu: undefined,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -215,6 +222,8 @@ class Reader extends React.Component<IProps, IState> {
         this.handleMediaOverlaysPrevious = this.handleMediaOverlaysPrevious.bind(this);
         this.handleMediaOverlaysNext = this.handleMediaOverlaysNext.bind(this);
         this.handleMediaOverlaysPlaybackRate = this.handleMediaOverlaysPlaybackRate.bind(this);
+
+        this.showSearchResults = this.showSearchResults.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -360,8 +369,10 @@ class Reader extends React.Component<IProps, IState> {
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
+            focusMainAreaLandmarkAndCloseMenu: this.focusMainAreaLandmarkAndCloseMenu.bind(this),
             pdfToc: this.state.pdfPlayerToc,
             isPdf: this.props.isPdf,
+            openedSection: this.state.openedSectionMenu,
         };
 
         const readerOptionsProps: IReaderOptionsProps = {
@@ -381,6 +392,7 @@ class Reader extends React.Component<IProps, IState> {
             isDivina: this.props.isDivina,
             isPdf: this.props.isPdf,
             pdfEventBus: this.state.pdfPlayerBusEvent,
+            openedSection: this.state.openedSectionSettings,
         };
 
         return (
@@ -404,6 +416,7 @@ class Reader extends React.Component<IProps, IState> {
                 />
                 <div className={styles.root}>
                     <ReaderHeader
+                        shortcutEnable={this.state.shortcutEnable}
                         infoOpen={this.props.infoOpen}
                         menuOpen={this.state.menuOpen}
                         settingsOpen={this.state.settingsOpen}
@@ -438,6 +451,7 @@ class Reader extends React.Component<IProps, IState> {
                         handleReaderClose={this.handleReaderClose}
                         toggleBookmark={() => this.handleToggleBookmark(false)}
                         isOnBookmark={this.state.visibleBookmarkList.length > 0}
+                        isOnSearch={this.props.searchEnable}
                         readerOptionsProps={readerOptionsProps}
                         readerMenuProps={readerMenuProps}
                         displayPublicationInfo={this.displayPublicationInfo}
@@ -448,6 +462,7 @@ class Reader extends React.Component<IProps, IState> {
                     />
                     <div className={classNames(styles.content_root,
                         this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
+                        <PickerManager showSearchResults={this.showSearchResults}></PickerManager>
                         <div className={styles.reader}>
                             <main
                                 id="main"
@@ -1096,11 +1111,16 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private handleMenuButtonClick() {
+    private showSearchResults() {
+        this.handleMenuButtonClick(4); // "search" in ReaderMenu.tsx
+    }
+
+    private handleMenuButtonClick(openedSectionMenu?: number | undefined) {
         this.setState({
             menuOpen: !this.state.menuOpen,
             shortcutEnable: this.state.menuOpen,
             settingsOpen: false,
+            openedSectionMenu,
         });
     }
 
@@ -1374,11 +1394,12 @@ class Reader extends React.Component<IProps, IState> {
         this.setState({ fullscreen: !this.state.fullscreen });
     }
 
-    private handleSettingsClick() {
+    private handleSettingsClick(openedSectionSettings?: number | undefined) {
         this.setState({
             settingsOpen: !this.state.settingsOpen,
             shortcutEnable: this.state.settingsOpen,
             menuOpen: false,
+            openedSectionSettings,
         });
     }
 
@@ -1599,6 +1620,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
             state.dialog.type === DialogTypeName.PublicationInfoReader,
         pubId: state.reader.info.publicationIdentifier,
         locator: state.reader.locator,
+        searchEnable: state.search.enable,
         manifestUrlR2Protocol: state.reader.info.manifestUrlR2Protocol,
         winId: state.win.identifier,
     };
@@ -1607,11 +1629,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
-            if (fullscreenOn) {
-                dispatch(readerActions.fullScreenRequest.build(true));
-            } else {
-                dispatch(readerActions.fullScreenRequest.build(false));
-            }
+                dispatch(readerActions.fullScreenRequest.build(fullscreenOn));
         },
         closeReader: () => {
             dispatch(readerActions.closeRequest.build());

@@ -231,6 +231,7 @@
             "delete": "Verwijder",
             "edit": "Wijzig",
             "landmarks": "structuur elementen",
+            "search": "",
             "toc": "Inhoudsopgave"
         },
         "media-overlays": {
@@ -255,10 +256,23 @@
             "goToPlaceHolder": "Voer een paginanummer in",
             "goToTitle": "Ga naar pagina",
             "infoTitle": "informatie",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navigatie",
             "quitFullscreenTitle": "verlaat volledig scherm modus",
             "readBookTitle": "begin met het lezen van het boek",
             "settingsTitle": "instellingen"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {

@@ -494,6 +494,7 @@ declare namespace typed_i18n {
     readonly "delete": string,
     readonly "edit": string,
     readonly "landmarks": string,
+    readonly "search": string,
     readonly "toc": string
   },
   readonly "media-overlays": {
@@ -518,10 +519,23 @@ declare namespace typed_i18n {
     readonly "goToPlaceHolder": string,
     readonly "goToTitle": string,
     readonly "infoTitle": string,
+    readonly "magnifyingGlassButton": string,
     readonly "openTableOfContentsTitle": string,
     readonly "quitFullscreenTitle": string,
     readonly "readBookTitle": string,
     readonly "settingsTitle": string
+  },
+  readonly "picker": {
+    readonly "annotationTitle": string,
+    readonly "search": {
+      readonly "founds": string,
+      readonly "input": string,
+      readonly "next": string,
+      readonly "notFound": string,
+      readonly "previous": string,
+      readonly "submit": string
+    },
+    readonly "searchTitle": string
   },
   readonly "settings": {
     readonly "column": {
@@ -594,6 +608,7 @@ declare namespace typed_i18n {
   readonly "delete": string,
   readonly "edit": string,
   readonly "landmarks": string,
+  readonly "search": string,
   readonly "toc": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
@@ -601,6 +616,7 @@ declare namespace typed_i18n {
   (_: "reader.marks.delete", __?: {}): string;
   (_: "reader.marks.edit", __?: {}): string;
   (_: "reader.marks.landmarks", __?: {}): string;
+  (_: "reader.marks.search", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.media-overlays", __?: {}): {
   readonly "activate": string,
@@ -634,6 +650,7 @@ declare namespace typed_i18n {
   readonly "goToPlaceHolder": string,
   readonly "goToTitle": string,
   readonly "infoTitle": string,
+  readonly "magnifyingGlassButton": string,
   readonly "openTableOfContentsTitle": string,
   readonly "quitFullscreenTitle": string,
   readonly "readBookTitle": string,
@@ -648,10 +665,39 @@ declare namespace typed_i18n {
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
   (_: "reader.navigation.goToTitle", __?: {}): string;
   (_: "reader.navigation.infoTitle", __?: {}): string;
+  (_: "reader.navigation.magnifyingGlassButton", __?: {}): string;
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;
   (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
+  (_: "reader.picker", __?: {}): {
+  readonly "annotationTitle": string,
+  readonly "search": {
+    readonly "founds": string,
+    readonly "input": string,
+    readonly "next": string,
+    readonly "notFound": string,
+    readonly "previous": string,
+    readonly "submit": string
+  },
+  readonly "searchTitle": string
+};
+  (_: "reader.picker.annotationTitle", __?: {}): string;
+  (_: "reader.picker.search", __?: {}): {
+  readonly "founds": string,
+  readonly "input": string,
+  readonly "next": string,
+  readonly "notFound": string,
+  readonly "previous": string,
+  readonly "submit": string
+};
+  (_: "reader.picker.search.founds", __?: {}): string;
+  (_: "reader.picker.search.input", __?: {}): string;
+  (_: "reader.picker.search.next", __?: {}): string;
+  (_: "reader.picker.search.notFound", __?: {}): string;
+  (_: "reader.picker.search.previous", __?: {}): string;
+  (_: "reader.picker.search.submit", __?: {}): string;
+  (_: "reader.picker.searchTitle", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,

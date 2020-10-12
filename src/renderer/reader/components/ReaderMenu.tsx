@@ -27,6 +27,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
 import { IReaderMenuProps } from "./options-values";
+import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
@@ -48,7 +49,6 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
-    openedSection: number;
     bookmarkToUpdate: number;
     pageError: boolean;
     refreshError: boolean;
@@ -65,7 +65,6 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         this.goToRef = React.createRef<HTMLInputElement>();
 
         this.state = {
-            openedSection: undefined,
             bookmarkToUpdate: undefined,
             pageError: false,
             refreshError: false,
@@ -143,6 +142,16 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 disabled: true,
             },
             {
+                title: __("reader.marks.search"),
+                content: this.props.searchEnable
+                    ? <ReaderMenuSearch
+                        focusMainAreaLandmarkAndCloseMenu={this.props.focusMainAreaLandmarkAndCloseMenu}
+                    ></ReaderMenuSearch>
+                    : <></>,
+                disabled: !this.props.searchEnable,
+                skipMaxHeight: true,
+            },
+            {
                 content: this.buildGoToPageSection(),
                 disabled: false,
                 notExtendable: true,
@@ -151,6 +160,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
         return (
             <SideMenu
+                openedSection={this.props.openedSection}
                 className={styles.chapters_settings}
                 listClassName={styles.chapter_settings_list}
                 open={this.props.open}
@@ -528,6 +538,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
     return {
         pubId: state.reader.info.publicationIdentifier,
+        searchEnable: state.search.enable,
         // isDivina,
     };
 };

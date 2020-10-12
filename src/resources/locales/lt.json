@@ -231,6 +231,7 @@
             "delete": "Šalinti",
             "edit": "Keisti",
             "landmarks": "Gairės",
+            "search": "",
             "toc": "Turinys"
         },
         "media-overlays": {
@@ -255,10 +256,23 @@
             "goToPlaceHolder": "Įveskite puslapio numerį",
             "goToTitle": "Eiti į puslapį",
             "infoTitle": "informacija",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "naršymas",
             "quitFullscreenTitle": "išjungti viso ekrano režimą",
             "readBookTitle": "pradėti skaityti knygą",
             "settingsTitle": "nuostatos"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {

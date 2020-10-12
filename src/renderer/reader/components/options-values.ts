@@ -113,8 +113,11 @@ export interface IReaderMenuProps {
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
     handleBookmarkClick: (locator: R2Locator) => void;
     toggleMenu: () => void;
+    focusMainAreaLandmarkAndCloseMenu: () => void;
     pdfToc: TToc;
     isPdf: boolean;
+
+    openedSection: number | undefined;
 }
 
 export type TdivinaReadingMode = "single" | "double" | "scroll" | "guided";
@@ -141,4 +144,6 @@ export interface IReaderOptionsProps {
     pdfEventBus: IEventBusPdfPlayer;
     isDivina: boolean;
     isPdf: boolean;
+
+    openedSection: number | undefined;
 }

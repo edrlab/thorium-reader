@@ -231,6 +231,7 @@
             "delete": "Delete",
             "edit": "Edit",
             "landmarks": "Landmarks",
+            "search": "Search",
             "toc": "Table of Contents"
         },
         "media-overlays": {
@@ -255,10 +256,23 @@
             "goToPlaceHolder": "Enter a page number",
             "goToTitle": "Go to page",
             "infoTitle": "information",
+            "magnifyingGlassButton": "search in publication",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
             "settingsTitle": "settings"
+        },
+        "picker": {
+            "annotationTitle": "Annotations:",
+            "search": {
+                "founds": "{{- nResults}} match(es)",
+                "input": "text to match",
+                "next": "Next",
+                "notFound": "no matches",
+                "previous": "Previous",
+                "submit": "Find"
+            },
+            "searchTitle": "Search:"
         },
         "settings": {
             "column": {
