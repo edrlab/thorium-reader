@@ -6,9 +6,15 @@
 // ==LICENSE-END
 
 import { ipcRenderer } from "electron";
-import { IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP } from "r2-navigator-js/dist/es6-es2015/src/electron/common/events";
+
+import {
+    IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP,
+} from "@r2-navigator-js/electron/common/events";
+
 import { eventBus } from "../common/eventBus";
-import { IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../common/pdfReader.type";
+import {
+    IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView,
+} from "../common/pdfReader.type";
 import { pdfReaderMountingPoint } from "./pdfReader";
 
 function main() {
