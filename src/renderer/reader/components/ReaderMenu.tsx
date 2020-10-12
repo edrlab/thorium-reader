@@ -49,7 +49,6 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
-    openedSection: number;
     bookmarkToUpdate: number;
     pageError: boolean;
     refreshError: boolean;
@@ -66,7 +65,6 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         this.goToRef = React.createRef<HTMLInputElement>();
 
         this.state = {
-            openedSection: undefined,
             bookmarkToUpdate: undefined,
             pageError: false,
             refreshError: false,
@@ -162,6 +160,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
         return (
             <SideMenu
+                openedSection={this.props.openedSection}
                 className={styles.chapters_settings}
                 listClassName={styles.chapter_settings_list}
                 open={this.props.open}

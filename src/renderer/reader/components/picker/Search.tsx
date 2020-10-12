@@ -22,6 +22,7 @@ import SearchFormPicker from "./SearchFormPicker";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
+    showSearchResults: () => void;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -97,14 +98,31 @@ class SearchPicker extends React.Component<IProps, IState> {
                     load &&
                     <LoaderSearch></LoaderSearch>
                 }
-                <span style={{
-                    fontSize: "0.9em",
-                    alignSelf: "center",
-                }} aria-live="polite">
-                    {
-                        this.loadSeq > 2 && found
-                    }
-                </span>
+                {
+                (this.loadSeq > 2 && found) &&
+                (
+                <button
+                    disabled={notFound}
+                    onClick={() => {
+                        this.props.showSearchResults();
+                    }}
+                    aria-label={__("reader.picker.search.next")}
+                    title={__("opds.next")}
+                    style={{
+                        width: "auto",
+                        padding: "4px",
+                        margin: 0,
+                        fontSize: "1em",
+                        color: notFound ? "grey" : "black",
+                        fill: notFound ? "grey" : "black",
+                    }}
+                >
+                    <span aria-live="polite">
+                        {found}
+                    </span>
+                </button>
+                )
+                }
             </div>
         );
 

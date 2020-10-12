@@ -44,54 +44,54 @@ class HeaderSearch extends React.Component<IProps, undefined> {
         this.enableSearch = this.enableSearch.bind(this);
     }
 
+    // public componentDidMount() {
+    //     ensureKeyboardListenerIsInstalled();
+    //     this.registerAllKeyboardListeners();
+    // }
+
+    // public componentWillUnmount() {
+    //     this.unregisterAllKeyboardListeners();
+    // }
+
+    // public async componentDidUpdate(oldProps: IProps) {
+    //     if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+    //         this.unregisterAllKeyboardListeners();
+    //         this.registerAllKeyboardListeners();
+    //     }
+    // }
+
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
-        this.registerAllKeyboardListeners();
-    }
+        if (!this.props.isOnSearch) {
 
-    public componentWillUnmount() {
-        this.unregisterAllKeyboardListeners();
-    }
-
-    public async componentDidUpdate(oldProps: IProps) {
-        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
-            this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
     }
 
-    // public componentDidMount() {
-    //     ensureKeyboardListenerIsInstalled();
-    //     if (!this.props.isOnSearch) {
+    public componentWillUnmount() {
 
-    //         this.registerAllKeyboardListeners();
-    //     }
-    // }
+        if (!this.props.isOnSearch) {
 
-    // public componentWillUnmount() {
+            this.unregisterAllKeyboardListeners();
+        }
+    }
 
-    //     if (!this.props.isOnSearch) {
+    public async componentDidUpdate(oldProps: IProps) {
+        if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch) {
+            this.unregisterAllKeyboardListeners();
+        } else if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch === false) {
+            this.registerAllKeyboardListeners();
+        }
 
-    //         this.unregisterAllKeyboardListeners();
-    //     }
-    // }
-
-    // public async componentDidUpdate(oldProps: IProps) {
-    //     if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch) {
-    //         this.unregisterAllKeyboardListeners();
-    //     } else if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch === false) {
-    //         this.registerAllKeyboardListeners();
-    //     }
-
-    //     // keyboard binding refresh
-    //     if (
-    //         !keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)
-    //         && !this.props.isOnSearch
-    //     ) {
-    //         this.unregisterAllKeyboardListeners();
-    //         this.registerAllKeyboardListeners();
-    //     }
-    // }
+        // keyboard binding refresh
+        if (
+            !keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)
+            && !this.props.isOnSearch
+        ) {
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
+        }
+    }
 
     public render() {
         const { __ } = this.props;

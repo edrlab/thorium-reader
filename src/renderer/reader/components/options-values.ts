@@ -116,6 +116,8 @@ export interface IReaderMenuProps {
     focusMainAreaLandmarkAndCloseMenu: () => void;
     pdfToc: TToc;
     isPdf: boolean;
+
+    openedSection: number | undefined;
 }
 
 export type TdivinaReadingMode = "single" | "double" | "scroll" | "guided";
@@ -142,4 +144,6 @@ export interface IReaderOptionsProps {
     pdfEventBus: IEventBusPdfPlayer;
     isDivina: boolean;
     isPdf: boolean;
+
+    openedSection: number | undefined;
 }

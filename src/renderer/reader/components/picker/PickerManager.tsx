@@ -22,6 +22,7 @@ import SearchPicker from "./Search";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
+    showSearchResults: () => void;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -127,7 +128,7 @@ class PickerManager extends React.Component<IProps, IState> {
                     {
 
                         type === "search"
-                            ? <SearchPicker></SearchPicker>
+                            ? <SearchPicker showSearchResults={this.props.showSearchResults}></SearchPicker>
                             : <AnnotationPicker></AnnotationPicker>
                     }
                 </>

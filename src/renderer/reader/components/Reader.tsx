@@ -117,6 +117,9 @@ interface IState {
 
     pdfPlayerBusEvent: IEventBusPdfPlayer;
     pdfPlayerToc: TToc;
+
+    openedSectionSettings: number | undefined;
+    openedSectionMenu: number | undefined;
 }
 
 // import { debounce } from "debounce";
@@ -192,6 +195,9 @@ class Reader extends React.Component<IProps, IState> {
 
             pdfPlayerBusEvent: undefined,
             pdfPlayerToc: undefined,
+
+            openedSectionSettings: undefined,
+            openedSectionMenu: undefined,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -216,6 +222,8 @@ class Reader extends React.Component<IProps, IState> {
         this.handleMediaOverlaysPrevious = this.handleMediaOverlaysPrevious.bind(this);
         this.handleMediaOverlaysNext = this.handleMediaOverlaysNext.bind(this);
         this.handleMediaOverlaysPlaybackRate = this.handleMediaOverlaysPlaybackRate.bind(this);
+
+        this.showSearchResults = this.showSearchResults.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -364,6 +372,7 @@ class Reader extends React.Component<IProps, IState> {
             focusMainAreaLandmarkAndCloseMenu: this.focusMainAreaLandmarkAndCloseMenu.bind(this),
             pdfToc: this.state.pdfPlayerToc,
             isPdf: this.props.isPdf,
+            openedSection: this.state.openedSectionMenu,
         };
 
         const readerOptionsProps: IReaderOptionsProps = {
@@ -383,6 +392,7 @@ class Reader extends React.Component<IProps, IState> {
             isDivina: this.props.isDivina,
             isPdf: this.props.isPdf,
             pdfEventBus: this.state.pdfPlayerBusEvent,
+            openedSection: this.state.openedSectionSettings,
         };
 
         return (
@@ -452,7 +462,7 @@ class Reader extends React.Component<IProps, IState> {
                     />
                     <div className={classNames(styles.content_root,
                         this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
-                        <PickerManager></PickerManager>
+                        <PickerManager showSearchResults={this.showSearchResults}></PickerManager>
                         <div className={styles.reader}>
                             <main
                                 id="main"
@@ -1101,11 +1111,16 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private handleMenuButtonClick() {
+    private showSearchResults() {
+        this.handleMenuButtonClick(4); // "search" in ReaderMenu.tsx
+    }
+
+    private handleMenuButtonClick(openedSectionMenu?: number | undefined) {
         this.setState({
             menuOpen: !this.state.menuOpen,
             shortcutEnable: this.state.menuOpen,
             settingsOpen: false,
+            openedSectionMenu,
         });
     }
 
@@ -1379,11 +1394,12 @@ class Reader extends React.Component<IProps, IState> {
         this.setState({ fullscreen: !this.state.fullscreen });
     }
 
-    private handleSettingsClick() {
+    private handleSettingsClick(openedSectionSettings?: number | undefined) {
         this.setState({
             settingsOpen: !this.state.settingsOpen,
             shortcutEnable: this.state.settingsOpen,
             menuOpen: false,
+            openedSectionSettings,
         });
     }
 
