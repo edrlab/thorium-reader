@@ -10,23 +10,28 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { URL } from "url";
+import { getStorePromiseFromProcessFile } from "./process";
 
 // Logger
 const debug = debug_("readium-desktop:main:cli:commandLine");
 
-function openReader(publicationView: PublicationView | PublicationView[]) {
+async function openReader(publicationView: PublicationView | PublicationView[]) {
     if (Array.isArray(publicationView)) {
         publicationView = publicationView[0];
     }
     if (publicationView) {
-        const store = diMainGet("store");
+        const store = await getStorePromiseFromProcessFile();
+        try {
+            store.dispatch(readerActions.openRequest.build(publicationView.identifier));
+        } catch (e) {
+            debug("open error", e);
+        }
         // 09/09/2020 : any thoughts on this ?
         // TODO
         // FIXME
         // Can't call readerActions.openRequest before appInit
         // check the flow to throw appInit and openReader consecutively
         // and need to exec main here before to call openReader
-        store.dispatch(readerActions.openRequest.build(publicationView.identifier));
         return true;
     }
     return false;
@@ -37,7 +42,7 @@ export async function openTitleFromCli(title: string) {
     const sagaMiddleware = diMainGet("saga-middleware");
     const pubApi = diMainGet("publication-api");
     const pubViews = await sagaMiddleware.run(pubApi.search, title).toPromise<PublicationView[]>();
-    return openReader(pubViews);
+    return await openReader(pubViews);
 }
 
 // used also in lock.ts on mac
@@ -46,7 +51,7 @@ export async function openFileFromCli(filePath: string): Promise<boolean> {
     const sagaMiddleware = diMainGet("saga-middleware");
     const pubApi = diMainGet("publication-api");
     const pubViews = await sagaMiddleware.run(pubApi.importFromFs, filePath).toPromise<PublicationView[]>();
-    return openReader(pubViews);
+    return await openReader(pubViews);
 }
 
 export async function cliImport(filePath: string[] | string) {
