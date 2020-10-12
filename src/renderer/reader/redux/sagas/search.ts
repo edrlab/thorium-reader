@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { handleLinkLocator } from "r2-navigator-js/dist/es6-es2015/src/electron/renderer";
 import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -17,6 +16,7 @@ import {
 } from "redux-saga/effects";
 
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
+import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions";

@@ -5,13 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IHighlight } from "r2-navigator-js/dist/es6-es2015/src/electron/common/highlight";
 import { zipWith } from "ramda";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { eventChannel, SagaIterator } from "redux-saga";
 import { put } from "redux-saga/effects";
 
+import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import {
     highlightsClickListen, highlightsCreate, highlightsRemove,
 } from "@r2-navigator-js/electron/renderer";
