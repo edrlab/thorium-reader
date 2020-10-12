@@ -106,8 +106,8 @@ class SearchPicker extends React.Component<IProps, IState> {
                     onClick={() => {
                         this.props.showSearchResults();
                     }}
-                    aria-label={__("reader.picker.search.next")}
-                    title={__("opds.next")}
+                    aria-label={found}
+                    title={found}
                     style={{
                         width: "auto",
                         padding: "4px",
