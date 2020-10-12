@@ -160,7 +160,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                 <ul>
 
                     {(this.props.mode === ReaderMode.Attached) ? (
-                        <li>
+                        <li className={classNames(styles.showInFullScreen)}>
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleReaderClose}
@@ -191,7 +191,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                     ) : (<></>)
                     }
 
-                    <ul className={styles.tts_toolbar}>
+                    <ul className={classNames(styles.tts_toolbar, styles.showInFullScreen)}>
                         {(this.props.publicationHasMediaOverlays &&
                             this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED ||
                             !this.props.publicationHasMediaOverlays &&
@@ -398,9 +398,9 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                         </li>
 
                         {this.props.fullscreen ?
-                            <li>
+                            <li className={classNames(styles.showInFullScreen)}>
                                 <button
-                                    className={styles.menu_button}
+                                    className={classNames(styles.menu_button)}
                                     onClick={this.props.handleFullscreenClick}
                                     ref={this.disableFullscreenRef}
                                 >
@@ -409,9 +409,9 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                 </button>
                             </li>
                             :
-                            <li className={styles.blue}>
+                            <li className={classNames(styles.showInFullScreen, styles.blue)}>
                                 <button
-                                    className={styles.menu_button}
+                                    className={classNames(styles.menu_button)}
                                     onClick={this.props.handleFullscreenClick}
                                     ref={this.enableFullscreenRef}
                                     aria-pressed={this.props.fullscreen}

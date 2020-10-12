@@ -515,14 +515,8 @@ button {
   }
 }
 .main_navigation_fullscreen {
-  & > ul > li:nth-child(1),
-  & > ul > li:nth-child(2),
-  & > ul > li:nth-child(3) {
-    display: none;
-  }
-  & > ul > ul:not(.tts_toolbar) > li:nth-child(1),
-  & > ul > ul:not(.tts_toolbar) > li:nth-child(2),
-  & > ul > ul:not(.tts_toolbar) > li:nth-child(3) {
+  & > ul:not(.showInFullScreen) > ul:not(.showInFullScreen) > li:not(.showInFullScreen),
+  & > ul:not(.showInFullScreen) > li:not(.showInFullScreen) {
     display: none;
   }
   & > ul > ul.tts_toolbar {
