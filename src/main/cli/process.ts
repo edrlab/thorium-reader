@@ -10,6 +10,7 @@ import { app, dialog } from "electron";
 import * as glob from "glob";
 import { EOL } from "os";
 import * as path from "path";
+import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
 import { lockInstance } from "readium-desktop/main/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
@@ -176,13 +177,13 @@ yargs
             }
         },
     )
-    .command("$0 [path]",
+    .command("$0 [path..]",
         "import and read an epub or lcpl file",
         (y) =>
             y.positional("path", {
                 describe: "path of your publication, it can be an absolute, relative path",
                 type: "string",
-                coerce: (arg) => path.resolve(arg),
+                coerce: (arg) => (Array.isArray(arg) ? arg : [arg]).map((a) => path.resolve(a)),
             })
                 .completion()
         ,
@@ -214,17 +215,23 @@ yargs
                     try {
                         await app.whenReady();
 
-                        try {
-                            if (!await openFileFromCli(argv.path)) {
-                                const errorMessage = `Import failed for the publication path : ${argv.path}`;
-                                throw new Error(errorMessage);
+                        const pathArray = Array.isArray(argv.path) ? (argv.path as string[]) : [argv.path];
+                        const promiseArray = pathArray.map(async (p) => {
+                            try {
+
+                                if (!await openFileFromCli(p)) {
+                                    const errorMessage = `Import failed for the publication path : ${p}`;
+                                    throw new Error(errorMessage);
+                                }
+                            } catch (e) {
+                                debug("$0 error :", e);
+                                const errorTitle = "Import Failed";
+                                dialog.showErrorBox(errorTitle, e.toString());
+                                process.stderr.write(e.toString() + EOL);
                             }
-                        } catch (e) {
-                            debug("$0 error :", e);
-                            const errorTitle = "Import Failed";
-                            dialog.showErrorBox(errorTitle, e.toString());
-                            process.stderr.write(e.toString() + EOL);
-                        }
+                        });
+
+                        await PromiseAllSettled(promiseArray);
 
                     } catch (_err) {
                         // ignore
