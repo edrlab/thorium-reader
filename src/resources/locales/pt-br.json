@@ -231,6 +231,7 @@
             "delete": "Apagar",
             "edit": "Editar",
             "landmarks": "Pontos de referência",
+            "search": "",
             "toc": "Índice"
         },
         "media-overlays": {
@@ -255,10 +256,23 @@
             "goToPlaceHolder": "Digite um número de página",
             "goToTitle": "Ir para a página",
             "infoTitle": "informação",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navegação",
             "quitFullscreenTitle": "sair do modo tela cheia",
             "readBookTitle": "Começar a ler o livro",
             "settingsTitle": "configurações"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {

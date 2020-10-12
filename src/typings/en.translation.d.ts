@@ -528,11 +528,10 @@ declare namespace typed_i18n {
   readonly "picker": {
     readonly "annotationTitle": string,
     readonly "search": {
-      readonly "found": string,
       readonly "founds": string,
-      readonly "notFound": string,
       readonly "input": string,
       readonly "next": string,
+      readonly "notFound": string,
       readonly "previous": string,
       readonly "submit": string
     },
@@ -674,11 +673,10 @@ declare namespace typed_i18n {
   (_: "reader.picker", __?: {}): {
   readonly "annotationTitle": string,
   readonly "search": {
-    readonly "found": string,
     readonly "founds": string,
-    readonly "notFound": string,
     readonly "input": string,
     readonly "next": string,
+    readonly "notFound": string,
     readonly "previous": string,
     readonly "submit": string
   },
@@ -686,18 +684,17 @@ declare namespace typed_i18n {
 };
   (_: "reader.picker.annotationTitle", __?: {}): string;
   (_: "reader.picker.search", __?: {}): {
-  readonly "found": string,
   readonly "founds": string,
-  readonly "notFound": string,
   readonly "input": string,
   readonly "next": string,
+  readonly "notFound": string,
   readonly "previous": string,
   readonly "submit": string
 };
   (_: "reader.picker.search.founds", __?: {}): string;
-  (_: "reader.picker.search.notFound", __?: {}): string;
   (_: "reader.picker.search.input", __?: {}): string;
   (_: "reader.picker.search.next", __?: {}): string;
+  (_: "reader.picker.search.notFound", __?: {}): string;
   (_: "reader.picker.search.previous", __?: {}): string;
   (_: "reader.picker.search.submit", __?: {}): string;
   (_: "reader.picker.searchTitle", __?: {}): string;

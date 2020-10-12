@@ -266,9 +266,9 @@
             "annotationTitle": "Annotations:",
             "search": {
                 "founds": "{{- nResults}} match(es)",
-                "notFound": "no matches",
                 "input": "text to match",
                 "next": "Next",
+                "notFound": "no matches",
                 "previous": "Previous",
                 "submit": "Find"
             },

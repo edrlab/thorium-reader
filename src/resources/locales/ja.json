@@ -231,6 +231,7 @@
             "delete": "削除",
             "edit": "編集",
             "landmarks": "構成",
+            "search": "",
             "toc": "目次"
         },
         "media-overlays": {
@@ -255,10 +256,23 @@
             "goToPlaceHolder": "移動先のページ番号",
             "goToTitle": "ページに移動",
             "infoTitle": "本の情報",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "ナビゲーション",
             "quitFullscreenTitle": "全画面表示の終了",
             "readBookTitle": "本を読み始める",
             "settingsTitle": "設定"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {

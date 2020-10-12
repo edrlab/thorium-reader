@@ -265,10 +265,10 @@
         "picker": {
             "annotationTitle": "",
             "search": {
-                "found": "",
                 "founds": "",
                 "input": "",
                 "next": "",
+                "notFound": "",
                 "previous": "",
                 "submit": ""
             },
