@@ -338,6 +338,7 @@
     "remote-redux-devtools": "^0.5.16",
     "rimraf": "^3.0.2",
     "svg-sprite-loader": "^5.0.0",
+    "terser-webpack-plugin": "^4.2.3",
     "ts-jest": "^24.3.0",
     "ts-loader": "^8.0.4",
     "tsconfig-paths": "^3.9.0",

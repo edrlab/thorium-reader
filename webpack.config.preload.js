@@ -1,3 +1,5 @@
+const TerserPlugin = require("terser-webpack-plugin");
+
 var fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
@@ -22,5 +24,27 @@ let config = Object.assign({}, {
         extensions: [".js"]
     }
 });
+
+config.optimization =
+{
+    ...(config.optimization || {}),
+    minimize: true,
+    minimizer: [
+        new TerserPlugin({
+            extractComments: false,
+            exclude: /MathJax/,
+            terserOptions: {
+                compress: false,
+                mangle: false,
+                output: {
+                    comments: false,
+                },
+            },
+        }),
+    ],
+};
+// {
+//     minimize: false,
+// };
 
 module.exports = config;

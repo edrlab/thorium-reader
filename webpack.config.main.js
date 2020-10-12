@@ -1,3 +1,5 @@
+const TerserPlugin = require("terser-webpack-plugin");
+
 const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -197,6 +199,31 @@ if (nodeEnv !== "production") {
 
     config.devtool = "source-map";
 } else {
+
+    config.optimization =
+    {
+        ...(config.optimization || {}),
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                exclude: /MathJax/,
+                terserOptions: {
+                    compress: false,
+                    mangle: false,
+                    output: {
+                        comments: false,
+                    },
+                    // node-fetch v2.x (fixed in 3.x https://github.com/node-fetch/node-fetch/pull/673 )
+                    // keep_fnames: /AbortSignal/,
+                },
+            }),
+        ],
+    };
+    // {
+    //     minimize: false,
+    // };
+
     config.plugins.push(
         new webpack.IgnorePlugin({
             resourceRegExp: /^electron-devtools-installer$/,
