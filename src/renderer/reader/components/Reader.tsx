@@ -806,6 +806,9 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardPageNavigationPreviousNext(true);
     }
     private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
+        if (this.props.isDivina) {
+            return;
+        }
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardPageNavigationPreviousNext)");
@@ -824,6 +827,9 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardSpineNavigationPreviousNext(true);
     }
     private onKeyboardSpineNavigationPreviousNext = (isPrevious: boolean) => {
+        if (this.props.isDivina) {
+            return;
+        }
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardSpineNavigationPreviousNext)");
