@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
-import { defaultRectangle } from "readium-desktop/common/rectangle/window";
+import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet, saveLibraryWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
@@ -33,6 +33,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     // initial state apply in reducers
     let windowBound = yield* selectTyped(
         (state: RootState) => state.win.session.library.windowBound);
+    windowBound = normalizeRectangle(windowBound);
     if (!windowBound) {
         windowBound = defaultRectangle();
     }

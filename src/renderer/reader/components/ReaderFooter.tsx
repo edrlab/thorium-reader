@@ -23,6 +23,7 @@ import {
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -34,6 +35,9 @@ interface IBaseProps extends TranslatorProps {
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
     isDivina: boolean;
+    divinaNumberOfPages: number;
+
+    isPdf: boolean;
 }
 
 // IProps may typically extend:
@@ -53,7 +57,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.state =  {
+        this.state = {
             moreInfo: false,
         };
 
@@ -61,7 +65,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { currentLocation, r2Publication, isDivina } = this.props;
+        const { currentLocation, r2Publication, isDivina, isPdf } = this.props;
+
+        // console.log(r2Publication, currentLocation);
 
         if (!r2Publication || !currentLocation) {
             return (<></>);
@@ -69,7 +75,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         const isAudioBook = isAudiobookFn(r2Publication);
 
-        const { __ } = this.props;
+        const { __ } = this.props;
         const { moreInfo } = this.state;
 
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
@@ -87,129 +93,149 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             <div className={classNames(styles.reader_footer,
                 this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}>
                 {!isAudioBook &&
-                <div className={styles.arrows}>
-                    <button onClick={() => this.props.navLeftOrRight(true)}>
-                        <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
-                    </button>
-                    <button onClick={() => this.props.navLeftOrRight(false)}>
-                        <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
-                    </button>
-                </div>
+                    <div className={styles.arrows}>
+                        <button onClick={() => this.props.navLeftOrRight(true)}>
+                            <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
+                        </button>
+                        <button onClick={() => this.props.navLeftOrRight(false)}>
+                            <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
+                        </button>
+                    </div>
                 }
                 {!this.props.fullscreen &&
-                <div className={classNames(styles.track_reading_wrapper,
-                    isAudioBook ? styles.track_reading_wrapper_noArrows : undefined)}>
+                    <div className={classNames(styles.track_reading_wrapper,
+                        isAudioBook ? styles.track_reading_wrapper_noArrows : undefined)}>
 
-                    { // <div id={styles.current}></div>
-                    <div id={styles.track_reading}>
-                        <div id={styles.chapters_markers}
-                            className={moreInfo ? styles.more_information : undefined}>
-                            { r2Publication.Spine.map((link, index) => {
+                        { // <div id={styles.current}></div>
+                            <div id={styles.track_reading}>
+                                <div id={styles.chapters_markers}
+                                    className={moreInfo ? styles.more_information : undefined}>
+                                    {
+                                        (isPdf
+                                            // tslint:disable-next-line: max-line-length
+                                            ? Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, i) => {
+                                                const link = new Link();
+                                                link.Href = i.toString();
+                                                return link;
+                                            })
+                                            : r2Publication.Spine
+                                        ).map((link, index) => {
 
-                                let atCurrentLocation = false;
-                                if (isDivina) {
-
-                                    atCurrentLocation = currentLocation.locator.href === index.toString();
-                                } else {
-
-                                    atCurrentLocation = currentLocation.locator.href === link.Href;
-                                }
-                                if (atCurrentLocation) {
-                                    afterCurrentLocation = true;
-                                }
-                                return (
-                                    <span
-                                        onClick={(e) => {
-
+                                            let atCurrentLocation = false;
                                             if (isDivina) {
-                                                const loc = {
-                                                    href: index.toString(),
-                                                    // progression generate in divina pagechange event
-                                                };
-                                                this.props.goToLocator(loc as any);
-
+                                                atCurrentLocation = currentLocation.locator?.href === index.toString();
                                             } else {
-
-                                                const el = e.nativeEvent.target as HTMLElement;
-                                                let left = el.offsetLeft;
-                                                if (!left) {
-                                                    left = 0;
-                                                }
-                                                let p = el.offsetParent as HTMLElement;
-                                                while (p) {
-                                                    const l = p.offsetLeft;
-                                                    left += (l ? l : 0);
-                                                    p = p.offsetParent as HTMLElement;
-                                                }
-                                                const deltaX = e.clientX - left;
-                                                let element = el;
-                                                let w: number | undefined;
-                                                while (element && element.classList) {
-                                                    if (element.classList.contains("progressChunkSpineItem")) {
-                                                        w = element.offsetWidth;
-                                                        break;
-                                                    }
-                                                    element = element.parentNode as HTMLElement;
-                                                }
-                                                if (!w) {
-                                                    w = element.offsetWidth;
-                                                }
-                                                const percent = deltaX / w;
-
-                                                const loc: R2Locator = {
-                                                    href: link.Href,
-                                                    locations: {
-                                                        progression: percent,
-                                                    },
-                                                };
-                                                this.props.goToLocator(loc);
-                                                // this.props.handleLinkClick(e, link.Href);
+                                                atCurrentLocation = currentLocation.locator?.href === link.Href;
                                             }
-                                        }}
-                                        key={index}
-                                        className={
-                                            classNames(
-                                                "progressChunkSpineItem",
-                                                atCurrentLocation ? styles.currentSpineItem : undefined)
-                                        }
-                                    >
-                                        {atCurrentLocation ? <span style={this.getProgressionStyle()}></span>
-                                            : !afterCurrentLocation && <span></span>}
-                                    </span>
-                                );
-                            })}
-                            </div>
-                            {moreInfo &&
-                                <div
-                                    id={styles.arrow_box}
-                                    style={this.getStyle(this.getArrowBoxStyle)}
-                                >
-                                    <span title={spineTitle}><em>{`(${
-                                        isDivina ?
-                                        (parseInt(currentLocation.locator.href, 10) + 1).toString() :
-                                        ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator.href)) + 1).toString()
-                                        }/${
-                                            r2Publication.Spine.length
-                                        }) `}</em> {` ${spineTitle}`}</span>
-                                    <p>
-                                { this.getProgression() }
-                            </p>
-                            <span
-                                style={this.getStyle(this.getArrowStyle)}
-                                className={styles.after}
-                            />
-                        </div>
-                        }
-                    </div>
-                    }
+                                            if (atCurrentLocation) {
+                                                afterCurrentLocation = true;
+                                            }
+                                            return (
+                                                <span
+                                                    onClick={(e) => {
 
-                    <span
-                        onClick={this.handleMoreInfoClick}
-                        id={styles.more_info_chapters}
-                    >
-                        {moreInfo ? __("reader.footerInfo.lessInfo") : __("reader.footerInfo.moreInfo")}
-                    </span>
-                </div>
+                                                        if (isDivina) {
+                                                            // const loc = {
+                                                            //     href: index.toString(),
+                                                            //     // progression generate in divina pagechange event
+                                                            // };
+                                                            // this.props.goToLocator(loc as any);
+                                                            if (link?.Href) {
+                                                                this.props.handleLinkClick(e, link.Href);
+                                                            }
+
+                                                        } else {
+
+                                                            const el = e.nativeEvent.target as HTMLElement;
+                                                            let left = el.offsetLeft;
+                                                            if (!left) {
+                                                                left = 0;
+                                                            }
+                                                            let p = el.offsetParent as HTMLElement;
+                                                            while (p) {
+                                                                const l = p.offsetLeft;
+                                                                left += (l ? l : 0);
+                                                                p = p.offsetParent as HTMLElement;
+                                                            }
+                                                            const deltaX = e.clientX - left;
+                                                            let element = el;
+                                                            let w: number | undefined;
+                                                            while (element && element.classList) {
+                                                                if (
+                                                                    // tslint:disable-next-line: max-line-length
+                                                                    element.classList.contains("progressChunkSpineItem")
+                                                                ) {
+                                                                    w = element.offsetWidth;
+                                                                    break;
+                                                                }
+                                                                element = element.parentNode as HTMLElement;
+                                                            }
+                                                            if (!w) {
+                                                                w = element.offsetWidth;
+                                                            }
+                                                            const percent = deltaX / w;
+
+                                                            const loc: R2Locator = {
+                                                                href: link.Href,
+                                                                locations: {
+                                                                    progression: percent,
+                                                                },
+                                                            };
+                                                            this.props.goToLocator(loc);
+                                                            // this.props.handleLinkClick(e, link.Href);
+                                                        }
+                                                    }}
+                                                    key={index}
+                                                    className={
+                                                        classNames(
+                                                            "progressChunkSpineItem",
+                                                            atCurrentLocation ? styles.currentSpineItem : undefined)
+                                                    }
+                                                >
+                                                    {
+                                                        atCurrentLocation
+                                                            ? <span style={this.getProgressionStyle()}></span>
+                                                            : !afterCurrentLocation && <span></span>
+                                                    }
+                                                </span>
+                                            );
+                                        })}
+                                </div>
+                                {moreInfo &&
+                                    <div
+                                        id={styles.arrow_box}
+                                        style={this.getStyle(this.getArrowBoxStyle)}
+                                    >
+                                        <span title={spineTitle}><em>{`(${(isDivina)
+                                            ? (parseInt(currentLocation.locator?.href, 10) + 1).toString()
+                                            : isPdf ?
+                                                parseInt(currentLocation.locator?.href, 10).toString()
+                                                :
+                                                ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
+                                            }/${isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
+                                            (isDivina
+                                            ? this.props.divinaNumberOfPages
+                                            : r2Publication.Spine.length)
+                                            }) `}</em> {` ${spineTitle}`}</span>
+                                        <p>
+                                            {this.getProgression()}
+                                        </p>
+                                        <span
+                                            style={this.getStyle(this.getArrowStyle)}
+                                            className={styles.after}
+                                        />
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        <span
+                            onClick={this.handleMoreInfoClick}
+                            id={styles.more_info_chapters}
+                        >
+                            {moreInfo ? __("reader.footerInfo.lessInfo") : __("reader.footerInfo.moreInfo")}
+                        </span>
+                    </div>
                 }
             </div>
         );
@@ -221,7 +247,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return {};
         }
 
-        let progression = currentLocation.locator.locations.progression;
+        let progression = currentLocation.locator.locations?.progression;
         if (progression >= 0.9) {
             progression = 1;
         }
@@ -231,17 +257,21 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     }
 
     private getArrowBoxPosition() {
-        const { currentLocation, r2Publication } = this.props;
+        const { currentLocation, r2Publication, isPdf } = this.props;
         if (!r2Publication || !currentLocation) {
             return undefined;
         }
 
         let spineItemId = 0;
         if (currentLocation) {
-            spineItemId = r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href);
+            if (isPdf) {
+                spineItemId = parseInt(currentLocation.locator?.href, 10) || 1;
+            } else {
+                spineItemId = r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator?.href);
+            }
         }
-        const onePourcent = 100 / r2Publication.Spine.length;
-        let progression = currentLocation.locator.locations.progression;
+        const onePourcent = 100 / (isPdf ? r2Publication.Metadata?.NumberOfPages || 1 : r2Publication.Spine?.length);
+        let progression = currentLocation.locator?.locations?.progression;
         if (progression >= 0.9) {
             progression = 1;
         }
@@ -255,7 +285,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return "";
         }
 
-        const percent = Math.round(currentLocation.locator.locations.progression * 100);
+        const percent = Math.round((currentLocation.locator.locations?.progression || 0) * 100);
 
         if (currentLocation.paginationInfo) {
             return `${percent}% (${currentLocation.paginationInfo.currentColumn + 1} / ${currentLocation.paginationInfo.totalColumns})`;

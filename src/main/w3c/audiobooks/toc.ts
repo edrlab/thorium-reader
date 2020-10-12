@@ -15,7 +15,8 @@
 
 import * as debug_ from "debug";
 import { JSDOM } from "jsdom";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import { w3cPublicationManifestToReadiumPublicationManifest } from "./converter";
 

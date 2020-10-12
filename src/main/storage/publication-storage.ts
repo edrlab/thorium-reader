@@ -122,6 +122,13 @@ export class PublicationStorage {
         if (fs.existsSync(pathDivina)) {
             return pathDivina;
         }
+        const pathLcpPdf = path.join(
+            root,
+            `book${acceptedExtensionObject.pdfLcp}`,
+        );
+        if (fs.existsSync(pathLcpPdf)) {
+            return pathLcpPdf;
+        }
         throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
@@ -156,6 +163,7 @@ export class PublicationStorage {
         const isAudioBookLcpAlt = new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
         const isWebpub = new RegExp(`\\${acceptedExtensionObject.webpub}$`).test(extension);
         const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`).test(extension);
+        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
 
         const ext = isAudioBook
             ? acceptedExtensionObject.audiobook
@@ -171,7 +179,11 @@ export class PublicationStorage {
                                     : (
                                         isWebpub
                                             ? acceptedExtensionObject.webpub
-                                            : acceptedExtensionObject.epub
+                                            : (
+                                                isLcpPdf
+                                                    ? acceptedExtensionObject.pdfLcp
+                                                    : acceptedExtensionObject.epub
+                                            )
                                     )
                             )
                     )
@@ -199,7 +211,9 @@ export class PublicationStorage {
                                         ? ContentType.DivinaPacked
                                         : isWebpub
                                             ? ContentType.webpubPacked
-                                            : ContentType.Epub
+                                            : isLcpPdf
+                                                ? ContentType.lcppdf
+                                                : ContentType.Epub
                             ),
                     size: getFileSize(dstPath),
                 });

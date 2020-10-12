@@ -1,4 +1,4 @@
-Informazioni su Thorium Reader 
+Informazioni su Thorium Reader
 =======================
 
 Importa e leggi ebook con il formato EPUB sul tuo computer windows 10/10S. Un'ottima esperienza di lettura; libreria locale con possibilità di ricerca ed aggiunta di tag personali; impostazioni di layout altamente personalizzabili, navigazione semplice con tabella dei cotenuti e lista delle pagine, barra di progresso della lettura, segnalibri con nomi, modalità "Zen".

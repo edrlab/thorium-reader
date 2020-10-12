@@ -58,9 +58,11 @@
             "continueReading": "Skaityti toliau",
             "continueReadingAudioBooks": "Klausyti toliau",
             "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Paskiausiai pridėtos",
             "lastAdditionsAudioBooks": "Paskiausiai pridėtos garsaknygės",
-            "lastAdditionsDivina": ""
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Eksportuoti",
         "lang": "Kalba",
@@ -279,6 +281,19 @@
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
             "paginated": "Skaidyti į puslapius",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "įrašyti",
                 "reset": "grįžti į pradinę būseną",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "Kairė",
             "right": "Dešinė"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "Aktyvuoti teksto įgarsinimą",

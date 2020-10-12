@@ -58,9 +58,11 @@
             "continueReading": "Ga door met lezen",
             "continueReadingAudioBooks": "Ga door met luisteren",
             "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Recent toegevoegd",
             "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken",
-            "lastAdditionsDivina": ""
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Exporteer",
         "lang": "Taal",
@@ -279,6 +281,19 @@
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
             "paginated": "Als pagina's",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "",
                 "reset": "",
@@ -300,6 +315,9 @@
         "svg": {
             "left": "Links",
             "right": "Rechts"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "",
