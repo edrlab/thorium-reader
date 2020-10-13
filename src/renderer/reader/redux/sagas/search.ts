@@ -154,14 +154,16 @@ function* requestPublicationData() {
         (state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol,
     );
     const request = r2Manifest.Spine.map((ln) => call(async () => {
-        let ret: ISearchDocument;
+        let ret: ISearchDocument = { href: ln.Href, xml: "" };
         try {
             const url = new URL(ln.Href, manifestUrlR2Protocol);
-            const urlStr = url.toString();
-            const res = await fetch(urlStr);
-            if (res.ok) {
-                const text = await res.text();
-                ret = { href: ln.Href, xml: text };
+            if (url.pathname.endsWith(".html") || url.pathname.endsWith(".xhtml")) {
+                const urlStr = url.toString();
+                const res = await fetch(urlStr);
+                if (res.ok) {
+                    const text = await res.text();
+                    ret = { href: ln.Href, xml: text };
+                }
             }
         } catch (e) {
             console.error("request", ln.Href, e);

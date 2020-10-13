@@ -11,6 +11,10 @@ import { searchDocDomSeek } from "./searchWithDomSeek";
 
 export async function search(searchInput: string, data: ISearchDocument): Promise<ISearchResult[]> {
 
+    if (!data.xml) {
+        return [];
+    }
+
     try {
 
         const xmlDom = (new DOMParser()).parseFromString(
