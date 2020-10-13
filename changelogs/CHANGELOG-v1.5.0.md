@@ -25,8 +25,18 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `v1.4.0`:
 https://github.com/edrlab/thorium-reader/compare/v1.4.0...v1.5.0
 
-=> **45** GitHub Pull Requests or high-level Git commits.
+=> **55** GitHub Pull Requests or high-level Git commits.
 
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4e740f2fbdc2eea8a7af47e057b1ebd45072e055) __chore(release):__ version bump back for CI builds
+* [(_)](https://github.com/edrlab/thorium-reader/commit/d8a637ad008845f97ebb27ed817b256330e68669) __fix:__ added XML in addition to XHTML and HTML in search document filters (EPUB2 and EPUB3 support) [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b2ca431c5d626413ce8488e6b34c90bdae2fccb2) __fix:__ CSS top toolbar in fullscreen for publications without audio playback UI buttons [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/980cc6ef8ab85b586916b3da1a10768509420261) __fix:__ text search limited to (X)HTML documents (ignore PDF, image, etc. spine items) [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/aff042d8e6c58bc4fcd22d32076b93c031d048e2) __fix(release):__ PDF.js shipped in pdf-extract lib is processed by WebPack and Web Worker is extracted as additional main.js file in electron-builder bundle [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b67ef457666a01d0f5fd4cbda0af35a98752be5d) __fix:__ typo in accessible label for search matches [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/f2d0a88a810dd6af32a81b2acd897371d84850c5) __fix:__ regression in PROD builds (DEV okay) due to node-fetch AbortSignal symbol name mangled by WebPack default minifier / code bundle compressor [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/254607d49a8182c420a82347dd4e543cc8d6bbdf) __chore(release):__ v1.5 bump [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/d2964d1525283661ca6fc15221d14fb236d68430) __chore(doc):__ updated list of supported GUI languages (localizations) in English readme [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/8c97d90207ce8e61647008ed6d510d576c9faccc) __chore(release):__ v1.5 changelog [skip ci]
 * [(_)](https://github.com/edrlab/thorium-reader/commit/1bc22e4ad804e9a580e117a1255c20e55f239188) __chore(NPM):__ package updates
 * [(_)](https://github.com/edrlab/thorium-reader/commit/4362797548e4153bfc602082df4007fb3ff70aee) __feat:__ in-publication text search, accessible paginated list of results + visual highlights with sequential navigation (PR [#1086](https://github.com/edrlab/thorium-reader/pull/1086) Fixes [#173](https://github.com/edrlab/thorium-reader/issues/173))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/e90a96cb1a7ef595467e973a5f6174944de5172d) __fix:__ Divina previous/left arrow keys hijacking (built-in pagination user interactions, keyboard, image touch, etc.)
