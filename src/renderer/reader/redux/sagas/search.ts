@@ -157,7 +157,7 @@ function* requestPublicationData() {
         let ret: ISearchDocument = { href: ln.Href, xml: "" };
         try {
             const url = new URL(ln.Href, manifestUrlR2Protocol);
-            if (url.pathname.endsWith(".html") || url.pathname.endsWith(".xhtml")) {
+            if (url.pathname.endsWith(".html") || url.pathname.endsWith(".xhtml") || url.pathname.endsWith(".xml")) {
                 const urlStr = url.toString();
                 const res = await fetch(urlStr);
                 if (res.ok) {
