@@ -506,7 +506,13 @@ button {
   }
 }
 
-.main_navigation_fullscreen,
+.main_navigation_fullscreen {
+  &:not(.hasTtsAudio) {
+    & > ul > ul.tts_toolbar {
+      display: none;
+    }
+  }
+}
 .main_navigation {
   &:not(.hasTtsAudio) {
     & > ul > ul.tts_toolbar > li {
