@@ -10,16 +10,17 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { URL } from "url";
+import { getStorePromiseFromProcessInit } from "./process";
 
 // Logger
 const debug = debug_("readium-desktop:main:cli:commandLine");
 
-function openReader(publicationView: PublicationView | PublicationView[]) {
+async function openReader(publicationView: PublicationView | PublicationView[]) {
     if (Array.isArray(publicationView)) {
         publicationView = publicationView[0];
     }
     if (publicationView) {
-        const store = diMainGet("store");
+        const store = await getStorePromiseFromProcessInit();
         // 09/09/2020 : any thoughts on this ?
         // TODO
         // FIXME
@@ -32,12 +33,13 @@ function openReader(publicationView: PublicationView | PublicationView[]) {
     return false;
 }
 
-export async function openTitleFromCli(title: string) {
+export async function openTitleFromCli(title: string): Promise<boolean> {
 
     const sagaMiddleware = diMainGet("saga-middleware");
     const pubApi = diMainGet("publication-api");
     const pubViews = await sagaMiddleware.run(pubApi.search, title).toPromise<PublicationView[]>();
-    return openReader(pubViews);
+    const state = await openReader(pubViews);
+    return state;
 }
 
 // used also in lock.ts on mac
@@ -46,7 +48,8 @@ export async function openFileFromCli(filePath: string): Promise<boolean> {
     const sagaMiddleware = diMainGet("saga-middleware");
     const pubApi = diMainGet("publication-api");
     const pubViews = await sagaMiddleware.run(pubApi.importFromFs, filePath).toPromise<PublicationView[]>();
-    return openReader(pubViews);
+    const state = await openReader(pubViews);
+    return state;
 }
 
 export async function cliImport(filePath: string[] | string) {

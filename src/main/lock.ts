@@ -7,13 +7,20 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
+import { writeFileSync } from "fs";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 
 import { openFileFromCli } from "./cli/commandLine";
 import { cli } from "./cli/process";
 
+import * as Path from "path";
+
 // Logger
 const debug = debug_("readium-desktop:main:lock");
+
+app.on("open-file", async (_event, filePath) => {
+    writeFileSync(Path.resolve(app.getPath("desktop"), "__openfile.txt"), Buffer.from(filePath));
+});
 
 export function lockInstance() {
     const gotTheLock = app.requestSingleInstanceLock();
@@ -28,6 +35,8 @@ export function lockInstance() {
             });
             app.on("open-file", async (event, filePath) => {
                 event.preventDefault();
+
+                writeFileSync(Path.resolve(app.getPath("desktop"), "__openfile__3.txt"), Buffer.from(filePath));
 
                 if (!await openFileFromCli(filePath)) {
                     debug(`the open-file event with ${filePath} return an error`);

@@ -42,6 +42,10 @@ let mainFct: ((
 
 let storePromise: Promise<Store<RootState>>;
 
+export const getStorePromiseFromProcessInit =
+    // tslint:disable-next-line: promise-function-async
+    () => storePromise;
+
 // yargs configuration
 yargs
     .scriptName(_APP_NAME)
