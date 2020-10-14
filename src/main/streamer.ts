@@ -114,6 +114,20 @@ const MATHJAX_URL_PATH = "math-jax";
 streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(mathJaxPath, staticOptions));
 const transformer = (_publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
 
+    const cssElectronMouseDrag =
+`
+<style type="text/css">
+*,
+*::after,
+*::before {
+    -webkit-user-drag: none !important;
+    -webkit-app-region: no-drag !important;
+}
+</style>
+`;
+
+    str = str.replace(/<\/head>/, `${cssElectronMouseDrag}</head>`);
+
     const store = diMainGet("store");
     // TODO
     // Same comment that above
