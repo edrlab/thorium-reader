@@ -6,13 +6,14 @@
 // ==LICENSE-END==
 
 import * as moment from "moment";
-import { OPDSAvailabilityEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-availability";
 import * as React from "react";
 import { IOPDSPropertiesView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+
+import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

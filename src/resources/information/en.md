@@ -12,7 +12,7 @@ tagging; highly customizable layout settings, easy navigation using the table of
 
 No ads. No private data going anywhere.
 
-The application is currently localized in four languages: English, French German and Spanish. More languages will come soon.
+The application is currently localized in several languages: English, French, German, Spanish, Portuguese, Italian, Lithuanian, Dutch, Japanese.
 
 Copyright 2019 European Digital Reading Lab. All rights reserved.
 Licensed to the Readium Foundation under one or more contributor license agreements.

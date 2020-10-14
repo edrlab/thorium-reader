@@ -5,35 +5,61 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
-import { LocatorType } from "readium-desktop/common/models/locator";
+import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { toastActions } from "readium-desktop/common/redux/actions";
 import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-import {
-    CatalogConfig, CatalogEntry, ConfigDocument,
-} from "readium-desktop/main/db/document/config";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+// import {
+//     CatalogConfig, CatalogEntry, ConfigDocument,
+// } from "readium-desktop/main/db/document/config";
+// import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { Store } from "redux";
 
-import { LocatorDocument } from "../db/document/locator";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+
+import { PublicationDocument } from "../db/document/publication";
+import { PublicationRepository } from "../db/repository/publication";
+import { diMainGet } from "../di";
+// import { publicationActions } from "../redux/actions";
+import { RootState } from "../redux/states";
 
 export const CATALOG_CONFIG_ID = "catalog";
+
+const NB_PUB = 10;
+
+// Logger
+const debug = debug_("readium-desktop:main:api:catalog");
+
+interface ICatalogReadedOrAdded {
+    readed: PublicationView[];
+    added: PublicationView[];
+}
+
+interface ICatalogCategories {
+    audio: ICatalogReadedOrAdded;
+    divina: ICatalogReadedOrAdded;
+    epub: ICatalogReadedOrAdded;
+    pdf: ICatalogReadedOrAdded;
+}
 
 @injectable()
 export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    @inject(diSymbolTable["config-repository"])
-    private readonly configRepository!: ConfigRepository<CatalogConfig>;
+    // @inject(diSymbolTable["config-repository"])
+    // private readonly configRepository!: ConfigRepository<CatalogConfig>;
 
-    @inject(diSymbolTable["locator-repository"])
-    private readonly locatorRepository!: LocatorRepository;
+    // @inject(diSymbolTable["locator-repository"])
+    // private readonly locatorRepository!: LocatorRepository;
 
     @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
@@ -41,160 +67,198 @@ export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
+
     public async get(): Promise<CatalogView> {
         const __ = this.translator.translate.bind(this.translator);
 
-        // Last read publicatons
-        const lastLocators = await this.locatorRepository.find(
-            {
-                selector: { locatorType: LocatorType.LastReadingLocation },
-                limit: 10,
-                sort: [ { updatedAt: "desc" } ],
+        const {
+            audio: {
+                readed: audiobookReaded,
+                added: audiobookAdded,
             },
-        );
-        const lastLocatorPublicationIdentifiers = lastLocators.map(
-            (locator: LocatorDocument) => locator.publicationIdentifier,
-        );
-        const lastReadPublicationViews = [];
-
-        for (const pubIdentifier of lastLocatorPublicationIdentifiers) {
-            let pubDoc = null;
-
-            try {
-                pubDoc = await this.publicationRepository.get(pubIdentifier);
-            } catch (error) {
-                // Document not found
-                continue;
-            }
-
-            lastReadPublicationViews.push(
-                this.publicationViewConverter.convertDocumentToView(pubDoc),
-            );
-        }
-
-        // Last added pubs not already on last read list
-        const lastAddedPublications = await this.publicationRepository.find({
-            limit: 10,
-            sort: [ { createdAt: "desc" } ],
-            selector: {},
-        });
-        const lastAddedPublicationViews: PublicationView[] = [];
-        for (const doc of lastAddedPublications) {
-            if (!lastReadPublicationViews.find((lastDoc) => lastDoc.identifier === doc.identifier)) {
-                lastAddedPublicationViews.push(this.publicationViewConverter.convertDocumentToView(doc));
-            }
-        }
-
-        const isAudiobook = (item: PublicationView) =>
-            item.RDFType && /http[s]?:\/\/schema\.org\/Audiobook$/.test(item.RDFType);
-
-        const lastAddedPublication = lastAddedPublicationViews.filter((item) => !isAudiobook(item));
-        const lastReadPublication = lastReadPublicationViews.filter((item) => !isAudiobook(item));
-        const lastAddedAudiobooks = lastAddedPublicationViews.filter(isAudiobook);
-        const lastReadAudiobooks = lastReadPublicationViews.filter(isAudiobook);
+            divina: {
+                readed: divinaReaded,
+                added: divinaAdded,
+            },
+            epub: {
+                readed: epubReaded,
+                added: epubAdded,
+            },
+            pdf: {
+                readed: pdfReaded,
+                added: pdfAdded,
+            },
+        } = await this.getPublicationView();
 
         // Dynamic entries
-        let entries: CatalogEntryView[] = [
+        const entries: CatalogEntryView[] = [
             {
                 title: __("catalog.entry.continueReading"),
-                totalCount: lastReadPublication.length,
-                publicationViews: lastReadPublication,
+                totalCount: epubReaded.length,
+                publicationViews: epubReaded,
             },
             {
                 title: __("catalog.entry.lastAdditions"),
-                totalCount: lastAddedPublication.length,
-                publicationViews: lastAddedPublication,
+                totalCount: epubAdded.length,
+                publicationViews: epubAdded,
             },
             {
                 title: __("catalog.entry.continueReadingAudioBooks"),
-                totalCount: lastReadAudiobooks.length,
-                publicationViews: lastReadAudiobooks,
+                totalCount: audiobookReaded.length,
+                publicationViews: audiobookReaded,
             },
             {
                 title: __("catalog.entry.lastAdditionsAudioBooks"),
-                totalCount: lastAddedAudiobooks.length,
-                publicationViews: lastAddedAudiobooks,
+                totalCount: audiobookAdded.length,
+                publicationViews: audiobookAdded,
+            },
+            {
+                title: __("catalog.entry.continueReadingDivina"),
+                totalCount: divinaReaded.length,
+                publicationViews: divinaReaded,
+            },
+            {
+                title: __("catalog.entry.lastAdditionsDivina"),
+                totalCount: divinaAdded.length,
+                publicationViews: divinaAdded,
+            },
+            {
+                title: __("catalog.entry.continueReadingPdf"),
+                totalCount: pdfReaded.length,
+                publicationViews: pdfReaded,
+            },
+            {
+                title: __("catalog.entry.lastAdditionsPdf"),
+                totalCount: pdfAdded.length,
+                publicationViews: pdfAdded,
             },
         ];
-
-        // Concat user entries
-        const userEntries = await this.getEntries();
-        entries = entries.concat(userEntries);
 
         return {
             entries,
         };
     }
 
-    public async addEntry(entryView: CatalogEntryView): Promise<CatalogEntryView[]> {
-        let entries: CatalogEntry[] = [];
+    private async getPublicationView() {
 
-        try {
-            const config = await this.configRepository.get(CATALOG_CONFIG_ID);
-            const catalog = config.value;
-            entries = catalog.entries;
-        } catch (error) {
-            // New configuration
-        }
+        const fillArrayPubView = (
+            array: PublicationView[],
+            doc: PublicationDocument | undefined,
+            filter: (view: PublicationView) => boolean,
+        ) => {
 
-        entries.push({
-            title: entryView.title,
-            tag: entryView.tag,
-        });
+            if (doc) {
+                if (array.length <= NB_PUB) {
+                    try {
+                        const view = this.publicationViewConverter.convertDocumentToView(doc);
+                        if (filter(view)) {
 
-        await this.configRepository.save({
-            identifier: CATALOG_CONFIG_ID,
-            value: { entries },
-        });
-        return this.getEntries();
-    }
+                            array.push(view);
+                        }
+                    } catch (e) {
+                        debug("Error in convertDocumentToView doc=", doc);
+                        this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc.title || ""));
 
-    /**
-     * Returns entries without pubs
-     */
-    public async getEntries(): Promise<CatalogEntryView[]> {
-        let config: ConfigDocument<CatalogConfig>;
-        try {
-            config = await this.configRepository.get(CATALOG_CONFIG_ID);
-        } catch (error) {
-            return [];
-        }
+                        debug(`${doc.identifier} => ${doc.title} should be removed`);
+                        try {
+                            // tslint:disable-next-line: no-floating-promises
+                            // this.publicationService.deletePublication(doc.identifier);
+                            const sagaMiddleware = diMainGet("saga-middleware");
+                            const pubApi = diMainGet("publication-api");
+                            // tslint:disable-next-line: no-floating-promises
+                            sagaMiddleware.run(pubApi.delete, doc.identifier).toPromise();
+                        } catch {
+                            // ignore
+                        }
+                    }
+                }
+            }
+        };
 
-        const catalog = config.value;
-        const entryViews: CatalogEntryView[] = [];
+        const fillPubView = (
+            doc: PublicationDocument | undefined,
+            key: keyof ICatalogReadedOrAdded,
+            obj: ICatalogCategories,
+        ) => {
 
-        for (const entry of catalog.entries) {
-            const publicationDocuments = await this.publicationRepository.findByTag(entry.tag);
-            const publicationViews = publicationDocuments.map((doc) => {
-                return this.publicationViewConverter.convertDocumentToView(doc);
-            });
-            entryViews.push(
-                {
-                    title: entry.title,
-                    tag: entry.tag,
-                    publicationViews,
-                    totalCount: publicationViews.length,
+            fillArrayPubView(obj.audio[key], doc, isAudiobookFn);
+            fillArrayPubView(obj.divina[key], doc, isDivinaFn);
+            fillArrayPubView(obj.pdf[key], doc,
+                (view: PublicationView) => {
+                    const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+                    const r2PublicationJson = JSON.parse(r2PublicationStr);
+                    const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+                    return isPdfFn(r2Publication);
                 },
             );
-        }
+            fillArrayPubView(obj.epub[key], doc,
+                (view: PublicationView) => {
+                    const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+                    const r2PublicationJson = JSON.parse(r2PublicationStr);
+                    const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+                    return !isAudiobookFn(view) && !isDivinaFn(view) && !isPdfFn(r2Publication);
+                },
+            );
 
-        return entryViews;
+        };
+
+        const lastAddedPublicationsDocument = await this.getLastAddedPublicationDocument();
+
+        const lastAddedPublicationsDocumentArray = lastAddedPublicationsDocument.map(
+            (doc) => this.getLastReadingPublicationId().includes(doc.identifier)
+                ? [doc, undefined]
+                : [undefined, doc],
+        );
+
+        return lastAddedPublicationsDocumentArray.reduce<ICatalogCategories>(
+            (pv, cv) => {
+
+                const [docInReadingQueue, docFreshlyAdded] = cv;
+
+                fillPubView(docInReadingQueue, "readed", pv);
+                fillPubView(docFreshlyAdded, "added", pv);
+
+                return pv;
+            },
+            {
+                audio: {
+                    readed: [],
+                    added: [],
+                },
+                divina: {
+                    readed: [],
+                    added: [],
+                },
+                epub: {
+                    readed: [],
+                    added: [],
+                },
+                pdf: {
+                    readed: [],
+                    added: [],
+                },
+            },
+        );
+
     }
 
-    public async updateEntries(entryViews: CatalogEntryView[]): Promise<CatalogEntryView[]> {
-        const entries = entryViews.map((view) => {
-            return {
-                title: view.title,
-                tag: view.tag,
-            };
+    private async getLastAddedPublicationDocument() {
+
+        const lastAddedPublications = await this.publicationRepository.find({
+            sort: [{ createdAt: "desc" }],
+            selector: {},
         });
-        const catalogConfig: CatalogConfig = {
-            entries,
-        };
-        await this.configRepository.save({
-            identifier: CATALOG_CONFIG_ID,
-            value: catalogConfig,
-        });
-        return this.getEntries();
+
+        return lastAddedPublications;
+    }
+
+    private getLastReadingPublicationId(): string[] {
+
+        const lastReading = this.store.getState().publication.lastReadingQueue;
+        const pubIdArray = lastReading.map(([, pubId]) => pubId);
+
+        return pubIdArray;
     }
 }

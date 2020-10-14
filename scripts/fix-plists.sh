@@ -105,3 +105,5 @@ open ./release/mas/Thorium.app
 
 sudo installer -store -pkg ./release/mas/Thorium.pkg -target /
 open /Applications/Thorium.app
+
+codesign --deep --force --verbose --sign - ./release/mas/Thorium.app

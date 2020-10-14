@@ -1,0 +1,36 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
+import { winActions } from "readium-desktop/main/redux/actions";
+import { IDictWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
+
+const initialState: IDictWinRegistryReaderState = {};
+
+export function winRegistryReaderReducer(
+    state: IDictWinRegistryReaderState = initialState,
+    action: winActions.registry.registerReaderPublication.TAction,
+): IDictWinRegistryReaderState {
+    switch (action.type) {
+
+        case winActions.registry.registerReaderPublication.ID:
+            return {
+                ...state,
+                ...{
+                    [action.payload.publicationIdentifier]: {
+                        ...state[action.payload.publicationIdentifier],
+                        ...{
+                            windowBound: action.payload.bound,
+                            reduxState: action.payload.reduxStateReader,
+                        },
+                    },
+                },
+            };
+
+        default:
+            return state;
+    }
+}

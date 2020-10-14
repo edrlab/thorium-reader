@@ -5,38 +5,62 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { i18nActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
-import { all, call, takeEvery } from "redux-saga/effects";
+import { error } from "readium-desktop/main/error";
+import { all, call } from "redux-saga/effects";
+
+// Logger
+const filename_ = "readium-desktop:main:saga:i18n";
+const debug = debug_(filename_);
+debug("_");
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
-    const translator = diMainGet("translator");
-    const configRepository: ConfigRepository<LocaleConfigValueType> = diMainGet("config-repository");
 
-    const configRepositorySave = async () =>
-        await configRepository.save({
-            identifier: LocaleConfigIdentifier,
-            value: {
-                locale: action.payload.locale,
-            },
-        });
-    const translatorSetLocale = async () =>
-        await translator.setLocale(action.payload.locale);
+    debug("$$$$$");
+    debug("i18n setLocale called", action.payload);
+    debug("$$$$$");
 
-    yield all([
-        call(configRepositorySave),
-        call(translatorSetLocale),
-    ]);
+    const langKey = Object.keys(AvailableLanguages);
+    if (langKey.includes(action.payload.locale)) {
+
+        const translator = yield* callTyped(() => diMainGet("translator"));
+        const configRepository: ConfigRepository<LocaleConfigValueType> = yield call(
+            () => diMainGet("config-repository"),
+        );
+
+        const configRepositorySave = () =>
+            configRepository.save({
+                identifier: LocaleConfigIdentifier,
+                value: {
+                    locale: action.payload.locale,
+                },
+            });
+
+        const translatorSetLocale = () =>
+            translator.setLocale(action.payload.locale);
+
+        yield all([
+            call(configRepositorySave),
+            call(translatorSetLocale),
+        ]);
+
+    } else {
+        debug("locale not defined!");
+    }
 }
 
-function* localeWatcher() {
-    yield takeEvery(i18nActions.setLocale.build, setLocale);
-}
+export function saga() {
 
-export function* watchers() {
-    yield all([
-        call(localeWatcher),
-    ]);
+    return takeSpawnLeading(
+        i18nActions.setLocale.ID,
+        setLocale,
+        (e) => error(filename_, e),
+    );
 }

@@ -8,6 +8,7 @@
     "promise-function-async": true,
     "await-promise": true,
     "no-unused-expression": true,
+    "indent": [true, "spaces", 4],
     "variable-name": [
       true,
       "ban-keywords",

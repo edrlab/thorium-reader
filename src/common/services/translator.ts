@@ -11,13 +11,23 @@ import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as esCatalog from "readium-desktop/resources/locales/es.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
+import * as itCatalog from "readium-desktop/resources/locales/it.json";
+import * as jaCatalog from "readium-desktop/resources/locales/ja.json";
+import * as ltCatalog from "readium-desktop/resources/locales/lt.json";
 import * as nlCatalog from "readium-desktop/resources/locales/nl.json";
+import * as ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
+import * as ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
 
 import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
 import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
 import * as esLang from "readium-desktop/resources/locale-names/esLang.json";
 import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
+import * as itLang from "readium-desktop/resources/locale-names/itLang.json";
+import * as jaLang from "readium-desktop/resources/locale-names/jaLang.json";
+import * as ltLang from "readium-desktop/resources/locale-names/ltLang.json";
 import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
+import * as ptBrLang from "readium-desktop/resources/locale-names/ptBrLang.json";
+import * as ptPtLang from "readium-desktop/resources/locale-names/ptPtLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
 
 // -----------------------------------------------------------
@@ -75,20 +85,35 @@ if (i18next.createInstance) {
 i18nextInstance.init({
     debug: false,
     resources: {
-        en: {
+        "en": {
             translation: enCatalog,
         },
-        fr: {
+        "fr": {
             translation: frCatalog,
         },
-        de: {
+        "de": {
             translation: deCatalog,
         },
-        es: {
+        "es": {
             translation: esCatalog,
         },
-        nl: {
+        "nl": {
             translation: nlCatalog,
+        },
+        "ja": {
+            translation: jaCatalog,
+        },
+        "lt": {
+            translation: ltCatalog,
+        },
+        "pt-BR": {
+            translation: ptBrCatalog,
+        },
+        "pt-PT": {
+            translation: ptPtCatalog,
+        },
+        "it" : {
+            translation: itCatalog,
         },
     },
     // lng: undefined,
@@ -116,6 +141,11 @@ i18nextInstance.addResourceBundle("fr", "translation", frLang, true);
 i18nextInstance.addResourceBundle("de", "translation", deLang, true);
 i18nextInstance.addResourceBundle("es", "translation", esLang, true);
 i18nextInstance.addResourceBundle("nl", "translation", nlLang, true);
+i18nextInstance.addResourceBundle("ja", "translation", jaLang, true);
+i18nextInstance.addResourceBundle("lt", "translation", ltLang, true);
+i18nextInstance.addResourceBundle("pt-BR", "translation", ptBrLang, true);
+i18nextInstance.addResourceBundle("pt-PT", "translation", ptPtLang, true);
+i18nextInstance.addResourceBundle("it", "translation", itLang, true);
 
 const i18nextInstanceEN = i18nextInstance.cloneInstance();
 i18nextInstanceEN.changeLanguage("en").then((_t) => {
@@ -128,11 +158,16 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 // src/utils/object-keys-values.ts
 // to benefit from compile-type TypeScript typesafe key enum
 export const AvailableLanguages = {
-    en: "English",
-    fr: "Français",
-    de: "Deutsch",
-    es: "Español",
-    nl: "Dutch",
+    "en": "English",
+    "fr": "Français",
+    "de": "Deutsch",
+    "es": "Español",
+    "nl": "Dutch",
+    "ja": "日本語",
+    "lt": "Lietuvių",
+    "pt-BR": "Português Brasileiro",
+    "pt-PT": "Português",
+    "it": "Italiano",
 };
 
 interface LocalizedContent {
@@ -162,6 +197,7 @@ export class Translator {
                 i18nextInstance.changeLanguage(this.locale).then((_t) => {
                     resolve();
                 }).catch((err) => {
+                    console.log(err);
                     reject(err);
                 });
             } else {

@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BrowserWindow } from "electron";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
-import { Identifiable } from "./identifiable";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 export enum ReaderMode {
     Attached = "attached",
@@ -17,12 +17,13 @@ export enum ReaderMode {
 /**
  *  A reader
  */
-export interface Reader extends Identifiable {
+export interface ReaderInfo {
     filesystemPath: string;
-    manifestUrl: string;
+    manifestUrlHttp: string;
+    manifestUrlR2Protocol: string;
     publicationIdentifier: string;
-    browserWindow: BrowserWindow;
-    browserWindowID: number;
+    r2Publication: R2Publication;
+    publicationView: PublicationView;
 }
 
 /**
@@ -57,6 +58,9 @@ export interface ReaderConfigBooleans {
     enableMathJax: boolean;
     noFootnotes: boolean;
     darken: boolean;
+    mediaOverlaysEnableSkippability: boolean;
+    mediaOverlaysEnableCaptionsMode: boolean;
+    ttsEnableOverlayMode: boolean;
 }
 
 export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans {

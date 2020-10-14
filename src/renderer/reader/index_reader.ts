@@ -11,20 +11,17 @@ import "react-dropdown/style.css";
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { EventPayload } from "readium-desktop/common/ipc/sync";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { readerIpc } from "readium-desktop/common/ipc";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { actionSerializer } from "readium-desktop/renderer/common/actionSerializer";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { diReaderGet } from "readium-desktop/renderer/reader/di";
+import { createStoreFromDi } from "readium-desktop/renderer/reader/di";
 
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
-
-// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 let devTron: any;
 let axe: any;
@@ -40,43 +37,37 @@ initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
 initGlobalConverters_GENERIC();
 
-// console.log(__dirname);
-// console.log((global as any).__dirname);
-// const lcpNativePluginPath = path.normalize(path.join((global as any).__dirname, "external-assets", "lcp.node"));
-// setLcpNativePluginPath(lcpNativePluginPath);
-
 if (IS_DEV) {
     setTimeout(() => {
         devTron.install();
     }, 5000);
 }
 
-ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
-    switch (data.type) {
-        case winIpc.EventType.IdResponse:
-            // Initialize window
-            const store = diReaderGet("store");
-            store.dispatch(winActions.initRequest.build(data.payload.winId));
-            break;
-    }
-});
+ipcRenderer.on(readerIpc.CHANNEL,
+    (_0: any, data: readerIpc.EventPayload) => {
+        switch (data.type) {
+            case readerIpc.EventType.request:
+                // Initialize window
 
-// Request main process for a new id
-ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: EventPayload) => {
-    switch (data.type) {
-        case syncIpc.EventType.MainAction:
-            // Dispatch main action to renderer reducers
-            const store = diReaderGet("store");
-            store.dispatch(Object.assign(
-                {},
-                actionSerializer.deserialize(data.payload.action),
-                {
-                    sender: data.sender,
-                },
-            ) as ActionWithSender);
-            break;
-    }
-});
+                // create an instance of r2Publication
+                const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf-8");
+                const r2PublicationJson = JSON.parse(r2PublicationStr);
+                const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+
+                data.payload.reader.info.r2Publication = r2Publication;
+
+                createStoreFromDi(data.payload)
+                    .then(
+                        (store) =>
+                            store.dispatch(winActions.initRequest.build(data.payload.win.identifier)),
+                    )
+                    .catch((e) => e);
+                // TODO display error ?
+                // // starting the ipc sync with redux
+                // ipcRenderer.on(syncIpc.CHANNEL, ipcSyncHandler);
+                break;
+        }
+    });
 
 if (IS_DEV) {
     ipcRenderer.once("AXE_A11Y", () => {

@@ -8,9 +8,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
+import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
-import { ICommonRootState } from "readium-desktop/renderer/common/redux/states";
 import { v4 as uuidv4 } from "uuid";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";

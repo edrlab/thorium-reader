@@ -4,7 +4,20 @@ Thorium Reader is an easy to use EPUB reading application for Windows 10/10S, Ma
 
 Free application. No ads. No private data flowing anywhere.
 
-This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit. It is currently localized in three languages: English, French and German. More languages will come soon.
+This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit.
+
+It is currently localized in following languages:
+- English
+- French
+- German
+- Dutch
+- Spanish
+- Japanese
+- Lithuanian
+- Portuguese
+- Italian
+
+More languages will come soon.
 
 ![library](img/library.png)
 ![publicqtion info](img/info.png)
@@ -28,7 +41,7 @@ In readium-desktop project
 
 ### Install readium-desktop dependencies
 
-1) `npm install` (initialize local `node_modules` packages from dependencies declared in `package.json`)
+1) `npm install` (or `npm ci`): initialize local `node_modules` packages from dependencies declared in `package.json`
 
 ### Start application in dev environment
 
@@ -36,9 +49,7 @@ In readium-desktop project
 
 ### Start application in production environment
 
-Before calling `npm start` (or `npm run start`), you must invoke the `npm run __postinstall` command (just once, so that the native libraries get build specifically for the Electron/NodeJS runtime).
-
-1) `npm start`
+1) `npm start` (or `npm run start`)
 
 ## Lint
 
@@ -56,7 +67,7 @@ your renderer view.
 
 To package, create an installer for the application:
 
-1) `npm run package`
+1) `npm run package:win` or `npm run package:mac` or `npm run package:linux`
 
 ## Useful commands
 

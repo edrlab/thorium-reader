@@ -1,6 +1,6 @@
 import {
     w3cPublicationManifestToReadiumPublicationManifest,
-} from "readium-desktop/main/lpfConverter";
+} from "readium-desktop/main/w3c/audiobooks/converter";
 
 import { initGlobalConverters_GENERIC } from "@r2-shared-js/init-globals";
 

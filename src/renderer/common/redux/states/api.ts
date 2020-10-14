@@ -7,7 +7,7 @@
 
 import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
 import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
-import { CodeError } from "readium-desktop/common/errors";
+import { CodeError } from "readium-desktop/common/codeError.class";
 
 // FIXME what is the purpose of this interface ?
 // interface PageState<T> {

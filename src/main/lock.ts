@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import { diMainGet } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 
 import { openFileFromCli } from "./cli/commandLine";
 import { cli } from "./cli/process";
@@ -43,21 +43,22 @@ export function lockInstance() {
             // Someone tried to run a second instance, we should focus our window.
             debug("comandLine", argv, _workingDir);
 
-            const winRegistry = diMainGet("win-registry");
-            const libraryAppWindow = winRegistry.getLibraryWindow();
+            const libraryAppWindow = getLibraryWindowFromDi();
             if (libraryAppWindow) {
-                if (libraryAppWindow.browserWindow.isMinimized()) {
-                    libraryAppWindow.browserWindow.restore();
+                if (libraryAppWindow.isMinimized()) {
+                    libraryAppWindow.restore();
                 }
-                libraryAppWindow.browserWindow.show(); // focuses as well
+                libraryAppWindow.show(); // focuses as well
             }
 
+            const store = diMainGet("store");
             // execute command line from second instance
             // when the command line doesn't used electron: execute and exit in second instance process
             // when the command has needed to open win electron: execute with below cli function
             // the mainFct is disallow to avoid to generate new mainWindow
             // remove --version and --help because isn't handle in ready state app
-            cli(() => ({}), argv.filter((arg) => !arg.startsWith("--")));
+            // tslint:disable-next-line: no-empty
+            cli(store, () => {}, argv.filter((arg) => !arg.startsWith("--")));
         });
     }
     return gotTheLock;

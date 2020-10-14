@@ -10,11 +10,11 @@ import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
 import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/common/redux/states/api";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
+import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 
-import { ICommonRootState } from "../states";
+import { ICommonRootState } from "../../../../common/redux/states/renderer/commonRootState";
 
 export function apiDispatch(dispatch: Dispatch) {
     return (requestId: string = uuidv4()) =>
@@ -30,7 +30,7 @@ export function apiDispatch(dispatch: Dispatch) {
 
 export function apiState(state: ICommonRootState) {
     return (requestId: string) =>
-        <T extends TApiMethodName>(_apiPath: T): ApiResponse<ReturnPromiseType<TApiMethod[T]>> =>
+        <T extends TApiMethodName>(_apiPath: T): ApiResponse<TReturnPromiseOrGeneratorType<TApiMethod[T]>> =>
             state.api[requestId];
 }
 

@@ -5,63 +5,61 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { importActions, toastActions } from "readium-desktop/common/redux/actions";
-import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
-import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { all, call, put } from "redux-saga/effects";
-
-import { Download } from "../states/download";
+import { all, put } from "redux-saga/effects";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 
-// FIXME : a lot of Downoload interface (ex: state and model)
-const findDownload = (dls: Download[], link: IOpdsLinkView) =>
-    dls.find(
-        (dl) => dl.url === link.url,
-    );
+// Logger
+const filename_ = "readium-desktop:renderer:redux:saga:same-file-import";
+const debug = debug_(filename_);
 
-function* sameFileImportWatcher() {
-    while (true) {
-        const action = yield* takeTyped(importActions.verify.build);
+function* sameFileImport(action: importActions.verify.TAction) {
 
-        const { link, title, r2OpdsPublicationBase64 } = action.payload;
+    const { link, pub } = action.payload;
 
-        const downloads = yield* selectTyped(
-            (state: ILibraryRootState) => state.download?.downloads);
+    const downloads = yield* selectTyped(
+        (state: ILibraryRootState) => state.download);
 
-        if (Array.isArray(downloads)
-            && findDownload(downloads, link)) {
+    if (Array.isArray(downloads)
+        && downloads.map(([{ downloadUrl }]) => downloadUrl).find((ln) => ln === link.url)) {
 
-            const translator = diLibraryGet("translator");
+        const translator = diLibraryGet("translator");
 
-            yield put(
-                toastActions.openRequest.build(
-                    ToastType.Success,
-                    translator.translate("message.import.alreadyImport",
-                        {
-                            title: title || "",
-                        },
-                    ),
+        yield put(
+            toastActions.openRequest.build(
+                ToastType.Success,
+                translator.translate("message.import.alreadyImport",
+                    {
+                        title: pub.title || "",
+                    },
                 ),
-            );
+            ),
+        );
 
-        } else {
+    } else {
 
-            yield* apiSaga("publication/importOpdsPublicationLink",
-                REQUEST_ID,
-                link,
-                r2OpdsPublicationBase64,
-            );
-        }
+        yield apiSaga("publication/importFromLink",
+            REQUEST_ID,
+            link,
+            pub,
+        );
     }
 }
 
-export function* watchers() {
-    yield all([
-        call(sameFileImportWatcher),
+export function saga() {
+    return all([
+        takeSpawnLeading(
+            importActions.verify.ID,
+            sameFileImport,
+            (e) => debug(e),
+        ),
     ]);
 }

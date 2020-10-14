@@ -63,7 +63,9 @@ const userFilePath = path.join(
 );
 
 function showFolder() {
-    shell.openItem(folderPath);
+    setTimeout(async () => {
+        await shell.openPath(folderPath);
+    }, 0);
 }
 function showDefaultFile() {
     shell.showItemInFolder(defaultsFilePath);
@@ -157,7 +159,7 @@ function init() {
         fs.writeFileSync(userFilePath, txt, { encoding: "utf8" });
     } else {
         const okay = loadUser();
-        debug(`Keyboard shortcuts from user (${okay}):`, JSON.stringify(current, null, 4));
+        debug(`Keyboard shortcuts from user (${okay}):` /*, JSON.stringify(current, null, 4)*/);
     }
 }
 // init();

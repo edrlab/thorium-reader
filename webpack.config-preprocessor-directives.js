@@ -5,6 +5,7 @@ var git = require("git-rev-sync");
 
 const portApp = process.env.PORT_APP || "8090";
 const portReader = process.env.PORT_READER || "8191";
+const portPdfWebview = process.env.PORT_PDF_WEBVIEW || "8292";
 
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
@@ -18,10 +19,12 @@ const isContinuousIntegrationDeploy = process.env.TRAVIS_OS_NAME_ ? true : false
 const skipLevelDown = isDev || isContinuousIntegrationDeploy;
 
 const pouchDbAdapterName = skipLevelDown ?
-    "jsondown" : "leveldb";
+    "websql" : // "jsondown"
+    "leveldb";
 
 const pouchDbAdapterPackage = skipLevelDown ?
-    "readium-desktop/pouchdb/jsondown-adapter" : "pouchdb-adapter-leveldb";
+    "pouchdb-adapter-node-websql" : ///"readium-desktop/pouchdb/jsondown-adapter" :
+    "pouchdb-adapter-leveldb";
 
 const rendererLibraryBaseUrl = isDev ?
     ("http://localhost:"+portApp+"/") : "file://";
@@ -29,10 +32,16 @@ const rendererLibraryBaseUrl = isDev ?
 const rendererReaderBaseUrl = isDev ?
     ("http://localhost:"+portReader+"/") : "file://";
 
+const rendererPdfWebviewBaseUrl = isDev ?
+    ("http://localhost:"+portPdfWebview+"/") : "file://";
+
 const isPackaging = process.env.PACKAGING || "0";
 
 const nodeModuleRelativeUrl = (isPackaging === "1") ?
     "node_modules" : "../node_modules";
+
+const distRelativeUrl = (isPackaging === "1") ?
+    "dist" : "../dist";
 
 const data = {
     __APP_VERSION__: JSON.stringify(version),
@@ -43,11 +52,13 @@ const data = {
     __NODE_ENV__: JSON.stringify(nodeEnv),
     __VSCODE_LAUNCH__: JSON.stringify(isVisualStudioCodeLaunch),
     __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
+    __DIST_RELATIVE_URL__: JSON.stringify(distRelativeUrl),
     __PACKAGING__: JSON.stringify(isPackaging),
     __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
     __RENDERER_LIBRARY_BASE_URL__: JSON.stringify(rendererLibraryBaseUrl),
     __RENDERER_READER_BASE_URL__: JSON.stringify(rendererReaderBaseUrl),
+    __RENDERER_PDF_WEBVIEW_BASE_URL__: JSON.stringify(rendererPdfWebviewBaseUrl),
     __CONTINUOUS_INTEGRATION_DEPLOY__: JSON.stringify(isContinuousIntegrationDeploy),
 };
 
@@ -63,6 +74,8 @@ module.exports = {
     definePlugin,
     portApp,
     portReader,
+    portPdfWebview,
     rendererLibraryBaseUrl,
     rendererReaderBaseUrl,
+    rendererPdfWebviewBaseUrl,
 };

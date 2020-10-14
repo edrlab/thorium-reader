@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { downloadActions } from "readium-desktop/common/redux/actions";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 import {
     TranslatorProps, withTranslator,
@@ -32,8 +33,8 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, downloadState } = this.props;
-        if (!downloadState || !downloadState.downloads || !downloadState.downloads.length) {
+        const { __, downloadState, abortDownload } = this.props;
+        if (!downloadState || !downloadState.length) {
             return <></>;
         }
         return (<div className={styles.downloadsPanel}
@@ -43,15 +44,19 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
             <div className={styles.section_title}>{ __("header.downloads")}</div>
             <ul>
                 {
-                downloadState.downloads.map((dl, i) => {
+                downloadState.map(([dl, id]) => {
                     let progress = dl.progress;
                     if (isNaN(progress)) {
                         progress = 0;
                     }
-                    return <li key={i}>
+                    return <li key={id}>
+                        <span className={styles.title}><a onClick={() => abortDownload(id)}>X</a></span>
                         <span className={styles.percent}>{progress}%</span>
                         <progress max="100" value={progress}>{progress}</progress>
-                        <span className={styles.title}>{dl.title ? dl.title : dl.url}</span>
+                        <span className={styles.title}>{dl.downloadUrl}</span>
+                        <span className={styles.title}>{dl.contentLengthHumanReadable}</span>
+                        <span className={styles.title}>{dl.speed + " Kb/s"}</span>
+
                     </li>;
                 })
                 }
@@ -66,9 +71,10 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     };
 };
 
-const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         // doStuff: (arg: any) => dispatch(downloadActions.doStuff.build(arg)),
+        abortDownload: (id: number) => dispatch(downloadActions.abort.build(id)),
     };
 };
 

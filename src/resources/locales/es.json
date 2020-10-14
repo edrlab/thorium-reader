@@ -21,8 +21,23 @@
             "title": "Editar",
             "undo": "Deshacer"
         },
-        "hide": "Ocultar {{appName}}",
-        "quit": "Salir de {{appName}}"
+        "hide": "Ocultar {{- appName}}",
+        "quit": "Salir de {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "No",
+                        "yes": "Sí"
+                    },
+                    "message": "¿Quieres guardar la sesión?",
+                    "title": "Guardar sesión"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": ""
+        }
     },
     "catalog": {
         "about": {
@@ -42,17 +57,21 @@
         "entry": {
             "continueReading": "Reanudar lectura",
             "continueReadingAudioBooks": "Reanudar reproducción",
+            "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Añadidos recientemente",
-            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente"
+            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente",
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Exportar",
         "lang": "Idioma",
         "moreInfo": "Más información",
         "myBooks": "Mis libros",
-        "noPublicationHelpL1": "Dejar la publicación",
+        "noPublicationHelpL1": "Suelta una publicación aquí",
         "noPublicationHelpL2": "o usa el botón \"+\" de arriba.",
         "noPublicationHelpL3": "Se admiten ficheros protegidos LCP.",
-        "noPublicationHelpL4": "Extensiones soportadas:",
+        "noPublicationHelpL4": "Extensiones admitidas:",
         "numberOfPages": "Número de páginas",
         "opds": {
             "info": {
@@ -92,6 +111,13 @@
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
         "yes": "Sí"
     },
+    "error": {
+        "errorBox": {
+            "error": "Mensaje de error",
+            "message": "Se ha producido un error en {{- filename}}",
+            "title": "Error interno de {{- appName}}"
+        }
+    },
     "header": {
         "allBooks": "Todos los libros",
         "books": "Mis libros",
@@ -118,14 +144,15 @@
     },
     "message": {
         "download": {
-            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]",
-            "start": "La descarga de {{- title}} ha comenzado.",
-            "success": "La descarga de {{- title}} ha finalizado."
+            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} ya estaba importado",
-            "fail": "La importación de {{- path}} falló. Comprueba que el fichero es válido",
+            "fail": "La importación de {{- path}} falló. {{- err}}",
             "success": "La importación de {{- title}} ha finalizado."
+        },
+        "open": {
+            "error": "No se puede abrir la publicación: {{- err}}"
         }
     },
     "opds": {
@@ -182,6 +209,9 @@
         "licenseOutOfDate": "La licencia está desactualizada",
         "licenseSignatureDateInvalid": "La fecha de la firma de la licencia no es válida",
         "licenseSignatureInvalid": "La firma de la licencia no es válida",
+        "progression": {
+            "title": "Progresión"
+        },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro no se puede leer porque la licencia LCP se ha devuelto.",
@@ -201,7 +231,20 @@
             "delete": "Eliminar",
             "edit": "Editar",
             "landmarks": "Puntos de referencia",
+            "search": "",
             "toc": "Tabla de contenido"
+        },
+        "media-overlays": {
+            "activate": "Activar lectura en voz alta",
+            "captions": "Texto sincronizado/presentación diáfana",
+            "next": "Siguiente lectura en voz alta",
+            "pause": "Pausar lectura en voz alta",
+            "play": "Reproducir lectura en voz alta",
+            "previous": "Anterior lectura en voz alta",
+            "skip": "Omitir información auxiliar",
+            "speed": "Velocidad de reproducción para lectura en voz alta",
+            "stop": "Detener lectura en voz alta",
+            "title": "Lectura en voz alta"
         },
         "navigation": {
             "backHomeTitle": "Volver a la biblioteca",
@@ -213,10 +256,23 @@
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
             "infoTitle": "Información",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navegación",
             "quitFullscreenTitle": "Salir del modo pantalla completa",
             "readBookTitle": "Empezar a leer el libro",
             "settingsTitle": "Opciones de configuración"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {
@@ -239,6 +295,24 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "paginated": "Paginado",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
+            "save": {
+                "apply": "Guardar",
+                "reset": "Restablecer",
+                "title": "Configuración"
+            },
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
             "text": "Texto",
@@ -255,6 +329,18 @@
         "svg": {
             "left": "Izquierda",
             "right": "Derecha"
+        },
+        "toc": {
+            "publicationNoToc": ""
+        },
+        "tts": {
+            "activate": "Activar texto a voz",
+            "next": "Siguiente texto a voz",
+            "pause": "Pausar texto a voz",
+            "play": "Reproducir texto a voz",
+            "previous": "Anterior texto a voz",
+            "speed": "Velocidad de reproducción para texto a voz",
+            "stop": "Detener texto a voz"
         }
     },
     "settings": {
@@ -272,6 +358,11 @@
         },
         "language": {
             "languageChoice": "Selección de idioma"
+        },
+        "session": {
+            "no": "Deshabilitar",
+            "title": "Guardar sesión",
+            "yes": "Habilitar"
         }
     }
 }

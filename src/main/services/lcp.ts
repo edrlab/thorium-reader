@@ -77,13 +77,17 @@ export class LcpManager {
             new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`).test(extension) ||
             new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
 
+        const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`).test(extension);
+
+        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
+
         const epubPathTMP = epubPath + ".tmplcpl";
         await new Promise((resolve, reject) => {
             injectBufferInZip(
                 epubPath,
                 epubPathTMP,
                 Buffer.from(lcpStr, "utf8"),
-                (!isAudioBook ? "META-INF/" : "") + "license.lcpl",
+                ((!isAudioBook && !isDivina && !isLcpPdf) ? "META-INF/" : "") + "license.lcpl",
                 (e: any) => {
                     debug("injectLcplIntoZip_ - injectBufferInZip ERROR!");
                     debug(e);
@@ -314,6 +318,10 @@ export class LcpManager {
                 "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
                 "User-Agent": "readium-desktop",
             };
+            // TODO - IDEALLY AS WELL:
+            // agentOptions: {
+            //     rejectUnauthorized: IS_DEV ? false : true,
+            // },
 
             const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
@@ -326,6 +334,9 @@ export class LcpManager {
                 });
                 if (!renewLink) {
                     debug("!renewLink");
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
                 if (renewLink.Type !== ContentType.Lsd) {
@@ -334,6 +345,9 @@ export class LcpManager {
                         return newPubDocument;
                     }
                     debug(`renewLink.Type: ${renewLink.Type}`);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
 
@@ -371,7 +385,7 @@ export class LcpManager {
                         debug(r2Publication.LCP.LSD);
 
                     } catch (err) {
-                        debug(err);
+                        debug("Error processStatusDocument", err);
                     }
 
                     if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
@@ -398,6 +412,10 @@ export class LcpManager {
                     this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+                } else {
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
+                    ));
                 }
             }
 
@@ -422,6 +440,10 @@ export class LcpManager {
                 "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
                 "User-Agent": "readium-desktop",
             };
+            // TODO - IDEALLY AS WELL:
+            // agentOptions: {
+            //     rejectUnauthorized: IS_DEV ? false : true,
+            // },
 
             const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
@@ -434,6 +456,9 @@ export class LcpManager {
                 });
                 if (!returnLink) {
                     debug("!returnLink");
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
                 if (returnLink.Type !== ContentType.Lsd) {
@@ -442,6 +467,9 @@ export class LcpManager {
                         return newPubDocument;
                     }
                     debug(`returnLink.Type: ${returnLink.Type}`);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                    ));
                     return newPubDocument;
                 }
 
@@ -498,6 +526,10 @@ export class LcpManager {
                     this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+                } else {
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                    ));
                 }
             }
 
@@ -820,6 +852,10 @@ export class LcpManager {
             "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
             "User-Agent": "readium-desktop",
         };
+        // TODO - IDEALLY AS WELL:
+        // agentOptions: {
+        //     rejectUnauthorized: IS_DEV ? false : true,
+        // },
 
         return new Promise(async (resolve, reject) => {
             const callback = async (licenseUpdateJson: string | undefined) => {
@@ -829,7 +865,7 @@ export class LcpManager {
                 if (licenseUpdateJson) {
 
                     let atLeastOneReaderIsOpen = false;
-                    const readers = this.store.getState().reader?.readers;
+                    const readers = this.store.getState().win.session.reader;
                     if (readers) {
                         for (const reader of Object.values(readers)) {
                             if (reader.publicationIdentifier === publicationDocumentIdentifier) {

@@ -21,13 +21,28 @@
             "title": "Edit",
             "undo": "Undo"
         },
-        "hide": "Hide {{appName}}",
-        "quit": "Quit {{appName}}"
+        "hide": "Hide {{- appName}}",
+        "quit": "Quit {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "No",
+                        "yes": "Yes"
+                    },
+                    "message": "Do you want to save the session ?",
+                    "title": "Save session"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": "Show library / bookshelf"
+        }
     },
     "catalog": {
         "about": {
             "button": "More information",
-            "title": "About {{appName}}"
+            "title": "About {{- appName}}"
         },
         "addBookToLib": "Import",
         "addTags": "Add a tag",
@@ -42,8 +57,12 @@
         "entry": {
             "continueReading": "Resume reading",
             "continueReadingAudioBooks": "Resume listening",
+            "continueReadingDivina": "Resume divina",
+            "continueReadingPdf": "Resume PDF",
             "lastAdditions": "Recently added",
-            "lastAdditionsAudioBooks": "Recently added audiobooks"
+            "lastAdditionsAudioBooks": "Recently added audiobooks",
+            "lastAdditionsDivina": "Recently added divina",
+            "lastAdditionsPdf": "Recently added PDF"
         },
         "export": "Export",
         "lang": "Language",
@@ -85,12 +104,19 @@
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
-        "import": "Do you really want to import those files :",
+        "import": "Do you really want to import these files :",
         "importError": "an error occured, verify your file extension ({{acceptedExtension}})",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
         "yes": "Yes"
+    },
+    "error": {
+        "errorBox": {
+            "error": "Error message:",
+            "message": "An error has occurred in {{- filename}}",
+            "title": "Internal {{- appName}} Error"
+        }
     },
     "header": {
         "allBooks": "All books",
@@ -118,14 +144,15 @@
     },
     "message": {
         "download": {
-            "error": "The download of {{- title}} has failed: [{{- err}}]",
-            "start": "The download of {{- title}} has begun.",
-            "success": "The download of {{- title}} is finished."
+            "error": "The download of {{- title}} has failed: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} was already imported",
-            "fail": "The import of {{- path}} failed. Verify that the file is valid",
+            "fail": "The import of {{- path}} failed. {{- err}}",
             "success": "The import of {{- title}} is finished."
+        },
+        "open": {
+            "error": "The publication can't be opened : {{- err}}"
         }
     },
     "opds": {
@@ -182,6 +209,9 @@
         "licenseOutOfDate": "License is out of date",
         "licenseSignatureDateInvalid": "License signature date is invalid",
         "licenseSignatureInvalid": "License signature is invalid",
+        "progression": {
+            "title": "Progression"
+        },
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This book can't be read because the LCP license has been returned.",
@@ -201,22 +231,48 @@
             "delete": "Delete",
             "edit": "Edit",
             "landmarks": "Landmarks",
+            "search": "Search",
             "toc": "Table of Contents"
+        },
+        "media-overlays": {
+            "activate": "Activate Readaloud",
+            "captions": "Captions / clean view",
+            "next": "Next Readaloud",
+            "pause": "Pause Readaloud",
+            "play": "Play Readaloud",
+            "previous": "Previous Readaloud",
+            "skip": "Skippability",
+            "speed": "Readaloud playback rate",
+            "stop": "Stop Readaloud",
+            "title": "Readaloud"
         },
         "navigation": {
             "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
-            "detachWindowTitle": "detach the window",
+            "detachWindowTitle": "show library / bookshelf window",
             "fullscreenTitle": "open fullscreen mode",
             "goTo": "Go to",
             "goToError": "This page break does not exist",
             "goToPlaceHolder": "Enter a page number",
             "goToTitle": "Go to page",
             "infoTitle": "information",
+            "magnifyingGlassButton": "search in publication",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
             "settingsTitle": "settings"
+        },
+        "picker": {
+            "annotationTitle": "Annotations:",
+            "search": {
+                "founds": "{{- nResults}} match(es)",
+                "input": "text to match",
+                "next": "Next",
+                "notFound": "no matches",
+                "previous": "Previous",
+                "submit": "Find"
+            },
+            "searchTitle": "Search:"
         },
         "settings": {
             "column": {
@@ -239,6 +295,24 @@
             "lineSpacing": "Line spacing",
             "margin": "Margin",
             "paginated": "Paginated",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "page fit",
+                    "width": "page width"
+                },
+                "title": "Zoom"
+            },
+            "save": {
+                "apply": "save",
+                "reset": "reset",
+                "title": "Configuration"
+            },
             "scrolled": "Scrollable",
             "spacing": "Spacing",
             "text": "Text",
@@ -255,6 +329,18 @@
         "svg": {
             "left": "Left",
             "right": "Right"
+        },
+        "toc": {
+            "publicationNoToc": "this publication does not provide a table of contents"
+        },
+        "tts": {
+            "activate": "Activate Text To Speech",
+            "next": "Next Text To Speech",
+            "pause": "Pause Text To Speech",
+            "play": "Play Text To Speech",
+            "previous": "Previous Text To Speech",
+            "speed": "Text To Speech playback rate",
+            "stop": "Stop Text To Speech"
         }
     },
     "settings": {
@@ -272,6 +358,11 @@
         },
         "language": {
             "languageChoice": "Language choice"
+        },
+        "session": {
+            "no": "Disable",
+            "title": "Save session",
+            "yes": "Enable"
         }
     }
 }

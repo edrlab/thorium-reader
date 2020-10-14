@@ -22,6 +22,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 @injectable()
@@ -41,47 +42,52 @@ export class ReaderApi implements IReaderApi {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
-    public async setLastReadingLocation(publicationIdentifier: string, locator: R2Locator): Promise<LocatorView> {
-        const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-            publicationIdentifier,
-            LocatorType.LastReadingLocation,
-        );
+    // public async setLastReadingLocation(publicationIdentifier: string, locator: R2Locator): Promise<LocatorView> {
+    //     const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
+    //         publicationIdentifier,
+    //         LocatorType.LastReadingLocation,
+    //     );
 
-        let newDoc = null;
+    //     let newDoc = null;
 
-        if (docs.length === 0) {
-            // Create new locator
-            newDoc = {
-                publicationIdentifier,
-                locatorType: LocatorType.LastReadingLocation,
-                locator: Object.assign({}, locator),
-            };
-        } else {
-            // Update locator
-            newDoc = Object.assign(
-                {},
-                docs[0],
-                {
-                    locator: Object.assign({}, locator),
-                },
-            );
-        }
+    //     if (docs.length === 0) {
+    //         // Create new locator
+    //         newDoc = {
+    //             publicationIdentifier,
+    //             locatorType: LocatorType.LastReadingLocation,
+    //             locator: Object.assign({}, locator),
+    //         };
+    //     } else {
+    //         // Update locator
+    //         newDoc = Object.assign(
+    //             {},
+    //             docs[0],
+    //             {
+    //                 locator: Object.assign({}, locator),
+    //             },
+    //         );
+    //     }
 
-        const savedDoc = await this.locatorRepository.save(newDoc);
-        return this.locatorViewConverter.convertDocumentToView(savedDoc);
-    }
+    //     const savedDoc = await this.locatorRepository.save(newDoc);
+    //     return this.locatorViewConverter.convertDocumentToView(savedDoc);
+    // }
 
-    public async getLastReadingLocation(publicationIdentifier: string): Promise<LocatorView> {
-        const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-            publicationIdentifier,
-            LocatorType.LastReadingLocation,
-        );
+    public async getLastReadingLocation(publicationIdentifier: string): Promise<LocatorExtended | undefined> {
+        // const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
+        //     publicationIdentifier,
+        //     LocatorType.LastReadingLocation,
+        // );
 
-        if (docs.length === 0) {
-            return null;
-        }
+        // if (docs.length === 0) {
+        //     return null;
+        // }
 
-        return this.locatorViewConverter.convertDocumentToView(docs[0]);
+        // return this.locatorViewConverter.convertDocumentToView(docs[0]);
+
+        const state = this.store.getState();
+        const locator = state.win.registry.reader[publicationIdentifier]?.reduxState.locator;
+
+        return locator;
     }
 
     public async findBookmarks(publicationIdentifier: string): Promise<LocatorView[]> {
@@ -141,6 +147,8 @@ export class ReaderApi implements IReaderApi {
         }
     }
 
+    // TODO
+    // clipboard can be an action catched in saga, nothing to return
     public async clipboardCopy(
         publicationIdentifier: string,
         clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY): Promise<boolean> {
@@ -157,7 +165,9 @@ export class ReaderApi implements IReaderApi {
 
         if (!publicationDocument.lcp ||
             !publicationDocument.lcp.rights ||
-            publicationDocument.lcp.rights.copy <= 0) {
+            publicationDocument.lcp.rights.copy === null ||
+            typeof publicationDocument.lcp.rights.copy === "undefined" ||
+            publicationDocument.lcp.rights.copy < 0) {
 
             clipboard.writeText(textToCopy, clipBoardType);
             return true;
@@ -193,5 +203,11 @@ export class ReaderApi implements IReaderApi {
             publicationIdentifier));
 
         return true;
+    }
+
+    // TODO
+    // may be removed and replaced with a action dispatched to every reader
+    public async getMode() {
+        return this.store.getState().mode;
     }
 }

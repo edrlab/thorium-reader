@@ -21,8 +21,23 @@
             "title": "Bearbeiten",
             "undo": "Rückgängig"
         },
-        "hide": "Ausblenden {{appName}}",
-        "quit": "Beenden {{appName}}"
+        "hide": "Ausblenden {{- appName}}",
+        "quit": "Beenden {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nein",
+                        "yes": "Ja"
+                    },
+                    "message": "Möchten Sie die Sitzung speichern ?",
+                    "title": "Sitzung sichern"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": ""
+        }
     },
     "catalog": {
         "about": {
@@ -42,8 +57,12 @@
         "entry": {
             "continueReading": "Lesen Sie weiter",
             "continueReadingAudioBooks": "Hören Sie weiter zu",
+            "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Kürzlich hinzugefügt",
-            "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher"
+            "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher",
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Export",
         "lang": "Sprache",
@@ -92,6 +111,13 @@
         "return": "",
         "yes": "Ja"
     },
+    "error": {
+        "errorBox": {
+            "error": "Fehlermeldung:",
+            "message": "In ist ein Fehler aufgetreten {{- filename}}",
+            "title": "interner {{- appName}} Leser"
+        }
+    },
     "header": {
         "allBooks": "Alle Bücher",
         "books": "Meine Bücher",
@@ -118,14 +144,15 @@
     },
     "message": {
         "download": {
-            "error": "Der Download von {{- title}} ist fehlgeschlagen: [{{- err}}]",
-            "start": "Der Download von {{- title}} hat begonnen",
-            "success": "Der Download von {{- title}} wurde abgeschlossen"
+            "error": "Der Download von {{- title}} ist fehlgeschlagen: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "Der Import von {{- title}} Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
-            "fail": "Der Import von {{- path}} ist fehlgeschlagen. Stellen Sie sicher, dass die Datei gültig ist.",
+            "fail": "Der Import von {{- path}} ist fehlgeschlagen. {{- err}}",
             "success": "Der Import von {{- title}} ist abgeschlossen."
+        },
+        "open": {
+            "error": "Die Publikation kann nicht geöffnet werden: {{- err}}"
         }
     },
     "opds": {
@@ -182,6 +209,9 @@
         "licenseOutOfDate": "",
         "licenseSignatureDateInvalid": "",
         "licenseSignatureInvalid": "",
+        "progression": {
+            "title": "Fortschreiten"
+        },
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "",
@@ -201,7 +231,20 @@
             "delete": "Löschen",
             "edit": "Bearbeiten",
             "landmarks": "Navigationspunkte",
+            "search": "",
             "toc": "Inhaltsverzeichnis"
+        },
+        "media-overlays": {
+            "activate": "",
+            "captions": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "skip": "",
+            "speed": "",
+            "stop": "",
+            "title": ""
         },
         "navigation": {
             "backHomeTitle": "Zurück zum Bücherregal",
@@ -213,10 +256,23 @@
             "goToPlaceHolder": "Gehe zur Seite",
             "goToTitle": "Gehe zur Seite",
             "infoTitle": "Informationen",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navigation",
             "quitFullscreenTitle": "Vollbildmodus beenden",
             "readBookTitle": "Mit dem Lesen des Buches beginnen",
             "settingsTitle": "Einstellungen"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {
@@ -239,6 +295,24 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "paginated": "Seitendarstellung",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
+            "save": {
+                "apply": "Speichern",
+                "reset": "Zurücksetzen",
+                "title": "Aufbau"
+            },
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
             "text": "Text",
@@ -255,6 +329,18 @@
         "svg": {
             "left": "",
             "right": ""
+        },
+        "toc": {
+            "publicationNoToc": ""
+        },
+        "tts": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "speed": "",
+            "stop": ""
         }
     },
     "settings": {
@@ -272,6 +358,11 @@
         },
         "language": {
             "languageChoice": "Sprachauswahl"
+        },
+        "session": {
+            "no": "Deaktivieren",
+            "title": "Sitzung speichern",
+            "yes": "aktivieren"
         }
     }
 }

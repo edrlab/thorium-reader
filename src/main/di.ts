@@ -7,17 +7,16 @@
 
 import "reflect-metadata";
 
-import { app } from "electron";
+import * as debug_ from "debug";
+import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
 import { Container } from "inversify";
 import * as path from "path";
 import * as PouchDBCore from "pouchdb-core";
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogApi } from "readium-desktop/main/api/catalog";
 import { LcpApi } from "readium-desktop/main/api/lcp";
 import { OpdsApi } from "readium-desktop/main/api/opds";
-import { PublicationApi } from "readium-desktop/main/api/publication";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -34,24 +33,30 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
-import { Downloader } from "readium-desktop/main/services/downloader";
 import { LcpManager } from "readium-desktop/main/services/lcp";
-import { PublicationService } from "readium-desktop/main/services/publication";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
+// import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
 import {
-    _APP_NAME, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
+    _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
 } from "readium-desktop/preprocessor-directives";
+import { PromiseAllSettled } from "readium-desktop/utils/promise";
 import { Store } from "redux";
+import { SagaMiddleware } from "redux-saga";
 
 import { Server } from "@r2-streamer-js/http/server";
 
 import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
+import { SessionApi } from "./api/session";
+import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 
+// Logger
+const debug = debug_("readium-desktop:main:di");
+
+export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
@@ -82,7 +87,7 @@ if ((PouchDB  as any).default) {
 
 const rootDbPath = path.join(
     userDataPath,
-    (_NODE_ENV === "development") ? "db-dev" : "db",
+    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "db-dev-sqlite" : "db",
 );
 
 if (!fs.existsSync(rootDbPath)) {
@@ -145,7 +150,7 @@ const lcpSecretRepository = new LcpSecretRepository(lcpSecretDb);
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     userDataPath,
-    "publications",
+    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "publications-dev" : "publications",
 );
 
 if (!fs.existsSync(publicationRepositoryPath)) {
@@ -155,25 +160,58 @@ if (!fs.existsSync(publicationRepositoryPath)) {
 // end of create database
 //
 
+// https://pouchdb.com/guides/compact-and-destroy.html
+const compactDb = async () => {
+    const res = await PromiseAllSettled([
+        publicationDb.compact(),
+        opdsDb.compact(),
+        configDb.compact(),
+        locatorDb.compact(),
+        lcpSecretDb.compact(),
+    ]);
+
+    const done = res.reduce((pv, cv) => pv && cv.status === "fulfilled", true);
+    if (!done) {
+        throw JSON.stringify(res);
+    }
+};
+
+const closeProcessLock = (() => {
+    let lock = false;
+
+    return {
+        get isLock() {
+            return lock;
+        },
+        lock: () => lock = true,
+        release: () => lock = false,
+    };
+})();
+
 //
 // Depedency Injection
 //
 // Create container used for dependency injection
 const container = new Container();
 
-// Create store
-const store = initStore();
-container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
+const createStoreFromDi = async () => {
+
+    debug("initStore");
+    const [store, sagaMiddleware] = await initStore(configRepository);
+    debug("store loaded");
+
+    container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
+    container.bind<SagaMiddleware>(diSymbolTable["saga-middleware"]).toConstantValue(sagaMiddleware);
+    debug("container store and saga binded");
+
+    return store;
+};
 
 // Create window registry
-container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSingletonScope();
+// container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSingletonScope();
 
 // Create translator
 container.bind<Translator>(diSymbolTable.translator).to(Translator).inSingletonScope();
-
-// Create downloader
-const downloader = new Downloader(null, configRepository, store);
-container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
 
 // Create repositories
 container.bind<PublicationRepository>(diSymbolTable["publication-repository"]).toConstantValue(
@@ -216,34 +254,45 @@ container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantVa
 
 // Create lcp manager
 container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingletonScope();
-container.bind<PublicationService>(diSymbolTable["publication-service"]).to(PublicationService).inSingletonScope();
 container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
 container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
-container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
+// container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
+
+container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi);
+
 container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
+container.bind<SessionApi>(diSymbolTable["session-api"]).to(SessionApi).inSingletonScope();
 
-// Create action serializer
-container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
+let libraryWin: BrowserWindow;
 
-//
-// end of create Depedency Injection Container
-//
+const saveLibraryWindowInDi =
+    (libWin: BrowserWindow) => (libraryWin = libWin, libraryWin);
 
-//
-// Overload container.get with our own type return
-//
+const getLibraryWindowFromDi =
+    () => libraryWin;
+
+const readerWinMap = new Map<string, BrowserWindow>();
+
+const saveReaderWindowInDi =
+    (readerWin: BrowserWindow, id: string) => (readerWinMap.set(id, readerWin), readerWin);
+
+const getReaderWindowFromDi =
+    (id: string) => readerWinMap.get(id);
+
+const getAllReaderWindowFromDi =
+    () =>
+        container.getAll<BrowserWindow>("WIN_REGISTRY_READER");
 
 // local interface to force type return
 interface IGet {
     (s: "store"): Store<RootState>;
-    (s: "win-registry"): WinRegistry;
+    // (s: "win-registry"): WinRegistry;
     (s: "translator"): Translator;
-    (s: "downloader"): Downloader;
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "locator-repository"): LocatorRepository;
@@ -256,14 +305,13 @@ interface IGet {
     (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;
     (s: "lcp-manager"): LcpManager;
-    (s: "publication-service"): PublicationService;
     (s: "catalog-api"): CatalogApi;
-    (s: "publication-api"): PublicationApi;
+    (s: "publication-api"): typeof publicationApi;
     (s: "opds-api"): OpdsApi;
     (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;
-    (s: "action-serializer"): ActionSerializer;
+    (s: "saga-middleware"): SagaMiddleware;
     // minor overload type used in api.ts/LN32
     (s: keyof typeof diSymbolTable): any;
 }
@@ -273,5 +321,13 @@ interface IGet {
 const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
 
 export {
+    closeProcessLock,
+    compactDb,
     diGet as diMainGet,
+    getLibraryWindowFromDi,
+    getReaderWindowFromDi,
+    saveLibraryWindowInDi,
+    saveReaderWindowInDi,
+    getAllReaderWindowFromDi,
+    createStoreFromDi,
 };

@@ -39,7 +39,7 @@ class NoPublicationInfo extends React.Component<IProps, undefined> {
                     <p>{__("catalog.noPublicationHelpL4")}</p>
                     {
                         acceptedExtensionArray.map(
-                            (ext) => <span>
+                            (ext, i) => <span key={`ext_${i}`}>
                                 {
                                     ext
                                 }

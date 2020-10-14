@@ -10,20 +10,60 @@ import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard"
 // import { netReducer } from "readium-desktop/common/redux/reducers/net";
 // import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
-import { readerReducer } from "readium-desktop/main/redux/reducers/reader";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { RootState } from "readium-desktop/main/redux/states";
+import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers } from "redux";
 
+import { publicationActions, winActions } from "../actions";
 import { lcpReducer } from "./lcp";
+import { readerDefaultConfigReducer } from "./reader/defaultConfig";
+import { sessionReducer } from "./session";
+import { winRegistryReaderReducer } from "./win/registry/reader";
+import { winSessionLibraryReducer } from "./win/session/library";
+import { winSessionReaderReducer } from "./win/session/reader";
+import { winModeReducer } from "./win/winModeReducer";
 
 export const rootReducer = combineReducers<RootState>({
+    session: sessionReducer,
     streamer: streamerReducer,
     i18n: i18nReducer,
-    reader: readerReducer,
+    reader: combineReducers({
+        defaultConfig: readerDefaultConfigReducer,
+    }),
     // net: netReducer,
     // update: updateReducer,
     app: appReducer,
+    win: combineReducers({
+        session: combineReducers({
+            library: winSessionLibraryReducer,
+            reader: winSessionReaderReducer,
+        }),
+        registry: combineReducers({
+            reader: winRegistryReaderReducer,
+        }),
+    }),
+    mode: winModeReducer,
     lcp: lcpReducer,
+    publication: combineReducers({
+        lastReadingQueue: priorityQueueReducer
+            <
+                winActions.session.setReduxState.TAction,
+                publicationActions.deletePublication.TAction
+            >(
+                {
+                    push: {
+                        type: winActions.session.setReduxState.ID,
+                        selector: (action) =>
+                            [(new Date()).getTime(), action.payload.publicationIdentifier],
+                    },
+                    pop: {
+                        type: publicationActions.deletePublication.ID,
+                        selector: (action) => [undefined, action.payload.publicationIdentifier],
+                    },
+                    sortFct: (a, b) => b[0] - a[0],
+                },
+            ),
+    }),
     keyboard: keyboardReducer,
 });

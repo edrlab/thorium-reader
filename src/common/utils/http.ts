@@ -5,118 +5,30 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
-import { diMainGet } from "readium-desktop/main/di";
-import { JsonMap } from "readium-desktop/typings/json";
-import * as request from "request";
-import { Url } from "url";
+import { RequestInit, Response } from "node-fetch";
 
-const debug = debug_("readium-desktop:common:utils:http");
+export type THttpOptions = RequestInit;
+export type THttpResponse = Response;
 
-type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
-type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
-
-export interface IHttpGetResult<TBody, TData> {
+export interface IHttpGetResult<TData> {
+    readonly url: string | URL;
     readonly isFailure: boolean;
     readonly isSuccess: boolean;
-    readonly isTimeout: boolean;
-    readonly url: string | Url;
+    readonly isNetworkError?: boolean;
+    readonly isTimeout?: boolean;
+    readonly isAbort?: boolean;
     readonly timeoutConnect?: boolean;
     readonly responseUrl?: string;
     readonly statusCode?: number;
     readonly statusMessage?: string;
-    readonly contentType?: string;
-    readonly body?: TBody;
+    contentType?: string;
+    body?: NodeJS.ReadableStream;
+    response?: THttpResponse;
     data?: TData;
 }
 
-type THttpGetCallback<T1, T2> =
-    (result: IHttpGetResult<T1, T2>) =>
-        IHttpGetResult<T1, T2> | Promise<IHttpGetResult<T1, T2>>;
+export type THttpGetResultAfterCallback<TData> = Omit<IHttpGetResult<TData>, "body" | "response">;
 
-/**
- * @param url url of your GET request
- * @param options request options
- * @param callback callback to set data from body
- * @returns body of url response. 'String' type returned in many cases except for options.json = true
- */
-export async function httpGet<TBody extends JsonMap | string = string , TData = string>(
-    url: string | Url,
-    options?: TRequestCoreOptionsOptionalUriUrl,
-    callback?: THttpGetCallback<TBody, TData>,
-): Promise<IHttpGetResult<TBody, TData>> {
-    options = options || {} as TRequestCoreOptionsOptionalUriUrl;
-    options.headers = options.headers || {};
-
-    const headerFromOptions: request.Headers = {};
-    for (const [key, value] of Object.entries(options.headers)) {
-        Object.assign(headerFromOptions, {
-            [key.toLowerCase()]: value,
-        });
-    }
-
-    const store = diMainGet("store");
-    const locale = store.getState().i18n.locale;
-    const headers: request.Headers = Object.assign(headerFromOptions, {
-                "user-agent": "readium-desktop",
-                "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
-            });
-    const requestOptions: TRequestCoreOptionsRequiredUriUrl = Object.assign(
-        {},
-        options,
-        {
-            url,
-            method: "GET",
-            encoding: undefined,
-            headers,
-        },
-    );
-
-    debug("HTTP REQUEST:");
-    debug(requestOptions);
-
-    const result: IHttpGetResult<TBody, TData> =
-        await new Promise((resolve, reject) => {
-            request(requestOptions, (err, response) => {
-
-                debug("HTTP RESPONSE:");
-                if (err) {
-                    debug(err);
-                    if (err.code === "ETIMEDOUT") {
-                        resolve({
-                            isTimeout: true,
-                            timeoutConnect: err.connect,
-                            isFailure: true,
-                            isSuccess: false,
-                            url: requestOptions.url,
-                        });
-                    }
-                    reject(err);
-                    return ;
-                }
-                if (response) {
-                    debug(response.statusCode);
-                    debug(response.statusMessage);
-                    debug(response.url);
-                    debug(response.body?.substr ? response.body.substr(0, 800) : response.body);
-                }
-                resolve({
-                    isTimeout: false,
-                    isFailure: response.statusCode < 200 || response.statusCode >= 300,
-                    isSuccess: response.statusCode >= 200 && response.statusCode < 300,
-                    url: requestOptions.url,
-                    responseUrl: response.url,
-                    statusCode: response.statusCode,
-                    statusMessage: response.statusMessage,
-                    body: response.body,
-                    data: callback ? undefined : response.body,
-                    contentType: response.caseless.get("Content-Type"),
-                });
-            });
-        });
-
-    if (callback) {
-        return (await Promise.all([callback(result)]))[0];
-    }
-    return result;
-}
+export type THttpGetCallback<T> =
+    (result: IHttpGetResult<T>) =>
+        THttpGetResultAfterCallback<T> | Promise<THttpGetResultAfterCallback<T>>;

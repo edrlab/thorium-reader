@@ -21,8 +21,23 @@
             "title": "Édition",
             "undo": "Annuler"
         },
-        "hide": "Cacher {{appName}}",
-        "quit": "Quitter {{appName}}"
+        "hide": "Masquer {{- appName}}",
+        "quit": "Quitter {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Non",
+                        "yes": "Oui"
+                    },
+                    "message": "Voulez-vous enregistrer la session ?",
+                    "title": "Sauvegarder la session"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": "Afficher la bibliothèque"
+        }
     },
     "catalog": {
         "about": {
@@ -42,8 +57,12 @@
         "entry": {
             "continueReading": "Reprendre la lecture",
             "continueReadingAudioBooks": "Reprendre l'écoute",
+            "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Récemment ajouté",
-            "lastAdditionsAudioBooks": "Livres audio récemment ajoutés"
+            "lastAdditionsAudioBooks": "Livres audio récemment ajoutés",
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Exporter",
         "lang": "Langue",
@@ -92,6 +111,13 @@
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
         "yes": "Oui"
     },
+    "error": {
+        "errorBox": {
+            "error": "Message d'erreur:",
+            "message": "Une erreur est survenue dans le fichier {{- filename}}",
+            "title": "Erreur interne {{- appName}}"
+        }
+    },
     "header": {
         "allBooks": "Tous les livres",
         "books": "Mes Livres",
@@ -118,14 +144,15 @@
     },
     "message": {
         "download": {
-            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]",
-            "start": "Le téléchargement de {{- title}} a commencé.",
-            "success": "Le téléchargement de {{- title}} est terminé."
+            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} est déja importé",
-            "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
+            "fail": "L'importation de {{- path}} a échoué. {{- err}}",
             "success": "L'import de {{- title}} est terminé."
+        },
+        "open": {
+            "error": "La publication ne peut pas etre ouverte : {{- err}}"
         }
     },
     "opds": {
@@ -182,6 +209,9 @@
         "licenseOutOfDate": "License expirée",
         "licenseSignatureDateInvalid": "Date de signature de license invalide",
         "licenseSignatureInvalid": "Signature de license invalide",
+        "progression": {
+            "title": "Progression"
+        },
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
         "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retournée.",
@@ -201,22 +231,48 @@
             "delete": "Supprimer",
             "edit": "Éditer",
             "landmarks": "Repères",
+            "search": "",
             "toc": "Table des matières"
+        },
+        "media-overlays": {
+            "activate": "",
+            "captions": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "skip": "",
+            "speed": "",
+            "stop": "",
+            "title": ""
         },
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",
-            "detachWindowTitle": "détacher la fenêtre",
+            "detachWindowTitle": "afficher la bibliothèque",
             "fullscreenTitle": "mode plein écran",
             "goTo": "Aller à",
             "goToError": "Cette page n'existe pas",
             "goToPlaceHolder": "Entrer un numéro de page",
             "goToTitle": "Aller à la page",
             "infoTitle": "informations",
+            "magnifyingGlassButton": "recherche dans la publication",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quitter le mode plein écran",
             "readBookTitle": "lancer la lecture du livre",
             "settingsTitle": "préférences"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {
@@ -239,6 +295,24 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "paginated": "Paginé",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
+            "save": {
+                "apply": "Sauvegarder",
+                "reset": "Réinitialiser",
+                "title": "Configuration"
+            },
             "scrolled": "Défilé",
             "spacing": "Espacement",
             "text": "Texte",
@@ -255,6 +329,18 @@
         "svg": {
             "left": "Gauche",
             "right": "Droite"
+        },
+        "toc": {
+            "publicationNoToc": ""
+        },
+        "tts": {
+            "activate": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "speed": "",
+            "stop": ""
         }
     },
     "settings": {
@@ -272,6 +358,11 @@
         },
         "language": {
             "languageChoice": "Choix de la langue"
+        },
+        "session": {
+            "no": "Désactiver",
+            "title": "Sauvegarder la session",
+            "yes": "Activer"
         }
     }
 }

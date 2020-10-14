@@ -5,19 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { routerActions, winActions } from "readium-desktop/renderer/library/redux/actions";
-import { all, call, put } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 
-function* historyWatcher() {
-    while (true) {
-        const action = yield* takeTyped(routerActions.locationChanged.build);
-        yield put(winActions.history.build(action.payload.location));
-    }
+function* historyWatcher(action: routerActions.locationChanged.TAction) {
+    yield put(winActions.history.build(action.payload.location));
 }
 
-export function* watchers() {
-    yield all([
-        call(historyWatcher),
-    ]);
+export function saga() {
+    return takeSpawnEvery(
+        routerActions.locationChanged.ID,
+        historyWatcher,
+    );
 }

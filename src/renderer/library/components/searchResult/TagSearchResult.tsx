@@ -52,9 +52,9 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     public componentDidMount() {
         this.unsubscribe = apiSubscribe([
             "publication/delete",
-            "publication/import",
+            "publication/importFromFs",
             "publication/updateTags",
-            "catalog/addEntry",
+            // "catalog/addEntry",
         ], () => {
             const value = matchPath<ILibrarySearchText>(
                 this.props.location.pathname, routes["/library/search/tag"],

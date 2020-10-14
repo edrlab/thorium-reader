@@ -15,6 +15,6 @@ export const CHANNEL = "WIN";
 export interface EventPayload {
     type: EventType;
     payload: {
-        winId: string;
+        identifier: string;
     };
 }
