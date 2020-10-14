@@ -12,6 +12,7 @@ import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/s
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
 
+import * as annotation from "./annotation";
 import * as cssUpdate from "./cssUpdate";
 import * as highlightHandler from "./highlight/handler";
 import * as i18n from "./i18n";
@@ -44,5 +45,7 @@ export function* rootSaga() {
         highlightHandler.saga(),
 
         search.saga(),
+
+        annotation.saga(),
     ]);
 }
