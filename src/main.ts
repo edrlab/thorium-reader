@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { app, dialog } from "electron";
 import * as path from "path";
 import { cli } from "readium-desktop/main/cli/process";
-import { createStoreFromDi } from "readium-desktop/main/di";
+import { createStoreFromDi, diMainGet } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { _PACKAGING, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
@@ -23,6 +23,7 @@ import {
 
 import { appActions } from "./main/redux/actions";
 import { RootState } from "./main/redux/states";
+import { tryCatch } from "./utils/tryCatch";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -60,7 +61,7 @@ setLcpNativePluginPath(lcpNativePluginPath);
 //     process.exit();
 // });
 
-const main = async (storeMayBePromise: Promise<Store<RootState>> | Store<RootState>, flushSession: boolean = false) => {
+export const main = async (flushSession: boolean = false): Promise<Store<RootState>> => {
 
     debug("main fct");
 
@@ -69,8 +70,12 @@ const main = async (storeMayBePromise: Promise<Store<RootState>> | Store<RootSta
 
     app.allowRendererProcessReuse = true;
 
-    const store = await Promise.resolve(storeMayBePromise);
+    let store = await tryCatch(() => diMainGet("store"), "Store not init");
+    if (store) {
+        return store;
+    }
 
+    store = await createStoreFromDi();
     debug("store loaded");
 
     try {
@@ -103,15 +108,15 @@ const main = async (storeMayBePromise: Promise<Store<RootState>> | Store<RootSta
 
         app.exit(1);
     }
-};
 
-const storePromise = createStoreFromDi();
+    return store;
+};
 
 if (_VSCODE_LAUNCH === "true") {
     // tslint:disable-next-line: no-floating-promises
-    main(storePromise);
+    main();
 } else {
-    cli(storePromise, main);
+    cli(); // call main fct
 }
 
 debug("Process version:", process.versions);

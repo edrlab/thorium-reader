@@ -7,20 +7,13 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import { writeFileSync } from "fs";
-import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 
 import { openFileFromCli } from "./cli/commandLine";
 import { cli } from "./cli/process";
 
-import * as Path from "path";
-
 // Logger
 const debug = debug_("readium-desktop:main:lock");
-
-app.on("open-file", async (_event, filePath) => {
-    writeFileSync(Path.resolve(app.getPath("desktop"), "__openfile.txt"), Buffer.from(filePath));
-});
 
 export function lockInstance() {
     const gotTheLock = app.requestSingleInstanceLock();
@@ -35,8 +28,6 @@ export function lockInstance() {
             });
             app.on("open-file", async (event, filePath) => {
                 event.preventDefault();
-
-                writeFileSync(Path.resolve(app.getPath("desktop"), "__openfile__3.txt"), Buffer.from(filePath));
 
                 if (!await openFileFromCli(filePath)) {
                     debug(`the open-file event with ${filePath} return an error`);
@@ -57,14 +48,7 @@ export function lockInstance() {
                 libraryAppWindow.show(); // focuses as well
             }
 
-            const store = diMainGet("store");
-            // execute command line from second instance
-            // when the command line doesn't used electron: execute and exit in second instance process
-            // when the command has needed to open win electron: execute with below cli function
-            // the mainFct is disallow to avoid to generate new mainWindow
-            // remove --version and --help because isn't handle in ready state app
-            // tslint:disable-next-line: no-empty
-            cli(store, () => {}, argv.filter((arg) => !arg.startsWith("--")));
+            cli(argv.filter((arg) => !arg.startsWith("--")));
         });
     }
     return gotTheLock;

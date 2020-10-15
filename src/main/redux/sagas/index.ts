@@ -57,9 +57,6 @@ export function* rootSaga() {
         app.exit(code);
     }
 
-    // send initSucess first
-    yield put(appActions.initSuccess.build());
-
     // watch all electon exit event
     yield appSaga.exit();
 
@@ -99,4 +96,6 @@ export function* rootSaga() {
 
     // enjoy the app !
     yield put(winActions.library.openRequest.build());
+
+    yield put(appActions.initSuccess.build());
 }

@@ -7,27 +7,37 @@
 
 import * as debug_ from "debug";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
+import { put, take } from "typed-redux-saga";
 import { URL } from "url";
-import { getStorePromiseFromProcessInit } from "./process";
+
+import { initSuccess } from "../redux/actions/app";
+import { RootState } from "../redux/states";
+import { AppStatus } from "../redux/states/app";
 
 // Logger
 const debug = debug_("readium-desktop:main:cli:commandLine");
 
 async function openReader(publicationView: PublicationView | PublicationView[]) {
-    if (Array.isArray(publicationView)) {
-        publicationView = publicationView[0];
-    }
-    if (publicationView) {
-        const store = await getStorePromiseFromProcessInit();
-        // 09/09/2020 : any thoughts on this ?
-        // TODO
-        // FIXME
-        // Can't call readerActions.openRequest before appInit
-        // check the flow to throw appInit and openReader consecutively
-        // and need to exec main here before to call openReader
-        store.dispatch(readerActions.openRequest.build(publicationView.identifier));
+    const pubView = Array.isArray(publicationView) ? publicationView[0] : publicationView;
+    if (pubView) {
+        const sagaMiddleware = diMainGet("saga-middleware");
+
+        await sagaMiddleware.run(function*() {
+
+            const appState = yield* selectTyped((state: RootState) => state.app.status);
+
+            if (appState !== AppStatus.Initialized) {
+
+                // wait to end of initialization
+                yield take(initSuccess.ID);
+            }
+
+            yield put(readerActions.openRequest.build(pubView.identifier));
+
+        }).toPromise();
         return true;
     }
     return false;
@@ -64,10 +74,10 @@ export async function cliImport(filePath: string[] | string) {
     const pubApi = diMainGet("publication-api");
     for (const fp of filePathArray) {
 
-        debug(fp);
+        debug("cliImport filePath in filePathArray: ", fp);
         const pubViews = await sagaMiddleware.run(pubApi.importFromFs, fp).toPromise<PublicationView[]>();
 
-        if (pubViews?.length === 0) {
+        if (!pubViews && pubViews.length === 0) {
             returnValue = false;
         }
     }
@@ -78,9 +88,11 @@ export async function cliOpds(title: string, url: string) {
     // save an opds feed with title and url in the db
     const hostname = (new URL(url)).hostname;
     if (hostname) {
+
         const opdsRepository = diMainGet("opds-feed-repository");
-        await opdsRepository.save({ title, url });
-        return true;
+        const opdsFeedDocument = await opdsRepository.save({ title, url });
+
+        return !!opdsFeedDocument;
     }
     return false;
 }
