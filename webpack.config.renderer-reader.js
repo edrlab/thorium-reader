@@ -1,3 +1,4 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
 var fs = require("fs");
@@ -196,6 +197,16 @@ let config = Object.assign(
             },
         },
         plugins: [
+            new BundleAnalyzerPlugin({
+                analyzerMode: "disabled",
+                defaultSizes: "stat", // "parsed"
+                openAnalyzer: false,
+                generateStatsFile: true,
+                statsFilename: "stats_renderer-reader.json",
+                statsOptions: null,
+
+                excludeAssets: null,
+            }),
             new HtmlWebpackPlugin({
                 template: "./src/renderer/reader/index_reader.ejs",
                 filename: "index_reader.html",
