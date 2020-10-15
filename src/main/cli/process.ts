@@ -233,10 +233,14 @@ yargs
 
                     debug("main started");
 
-                    const isSuccess = await openFileFromCli(argv.title);
-                    if (!isSuccess) {
-                        const errorMessage = `Import failed for the publication path : ${argv.path}`;
-                        throw new Error(errorMessage);
+                    if (argv.path) {
+
+                        const isSuccess = await openFileFromCli(argv.path);
+                        if (!isSuccess) {
+                            const errorMessage = `Import failed for the publication path : ${argv.path}`;
+                            throw new Error(errorMessage);
+                        }
+
                     }
 
                 } catch (e) {
