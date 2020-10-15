@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, dialog } from "electron";
+import { app } from "electron";
 import * as glob from "glob";
 import { EOL } from "os";
 import * as path from "path";
@@ -15,8 +15,9 @@ import { lockInstance } from "readium-desktop/main/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import * as yargs from "yargs";
 import { createStoreFromDi } from "../di";
+import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "../event";
 
-import { cliImport, cliOpds, openFileFromCli, openTitleFromCli } from "./commandLine";
+import { cliImport, cliOpds } from "./commandLine";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -178,18 +179,23 @@ yargs
                         app.whenReady(),
                     ]);
 
-                    const isSuccess = await openTitleFromCli(argv.title);
-                    if (!isSuccess) {
-                        const errorMessage = `There is no publication title match for \"${argv.title}\"`;
-                        throw new Error(errorMessage);
+                    if (argv.title) {
+                        const openTitleFromCliChannel = getOpenTitleFromCliChannel();
+                        openTitleFromCliChannel.put(argv.title);
                     }
+
+                    // const isSuccess = await openTitleFromCli(argv.title);
+                    // if (!isSuccess) {
+                    //     const errorMessage = `There is no publication title match for \"${argv.title}\"`;
+                    //     throw new Error(errorMessage);
+                    // }
 
                 } catch (e) {
 
                     debug("read title error :", e);
 
-                    const errorTitle = "No publication to read";
-                    dialog.showErrorBox(errorTitle, e.toString());
+                    // const errorTitle = "No publication to read";
+                    // dialog.showErrorBox(errorTitle, e.toString());
 
                     process.stderr.write("read title ERROR: " + e.toString() + EOL);
                 }
@@ -225,9 +231,7 @@ yargs
                 try {
 
                     await Promise.all([
-                        main(argv.path
-                            ? true
-                            : false),
+                        main(!!argv.path),
                         app.whenReady(),
                     ]);
 
@@ -235,11 +239,13 @@ yargs
 
                     if (argv.path) {
 
-                        const isSuccess = await openFileFromCli(argv.path);
-                        if (!isSuccess) {
-                            const errorMessage = `Import failed for the publication path : ${argv.path}`;
-                            throw new Error(errorMessage);
-                        }
+                        const openFileFromCliChannel = getOpenFileFromCliChannel();
+                        openFileFromCliChannel.put(argv.path);
+                        // const isSuccess = await openFileFromCli(argv.path);
+                        // if (!isSuccess) {
+                            // const errorMessage = `Import failed for the publication path : ${argv.path}`;
+                            // throw new Error(errorMessage);
+                        // }
 
                     }
 
@@ -247,10 +253,10 @@ yargs
 
                     debug("$0 path error :", e);
 
-                    const errorTitle = "Import Failed";
-                    dialog.showErrorBox(errorTitle, e.toString());
+                    // const errorTitle = "Import Failed";
+                    // dialog.showErrorBox(errorTitle, e.toString());
 
-                    process.stderr.write("read title ERROR: " + e.toString() + EOL);
+                    process.stderr.write("$0 title ERROR: " + e.toString() + EOL);
                 }
 
             } else {

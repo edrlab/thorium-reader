@@ -6,61 +6,46 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { put, take } from "typed-redux-saga";
+import { channel } from "redux-saga";
 import { URL } from "url";
 
-import { initSuccess } from "../redux/actions/app";
-import { RootState } from "../redux/states";
-import { AppStatus } from "../redux/states/app";
+export const openReaderChannel = channel<string>();
 
 // Logger
 const debug = debug_("readium-desktop:main:cli:commandLine");
 
-async function openReader(publicationView: PublicationView | PublicationView[]) {
-    const pubView = Array.isArray(publicationView) ? publicationView[0] : publicationView;
-    if (pubView) {
-        const sagaMiddleware = diMainGet("saga-middleware");
+// async function openReader(publicationView: PublicationView | PublicationView[]) {
+//     const pubView = Array.isArray(publicationView) ? publicationView[0] : publicationView;
+//     if (pubView) {
 
-        await sagaMiddleware.run(function*() {
+//         openReaderChannel.put(pubView.identifier);
+//         writeFileSync(Path.resolve(app.getPath("desktop"), "__openfile__5.txt"), Buffer.from(pubView.identifier));
 
-            const appState = yield* selectTyped((state: RootState) => state.app.status);
+//         return true;
+//     }
+//     return false;
+// }
 
-            if (appState !== AppStatus.Initialized) {
+// export async function openTitleFromCli(title: string): Promise<boolean> {
 
-                // wait to end of initialization
-                yield take(initSuccess.ID);
-            }
+//     const sagaMiddleware = diMainGet("saga-middleware");
+//     const pubApi = diMainGet("publication-api");
+//     const pubViews = await sagaMiddleware.run(pubApi.search, title).toPromise<PublicationView[]>();
+//     const state = await openReader(pubViews);
+//     return state;
+// }
 
-            yield put(readerActions.openRequest.build(pubView.identifier));
+// // used also in lock.ts on mac
+// export async function openFileFromCli(filePath: string): Promise<boolean> {
 
-        }).toPromise();
-        return true;
-    }
-    return false;
-}
-
-export async function openTitleFromCli(title: string): Promise<boolean> {
-
-    const sagaMiddleware = diMainGet("saga-middleware");
-    const pubApi = diMainGet("publication-api");
-    const pubViews = await sagaMiddleware.run(pubApi.search, title).toPromise<PublicationView[]>();
-    const state = await openReader(pubViews);
-    return state;
-}
-
-// used also in lock.ts on mac
-export async function openFileFromCli(filePath: string): Promise<boolean> {
-
-    const sagaMiddleware = diMainGet("saga-middleware");
-    const pubApi = diMainGet("publication-api");
-    const pubViews = await sagaMiddleware.run(pubApi.importFromFs, filePath).toPromise<PublicationView[]>();
-    const state = await openReader(pubViews);
-    return state;
-}
+//     const sagaMiddleware = diMainGet("saga-middleware");
+//     const pubApi = diMainGet("publication-api");
+//     const pubViews = await sagaMiddleware.run(pubApi.importFromFs, filePath).toPromise<PublicationView[]>();
+//     const state = await openReader(pubViews);
+//     return state;
+// }
 
 export async function cliImport(filePath: string[] | string) {
 

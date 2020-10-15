@@ -9,8 +9,8 @@ import * as debug_ from "debug";
 import { app } from "electron";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 
-import { openFileFromCli } from "./cli/commandLine";
 import { cli } from "./cli/process";
+import { getOpenFileFromCliChannel, getOpenUrlFromMacEventChannel } from "./event";
 
 // Logger
 const debug = debug_("readium-desktop:main:lock");
@@ -22,15 +22,26 @@ export function lockInstance() {
 
         // https://github.com/electron/electron/blob/master/docs/api/app.md#apprequestsingleinstancelock
         app.on("will-finish-launching", () => {
-            app.on("open-url", (event, _url) => {
+
+            app.on("open-url", (event, url) => {
                 event.preventDefault();
-                // Process url: import or open?
+
+                if (url) {
+                    const openUrlChannel = getOpenUrlFromMacEventChannel();
+                    openUrlChannel.put(url);
+                }
             });
+
             app.on("open-file", async (event, filePath) => {
                 event.preventDefault();
 
-                if (!await openFileFromCli(filePath)) {
-                    debug(`the open-file event with ${filePath} return an error`);
+                // if (!await openFileFromCli(filePath)) {
+                    // debug(`the open-file event with ${filePath} return an error`);
+                // }
+
+                if (filePath) {
+                    const openFileFromCliChannel = getOpenFileFromCliChannel();
+                    openFileFromCliChannel.put(filePath);
                 }
             });
         });
