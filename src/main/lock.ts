@@ -26,6 +26,7 @@ export function lockInstance() {
             app.on("open-url", (event, url) => {
                 event.preventDefault();
 
+                url = url.split("thorium:")[1];
                 if (url) {
                     const openUrlChannel = getOpenUrlFromMacEventChannel();
                     openUrlChannel.put(url);
