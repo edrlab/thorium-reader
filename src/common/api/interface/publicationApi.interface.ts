@@ -35,6 +35,7 @@ export interface IPublicationApi {
     ) => SagaGenerator<PublicationView>;
     importFromFs: (
         filePathArray: string | string[],
+        shiftKeyPress?: boolean,
     ) => SagaGenerator<PublicationView[]>;
     search: (
         title: string,

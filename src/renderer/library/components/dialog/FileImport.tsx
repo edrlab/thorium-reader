@@ -32,10 +32,24 @@ interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, Retu
 
 class FileImport extends React.Component<IProps, undefined> {
 
+    private shiftKeyPress: boolean;
+
     constructor(props: IProps) {
         super(props);
 
+        this.shiftKeyPress = false;
+
         this.importFiles = this.importFiles.bind(this);
+    }
+
+    public componentDidMount() {
+
+        document.addEventListener("keydown", this.keyHandler);
+    }
+
+    public componentWillUnmount() {
+
+        document.removeEventListener("keydown", this.keyHandler);
     }
 
     public render(): React.ReactElement<{}> {
@@ -76,12 +90,16 @@ class FileImport extends React.Component<IProps, undefined> {
         );
     }
 
+    private keyHandler = (ev: KeyboardEvent) => {
+        this.shiftKeyPress = ev.shiftKey;
+    }
+
     private importFiles() {
         if (this.props.files) {
             const paths = this.props.files.map((file) => {
                 return file.path;
             });
-            apiAction("publication/importFromFs", paths).catch((error) => {
+            apiAction("publication/importFromFs", paths, this.shiftKeyPress).catch((error) => {
                 console.error(`Error to fetch publication/importFromFs`, error);
             });
             this.props.closeDialog();

@@ -11,15 +11,17 @@ export const ID = "READER_CLOSE_SUCCESS";
 
 export interface Payload {
     identifier: string;
+    publicationIdentifier: string;
 }
 
-export function build(identifier: string):
+export function build(identifier: string, pubId: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             identifier,
+            publicationIdentifier: pubId,
         },
     };
 }
