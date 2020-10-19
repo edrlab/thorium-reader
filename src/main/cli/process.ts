@@ -17,7 +17,7 @@ import * as yargs from "yargs";
 import { createStoreFromDi } from "../di";
 import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "../event";
 
-import { cliImport, cliOpds } from "./commandLine";
+import { cliImport, cliOpds } from "./service";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -206,10 +206,10 @@ yargs
             }
         },
     )
-    .command("$0 [path]",
+    .command("$0 [path..]",
         "import and read an epub or lcpl file",
         (y) =>
-            y.positional("path", {
+            y.positional("path..", {
                 describe: "path of your publication, it can be an absolute, relative path",
                 type: "string",
                 coerce: (arg) => path.resolve(arg),
