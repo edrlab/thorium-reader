@@ -125,10 +125,7 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
 function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-
-    const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
-
-    if (libWin && libWinState.browserWindowId && libWinState.identifier) {
+    if (libWin) {
 
         // try-catch to do not trigger an error message when the winbound is not handle by the os
         let libBound: Electron.Rectangle;
@@ -297,23 +294,10 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
         const mode = yield* selectTyped((state: RootState) => state.mode);
         if (mode === ReaderMode.Attached) {
-
-            const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
-            const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-            const readerArray = ObjectValues(readers);
-
-            const isLib = libWinState.browserWindowId && libWinState.identifier;
-            if (!isLib || (isLib && readerArray.length)) {
-
-                yield put(readerActions.detachModeRequest.build());
-            } else {
-
-                try {
-                    const libWin = getLibraryWindowFromDi();
-                    libWin.hide();
-                } catch (_err) {
-                    debug("library can't be loaded from di");
-                }
+            try {
+                getLibraryWindowFromDi().hide();
+            } catch (_err) {
+                debug("library can't be loaded from di");
             }
         }
 
