@@ -235,7 +235,6 @@
     "opds-feed-parser": "0.0.18",
     "pdf.js-extract": "^0.1.4",
     "pdfjs-dist": "^2.6.347",
-    "ping": "github:danielzzz/node-ping#1601458126cc1dd0c31db8150f2e6b2a40570a7f",
     "portfinder": "^1.0.28",
     "pouchdb-adapter-leveldb": "^7.2.2",
     "pouchdb-adapter-node-websql": "^7.0.0",
