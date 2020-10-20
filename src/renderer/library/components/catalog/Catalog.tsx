@@ -11,7 +11,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import {
-    apiClean, apiDispatch, apiRefreshToState, apiState,
+    apiClean, apiDispatch, apiState,
 } from "readium-desktop/renderer/common/redux/api/api";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
@@ -51,7 +51,7 @@ class Catalog extends React.Component<IProps, undefined> {
     public componentDidUpdate(oldProps: IProps) {
         if (
             oldProps.refreshCatalog !== this.props.refreshCatalog
-            || this.props.refresh
+            // || this.props.refresh
         ) {
             this.getFromApi();
         }
@@ -98,14 +98,14 @@ class Catalog extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     apiData: apiState(state),
-    refresh: apiRefreshToState(state)([
-        "publication/importFromFs",
-        "publication/importFromLink",
-        "publication/delete",
-        // "catalog/addEntry",
-        "publication/updateTags",
-        // "reader/setLastReadingLocation",
-    ]),
+    // refresh: apiRefreshToState(state)([
+    //     "publication/importFromFs",
+    //     "publication/importFromLink",
+    //     "publication/delete",
+    //     // "catalog/addEntry",
+    //     "publication/updateTags",
+    //     // "reader/setLastReadingLocation",
+    // ]),
     location: state.router.location,
     refreshCatalog: state.updateCatalog, // update 'catalog/get'
 });

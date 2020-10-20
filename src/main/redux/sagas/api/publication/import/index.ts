@@ -12,6 +12,7 @@ import { allTyped, callTyped /*, raceTyped*/ } from "readium-desktop/common/redu
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
+import { publicationActions } from "readium-desktop/main/redux/actions";
 import { put } from "redux-saga/effects";
 import { /*delay,*/ SagaGenerator } from "typed-redux-saga";
 
@@ -71,6 +72,10 @@ export function* importFromLink(
                     { path: link.url, err: e.toString() }),
             ),
         );
+    } finally {
+
+        // update catalog view
+        yield put(publicationActions.publicationUpdated.build());
     }
 
     return undefined;
@@ -144,6 +149,9 @@ export function* importFromFs(
                 return undefined;
             }),
     );
+
+    // update catalog view
+    yield put(publicationActions.publicationUpdated.build());
 
     const pubView = yield* allTyped(effects);
     const ret = pubView.filter((v) => v);

@@ -28,4 +28,7 @@ export function* deletePublication(identifier: string): SagaGenerator<void> {
         const publicationStorage = diMainGet("publication-storage");
         // Remove from storage
         yield call(() => publicationStorage.removePublication(identifier));
+
+        // dispatch action to update catalog view
+        yield put(publicationActions.publicationUpdated.build());
 }

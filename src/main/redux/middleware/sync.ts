@@ -15,6 +15,7 @@ import {
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+import { publicationActions } from "../actions";
 
 import { RootState } from "../states";
 
@@ -28,6 +29,9 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // netActions.online.ID,
 
     dialogActions.openRequest.ID,
+
+    // update catalog view
+    publicationActions.publicationUpdated.ID,
 
     // readerActions.openError.ID,
     // readerActions.closeError.ID,
