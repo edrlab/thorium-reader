@@ -19,6 +19,7 @@
 
 :root {
   user-select: none;
+
   --sideButtonColor: rgb(130, 130, 130, 0.5);
 
   --reader-mainColor: white;
@@ -28,6 +29,13 @@
   --reader-menuPartColor: #F8F8F8;
   --reader-menuPartTitleColor: #ededed;
   --reader-menuPartTitleHoverColor: #d8d8d8;
+}
+
+*,
+*::after,
+*::before {
+	-webkit-user-drag: none;
+	-webkit-app-region: no-drag;
 }
 
 .nightMode {

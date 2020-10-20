@@ -1,3 +1,4 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
 var fs = require("fs");
@@ -110,9 +111,6 @@ const cssLoaderConfig = [
 let config = Object.assign(
     {},
     {
-        optimization: {
-            minimize: nodeEnv === "production",
-        },
         entry: "./src/renderer/reader/pdf/webview/index_pdf.ts",
         name: "renderer pdf webview index",
         output: {
@@ -178,6 +176,16 @@ let config = Object.assign(
         //     },
         // },
         plugins: [
+            new BundleAnalyzerPlugin({
+                analyzerMode: "disabled",
+                defaultSizes: "stat", // "parsed"
+                openAnalyzer: false,
+                generateStatsFile: true,
+                statsFilename: "stats_renderer-pdf.json",
+                statsOptions: null,
+
+                excludeAssets: null,
+            }),
             // new HtmlWebpackPlugin({
             //     template: "./src/renderer/reader/pdf/webview/index_pdf.ejs",
             //     filename: "index_pdf.html",

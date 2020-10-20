@@ -65,7 +65,13 @@
     "i18n-check": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages de es fr ja lt nl pt-br pt-pt it --space 4 --finalnewline --newkeysempty",
     "i18n-typed": "node ./scripts/locale-wrap.js \"src/resources/locales/en.json\" \"en.json\" && typed_i18n -i \"en.json\" -o src/typings -l typescript && rimraf \"en.json\"",
     "redux-devtools": "redux-devtools --hostname=localhost --port=7770",
-    "execFile": "cross-env DEBUG=r2:*,readium-desktop:* ts-node -r tsconfig-paths/register"
+    "execFile": "cross-env DEBUG=r2:*,readium-desktop:* ts-node -r tsconfig-paths/register",
+    "bundle-stats": "npm run bundle-stats_renderer-library && npm run bundle-stats_renderer-reader && npm run bundle-stats_renderer-pdf && npm run bundle-stats_renderer-preload && npm run bundle-stats_main",
+    "bundle-stats_renderer-library": "webpack-bundle-analyzer dist/stats_renderer-library.json dist --report dist/stats_renderer-library.html --mode static --default-sizes stat --log-level debug",
+    "bundle-stats_renderer-reader": "webpack-bundle-analyzer dist/stats_renderer-reader.json dist --report dist/stats_renderer-reader.html --mode static --default-sizes stat --log-level debug",
+    "bundle-stats_renderer-pdf": "webpack-bundle-analyzer dist/stats_renderer-pdf.json dist --report dist/stats_renderer-pdf.html --mode static --default-sizes stat --log-level debug",
+    "bundle-stats_renderer-preload": "webpack-bundle-analyzer dist/stats_renderer-preload.json dist --report dist/stats_renderer-preload.html --mode static --default-sizes stat --log-level debug",
+    "bundle-stats_main": "webpack-bundle-analyzer dist/stats_main.json dist --report dist/stats_main.html --mode static --default-sizes stat --log-level debug"
   },
   "repository": {
     "type": "git",
@@ -347,6 +353,7 @@
     "tslint-language-service": "^0.9.9",
     "typescript": "^4.0.3",
     "webpack": "^4.44.2",
+    "webpack-bundle-analyzer": "^3.9.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "worker-loader": "^3.0.4"

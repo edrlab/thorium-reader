@@ -1,3 +1,4 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
 const path = require("path");
@@ -133,6 +134,16 @@ let config = Object.assign(
             ],
         },
         plugins: [
+            new BundleAnalyzerPlugin({
+                analyzerMode: "disabled",
+                defaultSizes: "stat", // "parsed"
+                openAnalyzer: false,
+                generateStatsFile: true,
+                statsFilename: "stats_main.json",
+                statsOptions: null,
+
+                excludeAssets: null,
+            }),
             new CopyWebpackPlugin({ patterns: [
                 {
                     from: path.join(
