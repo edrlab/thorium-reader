@@ -6,17 +6,18 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, dialog } from "electron";
+import { app } from "electron";
 import * as glob from "glob";
 import { EOL } from "os";
 import * as path from "path";
+import { main } from "readium-desktop/main";
 import { lockInstance } from "readium-desktop/main/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
-import { Store } from "redux";
 import * as yargs from "yargs";
-import { RootState } from "../redux/states";
+import { createStoreFromDi } from "../di";
+import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "../event";
 
-import { cliImport, cliOpds, openFileFromCli, openTitleFromCli } from "./commandLine";
+import { cliImport, cliOpds } from "./service";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -32,15 +33,6 @@ const gotTheLock = lockInstance();
 //  and then exits.
 //  The second-instance event is still received, but the argv is ignored for the CLI,
 //  as it has already been executed by the "second instance" itself (see Yargs handlers).
-
-// main Fucntion variable
-let mainFct: ((
-    storeMayBePromise: Promise<Store<RootState>> | Store<RootState>,
-    flushSession: boolean,
-    // tslint:disable-next-line: no-empty
-) => void | Promise<void>) = async () => { };
-
-let storePromise: Promise<Store<RootState>>;
 
 // yargs configuration
 yargs
@@ -59,26 +51,43 @@ yargs
                     type: "string",
                 })
         ,
-        (argv) => {
+        async (argv) => {
+
             // if the app is not started or it's the second instance
             // The boolean app.isReady is true when the second-instance event handler is called
             // (as guaranteed by the Electron API
             // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance )
-            if (!app.isReady() || !gotTheLock) {
-                const promise = cliOpds(argv.title, argv.url);
-                promise.then((isValid) => {
+
+            const appNotReady = !app.isReady();
+            const noLock = !gotTheLock;
+            if (appNotReady || noLock) {
+
+                let returnCode = 0;
+                try {
+
+                    const isValid = await cliOpds(argv.title, argv.url);
                     if (isValid) {
+
                         process.stdout.write("OPDS import done." + EOL);
-                        app.exit(0);
-                        return;
+                    } else {
+
+                        process.stderr.write("OPDS URL not valid, exit with code 1" + EOL);
                     }
-                    process.stderr.write("OPDS URL not valid, exit with code 1" + EOL);
-                    app.exit(1);
-                }).catch((e) => {
-                    debug("import error :", e);
-                    process.stderr.write(e.toString() + EOL);
-                    app.exit(1);
-                });
+
+                } catch (e) {
+
+                    debug("opds import error :", e);
+                    process.stderr.write("OPDS import ERROR: " + e.toString() + EOL);
+
+                    returnCode = 1;
+
+                } finally {
+
+                    app.exit(returnCode);
+                }
+            } else {
+
+                // what to do ?
             }
         },
     )
@@ -99,7 +108,10 @@ yargs
             // The boolean app.isReady is true when the second-instance event handler is called
             // (as guaranteed by the Electron API
             // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
-            if (!app.isReady() || !gotTheLock) {
+
+            const appNotReady = !app.isReady();
+            const noLock = !gotTheLock;
+            if (appNotReady || noLock) {
 
                 const pathArray = glob.sync(argv.path, {
                     absolute: true,
@@ -109,26 +121,35 @@ yargs
 
                 debug(pathArray, argv.path, pathArrayResolved);
 
-                // store is needed in cliImport
-                await storePromise;
-
+                let returnCode = 0;
                 try {
+
+                    // cliImport need the SagaMiddleware
+                    await createStoreFromDi();
                     const isValid = await cliImport(pathArrayResolved);
 
                     if (isValid) {
+
                         process.stdout.write("Publication(s) import done." + EOL);
-                        app.exit(0);
-                        return;
+                    } else {
+
+                        process.stderr.write("No valid files, exit with code 1" + EOL);
                     }
-                    process.stderr.write("No valid files, exit with code 1" + EOL);
-                    app.exit(1);
 
                 } catch (e) {
 
                     debug("import error :", e);
-                    process.stderr.write(e.toString() + EOL);
-                    app.exit(1);
+                    process.stderr.write("import ERROR: " + e.toString() + EOL);
+
+                    returnCode = 1;
+
+                } finally {
+
+                    app.exit(returnCode);
                 }
+            } else {
+
+                // what to do ?
             }
         },
     )
@@ -150,36 +171,45 @@ yargs
                 // debug("store loaded and starting main");
 
                 // flush session because user ask to read one publication
-                await Promise.all([mainFct(storePromise, true)]);
 
                 try {
 
-                    await app.whenReady();
+                    await Promise.all([
+                        main(true),
+                        app.whenReady(),
+                    ]);
 
-                    try {
-                        if (!await openTitleFromCli(argv.title)) {
-                            const errorMessage = `There is no publication title match for \"${argv.title}\"`;
-                            throw new Error(errorMessage);
-                        }
-                    } catch (e) {
-                        debug("$0 error :", e);
-                        const errorTitle = "No publication to read";
-                        dialog.showErrorBox(errorTitle, e.toString());
-                        process.stderr.write(e.toString() + EOL);
+                    if (argv.title) {
+                        const openTitleFromCliChannel = getOpenTitleFromCliChannel();
+                        openTitleFromCliChannel.put(argv.title);
                     }
 
-                } catch (_err) {
-                    // ignore
+                    // const isSuccess = await openTitleFromCli(argv.title);
+                    // if (!isSuccess) {
+                    //     const errorMessage = `There is no publication title match for \"${argv.title}\"`;
+                    //     throw new Error(errorMessage);
+                    // }
+
+                } catch (e) {
+
+                    debug("read title error :", e);
+
+                    // const errorTitle = "No publication to read";
+                    // dialog.showErrorBox(errorTitle, e.toString());
+
+                    process.stderr.write("read title ERROR: " + e.toString() + EOL);
                 }
+
             } else {
+
                 app.exit(0);
             }
         },
     )
-    .command("$0 [path]",
+    .command("$0 [path..]",
         "import and read an epub or lcpl file",
         (y) =>
-            y.positional("path", {
+            y.positional("path..", {
                 describe: "path of your publication, it can be an absolute, relative path",
                 type: "string",
                 coerce: (arg) => path.resolve(arg),
@@ -188,6 +218,7 @@ yargs
         ,
         async (argv) => {
             // if it's the main instance
+
             if (gotTheLock) {
 
                 debug("thorium $0");
@@ -195,45 +226,44 @@ yargs
                 // const store = await storePromise;
                 // debug("store loaded and starting main");
 
-                // flush session if user want to read his book
-                await Promise.all(
-                    [
-                        mainFct(
-                            storePromise,
-                            argv.path
-                                ? true
-                                : false,
-                        ),
-                    ],
-                );
+                // flush session because user ask to read one publication
 
-                debug("main started");
+                try {
 
-                if (argv.path) {
+                    await Promise.all([
+                        main(!!argv.path),
+                        app.whenReady(),
+                    ]);
 
-                    try {
-                        await app.whenReady();
+                    debug("main started");
 
-                        try {
-                            if (!await openFileFromCli(argv.path)) {
-                                const errorMessage = `Import failed for the publication path : ${argv.path}`;
-                                throw new Error(errorMessage);
-                            }
-                        } catch (e) {
-                            debug("$0 error :", e);
-                            const errorTitle = "Import Failed";
-                            dialog.showErrorBox(errorTitle, e.toString());
-                            process.stderr.write(e.toString() + EOL);
-                        }
+                    if (argv.path) {
 
-                    } catch (_err) {
-                        // ignore
+                        const openFileFromCliChannel = getOpenFileFromCliChannel();
+                        openFileFromCliChannel.put(argv.path);
+                        // const isSuccess = await openFileFromCli(argv.path);
+                        // if (!isSuccess) {
+                            // const errorMessage = `Import failed for the publication path : ${argv.path}`;
+                            // throw new Error(errorMessage);
+                        // }
+
                     }
+
+                } catch (e) {
+
+                    debug("$0 path error :", e);
+
+                    // const errorTitle = "Import Failed";
+                    // dialog.showErrorBox(errorTitle, e.toString());
+
+                    process.stderr.write("$0 title ERROR: " + e.toString() + EOL);
                 }
+
             } else {
 
                 app.exit(0);
             }
+
         },
     )
     .help()
@@ -250,15 +280,8 @@ yargs
  * @param processArgv process.argv
  */
 export function cli(
-    storeMayBePromise: Promise<Store<RootState>> | Store<RootState>,
-    main: (
-        storeMayBePromise: Promise<Store<RootState>> | Store<RootState>,
-        flushSession: boolean,
-    ) => void | Promise<void>,
     processArgv = process.argv,
 ) {
-    mainFct = main;
-    storePromise = Promise.resolve(storeMayBePromise);
 
     const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("-"))

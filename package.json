@@ -97,6 +97,10 @@
   "build": {
     "productName": "Thorium",
     "appId": "io.github.edrlab.thorium",
+    "protocols": {
+      "name": "thorium",
+      "schemes": ["thorium"]
+    },
     "afterSign": "scripts/notarize.js",
     "dmg": {
       "sign": false,
