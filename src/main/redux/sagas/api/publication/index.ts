@@ -29,7 +29,7 @@ function* importFromFsMayBeShiftPressed(
 
     const pubView = yield* callTyped(importFromFs, filePath);
 
-    if (shiftKeyPress) {
+    if (shiftKeyPress && Array.isArray(pubView)) {
 
         for (const pub of pubView) {
 
