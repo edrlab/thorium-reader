@@ -10,12 +10,12 @@ import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
     apiActions, dialogActions, downloadActions, i18nActions, keyboardActions, lcpActions,
+    publicationActions,
     readerActions, toastActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
-import { publicationActions } from "../actions";
 
 import { RootState } from "../states";
 

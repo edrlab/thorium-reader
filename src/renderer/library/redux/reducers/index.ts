@@ -7,13 +7,14 @@
 
 import { connectRouter } from "connected-react-router";
 import { History } from "history";
-import { downloadActions, readerActions } from "readium-desktop/common/redux/actions";
+import {
+    downloadActions, publicationActions, readerActions,
+} from "readium-desktop/common/redux/actions";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 // import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
-import { publicationActions } from "readium-desktop/main/redux/actions";
 // import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { loadReducer } from "readium-desktop/renderer/common/redux/reducers/load";

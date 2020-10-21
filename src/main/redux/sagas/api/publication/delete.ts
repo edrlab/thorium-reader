@@ -5,9 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { readerActions } from "readium-desktop/common/redux/actions";
+import {
+    publicationActions as publicationActionsCommon, readerActions,
+} from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
-import { publicationActions } from "readium-desktop/main/redux/actions";
+import {
+    publicationActions as publicationActionsMainProcess,
+} from "readium-desktop/main/redux/actions";
 import { call, delay, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 
@@ -16,7 +20,7 @@ export function* deletePublication(identifier: string): SagaGenerator<void> {
         yield put(readerActions.closeRequestFromPublication.build(identifier));
 
         // dispatch action to update publication/lastReadingQueue reducer
-        yield put(publicationActions.deletePublication.build(identifier));
+        yield put(publicationActionsMainProcess.deletePublication.build(identifier));
 
         // allow extra completion time to ensure the filesystem ZIP streams are closed
         yield delay(300);
@@ -30,5 +34,5 @@ export function* deletePublication(identifier: string): SagaGenerator<void> {
         yield call(() => publicationStorage.removePublication(identifier));
 
         // dispatch action to update catalog view
-        yield put(publicationActions.publicationUpdated.build());
+        yield put(publicationActionsCommon.publicationUpdated.build());
 }
