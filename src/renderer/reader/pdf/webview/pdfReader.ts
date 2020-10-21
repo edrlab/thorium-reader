@@ -533,27 +533,53 @@ export async function pdfReaderMountingPoint(
     };
 
     const goToPageAction = async (pageNumber: number) => {
-        _lastPageNumber = pageNumberCheck(pageNumber);
 
-        await displayPageNumber(_lastPageNumber);
+        try {
+            _lastPageNumber = pageNumberCheck(pageNumber);
+            await displayPageNumber(_lastPageNumber);
+
+        } catch (e) {
+
+            _lastPageNumber = pageNumber;
+
+            console.error("pageNextAction", e);
+        }
 
         bus.dispatch("page", _lastPageNumber);
     };
     bus.subscribe("page", goToPageAction);
 
     const pageNextAction = async () => {
-        _lastPageNumber = pageNumberCheck(++_lastPageNumber);
 
-        await displayPageNumber(_lastPageNumber);
+        const previousPageNumber = _lastPageNumber;
+        try {
+            _lastPageNumber = pageNumberCheck(++_lastPageNumber);
+            await displayPageNumber(_lastPageNumber);
+
+        } catch (e) {
+
+            _lastPageNumber = previousPageNumber;
+
+            console.error("pageNextAction", e);
+        }
 
         bus.dispatch("page", _lastPageNumber);
     };
     bus.subscribe("page-next", pageNextAction);
 
     const pagePreviousAction = async () => {
-        _lastPageNumber = pageNumberCheck(--_lastPageNumber);
 
-        await displayPageNumber(_lastPageNumber);
+        const previousPageNumber = _lastPageNumber;
+        try {
+            _lastPageNumber = pageNumberCheck(--_lastPageNumber);
+            await displayPageNumber(_lastPageNumber);
+
+        } catch (e) {
+
+            _lastPageNumber = previousPageNumber;
+
+            console.error("pagePreviousAction", e);
+        }
 
         bus.dispatch("page", _lastPageNumber);
     };
