@@ -31,25 +31,27 @@ function* importFromFsMayBeShiftPressed(
 
     if (shiftKeyPress) {
 
-        const [pub] = pubView;
-        if (pub?.identifier) {
+        for (const pub of pubView) {
 
-            yield spawn(function*() {
+            if (pub?.identifier) {
 
-                yield put(readerActions.openRequest.build(pub.identifier));
+                yield spawn(function*() {
 
-                while (true) {
+                    yield put(readerActions.openRequest.build(pub.identifier));
 
-                    const action = yield* takeTyped(readerActions.closeSuccess.build);
-                    const pubId = action?.payload?.publicationIdentifier;
-                    if (pubId === pub.identifier) {
+                    while (true) {
 
-                        yield* callTyped(deletePublication, pubId);
+                        const action = yield* takeTyped(readerActions.closeSuccess.build);
+                        const pubId = action?.payload?.publicationIdentifier;
+                        if (pubId === pub.identifier) {
 
-                        break;
+                            yield* callTyped(deletePublication, pubId);
+
+                            break;
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
