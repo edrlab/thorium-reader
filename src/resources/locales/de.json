@@ -295,6 +295,7 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "paginated": "Seitendarstellung",
+            "paraSpacing": "",
             "pdfZoom": {
                 "name": {
                     "100pct": "",

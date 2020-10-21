@@ -752,6 +752,26 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             </div>
             <div className={styles.line_tab_content}>
                 <div className={styles.subheading}>
+                    {__("reader.settings.paraSpacing")}
+                </div>
+                <input
+                    type="range"
+                    onChange={(e) => this.props.handleIndexChange(e, "paraSpacing")}
+                    id="text_length"
+                    min={0}
+                    max={optionsValues.paraSpacing.length - 1}
+                    value={this.props.indexes.paraSpacing}
+                    step={1}
+                    aria-valuemin={0}
+                    aria-valuemax={optionsValues.paraSpacing.length - 1}
+                    aria-valuenow={this.props.indexes.paraSpacing}
+                />
+                <span className={styles.reader_settings_value}>
+                    {this.roundRemValue(readerConfig.paraSpacing)}
+                </span>
+            </div>
+            <div className={styles.line_tab_content}>
+                <div className={styles.subheading}>
                     {__("reader.settings.lineSpacing")}
                 </div>
                 <input

@@ -295,6 +295,7 @@
             "lineSpacing": "行の間隔",
             "margin": "縦列の余白",
             "paginated": "ページ型",
+            "paraSpacing": "",
             "pdfZoom": {
                 "name": {
                     "100pct": "",
