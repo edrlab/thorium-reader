@@ -295,6 +295,7 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "paginated": "Paginé",
+            "paraSpacing": "",
             "pdfZoom": {
                 "name": {
                     "100pct": "",

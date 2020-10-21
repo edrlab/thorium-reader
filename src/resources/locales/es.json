@@ -295,6 +295,7 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "paginated": "Paginado",
+            "paraSpacing": "",
             "pdfZoom": {
                 "name": {
                     "100pct": "",

@@ -295,6 +295,7 @@
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
             "paginated": "Skaidyti į puslapius",
+            "paraSpacing": "",
             "pdfZoom": {
                 "name": {
                     "100pct": "",

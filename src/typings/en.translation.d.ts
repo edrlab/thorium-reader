@@ -553,6 +553,7 @@ declare namespace typed_i18n {
     readonly "justification": string,
     readonly "justify": string,
     readonly "letterSpacing": string,
+    readonly "paraSpacing": string,
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "paginated": string,
@@ -714,6 +715,7 @@ declare namespace typed_i18n {
   readonly "justification": string,
   readonly "justify": string,
   readonly "letterSpacing": string,
+  readonly "paraSpacing": string,
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "paginated": string,
@@ -770,6 +772,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.justification", __?: {}): string;
   (_: "reader.settings.justify", __?: {}): string;
   (_: "reader.settings.letterSpacing", __?: {}): string;
+  (_: "reader.settings.paraSpacing", __?: {}): string;
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
