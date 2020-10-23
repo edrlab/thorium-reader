@@ -123,25 +123,20 @@ export class PublicationStorage {
             const root = this.buildPublicationPath(identifier);
 
             const dir = await fsp.opendir(root);
-            try {
 
-                // https://github.com/palantir/tslint/issues/3997
-                // tslint:disable-next-line: await-promise
-                for await (const dirent of dir) {
+            // https://github.com/palantir/tslint/issues/3997
+            // tslint:disable-next-line: await-promise
+            for await (const dirent of dir) {
 
-                    if (dirent?.isFile() && dirent.name) {
-                        const ext = path.extname(dirent.name);
-                        if (acceptedExtension(ext)) {
-                            return path.join(
-                                root,
-                                dirent.name,
-                            );
-                        }
+                if (dirent?.isFile() && dirent.name) {
+                    const ext = path.extname(dirent.name);
+                    if (acceptedExtension(ext)) {
+                        return path.join(
+                            root,
+                            dirent.name,
+                        );
                     }
                 }
-            } finally {
-
-                await dir.close();
             }
 
         }
