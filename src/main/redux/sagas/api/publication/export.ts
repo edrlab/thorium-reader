@@ -33,7 +33,7 @@ export function* exportPublication(publicationView: PublicationView) {
                 destinationPath = path.dirname(destinationPath);
             }
             const publicationStorage = diMainGet("publication-storage");
-            publicationStorage.copyPublicationToPath(publicationView, destinationPath);
+            yield* callTyped(() => publicationStorage.copyPublicationToPath(publicationView, destinationPath));
         }
     }
 }
