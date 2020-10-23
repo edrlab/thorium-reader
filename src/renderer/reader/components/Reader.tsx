@@ -51,6 +51,9 @@ import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import {
+    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
+import {
     audioForward, audioPause, audioRewind, audioTogglePlayPause,
 } from "@r2-navigator-js/electron/renderer/audiobook";
 import {
@@ -1019,10 +1022,14 @@ class Reader extends React.Component<IProps, IState> {
 
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
 
-            const manifestUrl = this.props.manifestUrlR2Protocol;
-            const [url] = manifestUrl.split("/manifest.json");
-            console.log("divina url", url);
+            let manifestUrl = this.props.manifestUrlR2Protocol;
+            console.log("divina url", manifestUrl);
+            if (manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)) {
+                manifestUrl = convertCustomSchemeToHttpUrl(manifestUrl);
+            }
+            console.log("divina url ADJUSTED", manifestUrl);
 
+            const [url] = manifestUrl.split("/manifest.json");
             // Load the divina from its folder path
             this.currentDivinaPlayer.openDivinaFromFolderPath(url, null, options);
 
