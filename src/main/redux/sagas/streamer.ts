@@ -79,7 +79,7 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
         // Remove publication from streamer because there is no more readers
         // open for this publication
         // Get epub file from publication
-        const epubPath = pubStorage.getPublicationEpubPath(pubId);
+        const epubPath = yield* callTyped(() => pubStorage.getPublicationEpubPath(pubId));
         // const epubPath = path.join(
         //     pubStorage.getRootPath(),
         //     publicationDocument.files[0].url.substr(6),

@@ -36,11 +36,11 @@ import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { Server } from "@r2-streamer-js/http/server";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import { extractCrc32OnZip } from "../crc";
+import { publicationParseFromPathToR2Publication } from "../publicationParsePromise";
 import { lcpActions } from "../redux/actions";
 import { DeviceIdManager } from "./device";
 
@@ -198,19 +198,16 @@ export class LcpManager {
             (requiresLCP && !publicationDocument.resources.r2LCPBase64);
 
         if (mustParse) {
-            const epubPath = this.publicationStorage.getPublicationEpubPath(
+            const epubPath = await this.publicationStorage.getPublicationEpubPath(
                 publicationDocument.identifier,
             );
 
-            r2Publication = await PublicationParsePromise(epubPath);
+            r2Publication = await publicationParseFromPathToR2Publication(epubPath);
             // just like when calling lsdLcpUpdateInject():
             // r2Publication.LCP.ZipPath is set to META-INF/license.lcpl
             // r2Publication.LCP.init(); is called to prepare for decryption (native NodeJS plugin)
             // r2Publication.LCP.JsonSource is set
 
-            // after PublicationParsePromise, cleanup zip handler
-            // (no need to fetch ZIP data beyond this point)
-            r2Publication.freeDestroy();
         } else {
             const r2PublicationBase64 = publicationDocument.resources.r2PublicationBase64;
             const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
@@ -286,7 +283,7 @@ export class LcpManager {
             }
         }
 
-        const epubPath = this.publicationStorage.getPublicationEpubPath(
+        const epubPath = await this.publicationStorage.getPublicationEpubPath(
             publicationDocument.identifier,
         );
 
@@ -399,7 +396,7 @@ export class LcpManager {
                         `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
                         ));
 
-                    const epubPath = this.publicationStorage.getPublicationEpubPath(
+                    const epubPath = await this.publicationStorage.getPublicationEpubPath(
                         publicationDocument.identifier,
                     );
                     const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
@@ -513,7 +510,7 @@ export class LcpManager {
                         `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
                         ));
 
-                    const epubPath = this.publicationStorage.getPublicationEpubPath(
+                    const epubPath = await this.publicationStorage.getPublicationEpubPath(
                         publicationDocument.identifier,
                     );
                     const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
@@ -636,7 +633,7 @@ export class LcpManager {
             lcpPasses = secrets;
         }
 
-        const epubPath = this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
+        const epubPath = await this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
         // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
         let r2Publication = this.streamer.cachedPublication(epubPath);
         if (!r2Publication) {
@@ -909,7 +906,7 @@ export class LcpManager {
                         // will be updated below via another round of processStatusDocument_()
                         r2Publication.LCP.LSD = prevLSD;
 
-                        const epubPath = this.publicationStorage.getPublicationEpubPath(
+                        const epubPath = await this.publicationStorage.getPublicationEpubPath(
                             publicationDocumentIdentifier,
                         );
                         await this.injectLcplIntoZip_(epubPath, licenseUpdateJson);

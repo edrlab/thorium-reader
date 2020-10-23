@@ -121,7 +121,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
     }
 
     const pubStorage = yield* callTyped(() => diMainGet("publication-storage"));
-    const epubPath = pubStorage.getPublicationEpubPath(publicationDocument.identifier);
+    const epubPath = yield* callTyped(() => pubStorage.getPublicationEpubPath(publicationDocument.identifier));
     // const epubPath = path.join(
     //     pubStorage.getRootPath(),
     //     publicationDocument.files[0].url.substr(6),

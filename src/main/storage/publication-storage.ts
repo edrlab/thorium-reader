@@ -5,20 +5,28 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
-import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { ContentType } from "readium-desktop/utils/content-type";
-import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
+import { getFileSize } from "readium-desktop/utils/fs";
+import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
+import * as rimraf from "rimraf";
 import slugify from "slugify";
+import { pipeline } from "stream";
+import { promisify } from "util";
 
-import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
-import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
-import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+
+import { extractFileFromZip } from "../zip/extract";
+
+// Logger
+const debug = debug_("readium-desktop:main/publication-storage");
+debug("_");
 
 // Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
@@ -50,102 +58,121 @@ export class PublicationStorage {
     public async storePublication(
         identifier: string,
         srcPath: string,
+        r2Publication: R2Publication,
     ): Promise<File[]> {
-        // Create a directory whose name is equals to publication identifier
-        const pubDirPath = this.buildPublicationPath(identifier);
-        fs.mkdirSync(pubDirPath);
 
-        // Store publication file and extract its cover
-        const bookFile = await this.storePublicationBook(
-            identifier, srcPath);
-        const coverFile = await this.storePublicationCover(
-            identifier, srcPath);
-        const files: File[] = [];
-        files.push(bookFile);
+        const fsp = fs.promises;
 
-        if (coverFile != null) {
-            files.push(coverFile);
+        const filePath = this.buildPublicationPath(identifier);
+
+        try {
+
+            await fsp.mkdir(filePath);
+        } catch (e) {
+
+            debug("ERROR storePublication can't create the folder", filePath);
         }
+
+        const getCoverPromise = async () => {
+
+            const coverLink = r2Publication?.GetCover();
+            const coverPath = coverLink?.Href;
+            if (coverPath) {
+                return this.storePublicationCover(identifier, srcPath, filePath, coverPath);
+            }
+            return Promise.resolve<undefined>(undefined);
+        };
+
+        const settled = await Promise.allSettled([
+            this.storePublicationBook(identifier, srcPath, filePath),
+            getCoverPromise(),
+        ]);
+
+        const files = settled
+            .map((settledResult) =>
+                settledResult.status === "fulfilled"
+                    ? settledResult.value
+                    : undefined,
+            ).filter((v) => !!v);
+
+        settled.forEach((settledResult, i) => {
+            if (settledResult.status === "rejected") {
+                debug(`storePublication promise rejected ${i} reason:${settledResult.reason}`);
+            }
+        });
 
         return files;
     }
 
-    public removePublication(identifier: string) {
-        rmDirSync(this.buildPublicationPath(identifier));
+    public async removePublication(identifier: string) {
+
+        if (identifier) {
+            const filePath = this.buildPublicationPath(identifier);
+
+            const rimrafPromise = promisify(rimraf);
+            await rimrafPromise(filePath); // no error catched, handled by saga
+        }
     }
 
-    // TODO: fs.existsSync() is really costly,
-    // TODO : A disaster ! :)
-    // and getPublicationEpubPath() is called many times!
-    public getPublicationEpubPath(identifier: string): string {
+    public async getPublicationEpubPath(identifier: string): Promise<string> {
 
-        const root = this.buildPublicationPath(identifier);
-        const pathEpub = path.join(
-            root,
-            `book${acceptedExtensionObject.epub}`,
-        );
-        if (fs.existsSync(pathEpub)) {
-            return pathEpub;
+        if (identifier) {
+
+            const fsp = fs.promises;
+
+            const root = this.buildPublicationPath(identifier);
+
+            const dir = await fsp.opendir(root);
+            try {
+
+                // https://github.com/palantir/tslint/issues/3997
+                // tslint:disable-next-line: await-promise
+                for await (const dirent of dir) {
+
+                    if (dirent?.isFile() && dirent.name) {
+                        const ext = path.extname(dirent.name);
+                        if (acceptedExtension(ext)) {
+                            return path.join(
+                                root,
+                                dirent.name,
+                            );
+                        }
+                    }
+                }
+            } finally {
+
+                await dir.close();
+            }
+
         }
-        const pathAudioBook = path.join(
-            root,
-            `book${acceptedExtensionObject.audiobook}`,
-        );
-        if (fs.existsSync(pathAudioBook)) {
-            return pathAudioBook;
-        }
-        const pathWebpub = path.join(
-            root,
-            `book${acceptedExtensionObject.webpub}`,
-        );
-        if (fs.existsSync(pathWebpub)) {
-            return pathWebpub;
-        }
-        const pathAudioBookLcp = path.join(
-            root,
-            `book${acceptedExtensionObject.audiobookLcp}`,
-        );
-        if (fs.existsSync(pathAudioBookLcp)) {
-            return pathAudioBookLcp;
-        }
-        const pathAudioBookLcpAlt = path.join(
-            root,
-            `book${acceptedExtensionObject.audiobookLcpAlt}`,
-        );
-        if (fs.existsSync(pathAudioBookLcpAlt)) {
-            return pathAudioBookLcpAlt;
-        }
-        const pathDivina = path.join(
-            root,
-            `book${acceptedExtensionObject.divina}`,
-        );
-        if (fs.existsSync(pathDivina)) {
-            return pathDivina;
-        }
-        const pathLcpPdf = path.join(
-            root,
-            `book${acceptedExtensionObject.pdfLcp}`,
-        );
-        if (fs.existsSync(pathLcpPdf)) {
-            return pathLcpPdf;
-        }
+
         throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
+
     }
 
-    public copyPublicationToPath(publicationView: PublicationView, destinationPath: string) {
-        const publicationPath = this.getPublicationEpubPath(publicationView.identifier);
+    public async copyPublicationToPath(publicationView: PublicationView, destinationPath: string) {
+
+        const publicationPath = await this.getPublicationEpubPath(publicationView.identifier);
+
         const extension = path.extname(publicationPath);
         const newFilePath = `${destinationPath}/${slugify(publicationView.title)}${extension}`;
-        fs.copyFile(publicationPath, newFilePath, async (err) => {
-            if (err) {
-                await dialog.showMessageBox({
-                    type: "error",
-                    message: err.message,
-                    title: err.name,
-                    buttons: ["OK"],
-                });
-            }
-        });
+
+        const fsp = fs.promises;
+
+        try {
+
+            await fsp.copyFile(publicationPath, newFilePath);
+
+        } catch (err) {
+
+            debug("ERROR copyPublication to external dir", err);
+            await dialog.showMessageBox({
+                type: "error",
+                message: err?.message || "",
+                title: err?.name || "copyPublicationPath",
+                buttons: ["OK"],
+            });
+        }
     }
 
     private buildPublicationPath(identifier: string): string {
@@ -155,123 +182,75 @@ export class PublicationStorage {
     private async storePublicationBook(
         identifier: string,
         srcPath: string,
-    ): Promise<File> {
+        appPath: string,
+    ): Promise<File | undefined> {
 
-        const extension = path.extname(srcPath);
-        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension);
-        const isAudioBookLcp = new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`).test(extension);
-        const isAudioBookLcpAlt = new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
-        const isWebpub = new RegExp(`\\${acceptedExtensionObject.webpub}$`).test(extension);
-        const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`).test(extension);
-        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
+        if (identifier && srcPath) {
 
-        const ext = isAudioBook
-            ? acceptedExtensionObject.audiobook
-            : (
-                isAudioBookLcp
-                    ? acceptedExtensionObject.audiobookLcp
-                    : (
-                        isAudioBookLcpAlt
-                            ? acceptedExtensionObject.audiobookLcpAlt
-                            : (
-                                isDivina
-                                    ? acceptedExtensionObject.divina
-                                    : (
-                                        isWebpub
-                                            ? acceptedExtensionObject.webpub
-                                            : (
-                                                isLcpPdf
-                                                    ? acceptedExtensionObject.pdfLcp
-                                                    : acceptedExtensionObject.epub
-                                            )
-                                    )
-                            )
-                    )
+            const ext = path.extname(srcPath);
+            const extFallback = acceptedExtension(ext) ? ext : acceptedExtensionObject.epub; // epub by default
+
+            const filename = `book${extFallback}`;
+            const dstPath = path.join(
+                appPath,
+                filename,
             );
 
-        const filename = `book${ext}`;
-        const dstPath = path.join(
-            this.buildPublicationPath(identifier),
-            filename,
-        );
+            const fsp = fs.promises;
+            try {
 
-        return new Promise<File>((resolve, _reject) => {
-            const writeStream = fs.createWriteStream(dstPath);
-            const fileResolve = () => {
-                resolve({
+                await fsp.copyFile(srcPath, dstPath);
+
+                return {
                     url: `store://${identifier}/${filename}`,
-                    ext,
-                    contentType:
-                        isAudioBook
-                            ? ContentType.AudioBookPacked
-                            : (
-                                (isAudioBookLcp || isAudioBookLcpAlt)
-                                    ? ContentType.AudioBookPackedLcp
-                                    : isDivina
-                                        ? ContentType.DivinaPacked
-                                        : isWebpub
-                                            ? ContentType.webpubPacked
-                                            : isLcpPdf
-                                                ? ContentType.lcppdf
-                                                : ContentType.Epub
-                            ),
-                    size: getFileSize(dstPath),
-                });
-            };
+                    ext: extFallback,
+                    contentType: findMimeTypeWithExtension(extFallback),
+                };
+            } catch (e) {
 
-            writeStream.on("finish", fileResolve);
-            fs.createReadStream(srcPath).pipe(writeStream);
-        });
+                debug("ERROR store publcation book copy file", e);
+            }
+
+        }
+
+        return undefined;
     }
 
     // Extract the image cover buffer then create a file on the publication folder
     private async storePublicationCover(
         identifier: string,
         srcPath: string,
-    ): Promise<File> {
+        appPath: string,
+        coverInternalPath: string,
+    ): Promise<File | undefined> {
 
-        const r2Publication = await PublicationParsePromise(srcPath);
+        if (srcPath && coverInternalPath) {
 
-        // private Internal is very hacky! :(
-        const zipInternal = (r2Publication as any).Internal.find((i: any) => {
-            if (i.Name === "zip") {
-                return true;
+            const coverStream = await extractFileFromZip(srcPath, coverInternalPath);
+            if (coverStream) {
+
+                const coverExt = path.extname(coverInternalPath);
+                const coverFilename = `cover${coverExt}`;
+                const coverDstPath = path.join(
+                    appPath,
+                    coverFilename,
+                );
+
+                const dstStream = fs.createWriteStream(coverDstPath);
+
+                const pipelinePromise = promisify(pipeline);
+                await pipelinePromise(coverStream, dstStream);
+
+                return {
+                    url: `store://${identifier}/${coverFilename}`,
+                    ext: coverExt,
+                    contentType: findMimeTypeWithExtension(coverExt),
+                    size: await getFileSize(coverDstPath) || 0,
+                };
             }
-            return false;
-        });
-        const zip = zipInternal.Value as IZip;
 
-        const coverLink = r2Publication.GetCover();
-        if (!coverLink) {
-            // after PublicationParsePromise, cleanup zip handler
-            r2Publication.freeDestroy();
-            return null;
         }
 
-        const coverType: string = coverLink.TypeLink;
-        const zipStream = await zip.entryStreamPromise(coverLink.Href);
-        const zipBuffer = await streamToBufferPromise(zipStream.stream);
-
-        // after PublicationParsePromise, cleanup zip handler
-        r2Publication.freeDestroy();
-
-        // Remove start dot in extensoion
-        const coverExt = path.extname(coverLink.Href).slice(1);
-        const coverFilename = "cover." + coverExt;
-        const coverDstPath = path.join(
-            this.buildPublicationPath(identifier),
-            coverFilename,
-        );
-
-        // Write cover to fs
-        fs.writeFileSync(coverDstPath, zipBuffer);
-
-        // Return cover file information
-        return {
-            url: `store://${identifier}/${coverFilename}`,
-            ext: coverExt,
-            contentType: coverType,
-            size: getFileSize(coverDstPath),
-        };
+        return undefined;
     }
 }
