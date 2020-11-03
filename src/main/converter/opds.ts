@@ -47,6 +47,7 @@ const supportedFileTypeLinkArray = [
     ContentType.Lcp,
     ContentType.AudioBook,
     ContentType.webpub,
+    ContentType.webpubPacked,
     ContentType.Json,
     ContentType.JsonLd,
     ContentType.pdf,
