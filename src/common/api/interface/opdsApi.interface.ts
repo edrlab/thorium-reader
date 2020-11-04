@@ -34,15 +34,15 @@ export interface IOpdsApi {
     getUrlWithSearchLinks: (
         searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch,
     ) => Promise<string | undefined>;
-    oauth: (
-        opdsUrl: string,
-        login: string | undefined,
-        password: string | undefined,
-        oAuthUrl: string,
-        oAuthRefreshUrl: string | undefined,
-        OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
-        OPDS_AUTH_ENCRYPTION_IV_HEX: string,
-        refreshToken?: string) => Promise<boolean>;
+    // oauth: (
+    //     opdsUrl: string,
+    //     login: string | undefined,
+    //     password: string | undefined,
+    //     oAuthUrl: string,
+    //     oAuthRefreshUrl: string | undefined,
+    //     OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
+    //     OPDS_AUTH_ENCRYPTION_IV_HEX: string,
+    //     refreshToken?: string) => Promise<boolean>;
 }
 
 export interface IOpdsModuleApi {
@@ -53,5 +53,5 @@ export interface IOpdsModuleApi {
     "opds/updateFeed": IOpdsApi["updateFeed"];
     "opds/browse": IOpdsApi["browse"];
     "opds/getUrlWithSearchLinks": IOpdsApi["getUrlWithSearchLinks"];
-    "opds/oauth": IOpdsApi["oauth"];
+    // "opds/oauth": IOpdsApi["oauth"];
 }

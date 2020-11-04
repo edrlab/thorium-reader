@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as crypto from "crypto";
+// import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { RequestInit } from "node-fetch";
@@ -16,11 +16,11 @@ import {
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { httpGet } from "readium-desktop/main/http";
-import { RootState } from "readium-desktop/main/redux/states";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
+// import { RootState } from "readium-desktop/main/redux/states";
+// import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/content-type";
-import { Store } from "redux";
-import * as request from "request";
+// import { Store } from "redux";
+// import * as request from "request";
 import * as URITemplate from "urijs/src/URITemplate";
 import * as xmldom from "xmldom";
 
@@ -33,7 +33,7 @@ import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
-import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
+// import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 import { OpdsFeedViewConverter } from "../converter/opds";
@@ -84,8 +84,8 @@ export class OpdsService {
         return searchResult.data;
     }
 
-    @inject(diSymbolTable.store)
-    private readonly store!: Store<RootState>;
+    // @inject(diSymbolTable.store)
+    // private readonly store!: Store<RootState>;
 
     @inject(diSymbolTable["config-repository"])
     private readonly configRepository!: ConfigRepository<AccessTokenMap>;
@@ -98,7 +98,7 @@ export class OpdsService {
 
     public async opdsRequest(
         url: string,
-        tryingAgain: boolean = false): Promise<THttpGetOpdsResultView> {
+        _tryingAgain: boolean = false): Promise<THttpGetOpdsResultView> {
 
         let savedAccessTokens: AccessTokenMap = {};
         try {
@@ -188,50 +188,50 @@ export class OpdsService {
                             jsonObj.groups ||
                             jsonObj.catalogs);
 
-                    const tryRefreshAccessToken =
-                        // to test / mock access token expiry, comment the next two lines:
-                        isAuth &&
-                        opdsFeedData.isFailure && opdsFeedData.statusCode === 401 &&
+                    // const tryRefreshAccessToken =
+                    //     // to test / mock access token expiry, comment the next two lines:
+                    //     isAuth &&
+                    //     opdsFeedData.isFailure && opdsFeedData.statusCode === 401 &&
 
-                        accessToken && accessToken.refreshToken && accessToken.refreshUrl &&
-                        !tryingAgain;
+                    //     accessToken && accessToken.refreshToken && accessToken.refreshUrl &&
+                    //     !tryingAgain;
                     // no need to decrypt pass!
                     // && this._OPDS_AUTH_ENCRYPTION_KEY_HEX &&
                     // this._OPDS_AUTH_ENCRYPTION_KEY_HEX ? true : false;
 
-                    if (tryRefreshAccessToken) {
-                        let doRetry = false;
-                        try {
-                            await this.oauth(
-                                url,
-                                undefined,
-                                undefined,
-                                accessToken.authenticationUrl,
-                                accessToken.refreshUrl,
-                                undefined, // this._OPDS_AUTH_ENCRYPTION_KEY_HEX, // can be undefined first-time around
-                                undefined, // this._OPDS_AUTH_ENCRYPTION_IV_HEX, // can be undefined first-time around
-                                accessToken.refreshToken);
+                    // if (tryRefreshAccessToken) {
+                    //     let doRetry = false;
+                    //     try {
+                    //         await this.oauth(
+                    //             url,
+                    //             undefined,
+                    //             undefined,
+                    //             accessToken.authenticationUrl,
+                    //             accessToken.refreshUrl,
+                    //             undefined, // this._OPDS_AUTH_ENCRYPTION_KEY_HEX, // can be undefined first-time around
+                    //             undefined, // this._OPDS_AUTH_ENCRYPTION_IV_HEX, // can be undefined first-time around
+                    //             accessToken.refreshToken);
 
-                            doRetry = true;
-                        } catch (err) {
-                            debug(err);
-                            // access token refresh failed
-                            // =>
-                            // continue with auth form
-                        }
+                    //         doRetry = true;
+                    //     } catch (err) {
+                    //         debug(err);
+                    //         // access token refresh failed
+                    //         // =>
+                    //         // continue with auth form
+                    //     }
 
-                        if (doRetry) {
-                            return this.opdsRequest(url, true); // tryingAgain
-                            // uncomment the following to debug-breakpoint more specifically in the promise "cascade"
-                            // try {
-                            //     const res = await this.browse(url, converter, converterAuth, true); // tryingAgain
-                            //     return res;
-                            // } catch (err) {
-                            //     debug(err);
-                            //     throw err; // reject
-                            // }
-                        }
-                    }
+                    //     if (doRetry) {
+                    //         return this.opdsRequest(url, true); // tryingAgain
+                    //         // uncomment the following to debug-breakpoint more specifically in the promise "cascade"
+                    //         // try {
+                    //         //     const res = await this.browse(url, converter, converterAuth, true); // tryingAgain
+                    //         //     return res;
+                    //         // } catch (err) {
+                    //         //     debug(err);
+                    //         //     throw err; // reject
+                    //         // }
+                    //     }
+                    // }
 
                     if (isAuth) { // usually with opdsFeedData.isFailure
                         r2OpdsAuth = TaJsonDeserialize<OPDSAuthenticationDoc>(
@@ -297,143 +297,143 @@ export class OpdsService {
     }
 
     // tslint:disable-next-line: max-line-length
-    public async oauth(
-        opdsUrl: string,
-        login: string | undefined,
-        passwordEncrypted: string | undefined,
-        oAuthUrl: string,
-        oAuthRefreshUrl: string | undefined,
-        OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
-        OPDS_AUTH_ENCRYPTION_IV_HEX: string,
-        refreshToken?: string): Promise<boolean> {
+    // public async oauth(
+    //     opdsUrl: string,
+    //     login: string | undefined,
+    //     passwordEncrypted: string | undefined,
+    //     oAuthUrl: string,
+    //     oAuthRefreshUrl: string | undefined,
+    //     OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
+    //     OPDS_AUTH_ENCRYPTION_IV_HEX: string,
+    //     refreshToken?: string): Promise<boolean> {
 
-        // this._OPDS_AUTH_ENCRYPTION_KEY_HEX = OPDS_AUTH_ENCRYPTION_KEY_HEX;
-        // this._OPDS_AUTH_ENCRYPTION_IV_HEX = OPDS_AUTH_ENCRYPTION_IV_HEX;
+    //     // this._OPDS_AUTH_ENCRYPTION_KEY_HEX = OPDS_AUTH_ENCRYPTION_KEY_HEX;
+    //     // this._OPDS_AUTH_ENCRYPTION_IV_HEX = OPDS_AUTH_ENCRYPTION_IV_HEX;
 
-        let password: string | undefined;
+    //     let password: string | undefined;
 
-        if (passwordEncrypted) {
-            const encrypted = Buffer.from(passwordEncrypted, "base64");
-            const decrypteds: Buffer[] = [];
-            const decryptStream = crypto.createDecipheriv("aes-256-cbc",
-                Buffer.from(OPDS_AUTH_ENCRYPTION_KEY_HEX, "hex"),
-                Buffer.from(OPDS_AUTH_ENCRYPTION_IV_HEX, "hex"));
-            decryptStream.setAutoPadding(false);
-            const buff1 = decryptStream.update(encrypted);
-            if (buff1) {
-                decrypteds.push(buff1);
-            }
-            const buff2 = decryptStream.final();
-            if (buff2) {
-                decrypteds.push(buff2);
-            }
-            const decrypted = Buffer.concat(decrypteds);
-            const nPaddingBytes = decrypted[decrypted.length - 1];
-            const size = encrypted.length - nPaddingBytes;
-            password = decrypted.slice(0, size).toString("utf8");
-        }
+    //     if (passwordEncrypted) {
+    //         const encrypted = Buffer.from(passwordEncrypted, "base64");
+    //         const decrypteds: Buffer[] = [];
+    //         const decryptStream = crypto.createDecipheriv("aes-256-cbc",
+    //             Buffer.from(OPDS_AUTH_ENCRYPTION_KEY_HEX, "hex"),
+    //             Buffer.from(OPDS_AUTH_ENCRYPTION_IV_HEX, "hex"));
+    //         decryptStream.setAutoPadding(false);
+    //         const buff1 = decryptStream.update(encrypted);
+    //         if (buff1) {
+    //             decrypteds.push(buff1);
+    //         }
+    //         const buff2 = decryptStream.final();
+    //         if (buff2) {
+    //             decrypteds.push(buff2);
+    //         }
+    //         const decrypted = Buffer.concat(decrypteds);
+    //         const nPaddingBytes = decrypted[decrypted.length - 1];
+    //         const size = encrypted.length - nPaddingBytes;
+    //         password = decrypted.slice(0, size).toString("utf8");
+    //     }
 
-        return new Promise<boolean>((resolve, reject) => {
+    //     return new Promise<boolean>((resolve, reject) => {
 
-            const failure = (err: any) => {
-                debug(err);
-                reject(err);
-            };
+    //         const failure = (err: any) => {
+    //             debug(err);
+    //             reject(err);
+    //         };
 
-            const success = async (response: request.RequestResponse) => {
+    //         const success = async (response: request.RequestResponse) => {
 
-                if (response.statusCode && (response.statusCode < 200 || response.statusCode >= 300)) {
-                    failure("HTTP CODE " + response.statusCode);
-                    return;
-                }
+    //             if (response.statusCode && (response.statusCode < 200 || response.statusCode >= 300)) {
+    //                 failure("HTTP CODE " + response.statusCode);
+    //                 return;
+    //             }
 
-                let responseData: Buffer;
-                try {
-                    responseData = await streamToBufferPromise(response);
-                } catch (err) {
-                    failure(err);
-                    return;
-                }
-                try {
-                    const responseStr = responseData.toString("utf8");
-                    const responseJson = JSON.parse(responseStr);
-                    // {
-                    //     "access_token": "XXX",
-                    //     "token_type": "Bearer",
-                    //     "expires_in": 3600,
-                    //     "refresh_token": "YYYY",
-                    //     "created_at": 1574940691
-                    // }
+    //             let responseData: Buffer;
+    //             try {
+    //                 responseData = await streamToBufferPromise(response);
+    //             } catch (err) {
+    //                 failure(err);
+    //                 return;
+    //             }
+    //             try {
+    //                 const responseStr = responseData.toString("utf8");
+    //                 const responseJson = JSON.parse(responseStr);
+    //                 // {
+    //                 //     "access_token": "XXX",
+    //                 //     "token_type": "Bearer",
+    //                 //     "expires_in": 3600,
+    //                 //     "refresh_token": "YYYY",
+    //                 //     "created_at": 1574940691
+    //                 // }
 
-                    if (!responseJson.access_token) {
-                        failure(responseStr);
-                        return;
-                    }
-                    const domain = opdsUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-                    const domainAccessToken: AccessTokenMap = {};
-                    domainAccessToken[domain] = {
-                        authenticationUrl: oAuthUrl,
-                        authenticationToken: responseJson.access_token,
-                        refreshUrl: oAuthRefreshUrl,
-                        refreshToken: responseJson.refresh_token,
-                    }; // as AccessTokenValue;
+    //                 if (!responseJson.access_token) {
+    //                     failure(responseStr);
+    //                     return;
+    //                 }
+    //                 const domain = opdsUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
+    //                 const domainAccessToken: AccessTokenMap = {};
+    //                 domainAccessToken[domain] = {
+    //                     authenticationUrl: oAuthUrl,
+    //                     authenticationToken: responseJson.access_token,
+    //                     refreshUrl: oAuthRefreshUrl,
+    //                     refreshToken: responseJson.refresh_token,
+    //                 }; // as AccessTokenValue;
 
-                    let savedAccessTokens: AccessTokenMap = {};
-                    try {
-                        const configDoc = await this.configRepository.get("oauth");
-                        savedAccessTokens = configDoc.value;
-                    } catch (err) {
-                        debug("oauth get");
-                        debug(err);
-                    }
-                    const accessTokens: AccessTokenMap = Object.assign(
-                        {},
-                        savedAccessTokens,
-                        domainAccessToken,
-                    );
-                    try {
-                        await this.configRepository.save({
-                            identifier: "oauth",
-                            value: accessTokens,
-                        });
-                    } catch (err) {
-                        debug("oauth save");
-                        debug(err);
-                    }
+    //                 let savedAccessTokens: AccessTokenMap = {};
+    //                 try {
+    //                     const configDoc = await this.configRepository.get("oauth");
+    //                     savedAccessTokens = configDoc.value;
+    //                 } catch (err) {
+    //                     debug("oauth get");
+    //                     debug(err);
+    //                 }
+    //                 const accessTokens: AccessTokenMap = Object.assign(
+    //                     {},
+    //                     savedAccessTokens,
+    //                     domainAccessToken,
+    //                 );
+    //                 try {
+    //                     await this.configRepository.save({
+    //                         identifier: "oauth",
+    //                         value: accessTokens,
+    //                     });
+    //                 } catch (err) {
+    //                     debug("oauth save");
+    //                     debug(err);
+    //                 }
 
-                    resolve(true);
-                } catch (err) {
-                    failure(err);
-                }
-            };
+    //                 resolve(true);
+    //             } catch (err) {
+    //                 failure(err);
+    //             }
+    //         };
 
-            const locale = this.store.getState().i18n.locale;
-            const headers = {
-                "user-agent": "readium-desktop",
-                "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
-                "Content-Type": ContentType.FormUrlEncoded,
-                "Accept": `${ContentType.Json},${ContentType.Xml}`,
-            };
-            request.post({
-                form: login && password ? {
-                    grant_type: "password",
-                    username: login,
-                    password,
-                } : {
-                        grant_type: "refresh_token",
-                        refresh_token: refreshToken,
-                    },
-                headers,
-                agentOptions: {
-                    rejectUnauthorized: IS_DEV ? false : true,
-                },
-                method: "POST",
-                uri: oAuthUrl,
-            })
-                .on("response", success)
-                .on("error", failure);
-        });
-    }
+    //         const locale = this.store.getState().i18n.locale;
+    //         const headers = {
+    //             "user-agent": "readium-desktop",
+    //             "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
+    //             "Content-Type": ContentType.FormUrlEncoded,
+    //             "Accept": `${ContentType.Json},${ContentType.Xml}`,
+    //         };
+    //         request.post({
+    //             form: login && password ? {
+    //                 grant_type: "password",
+    //                 username: login,
+    //                 password,
+    //             } : {
+    //                     grant_type: "refresh_token",
+    //                     refresh_token: refreshToken,
+    //                 },
+    //             headers,
+    //             agentOptions: {
+    //                 rejectUnauthorized: IS_DEV ? false : true,
+    //             },
+    //             method: "POST",
+    //             uri: oAuthUrl,
+    //         })
+    //             .on("response", success)
+    //             .on("error", failure);
+    //     });
+    // }
 
     public async parseOpdsSearchUrl(link: IOpdsLinkView[]): Promise<string | undefined> {
 
