@@ -10,7 +10,7 @@ import * as crypto from "crypto";
 import * as debug_ from "debug";
 import * as path from "path";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
-import { httpGet } from "readium-desktop/main/http";
+import { httpGet } from "readium-desktop/main/network/http";
 import {
     getUniqueResourcesFromR2Publication, w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";

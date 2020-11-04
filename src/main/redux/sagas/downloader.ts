@@ -19,7 +19,7 @@ import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
-import { AbortSignal, httpGet } from "readium-desktop/main/http";
+import { AbortSignal, httpGet } from "readium-desktop/main/network/http";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { mapGenerator } from "readium-desktop/utils/generator";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";

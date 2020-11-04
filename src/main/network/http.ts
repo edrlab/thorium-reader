@@ -7,24 +7,26 @@
 
 import * as debug_ from "debug";
 import * as https from "https";
-import fetch from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
-import { diMainGet } from "./di";
+import { diMainGet } from "../di";
+import { fetchWithCookie } from "./fetch";
 
 // Logger
-const debug = debug_("readium-desktop:main/http");
+const filename_ = "readium-desktop:main/http";
+const debug = debug_(filename_);
 
 const DEFAULT_HTTP_TIMEOUT = 30000;
 
-export async function request(
+export async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
-    locale = "en-US",
+    locale = tryCatchSync(() => diMainGet("store")?.getState()?.i18n?.locale, filename_) || "en-US",
 ): Promise<THttpResponse> {
 
     const headers = {
@@ -57,7 +59,7 @@ export async function request(
     }
     options.timeout = options.timeout || DEFAULT_HTTP_TIMEOUT;
 
-    const response = await fetch(url, options);
+    const response = await fetchWithCookie(url, options);
 
     debug(url);
     debug(options.headers);
@@ -68,10 +70,11 @@ export async function request(
     return response;
 }
 
-export async function httpGet<TData = undefined>(
+export async function httpFetchFormattedResponse<TData = undefined>(
     url: string | URL,
-    options: THttpOptions = {},
+    options?: THttpOptions,
     callback?: THttpGetCallback<TData>,
+    locale?: string,
 ): Promise<IHttpGetResult<TData>> {
 
     let result: IHttpGetResult<TData> = {
@@ -80,19 +83,8 @@ export async function httpGet<TData = undefined>(
         url,
     };
 
-    // options.signal = new AbortSignal();
-    options.method = "GET";
-
-    let locale = "en-US";
     try {
-        const store = diMainGet("store");
-        locale = store.getState().i18n.locale;
-    } catch {
-        // ignore
-    }
-
-    try {
-        const response = await request(url, options, locale);
+        const response = await httpFetchRawResponse(url, options, locale);
 
         result = {
             isAbort: false,
@@ -111,7 +103,9 @@ export async function httpGet<TData = undefined>(
         };
     } catch (err) {
 
-        const errStr = err instanceof Error ? err.toString() : err;
+        const errStr = err.toString();
+
+        debug(errStr);
 
         if (err.name === "AbortError") {
             result = {
@@ -157,6 +151,30 @@ export async function httpGet<TData = undefined>(
 
     return result;
 }
+
+export const httpGet: typeof httpFetchFormattedResponse =
+    async (...arg) => {
+
+        let [, options] = arg;
+
+        options = options || {};
+        options.method = "GET";
+        arg[1] = options;
+
+        return httpFetchFormattedResponse(...arg);
+    };
+
+export const httpPost: typeof httpFetchFormattedResponse =
+    async (...arg) => {
+
+        let [, options] = arg;
+
+        options = options || {};
+        options.method = "POST";
+        arg[1] = options;
+
+        return httpFetchFormattedResponse(...arg);
+    };
 
 // fetch checks the class name
 // https://github.com/node-fetch/node-fetch/blob/b7076bb24f75be688d8fc8b175f41b341e853f2b/src/utils/is.js#L78

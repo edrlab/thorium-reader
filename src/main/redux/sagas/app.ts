@@ -14,6 +14,7 @@ import {
     closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
+import { fetchCookieJarPersistence } from "readium-desktop/main/network/fetch";
 import { needToPersistState } from "readium-desktop/main/redux/sagas/persist.ts";
 import { _APP_NAME, IS_DEV } from "readium-desktop/preprocessor-directives";
 import { all, call, race, spawn, take } from "redux-saga/effects";
@@ -92,6 +93,13 @@ function* closeProcess() {
                     }
                 }),
                 call(function*() {
+
+                    try {
+                        yield call(fetchCookieJarPersistence);
+                        debug("Success to persist fetch cookieJar");
+                    } catch (e) {
+                        debug("ERROR to persist fetch cookieJar");
+                    }
 
                     try {
                         yield call(needToPersistState);

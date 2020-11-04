@@ -15,7 +15,7 @@ import {
 } from "readium-desktop/common/views/opds";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
-import { httpGet } from "readium-desktop/main/http";
+import { httpGet } from "readium-desktop/main/network/http";
 // import { RootState } from "readium-desktop/main/redux/states";
 // import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/content-type";
@@ -208,7 +208,9 @@ export class OpdsService {
                     //             undefined,
                     //             accessToken.authenticationUrl,
                     //             accessToken.refreshUrl,
+                    // tslint:disable-next-line: max-line-length
                     //             undefined, // this._OPDS_AUTH_ENCRYPTION_KEY_HEX, // can be undefined first-time around
+                    // tslint:disable-next-line: max-line-length
                     //             undefined, // this._OPDS_AUTH_ENCRYPTION_IV_HEX, // can be undefined first-time around
                     //             accessToken.refreshToken);
 
