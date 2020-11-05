@@ -45,7 +45,7 @@ export const httpSetHeaderAuthorization =
     (type: string, credentials: string) => `${type} ${credentials}`;
 
 // tslint:disable-next-line: variable-name
-export const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
+const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
     (hostname: string) => `CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN.${Buffer.from(hostname).toString("base64")}`;
 
 export interface IOpdsAuthenticationToken {
@@ -277,10 +277,9 @@ const httpGetUnauthorized =
             const options = _options || {};
             const { hostname } = url;
 
-            const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname);
-
             const auth = await tryCatch(
                 async () => {
+                    const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname);
                     const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
                     const doc = await configRepo.get(id);
                     return doc?.value;
