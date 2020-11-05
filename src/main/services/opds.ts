@@ -8,13 +8,9 @@
 // import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
-import { RequestInit } from "node-fetch";
-import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import {
     IOpdsLinkView, IOpdsResultView, THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { httpGet } from "readium-desktop/main/network/http";
 // import { RootState } from "readium-desktop/main/redux/states";
 // import { IS_DEV } from "readium-desktop/preprocessor-directives";
@@ -36,6 +32,7 @@ import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 // import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
+import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
 
@@ -64,7 +61,7 @@ export class OpdsService {
                 || contentType.startsWith(ContentType.Opds2Auth)
                 || contentType.startsWith(ContentType.Opds2Pub)
             )
-        ;
+            ;
     }
 
     private static async getOpenSearchUrl(opensearchLink: IOpdsLinkView): Promise<string | undefined> {
@@ -84,59 +81,27 @@ export class OpdsService {
         return searchResult.data;
     }
 
-    // @inject(diSymbolTable.store)
-    // private readonly store!: Store<RootState>;
-
-    @inject(diSymbolTable["config-repository"])
-    private readonly configRepository!: ConfigRepository<AccessTokenMap>;
-
     @inject(diSymbolTable["opds-feed-view-converter"])
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
 
-    // private _OPDS_AUTH_ENCRYPTION_KEY_HEX: string | undefined;
-    // private _OPDS_AUTH_ENCRYPTION_IV_HEX: string | undefined;
+    public async opdsRequest(url: string): Promise<THttpGetOpdsResultView> {
 
-    public async opdsRequest(
-        url: string,
-        _tryingAgain: boolean = false): Promise<THttpGetOpdsResultView> {
-
-        let savedAccessTokens: AccessTokenMap = {};
-        try {
-            const configDoc = await this.configRepository.get("oauth");
-            savedAccessTokens = configDoc.value;
-        } catch (err) {
-            debug("oauth get");
-            debug(err);
-        }
-
-        const domain = url.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-        const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
-
-        const options: RequestInit = {};
-        // options.timeout = 10000;
-
-        if (accessToken) {
-            options.headers = {
-                Authorization: `Bearer ${accessToken.authenticationToken}`,
-            };
-            debug("new header with oauth", options.headers);
-        }
         const result = httpGet<IOpdsResultView>(
             url,
-            options,
+            undefined, // options
             async (opdsFeedData) => {
-
-                let r2OpdsFeed: OPDSFeed | undefined;
-                let r2OpdsAuth: OPDSAuthenticationDoc | undefined;
-                let r2OpdsPublication: OPDSPublication | undefined;
 
                 if (opdsFeedData.isFailure) {
                     if (opdsFeedData.statusCode === 401) {
-                        // try parse OPDSAuthenticationDoc
-                        // (see below)
-                    } else {
-                        return opdsFeedData;
+                        // authentication failure
+                        // access_token and/or refresh_token are not provided
+                        // or the credentials are out of date
+
+                        debug("authentication failure");
+                        debug("access_token and/or refresh_token are not provided");
+                        debug("or the credentials are out of date");
                     }
+                    return opdsFeedData;
                 }
 
                 const contentType = opdsFeedData.contentType;
@@ -146,152 +111,19 @@ export class OpdsService {
                     // TODO: parse OPDS1 XML Authentication document
                     // note: Feedbooks can be used to test,
                     // but not with OAuth bearer token (instead: basic authentication realm)
-                    if (opdsFeedData.isFailure) {
-                        return opdsFeedData;
-                    }
 
-                    const buf = await opdsFeedData.response.buffer();
-                    const xmlDom = new xmldom.DOMParser().parseFromString(buf.toString());
-
-                    if (!xmlDom || !xmlDom.documentElement) {
-                        throw new OpdsParsingError(`Unable to parse ${url}`);
-                    }
-
-                    const isEntry = xmlDom.documentElement.localName === "entry";
-                    if (isEntry) {
-                        // It's a single publication entry and not an OpdsFeed
-
-                        const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
-                        r2OpdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
-                    } else {
-
-                        const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
-                        r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
-                    }
+                    return await this.opdsRequestXmlTransformer(opdsFeedData);
 
                 } else if (OpdsService.contentTypeisOpds(contentType)) {
 
-                    const jsonObj = await opdsFeedData.response.json();
-
-                    const isPub = contentType.startsWith(ContentType.Opds2Pub) ||
-                        (!jsonObj.publications &&
-                            !jsonObj.navigation &&
-                            !jsonObj.groups &&
-                            !jsonObj.catalogs);
-
-                    const isAuth = contentType.startsWith(ContentType.Opds2Auth) ||
-                        typeof jsonObj.authentication !== "undefined";
-
-                    const isFeed = contentType.startsWith(ContentType.Opds2) ||
-                        (jsonObj.publications ||
-                            jsonObj.navigation ||
-                            jsonObj.groups ||
-                            jsonObj.catalogs);
-
-                    // const tryRefreshAccessToken =
-                    //     // to test / mock access token expiry, comment the next two lines:
-                    //     isAuth &&
-                    //     opdsFeedData.isFailure && opdsFeedData.statusCode === 401 &&
-
-                    //     accessToken && accessToken.refreshToken && accessToken.refreshUrl &&
-                    //     !tryingAgain;
-                    // no need to decrypt pass!
-                    // && this._OPDS_AUTH_ENCRYPTION_KEY_HEX &&
-                    // this._OPDS_AUTH_ENCRYPTION_KEY_HEX ? true : false;
-
-                    // if (tryRefreshAccessToken) {
-                    //     let doRetry = false;
-                    //     try {
-                    //         await this.oauth(
-                    //             url,
-                    //             undefined,
-                    //             undefined,
-                    //             accessToken.authenticationUrl,
-                    //             accessToken.refreshUrl,
-                    // tslint:disable-next-line: max-line-length
-                    //             undefined, // this._OPDS_AUTH_ENCRYPTION_KEY_HEX, // can be undefined first-time around
-                    // tslint:disable-next-line: max-line-length
-                    //             undefined, // this._OPDS_AUTH_ENCRYPTION_IV_HEX, // can be undefined first-time around
-                    //             accessToken.refreshToken);
-
-                    //         doRetry = true;
-                    //     } catch (err) {
-                    //         debug(err);
-                    //         // access token refresh failed
-                    //         // =>
-                    //         // continue with auth form
-                    //     }
-
-                    //     if (doRetry) {
-                    //         return this.opdsRequest(url, true); // tryingAgain
-                    //         // uncomment the following to debug-breakpoint more specifically in the promise "cascade"
-                    //         // try {
-                    //         //     const res = await this.browse(url, converter, converterAuth, true); // tryingAgain
-                    //         //     return res;
-                    //         // } catch (err) {
-                    //         //     debug(err);
-                    //         //     throw err; // reject
-                    //         // }
-                    //     }
-                    // }
-
-                    if (isAuth) { // usually with opdsFeedData.isFailure
-                        r2OpdsAuth = TaJsonDeserialize<OPDSAuthenticationDoc>(
-                            jsonObj,
-                            OPDSAuthenticationDoc,
-                        );
-                    } else {
-                        if (opdsFeedData.isFailure) {
-                            return opdsFeedData;
-                        }
-
-                        if (isPub) {
-                            r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(
-                                jsonObj,
-                                OPDSPublication,
-                            );
-                        } else if (isFeed) {
-                            r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
-                                jsonObj,
-                                OPDSFeed,
-                            );
-                        }
-                    }
+                    return await this.opdsRequestJsonTransformer(opdsFeedData);
                 } else {
-                    if (opdsFeedData.isFailure) {
-                        return opdsFeedData;
-                    }
 
                     debug(`unknown url content-type : ${opdsFeedData.url} - ${contentType}`);
                     throw new Error(
                         `Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${contentType})`,
                     );
                 }
-
-                try {
-
-                    // modify each r2OpdsFeed.publications, and make relative URLs absolute with baseUrl(url)!
-                    if (r2OpdsFeed) {
-                        opdsFeedData.data = this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
-                    } else if (r2OpdsAuth) {
-                        opdsFeedData.data = this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, url);
-                    } else if (r2OpdsPublication) {
-                        const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, url);
-                        opdsFeedData.data = {
-                            title: pubView.title,
-                            publications: [pubView],
-                        } as IOpdsResultView;
-                    }
-                } catch (e) {
-                    debug("CATCH", e);
-
-                    opdsFeedData.data = {
-                        title: "",
-                        publications: [],
-                    } as IOpdsResultView;
-                }
-
-                return opdsFeedData;
             },
         );
 
@@ -471,5 +303,87 @@ export class OpdsService {
             // ignore
         }
         return (undefined);
+    }
+
+    private async opdsRequestJsonTransformer(opdsFeedData: IHttpGetResult<IOpdsResultView>) {
+
+        const jsonObj = await opdsFeedData.response.json();
+        const contentType = opdsFeedData.contentType;
+
+        const isPub = contentType.startsWith(ContentType.Opds2Pub) ||
+            (!jsonObj.publications &&
+                !jsonObj.navigation &&
+                !jsonObj.groups &&
+                !jsonObj.catalogs);
+
+        const isAuth = contentType.startsWith(ContentType.Opds2Auth) ||
+            typeof jsonObj.authentication !== "undefined";
+
+        const isFeed = contentType.startsWith(ContentType.Opds2) ||
+            (jsonObj.publications ||
+                jsonObj.navigation ||
+                jsonObj.groups ||
+                jsonObj.catalogs);
+
+        if (isAuth) {
+            const r2OpdsAuth = TaJsonDeserialize<OPDSAuthenticationDoc>(
+                        jsonObj,
+                        OPDSAuthenticationDoc,
+                    );
+            opdsFeedData.data = this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, `${opdsFeedData.url}`);
+        } else if (isPub) {
+            const r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(
+                            jsonObj,
+                            OPDSPublication,
+                        );
+            const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, `${opdsFeedData.url}`);
+            opdsFeedData.data = {
+                title: pubView.title,
+                publications: [pubView],
+            } as IOpdsResultView;
+        } else if (isFeed) {
+            const r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
+                            jsonObj,
+                            OPDSFeed,
+                        );
+            opdsFeedData.data = this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, `${opdsFeedData.url}`);
+        }
+
+        return opdsFeedData;
+
+    }
+
+    private async opdsRequestXmlTransformer(opdsFeedData: IHttpGetResult<IOpdsResultView>) {
+
+        const buf = await opdsFeedData.response.buffer();
+        const xmlDom = new xmldom.DOMParser().parseFromString(buf.toString());
+
+        if (!xmlDom || !xmlDom.documentElement) {
+            throw new Error(`Unable to parse ${opdsFeedData.url}`);
+        }
+
+        const isEntry = xmlDom.documentElement.localName === "entry";
+        if (isEntry) {
+            // It's a single publication entry and not an OpdsFeed
+
+            const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
+            const r2OpdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+            const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(
+                r2OpdsPublication,
+                `${opdsFeedData.url}`,
+            );
+            opdsFeedData.data = {
+                title: pubView.title,
+                publications: [pubView],
+            } as IOpdsResultView;
+
+        } else {
+
+            const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
+            const r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
+            opdsFeedData.data = this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, `${opdsFeedData.url}`);
+        }
+
+        return opdsFeedData;
     }
 }
