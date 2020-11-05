@@ -7,12 +7,14 @@
 
 import * as debug_ from "debug";
 import * as https from "https";
+import { Headers } from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
+import { resolve } from "url";
 
 import { diMainGet } from "../di";
 import { fetchWithCookie } from "./fetch";
@@ -23,9 +25,25 @@ const debug = debug_(filename_);
 
 const DEFAULT_HTTP_TIMEOUT = 30000;
 
+// https://github.com/node-fetch/node-fetch/blob/master/src/utils/is-redirect.js
+const redirectStatus = new Set([301, 302, 303, 307, 308]);
+
+/**
+ * Redirect code matching
+ *
+ * @param {number} code - Status code
+ * @return {boolean}
+ */
+const isRedirect = (code: number) => {
+    return redirectStatus.has(code);
+};
+
+const FOLLOW_REDIRECT_COUNTER = 20;
+
 export async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
+    redirectCounter = 0,
     locale = tryCatchSync(() => diMainGet("store")?.getState()?.i18n?.locale, filename_) || "en-US",
 ): Promise<THttpResponse> {
 
@@ -35,6 +53,7 @@ export async function httpFetchRawResponse(
         "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
     };
     options.headers = headers;
+    options.redirect = "manual"; // handle cookies
 
     // https://github.com/node-fetch/node-fetch#custom-agent
     // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
@@ -61,11 +80,47 @@ export async function httpFetchRawResponse(
 
     const response = await fetchWithCookie(url, options);
 
-    debug(url);
+    debug("fetch URL:", url);
+    debug("Request headers :");
     debug(options.headers);
-    debug(response.ok);
-    debug(response.status);
-    debug(response.statusText);
+    debug("###");
+    debug("OK: ", response.ok);
+    debug("status code :", response.status);
+    debug("status text :", response.statusText);
+
+    // manual Redirect to handle cookies
+    // https://github.com/node-fetch/node-fetch/blob/0d35ddbf7377a483332892d2b625ec8231fa6181/src/index.js#L129
+    if (isRedirect(response.status)) {
+
+        const location = response.headers.get("Location");
+        debug("Redirect", response.status, "to: ", location);
+
+        if (location) {
+            const locationUrl = resolve(response.url, location);
+
+            if (redirectCounter > FOLLOW_REDIRECT_COUNTER) {
+                throw new Error(`maximum redirect reached at: ${url}`);
+            }
+
+            if (
+                response.status === 303 ||
+                ((response.status === 301 || response.status === 302) && options.method === "POST")
+            ) {
+                options.method = "GET";
+                options.body = undefined;
+                if (options.headers) {
+                    if (!(options.headers instanceof Headers)) {
+                        options.headers = new Headers(options.headers);
+                    }
+                    options.headers.delete("content-length");
+                }
+            }
+
+            return await httpFetchRawResponse(locationUrl, options, redirectCounter + 1, locale);
+        } else {
+            debug("No location URL to redirect");
+        }
+    }
 
     return response;
 }
@@ -84,7 +139,11 @@ export async function httpFetchFormattedResponse<TData = undefined>(
     };
 
     try {
-        const response = await httpFetchRawResponse(url, options, locale);
+        const response = await httpFetchRawResponse(url, options, 0, locale);
+
+        debug("Response headers :");
+        debug({ ...response.headers.raw() });
+        debug("###");
 
         result = {
             isAbort: false,
@@ -100,6 +159,7 @@ export async function httpFetchFormattedResponse<TData = undefined>(
             response,
             data: undefined,
             contentType: response.headers.get("Content-Type"),
+            // cookies: response.headers.get("Set-Cookie"),
         };
     } catch (err) {
 
