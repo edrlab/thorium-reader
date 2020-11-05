@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import * as https from "https";
-import { Body, Headers, RequestInit } from "node-fetch";
+import { Headers, RequestInit } from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
@@ -15,8 +15,8 @@ import {
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { resolve } from "url";
-import { ConfigRepository } from "../db/repository/config";
 
+import { ConfigRepository } from "../db/repository/config";
 import { diMainGet } from "../di";
 import { fetchWithCookie } from "./fetch";
 
@@ -79,12 +79,11 @@ export async function httpFetchRawResponse(
     locale = tryCatchSync(() => diMainGet("store")?.getState()?.i18n?.locale, filename_) || "en-US",
 ): Promise<THttpResponse> {
 
-    const headers = {
-        ...options.headers,
-        "user-agent": "readium-desktop",
-        "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
-    };
-    options.headers = headers;
+    options.headers = options.headers instanceof Headers
+        ? options.headers
+        : new Headers(options.headers || {});
+    options.headers.set("user-agent", "readium-desktop");
+    options.headers.set("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
     options.redirect = "manual"; // handle cookies
 
     // https://github.com/node-fetch/node-fetch#custom-agent
