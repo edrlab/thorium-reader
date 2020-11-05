@@ -19,11 +19,14 @@ const CONFIGREPOSITORY_COOKIEJAR = "CONFIGREPOSITORY_COOKIEJAR";
 // src/main/redux/sagas/app.ts
 export const fetchCookieJarPersistence = async () => {
 
-    const configRepo = diMainGet("config-repository");
-    await configRepo.save({
-        identifier: CONFIGREPOSITORY_COOKIEJAR,
-        value: cookieJar.serializeSync(),
-    });
+    if (cookieJar) {
+
+        const configRepo = diMainGet("config-repository");
+        await configRepo.save({
+            identifier: CONFIGREPOSITORY_COOKIEJAR,
+            value: cookieJar.serializeSync(),
+        });
+    }
 };
 
 const fetchFactory = async () => {
@@ -33,11 +36,15 @@ const fetchFactory = async () => {
         const configRepo = diMainGet("config-repository");
         const data = await configRepo.get(CONFIGREPOSITORY_COOKIEJAR);
         if (data?.value) {
-            tougth.CookieJar.deserializeSync(data.value);
+            cookieJar = tougth.CookieJar.deserializeSync(data.value);
         }
+
     }, "src/main/network/fetch");
 
-    cookieJar = new tougth.CookieJar();
+    if (!cookieJar) {
+        cookieJar = new tougth.CookieJar();
+    }
+
     const _fetch = nodeFetchCookie(nodeFetch, cookieJar, false); // doesn't ignore errors
 
     return _fetch;
