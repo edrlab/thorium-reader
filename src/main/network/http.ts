@@ -13,8 +13,9 @@ import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { tryCatchSync } from "readium-desktop/utils/tryCatch";
+import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { resolve } from "url";
+import { ConfigRepository } from "../db/repository/config";
 
 import { diMainGet } from "../di";
 import { fetchWithCookie } from "./fetch";
@@ -39,6 +40,37 @@ const isRedirect = (code: number) => {
 };
 
 const FOLLOW_REDIRECT_COUNTER = 20;
+
+export const httpSetHeaderAuthorization =
+    (type: string, credentials: string) => `${type} ${credentials}`;
+
+// tslint:disable-next-line: variable-name
+export const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
+    (hostname: string) => `CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN.${Buffer.from(hostname).toString("base64")}`;
+
+export interface IOpdsAuthenticationToken {
+    opdsAuthenticationUrl: string; // application/opds-authentication+json
+    refreshUrl?: string;
+    authenticateUrl: string;
+    accessToken: string;
+    refreshToken?: string;
+    tokenType?: string;
+}
+
+export const httpSetToConfigRepoOpdsAuthenticationToken =
+(data: IOpdsAuthenticationToken) => tryCatch(
+    async () => {
+
+        const url = new URL(data.opdsAuthenticationUrl);
+        const { hostname } = url;
+        const configRepo = diMainGet("config-repository");
+        await configRepo.save({
+            identifier: CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname),
+            value: data,
+        });
+    },
+    filename_,
+);
 
 export async function httpFetchRawResponse(
     url: string | URL,
@@ -215,14 +247,70 @@ export async function httpFetchFormattedResponse<TData = undefined>(
 export const httpGet: typeof httpFetchFormattedResponse =
     async (...arg) => {
 
-        let [, options] = arg;
+        const [_url, _options, ..._arg] = arg;
 
-        options = options || {};
+        const options = _options || {};
         options.method = "GET";
-        arg[1] = options;
 
-        return httpFetchFormattedResponse(...arg);
+        const response = await httpFetchFormattedResponse(_url, options, ..._arg);
+
+        if (response.statusCode === 401) {
+            return httpGetUnauthorized("token")(_url, options, ..._arg);
+        }
+        return response;
     };
+
+type THttpGetUnauthorizedState = "token" | "refresh" | "fail";
+
+const httpGetUnauthorized =
+    (state: THttpGetUnauthorizedState): typeof httpFetchFormattedResponse =>
+        async (...arg) => {
+
+            debug("Unauthorized state", state);
+            if (state === "fail") {
+                throw new Error("unauthorized fail state");
+            }
+
+            const [_url, _options, ..._arg] = arg;
+
+            const url = _url instanceof URL ? _url : new URL(_url);
+            const options = _options || {};
+            const { hostname } = url;
+
+            const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname);
+
+            const auth = await tryCatch(
+                async () => {
+                    const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
+                    const doc = await configRepo.get(id);
+                    return doc?.value;
+                },
+                filename_,
+            );
+
+            if (auth) {
+                const { accessToken, tokenType } = auth;
+
+                options.headers = options.headers instanceof Headers
+                    ? options.headers
+                    : new Headers(options.headers || {});
+
+                options.headers.set("Authorization", httpSetHeaderAuthorization(tokenType || "Bearer", accessToken));
+            }
+
+            const response = await httpFetchFormattedResponse(url, options, ..._arg);
+
+            if (response.statusCode === 401) {
+
+                if (state === "refresh") {
+                    return response; // can't logged in
+                }
+                return httpGetUnauthorized(
+                    state === "token" ? "refresh" : "fail",
+                )(url, options, ..._arg);
+            }
+            return response;
+        };
 
 export const httpPost: typeof httpFetchFormattedResponse =
     async (...arg) => {
