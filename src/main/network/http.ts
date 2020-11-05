@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import * as https from "https";
-import { Headers } from "node-fetch";
+import { Body, Headers, RequestInit } from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
@@ -244,71 +244,105 @@ export async function httpFetchFormattedResponse<TData = undefined>(
     return result;
 }
 
-export const httpGet: typeof httpFetchFormattedResponse =
-    async (...arg) => {
-
-        const [_url, _options, ..._arg] = arg;
-
-        const options = _options || {};
-        options.method = "GET";
-
-        const response = await httpFetchFormattedResponse(_url, options, ..._arg);
-
-        if (response.statusCode === 401) {
-            return httpGetUnauthorized("token")(_url, options, ..._arg);
-        }
-        return response;
-    };
-
-type THttpGetUnauthorizedState = "token" | "refresh" | "fail";
-
-const httpGetUnauthorized =
-    (state: THttpGetUnauthorizedState): typeof httpFetchFormattedResponse =>
+export const httpGetWithAuth =
+    (enableAuth = true): typeof httpFetchFormattedResponse =>
         async (...arg) => {
 
-            debug("Unauthorized state", state);
-            if (state === "fail") {
-                throw new Error("unauthorized fail state");
+            const [_url, _options, ..._arg] = arg;
+
+            const options = _options || {};
+            options.method = "GET";
+
+            const response = await httpFetchFormattedResponse(_url, options, ..._arg);
+
+            if (enableAuth && response.statusCode === 401) {
+
+                const url = _url instanceof URL ? _url : new URL(_url);
+                const { hostname } = url;
+
+                const auth = await tryCatch(
+                    async () => {
+                        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname);
+                        const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
+                        const doc = await configRepo.get(id);
+                        return doc?.value;
+                    },
+                    filename_,
+                );
+
+                if (auth) {
+                    return httpGetUnauthorized(auth)(_url, options, ..._arg);
+                }
+
             }
+            return response;
+        };
+
+export const httpGet = httpGetWithAuth(true);
+
+const httpGetUnauthorized =
+    (auth: IOpdsAuthenticationToken, enableRefresh = true): typeof httpFetchFormattedResponse =>
+        async (...arg) => {
 
             const [_url, _options, ..._arg] = arg;
 
             const url = _url instanceof URL ? _url : new URL(_url);
             const options = _options || {};
-            const { hostname } = url;
 
-            const auth = await tryCatch(
-                async () => {
-                    const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname);
-                    const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
-                    const doc = await configRepo.get(id);
-                    return doc?.value;
-                },
-                filename_,
-            );
+            const { accessToken, tokenType } = auth;
 
-            if (auth) {
-                const { accessToken, tokenType } = auth;
+            options.headers = options.headers instanceof Headers
+                ? options.headers
+                : new Headers(options.headers || {});
 
-                options.headers = options.headers instanceof Headers
-                    ? options.headers
-                    : new Headers(options.headers || {});
+            options.headers.set("Authorization", httpSetHeaderAuthorization(tokenType || "Bearer", accessToken));
 
-                options.headers.set("Authorization", httpSetHeaderAuthorization(tokenType || "Bearer", accessToken));
-            }
+            const response = await httpGetWithAuth(false)(url, options, ..._arg);
 
-            const response = await httpFetchFormattedResponse(url, options, ..._arg);
-
-            if (response.statusCode === 401) {
-
-                if (state === "refresh") {
-                    return response; // can't logged in
+            if (enableRefresh && response.statusCode === 401) {
+                if (auth.refreshUrl && auth.refreshToken) {
+                    const responseAfterRefresh = await httpGetUnauthorizedRefresh(auth)(url, options, ..._arg);
+                    return responseAfterRefresh || response;
                 }
-                return httpGetUnauthorized(
-                    state === "token" ? "refresh" : "fail",
-                )(url, options, ..._arg);
             }
             return response;
+        };
+
+const httpGetUnauthorizedRefresh =
+    (auth: IOpdsAuthenticationToken): typeof httpFetchFormattedResponse =>
+        async (...arg) => {
+
+            const { refreshToken, refreshUrl } = auth;
+            const options: RequestInit = {};
+            options.headers = options.headers instanceof Headers
+                ? options.headers
+                : new Headers(options.headers || {});
+            options.headers.set("Content-Type", "application/json");
+
+            options.body = JSON.stringify({
+                refresh_token: refreshToken,
+                grant_type: "refresh_token",
+            });
+
+            const httpPostResponse = await httpPost(refreshUrl, options);
+            if (httpPostResponse.isSuccess) {
+                const jsonDataResponse = await httpPostResponse.response.json();
+
+                const newRefreshToken = typeof jsonDataResponse?.refresh_token === "string"
+                    ? jsonDataResponse.refresh_token
+                    : undefined;
+                auth.refreshToken = newRefreshToken || auth.refreshToken;
+
+                const newAccessToken = typeof jsonDataResponse?.access_token === "string"
+                    ? jsonDataResponse.access_token
+                    : undefined;
+                auth.accessToken = newAccessToken || auth.accessToken;
+
+                const httpGetResponse = await httpGetUnauthorized(auth, false)(...arg);
+                return httpGetResponse;
+            }
+
+            return undefined;
         };
 
 export const httpPost: typeof httpFetchFormattedResponse =
