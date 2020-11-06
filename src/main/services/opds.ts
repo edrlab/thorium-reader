@@ -35,6 +35,7 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
+import { getOpdsAuthenticationChannel } from "../event";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -330,6 +331,10 @@ export class OpdsService {
                         jsonObj,
                         OPDSAuthenticationDoc,
                     );
+            const opdsAuthChannel = getOpdsAuthenticationChannel();
+
+            // dispatch to saga authentication flow logic
+            opdsAuthChannel.put([r2OpdsAuth, opdsFeedData.responseUrl]);
             // const opdsAuthView = this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, `${opdsFeedData.url}`);
 
             opdsFeedData.data = undefined; // need to refresh the page
