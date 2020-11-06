@@ -49,6 +49,7 @@ const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
     (hostname: string) => `CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN.${Buffer.from(hostname).toString("base64")}`;
 
 export interface IOpdsAuthenticationToken {
+    id?: string;
     opdsAuthenticationUrl?: string; // application/opds-authentication+json
     refreshUrl?: string;
     authenticateUrl?: string;

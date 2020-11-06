@@ -6,14 +6,23 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { OPDSAuthenticationDoc } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
+import { BrowserWindow } from "electron";
+import {
+    OPDSAuthenticationDoc,
+} from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
-import { getOpdsAuthenticationChannel, TOpdsAuthenticationChannel } from "readium-desktop/main/event";
-import { httpGet, httpSetToConfigRepoOpdsAuthenticationToken, IOpdsAuthenticationToken } from "readium-desktop/main/network/http";
+import {
+    getOpdsAuthenticationChannel, TOpdsAuthenticationChannel,
+} from "readium-desktop/main/event";
+import {
+    httpSetToConfigRepoOpdsAuthenticationToken, IOpdsAuthenticationToken,
+} from "readium-desktop/main/network/http";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
+import { all } from "redux-saga/effects";
+import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -154,6 +163,7 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
     debug("authentication doc parsed", authParsed);
 
     const authCredentials: IOpdsAuthenticationToken = {
+        id: authParsed?.id || undefined,
         opdsAuthenticationUrl: baseUrl,
         tokenType: "Bearer",
         refreshUrl: authParsed?.links?.refresh?.url || undefined,
@@ -173,6 +183,38 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
 
     // launch an auth browserWindow
 
+    yield* callTyped(async () => {
+
+        let win: BrowserWindow;
+
+        try {
+            win = new BrowserWindow({
+                width: 800,
+                height: 600,
+            });
+
+            // win.hide();
+
+            await Promise.race([
+                win.loadURL(`opds://authorize`),
+                new Promise<void>((resolve) => setTimeout(() => resolve(), 7000)),
+
+            ]);
+
+            return ;
+
+        } finally {
+
+            debug("finally");
+
+            if (win) {
+
+                win.close();
+            }
+
+        }
+    });
+
     // wait opds://authorize for implicit or opds://signin for other
 
     // close the window
@@ -181,13 +223,64 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
 
 }
 
+function* opdsRequestEvent(req: Electron.Request) {
+
+        debug("########");
+        debug("########");
+        debug("odps:// request:", req);
+        debug("########");
+        debug("########");
+
+        if (typeof req === "object") {
+            const { method, url } = req;
+
+            if (method !== "GET") {
+                return;
+            }
+
+            const urlParsed = tryCatchSync(() => new URL(url), filename_);
+            if (!urlParsed) {
+                debug("authentication: can't parse the opds:// request url", url);
+                return;
+            }
+
+            const { protocol: urlProtocol, host, searchParams } = urlParsed;
+
+            if (urlProtocol !== ODPS_AUTH_SCHEME) {
+                debug("bad opds protocol !!");
+                return;
+            }
+
+            if (host === "authrorize") {
+
+                const authCredentials: IOpdsAuthenticationToken = {
+                    id: searchParams?.get("id") || undefined,
+                    tokenType: searchParams?.get("token_type") || "Bearer",
+                    refreshToken: searchParams?.get("refresh_token") || undefined,
+                    accessToken: searchParams?.get("token_type") || undefined,
+                };
+
+                yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
+            }
+        }
+}
+
 export function saga() {
 
     const opdsAuthChannel = getOpdsAuthenticationChannel();
 
-    return takeSpawnEveryChannel(
-        opdsAuthChannel,
-        opdsAuthFlow,
-        (e) => debug("redux OPDS authentication channel error", e),
-    );
+    const opdsRequestChannel = getOpdsRequestCustomProtocolEventChannel();
+
+    return all([
+        takeSpawnEveryChannel(
+            opdsAuthChannel,
+            opdsAuthFlow,
+            (e) => debug("redux OPDS authentication channel error", e),
+        ),
+        takeSpawnEveryChannel(
+            opdsRequestChannel,
+            opdsRequestEvent,
+            (e) => debug("opds request opds://", e),
+        ),
+    ]);
 }
