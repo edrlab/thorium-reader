@@ -8,6 +8,7 @@
 import * as debug_ from "debug";
 import { OPDSAuthenticationDoc } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
 import { getOpdsAuthenticationChannel, TOpdsAuthenticationChannel } from "readium-desktop/main/event";
@@ -140,7 +141,8 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
     debug("opds authenticate flow");
     debug("typeof doc", typeof doc);
 
-    const auth = tryCatchSync(() => opdsAuthDocConverter(doc, baseUrl), filename_);
+    const auth = yield* callTyped(
+        () => tryCatchSync(() => opdsAuthDocConverter(doc, baseUrl), filename_));
     if (!auth) {
 
         debug("authentication doc parsing error");
