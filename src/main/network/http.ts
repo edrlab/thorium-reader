@@ -49,10 +49,10 @@ const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
     (hostname: string) => `CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN.${Buffer.from(hostname).toString("base64")}`;
 
 export interface IOpdsAuthenticationToken {
-    opdsAuthenticationUrl: string; // application/opds-authentication+json
+    opdsAuthenticationUrl?: string; // application/opds-authentication+json
     refreshUrl?: string;
-    authenticateUrl: string;
-    accessToken: string;
+    authenticateUrl?: string;
+    accessToken?: string;
     refreshToken?: string;
     tokenType?: string;
 }
@@ -269,8 +269,13 @@ export const httpGetWithAuth =
                     filename_,
                 );
 
-                if (auth) {
+                if (
+                    typeof auth === "object"
+                    && auth.accessToken
+                ) {
                     return httpGetUnauthorized(auth)(_url, options, ..._arg);
+                } else {
+                    debug("there are no authentication credentials in configRepo");
                 }
 
             }

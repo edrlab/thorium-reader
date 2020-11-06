@@ -12,6 +12,7 @@ import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
 import { getOpdsAuthenticationChannel, TOpdsAuthenticationChannel } from "readium-desktop/main/event";
+import { httpGet, httpSetToConfigRepoOpdsAuthenticationToken, IOpdsAuthenticationToken } from "readium-desktop/main/network/http";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 // Logger
@@ -90,15 +91,16 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         ? authentication.Links.reduce((pv, cv) => {
 
             const rel = (cv.Rel || [])
-                .reduce((pvRel, cvRel) => pvRel || LINK_TYPE.find(cvRel as any) || "", "") as TLinkType;
+                .reduce((pvRel, cvRel) => pvRel || LINK_TYPE.find((v) => v === cvRel) || "", "") as TLinkType;
+
             if (
                 rel
                 && typeof cv.Href === "string"
             ) {
 
-                const l = viewConvert.convertLinkToView([cv], baseUrl);
+                const [l] = viewConvert.convertLinkToView([cv], baseUrl);
 
-                return { ...pv, [rel]: l };
+                return { ...pv, [rel]: l } as IOPDSAuthDocParsed["links"]; // typing error why ?
             }
 
             return pv;
@@ -108,10 +110,10 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
 
     const labels: IOPDSAuthDocParsed["labels"] = {};
     if (typeof authentication.Labels?.Login === "string") {
-        labels.login = authentication.Labels?.Login;
+        labels.login = authentication.Labels.Login;
     }
     if (typeof authentication.Labels?.Password === "string") {
-        labels.password = authentication.Labels?.Password;
+        labels.password = authentication.Labels.Password;
     }
     const logo = tryCatchSync(() => {
         const ln = Array.isArray(authentication.Links)
@@ -141,13 +143,33 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
     debug("opds authenticate flow");
     debug("typeof doc", typeof doc);
 
-    const auth = yield* callTyped(
+    const authParsed = yield* callTyped(
         () => tryCatchSync(() => opdsAuthDocConverter(doc, baseUrl), filename_));
-    if (!auth) {
+    if (!authParsed) {
 
         debug("authentication doc parsing error");
         return;
     }
+
+    debug("authentication doc parsed", authParsed);
+
+    const authCredentials: IOpdsAuthenticationToken = {
+        opdsAuthenticationUrl: baseUrl,
+        tokenType: "Bearer",
+        refreshUrl: authParsed?.links?.refresh?.url || undefined,
+        authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
+    };
+
+    debug("authentication credential config", authCredentials);
+    yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
+
+    // test opds://
+
+    // readium-desktop:main/http TypeError: Only HTTP(S) protocols are supported
+    // const response = yield* callTyped(() => httpGet("opds://authorize?test=123"));
+    // debug(typeof response);
+    // const res = response.response;
+    // debug("response", res);
 
     // launch an auth browserWindow
 

@@ -92,18 +92,18 @@ export class OpdsService {
             undefined, // options
             async (opdsFeedData) => {
 
-                if (opdsFeedData.isFailure) {
-                    if (opdsFeedData.statusCode === 401) {
-                        // authentication failure
-                        // access_token and/or refresh_token are not provided
-                        // or the credentials are out of date
+                // if (opdsFeedData.isFailure) {
+                //     // if (opdsFeedData.statusCode === 401) {
+                //     //     // authentication failure
+                //     //     // access_token and/or refresh_token are not provided
+                //     //     // or the credentials are out of date
 
-                        debug("authentication failure");
-                        debug("access_token and/or refresh_token are not provided");
-                        debug("or the credentials are out of date");
-                    }
-                    return opdsFeedData;
-                }
+                //     //     debug("authentication failure");
+                //     //     debug("access_token and/or refresh_token are not provided");
+                //     //     debug("or the credentials are out of date");
+                //     // }
+                //     return opdsFeedData;
+                // }
 
                 const contentType = opdsFeedData.contentType;
 
@@ -326,6 +326,8 @@ export class OpdsService {
                 jsonObj.groups ||
                 jsonObj.catalogs);
 
+        debug("isAuth, isPub, isFeed", isAuth, isPub, isFeed);
+
         if (isAuth) {
             const r2OpdsAuth = TaJsonDeserialize<OPDSAuthenticationDoc>(
                         jsonObj,
@@ -333,6 +335,7 @@ export class OpdsService {
                     );
             const opdsAuthChannel = getOpdsAuthenticationChannel();
 
+            debug("put the authentication model in the saga authChannel", r2OpdsAuth);
             // dispatch to saga authentication flow logic
             opdsAuthChannel.put([r2OpdsAuth, opdsFeedData.responseUrl]);
             // const opdsAuthView = this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, `${opdsFeedData.url}`);

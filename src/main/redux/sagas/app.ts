@@ -67,6 +67,26 @@ export function* init() {
         },
     );
 
+    // protocol.registerHttpProtocol(scheme, handler)
+    protocol.registerHttpProtocol("opds", (req, _cb) => {
+
+        debug("########");
+        debug("########");
+        debug("########");
+        debug("########");
+        debug("########");
+        debug("odps:// request:", req);
+
+        debug("########");
+        debug("########");
+        debug("########");
+        debug("########");
+
+    });
+
+    // opds auth
+    // opds://authorize or opds://signin
+
     app.on("will-quit", () => {
 
         debug("#####");
