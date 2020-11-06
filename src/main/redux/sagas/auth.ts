@@ -251,7 +251,7 @@ function* opdsRequestEvent(req: Electron.Request) {
                 return;
             }
 
-            if (host === "authrorize") {
+            if (host === "authorize") {
 
                 const authCredentials: IOpdsAuthenticationToken = {
                     id: searchParams?.get("id") || undefined,
