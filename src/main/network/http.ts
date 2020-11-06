@@ -338,6 +338,13 @@ const httpGetUnauthorizedRefresh =
                 auth.accessToken = newAccessToken || auth.accessToken;
 
                 const httpGetResponse = await httpGetUnauthorized(auth, false)(...arg);
+
+                if (httpGetResponse.statusCode !== 401) {
+
+                    debug("authenticate with the new access_token");
+                    debug("saved it into db");
+                    await httpSetToConfigRepoOpdsAuthenticationToken(auth);
+                }
                 return httpGetResponse;
             }
 
