@@ -113,17 +113,16 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         labels.password = authentication.Labels?.Password;
     }
     const logo = tryCatchSync(() => {
-        const convert = diMainGet("opds-feed-view-converter");
         const ln = Array.isArray(authentication.Links)
             ? authentication.Links.find((v) => (v.Rel || []).includes("logo"))
             : undefined;
         if (ln) {
-            const [linkView] = convert.convertLinkToView([ln], baseUrl);
+            const [linkView] = viewConvert.convertLinkToView([ln], baseUrl);
             return linkView;
         }
         return undefined;
 
-    }, "");
+    }, filename_);
 
     return {
         title: doc.Title || "",
