@@ -257,8 +257,10 @@ function* opdsRequestEvent(req: Electron.Request) {
                     id: searchParams?.get("id") || undefined,
                     tokenType: searchParams?.get("token_type") || "Bearer",
                     refreshToken: searchParams?.get("refresh_token") || undefined,
-                    accessToken: searchParams?.get("token_type") || undefined,
+                    accessToken: searchParams?.get("access_token") || undefined,
                 };
+
+                // TODO: update the credentials instead of overwriting them
 
                 yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
             }
