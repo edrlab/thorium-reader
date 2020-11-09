@@ -74,6 +74,17 @@ export const httpSetToConfigRepoOpdsAuthenticationToken =
     filename_,
 );
 
+export const getConfigRepoOpdsAuthenticationToken =
+    async (hostname: string) => await tryCatch(
+        async () => {
+            const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname);
+            const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
+            const doc = await configRepo.get(id);
+            return doc?.value;
+        },
+        filename_,
+    );
+
 export async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
@@ -261,15 +272,7 @@ export const httpGetWithAuth =
                 const url = _url instanceof URL ? _url : new URL(_url);
                 const { hostname } = url;
 
-                const auth = await tryCatch(
-                    async () => {
-                        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname);
-                        const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
-                        const doc = await configRepo.get(id);
-                        return doc?.value;
-                    },
-                    filename_,
-                );
+                const auth = await getConfigRepoOpdsAuthenticationToken(hostname);
 
                 if (
                     typeof auth === "object"

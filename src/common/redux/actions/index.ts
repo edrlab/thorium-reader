@@ -9,6 +9,7 @@ import * as apiActions from "./api/";
 import * as authActions from "./auth";
 import * as dialogActions from "./dialog/";
 import * as downloadActions from "./download/";
+import * as historyActions from "./history";
 import * as i18nActions from "./i18n/";
 import * as importActions from "./import/";
 import * as keyboardActions from "./keyboard/";
@@ -21,6 +22,7 @@ import * as toastActions from "./toast/";
 // import * as updateActions from "./update/";
 
 export {
+    historyActions,
     authActions,
     apiActions,
     dialogActions,

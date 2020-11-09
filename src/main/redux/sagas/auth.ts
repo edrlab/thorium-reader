@@ -11,8 +11,9 @@ import {
     OPDSAuthenticationDoc,
 } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { authActions, toastActions } from "readium-desktop/common/redux/actions";
+import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
@@ -22,10 +23,12 @@ import {
 import { cleanCookieJar } from "readium-desktop/main/network/fetch";
 import {
     CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN,
+    getConfigRepoOpdsAuthenticationToken,
     httpSetToConfigRepoOpdsAuthenticationToken, IOpdsAuthenticationToken,
 } from "readium-desktop/main/network/http";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { all, call, put } from "redux-saga/effects";
+import { channel } from "redux-saga";
+import { all, call, delay, put, race, take } from "redux-saga/effects";
 import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
 
 // Logger
@@ -73,6 +76,8 @@ interface IOPDSAuthDocParsed {
 
     logo?: IOpdsLinkView | undefined;
 }
+
+const opdsAuthDoneChannel = channel<IOpdsAuthenticationToken>();
 
 function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPDSAuthDocParsed | undefined {
 
@@ -179,6 +184,22 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
 
     // test opds://
 
+    let browserUrl: string;
+    switch (authParsed.authenticationType) {
+
+        case "http://opds-spec.org/auth/oauth/implicit": {
+
+            browserUrl = authCredentials.authenticateUrl;
+            break;
+        }
+
+        default: {
+
+            debug("authentication method not found", authParsed.authenticationType);
+            return;
+        }
+    }
+
     // readium-desktop:main/http TypeError: Only HTTP(S) protocols are supported
     // const response = yield* callTyped(() => httpGet("opds://authorize?test=123"));
     // debug(typeof response);
@@ -187,37 +208,58 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
 
     // launch an auth browserWindow
 
-    // yield* callTyped(async () => {
+    debug("Browser URL", browserUrl);
 
-    //     let win: BrowserWindow;
+    const win = new BrowserWindow({
+        width: 800,
+        height: 600,
+    });
 
-    //     try {
-    //         win = new BrowserWindow({
-    //             width: 800,
-    //             height: 600,
-    //         });
+    try {
 
-    //         // win.hide();
+        // tslint:disable-next-line: no-floating-promises
+        win.loadURL(browserUrl);
+        const { c } = yield race({
+            b: delay(60000),
+            c: take(opdsAuthDoneChannel),
+            d: call(
+                async () =>
+                    new Promise<void>((resolve) => win.on("close", () => resolve())),
+            ),
+        });
 
-    //         await Promise.race([
-    //             win.loadURL(`opds://authorize`),
-    //             new Promise<void>((resolve) => setTimeout(() => resolve(), 7000)),
+        const authorizeCred: IOpdsAuthenticationToken = c;
+        if (authorizeCred) {
+            if (
+                typeof authorizeCred === "object"
+                && authorizeCred.accessToken
+            ) {
 
-    //         ]);
+                const { authenticateUrl } = authCredentials;
+                const { hostname } = new URL(authenticateUrl);
+                const cred = yield* callTyped(getConfigRepoOpdsAuthenticationToken, hostname);
+                if (cred) {
+                    const newCred = { ...cred, ...authorizeCred };
 
-    //         return ;
+                    debug("new opds authentication credentials", newCred);
 
-    //     } finally {
+                    yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, newCred);
+                }
+            }
+        }
 
-    //         debug("finally");
+        yield put(historyActions.refresh.build());
+        return;
 
-    //         if (win) {
+    } finally {
 
-    //             win.close();
-    //         }
+        debug("finally");
 
-    //     }
-    // });
+        if (win) {
+
+            win.close();
+        }
+    }
 
     // wait opds://authorize for implicit or opds://signin for other
 
@@ -229,46 +271,45 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
 
 function* opdsRequestEvent(req: Electron.Request) {
 
-        debug("########");
-        debug("########");
-        debug("odps:// request:", req);
-        debug("########");
-        debug("########");
+    debug("########");
+    debug("########");
+    debug("odps:// request:", req);
+    debug("########");
+    debug("########");
 
-        if (typeof req === "object") {
-            const { method, url } = req;
+    if (typeof req === "object") {
+        const { method, url } = req;
 
-            if (method !== "GET") {
-                return;
-            }
-
-            const urlParsed = tryCatchSync(() => new URL(url), filename_);
-            if (!urlParsed) {
-                debug("authentication: can't parse the opds:// request url", url);
-                return;
-            }
-
-            const { protocol: urlProtocol, host, searchParams } = urlParsed;
-
-            if (urlProtocol !== ODPS_AUTH_SCHEME) {
-                debug("bad opds protocol !!", urlProtocol);
-                return;
-            }
-
-            if (host === "authorize") {
-
-                const authCredentials: IOpdsAuthenticationToken = {
-                    id: searchParams?.get("id") || undefined,
-                    tokenType: searchParams?.get("token_type") || "Bearer",
-                    refreshToken: searchParams?.get("refresh_token") || undefined,
-                    accessToken: searchParams?.get("access_token") || undefined,
-                };
-
-                // TODO: update the credentials instead of overwriting them
-
-                yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
-            }
+        if (method !== "GET") {
+            debug("not a GET method !!");
+            return;
         }
+
+        const urlParsed = tryCatchSync(() => new URL(url), filename_);
+        if (!urlParsed) {
+            debug("authentication: can't parse the opds:// request url", url);
+            return;
+        }
+
+        const { protocol: urlProtocol, host, searchParams } = urlParsed;
+
+        if (urlProtocol !== `${ODPS_AUTH_SCHEME}:`) {
+            debug("bad opds protocol !!", urlProtocol);
+            return;
+        }
+
+        if (host === "authorize") {
+
+            const authCredentials: IOpdsAuthenticationToken = {
+                id: searchParams?.get("id") || undefined,
+                tokenType: searchParams?.get("token_type") || "Bearer",
+                refreshToken: searchParams?.get("refresh_token") || undefined,
+                accessToken: searchParams?.get("access_token") || undefined,
+            };
+
+            opdsAuthDoneChannel.put(authCredentials);
+        }
+    }
 }
 
 function* opdsAuthWipeData() {
@@ -303,7 +344,7 @@ export function saga() {
     const opdsRequestChannel = getOpdsRequestCustomProtocolEventChannel();
 
     return all([
-        takeSpawnEveryChannel(
+        takeSpawnLeadingChannel(
             opdsAuthChannel,
             opdsAuthFlow,
             (e) => debug("redux OPDS authentication channel error", e),
