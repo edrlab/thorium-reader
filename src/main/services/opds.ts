@@ -340,7 +340,10 @@ export class OpdsService {
             opdsAuthChannel.put([r2OpdsAuth, opdsFeedData.responseUrl]);
             // const opdsAuthView = this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, `${opdsFeedData.url}`);
 
-            opdsFeedData.data = undefined; // need to refresh the page
+            opdsFeedData.data = {
+                title: "Unauthorized",
+                publications: [],
+            }; // need to refresh the page
         } else if (isPub) {
             const r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(
                             jsonObj,

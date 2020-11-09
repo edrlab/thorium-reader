@@ -244,11 +244,13 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
                     debug("new opds authentication credentials", newCred);
 
                     yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, newCred);
+
+                    // debug("REFRESH the page");
+                    yield put(historyActions.refresh.build());
                 }
             }
         }
 
-        yield put(historyActions.refresh.build());
         return;
 
     } finally {
@@ -306,6 +308,9 @@ function* opdsRequestEvent(req: Electron.Request) {
                 refreshToken: searchParams?.get("refresh_token") || undefined,
                 accessToken: searchParams?.get("access_token") || undefined,
             };
+
+            authCredentials.tokenType =
+                authCredentials.tokenType.charAt(0).toUpperCase() + authCredentials.tokenType.slice(1);
 
             opdsAuthDoneChannel.put(authCredentials);
         }

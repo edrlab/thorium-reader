@@ -169,6 +169,18 @@ export async function httpFetchRawResponse(
     return response;
 }
 
+const handleCallback =
+    async <T = undefined>(res: IHttpGetResult<T>, callback: THttpGetCallback<T>) => {
+        if (callback) {
+            res = await Promise.resolve(callback(res));
+
+            // remove for IPC sync
+            res.body = undefined;
+            res.response = undefined;
+        }
+        return res;
+    };
+
 export async function httpFetchFormattedResponse<TData = undefined>(
     url: string | URL,
     options?: THttpOptions,
@@ -243,14 +255,7 @@ export async function httpFetchFormattedResponse<TData = undefined>(
         }
 
     } finally {
-
-        if (callback) {
-            result = await Promise.resolve(callback(result));
-
-            // remove for IPC sync
-            result.body = undefined;
-            result.response = undefined;
-        }
+        result = await handleCallback(result, callback);
     }
 
     return result;
@@ -260,29 +265,38 @@ export const httpGetWithAuth =
     (enableAuth = true): typeof httpFetchFormattedResponse =>
         async (...arg) => {
 
-            const [_url, _options, ..._arg] = arg;
+            const [_url, _options, _callback, ..._arg] = arg;
 
             const options = _options || {};
             options.method = "GET";
 
-            const response = await httpFetchFormattedResponse(_url, options, ..._arg);
+            const response = await httpFetchFormattedResponse(
+                _url,
+                options,
+                enableAuth ? undefined : _callback,
+                ..._arg,
+            );
 
-            if (enableAuth && response.statusCode === 401) {
+            if (enableAuth) {
+                if (response.statusCode === 401) {
 
-                const url = _url instanceof URL ? _url : new URL(_url);
-                const { hostname } = url;
+                    const url = _url instanceof URL ? _url : new URL(_url);
+                    const { hostname } = url;
 
-                const auth = await getConfigRepoOpdsAuthenticationToken(hostname);
+                    const auth = await getConfigRepoOpdsAuthenticationToken(hostname);
 
-                if (
-                    typeof auth === "object"
-                    && auth.accessToken
-                ) {
-                    return httpGetUnauthorized(auth)(_url, options, ..._arg);
+                    if (
+                        typeof auth === "object"
+                        && auth.accessToken
+                    ) {
+                        return httpGetUnauthorized(auth)(_url, options, _callback, ..._arg);
+                    } else {
+                        debug("there are no authentication credentials in configRepo");
+                        return await handleCallback(response, _callback);
+                    }
                 } else {
-                    debug("there are no authentication credentials in configRepo");
+                    return await handleCallback(response, _callback);
                 }
-
             }
             return response;
         };
@@ -293,7 +307,7 @@ const httpGetUnauthorized =
     (auth: IOpdsAuthenticationToken, enableRefresh = true): typeof httpFetchFormattedResponse =>
         async (...arg) => {
 
-            const [_url, _options, ..._arg] = arg;
+            const [_url, _options, _callback, ..._arg] = arg;
 
             const url = _url instanceof URL ? _url : new URL(_url);
             const options = _options || {};
@@ -306,12 +320,23 @@ const httpGetUnauthorized =
 
             options.headers.set("Authorization", httpSetHeaderAuthorization(tokenType || "Bearer", accessToken));
 
-            const response = await httpGetWithAuth(false)(url, options, ..._arg);
+            const response = await httpGetWithAuth(false)(
+                url,
+                options,
+                enableRefresh ? undefined : _callback,
+                ..._arg,
+            );
 
-            if (enableRefresh && response.statusCode === 401) {
-                if (auth.refreshUrl && auth.refreshToken) {
-                    const responseAfterRefresh = await httpGetUnauthorizedRefresh(auth)(url, options, ..._arg);
+            if (enableRefresh) {
+                if (
+                    response.statusCode === 401
+                    && auth.refreshUrl && auth.refreshToken
+                ) {
+                    const responseAfterRefresh =
+                        await httpGetUnauthorizedRefresh(auth)(url, options, _callback, ..._arg);
                     return responseAfterRefresh || response;
+                } else {
+                    return await handleCallback(response, _callback);
                 }
             }
             return response;
