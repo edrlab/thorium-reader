@@ -10,18 +10,22 @@ import { BrowserWindow } from "electron";
 import {
     OPDSAuthenticationDoc,
 } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
-import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { authActions, toastActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
 import {
     getOpdsAuthenticationChannel, TOpdsAuthenticationChannel,
 } from "readium-desktop/main/event";
+import { cleanCookieJar } from "readium-desktop/main/network/fetch";
 import {
+    CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN,
     httpSetToConfigRepoOpdsAuthenticationToken, IOpdsAuthenticationToken,
 } from "readium-desktop/main/network/http";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { all } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
 import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
 
 // Logger
@@ -183,37 +187,37 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
 
     // launch an auth browserWindow
 
-    yield* callTyped(async () => {
+    // yield* callTyped(async () => {
 
-        let win: BrowserWindow;
+    //     let win: BrowserWindow;
 
-        try {
-            win = new BrowserWindow({
-                width: 800,
-                height: 600,
-            });
+    //     try {
+    //         win = new BrowserWindow({
+    //             width: 800,
+    //             height: 600,
+    //         });
 
-            // win.hide();
+    //         // win.hide();
 
-            await Promise.race([
-                win.loadURL(`opds://authorize`),
-                new Promise<void>((resolve) => setTimeout(() => resolve(), 7000)),
+    //         await Promise.race([
+    //             win.loadURL(`opds://authorize`),
+    //             new Promise<void>((resolve) => setTimeout(() => resolve(), 7000)),
 
-            ]);
+    //         ]);
 
-            return ;
+    //         return ;
 
-        } finally {
+    //     } finally {
 
-            debug("finally");
+    //         debug("finally");
 
-            if (win) {
+    //         if (win) {
 
-                win.close();
-            }
+    //             win.close();
+    //         }
 
-        }
-    });
+    //     }
+    // });
 
     // wait opds://authorize for implicit or opds://signin for other
 
@@ -247,7 +251,7 @@ function* opdsRequestEvent(req: Electron.Request) {
             const { protocol: urlProtocol, host, searchParams } = urlParsed;
 
             if (urlProtocol !== ODPS_AUTH_SCHEME) {
-                debug("bad opds protocol !!");
+                debug("bad opds protocol !!", urlProtocol);
                 return;
             }
 
@@ -267,6 +271,31 @@ function* opdsRequestEvent(req: Electron.Request) {
         }
 }
 
+function* opdsAuthWipeData() {
+
+    debug("Wipping authentication data");
+
+    yield* callTyped(cleanCookieJar);
+
+    const configDoc = yield* callTyped(() => diMainGet("config-repository"));
+
+    const docs = yield* callTyped(() => configDoc.findAll());
+
+    if (Array.isArray(docs)) {
+        for (const doc of docs) {
+
+            if (doc.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)) {
+
+                debug("delete", doc.identifier);
+                yield call(() => configDoc.delete(doc.identifier));
+            }
+        }
+    }
+
+    yield put(toastActions.openRequest.build(ToastType.Success, "👍"));
+    debug("End of wipping auth data");
+}
+
 export function saga() {
 
     const opdsAuthChannel = getOpdsAuthenticationChannel();
@@ -283,6 +312,11 @@ export function saga() {
             opdsRequestChannel,
             opdsRequestEvent,
             (e) => debug("opds request opds://", e),
+        ),
+        takeSpawnEvery(
+            authActions.wipeData.ID,
+            opdsAuthWipeData,
+            (e) => debug("opds authentication data wipping error", e),
         ),
     ]);
 }

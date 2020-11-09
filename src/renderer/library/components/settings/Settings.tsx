@@ -10,6 +10,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
+import AuthSettings from "./AuthSettings";
 
 import KeyboardSettings from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
@@ -38,6 +39,7 @@ class Settings extends React.Component<IProps, undefined> {
                     <LanguageSettings></LanguageSettings>
                     <SessionSettings></SessionSettings>
                     <KeyboardSettings></KeyboardSettings>
+                    <AuthSettings></AuthSettings>
                 </LibraryLayout>
             </>
         );

@@ -44,9 +44,10 @@ const FOLLOW_REDIRECT_COUNTER = 20;
 export const httpSetHeaderAuthorization =
     (type: string, credentials: string) => `${type} ${credentials}`;
 
+export const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN = "CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN";
 // tslint:disable-next-line: variable-name
 const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
-    (hostname: string) => `CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN.${Buffer.from(hostname).toString("base64")}`;
+    (hostname: string) => `${CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN}.${Buffer.from(hostname).toString("base64")}`;
 
 export interface IOpdsAuthenticationToken {
     id?: string;
