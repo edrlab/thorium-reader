@@ -197,28 +197,8 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
 
 function* downloadLinkRequest(linkHref: string, abort: AbortSignal): SagaGenerator<IHttpGetResult<undefined>> {
 
-    let savedAccessTokens: AccessTokenMap = {};
-    try {
-        // Why is this undefined?? Injection async problem?
-        const configRepository = diMainGet("config-repository");
-        const configDoc = yield* callTyped(() => configRepository.get("oauth"));
-        savedAccessTokens = configDoc.value;
-    } catch (err) {
-        debug("Error to get oauth config value");
-        debug(err);
-    }
-    const domain = linkHref.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-    const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
-
     const options: RequestInit = {};
     options.signal = abort;
-
-    if (accessToken) {
-        options.headers = {
-            Authorization: `Bearer ${accessToken.authenticationToken}`,
-        };
-        debug("new header with oauth", options.headers);
-    }
 
     const data = yield* callTyped(() => httpGet(linkHref, options));
 
