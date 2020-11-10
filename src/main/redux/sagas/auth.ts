@@ -7,14 +7,15 @@
 
 import * as debug_ from "debug";
 import { BrowserWindow, globalShortcut } from "electron";
+import { Headers } from "node-fetch";
 import {
     OPDSAuthenticationDoc,
 } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
-import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { callTyped, forkTyped, takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import {
@@ -22,13 +23,13 @@ import {
 } from "readium-desktop/main/event";
 import { cleanCookieJar } from "readium-desktop/main/network/fetch";
 import {
-    CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN,
-    getConfigRepoOpdsAuthenticationToken,
+    CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, httpPost,
     httpSetToConfigRepoOpdsAuthenticationToken, IOpdsAuthenticationToken,
 } from "readium-desktop/main/network/http";
+import { ContentType } from "readium-desktop/utils/content-type";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { channel } from "redux-saga";
-import { all, call, delay, put, race, take } from "redux-saga/effects";
+import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
+
 import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
 
 // Logger
@@ -60,6 +61,299 @@ const LINK_TYPE: TLinkType[] = [
 //     "password",
 // ];
 
+const opdsAuthFlow = (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRequestCustomProtocolEventChannel>) =>
+    function*([doc, baseUrl]: TOpdsAuthenticationChannel) {
+
+        debug("opds authenticate flow");
+        const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
+        if (!baseUrlParsed) {
+            debug("no valid base url");
+            return;
+        }
+
+        const authParsed = tryCatchSync(() => opdsAuthDocConverter(doc, baseUrl), filename_);
+        if (!authParsed) {
+            debug("authentication doc parsing error");
+            return;
+        }
+        debug("authentication doc parsed", authParsed);
+
+        const browserUrl = getHtmlAuthenticationUrl(authParsed);
+        if (!browserUrl) {
+            debug("no valid authentication html url");
+            return;
+        }
+        debug("Browser URL", browserUrl);
+
+        const authCredentials: IOpdsAuthenticationToken = {
+            id: authParsed?.id || undefined,
+            opdsAuthenticationUrl: baseUrl,
+            tokenType: "Bearer",
+            refreshUrl: authParsed?.links?.refresh?.url || undefined,
+            authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
+        };
+        debug("authentication credential config", authCredentials);
+        yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
+
+        const task = yield* forkTyped(function*() {
+
+            const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
+            return parseRequestFromCustomProtocol(parsedRequest);
+        });
+
+        const win =
+            tryCatchSync(
+                () => createOpdsAuthenticationModalWin(browserUrl),
+                filename_,
+            );
+        if (!win) {
+            debug("modal win undefined");
+
+            yield cancel(task);
+            return;
+        }
+
+        try {
+
+            yield race({
+                a: delay(60000),
+                b: join(task),
+                c: call(
+                    async () =>
+                        new Promise<void>((resolve) => win.on("close", () => resolve())),
+                ),
+            });
+
+            if (task.isRunning()) {
+                debug("no authentication credentials received");
+                debug("perhaps timeout or closing authentication window occured");
+
+                return ;
+
+            } else {
+                const opdsCustomProtocolRequestParsed = task.result();
+                if (opdsCustomProtocolRequestParsed) {
+
+                    const [, err] = yield* callTyped(opdsSetAuthCredentials,
+                        opdsCustomProtocolRequestParsed,
+                        authCredentials,
+                        authParsed.authenticationType,
+                    );
+
+                    if (err instanceof Error) {
+                        debug(err.message);
+
+                        return ;
+
+                    } else {
+                        yield put(historyActions.refresh.build());
+                    }
+                }
+            }
+
+        } finally {
+
+            if (win) {
+                win.close();
+            }
+            if (task.isRunning()) {
+                yield cancel(task);
+            }
+        }
+
+    };
+
+function* opdsAuthWipeData() {
+
+    debug("Wipping authentication data");
+
+    yield* callTyped(cleanCookieJar);
+
+    const configDoc = yield* callTyped(() => diMainGet("config-repository"));
+
+    const docs = yield* callTyped(() => configDoc.findAll());
+
+    if (Array.isArray(docs)) {
+        for (const doc of docs) {
+
+            if (doc.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)) {
+
+                debug("delete", doc.identifier);
+                yield call(() => configDoc.delete(doc.identifier));
+            }
+        }
+    }
+
+    yield put(toastActions.openRequest.build(ToastType.Success, "👍"));
+    debug("End of wipping auth data");
+}
+
+export function saga() {
+
+    const opdsAuthChannel = getOpdsAuthenticationChannel();
+    const opdsRequestChannel = getOpdsRequestCustomProtocolEventChannel();
+
+    return all([
+        takeSpawnLeadingChannel(
+            opdsAuthChannel,
+            opdsAuthFlow(opdsRequestChannel),
+            (e) => debug("redux OPDS authentication channel error", e),
+        ),
+        takeSpawnEvery(
+            authActions.wipeData.ID,
+            opdsAuthWipeData,
+            (e) => debug("opds authentication data wipping error", e),
+        ),
+    ]);
+}
+
+// -----
+
+async function opdsSetAuthCredentials(
+    opdsCustomProtocolRequestParsed: IParseRequestFromCustomProtocol<TLabelName>,
+    authCredentials: IOpdsAuthenticationToken,
+    authenticationType: TAuthenticationType,
+): Promise<[undefined, Error]> {
+
+    if (!opdsCustomProtocolRequestParsed) {
+        return [, new Error("")];
+    }
+
+    const { url: { host, searchParams }, method, data } = opdsCustomProtocolRequestParsed;
+    if (host === "authorize") {
+
+        // handle GET or POST request
+
+        if (method === "POST") {
+
+            // payload in function of authentication type
+            const payload: any = {
+                username: data.login,
+                password: data.password,
+            };
+            const type = authenticationType;
+            if (type === "http://opds-spec.org/auth/oauth/password") {
+                payload.grant_type = "password";
+            }
+
+            const { authenticateUrl } = authCredentials || {};
+            if (!authenticateUrl) {
+                return [, new Error("cannot retrieve the authenticate url !!")];
+            }
+
+            const headers = new Headers();
+            headers.set("Content-Type", ContentType.Json);
+
+            const { data: postData } = await httpPost<IOpdsAuthenticationToken>(
+                authenticateUrl,
+                {
+                    body: JSON.stringify(payload),
+                    headers,
+                },
+                async (res) => {
+                    if (res.isSuccess) {
+
+                        const _data = await res.response.json();
+                        if (typeof _data === "object") {
+
+                            res.data = {
+                                accessToken: typeof _data.access_token === "string"
+                                    ? _data.access_token
+                                    : undefined,
+                                refreshToken: typeof _data.refresh_token === "string"
+                                    ? _data.refresh_token
+                                    : undefined,
+                                tokenType: (typeof _data.token_type === "string"
+                                    ? _data.token_type
+                                    : undefined) || "Bearer",
+                            };
+                        }
+                    }
+                    return res;
+                },
+            );
+
+            if (postData) {
+                postData.tokenType = postData.tokenType || authCredentials.tokenType || "Bearer";
+                postData.tokenType =
+                    postData.tokenType.charAt(0).toUpperCase() + postData.tokenType.slice(1);
+                const newCredentials = { ...authCredentials, ...postData };
+
+                if (typeof newCredentials.accessToken === "string") {
+
+                    debug("new opds authentication credentials");
+                    await httpSetToConfigRepoOpdsAuthenticationToken(newCredentials);
+
+                    return [, undefined];
+                }
+
+                return [, new Error("no accessToken received")];
+            }
+        }
+
+        if (method === "GET") {
+
+            const newCredentials = {
+                ...authCredentials,
+                id: searchParams?.get("id") || authCredentials.id || undefined,
+                tokenType: searchParams?.get("token_type") || authCredentials.tokenType || "Bearer",
+                refreshToken: searchParams?.get("refresh_token") || undefined,
+                accessToken: searchParams?.get("access_token") || undefined,
+            };
+
+            newCredentials.tokenType =
+                newCredentials.tokenType.charAt(0).toUpperCase() + newCredentials.tokenType.slice(1);
+
+            if (typeof newCredentials.accessToken === "string") {
+
+                debug("new opds authentication credentials");
+                await httpSetToConfigRepoOpdsAuthenticationToken(newCredentials);
+
+                return [, undefined];
+            }
+
+            return [, new Error("no accessToken received")];
+
+        }
+    }
+
+    return [, undefined];
+}
+
+function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
+
+    let browserUrl: string;
+    switch (auth.authenticationType) {
+
+        case "http://opds-spec.org/auth/oauth/implicit": {
+
+            browserUrl = auth.links?.authenticate?.url;
+            break;
+        }
+
+        case "http://opds-spec.org/auth/oauth/password": {
+
+            const html = encodeURIComponent(
+                htmlLoginTemplate(
+                    "opds://authorize",
+                    auth.labels?.login,
+                    auth.labels?.password,
+                    auth.logo?.url,
+                ),
+            );
+            browserUrl = `data:text/html;charset=utf-8,${html}`;
+            break;
+        }
+
+        default: {
+
+            debug("authentication method not found", auth.authenticationType);
+            return undefined;
+        }
+    }
+    return browserUrl;
+}
+
 interface IOPDSAuthDocParsed {
     title: string;
     id: string;
@@ -76,9 +370,6 @@ interface IOPDSAuthDocParsed {
 
     logo?: IOpdsLinkView | undefined;
 }
-
-const opdsAuthDoneChannel = channel<IOpdsAuthenticationToken | undefined>();
-
 function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPDSAuthDocParsed | undefined {
 
     if (!doc || !(doc instanceof OPDSAuthenticationDoc)) {
@@ -134,8 +425,11 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         labels.password = authentication.Labels.Password;
     }
     const logo = tryCatchSync(() => {
-        const ln = Array.isArray(authentication.Links)
-            ? authentication.Links.find((v) => (v.Rel || []).includes("logo"))
+        const ln = Array.isArray(doc.Links)
+            ? doc.Links.find((v) => {
+                debug(v);
+                return (v.Rel || []).includes("logo");
+            })
             : undefined;
         if (ln) {
             const [linkView] = viewConvert.convertLinkToView([ln], baseUrl);
@@ -155,68 +449,14 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     };
 }
 
-function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
+function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefined {
 
-    const [doc, baseUrl] = opdsAuth;
-    debug("opds authenticate flow");
-    debug("typeof doc", typeof doc);
-
-    const authParsed = yield* callTyped(
-        () => tryCatchSync(() => opdsAuthDocConverter(doc, baseUrl), filename_));
-    if (!authParsed) {
-
-        debug("authentication doc parsing error");
-        return;
+    const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
+    if (!libWin) {
+        debug("no lib win !!");
+        return undefined;
     }
 
-    debug("authentication doc parsed", authParsed);
-
-    const authCredentials: IOpdsAuthenticationToken = {
-        id: authParsed?.id || undefined,
-        opdsAuthenticationUrl: baseUrl,
-        tokenType: "Bearer",
-        refreshUrl: authParsed?.links?.refresh?.url || undefined,
-        authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
-    };
-
-    debug("authentication credential config", authCredentials);
-    yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
-
-    // test opds://
-
-    let browserUrl: string;
-    switch (authParsed.authenticationType) {
-
-        case "http://opds-spec.org/auth/oauth/implicit": {
-
-            browserUrl = authCredentials.authenticateUrl;
-            break;
-        }
-
-        case "http://opds-spec.org/auth/oauth/password": {
-
-            browserUrl = `data:text/html;charset=utf-8,${encodeURIComponent(htmlLoginTemplate("opds://authorize"))}`;
-            break;
-        }
-
-        default: {
-
-            debug("authentication method not found", authParsed.authenticationType);
-            return;
-        }
-    }
-
-    // readium-desktop:main/http TypeError: Only HTTP(S) protocols are supported
-    // const response = yield* callTyped(() => httpGet("opds://authorize?test=123"));
-    // debug(typeof response);
-    // const res = response.response;
-    // debug("response", res);
-
-    // launch an auth browserWindow
-
-    debug("Browser URL", browserUrl);
-
-    const libWin = getLibraryWindowFromDi();
     const win = new BrowserWindow(
         {
             width: 800,
@@ -236,193 +476,99 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
         win.show();
     });
 
-    // tslint:disable-next-line: no-empty
-    opdsAuthDoneChannel.flush(() => {});
+    // tslint:disable-next-line: no-floating-promises
+    win.loadURL(url);
 
-    try {
-
-        // tslint:disable-next-line: no-floating-promises
-        win.loadURL(browserUrl);
-        const { c } = yield race({
-            b: delay(60000),
-            c: take(opdsAuthDoneChannel),
-            d: call(
-                async () =>
-                    new Promise<void>((resolve) => win.on("close", () => resolve())),
-            ),
-        });
-
-        const authorizeCred: IOpdsAuthenticationToken = c;
-        if (authorizeCred) {
-            if (
-                typeof authorizeCred === "object"
-                && authorizeCred.accessToken
-            ) {
-
-                const { authenticateUrl } = authCredentials;
-                const { hostname } = new URL(authenticateUrl);
-                const cred = yield* callTyped(getConfigRepoOpdsAuthenticationToken, hostname);
-                if (cred) {
-                    const newCred = { ...cred, ...authorizeCred };
-
-                    debug("new opds authentication credentials");
-
-                    yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, newCred);
-
-                    // debug("REFRESH the page");
-                    yield put(historyActions.refresh.build());
-                }
-            }
-        }
-
-        return;
-
-    } finally {
-
-        debug("finally");
-
-        if (win) {
-
-            win.close();
-        }
-    }
-
-    // wait opds://authorize for implicit or opds://signin for other
-
-    // close the window
-
-    // refresh the opds browser view
-
+    return win;
 }
 
-function* opdsRequestEvent(req: Electron.Request) {
+interface IParseRequestFromCustomProtocol<T = string> {
+    url: URL;
+    method: "GET" | "POST";
+    data: {
+        [key in T & string]?: string;
+    };
+}
+function parseRequestFromCustomProtocol(req: Electron.Request)
+    : IParseRequestFromCustomProtocol<TLabelName> | undefined {
 
-    debug("########");
     debug("########");
     debug("opds:// request:", req);
     debug("########");
-    debug("########");
 
-    let authCredentials: IOpdsAuthenticationToken = {}; // null channel
-    try {
+    if (typeof req === "object") {
+        const { method, url, uploadData } = req;
 
-        if (typeof req === "object") {
-            const { method, url } = req;
+        const urlParsed = tryCatchSync(() => new URL(url), filename_);
+        if (!urlParsed) {
+            debug("authentication: can't parse the opds:// request url", url);
+            return undefined;
+        }
+        const { protocol: urlProtocol, host } = urlParsed;
 
-            if (method === "POST") {
+        if (urlProtocol !== `${ODPS_AUTH_SCHEME}:`) {
+            debug("bad opds protocol !!", urlProtocol);
+            return undefined;
+        }
 
-                debug("post request", req.uploadData);
+        if (method === "POST") {
+            if (host === "authorize") {
 
-                if (Array.isArray(req.uploadData)) {
+                debug("POST request", uploadData);
 
-                    const [res] = req.uploadData;
+                if (Array.isArray(uploadData)) {
+
+                    const [res] = uploadData;
 
                     if ((res as any).type === "rawData") {
                         debug("RAW DATA received");
                     }
-                    const data = Buffer.from(res.bytes).toString();
+                    const data =
+                        tryCatchSync(
+                            () => Buffer.from(res.bytes).toString(),
+                            filename_,
+                        ) || "";
                     debug("data", data);
 
                     const keyValue = data.split("&");
-                    const values = keyValue.reduce((pv, cv) => ({
-                        ...pv,
-                        [cv.split("=")[0]]: cv.split("=")[1],
-                    }), {});
+                    const values = tryCatchSync(
+                        () => keyValue.reduce(
+                            (pv, cv) =>
+                                ({
+                                    ...pv,
+                                    [cv.split("=")[0]]: cv.split("=")[1],
+                                }),
+                            {},
+                        ),
+                        filename_,
+                    ) || {};
                     debug(values);
+
+                    return {
+                        url: urlParsed,
+                        method: "POST",
+                        data: values,
+                    };
                 }
             }
+        }
 
-            if (method !== "GET") {
-                debug("not a GET method !!");
-                return;
-            }
-
-            const urlParsed = tryCatchSync(() => new URL(url), filename_);
-            if (!urlParsed) {
-                debug("authentication: can't parse the opds:// request url", url);
-                return;
-            }
-
-            const { protocol: urlProtocol, host, searchParams } = urlParsed;
-
-            if (urlProtocol !== `${ODPS_AUTH_SCHEME}:`) {
-                debug("bad opds protocol !!", urlProtocol);
-                return;
-            }
-
+        if (method === "GET") {
             if (host === "authorize") {
 
-                authCredentials = {
-                    id: searchParams?.get("id") || undefined,
-                    tokenType: searchParams?.get("token_type") || "Bearer",
-                    refreshToken: searchParams?.get("refresh_token") || undefined,
-                    accessToken: searchParams?.get("access_token") || undefined,
+                return {
+                    url: urlParsed,
+                    method: "GET",
+                    data: {},
                 };
-
-                authCredentials.tokenType =
-                    authCredentials.tokenType.charAt(0).toUpperCase() + authCredentials.tokenType.slice(1);
-
-                return;
-            }
-        }
-    } finally {
-
-        opdsAuthDoneChannel.put(authCredentials);
-    }
-
-}
-
-function* opdsAuthWipeData() {
-
-    debug("Wipping authentication data");
-
-    yield* callTyped(cleanCookieJar);
-
-    const configDoc = yield* callTyped(() => diMainGet("config-repository"));
-
-    const docs = yield* callTyped(() => configDoc.findAll());
-
-    if (Array.isArray(docs)) {
-        for (const doc of docs) {
-
-            if (doc.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)) {
-
-                debug("delete", doc.identifier);
-                yield call(() => configDoc.delete(doc.identifier));
             }
         }
     }
 
-    yield put(toastActions.openRequest.build(ToastType.Success, "👍"));
-    debug("End of wipping auth data");
+    return undefined;
 }
 
-export function saga() {
-
-    const opdsAuthChannel = getOpdsAuthenticationChannel();
-
-    const opdsRequestChannel = getOpdsRequestCustomProtocolEventChannel();
-
-    return all([
-        takeSpawnLeadingChannel(
-            opdsAuthChannel,
-            opdsAuthFlow,
-            (e) => debug("redux OPDS authentication channel error", e),
-        ),
-        takeSpawnEveryChannel(
-            opdsRequestChannel,
-            opdsRequestEvent,
-            (e) => debug("opds request opds://", e),
-        ),
-        takeSpawnEvery(
-            authActions.wipeData.ID,
-            opdsAuthWipeData,
-            (e) => debug("opds authentication data wipping error", e),
-        ),
-    ]);
-}
-
-const htmlLoginTemplate = (urlToSubmit: string = "") => `
+const htmlLoginTemplate = (urlToSubmit: string = "", loginLabel = "login", passLabel = "password", logoUrl?: string) => `
 <html lang="en">
 
 <head>
@@ -481,7 +627,7 @@ const htmlLoginTemplate = (urlToSubmit: string = "") => `
       z-index: 2;
     }
 
-    .form-signin input[type="username"] {
+    .form-signin input[type="login"] {
       margin-bottom: -1px;
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
@@ -496,15 +642,16 @@ const htmlLoginTemplate = (urlToSubmit: string = "") => `
 </head>
 
 <body class="text-center">
-  <form class="form-signin" action="${urlToSubmit}" method="post">
+<form class="form-signin" action="${urlToSubmit}" method="post">
+    ${logoUrl ? `<img class="mb-4" src="${logoUrl}" alt="login logo">` : ``}
     <!--<img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72"
       height="72">!-->
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputUsername" class="sr-only">Email address</label>
-    <input name="username" id="inputUsername" class="form-control" placeholder="username" required autofocus>
+    <label for="inputLogin" class="sr-only">${loginLabel}</label>
+    <input name="login" id="inputUsername" class="form-control" placeholder="${loginLabel}" required autofocus>
     <!-- <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus> -->
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <label for="inputPassword" class="sr-only">${passLabel}</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="${passLabel}" required>
     <!--<div class="checkbox mb-3">
       <label>
         <input type="checkbox" value="remember-me"> Remember me
