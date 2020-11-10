@@ -129,6 +129,7 @@ export async function httpFetchRawResponse(
     const response = await fetchWithCookie(url, options);
 
     debug("fetch URL:", `${url}`);
+    debug("Method", options.method);
     debug("Request headers :");
     debug(options.headers);
     debug("###");
@@ -272,7 +273,7 @@ export const httpGetWithAuth =
             const [_url, _options, _callback, ..._arg] = arg;
 
             const options = _options || {};
-            options.method = "GET";
+            options.method = "get";
 
             const response = await httpFetchFormattedResponse(
                 _url,
@@ -396,8 +397,11 @@ export const httpPost: typeof httpFetchFormattedResponse =
         let [, options] = arg;
 
         options = options || {};
-        options.method = "POST";
+        options.method = "post";
         arg[1] = options;
+
+        debug("Body:");
+        debug(options.body);
 
         return httpFetchFormattedResponse(...arg);
     };
