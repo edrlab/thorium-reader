@@ -193,6 +193,12 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
             break;
         }
 
+        case "http://opds-spec.org/auth/oauth/password": {
+
+            browserUrl = `data:text/html;charset=utf-8,${encodeURIComponent(htmlLoginTemplate("opds://authorize"))}`;
+            break;
+        }
+
         default: {
 
             debug("authentication method not found", authParsed.authenticationType);
@@ -293,50 +299,77 @@ function* opdsRequestEvent(req: Electron.Request) {
 
     debug("########");
     debug("########");
-    debug("odps:// request:", req);
+    debug("opds:// request:", req);
     debug("########");
     debug("########");
 
-    if (typeof req === "object") {
-        const { method, url } = req;
+    let authCredentials: IOpdsAuthenticationToken = {}; // null channel
+    try {
 
-        if (method !== "GET") {
-            debug("not a GET method !!");
-            return;
+        if (typeof req === "object") {
+            const { method, url } = req;
+
+            if (method === "POST") {
+
+                debug("post request", req.uploadData);
+
+                if (Array.isArray(req.uploadData)) {
+
+                    const [res] = req.uploadData;
+
+                    if ((res as any).type === "rawData") {
+                        debug("RAW DATA received");
+                    }
+                    const data = Buffer.from(res.bytes).toString();
+                    debug("data", data);
+
+                    const keyValue = data.split("&");
+                    const values = keyValue.reduce((pv, cv) => ({
+                        ...pv,
+                        [cv.split("=")[0]]: cv.split("=")[1],
+                    }), {});
+                    debug(values);
+                }
+            }
+
+            if (method !== "GET") {
+                debug("not a GET method !!");
+                return;
+            }
+
+            const urlParsed = tryCatchSync(() => new URL(url), filename_);
+            if (!urlParsed) {
+                debug("authentication: can't parse the opds:// request url", url);
+                return;
+            }
+
+            const { protocol: urlProtocol, host, searchParams } = urlParsed;
+
+            if (urlProtocol !== `${ODPS_AUTH_SCHEME}:`) {
+                debug("bad opds protocol !!", urlProtocol);
+                return;
+            }
+
+            if (host === "authorize") {
+
+                authCredentials = {
+                    id: searchParams?.get("id") || undefined,
+                    tokenType: searchParams?.get("token_type") || "Bearer",
+                    refreshToken: searchParams?.get("refresh_token") || undefined,
+                    accessToken: searchParams?.get("access_token") || undefined,
+                };
+
+                authCredentials.tokenType =
+                    authCredentials.tokenType.charAt(0).toUpperCase() + authCredentials.tokenType.slice(1);
+
+                return;
+            }
         }
+    } finally {
 
-        const urlParsed = tryCatchSync(() => new URL(url), filename_);
-        if (!urlParsed) {
-            debug("authentication: can't parse the opds:// request url", url);
-            return;
-        }
-
-        const { protocol: urlProtocol, host, searchParams } = urlParsed;
-
-        if (urlProtocol !== `${ODPS_AUTH_SCHEME}:`) {
-            debug("bad opds protocol !!", urlProtocol);
-            return;
-        }
-
-        if (host === "authorize") {
-
-            const authCredentials: IOpdsAuthenticationToken = {
-                id: searchParams?.get("id") || undefined,
-                tokenType: searchParams?.get("token_type") || "Bearer",
-                refreshToken: searchParams?.get("refresh_token") || undefined,
-                accessToken: searchParams?.get("access_token") || undefined,
-            };
-
-            authCredentials.tokenType =
-                authCredentials.tokenType.charAt(0).toUpperCase() + authCredentials.tokenType.slice(1);
-
-            opdsAuthDoneChannel.put(authCredentials);
-
-            return;
-        }
+        opdsAuthDoneChannel.put(authCredentials);
     }
 
-    opdsAuthDoneChannel.put(undefined);
 }
 
 function* opdsAuthWipeData() {
@@ -388,3 +421,97 @@ export function saga() {
         ),
     ]);
 }
+
+const htmlLoginTemplate = (urlToSubmit: string = "") => `
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Sign in</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      display: -ms-flexbox;
+      display: -webkit-box;
+      display: flex;
+      -ms-flex-align: center;
+      -ms-flex-pack: center;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      padding-top: 40px;
+      padding-bottom: 40px;
+      background-color: #f5f5f5;
+    }
+
+    .form-signin {
+      width: 100%;
+      max-width: 330px;
+      padding: 15px;
+      margin: 0 auto;
+    }
+
+    .form-signin .checkbox {
+      font-weight: 400;
+    }
+
+    .form-signin .form-control {
+      position: relative;
+      box-sizing: border-box;
+      height: auto;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .form-signin .form-control:focus {
+      z-index: 2;
+    }
+
+    .form-signin input[type="username"] {
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="password"] {
+      margin-bottom: 10px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  </style>
+</head>
+
+<body class="text-center">
+  <form class="form-signin" action="${urlToSubmit}" method="post">
+    <!--<img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72"
+      height="72">!-->
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputUsername" class="sr-only">Email address</label>
+    <input name="username" id="inputUsername" class="form-control" placeholder="username" required autofocus>
+    <!-- <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus> -->
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <!--<div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>!-->
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  </form>
+</body>
+
+</html>`;
