@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { BrowserWindow } from "electron";
+import { BrowserWindow, globalShortcut } from "electron";
 import {
     OPDSAuthenticationDoc,
 } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
@@ -16,7 +16,7 @@ import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/re
 import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
-import { diMainGet } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import {
     getOpdsAuthenticationChannel, TOpdsAuthenticationChannel,
 } from "readium-desktop/main/event";
@@ -77,7 +77,7 @@ interface IOPDSAuthDocParsed {
     logo?: IOpdsLinkView | undefined;
 }
 
-const opdsAuthDoneChannel = channel<IOpdsAuthenticationToken>();
+const opdsAuthDoneChannel = channel<IOpdsAuthenticationToken | undefined>();
 
 function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPDSAuthDocParsed | undefined {
 
@@ -210,10 +210,28 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
 
     debug("Browser URL", browserUrl);
 
-    const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+    const libWin = getLibraryWindowFromDi();
+    const win = new BrowserWindow(
+        {
+            width: 800,
+            height: 600,
+            parent: libWin,
+            modal: true,
+            show: false,
+        });
+
+    const handler = () => win.close();
+    globalShortcut.register("esc", handler);
+    win.on("close", () => {
+        globalShortcut.unregister("esc");
     });
+
+    win.once("ready-to-show", () => {
+        win.show();
+    });
+
+    // tslint:disable-next-line: no-empty
+    opdsAuthDoneChannel.flush(() => {});
 
     try {
 
@@ -241,7 +259,7 @@ function* opdsAuthFlow(opdsAuth: TOpdsAuthenticationChannel) {
                 if (cred) {
                     const newCred = { ...cred, ...authorizeCred };
 
-                    debug("new opds authentication credentials", newCred);
+                    debug("new opds authentication credentials");
 
                     yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, newCred);
 
@@ -313,8 +331,12 @@ function* opdsRequestEvent(req: Electron.Request) {
                 authCredentials.tokenType.charAt(0).toUpperCase() + authCredentials.tokenType.slice(1);
 
             opdsAuthDoneChannel.put(authCredentials);
+
+            return;
         }
     }
+
+    opdsAuthDoneChannel.put(undefined);
 }
 
 function* opdsAuthWipeData() {

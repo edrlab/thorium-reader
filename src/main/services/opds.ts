@@ -38,7 +38,7 @@ import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
 
 // Logger
-const debug = debug_("readium-desktop:main#services/catalog");
+const debug = debug_("readium-desktop:main#services/opds");
 
 const SEARCH_TERM = "{searchTerms}";
 
@@ -312,7 +312,7 @@ export class OpdsService {
         const contentType = opdsFeedData.contentType;
 
         const isPub = contentType.startsWith(ContentType.Opds2Pub) ||
-            (!jsonObj.publications &&
+            !!(!jsonObj.publications &&
                 !jsonObj.navigation &&
                 !jsonObj.groups &&
                 !jsonObj.catalogs);
@@ -321,7 +321,7 @@ export class OpdsService {
             typeof jsonObj.authentication !== "undefined";
 
         const isFeed = contentType.startsWith(ContentType.Opds2) ||
-            (jsonObj.publications ||
+            !!(jsonObj.publications ||
                 jsonObj.navigation ||
                 jsonObj.groups ||
                 jsonObj.catalogs);

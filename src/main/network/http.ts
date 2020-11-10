@@ -65,6 +65,7 @@ export const httpSetToConfigRepoOpdsAuthenticationToken =
 
         const url = new URL(data.opdsAuthenticationUrl);
         const { hostname } = url;
+        debug("SET opds authentication credentials for", hostname, data);
         const configRepo = diMainGet("config-repository");
         await configRepo.save({
             identifier: CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname),
@@ -77,9 +78,12 @@ export const httpSetToConfigRepoOpdsAuthenticationToken =
 export const getConfigRepoOpdsAuthenticationToken =
     async (hostname: string) => await tryCatch(
         async () => {
+
             const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname);
             const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
             const doc = await configRepo.get(id);
+            debug("GET opds authentication credentials for", hostname);
+            debug("Credentials: ", doc?.value);
             return doc?.value;
         },
         filename_,
@@ -124,7 +128,7 @@ export async function httpFetchRawResponse(
 
     const response = await fetchWithCookie(url, options);
 
-    debug("fetch URL:", url);
+    debug("fetch URL:", `${url}`);
     debug("Request headers :");
     debug(options.headers);
     debug("###");
