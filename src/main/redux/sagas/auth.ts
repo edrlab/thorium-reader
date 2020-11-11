@@ -226,58 +226,81 @@ async function opdsSetAuthCredentials(
 
         if (method === "POST") {
 
-            // payload in function of authentication type
-            const payload: any = {
-                username: data.login,
-                password: data.password,
-            };
-            const type = authenticationType;
-            if (type === "http://opds-spec.org/auth/oauth/password") {
-                payload.grant_type = "password";
-            }
+            let postDataCredential: IOpdsAuthenticationToken;
+            if (authenticationType === "http://opds-spec.org/auth/basic") {
 
-            const { authenticateUrl } = authCredentials || {};
-            if (!authenticateUrl) {
-                return [, new Error("cannot retrieve the authenticate url !!")];
-            }
+                postDataCredential = {
+                    accessToken: Buffer.from(`${data.login}:${data.password}`).toString("base64"),
+                    refreshToken: undefined,
+                    tokenType: "basic",
+                };
 
-            const headers = new Headers();
-            headers.set("Content-Type", ContentType.Json);
+            } else {
 
-            const { data: postData } = await httpPost<IOpdsAuthenticationToken>(
-                authenticateUrl,
-                {
-                    body: JSON.stringify(payload),
-                    headers,
-                },
-                async (res) => {
-                    if (res.isSuccess) {
-
-                        const _data = await res.response.json();
-                        if (typeof _data === "object") {
-
-                            res.data = {
-                                accessToken: typeof _data.access_token === "string"
-                                    ? _data.access_token
-                                    : undefined,
-                                refreshToken: typeof _data.refresh_token === "string"
-                                    ? _data.refresh_token
-                                    : undefined,
-                                tokenType: (typeof _data.token_type === "string"
-                                    ? _data.token_type
-                                    : undefined) || "Bearer",
-                            };
-                        }
+                const requestTokenFromCredentials =
+                    await (async (): Promise<[IOpdsAuthenticationToken, Error]> => {
+                    // payload in function of authenticationType
+                    const payload: any = {
+                        username: data.login,
+                        password: data.password,
+                    };
+                    if (authenticationType === "http://opds-spec.org/auth/oauth/password") {
+                        payload.grant_type = "password";
+                    } else if (authenticationType === "http://opds-spec.org/auth/local") {
+                        // do nothing
                     }
-                    return res;
-                },
-            );
 
-            if (postData) {
-                postData.tokenType = postData.tokenType || authCredentials.tokenType || "Bearer";
-                postData.tokenType =
-                    postData.tokenType.charAt(0).toUpperCase() + postData.tokenType.slice(1);
-                const newCredentials = { ...authCredentials, ...postData };
+                    const { authenticateUrl } = authCredentials || {};
+                    if (!authenticateUrl) {
+                        return [, new Error("unable to retrieve the authenticate url !!")];
+                    }
+
+                    const headers = new Headers();
+                    headers.set("Content-Type", ContentType.Json);
+
+                    const { data: postData } = await httpPost<IOpdsAuthenticationToken>(
+                        authenticateUrl,
+                        {
+                            body: JSON.stringify(payload),
+                            headers,
+                        },
+                        async (res) => {
+                            if (res.isSuccess) {
+
+                                const _data = await res.response.json();
+                                if (typeof _data === "object") {
+
+                                    res.data = {
+                                        accessToken: typeof _data.access_token === "string"
+                                            ? _data.access_token
+                                            : undefined,
+                                        refreshToken: typeof _data.refresh_token === "string"
+                                            ? _data.refresh_token
+                                            : undefined,
+                                        tokenType: (typeof _data.token_type === "string"
+                                            ? _data.token_type
+                                            : undefined) || "Bearer",
+                                    };
+                                }
+                            }
+                            return res;
+                        },
+                    );
+
+                    return [postData, undefined];
+                })();
+                const [, err] = requestTokenFromCredentials;
+                if (err) {
+                    return [, err];
+                }
+                [postDataCredential] = requestTokenFromCredentials;
+            }
+
+            if (postDataCredential) {
+                postDataCredential.tokenType = postDataCredential.tokenType || authCredentials.tokenType || "Bearer";
+                postDataCredential.tokenType =
+                    postDataCredential.tokenType.charAt(0).toUpperCase() + postDataCredential.tokenType.slice(1);
+                const newCredentials = { ...authCredentials, ...postDataCredential };
 
                 if (typeof newCredentials.accessToken === "string") {
 
@@ -286,6 +309,7 @@ async function opdsSetAuthCredentials(
 
                     return [, undefined];
                 }
+                // newCredentials maybe an opds feed
 
                 return [, new Error("no accessToken received")];
             }
@@ -315,9 +339,11 @@ async function opdsSetAuthCredentials(
             return [, new Error("no accessToken received")];
 
         }
+    } else {
+        return [, new Error("not host path authorize")];
     }
 
-    return [, undefined];
+    return [, new Error("")];
 }
 
 function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
@@ -331,6 +357,8 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
             break;
         }
 
+        case "http://opds-spec.org/auth/local":
+        case "http://opds-spec.org/auth/basic":
         case "http://opds-spec.org/auth/oauth/password": {
 
             const html = encodeURIComponent(
