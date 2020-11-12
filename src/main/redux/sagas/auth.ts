@@ -97,6 +97,9 @@ const opdsAuthFlow = (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRe
 
         const task = yield* forkTyped(function*() {
 
+            // tslint:disable-next-line: no-empty
+            opdsRequestFromCustomProtocol.flush(() => {});
+
             const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
             return parseRequestFromCustomProtocol(parsedRequest);
         });
