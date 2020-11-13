@@ -1,0 +1,33 @@
+name: Sync Fork
+
+on:
+    schedule:
+        - cron:  '0 0 * * *'
+    workflow_dispatch: # on button click
+
+jobs:
+    sync_with_upstream:
+        runs-on: ubuntu-latest
+        name: Sync develop with upstream latest
+
+        steps:
+            - name: Checkout develop
+              uses: actions/checkout@v2
+              with:
+                ref: develop
+
+            - name: Pull upstream changes
+              id: sync
+              uses: aormsby/Fork-Sync-With-Upstream-action@v2.1
+              with:
+                upstream_repository: edrlab/thorium-reader
+                upstream_branch: develop
+                target_branch: develop
+                git_push_args: '--force-with-lease'
+                git_pull_args: '--allow-unrelated-histories'
+                config_git_credentials: true
+                git_user: 'panac'
+                git_email: 'panac@gmail.com'
+
+            - name: Timestamp
+              run: date
