@@ -41,6 +41,7 @@ import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import { extractCrc32OnZip } from "../crc";
 import { lcpActions } from "../redux/actions";
+import { streamerCachedPublication } from "../streamer";
 import { DeviceIdManager } from "./device";
 
 // Logger
@@ -632,9 +633,18 @@ export class LcpManager {
             lcpPasses = secrets;
         }
 
-        const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
-        if (r2Publication.LCP) {
-            r2Publication.LCP.init();
+        const epubPath = this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
+        // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
+        let r2Publication = streamerCachedPublication(epubPath);
+        if (!r2Publication) {
+            r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
+            if (r2Publication.LCP) {
+                r2Publication.LCP.init();
+            }
+        } else {
+            // The streamer at this point should not host an instance of this R2Publication,
+            // because we normally ensure readers are closed before performing LCP/LSD
+            debug(`>>>>>>> streamer.cachedPublication() ?! ${publicationIdentifier} ${epubPath}`);
         }
         if (!r2Publication) {
             debug("unlockPublication !r2Publication ?");

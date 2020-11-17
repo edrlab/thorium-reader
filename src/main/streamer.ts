@@ -8,6 +8,9 @@
 import * as debug_ from "debug";
 import { app, protocol, Request, session, StreamProtocolResponse } from "electron";
 import * as path from "path";
+import {
+    PublicationParsePromise,
+} from "r2-shared-js/dist/es6-es2015/src/parser/publication-parser";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { diMainGet } from "readium-desktop/main/di";
@@ -21,6 +24,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { Transformers } from "@r2-shared-js/transform/transformer";
 import { TransformerHTML, TTransformFunction } from "@r2-shared-js/transform/transformer-html";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { bufferToStream } from "@r2-utils-js/_utils/stream/BufferUtils";
 
 const debug = debug_("readium-desktop:main#streamer");
@@ -41,6 +45,16 @@ if (_PACKAGING === "1") {
 
 rcssPath = rcssPath.replace(/\\/g, "/");
 debug("readium css path:", rcssPath);
+
+let mathJaxPath = "MathJax";
+if (_PACKAGING === "1") {
+    mathJaxPath = path.normalize(path.join(__dirname, mathJaxPath));
+} else {
+    mathJaxPath = "mathjax";
+    mathJaxPath = path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL, mathJaxPath));
+}
+mathJaxPath = mathJaxPath.replace(/\\/g, "/");
+debug("MathJax path:", mathJaxPath);
 
 function computeReadiumCssJsonMessageInStreamer(
     _r2Publication: R2Publication,
@@ -137,7 +151,8 @@ const transformerReadiumCss: TTransformFunction = (
 
     if (readiumcssJson) {
         if (!readiumcssJson.urlRoot) {
-            readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://root"; // `/${READIUM_CSS_URL_PATH}/`
+             // `/${READIUM_CSS_URL_PATH}/`
+            readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://host";
         }
         if (IS_DEV) {
             console.log("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
@@ -156,17 +171,7 @@ const transformerReadiumCss: TTransformFunction = (
 };
 Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
-let mathJaxPath = "MathJax";
-if (_PACKAGING === "1") {
-    mathJaxPath = path.normalize(path.join(__dirname, mathJaxPath));
-} else {
-    mathJaxPath = "mathjax";
-    mathJaxPath = path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL, mathJaxPath));
-}
-mathJaxPath = mathJaxPath.replace(/\\/g, "/");
-debug("MathJax path:", mathJaxPath);
-
-const transformer = (_publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
+const transformerMathJax = (_publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
 
     const cssElectronMouseDrag =
         `
@@ -188,7 +193,7 @@ const transformer = (_publication: R2Publication, _link: Link, _url: string | un
     const settings = store.getState().reader.defaultConfig;
 
     if (settings.enableMathJax) {
-        const url = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://root/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`;
+        const url = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`;
         const script = `
         <script type="text/javascript">
 window.MathJax = {
@@ -210,7 +215,7 @@ window.MathJax = {
         return str;
     }
 };
-Transformers.instance().add(new TransformerHTML(transformer));
+Transformers.instance().add(new TransformerHTML(transformerMathJax));
 
 const streamProtocolHandler = (
     req: Request,
@@ -318,3 +323,92 @@ export function initSessions() {
         }
     });
 }
+
+interface IPathPublicationMap { [key: string]: R2Publication; }
+const _publications: string[] = [];
+const _pathPublicationMap: IPathPublicationMap = {};
+
+export function streamerAddPublications(pubs: string[]): string[] {
+    pubs.forEach((pub) => {
+        if (_publications.indexOf(pub) < 0) {
+            _publications.push(pub);
+        }
+    });
+
+    return pubs.map((pub) => {
+        const pubid = encodeURIComponent_RFC3986(Buffer.from(pub).toString("base64"));
+        return `/pub/${pubid}/manifest.json`;
+    });
+}
+
+export function streamerRemovePublications(pubs: string[]): string[] {
+    pubs.forEach((pub) => {
+        streamerUncachePublication(pub);
+        const i = _publications.indexOf(pub);
+        if (i >= 0) {
+            _publications.splice(i, 1);
+        }
+    });
+
+    return pubs.map((pub) => {
+        const pubid = encodeURIComponent_RFC3986(Buffer.from(pub).toString("base64"));
+        return `/pub/${pubid}/manifest.json`;
+    });
+}
+
+export async function streamerLoadOrGetCachedPublication(filePath: string): Promise<R2Publication> {
+
+    let publication = streamerCachedPublication(filePath);
+    if (!publication) {
+
+        // const fileName = path.basename(pathBase64Str);
+        // const ext = path.extname(fileName).toLowerCase();
+
+        try {
+            publication = await PublicationParsePromise(filePath);
+        } catch (err) {
+            debug(err);
+            return Promise.reject(err);
+        }
+
+        streamerCachePublication(filePath, publication);
+    }
+    // return Promise.resolve(publication);
+    return publication;
+}
+
+export function streamerIsPublicationCached(filePath: string): boolean {
+    return typeof streamerCachedPublication(filePath) !== "undefined";
+}
+
+export function streamerCachedPublication(filePath: string): R2Publication | undefined {
+    return _pathPublicationMap[filePath];
+}
+
+export function streamerCachePublication(filePath: string, pub: R2Publication) {
+    // TODO: implement LRU caching algorithm? Anything smarter than this will do!
+    if (!streamerIsPublicationCached(filePath)) {
+        _pathPublicationMap[filePath] = pub;
+    }
+}
+
+export function streamerUncachePublication(filePath: string) {
+    if (streamerIsPublicationCached(filePath)) {
+        const pub = streamerCachedPublication(filePath);
+        if (pub) {
+            pub.freeDestroy();
+        }
+        _pathPublicationMap[filePath] = undefined;
+        delete _pathPublicationMap[filePath];
+    }
+}
+
+// export function streamerGetPublications(): string[] {
+//     return _publications;
+// }
+
+// export function streamerUncachePublications() {
+//     Object.keys(_pathPublicationMap).forEach((filePath) => {
+//         streamerUncachePublication(filePath);
+//     });
+// }
