@@ -7,7 +7,7 @@
 
 import * as crypto from "crypto";
 import * as debug_ from "debug";
-import { app, protocol, Request, session, StreamProtocolResponse } from "electron";
+import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
@@ -255,8 +255,8 @@ function getPreFetchResources(publication: R2Publication): Link[] {
 }
 
 const streamProtocolHandler = async (
-    req: Request,
-    callback: (stream?: (NodeJS.ReadableStream) | (StreamProtocolResponse)) => void) => {
+    req: ProtocolRequest,
+    callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void) => {
 
     // debug("streamProtocolHandler:");
     // debug(req.url);
@@ -297,17 +297,22 @@ const streamProtocolHandler = async (
         debug("streamProtocolHandler req.referrer", ref);
     }
 
+    Object.keys(req.headers).forEach((header: string) => {
+        const val = req.headers[header];
+
+        debug("streamProtocolHandler req.header: " + header + " => " + val);
+
+        // if (val) {
+        //     headers[header] = val;
+        // }
+    });
+
     const headers: Record<string, (string) | (string[])> = {};
-    // Object.keys(req.headers).forEach((header: string) => {
-    //     const val = req.headers[header];
-
-    //     debug(header + " => " + val);
-
-    //     if (val) {
-    //         headers[header] = val;
-    //     }
-    // });
-    headers.referer = ref;
+    if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
+        headers.referer = ref;
+    } else {
+        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host/`;
+    }
 
     // CORS everything!
     headers["Access-Control-Allow-Origin"] = "*";
@@ -427,7 +432,7 @@ const streamProtocolHandler = async (
             const match = req.headers["If-None-Match"];
             if (match === hash) {
                 debug("streamProtocolHandler smil cache");
-                const obj: StreamProtocolResponse = {
+                const obj: ProtocolResponse = {
                     // NodeJS.ReadableStream
                     data: null,
                     headers,
@@ -443,7 +448,9 @@ const streamProtocolHandler = async (
             // headers["Cache-Control"] = "public,max-age=86400";
 
             if (isHead) {
-                const obj: StreamProtocolResponse = {
+                debug("streamProtocolHandler smil HEAD RESPONSE HEADERS: ", headers);
+
+                const obj: ProtocolResponse = {
                     // NodeJS.ReadableStream
                     data: null,
                     headers,
@@ -454,7 +461,9 @@ const streamProtocolHandler = async (
                 const buff = Buffer.from(jsonStr);
                 headers["Content-Length"] = buff.length.toString();
 
-                const obj: StreamProtocolResponse = {
+                debug("streamProtocolHandler smil GET RESPONSE HEADERS: ", headers);
+
+                const obj: ProtocolResponse = {
                     // NodeJS.ReadableStream
                     data: bufferToStream(buff),
                     headers,
@@ -533,7 +542,7 @@ const streamProtocolHandler = async (
             const match = req.headers["If-None-Match"];
             if (match === hash) {
                 debug("streamProtocolHandler manifest.json cache");
-                const obj: StreamProtocolResponse = {
+                const obj: ProtocolResponse = {
                     // NodeJS.ReadableStream
                     data: null,
                     headers,
@@ -562,7 +571,9 @@ const streamProtocolHandler = async (
             }
 
             if (isHead) {
-                const obj: StreamProtocolResponse = {
+                debug("streamProtocolHandler manifest HEAD RESPONSE HEADERS: ", headers);
+
+                const obj: ProtocolResponse = {
                     // NodeJS.ReadableStream
                     data: null,
                     headers,
@@ -573,7 +584,9 @@ const streamProtocolHandler = async (
                 const buff = Buffer.from(publicationJsonStr);
                 headers["Content-Length"] = buff.length.toString();
 
-                const obj: StreamProtocolResponse = {
+                debug("streamProtocolHandler manifest GET RESPONSE HEADERS: ", headers);
+
+                const obj: ProtocolResponse = {
                     // NodeJS.ReadableStream
                     data: bufferToStream(buff),
                     headers,
@@ -730,7 +743,7 @@ const streamProtocolHandler = async (
         //         || link.Properties.Encrypted.Algorithm === "http://www.idpf.org/2008/embedding");
         debug("streamProtocolHandler isEncrypted", isEncrypted);
 
-        const isPartialByteRangeRequest = ((req.headers && req.headers.range) ? true : false);
+        const isPartialByteRangeRequest = ((req.headers && req.headers.Range) ? true : false);
         debug("streamProtocolHandler isPartialByteRangeRequest", isPartialByteRangeRequest);
 
         // if (isEncrypted && isPartialByteRangeRequest) {
@@ -744,14 +757,14 @@ const streamProtocolHandler = async (
         let partialByteBegin = 0; // inclusive boundaries
         let partialByteEnd = -1;
         if (isPartialByteRangeRequest) {
-            debug("streamProtocolHandler isPartialByteRangeRequest", req.headers.range);
+            debug("streamProtocolHandler isPartialByteRangeRequest", req.headers.Range);
 
-            const ranges = parseRangeHeader(req.headers.range);
+            const ranges = parseRangeHeader(req.headers.Range);
             // debug(ranges);
 
             if (ranges && ranges.length) {
                 if (ranges.length > 1) {
-                    const err = "Too many HTTP ranges: " + req.headers.range;
+                    const err = "Too many HTTP ranges: " + req.headers.Range;
                     debug(err);
                     const buff =
                         Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -889,7 +902,8 @@ const streamProtocolHandler = async (
         }
 
         if (isHead) {
-            const obj: StreamProtocolResponse = {
+            debug("streamProtocolHandler HEAD RESPONSE HEADERS: ", headers);
+            const obj: ProtocolResponse = {
                 // NodeJS.ReadableStream
                 data: null,
                 headers,
@@ -897,6 +911,7 @@ const streamProtocolHandler = async (
             };
             callback(obj);
         } else {
+            debug("streamProtocolHandler GET RESPONSE HEADERS: ", headers);
             const obj = {
                 // NodeJS.ReadableStream
                 data: zipStream_.stream,
@@ -951,7 +966,7 @@ const streamProtocolHandler = async (
             const match = req.headers["If-None-Match"];
             if (match === hash) {
                 debug("streamProtocolHandler cached: " + p);
-                const obj_: StreamProtocolResponse = {
+                const obj_: ProtocolResponse = {
                     // NodeJS.ReadableStream
                     data: null,
                     headers,
@@ -966,7 +981,8 @@ const streamProtocolHandler = async (
 
             headers["Content-Length"] = buffer.length.toString();
 
-            const obj: StreamProtocolResponse = {
+            debug("streamProtocolHandler MATHJAX / READIUMCSS RESPONSE HEADERS: ", headers);
+            const obj: ProtocolResponse = {
                 // NodeJS.ReadableStream
                 data: bufferToStream(buffer),
                 headers,
@@ -999,6 +1015,7 @@ export function initSessions() {
             corsEnabled: true,
             secure: true,
             standard: true,
+            stream: true,
             supportFetchAPI: true,
         },
         scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
@@ -1016,29 +1033,13 @@ export function initSessions() {
         if (session.defaultSession) {
             session.defaultSession.protocol.registerStreamProtocol(
                 THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandler,
-                (error: Error) => {
-                    if (error) {
-                        debug("registerStreamProtocol ERROR (default session)");
-                        debug(error);
-                    } else {
-                        debug("registerStreamProtocol OKAY (default session)");
-                    }
-                });
+                streamProtocolHandler);
         }
         const webViewSession = getWebViewSession();
         if (webViewSession) {
             webViewSession.protocol.registerStreamProtocol(
                 THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandler,
-                (error: Error) => {
-                    if (error) {
-                        debug("registerStreamProtocol ERROR (webview session)");
-                        debug(error);
-                    } else {
-                        debug("registerStreamProtocol OKAY (webview session)");
-                    }
-                });
+                streamProtocolHandler);
 
             webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
                 debug("setPermissionRequestHandler");
