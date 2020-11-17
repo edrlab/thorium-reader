@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ContentType } from "../content-type";
+import { ContentType } from "../contentType";
 import { ISearchDocument, ISearchResult } from "./search.interface";
 import { searchDocDomSeek } from "./searchWithDomSeek";
 

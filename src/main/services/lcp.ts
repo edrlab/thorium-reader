@@ -25,7 +25,7 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
 

@@ -11,7 +11,7 @@ import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { decodeB64 } from "readium-desktop/renderer/common/logics/base64";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType } from "readium-desktop/utils/contentType";
 
 import { dispatchHistoryPush, TLocation } from "../routing";
 import { extractParamFromOpdsRoutePathname } from "./route";

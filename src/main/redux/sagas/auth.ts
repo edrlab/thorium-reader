@@ -26,7 +26,7 @@ import {
     CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, httpPost,
     httpSetToConfigRepoOpdsAuthenticationToken, IOpdsAuthenticationToken,
 } from "readium-desktop/main/network/http";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
 
@@ -96,9 +96,6 @@ const opdsAuthFlow = (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRe
         yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
 
         const task = yield* forkTyped(function*() {
-
-            // tslint:disable-next-line: no-empty
-            opdsRequestFromCustomProtocol.flush(() => {});
 
             const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
             return parseRequestFromCustomProtocol(parsedRequest);
@@ -370,6 +367,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
                     auth.labels?.login,
                     auth.labels?.password,
                     auth.logo?.url,
+                    auth.title,
                 ),
             );
             browserUrl = `data:text/html;charset=utf-8,${html}`;
@@ -599,7 +597,8 @@ function parseRequestFromCustomProtocol(req: Electron.Request)
     return undefined;
 }
 
-const htmlLoginTemplate = (urlToSubmit: string = "", loginLabel = "login", passLabel = "password", logoUrl?: string) => `
+// tslint:disable-next-line: max-line-length
+const htmlLoginTemplate = (urlToSubmit: string = "", loginLabel = "login", passLabel = "password", logoUrl?: string, title?: string) => `
 <html lang="en">
 
 <head>
@@ -675,6 +674,7 @@ const htmlLoginTemplate = (urlToSubmit: string = "", loginLabel = "login", passL
 <body class="text-center">
 <form class="form-signin" action="${urlToSubmit}" method="post">
     ${logoUrl ? `<img class="mb-4" src="${logoUrl}" alt="login logo">` : ``}
+    ${title ? `<h4 class="h4 mb-4 font-weight-normal">${title}</h4>` : ``}
     <!--<img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72"
       height="72">!-->
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>

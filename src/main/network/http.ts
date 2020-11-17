@@ -47,7 +47,7 @@ export const httpSetHeaderAuthorization =
 export const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN = "CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN";
 // tslint:disable-next-line: variable-name
 const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
-    (hostname: string) => `${CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN}.${Buffer.from(hostname).toString("base64")}`;
+    (host: string) => `${CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN}.${Buffer.from(host).toString("base64")}`;
 
 export interface IOpdsAuthenticationToken {
     id?: string;
@@ -63,12 +63,16 @@ export const httpSetToConfigRepoOpdsAuthenticationToken =
 (data: IOpdsAuthenticationToken) => tryCatch(
     async () => {
 
+        if (!data.opdsAuthenticationUrl) {
+            throw new Error("no opdsAutenticationUrl !!");
+        }
+
         const url = new URL(data.opdsAuthenticationUrl);
-        const { hostname } = url;
-        debug("SET opds authentication credentials for", hostname, data);
+        const { host } = url;
+        debug("SET opds authentication credentials for", host, data);
         const configRepo = diMainGet("config-repository");
         await configRepo.save({
-            identifier: CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname),
+            identifier: CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host),
             value: data,
         });
     },
@@ -76,13 +80,13 @@ export const httpSetToConfigRepoOpdsAuthenticationToken =
 );
 
 export const getConfigRepoOpdsAuthenticationToken =
-    async (hostname: string) => await tryCatch(
+    async (host: string) => await tryCatch(
         async () => {
 
-            const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(hostname);
+            const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
             const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
             const doc = await configRepo.get(id);
-            debug("GET opds authentication credentials for", hostname);
+            debug("GET opds authentication credentials for", host);
             debug("Credentials: ", doc?.value);
             return doc?.value;
         },
@@ -286,9 +290,9 @@ export const httpGetWithAuth =
                 if (response.statusCode === 401) {
 
                     const url = _url instanceof URL ? _url : new URL(_url);
-                    const { hostname } = url;
+                    const { host } = url;
 
-                    const auth = await getConfigRepoOpdsAuthenticationToken(hostname);
+                    const auth = await getConfigRepoOpdsAuthenticationToken(host);
 
                     if (
                         typeof auth === "object"

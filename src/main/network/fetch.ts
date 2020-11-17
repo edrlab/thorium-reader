@@ -18,7 +18,9 @@ const CONFIGREPOSITORY_COOKIEJAR = "CONFIGREPOSITORY_COOKIEJAR";
 
 export const cleanCookieJar = async () => {
 
-    return cookieJar.removeAllCookies();
+    if (cookieJar) {
+        await cookieJar.removeAllCookies();
+    }
 };
 
 // src/main/redux/sagas/app.ts
