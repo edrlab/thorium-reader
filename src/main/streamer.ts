@@ -6,8 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app } from "electron";
-import * as express from "express";
+import { app, protocol, Request, session, StreamProtocolResponse } from "electron";
 import * as path from "path";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
@@ -15,28 +14,22 @@ import { diMainGet } from "readium-desktop/main/di";
 import { _NODE_MODULE_RELATIVE_URL, _PACKAGING } from "readium-desktop/preprocessor-directives";
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
-import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
-import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
+import { readiumCssTransformHtml } from "@r2-navigator-js/electron/common/readium-css-inject";
+import { clearSessions, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
+import { URL_PARAM_IS_IFRAME } from "@r2-navigator-js/electron/renderer/common/url-params";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { Transformers } from "@r2-shared-js/transform/transformer";
-import { TransformerHTML } from "@r2-shared-js/transform/transformer-html";
-import { Server } from "@r2-streamer-js/http/server";
+import { TransformerHTML, TTransformFunction } from "@r2-shared-js/transform/transformer-html";
+import { bufferToStream } from "@r2-utils-js/_utils/stream/BufferUtils";
 
 const debug = debug_("readium-desktop:main#streamer");
 
-// Create readium2 streamer
-// This streamer is used to stream epub content to the renderer
-export const streamer: Server = new Server({
-    disableDecryption: false,
-    disableOPDS: true,
-    disableReaders: true,
-    disableRemotePubUrl: true,
-});
+const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
-app.on("ready", () => {
-    secureSessions(streamer); // HTTPS
-});
+export const THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL = "thoriumhttps";
+const MATHJAX_URL_PATH = "math-jax";
+// const READIUM_CSS_URL_PATH = "readium-css";
 
 let rcssPath = "ReadiumCSS";
 if (_PACKAGING === "1") {
@@ -84,7 +77,84 @@ function computeReadiumCssJsonMessageInStreamer(
     return computeReadiumCssJsonMessage(settings);
 }
 
-setupReadiumCSS(streamer, rcssPath, computeReadiumCssJsonMessageInStreamer);
+// rcssPath
+
+function isFixedLayout(publication: R2Publication, link: Link | undefined): boolean {
+    if (link && link.Properties) {
+        if (link.Properties.Layout === "fixed") {
+            return true;
+        }
+        if (typeof link.Properties.Layout !== "undefined") {
+            return false;
+        }
+    }
+    if (publication &&
+        publication.Metadata &&
+        publication.Metadata.Rendition) {
+        return publication.Metadata.Rendition.Layout === "fixed";
+    }
+    return false;
+}
+
+const transformerReadiumCss: TTransformFunction = (
+    publication: R2Publication,
+    link: Link,
+    url: string | undefined,
+    str: string,
+    sessionInfo: string | undefined,
+): string => {
+
+    let isIframe = false;
+    if (url) {
+        const url_ = new URL(url);
+        if (url_.searchParams.has(URL_PARAM_IS_IFRAME)) {
+            isIframe = true;
+        }
+    }
+
+    if (isIframe) {
+        return str;
+    }
+
+    let readiumcssJson = computeReadiumCssJsonMessageInStreamer(publication, link, sessionInfo);
+    if (isFixedLayout(publication, link)) {
+        const readiumcssJson_ = { setCSS: undefined, isFixedLayout: true } as IEventPayload_R2_EVENT_READIUMCSS;
+        if (readiumcssJson.setCSS) {
+            if (readiumcssJson.setCSS.mathJax) {
+                // TODO: apply MathJax to FXL?
+                // (reminder: setCSS must remain 'undefined'
+                // in order to completely remove ReadiumCSS from FXL docs)
+            }
+            if (readiumcssJson.setCSS.reduceMotion) {
+                // TODO: same as MathJax (see above)
+            }
+            // if (readiumcssJson.setCSS.audioPlaybackRate) {
+            //     // TODO: same as MathJax (see above)
+            // }
+        }
+        readiumcssJson = readiumcssJson_;
+    }
+
+    if (readiumcssJson) {
+        if (!readiumcssJson.urlRoot) {
+            readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://root"; // `/${READIUM_CSS_URL_PATH}/`
+        }
+        if (IS_DEV) {
+            console.log("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
+        }
+
+        // import * as mime from "mime-types";
+        let mediaType = "application/xhtml+xml"; // mime.lookup(link.Href);
+        if (link && link.TypeLink) {
+            mediaType = link.TypeLink;
+        }
+
+        return readiumCssTransformHtml(str, readiumcssJson, mediaType);
+    } else {
+        return str;
+    }
+};
+Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
 let mathJaxPath = "MathJax";
 if (_PACKAGING === "1") {
@@ -95,27 +165,11 @@ if (_PACKAGING === "1") {
 }
 mathJaxPath = mathJaxPath.replace(/\\/g, "/");
 debug("MathJax path:", mathJaxPath);
-// https://expressjs.com/en/4x/api.html#express.static
-const staticOptions = {
-    dotfiles: "ignore",
-    etag: true,
-    fallthrough: false,
-    immutable: true,
-    index: false,
-    maxAge: "1d",
-    redirect: false,
-    // extensions: ["css", "otf"],
-    setHeaders: (res: express.Response, _path: string, _stat: any) => {
-        //   res.set('x-timestamp', Date.now())
-        streamer.setResponseCORS(res);
-    },
-};
-const MATHJAX_URL_PATH = "math-jax";
-streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(mathJaxPath, staticOptions));
+
 const transformer = (_publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
 
     const cssElectronMouseDrag =
-`
+        `
 <style type="text/css">
 *,
 *::after,
@@ -134,7 +188,7 @@ const transformer = (_publication: R2Publication, _link: Link, _url: string | un
     const settings = store.getState().reader.defaultConfig;
 
     if (settings.enableMathJax) {
-        const url = `${streamer.serverUrl()}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`;
+        const url = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://root/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`;
         const script = `
         <script type="text/javascript">
 window.MathJax = {
@@ -157,3 +211,110 @@ window.MathJax = {
     }
 };
 Transformers.instance().add(new TransformerHTML(transformer));
+
+const streamProtocolHandler = (
+    req: Request,
+    callback: (stream?: (NodeJS.ReadableStream) | (StreamProtocolResponse)) => void) => {
+
+    // debug("streamProtocolHandler:");
+    // debug(req.url);
+    // debug(req.referrer);
+    // debug(req.method);
+    // debug(req.headers);
+
+    debug(req.url);
+    const u = new URL(req.url);
+    let ref = u.origin;
+    debug(ref);
+    if (req.referrer && req.referrer.trim()) {
+        ref = req.referrer;
+        debug(ref);
+    }
+
+    const headers: Record<string, (string) | (string[])> = {};
+    Object.keys(req.headers).forEach((header: string) => {
+        const val = req.headers[header];
+
+        debug(header + " => " + val);
+
+        if (val) {
+            headers[header] = val;
+        }
+    });
+    if (!headers.referer) {
+        headers.referer = ref;
+    }
+    headers["Content-Type"] = "application/xhtml+xml";
+    const buff = Buffer.from(`<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml">HELLO</html>`);
+    headers["Content-Length"] = buff.length.toString();
+    const obj = {
+        // NodeJS.ReadableStream
+        data: bufferToStream(buff),
+        headers,
+        statusCode: 200,
+    };
+    callback(obj);
+
+    // TODO: fetch publication resource (base64 path?)
+};
+
+export function initSessions() {
+    app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
+
+    protocol.registerSchemesAsPrivileged([{
+        privileges: {
+            allowServiceWorkers: false,
+            bypassCSP: false,
+            corsEnabled: true,
+            secure: true,
+            standard: true,
+            supportFetchAPI: true,
+        },
+        scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+    }]);
+
+    app.on("ready", async () => {
+        debug("app ready");
+
+        try {
+            await clearSessions();
+        } catch (err) {
+            debug(err);
+        }
+
+        if (session.defaultSession) {
+            session.defaultSession.protocol.registerStreamProtocol(
+                THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                streamProtocolHandler,
+                (error: Error) => {
+                    if (error) {
+                        debug("registerStreamProtocol ERROR (default session)");
+                        debug(error);
+                    } else {
+                        debug("registerStreamProtocol OKAY (default session)");
+                    }
+                });
+        }
+        const webViewSession = getWebViewSession();
+        if (webViewSession) {
+            webViewSession.protocol.registerStreamProtocol(
+                THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                streamProtocolHandler,
+                (error: Error) => {
+                    if (error) {
+                        debug("registerStreamProtocol ERROR (webview session)");
+                        debug(error);
+                    } else {
+                        debug("registerStreamProtocol OKAY (webview session)");
+                    }
+                });
+
+            // webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
+            //     debug("setPermissionRequestHandler");
+            //     debug(wc.getURL());
+            //     debug(permission);
+            //     callback(true);
+            // });
+        }
+    });
+}

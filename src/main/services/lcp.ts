@@ -37,7 +37,6 @@ import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
-import { Server } from "@r2-streamer-js/http/server";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import { extractCrc32OnZip } from "../crc";
@@ -54,9 +53,6 @@ export class LcpManager {
 
     @inject(diSymbolTable["lcp-secret-repository"])
     private readonly lcpSecretRepository!: LcpSecretRepository;
-
-    @inject(diSymbolTable.streamer)
-    private readonly streamer!: Server;
 
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
@@ -636,18 +632,9 @@ export class LcpManager {
             lcpPasses = secrets;
         }
 
-        const epubPath = this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
-        // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
-        let r2Publication = this.streamer.cachedPublication(epubPath);
-        if (!r2Publication) {
-            r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
-            if (r2Publication.LCP) {
-                r2Publication.LCP.init();
-            }
-        } else {
-            // The streamer at this point should not host an instance of this R2Publication,
-            // because we normally ensure readers are closed before performing LCP/LSD
-            debug(`>>>>>>> streamer.cachedPublication() ?! ${publicationIdentifier} ${epubPath}`);
+        const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
+        if (r2Publication.LCP) {
+            r2Publication.LCP.init();
         }
         if (!r2Publication) {
             debug("unlockPublication !r2Publication ?");

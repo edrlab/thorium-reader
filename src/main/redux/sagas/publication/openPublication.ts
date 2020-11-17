@@ -6,6 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import {
+    PublicationParsePromise,
+} from "r2-shared-js/dist/es6-es2015/src/parser/publication-parser";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { lcpActions } from "readium-desktop/common/redux/actions/";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -13,10 +16,12 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { diMainGet } from "readium-desktop/main/di";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/main/streamer";
 import { put, take } from "redux-saga/effects";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:publication:open";
@@ -130,7 +135,6 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     // Start streamer if it's not already started
     const status = yield* selectTyped((s: RootState) => s.streamer.status);
-    const streamer = yield* callTyped(() => diMainGet("streamer"));
 
     if (status === StreamerStatus.Stopped) {
         // Streamer is stopped, start it
@@ -152,12 +156,10 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         }
     }
 
-    const manifestPaths = streamer.addPublications([epubPath]);
-
     let r2Publication: R2Publication;
     try {
         r2Publication = yield* callTyped(
-            () => streamer.loadOrGetCachedPublication(epubPath),
+            () => PublicationParsePromise(epubPath),
         );
     } catch (error) {
 
@@ -201,7 +203,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         }
     }
 
-    const manifestUrl = streamer.serverUrl() + manifestPaths[0];
+    const manifestUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://pub/${encodeURIComponent_RFC3986(Buffer.from(epubPath).toString("base64"))}/manifest.json`;
     debug(pubId, " streamed on ", manifestUrl);
 
     // add in reducer

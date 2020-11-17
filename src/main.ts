@@ -15,7 +15,6 @@ import { _PACKAGING, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directi
 import { Store } from "redux";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
-import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
@@ -23,6 +22,7 @@ import {
 
 import { appActions } from "./main/redux/actions";
 import { RootState } from "./main/redux/states";
+import { initSessions } from "./main/streamer";
 import { tryCatch } from "./utils/tryCatch";
 
 if (_PACKAGING !== "0") {
