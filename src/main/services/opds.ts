@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { OPDSAuthentication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication";
@@ -16,13 +15,9 @@ import {
     IOpdsLinkView, IOpdsResultView, THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { httpGet } from "readium-desktop/main/network/http";
-// import { RootState } from "readium-desktop/main/redux/states";
-// import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import {
     ContentType, contentTypeisOpds, contentTypeisXml, parseContentType,
 } from "readium-desktop/utils/contentType";
-// import { Store } from "redux";
-// import * as request from "request";
 import * as URITemplate from "urijs/src/URITemplate";
 import * as xmldom from "xmldom";
 
@@ -35,7 +30,6 @@ import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
-// import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 import { OpdsFeedViewConverter } from "../converter/opds";
@@ -233,9 +227,17 @@ export class OpdsService {
         baseUrl: string = responseUrl,
     ): Promise<IOpdsResultView | undefined> {
 
-        const isPub = contentType === ContentType.Opds2Pub ||
+        const isOpdsPub = contentType === ContentType.Opds2Pub ||
             jsonObj.metadata &&
-            jsonObj["@context"] &&
+            // jsonObj.links &&
+            !!(!jsonObj.publications &&
+                !jsonObj.navigation &&
+                !jsonObj.groups &&
+                !jsonObj.catalogs);
+
+        const isR2Pub = contentType === ContentType.webpub ||
+            jsonObj.metadata &&
+            jsonObj["@context"] === "https://readium.org/webpub-manifest/context.jsonld" &&
             !!(!jsonObj.publications &&
                 !jsonObj.navigation &&
                 !jsonObj.groups &&
@@ -250,7 +252,7 @@ export class OpdsService {
                 jsonObj.groups ||
                 jsonObj.catalogs);
 
-        debug("isAuth, isPub, isFeed", isAuth, isPub, isFeed);
+        debug("isAuth, isOpdsPub, isR2Pub, isFeed", isAuth, isOpdsPub, isR2Pub, isFeed);
 
         if (isAuth) {
             const r2OpdsAuth = TaJsonDeserialize<OPDSAuthenticationDoc>(
@@ -265,8 +267,8 @@ export class OpdsService {
                 publications: [],
             }; // need to refresh the page
 
-        } else if (isPub) {
-            const r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(
+        } else if (isOpdsPub) {
+            const r2OpdsPublication = TaJsonDeserialize(
                 jsonObj,
                 OPDSPublication,
             );
@@ -274,10 +276,50 @@ export class OpdsService {
             return {
                 title: pubView.title,
                 publications: [pubView],
-            } as IOpdsResultView;
+            };
+
+        } else if (isR2Pub) {
+
+            // TODO : https://github.com/edrlab/thorium-reader/issues/1261
+            // publication in OPDS2 feed might be an OPDSPublication or an R2Publication
+
+            debug("R2Publication in OPDS not supported");
+
+            // const r2Publication = TaJsonDeserialize(
+            //     jsonObj,
+            //     R2Publication,
+            // );
+
+            // const pub = new OPDSPublication();
+
+            // if (typeof r2Publication.Metadata === "object") {
+            //     pub.Metadata = r2Publication.Metadata;
+            // }
+
+            // const coverLink = r2Publication.searchLinkByRel("cover");
+            // if (coverLink) {
+            //     pub.AddImage(
+            //         coverLink.Href,
+            //         coverLink.TypeLink,
+            //         coverLink.Height, coverLink.Width);
+            // }
+
+            // pub.AddLink_(, "application/webpub+json", "http://opds-spec.org/acquisition/open-access", "");
+
+            // const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2Publication, baseUrl);
+
+            // return {
+            //     title: pubView.title,
+            //     publications: [pubView],
+            // } as IOpdsResultView;
+
+            return {
+                title: "",
+                publications: [],
+            };
 
         } else if (isFeed) {
-            const r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
+            const r2OpdsFeed = TaJsonDeserialize(
                 jsonObj,
                 OPDSFeed,
             );
