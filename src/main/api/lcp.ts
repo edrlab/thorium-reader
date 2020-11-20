@@ -103,6 +103,7 @@ export class LcpApi implements ILcpApi {
                     const action = lcpActions.userKeyCheckRequest.build(
                         publicationView,
                         publicationView.lcp.textHint, // r2Publication.LCP.Encryption.UserKey.TextHint,
+                        publicationView.lcp.urlHint,
                         message,
                     );
                     this.store.dispatch(action);

@@ -50,6 +50,10 @@ export interface DialogType {
     [DialogTypeName.LcpAuthentication]: {
         publicationView: PublicationView;
         hint: string;
+        urlHint: {
+            href: string | undefined;
+            title?: string;
+        };
         message: string | undefined;
     };
     [DialogTypeName.LsdReturnConfirm]: {

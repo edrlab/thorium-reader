@@ -14,9 +14,18 @@ export interface Payload {
     publicationView: PublicationView;
     message: string;
     hint: string;
+    urlHint: {
+        href: string,
+        title?: string,
+    };
 }
 
-export function build(publicationView: PublicationView, hint: string, message: string | undefined):
+export function build(
+    publicationView: PublicationView,
+    hint: string,
+    urlHint: Payload["urlHint"] | undefined,
+    message: string | undefined,
+):
     Action<typeof ID, Payload> {
 
     return {
@@ -24,6 +33,7 @@ export function build(publicationView: PublicationView, hint: string, message: s
         payload: {
             publicationView,
             hint,
+            urlHint,
             message,
         },
     };
