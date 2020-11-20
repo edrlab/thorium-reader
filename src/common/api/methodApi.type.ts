@@ -11,6 +11,7 @@ import { ILcpApi } from "./interface/lcpApi.interface";
 import { IOpdsApi } from "./interface/opdsApi.interface";
 import { IPublicationApi } from "./interface/publicationApi.interface";
 import { IReaderApi } from "./interface/readerApi.interface";
+import { IServerApi } from "./interface/server.interface";
 import { ISessionApi } from "./interface/session.interface";
 
 export type TMethodApi =
@@ -20,4 +21,5 @@ export type TMethodApi =
     keyof IKeyboardApi |
     keyof ILcpApi |
     keyof IReaderApi |
-    keyof ISessionApi;
+    keyof ISessionApi |
+    keyof IServerApi;

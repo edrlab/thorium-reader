@@ -16,6 +16,7 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationExportButton from "./PublicationExportButton";
+import PublicationServerPublishButton from "./PublicationServerPublishButton";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -61,6 +62,9 @@ export class CatalogMenu extends React.Component<IProps, IState> {
                     {__("catalog.delete")}
                 </button>
                 <PublicationExportButton
+                    publicationView={this.props.publicationView}
+                />
+                <PublicationServerPublishButton
                     publicationView={this.props.publicationView}
                 />
             </>

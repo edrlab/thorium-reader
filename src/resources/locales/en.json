@@ -65,6 +65,7 @@
             "lastAdditionsPdf": "Recently added PDF"
         },
         "export": "Export",
+        "publishPublicationToServer": "Publish",
         "lang": "Language",
         "moreInfo": "More Info",
         "myBooks": "My books",
@@ -364,6 +365,21 @@
             "no": "Disable",
             "title": "Save session",
             "yes": "Enable"
+        },
+        "server": {
+          "title": "publication server url",
+          "url": "url : ",
+          "urlPlaceHolder": "",
+          "token": "token : ",
+          "tokenPlaceHolder": "DEFAULT_TOKEN",
+          "submit": "set",
+          "slashExpectedAtTheEnd": "\"/\" expected a the end"
         }
+    },
+    "toast": {
+      "publish": {
+        "uploadError": "Error to publish the publication on the publication server {{- error}}",
+        "uploadSucces": "{{- name}} is published on the publication server"
+      }
     }
 }

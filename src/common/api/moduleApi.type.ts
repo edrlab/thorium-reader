@@ -13,6 +13,7 @@ type TKeyboardApi = "keyboardShortcuts";
 type TLcpApi = "lcp";
 type TReaderApi = "reader";
 type TSessionApi = "session";
+type TServerApi = "server";
 export type TModuleApi =
     TCatalogApi |
     TPublicationApi |
@@ -20,4 +21,5 @@ export type TModuleApi =
     TKeyboardApi |
     TLcpApi |
     TReaderApi |
-    TSessionApi;
+    TSessionApi |
+    TServerApi;

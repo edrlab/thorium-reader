@@ -113,6 +113,7 @@ declare namespace typed_i18n {
     readonly "lastAdditionsPdf": string
   },
   readonly "export": string,
+  readonly "publishPublicationToServer": string,
   readonly "lang": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
@@ -180,6 +181,7 @@ declare namespace typed_i18n {
   (_: "catalog.entry.lastAdditionsDivina", __?: {}): string;
   (_: "catalog.entry.lastAdditionsPdf", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
+  (_: "catalog.publishPublicationToServer", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
@@ -876,6 +878,15 @@ declare namespace typed_i18n {
     readonly "no": string,
     readonly "title": string,
     readonly "yes": string
+  },
+  readonly "server": {
+    readonly "title": string,
+    readonly "url": string,
+    readonly "urlPlaceHolder": string,
+    readonly "token": string,
+    readonly "tokenPlaceHolder": string,
+    readonly "submit": string,
+    readonly "slashExpectedAtTheEnd": string
   }
 };
   (_: "settings.keyboard", __?: {}): {
@@ -905,7 +916,32 @@ declare namespace typed_i18n {
   (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
   (_: "settings.session.no", __?: {}): string;
   (_: "settings.session.title", __?: {}): string;
-  (_: "settings.session.yes", __?: {}): string
+  (_: "settings.session.yes", __?: {}): string;
+  (_: "settings.server", __?: {}): {
+  readonly "title": string,
+  readonly "url": string,
+  readonly "urlPlaceHolder": string,
+  readonly "token": string,
+  readonly "tokenPlaceHolder": string,
+  readonly "submit": string,
+  readonly "slashExpectedAtTheEnd": string
+};
+  (_: "settings.server.title", __?: {}): string;
+  (_: "settings.server.url", __?: {}): string;
+  (_: "settings.server.urlPlaceHolder", __?: {}): string;
+  (_: "settings.server.token", __?: {}): string;
+  (_: "settings.server.tokenPlaceHolder", __?: {}): string;
+  (_: "settings.server.submit", __?: {}): string;
+  (_: "settings.server.slashExpectedAtTheEnd", __?: {}): string;
+  (_: "toast", __?: {}): {
+  readonly "publish": {
+    readonly "uploadError": string,
+    readonly "uploadSucces": string
+  }
+};
+  (_: "toast.publish", __?: {}): { readonly "uploadError": string, readonly "uploadSucces": string };
+  (_: "toast.publish.uploadError", __?: {}): string;
+  (_: "toast.publish.uploadSucces", __?: {}): string
 }
 }
 export = typed_i18n;

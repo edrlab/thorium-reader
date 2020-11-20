@@ -18,6 +18,7 @@ import { combineReducers } from "redux";
 import { publicationActions, winActions } from "../actions";
 import { lcpReducer } from "./lcp";
 import { readerDefaultConfigReducer } from "./reader/defaultConfig";
+import { serverReducer } from "./server";
 import { sessionReducer } from "./session";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
@@ -66,4 +67,5 @@ export const rootReducer = combineReducers<RootState>({
             ),
     }),
     keyboard: keyboardReducer,
+    server: serverReducer,
 });

@@ -13,6 +13,7 @@ import LibraryLayout from "readium-desktop/renderer/library/components/layout/Li
 
 import KeyboardSettings from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
+import ServerSettings from "./ServerSettings";
 import SessionSettings from "./SessionSettings";
 
 // tslint:disable-next-line: no-empty-interface
@@ -38,6 +39,7 @@ class Settings extends React.Component<IProps, undefined> {
                     <LanguageSettings></LanguageSettings>
                     <SessionSettings></SessionSettings>
                     <KeyboardSettings></KeyboardSettings>
+                    <ServerSettings></ServerSettings>
                 </LibraryLayout>
             </>
         );

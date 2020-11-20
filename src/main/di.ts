@@ -48,6 +48,7 @@ import { Server } from "@r2-streamer-js/http/server";
 
 import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
+import { ServerApi } from "./api/server";
 import { SessionApi } from "./api/session";
 import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
@@ -267,6 +268,7 @@ container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSin
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 container.bind<SessionApi>(diSymbolTable["session-api"]).to(SessionApi).inSingletonScope();
+container.bind<ServerApi>(diSymbolTable["server-api"]).to(ServerApi).inSingletonScope();
 
 let libraryWin: BrowserWindow;
 

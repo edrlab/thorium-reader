@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import { ContentType } from "readium-desktop/utils/content-type";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 
 // cf src/utils/mimeTypes.ts
@@ -23,6 +24,16 @@ export const acceptedExtensionObject = {
     daisy: ".daisy",
 
     // cbz: ".cbz",
+};
+
+export const extensionToTypeLink = {
+    [acceptedExtensionObject.lcpLicence]: ContentType.Lcp,
+    [acceptedExtensionObject.epub]: ContentType.Epub,
+    [acceptedExtensionObject.epub3]: ContentType.Epub,
+    [acceptedExtensionObject.audiobook]: ContentType.AudioBookPacked,
+    [acceptedExtensionObject.audiobookLcp]: ContentType.AudioBookPackedLcp,
+    [acceptedExtensionObject.audiobookLcpAlt]: ContentType.AudioBookPackedLcp,
+    [acceptedExtensionObject.w3cAudiobook]: ContentType.Lpf,
 };
 
 export const acceptedExtensionArray = ObjectValues(acceptedExtensionObject);
