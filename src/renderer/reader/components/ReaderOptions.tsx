@@ -83,9 +83,9 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         if (this.props.pdfEventBus) {
 
-            this.props.pdfEventBus.subscribe("scale", this.setScale);
-            this.props.pdfEventBus.subscribe("view", this.setView);
-            this.props.pdfEventBus.subscribe("column", this.setCol);
+            this.props.pdfEventBus.subscribe("scale", () => this.setScale);
+            this.props.pdfEventBus.subscribe("view", () => this.setView);
+            this.props.pdfEventBus.subscribe("column", () => this.setCol);
 
         }
     }
@@ -380,21 +380,21 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
             return <div>
                     <input
-                        id={"radio-" + scale}
+                        id={"radio-" + `${scale}`}
                         type="radio"
-                        name={scale}
+                        name={`${scale}`}
                         onChange={() => this.props.pdfEventBus.dispatch("scale", scale)}
                         checked={this.state.pdfScale === scale}
                     />
-                    <label htmlFor={"radio-" + scale}>
+                    <label htmlFor={"radio-" + `${scale}`}>
                         {this.state.pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
                         {
-                        scale === "50" ? __("reader.settings.pdfZoom.name.50pct") :
-                        (scale === "100" ? __("reader.settings.pdfZoom.name.100pct") :
-                        (scale === "150" ? __("reader.settings.pdfZoom.name.150pct") :
-                        (scale === "200" ? __("reader.settings.pdfZoom.name.200pct") :
-                        (scale === "300" ? __("reader.settings.pdfZoom.name.300pct") :
-                        (scale === "500" ? __("reader.settings.pdfZoom.name.500pct") :
+                        scale === 50 ? __("reader.settings.pdfZoom.name.50pct") :
+                        (scale === 100 ? __("reader.settings.pdfZoom.name.100pct") :
+                        (scale === 150 ? __("reader.settings.pdfZoom.name.150pct") :
+                        (scale === 200 ? __("reader.settings.pdfZoom.name.200pct") :
+                        (scale === 300 ? __("reader.settings.pdfZoom.name.300pct") :
+                        (scale === 500 ? __("reader.settings.pdfZoom.name.500pct") :
                         (scale === "fit" ? __("reader.settings.pdfZoom.name.fit") :
                         (scale === "width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
                         // --("reader.settings.pdfZoom.name." + scale as any)
@@ -408,12 +408,12 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             <div id={styles.themes_list}>
                 {inputComponent("fit")}
                 {inputComponent("width")}
-                {inputComponent("50")}
-                {inputComponent("100")}
-                {inputComponent("150")}
-                {inputComponent("200")}
-                {inputComponent("300")}
-                {inputComponent("500")}
+                {inputComponent(50)}
+                {inputComponent(100)}
+                {inputComponent(150)}
+                {inputComponent(200)}
+                {inputComponent(300)}
+                {inputComponent(500)}
             </div>
         );
     }

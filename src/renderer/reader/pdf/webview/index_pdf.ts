@@ -15,13 +15,35 @@ import { eventBus } from "../common/eventBus";
 import {
     IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView,
 } from "../common/pdfReader.type";
-import { pdfReaderMountingPoint } from "./pdfReader";
+import { pdfReaderInit } from "./init";
+import { IStore } from "./store";
+
+export interface IPdfState {
+    view: IPdfPlayerView;
+    scale: IPdfPlayerScale;
+    column: IPdfPlayerColumn;
+    lastPageNumber: number;
+    displayPage: (pageNumber: number) => Promise<void>;
+}
+
+export type IPdfStore = IStore<IPdfState>;
+export type IPdfBus = IEventBusPdfPlayer<IEVState>;
+
+export interface IEVState {
+    store: IPdfStore | undefined;
+    bus: IEventBusPdfPlayer<IEVState> | undefined;
+}
 
 function main() {
 
     const rootElement = document.body;
 
-    const bus: IEventBusPdfPlayer = eventBus(
+    const evState: IEVState = {
+        store: undefined,
+        bus: undefined,
+    };
+
+    const bus: IPdfBus = eventBus<IEVState>(
         (key, ...a) => {
             const data = {
                 key: JSON.stringify(key),
@@ -48,9 +70,12 @@ function main() {
 
             });
         },
+        evState,
     );
 
-    bus.subscribe("start", async (pdfPath: string) => {
+    evState.bus = bus;
+
+    bus.subscribe("start", () => async (pdfPath: string) => {
 
         console.log("bus.subscribe start pdfPath", pdfPath);
 
@@ -58,15 +83,25 @@ function main() {
         const defaultScale: IPdfPlayerScale = "fit";
         const defaultCol: IPdfPlayerColumn = "1";
 
-        const toc = await pdfReaderMountingPoint(rootElement, pdfPath, bus, defaultView, defaultCol, defaultScale);
-
-        bus.subscribe("ready", () => {
-
-            bus.dispatch("scale", defaultScale);
-            bus.dispatch("view", defaultView);
-            bus.dispatch("column", defaultCol);
+        const store = await pdfReaderInit(rootElement, pdfPath, bus, {
+            view: defaultView,
+            scale: defaultScale,
+            column: defaultCol,
         });
-        bus.dispatch("ready", toc);
+
+        evState.store = store;
+
+        // never called
+        // bus.subscribe("ready", () => () => {
+
+        //     console.log("READY", "dispatched from reader.tsx busEventLoaded");
+
+        //     // bus.dispatch("scale", defaultScale);
+        //     // bus.dispatch("view", defaultView);
+        //     // bus.dispatch("column", defaultCol);
+        // });
+
+        bus.dispatch("ready");
 
     });
 

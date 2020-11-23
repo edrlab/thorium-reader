@@ -141,7 +141,7 @@ export interface IReaderOptionsProps {
     divinaReadingMode: TdivinaReadingMode;
     divinaReadingModeSupported: TdivinaReadingMode[];
 
-    pdfEventBus: IEventBusPdfPlayer;
+    pdfEventBus: IEventBusPdfPlayer<{}>;
     isDivina: boolean;
     isPdf: boolean;
 
