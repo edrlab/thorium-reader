@@ -39,7 +39,7 @@ const getViewport =
                 : scale === "width"
                     ? scaleW
                     : typeof scale === "number"
-                        ? scale / 25
+                        ? scale / 50
                         : 2;
 
         return pdfPage.getViewport({ scale: scaleDefined });

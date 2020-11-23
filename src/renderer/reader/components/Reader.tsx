@@ -352,12 +352,6 @@ class Reader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
-
-        // never called
-        // if (oldState.pdfPlayerBusEvent !== this.state.pdfPlayerBusEvent) {
-        //     this.state.pdfPlayerBusEvent.dispatch("ready");
-        // }
-
     }
 
     public componentWillUnmount() {

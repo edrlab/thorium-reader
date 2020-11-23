@@ -75,14 +75,19 @@ function main() {
 
     evState.bus = bus;
 
+    const defaultView: IPdfPlayerView = "paginated";
+    const defaultScale: IPdfPlayerScale = "fit";
+    const defaultCol: IPdfPlayerColumn = "1";
+
+    // ready dispatched from Reader.tsx when bus loaded
+    // bus.subscribe("ready", () => () => {
+
+    // });
+
+    // start dispatched from webview dom ready
     bus.subscribe("start", () => async (pdfPath: string) => {
 
         console.log("bus.subscribe start pdfPath", pdfPath);
-
-        const defaultView: IPdfPlayerView = "paginated";
-        const defaultScale: IPdfPlayerScale = "fit";
-        const defaultCol: IPdfPlayerColumn = "1";
-
         const store = await pdfReaderInit(rootElement, pdfPath, bus, {
             view: defaultView,
             scale: defaultScale,
@@ -91,18 +96,14 @@ function main() {
 
         evState.store = store;
 
-        // never called
-        // bus.subscribe("ready", () => () => {
+        bus.subscribe("scale", () => () => console.log("HELLO"));
 
-        //     console.log("READY", "dispatched from reader.tsx busEventLoaded");
+        bus.dispatch("scale", defaultScale);
+        bus.dispatch("view", defaultView);
+        bus.dispatch("column", defaultCol);
 
-        //     // bus.dispatch("scale", defaultScale);
-        //     // bus.dispatch("view", defaultView);
-        //     // bus.dispatch("column", defaultCol);
-        // });
-
+        // send to reader.tsx ready to render pdf
         bus.dispatch("ready");
-
     });
 
     window.document.body.addEventListener("copy", (evt: ClipboardEvent) => {

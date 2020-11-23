@@ -140,16 +140,19 @@ export async function pdfReaderInit(
     bus.subscribe("scale",
         (a) => async (scale) => {
             a.store.setState({scale});
+            a.bus.dispatch("scale", scale);
             return goToPageAction(a)(a.store.getState().lastPageNumber);
         });
     bus.subscribe("view",
         (a) => async (view) => {
             a.store.setState({view});
+            a.bus.dispatch("view", view);
             return goToPageAction(a)(a.store.getState().lastPageNumber);
         });
     bus.subscribe("column",
         (a) => async (column) => {
             a.store.setState({column});
+            a.bus.dispatch("column", column);
             return goToPageAction(a)(a.store.getState().lastPageNumber);
         });
     bus.subscribe("search", () => searchAction);

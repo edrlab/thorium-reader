@@ -79,14 +79,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.handleChooseTheme = this.handleChooseTheme.bind(this);
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(oldProps: IProps) {
 
-        if (this.props.pdfEventBus) {
+        if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
 
             this.props.pdfEventBus.subscribe("scale", () => this.setScale);
             this.props.pdfEventBus.subscribe("view", () => this.setView);
             this.props.pdfEventBus.subscribe("column", () => this.setCol);
-
         }
     }
 
@@ -377,7 +376,6 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const { __ } = this.props;
 
         const inputComponent = (scale: IPdfPlayerScale) => {
-
             return <div>
                     <input
                         id={"radio-" + `${scale}`}
