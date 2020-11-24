@@ -9,7 +9,7 @@ import { PDFDocumentProxy, PDFPageProxy } from "pdfjs-dist/types/display/api";
 import { PageViewport } from "pdfjs-dist/types/display/display_utils";
 
 import { IPdfPlayerScale } from "../common/pdfReader.type";
-import { pageNumberCheck } from "./actions";
+import { goToPageAction, pageNumberCheck } from "./actions";
 import { IPdfBus, IPdfStore } from "./index_pdf";
 import { pdfJs } from "./pdfjs";
 import { destForPageIndexParse } from "./toc";
@@ -99,6 +99,8 @@ export const displayPageInCanvaFactory =
             const { scale: _scale } = store.getState();
 
             const pdfPage = await pdf.getPage(pageNumber);
+            const nbPages = pdf.numPages;
+            console.log("Number of pages in the PDF ??", nbPages);
 
             const viewport = await getViewport(pdfPage, windowViewportSize, _scale);
             setCanvasDimmension(canvas, viewport, windowViewportSize, _scale);
@@ -157,30 +159,33 @@ export const displayPageInCanvaFactory =
                         console.log("executeNamedAction", action);
                         // return void;
 
+                        const { lastPageNumber }  = store.getState();
                         switch (action) {
-                            // case "GoBack":
-                            //     await pagePreviousAction();
-                            //     break;
+                            case "GoBack":
 
-                            // case "GoForward":
-                            //     await pageNextAction();
-                            //     break;
+                                await goToPageAction({store, bus})(lastPageNumber - 1);
+                                break;
 
-                            // case "NextPage":
-                            //     await pageNextAction();
-                            //     break;
+                            case "GoForward":
 
-                            // case "PrevPage":
-                            //     await pagePreviousAction();
-                            //     break;
+                                await goToPageAction({store, bus})(lastPageNumber + 1);
+                                break;
 
-                            // case "LastPage":
-                            //     await goToPageAction(pdf.numPages);
-                            //     break;
+                            case "NextPage":
+                                await goToPageAction({store, bus})(lastPageNumber + 1);
+                                break;
 
-                            // case "FirstPage":
-                            //     await goToPageAction(1);
-                            //     break;
+                            case "PrevPage":
+                                await goToPageAction({store, bus})(lastPageNumber - 1);
+                                break;
+
+                            case "LastPage":
+                                await goToPageAction({store, bus})(nbPages || lastPageNumber);
+                                break;
+
+                            case "FirstPage":
+                                await goToPageAction({store, bus})(1);
+                                break;
 
                             default:
                                 break; // No action according to spec
