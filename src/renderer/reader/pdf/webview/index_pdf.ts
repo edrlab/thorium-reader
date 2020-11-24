@@ -169,6 +169,13 @@ function main() {
             passive: false,
         });
 
+    window.document.addEventListener("wheel", (ev) => {
+        ev.preventDefault();
+
+        console.log(ev.deltaY);
+        console.log(ev);
+    });
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
