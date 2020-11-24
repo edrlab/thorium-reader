@@ -1,9 +1,9 @@
 
 type TFn<Key extends keyof Second = any, First = any, Second = any, Ret = any> = (a: First) => (b: Second[Key]) => Ret;
 
-type TNewStateRet<T, P extends keyof T> = T[P] | Promise<T[P]>;
+type TRetMayBePromise<T, P extends keyof T> = T[P] | Promise<T[P]>;
 type TNEWState<T> = {
-    [P in keyof T]?: TNewStateRet<T, P>;
+    [P in keyof T]?: TRetMayBePromise<T, P>;
 };
 
 export interface IStore<T, T2> {
@@ -11,7 +11,7 @@ export interface IStore<T, T2> {
     setState: (a: TNEWState<T>) => void;
     subscribe: <TK extends keyof T>(key: TK, fn: TFn<TK, T2, T>) => void;
     unsubscribe: (fn: TFn) => void;
-    pipe: <TK extends keyof T>(key: TK, fn: TFn<TK, T2, T, Promise<T[TK]> | T[TK]>) => void;
+    pipe: <TK extends keyof T>(key: TK, fn: TFn<TK, T2, T, TRetMayBePromise<T, TK>>) => void;
     unpipe: (fn: TFn) => void;
 }
 
@@ -45,7 +45,7 @@ export const storeInit = <TStateValue = {}, TCallbackInjection extends {} = {}>(
         (Object.entries(newState) as Array<[string, Promise<unknown>]>)
             .forEach(([key, value]) =>
                 callbackArray[key]?.forEach((fn) =>
-                    (value as Promise<unknown>).then((v) => fn(di)(v)))),
+                    value.then((v) => fn(di)(v)))),
         undefined
     ),
     subscribe: (key, fn) => (
