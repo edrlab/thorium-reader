@@ -80,7 +80,7 @@ const fitAnnotationDivWithCanvasSize = (
     annotationDiv.innerHTML = "";
 };
 
-export const displayPageInCanvaFactory =
+export const displayPageInCanvasFactory =
     (
         canvas: HTMLCanvasElement,
         annotationDiv: HTMLDivElement,

@@ -12,11 +12,11 @@ import {
 } from "readium-desktop/preprocessor-directives";
 
 import { goToPageAction, searchAction } from "./actions";
-import { createAnnotationDiv } from "./annotation";
-import { createCanvas } from "./canvas";
-import { displayPageInCanvaFactory } from "./display";
+import { displayPageInCanvasFactory } from "./display";
 import { IPdfBus, IPdfState, IPdfStore } from "./index_pdf";
-import { createLoadingIconElement } from "./loading";
+import { createAnnotationDiv } from "./page/annotation";
+import { createCanvas } from "./page/canvas";
+import { createLoadingIconElement } from "./page/loading";
 import { pdfJs } from "./pdfjs";
 import { storeInit } from "./store";
 import { getToc } from "./toc";
@@ -106,6 +106,9 @@ export async function pdfReaderInit(
 
     createLoadingIconElement(rootElement);
 
+    // const viewerContainerDiv = document.createElement("div");
+    // viewerContainerDiv.setAttribute("class", "viewerContainer");
+
     // parse pdf
     const pdf = await pdfJs.getDocument(pdfPath).promise;
 
@@ -121,7 +124,7 @@ export async function pdfReaderInit(
     // annotation div
     const annotationDiv = createAnnotationDiv(rootElement);
 
-    const displayPage = displayPageInCanvaFactory(
+    const displayPage = displayPageInCanvasFactory(
         canvas,
         annotationDiv,
         pdf,
