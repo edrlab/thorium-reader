@@ -1,5 +1,5 @@
 
-export const createLoadingIconElement = (rootElement?: HTMLDivElement) => {
+export const createLoadingIconElement = (rootElement?: HTMLElement) => {
 
     const loadingDiv = document.createElement("div");
     loadingDiv.setAttribute("class", "loadingIcon");

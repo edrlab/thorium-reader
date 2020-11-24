@@ -104,7 +104,7 @@ export async function pdfReaderInit(
         }
     }
 
-    createLoadingIconElement(rootElement as HTMLDivElement);
+    createLoadingIconElement(rootElement);
 
     // parse pdf
     const pdf = await pdfJs.getDocument(pdfPath).promise;
