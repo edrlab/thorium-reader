@@ -16,6 +16,7 @@ import { createAnnotationDiv } from "./annotation";
 import { createCanvas } from "./canvas";
 import { displayPageInCanvaFactory } from "./display";
 import { IPdfBus, IPdfState, IPdfStore } from "./index_pdf";
+import { createLoadingIconElement } from "./loading";
 import { pdfJs } from "./pdfjs";
 import { storeInit } from "./store";
 import { getToc } from "./toc";
@@ -102,6 +103,8 @@ export async function pdfReaderInit(
             throw new Error("no html el !!");
         }
     }
+
+    createLoadingIconElement(rootElement as HTMLDivElement);
 
     // parse pdf
     const pdf = await pdfJs.getDocument(pdfPath).promise;
