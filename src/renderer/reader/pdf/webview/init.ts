@@ -12,13 +12,9 @@ import {
 } from "readium-desktop/preprocessor-directives";
 
 import { goToPageAction, searchAction } from "./actions";
-import { displayPageInCanvasFactory } from "./display";
-import { IPdfBus, IPdfState, IPdfStore } from "./index_pdf";
-import { createAnnotationDiv } from "./page/annotation";
-import { createCanvas } from "./page/canvas";
-import { createLoadingIconElement } from "./page/loading";
+import { IEVState } from "./index_pdf";
+import { renderPage } from "./page/render";
 import { pdfJs } from "./pdfjs";
-import { storeInit } from "./store";
 import { getToc } from "./toc";
 
 // import * as pdfJs from "pdfjs-dist/webpack";
@@ -75,27 +71,13 @@ pdfJs.GlobalWorkerOptions.workerPort = new Worker(window.URL.createObjectURL(
 
 export async function pdfReaderInit(
     rootElement: HTMLElement,
-    pdfPath: string,
-    bus: IPdfBus,
-    _state: Partial<IPdfState>,
-): Promise<IPdfStore> {
+    evState: IEVState,
+): Promise<void> {
 
-    const state: IPdfState = {
-        ...{
-            view: "paginated",
-            column: "1",
-            scale: "fit",
-            lastPageNumber: 1,
-            displayPage: () => Promise.resolve(),
-        },
-        ..._state,
-    };
+    const {bus, pdf, store} = evState;
 
     if (!bus) {
         throw new Error("no BUS !!");
-    }
-    if (!pdfPath) {
-        throw new Error("no pdfPath !!");
     }
     {
         const is = rootElement instanceof HTMLElement;
@@ -104,39 +86,22 @@ export async function pdfReaderInit(
         }
     }
 
-    createLoadingIconElement(rootElement);
-
-    // const viewerContainerDiv = document.createElement("div");
-    // viewerContainerDiv.setAttribute("class", "viewerContainer");
-
-    // parse pdf
-    const pdf = await pdfJs.getDocument(pdfPath).promise;
-
     const toc = await getToc(pdf);
     bus.dispatch("toc", toc);
     console.log("toc", toc);
 
-    const pdfStore = storeInit(state);
+    let disable: () => any;
+    let enable: () => any;
+    let pageDiv: HTMLDivElement;
+    const LoadRenderPage = renderPage(evState);
+    const displayPage = async (pageNumber: number) => {
+        if (disable) { disable(); }
+        if (pageDiv) { pageDiv.remove(); }
+        [enable, disable, {pageDiv}] = await LoadRenderPage(pageNumber, rootElement);
+        enable();
+    };
 
-    // canva
-    const canvas = createCanvas(rootElement);
-
-    // annotation div
-    const annotationDiv = createAnnotationDiv(rootElement);
-
-    const displayPage = displayPageInCanvasFactory(
-        canvas,
-        annotationDiv,
-        pdf,
-        pdfStore,
-        {
-            width: rootElement.clientWidth,
-            height: rootElement.clientHeight,
-        },
-        bus,
-    );
-
-    pdfStore.setState({ displayPage });
+    store.setState({ displayPage });
 
     bus.subscribe("page", goToPageAction);
     bus.subscribe("page-next",
@@ -145,19 +110,19 @@ export async function pdfReaderInit(
         (a) => () => goToPageAction(a)(--a.store.getState().lastPageNumber));
     bus.subscribe("scale",
         (a) => async (scale) => {
-            a.store.setState({scale});
+            a.store.setState({ scale });
             a.bus.dispatch("scale", scale);
             return goToPageAction(a)(a.store.getState().lastPageNumber);
         });
     bus.subscribe("view",
         (a) => async (view) => {
-            a.store.setState({view});
+            a.store.setState({ view });
             a.bus.dispatch("view", view);
             return goToPageAction(a)(a.store.getState().lastPageNumber);
         });
     bus.subscribe("column",
         (a) => async (column) => {
-            a.store.setState({column});
+            a.store.setState({ column });
             a.bus.dispatch("column", column);
             return goToPageAction(a)(a.store.getState().lastPageNumber);
         });
@@ -165,7 +130,8 @@ export async function pdfReaderInit(
 
     const debouncedResize = debounce(async () => {
         console.log("resize DEBOUNCED", rootElement.clientWidth, rootElement.clientHeight);
-        const { lastPageNumber } = pdfStore.getState();
+        store.setState({pageSize: {width: rootElement.clientWidth, height: rootElement.clientHeight}});
+        const { lastPageNumber } = store.getState();
         if (lastPageNumber > 0) {
             await displayPage(lastPageNumber);
         }
@@ -175,6 +141,4 @@ export async function pdfReaderInit(
         console.log("resize", rootElement.clientWidth, rootElement.clientHeight);
         await debouncedResize();
     });
-
-    return pdfStore;
 }

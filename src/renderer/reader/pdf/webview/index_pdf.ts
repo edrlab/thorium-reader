@@ -6,6 +6,7 @@
 // ==LICENSE-END
 
 import { ipcRenderer } from "electron";
+import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 
 import {
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP,
@@ -16,7 +17,9 @@ import {
     IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView,
 } from "../common/pdfReader.type";
 import { pdfReaderInit } from "./init";
-import { IStore } from "./store";
+import { createLoadingIconElement } from "./loading";
+import { pdfJs } from "./pdfjs";
+import { IStore, storeInit } from "./store";
 
 export interface IPdfState {
     view: IPdfPlayerView;
@@ -24,6 +27,10 @@ export interface IPdfState {
     column: IPdfPlayerColumn;
     lastPageNumber: number;
     displayPage: (pageNumber: number) => Promise<void>;
+    pageSize: {
+        width: number;
+        height: number;
+    };
 }
 
 export type IPdfStore = IStore<IPdfState>;
@@ -32,6 +39,7 @@ export type IPdfBus = IEventBusPdfPlayer<IEVState>;
 export interface IEVState {
     store: IPdfStore | undefined;
     bus: IEventBusPdfPlayer<IEVState> | undefined;
+    pdf: PDFDocumentProxy | undefined;
 }
 
 function main() {
@@ -41,7 +49,25 @@ function main() {
     const evState: IEVState = {
         store: undefined,
         bus: undefined,
+        pdf: undefined,
     };
+
+    const defaultView: IPdfPlayerView = "paginated";
+    const defaultScale: IPdfPlayerScale = "fit";
+    const defaultCol: IPdfPlayerColumn = "1";
+    const state: IPdfState = {
+        view: defaultView,
+        column: defaultCol,
+        scale: defaultScale,
+        lastPageNumber: 1,
+        displayPage: () => Promise.resolve(),
+        pageSize: {
+            width: 0,
+            height: 0,
+        },
+    };
+
+    evState.store = storeInit(state);
 
     const bus: IPdfBus = eventBus<IEVState>(
         (key, ...a) => {
@@ -75,10 +101,6 @@ function main() {
 
     evState.bus = bus;
 
-    const defaultView: IPdfPlayerView = "paginated";
-    const defaultScale: IPdfPlayerScale = "fit";
-    const defaultCol: IPdfPlayerColumn = "1";
-
     // ready dispatched from Reader.tsx when bus loaded
     // bus.subscribe("ready", () => () => {
 
@@ -88,20 +110,29 @@ function main() {
     bus.subscribe("start", () => async (pdfPath: string) => {
 
         console.log("bus.subscribe start pdfPath", pdfPath);
-        const store = await pdfReaderInit(rootElement, pdfPath, bus, {
-            view: defaultView,
-            scale: defaultScale,
-            column: defaultCol,
+
+        const [enableLoading, disableLoading] = createLoadingIconElement(rootElement);
+        enableLoading();
+
+        evState.store.setState({
+            pageSize: {
+                width: document.body.clientWidth,
+                height: document.body.clientHeight,
+            },
         });
 
-        evState.store = store;
+        evState.pdf = await pdfJs.getDocument(pdfPath).promise;
 
-        bus.subscribe("scale", () => () => console.log("HELLO"));
+        await pdfReaderInit(
+            rootElement,
+            evState,
+        );
 
         bus.dispatch("scale", defaultScale);
         bus.dispatch("view", defaultView);
         bus.dispatch("column", defaultCol);
 
+        disableLoading();
         // send to reader.tsx ready to render pdf
         bus.dispatch("ready");
     });

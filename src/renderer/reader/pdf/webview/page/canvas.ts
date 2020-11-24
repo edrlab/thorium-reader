@@ -14,5 +14,9 @@ export function createCanvas(rootElement?: HTMLElement): HTMLCanvasElement {
     canvas.height = rootElement.clientHeight;
     canvas.setAttribute("style", "display: block; position: absolute; left: 0; top: 0;");
 
+    canvas.ownerDocument.body.style.overflow = "hidden";
+    canvas.ownerDocument.body.style.overflowX = "hidden";
+    canvas.ownerDocument.body.style.overflowY = "hidden";
+
     return canvas;
 }

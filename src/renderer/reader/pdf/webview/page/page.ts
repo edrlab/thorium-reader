@@ -5,20 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
+import { createLoadingIconElement } from "../loading";
 import { createAnnotationDiv } from "./annotation";
 import { createCanvas } from "./canvas";
-import { createLoadingIconElement } from "./loading";
 
 export const PAGE_NUMBER_ATT = "data-page-number";
 
 export interface ICreatePageElementPayload {
-    pageNumber: number;
+    // pageNumber: number;
     viewportSize: {width: number, height: number};
     hiddenWhenDisabled: boolean;
 }
 
 const createPageDivElement = (
-    {pageNumber, viewportSize: {width, height}}: ICreatePageElementPayload,
+    {/*pageNumber*/viewportSize: { width, height } }: ICreatePageElementPayload,
     rootElement?: HTMLElement,
 ): [el: HTMLDivElement, enable: () => any, disable: () => any] => {
 
@@ -26,7 +26,7 @@ const createPageDivElement = (
     pageDiv.setAttribute("style", "display: block; position: absolute; left: 0; top: 0;");
     pageDiv.style.width = `${width}px`;
     pageDiv.style.height = `${height}px`;
-    pageDiv.setAttribute(PAGE_NUMBER_ATT, pageNumber.toString());
+    // pageDiv.setAttribute(PAGE_NUMBER_ATT, pageNumber.toString());
 
     rootElement?.appendChild(pageDiv);
 
@@ -36,6 +36,8 @@ const createPageDivElement = (
         () => pageDiv.style.display = "none",
     ];
 };
+
+export interface IPageHTMLEL { canvas?: HTMLCanvasElement; annotationDiv?: HTMLDivElement; pageDiv: HTMLDivElement; }
 
 export const createPageElement = (
     payload: ICreatePageElementPayload,
@@ -49,7 +51,7 @@ export const createPageElement = (
 ): [
     enable: () => () => void,
     disable: () => void,
-    el: { canvas: HTMLCanvasElement, annotationDiv: HTMLDivElement, pageDiv: HTMLDivElement },
+    el: IPageHTMLEL,
 ] => {
     const {
         hiddenWhenDisabled,
@@ -57,19 +59,17 @@ export const createPageElement = (
 
     const [pageDiv, enablePage, disablePage] = createPageDivElement(payload);
 
-    const [, enableLoading, disableLoading] = createLoadingIconElement(pageDiv);
+    const [enableLoading, disableLoading] = createLoadingIconElement(pageDiv);
 
     rootElement.appendChild(pageDiv);
 
-    let canvas: HTMLCanvasElement;
-    let annotationDiv: HTMLDivElement;
-
+    const el: IPageHTMLEL = { pageDiv };
     return [
         () => {
 
             enableLoading();
-            canvas = createCanvas(pageDiv);
-            annotationDiv = createAnnotationDiv(pageDiv);
+            el.canvas = createCanvas(pageDiv);
+            el.annotationDiv = createAnnotationDiv(pageDiv);
 
             enablePage();
 
@@ -83,14 +83,9 @@ export const createPageElement = (
                 enableLoading();
             }
 
-            canvas.remove();
-            annotationDiv.remove();
-
+            el.canvas?.remove();
+            el.annotationDiv?.remove();
         },
-        {
-            canvas,
-            annotationDiv,
-            pageDiv,
-        },
+        el,
     ];
 };
