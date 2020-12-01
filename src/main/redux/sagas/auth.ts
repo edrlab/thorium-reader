@@ -128,7 +128,7 @@ const opdsAuthFlow = (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRe
                 debug("no authentication credentials received");
                 debug("perhaps timeout or closing authentication window occured");
 
-                return ;
+                return;
 
             } else {
                 const opdsCustomProtocolRequestParsed = task.result();
@@ -143,7 +143,7 @@ const opdsAuthFlow = (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRe
                     if (err instanceof Error) {
                         debug(err.message);
 
-                        return ;
+                        return;
 
                     } else {
                         yield put(historyActions.refresh.build());
@@ -239,56 +239,56 @@ async function opdsSetAuthCredentials(
 
                 const requestTokenFromCredentials =
                     await (async (): Promise<[IOpdsAuthenticationToken, Error]> => {
-                    // payload in function of authenticationType
-                    const payload: any = {
-                        username: data.login,
-                        password: data.password,
-                    };
-                    if (authenticationType === "http://opds-spec.org/auth/oauth/password") {
-                        payload.grant_type = "password";
-                    } else if (authenticationType === "http://opds-spec.org/auth/local") {
-                        // do nothing
-                    }
+                        // payload in function of authenticationType
+                        const payload: any = {
+                            username: data.login,
+                            password: data.password,
+                        };
+                        if (authenticationType === "http://opds-spec.org/auth/oauth/password") {
+                            payload.grant_type = "password";
+                        } else if (authenticationType === "http://opds-spec.org/auth/local") {
+                            // do nothing
+                        }
 
-                    const { authenticateUrl } = authCredentials || {};
-                    if (!authenticateUrl) {
-                        return [, new Error("unable to retrieve the authenticate url !!")];
-                    }
+                        const { authenticateUrl } = authCredentials || {};
+                        if (!authenticateUrl) {
+                            return [, new Error("unable to retrieve the authenticate url !!")];
+                        }
 
-                    const headers = new Headers();
-                    headers.set("Content-Type", ContentType.Json);
+                        const headers = new Headers();
+                        headers.set("Content-Type", ContentType.Json);
 
-                    const { data: postData } = await httpPost<IOpdsAuthenticationToken>(
-                        authenticateUrl,
-                        {
-                            body: JSON.stringify(payload),
-                            headers,
-                        },
-                        async (res) => {
-                            if (res.isSuccess) {
+                        const { data: postData } = await httpPost<IOpdsAuthenticationToken>(
+                            authenticateUrl,
+                            {
+                                body: JSON.stringify(payload),
+                                headers,
+                            },
+                            async (res) => {
+                                if (res.isSuccess) {
 
-                                const _data = await res.response.json();
-                                if (typeof _data === "object") {
+                                    const _data = await res.response.json();
+                                    if (typeof _data === "object") {
 
-                                    res.data = {
-                                        accessToken: typeof _data.access_token === "string"
-                                            ? _data.access_token
-                                            : undefined,
-                                        refreshToken: typeof _data.refresh_token === "string"
-                                            ? _data.refresh_token
-                                            : undefined,
-                                        tokenType: (typeof _data.token_type === "string"
-                                            ? _data.token_type
-                                            : undefined) || "Bearer",
-                                    };
+                                        res.data = {
+                                            accessToken: typeof _data.access_token === "string"
+                                                ? _data.access_token
+                                                : undefined,
+                                            refreshToken: typeof _data.refresh_token === "string"
+                                                ? _data.refresh_token
+                                                : undefined,
+                                            tokenType: (typeof _data.token_type === "string"
+                                                ? _data.token_type
+                                                : undefined) || "Bearer",
+                                        };
+                                    }
                                 }
-                            }
-                            return res;
-                        },
-                    );
+                                return res;
+                            },
+                        );
 
-                    return [postData, undefined];
-                })();
+                        return [postData, undefined];
+                    })();
                 const [, err] = requestTokenFromCredentials;
                 if (err) {
                     return [, err];
