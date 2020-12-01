@@ -9,12 +9,12 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { authActions } from "readium-desktop/common/redux/actions";
+import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
