@@ -610,87 +610,197 @@ const htmlLoginTemplate = (urlToSubmit: string = "", loginLabel = "login", passL
 
     <title>Sign in</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom styles for this template -->
     <style>
-        html,
-        body {
-        height: 100%;
+    body {
+            font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
+            color: #404040;
+            background: white;
         }
 
-        body {
-        display: -ms-flexbox;
-        display: -webkit-box;
-        display: flex;
-        -ms-flex-align: center;
-        -ms-flex-pack: center;
-        -webkit-box-align: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        justify-content: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
+        .login {
+            position: relative;
+            margin: 30px auto;
+            padding: 20px 20px 20px;
+            width: 310px;
+            background: white;
+            border-radius: 3px;
+            -webkit-box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
-        .form-signin {
-        width: 100%;
-        max-width: 330px;
-        padding: 15px;
-        margin: 0 auto;
+        .login:before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            bottom: -8px;
+            left: -8px;
+            z-index: -1;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 4px;
         }
 
-        .form-signin .checkbox {
-        font-weight: 400;
+        .login h1 {
+            margin: -20px -20px 21px;
+            line-height: 40px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #555;
+            text-align: center;
+            text-shadow: 0 1px white;
+            background: #f3f3f3;
+            border-bottom: 1px solid #cfcfcf;
+            border-radius: 3px 3px 0 0;
+            background-image: -webkit-linear-gradient(top, whiteffd, #eef2f5);
+            background-image: -moz-linear-gradient(top, whiteffd, #eef2f5);
+            background-image: -o-linear-gradient(top, whiteffd, #eef2f5);
+            background-image: linear-gradient(to bottom, whiteffd, #eef2f5);
+            -webkit-box-shadow: 0 1px whitesmoke;
+            box-shadow: 0 1px whitesmoke;
         }
 
-        .form-signin .form-control {
-        position: relative;
-        box-sizing: border-box;
-        height: auto;
-        padding: 10px;
-        font-size: 16px;
+        .login img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
         }
 
-        .form-signin .form-control:focus {
-        z-index: 2;
+        .login p {
+            margin: 20px 0 0;
         }
 
-        .form-signin input[type="login"] {
-        margin-bottom: -1px;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
+        .login p:first-child {
+            margin-top: 0;
         }
 
-        .form-signin input[type="password"] {
-        margin-bottom: 10px;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+        .login input[type=text], .login input[type=password] {
+            width: 278px;
+        }
+
+        .login p.remember_me {
+            float: left;
+            line-height: 31px;
+        }
+
+        .login p.remember_me label {
+            font-size: 12px;
+            color: #777;
+            cursor: pointer;
+        }
+
+        .login p.remember_me input {
+            position: relative;
+            bottom: 1px;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        .login p.submit {
+            text-align: right;
+        }
+
+        .login-help {
+            margin: 20px 0;
+            font-size: 11px;
+            color: white;
+            text-align: center;
+            text-shadow: 0 1px #2a85a1;
+        }
+
+        .login-help a {
+            color: #cce7fa;
+            text-decoration: none;
+        }
+
+        .login-help a:hover {
+            text-decoration: underline;
+        }
+
+        :-moz-placeholder {
+            color: #c9c9c9 !important;
+            font-size: 13px;
+        }
+
+        ::-webkit-input-placeholder {
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        input {
+            font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
+            font-size: 14px;
+        }
+
+        input[type=text], input[type=password] {
+            margin: 5px;
+            padding: 0 10px;
+            width: 200px;
+            height: 34px;
+            color: #404040;
+            background: white;
+            border: 1px solid;
+            border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+            border-radius: 2px;
+            outline: 5px solid #eff4f7;
+            -moz-outline-radius: 3px;
+            -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        input[type=text]:focus, input[type=password]:focus {
+            border-color: #7dc9e2;
+            outline-color: #dceefc;
+            outline-offset: 0;
+        }
+
+        input[type=submit] {
+            padding: 0 18px;
+            height: 29px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #527881;
+            text-shadow: 0 1px #e3f1f1;
+            background: #cde5ef;
+            border: 1px solid;
+            border-color: #b4ccce #b3c0c8 #9eb9c2;
+            border-radius: 16px;
+            outline: 0;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+            background-image: -webkit-linear-gradient(top, #edf5f8, #cde5ef);
+            background-image: -moz-linear-gradient(top, #edf5f8, #cde5ef);
+            background-image: -o-linear-gradient(top, #edf5f8, #cde5ef);
+            background-image: linear-gradient(to bottom, #edf5f8, #cde5ef);
+            -webkit-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+            box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+        }
+
+        input[type=submit]:active {
+            background: #cde5ef;
+            border-color: #9eb9c2 #b3c0c8 #b4ccce;
+            -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
+            line-height: 34px;
         }
     </style>
     </head>
 
     <body class="text-center">
-    <form class="form-signin" action="${urlToSubmit}" method="post">
-        ${logoUrl ? `<img class="mb-4" src="${logoUrl}" alt="login logo">` : ``}
-        ${title ? `<h4 class="h4 mb-4 font-weight-normal">${title}</h4>` : ``}
-        <!--<img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72"
-        height="72">!-->
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputLogin" class="sr-only">${loginLabel}</label>
-        <input name="login" id="inputUsername" class="form-control" placeholder="${loginLabel}" required autofocus>
-        <!-- <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus> -->
-        <label for="inputPassword" class="sr-only">${passLabel}</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="${passLabel}" required>
-        <!--<div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>!-->
+        <div class="login">
+        ${title ? `<h1>${title}</h1>` : "<h1>Login</h1>"}
+        <form method="post" action="${urlToSubmit}">
+        ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ``}
+        <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
+        <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
+        <p class="submit"><input type="submit" name="commit" value="Login"></p>
+        </form>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
-</body>
+    </body>
 
 </html>`;
