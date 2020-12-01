@@ -48,14 +48,16 @@ export const parseContentType = (RawContentType: string): ContentType | undefine
 };
 
 export const contentTypeisXml = (contentType: ContentType | undefined) =>
-    contentType &&
-    contentType === ContentType.AtomXml
-    || contentType === ContentType.Xml
-    || contentType === ContentType.TextXml;
+    contentType && (
+        contentType === ContentType.AtomXml
+        || contentType === ContentType.Xml
+        || contentType === ContentType.TextXml
+    );
 
 export const contentTypeisOpds = (contentType: ContentType | undefined) =>
-    contentType &&
-    contentType === ContentType.Json
-    || contentType === ContentType.Opds2
-    || contentType === ContentType.Opds2Auth
-    || contentType === ContentType.Opds2Pub;
+    contentType && (
+        contentType === ContentType.Json
+        || contentType === ContentType.Opds2
+        || contentType === ContentType.Opds2Auth
+        || contentType === ContentType.Opds2Pub
+    );
