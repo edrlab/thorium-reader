@@ -61,107 +61,108 @@ const LINK_TYPE: TLinkType[] = [
 //     "password",
 // ];
 
-const opdsAuthFlow = (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRequestCustomProtocolEventChannel>) =>
-    function*([doc, baseUrl]: TOpdsAuthenticationChannel) {
+const opdsAuthFlow =
+    (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRequestCustomProtocolEventChannel>) =>
+        function*([doc, baseUrl]: TOpdsAuthenticationChannel) {
 
-        debug("opds authenticate flow");
-        const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
-        if (!baseUrlParsed) {
-            debug("no valid base url");
-            return;
-        }
+            debug("opds authenticate flow");
+            const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
+            if (!baseUrlParsed) {
+                debug("no valid base url");
+                return;
+            }
 
-        const authParsed = tryCatchSync(() => opdsAuthDocConverter(doc, baseUrl), filename_);
-        if (!authParsed) {
-            debug("authentication doc parsing error");
-            return;
-        }
-        debug("authentication doc parsed", authParsed);
+            const authParsed = tryCatchSync(() => opdsAuthDocConverter(doc, baseUrl), filename_);
+            if (!authParsed) {
+                debug("authentication doc parsing error");
+                return;
+            }
+            debug("authentication doc parsed", authParsed);
 
-        const browserUrl = getHtmlAuthenticationUrl(authParsed);
-        if (!browserUrl) {
-            debug("no valid authentication html url");
-            return;
-        }
-        debug("Browser URL", browserUrl);
+            const browserUrl = getHtmlAuthenticationUrl(authParsed);
+            if (!browserUrl) {
+                debug("no valid authentication html url");
+                return;
+            }
+            debug("Browser URL", browserUrl);
 
-        const authCredentials: IOpdsAuthenticationToken = {
-            id: authParsed?.id || undefined,
-            opdsAuthenticationUrl: baseUrl,
-            tokenType: "Bearer",
-            refreshUrl: authParsed?.links?.refresh?.url || undefined,
-            authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
-        };
-        debug("authentication credential config", authCredentials);
-        yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
+            const authCredentials: IOpdsAuthenticationToken = {
+                id: authParsed?.id || undefined,
+                opdsAuthenticationUrl: baseUrl,
+                tokenType: "Bearer",
+                refreshUrl: authParsed?.links?.refresh?.url || undefined,
+                authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
+            };
+            debug("authentication credential config", authCredentials);
+            yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
 
-        const task = yield* forkTyped(function*() {
+            const task = yield* forkTyped(function*() {
 
-            const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
-            return parseRequestFromCustomProtocol(parsedRequest);
-        });
-
-        const win =
-            tryCatchSync(
-                () => createOpdsAuthenticationModalWin(browserUrl),
-                filename_,
-            );
-        if (!win) {
-            debug("modal win undefined");
-
-            yield cancel(task);
-            return;
-        }
-
-        try {
-
-            yield race({
-                a: delay(60000),
-                b: join(task),
-                c: call(
-                    async () =>
-                        new Promise<void>((resolve) => win.on("close", () => resolve())),
-                ),
+                const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
+                return parseRequestFromCustomProtocol(parsedRequest);
             });
 
-            if (task.isRunning()) {
-                debug("no authentication credentials received");
-                debug("perhaps timeout or closing authentication window occured");
+            const win =
+                tryCatchSync(
+                    () => createOpdsAuthenticationModalWin(browserUrl),
+                    filename_,
+                );
+            if (!win) {
+                debug("modal win undefined");
 
+                yield cancel(task);
                 return;
+            }
 
-            } else {
-                const opdsCustomProtocolRequestParsed = task.result();
-                if (opdsCustomProtocolRequestParsed) {
+            try {
 
-                    const [, err] = yield* callTyped(opdsSetAuthCredentials,
-                        opdsCustomProtocolRequestParsed,
-                        authCredentials,
-                        authParsed.authenticationType,
-                    );
+                yield race({
+                    a: delay(60000),
+                    b: join(task),
+                    c: call(
+                        async () =>
+                            new Promise<void>((resolve) => win.on("close", () => resolve())),
+                    ),
+                });
 
-                    if (err instanceof Error) {
-                        debug(err.message);
+                if (task.isRunning()) {
+                    debug("no authentication credentials received");
+                    debug("perhaps timeout or closing authentication window occured");
 
-                        return;
+                    return;
 
-                    } else {
-                        yield put(historyActions.refresh.build());
+                } else {
+                    const opdsCustomProtocolRequestParsed = task.result();
+                    if (opdsCustomProtocolRequestParsed) {
+
+                        const [, err] = yield* callTyped(opdsSetAuthCredentials,
+                            opdsCustomProtocolRequestParsed,
+                            authCredentials,
+                            authParsed.authenticationType,
+                        );
+
+                        if (err instanceof Error) {
+                            debug(err.message);
+
+                            return;
+
+                        } else {
+                            yield put(historyActions.refresh.build());
+                        }
                     }
+                }
+
+            } finally {
+
+                if (win) {
+                    win.close();
+                }
+                if (task.isRunning()) {
+                    yield cancel(task);
                 }
             }
 
-        } finally {
-
-            if (win) {
-                win.close();
-            }
-            if (task.isRunning()) {
-                yield cancel(task);
-            }
-        }
-
-    };
+        };
 
 function* opdsAuthWipeData() {
 
