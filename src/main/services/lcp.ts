@@ -783,8 +783,8 @@ export class LcpManager {
             if (typeof urlHint?.Href === "string") {
                 lcpInfo.urlHint = {
                     href: urlHint.Href,
-                    title: `${urlHint.Title}` || undefined,
-                    type: `${urlHint.Type}` || undefined,
+                    title: urlHint.Title ?? undefined,
+                    type: urlHint.Type ?? undefined,
                 };
             }
         }
