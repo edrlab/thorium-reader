@@ -599,7 +599,13 @@ function parseRequestFromCustomProtocol(req: Electron.Request)
 }
 
 // tslint:disable-next-line: max-line-length
-const htmlLoginTemplate = (urlToSubmit: string = "", loginLabel = "login", passLabel = "password", logoUrl?: string, title?: string) => `
+const htmlLoginTemplate = (
+    urlToSubmit: string = "",
+    loginLabel = "login",
+    passLabel = "password",
+    logoUrl?: string,
+    title: string = diMainGet("translator").translate("opds.auth.login"),
+) => `
 <html lang="en">
 
 <head>
@@ -799,6 +805,7 @@ const htmlLoginTemplate = (urlToSubmit: string = "", loginLabel = "login", passL
         <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
         <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
         <p class="submit"><input type="submit" name="commit" value="Login"></p>
+        <h5>${diMainGet("translator").translate("opds.auth.cancel")}</h5>
         </form>
         </div>
     </body>

@@ -366,6 +366,7 @@ declare namespace typed_i18n {
     readonly "urlPlaceholder": string
   },
   readonly "addMenu": string,
+  readonly "auth": { readonly "login": string, readonly "cancel": string },
   readonly "back": string,
   readonly "breadcrumbRoot": string,
   readonly "empty": string,
@@ -403,7 +404,11 @@ declare namespace typed_i18n {
   (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
-  (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
+  (_: "opds.addMenu", __?: {}): string;
+  (_: "opds.auth", __?: {}): { readonly "login": string, readonly "cancel": string };
+  (_: "opds.auth.login", __?: {}): string;
+  (_: "opds.auth.cancel", __?: {}): string;
+  (_: "opds.back", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
   (_: "opds.empty", __?: {}): string; (_: "opds.firstPage", __?: {}): string;
   (_: "opds.lastPage", __?: {}): string;

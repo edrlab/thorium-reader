@@ -74,6 +74,10 @@
         "noPublicationHelpL4": "Unterstützte Erweiterungen:",
         "numberOfPages": "Seitenzahl",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Verfügbar seit",
                 "availableState": {
@@ -345,6 +349,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Menü",
             "cancel": "Stornieren",

@@ -74,6 +74,10 @@
         "noPublicationHelpL4": "Supported extensions:",
         "numberOfPages": "Number of pages",
         "opds": {
+            "auth": {
+                "cancel": "Press the Escape key to cancel the authentication",
+                "login": "Login"
+            },
             "info": {
                 "availableSince": "Since",
                 "availableState": {
@@ -346,7 +350,7 @@
     },
     "settings": {
         "auth": {
-          "wipeData": "Wipe navigation data"
+            "wipeData": "Wipe navigation data"
         },
         "keyboard": {
             "advancedMenu": "Menu",
