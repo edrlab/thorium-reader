@@ -10,8 +10,8 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-import AuthSettings from "./AuthSettings";
 
+import AuthSettings from "./AuthSettings";
 import KeyboardSettings from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
 import SessionSettings from "./SessionSettings";
