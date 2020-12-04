@@ -322,6 +322,7 @@ export class OpdsFeedViewConverter {
         const entrylinkView = fallback(
             this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
                 type: "type=entry;profile=opds-catalog",
+                rel: "alternate",
             }),
             this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
                 type: ContentType.Opds2Pub,
