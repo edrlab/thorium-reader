@@ -24,6 +24,8 @@ export interface IPdfState {
     column: IPdfPlayerColumn;
     lastPageNumber: number;
     displayPage: (pageNumber: number) => Promise<void>;
+    pdfViewer: any;
+    pdfDistEventBus: any;
 }
 
 export type IPdfStore = IStore<IPdfState>;

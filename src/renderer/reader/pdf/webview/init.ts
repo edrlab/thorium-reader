@@ -5,16 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { debounce } from "debounce";
+// import { debounce } from "debounce";
 import * as path from "path";
+import * as pdfViewerDist from "pdfjs-dist/web/pdf_viewer";
+import { any } from "ramda";
 import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
-import { goToPageAction, searchAction } from "./actions";
-import { createAnnotationDiv } from "./annotation";
-import { createCanvas } from "./canvas";
-import { displayPageInCanvaFactory } from "./display";
+// import { goToPageAction, searchAction } from "./actions";
+// import { createAnnotationDiv } from "./annotation";
+// import { createCanvas } from "./canvas";
+// import { displayPageInCanvaFactory } from "./display";
 import { IPdfBus, IPdfState, IPdfStore } from "./index_pdf";
 import { pdfJs } from "./pdfjs";
 import { storeInit } from "./store";
@@ -86,6 +88,8 @@ export async function pdfReaderInit(
             scale: "fit",
             lastPageNumber: 1,
             displayPage: () => Promise.resolve(),
+            pdfViewer: any,
+            pdfDistEventBus: any,
         },
         ..._state,
     };
@@ -112,63 +116,91 @@ export async function pdfReaderInit(
 
     const pdfStore = storeInit(state);
 
-    // canva
-    const canvas = createCanvas(rootElement);
+    const pdfDistEventBus = new pdfViewerDist.EventBus();
 
-    // annotation div
-    const annotationDiv = createAnnotationDiv(rootElement);
-
-    const displayPage = displayPageInCanvaFactory(
-        canvas,
-        annotationDiv,
-        pdf,
-        pdfStore,
-        {
-            width: rootElement.clientWidth,
-            height: rootElement.clientHeight,
-        },
-        bus,
-    );
-
-    pdfStore.setState({ displayPage });
-
-    bus.subscribe("page", goToPageAction);
-    bus.subscribe("page-next",
-        (a) => () => goToPageAction(a)(++a.store.getState().lastPageNumber));
-    bus.subscribe("page-previous",
-        (a) => () => goToPageAction(a)(--a.store.getState().lastPageNumber));
-    bus.subscribe("scale",
-        (a) => async (scale) => {
-            a.store.setState({scale});
-            a.bus.dispatch("scale", scale);
-            return goToPageAction(a)(a.store.getState().lastPageNumber);
-        });
-    bus.subscribe("view",
-        (a) => async (view) => {
-            a.store.setState({view});
-            a.bus.dispatch("view", view);
-            return goToPageAction(a)(a.store.getState().lastPageNumber);
-        });
-    bus.subscribe("column",
-        (a) => async (column) => {
-            a.store.setState({column});
-            a.bus.dispatch("column", column);
-            return goToPageAction(a)(a.store.getState().lastPageNumber);
-        });
-    bus.subscribe("search", () => searchAction);
-
-    const debouncedResize = debounce(async () => {
-        console.log("resize DEBOUNCED", rootElement.clientWidth, rootElement.clientHeight);
-        const { lastPageNumber } = pdfStore.getState();
-        if (lastPageNumber > 0) {
-            await displayPage(lastPageNumber);
-        }
-    }, 500);
-
-    window.addEventListener("resize", async () => {
-        console.log("resize", rootElement.clientWidth, rootElement.clientHeight);
-        await debouncedResize();
+    const container = document.getElementById("viewerContainer");
+    const viewer = document.getElementById("viewer");
+    const pdfViewer = new pdfViewerDist.PDFViewer({
+      container,
+      viewer,
+      eventBus: pdfDistEventBus,
+    //   renderingQueue: pdfRenderingQueue,
+    //   linkService: pdfLinkService,
+    //   downloadManager,
+    //   findController,
+    //   renderer: AppOptions.get("renderer"),
+    //   enableWebGL: AppOptions.get("enableWebGL"),
+    //   l10n: this.l10n,
+    //   textLayerMode: AppOptions.get("textLayerMode"),
+    //   imageResourcesPath: AppOptions.get("imageResourcesPath"),
+    //   renderInteractiveForms: AppOptions.get("renderInteractiveForms"),
+    //   enablePrintAutoRotate: AppOptions.get("enablePrintAutoRotate"),
+    //   useOnlyCssZoom: AppOptions.get("useOnlyCssZoom"),
+    //   maxCanvasPixels: AppOptions.get("maxCanvasPixels"),
+    //   enableScripting: AppOptions.get("enableScripting"),
     });
+
+    pdfViewer.setDocument(pdf);
+
+    pdfStore.setState({pdfViewer, pdfDistEventBus});
+
+    // // canva
+    // const canvas = createCanvas(rootElement);
+
+    // // annotation div
+    // const annotationDiv = createAnnotationDiv(rootElement);
+
+    // const displayPage = displayPageInCanvaFactory(
+    //     canvas,
+    //     annotationDiv,
+    //     pdf,
+    //     pdfStore,
+    //     {
+    //         width: rootElement.clientWidth,
+    //         height: rootElement.clientHeight,
+    //     },
+    //     bus,
+    // );
+
+    // pdfStore.setState({ displayPage });
+
+    // bus.subscribe("page", goToPageAction);
+    // bus.subscribe("page-next",
+    //     (a) => () => goToPageAction(a)(++a.store.getState().lastPageNumber));
+    // bus.subscribe("page-previous",
+    //     (a) => () => goToPageAction(a)(--a.store.getState().lastPageNumber));
+    // bus.subscribe("scale",
+    //     (a) => async (scale) => {
+    //         a.store.setState({scale});
+    //         a.bus.dispatch("scale", scale);
+    //         return goToPageAction(a)(a.store.getState().lastPageNumber);
+    //     });
+    // bus.subscribe("view",
+    //     (a) => async (view) => {
+    //         a.store.setState({view});
+    //         a.bus.dispatch("view", view);
+    //         return goToPageAction(a)(a.store.getState().lastPageNumber);
+    //     });
+    // bus.subscribe("column",
+    //     (a) => async (column) => {
+    //         a.store.setState({column});
+    //         a.bus.dispatch("column", column);
+    //         return goToPageAction(a)(a.store.getState().lastPageNumber);
+    //     });
+    // bus.subscribe("search", () => searchAction);
+
+    // const debouncedResize = debounce(async () => {
+    //     console.log("resize DEBOUNCED", rootElement.clientWidth, rootElement.clientHeight);
+    //     const { lastPageNumber } = pdfStore.getState();
+    //     if (lastPageNumber > 0) {
+    //         await displayPage(lastPageNumber);
+    //     }
+    // }, 500);
+
+    // window.addEventListener("resize", async () => {
+    //     console.log("resize", rootElement.clientWidth, rootElement.clientHeight);
+    //     await debouncedResize();
+    // });
 
     return pdfStore;
 }

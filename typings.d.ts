@@ -26,6 +26,8 @@ declare module "pouchdb-adapter-node-websql";
 
 declare module "pdfjs-dist/webpack";
 
+declare module 'pdfjs-dist/web/pdf_viewer';
+
 declare module "*.css" {
     interface IClassNames {
         [className: string]: string
