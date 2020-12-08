@@ -370,11 +370,13 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
     {
         const links = pop("links");
         const resources = pop("resources");
-        const linksLinks = convertW3CpublicationLinksToReadiumManifestLink(resources, defaultBcp47Language);
-        const linksResources = convertW3CpublicationLinksToReadiumManifestLink(links, defaultBcp47Language);
-        const linksBoth = [ ...linksLinks, ...linksResources];
-        if (linksBoth.length) {
-            publication.Links = linksBoth;
+        const linksLinks = convertW3CpublicationLinksToReadiumManifestLink(links, defaultBcp47Language);
+        const linksResources = convertW3CpublicationLinksToReadiumManifestLink(resources, defaultBcp47Language);
+        if (linksLinks.length) {
+            publication.Links = linksLinks;
+        }
+        if (linksResources.length) {
+            publication.Resources = linksResources;
         }
     }
     {

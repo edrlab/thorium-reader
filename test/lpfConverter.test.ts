@@ -2,6 +2,7 @@ import {
     Iw3cPublicationManifest, w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
 
+import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { initGlobalConverters_GENERIC } from "@r2-shared-js/init-globals";
 
 const manifest = {
@@ -39,7 +40,6 @@ const manifest = {
             "Music",
             "Sounds",
         ],
-        "type": "Audiobook",
         "abridged": "false",
         "copyrightYear": "2020",
         "copyrightHolder": "Stanford U",
@@ -63,6 +63,7 @@ const manifest = {
             duration: 12,
             alternate: [
                 {
+                    type: "audio/mpeg",
                     href: "audio/gtr-jazz.mp3",
                 },
             ],
@@ -227,17 +228,13 @@ const publication: Tw3cPublicationManifest = {
 // https://github.com/readium/r2-shared-js/blob/83c63065b93f52611664bef334b16e2fcd7251e4/src/init-globals.ts#L26
 initGlobalConverters_GENERIC();
 
-test("publication to manifest", () => {
+test("publication to manifest", async () => {
 
-    Date.prototype.toJSON = function() { return this.toJSON(); };
-
-    const resultat = w3cPublicationManifestToReadiumPublicationManifest(publication, (uniqueResources) => {
-        console.log(uniqueResources);
+    const res = await w3cPublicationManifestToReadiumPublicationManifest(publication, (_uniqueResources) => {
+        // console.log(uniqueResources);
         return undefined;
     });
 
-    console.log(JSON.stringify(resultat));
-
     // tslint:disable-next-line: max-line-length
-    expect(JSON.stringify(resultat)).toStrictEqual(JSON.stringify(manifest));
+    expect(JSON.stringify(TaJsonSerialize(res))).toStrictEqual(JSON.stringify(manifest));
 });
