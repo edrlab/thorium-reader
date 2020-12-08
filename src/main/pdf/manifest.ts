@@ -7,8 +7,6 @@
 
 import * as debug_ from "debug";
 import * as path from "path";
-// https://github.com/mozilla/pdf.js/tree/master/examples/node
-// import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
 import { PDFExtract, PDFExtractOptions } from "pdf.js-extract";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
@@ -17,6 +15,9 @@ import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
+
+// https://github.com/mozilla/pdf.js/tree/master/examples/node
+// import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
 
 // Logger
 const _filename = "readium-desktop:main/pdf/manifest";

@@ -109,7 +109,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
                     .catch((err: Error) => debug("An error occurred: ", err));
             });
 
-            // the dispatching of 'openSuccess' action must be in the 'did-finish-load' event
+            // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
             // because webpack-dev-server automaticaly refresh the window.
             const store = diMainGet("store");
             const identifier = store.getState().win.session.library.identifier;

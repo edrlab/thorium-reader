@@ -53,39 +53,6 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             keyboard,
         },
     } as readerIpc.EventPayload);
-
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: readerActions.openSuccess.build(state.reader.readers[winId]),
-    //     },
-    // } as syncIpc.EventPayload);
-
-    // // Send reader config
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: readerActions.configSetSuccess.build(state.reader.config),
-    //     },
-    // } as syncIpc.EventPayload);
-
-    // Send reader mode
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: readerActions.detachModeSuccess.build(state.reader.mode),
-    //     },
-    // } as syncIpc.EventPayload);
-    // send with an API Request now
-    // should be removed
-
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: i18nActions.setLocale.build(state.i18n.locale),
-    //     },
-    // } as syncIpc.EventPayload);
-
 }
 
 function* winClose(action: winActions.reader.closed.TAction) {
@@ -108,9 +75,6 @@ function* winClose(action: winActions.reader.closed.TAction) {
                 );
 
             yield put(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));
-
-            // not yet used
-            // yield put(readerActions.closeSuccess.build(identifier));
         }
     }
 

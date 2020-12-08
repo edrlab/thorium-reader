@@ -23,11 +23,6 @@ import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
 
-// import * as Path from "path";
-
-// import { netStatusWatcher } from "./net";
-// import { updateStatusWatcher } from "./update";
-
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);

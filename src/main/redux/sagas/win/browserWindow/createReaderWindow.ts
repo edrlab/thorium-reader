@@ -132,7 +132,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
         readerWindow.webContents.on("did-finish-load", () => {
 
-            // the dispatching of 'openSuccess' action must be in the 'did-finish-load' event
+            // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
             // because webpack-dev-server automaticaly refresh the window.
             const store = diMainGet("store");
 
