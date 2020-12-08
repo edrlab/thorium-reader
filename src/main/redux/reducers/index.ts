@@ -7,8 +7,6 @@
 
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
-// import { netReducer } from "readium-desktop/common/redux/reducers/net";
-// import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { RootState } from "readium-desktop/main/redux/states";

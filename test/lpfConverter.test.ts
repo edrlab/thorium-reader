@@ -1,5 +1,5 @@
 import {
-    w3cPublicationManifestToReadiumPublicationManifest,
+    Iw3cPublicationManifest, w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
 
 import { initGlobalConverters_GENERIC } from "@r2-shared-js/init-globals";
@@ -121,7 +121,13 @@ const manifest = {
     ],
 };
 
-const publication = {
+interface Tw3cPublicationManifest extends Iw3cPublicationManifest {
+    abridged: string;
+    copyrightYear: string;
+    copyrightHolder: string;
+}
+
+const publication: Tw3cPublicationManifest = {
     "@context": [
         "https://schema.org",
         "https://www.w3.org/ns/pub-context",
@@ -180,7 +186,9 @@ const publication = {
             url: "audio/Latin.mp3",
             name: "Track 2",
             duration: "PT12S",
-            alternate: "audio/gtr-jazz.mp3",
+            alternate: {
+                url: "audio/gtr-jazz.mp3",
+            },
         },
         {
             type: "LinkedResource",
@@ -223,7 +231,10 @@ test("publication to manifest", () => {
 
     Date.prototype.toJSON = function() { return this.toJSON(); };
 
-    const resultat = w3cPublicationManifestToReadiumPublicationManifest(publication as any);
+    const resultat = w3cPublicationManifestToReadiumPublicationManifest(publication, (uniqueResources) => {
+        console.log(uniqueResources);
+        return undefined;
+    });
 
     console.log(JSON.stringify(resultat));
 

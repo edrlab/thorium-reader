@@ -31,9 +31,11 @@ interface IW3cLocalizableString {
     value?: string;
     direction?: string;
 }
+type TW3cString = IW3cLocalizableString | string;
+type TW3cLocalizableString = TW3cString[] | TW3cString;
 
 function convertW3cLocalisableStringToReadiumManifestTitle(
-    titleRaw: IW3cLocalizableString[] | IW3cLocalizableString | string,
+    titleRaw: TW3cLocalizableString,
     defaultBcp47Language: string,
 ): string | IStringMap {
 
@@ -41,7 +43,7 @@ function convertW3cLocalisableStringToReadiumManifestTitle(
 
         const titleObjArray = (
             Array.isArray(titleRaw) ? titleRaw : [titleRaw]
-        ) as Array<IW3cLocalizableString | string>;
+        ) as TW3cString[];
 
         const titleObj = titleObjArray
             .reduce(
@@ -65,7 +67,7 @@ function convertW3cLocalisableStringToReadiumManifestTitle(
 
 interface IW3cEntities {
     type?: string[] | string;
-    name?: IW3cLocalizableString[] | IW3cLocalizableString | string;
+    name?: TW3cLocalizableString;
     id?: string;
     url?: string;
     identifier?: string[] | string;
@@ -113,8 +115,8 @@ export interface IW3cLinkedResources {
     type?: string | string[];
     url?: string;
     encodingFormat?: string;
-    name?: IW3cLocalizableString[] | IW3cLocalizableString | string;
-    description?: IW3cLocalizableString[] | IW3cLocalizableString | string;
+    name?: TW3cLocalizableString;
+    description?: TW3cLocalizableString;
     rel?: string | string[];
     integrity?: string;
     duration?: string;
@@ -211,7 +213,7 @@ export interface Iw3cPublicationManifest {
     "conformsTo"?: string | string[];
     "id"?: string;
     "url"?: string;
-    "name"?: string | IW3cLocalizableString | IW3cLocalizableString[];
+    "name"?: TW3cLocalizableString;
     "dcterms:description"?: string;
     "dcterms:subject"?: any;
     "inLanguage"?: any;
@@ -228,7 +230,7 @@ export interface Iw3cPublicationManifest {
     "accessModeSufficient"?: any | any[];
     "accessibilityFeature"?: string | string[];
     "accessibilityHazard"?: string | string[];
-    "accessibilitySummary"?: string | IW3cLocalizableString | IW3cLocalizableString[];
+    "accessibilitySummary"?: TW3cLocalizableString;
 }
 
 export async function w3cPublicationManifestToReadiumPublicationManifest(
