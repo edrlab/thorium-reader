@@ -13,6 +13,7 @@ import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
+import { EventBus } from "../common/pdfEventBus";
 // import { goToPageAction, searchAction } from "./actions";
 // import { createAnnotationDiv } from "./annotation";
 // import { createCanvas } from "./canvas";
@@ -116,7 +117,9 @@ export async function pdfReaderInit(
 
     const pdfStore = storeInit(state);
 
-    const pdfDistEventBus = new pdfViewerDist.EventBus();
+    const pdfDistEventBus = new EventBus();
+
+    pdfDistEventBus.onAll((key: string) => (...a: any[]) => console.log(key, a));
 
     const container = document.getElementById("viewerContainer");
     const viewer = document.getElementById("viewer");
