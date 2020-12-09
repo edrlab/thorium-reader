@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as debug_ from "debug";
-
 import { inject, injectable } from "inversify";
 import { IOpdsApi, TOpdsLinkSearch } from "readium-desktop/common/api/interface/opdsApi.interface";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
@@ -18,6 +16,7 @@ import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsService } from "readium-desktop/main/services/opds";
 
+// import * as debug_ from "debug";
 // Logger
 // const debug = debug_("readium-desktop:src/main/api/opds");
 

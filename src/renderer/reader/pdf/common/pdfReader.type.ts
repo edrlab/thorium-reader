@@ -41,7 +41,7 @@ export interface IEventBusPdfPlayer<TState> extends IEventBus {
 }
 
 // extract from publication link class
-// import { Link } from "@r2-shared-js/models/publication-link";
+// see { Link } from "@r2-shared-js/models/publication-link";
 export interface ILink {
     Href?: string;
     Title?: string;

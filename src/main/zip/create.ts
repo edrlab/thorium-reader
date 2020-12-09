@@ -29,7 +29,7 @@ export async function createWebpubZip(
     const pathFile = await createTempDir(nanoid(8), name);
     const packagePath = path.resolve(pathFile, "package.webpub");
 
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
 
         debug("package path", pathFile);
 

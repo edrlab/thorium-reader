@@ -82,7 +82,7 @@ export class LcpManager {
         const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
 
         const epubPathTMP = epubPath + ".tmplcpl";
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
             injectBufferInZip(
                 epubPath,
                 epubPathTMP,
@@ -100,13 +100,13 @@ export class LcpManager {
 
         // Replace epub without LCP with a new one containing LCPL
         fs.unlinkSync(epubPath);
-        await new Promise((resolve, _reject) => {
+        await new Promise<void>((resolve, _reject) => {
             setTimeout(() => {
                 resolve();
             }, 200); // to avoid issues with some filesystems (allow extra completion time)
         });
         fs.renameSync(epubPathTMP, epubPath);
-        await new Promise((resolve, _reject) => {
+        await new Promise<void>((resolve, _reject) => {
             setTimeout(() => {
                 resolve();
             }, 200); // to avoid issues with some filesystems (allow extra completion time)
@@ -878,7 +878,7 @@ export class LcpManager {
                         this.store.dispatch(readerActions.closeRequestFromPublication.build(
                             publicationDocumentIdentifier));
 
-                        await new Promise((res, _rej) => {
+                        await new Promise<void>((res, _rej) => {
                             setTimeout(() => {
                                 res();
                             }, 500); // allow extra completion time to ensure the filesystem ZIP streams are closed

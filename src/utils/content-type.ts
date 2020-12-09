@@ -33,3 +33,16 @@ export enum ContentType {
     lcppdf = "application/pdf+lcp",
     pdf = "application/pdf",
 }
+
+export const parseContentType = (RawContentType: string): ContentType | undefined => {
+
+    if (!RawContentType) {
+        return undefined;
+    }
+
+    const contentTypeArray = RawContentType.replace(/\s/g, "").split(";");
+
+    const contentType = contentTypeArray.reduce<ContentType | undefined>(
+        (pv, cv) => pv || Object.values(ContentType).find((v) => v === cv), undefined);
+    return contentType;
+};

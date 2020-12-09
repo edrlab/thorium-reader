@@ -38,14 +38,6 @@ export class LcpApi implements ILcpApi {
     @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
 
-    // import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-    // @inject(diSymbolTable["publication-storage"])
-    // private readonly publicationStorage!: PublicationStorage;
-
-    // import { Server } from "@r2-streamer-js/http/server";
-    // @inject(diSymbolTable.streamer)
-    // private readonly streamer!: Server;
-
     public async renewPublicationLicense(publicationIdentifier: string): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(
             publicationIdentifier,

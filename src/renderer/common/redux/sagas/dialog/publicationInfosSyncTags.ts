@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
-// import { error } from "readium-desktop/common/error";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
