@@ -8,11 +8,11 @@
 import { PDFDocumentProxy, PDFPageProxy } from "pdfjs-dist/types/display/api";
 import { PageViewport } from "pdfjs-dist/types/display/display_utils";
 
-import { IPdfPlayerScale } from "../common/pdfReader.type";
-import { pageNumberCheck } from "./actions";
-import { IPdfBus, IPdfStore } from "./index_pdf";
-import { pdfJs } from "./pdfjs";
-import { destForPageIndexParse } from "./toc";
+import { IPdfPlayerScale } from "../../../common/pdfReader.type";
+import { pageNumberCheck } from "../../actions";
+import { IPdfBus, IPdfStore } from "../../index_pdf";
+import { pdfJs } from "../../pdfjs";
+import { destForPageIndexParse } from "../../toc";
 
 // PDF is 72dpi
 // CSS is 96dpi
@@ -86,14 +86,13 @@ export const displayPageInCanvaFactory =
         annotationDiv: HTMLDivElement,
         pdf: PDFDocumentProxy,
         store: IPdfStore,
-        windowViewportSize: IWindowViewPort,
         bus: IPdfBus,
     ) =>
         async (pageNumber: number) => {
-
-            if (!windowViewportSize?.height || !windowViewportSize.height) {
-                throw new Error("no client windowViewportSize");
-            }
+            const windowViewportSize = {
+                width: canvas.ownerDocument.body.clientWidth,
+                height: canvas.ownerDocument.body.clientHeight,
+            };
 
             // CANVAS rendering
             const { scale: _scale } = store.getState();

@@ -5,23 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-// import { debounce } from "debounce";
+import { debounce } from "debounce";
 import * as path from "path";
 import * as pdfViewerDist from "pdfjs-dist/web/pdf_viewer";
-import { any } from "ramda";
 import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
-import { EventBus } from "../common/pdfEventBus";
-// import { goToPageAction, searchAction } from "./actions";
-// import { createAnnotationDiv } from "./annotation";
-// import { createCanvas } from "./canvas";
-// import { displayPageInCanvaFactory } from "./display";
-import { IPdfBus, IPdfState, IPdfStore } from "./index_pdf";
+import { goToPageAction, searchAction } from "./actions";
+import { createAnnotationDiv } from "./annotation";
+import { createCanvas } from "./canvas";
+import { IEVState, IPdfBus, IPdfState, IPdfStore } from "./index_pdf";
+import { EventBus } from "./pdfEventBus";
 import { pdfJs } from "./pdfjs";
 import { storeInit } from "./store";
 import { getToc } from "./toc";
+import { displayPageInCanvaFactory } from "./view/paginated/display";
 
 // import * as pdfJs from "pdfjs-dist/webpack";
 
@@ -76,7 +75,6 @@ pdfJs.GlobalWorkerOptions.workerPort = new Worker(window.URL.createObjectURL(
 // pdfJs.GlobalWorkerOptions.workerSrc = workerPath;
 
 export async function pdfReaderInit(
-    rootElement: HTMLElement,
     pdfPath: string,
     bus: IPdfBus,
     _state: Partial<IPdfState>,
@@ -89,8 +87,9 @@ export async function pdfReaderInit(
             scale: "fit",
             lastPageNumber: 1,
             displayPage: () => Promise.resolve(),
-            pdfViewer: any,
-            pdfDistEventBus: any,
+            pdfViewer: null,
+            pdfDistEventBus: null,
+            pdfDocument: null,
         },
         ..._state,
     };
@@ -101,17 +100,10 @@ export async function pdfReaderInit(
     if (!pdfPath) {
         throw new Error("no pdfPath !!");
     }
-    {
-        const is = rootElement instanceof HTMLElement;
-        if (!is) {
-            throw new Error("no html el !!");
-        }
-    }
-
     // parse pdf
-    const pdf = await pdfJs.getDocument(pdfPath).promise;
+    const pdfDocument = await pdfJs.getDocument(pdfPath).promise;
 
-    const toc = await getToc(pdf);
+    const toc = await getToc(pdfDocument);
     bus.dispatch("toc", toc);
     console.log("toc", toc);
 
@@ -119,13 +111,13 @@ export async function pdfReaderInit(
 
     const pdfDistEventBus = new EventBus();
 
-    pdfDistEventBus.onAll((key: string) => (...a: any[]) => console.log(key, a));
+    pdfDistEventBus.onAll((key: string) => (...a: any[]) => console.log("PDFEVENT", key, ...a));
 
-    const container = document.getElementById("viewerContainer");
-    const viewer = document.getElementById("viewer");
+    const scrolledContainer = document.getElementById("viewerContainer");
+    const scrolledViewer = document.getElementById("viewer");
     const pdfViewer = new pdfViewerDist.PDFViewer({
-      container,
-      viewer,
+      container: scrolledContainer,
+      viewer: scrolledViewer,
       eventBus: pdfDistEventBus,
     //   renderingQueue: pdfRenderingQueue,
     //   linkService: pdfLinkService,
@@ -143,67 +135,91 @@ export async function pdfReaderInit(
     //   enableScripting: AppOptions.get("enableScripting"),
     });
 
-    pdfViewer.setDocument(pdf);
+    pdfViewer.setDocument(pdfDocument);
 
     pdfStore.setState({pdfViewer, pdfDistEventBus});
 
-    // // canva
-    // const canvas = createCanvas(rootElement);
+    // canva
+    const paginatedContainer = document.getElementById("paginatedContainer");
+    const canvas = createCanvas(paginatedContainer);
 
-    // // annotation div
-    // const annotationDiv = createAnnotationDiv(rootElement);
+    // annotation div
+    const annotationDiv = createAnnotationDiv(paginatedContainer);
 
-    // const displayPage = displayPageInCanvaFactory(
-    //     canvas,
-    //     annotationDiv,
-    //     pdf,
-    //     pdfStore,
-    //     {
-    //         width: rootElement.clientWidth,
-    //         height: rootElement.clientHeight,
-    //     },
-    //     bus,
-    // );
+    const displayPaginatedPage = displayPageInCanvaFactory(
+        canvas,
+        annotationDiv,
+        pdfDocument,
+        pdfStore,
+        bus,
+    );
 
-    // pdfStore.setState({ displayPage });
+    const displayScrolledPage = async (pageNumber: number) => {
+        console.log("scrolled page number", pageNumber);
 
-    // bus.subscribe("page", goToPageAction);
-    // bus.subscribe("page-next",
-    //     (a) => () => goToPageAction(a)(++a.store.getState().lastPageNumber));
-    // bus.subscribe("page-previous",
-    //     (a) => () => goToPageAction(a)(--a.store.getState().lastPageNumber));
-    // bus.subscribe("scale",
-    //     (a) => async (scale) => {
-    //         a.store.setState({scale});
-    //         a.bus.dispatch("scale", scale);
-    //         return goToPageAction(a)(a.store.getState().lastPageNumber);
-    //     });
-    // bus.subscribe("view",
-    //     (a) => async (view) => {
-    //         a.store.setState({view});
-    //         a.bus.dispatch("view", view);
-    //         return goToPageAction(a)(a.store.getState().lastPageNumber);
-    //     });
-    // bus.subscribe("column",
-    //     (a) => async (column) => {
-    //         a.store.setState({column});
-    //         a.bus.dispatch("column", column);
-    //         return goToPageAction(a)(a.store.getState().lastPageNumber);
-    //     });
-    // bus.subscribe("search", () => searchAction);
+        pdfViewer.currentPageNumber = pageNumber;
+    };
 
-    // const debouncedResize = debounce(async () => {
-    //     console.log("resize DEBOUNCED", rootElement.clientWidth, rootElement.clientHeight);
-    //     const { lastPageNumber } = pdfStore.getState();
-    //     if (lastPageNumber > 0) {
-    //         await displayPage(lastPageNumber);
-    //     }
-    // }, 500);
+    const updateDisplayPage = ({store}: IEVState) => {
 
-    // window.addEventListener("resize", async () => {
-    //     console.log("resize", rootElement.clientWidth, rootElement.clientHeight);
-    //     await debouncedResize();
-    // });
+        document.body.style.overflow = "auto";
+        document.body.style.overflowY = "auto";
+        document.body.style.overflowX = "auto";
+
+        if (store.getState().view === "paginated") {
+            scrolledContainer.hidden = true;
+            paginatedContainer.hidden = false;
+            store.setState({ displayPage: displayPaginatedPage });
+        } else {
+            paginatedContainer.hidden = true;
+            scrolledContainer.hidden = false;
+            store.setState({ displayPage: displayScrolledPage });
+            pdfViewer.update();
+            const { lastPageNumber } = store.getState();
+            // tslint:disable-next-line: no-floating-promises
+            displayScrolledPage(lastPageNumber);
+        }
+    };
+    updateDisplayPage({store: pdfStore, bus});
+
+    bus.subscribe("page", goToPageAction);
+    bus.subscribe("page-next",
+        (a) => () => goToPageAction(a)(++a.store.getState().lastPageNumber));
+    bus.subscribe("page-previous",
+        (a) => () => goToPageAction(a)(--a.store.getState().lastPageNumber));
+    bus.subscribe("scale",
+        (a) => async (scale) => {
+            a.store.setState({scale});
+            a.bus.dispatch("scale", scale);
+            return goToPageAction(a)(a.store.getState().lastPageNumber);
+        });
+    bus.subscribe("view",
+        (a) => async (view) => {
+            a.store.setState({view});
+            updateDisplayPage(a);
+            a.bus.dispatch("view", view);
+            return goToPageAction(a)(a.store.getState().lastPageNumber);
+        });
+    bus.subscribe("column",
+        (a) => async (column) => {
+            a.store.setState({column});
+            a.bus.dispatch("column", column);
+            return goToPageAction(a)(a.store.getState().lastPageNumber);
+        });
+    bus.subscribe("search", () => searchAction);
+
+    const debouncedResize = debounce(async () => {
+        console.log("resize DEBOUNCED", document.body.clientWidth, document.body.clientHeight);
+        const { lastPageNumber, displayPage } = pdfStore.getState();
+        if (lastPageNumber > 0) {
+            await displayPage(lastPageNumber);
+        }
+    }, 500);
+
+    window.addEventListener("resize", async () => {
+        console.log("resize", document.body.clientWidth, document.body.clientHeight);
+        await debouncedResize();
+    });
 
     return pdfStore;
 }

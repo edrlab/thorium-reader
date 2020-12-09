@@ -38,8 +38,6 @@ export interface IEVState {
 
 function main() {
 
-    const rootElement = document.body;
-
     const evState: IEVState = {
         store: undefined,
         bus: undefined,
@@ -90,15 +88,13 @@ function main() {
     bus.subscribe("start", () => async (pdfPath: string) => {
 
         console.log("bus.subscribe start pdfPath", pdfPath);
-        const store = await pdfReaderInit(rootElement, pdfPath, bus, {
+        const store = await pdfReaderInit(pdfPath, bus, {
             view: defaultView,
             scale: defaultScale,
             column: defaultCol,
         });
 
         evState.store = store;
-
-        bus.subscribe("scale", () => () => console.log("HELLO"));
 
         bus.dispatch("scale", defaultScale);
         bus.dispatch("view", defaultView);
