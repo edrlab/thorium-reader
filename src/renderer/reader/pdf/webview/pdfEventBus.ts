@@ -39,6 +39,8 @@ export class EventBus {
 
     dispatch(eventName) {
 
+        const args = Array.prototype.slice.call(arguments, 1);
+
         this._listenersAll.forEach((l) => l(eventName)(args))
 
         const eventListeners = this._listeners[eventName];
@@ -47,13 +49,11 @@ export class EventBus {
                 (typeof PDFJSDev === "undefined" || PDFJSDev.test("MOZCENTRAL")) &&
                 this._isInAutomation
             ) {
-                const args = Array.prototype.slice.call(arguments, 1);
                 dispatchDOMEvent(eventName, args);
             }
             return;
         }
         // Passing all arguments after the eventName to the listeners.
-        const args = Array.prototype.slice.call(arguments, 1);
         let externalListeners;
         // Making copy of the listeners array in case if it will be modified
         // during dispatch.

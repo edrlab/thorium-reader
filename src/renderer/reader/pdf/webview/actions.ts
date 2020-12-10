@@ -9,9 +9,9 @@ export const goToPageAction =
     ({ store, bus }: { store: IPdfStore, bus: IPdfBus }) =>
         async (pageNumber: number) => {
 
-            const { displayPage } = store.getState();
             try {
                 const pageNb = pageNumberCheck(pageNumber);
+                const { displayPage } = store.getState();
                 await displayPage(pageNb);
                 store.setState({ lastPageNumber: pageNb });
             } catch (e) {

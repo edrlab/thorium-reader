@@ -113,6 +113,19 @@ export async function pdfReaderInit(
 
     pdfDistEventBus.onAll((key: string) => (...a: any[]) => console.log("PDFEVENT", key, ...a));
 
+    const debounceUpdateviewarea = debounce(async (evt: any) => {
+        try {
+            const {location: {pageNumber}} = evt;
+            console.log("pageNumber", pageNumber);
+            bus.dispatch("page", pageNumber);
+        } catch (e) {
+            console.log("updateviewarea ERROR", e);
+        }
+    });
+    pdfDistEventBus.on("updateviewarea", async (evt: any) => {
+        await debounceUpdateviewarea(evt);
+    });
+
     const scrolledContainer = document.getElementById("viewerContainer");
     const scrolledViewer = document.getElementById("viewer");
     const pdfViewer = new pdfViewerDist.PDFViewer({
