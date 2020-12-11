@@ -76,7 +76,7 @@ function main() {
     evState.bus = bus;
 
     const defaultView: IPdfPlayerView = "paginated";
-    const defaultScale: IPdfPlayerScale = "fit";
+    const defaultScale: IPdfPlayerScale = "page-fit";
     const defaultCol: IPdfPlayerColumn = "1";
 
     // ready dispatched from Reader.tsx when bus loaded

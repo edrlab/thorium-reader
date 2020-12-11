@@ -34,9 +34,9 @@ const getViewport =
         const scaleH = windowViewportSize.height / (viewportNoScale.height * CSS_UNITS);
 
         const scaleDefined =
-            scale === "fit"
+            scale === "page-fit"
                 ? Math.min(scaleW, scaleH)
-                : scale === "width"
+                : scale === "page-width"
                     ? scaleW
                     : typeof scale === "number"
                         ? scale / 50
@@ -51,7 +51,7 @@ const setCanvasDimmension = (
     windowViewportSize: IWindowViewPort,
     scale: IPdfPlayerScale,
 ) => {
-    const canvasStyleLeft = scale === "fit"
+    const canvasStyleLeft = scale === "page-fit"
         ? `${(windowViewportSize.width - (viewport.width * CSS_UNITS)) / 2}px`
         : "0px";
     canvas.style.left = canvasStyleLeft;
@@ -59,10 +59,10 @@ const setCanvasDimmension = (
     canvas.width = viewport.width * CSS_UNITS;
     canvas.height = viewport.height * CSS_UNITS;
 
-    const overflow = scale === "fit" || scale === "width" ? "hidden" : "auto";
+    const overflow = scale === "page-fit" || scale === "page-width" ? "hidden" : "auto";
     canvas.ownerDocument.body.style.overflow = overflow;
     canvas.ownerDocument.body.style.overflowX = overflow;
-    canvas.ownerDocument.body.style.overflowY = scale === "fit" ? "hidden" : "auto";
+    canvas.ownerDocument.body.style.overflowY = scale === "page-fit" ? "hidden" : "auto";
 };
 
 const fitAnnotationDivWithCanvasSize = (
