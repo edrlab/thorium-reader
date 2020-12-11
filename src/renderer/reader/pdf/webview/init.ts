@@ -204,6 +204,15 @@ export async function pdfReaderInit(
         (a) => async (scale) => {
             a.store.setState({ scale });
             a.bus.dispatch("scale", scale);
+
+            if (typeof scale === "number") {
+
+                pdfViewer.currentScaleValue = scale / 100; // 10% become 0.1
+            } else {
+
+                pdfViewer.currentScaleValue = scale;
+            }
+
             return goToPageAction(a)(a.store.getState().lastPageNumber);
         });
     bus.subscribe("view",
@@ -217,6 +226,9 @@ export async function pdfReaderInit(
         (a) => async (column) => {
             a.store.setState({ column });
             a.bus.dispatch("column", column);
+
+            pdfViewer.spreadMode = parseInt(column, 10);
+
             return goToPageAction(a)(a.store.getState().lastPageNumber);
         });
     bus.subscribe("search", () => searchAction);

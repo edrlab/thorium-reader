@@ -393,8 +393,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         (scale === 200 ? __("reader.settings.pdfZoom.name.200pct") :
                         (scale === 300 ? __("reader.settings.pdfZoom.name.300pct") :
                         (scale === 500 ? __("reader.settings.pdfZoom.name.500pct") :
-                        (scale === "fit" ? __("reader.settings.pdfZoom.name.fit") :
-                        (scale === "width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
+                        (scale === "page-fit" ? __("reader.settings.pdfZoom.name.fit") :
+                        (scale === "page-width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
                         // --("reader.settings.pdfZoom.name." + scale as any)
                         }
                     </label>
@@ -404,8 +404,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         return (
             <div id={styles.themes_list}>
-                {inputComponent("fit")}
-                {inputComponent("width")}
+                {inputComponent("page-fit")}
+                {inputComponent("page-width")}
                 {inputComponent(50)}
                 {inputComponent(100)}
                 {inputComponent(150)}
