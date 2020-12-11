@@ -587,6 +587,22 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     </div>
                     <div className={styles.focus_element}>
                         <input
+                            id={"radio-" + styles.option_left}
+                            name="alignment"
+                            type="radio"
+                            onChange={(e) => this.props.handleSettingChange(e, "align", textAlignEnum.left)}
+                            checked={readerConfig.align === textAlignEnum.left}
+                        />
+                        <label
+                            htmlFor={"radio-" + styles.option_left}
+                            className={this.getButtonClassName("align", "left")}
+                        >
+                            <SVG svg={JustifyIcon} />
+                            {__("reader.settings.left")}
+                        </label>
+                    </div>
+                    <div className={styles.focus_element}>
+                        <input
                             id={"radio-" + styles.option_justif}
                             name="alignment"
                             type="radio"
@@ -599,6 +615,22 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         >
                             <SVG svg={JustifyIcon} />
                             {__("reader.settings.justify")}
+                        </label>
+                    </div>
+                    <div className={styles.focus_element}>
+                        <input
+                            id={"radio-" + styles.option_right}
+                            name="alignment"
+                            type="radio"
+                            onChange={(e) => this.props.handleSettingChange(e, "align", textAlignEnum.right)}
+                            checked={readerConfig.align === textAlignEnum.right}
+                        />
+                        <label
+                            htmlFor={"radio-" + styles.option_right}
+                            className={this.getButtonClassName("align", "right")}
+                        >
+                            <SVG svg={JustifyIcon} />
+                            {__("reader.settings.right")}
                         </label>
                     </div>
                 </div>
