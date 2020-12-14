@@ -115,7 +115,7 @@ export async function pdfReaderInit(
 
     const debounceUpdateviewarea = debounce(async (evt: any) => {
         try {
-            const {location: {pageNumber}} = evt;
+            const { location: { pageNumber } } = evt;
             console.log("pageNumber", pageNumber);
             bus.dispatch("page", pageNumber);
         } catch (e) {
@@ -126,26 +126,98 @@ export async function pdfReaderInit(
         await debounceUpdateviewarea(evt);
     });
 
+    const pdfLinkService = new pdfViewerDist.PDFLinkService({
+        eventBus: pdfDistEventBus,
+        // externalLinkTarget: AppOptions.get("externalLinkTarget"),
+        // externalLinkRel: AppOptions.get("externalLinkRel"),
+        // ignoreDestinationZoom: AppOptions.get("ignoreDestinationZoom"),
+    });
+
+    const findController = new pdfViewerDist.PDFFindController({
+        linkService: pdfLinkService,
+        eventBus: pdfDistEventBus,
+    });
+
+    /*
+    // https://github.com/mozilla/pdf.js/blob/959dc379ee6b5259e7ce804a25dc19d795c6cafc/web/pdf_find_bar.js#L66
+
+    this.findPreviousButton.addEventListener("click", () => {
+      this.dispatchEvent("again", true);
+    });
+
+    this.findNextButton.addEventListener("click", () => {
+      this.dispatchEvent("again", false);
+    });
+
+    this.highlightAll.addEventListener("click", () => {
+      this.dispatchEvent("highlightallchange");
+    });
+
+    this.caseSensitive.addEventListener("click", () => {
+      this.dispatchEvent("casesensitivitychange");
+    });
+
+    this.entireWord.addEventListener("click", () => {
+      this.dispatchEvent("entirewordchange");
+    });
+
+    this.eventBus._on("resize", this._adjustWidth.bind(this));
+  }
+
+  reset() {
+    this.updateUIState();
+  }
+
+  dispatchEvent(type, findPrev) {
+    this.eventBus.dispatch("find", {
+      source: this,
+      type,
+      query: this.findField.value,
+      phraseSearch: true,
+      caseSensitive: this.caseSensitive.checked,
+      entireWord: this.entireWord.checked,
+      highlightAll: this.highlightAll.checked,
+      findPrevious: findPrev,
+    });
+  }
+
+  */
+
+    /*
+
+    // https://github.com/mozilla/pdf.js/blob/959dc379ee6b5259e7ce804a25dc19d795c6cafc/web/app.js#L2744
+    function webViewerFind(evt) {
+    PDFViewerApplication.findController.executeCommand("find" + evt.type, {
+      query: evt.query,
+      phraseSearch: evt.phraseSearch,
+      caseSensitive: evt.caseSensitive,
+      entireWord: evt.entireWord,
+      highlightAll: evt.highlightAll,
+      findPrevious: evt.findPrevious,
+    });
+  }
+  */
+
     const scrolledContainer = document.getElementById("viewerContainer");
     const scrolledViewer = document.getElementById("viewer");
     const pdfViewer = new pdfViewerDist.PDFViewer({
-      container: scrolledContainer,
-      viewer: scrolledViewer,
-      eventBus: pdfDistEventBus,
-    //   renderingQueue: pdfRenderingQueue,
-    //   linkService: pdfLinkService,
-    //   downloadManager,
-    //   findController,
-    //   renderer: AppOptions.get("renderer"),
-    //   enableWebGL: AppOptions.get("enableWebGL"),
-    //   l10n: this.l10n,
-    //   textLayerMode: AppOptions.get("textLayerMode"),
-    //   imageResourcesPath: AppOptions.get("imageResourcesPath"),
-    //   renderInteractiveForms: AppOptions.get("renderInteractiveForms"),
-    //   enablePrintAutoRotate: AppOptions.get("enablePrintAutoRotate"),
-    //   useOnlyCssZoom: AppOptions.get("useOnlyCssZoom"),
-    //   maxCanvasPixels: AppOptions.get("maxCanvasPixels"),
-    //   enableScripting: AppOptions.get("enableScripting"),
+        container: scrolledContainer,
+        viewer: scrolledViewer,
+        eventBus: pdfDistEventBus,
+        //   renderingQueue: pdfRenderingQueue,
+        //   linkService: pdfLinkService,
+        //   downloadManager,
+        findController,
+        //   renderer: AppOptions.get("renderer"),
+        //   enableWebGL: AppOptions.get("enableWebGL"),
+        //   l10n: this.l10n,
+        //   textLayerMode: AppOptions.get("textLayerMode"),
+        //   imageResourcesPath: AppOptions.get("imageResourcesPath"),
+        //   renderInteractiveForms: AppOptions.get("renderInteractiveForms"),
+        //   enablePrintAutoRotate: AppOptions.get("enablePrintAutoRotate"),
+        //   useOnlyCssZoom: AppOptions.get("useOnlyCssZoom"),
+        //   maxCanvasPixels: AppOptions.get("maxCanvasPixels"),
+        //   enableScripting: AppOptions.get("enableScripting"),
     });
 
     pdfViewer.setDocument(pdfDocument);
