@@ -82,9 +82,9 @@ export async function pdfReaderInit(
 
     const state: IPdfState = {
         ...{
-            view: "paginated",
-            column: "1",
-            scale: "page-fit",
+            view: "scrolled", // set in index_pdf.ts
+            column: "1", // set in index_pdf.ts
+            scale: "page-fit", // set in index_pdf.ts
             lastPageNumber: 1,
             displayPage: () => Promise.resolve(),
             pdfViewer: null,

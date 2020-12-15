@@ -75,7 +75,7 @@ function main() {
 
     evState.bus = bus;
 
-    const defaultView: IPdfPlayerView = "paginated";
+    const defaultView: IPdfPlayerView = "scrolled";
     const defaultScale: IPdfPlayerScale = "page-fit";
     const defaultCol: IPdfPlayerColumn = "1";
 
