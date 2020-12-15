@@ -454,7 +454,10 @@ class Reader extends React.Component<IProps, IState> {
                     />
                     <div className={classNames(styles.content_root,
                         this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
-                        <PickerManager showSearchResults={this.showSearchResults}></PickerManager>
+                        <PickerManager
+                            showSearchResults={this.showSearchResults}
+                            pdfEventBus={this.state.pdfPlayerBusEvent}
+                        ></PickerManager>
                         <div className={styles.reader}>
                             <main
                                 id="main"

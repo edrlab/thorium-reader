@@ -20,8 +20,3 @@ export const goToPageAction =
 
             bus.dispatch("page", store.getState().lastPageNumber);
         };
-
-export const searchAction = (search: string) => {
-
-    console.log("search", search);
-};

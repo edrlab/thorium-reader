@@ -12,7 +12,7 @@ import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
-import { goToPageAction, searchAction } from "./actions";
+import { goToPageAction } from "./actions";
 import { createAnnotationDiv } from "./annotation";
 import { createCanvas } from "./canvas";
 import { IEVState, IPdfBus, IPdfState, IPdfStore } from "./index_pdf";
@@ -205,7 +205,7 @@ export async function pdfReaderInit(
         viewer: scrolledViewer,
         eventBus: pdfDistEventBus,
         //   renderingQueue: pdfRenderingQueue,
-        //   linkService: pdfLinkService,
+        linkService: pdfLinkService,
         //   downloadManager,
         findController,
         //   renderer: AppOptions.get("renderer"),
@@ -303,7 +303,50 @@ export async function pdfReaderInit(
 
             return goToPageAction(a)(a.store.getState().lastPageNumber);
         });
-    bus.subscribe("search", () => searchAction);
+
+    let searchRequest = "";
+    bus.subscribe("search", () => (searchWord) => {
+
+        console.log("SEARCH PDF", searchWord);
+
+        searchRequest = searchWord;
+
+        findController.executeCommand("find", {
+            query: searchRequest,
+            phraseSearch: true,
+            caseSensitive: false,
+            entireWord: false,
+            highlightAll: true,
+            findPrevious: undefined,
+          });
+    });
+
+    bus.subscribe("search-next", () => () => {
+
+        findController.executeCommand("findagain", {
+            query: searchRequest,
+            phraseSearch: true,
+            caseSensitive: false,
+            entireWord: false,
+            highlightAll: true,
+            findPrevious: false,
+          });
+    });
+
+    bus.subscribe("search-previous", () => () => {
+        findController.executeCommand("findagain", {
+            query: searchRequest,
+            phraseSearch: true,
+            caseSensitive: false,
+            entireWord: false,
+            highlightAll: true,
+            findPrevious: true,
+          });
+    });
+
+    bus.subscribe("search-wipe", () => () => {
+        pdfDistEventBus.dispatch("findbarclose");
+    });
 
     const debouncedResize = debounce(async () => {
         console.log("resize DEBOUNCED", document.body.clientWidth, document.body.clientHeight);

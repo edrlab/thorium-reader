@@ -15,6 +15,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
 import { readerLocalActionSearch } from "../../redux/actions";
 import LoaderSearch from "./LoaderSearch";
@@ -23,6 +24,8 @@ import SearchFormPicker from "./SearchFormPicker";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
     showSearchResults: () => void;
+    pdfEventBus: IEventBusPdfPlayer<{}>;
+    isPdf: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -63,7 +66,10 @@ class SearchPicker extends React.Component<IProps, IState> {
 
                 // paddingBlock: "20px",
             }}>
-                <SearchFormPicker></SearchFormPicker>
+                <SearchFormPicker
+                    pdfEventBus={this.props.pdfEventBus}
+                    isPdf={this.props.isPdf}
+                ></SearchFormPicker>
                 <button
                     disabled={notFound}
                     onClick={previous}
@@ -140,12 +146,22 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch) => ({
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => ({
     next: () => {
-        dispatch(readerLocalActionSearch.next.build());
+        if (props.isPdf) {
+            console.log("PDF");
+
+            props.pdfEventBus?.dispatch("search-next");
+        } else {
+            dispatch(readerLocalActionSearch.next.build());
+        }
     },
     previous: () => {
-        dispatch(readerLocalActionSearch.previous.build());
+        if (props.isPdf) {
+            props.pdfEventBus?.dispatch("search-previous");
+        } else {
+            dispatch(readerLocalActionSearch.previous.build());
+        }
     },
 });
 

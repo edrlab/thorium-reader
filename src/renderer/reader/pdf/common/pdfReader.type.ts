@@ -21,6 +21,7 @@ export interface IPdfPlayerEvent {
     "search": (searchWord: string) => any;
     "search-next": () => any;
     "search-previous": () => any;
+    "search-wipe": () => any; // search bar closed
     "page-next": () => any;
     "page-previous": () => any;
     "ready": () => any;

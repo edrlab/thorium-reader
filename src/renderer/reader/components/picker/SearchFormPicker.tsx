@@ -19,11 +19,14 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
 import { readerLocalActionSearch } from "../../redux/actions";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
+    pdfEventBus: IEventBusPdfPlayer<{}>;
+    isPdf: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -139,9 +142,13 @@ const mapStateToProps = (state: IReaderRootState) => ({
     textSearch: state.search.textSearch,
 });
 
-const mapDispatchToProps = (dispatch: TDispatch) => ({
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => ({
     searchRequest: (text: string) => {
-        dispatch(readerLocalActionSearch.request.build(text));
+        if (props.isPdf) {
+            props.pdfEventBus?.dispatch("search", text);
+        } else {
+            dispatch(readerLocalActionSearch.request.build(text));
+        }
     },
 });
 

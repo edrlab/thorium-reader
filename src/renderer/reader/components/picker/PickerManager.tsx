@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { isPdfFn } from "readium-desktop/common/isManifestType";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import {
@@ -14,6 +15,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
 import { IPickerState } from "../../redux/state/picker";
@@ -23,6 +25,7 @@ import SearchPicker from "./Search";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
     showSearchResults: () => void;
+    pdfEventBus: IEventBusPdfPlayer<{}>;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -128,7 +131,11 @@ class PickerManager extends React.Component<IProps, IState> {
                     {
 
                         type === "search"
-                            ? <SearchPicker showSearchResults={this.props.showSearchResults}></SearchPicker>
+                            ? <SearchPicker
+                                showSearchResults={this.props.showSearchResults}
+                                pdfEventBus={this.props.pdfEventBus}
+                                isPdf={this.props.isPdf}
+                            ></SearchPicker>
                             : <AnnotationPicker></AnnotationPicker>
                     }
                 </>
@@ -182,17 +189,24 @@ class PickerManager extends React.Component<IProps, IState> {
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
+
+    const isPdf = isPdfFn(state.reader.info.r2Publication);
     return {
+        isPdf,
         picker: state.picker,
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch) => ({
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => ({
     // tslint:disable-next-line: max-line-length
     /* Exported variable 'mapDispatchToProps' has or is using name 'IPayload' from external module "/Users/Pierre/Documents/thorium/src/renderer/reader/redux/actions/picker/picker" but cannot be named.ts(4023) */
     closePicker: (type: IPickerState["type"]) => {
         if (type === "search") {
-            dispatch(readerLocalActionSearch.cancel.build());
+            if ((props as any).isPdf) {
+                props.pdfEventBus?.dispatch("search-wipe");
+            } else {
+                dispatch(readerLocalActionSearch.cancel.build());
+            }
         }
         dispatch(readerLocalActionPicker.manager.build(false));
     },
