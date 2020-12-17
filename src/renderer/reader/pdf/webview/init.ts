@@ -138,6 +138,42 @@ export async function pdfReaderInit(
         eventBus: pdfDistEventBus,
     });
 
+    // https://github.com/mozilla/pdf.js/blob/3c603fb28befaf9befbb4df9c612406f9225f23c/web/app.js#L2787
+    // function webViewerUpdateFindControlState({
+    //     state,
+    //     previous,
+    //     matchesCount,
+    //     rawQuery,
+    // }) {
+    //     if (PDFViewerApplication.supportsIntegratedFind) {
+    //         PDFViewerApplication.externalServices.updateFindControlState({
+    //             result: state,
+    //             findPrevious: previous,
+    //             matchesCount,
+    //             rawQuery,
+    //         });
+    //     } else {
+    //         PDFViewerApplication.findBar.updateUIState(state, previous, matchesCount);
+    //     }
+    // }
+    pdfDistEventBus.on("updatefindmatchescount", ({
+        matchesCount,
+
+    }: any) => {
+        console.log("updatte find matches count", matchesCount);
+    });
+
+    pdfDistEventBus.on("updatefindcontrolstate", ({
+        // tslint:disable-next-line: variable-name
+        state: ___state,
+        previous,
+        matchesCount,
+        rawQuery,
+
+    }: any) => {
+        console.log("updatte find control state", ___state, previous, matchesCount, rawQuery);
+    });
+
     /*
     // https://github.com/mozilla/pdf.js/blob/959dc379ee6b5259e7ce804a25dc19d795c6cafc/web/pdf_find_bar.js#L66
 
@@ -242,7 +278,10 @@ export async function pdfReaderInit(
     const displayScrolledPage = async (pageNumber: number) => {
         console.log("scrolled page number", pageNumber);
 
-        pdfViewer.currentPageNumber = pageNumber;
+        setTimeout(() => {
+
+            pdfViewer.currentPageNumber = pageNumber;
+        }, 0);
     };
 
     const updateDisplayPage = ({ store }: IEVState) => {
