@@ -15,7 +15,7 @@ import { eventBus } from "../common/eventBus";
 import {
     IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView,
 } from "../common/pdfReader.type";
-import { pdfReaderInit } from "./init";
+// import { pdfReaderInit } from "./init";
 import { IStore } from "./store";
 
 export interface IPdfState {
@@ -36,7 +36,7 @@ export interface IEVState {
 
 function main() {
 
-    const rootElement = document.body;
+    // const rootElement = document.body;
 
     const evState: IEVState = {
         store: undefined,
@@ -88,13 +88,13 @@ function main() {
     bus.subscribe("start", () => async (pdfPath: string) => {
 
         console.log("bus.subscribe start pdfPath", pdfPath);
-        const store = await pdfReaderInit(rootElement, pdfPath, bus, {
-            view: defaultView,
-            scale: defaultScale,
-            column: defaultCol,
-        });
+        // const store = await pdfReaderInit(rootElement, pdfPath, bus, {
+        //     view: defaultView,
+        //     scale: defaultScale,
+        //     column: defaultCol,
+        // });
 
-        evState.store = store;
+        // evState.store = store;
 
         bus.subscribe("scale", () => () => console.log("HELLO"));
 

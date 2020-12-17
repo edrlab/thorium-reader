@@ -78,10 +78,11 @@ export function* init() {
 
     /// PDF
 
-    const protocolFromPDFWebview = session.fromPartition("persist:pdfjsreader").protocol;
-    protocolFromPDFWebview.registerBufferProtocol("pdfjs", async (request, callback) => {
+    // const sessionPDFWebview = session.fromPartition("persist:pdfjsreader");
+    // const protocolFromPDFWebview = sessionPDFWebview.protocol;
+    protocol.registerBufferProtocol("pdfjs", async (request, callback) => {
 
-        debug("PDFJS request", request);
+        // debug("PDFJS request", request);
 
         const pdfjsFolder = "assets/lib/pdfjs";
         const url = (new URL(request.url)).pathname; // debug only
@@ -89,16 +90,12 @@ export function* init() {
         debug("PDFJS request this file:", url);
 
         let folderPath: string = path.join(__dirname, pdfjsFolder);
-        try {
-            if (_PACKAGING === "0") {
-                folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
-            }
-        } catch (err) {
-            debug("ERROR", err);
+        if (_PACKAGING === "0") {
+            folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
         }
 
         const pathname = path.normalize(`${folderPath}/${url}`);
-        debug("PDFJS Folder path", pathname);
+        // debug("PDFJS Folder path", pathname);
 
         const buffer = await promisify(readFile)(pathname);
         callback({ data: buffer, mimeType: findMimeTypeWithExtension(path.extname(pathname))});
