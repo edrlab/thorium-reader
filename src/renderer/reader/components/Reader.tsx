@@ -892,10 +892,6 @@ class Reader extends React.Component<IProps, IState> {
         if (this.props.isPdf) {
 
             const publicationViewport = this.mainElRef.current;
-            if (publicationViewport) {
-                // tslint:disable-next-line: max-line-length
-                publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow-y: scroll; overflow-x: scroll;");
-            }
 
             const readingOrder = this.props.r2Publication?.Spine;
             let pdfUrl = this.props.manifestUrlR2Protocol;

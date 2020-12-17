@@ -35,21 +35,6 @@ export async function pdfMountAndReturnBus(
     webview.setAttribute("style",
         "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
 
-    let htmlPath = "index_pdf.html";
-    if (_PACKAGING === "1") {
-        htmlPath = "file://" + path.normalize(path.join((global as any).__dirname, htmlPath));
-    } else {
-        if (_RENDERER_PDF_WEBVIEW_BASE_URL === "file://") {
-            // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-            htmlPath = "file://" +
-                path.normalize(path.join((global as any).__dirname, _DIST_RELATIVE_URL, htmlPath));
-        } else {
-            // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-            htmlPath = "file://" + path.normalize(path.join(process.cwd(), "dist", htmlPath));
-        }
-    }
-    htmlPath = htmlPath.replace(/\\/g, "/");
-
     // tslint:disable-next-line:max-line-length
     // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#3-enable-context-isolation-for-remote-content
     // webview.setAttribute("webpreferences",
@@ -141,11 +126,28 @@ export async function pdfMountAndReturnBus(
         }
     }
     preloadPath = preloadPath.replace(/\\/g, "/");
+    let htmlPath = "index_pdf.html";
+    if (_PACKAGING === "1") {
+        htmlPath = "file://" + path.normalize(path.join((global as any).__dirname, htmlPath));
+    } else {
+        if (_RENDERER_PDF_WEBVIEW_BASE_URL === "file://") {
+            // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+            htmlPath = "file://" +
+                path.normalize(path.join((global as any).__dirname, _DIST_RELATIVE_URL, htmlPath));
+        } else {
+            // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+            htmlPath = "file://" + path.normalize(path.join(process.cwd(), "dist", htmlPath));
+        }
+    }
+    htmlPath = htmlPath.replace(/\\/g, "/");
 
-    webview.setAttribute("preload", preloadPath);
-
-    // webview.src = rendererBaseUrl;
-    webview.setAttribute("src", htmlPath);
+    webview.setAttribute("style",
+        "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
+    webview.setAttribute("partition", "persist:pdfjsreader");
+    webview.setAttribute("src", "pdfjs://local/web/viewer.html");
+    webview.setAttribute("worldSafeExecuteJavaScript", "");
+    webview.setAttribute("webpreferences", "allowRunningInsecureContent");
+    webview.setAttribute("disablewebsecurity", "");
 
     publicationViewport.append(webview);
 

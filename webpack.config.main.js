@@ -157,6 +157,18 @@ let config = Object.assign(
             ]}),
             new CopyWebpackPlugin({ patterns: [
                 {
+                    from: path.join(
+                        __dirname,
+                        "src",
+                        "resources",
+                        "lib",
+                        "pdfjs",
+                    ),
+                    to: "assets/lib/pdfjs",
+                },
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
+                {
                     from: path.join(__dirname, "external-assets"),
                     to: "external-assets",
                 },
