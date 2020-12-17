@@ -69,7 +69,7 @@ import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
-import { pdfMountWebview } from "../pdf/driver";
+import { pdfMountAndReturnBus } from "../pdf/driver";
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
@@ -115,7 +115,7 @@ interface IState {
     divinaReadingModeSupported: TdivinaReadingMode[];
     divinaNumberOfPages: number;
 
-    pdfPlayerBusEvent: IEventBusPdfPlayer;
+    pdfPlayerBusEvent: IEventBusPdfPlayer<{}>;
     pdfPlayerToc: TToc;
 
     openedSectionSettings: number | undefined;
@@ -254,8 +254,8 @@ class Reader extends React.Component<IProps, IState> {
 
             if (this.state.pdfPlayerBusEvent) {
 
-                this.state.pdfPlayerBusEvent.subscribe("page",
-                    (pageIndex: number) => {
+                this.state.pdfPlayerBusEvent.subscribe("page", () =>
+                    (pageIndex) => {
                         const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
                         const loc = {
                             locator: {
@@ -272,7 +272,10 @@ class Reader extends React.Component<IProps, IState> {
 
                 const index = parseInt(this.props.locator?.locator?.href, 10) || 1;
                 console.log("pdf page index", index);
-                this.state.pdfPlayerBusEvent.dispatch("page", index);
+
+                this.state.pdfPlayerBusEvent.subscribe("ready", () => () => {
+                    this.state.pdfPlayerBusEvent.dispatch("page", index);
+                });
 
             } else {
                 console.log("pdf bus event undefined");
@@ -340,11 +343,6 @@ class Reader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
-
-        if (oldState.pdfPlayerBusEvent !== this.state.pdfPlayerBusEvent) {
-            this.state.pdfPlayerBusEvent.dispatch("ready");
-        }
-
     }
 
     public componentWillUnmount() {
@@ -919,60 +917,61 @@ class Reader extends React.Component<IProps, IState> {
                         .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
                 };
 
-            const [pdfPlayerBusEvent, pdfPlayerToc] = await pdfMountWebview(
+            const pdfPlayerBusEvent = await pdfMountAndReturnBus(
                 pdfUrl,
                 publicationViewport,
-                clipboardInterceptor);
+            );
 
             this.setState({
-                pdfPlayerToc,
                 pdfPlayerBusEvent,
             });
+            pdfPlayerBusEvent.subscribe("copy", () => (txt) => clipboardInterceptor({ txt, locator: undefined }));
+            pdfPlayerBusEvent.subscribe("toc", () => (toc) => this.setState({pdfPlayerToc: toc}));
 
             console.log("toc", this.state.pdfPlayerToc);
 
-            this.state.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
+            // this.state.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
 
-                console.log("pdfPlayer page changed", pageNumber);
-            });
+            //     console.log("pdfPlayer page changed", pageNumber);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("scale", (scale) => {
+            // this.state.pdfPlayerBusEvent.subscribe("scale", (scale) => {
 
-                console.log("pdfPlayer scale changed", scale);
-            });
+            //     console.log("pdfPlayer scale changed", scale);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("view", (view) => {
+            // this.state.pdfPlayerBusEvent.subscribe("view", (view) => {
 
-                console.log("pdfPlayer view changed", view);
-            });
+            //     console.log("pdfPlayer view changed", view);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("column", (column) => {
+            // this.state.pdfPlayerBusEvent.subscribe("column", (column) => {
 
-                console.log("pdfPlayer column changed", column);
-            });
+            //     console.log("pdfPlayer column changed", column);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("search", (search) => {
+            // this.state.pdfPlayerBusEvent.subscribe("search", (search) => {
 
-                console.log("pdfPlayer search word changed", search);
-            });
+            //     console.log("pdfPlayer search word changed", search);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("search-next", () => {
+            // this.state.pdfPlayerBusEvent.subscribe("search-next", () => {
 
-                console.log("pdfPlayer highlight next search word executed");
-            });
+            //     console.log("pdfPlayer highlight next search word executed");
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("search-previous", () => {
+            // this.state.pdfPlayerBusEvent.subscribe("search-previous", () => {
 
-                console.log("pdfPlayer highlight previous search word executed");
-            });
+            //     console.log("pdfPlayer highlight previous search word executed");
+            // });
 
-            /* master subscribe */
-            this.state.pdfPlayerBusEvent.subscribe("page-next", () => {
-                console.log("pdfPlayer next page requested");
-            });
-            this.state.pdfPlayerBusEvent.subscribe("page-previous", () => {
-                console.log("pdfPlayer previous page requested");
-            });
+            // /* master subscribe */
+            // this.state.pdfPlayerBusEvent.subscribe("page-next", () => {
+            //     console.log("pdfPlayer next page requested");
+            // });
+            // this.state.pdfPlayerBusEvent.subscribe("page-previous", () => {
+            //     console.log("pdfPlayer previous page requested");
+            // });
 
         } else if (this.props.isDivina) {
 

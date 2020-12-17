@@ -8,22 +8,28 @@
 import { remote, shell, WillNavigateEvent } from "electron";
 import * as path from "path";
 import {
+    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "r2-navigator-js/dist/es6-es2015/src/electron/common/sessions";
+import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import { keyDownEventHandler, keyUpEventHandler } from "readium-desktop/renderer/common/keyboard";
 
-import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
-
 import { eventBus } from "./common/eventBus";
-import { IEventBusPdfPlayer, TToc } from "./common/pdfReader.type";
+import { IEventBusPdfPlayer } from "./common/pdfReader.type";
 
 // bridge between webview tx-rx communication and reader.tsx
 
-export async function pdfMountWebview(
+export async function pdfMountAndReturnBus(
     pdfPath: string,
     publicationViewport: HTMLDivElement,
-    clipboardInterceptor: (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => void,
-): Promise<[bus: IEventBusPdfPlayer, toc: TToc | undefined]> {
+): Promise<IEventBusPdfPlayer<{}>> {
+
+    if (pdfPath.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)) {
+        pdfPath = convertCustomSchemeToHttpUrl(pdfPath);
+    }
+
+    console.log("pdfPath ADJUSTED", pdfPath);
 
     const webview = document.createElement("webview");
     webview.setAttribute("style",
@@ -70,60 +76,9 @@ export async function pdfMountWebview(
         console.log("pdf-webview", e.message);
     });
 
-    webview.addEventListener("dom-ready", () => {
-        // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webcontents
+    webview.addEventListener("dom-ready", webviewDomReadyDebugger);
 
-        webview.clearHistory();
-
-        if (IS_DEV) {
-            const wc = remote.webContents.fromId(webview.getWebContentsId());
-            // const wc = wv.getWebContents();
-
-            wc.on("context-menu", (_ev, params) => {
-                const { x, y } = params;
-                const openDevToolsAndInspect = () => {
-                    const devToolsOpened = () => {
-                        wc.off("devtools-opened", devToolsOpened);
-                        wc.inspectElement(x, y);
-
-                        setTimeout(() => {
-                            if (wc.devToolsWebContents && wc.isDevToolsOpened()) {
-                                wc.devToolsWebContents.focus();
-                            }
-                        }, 500);
-                    };
-                    wc.on("devtools-opened", devToolsOpened);
-                    wc.openDevTools({ activate: true, mode: "detach" });
-                };
-                remote.Menu.buildFromTemplate([{
-                    click: () => {
-                        const wasOpened = wc.isDevToolsOpened();
-                        if (!wasOpened) {
-                            openDevToolsAndInspect();
-                        } else {
-                            if (!wc.isDevToolsFocused()) {
-                                // wc.toggleDevTools();
-                                wc.closeDevTools();
-
-                                setImmediate(() => {
-                                    openDevToolsAndInspect();
-                                });
-                            } else {
-                                // right-click context menu normally occurs when focus
-                                // is in BrowserWindow / WebView's WebContents,
-                                // but some platforms (e.g. MacOS) allow mouse interaction
-                                // when the window is in the background.
-                                wc.inspectElement(x, y);
-                            }
-                        }
-                    },
-                    label: "Inspect element",
-                }]).popup({ window: remote.getCurrentWindow() });
-            });
-        }
-    });
-
-    const bus: IEventBusPdfPlayer = eventBus(
+    const bus: IEventBusPdfPlayer<{}> = eventBus(
         (key, ...a) => {
             const data = {
                 key: JSON.stringify(key),
@@ -156,13 +111,13 @@ export async function pdfMountWebview(
                 }
             });
         },
+        {}, // no global state
     );
 
-    bus.subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
-    bus.subscribe("keydown", (payload) => {
+    bus.subscribe("keydown", () => (payload) => {
         keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
     });
-    bus.subscribe("keyup", (payload) => {
+    bus.subscribe("keyup", () => (payload) => {
         keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
     });
 
@@ -194,15 +149,60 @@ export async function pdfMountWebview(
 
     publicationViewport.append(webview);
 
-    const toc = await Promise.race([
-        new Promise<void>((_r, reject) => setTimeout(() => reject("TIMEOUT"), 50000)),
-        new Promise<TToc>((resolve) => bus.subscribe("ready", (t) => resolve(t))),
-    ]);
-
-    if (Array.isArray(toc)) {
-        return [bus, toc];
-    }
-
-    return [bus, undefined];
-
+    return bus;
 }
+
+const webviewDomReadyDebugger = (ev: Electron.Event) => {
+    // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webcontents
+
+    const webview = ev.target as Electron.WebviewTag;
+
+    webview.clearHistory();
+
+    if (IS_DEV) {
+        const wc = remote.webContents.fromId(webview.getWebContentsId());
+        // const wc = wv.getWebContents();
+
+        wc.on("context-menu", (_ev, params) => {
+            const { x, y } = params;
+            const openDevToolsAndInspect = () => {
+                const devToolsOpened = () => {
+                    wc.off("devtools-opened", devToolsOpened);
+                    wc.inspectElement(x, y);
+
+                    setTimeout(() => {
+                        if (wc.devToolsWebContents && wc.isDevToolsOpened()) {
+                            wc.devToolsWebContents.focus();
+                        }
+                    }, 500);
+                };
+                wc.on("devtools-opened", devToolsOpened);
+                wc.openDevTools({ activate: true, mode: "detach" });
+            };
+            remote.Menu.buildFromTemplate([{
+                click: () => {
+                    const wasOpened = wc.isDevToolsOpened();
+                    if (!wasOpened) {
+                        openDevToolsAndInspect();
+                    } else {
+                        if (!wc.isDevToolsFocused()) {
+                            // wc.toggleDevTools();
+                            wc.closeDevTools();
+
+                            setImmediate(() => {
+                                openDevToolsAndInspect();
+                            });
+                        } else {
+                            // right-click context menu normally occurs when focus
+                            // is in BrowserWindow / WebView's WebContents,
+                            // but some platforms (e.g. MacOS) allow mouse interaction
+                            // when the window is in the background.
+                            wc.inspectElement(x, y);
+                        }
+                    }
+                },
+                label: "Inspect element",
+            }]).popup({ window: remote.getCurrentWindow() });
+        });
+    }
+};

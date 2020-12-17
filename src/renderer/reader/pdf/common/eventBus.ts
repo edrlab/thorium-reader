@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 
 const debug = debug_("readium-desktop:utils/eventBus");
 
-type TCallBack<Param = any, Ret = any> = (...a: Param[]) => Ret;
+type TCallBack<Param = any, Ret = any, State = any> = (a: State) => (...b: Param[]) => Ret;
 
 export interface IEventBus {
     subscribe: (key: any, fn: TCallBack) => void;
@@ -22,9 +22,10 @@ interface IEventObj {
     [key: string]: Set<TCallBack>;
 }
 
-export function eventBus(
+export function eventBus<TState = {}>(
     tx: (key: any, ...a: any[]) => any,
     rx: (ev: (key: any, ...a: any) => any) => any,
+    state: TState,
 ): IEventBus {
 
     const event: IEventObj = {};
@@ -35,7 +36,7 @@ export function eventBus(
             const fns = event[key];
             fns.forEach((fn) => {
                 try {
-                    fn(...arg);
+                    fn(state)(...arg);
                 } catch (e) {
                     debug(e);
                 }
@@ -44,16 +45,7 @@ export function eventBus(
     });
 
     const subscribe = <TKey extends string, TFn extends TCallBack>(key: TKey, fn: TFn) => {
-        if (event[key]) {
-            const set = event[key];
-            set.add(fn);
-
-        } else {
-            const set = new Set<TCallBack>();
-            set.add(fn);
-            event[key] = set;
-
-        }
+        event[key] = (event[key] || new Set<TCallBack>()).add(fn);
     };
 
     const dispatch = tx;
