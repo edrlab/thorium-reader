@@ -23,7 +23,7 @@ import { IEventBusPdfPlayer } from "./common/pdfReader.type";
 export async function pdfMountAndReturnBus(
     pdfPath: string,
     publicationViewport: HTMLDivElement,
-): Promise<IEventBusPdfPlayer<{}>> {
+): Promise<IEventBusPdfPlayer> {
 
     if (pdfPath.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)) {
         pdfPath = convertCustomSchemeToHttpUrl(pdfPath);
@@ -63,7 +63,7 @@ export async function pdfMountAndReturnBus(
 
     webview.addEventListener("dom-ready", webviewDomReadyDebugger);
 
-    const bus: IEventBusPdfPlayer<{}> = eventBus(
+    const bus: IEventBusPdfPlayer = eventBus(
         (key, ...a) => {
             const data = {
                 key: JSON.stringify(key),
@@ -96,13 +96,12 @@ export async function pdfMountAndReturnBus(
                 }
             });
         },
-        {}, // no global state
     );
 
-    bus.subscribe("keydown", () => (payload) => {
+    bus.subscribe("keydown", (payload) => {
         keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
     });
-    bus.subscribe("keyup", () => (payload) => {
+    bus.subscribe("keyup", (payload) => {
         keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
     });
 

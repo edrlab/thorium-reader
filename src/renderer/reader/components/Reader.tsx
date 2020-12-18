@@ -115,7 +115,7 @@ interface IState {
     divinaReadingModeSupported: TdivinaReadingMode[];
     divinaNumberOfPages: number;
 
-    pdfPlayerBusEvent: IEventBusPdfPlayer<{}>;
+    pdfPlayerBusEvent: IEventBusPdfPlayer;
     pdfPlayerToc: TToc;
 
     openedSectionSettings: number | undefined;
@@ -254,7 +254,7 @@ class Reader extends React.Component<IProps, IState> {
 
             if (this.state.pdfPlayerBusEvent) {
 
-                this.state.pdfPlayerBusEvent.subscribe("page", () =>
+                this.state.pdfPlayerBusEvent.subscribe("page",
                     (pageIndex) => {
                         const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
                         const loc = {
@@ -273,7 +273,7 @@ class Reader extends React.Component<IProps, IState> {
                 const index = parseInt(this.props.locator?.locator?.href, 10) || 1;
                 console.log("pdf page index", index);
 
-                this.state.pdfPlayerBusEvent.subscribe("ready", () => () => {
+                this.state.pdfPlayerBusEvent.subscribe("ready", () => {
                     this.state.pdfPlayerBusEvent.dispatch("page", index);
                 });
 
@@ -454,7 +454,10 @@ class Reader extends React.Component<IProps, IState> {
                     />
                     <div className={classNames(styles.content_root,
                         this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
-                        <PickerManager showSearchResults={this.showSearchResults}></PickerManager>
+                        <PickerManager
+                            showSearchResults={this.showSearchResults}
+                            pdfEventBus={this.state.pdfPlayerBusEvent}
+                        ></PickerManager>
                         <div className={styles.reader}>
                             <main
                                 id="main"
@@ -921,8 +924,8 @@ class Reader extends React.Component<IProps, IState> {
             this.setState({
                 pdfPlayerBusEvent,
             });
-            pdfPlayerBusEvent.subscribe("copy", () => (txt) => clipboardInterceptor({ txt, locator: undefined }));
-            pdfPlayerBusEvent.subscribe("toc", () => (toc) => this.setState({pdfPlayerToc: toc}));
+            pdfPlayerBusEvent.subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
+            pdfPlayerBusEvent.subscribe("toc", (toc) => this.setState({pdfPlayerToc: toc}));
 
             console.log("toc", this.state.pdfPlayerToc);
 

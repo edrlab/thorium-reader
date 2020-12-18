@@ -21,6 +21,7 @@ export interface IPdfPlayerEvent {
     "search": (searchWord: string) => any;
     "search-next": () => any;
     "search-previous": () => any;
+    "search-wipe": () => any; // search bar closed
     "page-next": () => any;
     "page-previous": () => any;
     "ready": () => any;
@@ -31,9 +32,9 @@ export interface IPdfPlayerEvent {
     "toc": (event: TToc) => any;
 }
 
-export interface IEventBusPdfPlayer<TState> extends IEventBus {
+export interface IEventBusPdfPlayer extends IEventBus {
 
-    subscribe: <TKey extends keyof IPdfPlayerEvent, TFn extends (a: TState) => IPdfPlayerEvent[TKey]>
+    subscribe: <TKey extends keyof IPdfPlayerEvent, TFn extends IPdfPlayerEvent[TKey]>
         (key: TKey, fn: TFn) => void;
     dispatch: <TKey extends keyof IPdfPlayerEvent>(key: TKey, ...arg: Parameters<IPdfPlayerEvent[TKey]>) => void;
     remove: <TKey extends keyof IPdfPlayerEvent>(fn: IPdfPlayerEvent[TKey], key?: TKey) => void;

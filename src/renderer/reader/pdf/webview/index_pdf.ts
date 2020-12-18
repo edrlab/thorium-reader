@@ -30,12 +30,7 @@ export interface IPdfState {
 }
 
 export type IPdfStore = IStore<IPdfState>;
-export type IPdfBus = IEventBusPdfPlayer<IEVState>;
-
-export interface IEVState {
-    store: IPdfStore | undefined;
-    bus: IEventBusPdfPlayer<IEVState> | undefined;
-}
+export type IPdfBus = IEventBusPdfPlayer;
 
 const pdfjsEventBus = new EventBus();
 pdfjsEventBus.onAll((key: any) => (...arg: any[]) => console.log("PDFJS EVENTBUS", key, ...arg));
@@ -48,14 +43,7 @@ const pdfDocument = new Promise<PDFDocumentProxy>((resolve) =>
 
 function main() {
 
-    // const rootElement = document.body;
-
-    const evState: IEVState = {
-        store: undefined,
-        bus: undefined,
-    };
-
-    const bus: IPdfBus = eventBus<IEVState>(
+    const bus: IPdfBus = eventBus(
         (key, ...a) => {
             const data = {
                 key: JSON.stringify(key),
@@ -82,22 +70,14 @@ function main() {
 
             });
         },
-        evState,
     );
-
-    evState.bus = bus;
 
     const defaultView: IPdfPlayerView = "paginated";
     const defaultScale: IPdfPlayerScale = "fit";
     const defaultCol: IPdfPlayerColumn = "1";
 
-    // ready dispatched from Reader.tsx when bus loaded
-    // bus.subscribe("ready", () => () => {
-
-    // });
-
     // start dispatched from webview dom ready
-    bus.subscribe("start", () => async (pdfPath: string) => {
+    bus.subscribe("start", async (pdfPath: string) => {
 
         pdfDocument.then(async (pdf) => {
 
@@ -119,8 +99,6 @@ function main() {
         // });
 
         // evState.store = store;
-
-        bus.subscribe("scale", () => () => console.log("HELLO"));
 
         bus.dispatch("scale", defaultScale);
         bus.dispatch("view", defaultView);
