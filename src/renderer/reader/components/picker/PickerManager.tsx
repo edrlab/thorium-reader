@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { isPdfFn } from "readium-desktop/common/isManifestType";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import {
@@ -26,6 +25,7 @@ import SearchPicker from "./Search";
 interface IBaseProps {
     showSearchResults: () => void;
     pdfEventBus: IEventBusPdfPlayer;
+    isPdf: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -189,9 +189,7 @@ class PickerManager extends React.Component<IProps, IState> {
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
-    const isPdf = isPdfFn(state.reader.info.r2Publication);
     return {
-        isPdf,
         picker: state.picker,
     };
 };
@@ -200,11 +198,11 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => ({
     // tslint:disable-next-line: max-line-length
     /* Exported variable 'mapDispatchToProps' has or is using name 'IPayload' from external module "/Users/Pierre/Documents/thorium/src/renderer/reader/redux/actions/picker/picker" but cannot be named.ts(4023) */
     closePicker: (type: IPickerState["type"]) => {
+        console.log("closepicker", type, props);
         if (type === "search") {
-            if ((props as any).isPdf) {
+            dispatch(readerLocalActionSearch.cancel.build());
+            if (props.isPdf) {
                 props.pdfEventBus?.dispatch("search-wipe");
-            } else {
-                dispatch(readerLocalActionSearch.cancel.build());
             }
         }
         dispatch(readerLocalActionPicker.manager.build(false));

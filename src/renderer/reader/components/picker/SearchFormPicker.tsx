@@ -27,6 +27,7 @@ import { readerLocalActionSearch } from "../../redux/actions";
 interface IBaseProps extends TranslatorProps {
     pdfEventBus: IEventBusPdfPlayer;
     isPdf: boolean;
+    reset: () => void;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -132,6 +133,8 @@ class SearchFormPicker extends React.Component<IProps, IState> {
 
     private search(e: TFormEvent) {
         e.preventDefault();
+
+        this.props.reset();
 
         this.props.searchRequest(this.state.inputValue);
     }

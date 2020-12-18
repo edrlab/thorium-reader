@@ -457,6 +457,7 @@ class Reader extends React.Component<IProps, IState> {
                         <PickerManager
                             showSearchResults={this.showSearchResults}
                             pdfEventBus={this.state.pdfPlayerBusEvent}
+                            isPdf={this.props.isPdf}
                         ></PickerManager>
                         <div className={styles.reader}>
                             <main

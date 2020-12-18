@@ -41,21 +41,57 @@ interface IProps extends IBaseProps,
 
 // tslint:disable-next-line: no-empty-interface
 interface IState {
+    foundNumber: number;
+    notFound: boolean;
+    load: boolean;
 }
 
 class SearchPicker extends React.Component<IProps, IState> {
 
     private loadSeq: number;
 
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            foundNumber: 0,
+            notFound: false,
+            load: false,
+        };
+    }
+
+    public componentDidMount() {
+
+        this.props.pdfEventBus.subscribe("search-found", this.setFoundNumber);
+    }
+
+    public componentDidUpdate(oldProps: IProps) {
+
+        if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
+
+            this.props.pdfEventBus.subscribe("search-found", this.setFoundNumber);
+        }
+    }
+
+    public componentWillUnmount() {
+
+        if (this.props.pdfEventBus) {
+            this.props.pdfEventBus.remove(this.setFoundNumber, "search-found");
+        }
+    }
     public render() {
 
-        const { load, notFound, next, previous, __ } = this.props;
+        const { next, previous, __ } = this.props;
 
-        const found = this.props.foundNumber === 0 ?
+        const { notFound, foundNumber, load } = this.props.isPdf
+            ? this.state
+            : this.props;
+
+        const found = foundNumber === 0 ?
             __("reader.picker.search.notFound") :
-            __("reader.picker.search.founds", {nResults: this.props.foundNumber});
+            __("reader.picker.search.founds", {nResults: foundNumber});
 
-        this.loadSeq = (this.loadSeq || 0) + 1;
+        this.loadSeq = this.props.isPdf ? 999 : (this.loadSeq || 0) + 1;
 
         return (
             <div style={{
@@ -69,6 +105,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                 <SearchFormPicker
                     pdfEventBus={this.props.pdfEventBus}
                     isPdf={this.props.isPdf}
+                    reset={() => this.setState({foundNumber: 0, notFound: true})}
                 ></SearchFormPicker>
                 <button
                     disabled={notFound}
@@ -132,6 +169,11 @@ class SearchPicker extends React.Component<IProps, IState> {
             </div>
         );
 
+    }
+
+    private setFoundNumber = (foundNumber: number) => {
+
+        this.setState({foundNumber, notFound: !foundNumber});
     }
 
 }

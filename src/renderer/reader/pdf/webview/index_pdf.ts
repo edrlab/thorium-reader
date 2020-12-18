@@ -139,6 +139,9 @@ function main() {
         bus.subscribe("search-wipe", () => {
             pdfjsEventBus.dispatch("findbarclose", { source: null });
         });
+        pdfjsEventBus.on("updatefindmatchescount", ({ matchesCount: { total = 0 /* current */ } }: any) => {
+            bus.dispatch("search-found", total);
+        });
     }
 
     window.document.body.addEventListener("copy", (evt: ClipboardEvent) => {

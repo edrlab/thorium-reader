@@ -83,9 +83,9 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
 
-            this.props.pdfEventBus.subscribe("scale", () => this.setScale);
-            this.props.pdfEventBus.subscribe("view", () => this.setView);
-            this.props.pdfEventBus.subscribe("column", () => this.setCol);
+            this.props.pdfEventBus.subscribe("scale", this.setScale);
+            this.props.pdfEventBus.subscribe("view", this.setView);
+            this.props.pdfEventBus.subscribe("column", this.setCol);
         }
     }
 
