@@ -67,7 +67,7 @@ function getViewerConfiguration() {
     appContainer: document.body,
     mainContainer: document.getElementById("viewerContainer"),
     viewerContainer: document.getElementById("viewer"),
-    eventBus: null,
+    eventBus: window.pdfjsEventBus,
     toolbar: {
       container: document.getElementById("toolbarViewer"),
       numPages: document.getElementById("numPages"),
@@ -1469,6 +1469,7 @@ const PDFViewerApplication = {
   },
 
   load(pdfDocument) {
+    this.eventBus.dispatch("__pdfdocument", pdfDocument);
     this.pdfDocument = pdfDocument;
     pdfDocument.getDownloadInfo().then(() => {
       this.downloadComplete = true;
@@ -14340,7 +14341,7 @@ _app.PDFPrintServiceFactory.instance = {
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -14353,14 +14354,14 @@ _app.PDFPrintServiceFactory.instance = {
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	// startup
 /******/ 	// Load entry module

@@ -6,6 +6,7 @@
 // ==LICENSE-END
 
 import { ipcRenderer } from "electron";
+import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 
 import {
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP,
@@ -15,8 +16,10 @@ import { eventBus } from "../common/eventBus";
 import {
     IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView,
 } from "../common/pdfReader.type";
+import { EventBus } from "./pdfEventBus";
 // import { pdfReaderInit } from "./init";
 import { IStore } from "./store";
+import { getToc } from "./toc";
 
 export interface IPdfState {
     view: IPdfPlayerView;
@@ -33,6 +36,15 @@ export interface IEVState {
     store: IPdfStore | undefined;
     bus: IEventBusPdfPlayer<IEVState> | undefined;
 }
+
+const pdfjsEventBus = new EventBus();
+pdfjsEventBus.onAll((key: any) => (...arg: any[]) => console.log("PDFJS EVENTBUS", key, ...arg));
+(window as any).pdfjsEventBus = pdfjsEventBus;
+
+const pdfDocument = new Promise<PDFDocumentProxy>((resolve) =>
+    pdfjsEventBus.on("__pdfdocument", (_pdfDocument: PDFDocumentProxy) => {
+        resolve(_pdfDocument);
+    }));
 
 function main() {
 
@@ -86,6 +98,18 @@ function main() {
 
     // start dispatched from webview dom ready
     bus.subscribe("start", () => async (pdfPath: string) => {
+
+        pdfDocument.then(async (pdf) => {
+
+            console.log("PDFDOC LOADED");
+
+            const toc = await getToc(pdf);
+
+            console.log("TOC");
+            console.log(toc);
+
+            bus.dispatch("toc", toc);
+        }).catch((e) => console.error(e));
 
         console.log("bus.subscribe start pdfPath", pdfPath);
         // const store = await pdfReaderInit(rootElement, pdfPath, bus, {
