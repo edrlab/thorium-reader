@@ -9,7 +9,7 @@ import { IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_
 import { IEventBus } from "./eventBus";
 
 // export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "150" | "200" | "300" | "500";
-export type IPdfPlayerScale = "fit" | "width" | number;
+export type IPdfPlayerScale = "page-fit" | "page-width" | number;
 export type IPdfPlayerView = "scrolled" | "paginated";
 export type IPdfPlayerColumn = "auto" | "1" | "2";
 
