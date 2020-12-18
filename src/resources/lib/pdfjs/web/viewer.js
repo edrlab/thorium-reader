@@ -715,6 +715,7 @@ const PDFViewerApplication = {
     });
 
     this._initializedCapability.resolve();
+    this.eventBus.dispatch("__ready");
   },
 
   async _readPreferences() {
@@ -2263,9 +2264,9 @@ const PDFViewerApplication = {
       eventBus._on("pagechanging", _boundEvents.reportPageStatsPDFBug);
     }
 
-    eventBus._on("fileinputchange", webViewerFileInputChange);
+    // eventBus._on("fileinputchange", webViewerFileInputChange);
 
-    eventBus._on("openfile", webViewerOpenFile);
+    // eventBus._on("openfile", webViewerOpenFile);
   },
 
   bindWindowEvents() {
@@ -2405,9 +2406,9 @@ const PDFViewerApplication = {
       _boundEvents.reportPageStatsPDFBug = null;
     }
 
-    eventBus._off("fileinputchange", webViewerFileInputChange);
+    // eventBus._off("fileinputchange", webViewerFileInputChange);
 
-    eventBus._off("openfile", webViewerOpenFile);
+    // eventBus._off("openfile", webViewerOpenFile);
 
     _boundEvents.beforePrint = null;
     _boundEvents.afterPrint = null;

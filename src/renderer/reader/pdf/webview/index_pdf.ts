@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
+import { debounce } from "debounce";
 import { ipcRenderer } from "electron";
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 
@@ -89,6 +90,7 @@ function main() {
             console.log(toc);
 
             bus.dispatch("toc", toc);
+
         }).catch((e) => console.error(e));
 
         console.log("bus.subscribe start pdfPath", pdfPath);
@@ -105,8 +107,14 @@ function main() {
         bus.dispatch("column", defaultCol);
 
         // send to reader.tsx ready to render pdf
-        bus.dispatch("ready");
     });
+
+    {
+        pdfjsEventBus.on("__ready", () => {
+
+            bus.dispatch("ready");
+        });
+    }
 
     // search
     {
@@ -142,6 +150,44 @@ function main() {
         pdfjsEventBus.on("updatefindmatchescount", ({ matchesCount: { total = 0 /* current */ } }: any) => {
             bus.dispatch("search-found", total);
         });
+    }
+
+    const p = new Promise<void>((resolve) => pdfjsEventBus.on("documentloaded", resolve));
+
+    // pagechange
+    {
+        bus.subscribe("page", (pageNumber) => {
+            console.log("pageNumber from host", pageNumber);
+
+            // tslint:disable-next-line: no-floating-promises
+            p.then(() => {
+
+                pdfjsEventBus.dispatch("pagenumberchanged", {
+                    source: null,
+                    value: pageNumber.toString(),
+                });
+            });
+        });
+        const debounceUpdateviewarea = debounce(async (evt: any) => {
+            try {
+                const { location: { pageNumber } } = evt;
+                console.log("pageNumber", pageNumber);
+                bus.dispatch("page", pageNumber);
+            } catch (e) {
+                console.log("updateviewarea ERROR", e);
+            }
+        }, 500);
+        pdfjsEventBus.on("updateviewarea", async (evt: any) => {
+            await debounceUpdateviewarea(evt);
+        });
+
+        bus.subscribe("page-next", () => {
+            pdfjsEventBus.dispatch("nextpage");
+        });
+        bus.subscribe("page-previous", () => {
+            pdfjsEventBus.dispatch("previouspage");
+        });
+
     }
 
     window.document.body.addEventListener("copy", (evt: ClipboardEvent) => {
