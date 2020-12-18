@@ -419,12 +419,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     // ignore
                 }
             } else if (this.props.isPdf) {
-                try {
-                    const p = parseInt(currentPage, 10);
-                    currentPage = p.toString();
-                } catch (e) {
-                    // ignore
-                }
+                currentPage = currentPage;
             }
         }
 
@@ -486,20 +481,18 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     // ignore error
                 }
             } else if (this.props.isPdf) {
-                try {
-                    page = parseInt(pageNbr, 10);
-                } catch (e) {
-                    // ignore error
-                }
+                //
             }
-            if (typeof page !== "undefined" && page >= 0 &&
-                ((this.props.r2Publication.Spine && this.props.r2Publication.Spine[page]) || this.props.isPdf)) {
+            if (this.props.isPdf ||
+                (typeof page !== "undefined" && page >= 0 &&
+                    this.props.r2Publication.Spine && this.props.r2Publication.Spine[page])
+            ) {
 
-                this.setState({pageError: false});
+                this.setState({ pageError: false });
 
                 // this.props.handleLinkClick(undefined, pageNbr);
                 const loc = {
-                    href: page.toString(),
+                    href: (page || pageNbr).toString(),
                     // progression generate in divina pagechange event
                 };
                 this.props.handleBookmarkClick(loc as any);

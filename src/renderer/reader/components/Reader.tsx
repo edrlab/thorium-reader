@@ -256,25 +256,26 @@ class Reader extends React.Component<IProps, IState> {
 
                 this.state.pdfPlayerBusEvent.subscribe("page",
                     (pageIndex) => {
-                        const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
+                        // const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
                         const loc = {
                             locator: {
                                 href: pageIndex.toString(),
                                 locations: {
                                     position: pageIndex,
-                                    progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
+                                    // progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
+                                    progression: 0,
                                 },
                             },
                         };
                         console.log("pdf pageChange", pageIndex);
-                        this.handleReadingLocationChange(loc as LocatorExtended);
+                        this.handleReadingLocationChange(loc as unknown as LocatorExtended);
                     });
 
-                const index = parseInt(this.props.locator?.locator?.href, 10) || 1;
-                console.log("pdf page index", index);
+                const page = this.props.locator?.locator?.href || "";
+                console.log("pdf page index", page);
 
                 this.state.pdfPlayerBusEvent.subscribe("ready", () => {
-                    this.state.pdfPlayerBusEvent.dispatch("page", index);
+                    this.state.pdfPlayerBusEvent.dispatch("page", page);
                 });
 
             } else {
@@ -1222,7 +1223,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
 
-            const index = parseInt(locator?.href, 10);
+            const index = locator?.href || "";
             if (index) {
                 this.state.pdfPlayerBusEvent?.dispatch("page", index);
             }
@@ -1251,7 +1252,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
 
-            const index = parseInt(url, 10);
+            const index = url;
             if (index) {
                 this.state.pdfPlayerBusEvent?.dispatch("page", index);
             }
