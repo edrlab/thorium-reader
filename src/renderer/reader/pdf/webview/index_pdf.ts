@@ -94,24 +94,17 @@ function main() {
         }).catch((e) => console.error(e));
 
         console.log("bus.subscribe start pdfPath", pdfPath);
-        // const store = await pdfReaderInit(rootElement, pdfPath, bus, {
-        //     view: defaultView,
-        //     scale: defaultScale,
-        //     column: defaultCol,
-        // });
-
-        // evState.store = store;
 
         bus.dispatch("scale", defaultScale);
         bus.dispatch("view", defaultView);
         bus.dispatch("column", defaultCol);
 
-        // send to reader.tsx ready to render pdf
     });
 
     {
         pdfjsEventBus.on("__ready", () => {
 
+            // send to reader.tsx ready to render pdf
             bus.dispatch("ready");
         });
     }
@@ -188,6 +181,31 @@ function main() {
             pdfjsEventBus.dispatch("previouspage");
         });
 
+    }
+    // spreadmode
+    {
+        bus.subscribe("column", (col) => {
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : parseInt(col, 10) });
+            bus.dispatch("column", col);
+        });
+    }
+    // view
+    {
+        bus.subscribe("view", (view) => {
+            if (view === "paginated") {
+                //
+            } else if (view === "scrolled") {
+                //
+            }
+            bus.dispatch("view", view);
+        });
+    }
+    // scale
+    {
+        bus.subscribe("scale", (scale) => {
+            pdfjsEventBus.dispatch("scalechanged", {value: typeof scale === "number" ? `${scale / 100}` : scale});
+            bus.dispatch("scale", scale);
+        });
     }
 
     window.document.body.addEventListener("copy", (evt: ClipboardEvent) => {
