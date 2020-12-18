@@ -28,7 +28,8 @@ export function destForPageIndexParse(destRaw: any | any[]): TdestForPageIndex |
     return destForPageIndex;
 }
 
-export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy): Promise<ILink> {
+// tslint:disable-next-line: max-line-length
+export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy, pageLabels: string[]): Promise<ILink> {
 
     const link: ILink = {};
 
@@ -49,8 +50,8 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentPr
         if (destForPageIndex) {
             // tslint:disable-next-line: max-line-length
             const page = (await pdf.getPageIndex(destForPageIndex) as unknown as number); // type error should return a number zero based
-            const pageOffset = page + 1;
-            link.Href = pageOffset.toString();
+            const label = pageLabels[page];
+            link.Href = label;
         }
 
     }
@@ -59,7 +60,7 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentPr
 
     if (Array.isArray(outline.items)) {
 
-        const itemsPromise = outline.items.map(async (item) => tocOutlineItemToLink(item, pdf));
+        const itemsPromise = outline.items.map(async (item) => tocOutlineItemToLink(item, pdf, pageLabels));
         link.Children = await Promise.all(itemsPromise);
     }
 
@@ -71,8 +72,9 @@ export async function getToc(pdf: PDFDocumentProxy) {
     return await tryCatch(async () => {
 
         const outline: IOutline[] = await pdf.getOutline();
+        const pageLabels = await pdf.getPageLabels();
         if (Array.isArray(outline)) {
-            const tocPromise = outline.map((item) => tocOutlineItemToLink(item, pdf));
+            const tocPromise = outline.map((item) => tocOutlineItemToLink(item, pdf, pageLabels));
             return await Promise.all(tocPromise);
         }
 
