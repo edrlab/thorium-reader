@@ -108,6 +108,39 @@ function main() {
         bus.dispatch("ready");
     });
 
+    // search
+    {
+
+        // https://github.com/mozilla/pdf.js/blob/c366390f6bb2fa303d0d85879afda2c27ee06c28/web/pdf_find_bar.js#L930
+        const dispatchEvent = (type: any, findPrev?: any) => {
+            pdfjsEventBus.dispatch("find", {
+              source: null,
+              type,
+              query: searchRequest,
+              phraseSearch: true,
+              caseSensitive: false,
+              entireWord: false,
+              highlightAll: true,
+              findPrevious: findPrev,
+            });
+          };
+
+        let searchRequest = "";
+        bus.subscribe("search", (txt) => {
+            searchRequest = txt;
+            dispatchEvent("");
+        });
+        bus.subscribe("search-next", () => {
+            dispatchEvent("again", false);
+        });
+        bus.subscribe("search-previous", () => {
+            dispatchEvent("again", true);
+        });
+        bus.subscribe("search-wipe", () => {
+            pdfjsEventBus.dispatch("findbarclose", { source: null });
+        });
+    }
+
     window.document.body.addEventListener("copy", (evt: ClipboardEvent) => {
         const selection = window.document.getSelection();
         if (selection) {

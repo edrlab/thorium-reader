@@ -39,7 +39,7 @@ export class EventBus {
         this._off(eventName, listener, { external: true });
     }
 
-    dispatch(eventName) {
+    dispatch(eventName, ...arg) {
 
         const args = Array.prototype.slice.call(arguments, 1);
 
