@@ -74,7 +74,7 @@ function main() {
     );
 
     const defaultView: IPdfPlayerView = "paginated";
-    const defaultScale: IPdfPlayerScale = "fit";
+    const defaultScale: IPdfPlayerScale = "page-fit";
     const defaultCol: IPdfPlayerColumn = "1";
 
     // start dispatched from webview dom ready
@@ -185,7 +185,8 @@ function main() {
     // spreadmode
     {
         bus.subscribe("column", (col) => {
-            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : parseInt(col, 10) });
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : parseInt(col, 10) - 1});
+            // 1 = odd 2 = even
             bus.dispatch("column", col);
         });
     }
