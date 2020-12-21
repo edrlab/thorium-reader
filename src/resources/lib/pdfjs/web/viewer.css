@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 
+.hidescrollbar::--webkit-scrollbar {
+  display: none;
+}
+
 .textLayer {
   position: absolute;
   left: 0;

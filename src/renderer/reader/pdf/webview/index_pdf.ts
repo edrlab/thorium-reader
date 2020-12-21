@@ -73,7 +73,7 @@ function main() {
         },
     );
 
-    const defaultView: IPdfPlayerView = "paginated";
+    const defaultView: IPdfPlayerView = "scrolled";
     const defaultScale: IPdfPlayerScale = "page-fit";
     const defaultCol: IPdfPlayerColumn = "1";
 
@@ -191,12 +191,17 @@ function main() {
         });
     }
     // view
+    let lockViewMode = false;
     {
         bus.subscribe("view", (view) => {
             if (view === "paginated") {
-                //
+                pdfjsEventBus.dispatch("scalechanged", {value: "page-fit"});
+                bus.dispatch("scale", "page-fit");
+                document.body.className = "hidescrollbar";
+                lockViewMode = true;
             } else if (view === "scrolled") {
-                //
+                document.body.className = "";
+                lockViewMode = false;
             }
             bus.dispatch("view", view);
         });
@@ -204,8 +209,11 @@ function main() {
     // scale
     {
         bus.subscribe("scale", (scale) => {
-            pdfjsEventBus.dispatch("scalechanged", {value: typeof scale === "number" ? `${scale / 100}` : scale});
-            bus.dispatch("scale", scale);
+            if (!lockViewMode) {
+
+                pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
+                bus.dispatch("scale", scale);
+            }
         });
     }
 
