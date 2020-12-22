@@ -147,7 +147,9 @@ class SearchPicker extends React.Component<IProps, IState> {
                 <button
                     disabled={notFound}
                     onClick={() => {
-                        this.props.showSearchResults();
+                        if (!this.props.isPdf) {
+                            this.props.showSearchResults();
+                        }
                     }}
                     aria-label={found}
                     title={found}
