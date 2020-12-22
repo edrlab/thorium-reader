@@ -523,7 +523,8 @@ declare namespace typed_i18n {
     readonly "openTableOfContentsTitle": string,
     readonly "quitFullscreenTitle": string,
     readonly "readBookTitle": string,
-    readonly "settingsTitle": string
+    readonly "settingsTitle": string,
+    readonly "pdfscalemode": string
   },
   readonly "picker": {
     readonly "annotationTitle": string,
@@ -553,10 +554,10 @@ declare namespace typed_i18n {
     readonly "justification": string,
     readonly "justify": string,
     readonly "letterSpacing": string,
-    readonly "paraSpacing": string,
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "paginated": string,
+    readonly "paraSpacing": string,
     readonly "pdfZoom": {
       readonly "name": {
         readonly "100pct": string,
@@ -655,7 +656,8 @@ declare namespace typed_i18n {
   readonly "openTableOfContentsTitle": string,
   readonly "quitFullscreenTitle": string,
   readonly "readBookTitle": string,
-  readonly "settingsTitle": string
+  readonly "settingsTitle": string,
+  readonly "pdfscalemode": string
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
@@ -671,6 +673,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;
   (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
+  (_: "reader.navigation.pdfscalemode", __?: {}): string;
   (_: "reader.picker", __?: {}): {
   readonly "annotationTitle": string,
   readonly "search": {
@@ -715,10 +718,10 @@ declare namespace typed_i18n {
   readonly "justification": string,
   readonly "justify": string,
   readonly "letterSpacing": string,
-  readonly "paraSpacing": string,
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "paginated": string,
+  readonly "paraSpacing": string,
   readonly "pdfZoom": {
     readonly "name": {
       readonly "100pct": string,
@@ -772,10 +775,10 @@ declare namespace typed_i18n {
   (_: "reader.settings.justification", __?: {}): string;
   (_: "reader.settings.justify", __?: {}): string;
   (_: "reader.settings.letterSpacing", __?: {}): string;
-  (_: "reader.settings.paraSpacing", __?: {}): string;
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
+  (_: "reader.settings.paraSpacing", __?: {}): string;
   (_: "reader.settings.pdfZoom", __?: {}): {
   readonly "name": {
     readonly "100pct": string,

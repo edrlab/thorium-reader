@@ -260,7 +260,8 @@
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
-            "settingsTitle": "settings"
+            "settingsTitle": "settings",
+            "pdfscalemode": "Page fit or width"
         },
         "picker": {
             "annotationTitle": "Annotations:",
