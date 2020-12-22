@@ -115,16 +115,16 @@ function main() {
         // https://github.com/mozilla/pdf.js/blob/c366390f6bb2fa303d0d85879afda2c27ee06c28/web/pdf_find_bar.js#L930
         const dispatchEvent = (type: any, findPrev?: any) => {
             pdfjsEventBus.dispatch("find", {
-              source: null,
-              type,
-              query: searchRequest,
-              phraseSearch: true,
-              caseSensitive: false,
-              entireWord: false,
-              highlightAll: true,
-              findPrevious: findPrev,
+                source: null,
+                type,
+                query: searchRequest,
+                phraseSearch: true,
+                caseSensitive: false,
+                entireWord: false,
+                highlightAll: true,
+                findPrevious: findPrev,
             });
-          };
+        };
 
         let searchRequest = "";
         bus.subscribe("search", (txt) => {
@@ -149,7 +149,7 @@ function main() {
     let colMode: IPdfPlayerColumn = defaultCol;
     {
         bus.subscribe("column", (col) => {
-            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : col === "1" ? 0 : 1});
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : col === "1" ? 0 : 1 });
             // 1 = odd 2 = even
             bus.dispatch("column", col);
             colMode = col;
@@ -204,7 +204,7 @@ function main() {
     {
         bus.subscribe("view", (view) => {
             if (view === "paginated") {
-                pdfjsEventBus.dispatch("scalechanged", {value: "page-fit"});
+                pdfjsEventBus.dispatch("scalechanged", { value: "page-fit" });
                 bus.dispatch("scale", "page-fit");
                 document.body.className = "hidescrollbar";
                 lockViewMode = true;
@@ -224,7 +224,7 @@ function main() {
                 bus.dispatch("scale", scale);
             }
         });
-        pdfjsEventBus.on("scalechanging", ({_scale, presetValue}: any) => bus.dispatch("scale", presetValue));
+        pdfjsEventBus.on("scalechanging", ({/*_scale, */ presetValue }: any) => bus.dispatch("scale", presetValue));
     }
 
     window.document.body.addEventListener("copy", (evt: ClipboardEvent) => {
