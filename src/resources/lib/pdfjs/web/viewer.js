@@ -7933,12 +7933,12 @@ class PDFLinkService {
         this.page = pageNumber;
       }
 
-      if ("pagemode" in params) {
-        this.eventBus.dispatch("pagemode", {
-          source: this,
-          mode: params.pagemode
-        });
-      }
+    //   if ("pagemode" in params) {
+    //     this.eventBus.dispatch("pagemode", {
+    //       source: this,
+    //       mode: params.pagemode
+    //     });
+    //   }
 
       if ("nameddest" in params) {
         this.goToDestination(params.nameddest);
