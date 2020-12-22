@@ -145,6 +145,17 @@ function main() {
         });
     }
 
+    // spreadmode
+    let colMode: IPdfPlayerColumn = defaultCol;
+    {
+        bus.subscribe("column", (col) => {
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : col === "1" ? 0 : 1});
+            // 1 = odd 2 = even
+            bus.dispatch("column", col);
+            colMode = col;
+        });
+    }
+
     const p = new Promise<void>((resolve) => pdfjsEventBus.on("documentloaded", resolve));
 
     // pagechange
@@ -175,20 +186,18 @@ function main() {
         });
 
         bus.subscribe("page-next", () => {
+            if (colMode === "2") {
+                pdfjsEventBus.dispatch("nextpage");
+            }
             pdfjsEventBus.dispatch("nextpage");
         });
         bus.subscribe("page-previous", () => {
+            if (colMode === "2") {
+                pdfjsEventBus.dispatch("previouspage");
+            }
             pdfjsEventBus.dispatch("previouspage");
         });
 
-    }
-    // spreadmode
-    {
-        bus.subscribe("column", (col) => {
-            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : parseInt(col, 10) - 1});
-            // 1 = odd 2 = even
-            bus.dispatch("column", col);
-        });
     }
     // view
     let lockViewMode = false;
@@ -215,6 +224,7 @@ function main() {
                 bus.dispatch("scale", scale);
             }
         });
+        pdfjsEventBus.on("scalechanging", ({_scale, presetValue}: any) => bus.dispatch("scale", presetValue));
     }
 
     window.document.body.addEventListener("copy", (evt: ClipboardEvent) => {
