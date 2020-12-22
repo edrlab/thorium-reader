@@ -148,7 +148,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         focusMainAreaLandmarkAndCloseMenu={this.props.focusMainAreaLandmarkAndCloseMenu}
                     ></ReaderMenuSearch>
                     : <></>,
-                disabled: !this.props.searchEnable,
+                disabled: !this.props.searchEnable || this.props.isPdf,
                 skipMaxHeight: true,
             },
             {
