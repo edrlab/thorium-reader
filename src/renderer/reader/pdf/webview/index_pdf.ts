@@ -19,7 +19,6 @@ import {
 } from "../common/pdfReader.type";
 import { EventBus } from "./pdfEventBus";
 // import { pdfReaderInit } from "./init";
-import { IStore } from "./store";
 import { getToc } from "./toc";
 
 export interface IPdfState {
@@ -30,7 +29,6 @@ export interface IPdfState {
     displayPage: (pageNumber: number) => Promise<void>;
 }
 
-export type IPdfStore = IStore<IPdfState>;
 export type IPdfBus = IEventBusPdfPlayer;
 
 const pdfjsEventBus = new EventBus();
