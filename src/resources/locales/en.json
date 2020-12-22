@@ -258,10 +258,10 @@
             "infoTitle": "information",
             "magnifyingGlassButton": "search in publication",
             "openTableOfContentsTitle": "navigation",
+            "pdfscalemode": "Page fit or width",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
-            "settingsTitle": "settings",
-            "pdfscalemode": "Page fit or width"
+            "settingsTitle": "settings"
         },
         "picker": {
             "annotationTitle": "Annotations:",
