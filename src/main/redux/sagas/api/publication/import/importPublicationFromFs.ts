@@ -27,12 +27,6 @@ import { DaisyParsePromise } from "@r2-shared-js/parser/daisy";
 import { convertDaisyToReadiumWebPub } from "@r2-shared-js/parser/daisy-convert-to-epub";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
-// import { CbzParsePromise } from "@r2-shared-js/parser/cbz";
-// import { DivinaParsePromise } from "@r2-shared-js/parser/divina";
-// import {
-//     PublicationParsePromise,
-// } from "@r2-shared-js/parser/publication-parser";
-
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationFromFs");
 

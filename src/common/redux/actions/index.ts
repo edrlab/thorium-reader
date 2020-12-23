@@ -19,8 +19,6 @@ import * as netActions from "./net/";
 import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
 
-// import * as updateActions from "./update/";
-
 export {
     historyActions,
     authActions,
@@ -30,7 +28,6 @@ export {
     netActions,
     readerActions,
     lcpActions,
-    // updateActions,
     importActions,
     toastActions,
     downloadActions,

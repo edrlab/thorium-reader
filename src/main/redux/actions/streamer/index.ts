@@ -8,8 +8,6 @@
 import * as publicationCloseError from "./publicationCloseError";
 import * as publicationCloseRequest from "./publicationCloseRequest";
 import * as publicationCloseSuccess from "./publicationCloseSuccess";
-// import * as publicationOpenError from "./publicationOpenError";
-// import * as publicationOpenRequest from "./publicationOpenRequest";
 import * as publicationOpenSuccess from "./publicationOpenSuccess";
 import * as startError from "./startError";
 import * as startRequest from "./startRequest";
@@ -28,7 +26,5 @@ export {
     publicationCloseRequest,
     publicationCloseSuccess,
     publicationCloseError,
-    // publicationOpenRequest,
     publicationOpenSuccess,
-    // publicationOpenError,
 };

@@ -53,7 +53,7 @@ export async function injectManifestToZip(
     filename: string = "manifest.json",
 ) {
 
-    return new Promise(
+    return new Promise<void>(
         (resolve, reject) => {
             injectBufferInZip(
                 sourcePath,

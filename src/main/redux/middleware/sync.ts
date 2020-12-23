@@ -24,24 +24,14 @@ const debug = debug_("readium-desktop:sync");
 const SYNCHRONIZABLE_ACTIONS: string[] = [
     apiActions.result.ID,
 
-    // netActions.offline.ID,
-    // netActions.online.ID,
-
     historyActions.refresh.ID,
-
+  
     dialogActions.openRequest.ID,
-
-    // readerActions.openError.ID,
-    // readerActions.closeError.ID,
-    // readerActions.closeSuccess.ID,
 
     readerActions.detachModeSuccess.ID,
 
     readerActions.configSetDefault.ID,
     readerActions.setReduxState.ID, // used only to update the catalog when dispatched from reader
-
-    // readerActions.saveBookmarkError.ID,
-    // readerActions.saveBookmarkSuccess.ID,
 
     readerActions.fullScreenRequest.ID,
 
@@ -52,8 +42,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     keyboardActions.setShortcuts.ID,
     keyboardActions.showShortcuts.ID,
     keyboardActions.reloadShortcuts.ID,
-
-    // updateActions.latestVersion.ID,
 
     toastActions.openRequest.ID,
     toastActions.closeRequest.ID,

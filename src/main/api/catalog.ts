@@ -15,10 +15,6 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-// import {
-//     CatalogConfig, CatalogEntry, ConfigDocument,
-// } from "readium-desktop/main/db/document/config";
-// import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { Store } from "redux";
 
@@ -28,7 +24,6 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationDocument } from "../db/document/publication";
 import { PublicationRepository } from "../db/repository/publication";
 import { diMainGet } from "../di";
-// import { publicationActions } from "../redux/actions";
 import { RootState } from "../redux/states";
 
 export const CATALOG_CONFIG_ID = "catalog";
