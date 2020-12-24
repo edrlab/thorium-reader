@@ -86,11 +86,11 @@
                 "availableUntil": "До",
                 "copyAvalaible": "Количество доступных",
                 "copyTotal": "Количество копий",
-                "holdPosition": "Your hold position",
-                "holdTotal": "Holded",
-                "numberOfItems": "Number of items",
+                "holdPosition": "Ваша позиция удержания",
+                "holdTotal": "Удержано",
+                "numberOfItems": "Количество позиций",
                 "priveValue": "Цена",
-                "state": "State"
+                "state": "Cостояние"
             }
         },
         "publisher": "Издатель",
@@ -115,7 +115,7 @@
         "errorBox": {
             "error": "Сообщение об ошибке:",
             "message": "Произошла ошибка в {{- filename}}",
-            "title": "Internal {{- appName}} Error"
+            "title": "Внутренняя {{- appName}} ошибка"
         }
     },
     "header": {
@@ -172,7 +172,7 @@
         "lastPage": "Последняя",
         "menu": {
             "aboutBook": "Об этой книге",
-            "addExtract": "Import the extract",
+            "addExtract": "Добавить и извлечь",
             "goBuyBook": "Купить эту книгу",
             "goLoanBook": "Брать эту книгу",
             "goSubBook": "Подписаться"
@@ -190,7 +190,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Tracks"
+            "tracks": "Треки"
         },
         "cancelledLcp": "Эту книгу нельзя прочитать, потому что лицензия LCP аннулирована.",
         "certificateRevoked": "Сертификат отозван",
@@ -203,8 +203,8 @@
         },
         "expiredLcp": "Эту книгу нельзя прочитать, потому что срок действия лицензии LCP истек.",
         "lcpEnd": "Конец",
-        "lcpRightsCopy": "Character copy",
-        "lcpRightsPrint": "Printer copy",
+        "lcpRightsCopy": "Количество символов для копирования",
+        "lcpRightsPrint": "Количество страниц, разрешенных для печати",
         "lcpStart": "Начать",
         "licenseOutOfDate": "Лицензия устарела",
         "licenseSignatureDateInvalid": "Дата подписания лицензии недействительна",
@@ -235,15 +235,15 @@
             "toc": "Содержание"
         },
         "media-overlays": {
-            "activate": "Activate Readaloud",
-            "captions": "Captions / clean view",
-            "next": "Next Readaloud",
-            "pause": "Pause Readaloud",
-            "play": "Play Readaloud",
-            "previous": "Previous Readaloud",
-            "skip": "Skippability",
-            "speed": "Readaloud playback rate",
-            "stop": "Stop Readaloud",
+            "activate": "Активировать Readaloud",
+            "captions": "Подписи / чистый вид",
+            "next": "Далее Readaloud",
+            "pause": "Пауза Readaloud",
+            "play": "Играть Readaloud",
+            "previous": "Предыдущий Readaloud",
+            "skip": "Возможность пропуска",
+            "speed": "Readaloud скорость воспроизведения",
+            "stop": "Остановить Readaloud",
             "title": "Readaloud"
         },
         "navigation": {
@@ -304,8 +304,8 @@
                     "300pct": "300 %",
                     "500pct": "500 %",
                     "50pct": "50 %",
-                    "fit": "page fit",
-                    "width": "page width"
+                    "fit": "подгонка страницы",
+                    "width": "ширина страницы"
                 },
                 "title": "Увеличить"
             },
