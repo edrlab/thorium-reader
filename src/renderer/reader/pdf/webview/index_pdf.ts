@@ -88,6 +88,7 @@ function main() {
             console.log(toc);
 
             bus.dispatch("toc", toc);
+            bus.dispatch("numberofpages", pdf.numPages);
 
         }).catch((e) => console.error(e));
 

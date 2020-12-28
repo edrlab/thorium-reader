@@ -261,7 +261,9 @@
             "pdfscalemode": "Page fit or width",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
-            "settingsTitle": "settings"
+            "settingsTitle": "settings",
+            "currentPageTotal": "Current page: ({{- current}}/{{- total}})",
+            "currentPage": "Current page: {{- current}}"
         },
         "picker": {
             "annotationTitle": "Annotations:",

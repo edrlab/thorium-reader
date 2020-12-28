@@ -116,7 +116,8 @@ interface IState {
     divinaNumberOfPages: number;
 
     pdfPlayerBusEvent: IEventBusPdfPlayer;
-    pdfPlayerToc: TToc;
+    pdfPlayerToc: TToc | undefined;
+    pdfPlayerNumberOfPages: number | undefined;
 
     openedSectionSettings: number | undefined;
     openedSectionMenu: number | undefined;
@@ -189,6 +190,7 @@ class Reader extends React.Component<IProps, IState> {
 
             pdfPlayerBusEvent: undefined,
             pdfPlayerToc: undefined,
+            pdfPlayerNumberOfPages: undefined,
 
             openedSectionSettings: undefined,
             openedSectionMenu: undefined,
@@ -366,6 +368,7 @@ class Reader extends React.Component<IProps, IState> {
             pdfToc: this.state.pdfPlayerToc,
             isPdf: this.props.isPdf,
             openedSection: this.state.openedSectionMenu,
+            pdfNumberOfPages: this.state.pdfPlayerNumberOfPages,
         };
 
         const readerOptionsProps: IReaderOptionsProps = {
@@ -929,6 +932,7 @@ class Reader extends React.Component<IProps, IState> {
             });
             pdfPlayerBusEvent.subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
             pdfPlayerBusEvent.subscribe("toc", (toc) => this.setState({pdfPlayerToc: toc}));
+            pdfPlayerBusEvent.subscribe("numberofpages", (pages) => this.setState({pdfPlayerNumberOfPages: pages}));
 
             console.log("toc", this.state.pdfPlayerToc);
 

@@ -31,6 +31,7 @@ export interface IPdfPlayerEvent {
     "keydown": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => any;
     "keyup": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYUP) => any;
     "toc": (event: TToc) => any;
+    "numberofpages": (pages: number) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

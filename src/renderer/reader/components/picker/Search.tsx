@@ -62,7 +62,7 @@ class SearchPicker extends React.Component<IProps, IState> {
 
     public componentDidMount() {
 
-        this.props.pdfEventBus.subscribe("search-found", this.setFoundNumber);
+        this.props.pdfEventBus?.subscribe("search-found", this.setFoundNumber);
     }
 
     public componentDidUpdate(oldProps: IProps) {

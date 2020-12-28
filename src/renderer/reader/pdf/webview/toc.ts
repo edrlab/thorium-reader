@@ -8,7 +8,7 @@
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 
-import { ILink } from "../common/pdfReader.type";
+import { ILink, TToc } from "../common/pdfReader.type";
 import { TdestForPageIndex, TdestObj, TOutlineUnArray } from "./pdfjs.type";
 
 export interface IOutline extends Partial<TOutlineUnArray> {
@@ -67,7 +67,7 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentPr
     return link;
 }
 
-export async function getToc(pdf: PDFDocumentProxy) {
+export async function getToc(pdf: PDFDocumentProxy): Promise<TToc> {
 
     return await tryCatch(async () => {
 

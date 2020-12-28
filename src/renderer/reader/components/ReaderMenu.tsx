@@ -38,6 +38,7 @@ interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     currentLocation: LocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
+    pdfNumberOfPages: number;
 }
 
 // IProps may typically extend:
@@ -76,6 +77,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
+
         this.unsubscribe = apiSubscribe([
             "reader/addBookmark",
             "reader/deleteBookmark",
@@ -152,7 +154,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 skipMaxHeight: true,
             },
             {
-                content: this.buildGoToPageSection(),
+                content: this.buildGoToPageSection(
+                    this.props.isPdf && this.props.pdfNumberOfPages
+                        ? this.props.pdfNumberOfPages.toString()
+                        : undefined),
                 disabled: false,
                 notExtendable: true,
             },
@@ -401,7 +406,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             .catch((error) => console.error("Error to fetch api reader/deleteBookmark", error));
     }
 
-    private buildGoToPageSection() {
+    private buildGoToPageSection(totalPages?: string) {
         if (!this.props.r2Publication) {
             return <></>;
         }
@@ -456,7 +461,14 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 </p>
             }
 
-            <p className={styles.currentPage}>({currentPage})</p>
+            <p className={styles.currentPage}>
+                {
+                totalPages
+                        // tslint:disable-next-line: max-line-length
+                        ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
+                        : __("reader.navigation.currentPage", { current: `${currentPage}`})
+                }
+            </p>
 
         </div>;
     }
