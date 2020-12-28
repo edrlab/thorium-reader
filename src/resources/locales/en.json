@@ -249,6 +249,8 @@
         "navigation": {
             "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
+            "currentPage": "Current page: {{- current}}",
+            "currentPageTotal": "Current page: ({{- current}}/{{- total}})",
             "detachWindowTitle": "show library / bookshelf window",
             "fullscreenTitle": "open fullscreen mode",
             "goTo": "Go to",
@@ -261,9 +263,7 @@
             "pdfscalemode": "Page fit or width",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
-            "settingsTitle": "settings",
-            "currentPageTotal": "Current page: ({{- current}}/{{- total}})",
-            "currentPage": "Current page: {{- current}}"
+            "settingsTitle": "settings"
         },
         "picker": {
             "annotationTitle": "Annotations:",

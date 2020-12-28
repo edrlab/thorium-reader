@@ -249,6 +249,8 @@
         "navigation": {
             "backHomeTitle": "Zurück zum Bücherregal",
             "bookmarkTitle": "Lesezeichen setzen",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "Fenster loslösen",
             "fullscreenTitle": "Vollbildmodus",
             "goTo": "Gehe zu",

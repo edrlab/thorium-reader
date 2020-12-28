@@ -249,6 +249,8 @@
         "navigation": {
             "backHomeTitle": "ritorna alla libreria",
             "bookmarkTitle": "segnalibro",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "Separa la finestra",
             "fullscreenTitle": "attiva modalità schermo intero",
             "goTo": "Vai a",

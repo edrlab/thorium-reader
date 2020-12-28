@@ -249,6 +249,8 @@
         "navigation": {
             "backHomeTitle": "grįžti į knygų lentyną",
             "bookmarkTitle": "sukurti žymę",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "rodyti bibliotekos / knygų lentynos langą",
             "fullscreenTitle": "įjungti viso ekrano režimą",
             "goTo": "Eiti į",

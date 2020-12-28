@@ -249,6 +249,8 @@
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",
+            "currentPage": "Page courante: {{- current}}",
+            "currentPageTotal": "Page courante: ({{- current}}/{{- total}})",
             "detachWindowTitle": "afficher la bibliothèque",
             "fullscreenTitle": "mode plein écran",
             "goTo": "Aller à",

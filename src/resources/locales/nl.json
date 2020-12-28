@@ -249,6 +249,8 @@
         "navigation": {
             "backHomeTitle": "terug naar de boekenplank",
             "bookmarkTitle": "bladwijzer",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "maak het venster los",
             "fullscreenTitle": "gebruik volledig scherm",
             "goTo": "Ga naar",

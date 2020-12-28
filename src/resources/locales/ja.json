@@ -249,6 +249,8 @@
         "navigation": {
             "backHomeTitle": "本棚に戻る",
             "bookmarkTitle": "しおりを挟む",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "蔵書/本棚を表示",
             "fullscreenTitle": "全画面表示",
             "goTo": "移動",

@@ -249,6 +249,8 @@
         "navigation": {
             "backHomeTitle": "voltar à estante",
             "bookmarkTitle": "marcador",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "mostrar biblioteca / janela da biblioteca",
             "fullscreenTitle": "abrir modo tela cheia",
             "goTo": "Ir para",

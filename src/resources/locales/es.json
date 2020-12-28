@@ -249,6 +249,8 @@
         "navigation": {
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "Separar la ventana",
             "fullscreenTitle": "Abrir modo pantalla completa",
             "goTo": "Ir a",
