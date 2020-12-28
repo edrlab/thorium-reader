@@ -5,19 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as debug_ from "debug";
 import { /*BrowserWindow,*/ Rectangle, screen } from "electron";
-// import { ConfigDocument } from "readium-desktop/main/db/document/config";
-// import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-// import { diMainGet } from "readium-desktop/main/di";
-// import { debounce } from "readium-desktop/utils/debounce";
 
-// import { AppWindowType } from "../models/win";
-
+// import * as debug_ from "debug";
 // // Logger
 // const debug = debug_("readium-desktop:common:rectangle:window");
-
-// const WINDOW_RECT_CONFIG_ID = "windowRectangle";
 
 export const defaultRectangle = (): Rectangle => (
     {

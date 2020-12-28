@@ -46,7 +46,6 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-// import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
@@ -76,8 +75,6 @@ import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
-
-// import { isDeepStrictEqual } from "util";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -124,12 +121,6 @@ interface IState {
     openedSectionSettings: number | undefined;
     openedSectionMenu: number | undefined;
 }
-
-// import { debounce } from "debounce";
-// const handleTTSPlayRaw = (that: Reader) => {
-//     that.handleTTSPlay_();
-// };
-// const handleTTSPlayDebounced = debounce(handleTTSPlayRaw, 500);
 
 class Reader extends React.Component<IProps, IState> {
 
