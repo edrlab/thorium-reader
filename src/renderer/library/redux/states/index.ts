@@ -27,6 +27,5 @@ export interface ILibraryRootState extends ICommonRootState {
     router: RouterState<IRouterLocationState>;
     download: TPQueueState<downloadActions.progress.Payload, number>;
     history: THistoryState;
-    updateCatalog: number;
     load: ILoadState;
 }
