@@ -58,9 +58,11 @@
             "continueReading": "Continua a leggere",
             "continueReadingAudioBooks": "Continua ad ascoltare",
             "continueReadingDivina": "Continua divina",
+            "continueReadingPdf": "",
             "lastAdditions": "Aggiunti di recente",
             "lastAdditionsAudioBooks": "Audiobooks aggiunti di recente",
-            "lastAdditionsDivina": "Divina aggiunti di recente"
+            "lastAdditionsDivina": "Divina aggiunti di recente",
+            "lastAdditionsPdf": ""
         },
         "export": "Esporta",
         "lang": "Lingua",
@@ -229,6 +231,7 @@
             "delete": "Elimina",
             "edit": "Modifica",
             "landmarks": "Punti di riferimento",
+            "search": "",
             "toc": "Tabella dei contenuti"
         },
         "media-overlays": {
@@ -253,10 +256,23 @@
             "goToPlaceHolder": "Inserisci il numero della pagina",
             "goToTitle": "Vai alla pagina",
             "infoTitle": "informazione",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navigazione",
             "quitFullscreenTitle": "esci dalla modalità schermo intero",
             "readBookTitle": "inizia a leggere il libro",
             "settingsTitle": "impostazioni"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {
@@ -279,6 +295,20 @@
             "lineSpacing": "Spaziatura linee",
             "margin": "Margine",
             "paginated": "Impaginato",
+            "paraSpacing": "",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "salva",
                 "reset": "ripristina",
@@ -300,6 +330,9 @@
         "svg": {
             "left": "Sinistra",
             "right": "Destra"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "Attiva Testo a Voce",

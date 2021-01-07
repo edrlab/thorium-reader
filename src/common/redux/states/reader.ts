@@ -16,7 +16,7 @@ export const readerConfigInitialState: ReaderConfig = {
     invert: false,
     lineHeight: "1.5",
     night: false,
-    paged: false,
+    paged: true, // https://github.com/edrlab/thorium-reader/issues/1222
     readiumcss: true,
     sepia: false,
     enableMathJax: false,

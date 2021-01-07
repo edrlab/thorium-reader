@@ -20,11 +20,11 @@ declare module "*.png" {
     export default content;
 }
 
-declare module "ping";
-
 declare module "pouchdb-adapter-leveldb";
 declare module "pouchdb-adapter-node-websql";
 // declare module "readium-desktop/pouchdb/jsondown-adapter";
+
+declare module "pdfjs-dist/webpack";
 
 declare module "*.css" {
     interface IClassNames {

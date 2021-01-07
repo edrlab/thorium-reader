@@ -1,3 +1,6 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const TerserPlugin = require("terser-webpack-plugin");
+
 const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -131,6 +134,16 @@ let config = Object.assign(
             ],
         },
         plugins: [
+            new BundleAnalyzerPlugin({
+                analyzerMode: "disabled",
+                defaultSizes: "stat", // "parsed"
+                openAnalyzer: false,
+                generateStatsFile: true,
+                statsFilename: "stats_main.json",
+                statsOptions: null,
+
+                excludeAssets: null,
+            }),
             new CopyWebpackPlugin({ patterns: [
                 {
                     from: path.join(
@@ -181,6 +194,10 @@ config.plugins.push(
     new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })
 ); // jsondown (runtimejs, fatfs)
 
+config.plugins.push(
+    new webpack.IgnorePlugin({ resourceRegExp: /^canvas$/ })
+); // pdfjs
+
 if (!checkTypeScriptSkip) {
     config.plugins.push(new ForkTsCheckerWebpackPlugin({
         // measureCompilationTime: true,
@@ -197,6 +214,31 @@ if (nodeEnv !== "production") {
 
     config.devtool = "source-map";
 } else {
+
+    config.optimization =
+    {
+        ...(config.optimization || {}),
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                exclude: /MathJax/,
+                terserOptions: {
+                    compress: false,
+                    mangle: false,
+                    output: {
+                        comments: false,
+                    },
+                    // node-fetch v2.x (fixed in 3.x https://github.com/node-fetch/node-fetch/pull/673 )
+                    // keep_fnames: /AbortSignal/,
+                },
+            }),
+        ],
+    };
+    // {
+    //     minimize: false,
+    // };
+
     config.plugins.push(
         new webpack.IgnorePlugin({
             resourceRegExp: /^electron-devtools-installer$/,

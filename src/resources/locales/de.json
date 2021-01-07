@@ -58,9 +58,11 @@
             "continueReading": "Lesen Sie weiter",
             "continueReadingAudioBooks": "Hören Sie weiter zu",
             "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Kürzlich hinzugefügt",
             "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher",
-            "lastAdditionsDivina": ""
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Export",
         "lang": "Sprache",
@@ -229,6 +231,7 @@
             "delete": "Löschen",
             "edit": "Bearbeiten",
             "landmarks": "Navigationspunkte",
+            "search": "",
             "toc": "Inhaltsverzeichnis"
         },
         "media-overlays": {
@@ -253,10 +256,23 @@
             "goToPlaceHolder": "Gehe zur Seite",
             "goToTitle": "Gehe zur Seite",
             "infoTitle": "Informationen",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navigation",
             "quitFullscreenTitle": "Vollbildmodus beenden",
             "readBookTitle": "Mit dem Lesen des Buches beginnen",
             "settingsTitle": "Einstellungen"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {
@@ -279,6 +295,20 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "paginated": "Seitendarstellung",
+            "paraSpacing": "",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "Speichern",
                 "reset": "Zurücksetzen",
@@ -300,6 +330,9 @@
         "svg": {
             "left": "",
             "right": ""
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "",

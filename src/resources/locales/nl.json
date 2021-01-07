@@ -58,9 +58,11 @@
             "continueReading": "Ga door met lezen",
             "continueReadingAudioBooks": "Ga door met luisteren",
             "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "Recent toegevoegd",
             "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken",
-            "lastAdditionsDivina": ""
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "Exporteer",
         "lang": "Taal",
@@ -229,6 +231,7 @@
             "delete": "Verwijder",
             "edit": "Wijzig",
             "landmarks": "structuur elementen",
+            "search": "",
             "toc": "Inhoudsopgave"
         },
         "media-overlays": {
@@ -253,10 +256,23 @@
             "goToPlaceHolder": "Voer een paginanummer in",
             "goToTitle": "Ga naar pagina",
             "infoTitle": "informatie",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navigatie",
             "quitFullscreenTitle": "verlaat volledig scherm modus",
             "readBookTitle": "begin met het lezen van het boek",
             "settingsTitle": "instellingen"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {
@@ -279,6 +295,20 @@
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
             "paginated": "Als pagina's",
+            "paraSpacing": "",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "",
                 "reset": "",
@@ -300,6 +330,9 @@
         "svg": {
             "left": "Links",
             "right": "Rechts"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "",

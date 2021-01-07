@@ -58,9 +58,11 @@
             "continueReading": "読書を再開",
             "continueReadingAudioBooks": "オーディオブックを再開",
             "continueReadingDivina": "",
+            "continueReadingPdf": "",
             "lastAdditions": "最近追加された出版物",
             "lastAdditionsAudioBooks": "最近追加されたオーディオブック",
-            "lastAdditionsDivina": ""
+            "lastAdditionsDivina": "",
+            "lastAdditionsPdf": ""
         },
         "export": "書き出し",
         "lang": "言語",
@@ -229,6 +231,7 @@
             "delete": "削除",
             "edit": "編集",
             "landmarks": "構成",
+            "search": "",
             "toc": "目次"
         },
         "media-overlays": {
@@ -253,10 +256,23 @@
             "goToPlaceHolder": "移動先のページ番号",
             "goToTitle": "ページに移動",
             "infoTitle": "本の情報",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "ナビゲーション",
             "quitFullscreenTitle": "全画面表示の終了",
             "readBookTitle": "本を読み始める",
             "settingsTitle": "設定"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {
@@ -279,6 +295,20 @@
             "lineSpacing": "行の間隔",
             "margin": "縦列の余白",
             "paginated": "ページ型",
+            "paraSpacing": "",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
             "save": {
                 "apply": "保存",
                 "reset": "リセット",
@@ -300,6 +330,9 @@
         "svg": {
             "left": "左",
             "right": "右"
+        },
+        "toc": {
+            "publicationNoToc": ""
         },
         "tts": {
             "activate": "音声合成による読み上げ機能を起動",

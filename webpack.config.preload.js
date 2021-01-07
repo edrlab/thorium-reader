@@ -1,3 +1,6 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const TerserPlugin = require("terser-webpack-plugin");
+
 var fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
@@ -20,7 +23,42 @@ let config = Object.assign({}, {
 
     resolve: {
         extensions: [".js"]
-    }
+    },
+
+    plugins: [
+        new BundleAnalyzerPlugin({
+            analyzerMode: "disabled",
+            defaultSizes: "stat", // "parsed"
+            openAnalyzer: false,
+            generateStatsFile: true,
+            statsFilename: "stats_renderer-preload.json",
+            statsOptions: null,
+
+            excludeAssets: null,
+        }),
+    ]
 });
+
+config.optimization =
+{
+    ...(config.optimization || {}),
+    minimize: true,
+    minimizer: [
+        new TerserPlugin({
+            extractComments: false,
+            exclude: /MathJax/,
+            terserOptions: {
+                compress: false,
+                mangle: false,
+                output: {
+                    comments: false,
+                },
+            },
+        }),
+    ],
+};
+// {
+//     minimize: false,
+// };
 
 module.exports = config;

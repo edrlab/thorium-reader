@@ -1,8 +1,12 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const TerserPlugin = require("terser-webpack-plugin");
+
 var fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
@@ -88,8 +92,9 @@ const cssLoaderConfig = [
         loader: MiniCssExtractPlugin.loader,
         options: {
             // publicPath: "./styling", // preprocessorDirectives.rendererReaderBaseUrl,
-            hmr: _enableHot,
-            reloadAll: true,
+            // hmr: _enableHot,
+            // reloadAll: true,
+            esModule: false,
         },
     },
     {
@@ -192,6 +197,16 @@ let config = Object.assign(
             },
         },
         plugins: [
+            new BundleAnalyzerPlugin({
+                analyzerMode: "disabled",
+                defaultSizes: "stat", // "parsed"
+                openAnalyzer: false,
+                generateStatsFile: true,
+                statsFilename: "stats_renderer-reader.json",
+                statsOptions: null,
+
+                excludeAssets: null,
+            }),
             new HtmlWebpackPlugin({
                 template: "./src/renderer/reader/index_reader.ejs",
                 filename: "index_reader.html",
@@ -254,6 +269,29 @@ if (nodeEnv !== "production") {
         use: cssLoaderConfig,
     });
 } else {
+
+    config.optimization =
+    {
+        ...(config.optimization || {}),
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                exclude: /MathJax/,
+                terserOptions: {
+                    compress: false,
+                    mangle: false,
+                    output: {
+                        comments: false,
+                    },
+                },
+            }),
+        ],
+    };
+    // {
+    //     minimize: false,
+    // };
+
     config.plugins.push(
         new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ })
     );

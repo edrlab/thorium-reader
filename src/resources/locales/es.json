@@ -36,7 +36,7 @@
             }
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "Mostrar biblioteca / estante"
         }
     },
     "catalog": {
@@ -57,10 +57,12 @@
         "entry": {
             "continueReading": "Reanudar lectura",
             "continueReadingAudioBooks": "Reanudar reproducción",
-            "continueReadingDivina": "",
+            "continueReadingDivina": "Reanudar divina",
+            "continueReadingPdf": "Reanudar PDF",
             "lastAdditions": "Añadidos recientemente",
             "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente",
-            "lastAdditionsDivina": ""
+            "lastAdditionsDivina": "Divina añadidos recientemente",
+            "lastAdditionsPdf": "PDF añadidos recientemente"
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -229,6 +231,7 @@
             "delete": "Eliminar",
             "edit": "Editar",
             "landmarks": "Puntos de referencia",
+            "search": "Buscar",
             "toc": "Tabla de contenido"
         },
         "media-overlays": {
@@ -253,10 +256,23 @@
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
             "infoTitle": "Información",
+            "magnifyingGlassButton": "buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",
             "quitFullscreenTitle": "Salir del modo pantalla completa",
             "readBookTitle": "Empezar a leer el libro",
             "settingsTitle": "Opciones de configuración"
+        },
+        "picker": {
+            "annotationTitle": "Anotaciones:",
+            "search": {
+                "founds": "{{- nResults}} encontrado/s",
+                "input": "texto de búsqueda",
+                "next": "Siguiente",
+                "notFound": "no hay coincidencias",
+                "previous": "Anterior",
+                "submit": "Encontrar"
+            },
+            "searchTitle": "Buscar:"
         },
         "settings": {
             "column": {
@@ -279,6 +295,20 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "paginated": "Paginado",
+            "paraSpacing": "",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100%",
+                    "150pct": "150%",
+                    "200pct": "200%",
+                    "300pct": "300%",
+                    "500pct": "500%",
+                    "50pct": "50%",
+                    "fit": "ajuste de página",
+                    "width": "ancho de página"
+                },
+                "title": "Zum"
+            },
             "save": {
                 "apply": "Guardar",
                 "reset": "Restablecer",
@@ -300,6 +330,9 @@
         "svg": {
             "left": "Izquierda",
             "right": "Derecha"
+        },
+        "toc": {
+            "publicationNoToc": "esta publicación no proporciona tabla de contenido"
         },
         "tts": {
             "activate": "Activar texto a voz",

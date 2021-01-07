@@ -82,7 +82,7 @@ class SearchForm extends React.Component<IProps, undefined> {
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
-                    aria-label={__("accessibility.searchBook")}
+                    aria-label={__("header.searchPlaceholder")}
                     placeholder={__("header.searchPlaceholder")}
                 />
                 <button

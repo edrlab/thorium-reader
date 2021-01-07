@@ -5,19 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as debug_ from "debug";
 import { /*BrowserWindow,*/ Rectangle, screen } from "electron";
-// import { ConfigDocument } from "readium-desktop/main/db/document/config";
-// import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-// import { diMainGet } from "readium-desktop/main/di";
-// import { debounce } from "readium-desktop/utils/debounce";
 
-// import { AppWindowType } from "../models/win";
-
+// import * as debug_ from "debug";
 // // Logger
 // const debug = debug_("readium-desktop:common:rectangle:window");
-
-// const WINDOW_RECT_CONFIG_ID = "windowRectangle";
 
 export const defaultRectangle = (): Rectangle => (
     {
@@ -26,30 +18,34 @@ export const defaultRectangle = (): Rectangle => (
         x: Math.round(screen.getPrimaryDisplay().workAreaSize.width / 3),
         y: Math.round(screen.getPrimaryDisplay().workAreaSize.height / 3),
     });
-export const normalizeRectangle = (winBound: Rectangle) => {
+
+export const normalizeRectangle = (winBound: Rectangle): Rectangle | undefined => {
 
     // TS strictNullChecks would flag this incoherent check ...
     // ... but the "window bounds" code has been brittle so let's err on the side of caution
     if (!winBound) {
-        return;
+        return undefined;
     }
 
-    const rect = defaultRectangle();
+    const normalizeBound = { ...winBound };
 
-    // note: 0 and NaN are falsy (as well as null and undefined),
-    // positive and negative numbers are truthy.
-    if (!winBound.x) {
-        winBound.x = 0; // rect.x can push window frame outside of visible viewport
+    const windowWithinBounds = (bounds: Rectangle, state: Rectangle): boolean => {
+        return !!bounds && !!state && (
+            state.x >= bounds.x &&
+            state.y >= bounds.y &&
+            state.x + state.width <= bounds.x + bounds.width &&
+            state.y + state.height <= bounds.y + bounds.height
+        );
+    };
+
+    const visible = screen.getAllDisplays().some((display) => {
+        return windowWithinBounds(display.workArea, normalizeBound);
+    });
+
+    if (visible) {
+        return normalizeBound;
     }
-    if (!winBound.y) {
-        winBound.y = 0; // rect.y can push window frame outside of visible viewport
-    }
-    if (!winBound.width) {
-        winBound.width = rect.width;
-    }
-    if (!winBound.height) {
-        winBound.height = rect.height;
-    }
+    return defaultRectangle();
 };
 
 // export type t_savedWindowsRectangle = typeof savedWindowsRectangle;

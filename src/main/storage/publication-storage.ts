@@ -87,6 +87,20 @@ export class PublicationStorage {
         if (fs.existsSync(pathEpub)) {
             return pathEpub;
         }
+        const pathEpub3 = path.join(
+            root,
+            `book${acceptedExtensionObject.epub3}`,
+        );
+        if (fs.existsSync(pathEpub3)) {
+            return pathEpub3;
+        }
+        const pathDaisy = path.join(
+            root,
+            `book${acceptedExtensionObject.daisy}`,
+        );
+        if (fs.existsSync(pathDaisy)) {
+            return pathDaisy;
+        }
         const pathAudioBook = path.join(
             root,
             `book${acceptedExtensionObject.audiobook}`,
@@ -122,6 +136,13 @@ export class PublicationStorage {
         if (fs.existsSync(pathDivina)) {
             return pathDivina;
         }
+        const pathLcpPdf = path.join(
+            root,
+            `book${acceptedExtensionObject.pdfLcp}`,
+        );
+        if (fs.existsSync(pathLcpPdf)) {
+            return pathLcpPdf;
+        }
         throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
@@ -156,6 +177,8 @@ export class PublicationStorage {
         const isAudioBookLcpAlt = new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
         const isWebpub = new RegExp(`\\${acceptedExtensionObject.webpub}$`).test(extension);
         const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`).test(extension);
+        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
+        const isDaisy = new RegExp(`\\${acceptedExtensionObject.daisy}$`).test(extension);
 
         const ext = isAudioBook
             ? acceptedExtensionObject.audiobook
@@ -171,7 +194,15 @@ export class PublicationStorage {
                                     : (
                                         isWebpub
                                             ? acceptedExtensionObject.webpub
-                                            : acceptedExtensionObject.epub
+                                            : (
+                                                isLcpPdf
+                                                    ? acceptedExtensionObject.pdfLcp
+                                                    : (
+                                                        isDaisy
+                                                            ? acceptedExtensionObject.daisy
+                                                            : acceptedExtensionObject.epub
+                                                    )
+                                            )
                                     )
                             )
                     )
@@ -199,7 +230,9 @@ export class PublicationStorage {
                                         ? ContentType.DivinaPacked
                                         : isWebpub
                                             ? ContentType.webpubPacked
-                                            : ContentType.Epub
+                                            : isLcpPdf
+                                                ? ContentType.lcppdf
+                                                : ContentType.Epub
                             ),
                     size: getFileSize(dstPath),
                 });
@@ -216,7 +249,13 @@ export class PublicationStorage {
         srcPath: string,
     ): Promise<File> {
 
-        const r2Publication = await PublicationParsePromise(srcPath);
+        let r2Publication;
+        try {
+            r2Publication = await PublicationParsePromise(srcPath);
+        } catch (err) {
+            console.log(err);
+            return null;
+        }
 
         // private Internal is very hacky! :(
         const zipInternal = (r2Publication as any).Internal.find((i: any) => {

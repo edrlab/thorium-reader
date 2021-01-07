@@ -15,3 +15,8 @@
         width: 2rem;
     }
 }
+
+.loader_search_picker {
+    width: 24px;
+    align-self: center;
+}

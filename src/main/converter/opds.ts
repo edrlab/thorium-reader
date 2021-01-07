@@ -46,8 +46,12 @@ const supportedFileTypeLinkArray = [
     ContentType.Epub,
     ContentType.Lcp,
     ContentType.AudioBook,
+    ContentType.webpub,
+    ContentType.webpubPacked,
     ContentType.Json,
     ContentType.JsonLd,
+    ContentType.pdf,
+    ContentType.lcppdf,
 ];
 
 @injectable()
@@ -318,6 +322,7 @@ export class OpdsFeedViewConverter {
         const entrylinkView = fallback(
             this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
                 type: "type=entry;profile=opds-catalog",
+                rel: "alternate",
             }),
             this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
                 type: ContentType.Opds2Pub,

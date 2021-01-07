@@ -11,13 +11,10 @@ import { downloadActions, readerActions } from "readium-desktop/common/redux/act
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
-// import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
-// import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { loadReducer } from "readium-desktop/renderer/common/redux/reducers/load";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
-// import { downloadReducer } from "readium-desktop/renderer/library/redux/reducers/download";
 import { historyReducer } from "readium-desktop/renderer/library/redux/reducers/history";
 import {
     opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer,

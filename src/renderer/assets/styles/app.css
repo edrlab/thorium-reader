@@ -4,6 +4,13 @@
   user-select: none;
 }
 
+*,
+*::after,
+*::before {
+	-webkit-user-drag: none;
+	-webkit-app-region: no-drag;
+}
+
 body {
   margin: 0;
   padding: 0;

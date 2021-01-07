@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
-
 import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
 
 import { deletePublication } from "./delete";

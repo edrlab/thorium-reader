@@ -12,7 +12,7 @@ import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
-import { isDivinaFn } from "readium-desktop/common/isManifestType";
+import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
@@ -44,11 +44,14 @@ import {
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-// import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
+import {
+    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
 import {
     audioForward, audioPause, audioRewind, audioTogglePlayPause,
 } from "@r2-navigator-js/electron/renderer/audiobook";
@@ -65,12 +68,13 @@ import {
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
+import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
+import { pdfMountWebview } from "../pdf/driver";
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
-
-// import { isDeepStrictEqual } from "util";
+import PickerManager from "./picker/PickerManager";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -106,13 +110,17 @@ interface IState {
     bookmarks: LocatorView[] | undefined;
 
     readerMode: ReaderMode;
-}
 
-// import { debounce } from "debounce";
-// const handleTTSPlayRaw = (that: Reader) => {
-//     that.handleTTSPlay_();
-// };
-// const handleTTSPlayDebounced = debounce(handleTTSPlayRaw, 500);
+    divinaReadingMode: TdivinaReadingMode;
+    divinaReadingModeSupported: TdivinaReadingMode[];
+    divinaNumberOfPages: number;
+
+    pdfPlayerBusEvent: IEventBusPdfPlayer;
+    pdfPlayerToc: TToc;
+
+    openedSectionSettings: number | undefined;
+    openedSectionMenu: number | undefined;
+}
 
 class Reader extends React.Component<IProps, IState> {
 
@@ -174,6 +182,16 @@ class Reader extends React.Component<IProps, IState> {
             bookmarks: undefined,
 
             readerMode: ReaderMode.Attached,
+
+            divinaNumberOfPages: 0,
+            divinaReadingMode: "single",
+            divinaReadingModeSupported: [],
+
+            pdfPlayerBusEvent: undefined,
+            pdfPlayerToc: undefined,
+
+            openedSectionSettings: undefined,
+            openedSectionMenu: undefined,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -198,6 +216,8 @@ class Reader extends React.Component<IProps, IState> {
         this.handleMediaOverlaysPrevious = this.handleMediaOverlaysPrevious.bind(this);
         this.handleMediaOverlaysNext = this.handleMediaOverlaysNext.bind(this);
         this.handleMediaOverlaysPlaybackRate = this.handleMediaOverlaysPlaybackRate.bind(this);
+
+        this.showSearchResults = this.showSearchResults.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -225,18 +245,52 @@ class Reader extends React.Component<IProps, IState> {
             });
         });
 
-        if (this.props.isDivina) {
+        ensureKeyboardListenerIsInstalled();
+        this.registerAllKeyboardListeners();
+
+        if (this.props.isPdf) {
+
+            await this.loadPublicationIntoViewport();
+
+            if (this.state.pdfPlayerBusEvent) {
+
+                this.state.pdfPlayerBusEvent.subscribe("page",
+                    (pageIndex: number) => {
+                        const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
+                        const loc = {
+                            locator: {
+                                href: pageIndex.toString(),
+                                locations: {
+                                    position: pageIndex,
+                                    progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
+                                },
+                            },
+                        };
+                        console.log("pdf pageChange", pageIndex);
+                        this.handleReadingLocationChange(loc as LocatorExtended);
+                    });
+
+                const index = parseInt(this.props.locator?.locator?.href, 10) || 1;
+                console.log("pdf page index", index);
+                this.state.pdfPlayerBusEvent.dispatch("page", index);
+
+            } else {
+                console.log("pdf bus event undefined");
+            }
+
+        } else if (this.props.isDivina) {
 
             await this.loadPublicationIntoViewport();
 
             if (this.currentDivinaPlayer) {
+
+                this.currentDivinaPlayer.eventEmitter.on("pagechange", this.divinaSetLocation);
 
                 this.currentDivinaPlayer.eventEmitter.on(
                     "initialload",
                     () => {
 
                         console.log("divina loaded");
-
                         // nextTick update
                         setTimeout(() => {
 
@@ -252,24 +306,6 @@ class Reader extends React.Component<IProps, IState> {
                                 console.log("currentDivinaPlayer.goToPageWithIndex", e);
                             }
 
-                            this.currentDivinaPlayer.eventEmitter.on(
-                                "pagechange",
-                                ({ pageIndex, nbOfPages }: { pageIndex: number, nbOfPages: number }) => {
-                                    const loc = {
-                                        locator: {
-                                            href: pageIndex.toString(),
-                                            locations: {
-                                                position: pageIndex,
-                                                progression: pageIndex / nbOfPages,
-                                            },
-                                        },
-                                    };
-                                    console.log("pageChange", pageIndex, nbOfPages);
-                                    this.handleReadingLocationChange(loc as LocatorExtended);
-
-                                },
-                            );
-
                         }, 0);
 
                     },
@@ -279,16 +315,12 @@ class Reader extends React.Component<IProps, IState> {
                 console.log("divinaPlayer not loaded");
             }
         } else {
-            ensureKeyboardListenerIsInstalled();
-            this.registerAllKeyboardListeners();
-
             setKeyDownEventHandler(keyDownEventHandler);
             setKeyUpEventHandler(keyUpEventHandler);
 
             setReadingLocationSaver(this.handleReadingLocationChange);
             setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
             await this.loadPublicationIntoViewport();
-
         }
 
         this.unsubscribe = apiSubscribe([
@@ -308,6 +340,11 @@ class Reader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
+
+        if (oldState.pdfPlayerBusEvent !== this.state.pdfPlayerBusEvent) {
+            this.state.pdfPlayerBusEvent.dispatch("ready");
+        }
+
     }
 
     public componentWillUnmount() {
@@ -326,6 +363,10 @@ class Reader extends React.Component<IProps, IState> {
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
+            focusMainAreaLandmarkAndCloseMenu: this.focusMainAreaLandmarkAndCloseMenu.bind(this),
+            pdfToc: this.state.pdfPlayerToc,
+            isPdf: this.props.isPdf,
+            openedSection: this.state.openedSectionMenu,
         };
 
         const readerOptionsProps: IReaderOptionsProps = {
@@ -338,6 +379,14 @@ class Reader extends React.Component<IProps, IState> {
             toggleMenu: this.handleSettingsClick,
             r2Publication: this.props.r2Publication,
             handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
+
+            divinaReadingMode: this.state.divinaReadingMode,
+            divinaReadingModeSupported: this.state.divinaReadingModeSupported,
+
+            isDivina: this.props.isDivina,
+            isPdf: this.props.isPdf,
+            pdfEventBus: this.state.pdfPlayerBusEvent,
+            openedSection: this.state.openedSectionSettings,
         };
 
         return (
@@ -361,6 +410,7 @@ class Reader extends React.Component<IProps, IState> {
                 />
                 <div className={styles.root}>
                     <ReaderHeader
+                        shortcutEnable={this.state.shortcutEnable}
                         infoOpen={this.props.infoOpen}
                         menuOpen={this.state.menuOpen}
                         settingsOpen={this.state.settingsOpen}
@@ -395,14 +445,18 @@ class Reader extends React.Component<IProps, IState> {
                         handleReaderClose={this.handleReaderClose}
                         toggleBookmark={() => this.handleToggleBookmark(false)}
                         isOnBookmark={this.state.visibleBookmarkList.length > 0}
+                        isOnSearch={this.props.searchEnable}
                         readerOptionsProps={readerOptionsProps}
                         readerMenuProps={readerMenuProps}
                         displayPublicationInfo={this.displayPublicationInfo}
-                        currentLocation={this.props.isDivina ? this.props.locator : this.state.currentLocation}
+                        // tslint:disable-next-line: max-line-length
+                        currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                         isDivina={this.props.isDivina}
+                        isPdf={this.props.isPdf}
                     />
                     <div className={classNames(styles.content_root,
-                            this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
+                        this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
+                        <PickerManager showSearchResults={this.showSearchResults}></PickerManager>
                         <div className={styles.reader}>
                             <main
                                 id="main"
@@ -430,11 +484,14 @@ class Reader extends React.Component<IProps, IState> {
                 <ReaderFooter
                     navLeftOrRight={this.navLeftOrRight_.bind(this)}
                     fullscreen={this.state.fullscreen}
-                    currentLocation={this.props.isDivina ? this.props.locator : this.state.currentLocation}
+                    // tslint:disable-next-line: max-line-length
+                    currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                     r2Publication={this.props.r2Publication}
                     handleLinkClick={this.handleLinkClick}
                     goToLocator={this.goToLocator}
                     isDivina={this.props.isDivina}
+                    divinaNumberOfPages={this.state.divinaNumberOfPages}
+                    isPdf={this.props.isPdf}
                 />
             </div>
         );
@@ -753,6 +810,9 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardPageNavigationPreviousNext(true);
     }
     private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
+        if (this.props.isDivina) {
+            return;
+        }
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardPageNavigationPreviousNext)");
@@ -761,6 +821,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         this.navLeftOrRight_(isPrevious, false);
+
     }
 
     private onKeyboardSpineNavigationNext = () => {
@@ -770,6 +831,9 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardSpineNavigationPreviousNext(true);
     }
     private onKeyboardSpineNavigationPreviousNext = (isPrevious: boolean) => {
+        if (this.props.isDivina) {
+            return;
+        }
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardSpineNavigationPreviousNext)");
@@ -798,9 +862,119 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
+    private divinaSetLocation = ({ pageIndex, nbOfPages }: { pageIndex: number, nbOfPages: number }) => {
+        const loc = {
+            locator: {
+                href: pageIndex.toString(),
+                locations: {
+                    position: pageIndex,
+                    progression: pageIndex / nbOfPages,
+                },
+            },
+        };
+        console.log("pageChange", pageIndex, nbOfPages);
+        this.handleReadingLocationChange(loc as LocatorExtended);
+
+    }
+
     private async loadPublicationIntoViewport() {
 
-        if (this.props.isDivina) {
+        if (this.props.r2Publication?.Metadata?.Title) {
+            const title = this.props.translator.translateContentField(this.props.r2Publication.Metadata.Title);
+
+            window.document.title = capitalizedAppName;
+            if (title) {
+                window.document.title = `${capitalizedAppName} - ${title}`;
+                // this.setState({
+                //     title,
+                // });
+            }
+        }
+
+        if (this.props.isPdf) {
+
+            const publicationViewport = this.mainElRef.current;
+            if (publicationViewport) {
+                // tslint:disable-next-line: max-line-length
+                publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow-y: scroll; overflow-x: scroll;");
+            }
+
+            const readingOrder = this.props.r2Publication?.Spine;
+            let pdfUrl = this.props.manifestUrlR2Protocol;
+            if (Array.isArray(readingOrder)) {
+                const link = readingOrder[0];
+                if (link.TypeLink === mimeTypes.pdf) {
+
+                    pdfUrl = this.props.manifestUrlR2Protocol + "/../" + link.Href;
+                }
+            } else {
+                console.log("can't found pdf link");
+            }
+
+            console.log("pdf url", pdfUrl);
+
+            const clipboardInterceptor = // !this.props.publicationView.lcp ? undefined :
+                (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
+                    apiAction("reader/clipboardCopy", this.props.pubId, clipboardData)
+                        .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
+                };
+
+            const [pdfPlayerBusEvent, pdfPlayerToc] = await pdfMountWebview(
+                pdfUrl,
+                publicationViewport,
+                clipboardInterceptor);
+
+            this.setState({
+                pdfPlayerToc,
+                pdfPlayerBusEvent,
+            });
+
+            console.log("toc", this.state.pdfPlayerToc);
+
+            this.state.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
+
+                console.log("pdfPlayer page changed", pageNumber);
+            });
+
+            this.state.pdfPlayerBusEvent.subscribe("scale", (scale) => {
+
+                console.log("pdfPlayer scale changed", scale);
+            });
+
+            this.state.pdfPlayerBusEvent.subscribe("view", (view) => {
+
+                console.log("pdfPlayer view changed", view);
+            });
+
+            this.state.pdfPlayerBusEvent.subscribe("column", (column) => {
+
+                console.log("pdfPlayer column changed", column);
+            });
+
+            this.state.pdfPlayerBusEvent.subscribe("search", (search) => {
+
+                console.log("pdfPlayer search word changed", search);
+            });
+
+            this.state.pdfPlayerBusEvent.subscribe("search-next", () => {
+
+                console.log("pdfPlayer highlight next search word executed");
+            });
+
+            this.state.pdfPlayerBusEvent.subscribe("search-previous", () => {
+
+                console.log("pdfPlayer highlight previous search word executed");
+            });
+
+            /* master subscribe */
+            this.state.pdfPlayerBusEvent.subscribe("page-next", () => {
+                console.log("pdfPlayer next page requested");
+            });
+            this.state.pdfPlayerBusEvent.subscribe("page-previous", () => {
+                console.log("pdfPlayer previous page requested");
+            });
+
+        } else if (this.props.isDivina) {
 
             console.log("DIVINA !!");
 
@@ -827,24 +1001,28 @@ class Reader extends React.Component<IProps, IState> {
                 language: this.props.lang,
             };
 
-            let manifestJson: any;
-            try {
+            // let manifestJson: any;
+            // try {
 
-                const manifestBuffer = Buffer.from(this.props.publicationView.r2PublicationBase64, "base64");
-                const manifestStr = manifestBuffer.toString();
-                manifestJson = JSON.parse(manifestStr);
-            } catch (e) {
-                console.log("divina manifest parsing error");
-            }
+            //     const manifestBuffer = Buffer.from(this.props.publicationView.r2PublicationBase64, "base64");
+            //     const manifestStr = manifestBuffer.toString();
+            //     manifestJson = JSON.parse(manifestStr);
+            // } catch (e) {
+            //     console.log("divina manifest parsing error");
+            // }
 
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
 
-            const manifestUrl = this.props.manifestUrlR2Protocol;
-            const url = manifestUrl.split("/manifest.json")[0];
-            console.log("divina url", url);
+            let manifestUrl = this.props.manifestUrlR2Protocol;
+            console.log("divina url", manifestUrl);
+            if (manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)) {
+                manifestUrl = convertCustomSchemeToHttpUrl(manifestUrl);
+            }
+            console.log("divina url ADJUSTED", manifestUrl);
 
+            const [url] = manifestUrl.split("/manifest.json");
             // Load the divina from its folder path
-            this.currentDivinaPlayer.openDivinaFromJsonAndPath(manifestJson, url, url, options);
+            this.currentDivinaPlayer.openDivinaFromFolderPath(url, null, options);
 
             // Handle events emitted by the currentDivinaPlayer
             const eventEmitter = this.currentDivinaPlayer.eventEmitter;
@@ -853,39 +1031,43 @@ class Reader extends React.Component<IProps, IState> {
             });
             eventEmitter.on("pagenavigatorscreation", (data: any) => {
                 console.log("Page navigators creation", data);
+
+                // Page navigators creation { readingModesArray: [ 'scroll' ], languagesArray: [ 'unspecified' ] }
+                this.setState({ divinaReadingModeSupported: data.readingModesArray });
             });
             eventEmitter.on("initialload", (data: any) => {
                 console.log("Initial load", data);
             });
             eventEmitter.on("languagechange", (data: any) => {
                 console.log("Language change", data);
+
+                // Language change { language: 'unspecified' }
             });
             eventEmitter.on("readingmodechange", (data: any) => {
                 console.log("Reading mode change", data);
+
+                // Reading mode change { readingMode: 'scroll', nbOfPages: 1 }
+                this.setState({ divinaReadingMode: data.readingMode, divinaNumberOfPages: data.nbOfPages });
+                const index = parseInt(this.props.locator?.locator?.href, 10);
+                if (typeof index === "number" && index >= 0) {
+                    console.log("index divina", index);
+                } else {
+                    this.divinaSetLocation({ pageIndex: 0, nbOfPages: data.nbOfPages });
+                }
             });
             eventEmitter.on("readingmodeupdate", (data: any) => {
                 console.log("Reading mode update", data);
+
+                this.setState({ divinaReadingMode: data.readingMode, divinaNumberOfPages: data.nbOfPages });
             });
-            // eventEmitter.on("pagechange", (data: any) => {
-            //     console.log("Page change", data);
-            // });
+            eventEmitter.on("pagechange", (data: any) => {
+                console.log("Page change", data);
+            });
 
         } else {
             this.setState({
                 r2PublicationHasMediaOverlays: publicationHasMediaOverlays(this.props.r2Publication),
             });
-
-            if (this.props.r2Publication.Metadata && this.props.r2Publication.Metadata.Title) {
-                const title = this.props.translator.translateContentField(this.props.r2Publication.Metadata.Title);
-
-                window.document.title = capitalizedAppName;
-                if (title) {
-                    window.document.title = `${capitalizedAppName} - ${title}`;
-                    // this.setState({
-                    //     title,
-                    // });
-                }
-            }
 
             let preloadPath = "preload.js";
             if (_PACKAGING === "1") {
@@ -927,11 +1109,16 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private handleMenuButtonClick() {
+    private showSearchResults() {
+        this.handleMenuButtonClick(4); // "search" in ReaderMenu.tsx
+    }
+
+    private handleMenuButtonClick(openedSectionMenu?: number | undefined) {
         this.setState({
             menuOpen: !this.state.menuOpen,
             shortcutEnable: this.state.menuOpen,
             settingsOpen: false,
+            openedSectionMenu,
         });
     }
 
@@ -940,7 +1127,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleReadingLocationChange(loc: LocatorExtended) {
-        if (!this.props.isDivina && this.ttsOverlayEnableNeedsSync) {
+        if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
         }
         this.ttsOverlayEnableNeedsSync = false;
@@ -966,7 +1153,7 @@ class Reader extends React.Component<IProps, IState> {
             // calling into the webview via IPC is expensive,
             // let's filter out ahead of time based on document href
             if (!locator || locator.href === bookmark.locator.href) {
-                if (this.props.isDivina) {
+                if (this.props.isDivina || this.props.isPdf) {
                     const isVisible = bookmark.locator.href === this.props.locator.locator.href;
                     if (isVisible) {
                         visibleBookmarkList.push(bookmark);
@@ -998,7 +1185,13 @@ class Reader extends React.Component<IProps, IState> {
 
     private navLeftOrRight_(left: boolean, spineNav?: boolean) {
 
-        if (this.props.isDivina) {
+        if (this.props.isPdf) {
+            if (left) {
+                this.state.pdfPlayerBusEvent?.dispatch("page-previous");
+            } else {
+                this.state.pdfPlayerBusEvent?.dispatch("page-next");
+            }
+        } else if (this.props.isDivina) {
 
             if (this.currentDivinaPlayer) {
                 if (left) {
@@ -1028,9 +1221,16 @@ class Reader extends React.Component<IProps, IState> {
 
     private goToLocator(locator: R2Locator) {
 
-        if (this.props.isDivina) {
+        if (this.props.isPdf) {
+
             const index = parseInt(locator?.href, 10);
-            if (typeof index !== "undefined" && index >= 0) {
+            if (index) {
+                this.state.pdfPlayerBusEvent?.dispatch("page", index);
+            }
+
+        } else if (this.props.isDivina) {
+            const index = parseInt(locator?.href, 10);
+            if (index >= 0) {
                 this.currentDivinaPlayer.goToPageWithIndex(index);
             }
         } else {
@@ -1050,7 +1250,14 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        if (this.props.isDivina) {
+        if (this.props.isPdf) {
+
+            const index = parseInt(url, 10);
+            if (index) {
+                this.state.pdfPlayerBusEvent?.dispatch("page", index);
+            }
+
+        } else if (this.props.isDivina) {
 
             const newUrl = this.props.manifestUrlR2Protocol.split("/manifest.json")[1] + url;
 
@@ -1068,7 +1275,7 @@ class Reader extends React.Component<IProps, IState> {
 
         const visibleBookmark = this.state.visibleBookmarkList;
 
-        if (this.props.isDivina) {
+        if (this.props.isDivina || this.props.isPdf) {
 
             const locator = this.props.locator?.locator;
             const href = locator?.href;
@@ -1163,12 +1370,12 @@ class Reader extends React.Component<IProps, IState> {
                 }
 
                 try {
-                await apiAction("reader/addBookmark", this.props.pubId, locator, name);
-            } catch (e) {
-                console.error("Error to fetch api reader/addBookmark", e);
+                    await apiAction("reader/addBookmark", this.props.pubId, locator, name);
+                } catch (e) {
+                    console.error("Error to fetch api reader/addBookmark", e);
+                }
             }
         }
-    }
     }
 
     private handleReaderClose() {
@@ -1185,11 +1392,12 @@ class Reader extends React.Component<IProps, IState> {
         this.setState({ fullscreen: !this.state.fullscreen });
     }
 
-    private handleSettingsClick() {
+    private handleSettingsClick(openedSectionSettings?: number | undefined) {
         this.setState({
             settingsOpen: !this.state.settingsOpen,
             shortcutEnable: this.state.settingsOpen,
             menuOpen: false,
+            openedSectionSettings,
         });
     }
 
@@ -1395,9 +1603,11 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // const isDivina = isDivinaFn(state.r2Publication);
     // const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
     const isDivina = isDivinaFn(state.reader.info.r2Publication);
+    const isPdf = isPdfFn(state.reader.info.r2Publication);
 
     return {
         isDivina,
+        isPdf,
         lang: state.i18n.locale,
         publicationView: state.reader.info.publicationView,
         r2Publication: state.reader.info.r2Publication,
@@ -1408,6 +1618,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
             state.dialog.type === DialogTypeName.PublicationInfoReader,
         pubId: state.reader.info.publicationIdentifier,
         locator: state.reader.locator,
+        searchEnable: state.search.enable,
         manifestUrlR2Protocol: state.reader.info.manifestUrlR2Protocol,
         winId: state.win.identifier,
     };
@@ -1416,11 +1627,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
-            if (fullscreenOn) {
-                dispatch(readerActions.fullScreenRequest.build(true));
-            } else {
-                dispatch(readerActions.fullScreenRequest.build(false));
-            }
+                dispatch(readerActions.fullScreenRequest.build(fullscreenOn));
         },
         closeReader: () => {
             dispatch(readerActions.closeRequest.build());
