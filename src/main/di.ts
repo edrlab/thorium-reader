@@ -7,6 +7,7 @@
 
 import "reflect-metadata";
 
+import * as atomically from "atomically";
 import * as debug_ from "debug";
 import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
@@ -287,6 +288,48 @@ const getAllReaderWindowFromDi =
     () =>
         container.getAll<BrowserWindow>("WIN_REGISTRY_READER");
 
+/// redux persistence
+
+const rootReduxPersist = path.join(
+    userDataPath,
+    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "reduxpersist-dev.json" : "reduxpersist.json",
+);
+
+const getReduxPersistState = async (): Promise<Partial<RootState>> => {
+
+    try {
+        const buffer = await atomically.readFile(rootReduxPersist);
+        return JSON.parse(buffer.toString());
+    } catch (e) {
+
+        debug(e);
+        debug("create a new file:", rootReduxPersist);
+        fs.writeFileSync(rootReduxPersist, Buffer.from(JSON.stringify({})));
+    }
+    return {};
+};
+
+const setReduxPersistState = async (data: Partial<RootState>) => {
+
+    const buffer = Buffer.from(JSON.stringify(data));
+
+    try {
+        await atomically.writeFile(rootReduxPersist, buffer);
+    } catch (error) {
+
+        debug("######");
+        debug("######");
+        debug("ERROR TO ATOMICALLY Write ", rootReduxPersist);
+        debug(error);
+        debug("######");
+        debug("######");
+
+        fs.writeFileSync(rootReduxPersist, buffer);
+    }
+};
+
+///
+
 // local interface to force type return
 interface IGet {
     (s: "store"): Store<RootState>;
@@ -329,4 +372,6 @@ export {
     saveReaderWindowInDi,
     getAllReaderWindowFromDi,
     createStoreFromDi,
+    setReduxPersistState,
+    getReduxPersistState,
 };

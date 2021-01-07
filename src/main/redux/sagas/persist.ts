@@ -8,12 +8,12 @@
 import * as debug_ from "debug";
 import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
+import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, setReduxPersistState } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { call, debounce  } from "redux-saga/effects";
 
-const DEBOUNCE_TIME = 1000;
+const DEBOUNCE_TIME = 30000;
 
 // Logger
 const filename_ = "readium-desktop:main:saga:persist";
@@ -22,20 +22,22 @@ debug("_");
 
 const persistStateToFs = async (nextState: RootState) => {
 
-    // currently saved with pouchDb in one json file.
-    // may be consuming a lot of I/O
-    // rather need to save by chunck of data in many json file
+    const data = {
+        win: nextState.win,
+        publication: nextState.publication,
+        reader: nextState.reader,
+        session: nextState.session,
+    };
 
     debug("start of persist reduxState in disk");
+    await setReduxPersistState(data);
+
+    // TODO : REMOVE THIS !
+    // there are a new redux persistence
     const configRepository: ConfigRepository<Partial<RootState>> = diMainGet("config-repository");
     await configRepository.save({
         identifier: CONFIGREPOSITORY_REDUX_PERSISTENCE,
-        value: {
-            win: nextState.win,
-            publication: nextState.publication,
-            reader: nextState.reader,
-            session: nextState.session,
-        },
+        value: data,
     });
     debug("end of persist reduxState in disk");
 };

@@ -17,7 +17,7 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
+import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, getReduxPersistState } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
@@ -138,9 +138,22 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("ERR when get state from FS", err);
     }
 
-    let reduxStateWin = reduxStateWinRepository?.value?.win
-        ? reduxStateWinRepository.value
-        : undefined;
+    const reduxStateWinFromFS = await getReduxPersistState();
+
+    let reduxStateWin =
+        reduxStateWinFromFS?.win
+            ? reduxStateWinFromFS
+            : reduxStateWinRepository?.value?.win
+                ? reduxStateWinRepository.value
+                : undefined;
+
+    if (reduxStateWinFromFS?.win) {
+        debug("NEW REDUX STATE PERSISTENCE IS LOADED ✅");
+    } else if (reduxStateWinRepository?.value?.win) {
+        debug("REDUX STATE PERSISTENCE IS LOADED FROM POUCHDB ❌");
+    } else {
+        debug("THERE ARE NO REDUX STATE PERSISTENCE FROM FS");
+    }
 
     const i18n = i18nStateRepository?.value?.locale
                 ? i18nStateRepository.value

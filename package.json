@@ -234,6 +234,7 @@
     }
   },
   "dependencies": {
+    "atomically": "^1.7.0",
     "classnames": "^2.2.6",
     "commonmark": "^0.29.3",
     "connected-react-router": "^6.8.0",
