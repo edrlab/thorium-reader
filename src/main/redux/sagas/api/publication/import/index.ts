@@ -84,7 +84,7 @@ export function* importFromString(
     if (manifest) {
 
         try {
-            const publicationDocument = yield* callTyped(importFromStringService, manifest);
+            const [publicationDocument]  = yield* callTyped(importFromStringService, manifest);
 
             if (!publicationDocument) {
                 throw new Error("publicationDocument not imported on db");

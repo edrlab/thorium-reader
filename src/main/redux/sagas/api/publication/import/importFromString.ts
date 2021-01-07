@@ -6,12 +6,8 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { toastActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-import { diMainGet } from "readium-desktop/main/di";
-import { put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 
 import { packageFromManifestBuffer } from "../packager/packageLink";
@@ -22,31 +18,14 @@ const debug = debug_("readium-desktop:main#saga/api/publication/importFromString
 
 export function* importFromStringService(
     manifest: string,
-): SagaGenerator<PublicationDocument | undefined> {
+): SagaGenerator<[publicationDoc: PublicationDocument, alreadyImported: boolean]> {
 
-    try {
-
-        const packagePath = yield* callTyped(packageFromManifestBuffer, "file://", Buffer.from(manifest));
-        if (packagePath) {
-            return yield* callTyped(importFromFsService, packagePath);
-        } else {
-            debug("package path is empty");
-        }
-
-    } catch (e) {
-
-        const translate = diMainGet("translator").translate;
-        debug("importFromLink failed", e.toString(), e.trace);
-        yield put(
-            toastActions.openRequest.build(
-                ToastType.Error,
-                translate(
-                    "message.import.fail", { path: "", err: e.toString() },
-                ),
-            ),
-        );
+    const packagePath = yield* callTyped(packageFromManifestBuffer, "file://", Buffer.from(manifest));
+    if (packagePath) {
+        return yield* callTyped(importFromFsService, packagePath);
+    } else {
+        debug("package path is empty");
     }
 
-    debug("error to import from buffer");
-    return undefined;
+    return [undefined, false];
 }
