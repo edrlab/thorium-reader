@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { existsSync } from "fs";
+import { existsSync, promises } from "fs";
 import * as path from "path";
 import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
@@ -20,7 +20,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { mimeTypes } from "readium-desktop/utils/mimeTypes";
+import { findMimeTypeWithExtension, mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 import { Metadata } from "@r2-shared-js/models/metadata";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -47,8 +47,9 @@ export class Information extends React.Component<IProps, undefined> {
     }
 
     public async componentDidMount() {
-        const { locale } = this.props;
+        const { locale, __ } = this.props;
         const infoFolderRelativePath = "assets/md/information";
+        const imagesFolder = "images";
 
         let aboutLocale = locale;
 
@@ -87,13 +88,23 @@ export class Information extends React.Component<IProps, undefined> {
             const publication = new R2Publication();
             publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
             publication.Metadata = new Metadata();
-            publication.Metadata.Title = title;
+            publication.Metadata.Title = `${__("reader.footerInfo.moreInfo")} ${aboutLocale}`;
 
             const link = new Link();
             link.Href = filePath;
             link.TypeLink = mimeTypes.html;
             link.Title = aboutLocale;
             publication.Spine = [link];
+
+            const imgPath = path.join(folderPath, imagesFolder);
+            const imgArray = await promises.readdir(imgPath);
+            publication.Resources = imgArray.map((i) => {
+                const l = new Link();
+                l.Href = path.join(imgPath, i);
+                l.TypeLink = findMimeTypeWithExtension(path.extname(l.Href));
+
+                return l;
+            });
 
             const publicationSerialize = TaJsonSerialize(publication);
             const publicationStr = JSON.stringify(publicationSerialize);
@@ -106,7 +117,6 @@ export class Information extends React.Component<IProps, undefined> {
         } finally {
 
             this.forceUpdate();
-            this.props.closeReader();
         }
     }
 
