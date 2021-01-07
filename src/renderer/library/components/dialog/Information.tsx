@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { existsSync } from "fs";
 import * as path from "path";
 import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
@@ -46,14 +47,15 @@ export class Information extends React.Component<IProps, undefined> {
     }
 
     public async componentDidMount() {
-        const { locale, __ } = this.props;
+        const { locale } = this.props;
         const infoFolderRelativePath = "assets/md/information";
+
+        let aboutLocale = locale;
 
         try {
 
-            const title = `${__("reader.footerInfo.moreInfo")} ${locale}`;
-
-            const [pubView] = await apiAction("publication/search", title);
+            let title = `_______________ ${aboutLocale}`;
+            let [pubView] = await apiAction("publication/search", title);
             if (pubView) {
 
                 console.log("pubView already exist no need to generate a new one");
@@ -67,7 +69,20 @@ export class Information extends React.Component<IProps, undefined> {
             if (_PACKAGING === "0") {
                 folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
             }
-            const filePath = path.join(folderPath, `${locale}.html`);
+            let filePath = path.join(folderPath, `${aboutLocale}.html`);
+            aboutLocale = existsSync(filePath) === true ? locale : "en";
+            filePath = path.join(folderPath, `${aboutLocale}.html`);
+            title = `_______________ ${aboutLocale}`;
+
+            [pubView] = await apiAction("publication/search", title);
+            if (pubView) {
+
+                console.log("pubView already exist no need to generate a new one");
+                console.log(pubView);
+
+                this.manifestView = pubView;
+                return;
+            }
 
             const publication = new R2Publication();
             publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
@@ -77,7 +92,7 @@ export class Information extends React.Component<IProps, undefined> {
             const link = new Link();
             link.Href = filePath;
             link.TypeLink = mimeTypes.html;
-            link.Title = locale;
+            link.Title = aboutLocale;
             publication.Spine = [link];
 
             const publicationSerialize = TaJsonSerialize(publication);
@@ -86,11 +101,12 @@ export class Information extends React.Component<IProps, undefined> {
             this.manifestView = await apiAction("publication/importFromString", publicationStr);
 
         } catch (e) {
-            console.log("error to import about", locale, e);
+            console.log("error to import about", aboutLocale, e);
 
         } finally {
 
             this.forceUpdate();
+            this.props.closeReader();
         }
     }
 
@@ -128,6 +144,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         // },
         openReader: (publicationView: PublicationView) => {
             dispatch(readerActions.openRequest.build(publicationView.identifier));
+            dispatch(dialogActions.closeRequest.build());
+        },
+        closeReader: () => {
             dispatch(dialogActions.closeRequest.build());
         },
     };
