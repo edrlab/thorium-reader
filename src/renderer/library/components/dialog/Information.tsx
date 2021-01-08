@@ -93,7 +93,7 @@ export class Information extends React.Component<IProps, undefined> {
 
             const link = new Link();
             link.Href = htmlFile;
-            link.TypeLink = mimeTypes.html;
+            link.TypeLink = mimeTypes.xhtml;
             link.Title = aboutLocale;
             publication.Spine = [link];
 
