@@ -19,7 +19,7 @@ export enum ContentType {
     Opds2Pub = "application/opds-publication+json",
     OpenSearch = "application/opensearchdescription+xml",
     FormUrlEncoded = "application/x-www-form-url-encoded",
-    Xhtml = "application/xml+xhtml",
+    Xhtml = "application/xhtml+xml",
     Html = "text/html",
     Epub = "application/epub+zip",
     Lpf = "application/lpf+zip",
@@ -46,3 +46,18 @@ export const parseContentType = (RawContentType: string): ContentType | undefine
         (pv, cv) => pv || Object.values(ContentType).find((v) => v === cv), undefined);
     return contentType;
 };
+
+export const contentTypeisXml = (contentType: ContentType | undefined) =>
+    contentType && (
+        contentType === ContentType.AtomXml
+        || contentType === ContentType.Xml
+        || contentType === ContentType.TextXml
+    );
+
+export const contentTypeisOpds = (contentType: ContentType | undefined) =>
+    contentType && (
+        contentType === ContentType.Json
+        || contentType === ContentType.Opds2
+        || contentType === ContentType.Opds2Auth
+        || contentType === ContentType.Opds2Pub
+    );

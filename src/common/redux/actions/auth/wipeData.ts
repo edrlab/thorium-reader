@@ -5,6 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BaseError } from "./base";
+import { Action } from "readium-desktop/common/models/redux";
 
-export class OpdsParsingError extends BaseError { }
+export const ID = "AUTH_WIPE_DATA";
+
+export function build():
+    Action<typeof ID> {
+
+    return {
+        type: ID,
+    };
+}
+build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

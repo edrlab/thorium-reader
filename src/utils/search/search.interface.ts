@@ -19,4 +19,6 @@ export interface ISearchResult {
 export interface ISearchDocument {
     xml: string;
     href: string;
+    contentType: string;
+    isFixedLayout: boolean;
 }

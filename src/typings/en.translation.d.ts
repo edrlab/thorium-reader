@@ -122,6 +122,7 @@ declare namespace typed_i18n {
   readonly "noPublicationHelpL4": string,
   readonly "numberOfPages": string,
   readonly "opds": {
+    readonly "auth": { readonly "cancel": string, readonly "login": string },
     readonly "info": {
       readonly "availableSince": string,
       readonly "availableState": {
@@ -189,6 +190,7 @@ declare namespace typed_i18n {
   (_: "catalog.noPublicationHelpL4", __?: {}): string;
   (_: "catalog.numberOfPages", __?: {}): string;
   (_: "catalog.opds", __?: {}): {
+  readonly "auth": { readonly "cancel": string, readonly "login": string },
   readonly "info": {
     readonly "availableSince": string,
     readonly "availableState": {
@@ -208,6 +210,9 @@ declare namespace typed_i18n {
     readonly "state": string
   }
 };
+  (_: "catalog.opds.auth", __?: {}): { readonly "cancel": string, readonly "login": string };
+  (_: "catalog.opds.auth.cancel", __?: {}): string;
+  (_: "catalog.opds.auth.login", __?: {}): string;
   (_: "catalog.opds.info", __?: {}): {
   readonly "availableSince": string,
   readonly "availableState": {
@@ -553,10 +558,10 @@ declare namespace typed_i18n {
     readonly "justification": string,
     readonly "justify": string,
     readonly "letterSpacing": string,
-    readonly "paraSpacing": string,
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "paginated": string,
+    readonly "paraSpacing": string,
     readonly "pdfZoom": {
       readonly "name": {
         readonly "100pct": string,
@@ -715,10 +720,10 @@ declare namespace typed_i18n {
   readonly "justification": string,
   readonly "justify": string,
   readonly "letterSpacing": string,
-  readonly "paraSpacing": string,
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "paginated": string,
+  readonly "paraSpacing": string,
   readonly "pdfZoom": {
     readonly "name": {
       readonly "100pct": string,
@@ -772,10 +777,10 @@ declare namespace typed_i18n {
   (_: "reader.settings.justification", __?: {}): string;
   (_: "reader.settings.justify", __?: {}): string;
   (_: "reader.settings.letterSpacing", __?: {}): string;
-  (_: "reader.settings.paraSpacing", __?: {}): string;
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
+  (_: "reader.settings.paraSpacing", __?: {}): string;
   (_: "reader.settings.pdfZoom", __?: {}): {
   readonly "name": {
     readonly "100pct": string,
@@ -859,6 +864,7 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "settings", __?: {}): {
+  readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
@@ -878,6 +884,8 @@ declare namespace typed_i18n {
     readonly "yes": string
   }
 };
+  (_: "settings.auth", __?: {}): { readonly "wipeData": string };
+  (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
   readonly "cancel": string,

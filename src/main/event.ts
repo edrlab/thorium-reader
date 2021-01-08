@@ -7,6 +7,8 @@
 
 import { channel } from "redux-saga";
 
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+
 const openFileFromCliChannel = channel<string>();
 
 export const getOpenFileFromCliChannel = () => openFileFromCliChannel;
@@ -18,3 +20,13 @@ export const getOpenTitleFromCliChannel = () => openTitleFromCliChannel;
 const openUrlFromMacEventChannel = channel<string>();
 
 export const getOpenUrlFromMacEventChannel = () => openUrlFromMacEventChannel;
+
+//
+// OPDS2 authentication
+//
+
+export type TOpdsAuthenticationChannel = [doc: OPDSAuthenticationDoc, baseUrl: string];
+
+const opdsAuthenticationChannel = channel<TOpdsAuthenticationChannel>();
+
+export const getOpdsAuthenticationChannel = () => opdsAuthenticationChannel;

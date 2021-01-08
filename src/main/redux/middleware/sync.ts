@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
-    apiActions, dialogActions, downloadActions, i18nActions, keyboardActions, lcpActions,
+    apiActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     readerActions, toastActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
@@ -24,6 +24,7 @@ const debug = debug_("readium-desktop:sync");
 const SYNCHRONIZABLE_ACTIONS: string[] = [
     apiActions.result.ID,
 
+    historyActions.refresh.ID,
     dialogActions.openRequest.ID,
 
     readerActions.detachModeSuccess.ID,
