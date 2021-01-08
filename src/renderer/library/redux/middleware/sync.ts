@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, downloadActions, i18nActions, keyboardActions, readerActions,
+    apiActions, authActions, downloadActions, i18nActions, keyboardActions, readerActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -14,6 +14,8 @@ import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/sy
 const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     apiActions.request.ID,
+
+    authActions.wipeData.ID,
 
     readerActions.openRequest.ID,
     readerActions.closeRequest.ID,

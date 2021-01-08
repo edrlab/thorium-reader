@@ -80,26 +80,4 @@ export class OpdsApi implements IOpdsApi {
         const link = Array.isArray(searchLink) ? searchLink : [searchLink];
         return this.opdsService.parseOpdsSearchUrl(link);
     }
-
-    // tslint:disable-next-line: max-line-length
-    public async oauth(
-        opdsUrl: string,
-        login: string | undefined,
-        passwordEncrypted: string | undefined,
-        oAuthUrl: string,
-        oAuthRefreshUrl: string | undefined,
-        OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
-        OPDS_AUTH_ENCRYPTION_IV_HEX: string,
-        refreshToken?: string): Promise<boolean> {
-
-        return this.opdsService.oauth(
-            opdsUrl,
-            login,
-            passwordEncrypted,
-            oAuthUrl,
-            oAuthRefreshUrl,
-            OPDS_AUTH_ENCRYPTION_KEY_HEX,
-            OPDS_AUTH_ENCRYPTION_IV_HEX,
-            refreshToken);
-    }
 }

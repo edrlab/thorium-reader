@@ -8,7 +8,8 @@
 // import { JSDOM } from "jsdom";
 // import * as xmldom from "xmldom";
 
-import { ContentType } from "../content-type";
+import { ContentType } from "../contentType";
+
 import { ISearchDocument, ISearchResult } from "./search.interface";
 import { searchDocDomSeek } from "./searchWithDomSeek";
 

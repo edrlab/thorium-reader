@@ -74,6 +74,10 @@
         "noPublicationHelpL4": "サポートされる拡張機能：",
         "numberOfPages": "ページ数",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "始まり",
                 "availableState": {
@@ -345,6 +349,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "メニュー",
             "cancel": "キャンセル",
