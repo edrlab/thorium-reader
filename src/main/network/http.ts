@@ -69,7 +69,8 @@ export const httpSetToConfigRepoOpdsAuthenticationToken =
 
         const url = new URL(data.opdsAuthenticationUrl);
         const { host } = url;
-        debug("SET opds authentication credentials for", host, data);
+        // do not risk showing plaintext access/refresh tokens in console / command line shell
+        debug("SET opds authentication credentials for", host); // data
         const configRepo = diMainGet("config-repository");
         await configRepo.save({
             identifier: CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host),
@@ -87,7 +88,8 @@ export const getConfigRepoOpdsAuthenticationToken =
             const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
             const doc = await configRepo.get(id);
             debug("GET opds authentication credentials for", host);
-            debug("Credentials: ", doc?.value);
+            // do not risk showing plaintext access/refresh tokens in console / command line shell
+            // debug("Credentials: ", doc?.value);
             return doc?.value;
         },
         filename_,
@@ -404,8 +406,9 @@ export const httpPost: typeof httpFetchFormattedResponse =
         options.method = "post";
         arg[1] = options;
 
-        debug("Body:");
-        debug(options.body);
+        // do not risk showing plaintext password in console / command line shell
+        // debug("Body:");
+        // debug(options.body);
 
         return httpFetchFormattedResponse(...arg);
     };
