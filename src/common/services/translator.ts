@@ -17,6 +17,7 @@ import * as ltCatalog from "readium-desktop/resources/locales/lt.json";
 import * as nlCatalog from "readium-desktop/resources/locales/nl.json";
 import * as ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
 import * as ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
+import * as ruCatalog from "readium-desktop/resources/locales/ru.json";
 import * as zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
 
 import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
@@ -29,6 +30,7 @@ import * as ltLang from "readium-desktop/resources/locale-names/ltLang.json";
 import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
 import * as ptBrLang from "readium-desktop/resources/locale-names/ptBrLang.json";
 import * as ptPtLang from "readium-desktop/resources/locale-names/ptPtLang.json";
+import * as ruLang from "readium-desktop/resources/locale-names/ruLang.json";
 import * as zhCnLang from "readium-desktop/resources/locale-names/zhCnLang.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
@@ -121,6 +123,9 @@ i18nextInstance.init({
         "it" : {
             translation: itCatalog,
         },
+        "ru" : {
+            translation: ruCatalog,
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
@@ -153,6 +158,7 @@ i18nextInstance.addResourceBundle("pt-BR", "translation", ptBrLang, true);
 i18nextInstance.addResourceBundle("pt-PT", "translation", ptPtLang, true);
 i18nextInstance.addResourceBundle("zh-CN", "translation", zhCnLang, true);
 i18nextInstance.addResourceBundle("it", "translation", itLang, true);
+i18nextInstance.addResourceBundle("ru", "translation", ruLang, true);
 
 const i18nextInstanceEN = i18nextInstance.cloneInstance();
 i18nextInstanceEN.changeLanguage("en").then((_t) => {
@@ -176,6 +182,7 @@ export const AvailableLanguages = {
     "pt-PT": "Português",
     "zh-CN": "中文",
     "it": "Italiano",
+    "ru": "Русский",
 };
 
 interface LocalizedContent {
