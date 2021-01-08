@@ -20,7 +20,7 @@ import { importFromFsService } from "./importFromFs";
 import { importFromLinkService } from "./importFromLink";
 
 // Logger
-const debug = debug_("readium-desktop:main#saga/api/publication/importFromFSService");
+const debug = debug_("readium-desktop:main#saga/api/publication/import");
 
 export function* importFromLink(
     link: IOpdsLinkView,
