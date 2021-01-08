@@ -12,7 +12,8 @@ import * as path from "path";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
-    getUniqueResourcesFromR2Publication, w3cPublicationManifestToReadiumPublicationManifest,
+    getUniqueResourcesFromR2Publication,
+    w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
 import {
     findManifestFromHtmlEntryAndReturnBuffer,
@@ -84,31 +85,53 @@ const linksToArray = (lns: Link[]): string[] =>
                 : pv,
         new Array<string>());
 
-type TResources = Array<[fsPath: string, href: string, zipPath: string]>;
+type TResource = [fsPath: string, href: string, zipPath: string];
+type TResources = TResource[];
 function* downloadResources(
     r2Publication: R2Publication,
     title: string,
     baseUrl: string,
 ): SagaGenerator<TResources> {
-    const uResources = getUniqueResourcesFromR2Publication(r2Publication);
 
+    const uResources = getUniqueResourcesFromR2Publication(r2Publication);
     const resourcesHref = [...new Set(linksToArray(uResources))];
+    const resourcesType = resourcesHref.map((v) => {
+        // tslint:disable-next-line
+        try { new URL(v); return false; } catch {}
+        return true;
+    });
+
     const resourcesHrefResolved = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
 
-    const pathArray = yield* callTyped(downloader, resourcesHrefResolved, title);
+    const pathArrayFromDownloader = baseUrl.startsWith("file://")
+        ? resourcesHrefResolved.map((v) => v.slice("file://".length))
+        : yield* callTyped(downloader, resourcesHrefResolved, title);
+    const pathArray = pathArrayFromDownloader.map<[string, boolean]>((v, i) => [v, resourcesType[i]]);
 
-    const resourcesHrefMap: TResources = pathArray.map(
-        (fsPath, idx) => {
+    const resourcesHrefMap = pathArray.map<TResource>(
+        ([fsPath, isResourcesType], idx) => {
 
-            const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
+            // fsPath can be undefined
+            if (!fsPath) {
+                return undefined;
+            }
+
+            let zipPath: string;
+            if (isResourcesType) {
+                zipPath = path.normalize(resourcesHref[idx]);
+
+            } else {
+                const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
+                zipPath = hash + "/" + path.basename(resourcesHrefResolved[idx]);
+            }
             return [
-            fsPath,
-            resourcesHref[idx],
-            hash + "/" + path.basename(resourcesHrefResolved[idx]), // crc32 check failed // how to fix this ?
-        ];
+                fsPath,
+                resourcesHref[idx],
+                zipPath,
+            ];
 
         },
-    );
+    ).filter((v) => !!v);
 
     return resourcesHrefMap;
 }

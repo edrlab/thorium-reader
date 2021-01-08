@@ -28,6 +28,7 @@ export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
 
                 // Note: "pt-PT" in the i18next ResourceBundle is not captured because key match reduced to "pt"
                 // Also: pt-pt vs. pt-PT case sensitivity
+                // Also zh-CN (mandarin chinese)
                 const l = lang.split("-")[0];
 
                 // because dynamic label does not pass typed i18n compilation

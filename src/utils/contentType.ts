@@ -19,7 +19,7 @@ export enum ContentType {
     Opds2Pub = "application/opds-publication+json",
     OpenSearch = "application/opensearchdescription+xml",
     FormUrlEncoded = "application/x-www-form-url-encoded",
-    Xhtml = "application/xml+xhtml",
+    Xhtml = "application/xhtml+xml",
     Html = "text/html",
     Epub = "application/epub+zip",
     Lpf = "application/lpf+zip",
