@@ -776,6 +776,17 @@ export class LcpManager {
                     r2LSDBase64,
                 };
             }
+
+            const urlHint = lcp.Links.find((link) => {
+                return link.Rel === "hint";
+            });
+            if (typeof urlHint?.Href === "string") {
+                lcpInfo.urlHint = {
+                    href: urlHint.Href,
+                    title: urlHint.Title ?? undefined,
+                    type: urlHint.Type ?? undefined,
+                };
+            }
         }
 
         if (lcp.LSD && lcpInfo.lsd) {
