@@ -15,7 +15,7 @@ import {
 } from "readium-desktop/common/views/opds";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType } from "readium-desktop/utils/contentType";
 
 import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";

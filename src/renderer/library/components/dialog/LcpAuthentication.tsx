@@ -66,6 +66,14 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         {__("library.lcp.sentence")}
                         <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                     </p>
+                    {
+                        this.props.urlHint?.href
+                            ?
+                            <a href={this.props.urlHint.href}>
+                                {this.props.urlHint.title || this.props.urlHint.href}
+                            </a>
+                            : <></>
+                    }
                     <form onSubmit={this.submit}>
                         <input
                             type="password"

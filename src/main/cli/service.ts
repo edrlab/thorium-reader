@@ -8,10 +8,10 @@
 import * as debug_ from "debug";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { channel } from "redux-saga";
+// import { channel } from "redux-saga";
 import { URL } from "url";
 
-export const openReaderChannel = channel<string>();
+// export const openReaderChannel = channel<string>();
 
 // Logger
 const debug = debug_("readium-desktop:main:cli:commandLine");

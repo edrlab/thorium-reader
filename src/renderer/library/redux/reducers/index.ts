@@ -7,7 +7,7 @@
 
 import { connectRouter } from "connected-react-router";
 import { History } from "history";
-import { downloadActions, readerActions } from "readium-desktop/common/redux/actions";
+import { downloadActions } from "readium-desktop/common/redux/actions";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
@@ -63,9 +63,6 @@ export const rootReducer = (history: History<IRouterLocationState>) => {
                 },
             ),
         history: historyReducer,
-        // just to recall 'catalog/get' when readerActions.setReduxState is dispatched
-        updateCatalog: (state: number = 0, action: readerActions.setReduxState.TAction) =>
-            action.type === readerActions.setReduxState.ID ? Number(state) + 1 : state,
         keyboard: keyboardReducer,
         load: loadReducer,
     });

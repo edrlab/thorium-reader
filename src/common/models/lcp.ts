@@ -28,6 +28,11 @@ export interface LcpInfo {
     lsd?: LsdInfo;
     rights: LcpRights;
     textHint: string;
+    urlHint?: {
+        href: string | undefined,
+        title?: string,
+        type?: string,
+    };
 
     r2LCPBase64: string;
 }
