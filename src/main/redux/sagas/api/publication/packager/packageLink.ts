@@ -12,6 +12,7 @@ import * as path from "path";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { httpGet } from "readium-desktop/main/http";
 import {
+    getUniqueResourcesFromR2Publication,
     w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
 import {
@@ -91,46 +92,21 @@ function* downloadResources(
     title: string,
     baseUrl: string,
 ): SagaGenerator<TResources> {
-    const readingpluslink = [
-        ...(
-            Array.isArray(r2Publication.Links)
-                ? r2Publication.Links
-                : []),
-        ...(
-            Array.isArray(r2Publication.Spine)
-                ? r2Publication.Spine
-                : []),
-    ];
 
-    const resources = [
-        ...(
-            Array.isArray(r2Publication.Resources)
-                ? r2Publication.Resources
-                : []),
-    ];
+    const uResources = getUniqueResourcesFromR2Publication(r2Publication);
+    const resourcesHref = [...new Set(linksToArray(uResources))];
+    const resourcesType = resourcesHref.map((v) => {
+        // tslint:disable-next-line
+        try { new URL(v); return false; } catch {}
+        return true;
+    });
 
-    const resourcesHrefReadingPlusLink = [...new Set(linksToArray(readingpluslink))];
-    const resourcesHrefResources = [...new Set(linksToArray(resources))];
+    const resourcesHrefResolved = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
 
-    const resourcesHref = [...resourcesHrefReadingPlusLink, ...resourcesHrefResources];
-    const resourcesType = [...resourcesHrefReadingPlusLink.map(() => false), ...resourcesHrefResources.map(() => true)];
-
-    const getPathArray = function*(): SagaGenerator<[Array<[string, boolean]>, string[]]> {
-
-        if (baseUrl.startsWith("file://")) {
-            baseUrl = baseUrl.slice("file://".length);
-            const a = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
-            const b = a.map<[string, boolean]>((v, i) => [v, resourcesType[i]]);
-            return [b, a];
-        } else {
-            const a = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
-            const b = yield* callTyped(downloader, a, title);
-            const c = b.map<[string, boolean]>((v, i) => [v, resourcesType[i]]);
-            return [c, a];
-        }
-    };
-
-    const [pathArray, resourcesHrefResolved] = yield* callTyped(getPathArray);
+    const pathArrayFromDownloader = baseUrl.startsWith("file://")
+        ? resourcesHrefResolved.map((v) => v.slice("file://".length))
+        : yield* callTyped(downloader, resourcesHrefResolved, title);
+    const pathArray = pathArrayFromDownloader.map<[string, boolean]>((v, i) => [v, resourcesType[i]]);
 
     const resourcesHrefMap = pathArray.map<TResource>(
         ([fsPath, isResourcesType], idx) => {
@@ -144,12 +120,6 @@ function* downloadResources(
             if (isResourcesType) {
                 zipPath = path.normalize(resourcesHref[idx]);
 
-                // specific fixes for exploded epub format
-                // zipPath = zipPath.startsWith("OEBPS/")
-                //     ? zipPath.slice(6)
-                //     : zipPath.startsWith("/OEBPS/")
-                //         ? zipPath.slice(7)
-                //         : zipPath;
             } else {
                 const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
                 zipPath = hash + "/" + path.basename(resourcesHrefResolved[idx]);
