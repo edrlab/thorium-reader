@@ -25,6 +25,7 @@
 	& .title {
 		display: flex;
 		justify-content: space-between;
+		align-items: baseline;
 		padding-top: 40px;
 		padding-bottom: 5px;
 		margin-bottom: 15px;
@@ -53,6 +54,13 @@
 			font-weight: 700;
 			margin: 0;
 			font-size: 1.5rem;
+		}
+
+		& .titlelink {
+			display: inline-block;
+			position: relative;
+			font-size: 0.95rem;
+			border: 1px solid silver;
 		}
 	}
 

@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "继续听读",
             "continueReadingDivina": "继续阅读divina",
             "continueReadingPdf": "继续阅读PDF",
-            "lastAdditions": "最近添加",
-            "lastAdditionsAudioBooks": "最近添加的有声书",
-            "lastAdditionsDivina": "最近添加的divina",
-            "lastAdditionsPdf": "最近添加的PDF"
+            "lastAdditions": "最近添加"
         },
         "export": "导出",
         "lang": "语言",
