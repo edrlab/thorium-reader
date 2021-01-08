@@ -29,7 +29,7 @@ import { RootState } from "../redux/states";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
-const NB_PUB = 10;
+const NB_PUB = 5;
 
 const viewToR2Pub = memoizeWith((v) => v.identifier, (view: PublicationView) => {
     const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
@@ -95,22 +95,28 @@ export class CatalogApi implements ICatalogApi {
             },
         } = await this.getPublicationView();
 
+        const allAdded_ = allAdded.slice(0, NB_PUB);
+        const epubReaded_ = epubReaded.slice(0, NB_PUB);
+        const audiobookReaded_ = audiobookReaded.slice(0, NB_PUB);
+        const divinaReaded_ = divinaReaded.slice(0, NB_PUB);
+        const pdfReaded_ = pdfReaded.slice(0, NB_PUB);
+
         // Dynamic entries
         const entries: CatalogEntryView[] = [
             {
                 title: __("catalog.entry.lastAdditions"),
-                totalCount: allAdded.slice(0, NB_PUB).length,
-                publicationViews: allAdded.slice(0, NB_PUB),
+                totalCount: allAdded_.length,
+                publicationViews: allAdded_,
             },
             {
                 title: __("catalog.entry.continueReading"),
-                totalCount: epubReaded.slice(0, NB_PUB).length,
-                publicationViews: epubReaded.slice(0, NB_PUB),
+                totalCount: epubReaded_.length,
+                publicationViews: epubReaded_,
             },
             {
                 title: __("catalog.entry.continueReadingAudioBooks"),
-                totalCount: audiobookReaded.slice(0, NB_PUB).length,
-                publicationViews: audiobookReaded.slice(0, NB_PUB),
+                totalCount: audiobookReaded_.length,
+                publicationViews: audiobookReaded_,
             },
             // {
             //     title: __("catalog.entry.lastAdditionsAudioBooks"),
@@ -119,8 +125,8 @@ export class CatalogApi implements ICatalogApi {
             // },
             {
                 title: __("catalog.entry.continueReadingDivina"),
-                totalCount: divinaReaded.slice(0, NB_PUB).length,
-                publicationViews: divinaReaded.slice(0, NB_PUB),
+                totalCount: divinaReaded_.length,
+                publicationViews: divinaReaded_,
             },
             // {
             //     title: __("catalog.entry.lastAdditionsDivina"),
@@ -129,8 +135,8 @@ export class CatalogApi implements ICatalogApi {
             // },
             {
                 title: __("catalog.entry.continueReadingPdf"),
-                totalCount: pdfReaded.slice(0, NB_PUB).length,
-                publicationViews: pdfReaded.slice(0, NB_PUB),
+                totalCount: pdfReaded_.length,
+                publicationViews: pdfReaded_,
             },
             // {
             //     title: __("catalog.entry.lastAdditionsPdf"),
