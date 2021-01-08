@@ -5,10 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as atomically from "atomically";
+import * as debug_ from "debug";
+import { app } from "electron";
 import * as moment from "moment";
+import * as path from "path";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
+import { _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV } from "readium-desktop/preprocessor-directives";
 import { v4 as uuidv4 } from "uuid";
 
 interface Index  {
@@ -19,6 +24,14 @@ interface Index  {
 export type ExcludeTimestampableAndIdentifiable<D> = Omit<D, keyof Timestampable | keyof Identifiable>;
 // tslint:disable-next-line: max-line-length
 export type ExcludeTimestampableWithPartialIdentifiable<D> = ExcludeTimestampableAndIdentifiable<D> & Partial<Identifiable>;
+
+const dbBackupfilePath = path.join(
+    app.getPath("userData"),
+    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "db-backup-dev" : "db-backup",
+);
+
+// Logger
+const debug = debug_("readium-desktop:db:repository:base");
 
 export abstract class BaseRepository<D extends Identifiable & Timestampable> {
     protected db: PouchDB.Database<D>;
@@ -79,6 +92,17 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         }
 
         await this.db.put(dbDoc);
+
+        try {
+            await atomically.writeFile(path.join(dbBackupfilePath, dbDoc._id), JSON.stringify(dbDoc));
+        } catch (e) {
+            debug("##########");
+            debug("##########");
+            debug("db backup error to write", dbDoc._id);
+            debug(e);
+            debug("##########");
+            debug("##########");
+        }
 
         return this.get(document.identifier);
     }
