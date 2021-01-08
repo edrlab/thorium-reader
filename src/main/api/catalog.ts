@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
+import { memoizeWith } from "ramda";
 import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
 import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -29,6 +30,14 @@ import { RootState } from "../redux/states";
 export const CATALOG_CONFIG_ID = "catalog";
 
 const NB_PUB = 10;
+
+const viewToR2Pub = memoizeWith((v) => v.identifier, (view: PublicationView) => {
+    const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+    const r2PublicationJson = JSON.parse(r2PublicationStr);
+    const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+
+    return r2Publication;
+});
 
 // Logger
 const debug = debug_("readium-desktop:main:api:catalog");
@@ -152,14 +161,6 @@ export class CatalogApi implements ICatalogApi {
             } catch {
                 // ignore
             }
-        };
-
-        const viewToR2Pub = (view: PublicationView) => {
-            const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
-            const r2PublicationJson = JSON.parse(r2PublicationStr);
-            const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
-
-            return r2Publication;
         };
 
         const lastAddedPublicationsDocumentRaw = await this.getLastAddedPublicationDocument();
