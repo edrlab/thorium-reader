@@ -18,9 +18,11 @@ const debug = debug_("readium-desktop:main#saga/api/publication/importFromString
 
 export function* importFromStringService(
     manifest: string,
+    baseFileUrl: string, // should starts with 'file://'
 ): SagaGenerator<[publicationDoc: PublicationDocument, alreadyImported: boolean]> {
 
-    const packagePath = yield* callTyped(packageFromManifestBuffer, "file://", Buffer.from(manifest));
+    const baseUrl = baseFileUrl.startsWith("file://") ? baseFileUrl : "file://";
+    const packagePath = yield* callTyped(packageFromManifestBuffer, baseUrl, Buffer.from(manifest));
     if (packagePath) {
         return yield* callTyped(importFromFsService, packagePath);
     } else {

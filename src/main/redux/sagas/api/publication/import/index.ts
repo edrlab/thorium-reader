@@ -79,12 +79,13 @@ export function* importFromLink(
 
 export function* importFromString(
     manifest: string,
+    baseFileUrl: string, // should starts with 'file://'
 ): SagaGenerator<PublicationView | undefined> {
 
     if (manifest) {
 
         try {
-            const [publicationDocument]  = yield* callTyped(importFromStringService, manifest);
+            const [publicationDocument]  = yield* callTyped(importFromStringService, manifest, baseFileUrl);
 
             if (!publicationDocument) {
                 throw new Error("publicationDocument not imported on db");

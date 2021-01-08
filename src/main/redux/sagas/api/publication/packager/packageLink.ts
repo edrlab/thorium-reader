@@ -117,8 +117,11 @@ function* downloadResources(
 
     const getPathArray = function*(): SagaGenerator<[Array<[string, boolean]>, string[]]> {
 
-        if (baseUrl === "file://") {
-            return [resourcesHref.map<[string, boolean]>((v, i) => [v, resourcesType[i]]), resourcesHref];
+        if (baseUrl.startsWith("file://")) {
+            baseUrl = baseUrl.slice("file://".length);
+            const a = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
+            const b = a.map<[string, boolean]>((v, i) => [v, resourcesType[i]]);
+            return [b, a];
         } else {
             const a = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
             const b = yield* callTyped(downloader, a, title);

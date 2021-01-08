@@ -48,7 +48,7 @@ export class Information extends React.Component<IProps, undefined> {
 
     public async componentDidMount() {
         const { locale, __ } = this.props;
-        const infoFolderRelativePath = "assets/md/information";
+        const infoFolderRelativePath = "assets/md/information/"; // final / is important
         const imagesFolder = "images";
 
         let aboutLocale = locale;
@@ -70,9 +70,10 @@ export class Information extends React.Component<IProps, undefined> {
             if (_PACKAGING === "0") {
                 folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
             }
-            let filePath = path.join(folderPath, `${aboutLocale}.html`);
+            const filePath = path.join(folderPath, `${aboutLocale}.html`);
+            let htmlFile = `${aboutLocale}.html`;
             aboutLocale = existsSync(filePath) === true ? locale : "en";
-            filePath = path.join(folderPath, `${aboutLocale}.html`);
+            htmlFile = `${aboutLocale}.html`;
             title = `_______________ ${aboutLocale}`;
 
             [pubView] = await apiAction("publication/search", title);
@@ -91,7 +92,7 @@ export class Information extends React.Component<IProps, undefined> {
             publication.Metadata.Title = `${__("reader.footerInfo.moreInfo")} ${aboutLocale}`;
 
             const link = new Link();
-            link.Href = filePath;
+            link.Href = htmlFile;
             link.TypeLink = mimeTypes.html;
             link.Title = aboutLocale;
             publication.Spine = [link];
@@ -100,7 +101,7 @@ export class Information extends React.Component<IProps, undefined> {
             const imgArray = await promises.readdir(imgPath);
             publication.Resources = imgArray.map((i) => {
                 const l = new Link();
-                l.Href = path.join(imgPath, i);
+                l.Href = path.join(imagesFolder, i);
                 l.TypeLink = findMimeTypeWithExtension(path.extname(l.Href));
 
                 return l;
@@ -109,7 +110,7 @@ export class Information extends React.Component<IProps, undefined> {
             const publicationSerialize = TaJsonSerialize(publication);
             const publicationStr = JSON.stringify(publicationSerialize);
 
-            this.manifestView = await apiAction("publication/importFromString", publicationStr);
+            this.manifestView = await apiAction("publication/importFromString", publicationStr, "file://" + folderPath);
 
         } catch (e) {
             console.log("error to import about", aboutLocale, e);

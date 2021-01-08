@@ -35,6 +35,7 @@ export interface IPublicationApi {
     ) => SagaGenerator<PublicationView>;
     importFromString: (
         manifest: string,
+        baseFileUrl: string, // should starts with 'file://'
     ) => SagaGenerator<PublicationView>;
     importFromFs: (
         filePathArray: string | string[],
