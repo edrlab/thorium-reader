@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "オーディオブックを再開",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "最近追加された出版物",
-            "lastAdditionsAudioBooks": "最近追加されたオーディオブック",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "最近追加された出版物"
         },
         "export": "書き出し",
         "lang": "言語",
