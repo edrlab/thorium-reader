@@ -75,7 +75,7 @@
         "numberOfPages": "Nombre de pages",
         "opds": {
             "auth": {
-                "cancel": "Appuyer sur la touche Echap pour quitter l'authentification",
+                "cancel": "Annuler",
                 "login": "Connection"
             },
             "info": {

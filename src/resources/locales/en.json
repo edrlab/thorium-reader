@@ -75,7 +75,7 @@
         "numberOfPages": "Number of pages",
         "opds": {
             "auth": {
-                "cancel": "Press the Escape key to cancel the authentication",
+                "cancel": "Cancel",
                 "login": "Login"
             },
             "info": {

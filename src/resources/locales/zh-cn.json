@@ -74,6 +74,10 @@
         "noPublicationHelpL4": "支持的扩展名:",
         "numberOfPages": "页码",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "开始时间",
                 "availableState": {
@@ -345,6 +349,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "菜单",
             "cancel": "取消",

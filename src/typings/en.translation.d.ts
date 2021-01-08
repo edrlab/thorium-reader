@@ -122,6 +122,7 @@ declare namespace typed_i18n {
   readonly "noPublicationHelpL4": string,
   readonly "numberOfPages": string,
   readonly "opds": {
+    readonly "auth": { readonly "cancel": string, readonly "login": string },
     readonly "info": {
       readonly "availableSince": string,
       readonly "availableState": {
@@ -189,6 +190,7 @@ declare namespace typed_i18n {
   (_: "catalog.noPublicationHelpL4", __?: {}): string;
   (_: "catalog.numberOfPages", __?: {}): string;
   (_: "catalog.opds", __?: {}): {
+  readonly "auth": { readonly "cancel": string, readonly "login": string },
   readonly "info": {
     readonly "availableSince": string,
     readonly "availableState": {
@@ -208,6 +210,9 @@ declare namespace typed_i18n {
     readonly "state": string
   }
 };
+  (_: "catalog.opds.auth", __?: {}): { readonly "cancel": string, readonly "login": string };
+  (_: "catalog.opds.auth.cancel", __?: {}): string;
+  (_: "catalog.opds.auth.login", __?: {}): string;
   (_: "catalog.opds.info", __?: {}): {
   readonly "availableSince": string,
   readonly "availableState": {
@@ -366,7 +371,6 @@ declare namespace typed_i18n {
     readonly "urlPlaceholder": string
   },
   readonly "addMenu": string,
-  readonly "auth": { readonly "login": string, readonly "cancel": string },
   readonly "back": string,
   readonly "breadcrumbRoot": string,
   readonly "empty": string,
@@ -404,11 +408,7 @@ declare namespace typed_i18n {
   (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
-  (_: "opds.addMenu", __?: {}): string;
-  (_: "opds.auth", __?: {}): { readonly "login": string, readonly "cancel": string };
-  (_: "opds.auth.login", __?: {}): string;
-  (_: "opds.auth.cancel", __?: {}): string;
-  (_: "opds.back", __?: {}): string;
+  (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
   (_: "opds.empty", __?: {}): string; (_: "opds.firstPage", __?: {}): string;
   (_: "opds.lastPage", __?: {}): string;

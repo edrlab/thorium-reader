@@ -558,7 +558,8 @@ function parseRequestFromCustomProtocol(req: Electron.Request)
                             () => Buffer.from(res.bytes).toString(),
                             filename_,
                         ) || "";
-                    debug("data", data);
+                    // do not risk showing plaintext password in console / command line shell
+                    // debug("data", data);
 
                     const keyValue = data.split("&");
                     const values = tryCatchSync(
@@ -572,7 +573,8 @@ function parseRequestFromCustomProtocol(req: Electron.Request)
                         ),
                         filename_,
                     ) || {};
-                    debug(values);
+                    // do not risk showing plaintext password in console / command line shell
+                    // debug(values);
 
                     return {
                         url: urlParsed,
@@ -604,7 +606,7 @@ const htmlLoginTemplate = (
     loginLabel = "login",
     passLabel = "password",
     logoUrl?: string,
-    title: string = diMainGet("translator").translate("opds.auth.login"),
+    title: string = diMainGet("translator").translate("catalog.opds.auth.login"),
 ) => `
 <html lang="en">
 
@@ -782,6 +784,7 @@ const htmlLoginTemplate = (
             background-image: linear-gradient(to bottom, #edf5f8, #cde5ef);
             -webkit-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
             box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+            padding-left: 1em;
         }
 
         input[type=submit]:active {
@@ -799,13 +802,15 @@ const htmlLoginTemplate = (
 
     <body class="text-center">
         <div class="login">
-        ${title ? `<h1>${title}</h1>` : "<h1>Login</h1>"}
+        <h1>${title}</h1>
         <form method="post" action="${urlToSubmit}">
         ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ``}
         <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
         <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
-        <p class="submit"><input type="submit" name="commit" value="Login"></p>
-        <h5>${diMainGet("translator").translate("opds.auth.cancel")}</h5>
+        <p class="submit">
+        <input type="submit" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}">
+        <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
+        </p>
         </form>
         </div>
     </body>

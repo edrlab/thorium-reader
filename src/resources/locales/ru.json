@@ -74,6 +74,10 @@
         "noPublicationHelpL4": "Поддерживаемые расширения:",
         "numberOfPages": "Количество страниц",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "C",
                 "availableState": {
@@ -345,6 +349,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Меню",
             "cancel": "Отменить",
