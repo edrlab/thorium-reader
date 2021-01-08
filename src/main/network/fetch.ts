@@ -52,7 +52,7 @@ const fetchFactory = async () => {
         cookieJar = new tougth.CookieJar();
     }
 
-    const _fetch = nodeFetchCookie(nodeFetch, cookieJar, false); // doesn't ignore errors
+    const _fetch = nodeFetchCookie(nodeFetch, cookieJar, false) as typeof nodeFetch; // doesn't ignore errors
 
     return _fetch;
 };
