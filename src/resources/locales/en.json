@@ -350,7 +350,7 @@
     },
     "settings": {
         "auth": {
-            "wipeData": "Wipe navigation data"
+            "wipeData": "Wipe authentication data"
         },
         "keyboard": {
             "advancedMenu": "Menu",

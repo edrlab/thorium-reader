@@ -350,7 +350,7 @@
     },
     "settings": {
         "auth": {
-            "wipeData": "Effacer les cookies"
+            "wipeData": "Effacer les données d'authentification"
         },
         "keyboard": {
             "advancedMenu": "Menu",

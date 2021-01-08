@@ -37,7 +37,7 @@ class AuthSettings extends React.Component<IProps> {
         const { __ } = this.props;
         return (
             <>
-                <h3>{__("settings.auth.wipeData")}</h3>
+                <h3>{__("catalog.opds.auth.login")}</h3>
                 <section className={styles.keyboard_shortcuts_section}>
                     <button
                         className={
