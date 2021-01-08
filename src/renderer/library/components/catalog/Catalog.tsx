@@ -19,9 +19,9 @@ import { DisplayType } from "readium-desktop/renderer/library/routing";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 
-import { CatalogGridView } from "./GridView";
+import CatalogGridView from "./GridView";
 import Header from "./Header";
-import { CatalogListView } from "./ListView";
+import CatalogListView from "./ListView";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
