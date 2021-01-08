@@ -7,10 +7,6 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
-import { OPDSAuthentication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication";
-import {
-    OPDSAuthenticationLabels,
-} from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-labels";
 import {
     IOpdsLinkView, IOpdsResultView, THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
@@ -28,7 +24,9 @@ import {
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
+import { OPDSAuthentication } from "@r2-opds-js/opds/opds2/opds2-authentication";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+import { OPDSAuthenticationLabels } from "@r2-opds-js/opds/opds2/opds2-authentication-labels";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 

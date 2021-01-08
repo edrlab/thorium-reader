@@ -8,9 +8,6 @@
 import * as debug_ from "debug";
 import { BrowserWindow, globalShortcut } from "electron";
 import { Headers } from "node-fetch";
-import {
-    OPDSAuthenticationDoc,
-} from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -29,6 +26,8 @@ import {
 import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
+
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 
 import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
 

@@ -5,8 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { OPDSAuthenticationDoc } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
 import { channel } from "redux-saga";
+
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 
 const openFileFromCliChannel = channel<string>();
 
