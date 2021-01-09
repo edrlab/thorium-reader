@@ -217,7 +217,8 @@
       "desktop": {
         "MimeType": "application/epub+zip"
       },
-      "executableName": "thorium"
+      "executableName": "thorium",
+      "category": "Office"
     },
     "mac": {
       "category": "public.app-category.developer-tools",
