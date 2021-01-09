@@ -30,7 +30,6 @@ export async function search(searchInput: string, data: ISearchDocument): Promis
         /<body([\s\S]*?)>/gm,
         `<body$1><a href="DUMMY_URL">DUMMY LNIK</a>`,
     );
-    console.log("data.isFixedLayout", data.isFixedLayout, " --- ", data.contentType);
 
     const contentType = data.contentType ? (data.contentType as DOMParserSupportedType) : ContentType.Xhtml;
     try {
