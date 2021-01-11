@@ -463,10 +463,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
             <p className={styles.currentPage}>
                 {
-                totalPages
+                typeof currentPage !== "undefined" ?
+                (totalPages
                         // tslint:disable-next-line: max-line-length
                         ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
-                        : __("reader.navigation.currentPage", { current: `${currentPage}`})
+                        : __("reader.navigation.currentPage", { current: `${currentPage}`})) : ""
                 }
             </p>
 
