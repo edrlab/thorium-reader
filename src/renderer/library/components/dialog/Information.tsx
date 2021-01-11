@@ -11,6 +11,7 @@ import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import * as React from "react";
 import { connect } from "react-redux";
+import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -53,9 +54,11 @@ export class Information extends React.Component<IProps, undefined> {
 
         let aboutLocale = locale;
 
+        const setTitle = (l: string) => `${ABOUT_BOOK_TITLE_PREFIX}${l}`;
+
         try {
 
-            let title = `_______________ ${aboutLocale}`;
+            let title = setTitle(aboutLocale);
             let [pubView] = await apiAction("publication/search", title);
             if (pubView) {
 
@@ -74,7 +77,7 @@ export class Information extends React.Component<IProps, undefined> {
             let htmlFile = `${aboutLocale}.html`;
             aboutLocale = existsSync(filePath) === true ? locale : "en";
             htmlFile = `${aboutLocale}.html`;
-            title = `_______________ ${aboutLocale}`;
+            title = setTitle(aboutLocale);
 
             [pubView] = await apiAction("publication/search", title);
             if (pubView) {
@@ -89,7 +92,7 @@ export class Information extends React.Component<IProps, undefined> {
             const publication = new R2Publication();
             publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
             publication.Metadata = new Metadata();
-            publication.Metadata.Title = `${__("reader.footerInfo.moreInfo")} ${aboutLocale}`;
+            publication.Metadata.Title = title;
 
             const link = new Link();
             link.Href = htmlFile;
