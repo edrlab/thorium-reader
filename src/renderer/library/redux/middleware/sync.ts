@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, downloadActions, i18nActions, keyboardActions, readerActions,
+    apiActions, authActions, downloadActions, i18nActions, keyboardActions, readerActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -15,10 +15,12 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     apiActions.request.ID,
 
+    authActions.wipeData.ID,
+
     readerActions.openRequest.ID,
     readerActions.closeRequest.ID,
     readerActions.detachModeRequest.ID,
-    // readerActions.setReduxState.ID,
+    readerActions.setReduxState.ID,
     // readerActions.saveBookmarkRequest.ID,
     readerActions.fullScreenRequest.ID,
 

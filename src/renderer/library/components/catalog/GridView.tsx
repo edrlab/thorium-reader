@@ -6,10 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import PublicationCard from "readium-desktop/renderer/library/components/publication/PublicationCard";
 import Slider from "readium-desktop/renderer/library/components/utils/Slider";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
@@ -17,16 +23,17 @@ import SortMenu from "./SortMenu";
 import TagLayout from "./TagLayout";
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps {
+interface IBaseProps extends TranslatorProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
 }
+
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -39,7 +46,7 @@ enum SortStatus {
     Alpha,
 }
 
-export class CatalogGridView extends React.Component<IProps, IState> {
+class CatalogGridView extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -82,6 +89,16 @@ export class CatalogGridView extends React.Component<IProps, IState> {
 
                                             <div className={styles.title}>
                                                 <h2>{entry.title}</h2>
+
+                                                <Link
+                                                    className={styles.titlelink}
+                                                    to={{
+                                                        ...this.props.location,
+                                                        pathname: "/library/search/all",
+                                                    }}
+                                                >
+                                                    {this.props.__("header.allBooks")}
+                                                </Link>
                                             </div>
                                         }
                                         {
@@ -161,3 +178,9 @@ export class CatalogGridView extends React.Component<IProps, IState> {
     }
 
 }
+
+const mapStateToProps = (state: ILibraryRootState) => ({
+    location: state.router.location,
+});
+
+export default connect(mapStateToProps)(withTranslator(CatalogGridView));

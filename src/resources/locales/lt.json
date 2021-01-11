@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Klausyti toliau",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Paskiausiai pridėtos",
-            "lastAdditionsAudioBooks": "Paskiausiai pridėtos garsaknygės",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Paskiausiai pridėtos"
         },
         "export": "Eksportuoti",
         "lang": "Kalba",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Palaikomi plėtiniai:",
         "numberOfPages": "Puslapių skaičius",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Prieinama nuo",
                 "availableState": {
@@ -345,6 +346,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Meniu",
             "cancel": "Nutraukti",

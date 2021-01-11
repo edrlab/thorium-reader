@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Retomar a escuta",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Adicionado recentemente",
-            "lastAdditionsAudioBooks": "Audiolivros adicionados recentemente",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Adicionado recentemente"
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Extensões suportadas:",
         "numberOfPages": "Número de páginas",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Desde",
                 "availableState": {
@@ -345,6 +346,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Cancelar",

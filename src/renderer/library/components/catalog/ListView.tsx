@@ -6,27 +6,34 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import CatalogMenu from "readium-desktop/renderer/library/components/publication/menu/CatalogMenu";
 import PublicationListElement from "readium-desktop/renderer/library/components/publication/PublicationListElement";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import NoPublicationInfo from "./NoPublicationInfo";
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps {
+interface IBaseProps extends TranslatorProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
 }
+
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-export class CatalogListView extends React.Component<IProps, undefined> {
+class CatalogListView extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
@@ -45,6 +52,16 @@ export class CatalogListView extends React.Component<IProps, undefined> {
                         {
                             <div className={styles.title}>
                                 <h2>{ entry.title }</h2>
+
+                                <Link
+                                    className={styles.titlelink}
+                                    to={{
+                                        ...this.props.location,
+                                        pathname: "/library/search/all",
+                                    }}
+                                >
+                                    {this.props.__("header.allBooks")}
+                                </Link>
                             </div>
                         }
                         {
@@ -74,3 +91,9 @@ export class CatalogListView extends React.Component<IProps, undefined> {
     }
 
 }
+
+const mapStateToProps = (state: ILibraryRootState) => ({
+    location: state.router.location,
+});
+
+export default connect(mapStateToProps)(withTranslator(CatalogListView));

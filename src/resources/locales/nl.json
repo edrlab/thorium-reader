@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Ga door met luisteren",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Recent toegevoegd",
-            "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Recent toegevoegd"
         },
         "export": "Exporteer",
         "lang": "Taal",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Ondersteunde uitbreidingen:",
         "numberOfPages": "Aantal pagina's",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Sinds",
                 "availableState": {
@@ -345,6 +346,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",
