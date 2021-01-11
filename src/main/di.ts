@@ -69,6 +69,13 @@ if (!fs.existsSync(userDataPath)) {
 }
 
 //
+// Backup DB with atomic json writing
+const dbBackupfilePath = path.join(
+    app.getPath("userData"),
+    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "db-backup-dev" : "db-backup",
+);
+
+//
 // Create databases
 //
 let PouchDB = PouchDBCore;
@@ -329,4 +336,5 @@ export {
     saveReaderWindowInDi,
     getAllReaderWindowFromDi,
     createStoreFromDi,
+    dbBackupfilePath, // pouchdb Base class
 };

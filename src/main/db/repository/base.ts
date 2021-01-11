@@ -7,13 +7,13 @@
 
 import * as atomically from "atomically";
 import * as debug_ from "debug";
-import { app } from "electron";
+import * as fs from "fs";
 import * as moment from "moment";
 import * as path from "path";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
-import { _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV } from "readium-desktop/preprocessor-directives";
+import { dbBackupfilePath } from "readium-desktop/main/di";
 import { v4 as uuidv4 } from "uuid";
 
 interface Index  {
@@ -25,13 +25,26 @@ export type ExcludeTimestampableAndIdentifiable<D> = Omit<D, keyof Timestampable
 // tslint:disable-next-line: max-line-length
 export type ExcludeTimestampableWithPartialIdentifiable<D> = ExcludeTimestampableAndIdentifiable<D> & Partial<Identifiable>;
 
-const dbBackupfilePath = path.join(
-    app.getPath("userData"),
-    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "db-backup-dev" : "db-backup",
-);
-
 // Logger
 const debug = debug_("readium-desktop:db:repository:base");
+
+let promiseLockCounter = 0;
+const promiseLockDispatch: Array<() => void> = [];
+const promiseLock = async <T>(p: Promise<T>): Promise<T> => {
+
+    promiseLockCounter += 1;
+
+    // tslint:disable-next-line: no-floating-promises
+    p.then(() => {
+        promiseLockCounter -= 1;
+
+        if (promiseLockCounter === 0) {
+            promiseLockDispatch.forEach((fn) => fn());
+        }
+    });
+
+    return p;
+};
 
 export abstract class BaseRepository<D extends Identifiable & Timestampable> {
     protected db: PouchDB.Database<D>;
@@ -42,6 +55,14 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         this.db = db;
         this.idPrefix = idPrefix;
         this.indexes = (indexes == null) ? [] : indexes;
+
+        this.findAll()
+            .then((result) => {
+                result.forEach((v) => promiseLock(this.saveToBackupAtomicJsonDb(v)));
+            })
+            .catch((e) => {
+                debug("ERROR DB Backup (findAll)", e);
+            });
     }
 
     public buildId(documentIdentifier: string) {
@@ -93,18 +114,26 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
 
         await this.db.put(dbDoc);
 
-        try {
-            await atomically.writeFile(path.join(dbBackupfilePath, dbDoc._id), JSON.stringify(dbDoc));
-        } catch (e) {
-            debug("##########");
-            debug("##########");
-            debug("db backup error to write", dbDoc._id);
-            debug(e);
-            debug("##########");
-            debug("##########");
-        }
+        const result = await this.get(document.identifier);
 
-        return this.get(document.identifier);
+        try {
+            if (promiseLockCounter > 0) {
+                await Promise.race([
+                    new Promise<void>((_resolve, reject) => setTimeout(reject, 1000)),
+                    new Promise<void>((resolve) => {
+                        promiseLockDispatch.push(resolve);
+                    }),
+                ]);
+            }
+        } catch (e) {
+            debug("A dump of the db is in progress");
+            debug("timeout 1s rejected");
+            debug("force save newest document in backup db");
+            debug(e);
+        } finally {
+            await this.saveToBackupAtomicJsonDb(result);
+        }
+        return result;
     }
 
     public async get(identifier: string): Promise<D> {
@@ -251,4 +280,32 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
     }
 
     protected abstract convertToDocument(dbDoc: PouchDB.Core.Document<D>): D;
+
+    private saveToBackupAtomicJsonDb = async (result: D) => {
+
+        const id = this.buildId(result.identifier);
+        const atomicDbPath = path.join(dbBackupfilePath, id + ".json");
+        const atomicDbData = JSON.stringify(result);
+        try {
+            await atomically.writeFile(atomicDbPath, atomicDbData);
+        } catch (e) {
+            debug("##########");
+            debug("##########");
+            debug("db backup error to write", id);
+            debug(e);
+            debug("##########");
+            debug("##########");
+
+            // tslint:disable-next-line: max-line-length
+            // https://github.com/sindresorhus/conf/blob/a96e9d78ac7e675a24ed702f1c21dd46a0b3ae0e/source/index.ts#L456-L468
+            // Fix for https://github.com/sindresorhus/electron-store/issues/106
+            // Sometimes on Windows, we will get an EXDEV error when atomic writing
+            // (even though to the same directory), so we fall back to non atomic write
+            if (e.code === "EXDEV") {
+                debug("EXDEV ERROR");
+                debug("fs.writeFileSync instead");
+                fs.writeFileSync(atomicDbPath, atomicDbData);
+            }
+        }
+    }
 }
