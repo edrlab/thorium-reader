@@ -48,7 +48,7 @@ export class Information extends React.Component<IProps, undefined> {
     }
 
     public async componentDidMount() {
-        const { locale, __ } = this.props;
+        const { locale } = this.props;
         const infoFolderRelativePath = "assets/md/information/"; // final / is important
         const imagesFolder = "images";
 
