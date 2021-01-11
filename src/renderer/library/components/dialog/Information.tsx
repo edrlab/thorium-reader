@@ -7,8 +7,6 @@
 
 import { existsSync, promises } from "fs";
 import * as path from "path";
-import { TaJsonSerialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import * as React from "react";
 import { connect } from "react-redux";
 import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
@@ -23,8 +21,10 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TDispatch } from "readium-desktop/typings/redux";
 import { findMimeTypeWithExtension, mimeTypes } from "readium-desktop/utils/mimeTypes";
 
+import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Metadata } from "@r2-shared-js/models/metadata";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import { apiAction } from "../../apiAction";
 
