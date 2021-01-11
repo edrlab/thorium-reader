@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
@@ -14,6 +15,9 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import {
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
@@ -63,6 +67,9 @@ class SearchPicker extends React.Component<IProps, IState> {
     public componentDidMount() {
 
         this.props.pdfEventBus?.subscribe("search-found", this.setFoundNumber);
+
+        ensureKeyboardListenerIsInstalled();
+        this.registerAllKeyboardListeners();
     }
 
     public componentDidUpdate(oldProps: IProps) {
@@ -71,6 +78,11 @@ class SearchPicker extends React.Component<IProps, IState> {
 
             this.props.pdfEventBus.subscribe("search-found", this.setFoundNumber);
         }
+
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
+        }
     }
 
     public componentWillUnmount() {
@@ -78,7 +90,10 @@ class SearchPicker extends React.Component<IProps, IState> {
         if (this.props.pdfEventBus) {
             this.props.pdfEventBus.remove(this.setFoundNumber, "search-found");
         }
+
+        this.unregisterAllKeyboardListeners();
     }
+
     public render() {
 
         const { next, previous, __ } = this.props;
@@ -178,11 +193,36 @@ class SearchPicker extends React.Component<IProps, IState> {
         this.setState({foundNumber, notFound: !foundNumber});
     }
 
+    private registerAllKeyboardListeners() {
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.SearchPrevious,
+            this.onKeyboardSearchPrevious,
+        );
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.SearchNext,
+            this.onKeyboardSearchNext,
+        );
+    }
+
+    private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardSearchPrevious);
+        unregisterKeyboardListener(this.onKeyboardSearchNext);
+    }
+
+    private onKeyboardSearchPrevious = () => {
+        this.props.previous();
+    }
+    private onKeyboardSearchNext = () => {
+        this.props.next();
+    }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
     return {
+        keyboardShortcuts: state.keyboard.shortcuts,
         picker: state.picker,
         load: state.search.state === "busy",
         notFound: !state.search.foundArray?.length,

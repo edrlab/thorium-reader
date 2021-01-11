@@ -19,9 +19,9 @@ import { DisplayType } from "readium-desktop/renderer/library/routing";
 import { Dispatch } from "redux";
 import { CATALOG_GET_API_ID_CHANNEL, PUBLICATION_TAGS_API_ID_CHANNEL } from "../../redux/sagas/catalog";
 
-import { CatalogGridView } from "./GridView";
+import CatalogGridView from "./GridView";
 import Header from "./Header";
-import { CatalogListView } from "./ListView";
+import CatalogListView from "./ListView";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

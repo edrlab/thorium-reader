@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Retomar a escuta",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Adicionado recentemente",
-            "lastAdditionsAudioBooks": "Audiolivros adicionados recentemente",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Adicionado recentemente"
         },
         "export": "Exportar",
         "lang": "Idioma",

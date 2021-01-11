@@ -107,10 +107,7 @@ declare namespace typed_i18n {
     readonly "continueReadingAudioBooks": string,
     readonly "continueReadingDivina": string,
     readonly "continueReadingPdf": string,
-    readonly "lastAdditions": string,
-    readonly "lastAdditionsAudioBooks": string,
-    readonly "lastAdditionsDivina": string,
-    readonly "lastAdditionsPdf": string
+    readonly "lastAdditions": string
   },
   readonly "export": string,
   readonly "lang": string,
@@ -167,19 +164,13 @@ declare namespace typed_i18n {
   readonly "continueReadingAudioBooks": string,
   readonly "continueReadingDivina": string,
   readonly "continueReadingPdf": string,
-  readonly "lastAdditions": string,
-  readonly "lastAdditionsAudioBooks": string,
-  readonly "lastAdditionsDivina": string,
-  readonly "lastAdditionsPdf": string
+  readonly "lastAdditions": string
 };
   (_: "catalog.entry.continueReading", __?: {}): string;
   (_: "catalog.entry.continueReadingAudioBooks", __?: {}): string;
   (_: "catalog.entry.continueReadingDivina", __?: {}): string;
   (_: "catalog.entry.continueReadingPdf", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
-  (_: "catalog.entry.lastAdditionsAudioBooks", __?: {}): string;
-  (_: "catalog.entry.lastAdditionsDivina", __?: {}): string;
-  (_: "catalog.entry.lastAdditionsPdf", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;

@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Ga door met luisteren",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Recent toegevoegd",
-            "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Recent toegevoegd"
         },
         "export": "Exporteer",
         "lang": "Taal",
