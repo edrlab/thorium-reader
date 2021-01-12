@@ -76,9 +76,6 @@ class Entry extends React.Component<IProps, undefined> {
                                 ) :
                                 (<></>)
                         }
-                        <div className={styles.flux_image}>
-                            <SVG svg={ArrowIcon} />
-                        </div>
                     </Link>
                 </div>
                 {/* <Slider
