@@ -250,6 +250,8 @@
         "navigation": {
             "backHomeTitle": "Zurück zum Bücherregal",
             "bookmarkTitle": "Lesezeichen setzen",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "Fenster loslösen",
             "fullscreenTitle": "Vollbildmodus",
             "goTo": "Gehe zu",
@@ -259,6 +261,7 @@
             "infoTitle": "Informationen",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navigation",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "Vollbildmodus beenden",
             "readBookTitle": "Mit dem Lesen des Buches beginnen",
             "settingsTitle": "Einstellungen"

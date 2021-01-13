@@ -19,6 +19,7 @@ import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
 import { readerLocalActionSearch } from "../../redux/actions";
 import LoaderSearch from "./LoaderSearch";
@@ -27,6 +28,8 @@ import SearchFormPicker from "./SearchFormPicker";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
     showSearchResults: () => void;
+    pdfEventBus: IEventBusPdfPlayer;
+    isPdf: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -42,37 +45,68 @@ interface IProps extends IBaseProps,
 
 // tslint:disable-next-line: no-empty-interface
 interface IState {
+    foundNumber: number;
+    notFound: boolean;
+    load: boolean;
 }
 
 class SearchPicker extends React.Component<IProps, IState> {
 
     private loadSeq: number;
 
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            foundNumber: 0,
+            notFound: false,
+            load: false,
+        };
+    }
+
     public componentDidMount() {
+
+        this.props.pdfEventBus?.subscribe("search-found", this.setFoundNumber);
+
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
     }
 
-    public componentWillUnmount() {
-        this.unregisterAllKeyboardListeners();
-    }
+    public componentDidUpdate(oldProps: IProps) {
 
-    public async componentDidUpdate(oldProps: IProps) {
+        if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
+
+            this.props.pdfEventBus.subscribe("search-found", this.setFoundNumber);
+        }
+
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
     }
 
+    public componentWillUnmount() {
+
+        if (this.props.pdfEventBus) {
+            this.props.pdfEventBus.remove(this.setFoundNumber, "search-found");
+        }
+
+        this.unregisterAllKeyboardListeners();
+    }
+
     public render() {
 
-        const { load, notFound, next, previous, __ } = this.props;
+        const { next, previous, __ } = this.props;
 
-        const found = this.props.foundNumber === 0 ?
+        const { notFound, foundNumber, load } = this.props.isPdf
+            ? this.state
+            : this.props;
+
+        const found = foundNumber === 0 ?
             __("reader.picker.search.notFound") :
-            __("reader.picker.search.founds", {nResults: this.props.foundNumber});
+            __("reader.picker.search.founds", {nResults: foundNumber});
 
-        this.loadSeq = (this.loadSeq || 0) + 1;
+        this.loadSeq = this.props.isPdf ? 999 : (this.loadSeq || 0) + 1;
 
         return (
             <div style={{
@@ -83,7 +117,11 @@ class SearchPicker extends React.Component<IProps, IState> {
 
                 // paddingBlock: "20px",
             }}>
-                <SearchFormPicker></SearchFormPicker>
+                <SearchFormPicker
+                    pdfEventBus={this.props.pdfEventBus}
+                    isPdf={this.props.isPdf}
+                    reset={() => this.setState({foundNumber: 0, notFound: true})}
+                ></SearchFormPicker>
                 <button
                     disabled={notFound}
                     onClick={previous}
@@ -124,7 +162,9 @@ class SearchPicker extends React.Component<IProps, IState> {
                 <button
                     disabled={notFound}
                     onClick={() => {
-                        this.props.showSearchResults();
+                        if (!this.props.isPdf) {
+                            this.props.showSearchResults();
+                        }
                     }}
                     aria-label={found}
                     title={found}
@@ -146,6 +186,11 @@ class SearchPicker extends React.Component<IProps, IState> {
             </div>
         );
 
+    }
+
+    private setFoundNumber = (foundNumber: number) => {
+
+        this.setState({foundNumber, notFound: !foundNumber});
     }
 
     private registerAllKeyboardListeners() {
@@ -185,12 +230,22 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch) => ({
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => ({
     next: () => {
-        dispatch(readerLocalActionSearch.next.build());
+        if (props.isPdf) {
+            console.log("PDF");
+
+            props.pdfEventBus?.dispatch("search-next");
+        } else {
+            dispatch(readerLocalActionSearch.next.build());
+        }
     },
     previous: () => {
-        dispatch(readerLocalActionSearch.previous.build());
+        if (props.isPdf) {
+            props.pdfEventBus?.dispatch("search-previous");
+        } else {
+            dispatch(readerLocalActionSearch.previous.build());
+        }
     },
 });
 
