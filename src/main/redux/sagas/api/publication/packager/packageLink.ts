@@ -179,7 +179,7 @@ function* BufferManifestToR2Publication(manifest: Buffer, href: string): SagaGen
 
     } catch (e) {
 
-        debug("error to parse manifest");
+        debug("error to parse manifest", e, manifest);
         return undefined;
     }
 
@@ -210,8 +210,17 @@ export function* packageFromLink(
 
     const [manifest, manifestUrl] = yield* callTyped(packageGetManifestBuffer, href, isHtml);
     if (!manifest) {
-        throw new Error("manifest not found from content link");
+        throw new Error("manifest not found from content link " + href);
     }
+
+    return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl);
+}
+
+export function* packageFromManifestBuffer(
+    href: string, // 'file://' for local resources
+    manifest: Buffer,
+    manifestUrl?: string,
+) {
 
     const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, href);
     if (!r2Publication) {

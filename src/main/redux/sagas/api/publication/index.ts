@@ -13,7 +13,7 @@ import { findAll } from "./findAll";
 import { findByTag } from "./findByTag";
 import { getAllTags } from "./getAllTags";
 import { getPublication } from "./getPublication";
-import { importFromFs, importFromLink } from "./import";
+import { importFromFs, importFromLink, importFromString } from "./import";
 import { search } from "./search";
 import { updateTags } from "./updateTags";
 
@@ -28,4 +28,5 @@ export const publicationApi: IPublicationApi = {
     exportPublication,
     importFromFs,
     importFromLink,
+    importFromString,
 };
