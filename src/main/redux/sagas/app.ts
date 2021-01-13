@@ -98,8 +98,14 @@ export function* init() {
         const pathname = path.normalize(`${folderPath}/${url}`);
         // debug("PDFJS Folder path", pathname);
 
-        const buffer = await promisify(readFile)(pathname);
-        callback({ data: buffer, mimeType: findMimeTypeWithExtension(path.extname(pathname))});
+        try {
+            const buffer = await promisify(readFile)(pathname);
+            callback({ data: buffer, mimeType: findMimeTypeWithExtension(path.extname(pathname))});
+        } catch (error) {
+            debug("ERROR registerFileProtocol resource", error);
+            callback();
+            // throw error;
+        }
     }, (err) => {
         if (err) {
             debug("ERROR registerFileProtocol pdf webview", err);
