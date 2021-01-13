@@ -93,15 +93,27 @@ const _defaults_ = Object.freeze({
     }),
     SearchNext: Object.freeze<TKeyboardShortcut>({
         alt: false,
-        control: true,
+        control: false,
         shift: false,
         key: "F3",
     }),
     SearchPrevious: Object.freeze<TKeyboardShortcut>({
         alt: false,
-        control: true,
+        control: false,
         shift: true,
         key: "F3",
+    }),
+    SearchNextAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "G",
+    }),
+    SearchPreviousAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "G",
     }),
 
     NavigatePreviousOPDSPage: Object.freeze<TKeyboardShortcut>({

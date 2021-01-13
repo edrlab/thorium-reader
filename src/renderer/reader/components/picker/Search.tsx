@@ -204,6 +204,16 @@ class SearchPicker extends React.Component<IProps, IState> {
             this.props.keyboardShortcuts.SearchNext,
             this.onKeyboardSearchNext,
         );
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.SearchPreviousAlt,
+            this.onKeyboardSearchPrevious,
+        );
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.SearchNextAlt,
+            this.onKeyboardSearchNext,
+        );
     }
 
     private unregisterAllKeyboardListeners() {

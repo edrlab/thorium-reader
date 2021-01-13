@@ -8,12 +8,13 @@
 import { remote, shell, WillNavigateEvent } from "electron";
 import * as path from "path";
 import {
-    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "r2-navigator-js/dist/es6-es2015/src/electron/common/sessions";
-import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import { keyDownEventHandler, keyUpEventHandler } from "readium-desktop/renderer/common/keyboard";
+
+import {
+    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
 
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer } from "./common/pdfReader.type";
