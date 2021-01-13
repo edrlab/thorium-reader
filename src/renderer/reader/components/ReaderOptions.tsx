@@ -79,14 +79,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.handleChooseTheme = this.handleChooseTheme.bind(this);
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(oldProps: IProps) {
 
-        if (this.props.pdfEventBus) {
+        if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
 
             this.props.pdfEventBus.subscribe("scale", this.setScale);
             this.props.pdfEventBus.subscribe("view", this.setView);
             this.props.pdfEventBus.subscribe("column", this.setCol);
-
         }
     }
 
@@ -376,27 +375,30 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         const { __ } = this.props;
 
-        const inputComponent = (scale: IPdfPlayerScale) => {
-
+        const inputComponent = (scale: IPdfPlayerScale, disabled: boolean = false) => {
             return <div>
                     <input
-                        id={"radio-" + scale}
+                        id={"radio-" + `${scale}`}
                         type="radio"
-                        name={scale}
+                        name={`${scale}`}
                         onChange={() => this.props.pdfEventBus.dispatch("scale", scale)}
                         checked={this.state.pdfScale === scale}
+                        disabled={disabled}
                     />
-                    <label htmlFor={"radio-" + scale}>
+                    <label
+                        aria-disabled={disabled}
+                        htmlFor={"radio-" + `${scale}`}
+                    >
                         {this.state.pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
                         {
-                        scale === "50" ? __("reader.settings.pdfZoom.name.50pct") :
-                        (scale === "100" ? __("reader.settings.pdfZoom.name.100pct") :
-                        (scale === "150" ? __("reader.settings.pdfZoom.name.150pct") :
-                        (scale === "200" ? __("reader.settings.pdfZoom.name.200pct") :
-                        (scale === "300" ? __("reader.settings.pdfZoom.name.300pct") :
-                        (scale === "500" ? __("reader.settings.pdfZoom.name.500pct") :
-                        (scale === "fit" ? __("reader.settings.pdfZoom.name.fit") :
-                        (scale === "width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
+                        scale === 50 ? __("reader.settings.pdfZoom.name.50pct") :
+                        (scale === 100 ? __("reader.settings.pdfZoom.name.100pct") :
+                        (scale === 150 ? __("reader.settings.pdfZoom.name.150pct") :
+                        (scale === 200 ? __("reader.settings.pdfZoom.name.200pct") :
+                        (scale === 300 ? __("reader.settings.pdfZoom.name.300pct") :
+                        (scale === 500 ? __("reader.settings.pdfZoom.name.500pct") :
+                        (scale === "page-fit" ? __("reader.settings.pdfZoom.name.fit") :
+                        (scale === "page-width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
                         // --("reader.settings.pdfZoom.name." + scale as any)
                         }
                     </label>
@@ -406,14 +408,14 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         return (
             <div id={styles.themes_list}>
-                {inputComponent("fit")}
-                {inputComponent("width")}
-                {inputComponent("50")}
-                {inputComponent("100")}
-                {inputComponent("150")}
-                {inputComponent("200")}
-                {inputComponent("300")}
-                {inputComponent("500")}
+                {inputComponent("page-fit")}
+                {inputComponent("page-width", this.state.pdfView === "paginated")}
+                {inputComponent(50, this.state.pdfView === "paginated")}
+                {inputComponent(100, this.state.pdfView === "paginated")}
+                {inputComponent(150, this.state.pdfView === "paginated")}
+                {inputComponent(200, this.state.pdfView === "paginated")}
+                {inputComponent(300, this.state.pdfView === "paginated")}
+                {inputComponent(500, this.state.pdfView === "paginated")}
             </div>
         );
     }

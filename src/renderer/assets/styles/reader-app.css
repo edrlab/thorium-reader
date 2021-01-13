@@ -135,6 +135,9 @@ button {
   margin-top: -10px;
   margin-bottom: 60px;
 }
+.content_root_skip_bottom_spacing {
+  margin-top: 0px;
+}
 
 /* ========== READER ==========*/
 

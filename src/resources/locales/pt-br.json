@@ -250,6 +250,8 @@
         "navigation": {
             "backHomeTitle": "voltar à estante",
             "bookmarkTitle": "marcador",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "mostrar biblioteca / janela da biblioteca",
             "fullscreenTitle": "abrir modo tela cheia",
             "goTo": "Ir para",
@@ -259,6 +261,7 @@
             "infoTitle": "informação",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navegação",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "sair do modo tela cheia",
             "readBookTitle": "Começar a ler o livro",
             "settingsTitle": "configurações"

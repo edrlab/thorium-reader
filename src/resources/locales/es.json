@@ -250,6 +250,8 @@
         "navigation": {
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "Separar la ventana",
             "fullscreenTitle": "Abrir modo pantalla completa",
             "goTo": "Ir a",
@@ -259,6 +261,7 @@
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "Salir del modo pantalla completa",
             "readBookTitle": "Empezar a leer el libro",
             "settingsTitle": "Opciones de configuración"

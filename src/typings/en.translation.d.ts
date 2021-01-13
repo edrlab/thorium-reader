@@ -517,9 +517,12 @@ declare namespace typed_i18n {
     readonly "infoTitle": string,
     readonly "magnifyingGlassButton": string,
     readonly "openTableOfContentsTitle": string,
+    readonly "pdfscalemode": string,
     readonly "quitFullscreenTitle": string,
     readonly "readBookTitle": string,
-    readonly "settingsTitle": string
+    readonly "settingsTitle": string,
+    readonly "currentPageTotal": string,
+    readonly "currentPage": string
   },
   readonly "picker": {
     readonly "annotationTitle": string,
@@ -649,9 +652,12 @@ declare namespace typed_i18n {
   readonly "infoTitle": string,
   readonly "magnifyingGlassButton": string,
   readonly "openTableOfContentsTitle": string,
+  readonly "pdfscalemode": string,
   readonly "quitFullscreenTitle": string,
   readonly "readBookTitle": string,
-  readonly "settingsTitle": string
+  readonly "settingsTitle": string,
+  readonly "currentPageTotal": string,
+  readonly "currentPage": string
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
@@ -664,9 +670,12 @@ declare namespace typed_i18n {
   (_: "reader.navigation.infoTitle", __?: {}): string;
   (_: "reader.navigation.magnifyingGlassButton", __?: {}): string;
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
+  (_: "reader.navigation.pdfscalemode", __?: {}): string;
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;
   (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
+  (_: "reader.navigation.currentPageTotal", __?: {}): string;
+  (_: "reader.navigation.currentPage", __?: {}): string;
   (_: "reader.picker", __?: {}): {
   readonly "annotationTitle": string,
   readonly "search": {

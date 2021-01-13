@@ -250,6 +250,8 @@
         "navigation": {
             "backHomeTitle": "terug naar de boekenplank",
             "bookmarkTitle": "bladwijzer",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "maak het venster los",
             "fullscreenTitle": "gebruik volledig scherm",
             "goTo": "Ga naar",
@@ -259,6 +261,7 @@
             "infoTitle": "informatie",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navigatie",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "verlaat volledig scherm modus",
             "readBookTitle": "begin met het lezen van het boek",
             "settingsTitle": "instellingen"
