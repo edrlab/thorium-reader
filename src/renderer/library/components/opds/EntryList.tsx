@@ -32,8 +32,8 @@ class EntryList extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         return (
-            <section id={styles.flux_list}>
-                <ul>
+            <section>
+                <ul className={styles.opds_entry_ul}>
                     {this.props.entries.map((entry, index) =>
                         <li key={index} >
                             <Entry entry={entry} level={this.props.level} />
