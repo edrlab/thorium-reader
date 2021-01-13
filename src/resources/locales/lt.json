@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Klausyti toliau",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Paskiausiai pridėtos",
-            "lastAdditionsAudioBooks": "Paskiausiai pridėtos garsaknygės",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Paskiausiai pridėtos"
         },
         "export": "Eksportuoti",
         "lang": "Kalba",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Palaikomi plėtiniai:",
         "numberOfPages": "Puslapių skaičius",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Prieinama nuo",
                 "availableState": {
@@ -249,6 +250,8 @@
         "navigation": {
             "backHomeTitle": "grįžti į knygų lentyną",
             "bookmarkTitle": "sukurti žymę",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "rodyti bibliotekos / knygų lentynos langą",
             "fullscreenTitle": "įjungti viso ekrano režimą",
             "goTo": "Eiti į",
@@ -258,6 +261,7 @@
             "infoTitle": "informacija",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "naršymas",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "išjungti viso ekrano režimą",
             "readBookTitle": "pradėti skaityti knygą",
             "settingsTitle": "nuostatos"
@@ -345,6 +349,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Meniu",
             "cancel": "Nutraukti",

@@ -15,11 +15,10 @@ import { downloadActions, toastActions } from "readium-desktop/common/redux/acti
 import {
     callTyped, forkTyped, putTyped, raceTyped,
 } from "readium-desktop/common/redux/sagas/typed-saga";
-import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
-import { AbortSignal, httpGet } from "readium-desktop/main/http";
+import { AbortSignal, httpGet } from "readium-desktop/main/network/http";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { mapGenerator } from "readium-desktop/utils/generator";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
@@ -197,28 +196,8 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
 
 function* downloadLinkRequest(linkHref: string, abort: AbortSignal): SagaGenerator<IHttpGetResult<undefined>> {
 
-    let savedAccessTokens: AccessTokenMap = {};
-    try {
-        // Why is this undefined?? Injection async problem?
-        const configRepository = diMainGet("config-repository");
-        const configDoc = yield* callTyped(() => configRepository.get("oauth"));
-        savedAccessTokens = configDoc.value;
-    } catch (err) {
-        debug("Error to get oauth config value");
-        debug(err);
-    }
-    const domain = linkHref.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-    const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
-
     const options: RequestInit = {};
     options.signal = abort;
-
-    if (accessToken) {
-        options.headers = {
-            Authorization: `Bearer ${accessToken.authenticationToken}`,
-        };
-        debug("new header with oauth", options.headers);
-    }
 
     const data = yield* callTyped(() => httpGet(linkHref, options));
 

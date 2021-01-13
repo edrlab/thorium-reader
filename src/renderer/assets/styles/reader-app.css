@@ -135,6 +135,9 @@ button {
   margin-top: -10px;
   margin-bottom: 60px;
 }
+.content_root_skip_bottom_spacing {
+  margin-top: 0px;
+}
 
 /* ========== READER ==========*/
 
@@ -617,6 +620,11 @@ button {
   padding: 0;
 	height:auto;
   list-style: none;
+
+  & > li > div > a > span {
+    /* color: red !important; */
+    line-height: 1.5em;
+  }
 
   & .chapters_content {
 	  padding: 0 0 0 20px;

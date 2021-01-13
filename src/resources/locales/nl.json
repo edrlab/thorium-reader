@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Ga door met luisteren",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Recent toegevoegd",
-            "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Recent toegevoegd"
         },
         "export": "Exporteer",
         "lang": "Taal",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Ondersteunde uitbreidingen:",
         "numberOfPages": "Aantal pagina's",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Sinds",
                 "availableState": {
@@ -249,6 +250,8 @@
         "navigation": {
             "backHomeTitle": "terug naar de boekenplank",
             "bookmarkTitle": "bladwijzer",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "maak het venster los",
             "fullscreenTitle": "gebruik volledig scherm",
             "goTo": "Ga naar",
@@ -258,6 +261,7 @@
             "infoTitle": "informatie",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navigatie",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "verlaat volledig scherm modus",
             "readBookTitle": "begin met het lezen van het boek",
             "settingsTitle": "instellingen"
@@ -345,6 +349,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",

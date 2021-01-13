@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "オーディオブックを再開",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "最近追加された出版物",
-            "lastAdditionsAudioBooks": "最近追加されたオーディオブック",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "最近追加された出版物"
         },
         "export": "書き出し",
         "lang": "言語",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "サポートされる拡張機能：",
         "numberOfPages": "ページ数",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "始まり",
                 "availableState": {
@@ -249,6 +250,8 @@
         "navigation": {
             "backHomeTitle": "本棚に戻る",
             "bookmarkTitle": "しおりを挟む",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "蔵書/本棚を表示",
             "fullscreenTitle": "全画面表示",
             "goTo": "移動",
@@ -258,6 +261,7 @@
             "infoTitle": "本の情報",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "ナビゲーション",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "全画面表示の終了",
             "readBookTitle": "本を読み始める",
             "settingsTitle": "設定"
@@ -345,6 +349,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "メニュー",
             "cancel": "キャンセル",

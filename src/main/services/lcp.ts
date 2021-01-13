@@ -25,7 +25,7 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
 
@@ -774,6 +774,17 @@ export class LcpManager {
                 lcpInfo.lsd = {
                     statusUrl: statusLink.Href,
                     r2LSDBase64,
+                };
+            }
+
+            const urlHint = lcp.Links.find((link) => {
+                return link.Rel === "hint";
+            });
+            if (typeof urlHint?.Href === "string") {
+                lcpInfo.urlHint = {
+                    href: urlHint.Href,
+                    title: urlHint.Title ?? undefined,
+                    type: urlHint.Type ?? undefined,
                 };
             }
         }

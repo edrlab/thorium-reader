@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Reanudar reproducción",
             "continueReadingDivina": "Reanudar divina",
             "continueReadingPdf": "Reanudar PDF",
-            "lastAdditions": "Añadidos recientemente",
-            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente",
-            "lastAdditionsDivina": "Divina añadidos recientemente",
-            "lastAdditionsPdf": "PDF añadidos recientemente"
+            "lastAdditions": "Añadidos recientemente"
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Extensiones admitidas:",
         "numberOfPages": "Número de páginas",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Desde",
                 "availableState": {
@@ -249,6 +250,8 @@
         "navigation": {
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "Separar la ventana",
             "fullscreenTitle": "Abrir modo pantalla completa",
             "goTo": "Ir a",
@@ -258,6 +261,7 @@
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "Salir del modo pantalla completa",
             "readBookTitle": "Empezar a leer el libro",
             "settingsTitle": "Opciones de configuración"
@@ -345,6 +349,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancelar",
