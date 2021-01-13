@@ -458,7 +458,8 @@ class Reader extends React.Component<IProps, IState> {
                         pdfEventBus={this.state.pdfPlayerBusEvent}
                     />
                     <div className={classNames(styles.content_root,
-                        this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
+                        this.state.fullscreen ? styles.content_root_fullscreen : undefined,
+                        this.props.isPdf ? styles.content_root_skip_bottom_spacing : undefined)}>
                         <PickerManager
                             showSearchResults={this.showSearchResults}
                             pdfEventBus={this.state.pdfPlayerBusEvent}
