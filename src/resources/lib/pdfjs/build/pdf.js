@@ -250,8 +250,8 @@ var _text_layer = __w_pdfjs_require__(21);
 
 var _svg = __w_pdfjs_require__(22);
 
-const pdfjsVersion = '2.7.393';
-const pdfjsBuild = '3447f7c70';
+const pdfjsVersion = '2.7.518';
+const pdfjsBuild = 'dcd1589b2';
 {
   const {
     isNodeJS
@@ -292,12 +292,12 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.addLinkAttributes = addLinkAttributes;
+exports.deprecated = deprecated;
 exports.getFilenameFromUrl = getFilenameFromUrl;
 exports.isFetchSupported = isFetchSupported;
 exports.isValidFetchUrl = isValidFetchUrl;
 exports.loadScript = loadScript;
-exports.deprecated = deprecated;
-exports.PDFDateString = exports.StatTimer = exports.DOMSVGFactory = exports.DOMCMapReaderFactory = exports.BaseCMapReaderFactory = exports.DOMCanvasFactory = exports.BaseCanvasFactory = exports.DEFAULT_LINK_REL = exports.LinkTarget = exports.RenderingCancelledException = exports.PageViewport = void 0;
+exports.StatTimer = exports.RenderingCancelledException = exports.PDFDateString = exports.PageViewport = exports.LinkTarget = exports.DOMSVGFactory = exports.DOMCMapReaderFactory = exports.DOMCanvasFactory = exports.DEFAULT_LINK_REL = exports.BaseCMapReaderFactory = exports.BaseCanvasFactory = void 0;
 
 var _util = __w_pdfjs_require__(2);
 
@@ -839,31 +839,33 @@ exports.arraysToBytes = arraysToBytes;
 exports.assert = assert;
 exports.bytesToString = bytesToString;
 exports.createPromiseCapability = createPromiseCapability;
-exports.escapeString = escapeString;
+exports.createValidAbsoluteUrl = createValidAbsoluteUrl;
 exports.encodeToXmlString = encodeToXmlString;
+exports.escapeString = escapeString;
 exports.getModificationDate = getModificationDate;
 exports.getVerbosityLevel = getVerbosityLevel;
 exports.info = info;
 exports.isArrayBuffer = isArrayBuffer;
 exports.isArrayEqual = isArrayEqual;
+exports.isAscii = isAscii;
 exports.isBool = isBool;
 exports.isNum = isNum;
-exports.isString = isString;
 exports.isSameOrigin = isSameOrigin;
-exports.createValidAbsoluteUrl = createValidAbsoluteUrl;
-exports.objectSize = objectSize;
+exports.isString = isString;
 exports.objectFromEntries = objectFromEntries;
+exports.objectSize = objectSize;
 exports.removeNullCharacters = removeNullCharacters;
 exports.setVerbosityLevel = setVerbosityLevel;
 exports.shadow = shadow;
 exports.string32 = string32;
 exports.stringToBytes = stringToBytes;
 exports.stringToPDFString = stringToPDFString;
+exports.stringToUTF16BEString = stringToUTF16BEString;
 exports.stringToUTF8String = stringToUTF8String;
+exports.unreachable = unreachable;
 exports.utf8StringToString = utf8StringToString;
 exports.warn = warn;
-exports.unreachable = unreachable;
-exports.IsEvalSupportedCached = exports.IsLittleEndianCached = exports.createObjectURL = exports.FormatError = exports.Util = exports.UnknownErrorException = exports.UnexpectedResponseException = exports.TextRenderingMode = exports.StreamType = exports.PermissionFlag = exports.PasswordResponses = exports.PasswordException = exports.MissingPDFException = exports.InvalidPDFException = exports.AbortException = exports.CMapCompressionType = exports.ImageKind = exports.FontType = exports.AnnotationType = exports.AnnotationStateModelType = exports.AnnotationReviewState = exports.AnnotationReplyType = exports.AnnotationMarkedState = exports.AnnotationFlag = exports.AnnotationFieldFlag = exports.AnnotationBorderStyleType = exports.AnnotationActionEventType = exports.UNSUPPORTED_FEATURES = exports.VerbosityLevel = exports.OPS = exports.IDENTITY_MATRIX = exports.FONT_IDENTITY_MATRIX = exports.BaseException = void 0;
+exports.VerbosityLevel = exports.Util = exports.UNSUPPORTED_FEATURES = exports.UnknownErrorException = exports.UnexpectedResponseException = exports.TextRenderingMode = exports.StreamType = exports.PermissionFlag = exports.PasswordResponses = exports.PasswordException = exports.PageActionEventType = exports.OPS = exports.MissingPDFException = exports.IsLittleEndianCached = exports.IsEvalSupportedCached = exports.InvalidPDFException = exports.ImageKind = exports.IDENTITY_MATRIX = exports.FormatError = exports.FontType = exports.FONT_IDENTITY_MATRIX = exports.DocumentActionEventType = exports.createObjectURL = exports.CMapCompressionType = exports.BaseException = exports.AnnotationType = exports.AnnotationStateModelType = exports.AnnotationReviewState = exports.AnnotationReplyType = exports.AnnotationMarkedState = exports.AnnotationFlag = exports.AnnotationFieldFlag = exports.AnnotationBorderStyleType = exports.AnnotationActionEventType = exports.AbortException = void 0;
 
 __w_pdfjs_require__(3);
 
@@ -1010,14 +1012,22 @@ const AnnotationActionEventType = {
   K: "Keystroke",
   F: "Format",
   V: "Validate",
-  C: "Calculate",
+  C: "Calculate"
+};
+exports.AnnotationActionEventType = AnnotationActionEventType;
+const DocumentActionEventType = {
   WC: "WillClose",
   WS: "WillSave",
   DS: "DidSave",
   WP: "WillPrint",
   DP: "DidPrint"
 };
-exports.AnnotationActionEventType = AnnotationActionEventType;
+exports.DocumentActionEventType = DocumentActionEventType;
+const PageActionEventType = {
+  O: "PageOpen",
+  C: "PageClose"
+};
+exports.PageActionEventType = PageActionEventType;
 const StreamType = {
   UNKNOWN: "UNKNOWN",
   FLATE: "FLATE",
@@ -1602,6 +1612,22 @@ function escapeString(str) {
   });
 }
 
+function isAscii(str) {
+  return /^[\x00-\x7F]*$/.test(str);
+}
+
+function stringToUTF16BEString(str) {
+  const buf = ["\xFE\xFF"];
+
+  for (let i = 0, ii = str.length; i < ii; i++) {
+    const char = str.charCodeAt(i);
+    buf.push(String.fromCharCode(char >> 8 & 0xff));
+    buf.push(String.fromCharCode(char & 0xff));
+  }
+
+  return buf.join("");
+}
+
 function stringToUTF8String(str) {
   return decodeURIComponent(escape(str));
 }
@@ -1778,7 +1804,7 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports.getDocument = getDocument;
 exports.setPDFNetworkStreamFactory = setPDFNetworkStreamFactory;
-exports.build = exports.version = exports.PDFPageProxy = exports.PDFDocumentProxy = exports.PDFWorker = exports.PDFDataRangeTransport = exports.LoopbackPort = void 0;
+exports.version = exports.PDFWorker = exports.PDFPageProxy = exports.PDFDocumentProxy = exports.PDFDataRangeTransport = exports.LoopbackPort = exports.DefaultCMapReaderFactory = exports.DefaultCanvasFactory = exports.build = void 0;
 
 var _util = __w_pdfjs_require__(2);
 
@@ -1811,7 +1837,9 @@ var _webgl = __w_pdfjs_require__(18);
 const DEFAULT_RANGE_CHUNK_SIZE = 65536;
 const RENDERING_CANCELLED_TIMEOUT = 100;
 const DefaultCanvasFactory = _is_node.isNodeJS ? _node_utils.NodeCanvasFactory : _display_utils.DOMCanvasFactory;
+exports.DefaultCanvasFactory = DefaultCanvasFactory;
 const DefaultCMapReaderFactory = _is_node.isNodeJS ? _node_utils.NodeCMapReaderFactory : _display_utils.DOMCMapReaderFactory;
+exports.DefaultCMapReaderFactory = DefaultCMapReaderFactory;
 let createPDFNetworkStream;
 
 function setPDFNetworkStreamFactory(pdfNetworkStreamFactory) {
@@ -1985,7 +2013,7 @@ function _fetchDocument(worker, source, pdfDataRangeTransport, docId) {
 
   return worker.messageHandler.sendWithPromise("GetDocRequest", {
     docId,
-    apiVersion: '2.7.393',
+    apiVersion: '2.7.518',
     source: {
       data: source.data,
       url: source.url,
@@ -2182,6 +2210,10 @@ class PDFDocumentProxy {
     return this._transport.getJavaScript();
   }
 
+  getJSActions() {
+    return this._transport.getDocJSActions();
+  }
+
   getOutline() {
     return this._transport.getOutline();
   }
@@ -2312,6 +2344,10 @@ class PDFPageProxy {
     }
 
     return this.annotationsPromise;
+  }
+
+  getJSActions() {
+    return this._jsActionsPromise || (this._jsActionsPromise = this._transport.getPageJSActions(this._pageIndex));
   }
 
   render({
@@ -2573,6 +2609,7 @@ class PDFPageProxy {
 
     this.objs.clear();
     this.annotationsPromise = null;
+    this._jsActionsPromise = null;
     this.pendingCleanup = false;
     return Promise.all(waitOn);
   }
@@ -2600,6 +2637,7 @@ class PDFPageProxy {
 
     this.objs.clear();
     this.annotationsPromise = null;
+    this._jsActionsPromise = null;
 
     if (resetStats && this._stats) {
       this._stats = new _display_utils.StatTimer();
@@ -3179,6 +3217,10 @@ class WorkerTransport {
     this.setupMessageHandler();
   }
 
+  get loadingTaskSettled() {
+    return this.loadingTask._capability.settled;
+  }
+
   destroy() {
     if (this.destroyCapability) {
       return this.destroyCapability.promise;
@@ -3201,6 +3243,16 @@ class WorkerTransport {
     this.pagePromises.length = 0;
     const terminated = this.messageHandler.sendWithPromise("Terminate", null);
     waitOn.push(terminated);
+
+    if (this.loadingTaskSettled) {
+      const annotationStorageResetModified = this.loadingTask.promise.then(pdfDocument => {
+        if (pdfDocument.hasOwnProperty("annotationStorage")) {
+          pdfDocument.annotationStorage.resetModified();
+        }
+      }).catch(() => {});
+      waitOn.push(annotationStorageResetModified);
+    }
+
     Promise.all(waitOn).then(() => {
       this.commonObjs.clear();
       this.fontLoader.clear();
@@ -3660,6 +3712,16 @@ class WorkerTransport {
     return this.messageHandler.sendWithPromise("GetJavaScript", null);
   }
 
+  getDocJSActions() {
+    return this.messageHandler.sendWithPromise("GetDocJSActions", null);
+  }
+
+  getPageJSActions(pageIndex) {
+    return this.messageHandler.sendWithPromise("GetPageJSActions", {
+      pageIndex
+    });
+  }
+
   getOutline() {
     return this.messageHandler.sendWithPromise("GetOutline", null);
   }
@@ -3964,9 +4026,9 @@ const InternalRenderTask = function InternalRenderTaskClosure() {
   return InternalRenderTask;
 }();
 
-const version = '2.7.393';
+const version = '2.7.518';
 exports.version = version;
-const build = '3447f7c70';
+const build = 'dcd1589b2';
 exports.build = build;
 
 /***/ }),
@@ -7771,13 +7833,17 @@ class Metadata {
   constructor(data) {
     (0, _util.assert)(typeof data === "string", "Metadata: input is not a string");
     data = this._repair(data);
-    const parser = new _xml_parser.SimpleXMLParser();
+    const parser = new _xml_parser.SimpleXMLParser({
+      lowerCaseName: true
+    });
     const xmlDocument = parser.parseFromString(data);
     this._metadataMap = new Map();
 
     if (xmlDocument) {
       this._parse(xmlDocument);
     }
+
+    this._data = data;
   }
 
   _repair(data) {
@@ -7820,41 +7886,71 @@ class Metadata {
     });
   }
 
+  _getSequence(entry) {
+    const name = entry.nodeName;
+
+    if (name !== "rdf:bag" && name !== "rdf:seq" && name !== "rdf:alt") {
+      return null;
+    }
+
+    return entry.childNodes.filter(node => node.nodeName === "rdf:li");
+  }
+
+  _getCreators(entry) {
+    if (entry.nodeName !== "dc:creator") {
+      return false;
+    }
+
+    if (!entry.hasChildNodes()) {
+      return true;
+    }
+
+    const seqNode = entry.childNodes[0];
+    const authors = this._getSequence(seqNode) || [];
+
+    this._metadataMap.set(entry.nodeName, authors.map(node => node.textContent.trim()));
+
+    return true;
+  }
+
   _parse(xmlDocument) {
     let rdf = xmlDocument.documentElement;
 
-    if (rdf.nodeName.toLowerCase() !== "rdf:rdf") {
+    if (rdf.nodeName !== "rdf:rdf") {
       rdf = rdf.firstChild;
 
-      while (rdf && rdf.nodeName.toLowerCase() !== "rdf:rdf") {
+      while (rdf && rdf.nodeName !== "rdf:rdf") {
         rdf = rdf.nextSibling;
       }
     }
 
-    const nodeName = rdf ? rdf.nodeName.toLowerCase() : null;
-
-    if (!rdf || nodeName !== "rdf:rdf" || !rdf.hasChildNodes()) {
+    if (!rdf || rdf.nodeName !== "rdf:rdf" || !rdf.hasChildNodes()) {
       return;
     }
 
-    const children = rdf.childNodes;
-
-    for (let i = 0, ii = children.length; i < ii; i++) {
-      const desc = children[i];
-
-      if (desc.nodeName.toLowerCase() !== "rdf:description") {
+    for (const desc of rdf.childNodes) {
+      if (desc.nodeName !== "rdf:description") {
         continue;
       }
 
-      for (let j = 0, jj = desc.childNodes.length; j < jj; j++) {
-        if (desc.childNodes[j].nodeName.toLowerCase() !== "#text") {
-          const entry = desc.childNodes[j];
-          const name = entry.nodeName.toLowerCase();
+      for (const entry of desc.childNodes) {
+        const name = entry.nodeName;
 
-          this._metadataMap.set(name, entry.textContent.trim());
+        if (name === "#text") {
+          continue;
         }
+
+        if (this._getCreators(entry)) {
+          continue;
+        }
+
+        this._metadataMap.set(name, entry.textContent.trim());
       }
     }
+  }
+
+  getRaw() {
+    return this._data;
   }
 
   get(name) {
@@ -8321,12 +8417,16 @@ class SimpleDOMNode {
 exports.SimpleDOMNode = SimpleDOMNode;
 
 class SimpleXMLParser extends XMLParserBase {
-  constructor(hasAttributes = false) {
+  constructor({
+    hasAttributes = false,
+    lowerCaseName = false
+  }) {
     super();
     this._currentFragment = null;
     this._stack = null;
     this._errorCode = XMLParserErrorCode.NoError;
     this._hasAttributes = hasAttributes;
+    this._lowerCaseName = lowerCaseName;
   }
 
   parseFromString(data) {
@@ -8376,6 +8476,10 @@ class SimpleXMLParser extends XMLParserBase {
   }
 
   onBeginElement(name, attributes, isEmpty) {
+    if (this._lowerCaseName) {
+      name = name.toLowerCase();
+    }
+
     const node = new SimpleDOMNode(name);
     node.childNodes = [];
 
@@ -9503,6 +9607,7 @@ class AnnotationElement {
     this.annotationStorage = parameters.annotationStorage;
     this.enableScripting = parameters.enableScripting;
     this.hasJSActions = parameters.hasJSActions;
+    this._mouseState = parameters.mouseState;
 
     if (isRenderable) {
       this.container = this._createContainer(ignoreBorder);
@@ -9669,7 +9774,7 @@ class LinkAnnotationElement extends AnnotationElement {
     } else if (data.dest) {
       this._bindLink(link, data.dest);
     } else if (data.actions && (data.actions.Action || data.actions.MouseUp || data.actions.MouseDown) && this.enableScripting && this.hasJSActions) {
-      this._bindJSAction(link);
+      this._bindJSAction(link, data);
     } else {
       this._bindLink(link, "");
     }
@@ -9714,11 +9819,8 @@ class LinkAnnotationElement extends AnnotationElement {
     link.className = "internalLink";
   }
 
-  _bindJSAction(link) {
-    link.href = this.linkService.getAnchorUrl("#");
-    const {
-      data
-    } = this;
+  _bindJSAction(link, data) {
+    link.href = this.linkService.getAnchorUrl("");
     const map = new Map([["Action", "onclick"], ["MouseUp", "onmouseup"], ["MouseDown", "onmousedown"]]);
 
     for (const name of Object.keys(data.actions)) {
@@ -9729,12 +9831,13 @@ class LinkAnnotationElement extends AnnotationElement {
       }
 
       link[jsName] = () => {
-        window.dispatchEvent(new CustomEvent("dispatchEventInSandbox", {
+        this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
+          source: this,
           detail: {
             id: data.id,
             name
           }
-        }));
+        });
         return false;
       };
     }
@@ -9788,34 +9891,42 @@ class WidgetAnnotationElement extends AnnotationElement {
   }
 
   _setEventListener(element, baseName, eventName, valueGetter) {
-    if (this.data.actions && eventName.replace(" ", "") in this.data.actions) {
-      if (baseName.includes("mouse")) {
-        element.addEventListener(baseName, event => {
-          window.dispatchEvent(new CustomEvent("dispatchEventInSandbox", {
-            detail: {
-              id: this.data.id,
-              name: eventName,
-              value: valueGetter(event),
-              shift: event.shiftKey,
-              modifier: this._getKeyModifier(event)
-            }
-          }));
+    if (this.data.actions[eventName.replace(" ", "")] === undefined) {
+      return;
+    }
+
+    if (baseName.includes("mouse")) {
+      element.addEventListener(baseName, event => {
+        this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
+          source: this,
+          detail: {
+            id: this.data.id,
+            name: eventName,
+            value: valueGetter(event),
+            shift: event.shiftKey,
+            modifier: this._getKeyModifier(event)
+          }
         });
-      } else {
-        element.addEventListener(baseName, event => {
-          window.dispatchEvent(new CustomEvent("dispatchEventInSandbox", {
-            detail: {
-              id: this.data.id,
-              name: eventName,
-              value: event.target.checked
-            }
-          }));
+      });
+    } else {
+      element.addEventListener(baseName, event => {
+        this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
+          source: this,
+          detail: {
+            id: this.data.id,
+            name: eventName,
+            value: event.target.checked
+          }
         });
-      }
+      });
     }
   }
 
   _setEventListeners(element, names, getter) {
+    if (!this.data.actions) {
+      return;
+    }
+
     for (const [baseName, eventName] of names) {
       this._setEventListener(element, baseName, eventName, getter);
     }
@@ -9829,7 +9940,6 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
     super(parameters, {
       isRenderable
     });
-    this.mouseState = parameters.mouseState;
   }
 
   render() {
@@ -9882,7 +9992,7 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
             event.target.value = elementData.userValue;
           }
         });
-        element.addEventListener("updateFromSandbox", function (event) {
+        element.addEventListener("updatefromsandbox", function (event) {
           const {
             detail
           } = event;
@@ -9892,6 +10002,10 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
               storage.setValue(id, {
                 value: elementData.userValue.toString()
               });
+
+              if (!elementData.formattedValue) {
+                event.target.value = elementData.userValue;
+              }
             },
 
             valueAsString() {
@@ -9962,7 +10076,8 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
             }
 
             elementData.userValue = event.target.value;
-            window.dispatchEvent(new CustomEvent("dispatchEventInSandbox", {
+            this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
+              source: this,
               detail: {
                 id,
                 name: "Keystroke",
@@ -9972,14 +10087,15 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
                 selStart: event.target.selectionStart,
                 selEnd: event.target.selectionEnd
               }
-            }));
+            });
           });
           const _blurListener = blurListener;
           blurListener = null;
           element.addEventListener("blur", event => {
-            if (this.mouseState.isDown) {
+            if (this._mouseState.isDown) {
               elementData.userValue = event.target.value;
-              window.dispatchEvent(new CustomEvent("dispatchEventInSandbox", {
+              this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
+                source: this,
                 detail: {
                   id,
                   name: "Keystroke",
@@ -9989,7 +10105,7 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
                   selStart: event.target.selectionStart,
                   selEnd: event.target.selectionEnd
                 }
-              }));
+              });
             }
 
             _blurListener(event);
@@ -10016,7 +10132,8 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
                 [selStart, selEnd] = elementData.beforeInputSelectionRange;
               }
 
-              window.dispatchEvent(new CustomEvent("dispatchEventInSandbox", {
+              this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
+                source: this,
                 detail: {
                   id,
                   name: "Keystroke",
@@ -10026,7 +10143,7 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
                   selStart,
                   selEnd
                 }
-              }));
+              });
             });
           }
 
@@ -10142,7 +10259,7 @@ class CheckboxWidgetAnnotationElement extends WidgetAnnotationElement {
     });
 
     if (this.enableScripting && this.hasJSActions) {
-      element.addEventListener("updateFromSandbox", event => {
+      element.addEventListener("updatefromsandbox", event => {
         const {
           detail
         } = event;
@@ -10211,9 +10328,11 @@ class RadioButtonWidgetAnnotationElement extends WidgetAnnotationElement {
     element.setAttribute("pdfButtonValue", data.buttonValue);
     element.setAttribute("id", id);
     element.addEventListener("change", function (event) {
-      const target = event.target;
+      const {
+        target
+      } = event;
 
-      for (const radio of document.getElementsByName(event.target.name)) {
+      for (const radio of document.getElementsByName(target.name)) {
         if (radio !== target) {
           storage.setValue(radio.getAttribute("id"), {
             value: false
@@ -10227,7 +10346,7 @@ class RadioButtonWidgetAnnotationElement extends WidgetAnnotationElement {
     });
 
     if (this.enableScripting && this.hasJSActions) {
-      element.addEventListener("updateFromSandbox", event => {
+      element.addEventListener("updatefromsandbox", event => {
         const {
           detail
         } = event;
@@ -10340,7 +10459,7 @@ class ChoiceWidgetAnnotationElement extends WidgetAnnotationElement {
     }
 
     if (this.enableScripting && this.hasJSActions) {
-      selectElement.addEventListener("updateFromSandbox", event => {
+      selectElement.addEventListener("updatefromsandbox", event => {
         const {
           detail
         } = event;
@@ -10378,12 +10497,13 @@ class ChoiceWidgetAnnotationElement extends WidgetAnnotationElement {
         };
         Object.keys(detail).filter(name => name in actions).forEach(name => actions[name]());
       });
-      selectElement.addEventListener("input", function (event) {
+      selectElement.addEventListener("input", event => {
         const value = getValue(event);
         storage.setValue(id, {
           value
         });
-        window.dispatchEvent(new CustomEvent("dispatchEventInSandbox", {
+        this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
+          source: this,
           detail: {
             id,
             name: "Keystroke",
@@ -10392,7 +10512,7 @@ class ChoiceWidgetAnnotationElement extends WidgetAnnotationElement {
             commitKey: 1,
             keyDown: false
           }
-        }));
+        });
       });
 
       this._setEventListeners(selectElement, [["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "MouseUp"]], event => event.target.checked);
@@ -10937,15 +11057,12 @@ class FileAttachmentAnnotationElement extends AnnotationElement {
     } = this.data.file;
     this.filename = (0, _display_utils.getFilenameFromUrl)(filename);
     this.content = content;
-
-    if (this.linkService.eventBus) {
-      this.linkService.eventBus.dispatch("fileattachmentannotation", {
-        source: this,
-        id: (0, _util.stringToPDFString)(filename),
-        filename,
-        content
-      });
-    }
+    this.linkService.eventBus?.dispatch("fileattachmentannotation", {
+      source: this,
+      id: (0, _util.stringToPDFString)(filename),
+      filename,
+      content
+    });
   }
 
   render() {
@@ -11010,7 +11127,9 @@ class AnnotationLayer {
         annotationStorage: parameters.annotationStorage || new _annotation_storage.AnnotationStorage(),
         enableScripting: parameters.enableScripting,
         hasJSActions: parameters.hasJSActions,
-        mouseState: parameters.mouseState
+        mouseState: parameters.mouseState || {
+          isDown: false
+        }
       });
 
       if (element.isRenderable) {
