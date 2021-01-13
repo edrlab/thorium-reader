@@ -59,9 +59,10 @@ export class Information extends React.Component<IProps, undefined> {
         try {
 
             let title = setTitle(aboutLocale);
+
+            // TODO: search by title is not reliable
             let [pubView] = await apiAction("publication/search", title);
             if (pubView) {
-
                 console.log("pubView already exist no need to generate a new one");
                 console.log(pubView);
 
@@ -73,11 +74,16 @@ export class Information extends React.Component<IProps, undefined> {
             if (_PACKAGING === "0") {
                 folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
             }
-            const filePath = path.join(folderPath, `${aboutLocale}.html`);
-            let htmlFile = `${aboutLocale}.html`;
-            aboutLocale = existsSync(filePath) === true ? locale : "en";
-            htmlFile = `${aboutLocale}.html`;
-            title = setTitle(aboutLocale);
+
+            let htmlFile = `${aboutLocale}.xhtml`;
+            {
+                const filePath = path.join(folderPath, `${aboutLocale}.xhtml`);
+                if (!existsSync(filePath)) {
+                    aboutLocale = "en";
+                }
+                htmlFile = `${aboutLocale}.xhtml`;
+                title = setTitle(aboutLocale);
+            }
 
             [pubView] = await apiAction("publication/search", title);
             if (pubView) {
