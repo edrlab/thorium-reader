@@ -64,6 +64,12 @@ const _defaults_ = Object.freeze({
         shift: false,
         key: "KeyN",
     }),
+    FocusReaderGotoPage: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyP",
+    }),
     FocusReaderSettings: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,

@@ -114,6 +114,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!r2Publication) {
             return <></>;
         }
+
+        // WARNING: do not modify zero-based index without adjusting Reader.tsx
+        // showSearchResults (4)
+        // showGotoPage (5)
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
@@ -411,11 +415,24 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             return <></>;
         }
 
+        // this.props.currentLocation.docInfo.isFixedLayout
+        const isFixedLayout = !this.props.r2Publication.PageList &&
+            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+
         let currentPage = (this.props.isDivina || this.props.isPdf) ?
             this.props.currentLocation?.locator?.href :
             this.props.currentLocation?.epubPage;
-        if (currentPage) {
-
+        if (isFixedLayout &&
+            this.props.currentLocation?.locator?.href &&
+            this.props.r2Publication.Spine) {
+            const spineIndex = this.props.r2Publication.Spine.findIndex((l) => {
+                return l.Href === this.props.currentLocation.locator.href;
+            });
+            if (spineIndex >= 0) {
+                currentPage = (spineIndex + 1).toString();
+                totalPages = this.props.r2Publication.Spine.length.toString();
+            }
+        } else if (currentPage) {
             if (this.props.isDivina) {
                 try {
                     const p = parseInt(currentPage, 10) + 1;
@@ -429,7 +446,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
 
         const { __ } = this.props;
-        const error = this.state.pageError;
+
         return <div className={styles.goToPage}>
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
 
@@ -437,16 +454,17 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 id="gotoPageLabel"
                 htmlFor="gotoPageInput">
                 {
-                typeof currentPage !== "undefined" ?
+                currentPage ?
                 (totalPages
                         // tslint:disable-next-line: max-line-length
                         ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
-                        : __("reader.navigation.currentPage", { current: `${currentPage}`})) : ""
+                        : __("reader.navigation.currentPage", { current: `${currentPage}`})) :
+                ""
                 }
             </label>
 
             <form onSubmit={this.handleSubmitPage}>
-                {this.props.r2Publication?.PageList &&
+                {(isFixedLayout || this.props.r2Publication?.PageList) &&
                 <select
                     onChange={(ev) => {
                         const val = ev.target?.value?.toString();
@@ -455,9 +473,36 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         }
                         this.goToRef.current.value = val;
                         this.setState({pageError: false});
+
+                        // Warning: Use the `defaultValue` or `value` props on <select>
+                        // instead of setting `selected` on <option>.
+                        // ... BUT: this does not result in the behaviour we want,
+                        // which is to display the current page, OR the user-selected page (not actually current yet)
+                        // value={
+                        //     this.props.r2Publication.PageList.find((pl) => {
+                        //         return pl.Title === currentPage;
+                        //     }) ?
+                        //     currentPage : undefined
+                        // }
                     }}
                 >
-                    {this.props.r2Publication.PageList.map((pageLink, idx) => {
+                    {
+                    isFixedLayout
+                    ?
+                    this.props.r2Publication.Spine.map((_spineLink, idx) => {
+                        const indexStr = (idx + 1).toString();
+                        return (
+                            <option
+                                key={`pageGoto_${idx}`}
+                                value={indexStr}
+                                selected={currentPage === indexStr}
+                            >
+                                {indexStr}
+                            </option>
+                        );
+                    })
+                    :
+                    this.props.r2Publication.PageList.map((pageLink, idx) => {
                         return (
                             pageLink.Title ?
                             <option
@@ -468,7 +513,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                 {pageLink.Title}
                             </option> : <></>
                         );
-                    })}
+                    })
+                    }
                 </select>
                 }
                 <input
@@ -476,20 +522,24 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     aria-labelledby="gotoPageLabel"
                     ref={this.goToRef}
                     type="text"
-                    aria-invalid={error}
+                    aria-invalid={this.state.pageError}
                     onChange={() => this.setState({pageError: false})}
-                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)}
+                    disabled={
+                        !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
+                    }
                     placeholder={__("reader.navigation.goToPlaceHolder")}
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
                     type="submit"
-                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)}
+                    disabled={
+                        !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
+                    }
                 >
                     { __("reader.navigation.goTo") }
                 </button>
             </form>
-            {error &&
+            {this.state.pageError &&
                 <p
                     className={styles.goToErrorMessage}
                     aria-live="assertive"
@@ -512,8 +562,27 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!this.goToRef?.current?.value) {
             return;
         }
+
+        // this.props.currentLocation.docInfo.isFixedLayout
+        const isFixedLayout = !this.props.r2Publication.PageList &&
+            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+
         const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
-        if (this.props.isDivina || this.props.isPdf) {
+        if (isFixedLayout) {
+            try {
+                const spineIndex = parseInt(pageNbr, 10) - 1;
+                const spineLink = this.props.r2Publication.Spine[spineIndex];
+                if (spineLink) {
+                    this.setState({pageError: false});
+                    this.props.handleLinkClick(undefined, spineLink.Href);
+                    return;
+                }
+            } catch (e) {
+                // ignore error
+            }
+
+            this.setState({refreshError: true});
+        } else if (this.props.isDivina || this.props.isPdf) {
             let page: number | undefined;
 
             if (this.props.isDivina) {
