@@ -433,8 +433,47 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         return <div className={styles.goToPage}>
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
 
+            <label className={styles.currentPage}
+                id="gotoPageLabel"
+                htmlFor="gotoPageInput">
+                {
+                typeof currentPage !== "undefined" ?
+                (totalPages
+                        // tslint:disable-next-line: max-line-length
+                        ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
+                        : __("reader.navigation.currentPage", { current: `${currentPage}`})) : ""
+                }
+            </label>
+
             <form onSubmit={this.handleSubmitPage}>
+                {this.props.r2Publication?.PageList &&
+                <select
+                    onChange={(ev) => {
+                        const val = ev.target?.value?.toString();
+                        if (!val || !this.goToRef?.current) {
+                            return;
+                        }
+                        this.goToRef.current.value = val;
+                        this.setState({pageError: false});
+                    }}
+                >
+                    {this.props.r2Publication.PageList.map((pageLink, idx) => {
+                        return (
+                            pageLink.Title ?
+                            <option
+                                key={`pageGoto_${idx}`}
+                                value={pageLink.Title}
+                                selected={currentPage === pageLink.Title}
+                            >
+                                {pageLink.Title}
+                            </option> : <></>
+                        );
+                    })}
+                </select>
+                }
                 <input
+                    id="gotoPageInput"
+                    aria-labelledby="gotoPageLabel"
                     ref={this.goToRef}
                     type="text"
                     aria-invalid={error}
@@ -460,16 +499,6 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     { __("reader.navigation.goToError") }
                 </p>
             }
-
-            <p className={styles.currentPage}>
-                {
-                typeof currentPage !== "undefined" ?
-                (totalPages
-                        // tslint:disable-next-line: max-line-length
-                        ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
-                        : __("reader.navigation.currentPage", { current: `${currentPage}`})) : ""
-                }
-            </p>
 
         </div>;
     }
