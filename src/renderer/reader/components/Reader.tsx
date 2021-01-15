@@ -220,6 +220,7 @@ class Reader extends React.Component<IProps, IState> {
         this.handleMediaOverlaysPlaybackRate = this.handleMediaOverlaysPlaybackRate.bind(this);
 
         this.showSearchResults = this.showSearchResults.bind(this);
+        this.onKeyboardShowGotoPage = this.onKeyboardShowGotoPage.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -592,6 +593,11 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderGotoPage,
+            this.onKeyboardShowGotoPage);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.CloseReader,
             this.onKeyboardCloseReader);
 
@@ -625,6 +631,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardInfo);
         unregisterKeyboardListener(this.onKeyboardFocusSettings);
         unregisterKeyboardListener(this.onKeyboardFocusNav);
+        unregisterKeyboardListener(this.onKeyboardShowGotoPage);
         unregisterKeyboardListener(this.onKeyboardCloseReader);
         unregisterKeyboardListener(this.onKeyboardAudioPlayPause);
         unregisterKeyboardListener(this.onKeyboardAudioPrevious);
@@ -739,7 +746,7 @@ class Reader extends React.Component<IProps, IState> {
     private onKeyboardCloseReader = () => {
         // if (!this.state.shortcutEnable) {
         //     if (DEBUG_KEYBOARD) {
-        //         console.log("!shortcutEnable (onKeyboardInfo)");
+        //         console.log("!shortcutEnable (onKeyboardCloseReader)");
         //     }
         //     return;
         // }
@@ -1115,8 +1122,18 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
+    private onKeyboardShowGotoPage() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowGotoPage)");
+            }
+            return;
+        }
+        this.handleMenuButtonClick(5); // "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
+    }
+
     private showSearchResults() {
-        this.handleMenuButtonClick(4); // "search" in ReaderMenu.tsx
+        this.handleMenuButtonClick(4); // "search" zero-based index in SectionData[] of ReaderMenu.tsx
     }
 
     private handleMenuButtonClick(openedSectionMenu?: number | undefined) {
