@@ -8,6 +8,7 @@
 import * as debug_ from "debug";
 import { BrowserWindow, globalShortcut } from "electron";
 import { Headers } from "node-fetch";
+import { URL } from "url";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -41,13 +42,15 @@ type TLabelName = "login" | "password";
 type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/implicit"
     | "http://opds-spec.org/auth/basic"
-    | "http://opds-spec.org/auth/local";
+    | "http://opds-spec.org/auth/local"
+    | "http://librarysimplified.org/authtype/SAML-2.0";
 
 const AUTHENTICATION_TYPE: TAuthenticationType[] = [
     "http://opds-spec.org/auth/oauth/password",
     "http://opds-spec.org/auth/oauth/implicit",
     "http://opds-spec.org/auth/basic",
     "http://opds-spec.org/auth/local",
+    "http://librarysimplified.org/authtype/SAML-2.0",
 ];
 
 const LINK_TYPE: TLinkType[] = [
@@ -364,6 +367,13 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
             break;
         }
 
+        case "http://librarysimplified.org/authtype/SAML-2.0": {
+            browserUrl = `${
+                auth.links?.authenticate?.url
+            }&redirect_uri=${encodeURI("opds://authorize")}`;
+            break;
+        }
+
         case "http://opds-spec.org/auth/local":
         case "http://opds-spec.org/auth/basic":
         case "http://opds-spec.org/auth/oauth/password": {
@@ -593,11 +603,15 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
 
         if (method === "GET") {
             if (host === "authorize") {
-
+                const urlObject = new URL(url);
+                const data: Record<string, string> = {};
+                for(const [key, value] of urlObject.searchParams){
+                    data[key] = value
+                }
                 return {
                     url: urlParsed,
                     method: "GET",
-                    data: {},
+                    data,
                 };
             }
         }

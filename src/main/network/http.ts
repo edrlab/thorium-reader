@@ -95,6 +95,21 @@ export const getConfigRepoOpdsAuthenticationToken =
         filename_,
     );
 
+export const deleteConfigRepoOpdsAuthenticationToken = async (host: string) =>
+    await tryCatch(async () => {
+        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
+        const configRepo = diMainGet(
+            "config-repository"
+        ) as ConfigRepository<IOpdsAuthenticationToken>;
+        const doc = await configRepo.get(id);
+        debug("DELETE opds authentication credentials for", host);
+        // do not risk showing plaintext access/refresh tokens in console / command line shell
+        // debug("Credentials: ", doc?.value);
+        await configRepo.delete(doc.identifier);
+    }, filename_);
+
+
+
 export async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
@@ -339,13 +354,20 @@ const httpGetUnauthorized =
             );
 
             if (enableRefresh) {
-                if (
-                    response.statusCode === 401
-                    && auth.refreshUrl && auth.refreshToken
-                ) {
-                    const responseAfterRefresh =
-                        await httpGetUnauthorizedRefresh(auth)(url, options, _callback, ..._arg);
-                    return responseAfterRefresh || response;
+                if (response.statusCode === 401) {
+                    if (auth.refreshUrl && auth.refreshToken) {
+                        const responseAfterRefresh = await httpGetUnauthorizedRefresh(
+                            auth
+                        )(url, options, _callback, ..._arg);
+                        return responseAfterRefresh || response;
+                    } else {
+                        await deleteConfigRepoOpdsAuthenticationToken(url.host);
+                        options.headers.delete("Authorization");
+                        const responseWithoutAuth = await httpGetWithAuth(
+                            false
+                        )(url, options, _callback, ..._arg);
+                        return responseWithoutAuth || response;
+                    }
                 } else {
                     return await handleCallback(response, _callback);
                 }
