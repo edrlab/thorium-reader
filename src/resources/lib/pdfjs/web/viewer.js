@@ -1035,7 +1035,8 @@ const PDFViewerApplication = {
   },
 
   get supportsPrinting() {
-    return PDFPrintServiceFactory.instance.supportsPrinting;
+    // return PDFPrintServiceFactory.instance.supportsPrinting;
+    return false;
   },
 
   get supportsFullscreen() {
@@ -2332,7 +2333,7 @@ const PDFViewerApplication = {
 
     eventBus._on("presentationmode", webViewerPresentationMode);
 
-    eventBus._on("print", webViewerPrint);
+    // eventBus._on("print", webViewerPrint);
 
     eventBus._on("download", webViewerDownload);
 
@@ -2482,7 +2483,7 @@ const PDFViewerApplication = {
 
     eventBus._off("presentationmode", webViewerPresentationMode);
 
-    eventBus._off("print", webViewerPrint);
+    // eventBus._off("print", webViewerPrint);
 
     eventBus._off("download", webViewerDownload);
 
