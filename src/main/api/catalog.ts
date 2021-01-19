@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
-import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
@@ -26,6 +25,7 @@ import { PublicationDocument } from "../db/document/publication";
 import { PublicationRepository } from "../db/repository/publication";
 import { diMainGet } from "../di";
 import { RootState } from "../redux/states";
+import { aboutFiltered } from "../filter";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
@@ -91,8 +91,8 @@ export class CatalogApi implements ICatalogApi {
             },
         } = await this.getPublicationView();
 
-        const _allAdded = allAdded.filter(({title}) => !title.startsWith(ABOUT_BOOK_TITLE_PREFIX));
-        const _epubReaded = epubReaded.filter(({title}) => !title.startsWith(ABOUT_BOOK_TITLE_PREFIX));
+        const _allAdded = aboutFiltered(allAdded);
+        const _epubReaded = aboutFiltered(epubReaded);
 
         const allAdded_ = _allAdded.slice(0, NB_PUB);
         const epubReaded_ = _epubReaded.slice(0, NB_PUB);
