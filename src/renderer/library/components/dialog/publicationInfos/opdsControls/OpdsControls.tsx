@@ -73,7 +73,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             >
                                 {`${__("catalog.addBookToLib")}${ln.properties?.indirectAcquisitionType ?
                                 ` (${findExtWithMimeType(ln.properties.indirectAcquisitionType)})` :
-                                (ln.type ? ` (${findExtWithMimeType(ln.type)})` : "")}`}
+                                (ln.type ? ` (${findExtWithMimeType(ln.type) || findExtWithMimeType(ln.type.replace("+json", "+zip"))})` : "")}`}
                             </button>
                             <OpdsLinkProperties
                                 properties={ln.properties}
