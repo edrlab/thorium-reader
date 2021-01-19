@@ -375,6 +375,7 @@ declare namespace typed_i18n {
     readonly "addExtract": string,
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
+    readonly "goRevokeLoanBook": string,
     readonly "goSubBook": string
   },
   readonly "network": {
@@ -411,12 +412,14 @@ declare namespace typed_i18n {
   readonly "addExtract": string,
   readonly "goBuyBook": string,
   readonly "goLoanBook": string,
+  readonly "goRevokeLoanBook": string,
   readonly "goSubBook": string
 };
   (_: "opds.menu.aboutBook", __?: {}): string;
   (_: "opds.menu.addExtract", __?: {}): string;
   (_: "opds.menu.goBuyBook", __?: {}): string;
   (_: "opds.menu.goLoanBook", __?: {}): string;
+  (_: "opds.menu.goRevokeLoanBook", __?: {}): string;
   (_: "opds.menu.goSubBook", __?: {}): string;
   (_: "opds.network", __?: {}): {
   readonly "error": string,

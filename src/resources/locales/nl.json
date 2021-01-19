@@ -177,6 +177,7 @@
             "addExtract": "Voeg de samenvatting toe",
             "goBuyBook": "Koop dit boek",
             "goLoanBook": "Leen dit boek",
+            "goRevokeLoanBook": "",
             "goSubBook": "Abonneer"
         },
         "network": {
