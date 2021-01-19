@@ -113,13 +113,13 @@ const _defaults_ = Object.freeze({
         alt: false,
         control: true,
         shift: false,
-        key: "G",
+        key: "KeyG",
     }),
     SearchPreviousAlt: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: true,
-        key: "G",
+        key: "KeyG",
     }),
 
     NavigatePreviousOPDSPage: Object.freeze<TKeyboardShortcut>({
