@@ -24,8 +24,8 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationDocument } from "../db/document/publication";
 import { PublicationRepository } from "../db/repository/publication";
 import { diMainGet } from "../di";
-import { RootState } from "../redux/states";
 import { aboutFiltered } from "../filter";
+import { RootState } from "../redux/states";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
