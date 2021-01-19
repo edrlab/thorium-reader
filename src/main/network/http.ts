@@ -99,7 +99,7 @@ export const deleteConfigRepoOpdsAuthenticationToken = async (host: string) =>
     await tryCatch(async () => {
         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
         const configRepo = diMainGet(
-            "config-repository"
+            "config-repository",
         ) as ConfigRepository<IOpdsAuthenticationToken>;
         const doc = await configRepo.get(id);
         debug("DELETE opds authentication credentials for", host);
@@ -107,8 +107,6 @@ export const deleteConfigRepoOpdsAuthenticationToken = async (host: string) =>
         // debug("Credentials: ", doc?.value);
         await configRepo.delete(doc.identifier);
     }, filename_);
-
-
 
 export async function httpFetchRawResponse(
     url: string | URL,
@@ -357,14 +355,14 @@ const httpGetUnauthorized =
                 if (response.statusCode === 401) {
                     if (auth.refreshUrl && auth.refreshToken) {
                         const responseAfterRefresh = await httpGetUnauthorizedRefresh(
-                            auth
+                            auth,
                         )(url, options, _callback, ..._arg);
                         return responseAfterRefresh || response;
                     } else {
                         await deleteConfigRepoOpdsAuthenticationToken(url.host);
                         options.headers.delete("Authorization");
                         const responseWithoutAuth = await httpGetWithAuth(
-                            false
+                            false,
                         )(url, options, _callback, ..._arg);
                         return responseWithoutAuth || response;
                     }

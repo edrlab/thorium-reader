@@ -201,7 +201,7 @@ export class OpdsFeedViewConverter {
                     title: ln.Title,
                     type: ln.TypeLink,
                     properties: this.convertOpdsPropertiesToView(ln.Properties),
-                    rel: ln.Rel && ln.Rel.length >0 ? ln.Rel[0] : undefined
+                    rel: ln.Rel && ln.Rel.length > 0 ? ln.Rel[0] : undefined,
                 }),
         );
 
@@ -338,8 +338,8 @@ export class OpdsFeedViewConverter {
         );
 
         const revokeLoanLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
-            rel: ["http://librarysimplified.org/terms/rel/revoke"]
-        })
+            rel: ["http://librarysimplified.org/terms/rel/revoke"],
+        });
 
         const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
         const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
@@ -364,7 +364,7 @@ export class OpdsFeedViewConverter {
             subscribeLinks: subscribeLinkView,
             sampleOrPreviewLinks: sampleLinkView,
             openAccessLinks: acquisitionLinkView,
-            revokeLoanLinks: revokeLoanLinkView
+            revokeLoanLinks: revokeLoanLinkView,
         };
     }
     public convertOpdsAuthToView(r2OpdsAuth: OPDSAuthenticationDoc, baseUrl: string): IOpdsResultView {

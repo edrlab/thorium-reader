@@ -376,7 +376,7 @@ export class OpdsService {
     private handleApiProblems(jsonObj: any, baseUrl: string) {
         const { type, details } = jsonObj;
         debug(`api problem of type ${type}`);
-        debug(`when accessing ${baseUrl}`)
+        debug(`when accessing ${baseUrl}`);
         debug(`more ${details}`);
     }
 }

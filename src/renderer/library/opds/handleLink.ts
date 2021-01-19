@@ -27,7 +27,8 @@ export const dispatchOpdsLink =
                 contentType === ContentType.Opds2Auth ||
                 contentType === ContentType.Opds2Pub ||
                 contentType === ContentType.AtomXml ||
-                ln.rel === "http://librarysimplified.org/terms/rel/revoke" // TODO Remove Temporary Hack to make Revoke Links of Library Simplified work
+                // TODO Remove Temporary Hack to make Revoke Links of Library Simplified work
+                ln.rel === "http://librarysimplified.org/terms/rel/revoke"
                 ) {
 
                 const param = extractParamFromOpdsRoutePathname(location.pathname);

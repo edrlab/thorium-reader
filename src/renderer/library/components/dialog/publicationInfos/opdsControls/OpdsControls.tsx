@@ -185,7 +185,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         this.props.location,
                                         `${__("opds.menu.goRevokeLoanBook")} (${
                                             opdsPublicationView.title
-                                        })`
+                                        })`,
                                     )
                                 }
                             >
@@ -197,8 +197,6 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                 ) : (
                     <></>
                 );
-
-
 
             if (
                 (Array.isArray(opdsPublicationView.buyLinks)
