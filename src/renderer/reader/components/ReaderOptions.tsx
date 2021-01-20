@@ -158,10 +158,6 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     content: this.spacingContent(),
                 },
                 {
-                    title: "MathML",
-                    content: this.mathJax(),
-                },
-                {
                     title: __("reader.media-overlays.title"),
                     content: this.mediaOverlays(),
                 },
@@ -269,22 +265,6 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 }</label>
             </div>
         </>);
-    }
-
-    private mathJax() {
-
-        const { readerConfig } = this.props;
-        return (
-            <div className={styles.mathml_section}>
-                <input
-                    id="mathJaxCheckBox"
-                    type="checkbox"
-                    checked={readerConfig.enableMathJax}
-                    onChange={() => this.toggleMathJax()}
-                />
-                <label htmlFor="mathJaxCheckBox">MathJax</label>
-            </div>
-        );
     }
 
     private divinaSetReadingMode() {
@@ -686,6 +666,36 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     </div>
                 </div>
             </section>
+            <section className={styles.line_tab_content}>
+                <div className={styles.mathml_section}>
+                    <input
+                        id="mathJaxCheckBox"
+                        type="checkbox"
+                        checked={readerConfig.enableMathJax}
+                        onChange={() => this.toggleMathJax()}
+                    />
+                    <label htmlFor="mathJaxCheckBox">MathJax</label>
+                </div>
+                <div className={styles.mathml_section}>
+                    <input
+                        id="reduceMotionCheckBox"
+                        type="checkbox"
+                        checked={readerConfig.reduceMotion}
+                        onChange={() => this.toggleReduceMotion()}
+                    />
+                    <label htmlFor="reduceMotionCheckBox">{__("reader.settings.reduceMotion")}</label>
+                </div>
+
+                <div className={styles.mathml_section}>
+                    <input
+                        id="noFootnotesCheckBox"
+                        type="checkbox"
+                        checked={readerConfig.noFootnotes}
+                        onChange={() => this.toggleNoFootnotes()}
+                    />
+                    <label htmlFor="noFootnotesCheckBox">{__("reader.settings.noFootnotes")}</label>
+                </div>
+            </section>
         </>;
     }
 
@@ -820,6 +830,22 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     //     readerConfig.ttsEnableOverlayMode = !readerConfig.ttsEnableOverlayMode;
     //     this.props.setSettings(readerConfig);
     // }
+
+    private toggleReduceMotion() {
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
+        readerConfig.reduceMotion = !readerConfig.reduceMotion;
+        this.props.setSettings(readerConfig);
+    }
+
+    private toggleNoFootnotes() {
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
+        readerConfig.noFootnotes = !readerConfig.noFootnotes;
+        this.props.setSettings(readerConfig);
+    }
 
     private toggleMathJax() {
         // TODO: smarter clone?

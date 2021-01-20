@@ -250,6 +250,8 @@
         "navigation": {
             "backHomeTitle": "назад к книжной полке",
             "bookmarkTitle": "закладка",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "показать окно библиотеки / книжной полки",
             "fullscreenTitle": "открыть полноэкранный режим",
             "goTo": "Перейти на",
@@ -259,6 +261,7 @@
             "infoTitle": "информация",
             "magnifyingGlassButton": "искать в книге",
             "openTableOfContentsTitle": "навигация",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "выйти из полноэкранного режима",
             "readBookTitle": "начать читать книгу",
             "settingsTitle": "настройки"
@@ -295,6 +298,7 @@
             "letterSpacing": "Межбуквенное расстояние",
             "lineSpacing": "Межстрочный интервал",
             "margin": "Отступ",
+            "noFootnotes": "",
             "paginated": "Страничная",
             "paraSpacing": "Интервал между абзацами",
             "pdfZoom": {
@@ -310,6 +314,7 @@
                 },
                 "title": "Увеличить"
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "сохрнить",
                 "reset": "сбросить",
