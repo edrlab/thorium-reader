@@ -296,9 +296,9 @@ export const httpGetWithAuth =
 
             if (enableAuth) {
                 const url = _url instanceof URL ? _url : new URL(_url);
-                    const { host } = url;
+                const { host } = url;
 
-                    const auth = await getConfigRepoOpdsAuthenticationToken(host);
+                const auth = await getConfigRepoOpdsAuthenticationToken(host);
 
                 if (
                     typeof auth === "object"
