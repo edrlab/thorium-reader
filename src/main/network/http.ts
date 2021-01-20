@@ -294,35 +294,27 @@ export const httpGetWithAuth =
             const options = _options || {};
             options.method = "get";
 
-            const response = await httpFetchFormattedResponse(
+            if (enableAuth) {
+                const url = _url instanceof URL ? _url : new URL(_url);
+                    const { host } = url;
+
+                    const auth = await getConfigRepoOpdsAuthenticationToken(host);
+
+                if (
+                    typeof auth === "object"
+                    && auth.accessToken
+                ) {
+                    return httpGetUnauthorized(auth)(_url, options, _callback, ..._arg);
+                }
+            }
+
+            return httpFetchFormattedResponse(
                 _url,
                 options,
                 enableAuth ? undefined : _callback,
                 ..._arg,
             );
 
-            if (enableAuth) {
-                if (response.statusCode === 401) {
-
-                    const url = _url instanceof URL ? _url : new URL(_url);
-                    const { host } = url;
-
-                    const auth = await getConfigRepoOpdsAuthenticationToken(host);
-
-                    if (
-                        typeof auth === "object"
-                        && auth.accessToken
-                    ) {
-                        return httpGetUnauthorized(auth)(_url, options, _callback, ..._arg);
-                    } else {
-                        debug("there are no authentication credentials in configRepo");
-                        return await handleCallback(response, _callback);
-                    }
-                } else {
-                    return await handleCallback(response, _callback);
-                }
-            }
-            return response;
         };
 
 export const httpGet = httpGetWithAuth(true);
