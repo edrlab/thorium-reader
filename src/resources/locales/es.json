@@ -298,6 +298,7 @@
             "letterSpacing": "Espaciado de letras",
             "lineSpacing": "Interlineado",
             "margin": "Margen",
+            "noFootnotes": "",
             "paginated": "Paginado",
             "paraSpacing": "",
             "pdfZoom": {
@@ -313,6 +314,7 @@
                 },
                 "title": "Zum"
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "Guardar",
                 "reset": "Restablecer",

@@ -298,6 +298,7 @@
             "letterSpacing": "Letter afstand",
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
+            "noFootnotes": "",
             "paginated": "Als pagina's",
             "paraSpacing": "",
             "pdfZoom": {
@@ -313,6 +314,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "",
                 "reset": "",
