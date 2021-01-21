@@ -588,7 +588,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
                 <div className={styles.center_in_tab}>
-                    <div className={styles.focus_element}>
+                    {/* <div className={styles.focus_element}>
                         <input
                             id={"radio-" + styles.option_colonne}
                             type="radio"
@@ -612,7 +612,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             <SVG svg={AutoIcon} />
                             {__("reader.settings.column.auto")}
                         </label>
-                    </div>
+                    </div> */}
                     <div className={styles.focus_element}>
                         <input
                             {...(!readerConfig.paged && { disabled: true })}
