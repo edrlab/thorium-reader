@@ -140,7 +140,8 @@
             "hint": "Dein Kennwort",
             "password": "",
             "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
-            "submit": "Absenden"
+            "submit": "Absenden",
+            "urlHint": ""
         }
     },
     "message": {

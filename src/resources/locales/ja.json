@@ -140,7 +140,8 @@
             "hint": "（ヒント：{{hint}}）",
             "password": "パスワード",
             "sentence": "この本を読むためにはLCP解除のパスワードが必要です: ",
-            "submit": "送信"
+            "submit": "送信",
+            "urlHint": ""
         }
     },
     "message": {

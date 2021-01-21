@@ -140,7 +140,8 @@
             "hint": "(Užuomina : {{hint}})",
             "password": "Slaptažodis",
             "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
-            "submit": "Pateikti"
+            "submit": "Pateikti",
+            "urlHint": ""
         }
     },
     "message": {

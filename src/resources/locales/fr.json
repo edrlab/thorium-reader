@@ -140,7 +140,8 @@
             "hint": "(Indice : {{hint}})",
             "password": "Mot de passe",
             "sentence": "Cette publication a besoin d'un mot de passe : ",
-            "submit": "Valider"
+            "submit": "Valider",
+            "urlHint": "Oubli de votre phrase d'accès ? Vous pouvez trouver de l'aide avec ce lien"
         }
     },
     "message": {

@@ -140,7 +140,8 @@
             "hint": "(Dica : {{hint}})",
             "password": "Senha",
             "sentence": "Esta publicação precisa de uma senha LCP para ser aberta: ",
-            "submit": "Enviar"
+            "submit": "Enviar",
+            "urlHint": ""
         }
     },
     "message": {

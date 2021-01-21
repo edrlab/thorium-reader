@@ -140,7 +140,8 @@
             "hint": "(Hint : {{hint}})",
             "password": "Wachtwoordzin",
             "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
-            "submit": "Verzend"
+            "submit": "Verzend",
+            "urlHint": ""
         }
     },
     "message": {

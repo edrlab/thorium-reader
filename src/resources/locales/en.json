@@ -140,7 +140,8 @@
             "hint": "(Hint : {{hint}})",
             "password": "Passphrase",
             "sentence": "This publication needs an LCP passphrase to be opened: ",
-            "submit": "Submit"
+            "submit": "Submit",
+            "urlHint": "Forgot you're passphrase? find some help here"
         }
     },
     "message": {
