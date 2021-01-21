@@ -31,13 +31,13 @@ import fontList from "readium-desktop/utils/fontList";
 
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
+import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import optionsValues, { IReaderOptionsProps, TdivinaReadingMode } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
-import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
@@ -588,31 +588,35 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
                 <div className={styles.center_in_tab}>
-                    {/* <div className={styles.focus_element}>
-                        <input
-                            id={"radio-" + styles.option_colonne}
-                            type="radio"
-                            name="column"
-                            {...(!readerConfig.paged && { disabled: true })}
-                            onChange={(e) => isPdf
-                                ? this.props.pdfEventBus.dispatch("column", "auto")
-                                : this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
-                            checked={isPdf
-                                ? this.state.pdfCol === "auto"
-                                : readerConfig.colCount === colCountEnum.auto}
-                        />
-                        <label
-                            htmlFor={"radio-" + styles.option_colonne}
-                            className={isPdf
-                                ? this.getButtonClassNamePdf(this.state.pdfCol === "auto")
-                                : this.getButtonClassName("colCount",
-                                    !readerConfig.paged ? null : colCountEnum.auto,
-                                    !readerConfig.paged && styles.disable)}
-                        >
-                            <SVG svg={AutoIcon} />
-                            {__("reader.settings.column.auto")}
-                        </label>
-                    </div> */}
+                    {
+                        isPdf
+                            ? <></>
+                            : <div className={styles.focus_element}>
+                                <input
+                                    id={"radio-" + styles.option_colonne}
+                                    type="radio"
+                                    name="column"
+                                    {...(!readerConfig.paged && { disabled: true })}
+                                    onChange={(e) => isPdf
+                                        ? this.props.pdfEventBus.dispatch("column", "auto")
+                                        : this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
+                                    checked={isPdf
+                                        ? this.state.pdfCol === "auto"
+                                        : readerConfig.colCount === colCountEnum.auto}
+                                />
+                                <label
+                                    htmlFor={"radio-" + styles.option_colonne}
+                                    className={isPdf
+                                        ? this.getButtonClassNamePdf(this.state.pdfCol === "auto")
+                                        : this.getButtonClassName("colCount",
+                                            !readerConfig.paged ? null : colCountEnum.auto,
+                                            !readerConfig.paged && styles.disable)}
+                                >
+                                    <SVG svg={AutoIcon} />
+                                    {__("reader.settings.column.auto")}
+                                </label>
+                            </div>
+                    }
                     <div className={styles.focus_element}>
                         <input
                             {...(!readerConfig.paged && { disabled: true })}
