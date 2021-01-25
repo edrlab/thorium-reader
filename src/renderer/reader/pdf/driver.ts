@@ -106,65 +106,6 @@ export async function pdfMountAndReturnBus(
         keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
     });
 
-    // DEBUG
-    // DEBUG
-
-    bus.subscribe("numberofpages", (nb) => {
-
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-
-        console.log("nb");
-        console.log(nb);
-
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-    })
-
-    bus.subscribe("metadata", (m) => {
-
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-
-        console.log("meta");
-
-        console.log(m);
-
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-    })
-
-
-    bus.subscribe("cover", (dataUrl) => {
-
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-
-        console.log("cover");
-
-        console.log(dataUrl);
-
-
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-        console.log("$$$$$$$$$$$$$$$$$$$$$44");
-
-    })
-
-    // DEBUG
-    // DEBUG
-    // DEBUG
-
     webview.addEventListener("did-finish-load", () => {
 
         console.log("did-finish-load bus.dispatch start pdfPath", pdfPath);

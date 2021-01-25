@@ -50,6 +50,7 @@ function main() {
             };
 
             ipcRenderer.sendToHost("pdf-eventbus", data);
+            ipcRenderer.send("pdf-eventbus", data);
         },
         (ev) => {
             ipcRenderer.on("pdf-eventbus", (_event, message) => {
@@ -89,15 +90,8 @@ function main() {
 
             bus.dispatch("toc", toc);
 
-            const pages = pdf.page
-
-            const numberofpages = pdf?.numPages || Array.isArray(pages) ? pages.length : undefined;
+            const numberofpages = pdf?.numPages;
             const numberOfPagesChecked = typeof numberofpages === "number" ? numberofpages : 0;
-
-            if (typeof numberofpages === "number") {
-                bus.dispatch("numberofpages", numberOfPagesChecked);
-            }
-
 
             let info: IInfo = {
                 numberOfPage: numberOfPagesChecked,
@@ -119,38 +113,52 @@ function main() {
             }
             bus.dispatch("metadata", info);
 
+            console.log("METADATA", info);
+
+            const canvas = document.getElementById("COVER_RENDER_CANVAS") as HTMLCanvasElement;
             try {
 
                 const page = await pdf.getPage(1);
-                    const scale = 1.5;
-                    const viewport = page.getViewport(scale);
+                const viewport = page.getViewport({scale: 1});
 
-                    //
-                    // Prepare canvas using PDF page dimensions
-                    //
-                    const canvas = document.getElementById("COVER_RENDER_CANVAS") as HTMLCanvasElement;
-                    const context = canvas.getContext("2d");
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
+                //
+                // Prepare canvas using PDF page dimensions
+                //
+                const context = canvas.getContext("2d");
+                canvas.height = viewport.height || 1000;
+                canvas.width = viewport.width || 1000;
 
-                    //
-                    // Render PDF page into canvas context
-                    //
-                    const task = page.render({ canvasContext: context, viewport: viewport })
-                    await task.promise;
-                    const img = canvas.toDataURL("image/png");
+                //
+                // Render PDF page into canvas context
+                //
+                const task = page.render({ canvasContext: context, viewport: viewport })
+                await task.promise;
+                const img = canvas.toDataURL("image/png");
 
-                    bus.dispatch("cover", img);
+                bus.dispatch("cover", img);
 
-                } catch (e) {
+                console.log("COVER", img);
 
-                    console.log("ERROR to render the cover in the canva");
-                    console.log(e);
 
-                    bus.dispatch("cover", undefined);
-                }
 
-            }).catch((e) => console.error(e));
+            } catch (e) {
+
+                console.log("ERROR to render the cover in the canva");
+                console.log(e);
+
+                bus.dispatch("cover", undefined);
+            } finally {
+
+                document.removeChild(canvas);
+            }
+        })
+            .catch((e) => {
+                console.error("PDF GET DOCUMENT ERROR");
+
+                console.error(e);
+
+
+            });
 
         console.log("bus.subscribe start pdfPath", pdfPath);
 
