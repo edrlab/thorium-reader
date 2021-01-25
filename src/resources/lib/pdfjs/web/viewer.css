@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
- .hidescrollbar::--webkit-scrollbar {
+.hidescrollbar::--webkit-scrollbar {
   display: none;
 }
 
@@ -290,7 +290,7 @@
   direction: ltr;
   width: 816px;
   height: 1056px;
-  margin: 1px auto -8px auto;
+  margin: 1px auto -8px;
   position: relative;
   overflow: visible;
   border: 9px solid transparent;
@@ -301,7 +301,7 @@
 }
 
 .pdfViewer.removePageBorders .page {
-  margin: 0 auto 10px auto;
+  margin: 0 auto 10px;
   border: none;
 }
 
@@ -530,13 +530,13 @@
     --overlay-button-bg-color: rgba(92, 92, 97, 1);
     --overlay-button-hover-color: rgba(115, 115, 115, 1);
 
+    * This image is used in <input> elements, which unfortunately means that
+     * the `mask-image` approach used with all of the other images doesn't work
+     * here; hence why we still have two versions of this particular image. *
     --loading-icon: url(images/loading-dark.svg);
   }
 }
 */
-    /* This image is used in <input> elements, which unfortunately means that
-     * the `mask-image` approach used with all of the other images doesn't work
-     * here; hence why we still have two versions of this particular image. */
 
 * {
   padding: 0;
@@ -557,51 +557,11 @@ body {
   background-color: var(--body-bg-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  body {
-  background-color: rgba(42, 42, 46, 1);
-  background-color: var(--body-bg-color);
-  }
-}
-
 body {
   font: message-box;
   outline: none;
   scrollbar-color: auto auto;
   scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  body {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  body {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  body {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  body {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
 }
 
 input {
@@ -611,38 +571,6 @@ input {
   scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  input {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  input {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  input {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  input {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
 button {
   font: message-box;
   outline: none;
@@ -650,75 +578,11 @@ button {
   scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  button {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  button {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  button {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  button {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
 select {
   font: message-box;
   outline: none;
   scrollbar-color: auto auto;
   scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  select {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  select {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  select {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  select {
-  scrollbar-color: rgba(121, 121, 123, 1) rgba(35, 35, 39, 1);
-  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg-color);
-  }
 }
 
 .hidden {
@@ -906,7 +770,7 @@ html[dir="rtl"] #sidebarContent {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   position: absolute;
-  top: 0px;
+  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
@@ -957,14 +821,6 @@ html[dir="rtl"]
   background-color: rgba(245, 246, 247, 1);
   background-color: var(--sidebar-bg-color);
 }
-
-@media (prefers-color-scheme: dark) {
-
-  #toolbarSidebar {
-  background-color: rgba(50, 50, 52, 1);
-  background-color: var(--sidebar-bg-color);
-  }
-}
 html[dir="ltr"] #toolbarSidebar {
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25), 0 1px 0 rgba(0, 0, 0, 0.15),
     0 0 1px rgba(0, 0, 0, 0.1);
@@ -1012,22 +868,6 @@ html[dir="rtl"] #sidebarResizer {
   box-shadow: 0 1px 0 var(--toolbar-border-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  #toolbarContainer {
-  box-shadow: 0 1px 0 rgba(12, 12, 13, 1);
-  box-shadow: 0 1px 0 var(--toolbar-border-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #toolbarContainer {
-  background-color: rgba(56, 56, 61, 1);
-  background-color: var(--toolbar-bg-color);
-  }
-}
-
 .findbar {
   position: relative;
   height: 32px;
@@ -1037,22 +877,6 @@ html[dir="rtl"] #sidebarResizer {
   box-shadow: 0 1px 0 var(--toolbar-border-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .findbar {
-  box-shadow: 0 1px 0 rgba(12, 12, 13, 1);
-  box-shadow: 0 1px 0 var(--toolbar-border-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .findbar {
-  background-color: rgba(56, 56, 61, 1);
-  background-color: var(--toolbar-bg-color);
-  }
-}
-
 .secondaryToolbar {
   position: relative;
   height: 32px;
@@ -1060,22 +884,6 @@ html[dir="rtl"] #sidebarResizer {
   background-color: var(--toolbar-bg-color);
   box-shadow: 0 1px 0 rgba(204, 204, 204, 1);
   box-shadow: 0 1px 0 var(--toolbar-border-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .secondaryToolbar {
-  box-shadow: 0 1px 0 rgba(12, 12, 13, 1);
-  box-shadow: 0 1px 0 var(--toolbar-border-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .secondaryToolbar {
-  background-color: rgba(56, 56, 61, 1);
-  background-color: var(--toolbar-bg-color);
-  }
 }
 
 #toolbarViewer {
@@ -1095,22 +903,6 @@ html[dir="rtl"] #sidebarResizer {
   transition-duration: var(--sidebar-transition-duration);
   transition-timing-function: ease;
   transition-timing-function: var(--sidebar-transition-timing-function);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar {
-  border-bottom: 1px solid rgba(12, 12, 13, 1);
-  border-bottom: 1px solid var(--toolbar-border-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar {
-  background-color: rgba(42, 42, 46, 1);
-  background-color: var(--body-bg-color);
-  }
 }
 html[dir="ltr"] #loadingBar {
   transition-property: left;
@@ -1151,14 +943,6 @@ html[dir="rtl"] #outerContainer.sidebarOpen #loadingBar {
   transition: width 200ms;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress {
-  background-color: rgba(0, 96, 223, 1);
-  background-color: var(--progressBar-color);
-  }
-}
-
 @-webkit-keyframes progressIndeterminate {
   0% {
     left: -142px;
@@ -1181,14 +965,6 @@ html[dir="rtl"] #outerContainer.sidebarOpen #loadingBar {
   background-color: rgba(221, 221, 222, 1);
   background-color: var(--progressBar-indeterminate-bg-color);
   transition: none;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate {
-  background-color: rgba(40, 40, 43, 1);
-  background-color: var(--progressBar-indeterminate-bg-color);
-  }
 }
 
 #loadingBar .progress.indeterminate .glimmer {
@@ -1219,222 +995,6 @@ html[dir="rtl"] #outerContainer.sidebarOpen #loadingBar {
           animation: progressIndeterminate 1s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate .glimmer {
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(20, 68, 133, 1) 0,
-    rgba(40, 40, 43, 1) 5px,
-    rgba(40, 40, 43, 1) 45px,
-    rgba(0, 96, 223, 1) 55px,
-    rgba(0, 96, 223, 1) 95px,
-    rgba(20, 68, 133, 1) 100px
-  );
-  background: repeating-linear-gradient(
-    135deg,
-    var(--progressBar-indeterminate-blend-color) 0,
-    var(--progressBar-indeterminate-bg-color) 5px,
-    var(--progressBar-indeterminate-bg-color) 45px,
-    var(--progressBar-color) 55px,
-    var(--progressBar-color) 95px,
-    var(--progressBar-indeterminate-blend-color) 100px
-  );
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate .glimmer {
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(20, 68, 133, 1) 0,
-    rgba(40, 40, 43, 1) 5px,
-    rgba(40, 40, 43, 1) 45px,
-    rgba(0, 96, 223, 1) 55px,
-    rgba(0, 96, 223, 1) 95px,
-    rgba(20, 68, 133, 1) 100px
-  );
-  background: repeating-linear-gradient(
-    135deg,
-    var(--progressBar-indeterminate-blend-color) 0,
-    var(--progressBar-indeterminate-bg-color) 5px,
-    var(--progressBar-indeterminate-bg-color) 45px,
-    var(--progressBar-color) 55px,
-    var(--progressBar-color) 95px,
-    var(--progressBar-indeterminate-blend-color) 100px
-  );
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate .glimmer {
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(20, 68, 133, 1) 0,
-    rgba(40, 40, 43, 1) 5px,
-    rgba(40, 40, 43, 1) 45px,
-    rgba(0, 96, 223, 1) 55px,
-    rgba(0, 96, 223, 1) 95px,
-    rgba(20, 68, 133, 1) 100px
-  );
-  background: repeating-linear-gradient(
-    135deg,
-    var(--progressBar-indeterminate-blend-color) 0,
-    var(--progressBar-indeterminate-bg-color) 5px,
-    var(--progressBar-indeterminate-bg-color) 45px,
-    var(--progressBar-color) 55px,
-    var(--progressBar-color) 95px,
-    var(--progressBar-indeterminate-blend-color) 100px
-  );
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate .glimmer {
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(20, 68, 133, 1) 0,
-    rgba(40, 40, 43, 1) 5px,
-    rgba(40, 40, 43, 1) 45px,
-    rgba(0, 96, 223, 1) 55px,
-    rgba(0, 96, 223, 1) 95px,
-    rgba(20, 68, 133, 1) 100px
-  );
-  background: repeating-linear-gradient(
-    135deg,
-    var(--progressBar-indeterminate-blend-color) 0,
-    var(--progressBar-indeterminate-bg-color) 5px,
-    var(--progressBar-indeterminate-bg-color) 45px,
-    var(--progressBar-color) 55px,
-    var(--progressBar-color) 95px,
-    var(--progressBar-indeterminate-blend-color) 100px
-  );
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate .glimmer {
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(20, 68, 133, 1) 0,
-    rgba(40, 40, 43, 1) 5px,
-    rgba(40, 40, 43, 1) 45px,
-    rgba(0, 96, 223, 1) 55px,
-    rgba(0, 96, 223, 1) 95px,
-    rgba(20, 68, 133, 1) 100px
-  );
-  background: repeating-linear-gradient(
-    135deg,
-    var(--progressBar-indeterminate-blend-color) 0,
-    var(--progressBar-indeterminate-bg-color) 5px,
-    var(--progressBar-indeterminate-bg-color) 45px,
-    var(--progressBar-color) 55px,
-    var(--progressBar-color) 95px,
-    var(--progressBar-indeterminate-blend-color) 100px
-  );
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate .glimmer {
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(20, 68, 133, 1) 0,
-    rgba(40, 40, 43, 1) 5px,
-    rgba(40, 40, 43, 1) 45px,
-    rgba(0, 96, 223, 1) 55px,
-    rgba(0, 96, 223, 1) 95px,
-    rgba(20, 68, 133, 1) 100px
-  );
-  background: repeating-linear-gradient(
-    135deg,
-    var(--progressBar-indeterminate-blend-color) 0,
-    var(--progressBar-indeterminate-bg-color) 5px,
-    var(--progressBar-indeterminate-bg-color) 45px,
-    var(--progressBar-color) 55px,
-    var(--progressBar-color) 95px,
-    var(--progressBar-indeterminate-blend-color) 100px
-  );
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate .glimmer {
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(20, 68, 133, 1) 0,
-    rgba(40, 40, 43, 1) 5px,
-    rgba(40, 40, 43, 1) 45px,
-    rgba(0, 96, 223, 1) 55px,
-    rgba(0, 96, 223, 1) 95px,
-    rgba(20, 68, 133, 1) 100px
-  );
-  background: repeating-linear-gradient(
-    135deg,
-    var(--progressBar-indeterminate-blend-color) 0,
-    var(--progressBar-indeterminate-bg-color) 5px,
-    var(--progressBar-indeterminate-bg-color) 45px,
-    var(--progressBar-color) 55px,
-    var(--progressBar-color) 95px,
-    var(--progressBar-indeterminate-blend-color) 100px
-  );
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate .glimmer {
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(20, 68, 133, 1) 0,
-    rgba(40, 40, 43, 1) 5px,
-    rgba(40, 40, 43, 1) 45px,
-    rgba(0, 96, 223, 1) 55px,
-    rgba(0, 96, 223, 1) 95px,
-    rgba(20, 68, 133, 1) 100px
-  );
-  background: repeating-linear-gradient(
-    135deg,
-    var(--progressBar-indeterminate-blend-color) 0,
-    var(--progressBar-indeterminate-bg-color) 5px,
-    var(--progressBar-indeterminate-bg-color) 45px,
-    var(--progressBar-color) 55px,
-    var(--progressBar-color) 95px,
-    var(--progressBar-indeterminate-blend-color) 100px
-  );
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #loadingBar .progress.indeterminate .glimmer {
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(20, 68, 133, 1) 0,
-    rgba(40, 40, 43, 1) 5px,
-    rgba(40, 40, 43, 1) 45px,
-    rgba(0, 96, 223, 1) 55px,
-    rgba(0, 96, 223, 1) 95px,
-    rgba(20, 68, 133, 1) 100px
-  );
-  background: repeating-linear-gradient(
-    135deg,
-    var(--progressBar-indeterminate-blend-color) 0,
-    var(--progressBar-indeterminate-bg-color) 5px,
-    var(--progressBar-indeterminate-bg-color) 45px,
-    var(--progressBar-color) 55px,
-    var(--progressBar-color) 95px,
-    var(--progressBar-indeterminate-blend-color) 100px
-  );
-  }
-}
-
 .findbar,
 .secondaryToolbar {
   top: 32px;
@@ -1442,8 +1002,8 @@ html[dir="rtl"] #outerContainer.sidebarOpen #loadingBar {
   z-index: 10000;
   height: auto;
   min-width: 16px;
-  padding: 0 4px 0 4px;
-  margin: 4px 2px 4px 2px;
+  padding: 0 4px;
+  margin: 4px 2px;
   color: rgba(217, 217, 217, 1);
   font-size: 12px;
   line-height: 14px;
@@ -1455,14 +1015,6 @@ html[dir="rtl"] #outerContainer.sidebarOpen #loadingBar {
   min-width: 300px;
   background-color: rgba(249, 249, 250, 1);
   background-color: var(--toolbar-bg-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .findbar {
-  background-color: rgba(56, 56, 61, 1);
-  background-color: var(--toolbar-bg-color);
-  }
 }
 .findbar > div {
   height: 32px;
@@ -1503,30 +1055,6 @@ html[dir="rtl"] .findbar .splitToolbarButton {
   border-bottom: 1px solid var(--field-border-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .findbar .splitToolbarButton > .toolbarButton {
-  border-bottom: 1px solid rgba(115, 115, 115, 1);
-  border-bottom: 1px solid var(--field-border-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .findbar .splitToolbarButton > .toolbarButton {
-  border-top: 1px solid rgba(115, 115, 115, 1);
-  border-top: 1px solid var(--field-border-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .findbar .splitToolbarButton > .toolbarButton {
-  background-color: rgba(89, 89, 89, 1);
-  background-color: var(--findbar-nextprevious-btn-bg-color);
-  }
-}
-
 .findbar .splitToolbarButton > .toolbarButton::before {
   top: 5px;
 }
@@ -1540,25 +1068,11 @@ html[dir="ltr"] .findbar .splitToolbarButton > .findNext {
   border-right: 1px solid rgba(187, 187, 188, 1);
   border-right: 1px solid var(--field-border-color);
 }
-@media (prefers-color-scheme: dark) {
-
-  html[dir="ltr"] .findbar .splitToolbarButton > .findNext {
-  border-right: 1px solid rgba(115, 115, 115, 1);
-  border-right: 1px solid var(--field-border-color);
-  }
-}
 html[dir="rtl"] .findbar .splitToolbarButton > .findNext {
   border-bottom-left-radius: 2px;
   border-top-left-radius: 2px;
   border-left: 1px solid rgba(187, 187, 188, 1);
   border-left: 1px solid var(--field-border-color);
-}
-@media (prefers-color-scheme: dark) {
-
-  html[dir="rtl"] .findbar .splitToolbarButton > .findNext {
-  border-left: 1px solid rgba(115, 115, 115, 1);
-  border-left: 1px solid var(--field-border-color);
-  }
 }
 
 .findbar input[type="checkbox"] {
@@ -1577,25 +1091,9 @@ html[dir="rtl"] .findbar .splitToolbarButton > .findNext {
   background-color: var(--button-hover-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .findbar label:hover {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
-}
-
 .findbar input:focus + label {
   background-color: rgba(221, 222, 223, 1);
   background-color: var(--button-hover-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .findbar input:focus + label {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
 }
 
 html[dir="ltr"] #findInput {
@@ -1610,14 +1108,6 @@ html[dir="rtl"] #findInput {
 .findbar .toolbarField[type="checkbox"]:checked + .toolbarLabel {
   background-color: rgba(0, 0, 0, 0.3) !important;
   background-color: var(--toggled-btn-bg-color) !important;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .findbar .toolbarField[type="checkbox"]:checked + .toolbarLabel {
-  background-color: rgba(0, 0, 0, 0.3) !important;
-  background-color: var(--toggled-btn-bg-color) !important;
-  }
 }
 
 #findInput {
@@ -1641,13 +1131,6 @@ html[dir="rtl"] #findInput {
   background-repeat: no-repeat;
   background-position: 98%;
 }
-@media (prefers-color-scheme: dark) {
-
-  #findInput[data-status="pending"] {
-  background-image: url(images/loading-dark.svg);
-  background-image: var(--loading-icon);
-  }
-}
 html[dir="rtl"] #findInput[data-status="pending"] {
   background-position: 3px;
 }
@@ -1656,19 +1139,11 @@ html[dir="rtl"] #findInput[data-status="pending"] {
 }
 
 .secondaryToolbar {
-  padding: 6px 0 10px 0;
+  padding: 6px 0 10px;
   height: auto;
   z-index: 30000;
   background-color: rgba(255, 255, 255, 1);
   background-color: var(--doorhanger-bg-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .secondaryToolbar {
-  background-color: rgba(74, 74, 79, 1);
-  background-color: var(--doorhanger-bg-color);
-  }
 }
 html[dir="ltr"] .secondaryToolbar {
   right: 4px;
@@ -1698,32 +1173,12 @@ html[dir="rtl"] .secondaryToolbar {
     0 0 0 1px var(--doorhanger-border-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .doorHanger {
-  box-shadow: 0 1px 5px rgba(39, 39, 43, 1),
-    0 0 0 1px rgba(39, 39, 43, 1);
-  box-shadow: 0 1px 5px var(--doorhanger-border-color),
-    0 0 0 1px var(--doorhanger-border-color);
-  }
-}
-
 .doorHangerRight {
   border-radius: 2px;
   box-shadow: 0 1px 5px rgba(12, 12, 13, 0.2),
     0 0 0 1px rgba(12, 12, 13, 0.2);
   box-shadow: 0 1px 5px var(--doorhanger-border-color),
     0 0 0 1px var(--doorhanger-border-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .doorHangerRight {
-  box-shadow: 0 1px 5px rgba(39, 39, 43, 1),
-    0 0 0 1px rgba(39, 39, 43, 1);
-  box-shadow: 0 1px 5px var(--doorhanger-border-color),
-    0 0 0 1px var(--doorhanger-border-color);
-  }
 }
 .doorHanger:after,
 .doorHanger:before,
@@ -1745,47 +1200,19 @@ html[dir="rtl"] .secondaryToolbar {
   border-bottom-color: rgba(249, 249, 250, 1);
   border-bottom-color: var(--toolbar-bg-color);
 }
-@media (prefers-color-scheme: dark) {
-
-  .doorHanger:after {
-  border-bottom-color: rgba(56, 56, 61, 1);
-  border-bottom-color: var(--toolbar-bg-color);
-  }
-}
 .doorHangerRight:after {
   border-bottom-color: rgba(255, 255, 255, 1);
   border-bottom-color: var(--doorhanger-bg-color);
-}
-@media (prefers-color-scheme: dark) {
-
-  .doorHangerRight:after {
-  border-bottom-color: rgba(74, 74, 79, 1);
-  border-bottom-color: var(--doorhanger-bg-color);
-  }
 }
 .doorHanger:before {
   border-bottom-color: rgba(12, 12, 13, 0.2);
   border-bottom-color: var(--doorhanger-border-color);
   border-width: 9px;
 }
-@media (prefers-color-scheme: dark) {
-
-  .doorHanger:before {
-  border-bottom-color: rgba(39, 39, 43, 1);
-  border-bottom-color: var(--doorhanger-border-color);
-  }
-}
 .doorHangerRight:before {
   border-bottom-color: rgba(12, 12, 13, 0.2);
   border-bottom-color: var(--doorhanger-border-color);
   border-width: 9px;
-}
-@media (prefers-color-scheme: dark) {
-
-  .doorHangerRight:before {
-  border-bottom-color: rgba(39, 39, 43, 1);
-  border-bottom-color: var(--doorhanger-border-color);
-  }
 }
 
 html[dir="ltr"] .doorHanger:after,
@@ -1887,38 +1314,15 @@ html[dir="rtl"] .splitToolbarButton > .toolbarButton {
   background-color: rgba(12, 12, 13, 0.1);
   background-color: var(--overlay-button-bg-color);
 }
-@media (prefers-color-scheme: dark) {
-
-  .overlayButton {
-  background-color: rgba(92, 92, 97, 1);
-  background-color: var(--overlay-button-bg-color);
-  }
-}
 
 .overlayButton:hover {
   background-color: rgba(12, 12, 13, 0.3);
   background-color: var(--overlay-button-hover-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .overlayButton:hover {
-  background-color: rgba(115, 115, 115, 1);
-  background-color: var(--overlay-button-hover-color);
-  }
-}
-
 .overlayButton:focus {
   background-color: rgba(12, 12, 13, 0.3);
   background-color: var(--overlay-button-hover-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .overlayButton:focus {
-  background-color: rgba(115, 115, 115, 1);
-  background-color: var(--overlay-button-hover-color);
-  }
 }
 
 .toolbarButton > span {
@@ -1944,26 +1348,10 @@ html[dir="rtl"] .splitToolbarButton > .toolbarButton {
   z-index: 199;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .splitToolbarButton > .toolbarButton:hover {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
-}
-
 .splitToolbarButton > .toolbarButton:focus {
   background-color: rgba(221, 222, 223, 1);
   background-color: var(--button-hover-color);
   z-index: 199;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .splitToolbarButton > .toolbarButton:focus {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
 }
 
 .dropdownToolbarButton:hover {
@@ -1972,40 +1360,16 @@ html[dir="rtl"] .splitToolbarButton > .toolbarButton {
   z-index: 199;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .dropdownToolbarButton:hover {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
-}
-
 .toolbarButton.textButton:hover {
   background-color: rgba(221, 222, 223, 1);
   background-color: var(--button-hover-color);
   z-index: 199;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .toolbarButton.textButton:hover {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
-}
-
 .toolbarButton.textButton:focus {
   background-color: rgba(221, 222, 223, 1);
   background-color: var(--button-hover-color);
   z-index: 199;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .toolbarButton.textButton:focus {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
 }
 .splitToolbarButton > .toolbarButton {
   position: relative;
@@ -2027,27 +1391,12 @@ html[dir="rtl"] .splitToolbarButton > .toolbarButton:first-child {
   display: inline-block;
   margin: 4px 0;
 }
-@media (prefers-color-scheme: dark) {
-
-  .splitToolbarButtonSeparator {
-  background-color: rgba(0, 0, 0, 0.3);
-  background-color: var(--separator-color);
-  }
-}
 
 .findbar .splitToolbarButtonSeparator {
   background-color: rgba(187, 187, 188, 1);
   background-color: var(--field-border-color);
   margin: 0;
   padding: 13px 0;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .findbar .splitToolbarButtonSeparator {
-  background-color: rgba(115, 115, 115, 1);
-  background-color: var(--field-border-color);
-  }
 }
 
 html[dir="ltr"] .splitToolbarButtonSeparator {
@@ -2075,14 +1424,6 @@ html[dir="rtl"] .splitToolbarButtonSeparator {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .toolbarButton {
-  color: rgba(249, 249, 250, 1);
-  color: var(--main-color);
-  }
-}
-
 .dropdownToolbarButton {
   min-width: 16px;
   margin: 2px 1px;
@@ -2099,14 +1440,6 @@ html[dir="rtl"] .splitToolbarButtonSeparator {
           user-select: none;
   cursor: default;
   box-sizing: border-box;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .dropdownToolbarButton {
-  color: rgba(249, 249, 250, 1);
-  color: var(--main-color);
-  }
 }
 
 .secondaryToolbarButton {
@@ -2127,14 +1460,6 @@ html[dir="rtl"] .splitToolbarButtonSeparator {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .secondaryToolbarButton {
-  color: rgba(249, 249, 250, 1);
-  color: var(--main-color);
-  }
-}
-
 .overlayButton {
   min-width: 16px;
   margin: 2px 1px;
@@ -2153,14 +1478,6 @@ html[dir="rtl"] .splitToolbarButtonSeparator {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .overlayButton {
-  color: rgba(249, 249, 250, 1);
-  color: var(--main-color);
-  }
-}
-
 html[dir="ltr"] #toolbarViewerLeft > .toolbarButton:first-child,
 html[dir="rtl"] #toolbarViewerRight > .toolbarButton:last-child {
   margin-left: 2px;
@@ -2174,45 +1491,17 @@ html[dir="rtl"] #toolbarViewerLeft > .toolbarButton:first-child {
   background-color: rgba(221, 222, 223, 1);
   background-color: var(--button-hover-color);
 }
-@media (prefers-color-scheme: dark) {
-
-  .toolbarButton:hover {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
-}
 .toolbarButton:focus {
   background-color: rgba(221, 222, 223, 1);
   background-color: var(--button-hover-color);
-}
-@media (prefers-color-scheme: dark) {
-
-  .toolbarButton:focus {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
 }
 .secondaryToolbarButton:hover {
   background-color: rgba(237, 237, 237, 1);
   background-color: var(--doorhanger-hover-color);
 }
-@media (prefers-color-scheme: dark) {
-
-  .secondaryToolbarButton:hover {
-  background-color: rgba(93, 94, 98, 1);
-  background-color: var(--doorhanger-hover-color);
-  }
-}
 .secondaryToolbarButton:focus {
   background-color: rgba(237, 237, 237, 1);
   background-color: var(--doorhanger-hover-color);
-}
-@media (prefers-color-scheme: dark) {
-
-  .secondaryToolbarButton:focus {
-  background-color: rgba(93, 94, 98, 1);
-  background-color: var(--doorhanger-hover-color);
-  }
 }
 
 .toolbarButton.toggled {
@@ -2220,25 +1509,9 @@ html[dir="rtl"] #toolbarViewerLeft > .toolbarButton:first-child {
   background-color: var(--toggled-btn-bg-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .toolbarButton.toggled {
-  background-color: rgba(0, 0, 0, 0.3);
-  background-color: var(--toggled-btn-bg-color);
-  }
-}
-
 .splitToolbarButton.toggled > .toolbarButton.toggled {
   background-color: rgba(0, 0, 0, 0.3);
   background-color: var(--toggled-btn-bg-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .splitToolbarButton.toggled > .toolbarButton.toggled {
-  background-color: rgba(0, 0, 0, 0.3);
-  background-color: var(--toggled-btn-bg-color);
-  }
 }
 
 .secondaryToolbarButton.toggled {
@@ -2246,25 +1519,9 @@ html[dir="rtl"] #toolbarViewerLeft > .toolbarButton:first-child {
   background-color: var(--toggled-btn-bg-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .secondaryToolbarButton.toggled {
-  background-color: rgba(0, 0, 0, 0.3);
-  background-color: var(--toggled-btn-bg-color);
-  }
-}
-
 .toolbarButton.toggled:hover:active {
   background-color: rgba(0, 0, 0, 0.4);
   background-color: var(--toggled-hover-active-btn-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .toolbarButton.toggled:hover:active {
-  background-color: rgba(0, 0, 0, 0.4);
-  background-color: var(--toggled-hover-active-btn-color);
-  }
 }
 
 .splitToolbarButton.toggled > .toolbarButton.toggled:hover:active {
@@ -2272,25 +1529,9 @@ html[dir="rtl"] #toolbarViewerLeft > .toolbarButton:first-child {
   background-color: var(--toggled-hover-active-btn-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .splitToolbarButton.toggled > .toolbarButton.toggled:hover:active {
-  background-color: rgba(0, 0, 0, 0.4);
-  background-color: var(--toggled-hover-active-btn-color);
-  }
-}
-
 .secondaryToolbarButton.toggled:hover:active {
   background-color: rgba(0, 0, 0, 0.4);
   background-color: var(--toggled-hover-active-btn-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .secondaryToolbarButton.toggled:hover:active {
-  background-color: rgba(0, 0, 0, 0.4);
-  background-color: var(--toggled-hover-active-btn-color);
-  }
 }
 
 .dropdownToolbarButton {
@@ -2300,14 +1541,6 @@ html[dir="rtl"] #toolbarViewerLeft > .toolbarButton:first-child {
   background-color: rgba(215, 215, 219, 1);
   background-color: var(--dropdown-btn-bg-color);
   margin-top: 2px !important;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .dropdownToolbarButton {
-  background-color: rgba(74, 74, 79, 1);
-  background-color: var(--dropdown-btn-bg-color);
-  }
 }
 .dropdownToolbarButton::after {
   top: 6px;
@@ -2338,22 +1571,6 @@ html[dir="rtl"] .dropdownToolbarButton::after {
   background-color: rgba(215, 215, 219, 1);
   background-color: var(--dropdown-btn-bg-color);
 }
-
-@media (prefers-color-scheme: dark) {
-
-  .dropdownToolbarButton > select {
-  background-color: rgba(74, 74, 79, 1);
-  background-color: var(--dropdown-btn-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .dropdownToolbarButton > select {
-  color: rgba(249, 249, 250, 1);
-  color: var(--main-color);
-  }
-}
 html[dir="ltr"] .dropdownToolbarButton > select {
   padding-left: 4px;
 }
@@ -2364,38 +1581,15 @@ html[dir="rtl"] .dropdownToolbarButton > select {
   background-color: rgba(221, 222, 223, 1);
   background-color: var(--button-hover-color);
 }
-@media (prefers-color-scheme: dark) {
-
-  .dropdownToolbarButton > select:hover {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
-}
 
 .dropdownToolbarButton > select:focus {
   background-color: rgba(221, 222, 223, 1);
   background-color: var(--button-hover-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .dropdownToolbarButton > select:focus {
-  background-color: rgba(102, 102, 103, 1);
-  background-color: var(--button-hover-color);
-  }
-}
-
 .dropdownToolbarButton > select > option {
   background: rgba(255, 255, 255, 1);
   background: var(--doorhanger-bg-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .dropdownToolbarButton > select > option {
-  background: rgba(74, 74, 79, 1);
-  background: var(--doorhanger-bg-color);
-  }
 }
 
 #customScaleOption {
@@ -2427,14 +1621,6 @@ html[dir="rtl"] .dropdownToolbarButton > select {
   mask-size: cover;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .toolbarButton::before {
-  background-color: rgba(255, 255, 255, 1);
-  background-color: var(--toolbar-icon-bg-color);
-  }
-}
-
 .secondaryToolbarButton::before {
   /* All matching images have a size of 16x16
    * All relevant containers have a size of 28x28 */
@@ -2448,14 +1634,6 @@ html[dir="rtl"] .dropdownToolbarButton > select {
   background-color: var(--toolbar-icon-bg-color);
   -webkit-mask-size: cover;
   mask-size: cover;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .secondaryToolbarButton::before {
-  background-color: rgba(255, 255, 255, 1);
-  background-color: var(--toolbar-icon-bg-color);
-  }
 }
 
 .dropdownToolbarButton::after {
@@ -2473,14 +1651,6 @@ html[dir="rtl"] .dropdownToolbarButton > select {
   mask-size: cover;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .dropdownToolbarButton::after {
-  background-color: rgba(255, 255, 255, 1);
-  background-color: var(--toolbar-icon-bg-color);
-  }
-}
-
 .treeItemToggler::before {
   /* All matching images have a size of 16x16
    * All relevant containers have a size of 28x28 */
@@ -2494,14 +1664,6 @@ html[dir="rtl"] .dropdownToolbarButton > select {
   background-color: var(--toolbar-icon-bg-color);
   -webkit-mask-size: cover;
   mask-size: cover;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .treeItemToggler::before {
-  background-color: rgba(255, 255, 255, 1);
-  background-color: var(--toolbar-icon-bg-color);
-  }
 }
 
 .toolbarButton::before {
@@ -2734,7 +1896,7 @@ html[dir="rtl"] .toolbarButton.pdfSidebarNotification::after {
 .secondaryToolbarButton {
   position: relative;
   margin: 0;
-  padding: 0 0 1px 0;
+  padding: 0 0 1px;
   height: auto;
   min-height: 26px;
   width: auto;
@@ -2858,14 +2020,6 @@ html[dir="rtl"] .secondaryToolbarButton > span {
   background-color: rgba(0, 0, 0, 0.3);
   background-color: var(--separator-color);
 }
-
-@media (prefers-color-scheme: dark) {
-
-  .verticalToolbarSeparator {
-  background-color: rgba(0, 0, 0, 0.3);
-  background-color: var(--separator-color);
-  }
-}
 html[dir="ltr"] .verticalToolbarSeparator {
   margin-left: 2px;
 }
@@ -2875,24 +2029,16 @@ html[dir="rtl"] .verticalToolbarSeparator {
 
 .horizontalToolbarSeparator {
   display: block;
-  margin: 6px 0 5px 0;
+  margin: 6px 0 5px;
   height: 1px;
   width: 100%;
   border-top: 1px solid rgba(222, 222, 222, 1);
   border-top: 1px solid var(--doorhanger-separator-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .horizontalToolbarSeparator {
-  border-top: 1px solid rgba(92, 92, 97, 1);
-  border-top: 1px solid var(--doorhanger-separator-color);
-  }
-}
-
 .toolbarField {
   padding: 4px 7px;
-  margin: 3px 0 3px 0;
+  margin: 3px 0;
   border-radius: 2px;
   background-color: rgba(255, 255, 255, 1);
   background-color: var(--field-bg-color);
@@ -2907,30 +2053,6 @@ html[dir="rtl"] .verticalToolbarSeparator {
   font-size: 12px;
   line-height: 16px;
   outline-style: none;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .toolbarField {
-  color: rgba(250, 250, 250, 1);
-  color: var(--field-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .toolbarField {
-  border-color: rgba(115, 115, 115, 1);
-  border-color: var(--field-border-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .toolbarField {
-  background-color: rgba(64, 64, 68, 1);
-  background-color: var(--field-bg-color);
-  }
 }
 
 .toolbarField[type="checkbox"] {
@@ -2961,14 +2083,6 @@ html[dir="rtl"] .toolbarField[type="checkbox"] {
   background-position: 3px;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .toolbarField.pageNumber.visiblePageIsLoading {
-  background-image: url(images/loading-dark.svg);
-  background-image: var(--loading-icon);
-  }
-}
-
 .toolbarField.pageNumber::-webkit-inner-spin-button,
 .toolbarField.pageNumber::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -2997,14 +2111,6 @@ html[dir="rtl"] .toolbarField[type="checkbox"] {
   cursor: default;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .toolbarLabel {
-  color: rgba(249, 249, 250, 1);
-  color: var(--main-color);
-  }
-}
-
 html[dir="ltr"] #numPages.toolbarLabel {
   padding-left: 2px;
 }
@@ -3028,7 +2134,7 @@ html[dir="rtl"] #numPages.toolbarLabel {
 }
 
 .thumbnail {
-  margin: 0 10px 5px 10px;
+  margin: 0 10px 5px;
 }
 html[dir="ltr"] .thumbnail {
   float: left;
@@ -3047,7 +2153,7 @@ html[dir="rtl"] .thumbnail {
 
 .thumbnail:not([data-loaded]) {
   border: 1px dashed rgba(132, 132, 132, 1);
-  margin: -1px 9px 4px 9px;
+  margin: -1px 9px 4px;
 }
 
 .thumbnailImage {
@@ -3076,27 +2182,11 @@ a:focus > .thumbnail > .thumbnailSelectionRing {
   color: rgba(255, 255, 255, 0.9);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  a:focus > .thumbnail > .thumbnailSelectionRing {
-  background-color: rgba(255, 255, 255, 0.15);
-  background-color: var(--sidebaritem-bg-color);
-  }
-}
-
 .thumbnail:hover > .thumbnailSelectionRing {
   background-color: rgba(0, 0, 0, 0.15);
   background-color: var(--sidebaritem-bg-color);
   background-clip: padding-box;
   color: rgba(255, 255, 255, 0.9);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .thumbnail:hover > .thumbnailSelectionRing {
-  background-color: rgba(255, 255, 255, 0.15);
-  background-color: var(--sidebaritem-bg-color);
-  }
 }
 
 .thumbnail.selected > .thumbnailSelectionRing > .thumbnailImage {
@@ -3108,14 +2198,6 @@ a:focus > .thumbnail > .thumbnailSelectionRing {
   background-color: var(--sidebaritem-bg-color);
   background-clip: padding-box;
   color: rgba(255, 255, 255, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .thumbnail.selected > .thumbnailSelectionRing {
-  background-color: rgba(255, 255, 255, 0.15);
-  background-color: var(--sidebaritem-bg-color);
-  }
 }
 
 #outlineView,
@@ -3163,14 +2245,6 @@ html[dir="rtl"] .treeItem > .treeItems {
           user-select: none;
   white-space: normal;
   cursor: pointer;
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .treeItem > a {
-  color: rgba(255, 255, 255, 0.8);
-  color: var(--treeitem-color);
-  }
 }
 html[dir="ltr"] .treeItem > a {
   padding: 2px 0 5px 4px;
@@ -3233,22 +2307,6 @@ html[dir="rtl"] .treeItemToggler::before {
   color: var(--treeitem-selected-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .treeItem.selected > a {
-  color: rgba(255, 255, 255, 0.9);
-  color: var(--treeitem-selected-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .treeItem.selected > a {
-  background-color: rgba(255, 255, 255, 0.25);
-  background-color: var(--treeitem-selected-bg-color);
-  }
-}
-
 .treeItemToggler:hover {
   background-color: rgba(0, 0, 0, 0.15);
   background-color: var(--sidebaritem-bg-color);
@@ -3256,22 +2314,6 @@ html[dir="rtl"] .treeItemToggler::before {
   border-radius: 2px;
   color: rgba(0, 0, 0, 0.9);
   color: var(--treeitem-hover-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .treeItemToggler:hover {
-  color: rgba(255, 255, 255, 0.9);
-  color: var(--treeitem-hover-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .treeItemToggler:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  background-color: var(--sidebaritem-bg-color);
-  }
 }
 
 .treeItemToggler:hover + a {
@@ -3283,22 +2325,6 @@ html[dir="rtl"] .treeItemToggler::before {
   color: var(--treeitem-hover-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .treeItemToggler:hover + a {
-  color: rgba(255, 255, 255, 0.9);
-  color: var(--treeitem-hover-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .treeItemToggler:hover + a {
-  background-color: rgba(255, 255, 255, 0.15);
-  background-color: var(--sidebaritem-bg-color);
-  }
-}
-
 .treeItemToggler:hover ~ .treeItems {
   background-color: rgba(0, 0, 0, 0.15);
   background-color: var(--sidebaritem-bg-color);
@@ -3308,22 +2334,6 @@ html[dir="rtl"] .treeItemToggler::before {
   color: var(--treeitem-hover-color);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .treeItemToggler:hover ~ .treeItems {
-  color: rgba(255, 255, 255, 0.9);
-  color: var(--treeitem-hover-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .treeItemToggler:hover ~ .treeItems {
-  background-color: rgba(255, 255, 255, 0.15);
-  background-color: var(--sidebaritem-bg-color);
-  }
-}
-
 .treeItem > a:hover {
   background-color: rgba(0, 0, 0, 0.15);
   background-color: var(--sidebaritem-bg-color);
@@ -3331,22 +2341,6 @@ html[dir="rtl"] .treeItemToggler::before {
   border-radius: 2px;
   color: rgba(0, 0, 0, 0.9);
   color: var(--treeitem-hover-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .treeItem > a:hover {
-  color: rgba(255, 255, 255, 0.9);
-  color: var(--treeitem-hover-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .treeItem > a:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  background-color: var(--sidebaritem-bg-color);
-  }
 }
 
 /* TODO: file FF bug to support ::-moz-selection:window-inactive
@@ -3371,22 +2365,6 @@ html[dir="rtl"] .treeItemToggler::before {
   padding: 3px 6px;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  #errorWrapper {
-  color: rgba(249, 249, 250, 1);
-  color: var(--main-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #errorWrapper {
-  background: none repeat scroll 0 0 rgba(199, 17, 17, 1);
-  background: none repeat scroll 0 0 var(--errorWrapper-bg-color);
-  }
-}
-
 #errorMessageLeft {
   float: left;
 }
@@ -3407,34 +2385,10 @@ html[dir="rtl"] .treeItemToggler::before {
   width: 98%;
 }
 
-@media (prefers-color-scheme: dark) {
-
-  #errorMoreInfo {
-  border: 1px solid rgba(115, 115, 115, 1);
-  border: 1px solid var(--field-border-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #errorMoreInfo {
-  color: rgba(250, 250, 250, 1);
-  color: var(--field-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #errorMoreInfo {
-  background-color: rgba(64, 64, 68, 1);
-  background-color: var(--field-bg-color);
-  }
-}
-
 .overlayButton {
   width: auto;
-  margin: 3px 4px 2px 4px !important;
-  padding: 2px 11px 2px 11px;
+  margin: 3px 4px 2px !important;
+  padding: 2px 11px;
 }
 
 #overlayContainer {
@@ -3471,22 +2425,6 @@ html[dir="rtl"] .treeItemToggler::before {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  #overlayContainer > .container > .dialog {
-  background-color: rgba(74, 74, 79, 1);
-  background-color: var(--doorhanger-bg-color);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  #overlayContainer > .container > .dialog {
-  color: rgba(249, 249, 250, 1);
-  color: var(--main-color);
-  }
-}
-
 .dialog > .row {
   display: table-row;
 }
@@ -3501,19 +2439,11 @@ html[dir="rtl"] .treeItemToggler::before {
 
 .dialog .separator {
   display: block;
-  margin: 4px 0 4px 0;
+  margin: 4px 0;
   height: 1px;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   background-color: var(--separator-color);
-}
-
-@media (prefers-color-scheme: dark) {
-
-  .dialog .separator {
-  background-color: rgba(0, 0, 0, 0.3);
-  background-color: var(--separator-color);
-  }
 }
 
 .dialog .buttonRow {
