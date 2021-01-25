@@ -5,15 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 
 import { ILink, TToc } from "../common/pdfReader.type";
-import { TdestForPageIndex, TdestObj, TOutlineUnArray } from "./pdfjs.type";
+import { TdestForPageIndex, TdestObj } from "./pdfjs.type";
 
-export interface IOutline extends Partial<TOutlineUnArray> {
+export interface IOutline {
     dest?: string | TdestObj[];
     items?: IOutline[];
+    title?: string;
 }
 
 export function destForPageIndexParse(destRaw: any | any[]): TdestForPageIndex | undefined {
@@ -29,7 +29,7 @@ export function destForPageIndexParse(destRaw: any | any[]): TdestForPageIndex |
 }
 
 // tslint:disable-next-line: max-line-length
-export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy, pageLabels: string[]): Promise<ILink> {
+export async function tocOutlineItemToLink(outline: IOutline, pdf: any, pageLabels: string[]): Promise<ILink> {
 
     const link: ILink = {};
 
@@ -49,7 +49,7 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentPr
 
         if (destForPageIndex) {
             // tslint:disable-next-line: max-line-length
-            const page = (await pdf.getPageIndex(destForPageIndex) as unknown as number); // type error should return a number zero based
+            const page = (await pdf.getPageIndex(destForPageIndex) as number); // type error should return a number zero based
             const label = pageLabels[page];
             link.Href = label;
         }
@@ -67,15 +67,17 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentPr
     return link;
 }
 
-export async function getToc(pdf: PDFDocumentProxy): Promise<TToc> {
+export async function getToc(pdf: any): Promise<TToc> {
 
     return await tryCatch(async () => {
 
         const outline: IOutline[] = await pdf.getOutline();
         const pageLabels = await pdf.getPageLabels();
         if (Array.isArray(outline)) {
-            const tocPromise = outline.map((item) => tocOutlineItemToLink(item, pdf, pageLabels));
-            return await Promise.all(tocPromise);
+            const tocPromise = outline
+                .map((item) => tryCatch(() => tocOutlineItemToLink(item, pdf, pageLabels), ""))
+            const res = await Promise.all(tocPromise);
+            return res.filter((v) => !!v);
         }
 
         return [];
