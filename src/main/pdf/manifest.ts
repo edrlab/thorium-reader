@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import * as path from "path";
-import { PDFExtract, PDFExtractOptions } from "pdf.js-extract";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 
@@ -15,6 +14,7 @@ import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
+import { PDFExtractResult } from "./extract/extract.type";
 
 // https://github.com/mozilla/pdf.js/tree/master/examples/node
 // import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
@@ -22,22 +22,6 @@ import { Link } from "@r2-shared-js/models/publication-link";
 // Logger
 const _filename = "readium-desktop:main/pdf/manifest";
 const debug = debug_(_filename);
-
-interface IInfo {
-    PDFFormatVersion?: string;
-    IsAcroFormPresent?: boolean;
-    IsCollectionPresent?: boolean;
-    IsLinearized?: boolean;
-    IsXFAPresent?: boolean;
-    Title?: string;
-    Subject?: string;
-    Keywords?: string;
-    Author?: string;
-    Creator?: string;
-    Producer?: string;
-    CreationDate?: string;
-    ModDate?: string;
-}
 
 function pdfDateConverter(dateString: string): Date | undefined {
 
@@ -107,14 +91,9 @@ function pdfDateConverter(dateString: string): Date | undefined {
     return undefined;
 }
 
-export async function pdfManifest(pdfPath: string): Promise<R2Publication> {
+export async function pdfManifest(pdfPath: string, data: PDFExtractResult): Promise<R2Publication> {
 
-    const pdfExtract = new PDFExtract();
-
-    const options: PDFExtractOptions = {};
-    const data = await pdfExtract.extract(pdfPath, options);
-
-    const info = data.meta?.info as IInfo;
+    const info = data.meta?.info;
     const pages = data.pages;
     const pdfInfo = data.pdfInfo;
 
