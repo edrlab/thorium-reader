@@ -23,6 +23,7 @@ async function generatePdfCover(pdfPath: string, width: number, height: number):
         win = new BrowserWindow({
             width: Math.round(width),
             height: Math.round(height),
+            show: false // should be disabled on unix and win seems to me
         });
 
         win.hide();
