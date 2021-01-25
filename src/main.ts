@@ -24,6 +24,7 @@ import {
 import { appActions } from "./main/redux/actions";
 import { RootState } from "./main/redux/states";
 import { tryCatch } from "./utils/tryCatch";
+import { extract } from "./main/pdf/extract";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -67,6 +68,18 @@ initSessions();
 export const main = async (flushSession: boolean = false): Promise<Store<RootState>> => {
 
     debug("main fct");
+
+
+    // ///$$$$$$$$$$$$$$
+    // ///$$$$$$$$$$$$$$
+    // ///$$$$$$$$$$$$$$
+    // // pdftestt
+
+    // await extract();
+
+    // ///$$$$$$$$$$$$$$
+    // ///$$$$$$$$$$$$$$
+    // ///$$$$$$$$$$$$$$
 
     app.allowRendererProcessReuse = true;
 

@@ -89,6 +89,10 @@ console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
 
+const pdfjsFolder = "assets/lib/pdfjs";
+
+let folderPath = path.join(__dirname, pdfjsFolder);
+
 let config = Object.assign(
     {},
     {
@@ -131,6 +135,12 @@ let config = Object.assign(
                     },
                 },
                 { test: /\.node$/, loaders: ["node-loader"] },
+                {
+                    test: /\.js$/,
+                    exclude: [
+                        folderPath,
+                    ],
+                }
             ],
         },
         plugins: [

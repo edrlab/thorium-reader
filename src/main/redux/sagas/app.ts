@@ -30,6 +30,7 @@ import {
     getBeforeQuitEventChannel, getQuitEventChannel, getShutdownEventChannel,
     getWindowAllClosedEventChannel,
 } from "./getEventChannel";
+import { pdfJsFolderPath } from "readium-desktop/common/constant";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -85,16 +86,10 @@ export function* init() {
 
         // debug("PDFJS request", request);
 
-        const pdfjsFolder = "assets/lib/pdfjs";
+        const folderPath = pdfJsFolderPath;
         const url = (new URL(request.url)).pathname; // debug only
 
         debug("PDFJS request this file:", url);
-
-        let folderPath: string = path.join(__dirname, pdfjsFolder);
-        if (_PACKAGING === "0") {
-            folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
-        }
-
         const pathname = path.normalize(`${folderPath}/${url}`);
         // debug("PDFJS Folder path", pathname);
 
