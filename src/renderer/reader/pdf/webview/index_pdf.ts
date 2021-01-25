@@ -7,7 +7,6 @@
 
 import { debounce } from "debounce";
 import { ipcRenderer } from "electron";
-import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 
 import {
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP,
@@ -35,8 +34,8 @@ const pdfjsEventBus = new EventBus();
 pdfjsEventBus.onAll((key: any) => (...arg: any[]) => console.log("PDFJS EVENTBUS", key, ...arg));
 (window as any).pdfjsEventBus = pdfjsEventBus;
 
-const pdfDocument = new Promise<PDFDocumentProxy>((resolve) =>
-    pdfjsEventBus.on("__pdfdocument", (_pdfDocument: PDFDocumentProxy) => {
+const pdfDocument = new Promise<any>((resolve) =>
+    pdfjsEventBus.on("__pdfdocument", (_pdfDocument: any) => {
         resolve(_pdfDocument);
     }));
 
