@@ -16,8 +16,8 @@ import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
 
-import { eventBus } from "./common/eventBus";
-import { IEventBusPdfPlayer } from "./common/pdfReader.type";
+import { eventBus } from "../../../common/pdf/common/eventBus";
+import { IEventBusPdfPlayer } from "../../../common/pdf/common/pdfReader.type";
 
 // bridge between webview tx-rx communication and reader.tsx
 
@@ -105,6 +105,65 @@ export async function pdfMountAndReturnBus(
     bus.subscribe("keyup", (payload) => {
         keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
     });
+
+    // DEBUG
+    // DEBUG
+
+    bus.subscribe("numberofpages", (nb) => {
+
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+
+        console.log("nb");
+        console.log(nb);
+
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+    })
+
+    bus.subscribe("metadata", (m) => {
+
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+
+        console.log("meta");
+
+        console.log(m);
+
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+    })
+
+
+    bus.subscribe("cover", (dataUrl) => {
+
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+
+        console.log("cover");
+
+        console.log(dataUrl);
+
+
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+        console.log("$$$$$$$$$$$$$$$$$$$$$44");
+
+    })
+
+    // DEBUG
+    // DEBUG
+    // DEBUG
 
     webview.addEventListener("did-finish-load", () => {
 

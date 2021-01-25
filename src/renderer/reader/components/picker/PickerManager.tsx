@@ -14,7 +14,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
+import { IEventBusPdfPlayer } from "../../../../common/pdf/common/pdfReader.type";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
 import { IPickerState } from "../../redux/state/picker";

@@ -111,7 +111,7 @@ const cssLoaderConfig = [
 let config = Object.assign(
     {},
     {
-        entry: "./src/renderer/reader/pdf/webview/index_pdf.ts",
+        entry: "./src/common/pdf/webview/index_pdf.ts",
         name: "renderer pdf webview index",
         output: {
             filename: "index_pdf.js",

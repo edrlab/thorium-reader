@@ -34,7 +34,7 @@ import {
     LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
 
-import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.type";
+import { IEventBusPdfPlayer, IPdfPlayerScale } from "../../../common/pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";

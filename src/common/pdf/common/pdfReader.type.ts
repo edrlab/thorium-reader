@@ -32,6 +32,8 @@ export interface IPdfPlayerEvent {
     "keyup": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYUP) => any;
     "toc": (event: TToc) => any;
     "numberofpages": (pages: number) => any;
+    "metadata": (metadata: IInfo) => any;
+    "cover": (coverDataUrl: string) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {
@@ -49,6 +51,23 @@ export interface ILink {
     Href?: string;
     Title?: string;
     Children?: ILink[];
+}
+
+export interface IInfo {
+    PDFFormatVersion?: string;
+    IsAcroFormPresent?: boolean;
+    IsCollectionPresent?: boolean;
+    IsLinearized?: boolean;
+    IsXFAPresent?: boolean;
+    Title?: string;
+    Subject?: string;
+    Keywords?: string;
+    Author?: string;
+    Creator?: string;
+    Producer?: string;
+    CreationDate?: string;
+    ModDate?: string;
+    numberOfPage: number;
 }
 
 export type TToc = ILink[];

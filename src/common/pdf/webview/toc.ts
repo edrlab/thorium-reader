@@ -75,7 +75,7 @@ export async function getToc(pdf: any): Promise<TToc> {
         const pageLabels = await pdf.getPageLabels();
         if (Array.isArray(outline)) {
             const tocPromise = outline
-                .map((item) => tryCatch(() => tocOutlineItemToLink(item, pdf, pageLabels), ""))
+                .map((item) => tryCatch(() => tocOutlineItemToLink(item, pdf, pageLabels), ""));
             const res = await Promise.all(tocPromise);
             return res.filter((v) => !!v);
         }

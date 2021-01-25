@@ -26,9 +26,9 @@ export async function pdfPackager(pdfPath: string): Promise<string> {
 
     // lauch a browser window to extract pdf metadata and cover
     // let's reject parsing error .. it's a fatal error on pdf import
-    const [pdfData, pngBuffer] = await extractPDFData(pdfPath);
+    const [info, pngBuffer] = await extractPDFData(pdfPath);
 
-    const manifest = await pdfManifest(pdfPath, pdfData);
+    const manifest = await pdfManifest(pdfPath, info);
     const manifestJson = TaJsonSerialize(manifest);
     const manifestStr = JSON.stringify(manifestJson);
     const manifestBuf = Buffer.from(manifestStr);

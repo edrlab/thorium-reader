@@ -31,7 +31,7 @@ import fontList from "readium-desktop/utils/fontList";
 
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
-import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../../../common/pdf/common/pdfReader.type";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import optionsValues, { IReaderOptionsProps, TdivinaReadingMode } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
