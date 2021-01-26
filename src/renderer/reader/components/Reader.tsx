@@ -271,6 +271,13 @@ class Reader extends React.Component<IProps, IState> {
                             },
                         };
                         console.log("pdf pageChange", pageIndex);
+
+                        // TODO: this is a hack! Forcing type LocatorExtended on this non-matching object shape
+                        // only "works" because data going into the persistent store (see saveReadingLocation())
+                        // is used appropriately and selectively when extracted back out ...
+                        // however this may trip / crash future code
+                        // if strict LocatorExtended model structure is expected when
+                        // reading from the persistence layer.
                         this.handleReadingLocationChange(loc as unknown as LocatorExtended);
                     });
 
@@ -492,6 +499,8 @@ class Reader extends React.Component<IProps, IState> {
                 </div>
                 <ReaderFooter
                     navLeftOrRight={this.navLeftOrRight_.bind(this)}
+                    gotoBegin={this.onKeyboardNavigationToBegin.bind(this)}
+                    gotoEnd={this.onKeyboardNavigationToEnd.bind(this)}
                     fullscreen={this.state.fullscreen}
                     // tslint:disable-next-line: max-line-length
                     currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
@@ -555,6 +564,15 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.NavigateNextChapterAlt,
             this.onKeyboardSpineNavigationNext);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigateToBegin,
+            this.onKeyboardNavigationToBegin);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigateToEnd,
+            this.onKeyboardNavigationToEnd);
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
@@ -839,6 +857,51 @@ class Reader extends React.Component<IProps, IState> {
 
     }
 
+    private onKeyboardNavigationToBegin = () => {
+
+        if (this.props.isPdf) {
+            this.state.pdfPlayerBusEvent?.dispatch("page", "1");
+        } else if (this.props.isDivina) {
+            this.currentDivinaPlayer.goToPageWithIndex(0);
+        } else {
+            if (this.props.r2Publication?.Spine) {
+                const firstSpine = this.props.r2Publication.Spine[0];
+                if (firstSpine?.Href) {
+                    handleLinkLocator({
+                        href: firstSpine.Href,
+                        locations: {
+                            progression: 0,
+                        },
+                    });
+                }
+            }
+        }
+    }
+    private onKeyboardNavigationToEnd = () => {
+
+        if (this.props.isPdf) {
+            if (this.state.pdfPlayerNumberOfPages) {
+                this.state.pdfPlayerBusEvent?.dispatch("page",
+                    this.state.pdfPlayerNumberOfPages.toString());
+            }
+        } else if (this.props.isDivina) {
+            // TODO: Divina total number of pages? (last page index (number))
+            // this.currentDivinaPlayer.goToPageWithIndex(index);
+        } else {
+            if (this.props.r2Publication?.Spine) {
+                const lastSpine = this.props.r2Publication.Spine[this.props.r2Publication.Spine.length - 1];
+                if (lastSpine?.Href) {
+                    handleLinkLocator({
+                        href: lastSpine.Href,
+                        locations: {
+                            progression: 0.95, // because 1 (100%) tends to trip blankspace css columns :(
+                        },
+                    });
+                }
+            }
+        }
+    }
+
     private onKeyboardSpineNavigationNext = () => {
         this.onKeyboardSpineNavigationPreviousNext(false);
     }
@@ -888,8 +951,13 @@ class Reader extends React.Component<IProps, IState> {
             },
         };
         console.log("pageChange", pageIndex, nbOfPages);
-        this.handleReadingLocationChange(loc as LocatorExtended);
 
+        // TODO: this is a hack! Forcing type LocatorExtended on this non-matching object shape
+        // only "works" because data going into the persistent store (see saveReadingLocation())
+        // is used appropriately and selectively when extracted back out ...
+        // however this may trip / crash future code
+        // if strict LocatorExtended model structure is expected when reading from the persistence layer.
+        this.handleReadingLocationChange(loc as LocatorExtended);
     }
 
     private async loadPublicationIntoViewport() {
@@ -1157,6 +1225,11 @@ class Reader extends React.Component<IProps, IState> {
         this.props.setLocator(loc);
     }
 
+    // TODO: WARNING, see code comments alongisde usage of this function for Divina and PDF
+    // (forced type despite different object shape / data model)
+    // See saveReadingLocation() => dispatch(readerLocalActionSetLocator.build(locator))
+    // See Reader RootState reader.locator (readerLocatorReducer merges the action data payload
+    // as-is, without type checking ... but consumers might expect strict LocatorExtended!)
     private handleReadingLocationChange(loc: LocatorExtended) {
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
