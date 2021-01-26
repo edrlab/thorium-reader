@@ -670,7 +670,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     </div>
                 </div>
             </section>
-            <section className={styles.line_tab_content}>
+            <section className={styles.line_tab_content} hidden={this.props.isPdf}>
                 <div className={styles.mathml_section}>
                     <input
                         id="mathJaxCheckBox"

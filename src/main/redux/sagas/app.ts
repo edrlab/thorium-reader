@@ -80,8 +80,6 @@ export function* init() {
     // const protocolFromPDFWebview = sessionPDFWebview.protocol;
     protocol.registerFileProtocol("pdfjs", async (request, callback) => {
 
-        debug("register file protocol pdfjs");
-        debug("request", request);
         const url = (new URL(request.url)).pathname;
         debug("PDFJS request this file:", url);
 
@@ -91,8 +89,8 @@ export function* init() {
             folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
         }
         const pathname = path.normalize(`${folderPath}/${url}`);
-        callback(pathname);
 
+        callback(pathname);
     }, (err) => {
         if (err) {
             debug("ERROR registerFileProtocol pdf webview", err);

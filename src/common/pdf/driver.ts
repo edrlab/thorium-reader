@@ -10,7 +10,6 @@ import * as path from "path";
 import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-import { keyDownEventHandler, keyUpEventHandler } from "readium-desktop/renderer/common/keyboard";
 
 import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
@@ -98,13 +97,6 @@ export async function pdfMountAndReturnBus(
             });
         },
     );
-
-    bus.subscribe("keydown", (payload) => {
-        keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
-    });
-    bus.subscribe("keyup", (payload) => {
-        keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
-    });
 
     webview.addEventListener("did-finish-load", () => {
 

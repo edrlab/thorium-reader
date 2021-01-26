@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
+import { PDFDocumentProxy } from "readium-desktop/typings/pdf.js/display/api";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 
 import { ILink, TToc } from "../common/pdfReader.type";
@@ -29,7 +30,7 @@ export function destForPageIndexParse(destRaw: any | any[]): TdestForPageIndex |
 }
 
 // tslint:disable-next-line: max-line-length
-export async function tocOutlineItemToLink(outline: IOutline, pdf: any, pageLabels: string[]): Promise<ILink> {
+export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy, pageLabels: string[]): Promise<ILink> {
 
     const link: ILink = {};
 
@@ -49,7 +50,7 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: any, pageLabe
 
         if (destForPageIndex) {
             // tslint:disable-next-line: max-line-length
-            const page = (await pdf.getPageIndex(destForPageIndex) as number); // type error should return a number zero based
+            const page = (await pdf.getPageIndex(destForPageIndex) as unknown as number); // type error should return a number zero based
             const label = pageLabels[page];
             link.Href = label;
         }
@@ -67,7 +68,7 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: any, pageLabe
     return link;
 }
 
-export async function getToc(pdf: any): Promise<TToc> {
+export async function getToc(pdf: PDFDocumentProxy): Promise<TToc> {
 
     return await tryCatch(async () => {
 

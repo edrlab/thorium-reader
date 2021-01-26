@@ -942,6 +942,14 @@ class Reader extends React.Component<IProps, IState> {
             pdfPlayerBusEvent.subscribe("toc", (toc) => this.setState({pdfPlayerToc: toc}));
             pdfPlayerBusEvent.subscribe("numberofpages", (pages) => this.setState({pdfPlayerNumberOfPages: pages}));
 
+            // previously loaded in driver.ts. @danielWeck do you think is it possible to execute it here ?
+            pdfPlayerBusEvent.subscribe("keydown", (payload) => {
+                keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
+            });
+            pdfPlayerBusEvent.subscribe("keyup", (payload) => {
+                keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
+            });
+
             console.log("toc", this.state.pdfPlayerToc);
 
             // this.state.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
