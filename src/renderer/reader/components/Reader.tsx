@@ -499,6 +499,8 @@ class Reader extends React.Component<IProps, IState> {
                 </div>
                 <ReaderFooter
                     navLeftOrRight={this.navLeftOrRight_.bind(this)}
+                    gotoBegin={this.onKeyboardNavigationToBegin.bind(this)}
+                    gotoEnd={this.onKeyboardNavigationToEnd.bind(this)}
                     fullscreen={this.state.fullscreen}
                     // tslint:disable-next-line: max-line-length
                     currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
