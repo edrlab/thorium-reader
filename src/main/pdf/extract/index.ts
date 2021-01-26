@@ -130,7 +130,6 @@ export const extractPDFData =
 
             await new Promise<void>((resolve) => setTimeout(() => resolve(), 70000));
 
-            return [undefined, undefined];
 
         } catch (e) {
 
@@ -152,4 +151,6 @@ export const extractPDFData =
             }
 
         }
+
+        return [undefined, undefined];
     }
