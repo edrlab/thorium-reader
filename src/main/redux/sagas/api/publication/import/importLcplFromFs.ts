@@ -43,7 +43,7 @@ export function* importLcplFromFS(
         throw new Error(`LCP license malformed: ${JSON.stringify(lcpJson)}`);
     }
 
-    const r2LCP = TaJsonDeserialize<LCP>(lcpJson, LCP);
+    const r2LCP = TaJsonDeserialize(lcpJson, LCP);
     r2LCP.JsonSource = jsonStr;
     r2LCP.init();
 

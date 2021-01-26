@@ -253,7 +253,7 @@ export class OpdsService {
         debug("isAuth, isOpdsPub, isR2Pub, isFeed", isAuth, isOpdsPub, isR2Pub, isFeed);
 
         if (isAuth) {
-            const r2OpdsAuth = TaJsonDeserialize<OPDSAuthenticationDoc>(
+            const r2OpdsAuth = TaJsonDeserialize(
                 jsonObj,
                 OPDSAuthenticationDoc,
             );

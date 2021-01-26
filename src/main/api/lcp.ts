@@ -73,7 +73,7 @@ export class LcpApi implements ILcpApi {
                 // tslint:disable-next-line: max-line-length
                 // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
                 // const r2PublicationJson = JSON.parse(r2PublicationStr);
-                // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+                // const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 // const epubPath = this.publicationStorage.getPublicationEpubPath(publicationView.identifier);
                 // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);

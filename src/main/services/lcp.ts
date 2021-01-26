@@ -216,7 +216,7 @@ export class LcpManager {
             const r2PublicationBase64 = publicationDocument.resources.r2PublicationBase64;
             const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
             const r2PublicationJson = JSON.parse(r2PublicationStr);
-            r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+            r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
         }
         if (!r2Publication.LCP &&
             publicationDocument.resources && publicationDocument.resources.r2LCPBase64) {
@@ -229,7 +229,7 @@ export class LcpManager {
                 throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
             }
 
-            const r2LCP = TaJsonDeserialize<LCP>(r2LCPJson, LCP);
+            const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
             r2LCP.JsonSource = r2LCPStr;
 
             r2Publication.LCP = r2LCP;
@@ -240,7 +240,7 @@ export class LcpManager {
             const r2LSDBase64 = publicationDocument.resources.r2LSDBase64;
             const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
             const r2LSDJson = JSON.parse(r2LSDStr);
-            const r2LSD = TaJsonDeserialize<LSD>(r2LSDJson, LSD);
+            const r2LSD = TaJsonDeserialize(r2LSDJson, LSD);
 
             r2Publication.LCP.LSD = r2LSD;
         }
@@ -921,7 +921,7 @@ export class LcpManager {
 
                         let r2LCP: LCP;
                         try {
-                            r2LCP = TaJsonDeserialize<LCP>(lcplJson, LCP);
+                            r2LCP = TaJsonDeserialize(lcplJson, LCP);
                         } catch (erorz) {
                             debug(erorz);
                             reject(erorz);

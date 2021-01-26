@@ -47,7 +47,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
         // const r2OpdsPublicationStr =
         //     Buffer.from(this.props.opdsPublicationView.r2OpdsPublicationBase64, "base64").toString("utf-8");
         // const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
-        // // const r2OpdsPublication = TaJsonDeserialize<R2Publication>(r2OpdsPublicationJson, R2Publication);
+        // // const r2OpdsPublication = TaJsonDeserialize(r2OpdsPublicationJson, R2Publication);
         // console.log(JSON.stringify(r2OpdsPublicationJson, null, 4));
 
         const {

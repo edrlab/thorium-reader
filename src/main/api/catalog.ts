@@ -34,7 +34,7 @@ const NB_PUB = 5;
 const viewToR2Pub = (view: PublicationView) => {
     const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
     const r2PublicationJson = JSON.parse(r2PublicationStr);
-    const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+    const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
     return r2Publication;
 };
