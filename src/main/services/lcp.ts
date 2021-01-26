@@ -12,6 +12,7 @@ import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions/";
@@ -223,6 +224,11 @@ export class LcpManager {
             const r2LCPBase64 = publicationDocument.resources.r2LCPBase64;
             const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
             const r2LCPJson = JSON.parse(r2LCPStr);
+
+            if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
+                throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+            }
+
             const r2LCP = TaJsonDeserialize<LCP>(r2LCPJson, LCP);
             r2LCP.JsonSource = r2LCPStr;
 
@@ -905,6 +911,13 @@ export class LcpManager {
 
                         const lcplJson = global.JSON.parse(licenseUpdateJson);
                         debug(lcplJson);
+
+                        if (lcpLicenseIsNotWellFormed(lcplJson)) {
+                            const rej = `LCP license malformed: ${JSON.stringify(lcplJson)}`;
+                            debug(rej);
+                            reject(rej);
+                            return;
+                        }
 
                         let r2LCP: LCP;
                         try {

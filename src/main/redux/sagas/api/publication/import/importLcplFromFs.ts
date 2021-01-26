@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { promises as fsp } from "fs";
 import * as moment from "moment";
 import * as path from "path";
+import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -37,6 +38,11 @@ export function* importLcplFromFS(
 
     const jsonStr = yield* callTyped(() => fsp.readFile(filePath, { encoding: "utf8" }));
     const lcpJson = JSON.parse(jsonStr);
+
+    if (lcpLicenseIsNotWellFormed(lcpJson)) {
+        throw new Error(`LCP license malformed: ${JSON.stringify(lcpJson)}`);
+    }
+
     const r2LCP = TaJsonDeserialize<LCP>(lcpJson, LCP);
     r2LCP.JsonSource = jsonStr;
     r2LCP.init();
