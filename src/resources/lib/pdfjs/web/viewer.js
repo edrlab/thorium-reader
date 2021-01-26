@@ -20,6 +20,9 @@
  * Javascript code in this page
  */
 
+
+
+
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ([
@@ -67,7 +70,7 @@ function getViewerConfiguration() {
     appContainer: document.body,
     mainContainer: document.getElementById("viewerContainer"),
     viewerContainer: document.getElementById("viewer"),
-    eventBus: window.pdfjsEventBus,
+    eventBus: null,
     toolbar: {
       container: document.getElementById("toolbarViewer"),
       numPages: document.getElementById("numPages"),
@@ -860,10 +863,14 @@ const PDFViewerApplication = {
 
   async _initializeViewerComponents() {
     const appConfig = this.appConfig;
-    const eventBus = appConfig.eventBus || new _ui_utils.EventBus({
+    const eventBus = appConfig.eventBus || window.eventBus || new _ui_utils.EventBus({
       isInAutomation: this.externalServices.isInAutomation
     });
     this.eventBus = eventBus;
+    window.eventBus = eventBus;
+    try {
+        parent.eventBus = eventBus;
+    } catch (_e) {}
     this.overlayManager = new _overlay_manager.OverlayManager();
     const pdfRenderingQueue = new _pdf_rendering_queue.PDFRenderingQueue();
     pdfRenderingQueue.onIdle = this.cleanup.bind(this);
@@ -2384,48 +2391,111 @@ const PDFViewerApplication = {
 
       eventBus._on("pagechanging", _boundEvents.reportPageStatsPDFBug);
     }
-  },
 
-  bindWindowEvents() {
-    const {
-      eventBus,
-      _boundEvents
-    } = this;
 
-    _boundEvents.windowResize = () => {
-      eventBus.dispatch("resize", {
-        source: window
-      });
-    };
+    //// /////// /// // // //// / // // / // / // // / / // /
+    //// /////// /// // // //// / // // / // / // // / / // /
+    //// /////// /// // // //// / // // / // / // // / / // /
+    //// /////// /// // // //// / // // / // / // // / / // /
+    //// /////// /// // // //// / // // / // / // // / / // /
+    //// /////// /// // // //// / // // / // / // // / / // /
 
-    _boundEvents.windowHashChange = () => {
-      eventBus.dispatch("hashchange", {
-        source: window,
-        hash: document.location.hash.substring(1)
-      });
-    };
+    const pageRenderedExtract = async (ev) =>  {
 
-    _boundEvents.windowBeforePrint = () => {
-      eventBus.dispatch("beforeprint", {
-        source: window
-      });
-    };
 
-    _boundEvents.windowAfterPrint = () => {
-      eventBus.dispatch("afterprint", {
-        source: window
-      });
-    };
+        if (ev.pageNumber === 1) {
 
-    _boundEvents.windowUpdateFromSandbox = event => {
-      eventBus.dispatch("updatefromsandbox", {
-        source: window,
-        detail: event.detail
-      });
-    };
+                const filter = { urls: ["*://*/*"] };
 
-    window.addEventListener("visibilitychange", webViewerVisibilityChange);
-    window.addEventListener("wheel", webViewerWheel, {
+
+                const page = ev.source;
+
+                const img = page?.canvas?.toDataURL("image/png");
+
+                const doc = page?.annotationLayerFactory?.pdfDocument;
+
+                const metadata = await doc.getMetadata();
+
+                const numberofpages = doc?.numPages;
+                const numberOfPagesChecked = typeof numberofpages === "number" ? numberofpages : 0;
+
+                const data = {
+                    ...metadata,
+                    img,
+                    numberofpages: numberOfPagesChecked,
+                };
+
+                console.log("#$%#$%");
+                console.log(data);
+
+                const str = JSON.stringify(data);
+
+                // fetch("pdfjs-extract-data://data", {
+                //     method: "POST",
+                //     body: str,
+                // });
+
+                const ipc = require('electron').ipcRenderer;
+                ipc.send("pdfjs-extract-data", str);
+
+                eventBus._off("pagerendered", pageRenderedExtract);
+            }
+        }
+
+
+        eventBus._on("pagerendered", pageRenderedExtract);
+
+        //// /////// /// // // //// / // // / // / // // / / // /
+        //// /////// /// // // //// / // // / // / // // / / // /
+        //// /////// /// // // //// / // // / // / // // / / // /
+        //// /////// /// // // //// / // // / // / // // / / // /
+        //// /////// /// // // //// / // // / // / // // / / // /
+        //// /////// /// // // //// / // // / // / // // / / // /
+        //// /////// /// // // //// / // // / // / // // / / // /
+
+
+    },
+
+    bindWindowEvents() {
+        const {
+            eventBus,
+            _boundEvents
+        } = this;
+
+        _boundEvents.windowResize = () => {
+            eventBus.dispatch("resize", {
+                source: window
+            });
+        };
+
+        _boundEvents.windowHashChange = () => {
+            eventBus.dispatch("hashchange", {
+                source: window,
+                hash: document.location.hash.substring(1)
+            });
+        };
+
+        _boundEvents.windowBeforePrint = () => {
+            eventBus.dispatch("beforeprint", {
+                source: window
+            });
+        };
+
+        _boundEvents.windowAfterPrint = () => {
+            eventBus.dispatch("afterprint", {
+                source: window
+            });
+        };
+
+        _boundEvents.windowUpdateFromSandbox = event => {
+            eventBus.dispatch("updatefromsandbox", {
+                source: window,
+                detail: event.detail
+            });
+        };
+
+        window.addEventListener("visibilitychange", webViewerVisibilityChange);
+        window.addEventListener("wheel", webViewerWheel, {
       passive: false
     });
     window.addEventListener("touchstart", webViewerTouchStart, {
@@ -4174,11 +4244,13 @@ class EventBus {
   dispatch(eventName) {
     const eventListeners = this._listeners[eventName];
 
+    const args = Array.prototype.slice.call(arguments, 1);
+    console.log("PDF EVENT BUS", eventName, args);
+
     if (!eventListeners || eventListeners.length === 0) {
       return;
     }
 
-    const args = Array.prototype.slice.call(arguments, 1);
     let externalListeners;
     eventListeners.slice(0).forEach(({
       listener,
@@ -14801,7 +14873,7 @@ _app.PDFPrintServiceFactory.instance = {
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -14814,14 +14886,14 @@ _app.PDFPrintServiceFactory.instance = {
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	// startup
 /******/ 	// Load entry module

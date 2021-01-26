@@ -34,7 +34,7 @@ export type IPdfBus = IEventBusPdfPlayer;
 
 const pdfjsEventBus = new EventBus();
 pdfjsEventBus.onAll((key: any) => (...arg: any[]) => console.log("PDFJS EVENTBUS", key, ...arg));
-(window as any).pdfjsEventBus = pdfjsEventBus;
+(window as any).eventBus = pdfjsEventBus;
 
 const pdfDocument = new Promise<PDFDocumentProxy>((resolve) =>
     pdfjsEventBus.on("__pdfdocument", (_pdfDocument: PDFDocumentProxy) => {
