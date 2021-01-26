@@ -16,8 +16,8 @@ import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
 
-import { eventBus } from "../../../common/pdf/common/eventBus";
-import { IEventBusPdfPlayer } from "../../../common/pdf/common/pdfReader.type";
+import { eventBus } from "./common/eventBus";
+import { IEventBusPdfPlayer } from "./common/pdfReader.type";
 
 // bridge between webview tx-rx communication and reader.tsx
 
