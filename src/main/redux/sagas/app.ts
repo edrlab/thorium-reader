@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
-import { readFile } from "fs";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -18,10 +17,8 @@ import { error } from "readium-desktop/main/error";
 import { fetchCookieJarPersistence } from "readium-desktop/main/network/fetch";
 import { needToPersistState } from "readium-desktop/main/redux/sagas/persist.ts";
 import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
-import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { all, call, race, spawn, take } from "redux-saga/effects";
 import { delay, put } from "typed-redux-saga";
-import { promisify } from "util";
 
 import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 
@@ -81,35 +78,35 @@ export function* init() {
 
     // const sessionPDFWebview = session.fromPartition("persist:pdfjsreader");
     // const protocolFromPDFWebview = sessionPDFWebview.protocol;
-    protocol.registerBufferProtocol("pdfjs", async (request, callback) => {
+    protocol.registerFileProtocol("pdfjs", async (request, callback) => {
 
-        // debug("PDFJS request", request);
-
-        const pdfjsFolder = "assets/lib/pdfjs";
-        const url = (new URL(request.url)).pathname; // debug only
-
+        debug("register file protocol pdfjs");
+        debug("request", request);
+        const url = (new URL(request.url)).pathname;
         debug("PDFJS request this file:", url);
 
+        const pdfjsFolder = "assets/lib/pdfjs";
         let folderPath: string = path.join(__dirname, pdfjsFolder);
         if (_PACKAGING === "0") {
             folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
         }
-
         const pathname = path.normalize(`${folderPath}/${url}`);
-        // debug("PDFJS Folder path", pathname);
+        callback(pathname);
 
-        try {
-            const buffer = await promisify(readFile)(pathname);
-            callback({ data: buffer, mimeType: findMimeTypeWithExtension(path.extname(pathname))});
-        } catch (error) {
-            debug("ERROR registerFileProtocol resource", error);
-            callback();
-            // throw error;
-        }
     }, (err) => {
         if (err) {
             debug("ERROR registerFileProtocol pdf webview", err);
         }
+    });
+
+    protocol.registerFileProtocol("pdfjs-extract", async (request, callback) => {
+
+        debug("register file protocol pdfjs-extract");
+        debug("request", request);
+        const p = request.url.split("pdfjs-extract://")[1];
+        debug(p);
+
+        callback(p);
     });
 
 }

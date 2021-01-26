@@ -1,15 +1,17 @@
-import { BrowserWindow, Menu, remote } from "electron";
+import { BrowserWindow, ipcMain, protocol } from "electron";
 import { IEventBusPdfPlayer, IInfo } from "readium-desktop/common/pdf/common/pdfReader.type";
 import { IS_DEV, _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL } from "readium-desktop/preprocessor-directives";
 import * as path from "path";
 import { eventBus } from "readium-desktop/common/pdf/common/eventBus";
+import * as debug_ from "debug";
+
+const debug = debug_("src/main/pdf/extract/index.ts");
 
 export const extractPDFData =
     async (pdfPath: string)
         : Promise<[data: IInfo, coverPNG: Buffer]> => {
 
-
-        pdfPath = "file://" + encodeURIComponent(pdfPath);
+        pdfPath = "pdfjs-extract://" + encodeURIComponent(pdfPath);
 
         let win: BrowserWindow;
 
@@ -35,58 +37,26 @@ export const extractPDFData =
                 // show: false,
                 webPreferences: {
                     preload: preloadPath,
-                    nodeIntegration: true,
-                    webSecurity: false,
+                    // nodeIntegration: true,
+                    // webSecurity: false,
+                    // contextIsolation: false,
+                    // enableRemoteModule: true,
+                    allowRunningInsecureContent: false,
+                    contextIsolation: true,
+                    enableRemoteModule: false,
+                    nodeIntegration: false,
+                    sandbox: true,
                 },
             });
 
+
             // win.hide();
+            await win.loadURL(`pdfjs://local/web/viewer.html?file=${pdfPath}`); // no wait promise
 
             const content = win.webContents;
 
             if (IS_DEV) {
-                const wc = content;
-                wc.on("context-menu", (_ev, params) => {
-                    const { x, y } = params;
-                    const openDevToolsAndInspect = () => {
-                        const devToolsOpened = () => {
-                            wc.off("devtools-opened", devToolsOpened);
-                            wc.inspectElement(x, y);
-
-                            setTimeout(() => {
-                                if (wc.isDevToolsOpened() && wc.devToolsWebContents) {
-                                    wc.devToolsWebContents.focus();
-                                }
-                            }, 500);
-                        };
-                        wc.on("devtools-opened", devToolsOpened);
-                        wc.openDevTools({ activate: true, mode: "detach" });
-                    };
-                    Menu.buildFromTemplate([{
-                        click: () => {
-                            const wasOpened = wc.isDevToolsOpened();
-                            if (!wasOpened) {
-                                openDevToolsAndInspect();
-                            } else {
-                                if (!wc.isDevToolsFocused()) {
-                                    // wc.toggleDevTools();
-                                    wc.closeDevTools();
-
-                                    setImmediate(() => {
-                                        openDevToolsAndInspect();
-                                    });
-                                } else {
-                                    // right-click context menu normally occurs when focus
-                                    // is in BrowserWindow / WebView's WebContents,
-                                    // but some platforms (e.g. MacOS) allow mouse interaction
-                                    // when the window is in the background.
-                                    wc.inspectElement(x, y);
-                                }
-                            }
-                        },
-                        label: "Inspect element",
-                    }]).popup({ window: win });
-                });
+                win.webContents.openDevTools();
             }
 
             content.on("console-message", (_, __, message) => {
@@ -113,10 +83,14 @@ export const extractPDFData =
                     };
 
                     // tslint:disable-next-line: no-floating-promises
-                    content.send("pdf-eventbus", data);
+                    win.webContents.send("pdf-eventbus", data);
+
+                    console.log("SEND", data);
+
                 },
                 (ev) => {
-                    content.on("ipc-message", (_event, channel, ...args) => {
+                    win.webContents.on("ipc-message-sync", () => console.log("HEEEEEEEE")                    );
+                    win.webContents.on("ipc-message", (_event, channel, ...args) => {
 
                         if (channel === "pdf-eventbus") {
 
@@ -152,13 +126,7 @@ export const extractPDFData =
 
             })
 
-            content.on("did-finish-load", () => {
-                console.log("did-finish-load bus.dispatch start pdfPath", pdfPath);
-                bus.dispatch("start", pdfPath);
-
-            })
-
-            win.loadURL(`pdfjs://local/web/viewer.html?file=${pdfPath}`);
+            bus.dispatch("start", pdfPath);
 
             await new Promise<void>((resolve) => setTimeout(() => resolve(), 70000));
 
