@@ -81,31 +81,19 @@ export function* init() {
 
     // const sessionPDFWebview = session.fromPartition("persist:pdfjsreader");
     // const protocolFromPDFWebview = sessionPDFWebview.protocol;
-    protocol.registerBufferProtocol("pdfjs", async (request, callback) => {
+    protocol.registerFileProtocol("pdfjs", async (request, callback) => {
 
-        // debug("PDFJS request", request);
-
-        const pdfjsFolder = "assets/lib/pdfjs";
-        const url = (new URL(request.url)).pathname; // debug only
-
+        const url = (new URL(request.url)).pathname;
         debug("PDFJS request this file:", url);
 
+        const pdfjsFolder = "assets/lib/pdfjs";
         let folderPath: string = path.join(__dirname, pdfjsFolder);
         if (_PACKAGING === "0") {
             folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
         }
-
         const pathname = path.normalize(`${folderPath}/${url}`);
-        // debug("PDFJS Folder path", pathname);
 
-        try {
-            const buffer = await promisify(readFile)(pathname);
-            callback({ data: buffer, mimeType: findMimeTypeWithExtension(path.extname(pathname))});
-        } catch (error) {
-            debug("ERROR registerFileProtocol resource", error);
-            callback();
-            // throw error;
-        }
+        callback(pathname);
     }, (err) => {
         if (err) {
             debug("ERROR registerFileProtocol pdf webview", err);
