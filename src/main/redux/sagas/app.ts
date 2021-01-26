@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
-import { readFile } from "fs";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -18,10 +17,8 @@ import { error } from "readium-desktop/main/error";
 import { fetchCookieJarPersistence } from "readium-desktop/main/network/fetch";
 import { needToPersistState } from "readium-desktop/main/redux/sagas/persist.ts";
 import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
-import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { all, call, race, spawn, take } from "redux-saga/effects";
 import { delay, put } from "typed-redux-saga";
-import { promisify } from "util";
 
 import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 
