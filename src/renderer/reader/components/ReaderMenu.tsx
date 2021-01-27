@@ -25,7 +25,7 @@ import { Unsubscribe } from "redux";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
-import { ILink, TToc } from "../../../common/pdf/common/pdfReader.type";
+import { ILink, TToc } from "../pdf/common/pdfReader.type";
 import { IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";

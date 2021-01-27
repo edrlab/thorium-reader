@@ -14,7 +14,7 @@ import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
-import { IInfo } from "readium-desktop/common/pdf/common/pdfReader.type";
+import { IInfo } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
 
 // https://github.com/mozilla/pdf.js/tree/master/examples/node
 // import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";

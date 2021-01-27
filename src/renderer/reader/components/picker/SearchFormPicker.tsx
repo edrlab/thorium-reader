@@ -19,7 +19,7 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { IEventBusPdfPlayer } from "../../../../common/pdf/common/pdfReader.type";
+import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
 import { readerLocalActionSearch } from "../../redux/actions";
 

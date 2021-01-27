@@ -13,7 +13,7 @@ import {
 
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { IEventBusPdfPlayer, TToc } from "../../../common/pdf/common/pdfReader.type";
+import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
 
 export const fontSize: string[] = [
     "75%",

@@ -68,8 +68,8 @@ import {
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
-import { IEventBusPdfPlayer, TToc } from "../../../common/pdf/common/pdfReader.type";
-import { pdfMountAndReturnBus } from "../../../common/pdf/driver";
+import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
+import { pdfMountAndReturnBus } from "../pdf/driver";
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
