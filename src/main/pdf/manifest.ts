@@ -14,7 +14,8 @@ import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
-import { IInfo } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
+
+import { IInfo } from "./extract.type";
 
 // https://github.com/mozilla/pdf.js/tree/master/examples/node
 // import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
@@ -174,7 +175,7 @@ export async function pdfManifest(pdfPath: string, info: IInfo): Promise<R2Publi
         }, _filename);
 
         {
-            const numberOfPage = info.numberOfPage;
+            const numberOfPage = info.numberOfPages;
             debug("number of page", numberOfPage);
 
             if (numberOfPage) {

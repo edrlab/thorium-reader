@@ -1,7 +1,17 @@
-import { BrowserWindow } from "electron";
-import { IInfo } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
-import { _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL } from "readium-desktop/preprocessor-directives";
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import * as debug_ from "debug";
+import { BrowserWindow } from "electron";
+import {
+    _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL,
+} from "readium-desktop/preprocessor-directives";
+
+import { IInfo } from "./extract.type";
 
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
 debug("_");
@@ -49,7 +59,7 @@ export const extractPDFData =
                         // };
 
                         // debug(metadata);
-                        const info: IInfo = { ...(data.info || {}), numberOfPage: data.numberofpages };
+                        const info: IInfo = { ...(data.info || {}), numberOfPages: data.numberofpages };
 
                         debug(info);
 
