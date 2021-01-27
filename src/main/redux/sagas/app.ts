@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, protocol, remote } from "electron";
+import { app, protocol } from "electron";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -105,8 +105,6 @@ export function* init() {
         callback(p);
     });
 
-
-
 }
 
 function* closeProcess() {
@@ -115,7 +113,7 @@ function* closeProcess() {
     try {
         const [done] = yield* raceTyped([
             all([
-                call(function* () {
+                call(function*() {
 
                     try {
                         // clear session in r2-navigator
@@ -125,7 +123,7 @@ function* closeProcess() {
                         debug("ERROR to clearSessions", e);
                     }
                 }),
-                call(function* () {
+                call(function*() {
 
                     try {
                         yield call(fetchCookieJarPersistence);

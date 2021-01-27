@@ -10,8 +10,8 @@ import * as debug_ from "debug";
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 
 import { createWebpubZip, TResourcesBUFFERCreateZip } from "../zip/create";
-import { pdfManifest } from "./manifest";
 import { extractPDFData } from "./extract";
+import { pdfManifest } from "./manifest";
 
 // Logger
 const _filename = "readium-desktop:main/pdf/packager";

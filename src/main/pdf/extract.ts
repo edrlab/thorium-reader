@@ -71,17 +71,18 @@ export const extractPDFData =
                         resolve([info, img]);
                     }
 
-                })
+                }),
             );
 
-            const pdelay = new Promise<TExtractPdfData>((resolve) => setTimeout(() => resolve([undefined, undefined]), 7000));
+            const pdelay = new Promise<TExtractPdfData>(
+                (resolve) => setTimeout(() => resolve([undefined, undefined]), 7000));
 
-            const data = await Promise.race([
+            const dataResult = await Promise.race([
                 pdelay,
                 pdata,
             ]);
 
-            return data;
+            return dataResult;
 
         } catch (e) {
 
@@ -94,8 +95,6 @@ export const extractPDFData =
             debug("####");
             debug("####");
 
-
-
         } finally {
 
             if (win) {
@@ -105,4 +104,4 @@ export const extractPDFData =
         }
 
         return [undefined, undefined];
-    }
+    };
