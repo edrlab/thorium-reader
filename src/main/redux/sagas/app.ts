@@ -74,15 +74,6 @@ export function* init() {
         debug("#####");
     });
 
-    protocol.registerStringProtocol("pdfjs-extract-data", (request, callback) => {
-
-        debug("pdfjs-extract-data");
-        debug(request);
-
-
-        callback();
-    });
-
     // const sessionPDFWebview = session.fromPartition("persist:pdfjsreader");
     // const protocolFromPDFWebview = sessionPDFWebview.protocol;
     protocol.registerFileProtocol("pdfjs", async (request, callback) => {

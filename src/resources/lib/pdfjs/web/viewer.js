@@ -70,7 +70,7 @@ function getViewerConfiguration() {
     appContainer: document.body,
     mainContainer: document.getElementById("viewerContainer"),
     viewerContainer: document.getElementById("viewer"),
-    eventBus: null,
+    eventBus: window.pdfjsEventBus,
     toolbar: {
       container: document.getElementById("toolbarViewer"),
       numPages: document.getElementById("numPages"),
@@ -863,14 +863,11 @@ const PDFViewerApplication = {
 
   async _initializeViewerComponents() {
     const appConfig = this.appConfig;
-    const eventBus = appConfig.eventBus || window.eventBus || new _ui_utils.EventBus({
+    const eventBus = appConfig.eventBus || new _ui_utils.EventBus({
       isInAutomation: this.externalServices.isInAutomation
     });
     this.eventBus = eventBus;
     window.eventBus = eventBus;
-    try {
-        parent.eventBus = eventBus;
-    } catch (_e) {}
     this.overlayManager = new _overlay_manager.OverlayManager();
     const pdfRenderingQueue = new _pdf_rendering_queue.PDFRenderingQueue();
     pdfRenderingQueue.onIdle = this.cleanup.bind(this);
@@ -2456,46 +2453,46 @@ const PDFViewerApplication = {
 
     },
 
-    bindWindowEvents() {
-        const {
-            eventBus,
-            _boundEvents
-        } = this;
+  bindWindowEvents() {
+    const {
+        eventBus,
+        _boundEvents
+    } = this;
 
-        _boundEvents.windowResize = () => {
-            eventBus.dispatch("resize", {
-                source: window
-            });
-        };
+    _boundEvents.windowResize = () => {
+        eventBus.dispatch("resize", {
+            source: window
+        });
+    };
 
-        _boundEvents.windowHashChange = () => {
-            eventBus.dispatch("hashchange", {
-                source: window,
-                hash: document.location.hash.substring(1)
-            });
-        };
+    _boundEvents.windowHashChange = () => {
+        eventBus.dispatch("hashchange", {
+            source: window,
+            hash: document.location.hash.substring(1)
+        });
+    };
 
-        _boundEvents.windowBeforePrint = () => {
-            eventBus.dispatch("beforeprint", {
-                source: window
-            });
-        };
+    _boundEvents.windowBeforePrint = () => {
+        eventBus.dispatch("beforeprint", {
+            source: window
+        });
+    };
 
-        _boundEvents.windowAfterPrint = () => {
-            eventBus.dispatch("afterprint", {
-                source: window
-            });
-        };
+    _boundEvents.windowAfterPrint = () => {
+        eventBus.dispatch("afterprint", {
+            source: window
+        });
+    };
 
-        _boundEvents.windowUpdateFromSandbox = event => {
-            eventBus.dispatch("updatefromsandbox", {
-                source: window,
-                detail: event.detail
-            });
-        };
+    _boundEvents.windowUpdateFromSandbox = event => {
+        eventBus.dispatch("updatefromsandbox", {
+            source: window,
+            detail: event.detail
+        });
+    };
 
-        window.addEventListener("visibilitychange", webViewerVisibilityChange);
-        window.addEventListener("wheel", webViewerWheel, {
+    window.addEventListener("visibilitychange", webViewerVisibilityChange);
+    window.addEventListener("wheel", webViewerWheel, {
       passive: false
     });
     window.addEventListener("touchstart", webViewerTouchStart, {

@@ -20,7 +20,6 @@ import {
 import { EventBus } from "./pdfEventBus";
 // import { pdfReaderInit } from "./init";
 import { getToc } from "./toc";
-import { IInfo } from "../common/pdfReader.type";
 
 export interface IPdfState {
     view: IPdfPlayerView;
@@ -34,7 +33,7 @@ export type IPdfBus = IEventBusPdfPlayer;
 
 const pdfjsEventBus = new EventBus();
 pdfjsEventBus.onAll((key: any) => (...arg: any[]) => console.log("PDFJS EVENTBUS", key, ...arg));
-(window as any).eventBus = pdfjsEventBus;
+(window as any).pdfjsEventBus = pdfjsEventBus;
 
 const pdfDocument = new Promise<PDFDocumentProxy>((resolve) =>
     pdfjsEventBus.on("__pdfdocument", (_pdfDocument: PDFDocumentProxy) => {
@@ -51,7 +50,6 @@ function main() {
             };
 
             ipcRenderer.sendToHost("pdf-eventbus", data);
-            ipcRenderer.send("pdf-eventbus", data);
         },
         (ev) => {
             ipcRenderer.on("pdf-eventbus", (_event, message) => {
@@ -90,76 +88,9 @@ function main() {
             console.log(toc);
 
             bus.dispatch("toc", toc);
+            bus.dispatch("numberofpages", pdf.numPages);
 
-            const numberofpages = pdf?.numPages;
-            const numberOfPagesChecked = typeof numberofpages === "number" ? numberofpages : 0;
-
-            let info: IInfo = {
-                numberOfPage: numberOfPagesChecked,
-            };
-            try {
-
-                const meta = await pdf.getMetadata()
-
-                const _info = meta?.info || {};
-                info = {...info, ..._info};
-
-            } catch (e) {
-
-                console.log("ERROR to get METADATA");
-                console.log(e);
-
-                bus.dispatch("metadata", undefined);
-                // ignore
-            }
-            bus.dispatch("metadata", info);
-
-            console.log("METADATA", info);
-
-            const canvas = document.getElementById("COVER_RENDER_CANVAS") as HTMLCanvasElement;
-            try {
-
-                const page = await pdf.getPage(1);
-                const viewport = page.getViewport({scale: 1});
-
-                //
-                // Prepare canvas using PDF page dimensions
-                //
-                const context = canvas.getContext("2d");
-                canvas.height = viewport.height || 1000;
-                canvas.width = viewport.width || 1000;
-
-                //
-                // Render PDF page into canvas context
-                //
-                const task = page.render({ canvasContext: context, viewport: viewport })
-                await task.promise;
-                const img = canvas.toDataURL("image/png");
-
-                bus.dispatch("cover", img);
-
-                console.log("COVER", img);
-
-
-
-            } catch (e) {
-
-                console.log("ERROR to render the cover in the canva");
-                console.log(e);
-
-                bus.dispatch("cover", undefined);
-            } finally {
-
-                document.removeChild(canvas);
-            }
-        })
-            .catch((e) => {
-                console.error("PDF GET DOCUMENT ERROR");
-
-                console.error(e);
-
-
-            });
+        }).catch((e) => console.error(e));
 
         console.log("bus.subscribe start pdfPath", pdfPath);
 
