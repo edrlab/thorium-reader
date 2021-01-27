@@ -49,9 +49,7 @@ export const extractPDFData =
 
                     if (c === "pdfjs-extract-data") {
 
-                        const str = arg[0];
-
-                        const data = JSON.parse(str);
+                        const data = arg[0];
 
                         // const metadata = {
                         // info: data.info,
@@ -63,10 +61,12 @@ export const extractPDFData =
 
                         debug(info);
 
-                        const imgbase64 = data.img?.split(",")[1];
-                        const img = Buffer.from(imgbase64 || "", "base64");
-
-                        debug(typeof img);
+                        const arrayBuffer = data.img; // backed by Uint8Contents
+                        const img = Buffer.alloc(arrayBuffer.byteLength);
+                        const view = new Uint8Array(arrayBuffer);
+                        for (let i = 0; i < img.length; ++i) {
+                            img[i] = view[i];
+                        }
 
                         resolve([info, img]);
                     }
