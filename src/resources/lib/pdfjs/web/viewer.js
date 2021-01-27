@@ -48,8 +48,8 @@ var _app_options = __webpack_require__(1);
 
 var _app = __webpack_require__(3);
 
-const pdfjsVersion = '2.8.7';
-const pdfjsBuild = 'cae6fbff1';
+const pdfjsVersion = '2.8.18';
+const pdfjsBuild = '1d017b3b4';
 window.PDFViewerApplication = _app.PDFViewerApplication;
 window.PDFViewerApplicationOptions = _app_options.AppOptions;
 ;
@@ -2385,97 +2385,82 @@ const PDFViewerApplication = {
       eventBus._on("pagechanging", _boundEvents.reportPageStatsPDFBug);
     }
 
-      //// /////// /// // // //// / // // / // / // // / / // /
-      //// /////// /// // // //// / // // / // / // // / / // /
-      //// /////// /// // // //// / // // / // / // // / / // /
-      //// /////// /// // // //// / // // / // / // // / / // /
-      //// /////// /// // // //// / // // / // / // // / / // /
-      //// /////// /// // // //// / // // / // / // // / / // /
+    const pageRenderedExtract = async ev => {
+      try {
+        if (ev.pageNumber === 1) {
+          const page = ev.source;
 
-      const pageRenderedExtract = async (ev) => {
-
-
-          try {
-
-              if (ev.pageNumber === 1) {
-
-                  const page = ev.source;
-                  const img = page?.canvas?.toDataURL("image/png");
-                  const doc = page?.annotationLayerFactory?.pdfDocument;
-                  const metadata = await doc.getMetadata();
-                  const numberofpages = doc?.numPages;
-                  const numberOfPagesChecked = typeof numberofpages === "number" ? numberofpages : 0;
-
-                  const data = {
-                      ...metadata,
-                      img,
-                      numberofpages: numberOfPagesChecked,
-                  };
-
-                  const str = JSON.stringify(data);
-
-                  const ipc = require('electron').ipcRenderer;
-                  ipc.send("pdfjs-extract-data", str);
-
-                  eventBus._off("pagerendered", pageRenderedExtract);
-              }
-          } catch (e) {
-              console.log("ERROR TO EXTRACT COVER AND METADATA FROM PDF");
-              console.log("ERROR", e);
+          if (!page || !page.canvas) {
+            throw Error("PDF PAGE CANVAS??!");
           }
 
+          const blob = await new Promise((res, _rej) => {
+            page.canvas.toBlob(blob => {
+              res(blob);
+            }, "image/png", 0.95);
+          });
+          const img = await blob.arrayBuffer();
+          const doc = page?.annotationLayerFactory?.pdfDocument;
+          const metadata = await doc.getMetadata();
+          const numberofpages = doc?.numPages;
+          const numberOfPagesChecked = typeof numberofpages === "number" ? numberofpages : 0;
+          const data = { ...metadata,
+            img,
+            numberofpages: numberOfPagesChecked
+          };
+          const ipc = window.electronIpcRenderer;
+
+          if (ipc) {
+            ipc.send("pdfjs-extract-data", data);
+          }
+
+          eventBus._off("pagerendered", pageRenderedExtract);
+        }
+      } catch (e) {
+        console.log("ERROR TO EXTRACT COVER AND METADATA FROM PDF");
+        console.log("ERROR", e);
       }
+    };
 
-
-      eventBus._on("pagerendered", pageRenderedExtract);
-
-        //// /////// /// // // //// / // // / // / // // / / // /
-        //// /////// /// // // //// / // // / // / // // / / // /
-        //// /////// /// // // //// / // // / // / // // / / // /
-        //// /////// /// // // //// / // // / // / // // / / // /
-        //// /////// /// // // //// / // // / // / // // / / // /
-        //// /////// /// // // //// / // // / // / // // / / // /
-        //// /////// /// // // //// / // // / // / // // / / // /
-
-
-    },
+    eventBus._on("pagerendered", pageRenderedExtract);
+  },
 
   bindWindowEvents() {
     const {
-        eventBus,
-        _boundEvents
+      eventBus,
+      _boundEvents
     } = this;
 
     _boundEvents.windowResize = () => {
-        eventBus.dispatch("resize", {
-            source: window
-        });
+      eventBus.dispatch("resize", {
+        source: window
+      });
     };
 
     _boundEvents.windowHashChange = () => {
-        eventBus.dispatch("hashchange", {
-            source: window,
-            hash: document.location.hash.substring(1)
-        });
+      eventBus.dispatch("hashchange", {
+        source: window,
+        hash: document.location.hash.substring(1)
+      });
     };
 
     _boundEvents.windowBeforePrint = () => {
-        eventBus.dispatch("beforeprint", {
-            source: window
-        });
+      eventBus.dispatch("beforeprint", {
+        source: window
+      });
     };
 
     _boundEvents.windowAfterPrint = () => {
-        eventBus.dispatch("afterprint", {
-            source: window
-        });
+      eventBus.dispatch("afterprint", {
+        source: window
+      });
     };
 
     _boundEvents.windowUpdateFromSandbox = event => {
-        eventBus.dispatch("updatefromsandbox", {
-            source: window,
-            detail: event.detail
-        });
+      eventBus.dispatch("updatefromsandbox", {
+        source: window,
+        detail: event.detail
+      });
     };
 
     window.addEventListener("visibilitychange", webViewerVisibilityChange);
@@ -4228,13 +4213,11 @@ class EventBus {
   dispatch(eventName) {
     const eventListeners = this._listeners[eventName];
 
-    const args = Array.prototype.slice.call(arguments, 1);
-    console.log("PDF EVENT BUS", eventName, args);
-
     if (!eventListeners || eventListeners.length === 0) {
       return;
     }
 
+    const args = Array.prototype.slice.call(arguments, 1);
     let externalListeners;
     eventListeners.slice(0).forEach(({
       listener,
@@ -10030,7 +10013,7 @@ class BaseViewer {
       throw new Error("Cannot initialize BaseViewer.");
     }
 
-    const viewerVersion = '2.8.7';
+    const viewerVersion = '2.8.18';
 
     if (_pdfjsLib.version !== viewerVersion) {
       throw new Error(`The API version "${_pdfjsLib.version}" does not match the Viewer version "${viewerVersion}".`);
@@ -14857,7 +14840,7 @@ _app.PDFPrintServiceFactory.instance = {
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -14870,14 +14853,14 @@ _app.PDFPrintServiceFactory.instance = {
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/
+/******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+/******/ 	
 /************************************************************************/
 /******/ 	// startup
 /******/ 	// Load entry module
