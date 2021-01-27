@@ -87,12 +87,7 @@ export function* init() {
         const pathname = path.normalize(`${folderPath}/${url}`);
 
         callback(pathname);
-    }, (err) => {
-        if (err) {
-            debug("ERROR registerFileProtocol pdf webview", err);
-        }
     });
-
 }
 
 function* closeProcess() {

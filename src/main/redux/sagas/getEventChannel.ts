@@ -93,12 +93,19 @@ export function getShutdownEventChannel() {
 
 export const ODPS_AUTH_SCHEME = "opds";
 
+interface TregisterHttpProtocolHandler {
+    request: Electron.ProtocolRequest;
+    callback: (response: Electron.ProtocolResponse) => void;
+}
+
 export function getOpdsRequestCustomProtocolEventChannel() {
 
-    const channel = eventChannel<Electron.Request>(
+    const channel = eventChannel<TregisterHttpProtocolHandler>(
         (emit) => {
-
-            const handler = (req: Electron.Request) => emit(req);
+            const handler = (
+                request: Electron.ProtocolRequest,
+                callback: (response: Electron.ProtocolResponse) => void,
+            ) => emit({ request, callback });
             protocol.registerHttpProtocol(ODPS_AUTH_SCHEME, handler);
 
             return () => {
