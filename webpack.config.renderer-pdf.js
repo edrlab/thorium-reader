@@ -186,38 +186,6 @@ let config = Object.assign(
 
                 excludeAssets: null,
             }),
-            // new HtmlWebpackPlugin({
-            //     template: "./src/renderer/reader/pdf/webview/index_pdf.ejs",
-            //     filename: "index_pdf.html",
-            // }),
-            // new CopyWebpackPlugin({ patterns: [
-            //     {
-            //         from: path.join(
-            //             __dirname,
-            //             "src",
-            //             "renderer",
-            //             "reader",
-            //             "pdf",
-            //             "webview",
-            //             "index_pdf.ejs",
-            //         ),
-            //         to: "./index_pdf.html",
-            //         toType: "file",
-            //     },
-            // ]}),
-            // new CopyWebpackPlugin({ patterns: [
-            //     {
-            //         from: path.join(
-            //             __dirname,
-            //             "node_modules",
-            //             "pdfjs-dist",
-            //             "build",
-            //             nodeEnv === "production" ? "pdf.worker.min.js" : "pdf.worker.js",
-            //         ),
-            //         to: "./index_pdf.worker.js",
-            //         toType: "file",
-            //     },
-            // ]}),
             preprocessorDirectives.definePlugin,
         ],
     }

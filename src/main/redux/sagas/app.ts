@@ -70,8 +70,6 @@ export function* init() {
         debug("#####");
     });
 
-    /// PDF
-
     // const sessionPDFWebview = session.fromPartition("persist:pdfjsreader");
     // const protocolFromPDFWebview = sessionPDFWebview.protocol;
     protocol.registerFileProtocol("pdfjs", async (request, callback) => {
@@ -88,6 +86,17 @@ export function* init() {
 
         callback(pathname);
     });
+
+    protocol.registerFileProtocol("pdfjs-extract", async (request, callback) => {
+
+        debug("register file protocol pdfjs-extract");
+        debug("request", request);
+        const p = request.url.split("pdfjs-extract://")[1];
+        debug(p);
+
+        callback(p);
+    });
+
 }
 
 function* closeProcess() {

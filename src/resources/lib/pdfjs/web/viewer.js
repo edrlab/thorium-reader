@@ -48,8 +48,8 @@ var _app_options = __webpack_require__(1);
 
 var _app = __webpack_require__(3);
 
-const pdfjsVersion = '2.8.7';
-const pdfjsBuild = 'cae6fbff1';
+const pdfjsVersion = '2.8.18';
+const pdfjsBuild = '1d017b3b4';
 window.PDFViewerApplication = _app.PDFViewerApplication;
 window.PDFViewerApplicationOptions = _app_options.AppOptions;
 ;
@@ -2384,6 +2384,45 @@ const PDFViewerApplication = {
 
       eventBus._on("pagechanging", _boundEvents.reportPageStatsPDFBug);
     }
+
+    const pageRenderedExtract = async ev => {
+      try {
+        if (ev.pageNumber === 1) {
+          const page = ev.source;
+
+          if (!page || !page.canvas) {
+            throw Error("PDF PAGE CANVAS??!");
+          }
+
+          const blob = await new Promise((res, _rej) => {
+            page.canvas.toBlob(blob => {
+              res(blob);
+            }, "image/png", 0.95);
+          });
+          const img = await blob.arrayBuffer();
+          const doc = page?.annotationLayerFactory?.pdfDocument;
+          const metadata = await doc.getMetadata();
+          const numberofpages = doc?.numPages;
+          const numberOfPagesChecked = typeof numberofpages === "number" ? numberofpages : 0;
+          const data = { ...metadata,
+            img,
+            numberofpages: numberOfPagesChecked
+          };
+          const ipc = window.electronIpcRenderer;
+
+          if (ipc) {
+            ipc.send("pdfjs-extract-data", data);
+          }
+
+          eventBus._off("pagerendered", pageRenderedExtract);
+        }
+      } catch (e) {
+        console.log("ERROR TO EXTRACT COVER AND METADATA FROM PDF");
+        console.log("ERROR", e);
+      }
+    };
+
+    eventBus._on("pagerendered", pageRenderedExtract);
   },
 
   bindWindowEvents() {
@@ -9974,7 +10013,7 @@ class BaseViewer {
       throw new Error("Cannot initialize BaseViewer.");
     }
 
-    const viewerVersion = '2.8.7';
+    const viewerVersion = '2.8.18';
 
     if (_pdfjsLib.version !== viewerVersion) {
       throw new Error(`The API version "${_pdfjsLib.version}" does not match the Viewer version "${viewerVersion}".`);
