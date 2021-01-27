@@ -47,10 +47,6 @@ export function* init() {
     //     setTimeout(() => app.exit(0), 2000);
     // });
 
-    app.on("accessibility-support-changed", (_ev, accessibilitySupportEnabled) => {
-        debug(`accessibilitySupportEnabled: ${accessibilitySupportEnabled}`);
-    });
-
     yield call(() => app.whenReady());
 
     debug("Main app ready");
