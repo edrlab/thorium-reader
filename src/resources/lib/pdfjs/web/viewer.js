@@ -20,9 +20,6 @@
  * Javascript code in this page
  */
 
-
-
-
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ([
@@ -867,7 +864,6 @@ const PDFViewerApplication = {
       isInAutomation: this.externalServices.isInAutomation
     });
     this.eventBus = eventBus;
-    window.eventBus = eventBus;
     this.overlayManager = new _overlay_manager.OverlayManager();
     const pdfRenderingQueue = new _pdf_rendering_queue.PDFRenderingQueue();
     pdfRenderingQueue.onIdle = this.cleanup.bind(this);
@@ -2389,58 +2385,49 @@ const PDFViewerApplication = {
       eventBus._on("pagechanging", _boundEvents.reportPageStatsPDFBug);
     }
 
+      //// /////// /// // // //// / // // / // / // // / / // /
+      //// /////// /// // // //// / // // / // / // // / / // /
+      //// /////// /// // // //// / // // / // / // // / / // /
+      //// /////// /// // // //// / // // / // / // // / / // /
+      //// /////// /// // // //// / // // / // / // // / / // /
+      //// /////// /// // // //// / // // / // / // // / / // /
 
-    //// /////// /// // // //// / // // / // / // // / / // /
-    //// /////// /// // // //// / // // / // / // // / / // /
-    //// /////// /// // // //// / // // / // / // // / / // /
-    //// /////// /// // // //// / // // / // / // // / / // /
-    //// /////// /// // // //// / // // / // / // // / / // /
-    //// /////// /// // // //// / // // / // / // // / / // /
-
-    const pageRenderedExtract = async (ev) =>  {
-
-
-        if (ev.pageNumber === 1) {
-
-                const filter = { urls: ["*://*/*"] };
+      const pageRenderedExtract = async (ev) => {
 
 
-                const page = ev.source;
+          try {
 
-                const img = page?.canvas?.toDataURL("image/png");
+              if (ev.pageNumber === 1) {
 
-                const doc = page?.annotationLayerFactory?.pdfDocument;
+                  const page = ev.source;
+                  const img = page?.canvas?.toDataURL("image/png");
+                  const doc = page?.annotationLayerFactory?.pdfDocument;
+                  const metadata = await doc.getMetadata();
+                  const numberofpages = doc?.numPages;
+                  const numberOfPagesChecked = typeof numberofpages === "number" ? numberofpages : 0;
 
-                const metadata = await doc.getMetadata();
+                  const data = {
+                      ...metadata,
+                      img,
+                      numberofpages: numberOfPagesChecked,
+                  };
 
-                const numberofpages = doc?.numPages;
-                const numberOfPagesChecked = typeof numberofpages === "number" ? numberofpages : 0;
+                  const str = JSON.stringify(data);
 
-                const data = {
-                    ...metadata,
-                    img,
-                    numberofpages: numberOfPagesChecked,
-                };
+                  const ipc = require('electron').ipcRenderer;
+                  ipc.send("pdfjs-extract-data", str);
 
-                console.log("#$%#$%");
-                console.log(data);
+                  eventBus._off("pagerendered", pageRenderedExtract);
+              }
+          } catch (e) {
+              console.log("ERROR TO EXTRACT COVER AND METADATA FROM PDF");
+              console.log("ERROR", e);
+          }
 
-                const str = JSON.stringify(data);
-
-                // fetch("pdfjs-extract-data://data", {
-                //     method: "POST",
-                //     body: str,
-                // });
-
-                const ipc = require('electron').ipcRenderer;
-                ipc.send("pdfjs-extract-data", str);
-
-                eventBus._off("pagerendered", pageRenderedExtract);
-            }
-        }
+      }
 
 
-        eventBus._on("pagerendered", pageRenderedExtract);
+      eventBus._on("pagerendered", pageRenderedExtract);
 
         //// /////// /// // // //// / // // / // / // // / / // /
         //// /////// /// // // //// / // // / // / // // / / // /

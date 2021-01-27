@@ -25,7 +25,6 @@ export async function pdfPackager(pdfPath: string): Promise<string> {
     debug("pdf packager", pdfPath);
 
     // lauch a browser window to extract pdf metadata and cover
-    // let's reject parsing error .. it's a fatal error on pdf import
     const [info, pngBuffer] = await extractPDFData(pdfPath);
 
     const manifest = await pdfManifest(pdfPath, info);
