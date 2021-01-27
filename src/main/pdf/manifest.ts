@@ -17,9 +17,6 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { IInfo } from "./extract.type";
 
-// https://github.com/mozilla/pdf.js/tree/master/examples/node
-// import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
-
 // Logger
 const _filename = "readium-desktop:main/pdf/manifest";
 const debug = debug_(_filename);
