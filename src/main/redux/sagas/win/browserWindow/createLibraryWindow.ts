@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { BrowserWindow, Event, Menu, shell } from "electron";
+import { BrowserWindow, Event, shell } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -19,6 +19,8 @@ import {
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { put } from "redux-saga/effects";
+
+import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
@@ -54,47 +56,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
     if (IS_DEV) {
         const wc = libWindow.webContents;
-        wc.on("context-menu", (_ev, params) => {
-            const { x, y } = params;
-            const openDevToolsAndInspect = () => {
-                const devToolsOpened = () => {
-                    wc.off("devtools-opened", devToolsOpened);
-                    wc.inspectElement(x, y);
-
-                    setTimeout(() => {
-                        if (wc.isDevToolsOpened() && wc.devToolsWebContents) {
-                            wc.devToolsWebContents.focus();
-                        }
-                    }, 500);
-                };
-                wc.on("devtools-opened", devToolsOpened);
-                wc.openDevTools({ activate: true, mode: "detach" });
-            };
-            Menu.buildFromTemplate([{
-                click: () => {
-                    const wasOpened = wc.isDevToolsOpened();
-                    if (!wasOpened) {
-                        openDevToolsAndInspect();
-                    } else {
-                        if (!wc.isDevToolsFocused()) {
-                            // wc.toggleDevTools();
-                            wc.closeDevTools();
-
-                            setImmediate(() => {
-                                openDevToolsAndInspect();
-                            });
-                        } else {
-                            // right-click context menu normally occurs when focus
-                            // is in BrowserWindow / WebView's WebContents,
-                            // but some platforms (e.g. MacOS) allow mouse interaction
-                            // when the window is in the background.
-                            wc.inspectElement(x, y);
-                        }
-                    }
-                },
-                label: "Inspect element",
-            }]).popup({window: libWindow});
-        });
+        contextMenuSetup(wc, wc.id);
 
         libWindow.webContents.on("did-finish-load", () => {
             const {
