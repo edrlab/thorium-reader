@@ -83,7 +83,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         // if (lcp && lcp.r2LCPBase64) {
         //     const r2LCPStr = Buffer.from(lcp.r2LCPBase64, "base64").toString("utf-8");
         //     const r2LCPJson = JSON.parse(r2LCPStr);
-        //     const r2LCP = TaJsonDeserialize<LCP>(r2LCPJson, LCP);
+        //     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
         //     r2LCP.JsonSource = r2LCPStr;
 
         //     console.log(r2LCP.User.Name);

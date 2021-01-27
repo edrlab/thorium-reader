@@ -13,7 +13,6 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
 import DeletePublicationConfirm from "./DeletePublicationConfirm";
 import FileImport from "./FileImport";
-import Information from "./Information";
 import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 import RenewLsdConfirm from "./RenewLsdConfirm";
@@ -52,7 +51,6 @@ class DialogManager extends React.Component<IProps, undefined> {
                 <LcpAuthentication></LcpAuthentication>
                 <RenewLsdConfirm></RenewLsdConfirm>
                 <ReturnLsdConfirm></ReturnLsdConfirm>
-                <Information></Information>
                 <PublicationInfo></PublicationInfo>
             </>
         );

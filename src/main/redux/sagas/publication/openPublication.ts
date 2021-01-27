@@ -109,6 +109,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                     yield put(lcpActions.userKeyCheckRequest.build(
                         publicationView,
                         publicationView.lcp.textHint,
+                        publicationView.lcp.urlHint,
                         message,
                     ));
 
@@ -189,6 +190,9 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                     yield put(lcpActions.userKeyCheckRequest.build(
                         publicationView,
                         r2Publication.LCP.Encryption.UserKey.TextHint,
+                        {
+                            href: r2Publication.LCP?.Links?.find((l) => l.Rel === "hint")?.Href,
+                        },
                         message,
                     ));
 

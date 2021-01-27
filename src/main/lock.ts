@@ -26,8 +26,18 @@ export function lockInstance() {
             app.on("open-url", (event, url) => {
                 event.preventDefault();
 
+                // ex:
+                // thorium:https://api.archivelab.org/books/letters_to_friend_2004_librivox/opds_audio_manifest
+
+                // doesn't works in dev mode
+                debug("#####");
+                debug("OPEN URL", url);
+                debug("#####");
+
                 url = url.split("thorium:")[1];
                 if (url) {
+
+                    debug("open url", url);
                     const openUrlChannel = getOpenUrlFromMacEventChannel();
                     openUrlChannel.put(url);
                 }
@@ -35,6 +45,10 @@ export function lockInstance() {
 
             app.on("open-file", async (event, filePath) => {
                 event.preventDefault();
+
+                debug("#####");
+                debug("OPEN FILE", filePath);
+                debug("#####");
 
                 // if (!await openFileFromCli(filePath)) {
                     // debug(`the open-file event with ${filePath} return an error`);
@@ -49,6 +63,11 @@ export function lockInstance() {
 
         // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
         app.on("second-instance", (_e, argv, _workingDir) => {
+
+            debug("#####");
+            debug("Someone tried to run a second instance, we should focus our window", argv);
+            debug("#####");
+
             // Someone tried to run a second instance, we should focus our window.
             debug("comandLine", argv, _workingDir);
 

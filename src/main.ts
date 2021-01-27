@@ -61,12 +61,12 @@ setLcpNativePluginPath(lcpNativePluginPath);
 //     process.exit();
 // });
 
+// protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions
+initSessions();
+
 export const main = async (flushSession: boolean = false): Promise<Store<RootState>> => {
 
     debug("main fct");
-
-    // protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions
-    initSessions();
 
     app.allowRendererProcessReuse = true;
 

@@ -157,6 +157,18 @@ let config = Object.assign(
             ]}),
             new CopyWebpackPlugin({ patterns: [
                 {
+                    from: path.join(
+                        __dirname,
+                        "src",
+                        "resources",
+                        "lib",
+                        "pdfjs",
+                    ),
+                    to: "assets/lib/pdfjs",
+                },
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
+                {
                     from: path.join(__dirname, "external-assets"),
                     to: "external-assets",
                 },
@@ -193,6 +205,10 @@ let config = Object.assign(
 config.plugins.push(
     new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })
 ); // jsondown (runtimejs, fatfs)
+
+config.plugins.push(
+    new webpack.IgnorePlugin({ resourceRegExp: /^canvas$/ })
+); // pdfjs
 
 if (!checkTypeScriptSkip) {
     config.plugins.push(new ForkTsCheckerWebpackPlugin({

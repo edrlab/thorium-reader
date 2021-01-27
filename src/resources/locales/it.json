@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Continua ad ascoltare",
             "continueReadingDivina": "Continua divina",
             "continueReadingPdf": "",
-            "lastAdditions": "Aggiunti di recente",
-            "lastAdditionsAudioBooks": "Audiobooks aggiunti di recente",
-            "lastAdditionsDivina": "Divina aggiunti di recente",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Aggiunti di recente"
         },
         "export": "Esporta",
         "lang": "Lingua",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Estensioni supportate:",
         "numberOfPages": "Numero di pagine",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Da",
                 "availableState": {
@@ -139,7 +140,8 @@
             "hint": "(Suggerimento : {{hint}})",
             "password": "Passphrase",
             "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta: ",
-            "submit": "Invia"
+            "submit": "Invia",
+            "urlHint": ""
         }
     },
     "message": {
@@ -249,6 +251,8 @@
         "navigation": {
             "backHomeTitle": "ritorna alla libreria",
             "bookmarkTitle": "segnalibro",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "Separa la finestra",
             "fullscreenTitle": "attiva modalità schermo intero",
             "goTo": "Vai a",
@@ -258,6 +262,7 @@
             "infoTitle": "informazione",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navigazione",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "esci dalla modalità schermo intero",
             "readBookTitle": "inizia a leggere il libro",
             "settingsTitle": "impostazioni"
@@ -294,6 +299,7 @@
             "letterSpacing": "Spaziatura lettere",
             "lineSpacing": "Spaziatura linee",
             "margin": "Margine",
+            "noFootnotes": "",
             "paginated": "Impaginato",
             "paraSpacing": "",
             "pdfZoom": {
@@ -309,6 +315,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "salva",
                 "reset": "ripristina",
@@ -345,6 +352,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annulla",

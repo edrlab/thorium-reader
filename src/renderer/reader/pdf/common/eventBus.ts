@@ -5,12 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-// import * as assert from "assert";
 import * as debug_ from "debug";
 
 const debug = debug_("readium-desktop:utils/eventBus");
 
-type TCallBack<Param = any, Ret = any> = (...a: Param[]) => Ret;
+type TCallBack<Param = any, Ret = any> = (...b: Param[]) => Ret;
 
 export interface IEventBus {
     subscribe: (key: any, fn: TCallBack) => void;
@@ -45,16 +44,7 @@ export function eventBus(
     });
 
     const subscribe = <TKey extends string, TFn extends TCallBack>(key: TKey, fn: TFn) => {
-        if (event[key]) {
-            const set = event[key];
-            set.add(fn);
-
-        } else {
-            const set = new Set<TCallBack>();
-            set.add(fn);
-            event[key] = set;
-
-        }
+        event[key] = (event[key] || new Set<TCallBack>()).add(fn);
     };
 
     const dispatch = tx;

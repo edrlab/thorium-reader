@@ -31,13 +31,13 @@ import fontList from "readium-desktop/utils/fontList";
 
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
+import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import optionsValues, { IReaderOptionsProps, TdivinaReadingMode } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
-import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
@@ -79,14 +79,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.handleChooseTheme = this.handleChooseTheme.bind(this);
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(oldProps: IProps) {
 
-        if (this.props.pdfEventBus) {
+        if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
 
             this.props.pdfEventBus.subscribe("scale", this.setScale);
             this.props.pdfEventBus.subscribe("view", this.setView);
             this.props.pdfEventBus.subscribe("column", this.setCol);
-
         }
     }
 
@@ -157,10 +156,6 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 {
                     title: __("reader.settings.spacing"),
                     content: this.spacingContent(),
-                },
-                {
-                    title: "MathML",
-                    content: this.mathJax(),
                 },
                 {
                     title: __("reader.media-overlays.title"),
@@ -272,22 +267,6 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         </>);
     }
 
-    private mathJax() {
-
-        const { readerConfig } = this.props;
-        return (
-            <div className={styles.mathml_section}>
-                <input
-                    id="mathJaxCheckBox"
-                    type="checkbox"
-                    checked={readerConfig.enableMathJax}
-                    onChange={() => this.toggleMathJax()}
-                />
-                <label htmlFor="mathJaxCheckBox">MathJax</label>
-            </div>
-        );
-    }
-
     private divinaSetReadingMode() {
 
         return (
@@ -376,27 +355,30 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         const { __ } = this.props;
 
-        const inputComponent = (scale: IPdfPlayerScale) => {
-
+        const inputComponent = (scale: IPdfPlayerScale, disabled: boolean = false) => {
             return <div>
                     <input
-                        id={"radio-" + scale}
+                        id={"radio-" + `${scale}`}
                         type="radio"
-                        name={scale}
+                        name={`${scale}`}
                         onChange={() => this.props.pdfEventBus.dispatch("scale", scale)}
                         checked={this.state.pdfScale === scale}
+                        disabled={disabled}
                     />
-                    <label htmlFor={"radio-" + scale}>
+                    <label
+                        aria-disabled={disabled}
+                        htmlFor={"radio-" + `${scale}`}
+                    >
                         {this.state.pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
                         {
-                        scale === "50" ? __("reader.settings.pdfZoom.name.50pct") :
-                        (scale === "100" ? __("reader.settings.pdfZoom.name.100pct") :
-                        (scale === "150" ? __("reader.settings.pdfZoom.name.150pct") :
-                        (scale === "200" ? __("reader.settings.pdfZoom.name.200pct") :
-                        (scale === "300" ? __("reader.settings.pdfZoom.name.300pct") :
-                        (scale === "500" ? __("reader.settings.pdfZoom.name.500pct") :
-                        (scale === "fit" ? __("reader.settings.pdfZoom.name.fit") :
-                        (scale === "width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
+                        scale === 50 ? __("reader.settings.pdfZoom.name.50pct") :
+                        (scale === 100 ? __("reader.settings.pdfZoom.name.100pct") :
+                        (scale === 150 ? __("reader.settings.pdfZoom.name.150pct") :
+                        (scale === 200 ? __("reader.settings.pdfZoom.name.200pct") :
+                        (scale === 300 ? __("reader.settings.pdfZoom.name.300pct") :
+                        (scale === 500 ? __("reader.settings.pdfZoom.name.500pct") :
+                        (scale === "page-fit" ? __("reader.settings.pdfZoom.name.fit") :
+                        (scale === "page-width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
                         // --("reader.settings.pdfZoom.name." + scale as any)
                         }
                     </label>
@@ -406,14 +388,14 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         return (
             <div id={styles.themes_list}>
-                {inputComponent("fit")}
-                {inputComponent("width")}
-                {inputComponent("50")}
-                {inputComponent("100")}
-                {inputComponent("150")}
-                {inputComponent("200")}
-                {inputComponent("300")}
-                {inputComponent("500")}
+                {inputComponent("page-fit")}
+                {inputComponent("page-width", this.state.pdfView === "paginated")}
+                {inputComponent(50, this.state.pdfView === "paginated")}
+                {inputComponent(100, this.state.pdfView === "paginated")}
+                {inputComponent(150, this.state.pdfView === "paginated")}
+                {inputComponent(200, this.state.pdfView === "paginated")}
+                {inputComponent(300, this.state.pdfView === "paginated")}
+                {inputComponent(500, this.state.pdfView === "paginated")}
             </div>
         );
     }
@@ -606,31 +588,35 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
                 <div className={styles.center_in_tab}>
-                    <div className={styles.focus_element}>
-                        <input
-                            id={"radio-" + styles.option_colonne}
-                            type="radio"
-                            name="column"
-                            {...(!readerConfig.paged && { disabled: true })}
-                            onChange={(e) => isPdf
-                                ? this.props.pdfEventBus.dispatch("column", "auto")
-                                : this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
-                            checked={isPdf
-                                ? this.state.pdfCol === "auto"
-                                : readerConfig.colCount === colCountEnum.auto}
-                        />
-                        <label
-                            htmlFor={"radio-" + styles.option_colonne}
-                            className={isPdf
-                                ? this.getButtonClassNamePdf(this.state.pdfCol === "auto")
-                                : this.getButtonClassName("colCount",
-                                    !readerConfig.paged ? null : colCountEnum.auto,
-                                    !readerConfig.paged && styles.disable)}
-                        >
-                            <SVG svg={AutoIcon} />
-                            {__("reader.settings.column.auto")}
-                        </label>
-                    </div>
+                    {
+                        isPdf
+                            ? <></>
+                            : <div className={styles.focus_element}>
+                                <input
+                                    id={"radio-" + styles.option_colonne}
+                                    type="radio"
+                                    name="column"
+                                    {...(!readerConfig.paged && { disabled: true })}
+                                    onChange={(e) => isPdf
+                                        ? this.props.pdfEventBus.dispatch("column", "auto")
+                                        : this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
+                                    checked={isPdf
+                                        ? this.state.pdfCol === "auto"
+                                        : readerConfig.colCount === colCountEnum.auto}
+                                />
+                                <label
+                                    htmlFor={"radio-" + styles.option_colonne}
+                                    className={isPdf
+                                        ? this.getButtonClassNamePdf(this.state.pdfCol === "auto")
+                                        : this.getButtonClassName("colCount",
+                                            !readerConfig.paged ? null : colCountEnum.auto,
+                                            !readerConfig.paged && styles.disable)}
+                                >
+                                    <SVG svg={AutoIcon} />
+                                    {__("reader.settings.column.auto")}
+                                </label>
+                            </div>
+                    }
                     <div className={styles.focus_element}>
                         <input
                             {...(!readerConfig.paged && { disabled: true })}
@@ -682,6 +668,36 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             {__("reader.settings.column.two")}
                         </label>
                     </div>
+                </div>
+            </section>
+            <section className={styles.line_tab_content} hidden={this.props.isPdf}>
+                <div className={styles.mathml_section}>
+                    <input
+                        id="mathJaxCheckBox"
+                        type="checkbox"
+                        checked={readerConfig.enableMathJax}
+                        onChange={() => this.toggleMathJax()}
+                    />
+                    <label htmlFor="mathJaxCheckBox">MathJax</label>
+                </div>
+                <div className={styles.mathml_section}>
+                    <input
+                        id="reduceMotionCheckBox"
+                        type="checkbox"
+                        checked={readerConfig.reduceMotion}
+                        onChange={() => this.toggleReduceMotion()}
+                    />
+                    <label htmlFor="reduceMotionCheckBox">{__("reader.settings.reduceMotion")}</label>
+                </div>
+
+                <div className={styles.mathml_section}>
+                    <input
+                        id="noFootnotesCheckBox"
+                        type="checkbox"
+                        checked={readerConfig.noFootnotes}
+                        onChange={() => this.toggleNoFootnotes()}
+                    />
+                    <label htmlFor="noFootnotesCheckBox">{__("reader.settings.noFootnotes")}</label>
                 </div>
             </section>
         </>;
@@ -818,6 +834,22 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     //     readerConfig.ttsEnableOverlayMode = !readerConfig.ttsEnableOverlayMode;
     //     this.props.setSettings(readerConfig);
     // }
+
+    private toggleReduceMotion() {
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
+        readerConfig.reduceMotion = !readerConfig.reduceMotion;
+        this.props.setSettings(readerConfig);
+    }
+
+    private toggleNoFootnotes() {
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
+        readerConfig.noFootnotes = !readerConfig.noFootnotes;
+        this.props.setSettings(readerConfig);
+    }
 
     private toggleMathJax() {
         // TODO: smarter clone?

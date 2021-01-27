@@ -116,6 +116,7 @@ export interface IReaderMenuProps {
     focusMainAreaLandmarkAndCloseMenu: () => void;
     pdfToc: TToc;
     isPdf: boolean;
+    pdfNumberOfPages: number;
 
     openedSection: number | undefined;
 }

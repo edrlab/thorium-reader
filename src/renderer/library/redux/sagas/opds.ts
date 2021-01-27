@@ -17,7 +17,7 @@ import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/rou
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType } from "readium-desktop/utils/contentType";
 import { call, put, take } from "redux-saga/effects";
 import { delay } from "typed-redux-saga";
 

@@ -46,7 +46,6 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-// import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
@@ -70,14 +69,12 @@ import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
-import { pdfMountWebview } from "../pdf/driver";
+import { pdfMountAndReturnBus } from "../pdf/driver";
 import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
-
-// import { isDeepStrictEqual } from "util";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -119,17 +116,12 @@ interface IState {
     divinaNumberOfPages: number;
 
     pdfPlayerBusEvent: IEventBusPdfPlayer;
-    pdfPlayerToc: TToc;
+    pdfPlayerToc: TToc | undefined;
+    pdfPlayerNumberOfPages: number | undefined;
 
     openedSectionSettings: number | undefined;
     openedSectionMenu: number | undefined;
 }
-
-// import { debounce } from "debounce";
-// const handleTTSPlayRaw = (that: Reader) => {
-//     that.handleTTSPlay_();
-// };
-// const handleTTSPlayDebounced = debounce(handleTTSPlayRaw, 500);
 
 class Reader extends React.Component<IProps, IState> {
 
@@ -198,6 +190,7 @@ class Reader extends React.Component<IProps, IState> {
 
             pdfPlayerBusEvent: undefined,
             pdfPlayerToc: undefined,
+            pdfPlayerNumberOfPages: undefined,
 
             openedSectionSettings: undefined,
             openedSectionMenu: undefined,
@@ -227,6 +220,7 @@ class Reader extends React.Component<IProps, IState> {
         this.handleMediaOverlaysPlaybackRate = this.handleMediaOverlaysPlaybackRate.bind(this);
 
         this.showSearchResults = this.showSearchResults.bind(this);
+        this.onKeyboardShowGotoPage = this.onKeyboardShowGotoPage.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -264,24 +258,35 @@ class Reader extends React.Component<IProps, IState> {
             if (this.state.pdfPlayerBusEvent) {
 
                 this.state.pdfPlayerBusEvent.subscribe("page",
-                    (pageIndex: number) => {
-                        const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
+                    (pageIndex) => {
+                        // const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
                         const loc = {
                             locator: {
                                 href: pageIndex.toString(),
                                 locations: {
                                     position: pageIndex,
-                                    progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
+                                    // progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
+                                    progression: 0,
                                 },
                             },
                         };
                         console.log("pdf pageChange", pageIndex);
-                        this.handleReadingLocationChange(loc as LocatorExtended);
+
+                        // TODO: this is a hack! Forcing type LocatorExtended on this non-matching object shape
+                        // only "works" because data going into the persistent store (see saveReadingLocation())
+                        // is used appropriately and selectively when extracted back out ...
+                        // however this may trip / crash future code
+                        // if strict LocatorExtended model structure is expected when
+                        // reading from the persistence layer.
+                        this.handleReadingLocationChange(loc as unknown as LocatorExtended);
                     });
 
-                const index = parseInt(this.props.locator?.locator?.href, 10) || 1;
-                console.log("pdf page index", index);
-                this.state.pdfPlayerBusEvent.dispatch("page", index);
+                const page = this.props.locator?.locator?.href || "";
+                console.log("pdf page index", page);
+
+                this.state.pdfPlayerBusEvent.subscribe("ready", () => {
+                    this.state.pdfPlayerBusEvent.dispatch("page", page);
+                });
 
             } else {
                 console.log("pdf bus event undefined");
@@ -349,11 +354,6 @@ class Reader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
-
-        if (oldState.pdfPlayerBusEvent !== this.state.pdfPlayerBusEvent) {
-            this.state.pdfPlayerBusEvent.dispatch("ready");
-        }
-
     }
 
     public componentWillUnmount() {
@@ -376,6 +376,7 @@ class Reader extends React.Component<IProps, IState> {
             pdfToc: this.state.pdfPlayerToc,
             isPdf: this.props.isPdf,
             openedSection: this.state.openedSectionMenu,
+            pdfNumberOfPages: this.state.pdfPlayerNumberOfPages,
         };
 
         const readerOptionsProps: IReaderOptionsProps = {
@@ -462,10 +463,16 @@ class Reader extends React.Component<IProps, IState> {
                         currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                         isDivina={this.props.isDivina}
                         isPdf={this.props.isPdf}
+                        pdfEventBus={this.state.pdfPlayerBusEvent}
                     />
                     <div className={classNames(styles.content_root,
-                        this.state.fullscreen ? styles.content_root_fullscreen : undefined)}>
-                        <PickerManager showSearchResults={this.showSearchResults}></PickerManager>
+                        this.state.fullscreen ? styles.content_root_fullscreen : undefined,
+                        this.props.isPdf ? styles.content_root_skip_bottom_spacing : undefined)}>
+                        <PickerManager
+                            showSearchResults={this.showSearchResults}
+                            pdfEventBus={this.state.pdfPlayerBusEvent}
+                            isPdf={this.props.isPdf}
+                        ></PickerManager>
                         <div className={styles.reader}>
                             <main
                                 id="main"
@@ -492,6 +499,8 @@ class Reader extends React.Component<IProps, IState> {
                 </div>
                 <ReaderFooter
                     navLeftOrRight={this.navLeftOrRight_.bind(this)}
+                    gotoBegin={this.onKeyboardNavigationToBegin.bind(this)}
+                    gotoEnd={this.onKeyboardNavigationToEnd.bind(this)}
                     fullscreen={this.state.fullscreen}
                     // tslint:disable-next-line: max-line-length
                     currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
@@ -558,6 +567,15 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigateToBegin,
+            this.onKeyboardNavigationToBegin);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.NavigateToEnd,
+            this.onKeyboardNavigationToEnd);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusMain,
             this.onKeyboardFocusMain);
 
@@ -590,6 +608,11 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusReaderNavigation,
             this.onKeyboardFocusNav);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderGotoPage,
+            this.onKeyboardShowGotoPage);
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
@@ -626,6 +649,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardInfo);
         unregisterKeyboardListener(this.onKeyboardFocusSettings);
         unregisterKeyboardListener(this.onKeyboardFocusNav);
+        unregisterKeyboardListener(this.onKeyboardShowGotoPage);
         unregisterKeyboardListener(this.onKeyboardCloseReader);
         unregisterKeyboardListener(this.onKeyboardAudioPlayPause);
         unregisterKeyboardListener(this.onKeyboardAudioPrevious);
@@ -740,7 +764,7 @@ class Reader extends React.Component<IProps, IState> {
     private onKeyboardCloseReader = () => {
         // if (!this.state.shortcutEnable) {
         //     if (DEBUG_KEYBOARD) {
-        //         console.log("!shortcutEnable (onKeyboardInfo)");
+        //         console.log("!shortcutEnable (onKeyboardCloseReader)");
         //     }
         //     return;
         // }
@@ -833,6 +857,51 @@ class Reader extends React.Component<IProps, IState> {
 
     }
 
+    private onKeyboardNavigationToBegin = () => {
+
+        if (this.props.isPdf) {
+            this.state.pdfPlayerBusEvent?.dispatch("page", "1");
+        } else if (this.props.isDivina) {
+            this.currentDivinaPlayer.goToPageWithIndex(0);
+        } else {
+            if (this.props.r2Publication?.Spine) {
+                const firstSpine = this.props.r2Publication.Spine[0];
+                if (firstSpine?.Href) {
+                    handleLinkLocator({
+                        href: firstSpine.Href,
+                        locations: {
+                            progression: 0,
+                        },
+                    });
+                }
+            }
+        }
+    }
+    private onKeyboardNavigationToEnd = () => {
+
+        if (this.props.isPdf) {
+            if (this.state.pdfPlayerNumberOfPages) {
+                this.state.pdfPlayerBusEvent?.dispatch("page",
+                    this.state.pdfPlayerNumberOfPages.toString());
+            }
+        } else if (this.props.isDivina) {
+            // TODO: Divina total number of pages? (last page index (number))
+            // this.currentDivinaPlayer.goToPageWithIndex(index);
+        } else {
+            if (this.props.r2Publication?.Spine) {
+                const lastSpine = this.props.r2Publication.Spine[this.props.r2Publication.Spine.length - 1];
+                if (lastSpine?.Href) {
+                    handleLinkLocator({
+                        href: lastSpine.Href,
+                        locations: {
+                            progression: 0.95, // because 1 (100%) tends to trip blankspace css columns :(
+                        },
+                    });
+                }
+            }
+        }
+    }
+
     private onKeyboardSpineNavigationNext = () => {
         this.onKeyboardSpineNavigationPreviousNext(false);
     }
@@ -882,8 +951,13 @@ class Reader extends React.Component<IProps, IState> {
             },
         };
         console.log("pageChange", pageIndex, nbOfPages);
-        this.handleReadingLocationChange(loc as LocatorExtended);
 
+        // TODO: this is a hack! Forcing type LocatorExtended on this non-matching object shape
+        // only "works" because data going into the persistent store (see saveReadingLocation())
+        // is used appropriately and selectively when extracted back out ...
+        // however this may trip / crash future code
+        // if strict LocatorExtended model structure is expected when reading from the persistence layer.
+        this.handleReadingLocationChange(loc as LocatorExtended);
     }
 
     private async loadPublicationIntoViewport() {
@@ -903,10 +977,6 @@ class Reader extends React.Component<IProps, IState> {
         if (this.props.isPdf) {
 
             const publicationViewport = this.mainElRef.current;
-            if (publicationViewport) {
-                // tslint:disable-next-line: max-line-length
-                publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow-y: scroll; overflow-x: scroll;");
-            }
 
             const readingOrder = this.props.r2Publication?.Spine;
             let pdfUrl = this.props.manifestUrlR2Protocol;
@@ -928,60 +998,70 @@ class Reader extends React.Component<IProps, IState> {
                         .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
                 };
 
-            const [pdfPlayerBusEvent, pdfPlayerToc] = await pdfMountWebview(
+            const pdfPlayerBusEvent = await pdfMountAndReturnBus(
                 pdfUrl,
                 publicationViewport,
-                clipboardInterceptor);
+            );
 
             this.setState({
-                pdfPlayerToc,
                 pdfPlayerBusEvent,
+            });
+            pdfPlayerBusEvent.subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
+            pdfPlayerBusEvent.subscribe("toc", (toc) => this.setState({pdfPlayerToc: toc}));
+            pdfPlayerBusEvent.subscribe("numberofpages", (pages) => this.setState({pdfPlayerNumberOfPages: pages}));
+
+            // previously loaded in driver.ts. @danielWeck do you think is it possible to execute it here ?
+            pdfPlayerBusEvent.subscribe("keydown", (payload) => {
+                keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
+            });
+            pdfPlayerBusEvent.subscribe("keyup", (payload) => {
+                keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
             });
 
             console.log("toc", this.state.pdfPlayerToc);
 
-            this.state.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
+            // this.state.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
 
-                console.log("pdfPlayer page changed", pageNumber);
-            });
+            //     console.log("pdfPlayer page changed", pageNumber);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("scale", (scale) => {
+            // this.state.pdfPlayerBusEvent.subscribe("scale", (scale) => {
 
-                console.log("pdfPlayer scale changed", scale);
-            });
+            //     console.log("pdfPlayer scale changed", scale);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("view", (view) => {
+            // this.state.pdfPlayerBusEvent.subscribe("view", (view) => {
 
-                console.log("pdfPlayer view changed", view);
-            });
+            //     console.log("pdfPlayer view changed", view);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("column", (column) => {
+            // this.state.pdfPlayerBusEvent.subscribe("column", (column) => {
 
-                console.log("pdfPlayer column changed", column);
-            });
+            //     console.log("pdfPlayer column changed", column);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("search", (search) => {
+            // this.state.pdfPlayerBusEvent.subscribe("search", (search) => {
 
-                console.log("pdfPlayer search word changed", search);
-            });
+            //     console.log("pdfPlayer search word changed", search);
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("search-next", () => {
+            // this.state.pdfPlayerBusEvent.subscribe("search-next", () => {
 
-                console.log("pdfPlayer highlight next search word executed");
-            });
+            //     console.log("pdfPlayer highlight next search word executed");
+            // });
 
-            this.state.pdfPlayerBusEvent.subscribe("search-previous", () => {
+            // this.state.pdfPlayerBusEvent.subscribe("search-previous", () => {
 
-                console.log("pdfPlayer highlight previous search word executed");
-            });
+            //     console.log("pdfPlayer highlight previous search word executed");
+            // });
 
-            /* master subscribe */
-            this.state.pdfPlayerBusEvent.subscribe("page-next", () => {
-                console.log("pdfPlayer next page requested");
-            });
-            this.state.pdfPlayerBusEvent.subscribe("page-previous", () => {
-                console.log("pdfPlayer previous page requested");
-            });
+            // /* master subscribe */
+            // this.state.pdfPlayerBusEvent.subscribe("page-next", () => {
+            //     console.log("pdfPlayer next page requested");
+            // });
+            // this.state.pdfPlayerBusEvent.subscribe("page-previous", () => {
+            //     console.log("pdfPlayer previous page requested");
+            // });
 
         } else if (this.props.isDivina) {
 
@@ -1118,8 +1198,18 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
+    private onKeyboardShowGotoPage() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowGotoPage)");
+            }
+            return;
+        }
+        this.handleMenuButtonClick(5); // "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
+    }
+
     private showSearchResults() {
-        this.handleMenuButtonClick(4); // "search" in ReaderMenu.tsx
+        this.handleMenuButtonClick(4); // "search" zero-based index in SectionData[] of ReaderMenu.tsx
     }
 
     private handleMenuButtonClick(openedSectionMenu?: number | undefined) {
@@ -1135,6 +1225,11 @@ class Reader extends React.Component<IProps, IState> {
         this.props.setLocator(loc);
     }
 
+    // TODO: WARNING, see code comments alongisde usage of this function for Divina and PDF
+    // (forced type despite different object shape / data model)
+    // See saveReadingLocation() => dispatch(readerLocalActionSetLocator.build(locator))
+    // See Reader RootState reader.locator (readerLocatorReducer merges the action data payload
+    // as-is, without type checking ... but consumers might expect strict LocatorExtended!)
     private handleReadingLocationChange(loc: LocatorExtended) {
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
@@ -1232,7 +1327,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
 
-            const index = parseInt(locator?.href, 10);
+            const index = locator?.href || "";
             if (index) {
                 this.state.pdfPlayerBusEvent?.dispatch("page", index);
             }
@@ -1261,7 +1356,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
 
-            const index = parseInt(url, 10);
+            const index = url;
             if (index) {
                 this.state.pdfPlayerBusEvent?.dispatch("page", index);
             }

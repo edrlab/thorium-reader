@@ -73,6 +73,44 @@
 
 /* ELEMENT */
 
+.opds_entry_ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: 50px;
+    list-style-type: none;
+    grid-column-gap: 50px;
+
+    & .flux_infos {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        text-decoration: none;
+        color: black;
+        & .flux_title {
+            font-weight: 600;
+        }
+        & span {
+            display: inline-block;
+        }
+        & .flux_subtitle {
+            font-size: 0.8rem;
+            margin-left:10px;
+            padding-right: 10px;
+        }
+        & .flux_image {
+            flex: 1;
+            max-width: 80%;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            & svg {
+                width:15px;
+            }
+        }
+    }
+}
+
 #flux_list {
 	width: calc(100% + 120px);
 	margin-left:-60px;

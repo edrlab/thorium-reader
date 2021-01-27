@@ -66,9 +66,9 @@ export class SideMenu extends React.Component<IProps, IState> {
                             if (el.scrollIntoView) {
                                 el.scrollIntoView();
                             }
-                            if (el.firstElementChild &&
-                                (el.firstElementChild as HTMLElement).focus) {
-                                (el.firstElementChild as HTMLElement).focus();
+                            const inputEl = el.querySelector("input") || el.querySelector("button");
+                            if (inputEl && inputEl.focus) {
+                                inputEl.focus();
                             }
                         }
                     }
@@ -109,7 +109,11 @@ export class SideMenu extends React.Component<IProps, IState> {
                                 disabled={section.disabled}
                                 skipMaxHeight={section.skipMaxHeight}
                             />
-                        : <li key={index}>
+                        : <li
+                            ref={ openedSection === index ?
+                                (this.currentOpenRef as any) :
+                                undefined}
+                            key={index}>
                             { section.content }
                         </li>,
                     )}

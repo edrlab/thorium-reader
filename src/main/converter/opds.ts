@@ -15,7 +15,7 @@ import {
 } from "readium-desktop/common/views/opds";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType } from "readium-desktop/utils/contentType";
 
 import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
@@ -46,6 +46,8 @@ const supportedFileTypeLinkArray = [
     ContentType.Epub,
     ContentType.Lcp,
     ContentType.AudioBook,
+    ContentType.webpub,
+    ContentType.webpubPacked,
     ContentType.Json,
     ContentType.JsonLd,
     ContentType.pdf,
@@ -320,6 +322,7 @@ export class OpdsFeedViewConverter {
         const entrylinkView = fallback(
             this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
                 type: "type=entry;profile=opds-catalog",
+                rel: "alternate",
             }),
             this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
                 type: ContentType.Opds2Pub,

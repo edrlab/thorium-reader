@@ -10,8 +10,6 @@ import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { KeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
-// import { NetState } from "readium-desktop/common/redux/states/net";
-// import { UpdateState } from "readium-desktop/common/redux/states/update";
 import { AppState } from "./app";
 import { ILcpState } from "./lcp";
 import { ISessionState } from "./session";

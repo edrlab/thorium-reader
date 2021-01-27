@@ -51,8 +51,6 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         sepia: settings.sepia,
 
-        noFootnotes: settings.noFootnotes,
-
         textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
             (settings.align === textAlignEnum.right ? textAlignEnum.right :
             (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
@@ -66,7 +64,9 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         mathJax: settings.enableMathJax,
 
-        reduceMotion: readiumCSSDefaults.reduceMotion,
+        reduceMotion: settings.reduceMotion,
+
+        noFootnotes: settings.noFootnotes,
     };
 
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };

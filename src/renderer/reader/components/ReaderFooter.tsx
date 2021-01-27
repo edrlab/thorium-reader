@@ -25,9 +25,24 @@ import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
+function throttle(callback: (...args: any) => void, limit: number) {
+    let waiting = false;
+    return function(this: any) {
+        if (!waiting) {
+            callback.apply(this, arguments);
+            waiting = true;
+            setTimeout(() => {
+                waiting = false;
+            }, limit);
+        }
+    };
+}
+
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
+    gotoBegin: () => void;
+    gotoEnd: () => void;
     fullscreen: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
@@ -62,6 +77,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         };
 
         this.handleMoreInfoClick = this.handleMoreInfoClick.bind(this);
+
+        this.navLeftOrRightThrottled = throttle(this.navLeftOrRightThrottled, 500).bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -91,13 +108,42 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         return (
             <div className={classNames(styles.reader_footer,
-                this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}>
+                this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}
+                onWheel={(ev) => {
+                    if (ev.deltaY > 0 || ev.deltaX < 0) {
+                        this.navLeftOrRightThrottled(true);
+                    } else if (ev.deltaY < 0 || ev.deltaX > 0) {
+                        this.navLeftOrRightThrottled(false);
+                    }
+                }}>
                 {!isAudioBook &&
                     <div className={styles.arrows}>
-                        <button onClick={() => this.props.navLeftOrRight(true)}>
+                        <button onClick={(ev) => {
+                            if (ev.shiftKey) {
+                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                if (isRTL) {
+                                    this.props.gotoEnd();
+                                } else {
+                                    this.props.gotoBegin();
+                                }
+                            } else {
+                                this.props.navLeftOrRight(true);
+                            }
+                        }}>
                             <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
                         </button>
-                        <button onClick={() => this.props.navLeftOrRight(false)}>
+                        <button onClick={(ev) => {
+                            if (ev.shiftKey) {
+                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                if (isRTL) {
+                                    this.props.gotoBegin();
+                                } else {
+                                    this.props.gotoEnd();
+                                }
+                            } else {
+                                this.props.navLeftOrRight(false);
+                            }
+                        }}>
                             <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
                         </button>
                     </div>
@@ -239,6 +285,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }
             </div>
         );
+    }
+
+    private navLeftOrRightThrottled(dir: boolean) {
+        this.props.navLeftOrRight(dir);
     }
 
     private getProgressionStyle(): React.CSSProperties {

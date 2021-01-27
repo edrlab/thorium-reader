@@ -57,15 +57,24 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             <Dialog open={true} close={closeDialog} id={styles.lcp_dialog}>
                 <div>
                     {
-                        this.props.message &&
-                        <p>
-                            <span>{this.props.message}</span>
-                        </p>
+                        typeof this.props.message === "string" ?
+                            <p>
+                                <span>{this.props.message}</span>
+                            </p>
+                            : <></>
                     }
                     <p>
                         {__("library.lcp.sentence")}
                         <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                     </p>
+                    {
+                        this.props.urlHint?.href
+                            ?
+                            <a href={this.props.urlHint.href}>
+                                {this.props.urlHint.title || __("library.lcp.urlHint")}
+                            </a>
+                            : <></>
+                    }
                     <form onSubmit={this.submit}>
                         <input
                             type="password"
