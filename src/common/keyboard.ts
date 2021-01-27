@@ -207,6 +207,19 @@ const _defaults_ = Object.freeze({
         key: "PageDown",
     }),
 
+    NavigateToBegin: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Home",
+    }),
+    NavigateToEnd: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "End",
+    }),
+
     AudioPlayPause: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,

@@ -41,6 +41,8 @@ function throttle(callback: (...args: any) => void, limit: number) {
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
+    gotoBegin: () => void;
+    gotoEnd: () => void;
     fullscreen: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
@@ -116,10 +118,32 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }}>
                 {!isAudioBook &&
                     <div className={styles.arrows}>
-                        <button onClick={() => this.props.navLeftOrRight(true)}>
+                        <button onClick={(ev) => {
+                            if (ev.shiftKey) {
+                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                if (isRTL) {
+                                    this.props.gotoEnd();
+                                } else {
+                                    this.props.gotoBegin();
+                                }
+                            } else {
+                                this.props.navLeftOrRight(true);
+                            }
+                        }}>
                             <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
                         </button>
-                        <button onClick={() => this.props.navLeftOrRight(false)}>
+                        <button onClick={(ev) => {
+                            if (ev.shiftKey) {
+                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                if (isRTL) {
+                                    this.props.gotoBegin();
+                                } else {
+                                    this.props.gotoEnd();
+                                }
+                            } else {
+                                this.props.navLeftOrRight(false);
+                            }
+                        }}>
                             <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
                         </button>
                     </div>
