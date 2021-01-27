@@ -50,8 +50,8 @@ Object.defineProperty(exports, "WorkerMessageHandler", ({
 
 var _worker = __w_pdfjs_require__(1);
 
-const pdfjsVersion = '2.8.7';
-const pdfjsBuild = 'cae6fbff1';
+const pdfjsVersion = '2.8.18';
+const pdfjsBuild = '1d017b3b4';
 
 /***/ }),
 /* 1 */
@@ -145,7 +145,7 @@ class WorkerMessageHandler {
     var WorkerTasks = [];
     const verbosity = (0, _util.getVerbosityLevel)();
     const apiVersion = docParams.apiVersion;
-    const workerVersion = '2.8.7';
+    const workerVersion = '2.8.18';
 
     if (apiVersion !== workerVersion) {
       throw new Error(`The API version "${apiVersion}" does not match ` + `the Worker version "${workerVersion}".`);
@@ -21084,6 +21084,7 @@ class ChoiceWidgetAnnotation extends WidgetAnnotation {
       multipleSelection: this.data.multiSelect,
       hidden: this.data.hidden,
       actions: this.data.actions,
+      items: this.data.options,
       type
     };
   }

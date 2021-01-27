@@ -6,12 +6,11 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { tryCatch } from "readium-desktop/utils/tryCatch";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 
 import { createWebpubZip, TResourcesBUFFERCreateZip } from "../zip/create";
-import { pdfCover } from "./cover";
+import { extractPDFData } from "./extract";
 import { pdfManifest } from "./manifest";
 
 // Logger
@@ -25,7 +24,10 @@ export async function pdfPackager(pdfPath: string): Promise<string> {
 
     debug("pdf packager", pdfPath);
 
-    const manifest = await pdfManifest(pdfPath);
+    // lauch a browser window to extract pdf metadata and cover
+    const [info, pngBuffer] = await extractPDFData(pdfPath);
+
+    const manifest = await pdfManifest(pdfPath, info);
     const manifestJson = TaJsonSerialize(manifest);
     const manifestStr = JSON.stringify(manifestJson);
     const manifestBuf = Buffer.from(manifestStr);
@@ -33,11 +35,6 @@ export async function pdfPackager(pdfPath: string): Promise<string> {
     debug("manifest");
     debug(manifest);
 
-    const pdfCoverFn = () => pdfCover(pdfPath, manifest);
-    const pngBuffer = await tryCatch(() => Promise.race([
-        new Promise<void>((_resolve, reject) => setTimeout(() => reject("TIMEOUT"), 20000)),
-        pdfCoverFn(),
-    ]), _filename);
     const pngName = manifest?.Resources[0]?.Href || "";
     const coverResources: TResourcesBUFFERCreateZip =
         pngBuffer

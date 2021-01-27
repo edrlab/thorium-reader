@@ -250,8 +250,8 @@ var _text_layer = __w_pdfjs_require__(21);
 
 var _svg = __w_pdfjs_require__(22);
 
-const pdfjsVersion = '2.8.7';
-const pdfjsBuild = 'cae6fbff1';
+const pdfjsVersion = '2.8.18';
+const pdfjsBuild = '1d017b3b4';
 {
   const {
     isNodeJS
@@ -2013,7 +2013,7 @@ function _fetchDocument(worker, source, pdfDataRangeTransport, docId) {
 
   return worker.messageHandler.sendWithPromise("GetDocRequest", {
     docId,
-    apiVersion: '2.8.7',
+    apiVersion: '2.8.18',
     source: {
       data: source.data,
       url: source.url,
@@ -4026,9 +4026,9 @@ const InternalRenderTask = function InternalRenderTaskClosure() {
   return InternalRenderTask;
 }();
 
-const version = '2.8.7';
+const version = '2.8.18';
 exports.version = version;
-const build = 'cae6fbff1';
+const build = '1d017b3b4';
 exports.build = build;
 
 /***/ }),
@@ -10092,24 +10092,40 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
           };
           Object.keys(detail).filter(name => name in actions).forEach(name => actions[name]());
         });
+        element.addEventListener("keydown", event => {
+          elementData.beforeInputValue = event.target.value;
+          let commitKey = -1;
 
-        if (this.data.actions) {
-          element.addEventListener("keydown", event => {
-            elementData.beforeInputValue = event.target.value;
-            let commitKey = -1;
+          if (event.key === "Escape") {
+            commitKey = 0;
+          } else if (event.key === "Enter") {
+            commitKey = 2;
+          } else if (event.key === "Tab") {
+            commitKey = 3;
+          }
 
-            if (event.key === "Escape") {
-              commitKey = 0;
-            } else if (event.key === "Enter") {
-              commitKey = 2;
-            } else if (event.key === "Tab") {
-              commitKey = 3;
+          if (commitKey === -1) {
+            return;
+          }
+
+          elementData.userValue = event.target.value;
+          this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
+            source: this,
+            detail: {
+              id,
+              name: "Keystroke",
+              value: event.target.value,
+              willCommit: true,
+              commitKey,
+              selStart: event.target.selectionStart,
+              selEnd: event.target.selectionEnd
             }
-
-            if (commitKey === -1) {
-              return;
-            }
-
+          });
+        });
+        const _blurListener = blurListener;
+        blurListener = null;
+        element.addEventListener("blur", event => {
+          if (this._mouseState.isDown) {
             elementData.userValue = event.target.value;
             this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
               source: this,
@@ -10118,72 +10134,53 @@ class TextWidgetAnnotationElement extends WidgetAnnotationElement {
                 name: "Keystroke",
                 value: event.target.value,
                 willCommit: true,
-                commitKey,
+                commitKey: 1,
                 selStart: event.target.selectionStart,
                 selEnd: event.target.selectionEnd
               }
             });
-          });
-          const _blurListener = blurListener;
-          blurListener = null;
-          element.addEventListener("blur", event => {
-            if (this._mouseState.isDown) {
-              elementData.userValue = event.target.value;
-              this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
-                source: this,
-                detail: {
-                  id,
-                  name: "Keystroke",
-                  value: event.target.value,
-                  willCommit: true,
-                  commitKey: 1,
-                  selStart: event.target.selectionStart,
-                  selEnd: event.target.selectionEnd
-                }
-              });
-            }
-
-            _blurListener(event);
-          });
-          element.addEventListener("mousedown", event => {
-            elementData.beforeInputValue = event.target.value;
-            elementData.beforeInputSelectionRange = null;
-          });
-          element.addEventListener("keyup", event => {
-            if (event.target.selectionStart === event.target.selectionEnd) {
-              elementData.beforeInputSelectionRange = null;
-            }
-          });
-          element.addEventListener("select", event => {
-            elementData.beforeInputSelectionRange = [event.target.selectionStart, event.target.selectionEnd];
-          });
-
-          if ("Keystroke" in this.data.actions) {
-            element.addEventListener("input", event => {
-              let selStart = -1;
-              let selEnd = -1;
-
-              if (elementData.beforeInputSelectionRange) {
-                [selStart, selEnd] = elementData.beforeInputSelectionRange;
-              }
-
-              this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
-                source: this,
-                detail: {
-                  id,
-                  name: "Keystroke",
-                  value: elementData.beforeInputValue,
-                  change: event.data,
-                  willCommit: false,
-                  selStart,
-                  selEnd
-                }
-              });
-            });
           }
 
-          this._setEventListeners(element, [["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], event => event.target.value);
+          _blurListener(event);
+        });
+        element.addEventListener("mousedown", event => {
+          elementData.beforeInputValue = event.target.value;
+          elementData.beforeInputSelectionRange = null;
+        });
+        element.addEventListener("keyup", event => {
+          if (event.target.selectionStart === event.target.selectionEnd) {
+            elementData.beforeInputSelectionRange = null;
+          }
+        });
+        element.addEventListener("select", event => {
+          elementData.beforeInputSelectionRange = [event.target.selectionStart, event.target.selectionEnd];
+        });
+
+        if (this.data.actions?.Keystroke) {
+          element.addEventListener("input", event => {
+            let selStart = -1;
+            let selEnd = -1;
+
+            if (elementData.beforeInputSelectionRange) {
+              [selStart, selEnd] = elementData.beforeInputSelectionRange;
+            }
+
+            this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
+              source: this,
+              detail: {
+                id,
+                name: "Keystroke",
+                value: elementData.beforeInputValue,
+                change: event.data,
+                willCommit: false,
+                selStart,
+                selEnd
+              }
+            });
+          });
         }
+
+        this._setEventListeners(element, [["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], event => event.target.value);
       }
 
       if (blurListener) {
@@ -10474,10 +10471,26 @@ class ChoiceWidgetAnnotationElement extends WidgetAnnotationElement {
       selectElement.appendChild(optionElement);
     }
 
-    function getValue(event) {
+    const getValue = (event, isExport) => {
+      const name = isExport ? "value" : "textContent";
       const options = event.target.options;
-      return options[options.selectedIndex].value;
-    }
+
+      if (!event.target.multiple) {
+        return options.selectedIndex === -1 ? null : options[options.selectedIndex][name];
+      }
+
+      return Array.prototype.filter.call(options, option => option.selected).map(option => option[name]);
+    };
+
+    const getItems = event => {
+      const options = event.target.options;
+      return Array.prototype.map.call(options, option => {
+        return {
+          displayValue: option.textContent,
+          exportValue: option.value
+        };
+      });
+    };
 
     if (this.enableScripting && this.hasJSActions) {
       selectElement.addEventListener("updatefromsandbox", event => {
@@ -10486,16 +10499,107 @@ class ChoiceWidgetAnnotationElement extends WidgetAnnotationElement {
         } = event;
         const actions = {
           value() {
-            const options = event.target.options;
+            const options = selectElement.options;
             const value = detail.value;
-            const i = options.indexOf(value);
+            const values = new Set(Array.isArray(value) ? value : [value]);
+            Array.prototype.forEach.call(options, option => {
+              option.selected = values.has(option.value);
+            });
+            storage.setValue(id, {
+              value: getValue(event, true)
+            });
+          },
 
-            if (i !== -1) {
-              options.selectedIndex = i;
-              storage.setValue(id, {
-                value
-              });
+          multipleSelection() {
+            selectElement.multiple = true;
+          },
+
+          remove() {
+            const options = selectElement.options;
+            const index = detail.remove;
+            options[index].selected = false;
+            selectElement.remove(index);
+
+            if (options.length > 0) {
+              const i = Array.prototype.findIndex.call(options, option => option.selected);
+
+              if (i === -1) {
+                options[0].selected = true;
+              }
             }
+
+            storage.setValue(id, {
+              value: getValue(event, true),
+              items: getItems(event)
+            });
+          },
+
+          clear() {
+            while (selectElement.length !== 0) {
+              selectElement.remove(0);
+            }
+
+            storage.setValue(id, {
+              value: null,
+              items: []
+            });
+          },
+
+          insert() {
+            const {
+              index,
+              displayValue,
+              exportValue
+            } = detail.insert;
+            const optionElement = document.createElement("option");
+            optionElement.textContent = displayValue;
+            optionElement.value = exportValue;
+            selectElement.insertBefore(optionElement, selectElement.children[index]);
+            storage.setValue(id, {
+              value: getValue(event, true),
+              items: getItems(event)
+            });
+          },
+
+          items() {
+            const {
+              items
+            } = detail;
+
+            while (selectElement.length !== 0) {
+              selectElement.remove(0);
+            }
+
+            for (const item of items) {
+              const {
+                displayValue,
+                exportValue
+              } = item;
+              const optionElement = document.createElement("option");
+              optionElement.textContent = displayValue;
+              optionElement.value = exportValue;
+              selectElement.appendChild(optionElement);
+            }
+
+            if (selectElement.options.length > 0) {
+              selectElement.options[0].selected = true;
+            }
+
+            storage.setValue(id, {
+              value: getValue(event, true),
+              items: getItems(event)
+            });
+          },
+
+          indices() {
+            const indices = new Set(detail.indices);
+            const options = event.target.options;
+            Array.prototype.forEach.call(options, (option, i) => {
+              option.selected = indices.has(i);
+            });
+            storage.setValue(id, {
+              value: getValue(event, true)
+            });
           },
 
           focus() {
@@ -10519,16 +10623,18 @@ class ChoiceWidgetAnnotationElement extends WidgetAnnotationElement {
         Object.keys(detail).filter(name => name in actions).forEach(name => actions[name]());
       });
       selectElement.addEventListener("input", event => {
-        const value = getValue(event);
+        const exportValue = getValue(event, true);
+        const value = getValue(event, false);
         storage.setValue(id, {
-          value
+          value: exportValue
         });
         this.linkService.eventBus?.dispatch("dispatcheventinsandbox", {
           source: this,
           detail: {
             id,
             name: "Keystroke",
-            changeEx: value,
+            value,
+            changeEx: exportValue,
             willCommit: true,
             commitKey: 1,
             keyDown: false
@@ -10536,7 +10642,7 @@ class ChoiceWidgetAnnotationElement extends WidgetAnnotationElement {
         });
       });
 
-      this._setEventListeners(selectElement, [["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], event => event.target.checked);
+      this._setEventListeners(selectElement, [["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"], ["input", "Action"]], event => event.target.checked);
     } else {
       selectElement.addEventListener("input", function (event) {
         storage.setValue(id, {
