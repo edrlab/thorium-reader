@@ -127,9 +127,7 @@
       "assets/",
       "ReadiumCSS/",
       "MathJax/",
-      "index_pdf.html",
       "index_pdf.js",
-      "index_pdf.worker.js",
       "index_library.html",
       "index_library.js",
       "index_reader.html",
@@ -138,7 +136,6 @@
       "styles_reader.css",
       "preload.js",
       "main.js",
-      "1.main.js",
       "package.json",
       "fonts"
     ],
