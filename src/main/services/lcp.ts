@@ -25,7 +25,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { __USE_HTTP_STREAMER, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { _USE_HTTP_STREAMER, IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
@@ -645,7 +645,7 @@ export class LcpManager {
 
         const epubPath = this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
         // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
-        let r2Publication = __USE_HTTP_STREAMER ?
+        let r2Publication = _USE_HTTP_STREAMER ?
             this.streamer.cachedPublication(epubPath) :
             streamerCachedPublication(epubPath);
         if (!r2Publication) {

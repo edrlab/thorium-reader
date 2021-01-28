@@ -17,7 +17,7 @@ import {
     streamerAddPublications, streamerLoadOrGetCachedPublication,
     THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "readium-desktop/main/streamerNoHttp";
-import { __USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
+import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 import { put, take } from "redux-saga/effects";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
@@ -137,7 +137,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
     // Start streamer if it's not already started
     const status = yield* selectTyped((s: RootState) => s.streamer.status);
 
-    const streamer = __USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
+    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     if (status === StreamerStatus.Stopped) {
         // Streamer is stopped, start it
@@ -159,13 +159,13 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         }
     }
 
-    const manifestPaths = __USE_HTTP_STREAMER ?
+    const manifestPaths = _USE_HTTP_STREAMER ?
         streamer.addPublications([epubPath]) :
         streamerAddPublications([epubPath]);
 
     let r2Publication: R2Publication;
     try {
-        if (__USE_HTTP_STREAMER) {
+        if (_USE_HTTP_STREAMER) {
             r2Publication = yield* callTyped(() => streamer.loadOrGetCachedPublication(epubPath));
         } else {
             r2Publication = yield* callTyped(() => streamerLoadOrGetCachedPublication(epubPath));
@@ -215,7 +215,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         }
     }
 
-    const manifestUrl = __USE_HTTP_STREAMER ?
+    const manifestUrl = _USE_HTTP_STREAMER ?
         streamer.serverUrl() + manifestPaths[0] :
         `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host${manifestPaths[0]}`;
 

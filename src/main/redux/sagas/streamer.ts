@@ -17,7 +17,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import {
     streamerRemovePublications, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "readium-desktop/main/streamerNoHttp";
-import { __USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
+import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 import { SagaIterator } from "redux-saga";
 import { all, call, put } from "redux-saga/effects";
 
@@ -40,10 +40,10 @@ async function startStreamer(streamer: Server): Promise<string> {
 }
 
 function* startRequest(): SagaIterator {
-    const streamer = __USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
+    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     try {
-        const streamerUrl = __USE_HTTP_STREAMER ?
+        const streamerUrl = _USE_HTTP_STREAMER ?
             yield* callTyped(() => startStreamer(streamer)) :
             `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host`;
 
@@ -57,10 +57,10 @@ function* startRequest(): SagaIterator {
 
 function* stopRequest(): SagaIterator {
 
-    const streamer = __USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
+    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     try {
-        if (__USE_HTTP_STREAMER) {
+        if (_USE_HTTP_STREAMER) {
             yield call(() => streamer.stop);
         }
         yield put(streamerActions.stopSuccess.build());
@@ -77,7 +77,7 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
     // will decrement on streamerActions.publicationCloseSuccess.build (see below)
     const counter = yield* selectTyped((s: RootState) => s.streamer.openPublicationCounter);
 
-    const streamer = __USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
+    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     const pubStorage = yield* callTyped(() => diMainGet("publication-storage"));
 
@@ -91,7 +91,7 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
         //     publicationDocument.files[0].url.substr(6),
         // );
         debug(`EPUB ZIP CLEANUP: ${epubPath}`);
-        if (__USE_HTTP_STREAMER) {
+        if (_USE_HTTP_STREAMER) {
             streamer.removePublications([epubPath]);
         } else {
             streamerRemovePublications([epubPath]);

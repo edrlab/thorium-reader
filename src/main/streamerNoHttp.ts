@@ -11,7 +11,9 @@ import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "elect
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
-import { _NODE_MODULE_RELATIVE_URL, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import {
+    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _USE_HTTP_STREAMER,
+} from "readium-desktop/preprocessor-directives";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
@@ -51,85 +53,88 @@ export const THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL = "thoriumhttps";
 
 const READIUM_CSS_URL_PATH = "readium-css";
 
-function isFixedLayout(publication: R2Publication, link: Link | undefined): boolean {
-    if (link && link.Properties) {
-        if (link.Properties.Layout === "fixed") {
-            return true;
+if (!_USE_HTTP_STREAMER) {
+    function isFixedLayout(publication: R2Publication, link: Link | undefined): boolean {
+        if (link && link.Properties) {
+            if (link.Properties.Layout === "fixed") {
+                return true;
+            }
+            if (typeof link.Properties.Layout !== "undefined") {
+                return false;
+            }
         }
-        if (typeof link.Properties.Layout !== "undefined") {
-            return false;
+        if (publication &&
+            publication.Metadata &&
+            publication.Metadata.Rendition) {
+            return publication.Metadata.Rendition.Layout === "fixed";
         }
+        return false;
     }
-    if (publication &&
-        publication.Metadata &&
-        publication.Metadata.Rendition) {
-        return publication.Metadata.Rendition.Layout === "fixed";
-    }
-    return false;
+
+    const transformerReadiumCss: TTransformFunction = (
+        publication: R2Publication,
+        link: Link,
+        url: string | undefined,
+        str: string,
+        sessionInfo: string | undefined,
+    ): string => {
+
+        let isIframe = false;
+        if (url) {
+            const url_ = new URL(url);
+            if (url_.searchParams.has(URL_PARAM_IS_IFRAME)) {
+                isIframe = true;
+            }
+        }
+
+        if (isIframe) {
+            return str;
+        }
+
+        let readiumcssJson = computeReadiumCssJsonMessageInStreamer(publication, link, sessionInfo);
+        if (isFixedLayout(publication, link)) {
+            const readiumcssJson_ = { setCSS: undefined, isFixedLayout: true } as IEventPayload_R2_EVENT_READIUMCSS;
+            if (readiumcssJson.setCSS) {
+                if (readiumcssJson.setCSS.mathJax) {
+                    // TODO: apply MathJax to FXL?
+                    // (reminder: setCSS must remain 'undefined'
+                    // in order to completely remove ReadiumCSS from FXL docs)
+                }
+                if (readiumcssJson.setCSS.reduceMotion) {
+                    // TODO: same as MathJax (see above)
+                }
+                // if (readiumcssJson.setCSS.audioPlaybackRate) {
+                //     // TODO: same as MathJax (see above)
+                // }
+            }
+            readiumcssJson = readiumcssJson_;
+        }
+
+        if (readiumcssJson) {
+            if (!readiumcssJson.urlRoot) {
+                // `/${READIUM_CSS_URL_PATH}/`
+                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://host";
+            }
+            if (IS_DEV) {
+                console.log("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
+            }
+
+            // import * as mime from "mime-types";
+            let mediaType = "application/xhtml+xml"; // mime.lookup(link.Href);
+            if (link && link.TypeLink) {
+                mediaType = link.TypeLink;
+            }
+
+            return readiumCssTransformHtml(str, readiumcssJson, mediaType);
+        } else {
+            return str;
+        }
+    };
+    Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
+
+    setupMathJaxTransformer(
+        `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`);
 }
-
-const transformerReadiumCss: TTransformFunction = (
-    publication: R2Publication,
-    link: Link,
-    url: string | undefined,
-    str: string,
-    sessionInfo: string | undefined,
-): string => {
-
-    let isIframe = false;
-    if (url) {
-        const url_ = new URL(url);
-        if (url_.searchParams.has(URL_PARAM_IS_IFRAME)) {
-            isIframe = true;
-        }
-    }
-
-    if (isIframe) {
-        return str;
-    }
-
-    let readiumcssJson = computeReadiumCssJsonMessageInStreamer(publication, link, sessionInfo);
-    if (isFixedLayout(publication, link)) {
-        const readiumcssJson_ = { setCSS: undefined, isFixedLayout: true } as IEventPayload_R2_EVENT_READIUMCSS;
-        if (readiumcssJson.setCSS) {
-            if (readiumcssJson.setCSS.mathJax) {
-                // TODO: apply MathJax to FXL?
-                // (reminder: setCSS must remain 'undefined'
-                // in order to completely remove ReadiumCSS from FXL docs)
-            }
-            if (readiumcssJson.setCSS.reduceMotion) {
-                // TODO: same as MathJax (see above)
-            }
-            // if (readiumcssJson.setCSS.audioPlaybackRate) {
-            //     // TODO: same as MathJax (see above)
-            // }
-        }
-        readiumcssJson = readiumcssJson_;
-    }
-
-    if (readiumcssJson) {
-        if (!readiumcssJson.urlRoot) {
-            // `/${READIUM_CSS_URL_PATH}/`
-            readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://host";
-        }
-        if (IS_DEV) {
-            console.log("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
-        }
-
-        // import * as mime from "mime-types";
-        let mediaType = "application/xhtml+xml"; // mime.lookup(link.Href);
-        if (link && link.TypeLink) {
-            mediaType = link.TypeLink;
-        }
-
-        return readiumCssTransformHtml(str, readiumcssJson, mediaType);
-    } else {
-        return str;
-    }
-};
-Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
-
-setupMathJaxTransformer(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`);
 
 function getPreFetchResources(publication: R2Publication): Link[] {
     const links: Link[] = [];

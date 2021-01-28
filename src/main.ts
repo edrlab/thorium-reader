@@ -12,7 +12,7 @@ import { cli } from "readium-desktop/main/cli/process";
 import { createStoreFromDi, diMainGet } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import {
-    __USE_HTTP_STREAMER, _PACKAGING, _VSCODE_LAUNCH,
+    _PACKAGING, _USE_HTTP_STREAMER, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
 
@@ -65,7 +65,7 @@ setLcpNativePluginPath(lcpNativePluginPath);
 // });
 
 // protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions
-if (__USE_HTTP_STREAMER) {
+if (_USE_HTTP_STREAMER) {
     initSessionsHTTP();
 } else {
     initSessionsNoHTTP();
