@@ -41,7 +41,7 @@
     },
     "catalog": {
         "about": {
-            "button": "詳細",
+            "button": "より詳しい情報",
             "title": "{{appName}}について"
         },
         "addBookToLib": "追加",
