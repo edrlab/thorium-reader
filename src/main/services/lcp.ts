@@ -25,7 +25,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { __USE_HTTP_STREAMER, IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
@@ -38,11 +38,12 @@ import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
+import { Server } from "@r2-streamer-js/http/server";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import { extractCrc32OnZip } from "../crc";
 import { lcpActions } from "../redux/actions";
-import { streamerCachedPublication } from "../streamer";
+import { streamerCachedPublication } from "../streamerNoHttp";
 import { DeviceIdManager } from "./device";
 
 // Logger
@@ -55,6 +56,9 @@ export class LcpManager {
 
     @inject(diSymbolTable["lcp-secret-repository"])
     private readonly lcpSecretRepository!: LcpSecretRepository;
+
+    @inject(diSymbolTable.streamer)
+    private readonly streamer!: Server;
 
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
@@ -641,7 +645,9 @@ export class LcpManager {
 
         const epubPath = this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
         // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
-        let r2Publication = streamerCachedPublication(epubPath);
+        let r2Publication = __USE_HTTP_STREAMER ?
+            this.streamer.cachedPublication(epubPath) :
+            streamerCachedPublication(epubPath);
         if (!r2Publication) {
             r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
             if (r2Publication.LCP) {
