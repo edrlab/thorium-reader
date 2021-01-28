@@ -98,7 +98,10 @@ const opdsAuthFlow =
             const task = yield* forkTyped(function*() {
 
                 const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
-                return parseRequestFromCustomProtocol(parsedRequest);
+                return {
+                    request: parseRequestFromCustomProtocol(parsedRequest.request),
+                    callback: parsedRequest.callback,
+                };
             });
 
             const win =
@@ -131,7 +134,7 @@ const opdsAuthFlow =
                     return;
 
                 } else {
-                    const opdsCustomProtocolRequestParsed = task.result();
+                    const { request: opdsCustomProtocolRequestParsed, callback } = task.result();
                     if (opdsCustomProtocolRequestParsed) {
 
                         const [, err] = yield* callTyped(opdsSetAuthCredentials,
@@ -139,6 +142,10 @@ const opdsAuthFlow =
                             authCredentials,
                             authParsed.authenticationType,
                         );
+
+                        callback({
+                            url: undefined,
+                        });
 
                         if (err instanceof Error) {
                             debug(err.message);
@@ -518,7 +525,7 @@ interface IParseRequestFromCustomProtocol<T = string> {
         [key in T & string]?: string;
     };
 }
-function parseRequestFromCustomProtocol(req: Electron.Request)
+function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
     : IParseRequestFromCustomProtocol<TLabelName> | undefined {
 
     debug("########");

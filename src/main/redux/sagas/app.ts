@@ -85,10 +85,6 @@ export function* init() {
         const pathname = path.normalize(`${folderPath}/${url}`);
 
         callback(pathname);
-    }, (err) => {
-        if (err) {
-            debug("ERROR registerFileProtocol pdf webview", err);
-        }
     });
 
     protocol.registerFileProtocol("pdfjs-extract", async (request, callback) => {

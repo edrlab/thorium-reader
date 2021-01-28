@@ -43,6 +43,8 @@ const nodeModuleRelativeUrl = (isPackaging === "1") ?
 const distRelativeUrl = (isPackaging === "1") ?
     "dist" : "../dist";
 
+const USE_HTTP_STREAMER = true;
+
 const data = {
     __APP_VERSION__: JSON.stringify(version),
     __APP_NAME__: JSON.stringify(build.productName),
@@ -60,6 +62,7 @@ const data = {
     __RENDERER_READER_BASE_URL__: JSON.stringify(rendererReaderBaseUrl),
     __RENDERER_PDF_WEBVIEW_BASE_URL__: JSON.stringify(rendererPdfWebviewBaseUrl),
     __CONTINUOUS_INTEGRATION_DEPLOY__: JSON.stringify(isContinuousIntegrationDeploy),
+    __USE_HTTP_STREAMER__: JSON.stringify(USE_HTTP_STREAMER),
 };
 
 // we do not replace "process.env.NODE_ENV" at build-time,

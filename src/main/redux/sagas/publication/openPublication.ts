@@ -13,6 +13,11 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { diMainGet } from "readium-desktop/main/di";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
+import {
+    streamerAddPublications, streamerLoadOrGetCachedPublication,
+    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "readium-desktop/main/streamerNoHttp";
+import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 import { put, take } from "redux-saga/effects";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
@@ -131,7 +136,8 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     // Start streamer if it's not already started
     const status = yield* selectTyped((s: RootState) => s.streamer.status);
-    const streamer = yield* callTyped(() => diMainGet("streamer"));
+
+    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     if (status === StreamerStatus.Stopped) {
         // Streamer is stopped, start it
@@ -153,13 +159,17 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         }
     }
 
-    const manifestPaths = streamer.addPublications([epubPath]);
+    const manifestPaths = _USE_HTTP_STREAMER ?
+        streamer.addPublications([epubPath]) :
+        streamerAddPublications([epubPath]);
 
     let r2Publication: R2Publication;
     try {
-        r2Publication = yield* callTyped(
-            () => streamer.loadOrGetCachedPublication(epubPath),
-        );
+        if (_USE_HTTP_STREAMER) {
+            r2Publication = yield* callTyped(() => streamer.loadOrGetCachedPublication(epubPath));
+        } else {
+            r2Publication = yield* callTyped(() => streamerLoadOrGetCachedPublication(epubPath));
+        }
     } catch (error) {
 
         throw error;
@@ -205,7 +215,10 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         }
     }
 
-    const manifestUrl = streamer.serverUrl() + manifestPaths[0];
+    const manifestUrl = _USE_HTTP_STREAMER ?
+        streamer.serverUrl() + manifestPaths[0] :
+        `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host${manifestPaths[0]}`;
+
     debug(pubId, " streamed on ", manifestUrl);
 
     // add in reducer
