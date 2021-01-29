@@ -8,6 +8,7 @@
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
+import { aboutFiltered } from "readium-desktop/main/filter";
 import { SagaGenerator } from "typed-redux-saga";
 
 export function* search(title: string): SagaGenerator<PublicationView[]> {
@@ -20,5 +21,5 @@ export function* search(title: string): SagaGenerator<PublicationView[]> {
     const publicationViews = publicationDocuments.map((publicationDocument) =>
         publicationViewConverter.convertDocumentToView(publicationDocument));
 
-    return publicationViews;
+    return aboutFiltered(publicationViews);
 }
