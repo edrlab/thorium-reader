@@ -72,8 +72,8 @@
         "numberOfPages": "Número de páginas",
         "opds": {
             "auth": {
-                "cancel": "",
-                "login": ""
+                "cancel": "Cancelar",
+                "login": "Iniciar sesión"
             },
             "info": {
                 "availableSince": "Desde",
@@ -141,7 +141,7 @@
             "password": "Contraseña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
             "submit": "Enviar",
-            "urlHint": ""
+            "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí"
         }
     },
     "message": {
@@ -251,8 +251,8 @@
         "navigation": {
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
-            "currentPage": "",
-            "currentPageTotal": "",
+            "currentPage": "Página actual: {{- current}}",
+            "currentPageTotal": "Página actual: ({{- current}}/{{- total}})",
             "detachWindowTitle": "Separar la ventana",
             "fullscreenTitle": "Abrir modo pantalla completa",
             "goTo": "Ir a",
@@ -262,7 +262,7 @@
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",
-            "pdfscalemode": "",
+            "pdfscalemode": "Ajuste o ancho de página",
             "quitFullscreenTitle": "Salir del modo pantalla completa",
             "readBookTitle": "Empezar a leer el libro",
             "settingsTitle": "Opciones de configuración"
@@ -299,9 +299,9 @@
             "letterSpacing": "Espaciado de letras",
             "lineSpacing": "Interlineado",
             "margin": "Margen",
-            "noFootnotes": "",
+            "noFootnotes": "Desactivar notas al pie",
             "paginated": "Paginado",
-            "paraSpacing": "",
+            "paraSpacing": "Espaciado de párrafos",
             "pdfZoom": {
                 "name": {
                     "100pct": "100%",
@@ -315,7 +315,7 @@
                 },
                 "title": "Zum"
             },
-            "reduceMotion": "",
+            "reduceMotion": "Disminuir movimiento",
             "save": {
                 "apply": "Guardar",
                 "reset": "Restablecer",
@@ -353,7 +353,7 @@
     },
     "settings": {
         "auth": {
-            "wipeData": ""
+            "wipeData": "Limpiar datos de autenticación"
         },
         "keyboard": {
             "advancedMenu": "Menú",
