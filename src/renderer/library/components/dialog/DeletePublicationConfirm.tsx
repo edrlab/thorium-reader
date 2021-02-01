@@ -52,8 +52,8 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
                         <span>{this.props.publicationView.title}</span>
                     </p>
                     <div>
-                        <button onClick={this.remove}>{__("dialog.yes")}</button>
-                        <button className={styles.primary} onClick={closeDialog}>{__("dialog.no")}</button>
+                        <button className={styles.primary} onClick={this.remove}>{__("dialog.yes")}</button>
+                        <button onClick={closeDialog}>{__("dialog.no")}</button>
                     </div>
                 </div>
             </Dialog>
