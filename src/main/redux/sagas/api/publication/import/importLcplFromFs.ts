@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
-import * as moment from "moment";
 import * as path from "path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -56,16 +55,23 @@ export function* importLcplFromFS(
     // (LICENSE_OUT_OF_DATE = 11) occurs afterwards, so will only be checked after passphrase try
     if (r2LCP.isNativeNodePlugin()) {
         if (r2LCP.Rights) {
-            const now = moment.now();
+            const now = Date.now();
+
+            const end = new Date(r2LCP.Rights.End).getTime() / 1000;
+            const start = new Date(r2LCP.Rights.Start).getTime() / 1000;
+
+            debug("NOW", now);
+            debug("END", end);
+            debug("START", start);
             let res = 0;
             try {
                 if (r2LCP.Rights.Start) {
-                    if (moment(r2LCP.Rights.Start).isAfter(now)) {
+                    if (now - start > 0) {
                         res = 11;
                     }
                 }
                 if (r2LCP.Rights.End) {
-                    if (moment(r2LCP.Rights.End).isBefore(now)) {
+                    if (end - now > 0) {
                         res = 11;
                     }
                 }
