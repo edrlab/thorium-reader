@@ -55,7 +55,7 @@ export function* importLcplFromFS(
     // (LICENSE_OUT_OF_DATE = 11) occurs afterwards, so will only be checked after passphrase try
     if (r2LCP.isNativeNodePlugin()) {
         if (r2LCP.Rights) {
-            const now = Date.now();
+            const now = Math.floor(Date.now() / 1000);
 
             const end = new Date(r2LCP.Rights.End).getTime() / 1000;
             const start = new Date(r2LCP.Rights.Start).getTime() / 1000;
@@ -66,12 +66,12 @@ export function* importLcplFromFS(
             let res = 0;
             try {
                 if (r2LCP.Rights.Start) {
-                    if (now - start > 0) {
+                    if (start - now > 0) {
                         res = 11;
                     }
                 }
                 if (r2LCP.Rights.End) {
-                    if (end - now > 0) {
+                    if (now - end > 0) {
                         res = 11;
                     }
                 }
