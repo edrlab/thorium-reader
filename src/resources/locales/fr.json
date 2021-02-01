@@ -208,8 +208,8 @@
         "lcpRightsCopy": "Copie de caractères",
         "lcpRightsPrint": "Copies d'imprimante",
         "lcpStart": "Début",
-        "licenseOutOfDate": "License expirée",
         "licenceNotYetValid": "Licence par encore valide",
+        "licenseOutOfDate": "License expirée",
         "licenseSignatureDateInvalid": "Date de signature de license invalide",
         "licenseSignatureInvalid": "Signature de license invalide",
         "progression": {
