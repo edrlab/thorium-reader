@@ -63,8 +63,9 @@ export class LcpApi implements ILcpApi {
                 await this.lcpManager.unlockPublication(publicationDocument, passphrase);
 
             if (typeof unlockPublicationRes !== "undefined") {
-                const message = unlockPublicationRes === 11 ?
-                    this.translator.translate("publication.expiredLcp") :
+                const message =
+                    // unlockPublicationRes === 11 ?
+                    // this.translator.translate("publication.expiredLcp") :
                     this.lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
                 debug(message);
 

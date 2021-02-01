@@ -99,9 +99,10 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                 yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, undefined));
 
             if (typeof unlockPublicationRes !== "undefined") {
-                const message = unlockPublicationRes === 11
-                    ? translator.translate("publication.expiredLcp")
-                    : lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
+                const message =
+                    // unlockPublicationRes === 11
+                    // ? translator.translate("publication.expiredLcp") :
+                    lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
 
                 try {
                     const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
@@ -185,8 +186,9 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                 yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, undefined));
 
             if (typeof unlockPublicationRes !== "undefined") {
-                const message = unlockPublicationRes === 11 ?
-                    translator.translate("publication.expiredLcp") :
+                const message =
+                    // unlockPublicationRes === 11 ?
+                    // translator.translate("publication.expiredLcp") :
                     lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
                 debug(message);
 
