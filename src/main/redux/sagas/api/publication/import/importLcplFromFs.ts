@@ -61,7 +61,7 @@ export function* importLcplFromFS(
             try {
                 if (r2LCP.Rights.Start) {
                     if (moment(r2LCP.Rights.Start).isAfter(now)) {
-                        res = 11;
+                        res = 1111;
                     }
                 }
                 if (r2LCP.Rights.End) {

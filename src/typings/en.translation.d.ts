@@ -314,26 +314,26 @@ declare namespace typed_i18n {
   readonly "lcp": {
     readonly "cancel": string,
     readonly "hint": string,
-    readonly "urlHint": string,
     readonly "password": string,
     readonly "sentence": string,
-    readonly "submit": string
+    readonly "submit": string,
+    readonly "urlHint": string
   }
 };
   (_: "library.lcp", __?: {}): {
   readonly "cancel": string,
   readonly "hint": string,
-  readonly "urlHint": string,
   readonly "password": string,
   readonly "sentence": string,
-  readonly "submit": string
+  readonly "submit": string,
+  readonly "urlHint": string
 };
   (_: "library.lcp.cancel", __?: {}): string;
   (_: "library.lcp.hint", __?: {}): string;
-  (_: "library.lcp.urlHint", __?: {}): string;
   (_: "library.lcp.password", __?: {}): string;
   (_: "library.lcp.sentence", __?: {}): string;
   (_: "library.lcp.submit", __?: {}): string;
+  (_: "library.lcp.urlHint", __?: {}): string;
   (_: "message", __?: {}): {
   readonly "download": { readonly "error": string },
   readonly "import": {
@@ -445,6 +445,7 @@ declare namespace typed_i18n {
   readonly "lcpRightsPrint": string,
   readonly "lcpStart": string,
   readonly "licenseOutOfDate": string,
+  readonly "licenceNotYetValid": string,
   readonly "licenseSignatureDateInvalid": string,
   readonly "licenseSignatureInvalid": string,
   readonly "progression": { readonly "title": string },
@@ -471,6 +472,7 @@ declare namespace typed_i18n {
   (_: "publication.lcpRightsPrint", __?: {}): string;
   (_: "publication.lcpStart", __?: {}): string;
   (_: "publication.licenseOutOfDate", __?: {}): string;
+  (_: "publication.licenceNotYetValid", __?: {}): string;
   (_: "publication.licenseSignatureDateInvalid", __?: {}): string;
   (_: "publication.licenseSignatureInvalid", __?: {}): string;
   (_: "publication.progression", __?: {}): { readonly "title": string };

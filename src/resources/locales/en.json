@@ -209,6 +209,7 @@
         "lcpRightsPrint": "Printer copy",
         "lcpStart": "Start",
         "licenseOutOfDate": "License is out of date",
+        "licenceNotYetValid": "License not yet valid",
         "licenseSignatureDateInvalid": "License signature date is invalid",
         "licenseSignatureInvalid": "License signature is invalid",
         "progression": {

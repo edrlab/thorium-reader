@@ -566,6 +566,10 @@ export class LcpManager {
                     message = this.translator.translate("publication.licenseOutOfDate");
                     break;
                 }
+                case 1111: {
+                    message = this.translator.translate("publication.licenseNotYetValid");
+                    break;
+                }
                 case 101: {
                     // message = "CERTIFICATE_REVOKED: " + val;
                     message = this.translator.translate("publication.certificateRevoked");
