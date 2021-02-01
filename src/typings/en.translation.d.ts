@@ -445,7 +445,7 @@ declare namespace typed_i18n {
   readonly "lcpRightsPrint": string,
   readonly "lcpStart": string,
   readonly "licenseOutOfDate": string,
-  readonly "licenceNotYetValid": string,
+  readonly "licenseNotYetValid": string,
   readonly "licenseSignatureDateInvalid": string,
   readonly "licenseSignatureInvalid": string,
   readonly "progression": { readonly "title": string },
@@ -472,7 +472,7 @@ declare namespace typed_i18n {
   (_: "publication.lcpRightsPrint", __?: {}): string;
   (_: "publication.lcpStart", __?: {}): string;
   (_: "publication.licenseOutOfDate", __?: {}): string;
-  (_: "publication.licenceNotYetValid", __?: {}): string;
+  (_: "publication.licenseNotYetValid", __?: {}): string;
   (_: "publication.licenseSignatureDateInvalid", __?: {}): string;
   (_: "publication.licenseSignatureInvalid", __?: {}): string;
   (_: "publication.progression", __?: {}): { readonly "title": string };
