@@ -11,14 +11,14 @@ Importa y lee libros digitales EPUB en tu ordenador con Windows 10/10S. Gran exp
 
 Sin anuncios. Sin compartir datos privados.
 
-Actualmente la aplicación está traducida a cuatro idiomas: inglés, francés, alemán y español. Pronto contaremos con más idiomas.
+Actualmente la aplicación está traducida a varios idiomas: inglés, francés, alemán, español, portugués, italiano, lituano, holandés, japonés.
 
 Copyright 2019 European Digital Reading Lab. Todos los derechos reservados.
 Con licencia para la Readium Foundation bajo uno o más acuerdos de licencia para colaboradores.
 
 Esta aplicación es de código abierto, publicada bajo una licencia BSD 3. Se basa en el kit de herramientas de código abierto Readium Desktop.
 
-El proyecto se encuentra en constante evolución, correcciones y nuevas características se irán incorporando a intervalos regulares.
+El proyecto se encuentra en constante desarrollo, correcciones y nuevas características se irán incorporando a intervalos regulares.
 
 Este proyecto no habría visto la luz sin la ayuda financiera de las siguientes organizaciones:
 - CNL (Centre National du livre), Francia
