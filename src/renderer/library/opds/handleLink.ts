@@ -17,7 +17,7 @@ import { dispatchHistoryPush, TLocation } from "../routing";
 import { extractParamFromOpdsRoutePathname } from "./route";
 
 const REL_NAVIGATION_TYPES: string[] = [
-    "http://librarysimplified.org/terms/rel/revoke"
+    "http://librarysimplified.org/terms/rel/revoke",
 ];
 
 export const dispatchOpdsLink =

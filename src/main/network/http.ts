@@ -305,7 +305,8 @@ export const httpGetWithAuth =
                     && auth.accessToken
                 ) {
                     // We have an authentication token for this host.
-                    // We should use it by default because we won't always get a 401 response that will ask us to use it.
+                    // We should use it by default
+                    // Because we won't always get a 401 response that will ask us to use it.
                     return httpGetUnauthorized(auth)(_url, options, _callback, ..._arg);
                 }
             }
