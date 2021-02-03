@@ -304,6 +304,8 @@ export const httpGetWithAuth =
                     typeof auth === "object"
                     && auth.accessToken
                 ) {
+                    // We have an authentication token for this host.
+                    // We should use it by default because we won't always get a 401 response that will ask us to use it.
                     return httpGetUnauthorized(auth)(_url, options, _callback, ..._arg);
                 }
             }
@@ -351,6 +353,9 @@ const httpGetUnauthorized =
                         )(url, options, _callback, ..._arg);
                         return responseAfterRefresh || response;
                     } else {
+                        // Most likely because of a wrong access token.
+                        // In some cases the returned content won't launch a new authentication process
+                        // It's safer to just delete the access token and start afresh now.
                         await deleteConfigRepoOpdsAuthenticationToken(url.host);
                         options.headers.delete("Authorization");
                         const responseWithoutAuth = await httpGetWithAuth(
