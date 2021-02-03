@@ -70,6 +70,7 @@ export interface IOpdsGroupView {
     title: string;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
+    links: IOpdsLinkView[];
 }
 
 export interface IOpdsFacetView {
