@@ -68,9 +68,10 @@ export interface IOpdsResultView {
 
 export interface IOpdsGroupView {
     title: string;
+    numberOfItems?: number;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
-    links: IOpdsLinkView[];
+    links?: IOpdsLinkView[];
 }
 
 export interface IOpdsFacetView {

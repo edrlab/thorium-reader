@@ -421,6 +421,8 @@ export class OpdsFeedViewConverter {
             ? convertMultiLangStringToString(r2OpdsGroup.Metadata.Title)
             : "";
 
+        const nb = r2OpdsGroup.Metadata?.NumberOfItems;
+
         const publications = r2OpdsGroup.Publications?.map(
             (item) =>
                 // warning: modifies item, makes relative URLs absolute with baseUrl!
@@ -436,6 +438,7 @@ export class OpdsFeedViewConverter {
 
         const ret: IOpdsGroupView = {
             title,
+            numberOfItems: typeof nb === "number" ? nb : undefined,
             publications,
             navigation,
             links
