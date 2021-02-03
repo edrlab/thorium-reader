@@ -35,6 +35,7 @@ import { filterRelLink, filterTypeLink } from "./tools/filterLink";
 import { urlPathResolve } from "./tools/resolveUrl";
 import { TLinkMayBeOpds, TProperties } from "./type/link.type";
 import { ILinkFilter } from "./type/linkFilter.interface";
+import { OPDSProperties } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-properties";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -69,7 +70,7 @@ export class OpdsFeedViewConverter {
         // Title could be defined on multiple lines
         // Only keep the first one
         const titleParts = link.Title?.split("\n").filter((text) => text);
-        const title = titleParts[0]?.trim();
+        const title = titleParts[0]?.trim() || "";
         const subtitle = titleParts[1]?.trim();
 
         return {
@@ -199,11 +200,10 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public convertFilterLinksToView(
-        baseUrl: string,
+    public filterLinks(
         links: TLinkMayBeOpds[] | undefined,
         filter: ILinkFilter,
-    ): IOpdsLinkView[] {
+    ): TLinkMayBeOpds[] {
 
         const linksFiltered = links?.filter(
             (ln) => {
@@ -233,9 +233,21 @@ export class OpdsFeedViewConverter {
             },
         );
 
-        return linksFiltered.map(
+        return linksFiltered || [];
+    }
+    public convertFilterLinksToView(
+        baseUrl: string,
+        links: TLinkMayBeOpds[] | undefined,
+        filter: ILinkFilter,
+    ): IOpdsLinkView[] {
+
+        const lns = this.filterLinks(links, filter)
+        const view = lns.map(
             (item) =>
-                this.convertLinkToView(item, baseUrl));
+                this.convertLinkToView(item, baseUrl)
+        );
+
+        return view;
     }
 
     // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl!
@@ -417,12 +429,6 @@ export class OpdsFeedViewConverter {
     }
 
     public convertOpdsGroupToView(r2OpdsGroup: OPDSGroup, baseUrl: string): IOpdsGroupView {
-        const title = r2OpdsGroup.Metadata?.Title
-            ? convertMultiLangStringToString(r2OpdsGroup.Metadata.Title)
-            : "";
-
-        const nb = r2OpdsGroup.Metadata?.NumberOfItems;
-
         const publications = r2OpdsGroup.Publications?.map(
             (item) =>
                 // warning: modifies item, makes relative URLs absolute with baseUrl!
@@ -432,16 +438,28 @@ export class OpdsFeedViewConverter {
             (item) =>
                 this.convertOpdsNavigationLinkToView(item, baseUrl));
 
-        const links = r2OpdsGroup.Links.map(
-            (item) =>
-                this.convertLinkToView(item, baseUrl));
+
+        const [lnFiltered] = this.filterLinks(r2OpdsGroup.Links, {
+            "rel": "self",
+        });
+
+        const title = r2OpdsGroup.Metadata?.Title
+            ? convertMultiLangStringToString(r2OpdsGroup.Metadata.Title)
+            : "";
+
+        const nb = r2OpdsGroup.Metadata?.NumberOfItems;
+
+        const selfLink = new OPDSLink();
+        selfLink.Title = title;
+        selfLink.Properties = new OPDSProperties();
+        selfLink.Properties.NumberOfItems = nb;
+        selfLink.Rel = lnFiltered?.Rel || undefined;
+        selfLink.Href = lnFiltered?.Href || undefined;
 
         const ret: IOpdsGroupView = {
-            title,
-            numberOfItems: typeof nb === "number" ? nb : undefined,
             publications,
             navigation,
-            links
+            selfLink: this.convertOpdsNavigationLinkToView(selfLink, baseUrl),
         };
         return ret;
     }
