@@ -1,5 +1,24 @@
 /* FORM */
 
+.publicationgrid {
+
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 50px;
+}
+
+.entrygroups {
+  & span {
+    padding-right: 10%;
+  }
+}
+.entrygroups {
+  & a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
 .opds_form {
     & button {
         font-size: 1rem;

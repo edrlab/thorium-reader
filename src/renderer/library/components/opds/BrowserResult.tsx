@@ -72,22 +72,34 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     !browserResult.data.navigation &&
                     !browserResult.data.groups) {
 
+                    const facetsRender = browserResult.data.facets?.map((facet, facetId) =>
+                        <section key={`facet-${facetId}`}>
+                            <br></br>
+                            <h3>{facet.title}</h3>
+                            <EntryList entries={facet.links}></EntryList>
+                        </section>,
+                    );
+
                     content = (
                         <>
-                            {
-                                browserResult.data.facets?.map((facet, facetId) =>
-                                    <section key={`facet-${facetId}`}>
-                                        <br></br>
-                                        <h3>{facet.title}</h3>
-                                        <EntryList entries={facet.links}></EntryList>
-                                    </section>,
-                                )
-                            }
-                            <EntryPublicationList
-                                opdsPublicationView={browserResult.data.publications}
-                                links={browserResult.data.links}
-                                pageInfo={browserResult.data.metadata}
-                            />
+                            <div className={Array.isArray(facetsRender) ? styles.publicationgrid : ""}>
+                                {
+                                    Array.isArray(facetsRender)
+                                        ? <div className={styles.publicationgriditem}>
+                                            {
+                                                facetsRender
+                                            }
+                                        </div>
+                                        : <></>
+                                }
+                                <div className={Array.isArray(facetsRender) ? styles.publicationgriditem : ""}>
+                                    <EntryPublicationList
+                                        opdsPublicationView={browserResult.data.publications}
+                                        links={browserResult.data.links}
+                                        pageInfo={browserResult.data.metadata}
+                                    />
+                                </div>
+                            </div>
                         </>
                     );
                 } else if (browserResult.data.groups ||
