@@ -20,8 +20,8 @@ import { DisplayType } from "readium-desktop/renderer/library/routing";
 import PublicationCard from "../publication/PublicationCard";
 import { ListView } from "../utils/ListView";
 import Slider from "../utils/Slider";
-import EntryList from "./EntryList";
 import Entry from "./Entry";
+import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
@@ -115,7 +115,9 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                 browserResult.data.groups?.map((group, i) =>
                                     <section key={i}>
                                         <br></br>
-                                        <h3><Entry entry={group.selfLink}></Entry></h3>
+                                        <h3 className={styles.entrygroups}>
+                                            <Entry level={this.props.level} entry={group.selfLink}></Entry>
+                                        </h3>
                                         {
                                             group.navigation &&
                                             <EntryList entries={group.navigation} />
@@ -178,6 +180,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         browserData: apiBrowseData?.data,
         location: state.router.location,
+        level: state.opds.browser.breadcrumb.length + 1,
     };
 };
 

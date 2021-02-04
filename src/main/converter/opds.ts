@@ -25,6 +25,7 @@ import { OPDSFacet } from "@r2-opds-js/opds/opds2/opds2-facet";
 import { OPDSGroup } from "@r2-opds-js/opds/opds2/opds2-group";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSCurrencyEnum } from "@r2-opds-js/opds/opds2/opds2-price";
+import { OPDSProperties } from "@r2-opds-js/opds/opds2/opds2-properties";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { Subject } from "@r2-shared-js/models/metadata-subject";
@@ -35,7 +36,6 @@ import { filterRelLink, filterTypeLink } from "./tools/filterLink";
 import { urlPathResolve } from "./tools/resolveUrl";
 import { TLinkMayBeOpds, TProperties } from "./type/link.type";
 import { ILinkFilter } from "./type/linkFilter.interface";
-import { OPDSProperties } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-properties";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -241,10 +241,10 @@ export class OpdsFeedViewConverter {
         filter: ILinkFilter,
     ): IOpdsLinkView[] {
 
-        const lns = this.filterLinks(links, filter)
+        const lns = this.filterLinks(links, filter);
         const view = lns.map(
             (item) =>
-                this.convertLinkToView(item, baseUrl)
+                this.convertLinkToView(item, baseUrl),
         );
 
         return view;
@@ -436,11 +436,11 @@ export class OpdsFeedViewConverter {
 
         const navigation = r2OpdsGroup.Navigation?.map(
             (item) =>
-                this.convertOpdsNavigationLinkToView(item, baseUrl));
-
+                this.convertOpdsNavigationLinkToView(item, baseUrl),
+        );
 
         const [lnFiltered] = this.filterLinks(r2OpdsGroup.Links, {
-            "rel": "self",
+            rel: "self",
         });
 
         const title = r2OpdsGroup.Metadata?.Title
