@@ -177,6 +177,7 @@
             "addExtract": "Import the extract",
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
+            "goRevokeLoanBook": "Revoke loan",
             "goSubBook": "Subscribe"
         },
         "network": {

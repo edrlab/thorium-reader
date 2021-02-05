@@ -26,6 +26,7 @@ import {
 import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
+import { URL } from "url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 
@@ -41,13 +42,15 @@ type TLabelName = "login" | "password";
 type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/implicit"
     | "http://opds-spec.org/auth/basic"
-    | "http://opds-spec.org/auth/local";
+    | "http://opds-spec.org/auth/local"
+    | "http://librarysimplified.org/authtype/SAML-2.0";
 
 const AUTHENTICATION_TYPE: TAuthenticationType[] = [
     "http://opds-spec.org/auth/oauth/password",
     "http://opds-spec.org/auth/oauth/implicit",
     "http://opds-spec.org/auth/basic",
     "http://opds-spec.org/auth/local",
+    "http://librarysimplified.org/authtype/SAML-2.0",
 ];
 
 const LINK_TYPE: TLinkType[] = [
@@ -364,6 +367,13 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
             break;
         }
 
+        case "http://librarysimplified.org/authtype/SAML-2.0": {
+            browserUrl = `${
+                auth.links?.authenticate?.url
+            }&redirect_uri=${encodeURI("opds://authorize")}`;
+            break;
+        }
+
         case "http://opds-spec.org/auth/local":
         case "http://opds-spec.org/auth/basic":
         case "http://opds-spec.org/auth/oauth/password": {
@@ -593,11 +603,15 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
 
         if (method === "GET") {
             if (host === "authorize") {
-
+                const urlObject = new URL(url);
+                const data: Record<string, string> = {};
+                for (const [key, value] of urlObject.searchParams) {
+                    data[key] = value;
+                }
                 return {
                     url: urlParsed,
                     method: "GET",
-                    data: {},
+                    data,
                 };
             }
         }

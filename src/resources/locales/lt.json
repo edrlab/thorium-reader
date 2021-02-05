@@ -177,6 +177,7 @@
             "addExtract": "Importuoti ištrauką",
             "goBuyBook": "Pirkti šią knygą",
             "goLoanBook": "Pasiskolinti knygą",
+            "goRevokeLoanBook": "",
             "goSubBook": "Prenumeruoti"
         },
         "network": {

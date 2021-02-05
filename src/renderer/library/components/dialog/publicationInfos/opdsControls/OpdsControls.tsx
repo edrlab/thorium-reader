@@ -173,6 +173,31 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     )
                     : <></>;
 
+            const revokeLoanList = () =>
+                Array.isArray(opdsPublicationView.revokeLoanLinks) ? (
+                    opdsPublicationView.revokeLoanLinks.map((ln, idx) => (
+                        <li key={`revokeControl-${idx}`}>
+                            <button
+                                className={styles.lire}
+                                onClick={() =>
+                                    this.props.link(
+                                        ln,
+                                        this.props.location,
+                                        `${__("opds.menu.goRevokeLoanBook")} (${
+                                            opdsPublicationView.title
+                                        })`,
+                                    )
+                                }
+                            >
+                                {__("opds.menu.goRevokeLoanBook")}
+                            </button>
+                            <OpdsLinkProperties properties={ln.properties} />
+                        </li>
+                    ))
+                ) : (
+                    <></>
+                );
+
             if (
                 (Array.isArray(opdsPublicationView.buyLinks)
                     && opdsPublicationView.buyLinks.length)
@@ -180,6 +205,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     && opdsPublicationView.borrowLinks.length)
                 || (Array.isArray(opdsPublicationView.subscribeLinks)
                     && opdsPublicationView.subscribeLinks.length)
+                || (Array.isArray(opdsPublicationView.revokeLoanLinks)
+                    && opdsPublicationView.revokeLoanLinks.length)
             ) {
                 return (
                     <ul className={styles.liens}>
@@ -191,6 +218,9 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         }
                         {
                             subscribeList()
+                        }
+                        {
+                            revokeLoanList()
                         }
                     </ul>
                 );

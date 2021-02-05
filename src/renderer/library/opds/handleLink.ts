@@ -16,6 +16,10 @@ import { ContentType, parseContentType } from "readium-desktop/utils/contentType
 import { dispatchHistoryPush, TLocation } from "../routing";
 import { extractParamFromOpdsRoutePathname } from "./route";
 
+const REL_NAVIGATION_TYPES: string[] = [
+    "http://librarysimplified.org/terms/rel/revoke",
+];
+
 export const dispatchOpdsLink =
     (dispatch: TDispatch) =>
         async (ln: IOpdsLinkView, location: TLocation, title?: string | undefined) => {
@@ -26,7 +30,9 @@ export const dispatchOpdsLink =
             if (contentType === ContentType.Opds2 ||
                 contentType === ContentType.Opds2Auth ||
                 contentType === ContentType.Opds2Pub ||
-                contentType === ContentType.AtomXml) {
+                contentType === ContentType.AtomXml ||
+                REL_NAVIGATION_TYPES.includes(ln.rel)
+                ) {
 
                 const param = extractParamFromOpdsRoutePathname(location.pathname);
 

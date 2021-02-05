@@ -177,6 +177,7 @@
             "addExtract": "Добавить и извлечь",
             "goBuyBook": "Купить эту книгу",
             "goLoanBook": "Брать эту книгу",
+            "goRevokeLoanBook": "",
             "goSubBook": "Подписаться"
         },
         "network": {
