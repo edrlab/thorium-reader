@@ -453,7 +453,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
                 && typeof cv.Href === "string"
             ) {
 
-                const [l] = viewConvert.convertLinkToView([cv], baseUrl);
+                const l = viewConvert.convertLinkToView(cv, baseUrl);
 
                 return { ...pv, [rel]: l } as IOPDSAuthDocParsed["links"]; // typing error why ?
             }
@@ -478,7 +478,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
             })
             : undefined;
         if (ln) {
-            const [linkView] = viewConvert.convertLinkToView([ln], baseUrl);
+            const linkView = viewConvert.convertLinkToView(ln, baseUrl);
             return linkView;
         }
         return undefined;

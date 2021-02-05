@@ -9,15 +9,14 @@
   ],
   "engines": {
     "node": ">=12.0.0",
-    "npm": ">=6.0.0"
+    "npm": ">=6.0.0 <7.0.0"
   },
   "main": "dist/main.js",
   "scripts": {
     "clean": "rimraf dist && rimraf release",
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
     "testFile": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache ",
-    "postinstall__": "npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=11.2.2 --disturl=https://atom.io/download/atom-shell --build-from-source",
-    "postinstall": "npm rebuild --runtime=electron --target=11.2.2 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "postinstall": "npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=11.2.2 --disturl=https://atom.io/download/atom-shell --build-from-source",
     "rmLevelDownDeep": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelSQLite3Deep": "rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
     "_rmLevelSQLite3Deep": "node scripts/sqlite-package-patch.js node_modules/websql/package.json && node scripts/sqlite-package-patch.js node_modules/redux-devtools-cli/package.json && rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
@@ -63,8 +62,8 @@
     "cli:help": "electron . --help",
     "cli": "cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "i18n-sort": "node ./scripts/locales-sort.js",
-    "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en de es fr ja lt nl pt-br pt-pt it zh-cn ru --space 4 --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
-    "i18n-check": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages de es fr ja lt nl pt-br pt-pt it zh-cn ru --space 4 --finalnewline --newkeysempty",
+    "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en de es fr ja lt nl pt-br pt-pt it zh-cn ru fi --space 4 --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
+    "i18n-check": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages de es fr ja lt nl pt-br pt-pt it zh-cn ru fi --space 4 --finalnewline --newkeysempty",
     "i18n-typed": "node ./scripts/locale-wrap.js \"src/resources/locales/en.json\" \"en.json\" && typed_i18n -i \"en.json\" -o src/typings -l typescript && rimraf \"en.json\"",
     "redux-devtools": "redux-devtools --hostname=localhost --port=7770",
     "execFile": "cross-env DEBUG=r2:*,readium-desktop:* ts-node -r tsconfig-paths/register",

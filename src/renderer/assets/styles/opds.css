@@ -1,5 +1,17 @@
 /* FORM */
 
+.entrygroups {
+  & span {
+    padding-right: 10%;
+  }
+}
+.entrygroups {
+  & a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
 .opds_form {
     & button {
         font-size: 1rem;
