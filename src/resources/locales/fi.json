@@ -177,6 +177,7 @@
             "addExtract": "Tuo näyte",
             "goBuyBook": "Osta kirja",
             "goLoanBook": "Lainaa kirja",
+            "goRevokeLoanBook": "",
             "goSubBook": "Tilaa"
         },
         "network": {
