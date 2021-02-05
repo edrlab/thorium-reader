@@ -356,7 +356,7 @@
     "svg-sprite-loader": "^5.2.1",
     "terser-webpack-plugin": "^4.2.3",
     "ts-jest": "^24.3.0",
-    "ts-loader": "^8.0.14",
+    "ts-loader": "^8.0.15",
     "tsconfig-paths": "^3.9.0",
     "tslint": "5.*.*",
     "tslint-language-service": "^0.9.9",
