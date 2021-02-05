@@ -9,15 +9,14 @@
   ],
   "engines": {
     "node": ">=12.0.0",
-    "npm": ">=6.0.0"
+    "npm": ">=6.0.0 <7.0.0"
   },
   "main": "dist/main.js",
   "scripts": {
     "clean": "rimraf dist && rimraf release",
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
     "testFile": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache ",
-    "postinstall__": "npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=11.2.2 --disturl=https://atom.io/download/atom-shell --build-from-source",
-    "postinstall": "npm rebuild --runtime=electron --target=11.2.2 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "postinstall": "npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=11.2.2 --disturl=https://atom.io/download/atom-shell --build-from-source",
     "rmLevelDownDeep": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelSQLite3Deep": "rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
     "_rmLevelSQLite3Deep": "node scripts/sqlite-package-patch.js node_modules/websql/package.json && node scripts/sqlite-package-patch.js node_modules/redux-devtools-cli/package.json && rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
