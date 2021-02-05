@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { response } from "express";
 import * as https from "https";
 import { Headers, RequestInit } from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
