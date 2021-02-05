@@ -314,26 +314,26 @@ declare namespace typed_i18n {
   readonly "lcp": {
     readonly "cancel": string,
     readonly "hint": string,
-    readonly "urlHint": string,
     readonly "password": string,
     readonly "sentence": string,
-    readonly "submit": string
+    readonly "submit": string,
+    readonly "urlHint": string
   }
 };
   (_: "library.lcp", __?: {}): {
   readonly "cancel": string,
   readonly "hint": string,
-  readonly "urlHint": string,
   readonly "password": string,
   readonly "sentence": string,
-  readonly "submit": string
+  readonly "submit": string,
+  readonly "urlHint": string
 };
   (_: "library.lcp.cancel", __?: {}): string;
   (_: "library.lcp.hint", __?: {}): string;
-  (_: "library.lcp.urlHint", __?: {}): string;
   (_: "library.lcp.password", __?: {}): string;
   (_: "library.lcp.sentence", __?: {}): string;
   (_: "library.lcp.submit", __?: {}): string;
+  (_: "library.lcp.urlHint", __?: {}): string;
   (_: "message", __?: {}): {
   readonly "download": { readonly "error": string },
   readonly "import": {
