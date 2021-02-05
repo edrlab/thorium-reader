@@ -21,18 +21,18 @@ import * as ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
 import * as ruCatalog from "readium-desktop/resources/locales/ru.json";
 import * as zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
 
-// import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
-// import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
-// import * as esLang from "readium-desktop/resources/locale-names/esLang.json";
-// import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
-// import * as itLang from "readium-desktop/resources/locale-names/itLang.json";
-// import * as jaLang from "readium-desktop/resources/locale-names/jaLang.json";
-// import * as ltLang from "readium-desktop/resources/locale-names/ltLang.json";
-// import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
-// import * as ptBrLang from "readium-desktop/resources/locale-names/ptBrLang.json";
-// import * as ptPtLang from "readium-desktop/resources/locale-names/ptPtLang.json";
-// import * as ruLang from "readium-desktop/resources/locale-names/ruLang.json";
-// import * as zhCnLang from "readium-desktop/resources/locale-names/zhCnLang.json";
+import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
+import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
+import * as esLang from "readium-desktop/resources/locale-names/esLang.json";
+import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
+import * as itLang from "readium-desktop/resources/locale-names/itLang.json";
+import * as jaLang from "readium-desktop/resources/locale-names/jaLang.json";
+import * as ltLang from "readium-desktop/resources/locale-names/ltLang.json";
+import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
+import * as ptBrLang from "readium-desktop/resources/locale-names/ptBrLang.json";
+import * as ptPtLang from "readium-desktop/resources/locale-names/ptPtLang.json";
+import * as ruLang from "readium-desktop/resources/locale-names/ruLang.json";
+import * as zhCnLang from "readium-desktop/resources/locale-names/zhCnLang.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
@@ -151,19 +151,19 @@ i18nextInstance.init({
     console.log(err);
 });
 
-// i18nextInstance.addResourceBundle("en", "translation", enLang, true);
-// i18nextInstance.addResourceBundle("fr", "translation", frLang, true);
+i18nextInstance.addResourceBundle("en", "translation", enLang, true);
+i18nextInstance.addResourceBundle("fr", "translation", frLang, true);
 // i18nextInstance.addResourceBundle("fi", "translation", fiLang, true);
-// i18nextInstance.addResourceBundle("de", "translation", deLang, true);
-// i18nextInstance.addResourceBundle("es", "translation", esLang, true);
-// i18nextInstance.addResourceBundle("nl", "translation", nlLang, true);
-// i18nextInstance.addResourceBundle("ja", "translation", jaLang, true);
-// i18nextInstance.addResourceBundle("lt", "translation", ltLang, true);
-// i18nextInstance.addResourceBundle("pt-BR", "translation", ptBrLang, true);
-// i18nextInstance.addResourceBundle("pt-PT", "translation", ptPtLang, true);
-// i18nextInstance.addResourceBundle("zh-CN", "translation", zhCnLang, true);
-// i18nextInstance.addResourceBundle("it", "translation", itLang, true);
-// i18nextInstance.addResourceBundle("ru", "translation", ruLang, true);
+i18nextInstance.addResourceBundle("de", "translation", deLang, true);
+i18nextInstance.addResourceBundle("es", "translation", esLang, true);
+i18nextInstance.addResourceBundle("nl", "translation", nlLang, true);
+i18nextInstance.addResourceBundle("ja", "translation", jaLang, true);
+i18nextInstance.addResourceBundle("lt", "translation", ltLang, true);
+i18nextInstance.addResourceBundle("pt-BR", "translation", ptBrLang, true);
+i18nextInstance.addResourceBundle("pt-PT", "translation", ptPtLang, true);
+i18nextInstance.addResourceBundle("zh-CN", "translation", zhCnLang, true);
+i18nextInstance.addResourceBundle("it", "translation", itLang, true);
+i18nextInstance.addResourceBundle("ru", "translation", ruLang, true);
 
 const i18nextInstanceEN = i18nextInstance.cloneInstance();
 i18nextInstanceEN.changeLanguage("en").then((_t) => {
