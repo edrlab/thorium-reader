@@ -1,5 +1,12 @@
 /* FORM */
 
+.publicationgrid {
+
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 50px;
+}
+
 .entrygroups {
   & span {
     padding-right: 10%;
