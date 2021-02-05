@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { response } from "express";
 import * as https from "https";
 import { Headers, RequestInit } from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
@@ -294,7 +295,15 @@ export const httpGetWithAuth =
             const options = _options || {};
             options.method = "get";
 
+            // const response = await httpFetchFormattedResponse(
+            //     _url,
+            //     options,
+            //     enableAuth ? undefined : _callback,
+            //     ..._arg,
+            // );
+
             if (enableAuth) {
+                // response.statusCode === 401
 
                 // enableAuth always activate on httpGet request
                 // means that on each request the acessToken is returned and not only for the 401 http response
@@ -314,8 +323,11 @@ export const httpGetWithAuth =
                     // Because we won't always get a 401 response that will ask us to use it.
                     return httpGetUnauthorized(auth)(_url, options, _callback, ..._arg);
                 }
+
+                // return await handleCallback(response, _callback);
             }
 
+            // return response;
             return httpFetchFormattedResponse(
                 _url,
                 options,
