@@ -295,6 +295,11 @@ export const httpGetWithAuth =
             options.method = "get";
 
             if (enableAuth) {
+
+                // enableAuth always activate on httpGet request
+                // means that on each request the acessToken is returned and not only for the 401 http response
+                // specific to 'librarySimplified' server implementation
+
                 const url = _url instanceof URL ? _url : new URL(_url);
                 const { host } = url;
 
@@ -314,7 +319,7 @@ export const httpGetWithAuth =
             return httpFetchFormattedResponse(
                 _url,
                 options,
-                enableAuth ? undefined : _callback,
+                _callback,
                 ..._arg,
             );
 
