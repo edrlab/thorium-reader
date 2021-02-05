@@ -343,7 +343,7 @@ export class OpdsFeedViewConverter {
             }),
         );
 
-        const revokeLoanLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
+        const revokeLoanLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: ["http://librarysimplified.org/terms/rel/revoke"],
         });
 
