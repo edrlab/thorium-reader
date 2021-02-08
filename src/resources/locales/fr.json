@@ -177,6 +177,7 @@
             "addExtract": "Importer l'extrait",
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
+            "goRevokeLoanBook": "",
             "goSubBook": "Aller sur la page d'abonnement"
         },
         "network": {

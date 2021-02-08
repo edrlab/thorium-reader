@@ -177,6 +177,7 @@
             "addExtract": "抜粋を追加",
             "goBuyBook": "この本を購入",
             "goLoanBook": "この本を借りる",
+            "goRevokeLoanBook": "",
             "goSubBook": "購読"
         },
         "network": {

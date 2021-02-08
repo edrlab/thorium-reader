@@ -106,11 +106,13 @@ export const reduxSyncMiddleware: Middleware
                         ) {
 
                             debug("send to", id);
+                            const a = ActionSerializer.serialize(action);
+                            // debug(a);
                             try {
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
-                                        action: ActionSerializer.serialize(action),
+                                        action: a,
                                     },
                                     sender: {
                                         type: SenderType.Main,

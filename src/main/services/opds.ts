@@ -12,7 +12,12 @@ import {
 } from "readium-desktop/common/views/opds";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
-    ContentType, contentTypeisOpds, contentTypeisXml, parseContentType,
+    ContentType,
+    contentTypeisApiProblem,
+    contentTypeisOpds,
+    contentTypeisOpdsAuth,
+    contentTypeisXml,
+    parseContentType,
 } from "readium-desktop/utils/contentType";
 import * as URITemplate from "urijs/src/URITemplate";
 import * as xmldom from "xmldom";
@@ -93,6 +98,11 @@ export class OpdsService {
                     if (opdsFeedData.data) {
                         return opdsFeedData;
                     }
+                }
+                if (contentTypeisApiProblem(contentType)) {
+                    const json = await opdsFeedData.response.json();
+                    this.handleApiProblems(json, baseUrl);
+                    return opdsFeedData;
                 }
 
                 {
@@ -241,7 +251,7 @@ export class OpdsService {
                 !jsonObj.groups &&
                 !jsonObj.catalogs);
 
-        const isAuth = contentType === ContentType.Opds2Auth ||
+        const isAuth = contentTypeisOpdsAuth(contentType) ||
             typeof jsonObj.authentication !== "undefined";
 
         const isFeed = contentType === ContentType.Opds2 ||
@@ -361,5 +371,12 @@ export class OpdsService {
         const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
         const r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
         return this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, baseUrl);
+    }
+
+    private handleApiProblems(jsonObj: any, baseUrl: string) {
+        const { type, details } = jsonObj;
+        debug(`api problem of type ${type}`);
+        debug(`when accessing ${baseUrl}`);
+        debug(`more ${details}`);
     }
 }

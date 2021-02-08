@@ -177,6 +177,7 @@
             "addExtract": "Zur Bibliothek hinzufügen",
             "goBuyBook": "Dieses Buch kaufen",
             "goLoanBook": "Dieses Buch ausleihen",
+            "goRevokeLoanBook": "",
             "goSubBook": "Abonnieren"
         },
         "network": {

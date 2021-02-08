@@ -95,6 +95,19 @@ export const getConfigRepoOpdsAuthenticationToken =
         filename_,
     );
 
+export const deleteConfigRepoOpdsAuthenticationToken = async (host: string) =>
+    await tryCatch(async () => {
+        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
+        const configRepo = diMainGet(
+            "config-repository",
+        ) as ConfigRepository<IOpdsAuthenticationToken>;
+        const doc = await configRepo.get(id);
+        debug("DELETE opds authentication credentials for", host);
+        // do not risk showing plaintext access/refresh tokens in console / command line shell
+        // debug("Credentials: ", doc?.value);
+        await configRepo.delete(doc.identifier);
+    }, filename_);
+
 export async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
@@ -281,35 +294,46 @@ export const httpGetWithAuth =
             const options = _options || {};
             options.method = "get";
 
-            const response = await httpFetchFormattedResponse(
+            // const response = await httpFetchFormattedResponse(
+            //     _url,
+            //     options,
+            //     enableAuth ? undefined : _callback,
+            //     ..._arg,
+            // );
+
+            if (enableAuth) {
+                // response.statusCode === 401
+
+                // enableAuth always activate on httpGet request
+                // means that on each request the acessToken is returned and not only for the 401 http response
+                // specific to 'librarySimplified' server implementation
+
+                const url = _url instanceof URL ? _url : new URL(_url);
+                const { host } = url;
+
+                const auth = await getConfigRepoOpdsAuthenticationToken(host);
+
+                if (
+                    typeof auth === "object"
+                    && auth.accessToken
+                ) {
+                    // We have an authentication token for this host.
+                    // We should use it by default
+                    // Because we won't always get a 401 response that will ask us to use it.
+                    return httpGetUnauthorized(auth)(_url, options, _callback, ..._arg);
+                }
+
+                // return await handleCallback(response, _callback);
+            }
+
+            // return response;
+            return httpFetchFormattedResponse(
                 _url,
                 options,
-                enableAuth ? undefined : _callback,
+                _callback,
                 ..._arg,
             );
 
-            if (enableAuth) {
-                if (response.statusCode === 401) {
-
-                    const url = _url instanceof URL ? _url : new URL(_url);
-                    const { host } = url;
-
-                    const auth = await getConfigRepoOpdsAuthenticationToken(host);
-
-                    if (
-                        typeof auth === "object"
-                        && auth.accessToken
-                    ) {
-                        return httpGetUnauthorized(auth)(_url, options, _callback, ..._arg);
-                    } else {
-                        debug("there are no authentication credentials in configRepo");
-                        return await handleCallback(response, _callback);
-                    }
-                } else {
-                    return await handleCallback(response, _callback);
-                }
-            }
-            return response;
         };
 
 export const httpGet = httpGetWithAuth(true);
@@ -339,13 +363,23 @@ const httpGetUnauthorized =
             );
 
             if (enableRefresh) {
-                if (
-                    response.statusCode === 401
-                    && auth.refreshUrl && auth.refreshToken
-                ) {
-                    const responseAfterRefresh =
-                        await httpGetUnauthorizedRefresh(auth)(url, options, _callback, ..._arg);
-                    return responseAfterRefresh || response;
+                if (response.statusCode === 401) {
+                    if (auth.refreshUrl && auth.refreshToken) {
+                        const responseAfterRefresh = await httpGetUnauthorizedRefresh(
+                            auth,
+                        )(url, options, _callback, ..._arg);
+                        return responseAfterRefresh || response;
+                    } else {
+                        // Most likely because of a wrong access token.
+                        // In some cases the returned content won't launch a new authentication process
+                        // It's safer to just delete the access token and start afresh now.
+                        await deleteConfigRepoOpdsAuthenticationToken(url.host);
+                        options.headers.delete("Authorization");
+                        const responseWithoutAuth = await httpGetWithAuth(
+                            false,
+                        )(url, options, _callback, ..._arg);
+                        return responseWithoutAuth || response;
+                    }
                 } else {
                     return await handleCallback(response, _callback);
                 }
