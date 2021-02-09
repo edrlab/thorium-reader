@@ -129,7 +129,7 @@ function* downloadResources(
 
             let zipPath: string;
             if (isResourcesType) {
-                zipPath = path.normalize(resourcesHref[idx]).replace("\\", "/");
+                zipPath = resourcesHref[idx];
 
             } else {
                 const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
@@ -241,14 +241,14 @@ export function* packageFromManifestBuffer(
     debug("ready to package the r2Publication");
     debug(r2Publication);
 
-    const manifestUrlAbsolutized = manifestUrl ? url.resolve(href, manifestUrl) : undefined;
+    const manifestUrlAbsolutized = tryCatchSync(() => new URL(manifestUrl, href).toString(), filename_) || href;
     debug("manifestUrl", manifestUrlAbsolutized);
 
     const resourcesHrefMap = yield* callTyped(
         downloadResources,
         r2Publication,
         href,
-        manifestUrlAbsolutized || href,
+        manifestUrlAbsolutized,
     );
 
     const r2PublicationUpdated = updateManifest(r2Publication, resourcesHrefMap);

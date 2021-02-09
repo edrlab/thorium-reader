@@ -75,7 +75,6 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
 
             let title = setTitle(aboutLocale);
 
-            // TODO: search by title is not reliable
             let [pubView] = await apiAction("publication/searchEqTitle", title);
             if (pubView) {
                 console.log("pubView already exist no need to generate a new one");
