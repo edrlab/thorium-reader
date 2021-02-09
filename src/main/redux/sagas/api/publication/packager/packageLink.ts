@@ -119,7 +119,9 @@ function* downloadResources(
 
         // DEPRECATED API (watch for the inverse function parameter order!):
         // url.resolve(baseUrl, l)
-        return resourcesHref.map((l) => new URL(l, baseUrl).toString());
+        return resourcesHref
+            .map((l) => tryCatchSync(() => new URL(l, baseUrl).toString(), filename_))
+            .filter((v) => !!v);
 
     }, filename_);
     debug(resourcesHrefResolved);
