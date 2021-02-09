@@ -125,7 +125,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
             const imgArray = await promises.readdir(imgPath);
             publication.Resources = imgArray.map((i) => {
                 const l = new Link();
-                l.Href = path.join(imagesFolder, i);
+                l.Href = `${imagesFolder}/${i}`; // path.join not on window
                 l.TypeLink = findMimeTypeWithExtension(path.extname(l.Href));
 
                 return l;

@@ -29,9 +29,11 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { downloader } from "../../../downloader";
 import { manifestContext } from "./context";
+import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 // Logger
-const debug = debug_("readium-desktop:main#saga/api/publication/packager/packageLink");
+const filename_ = "readium-desktop:main#saga/api/publication/packager/packageLink";
+const debug = debug_(filename_);
 
 const fetcher = (baseUrl: string) => async (href: string) => {
 
@@ -101,10 +103,20 @@ function* downloadResources(
         return true;
     });
 
-    const resourcesHrefResolved = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
+    const resourcesHrefResolved = tryCatchSync(() => {
+        const baseUrlURL = new URL(baseUrl);
+
+        if (baseUrlURL.protocol === "file:") {
+            const baseUrlLocal = baseUrl.slice("file://".length);
+
+            return resourcesHref.map((l) => path.join(baseUrlLocal, l));
+        }
+        return resourcesHref.map((l) => new URL(decodeURIComponent(l), baseUrl).toString());
+
+    }, filename_);
 
     const pathArrayFromDownloader = baseUrl.startsWith("file://")
-        ? resourcesHrefResolved.map((v) => v.slice("file://".length))
+        ? resourcesHrefResolved
         : yield* callTyped(downloader, resourcesHrefResolved, title);
     const pathArray = pathArrayFromDownloader.map<[string, boolean]>((v, i) => [v, resourcesType[i]]);
 
@@ -118,7 +130,7 @@ function* downloadResources(
 
             let zipPath: string;
             if (isResourcesType) {
-                zipPath = path.normalize(resourcesHref[idx]);
+                zipPath = path.normalize(resourcesHref[idx]).replace("\\", "/");
 
             } else {
                 const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");

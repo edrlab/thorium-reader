@@ -5,4 +5,4 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export const ABOUT_BOOK_TITLE_PREFIX = "_______________";
+export const ABOUT_BOOK_TITLE_PREFIX = "EDRLAB.ThoriumReader-";

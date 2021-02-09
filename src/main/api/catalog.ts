@@ -162,7 +162,7 @@ export class CatalogApi implements ICatalogApi {
         const lastReadedPublicationDocument =
             lastReadingPubArray
                 .map(
-                    (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier)
+                    (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier),
                 )
                 .filter((v) => !!v);
 
