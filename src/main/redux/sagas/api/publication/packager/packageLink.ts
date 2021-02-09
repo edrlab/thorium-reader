@@ -36,6 +36,8 @@ const debug = debug_(filename_);
 const fetcher = (baseUrl: string) => async (href: string) => {
 
     debug("fetcher", href);
+    // DEPRECATED API (watch for the inverse function parameter order!):
+    // url.resolve(baseUrl, href)
     href = new URL(href, baseUrl).toString();
 
     const res = await httpGet(href);
@@ -115,6 +117,8 @@ function* downloadResources(
             return resourcesHref.map((l) => path.join(baseUrlLocal, l));
         }
 
+        // DEPRECATED API (watch for the inverse function parameter order!):
+        // url.resolve(baseUrl, l)
         return resourcesHref.map((l) => new URL(l, baseUrl).toString());
 
     }, filename_);
@@ -264,6 +268,8 @@ export function* packageFromManifestBuffer(
     debug("ready to package the r2Publication");
     debug(r2Publication);
 
+    // DEPRECATED API (watch for the inverse function parameter order!):
+    // url.resolve(href, manifestUrl)
     const manifestUrlAbsolutized = manifestUrl ? new URL(manifestUrl, href).toString() : href;
     debug("manifestUrl", manifestUrlAbsolutized, href, manifestUrl);
 
