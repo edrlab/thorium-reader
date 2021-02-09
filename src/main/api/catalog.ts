@@ -136,11 +136,12 @@ export class CatalogApi implements ICatalogApi {
 
     private async getPublicationView() {
 
-        const errorDeletePub = (doc: PublicationDocument) => {
+        const errorDeletePub = (doc: PublicationDocument | undefined) => {
             debug("Error in convertDocumentToView doc=", doc);
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc.title || ""));
 
-            debug(`${doc.identifier} => ${doc.title} should be removed`);
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc?.title || ""));
+
+            debug(`${doc?.identifier} => ${doc?.title} should be removed`);
             try {
                 // tslint:disable-next-line: no-floating-promises
                 // this.publicationService.deletePublication(doc.identifier);
@@ -159,8 +160,11 @@ export class CatalogApi implements ICatalogApi {
         const lastAddedPublicationsDocument =
             lastAddedPublicationsDocumentRaw.filter(({ identifier }) => !lastReadingPubArray.includes(identifier));
         const lastReadedPublicationDocument =
-            lastReadingPubArray.map(
-                (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier));
+            lastReadingPubArray
+                .map(
+                    (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier)
+                )
+                .filter((v) => !!v);
 
         const lastAddedPublicationsView =
             lastAddedPublicationsDocument.map((doc) => {
