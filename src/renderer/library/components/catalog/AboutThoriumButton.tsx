@@ -70,20 +70,21 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
         let aboutLocale = locale;
 
         const setTitle = (l: string) => `${ABOUT_BOOK_TITLE_PREFIX}${l}`;
-
         try {
 
             let title = setTitle(aboutLocale);
 
-            // TODO: search by title is not reliable
+            // TODO: search by title is not reliable!!
             let [pubView] = await apiAction("publication/search", title);
             if (pubView) {
                 console.log("pubView already exist no need to generate a new one");
                 console.log(pubView);
 
                 this.manifestView = pubView;
-                return;
+
+                return; // see finally {} below
             }
+            console.log("pubView not found, need to generate a new one: ", title);
 
             let folderPath = path.join((global as any).__dirname, infoFolderRelativePath);
             if (_PACKAGING === "0") {
@@ -93,6 +94,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
             let htmlFile = `${aboutLocale}.xhtml`;
             {
                 const filePath = path.join(folderPath, `${aboutLocale}.xhtml`);
+
                 if (!existsSync(filePath)) {
                     aboutLocale = "en";
                 }
@@ -100,15 +102,17 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
                 title = setTitle(aboutLocale);
             }
 
+            // TODO: search by title is not reliable!!
             [pubView] = await apiAction("publication/search", title);
             if (pubView) {
-
                 console.log("pubView already exist no need to generate a new one");
                 console.log(pubView);
 
                 this.manifestView = pubView;
-                return;
+
+                return; // see finally {} below
             }
+            console.log("pubView again not found, need to generate a new one: ", title);
 
             const publication = new R2Publication();
             publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
@@ -125,7 +129,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
             const imgArray = await promises.readdir(imgPath);
             publication.Resources = imgArray.map((i) => {
                 const l = new Link();
-                l.Href = `${imagesFolder}/${i}`; // path.join not on window
+                l.Href = `${imagesFolder}/${i}`; // path.join() backslash on Windows
                 l.TypeLink = findMimeTypeWithExtension(path.extname(l.Href));
 
                 return l;
@@ -134,7 +138,9 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
             const publicationSerialize = TaJsonSerialize(publication);
             const publicationStr = JSON.stringify(publicationSerialize);
 
-            this.manifestView = await apiAction("publication/importFromString", publicationStr, "file://" + folderPath);
+            this.manifestView = await apiAction("publication/importFromString",
+                publicationStr,
+                "file://" + folderPath.replace(/\\/g, "/"));
 
         } catch (e) {
             console.log("error to import about", aboutLocale, e);
