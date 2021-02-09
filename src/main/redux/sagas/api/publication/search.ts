@@ -23,3 +23,16 @@ export function* search(title: string): SagaGenerator<PublicationView[]> {
 
     return aboutFiltered(publicationViews);
 }
+
+export function* searchEqTitle(title: string): SagaGenerator<PublicationView[]> {
+    const titleFormated = title?.trim() || "";
+
+    const publicationRepository = diMainGet("publication-repository");
+    const publicationDocuments = yield* callTyped(() => publicationRepository.findByTitle(titleFormated));
+
+    const publicationViewConverter = diMainGet("publication-view-converter");
+    const publicationViews = publicationDocuments.map((publicationDocument) =>
+        publicationViewConverter.convertDocumentToView(publicationDocument));
+
+    return publicationViews;
+}

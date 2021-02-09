@@ -158,7 +158,7 @@ function* downloadResources(
 
             let zipPath: string;
             if (isResourcesType) {
-                zipPath = path.normalize(resourcesHref[idx]).replace(/\\/g, "/");
+                zipPath = resourcesHref[idx];
 
             } else {
                 const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
@@ -272,8 +272,8 @@ export function* packageFromManifestBuffer(
 
     // DEPRECATED API (watch for the inverse function parameter order!):
     // url.resolve(href, manifestUrl)
-    const manifestUrlAbsolutized = manifestUrl ? new URL(manifestUrl, href).toString() : href;
-    debug("manifestUrl", manifestUrlAbsolutized, href, manifestUrl);
+    const manifestUrlAbsolutized = tryCatchSync(() => new URL(manifestUrl, href).toString(), filename_) || href;
+    debug("manifestUrl", manifestUrlAbsolutized);
 
     const resourcesHrefMap = yield* callTyped(
         downloadResources,
