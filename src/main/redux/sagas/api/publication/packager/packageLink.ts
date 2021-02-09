@@ -264,7 +264,7 @@ export function* packageFromManifestBuffer(
     debug("ready to package the r2Publication");
     debug(r2Publication);
 
-    const manifestUrlAbsolutized = manifestUrl ? new URL(href, manifestUrl).toString() : href;
+    const manifestUrlAbsolutized = manifestUrl ? new URL(manifestUrl, href).toString() : href;
     debug("manifestUrl", manifestUrlAbsolutized, href, manifestUrl);
 
     const resourcesHrefMap = yield* callTyped(
