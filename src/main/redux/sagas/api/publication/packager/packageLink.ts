@@ -12,14 +12,14 @@ import * as path from "path";
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
-    getUniqueResourcesFromR2Publication,
-    w3cPublicationManifestToReadiumPublicationManifest,
+    getUniqueResourcesFromR2Publication, w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
 import {
     findManifestFromHtmlEntryAndReturnBuffer,
 } from "readium-desktop/main/w3c/audiobooks/entry";
 import { findHtmlTocInRessources } from "readium-desktop/main/w3c/audiobooks/toc";
 import { createWebpubZip, TResourcesFSCreateZip } from "readium-desktop/main/zip/create";
+import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { SagaGenerator } from "typed-redux-saga";
 import * as url from "url";
 
@@ -29,7 +29,6 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { downloader } from "../../../downloader";
 import { manifestContext } from "./context";
-import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 // Logger
 const filename_ = "readium-desktop:main#saga/api/publication/packager/packageLink";
