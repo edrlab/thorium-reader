@@ -21,7 +21,6 @@ import { findHtmlTocInRessources } from "readium-desktop/main/w3c/audiobooks/toc
 import { createWebpubZip, TResourcesFSCreateZip } from "readium-desktop/main/zip/create";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { SagaGenerator } from "typed-redux-saga";
-import * as url from "url";
 
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
