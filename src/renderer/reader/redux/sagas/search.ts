@@ -182,6 +182,8 @@ function* requestPublicationData() {
             isFixedLayout: isFixedLayout(ln, r2Manifest),
         };
         try {
+            // DEPRECATED API (watch for the inverse function parameter order!):
+            // url.resolve(manifestUrlR2Protocol, ln.Href)
             const url = new URL(ln.Href, manifestUrlR2Protocol);
             if (url.pathname.endsWith(".html") || url.pathname.endsWith(".xhtml") || url.pathname.endsWith(".xml")
                 || ln.TypeLink === ContentType.Xhtml

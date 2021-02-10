@@ -23,13 +23,26 @@ export function lockInstance() {
         // https://github.com/electron/electron/blob/master/docs/api/app.md#apprequestsingleinstancelock
         app.on("will-finish-launching", () => {
 
+            // https://api.archivelab.org/books/letters_to_friend_2004_librivox/opds_audio_manifest
+            // tslint:disable-next-line: max-line-length
+            // https://streamer.kvmai.com/pub/aHR0cHM6Ly9uZ25peC1zZXJ2ZXItbmNuZGFkd3M0cS1leS5hLnJ1bi5hcHAvcHVibGljL0FjY2Vzc2libGVfRVBVQl8zLmVwdWI=/manifest.json
+            //
+            // https://w3c.github.io/publ-tests/test_reports/manifest_processing/
+            // =>
+            // https://w3c.github.io/publ-tests/audiobooks/manifest_processing/tests/a4.2.04.html
+            // https://w3c.github.io/publ-tests/audiobooks/manifest_processing/tests/a4.2.02.html
+
+            // To test in dev mode:
+            // setTimeout(() => {
+            //     const url = "xxx";
+            //     const openUrlChannel = getOpenUrlFromMacEventChannel();
+            //     openUrlChannel.put(url);
+            //     debug("====================== open url", url);
+            // }, 10000);
+
             app.on("open-url", (event, url) => {
                 event.preventDefault();
 
-                // ex:
-                // thorium:https://api.archivelab.org/books/letters_to_friend_2004_librivox/opds_audio_manifest
-
-                // doesn't works in dev mode
                 debug("#####");
                 debug("OPEN URL", url);
                 debug("#####");
