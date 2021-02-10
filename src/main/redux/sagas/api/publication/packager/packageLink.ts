@@ -261,11 +261,11 @@ export function* packageFromLink(
 }
 
 export function* packageFromManifestBuffer(
-    href: string, // 'file://' for local resources
+    baseUrl: string, // 'file://' for local resources
     manifest: Buffer,
-    manifestUrl?: string,
+    manifestPath?: string,
 ) {
-    const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, href);
+    const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, baseUrl);
     if (!r2Publication) {
         throw new Error("r2Publication parsing failed");
     }
@@ -275,13 +275,13 @@ export function* packageFromManifestBuffer(
 
     // DEPRECATED API (watch for the inverse function parameter order!):
     // url.resolve(href, manifestUrl)
-    const manifestUrlAbsolutized = manifestUrl ? tryCatchSync(() => new URL(manifestUrl, href).toString(), filename_) : href;
+    const manifestUrlAbsolutized = manifestPath ? tryCatchSync(() => new URL(manifestPath, baseUrl).toString(), filename_) : baseUrl;
     debug("manifestUrl", manifestUrlAbsolutized);
 
     const resourcesHrefMap = yield* callTyped(
         downloadResources,
         r2Publication,
-        href,
+        baseUrl,
         manifestUrlAbsolutized,
     );
 
