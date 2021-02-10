@@ -272,7 +272,7 @@ export function* packageFromManifestBuffer(
 
     // DEPRECATED API (watch for the inverse function parameter order!):
     // url.resolve(href, manifestUrl)
-    const manifestUrlAbsolutized = tryCatchSync(() => new URL(manifestUrl, href).toString(), filename_) || href;
+    const manifestUrlAbsolutized = manifestUrl ? tryCatchSync(() => new URL(manifestUrl, href).toString(), filename_) : href;
     debug("manifestUrl", manifestUrlAbsolutized);
 
     const resourcesHrefMap = yield* callTyped(
