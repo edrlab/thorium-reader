@@ -112,6 +112,9 @@ function* downloadResources(
         const baseUrlURL = new URL(baseUrl);
 
         if (baseUrlURL.protocol === "file:") {
+            // new URL('file://C:/test/here')).pathname
+            // /C:/test/here
+            // WARNING: see code comment about isWindowsFilesystemPathRooted below!
             const baseUrlLocal = baseUrl.slice("file://".length);
 
             return resourcesHref.map((l) => path.join(baseUrlLocal, l));
