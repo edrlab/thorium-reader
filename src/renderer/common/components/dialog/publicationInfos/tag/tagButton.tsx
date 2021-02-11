@@ -20,7 +20,6 @@ export interface IProps {
     onClickLinkCb?: (tag: IOpdsTagView) => () => void | undefined;
 }
 
-// tslint:disable-next-line: no-empty
 export const TagButton: React.FC<IProps> = (props) => {
 
     const { tag, index, __, pubId, onClickDeleteCb, onClickLinkCb } = props;
