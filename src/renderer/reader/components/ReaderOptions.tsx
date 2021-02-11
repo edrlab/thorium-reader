@@ -467,12 +467,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const readiumCSSFontIDToSelect = fontListItem ?
             fontListItem.id : // readiumCSSFontID
             "VOID";
-        const readiumCSSFontNAME = fontListItem ? fontListItem.label : readiumCSSFontID;
-        const readiumCSSFontNAME_ = readiumCSSFontNAME === "VOID" ? "" : readiumCSSFontNAME;
+        const readiumCSSFontName = fontListItem ? fontListItem.label : readiumCSSFontID;
+        const readiumCSSFontPreview = (readiumCSSFontName === "VOID" || fontListItem?.id === "DEFAULT") ?
+            " " : readiumCSSFontName;
         const fontFamily =
             (fontListItem && fontListItem.style) ?
             fontListItem.style.replace("font-family:", "").replace(/;/g, "") :
-            `'${readiumCSSFontNAME}', serif`;
+            `'${readiumCSSFontName}', serif`;
 
         return <>
             <div className={styles.line_tab_content}>
@@ -561,8 +562,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                     "font",
                                     val);
                             }}
-                            placeholder={readiumCSSFontNAME_ ?? __("reader.settings.font")}
-                            alt={readiumCSSFontNAME_ ?? __("reader.settings.font")}
+                            placeholder={readiumCSSFontPreview ?? __("reader.settings.font")}
+                            alt={readiumCSSFontPreview ?? __("reader.settings.font")}
                         />
                     }
                     </div>
@@ -573,8 +574,9 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             lineHeight: "1.2em",
                             display: "block",
                             marginTop: "0.84em",
+                            marginBottom: "0.5em",
                             fontFamily,
-                        }}>{readiumCSSFontNAME_}</span>
+                        }}>{readiumCSSFontPreview}</span>
                 </div>
             </div>
         </>;
