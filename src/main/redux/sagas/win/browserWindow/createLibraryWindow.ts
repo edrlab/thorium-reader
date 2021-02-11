@@ -59,10 +59,12 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         contextMenuSetup(wc, wc.id);
 
         libWindow.webContents.on("did-finish-load", () => {
+
             const {
                 default: installExtension,
                 REACT_DEVELOPER_TOOLS,
                 REDUX_DEVTOOLS,
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             } = require("electron-devtools-installer");
 
             [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
