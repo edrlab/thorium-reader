@@ -21,6 +21,9 @@ import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readiu
 import { error } from "readium-desktop/main/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
+import {
+    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
+} from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take } from "redux-saga/effects";
 import { types } from "util";
