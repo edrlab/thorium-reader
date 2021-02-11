@@ -24,7 +24,7 @@ module.exports = {
         "prettier/@typescript-eslint",
         "plugin:prettier/recommended",
     ],
-    plugins: ["prettier"],
+    plugins: ["unused-imports", "prettier"],
     rules: {
         quotes: ["error", "double"],
         "comma-dangle": ["error", "always-multiline"],
@@ -32,7 +32,20 @@ module.exports = {
         semi: ["error", "always"],
 
         "no-unused-vars": 0,
-        "@typescript-eslint/no-unused-vars": [
+        "@typescript-eslint/no-unused-vars": 0,
+        // "@typescript-eslint/no-unused-vars": [
+        //     "error",
+        //     {
+        //         vars: "all",
+        //         args: "all",
+        //         argsIgnorePattern: "^_",
+        //         varsIgnorePattern: "^_",
+        //         caughtErrorsIgnorePattern: "^_",
+        //         caughtErrors: "all",
+        //     },
+        // ],
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
             "error",
             {
                 vars: "all",
@@ -43,6 +56,9 @@ module.exports = {
                 caughtErrors: "all",
             },
         ],
+
+        // react/jsx-uses-react
+        // react/jsx-uses-vars
 
         // TODO?
         "react/prop-types": 0,

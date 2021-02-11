@@ -7,9 +7,7 @@
 
 import { app } from "electron";
 import * as express from "express";
-import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _USE_HTTP_STREAMER,
-} from "readium-desktop/preprocessor-directives";
+import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";

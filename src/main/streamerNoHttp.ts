@@ -11,9 +11,7 @@ import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "elect
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
-import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _USE_HTTP_STREAMER,
-} from "readium-desktop/preprocessor-directives";
+import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
