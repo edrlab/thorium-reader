@@ -9,8 +9,6 @@ node_modules/*
 resources/*
 external-assets/*
 scripts/*
-src/utils/search/transliteration.ts
-src/utils/mimeTypes.ts
 src/typings/*
 src/resources/*
 src/renderer/assets/*

@@ -42,7 +42,6 @@ module.exports = {
         "react/prop-types": 0,
         "react/no-find-dom-node": 0,
 
-        "@typescript-eslint/ban-ts-comment": 0,
         "@typescript-eslint/no-inferrable-types": 0,
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/ban-types": 0,
