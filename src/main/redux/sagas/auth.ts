@@ -240,7 +240,10 @@ async function opdsSetAuthCredentials(
             if (authenticationType === "http://opds-spec.org/auth/basic") {
 
                 postDataCredential = {
-                    accessToken: Buffer.from(`${data.login}:${data.password}`).toString("base64"),
+                    accessToken:
+                        Buffer.from(
+                            `${decodeURIComponent(data.login)}:${decodeURIComponent(data.password)}`
+                            ).toString("base64"),
                     refreshToken: undefined,
                     tokenType: "basic",
                 };
@@ -251,8 +254,8 @@ async function opdsSetAuthCredentials(
                     await (async (): Promise<[IOpdsAuthenticationToken, Error]> => {
                         // payload in function of authenticationType
                         const payload: any = {
-                            username: data.login,
-                            password: data.password,
+                            username: decodeURIComponent(data.login),
+                            password: decodeURIComponent(data.password),
                         };
                         if (authenticationType === "http://opds-spec.org/auth/oauth/password") {
                             payload.grant_type = "password";
