@@ -9,7 +9,7 @@ import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "MAIN_WIN_READER_CLOSE_REQUEST";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
     identifier: string;
 }

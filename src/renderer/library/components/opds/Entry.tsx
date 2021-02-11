@@ -14,7 +14,7 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/rou
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     level?: number;
     entry: IOpdsNavigationLinkView;
@@ -23,7 +23,7 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 

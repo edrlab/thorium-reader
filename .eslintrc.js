@@ -39,14 +39,19 @@ module.exports = {
             },
         ],
 
+        // TODO?
         "react/prop-types": 0,
+
+        // TODO! (deprecated and fobidden in strict mode)
         "react/no-find-dom-node": 0,
 
-        "@typescript-eslint/no-explicit-any": 0,
+        // TODO ({} used as anonymous / generic object type)
         "@typescript-eslint/ban-types": 0,
+
+        // TODO (any!!)
+        "@typescript-eslint/no-explicit-any": 0,
+
         "@typescript-eslint/explicit-module-boundary-types": 0,
-        "@typescript-eslint/explicit-function-return-type": 0,
-        "@typescript-eslint/no-empty-interface": 0,
 
         "prettier/prettier": "error",
     },
