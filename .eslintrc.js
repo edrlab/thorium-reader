@@ -1,6 +1,11 @@
 module.exports = {
     parser: "@typescript-eslint/parser",
-
+    env: {
+        node: true,
+        browser: true,
+        es6: true,
+        es2020: true,
+    },
     parserOptions: {
         ecmaVersion: 2020,
         sourceType: "module",
@@ -48,11 +53,44 @@ module.exports = {
         // TODO ({} used as anonymous / generic object type)
         "@typescript-eslint/ban-types": 0,
 
-        // TODO (any!!)
+        // TODO (many any!!)
         "@typescript-eslint/no-explicit-any": 0,
 
+        // TODO (missing return types on functions)
         "@typescript-eslint/explicit-module-boundary-types": 0,
+        // "@typescript-eslint/explicit-module-boundary-types": [
+        //     "error",
+        //     {
+        //         allowArgumentsExplicitlyTypedAsAny: true,
+        //         allowDirectConstAssertionInArrowFunctions: true,
+        //         allowedNames: [],
+        //         allowHigherOrderFunctions: true,
+        //         allowTypedFunctionExpressions: true,
+        //     },
+        // ],
+
+        // "@typescript-eslint/explicit-function-return-type": 0,
+        // "@typescript-eslint/explicit-function-return-type": [
+        //     "error",
+        //     {
+        //         allowExpressions: true,
+        //         allowTypedFunctionExpressions: true,
+        //     },
+        // ],
 
         "prettier/prettier": "error",
     },
+    // overrides: [
+    //     {
+    //         files: ["*.ts", "*.tsx"],
+    //         rules: {
+    //             "@typescript-eslint/explicit-function-return-type": [
+    //                 "error",
+    //                 {
+    //                     allowExpressions: true,
+    //                 },
+    //             ],
+    //         },
+    //     },
+    // ],
 };
