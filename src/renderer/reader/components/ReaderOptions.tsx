@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { debounce } from "debounce";
-
 import * as React from "react";
 import { connect } from "react-redux";
 import { Font } from "readium-desktop/common/models/font";
@@ -29,7 +28,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
-import fontList from "readium-desktop/utils/fontList";
+import fontList, { FONT_ID_DEFAULT, FONT_ID_VOID } from "readium-desktop/utils/fontList";
 
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
@@ -40,6 +39,7 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
+
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
@@ -462,13 +462,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         // TODO: https://github.com/rBurgett/system-font-families
         const readiumCSSFontID = readerConfig.font;
         const fontListItem = fontList.find((f) => {
-            return f.id === readiumCSSFontID && f.id !== "VOID";
+            return f.id === readiumCSSFontID && f.id !== FONT_ID_VOID;
         });
         const readiumCSSFontIDToSelect = fontListItem ?
             fontListItem.id : // readiumCSSFontID
-            "VOID";
+            FONT_ID_VOID;
         const readiumCSSFontName = fontListItem ? fontListItem.label : readiumCSSFontID;
-        const readiumCSSFontPreview = (readiumCSSFontName === "VOID" || fontListItem?.id === "DEFAULT") ?
+        const readiumCSSFontPreview = (readiumCSSFontName === FONT_ID_VOID || fontListItem?.id === FONT_ID_DEFAULT) ?
             " " : readiumCSSFontName;
         const fontFamily =
             (fontListItem && fontListItem.style) ?

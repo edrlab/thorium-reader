@@ -81,6 +81,7 @@ src: local("iAWriterDuospace-Regular"),
 url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
         `;
                 el = document.createElement("style");
+                el.setAttribute("id", readiumCssFontFaceStyleID);
                 el.setAttribute("type", "text/css");
                 el.appendChild(document.createTextNode(css));
                 document.head.appendChild(el);

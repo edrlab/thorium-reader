@@ -11,9 +11,12 @@ import { Font } from "readium-desktop/common/models/font";
 // import { diRendererSymbolTable } from "readium-desktop/renderer/library/diSymbolTable";
 // console.log(diRendererSymbolTable["react-library-app"]);
 
+export const FONT_ID_DEFAULT = "DEFAULT";
+export const FONT_ID_VOID = "VOID";
+
 const fontList: Font[] =
 [{
-    id: "DEFAULT",
+    id: FONT_ID_DEFAULT,
     label: "Default font",
 }, {
     id: "OLD",
@@ -45,7 +48,7 @@ const fontList: Font[] =
     label: "Monospace",
     style: "font-family: \"Andale Mono\", Consolas, monospace;",
 }, {
-    id: "VOID",
+    id: FONT_ID_VOID,
     label: "...",
     style: "font-family: Consolas, monospace;",
 }];
