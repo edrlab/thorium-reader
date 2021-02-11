@@ -65,7 +65,7 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
     public remove(e: TMouseEventOnButton) {
         e.preventDefault();
         apiAction("opds/deleteFeed", this.props.feed.identifier).catch((error) => {
-            console.error(`Error to fetch opds/deleteFeed`, error);
+            console.error("Error to fetch opds/deleteFeed", error);
         });
         this.props.closeDialog();
     }

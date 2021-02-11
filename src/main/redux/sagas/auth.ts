@@ -827,7 +827,7 @@ const htmlLoginTemplate = (
         <div class="login">
         <h1>${title}</h1>
         <form method="post" action="${urlToSubmit}">
-        ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ``}
+        ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ""}
         <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
         <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
         <p class="submit">

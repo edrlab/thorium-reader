@@ -171,7 +171,7 @@ const streamProtocolHandler = async (
     debug("streamProtocolHandler req.url", req.url);
     const u = new URL(req.url);
 
-    const publicationAssetsPrefix = `/pub/`;
+    const publicationAssetsPrefix = "/pub/";
     const isPublicationAssets = u.pathname.startsWith(publicationAssetsPrefix);
 
     const mathJaxPrefix = `/${MATHJAX_URL_PATH}/`;

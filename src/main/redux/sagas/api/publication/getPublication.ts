@@ -22,7 +22,7 @@ export function* getPublication(identifier: string, checkLcpLsd: boolean = false
         doc = yield* callTyped(() => publicationRepository.get(identifier));
     } catch (e) {
         debug(`can't get ${identifier}`, e);
-        throw new Error(`publication not found`); // TODO translation
+        throw new Error("publication not found"); // TODO translation
     }
 
     const lcpManager = diMainGet("lcp-manager");
@@ -32,8 +32,8 @@ export function* getPublication(identifier: string, checkLcpLsd: boolean = false
             doc = yield* callTyped(() => lcpManager.checkPublicationLicenseUpdate(doc));
         }
     } catch (e) {
-        debug(`error on checkPublicationLicenseUpdate`, e);
-        throw new Error(`check lcp license in publication failed`); // TODO translation
+        debug("error on checkPublicationLicenseUpdate", e);
+        throw new Error("check lcp license in publication failed"); // TODO translation
     }
 
     const publicationViewConverter = diMainGet("publication-view-converter");

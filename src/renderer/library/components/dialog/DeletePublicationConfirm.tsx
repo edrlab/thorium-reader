@@ -63,7 +63,7 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
     public remove(e: TMouseEventOnButton) {
         e.preventDefault();
         apiAction("publication/delete", this.props.publicationView.identifier).catch((error) => {
-            console.error(`Error to fetch publication/delete`, error);
+            console.error("Error to fetch publication/delete", error);
         });
         this.props.closeDialog();
     }

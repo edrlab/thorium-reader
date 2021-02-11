@@ -28,7 +28,7 @@
     "build:prod": "npm run lint && npm run build",
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build:prod && cross-env DEBUG=r2:*,readium-desktop:* electron .",
-    "lint:ts": "eslint \"*/**/*.{ts,tsx}\"",
+    "lint:ts": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:editorconfig": "eclint check '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*' '!src/main/w3c/**' '!src/resources/**/*'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer:library-reader-pdf": "npm run start:dev:renderer:pdf && concurrently --kill-others \"npm run start:dev:renderer:library\" \"npm run start:dev:renderer:reader\"",

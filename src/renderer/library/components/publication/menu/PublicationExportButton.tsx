@@ -48,7 +48,7 @@ class PublicationExportButton extends React.Component<IProps, undefined> {
     private onExport = () => {
         const publicationView = this.props.publicationView;
         apiAction("publication/exportPublication", publicationView).catch((error) => {
-            console.error(`Error to fetch publication/exportPublication`, error);
+            console.error("Error to fetch publication/exportPublication", error);
         });
     }
 }

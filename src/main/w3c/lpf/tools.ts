@@ -23,7 +23,7 @@ export async function copyAndMoveLpfToTmpWithNewExt(
     ext: string = acceptedExtensionObject.audiobook,
 ): Promise<string> {
 
-    const tmpPathName = `lpfconverter`;
+    const tmpPathName = "lpfconverter";
     const tmpPath = os.tmpdir();
 
     // creation of a unique temporary directory

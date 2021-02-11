@@ -21,7 +21,6 @@ module.exports = {
     ],
     plugins: ["prettier"],
     rules: {
-        // "@typescript-eslint/explicit-function-return-type": "off"
         "quotes": ["error", "double"],
         "comma-dangle": ["error", "always-multiline"],
         "eol-last": ["error", "always"],
@@ -34,6 +33,22 @@ module.exports = {
             "caughtErrorsIgnorePattern": "^_",
             "caughtErrors": "all" }
         ],
+        "no-unused-vars": 0,
+
+        "prefer-rest-params": 0,
+        "react/prop-types": 0,
+        "react/no-find-dom-node": 0,
+        "@typescript-eslint/no-var-requires": 0,
+        "@typescript-eslint/no-empty-function": 0,
+        "@typescript-eslint/ban-ts-comment": 0,
+        "@typescript-eslint/no-unused-vars": 0,
+        "@typescript-eslint/no-inferrable-types": 0,
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/ban-types": 0,
+        "@typescript-eslint/explicit-module-boundary-types": 0,
+        "@typescript-eslint/explicit-function-return-type": 0,
+        "@typescript-eslint/no-empty-interface": 0,
+
         "prettier/prettier": "error",
     },
 };

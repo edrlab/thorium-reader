@@ -82,7 +82,7 @@ class FileImport extends React.Component<IProps, undefined> {
                 return file.path;
             });
             apiAction("publication/importFromFs", paths).catch((error) => {
-                console.error(`Error to fetch publication/importFromFs`, error);
+                console.error("Error to fetch publication/importFromFs", error);
             });
             this.props.closeDialog();
         }

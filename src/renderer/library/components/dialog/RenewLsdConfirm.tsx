@@ -63,7 +63,7 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
     public renew(e: TMouseEventOnButton) {
         e.preventDefault();
         apiAction("lcp/renewPublicationLicense", this.props.publicationView.identifier).catch((error) => {
-            console.error(`Error API lcp/renewPublicationLicense`, error);
+            console.error("Error API lcp/renewPublicationLicense", error);
         });
         this.props.closeDialog();
     }

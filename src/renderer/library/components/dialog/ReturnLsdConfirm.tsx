@@ -64,7 +64,7 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
         e.preventDefault();
         apiAction("lcp/returnPublication", this.props.publicationView.identifier)
         .catch((error) => {
-            console.error(`Error API lcp/returnPublication`, error);
+            console.error("Error API lcp/returnPublication", error);
         });
         this.props.closeDialog();
     }

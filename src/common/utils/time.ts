@@ -23,5 +23,5 @@ export function formatTime(seconds: number): string {
 }
 
 export function formatTime_(nHours: number, nMinutes: number, nSeconds: number): string {
-    return `${nHours > 0 ? (nHours.toString().padStart(2, "0") + ":") : ``}${nMinutes > 0 ? (nMinutes.toString().padStart(2, "0") + ":") : `00:`}${nSeconds > 0 ? (nSeconds.toString().padStart(2, "0")) : `00`}`;
+    return `${nHours > 0 ? (nHours.toString().padStart(2, "0") + ":") : ""}${nMinutes > 0 ? (nMinutes.toString().padStart(2, "0") + ":") : "00:"}${nSeconds > 0 ? (nSeconds.toString().padStart(2, "0")) : "00"}`;
 }
