@@ -242,7 +242,7 @@ async function opdsSetAuthCredentials(
                 postDataCredential = {
                     accessToken:
                         Buffer.from(
-                            `${decodeURIComponent(data.login)}:${decodeURIComponent(data.password)}`,
+                            `${data.login}:${data.password}`,
                             ).toString("base64"),
                     refreshToken: undefined,
                     tokenType: "basic",
@@ -254,8 +254,8 @@ async function opdsSetAuthCredentials(
                     await (async (): Promise<[IOpdsAuthenticationToken, Error]> => {
                         // payload in function of authenticationType
                         const payload: any = {
-                            username: decodeURIComponent(data.login),
-                            password: decodeURIComponent(data.password),
+                            username: data.login,
+                            password: data.password,
                         };
                         if (authenticationType === "http://opds-spec.org/auth/oauth/password") {
                             payload.grant_type = "password";
@@ -583,11 +583,15 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
                     const keyValue = data.split("&");
                     const values = tryCatchSync(
                         () => keyValue.reduce(
-                            (pv, cv) =>
-                                ({
+                            (pv, cv) => {
+                                const splt = cv.split("=");
+                                const key = decodeURIComponent(splt[0]);
+                                const val = decodeURIComponent(splt[1]);
+                                return {
                                     ...pv,
-                                    [cv.split("=")[0]]: cv.split("=")[1],
-                                }),
+                                    [key]: val,
+                                };
+                            },
                             {},
                         ),
                         filename_,
