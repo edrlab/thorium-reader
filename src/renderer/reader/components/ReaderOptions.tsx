@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { debounce } from "debounce";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { Font } from "readium-desktop/common/models/font";
@@ -64,10 +66,16 @@ interface IState {
     pdfCol: IPdfPlayerColumn | undefined;
 }
 
+type ThandleSettingChange = IReaderOptionsProps["handleSettingChange"];
+
 export class ReaderOptions extends React.Component<IProps, IState> {
+
+    public handleSettingChangeDebounced: ThandleSettingChange;
 
     constructor(props: IProps) {
         super(props);
+
+        this.handleSettingChangeDebounced = debounce(this.props.handleSettingChange, 500);
 
         this.state = {
             divinaReadingMode: undefined,
@@ -451,6 +459,21 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     private textContent() {
         const {__, readerConfig} = this.props;
 
+        // TODO: https://github.com/rBurgett/system-font-families
+        const readiumCSSFontID = readerConfig.font;
+        const fontListItem = fontList.find((f) => {
+            return f.id === readiumCSSFontID && f.id !== "VOID";
+        });
+        const readiumCSSFontIDToSelect = fontListItem ?
+            fontListItem.id : // readiumCSSFontID
+            "VOID";
+        const readiumCSSFontNAME = fontListItem ? fontListItem.label : readiumCSSFontID;
+        const readiumCSSFontNAME_ = readiumCSSFontNAME === "VOID" ? "" : readiumCSSFontNAME;
+        const fontFamily =
+            (fontListItem && fontListItem.style) ?
+            fontListItem.style.replace("font-family:", "").replace(/;/g, "") :
+            `'${readiumCSSFontNAME}', serif`;
+
         return <>
             <div className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.fontSize")}</div>
@@ -472,12 +495,25 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 </div>
             </div>
             <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>{__("reader.settings.font")}</div>
-                <div className={styles.center_in_tab}>
+                <div id="fontLabel" className={styles.subheading}>{__("reader.settings.font")}</div>
+                <div className={styles.center_in_tab} style={{flexDirection: "column"}}>
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        position: "relative",
+                        textAlign: "center",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}>
                     <select
+                        style={{
+                            width: fontListItem ? "fit-content" : "4em",
+                        }}
                         id={styles.police_texte}
-                        onChange={(e) => this.props.handleSettingChange(e, "font")}
-                        value={readerConfig.font}
+                        onChange={(e) => {
+                            this.props.handleSettingChange(e, "font");
+                        }}
+                        value={readiumCSSFontIDToSelect}
                     >
                         {fontList.map((font: Font, id: number) => {
                             return (
@@ -490,6 +526,55 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             );
                         })}
                     </select>
+                    {
+                        !fontListItem &&
+                        <input
+                            style={{width: "10em", marginLeft: "1em"}}
+                            id="fontInput"
+                            aria-labelledby="fontLabel"
+                            type="text"
+                            onChange={(e) => {
+                                let val = e.target?.value ? e.target.value.trim() : null;
+                                if (!val) { // includes empty string (falsy)
+                                    val = undefined;
+                                } else {
+                                    // a"b:c    ;d;<e>f'g&h
+                                    val = val.
+                                        replace(/\t/g, "").
+                                        replace(/"/g, "").
+                                        replace(/:/g, "").
+                                        replace(/'/g, "").
+                                        replace(/;/g, "").
+                                        replace(/</g, "").
+                                        replace(/>/g, "").
+                                        replace(/\\/g, "").
+                                        replace(/\//g, "").
+                                        replace(/&/g, "").
+                                        replace(/\n/g, " ").
+                                        replace(/\s\s+/g, " ");
+                                    if (!val) { // includes empty string (falsy)
+                                        val = undefined;
+                                    }
+                                }
+                                this.handleSettingChangeDebounced(
+                                    undefined, // e
+                                    "font",
+                                    val);
+                            }}
+                            placeholder={readiumCSSFontNAME_ ?? __("reader.settings.font")}
+                            alt={readiumCSSFontNAME_ ?? __("reader.settings.font")}
+                        />
+                    }
+                    </div>
+                    <span
+                        aria-hidden
+                        style={{
+                            fontSize: "1.4em",
+                            lineHeight: "1.2em",
+                            display: "block",
+                            marginTop: "0.84em",
+                            fontFamily,
+                        }}>{readiumCSSFontNAME_}</span>
                 </div>
             </div>
         </>;

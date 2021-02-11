@@ -44,6 +44,10 @@ const fontList: Font[] =
     id: "MONO",
     label: "Monospace",
     style: "font-family: \"Andale Mono\", Consolas, monospace;",
+}, {
+    id: "VOID",
+    label: "...",
+    style: "font-family: Consolas, monospace;",
 }];
 
 export default fontList;
