@@ -242,7 +242,7 @@ async function opdsSetAuthCredentials(
                 postDataCredential = {
                     accessToken:
                         Buffer.from(
-                            `${decodeURIComponent(data.login)}:${decodeURIComponent(data.password)}`
+                            `${decodeURIComponent(data.login)}:${decodeURIComponent(data.password)}`,
                             ).toString("base64"),
                     refreshToken: undefined,
                     tokenType: "basic",
