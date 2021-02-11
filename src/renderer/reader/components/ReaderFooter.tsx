@@ -29,6 +29,7 @@ function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
     return function(this: any) {
         if (!waiting) {
+            // eslint-disable-next-line prefer-rest-params
             callback.apply(this, arguments);
             waiting = true;
             setTimeout(() => {

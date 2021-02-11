@@ -35,7 +35,6 @@ module.exports = {
         ],
         "no-unused-vars": 0,
 
-        "prefer-rest-params": 0,
         "react/prop-types": 0,
         "react/no-find-dom-node": 0,
         "@typescript-eslint/no-var-requires": 0,
