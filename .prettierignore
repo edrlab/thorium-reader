@@ -1,0 +1,12 @@
+.vscode/*
+.history/*
+.github/*
+.git/*
+dist/*
+docs/*
+img/*
+node_modules/*
+resources/*
+external-assets/*
+scripts/*
+src/utils/search/transliteration.ts
