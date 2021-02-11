@@ -86,7 +86,7 @@ export function* importFromLinkService(
             } else {
                 link.type = "";
             }
-        } catch (e) {
+        } catch (_e) {
             debug("can't fetch url to determine the type", url.toString());
             link.type = "";
         }

@@ -130,7 +130,7 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
         if (new URL(searchRaw)) {
             returnUrl = searchRaw;
         }
-    } catch (err) {
+    } catch (_err) {
         try {
             const xmlDom = (new DOMParser()).parseFromString(searchRaw, ContentType.TextXml);
             const urlsElem = xmlDom.documentElement.querySelectorAll("Url");
@@ -155,7 +155,7 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
                 }
             }
         } catch (errXml) {
-            debug("error to parse searchRaw (xml or url)");
+            debug("error to parse searchRaw (xml or url)", errXml);
         }
     }
 

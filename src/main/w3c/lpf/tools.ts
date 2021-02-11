@@ -32,7 +32,7 @@ export async function copyAndMoveLpfToTmpWithNewExt(
         pathDir = path.resolve(tmpPath, _APP_NAME.toLowerCase(), tmpPathName, nanoid(8));
         await fsp.mkdir(pathDir, { recursive: true });
 
-    } catch (e) {
+    } catch (_e) {
 
         pathDir = await fsp.mkdtemp(`${_APP_NAME.toLowerCase()}-${tmpPathName}`);
     }

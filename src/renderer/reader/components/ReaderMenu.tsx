@@ -437,7 +437,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 try {
                     const p = parseInt(currentPage, 10) + 1;
                     currentPage = p.toString();
-                } catch (e) {
+                } catch (_e) {
                     // ignore
                 }
             } else if (this.props.isPdf) {
@@ -577,7 +577,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     this.props.handleLinkClick(undefined, spineLink.Href);
                     return;
                 }
-            } catch (e) {
+            } catch (_e) {
                 // ignore error
             }
 
@@ -588,7 +588,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             if (this.props.isDivina) {
                 try {
                     page = parseInt(pageNbr, 10) - 1;
-                } catch (e) {
+                } catch (_e) {
                     // ignore error
                 }
             } else if (this.props.isPdf) {

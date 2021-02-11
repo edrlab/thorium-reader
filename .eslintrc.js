@@ -21,26 +21,29 @@ module.exports = {
     ],
     plugins: ["prettier"],
     rules: {
-        "quotes": ["error", "double"],
+        quotes: ["error", "double"],
         "comma-dangle": ["error", "always-multiline"],
         "eol-last": ["error", "always"],
-        "semi": ["error", "always"],
-        "no-unused-vars": ["error", {
-            "vars": "all",
-            "args": "all",
-            "argsIgnorePattern": "^_",
-            "varsIgnorePattern": "^_",
-            "caughtErrorsIgnorePattern": "^_",
-            "caughtErrors": "all" }
-        ],
+        semi: ["error", "always"],
+
         "no-unused-vars": 0,
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                vars: "all",
+                args: "all",
+                argsIgnorePattern: "^_",
+                varsIgnorePattern: "^_",
+                caughtErrorsIgnorePattern: "^_",
+                caughtErrors: "all",
+            },
+        ],
 
         "react/prop-types": 0,
         "react/no-find-dom-node": 0,
         "@typescript-eslint/no-var-requires": 0,
         "@typescript-eslint/no-empty-function": 0,
         "@typescript-eslint/ban-ts-comment": 0,
-        "@typescript-eslint/no-unused-vars": 0,
         "@typescript-eslint/no-inferrable-types": 0,
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/ban-types": 0,

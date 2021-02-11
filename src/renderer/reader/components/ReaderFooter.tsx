@@ -100,7 +100,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         if (isDivina) {
             try {
                 spineTitle = (parseInt(spineTitle, 10) + 1).toString();
-            } catch (e) {
+            } catch (_e) {
                 // ignore
             }
         }
