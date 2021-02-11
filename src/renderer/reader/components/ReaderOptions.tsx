@@ -363,7 +363,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         const { __ } = this.props;
 
-        const inputComponent = (scale: IPdfPlayerScale, disabled: boolean = false) => {
+        const inputComponent = (scale: IPdfPlayerScale, disabled = false) => {
             return <div>
                     <input
                         id={"radio-" + `${scale}`}

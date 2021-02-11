@@ -269,9 +269,9 @@ interface IDownloadProgression {
 }
 function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, contentLength: number) {
 
-    let downloadedLength: number = 0;
-    let downloadedSpeed: number = 0;
-    let speed: number = 0;
+    let downloadedLength = 0;
+    let downloadedSpeed = 0;
+    let speed = 0;
     let pct = 0;
 
     const ev = <T = any>(cb: (emit: (data: T) => void) => void) => {

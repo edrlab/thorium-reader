@@ -629,7 +629,7 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
 
 // tslint:disable-next-line: max-line-length
 const htmlLoginTemplate = (
-    urlToSubmit: string = "",
+    urlToSubmit = "",
     loginLabel = "login",
     passLabel = "password",
     logoUrl?: string,

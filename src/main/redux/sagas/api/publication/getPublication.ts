@@ -13,7 +13,7 @@ import { diMainGet } from "readium-desktop/main/di";
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/get");
 
-export function* getPublication(identifier: string, checkLcpLsd: boolean = false) {
+export function* getPublication(identifier: string, checkLcpLsd = false) {
 
     const publicationRepository = diMainGet("publication-repository");
 

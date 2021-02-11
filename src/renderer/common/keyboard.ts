@@ -65,7 +65,7 @@ const keyDownUpEventHandler = (
     ev: IKeyboardEvent,
     elementName: string,
     elementAttributes: {[name: string]: string},
-    internal: boolean = false,
+    internal = false,
     keyDown: boolean,
 ) => {
     const doc = document as TKeyboardDocument;
@@ -145,7 +145,7 @@ export const keyDownEventHandler = (
     ev: IKeyboardEvent,
     elementName: string,
     elementAttributes: {[name: string]: string},
-    internal: boolean = false,
+    internal = false,
 ) => {
     keyDownUpEventHandler(ev, elementName, elementAttributes, internal, true);
 };
@@ -154,7 +154,7 @@ export const keyUpEventHandler = (
     ev: IKeyboardEvent,
     elementName: string,
     elementAttributes: {[name: string]: string},
-    internal: boolean = false,
+    internal = false,
 ) => {
     keyDownUpEventHandler(ev, elementName, elementAttributes, internal, false);
 };
