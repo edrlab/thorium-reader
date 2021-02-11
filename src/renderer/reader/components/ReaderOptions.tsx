@@ -470,16 +470,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const readiumCSSFontName = fontListItem ? fontListItem.label : readiumCSSFontID;
         const readiumCSSFontPreview = (readiumCSSFontName === FONT_ID_VOID || fontListItem?.id === FONT_ID_DEFAULT) ?
             " " : readiumCSSFontName;
-        const fontFamily =
-            (fontListItem && fontListItem.style) ?
-            fontListItem.style.replace("font-family:", "").replace(/;/g, "") :
-            `'${readiumCSSFontName}', serif`;
+        const fontFamily = fontListItem?.fontFamily ? fontListItem.fontFamily : `'${readiumCSSFontName}', serif`;
 
         return <>
             <div className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.fontSize")}</div>
                 <div className={styles.center_in_tab}>
-                    <span className={styles.slider_marker} >a</span>
+                    <span className={styles.slider_marker}>a</span>
                     <input type="range"
                         onChange={(e) => this.props.handleIndexChange(e, "fontSize")}
                         id="text_length"
