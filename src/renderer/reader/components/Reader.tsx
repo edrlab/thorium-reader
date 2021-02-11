@@ -1603,7 +1603,7 @@ class Reader extends React.Component<IProps, IState> {
 
         let value = givenValue;
         if (value === null || value === undefined) {
-            if (event) {
+            if (event?.target?.value) {
                 value = event.target.value.toString();
             } else {
                 return;

@@ -160,21 +160,6 @@ let config = Object.assign(
             ],
         },
 
-        // devServer: {
-        //     contentBase: __dirname,
-        //     hot: _enableHot,
-        //     watchContentBase: true,
-        //     watchOptions: {
-        //         ignored: [
-        //             /dist/,
-        //             /docs/,
-        //             /scripts/,
-        //             /test/,
-        //             /node_modules/,
-        //             /external-assets/,
-        //         ],
-        //     },
-        // },
         plugins: [
             new BundleAnalyzerPlugin({
                 analyzerMode: "disabled",
@@ -198,45 +183,6 @@ if (!checkTypeScriptSkip) {
 }
 
 if (nodeEnv !== "production") {
-
-    // const port = parseInt(preprocessorDirectives.portPdfWebview, 10);
-    // console.log("PDF PORT: " + port);
-
-    // // Renderer config for DEV environment
-    // config = Object.assign({}, config, {
-    //     // Enable sourcemaps for debugging webpack's output.
-    //     devtool: "inline-source-map",
-
-    //     devServer: {
-    //         contentBase: __dirname,
-    //         headers: {
-    //             "Access-Control-Allow-Origin": "*",
-    //         },
-    //         hot: _enableHot,
-    //         watchContentBase: true,
-    //         watchOptions: {
-    //             ignored: [
-    //                 /dist/,
-    //                 /docs/,
-    //                 /scripts/,
-    //                 /test/,
-    //                 /node_modules/,
-    //                 /external-assets/,
-    //             ],
-    //         },
-    //         port,
-    //     },
-    // });
-
-    // config.output.pathinfo = true;
-
-    // config.output.publicPath = preprocessorDirectives.rendererPdfWebviewBaseUrl;
-    // if (_enableHot) {
-    //     config.plugins.push(new webpack.HotModuleReplacementPlugin());
-    // }
-    // if (_enableHot) {
-    //     cssLoaderConfig.unshift("css-hot-loader");
-    // }
     config.module.rules.push({
         test: /\.css$/,
         use: cssLoaderConfig,

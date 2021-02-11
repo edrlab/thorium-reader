@@ -6,12 +6,13 @@
 // ==LICENSE-END==
 
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
 
 export const readerConfigInitialState: ReaderConfig = {
     align: "auto",
     colCount: "auto",
     dark: false,
-    font: "DEFAULT",
+    font: FONT_ID_DEFAULT,
     fontSize: "100%",
     invert: false,
     lineHeight: "1.5",
