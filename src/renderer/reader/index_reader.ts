@@ -26,10 +26,10 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 let devTron: any;
 let axe: any;
 if (IS_DEV) {
-    // tslint:disable-next-line: no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     devTron = require("devtron");
 
-    // tslint:disable-next-line: no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     axe = require("react-axe");
 }
 

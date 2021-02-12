@@ -40,7 +40,7 @@ import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
 }
@@ -49,7 +49,7 @@ interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -363,7 +363,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         const { __ } = this.props;
 
-        const inputComponent = (scale: IPdfPlayerScale, disabled: boolean = false) => {
+        const inputComponent = (scale: IPdfPlayerScale, disabled = false) => {
             return <div>
                     <input
                         id={"radio-" + `${scale}`}

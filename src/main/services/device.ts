@@ -110,7 +110,7 @@ export class DeviceIdManager implements IDeviceIDManager {
     private async getDeviceConfig(): Promise<ConfigDocument<DeviceConfig>> {
         try {
             return await this.configRepository.get("device");
-        } catch (error) {
+        } catch (_error) {
             return {
                 identifier: "device",
                 value: {} as DeviceConfig,

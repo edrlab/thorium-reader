@@ -19,14 +19,14 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -108,7 +108,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             this.state.password,
             this.props.publicationView.identifier,
         ).catch((error) => {
-            console.error(`Error lcp/unlockPublicationWithPassphrase`, error);
+            console.error("Error lcp/unlockPublicationWithPassphrase", error);
         });
 
         this.props.closeDialog();

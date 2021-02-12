@@ -93,13 +93,13 @@ if (!fs.existsSync(rootDbPath)) {
     fs.mkdirSync(rootDbPath);
 }
 
-// tslint:disable-next-line:no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 
-// tslint:disable-next-line:no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pouchDbFind = require("pouchdb-find");
 
-// tslint:disable-next-line:no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pouchDbSearch = require("pouchdb-quick-search");
 
 // Load PouchDB plugins

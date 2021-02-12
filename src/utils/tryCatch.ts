@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 
-export function tryCatchSync<R>(fn: () => (R), errorPath: string, errMessage: string = ""): R {
+export function tryCatchSync<R>(fn: () => (R), errorPath: string, errMessage = ""): R {
 
     // Logger
     const debug = debug_(errorPath);
@@ -27,7 +27,7 @@ export function tryCatchSync<R>(fn: () => (R), errorPath: string, errMessage: st
     return undefined;
 }
 
-export async function tryCatch<R>(fn: () => (R | Promise<R>), errorPath: string, errMessage: string = ""): Promise<R> {
+export async function tryCatch<R>(fn: () => (R | Promise<R>), errorPath: string, errMessage = ""): Promise<R> {
 
     // Logger
     const debug = debug_(errorPath);

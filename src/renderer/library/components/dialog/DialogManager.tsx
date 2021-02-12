@@ -18,14 +18,14 @@ import OpdsFeedAddForm from "./OpdsFeedAddForm";
 import RenewLsdConfirm from "./RenewLsdConfirm";
 import ReturnLsdConfirm from "./ReturnLsdConfirm";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 

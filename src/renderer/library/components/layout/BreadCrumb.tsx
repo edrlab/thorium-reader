@@ -18,7 +18,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     breadcrumb: IBreadCrumbItem[];
     className?: string;
@@ -27,7 +27,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 

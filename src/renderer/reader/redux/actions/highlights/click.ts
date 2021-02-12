@@ -11,7 +11,7 @@ import { IHighlightHandlerState } from "../../state/highlight";
 
 export const ID = "READER_HIGHLIGHT_CLICK";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPayload extends IHighlightHandlerState {
 }
 

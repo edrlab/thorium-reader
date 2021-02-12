@@ -121,7 +121,7 @@ function* closeProcess() {
                         yield call(fetchCookieJarPersistence);
                         debug("Success to persist fetch cookieJar");
                     } catch (e) {
-                        debug("ERROR to persist fetch cookieJar");
+                        debug("ERROR to persist fetch cookieJar", e);
                     }
 
                     try {

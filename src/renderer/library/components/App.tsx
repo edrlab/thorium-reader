@@ -51,7 +51,7 @@ export default class App extends React.Component<{}, undefined> {
                 return file.path;
             });
             apiAction("publication/importFromFs", paths).catch((error) => {
-                console.error(`Error to fetch publication/importFromFs`, error);
+                console.error("Error to fetch publication/importFromFs", error);
             });
             return;
         }

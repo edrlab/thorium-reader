@@ -7,9 +7,6 @@
 
 import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
-import {
-    _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL,
-} from "readium-desktop/preprocessor-directives";
 
 import { IInfo } from "./extract.type";
 

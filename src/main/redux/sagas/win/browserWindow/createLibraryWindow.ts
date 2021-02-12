@@ -15,7 +15,7 @@ import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
-    _PACKAGING, _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
+    _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { put } from "redux-saga/effects";
@@ -59,10 +59,12 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         contextMenuSetup(wc, wc.id);
 
         libWindow.webContents.on("did-finish-load", () => {
+
             const {
                 default: installExtension,
                 REACT_DEVELOPER_TOOLS,
                 REDUX_DEVTOOLS,
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             } = require("electron-devtools-installer");
 
             [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {

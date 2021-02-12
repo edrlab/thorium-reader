@@ -19,14 +19,14 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -82,7 +82,7 @@ class FileImport extends React.Component<IProps, undefined> {
                 return file.path;
             });
             apiAction("publication/importFromFs", paths).catch((error) => {
-                console.error(`Error to fetch publication/importFromFs`, error);
+                console.error("Error to fetch publication/importFromFs", error);
             });
             this.props.closeDialog();
         }

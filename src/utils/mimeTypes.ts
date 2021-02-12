@@ -1179,8 +1179,7 @@ export const findMimeTypeWithExtension = (ext: string): string | undefined => {
         ext = ext.slice(1);
     }
 
-    // @ts-ignore
-    return mimeTypes[ext] ?? undefined;
+    return (mimeTypes as any)[ext] ?? undefined;
 };
 
 export const findExtWithMimeType = (type: string): string | undefined => {

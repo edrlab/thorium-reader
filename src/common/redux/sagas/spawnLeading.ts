@@ -7,7 +7,7 @@
 
 import { call, ForkEffect, spawn } from "redux-saga/effects";
 
-// tslint:disable-next-line: no-empty
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => { };
 
 export function spawnLeading(

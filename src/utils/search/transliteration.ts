@@ -5,8 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-// tslint:disable
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 
 export const transliteratesDifferentLengthsLower = {
     "ß": "ss",
@@ -958,4 +960,4 @@ export const collapseWhitespaces = (str: string) => {
 
 export const cleanupStr = (str: string) => {
     return collapseWhitespaces(str).trim();
-}
+};

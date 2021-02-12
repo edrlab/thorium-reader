@@ -50,15 +50,13 @@ import { i18n } from "i18next"; // named export: just the TypeScript type
 // import i18next = require("i18next");
 //
 // ##### technique 3:
-// tslint:disable-next-line: no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const i18next: i18n = require("i18next");
 
 // ##### technique 4 (force CJS):
-// tslint:disable-next-line: no-var-requires
 // const i18next: i18n = require("i18next/dist/cjs/i18next");
 
 // ##### technique 5 (force ESM):
-// tslint:disable-next-line: no-var-requires
 // const i18next: i18n = require("i18next/dist/esm/i18next");
 
 // const i18nextInstance = i18next.createInstance(); // it should be as simple as that :(
@@ -173,7 +171,7 @@ export type I18nTyped = TFunction;
 @injectable()
 export class Translator {
     public translate: I18nTyped = this._translate;
-    private locale: string = "en";
+    private locale = "en";
 
     public getLocale(): string {
         return this.locale;

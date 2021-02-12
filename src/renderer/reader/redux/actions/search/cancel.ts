@@ -10,7 +10,7 @@ import { ISearchState, searchDefaultState } from "../../state/search";
 
 export const ID = "READER_SEARCH_CANCEL";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPayload extends Partial<ISearchState> {
 }
 

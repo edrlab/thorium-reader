@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     button: React.ReactElement;
     content: React.ReactElement;
@@ -27,7 +27,7 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 

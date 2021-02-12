@@ -71,7 +71,7 @@ if (_USE_HTTP_STREAMER) {
     initSessionsNoHTTP();
 }
 
-export const main = async (flushSession: boolean = false): Promise<Store<RootState>> => {
+export const main = async (flushSession = false): Promise<Store<RootState>> => {
 
     debug("main fct");
 

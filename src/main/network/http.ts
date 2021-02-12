@@ -478,7 +478,7 @@ export class AbortSignal implements IAbortSignal {
         this.listenerArray.forEach((l) => {
             try {
                 l();
-            } catch (e) {
+            } catch (_e) {
                 // ignore
             }
         });
