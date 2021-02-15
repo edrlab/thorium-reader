@@ -2,83 +2,33 @@
 
 ## Summary
 
-Version `1.6.0` was released on **?? February 2021**.
+Version `1.6.0` was released on **16 February 2021**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
-* delete publication wap primary button
-* about filter by tags disabled
-* about book visible in search query result
-* updates Japanese translation
-* Electron v11, r2-streamer-js HTTP server (activated by default) + optional no-HTTP streamer (Session.protocol.registerStreamProtocol currently buggy)
-* removed redundant PDF.js-related electron-builder packaged files
-* PDF cover image and metadata extraction using same PDF.js build as reader/renderer
-* Electron deprecation of remote module, routing of context-menu event, accessibility / screen reader detection, and r2-navigator-js update to match (added API)
-* goto begin/end of publication, CTRL HOME/END keyboard shortcuts, and shift-click on left/right arrow button icons
-* code cleanup, removal of unnecessary generic specifier in TypeScript function (TaJsonDeserialize)
-* LCP sanity check / safeguard for not-well-formed licenses (e.g. HTTP response error code body, or corrupted local file)
-* replace registerBufferProtocol with registerFileProtocol
-* PDF bus subscribe of keyup and keydown event in driver.ts. I moved it in the reader.tsx init.
-* PDF reader options had incorrect menu (MathJax, Popup Footnotes, Reduce Motion). Also updated to latest PDF.js build from EDRLab fork, built from source ( https://github.com/edrlab/pdf.js/blob/master/THORIUM_BUILD.md )
-* PDF.js added TypeScript type definitions, see https://github.com/edrlab/pdf.js/blob/master/TYPESCRIPT_TYPE_DEFINITIONS.md
-* PDF remove pdfjs-dist it was used only for typed index_pdf.ts and toc.ts in the webview. I replace some type with any. not a big deal
-* r2-streamer-js (notably: HTTP caching disabled for encrypted resources)
-* LCP url hint hyperlink is localized
-* disable 'autmatic' columns -> doesn't supported in the pdfjs viewer
-* Reduce Motion and Disable Footnotes display settings (+ moved MathJax toggle)
-* OPDS undefined book extension in import button
-* undefined type value in updateOpdsInfoWithEntryLink()
-* about epub displayed in "all book" section
-* disable about modal for nnecessary "about Thorium" publication requests
-* added start:dev:quick NPM command
-* keyboard shortcut for search previous/next commands was incorrect (KeyG instead of G)
-* chore(pdfjs fork documentation) update readme with last commit hash
-* disable print feature in mozilla pdf viewer
-* "goto page" feature now has a keyboard shortcut, and works with authored pageList as well as intrinsic page units such as with fixed layout FXL publications, PDF, etc.
-* package updates, notably minor Electron release, and r2-shared-js with a LCP PDF fix
-* keyboard shortcuts for search previous/next commands, now with alternative option
-* facets and navigation above publication listing now occupies available horizontal space
-* about dialog box now a publication to open in reader view, with full document accessibility, including readaloud
-* new Mozilla-based viewer / renderer with search and multipage
-* Redux Devtools CLI is now disabled (SQLite3 v5 compile issues)
-* package updates, including r2-shared-js with support for DAISY3 audio-only talking books
-* installer in Office category
-* removed unnecessary confirm dialog for importing a small number of publications during drag-drop
-* mouse wheel scroll and touchpad two finger swipe / drag to turn pages left/right (on bottom footer progress bar and arrows)
-* table of contents line height / interline of heading text
-* added missing previous/next keyboard shortcuts
-* double-click on list item closes menu, just like pressing enter
-* improved homescreen bookshelf design
-* URL hint was missing in passphrase dialog
-* book catalog update from setReduxState
-* OPDS authentication, OAuth2 access/refresh token, HTTP cookies
-* Russian localization
-* Chinese UI translation
-* i18n types update (alphabetical sort)
-* DOM search
-* typo in XHTML content type
-* packager resources path in the zip
-* documentation and debug in lock.ts
-* packager: resources path in the zip is the same that resources path in the rwpm
-* removed the possibility for protocol.registerSchemesAsPrivileged to be called after Electron app ready state
-* R2 OPDS JS with important bug fixes
-* package updates, notably: pdf-extract.js on the NodeJS backend require("canvas") ignored by WebPack config (breaking change due to PDF.js update in pdf-extract's own bundle)
-* converter from W3C Web Publications to Readium2 format, links vs. resources, typings + NPM updates and necessary code cleanup (stricter compiler checks)
-* package updates, stricter TypeScript Promise/void checks
-* filter rel='alternate', improved contentType parsing
-* WebPub content-type accepted in OPDS feeds, etc.
-* R2 navigator package update, fixes footnotes same-document content restriction, and DOM :target CSS styles
-* support for DAISY3 audio+text and text-only publications
-* Divina audio/video streaming now works (problem was related to Session.protocol.registerStreamProtocol() vs Session.protocol.registerHttpProtocol())
-* added missing paragraph spacing UI
-* PDF pagination overflow, now doesn't exceed last page
-* reflowable documents are now paginated by default, was scrolling
-* Updated Spanish translation
-* removed old ping lib
-* open publication from filesystem or drag-and-drop only opened library window
-* WebPack bundle analyser
-* prevent mouse drag on links, etc. in PDF rendering
-* prevent mouse drag on UI controls, links, etc. including inside EPUB HTML documents
+* Thorium is now based on Electron version 11.
+* Localization: updated Japanese and Spanish translations, added Finnish, Russian, Chinese translation.
+* Accessibility: improved screen reader detection to trigger force-refresh in the content webview.
+* Support for DAISY3 audio-only, audio+text and text-only talking books.
+* OPDS authentication: OAuth2 access/refresh token, HTTP cookies, SAML for Library Simplified (Lyrasis).
+* OPDS browser: better UI layout (navigation links, facets, groups).
+* The "about Thorium" information is now an automatically-generated Web Publication which opens in the reader view.
+* LCP: clarified error message for license rights.start in the future, vs. LSD expired status, added sanity check / safeguard for not-well-formed licenses (e.g. HTTP response error code body, or corrupted local file), localized URL hint hyperlink.
+* PDF: significant improvements, performance, bug fixes, layout features (still based on Mozilla PDF.js).
+* Library / bookshelf: fixed open publication from filesystem / drag-and-drop, removed unnecessary confirm dialog for importing a small number of publications using drag-drop.
+* User interface: fixed long unbreakable titles in publication info dialog, title/author ellipsis on 2-lines max layout.
+* Reader view: added support for user-installed system fonts (in addition to ReadiumCSS predefined typefaces), reflowable documents are now paginated by default (was scroll mode before), fixed the hyperlink :target CSS styles (temporary green outline), prevent mouse-drag on UI controls, links, etc. inside EPUB HTML, PDF documents.
+* Reader settings: Reduce Motion and Disable Footnotes display settings (+ moved MathJax toggle).
+* New reader navigation feature: goto begin/end of publication, CTRL HOME/END keyboard shortcuts, and shift-click on left/right arrow button icons.
+* Reader "goto page" now has a keyboard shortcut, and works with authored pageList as well as intrinsic page units such as with fixed layout FXL publications, PDF, etc.
+* Reader interaction: mouse wheel scroll and touchpad two-finger swipe/drag to turn pages left/right (on bottom footer progress bar and arrows).
+* Reader navigation panel: increased table of contents interline.
+* Reader footnotes: fixed same-document content restriction.
+* Search: fixed DOM / XHTML parsing issue, added keyboard shortcuts for find previous/next commands.
+* Divina: audio/video streaming now works.
+* Database: internal application state saved at every 3 minutes interval, plus persistence guaranteed on app shutdown (was too frequent before).
+* Development: added WebPack bundle analyser (dependency analysis), replaced deprecated TSLint with ESLint + Prettier (code linting / formatting checks).
+* ... and many more smaller changes listed below.
 
 (previous [v1.5.0 changelog](./CHANGELOG-v1.5.0.md))
 
@@ -88,9 +38,43 @@ Git commit diff since `v1.5.0`:
 https://github.com/edrlab/thorium-reader/compare/v1.5.0...v1.6.0
 https://github.com/edrlab/thorium-reader/compare/v1.5.0...develop
 
-=> **100** GitHub Pull Requests or high-level Git commits.
+=> **134** GitHub Pull Requests or high-level Git commits.
 
-* [(_)](https://github.com/edrlab/thorium-reader/commit/cf04170d65959b66cef906f3cbe362d8dbbd73c0) __(HEAD -> develop, origin/develop) fix(UI):__ delete publication wap primary button (fixes [#1352](https://github.com/edrlab/thorium-reader/issues/1352))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4dc8d3d8fd850453ddf020fa662880941bff9124) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/0923ff2b378d877d93bf83a9c386da615af2f1d6) __chore(dev):__ replace deprecated TSLint with ESLint + Prettier (PR [#1374](https://github.com/edrlab/thorium-reader/pull/1374) Fixes [#625](https://github.com/edrlab/thorium-reader/issues/625) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/e813cccbaac6017573503c0c6f685c0b06c8824b) __fix (l10n):__ updated Japanese Translation (PR [#1372](https://github.com/edrlab/thorium-reader/pull/1372) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/5cc28f5a295842d2b020d5e1784f569ed83899ae) __chore(code):__ cleanup redundant OPDS auth key/value escaping (decodeURIComponent)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/6ee0ce41eef1f3ddcff5a5a21bb73a5af9f66a5b) __fix(OPDS):__ slow servers tolerance, increased from 5s to 10s
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b578179718768110b6db765588f882e9aa767e48) __fix(ilnt):__ code checks via TSLint are unreliable, time to migrate to ESLint (see [#625](https://github.com/edrlab/thorium-reader/issues/625) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/61a35dcb5d2aad55e365ca163f9ef17940414ea9) __fix(OPDS):__ username/password for auth data was not decodeURIComponent'ed (incorrect base64 HTTP auth basic header was causing 401 status codes)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/bd81f9f2d84e936afe127ea6373ed486a711803f) __feat:__ user-installed system fonts, in addition to ReadiumCSS predefined typefaces (PR [#1373](https://github.com/edrlab/thorium-reader/pull/1373) Fixes [#766](https://github.com/edrlab/thorium-reader/issues/766) Fixes [#765](https://github.com/edrlab/thorium-reader/issues/765) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/684b0a24cfa8378b59ae685786a3b61baf2e131e) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/010ca1d33779babea7b217513209a928e8e5760f) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/726e70d6abecd758a54ffbd46eaecbc9bed1d00b) __fix:__ code fixes for absolute URL resolving, handling of Windows filepaths, and percent-encoded hrefs (PR [#1370](https://github.com/edrlab/thorium-reader/pull/1370))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/f31fc4c905dbd5d8e76a59984645fe415c269c26) __feat(l10n):__ XHTML "about Thorium" documents (PR [#1371](https://github.com/edrlab/thorium-reader/pull/1371))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/1c03bd7e52fdcbdcd70a2e911c9b49b26f1d30be) __fix(about):__ follow-up PR [#1370](https://github.com/edrlab/thorium-reader/pull/1370) and commit a47e73f4f339e7436bcf08a84ea6f704b17508d3
+* [(_)](https://github.com/edrlab/thorium-reader/commit/cbcde7a2469c68b00ee8886c85346be9bec81fa9) __fix(about):__ about publication always re-generated (Fixes [#1369](https://github.com/edrlab/thorium-reader/issues/1369))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/8322de68215e725b5527c5504860742a910ae348) chore(a47e73f4f339e7436bcf08a84ea6f704b17508d3) lint previous commit
+* [(_)](https://github.com/edrlab/thorium-reader/commit/a47e73f4f339e7436bcf08a84ea6f704b17508d3) fix(about) os windows path error on both images and xhtml (fixes [#1328](https://github.com/edrlab/thorium-reader/issues/1328))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/ad6fe6e0227647fdb283332bd9e3fa737a920e31) __fix(catalog):__ undefined publication on lastReadedPublication finder
+* [(_)](https://github.com/edrlab/thorium-reader/commit/6ff591f2cd87df499f89519bfa67dcf406c00848) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c1ac3db7b23b04cbf2769e7940d043417fa4e1bf) __feat(OPDS):__ SAML authentication for Library Simplified, Lyrasis (PR [#1366](https://github.com/edrlab/thorium-reader/pull/1366) original PR [#1272](https://github.com/edrlab/thorium-reader/pull/1272) Fixes [#1237](https://github.com/edrlab/thorium-reader/issues/1237))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/566243d56bbc474308032eb194bf17a32a6debac) __chore(NPM):__ package updates, including minor Electron v11 VoiceOver fixes, etc.
+* [(_)](https://github.com/edrlab/thorium-reader/commit/32b804d471d698e6a5e8defeb7c28648f72ae1ea) __fix(OPDS):__ feed navigation menu on the left, publications on the right (PR [#1363](https://github.com/edrlab/thorium-reader/pull/1363) Fixes [#1294](https://github.com/edrlab/thorium-reader/issues/1294))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/66f5815ffa2e60421a30e937f35c5fce8001a829) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/30bd54d20748c406d55d6e1132231f9375e94df4) __feat(OPDS):__ group navigation label (PR [#1360](https://github.com/edrlab/thorium-reader/pull/1360) Fixes [#1295](https://github.com/edrlab/thorium-reader/issues/1295))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/91fea7de1d181c6c5a64238f1b5e15d2d904e160) __chore:__ code cleanup, remove unused translated locale names (PR [#1365](https://github.com/edrlab/thorium-reader/pull/1365))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/da7a089a2cbdcc2863c0129517082de8ce58f81a) __chore(l10n):__ XHTML formatting ('es' and 'ja' only, 'en' and 'fi' are ok)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/09fd6900f62cffcc6da1fc36789d2500691eea57) __feat(l10n):__ Finnish translation (PR [#1364](https://github.com/edrlab/thorium-reader/pull/1364) Original PR: [#1362](https://github.com/edrlab/thorium-reader/issues/1362))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/760ddf0faf552e6cc23bea1d5ebf755b52981f2c) __fix:__ instead of saving the internal state every second into the database, increase the interval to 3 minutes (state is persisted on app shutdown too) (PR [#1359](https://github.com/edrlab/thorium-reader/pull/1359) Related issue: [#1274](https://github.com/edrlab/thorium-reader/issues/1274) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4c7ec27f44a36b2ab1b2255a1e5289ff09fa3860) __chore(ci):__ NPM v7 was breaking the build, so now ensure NPM v6 is used
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4f18f7a8a36ece75623097b33c04c990e2e32cef) __chore(ci):__ troubleshooting GitHub Actions which has entered an infinite loop of doom (NPM ERR! repeated for 6 hours until VM is shutdown)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/5c354e0d829e2ea1697572cb2a9ddf90604e04fd) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/1dac736089b9cb38a21eef685b1de5b655be6c41) __fix(UI):__ long unbreakable titles in publication info dialog, and title/author ellipsis on 2-lines max layout (Fixes [#1345](https://github.com/edrlab/thorium-reader/issues/1345) Fixes [#1358](https://github.com/edrlab/thorium-reader/issues/1358) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/cd9c450877b7820af7ffbb40a44533d1c267dcbc) __fix(l10n):__ updated Spanish translation, including new XHTML "about Thorium" info (PR [#1353](https://github.com/edrlab/thorium-reader/pull/1353))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/01581e540e88f165a26fdc225e750dcc33e04028) __fix(LCP):__ correct UI message for license rights.start in the future, vs. LSD expired status (PR [#1357](https://github.com/edrlab/thorium-reader/pull/1357) Fixes [#1351](https://github.com/edrlab/thorium-reader/issues/1351) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4c031ef8b49df2cc30217efe5c0902e53c2ad5a8) __chore(release):__ first-pass documentation for 1.6.0 release (changelog, distillation of 100+ commits into human-readable release notes)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/cf04170d65959b66cef906f3cbe362d8dbbd73c0) __fix(UI):__ delete publication wap primary button (fixes [#1352](https://github.com/edrlab/thorium-reader/issues/1352))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/f763ef65bcb13b75ab5c6b5d7cfc87b9cea6fdfc) __fix(about):__ about filter by tags disabled (fixes [#1350](https://github.com/edrlab/thorium-reader/issues/1350) twice)
 * [(_)](https://github.com/edrlab/thorium-reader/commit/3c7fb457459db13d50344df3b3b1205de2c05794) __fix(about):__ about book visible in search query result (fixes [#1350](https://github.com/edrlab/thorium-reader/issues/1350))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/a11780ad087f0ef4ffff1db7deb0f8f4909c34f2) __doc:__ updates Japanese translation (PR [#1344](https://github.com/edrlab/thorium-reader/pull/1344))
@@ -166,11 +150,10 @@ https://github.com/edrlab/thorium-reader/compare/v1.5.0...develop
 * [(_)](https://github.com/edrlab/thorium-reader/commit/3783b2ea7aa957ce20a5f469feb5bd3795f8c41f) __fix:__ converter from W3C Web Publications to Readium2 format, links vs. resources, typings + NPM updates and necessary code cleanup (stricter compiler checks) (PR [#1278](https://github.com/edrlab/thorium-reader/pull/1278) Fixes [#1280](https://github.com/edrlab/thorium-reader/issues/1280))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/e5fe7f1239aaa9f32c9fe74a0b4f6e08f01e4ed6) __chore(NPM):__ package updates, stricter TypeScript Promise<void> checks
 * [(_)](https://github.com/edrlab/thorium-reader/commit/c5c019b22fa0ad50e26c2ab0daf9b3e2ef395116) __fix(OPDS):__ filter rel='alternate', improved contentType parsing (PR [#1275](https://github.com/edrlab/thorium-reader/pull/1275) Fixes [#1148](https://github.com/edrlab/thorium-reader/issues/1148))
-* [(_)](https://github.com/edrlab/thorium-reader/commit/57b818376fbfe8be99362246abe66e7648c23b56) __fix:__ WebPub content-type accepted in OPDS feeds, etc. (PR [#1248](https://github.com/edrlab/thorium-reader/pull/1248))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/57b818376fbfe8be99362246abe66e7648c23b56) __(saad/develop) fix:__ WebPub content-type accepted in OPDS feeds, etc. (PR [#1248](https://github.com/edrlab/thorium-reader/pull/1248))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/af88785e0f737236bb9f40691a46c833805364ac) __chore(NPM):__ package update, including important r2-shared-js update
 * [(_)](https://github.com/edrlab/thorium-reader/commit/06ef8282e6b02bf209619f9a17dab1a8a7d200e2) __chore(NPM):__ package update r2-shared-js (DAISY support)
 * [(_)](https://github.com/edrlab/thorium-reader/commit/2de69e48df127a4a48c9ff7336c56f28356d72c8) __chore(NPM):__ r2-shared-js package update
-* [(_)](https://github.com/edrlab/thorium-reader/commit/550fe015eeb58000fc34b14250986c7a69e1d7e6) __Merge branch 'develop' of github.com:__readium/readium-desktop into develop
 * [(_)](https://github.com/edrlab/thorium-reader/commit/36d4646308482777f6bdc354e9660cb6d1a1fc8b) __chore(NPM):__ misc. package updates, R2 navigator and shared-js components
 * [(_)](https://github.com/edrlab/thorium-reader/commit/ef280f8a082a05d7355c437c35d8123c4a2c191b) __chore(CI):__ second attempt at fixing Travis CI (Windows was failing)
 * [(_)](https://github.com/edrlab/thorium-reader/commit/f8d95902b4318bfa5f435caed6fe3794802f1a6f) __chore(CI):__ attempt to fix GitHub Actions (replacement of set-env command)
@@ -194,6 +177,6 @@ https://github.com/edrlab/thorium-reader/compare/v1.5.0...develop
 __Developer Notes__:
 
 * The [standard-changelog](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/standard-changelog) utility (`npx standard-changelog --first-release`) somehow only generates a limited number of commits, so we use a one-liner command line / shell script instead:
-* `git --no-pager log --decorate=short --pretty=oneline v1.5.0...develop | cut -d " " -f 1- | sed -En '/^([0-9a-zA-Z]+)[[:space:]]([^:]+):(.+)$/!p;s//\1 __\2:__\3/p' | sed -En 's/^(.+)$/* \1/p' | sed -En '/PR[[:space:]]*#([0-9]+)/!p;s//PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/\(#([0-9]+)/!p;s//(PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/(Fixes|See|Fix|Fixed)[[:space:]]*#([0-9]+)/!p;s//\1 [#\2](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\2)/gp' | sed -En '/^.[[:space:]]([0-9a-zA-Z]+)[[:space:]]/!p;s//* [(_)](https:\/\/github.com\/edrlab\/thorium-reader\/commit\/\1) /p' | sed -En '/[[:space:]]#([0-9]+)/!p;s// [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\1)/gp'`
+* `git --no-pager log --decorate=short --pretty=oneline v1.5.0...v1.6.0 | cut -d " " -f 1- | sed -En '/^([0-9a-zA-Z]+)[[:space:]]([^:]+):(.+)$/!p;s//\1 __\2:__\3/p' | sed -En 's/^(.+)$/* \1/p' | sed -En '/PR[[:space:]]*#([0-9]+)/!p;s//PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/\(#([0-9]+)/!p;s//(PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/(Fixes|See|Fix|Fixed)[[:space:]]*#([0-9]+)/!p;s//\1 [#\2](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\2)/gp' | sed -En '/^.[[:space:]]([0-9a-zA-Z]+)[[:space:]]/!p;s//* [(_)](https:\/\/github.com\/edrlab\/thorium-reader\/commit\/\1) /p' | sed -En '/[[:space:]]#([0-9]+)/!p;s// [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\1)/gp'`
 * ...append `| pbcopy` on MacOS to copy the result into the clipboard.
 * ...append `| wc -l` to verify that the result actually matches the number of Git commits.
