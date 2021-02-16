@@ -6,8 +6,10 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { nanoid } from "nanoid";
 import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { extractCrc32OnZip } from "readium-desktop/main/crc";
@@ -15,19 +17,16 @@ import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
+import { createTempDir } from "readium-desktop/main/fs/path";
 import { extractFileFromZipToBuffer } from "readium-desktop/main/zip/extract";
 import { v4 as uuidv4 } from "uuid";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { DaisyParsePromise } from "@r2-shared-js/parser/daisy";
+import { convertDaisyToReadiumWebPub } from "@r2-shared-js/parser/daisy-convert-to-epub";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
-
-// import { CbzParsePromise } from "@r2-shared-js/parser/cbz";
-// import { DivinaParsePromise } from "@r2-shared-js/parser/divina";
-// import {
-//     PublicationParsePromise,
-// } from "@r2-shared-js/parser/publication-parser";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationFromFs");
@@ -58,6 +57,26 @@ export async function importPublicationFromFS(
             r2Publication.freeDestroy();
 
             break;
+
+        case acceptedExtensionObject.daisy:
+
+            debug("daisy extension", ext);
+
+            r2Publication = await DaisyParsePromise(filePath);
+
+            const pathFile = await createTempDir(nanoid(8), "misc");
+            const packagePath = await convertDaisyToReadiumWebPub(pathFile, r2Publication);
+
+            // after PublicationParsePromise, cleanup zip handler
+            // (no need to fetch ZIP data beyond this point)
+            r2Publication.freeDestroy();
+
+            if (packagePath) {
+                return await importPublicationFromFS(packagePath);
+            }
+
+            throw new Error("convertDaisyToReadiumWebPub failed?!");
+            // break;
 
         // case acceptedExtensionObject.cbz:
             // r2Publication = await CbzParsePromise(filePath);
@@ -93,6 +112,11 @@ export async function importPublicationFromFS(
 
                     const lcpString = lcpBuffer.toString();
                     const lcpJson = JSON.parse(lcpString);
+
+                    if (lcpLicenseIsNotWellFormed(lcpJson)) {
+                        throw new Error(`LCP license malformed: ${JSON.stringify(lcpJson)}`);
+                    }
+
                     const lcpl = TaJsonDeserialize(lcpJson, LCP);
 
                     lcpl.ZipPath = lcpEntryName;

@@ -36,7 +36,7 @@
             }
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "Mostrar biblioteca / estante"
         }
     },
     "catalog": {
@@ -57,12 +57,9 @@
         "entry": {
             "continueReading": "Reanudar lectura",
             "continueReadingAudioBooks": "Reanudar reproducción",
-            "continueReadingDivina": "",
-            "continueReadingPdf": "",
-            "lastAdditions": "Añadidos recientemente",
-            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "continueReadingDivina": "Reanudar divina",
+            "continueReadingPdf": "Reanudar PDF",
+            "lastAdditions": "Añadidos recientemente"
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Extensiones admitidas:",
         "numberOfPages": "Número de páginas",
         "opds": {
+            "auth": {
+                "cancel": "Cancelar",
+                "login": "Iniciar sesión"
+            },
             "info": {
                 "availableSince": "Desde",
                 "availableState": {
@@ -139,7 +140,8 @@
             "hint": "(Pista : {{hint}})",
             "password": "Contraseña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
-            "submit": "Enviar"
+            "submit": "Enviar",
+            "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí"
         }
     },
     "message": {
@@ -175,6 +177,7 @@
             "addExtract": "Importar extracto",
             "goBuyBook": "Comprar este libro",
             "goLoanBook": "Pedir prestado este libro",
+            "goRevokeLoanBook": "",
             "goSubBook": "Suscribirse"
         },
         "network": {
@@ -231,7 +234,7 @@
             "delete": "Eliminar",
             "edit": "Editar",
             "landmarks": "Puntos de referencia",
-            "search": "",
+            "search": "Buscar",
             "toc": "Tabla de contenido"
         },
         "media-overlays": {
@@ -249,6 +252,8 @@
         "navigation": {
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
+            "currentPage": "Página actual: {{- current}}",
+            "currentPageTotal": "Página actual: ({{- current}}/{{- total}})",
             "detachWindowTitle": "Separar la ventana",
             "fullscreenTitle": "Abrir modo pantalla completa",
             "goTo": "Ir a",
@@ -256,23 +261,24 @@
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
             "infoTitle": "Información",
-            "magnifyingGlassButton": "",
+            "magnifyingGlassButton": "buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",
+            "pdfscalemode": "Ajuste o ancho de página",
             "quitFullscreenTitle": "Salir del modo pantalla completa",
             "readBookTitle": "Empezar a leer el libro",
             "settingsTitle": "Opciones de configuración"
         },
         "picker": {
-            "annotationTitle": "",
+            "annotationTitle": "Anotaciones:",
             "search": {
-                "founds": "",
-                "input": "",
-                "next": "",
-                "notFound": "",
-                "previous": "",
-                "submit": ""
+                "founds": "{{- nResults}} encontrado/s",
+                "input": "texto de búsqueda",
+                "next": "Siguiente",
+                "notFound": "no hay coincidencias",
+                "previous": "Anterior",
+                "submit": "Encontrar"
             },
-            "searchTitle": ""
+            "searchTitle": "Buscar:"
         },
         "settings": {
             "column": {
@@ -294,20 +300,23 @@
             "letterSpacing": "Espaciado de letras",
             "lineSpacing": "Interlineado",
             "margin": "Margen",
+            "noFootnotes": "Desactivar notas al pie",
             "paginated": "Paginado",
+            "paraSpacing": "Espaciado de párrafos",
             "pdfZoom": {
                 "name": {
-                    "100pct": "",
-                    "150pct": "",
-                    "200pct": "",
-                    "300pct": "",
-                    "500pct": "",
-                    "50pct": "",
-                    "fit": "",
-                    "width": ""
+                    "100pct": "100%",
+                    "150pct": "150%",
+                    "200pct": "200%",
+                    "300pct": "300%",
+                    "500pct": "500%",
+                    "50pct": "50%",
+                    "fit": "ajuste de página",
+                    "width": "ancho de página"
                 },
-                "title": ""
+                "title": "Zum"
             },
+            "reduceMotion": "Disminuir movimiento",
             "save": {
                 "apply": "Guardar",
                 "reset": "Restablecer",
@@ -331,7 +340,7 @@
             "right": "Derecha"
         },
         "toc": {
-            "publicationNoToc": ""
+            "publicationNoToc": "esta publicación no proporciona tabla de contenido"
         },
         "tts": {
             "activate": "Activar texto a voz",
@@ -344,6 +353,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": "Limpiar datos de autenticación"
+        },
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancelar",

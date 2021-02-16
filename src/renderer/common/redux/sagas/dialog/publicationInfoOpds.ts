@@ -12,6 +12,7 @@ import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLat
 import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { call, delay, put, race, take } from "redux-saga/effects";
+
 import { opdsBrowse } from "../opdsBrowse";
 
 // Test URL : http://readium2.herokuapp.com/opds-v1-v2-convert/http%3A%2F%2Fmanybooks.net%2Fopds%2Fnew_titles.php
@@ -24,6 +25,8 @@ const debug = debug_(filename_);
 
 // Triggered when the publication data are available from the API
 function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
+
+    if (!links) { return; }
 
     for (const link of links) {
 
@@ -44,7 +47,7 @@ function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
             const opdsResultView = httpRes?.data;
             debug("Payload: ", opdsResultView);
 
-            const [publication] = opdsResultView.publications;
+            const [publication] = opdsResultView.publications || [];
             if (publication) {
                 publication.authors = publication.authors
                     ? Array.isArray(publication.authors)

@@ -12,7 +12,7 @@ import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType } from "readium-desktop/utils/contentType";
 import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
 import slugify from "slugify";
 
@@ -86,6 +86,20 @@ export class PublicationStorage {
         );
         if (fs.existsSync(pathEpub)) {
             return pathEpub;
+        }
+        const pathEpub3 = path.join(
+            root,
+            `book${acceptedExtensionObject.epub3}`,
+        );
+        if (fs.existsSync(pathEpub3)) {
+            return pathEpub3;
+        }
+        const pathDaisy = path.join(
+            root,
+            `book${acceptedExtensionObject.daisy}`,
+        );
+        if (fs.existsSync(pathDaisy)) {
+            return pathDaisy;
         }
         const pathAudioBook = path.join(
             root,
@@ -164,6 +178,7 @@ export class PublicationStorage {
         const isWebpub = new RegExp(`\\${acceptedExtensionObject.webpub}$`).test(extension);
         const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`).test(extension);
         const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
+        const isDaisy = new RegExp(`\\${acceptedExtensionObject.daisy}$`).test(extension);
 
         const ext = isAudioBook
             ? acceptedExtensionObject.audiobook
@@ -182,7 +197,11 @@ export class PublicationStorage {
                                             : (
                                                 isLcpPdf
                                                     ? acceptedExtensionObject.pdfLcp
-                                                    : acceptedExtensionObject.epub
+                                                    : (
+                                                        isDaisy
+                                                            ? acceptedExtensionObject.daisy
+                                                            : acceptedExtensionObject.epub
+                                                    )
                                             )
                                     )
                             )
@@ -230,7 +249,13 @@ export class PublicationStorage {
         srcPath: string,
     ): Promise<File> {
 
-        const r2Publication = await PublicationParsePromise(srcPath);
+        let r2Publication;
+        try {
+            r2Publication = await PublicationParsePromise(srcPath);
+        } catch (err) {
+            console.log(err);
+            return null;
+        }
 
         // private Internal is very hacky! :(
         const zipInternal = (r2Publication as any).Internal.find((i: any) => {

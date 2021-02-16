@@ -18,6 +18,7 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
+import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
 import PageManager from "readium-desktop/renderer/library/components/PageManager";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
@@ -35,21 +36,31 @@ export default class App extends React.Component<{}, undefined> {
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
+        const filez = acceptedFiles
+            .filter(
+                (file) => acceptedExtension(path.extname(file.path)),
+            )
+            .map(
+                (file) => ({
+                    name: file.name,
+                    path: file.path,
+                }),
+            );
+        if (filez.length <= 5) {
+            const paths = filez.map((file) => {
+                return file.path;
+            });
+            apiAction("publication/importFromFs", paths).catch((error) => {
+                console.error("Error to fetch publication/importFromFs", error);
+            });
+            return;
+        }
         const store = diLibraryGet("store");
         store.dispatch(
             dialogActions.openRequest.build(
                 DialogTypeName.FileImport,
                 {
-                    files: acceptedFiles
-                        .filter(
-                            (file) => acceptedExtension(path.extname(file.path)),
-                        )
-                        .map(
-                            (file) => ({
-                                name: file.name,
-                                path: file.path,
-                            }),
-                        ),
+                    files: filez,
                 },
             ));
     }

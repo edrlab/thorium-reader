@@ -5,7 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ContentType } from "../content-type";
+// import { JSDOM } from "jsdom";
+// import * as xmldom from "xmldom";
+
+import { ContentType } from "../contentType";
+
 import { ISearchDocument, ISearchResult } from "./search.interface";
 import { searchDocDomSeek } from "./searchWithDomSeek";
 
@@ -14,16 +18,35 @@ export async function search(searchInput: string, data: ISearchDocument): Promis
     if (!data.xml) {
         return [];
     }
+    if (!window.DOMParser) {
+        console.log("NOT RENDERER PROCESS???! (DOMParser for search)");
+        return [];
+    }
 
+    // TODO: this is a hack...
+    // but rendered reflowable documents have a top-level invisible accessible link injected by the navigator
+    // so we need it here to compute CSS Selectors
+    const toParse = data.isFixedLayout ? data.xml : data.xml.replace(
+        /<body([\s\S]*?)>/gm,
+        "<body$1><a href=\"DUMMY_URL\">DUMMY LNIK</a>",
+    );
+
+    const contentType = data.contentType ? (data.contentType as DOMParserSupportedType) : ContentType.Xhtml;
     try {
+        // const isRenderer = typeof window !== undefined; // && typeof process === undefined;
+        // const xmlDom = isRenderer ? (new DOMParser()).parseFromString(
+        //     toParse,
+        //     contentType,
+        // ) : (false ? (new xmldom.DOMParser()).parseFromString(
+        //     toParse,
+        //     contentType,
+        // ) : new JSDOM(toParse, { contentType: contentType }).window.document);
 
-        const xmlDom = (new DOMParser()).parseFromString(
-            data.xml,
-            ContentType.TextXml,
+        const xmlDom = (new window.DOMParser()).parseFromString(
+            toParse,
+            contentType,
         );
-
         return searchDocDomSeek(searchInput, xmlDom, data.href);
-
     } catch (e) {
         console.error("DOM Parser error", e);
         return [];

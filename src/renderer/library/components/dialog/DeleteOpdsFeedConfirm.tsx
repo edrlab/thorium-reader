@@ -21,14 +21,14 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -65,7 +65,7 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
     public remove(e: TMouseEventOnButton) {
         e.preventDefault();
         apiAction("opds/deleteFeed", this.props.feed.identifier).catch((error) => {
-            console.error(`Error to fetch opds/deleteFeed`, error);
+            console.error("Error to fetch opds/deleteFeed", error);
         });
         this.props.closeDialog();
     }

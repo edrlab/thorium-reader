@@ -8,7 +8,7 @@
 import { TakeableChannel } from "redux-saga";
 import { ActionPattern, call, fork, ForkEffect, spawn, take } from "redux-saga/effects";
 
-// tslint:disable-next-line: no-empty
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => { };
 
 export function takeSpawnEvery(

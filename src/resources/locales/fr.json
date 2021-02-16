@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Reprendre l'écoute",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Récemment ajouté",
-            "lastAdditionsAudioBooks": "Livres audio récemment ajoutés",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Récemment ajouté"
         },
         "export": "Exporter",
         "lang": "Langue",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Extensions prises en charge :",
         "numberOfPages": "Nombre de pages",
         "opds": {
+            "auth": {
+                "cancel": "Annuler",
+                "login": "Connection"
+            },
             "info": {
                 "availableSince": "Depuis le",
                 "availableState": {
@@ -139,7 +140,8 @@
             "hint": "(Indice : {{hint}})",
             "password": "Mot de passe",
             "sentence": "Cette publication a besoin d'un mot de passe : ",
-            "submit": "Valider"
+            "submit": "Valider",
+            "urlHint": "Oubli de votre phrase d'accès ? Vous pouvez trouver de l'aide avec ce lien"
         }
     },
     "message": {
@@ -175,6 +177,7 @@
             "addExtract": "Importer l'extrait",
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
+            "goRevokeLoanBook": "",
             "goSubBook": "Aller sur la page d'abonnement"
         },
         "network": {
@@ -206,7 +209,7 @@
         "lcpRightsCopy": "Copie de caractères",
         "lcpRightsPrint": "Copies d'imprimante",
         "lcpStart": "Début",
-        "licenseOutOfDate": "License expirée",
+        "licenseOutOfDate": "License inutilisable à cette date",
         "licenseSignatureDateInvalid": "Date de signature de license invalide",
         "licenseSignatureInvalid": "Signature de license invalide",
         "progression": {
@@ -249,6 +252,8 @@
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",
+            "currentPage": "Page courante: {{- current}}",
+            "currentPageTotal": "Page courante: ({{- current}}/{{- total}})",
             "detachWindowTitle": "afficher la bibliothèque",
             "fullscreenTitle": "mode plein écran",
             "goTo": "Aller à",
@@ -258,6 +263,7 @@
             "infoTitle": "informations",
             "magnifyingGlassButton": "recherche dans la publication",
             "openTableOfContentsTitle": "navigation",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "quitter le mode plein écran",
             "readBookTitle": "lancer la lecture du livre",
             "settingsTitle": "préférences"
@@ -294,7 +300,9 @@
             "letterSpacing": "Espacement des lettres",
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
+            "noFootnotes": "",
             "paginated": "Paginé",
+            "paraSpacing": "",
             "pdfZoom": {
                 "name": {
                     "100pct": "",
@@ -308,6 +316,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "Sauvegarder",
                 "reset": "Réinitialiser",
@@ -344,6 +353,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": "Effacer les données d'authentification"
+        },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuler",

@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Klausyti toliau",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Paskiausiai pridėtos",
-            "lastAdditionsAudioBooks": "Paskiausiai pridėtos garsaknygės",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Paskiausiai pridėtos"
         },
         "export": "Eksportuoti",
         "lang": "Kalba",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Palaikomi plėtiniai:",
         "numberOfPages": "Puslapių skaičius",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Prieinama nuo",
                 "availableState": {
@@ -139,7 +140,8 @@
             "hint": "(Užuomina : {{hint}})",
             "password": "Slaptažodis",
             "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
-            "submit": "Pateikti"
+            "submit": "Pateikti",
+            "urlHint": ""
         }
     },
     "message": {
@@ -175,6 +177,7 @@
             "addExtract": "Importuoti ištrauką",
             "goBuyBook": "Pirkti šią knygą",
             "goLoanBook": "Pasiskolinti knygą",
+            "goRevokeLoanBook": "",
             "goSubBook": "Prenumeruoti"
         },
         "network": {
@@ -249,6 +252,8 @@
         "navigation": {
             "backHomeTitle": "grįžti į knygų lentyną",
             "bookmarkTitle": "sukurti žymę",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "rodyti bibliotekos / knygų lentynos langą",
             "fullscreenTitle": "įjungti viso ekrano režimą",
             "goTo": "Eiti į",
@@ -258,6 +263,7 @@
             "infoTitle": "informacija",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "naršymas",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "išjungti viso ekrano režimą",
             "readBookTitle": "pradėti skaityti knygą",
             "settingsTitle": "nuostatos"
@@ -294,7 +300,9 @@
             "letterSpacing": "Raidžių išretinimas",
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
+            "noFootnotes": "",
             "paginated": "Skaidyti į puslapius",
+            "paraSpacing": "",
             "pdfZoom": {
                 "name": {
                     "100pct": "",
@@ -308,6 +316,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "įrašyti",
                 "reset": "grįžti į pradinę būseną",
@@ -344,6 +353,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Meniu",
             "cancel": "Nutraukti",

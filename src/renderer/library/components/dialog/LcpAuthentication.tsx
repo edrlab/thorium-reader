@@ -19,14 +19,14 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -57,15 +57,24 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             <Dialog open={true} close={closeDialog} id={styles.lcp_dialog}>
                 <div>
                     {
-                        this.props.message &&
-                        <p>
-                            <span>{this.props.message}</span>
-                        </p>
+                        typeof this.props.message === "string" ?
+                            <p>
+                                <span>{this.props.message}</span>
+                            </p>
+                            : <></>
                     }
                     <p>
                         {__("library.lcp.sentence")}
                         <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                     </p>
+                    {
+                        this.props.urlHint?.href
+                            ?
+                            <a href={this.props.urlHint.href}>
+                                {this.props.urlHint.title || __("library.lcp.urlHint")}
+                            </a>
+                            : <></>
+                    }
                     <form onSubmit={this.submit}>
                         <input
                             type="password"
@@ -99,7 +108,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             this.state.password,
             this.props.publicationView.identifier,
         ).catch((error) => {
-            console.error(`Error lcp/unlockPublicationWithPassphrase`, error);
+            console.error("Error lcp/unlockPublicationWithPassphrase", error);
         });
 
         this.props.closeDialog();

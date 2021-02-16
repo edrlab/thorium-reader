@@ -1,3 +1,4 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
 const path = require("path");
@@ -133,6 +134,16 @@ let config = Object.assign(
             ],
         },
         plugins: [
+            new BundleAnalyzerPlugin({
+                analyzerMode: "disabled",
+                defaultSizes: "stat", // "parsed"
+                openAnalyzer: false,
+                generateStatsFile: true,
+                statsFilename: "stats_main.json",
+                statsOptions: null,
+
+                excludeAssets: null,
+            }),
             new CopyWebpackPlugin({ patterns: [
                 {
                     from: path.join(
@@ -142,6 +153,18 @@ let config = Object.assign(
                         "information"
                     ),
                     to: "assets/md/information",
+                },
+            ]}),
+            new CopyWebpackPlugin({ patterns: [
+                {
+                    from: path.join(
+                        __dirname,
+                        "src",
+                        "resources",
+                        "lib",
+                        "pdfjs",
+                    ),
+                    to: "assets/lib/pdfjs",
                 },
             ]}),
             new CopyWebpackPlugin({ patterns: [
@@ -182,6 +205,10 @@ let config = Object.assign(
 config.plugins.push(
     new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })
 ); // jsondown (runtimejs, fatfs)
+
+config.plugins.push(
+    new webpack.IgnorePlugin({ resourceRegExp: /^canvas$/ })
+); // pdfjs
 
 if (!checkTypeScriptSkip) {
     config.plugins.push(new ForkTsCheckerWebpackPlugin({

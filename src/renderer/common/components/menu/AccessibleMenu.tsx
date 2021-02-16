@@ -9,7 +9,7 @@ import * as React from "react";
 import FocusLock from "react-focus-lock";
 import OutsideClickAlerter from "readium-desktop/renderer/common/components/OutsideClickAlerter";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     className?: string;
     visible: boolean;
@@ -22,7 +22,7 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 

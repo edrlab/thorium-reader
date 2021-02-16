@@ -13,7 +13,6 @@ import { ILoadState } from "readium-desktop/renderer/common/redux/states/load";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 import { IRouterLocationState } from "../../routing";
-// import { DownloadState } from "./download";
 import { THistoryState } from "./history";
 import { IOpdsHeaderState, IOpdsSearchState } from "./opds";
 
@@ -28,6 +27,5 @@ export interface ILibraryRootState extends ICommonRootState {
     router: RouterState<IRouterLocationState>;
     download: TPQueueState<downloadActions.progress.Payload, number>;
     history: THistoryState;
-    updateCatalog: number;
     load: ILoadState;
 }

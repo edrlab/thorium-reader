@@ -135,6 +135,9 @@ button {
   margin-top: -10px;
   margin-bottom: 60px;
 }
+.content_root_skip_bottom_spacing {
+  margin-top: 0px;
+}
 
 /* ========== READER ==========*/
 
@@ -617,6 +620,11 @@ button {
   padding: 0;
 	height:auto;
   list-style: none;
+
+  & > li > div > a > span {
+    /* color: red !important; */
+    line-height: 1.5em;
+  }
 
   & .chapters_content {
 	  padding: 0 0 0 20px;
@@ -1189,6 +1197,7 @@ input[type=radio] + label {
 .currentPage {
   font-size: 80%;
   font-weight: normal;
+  margin-bottom: 1em;
 }
 .goToPage {
   text-align: center;
@@ -1209,10 +1218,15 @@ input[type=radio] + label {
       border-radius: 5px;
       background: none;
       margin: 1rem;
+      margin-left: 8px;
       padding: 0.5rem;
       color: var(--reader-fontColor);
     }
 
+    & select {
+      margin: 0;
+      margin-right: 5px;
+    }
     & input {
       margin: 0;
     }

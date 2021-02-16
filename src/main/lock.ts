@@ -7,10 +7,10 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 
-import { openFileFromCli } from "./cli/commandLine";
 import { cli } from "./cli/process";
+import { getOpenFileFromCliChannel, getOpenUrlFromMacEventChannel } from "./event";
 
 // Logger
 const debug = debug_("readium-desktop:main:lock");
@@ -25,21 +25,65 @@ export function lockInstance() {
 
         // https://github.com/electron/electron/blob/master/docs/api/app.md#apprequestsingleinstancelock
         app.on("will-finish-launching", () => {
-            app.on("open-url", (event, _url) => {
+
+            // https://api.archivelab.org/books/letters_to_friend_2004_librivox/opds_audio_manifest
+            // tslint:disable-next-line: max-line-length
+            // https://streamer.kvmai.com/pub/aHR0cHM6Ly9uZ25peC1zZXJ2ZXItbmNuZGFkd3M0cS1leS5hLnJ1bi5hcHAvcHVibGljL0FjY2Vzc2libGVfRVBVQl8zLmVwdWI=/manifest.json
+            //
+            // https://w3c.github.io/publ-tests/test_reports/manifest_processing/
+            // =>
+            // https://w3c.github.io/publ-tests/audiobooks/manifest_processing/tests/a4.2.04.html
+            // https://w3c.github.io/publ-tests/audiobooks/manifest_processing/tests/a4.2.02.html
+
+            // To test in dev mode:
+            // setTimeout(() => {
+            //     const url = "xxx";
+            //     const openUrlChannel = getOpenUrlFromMacEventChannel();
+            //     openUrlChannel.put(url);
+            //     debug("====================== open url", url);
+            // }, 10000);
+
+            app.on("open-url", (event, url) => {
                 event.preventDefault();
-                // Process url: import or open?
+
+                debug("#####");
+                debug("OPEN URL", url);
+                debug("#####");
+
+                url = url.split("thorium:")[1];
+                if (url) {
+
+                    debug("open url", url);
+                    const openUrlChannel = getOpenUrlFromMacEventChannel();
+                    openUrlChannel.put(url);
+                }
             });
+
             app.on("open-file", async (event, filePath) => {
                 event.preventDefault();
 
-                if (!await openFileFromCli(filePath)) {
-                    debug(`the open-file event with ${filePath} return an error`);
+                debug("#####");
+                debug("OPEN FILE", filePath);
+                debug("#####");
+
+                // if (!await openFileFromCli(filePath)) {
+                    // debug(`the open-file event with ${filePath} return an error`);
+                // }
+
+                if (filePath) {
+                    const openFileFromCliChannel = getOpenFileFromCliChannel();
+                    openFileFromCliChannel.put(filePath);
                 }
             });
         });
 
         // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
         app.on("second-instance", (_e, argv, _workingDir) => {
+
+            debug("#####");
+            debug("Someone tried to run a second instance, we should focus our window", argv);
+            debug("#####");
+
             // Someone tried to run a second instance, we should focus our window.
             debug("comandLine", argv, _workingDir);
 
@@ -51,14 +95,7 @@ export function lockInstance() {
                 libraryAppWindow.show(); // focuses as well
             }
 
-            const store = diMainGet("store");
-            // execute command line from second instance
-            // when the command line doesn't used electron: execute and exit in second instance process
-            // when the command has needed to open win electron: execute with below cli function
-            // the mainFct is disallow to avoid to generate new mainWindow
-            // remove --version and --help because isn't handle in ready state app
-            // tslint:disable-next-line: no-empty
-            cli(store, () => {}, argv.filter((arg) => !arg.startsWith("--")));
+            cli(argv.filter((arg) => !arg.startsWith("--")));
         });
     }
     return gotTheLock;

@@ -23,7 +23,7 @@ export async function copyAndMoveLpfToTmpWithNewExt(
     ext: string = acceptedExtensionObject.audiobook,
 ): Promise<string> {
 
-    const tmpPathName = `lpfconverter`;
+    const tmpPathName = "lpfconverter";
     const tmpPath = os.tmpdir();
 
     // creation of a unique temporary directory
@@ -32,7 +32,7 @@ export async function copyAndMoveLpfToTmpWithNewExt(
         pathDir = path.resolve(tmpPath, _APP_NAME.toLowerCase(), tmpPathName, nanoid(8));
         await fsp.mkdir(pathDir, { recursive: true });
 
-    } catch (e) {
+    } catch (_e) {
 
         pathDir = await fsp.mkdtemp(`${_APP_NAME.toLowerCase()}-${tmpPathName}`);
     }
@@ -50,10 +50,10 @@ export async function injectManifestToZip(
     sourcePath: string,
     destinationPath: string,
     bufferFile: Buffer,
-    filename: string = "manifest.json",
+    filename = "manifest.json",
 ) {
 
-    return new Promise(
+    return new Promise<void>(
         (resolve, reject) => {
             injectBufferInZip(
                 sourcePath,

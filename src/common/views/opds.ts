@@ -39,6 +39,7 @@ export interface IOpdsPublicationView {
     subscribeLinks?: IOpdsLinkView[];
     sampleOrPreviewLinks?: IOpdsLinkView[];
     openAccessLinks?: IOpdsLinkView[];
+    revokeLoanLinks?: IOpdsLinkView[];
     cover?: IOpdsCoverView;
 }
 
@@ -67,9 +68,9 @@ export interface IOpdsResultView {
 }
 
 export interface IOpdsGroupView {
-    title: string;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
+    selfLink: IOpdsNavigationLinkView;
 }
 
 export interface IOpdsFacetView {
@@ -107,11 +108,11 @@ export interface IOpdsBaseLinkView {
     link: IOpdsLinkView[];
 }
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IOpdsTagView extends IOpdsBaseLinkView {
 }
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IOpdsContributorView extends IOpdsBaseLinkView {
 }
 
@@ -120,6 +121,7 @@ export interface IOpdsLinkView {
     title?: string | undefined;
     type?: string | undefined;
     properties?: IOPDSPropertiesView;
+    rel?: string;
 }
 
 export interface IOpdsNavigationLink {

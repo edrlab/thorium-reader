@@ -13,20 +13,19 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
 import DeletePublicationConfirm from "./DeletePublicationConfirm";
 import FileImport from "./FileImport";
-import Information from "./Information";
 import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 import RenewLsdConfirm from "./RenewLsdConfirm";
 import ReturnLsdConfirm from "./ReturnLsdConfirm";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
@@ -52,7 +51,6 @@ class DialogManager extends React.Component<IProps, undefined> {
                 <LcpAuthentication></LcpAuthentication>
                 <RenewLsdConfirm></RenewLsdConfirm>
                 <ReturnLsdConfirm></ReturnLsdConfirm>
-                <Information></Information>
                 <PublicationInfo></PublicationInfo>
             </>
         );

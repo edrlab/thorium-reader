@@ -15,7 +15,7 @@ import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import GridTagButton from "readium-desktop/renderer/library/components/catalog/GridTagButton";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     tags: string[];
     content?: React.ReactElement<{}>;
@@ -24,7 +24,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 

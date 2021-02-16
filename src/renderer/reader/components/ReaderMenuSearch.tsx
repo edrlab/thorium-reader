@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import classnames from "classnames";
+import { debounce } from "debounce";
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -25,9 +26,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { readerLocalActionSearch } from "../redux/actions";
 
-// import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
-
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     focusMainAreaLandmarkAndCloseMenu: () => void;
 }
@@ -35,12 +34,12 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 // tslint:disable-next-line: max-line-length
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps>, TranslatorProps {
 }
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IState {
     nMatchPage: number;
 }
@@ -244,7 +243,9 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                             fontWeight: "normal",
                                         }}
                                         onClick=
-                                            {(e) => this.handleSearchClick(e, v.uuid, false)}
+                                            {(e) => this.handleSearchClickDebounced(e, v.uuid, false)}
+                                        onDoubleClick=
+                                            {(e) => this.handleSearchClickDebounced(e, v.uuid, true)}
                                         tabIndex={0}
                                         onKeyPress=
                                             {
@@ -374,14 +375,33 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         href: string,
         escape: boolean) {
 
-        e.preventDefault();
-        console.log(href);
-        this.props.focus(href); // search uuid
-        if (escape) {
-            this.props.focusMainAreaLandmarkAndCloseMenu();
-        }
+        handleSearchClickFunc(this, e, href, escape);
+    }
+
+    private handleSearchClickDebounced(
+        e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>,
+        href: string,
+        escape: boolean) {
+
+        handleSearchClickFuncDebounced(this, e, href, escape);
     }
 }
+
+const handleSearchClickFunc = (
+    thiz: ReaderMenuSearch,
+    e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>,
+    href: string,
+    escape: boolean) => {
+
+    e.preventDefault();
+    console.log(href);
+    thiz.props.focus(href); // search uuid
+    if (escape) {
+        thiz.props.focusMainAreaLandmarkAndCloseMenu();
+    }
+};
+
+const handleSearchClickFuncDebounced = debounce(handleSearchClickFunc, 300);
 
 // const copyLink = (link: Link): Link => {
 //     const ln = new Link();

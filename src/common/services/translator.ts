@@ -10,6 +10,7 @@ import { injectable } from "inversify";
 import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as esCatalog from "readium-desktop/resources/locales/es.json";
+import * as fiCatalog from "readium-desktop/resources/locales/fi.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 import * as itCatalog from "readium-desktop/resources/locales/it.json";
 import * as jaCatalog from "readium-desktop/resources/locales/ja.json";
@@ -17,17 +18,9 @@ import * as ltCatalog from "readium-desktop/resources/locales/lt.json";
 import * as nlCatalog from "readium-desktop/resources/locales/nl.json";
 import * as ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
 import * as ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
+import * as ruCatalog from "readium-desktop/resources/locales/ru.json";
+import * as zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
 
-import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
-import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
-import * as esLang from "readium-desktop/resources/locale-names/esLang.json";
-import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
-import * as itLang from "readium-desktop/resources/locale-names/itLang.json";
-import * as jaLang from "readium-desktop/resources/locale-names/jaLang.json";
-import * as ltLang from "readium-desktop/resources/locale-names/ltLang.json";
-import * as nlLang from "readium-desktop/resources/locale-names/nlLang.json";
-import * as ptBrLang from "readium-desktop/resources/locale-names/ptBrLang.json";
-import * as ptPtLang from "readium-desktop/resources/locale-names/ptPtLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
 
 // -----------------------------------------------------------
@@ -57,15 +50,13 @@ import { i18n } from "i18next"; // named export: just the TypeScript type
 // import i18next = require("i18next");
 //
 // ##### technique 3:
-// tslint:disable-next-line: no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const i18next: i18n = require("i18next");
 
 // ##### technique 4 (force CJS):
-// tslint:disable-next-line: no-var-requires
 // const i18next: i18n = require("i18next/dist/cjs/i18next");
 
 // ##### technique 5 (force ESM):
-// tslint:disable-next-line: no-var-requires
 // const i18next: i18n = require("i18next/dist/esm/i18next");
 
 // const i18nextInstance = i18next.createInstance(); // it should be as simple as that :(
@@ -91,6 +82,9 @@ i18nextInstance.init({
         "fr": {
             translation: frCatalog,
         },
+        "fi": {
+            translation: fiCatalog,
+        },
         "de": {
             translation: deCatalog,
         },
@@ -112,8 +106,14 @@ i18nextInstance.init({
         "pt-PT": {
             translation: ptPtCatalog,
         },
+        "zh-CN": {
+            translation: zhCnCatalog,
+        },
         "it" : {
             translation: itCatalog,
+        },
+        "ru" : {
+            translation: ruCatalog,
         },
     },
     // lng: undefined,
@@ -136,17 +136,6 @@ i18nextInstance.init({
     console.log(err);
 });
 
-i18nextInstance.addResourceBundle("en", "translation", enLang, true);
-i18nextInstance.addResourceBundle("fr", "translation", frLang, true);
-i18nextInstance.addResourceBundle("de", "translation", deLang, true);
-i18nextInstance.addResourceBundle("es", "translation", esLang, true);
-i18nextInstance.addResourceBundle("nl", "translation", nlLang, true);
-i18nextInstance.addResourceBundle("ja", "translation", jaLang, true);
-i18nextInstance.addResourceBundle("lt", "translation", ltLang, true);
-i18nextInstance.addResourceBundle("pt-BR", "translation", ptBrLang, true);
-i18nextInstance.addResourceBundle("pt-PT", "translation", ptPtLang, true);
-i18nextInstance.addResourceBundle("it", "translation", itLang, true);
-
 const i18nextInstanceEN = i18nextInstance.cloneInstance();
 i18nextInstanceEN.changeLanguage("en").then((_t) => {
     // noop
@@ -160,6 +149,7 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 export const AvailableLanguages = {
     "en": "English",
     "fr": "Français",
+    "fi": "Suomi",
     "de": "Deutsch",
     "es": "Español",
     "nl": "Dutch",
@@ -167,7 +157,9 @@ export const AvailableLanguages = {
     "lt": "Lietuvių",
     "pt-BR": "Português Brasileiro",
     "pt-PT": "Português",
+    "zh-CN": "中文",
     "it": "Italiano",
+    "ru": "Русский",
 };
 
 interface LocalizedContent {
@@ -179,7 +171,7 @@ export type I18nTyped = TFunction;
 @injectable()
 export class Translator {
     public translate: I18nTyped = this._translate;
-    private locale: string = "en";
+    private locale = "en";
 
     public getLocale(): string {
         return this.locale;

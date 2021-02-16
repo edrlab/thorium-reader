@@ -20,6 +20,7 @@ export const acceptedExtensionObject = {
     pdf: ".pdf",
     w3cAudiobook: ".lpf",
     divina: ".divina",
+    daisy: ".daisy",
 
     // cbz: ".cbz",
 };

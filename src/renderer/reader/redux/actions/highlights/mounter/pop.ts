@@ -10,7 +10,7 @@ import { IHighlightBaseState } from "../../../state/highlight";
 
 export const ID = "READER_HIGHLIGHT_MOUNTER_POP";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPayload extends Array<IHighlightBaseState> {
 }
 

@@ -16,7 +16,7 @@ import AccessibleMenu from "readium-desktop/renderer/common/components/menu/Acce
 import { SectionData } from "./sideMenuData";
 import SideMenuSection, { SideMenuSection as SideMenuSectionClass } from "./SideMenuSection";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     open: boolean;
     sections: SectionData[];
@@ -32,7 +32,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -66,9 +66,9 @@ export class SideMenu extends React.Component<IProps, IState> {
                             if (el.scrollIntoView) {
                                 el.scrollIntoView();
                             }
-                            if (el.firstElementChild &&
-                                (el.firstElementChild as HTMLElement).focus) {
-                                (el.firstElementChild as HTMLElement).focus();
+                            const inputEl = el.querySelector("input") || el.querySelector("button");
+                            if (inputEl && inputEl.focus) {
+                                inputEl.focus();
                             }
                         }
                     }
@@ -109,7 +109,11 @@ export class SideMenu extends React.Component<IProps, IState> {
                                 disabled={section.disabled}
                                 skipMaxHeight={section.skipMaxHeight}
                             />
-                        : <li key={index}>
+                        : <li
+                            ref={ openedSection === index ?
+                                (this.currentOpenRef as any) :
+                                undefined}
+                            key={index}>
                             { section.content }
                         </li>,
                     )}

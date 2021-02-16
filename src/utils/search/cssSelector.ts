@@ -7,6 +7,8 @@
 
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector2";
 
+// import { fullQualifiedSelector } from "@r2-navigator-js/electron/renderer/common/cssselector";
+
 const _getCssSelectorOptions = {
     className: (_str: string) => {
         return true;
@@ -21,7 +23,11 @@ const _getCssSelectorOptions = {
 
 export const getCssSelector_ = (doc: Document) => (element: Element): string => {
     try {
-        return uniqueCssSelector(element, doc, _getCssSelectorOptions);
+        const sel = uniqueCssSelector(element, doc, _getCssSelectorOptions);
+        // const sel2 = fullQualifiedSelector(element, false);
+        // const sel3 = fullQualifiedSelector(element, true);
+        // console.log("CSS Selector: ", sel, " ---- ", sel2, " ---- ", sel3);
+        return sel;
     } catch (err) {
         console.error("uniqueCssSelector:", err);
         return "";

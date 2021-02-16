@@ -1,14 +1,5 @@
 {
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "tslint-language-service",
-        "alwaysShowRuleFailuresAsWarnings": false,
-        "ignoreDefinitionFiles": true,
-        "configFile": "./tslint.json",
-        "disableNoUnusedVariableRule": false
-      }
-    ],
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,

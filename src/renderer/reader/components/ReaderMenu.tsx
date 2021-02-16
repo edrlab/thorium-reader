@@ -32,19 +32,20 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     focusNaviguationMenu: () => void;
     currentLocation: LocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
+    pdfNumberOfPages: number;
 }
 
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
@@ -76,6 +77,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
+
         this.unsubscribe = apiSubscribe([
             "reader/addBookmark",
             "reader/deleteBookmark",
@@ -112,6 +114,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!r2Publication) {
             return <></>;
         }
+
+        // WARNING: do not modify zero-based index without adjusting Reader.tsx
+        // showSearchResults (4)
+        // showGotoPage (5)
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
@@ -148,11 +154,14 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         focusMainAreaLandmarkAndCloseMenu={this.props.focusMainAreaLandmarkAndCloseMenu}
                     ></ReaderMenuSearch>
                     : <></>,
-                disabled: !this.props.searchEnable,
+                disabled: !this.props.searchEnable || this.props.isPdf,
                 skipMaxHeight: true,
             },
             {
-                content: this.buildGoToPageSection(),
+                content: this.buildGoToPageSection(
+                    this.props.isPdf && this.props.pdfNumberOfPages
+                        ? this.props.pdfNumberOfPages.toString()
+                        : undefined),
                 disabled: false,
                 notExtendable: true,
             },
@@ -401,56 +410,136 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             .catch((error) => console.error("Error to fetch api reader/deleteBookmark", error));
     }
 
-    private buildGoToPageSection() {
+    private buildGoToPageSection(totalPages?: string) {
         if (!this.props.r2Publication) {
             return <></>;
         }
 
+        // this.props.currentLocation.docInfo.isFixedLayout
+        const isFixedLayout = !this.props.r2Publication.PageList &&
+            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+
         let currentPage = (this.props.isDivina || this.props.isPdf) ?
             this.props.currentLocation?.locator?.href :
             this.props.currentLocation?.epubPage;
-        if (currentPage) {
-
+        if (isFixedLayout &&
+            this.props.currentLocation?.locator?.href &&
+            this.props.r2Publication.Spine) {
+            const spineIndex = this.props.r2Publication.Spine.findIndex((l) => {
+                return l.Href === this.props.currentLocation.locator.href;
+            });
+            if (spineIndex >= 0) {
+                currentPage = (spineIndex + 1).toString();
+                totalPages = this.props.r2Publication.Spine.length.toString();
+            }
+        } else if (currentPage) {
             if (this.props.isDivina) {
                 try {
                     const p = parseInt(currentPage, 10) + 1;
                     currentPage = p.toString();
-                } catch (e) {
+                } catch (_e) {
                     // ignore
                 }
             } else if (this.props.isPdf) {
-                try {
-                    const p = parseInt(currentPage, 10);
-                    currentPage = p.toString();
-                } catch (e) {
-                    // ignore
-                }
+                currentPage = currentPage;
             }
         }
 
         const { __ } = this.props;
-        const error = this.state.pageError;
+
         return <div className={styles.goToPage}>
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
 
+            <label className={styles.currentPage}
+                id="gotoPageLabel"
+                htmlFor="gotoPageInput">
+                {
+                currentPage ?
+                (totalPages
+                        // tslint:disable-next-line: max-line-length
+                        ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
+                        : __("reader.navigation.currentPage", { current: `${currentPage}`})) :
+                ""
+                }
+            </label>
+
             <form onSubmit={this.handleSubmitPage}>
+                {(isFixedLayout || this.props.r2Publication?.PageList) &&
+                <select
+                    onChange={(ev) => {
+                        const val = ev.target?.value?.toString();
+                        if (!val || !this.goToRef?.current) {
+                            return;
+                        }
+                        this.goToRef.current.value = val;
+                        this.setState({pageError: false});
+
+                        // Warning: Use the `defaultValue` or `value` props on <select>
+                        // instead of setting `selected` on <option>.
+                        // ... BUT: this does not result in the behaviour we want,
+                        // which is to display the current page, OR the user-selected page (not actually current yet)
+                        // value={
+                        //     this.props.r2Publication.PageList.find((pl) => {
+                        //         return pl.Title === currentPage;
+                        //     }) ?
+                        //     currentPage : undefined
+                        // }
+                    }}
+                >
+                    {
+                    isFixedLayout
+                    ?
+                    this.props.r2Publication.Spine.map((_spineLink, idx) => {
+                        const indexStr = (idx + 1).toString();
+                        return (
+                            <option
+                                key={`pageGoto_${idx}`}
+                                value={indexStr}
+                                selected={currentPage === indexStr}
+                            >
+                                {indexStr}
+                            </option>
+                        );
+                    })
+                    :
+                    this.props.r2Publication.PageList.map((pageLink, idx) => {
+                        return (
+                            pageLink.Title ?
+                            <option
+                                key={`pageGoto_${idx}`}
+                                value={pageLink.Title}
+                                selected={currentPage === pageLink.Title}
+                            >
+                                {pageLink.Title}
+                            </option> : <></>
+                        );
+                    })
+                    }
+                </select>
+                }
                 <input
+                    id="gotoPageInput"
+                    aria-labelledby="gotoPageLabel"
                     ref={this.goToRef}
                     type="text"
-                    aria-invalid={error}
+                    aria-invalid={this.state.pageError}
                     onChange={() => this.setState({pageError: false})}
-                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)}
+                    disabled={
+                        !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
+                    }
                     placeholder={__("reader.navigation.goToPlaceHolder")}
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
                     type="submit"
-                    disabled={!(this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)}
+                    disabled={
+                        !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
+                    }
                 >
                     { __("reader.navigation.goTo") }
                 </button>
             </form>
-            {error &&
+            {this.state.pageError &&
                 <p
                     className={styles.goToErrorMessage}
                     aria-live="assertive"
@@ -460,8 +549,6 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     { __("reader.navigation.goToError") }
                 </p>
             }
-
-            <p className={styles.currentPage}>({currentPage})</p>
 
         </div>;
     }
@@ -475,31 +562,48 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         if (!this.goToRef?.current?.value) {
             return;
         }
+
+        // this.props.currentLocation.docInfo.isFixedLayout
+        const isFixedLayout = !this.props.r2Publication.PageList &&
+            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+
         const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
-        if (this.props.isDivina || this.props.isPdf) {
+        if (isFixedLayout) {
+            try {
+                const spineIndex = parseInt(pageNbr, 10) - 1;
+                const spineLink = this.props.r2Publication.Spine[spineIndex];
+                if (spineLink) {
+                    this.setState({pageError: false});
+                    this.props.handleLinkClick(undefined, spineLink.Href);
+                    return;
+                }
+            } catch (_e) {
+                // ignore error
+            }
+
+            this.setState({refreshError: true});
+        } else if (this.props.isDivina || this.props.isPdf) {
             let page: number | undefined;
 
             if (this.props.isDivina) {
                 try {
                     page = parseInt(pageNbr, 10) - 1;
-                } catch (e) {
+                } catch (_e) {
                     // ignore error
                 }
             } else if (this.props.isPdf) {
-                try {
-                    page = parseInt(pageNbr, 10);
-                } catch (e) {
-                    // ignore error
-                }
+                //
             }
-            if (typeof page !== "undefined" && page >= 0 &&
-                ((this.props.r2Publication.Spine && this.props.r2Publication.Spine[page]) || this.props.isPdf)) {
+            if (this.props.isPdf ||
+                (typeof page !== "undefined" && page >= 0 &&
+                    this.props.r2Publication.Spine && this.props.r2Publication.Spine[page])
+            ) {
 
-                this.setState({pageError: false});
+                this.setState({ pageError: false });
 
                 // this.props.handleLinkClick(undefined, pageNbr);
                 const loc = {
-                    href: page.toString(),
+                    href: (page || pageNbr).toString(),
                     // progression generate in divina pagechange event
                 };
                 this.props.handleBookmarkClick(loc as any);

@@ -22,11 +22,8 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
-// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
-
-// import { consoleRedirect } from "@r2-navigator-js/electron/renderer/common/console-redirect";
 if (IS_DEV) {
-    // tslint:disable-next-line:no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const cr = require("@r2-navigator-js/electron/renderer/common/console-redirect");
     // const releaseConsoleRedirect =
     cr.consoleRedirect("readium-desktop:renderer:bookshelf", process.stdout, process.stderr, true);
@@ -35,10 +32,10 @@ if (IS_DEV) {
 let devTron: any;
 let axe: any;
 if (IS_DEV) {
-    // tslint:disable-next-line: no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     devTron = require("devtron");
 
-    // tslint:disable-next-line: no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     axe = require("react-axe");
 }
 

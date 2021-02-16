@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
+import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/baseline-pause-24px.svg";
 import * as PlayIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg";
@@ -33,12 +34,13 @@ import {
     LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
 
+import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     menuOpen: boolean;
     infoOpen: boolean;
@@ -82,17 +84,22 @@ interface IBaseProps extends TranslatorProps {
     currentLocation: LocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
+    pdfEventBus: IEventBusPdfPlayer;
 }
 
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
-export class ReaderHeader extends React.Component<IProps, undefined> {
+interface IState {
+    pdfScaleMode: IPdfPlayerScale | undefined;
+}
+
+export class ReaderHeader extends React.Component<IProps, IState> {
 
     private enableFullscreenRef: React.RefObject<HTMLButtonElement>;
     private disableFullscreenRef: React.RefObject<HTMLButtonElement>;
@@ -110,9 +117,31 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
 
         this.focusSettingMenuButton = this.focusSettingMenuButton.bind(this);
         this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
+
+        this.state = {
+            pdfScaleMode: undefined,
+        };
+    }
+
+    public componentDidMount() {
+
+        this.props.pdfEventBus?.subscribe("scale", this.setScaleMode);
+    }
+
+    public componentWillUnmount() {
+
+        if (this.props.pdfEventBus) {
+            this.props.pdfEventBus.remove(this.setScaleMode, "scale");
+        }
     }
 
     public componentDidUpdate(oldProps: IProps) {
+
+        if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
+
+            this.props.pdfEventBus.subscribe("scale", this.setScaleMode);
+        }
+
         if (this.props.fullscreen !== oldProps.fullscreen) {
             if (this.props.fullscreen && this.disableFullscreenRef?.current) {
                 this.disableFullscreenRef.current.focus();
@@ -360,6 +389,30 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                                 <SVG svg={MarkIcon} title={__("reader.navigation.bookmarkTitle")} />
                             </label>
                         </li>
+                        {
+                            this.props.isPdf
+                                ? <li
+                                    {...(this.props.isOnBookmark &&
+                                        { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                                >
+                                    <input
+                                        id="pdfScaleButton"
+                                        className={styles.bookmarkButton}
+                                        type="checkbox"
+                                        checked={this.state.pdfScaleMode === "page-width"}
+                                        // tslint:disable-next-line: max-line-length
+                                        onChange={() => this.props.pdfEventBus.dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
+                                        aria-label={__("reader.navigation.pdfscalemode")}
+                                    />
+                                    <label
+                                        htmlFor="pdfScaleButton"
+                                        className={styles.menu_button}
+                                    >
+                                        <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} />
+                                    </label>
+                                </li>
+                                : <></>
+                        }
                         <li
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "rgb(193, 193, 193)" } })}
@@ -436,6 +489,10 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
                 </ul>
             </nav>
         );
+    }
+
+    private setScaleMode = (mode: IPdfPlayerScale) => {
+        this.setState({pdfScaleMode: mode});
     }
 
     private focusSettingMenuButton() {

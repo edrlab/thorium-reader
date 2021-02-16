@@ -147,7 +147,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
 
 function* winClose(_action: winActions.library.closed.TAction) {
 
-    debug(`library -> winClose`);
+    debug("library -> winClose");
 
     const library = getLibraryWindowFromDi();
     let value = 0; // window.close() // not saved session by default

@@ -16,9 +16,6 @@ import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/m
 import { error } from "readium-desktop/main/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
-} from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, put } from "redux-saga/effects";
 
@@ -53,39 +50,6 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             keyboard,
         },
     } as readerIpc.EventPayload);
-
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: readerActions.openSuccess.build(state.reader.readers[winId]),
-    //     },
-    // } as syncIpc.EventPayload);
-
-    // // Send reader config
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: readerActions.configSetSuccess.build(state.reader.config),
-    //     },
-    // } as syncIpc.EventPayload);
-
-    // Send reader mode
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: readerActions.detachModeSuccess.build(state.reader.mode),
-    //     },
-    // } as syncIpc.EventPayload);
-    // send with an API Request now
-    // should be removed
-
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: i18nActions.setLocale.build(state.i18n.locale),
-    //     },
-    // } as syncIpc.EventPayload);
-
 }
 
 function* winClose(action: winActions.reader.closed.TAction) {
@@ -108,9 +72,6 @@ function* winClose(action: winActions.reader.closed.TAction) {
                 );
 
             yield put(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));
-
-            // not yet used
-            // yield put(readerActions.closeSuccess.build(identifier));
         }
     }
 

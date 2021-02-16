@@ -26,10 +26,10 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 let devTron: any;
 let axe: any;
 if (IS_DEV) {
-    // tslint:disable-next-line: no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     devTron = require("devtron");
 
-    // tslint:disable-next-line: no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     axe = require("react-axe");
 }
 
@@ -52,7 +52,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 // create an instance of r2Publication
                 const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf-8");
                 const r2PublicationJson = JSON.parse(r2PublicationStr);
-                const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+                const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 data.payload.reader.info.r2Publication = r2Publication;
 

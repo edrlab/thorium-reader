@@ -19,14 +19,14 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -64,7 +64,7 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
         e.preventDefault();
         apiAction("lcp/returnPublication", this.props.publicationView.identifier)
         .catch((error) => {
-            console.error(`Error API lcp/returnPublication`, error);
+            console.error("Error API lcp/returnPublication", error);
         });
         this.props.closeDialog();
     }

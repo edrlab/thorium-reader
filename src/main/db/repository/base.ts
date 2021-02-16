@@ -62,7 +62,7 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
                     _rev: origDbDoc._rev,
                 } as PouchDB.Core.GetMeta,
             );
-        } catch (error) {
+        } catch (_error) {
             // Not found, so this is a new one
             dbDoc = Object.assign(
                 dbDoc,
@@ -87,7 +87,7 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         try {
             const dbDoc = await this.db.get(this.buildId(identifier));
             return this.convertToDocument(dbDoc);
-        } catch (error) {
+        } catch (_error) {
             throw new NotFoundError("document not found");
         }
     }

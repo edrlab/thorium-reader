@@ -11,7 +11,7 @@ import { callTyped, raceTyped } from "readium-desktop/common/redux/sagas/typed-s
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType } from "readium-desktop/utils/contentType";
 import { delay, SagaGenerator } from "typed-redux-saga";
 
 import { downloader } from "../../../downloader";
@@ -38,7 +38,7 @@ function* importLinkFromPath(
     let returnPublicationDocument = publicationDocument;
     if (!alreadyImported && publicationDocument) {
 
-        const tags = pub?.tags?.map((v) => v.name);
+        const tags = pub?.tags?.map((v) => v.name) || [];
 
         // Merge with the original publication
         const publicationDocumentAssigned = Object.assign(
@@ -86,9 +86,8 @@ export function* importFromLinkService(
             } else {
                 link.type = "";
             }
-        } catch (e) {
+        } catch (_e) {
             debug("can't fetch url to determine the type", url.toString());
-
             link.type = "";
         }
     }
@@ -116,20 +115,29 @@ export function* importFromLinkService(
     }
 
     if (isHtml || isJson) {
-        debug("the link need to be packaged");
+        link = { url: url.toString() };
+    }
 
-        const packagePath = yield* callTyped(packageFromLink, url.toString(), isHtml);
-        if (packagePath) {
-            return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString() }, pub);
+    const downloadMayBePackageLink = function*() {
+
+        if (isHtml || isJson) {
+            debug("the link need to be packaged");
+
+            return yield* callTyped(packageFromLink, url.toString(), isHtml);
+
+        } else {
+            debug("Start the download", link);
+
+            const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
+            return downloadPath;
         }
+    };
 
+    const fileOrPackagePath = yield* callTyped(downloadMayBePackageLink);
+    if (fileOrPackagePath) {
+        return yield* callTyped(importLinkFromPath, fileOrPackagePath, link, pub);
     } else {
-        debug("Start the download", link);
-
-        const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
-        if (downloadPath) {
-            return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
-        }
+        debug("downloaded file path or package path is empty");
     }
 
     return [undefined, false];

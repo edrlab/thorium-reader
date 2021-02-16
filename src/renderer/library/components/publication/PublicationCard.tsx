@@ -27,7 +27,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
     isOpds?: boolean;
@@ -36,7 +36,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
@@ -53,7 +53,7 @@ class PublicationCard extends React.Component<IProps, IState> {
             menuOpen: false,
         };
         this.openCloseMenu = this.openCloseMenu.bind(this);
-        this.truncateTitle = this.truncateTitle.bind(this);
+        // this.truncateTitle = this.truncateTitle.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -83,7 +83,8 @@ class PublicationCard extends React.Component<IProps, IState> {
                     <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
                         <p aria-hidden className={styles.book_title}>
                             {
-                                this.truncateTitle(publicationViewMaybeOpds.title)
+                                // this.truncateTitle()
+                                publicationViewMaybeOpds.title
                             }
                         </p>
                         <p aria-hidden className={styles.book_author}>
@@ -129,16 +130,16 @@ class PublicationCard extends React.Component<IProps, IState> {
     }
 
     /* function Truncate very long titles at 60 characters */
-    private truncateTitle(title: string): string {
-        let newTitle = title;
-        const truncate = 60;
+    // private truncateTitle(title: string): string {
+    //     let newTitle = title;
+    //     const truncate = 60;
 
-        if (newTitle && newTitle.length > truncate) {
-            newTitle = title.substr(0, truncate);
-            newTitle += "...";
-        }
-        return (newTitle);
-    }
+    //     if (newTitle && newTitle.length > truncate) {
+    //         newTitle = title.substr(0, truncate);
+    //         newTitle += "...";
+    //     }
+    //     return (newTitle);
+    // }
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {

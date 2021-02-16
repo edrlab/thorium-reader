@@ -17,7 +17,7 @@ import {
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationLcp: Partial<Pick<PublicationView, "lcp" | "lcpRightsCopies">>;
 }
@@ -25,7 +25,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -83,7 +83,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         // if (lcp && lcp.r2LCPBase64) {
         //     const r2LCPStr = Buffer.from(lcp.r2LCPBase64, "base64").toString("utf-8");
         //     const r2LCPJson = JSON.parse(r2LCPStr);
-        //     const r2LCP = TaJsonDeserialize<LCP>(r2LCPJson, LCP);
+        //     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
         //     r2LCP.JsonSource = r2LCPStr;
 
         //     console.log(r2LCP.User.Name);

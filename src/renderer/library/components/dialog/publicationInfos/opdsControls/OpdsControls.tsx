@@ -20,7 +20,7 @@ import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
 
 import OpdsLinkProperties from "./OpdsLinkProperties";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     opdsPublicationView: IOpdsPublicationView;
 }
@@ -28,7 +28,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -47,7 +47,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
         // const r2OpdsPublicationStr =
         //     Buffer.from(this.props.opdsPublicationView.r2OpdsPublicationBase64, "base64").toString("utf-8");
         // const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
-        // // const r2OpdsPublication = TaJsonDeserialize<R2Publication>(r2OpdsPublicationJson, R2Publication);
+        // // const r2OpdsPublication = TaJsonDeserialize(r2OpdsPublicationJson, R2Publication);
         // console.log(JSON.stringify(r2OpdsPublicationJson, null, 4));
 
         const {
@@ -73,7 +73,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             >
                                 {`${__("catalog.addBookToLib")}${ln.properties?.indirectAcquisitionType ?
                                 ` (${findExtWithMimeType(ln.properties.indirectAcquisitionType)})` :
-                                (ln.type ? ` (${findExtWithMimeType(ln.type)})` : "")}`}
+                                (ln.type ? ` (${findExtWithMimeType(ln.type) || findExtWithMimeType(ln.type.replace("+json", "+zip"))})` : "")}`}
                             </button>
                             <OpdsLinkProperties
                                 properties={ln.properties}
@@ -173,6 +173,31 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     )
                     : <></>;
 
+            const revokeLoanList = () =>
+                Array.isArray(opdsPublicationView.revokeLoanLinks) ? (
+                    opdsPublicationView.revokeLoanLinks.map((ln, idx) => (
+                        <li key={`revokeControl-${idx}`}>
+                            <button
+                                className={styles.lire}
+                                onClick={() =>
+                                    this.props.link(
+                                        ln,
+                                        this.props.location,
+                                        `${__("opds.menu.goRevokeLoanBook")} (${
+                                            opdsPublicationView.title
+                                        })`,
+                                    )
+                                }
+                            >
+                                {__("opds.menu.goRevokeLoanBook")}
+                            </button>
+                            <OpdsLinkProperties properties={ln.properties} />
+                        </li>
+                    ))
+                ) : (
+                    <></>
+                );
+
             if (
                 (Array.isArray(opdsPublicationView.buyLinks)
                     && opdsPublicationView.buyLinks.length)
@@ -180,6 +205,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     && opdsPublicationView.borrowLinks.length)
                 || (Array.isArray(opdsPublicationView.subscribeLinks)
                     && opdsPublicationView.subscribeLinks.length)
+                || (Array.isArray(opdsPublicationView.revokeLoanLinks)
+                    && opdsPublicationView.revokeLoanLinks.length)
             ) {
                 return (
                     <ul className={styles.liens}>
@@ -191,6 +218,9 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         }
                         {
                             subscribeList()
+                        }
+                        {
+                            revokeLoanList()
                         }
                     </ul>
                 );

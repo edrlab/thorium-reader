@@ -1,3 +1,4 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
 var fs = require("fs");
@@ -110,9 +111,6 @@ const cssLoaderConfig = [
 let config = Object.assign(
     {},
     {
-        optimization: {
-            minimize: nodeEnv === "production",
-        },
         entry: "./src/renderer/reader/pdf/webview/index_pdf.ts",
         name: "renderer pdf webview index",
         output: {
@@ -162,54 +160,17 @@ let config = Object.assign(
             ],
         },
 
-        // devServer: {
-        //     contentBase: __dirname,
-        //     hot: _enableHot,
-        //     watchContentBase: true,
-        //     watchOptions: {
-        //         ignored: [
-        //             /dist/,
-        //             /docs/,
-        //             /scripts/,
-        //             /test/,
-        //             /node_modules/,
-        //             /external-assets/,
-        //         ],
-        //     },
-        // },
         plugins: [
-            // new HtmlWebpackPlugin({
-            //     template: "./src/renderer/reader/pdf/webview/index_pdf.ejs",
-            //     filename: "index_pdf.html",
-            // }),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(
-                        __dirname,
-                        "src",
-                        "renderer",
-                        "reader",
-                        "pdf",
-                        "webview",
-                        "index_pdf.ejs",
-                    ),
-                    to: "./index_pdf.html",
-                    toType: "file",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(
-                        __dirname,
-                        "node_modules",
-                        "pdfjs-dist",
-                        "build",
-                        nodeEnv === "production" ? "pdf.worker.min.js" : "pdf.worker.js",
-                    ),
-                    to: "./index_pdf.worker.js",
-                    toType: "file",
-                },
-            ]}),
+            new BundleAnalyzerPlugin({
+                analyzerMode: "disabled",
+                defaultSizes: "stat", // "parsed"
+                openAnalyzer: false,
+                generateStatsFile: true,
+                statsFilename: "stats_renderer-pdf.json",
+                statsOptions: null,
+
+                excludeAssets: null,
+            }),
             preprocessorDirectives.definePlugin,
         ],
     }
@@ -222,45 +183,6 @@ if (!checkTypeScriptSkip) {
 }
 
 if (nodeEnv !== "production") {
-
-    // const port = parseInt(preprocessorDirectives.portPdfWebview, 10);
-    // console.log("PDF PORT: " + port);
-
-    // // Renderer config for DEV environment
-    // config = Object.assign({}, config, {
-    //     // Enable sourcemaps for debugging webpack's output.
-    //     devtool: "inline-source-map",
-
-    //     devServer: {
-    //         contentBase: __dirname,
-    //         headers: {
-    //             "Access-Control-Allow-Origin": "*",
-    //         },
-    //         hot: _enableHot,
-    //         watchContentBase: true,
-    //         watchOptions: {
-    //             ignored: [
-    //                 /dist/,
-    //                 /docs/,
-    //                 /scripts/,
-    //                 /test/,
-    //                 /node_modules/,
-    //                 /external-assets/,
-    //             ],
-    //         },
-    //         port,
-    //     },
-    // });
-
-    // config.output.pathinfo = true;
-
-    // config.output.publicPath = preprocessorDirectives.rendererPdfWebviewBaseUrl;
-    // if (_enableHot) {
-    //     config.plugins.push(new webpack.HotModuleReplacementPlugin());
-    // }
-    // if (_enableHot) {
-    //     cssLoaderConfig.unshift("css-hot-loader");
-    // }
     config.module.rules.push({
         test: /\.css$/,
         use: cssLoaderConfig,

@@ -20,19 +20,19 @@ import { DisplayType } from "readium-desktop/renderer/library/routing";
 import PublicationCard from "../publication/PublicationCard";
 import { ListView } from "../utils/ListView";
 import Slider from "../utils/Slider";
-import OPDSAuth from "./Auth";
+import Entry from "./Entry";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
@@ -62,11 +62,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             if (browserResult.isSuccess ||
                 (browserResult.isFailure && browserResult.statusCode === 401 && browserResult.data?.auth)) {
 
-                if (browserResult.data.auth) {
-                    content = (
-                        <OPDSAuth browserResult={browserResult} />
-                    );
-                } else if (browserResult.data.navigation &&
+                if (browserResult.data.navigation &&
                     !browserResult.data.publications &&
                     !browserResult.data.groups) {
 
@@ -77,22 +73,34 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     !browserResult.data.navigation &&
                     !browserResult.data.groups) {
 
+                    const facetsRender = browserResult.data.facets?.map((facet, facetId) =>
+                        <section key={`facet-${facetId}`}>
+                            <br></br>
+                            <h3>{facet.title}</h3>
+                            <EntryList entries={facet.links}></EntryList>
+                        </section>,
+                    );
+
                     content = (
                         <>
-                            {
-                                browserResult.data.facets?.map((facet, facetId) =>
-                                    <section key={`facet-${facetId}`}>
-                                        <br></br>
-                                        <h3>{facet.title}</h3>
-                                        <EntryList entries={facet.links}></EntryList>
-                                    </section>,
-                                )
-                            }
-                            <EntryPublicationList
-                                opdsPublicationView={browserResult.data.publications}
-                                links={browserResult.data.links}
-                                pageInfo={browserResult.data.metadata}
-                            />
+                            <div className={Array.isArray(facetsRender) ? styles.publicationgrid : ""}>
+                                {
+                                    Array.isArray(facetsRender)
+                                        ? <div className={styles.publicationgriditem}>
+                                            {
+                                                facetsRender
+                                            }
+                                        </div>
+                                        : <></>
+                                }
+                                <div className={Array.isArray(facetsRender) ? styles.publicationgriditem : ""}>
+                                    <EntryPublicationList
+                                        opdsPublicationView={browserResult.data.publications}
+                                        links={browserResult.data.links}
+                                        pageInfo={browserResult.data.metadata}
+                                    />
+                                </div>
+                            </div>
                         </>
                     );
                 } else if (browserResult.data.groups ||
@@ -119,7 +127,9 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                 browserResult.data.groups?.map((group, i) =>
                                     <section key={i}>
                                         <br></br>
-                                        <h3>{group.title}</h3>
+                                        <h3 className={styles.entrygroups}>
+                                            <Entry level={this.props.level} entry={group.selfLink}></Entry>
+                                        </h3>
                                         {
                                             group.navigation &&
                                             <EntryList entries={group.navigation} />
@@ -182,6 +192,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         browserData: apiBrowseData?.data,
         location: state.router.location,
+        level: state.opds.browser.breadcrumb.length + 1,
     };
 };
 

@@ -34,9 +34,8 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { LcpManager } from "readium-desktop/main/services/lcp";
-// import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { streamer } from "readium-desktop/main/streamer";
+import { streamer } from "readium-desktop/main/streamerHttp";
 import {
     _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
 } from "readium-desktop/preprocessor-directives";
@@ -94,13 +93,13 @@ if (!fs.existsSync(rootDbPath)) {
     fs.mkdirSync(rootDbPath);
 }
 
-// tslint:disable-next-line:no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 
-// tslint:disable-next-line:no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pouchDbFind = require("pouchdb-find");
 
-// tslint:disable-next-line:no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pouchDbSearch = require("pouchdb-quick-search");
 
 // Load PouchDB plugins

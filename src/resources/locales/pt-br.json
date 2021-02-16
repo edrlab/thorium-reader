@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Retomar a escuta",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Adicionado recentemente",
-            "lastAdditionsAudioBooks": "Audiolivros adicionados recentemente",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Adicionado recentemente"
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Extensões suportadas:",
         "numberOfPages": "Número de páginas",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Desde",
                 "availableState": {
@@ -139,7 +140,8 @@
             "hint": "(Dica : {{hint}})",
             "password": "Senha",
             "sentence": "Esta publicação precisa de uma senha LCP para ser aberta: ",
-            "submit": "Enviar"
+            "submit": "Enviar",
+            "urlHint": ""
         }
     },
     "message": {
@@ -175,6 +177,7 @@
             "addExtract": "Importar o excerto",
             "goBuyBook": "Comprar este livro",
             "goLoanBook": "Emprestar este livro",
+            "goRevokeLoanBook": "",
             "goSubBook": "Subscrever"
         },
         "network": {
@@ -249,6 +252,8 @@
         "navigation": {
             "backHomeTitle": "voltar à estante",
             "bookmarkTitle": "marcador",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "mostrar biblioteca / janela da biblioteca",
             "fullscreenTitle": "abrir modo tela cheia",
             "goTo": "Ir para",
@@ -258,6 +263,7 @@
             "infoTitle": "informação",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navegação",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "sair do modo tela cheia",
             "readBookTitle": "Começar a ler o livro",
             "settingsTitle": "configurações"
@@ -294,7 +300,9 @@
             "letterSpacing": "Espaçamento de letras",
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
+            "noFootnotes": "",
             "paginated": "Paginado",
+            "paraSpacing": "",
             "pdfZoom": {
                 "name": {
                     "100pct": "",
@@ -308,6 +316,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "salvar",
                 "reset": "redefinir",
@@ -344,6 +353,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Cancelar",

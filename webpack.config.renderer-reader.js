@@ -1,3 +1,4 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
 var fs = require("fs");
@@ -182,6 +183,8 @@ let config = Object.assign(
 
         devServer: {
             contentBase: __dirname,
+            contentBasePublicPath: "/",
+            publicPath: "/",
             hot: _enableHot,
             watchContentBase: true,
             watchOptions: {
@@ -196,6 +199,16 @@ let config = Object.assign(
             },
         },
         plugins: [
+            new BundleAnalyzerPlugin({
+                analyzerMode: "disabled",
+                defaultSizes: "stat", // "parsed"
+                openAnalyzer: false,
+                generateStatsFile: true,
+                statsFilename: "stats_renderer-reader.json",
+                statsOptions: null,
+
+                excludeAssets: null,
+            }),
             new HtmlWebpackPlugin({
                 template: "./src/renderer/reader/index_reader.ejs",
                 filename: "index_reader.html",
@@ -225,6 +238,8 @@ if (nodeEnv !== "production") {
 
         devServer: {
             contentBase: __dirname,
+            contentBasePublicPath: "/",
+            publicPath: "/",
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
@@ -246,7 +261,10 @@ if (nodeEnv !== "production") {
 
     config.output.pathinfo = true;
 
-    config.output.publicPath = preprocessorDirectives.rendererReaderBaseUrl;
+    // same as devServer.publicPath
+    // preprocessorDirectives.rendererReaderBaseUrl (full HTTP locahost + port)
+    config.output.publicPath = "/";
+
     if (_enableHot) {
         config.plugins.push(new webpack.HotModuleReplacementPlugin());
     }

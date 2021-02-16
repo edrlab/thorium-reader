@@ -12,6 +12,7 @@ import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions/";
@@ -24,8 +25,8 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { _USE_HTTP_STREAMER, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
 
@@ -42,6 +43,7 @@ import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import { extractCrc32OnZip } from "../crc";
 import { lcpActions } from "../redux/actions";
+import { streamerCachedPublication } from "../streamerNoHttp";
 import { DeviceIdManager } from "./device";
 
 // Logger
@@ -82,7 +84,7 @@ export class LcpManager {
         const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
 
         const epubPathTMP = epubPath + ".tmplcpl";
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
             injectBufferInZip(
                 epubPath,
                 epubPathTMP,
@@ -100,13 +102,13 @@ export class LcpManager {
 
         // Replace epub without LCP with a new one containing LCPL
         fs.unlinkSync(epubPath);
-        await new Promise((resolve, _reject) => {
+        await new Promise<void>((resolve, _reject) => {
             setTimeout(() => {
                 resolve();
             }, 200); // to avoid issues with some filesystems (allow extra completion time)
         });
         fs.renameSync(epubPathTMP, epubPath);
-        await new Promise((resolve, _reject) => {
+        await new Promise<void>((resolve, _reject) => {
             setTimeout(() => {
                 resolve();
             }, 200); // to avoid issues with some filesystems (allow extra completion time)
@@ -215,7 +217,7 @@ export class LcpManager {
             const r2PublicationBase64 = publicationDocument.resources.r2PublicationBase64;
             const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
             const r2PublicationJson = JSON.parse(r2PublicationStr);
-            r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+            r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
         }
         if (!r2Publication.LCP &&
             publicationDocument.resources && publicationDocument.resources.r2LCPBase64) {
@@ -223,7 +225,12 @@ export class LcpManager {
             const r2LCPBase64 = publicationDocument.resources.r2LCPBase64;
             const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
             const r2LCPJson = JSON.parse(r2LCPStr);
-            const r2LCP = TaJsonDeserialize<LCP>(r2LCPJson, LCP);
+
+            if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
+                throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+            }
+
+            const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
             r2LCP.JsonSource = r2LCPStr;
 
             r2Publication.LCP = r2LCP;
@@ -234,7 +241,7 @@ export class LcpManager {
             const r2LSDBase64 = publicationDocument.resources.r2LSDBase64;
             const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
             const r2LSDJson = JSON.parse(r2LSDStr);
-            const r2LSD = TaJsonDeserialize<LSD>(r2LSDJson, LSD);
+            const r2LSD = TaJsonDeserialize(r2LSDJson, LSD);
 
             r2Publication.LCP.LSD = r2LSD;
         }
@@ -638,7 +645,9 @@ export class LcpManager {
 
         const epubPath = this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
         // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
-        let r2Publication = this.streamer.cachedPublication(epubPath);
+        let r2Publication = _USE_HTTP_STREAMER ?
+            this.streamer.cachedPublication(epubPath) :
+            streamerCachedPublication(epubPath);
         if (!r2Publication) {
             r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
             if (r2Publication.LCP) {
@@ -776,6 +785,17 @@ export class LcpManager {
                     r2LSDBase64,
                 };
             }
+
+            const urlHint = lcp.Links.find((link) => {
+                return link.Rel === "hint";
+            });
+            if (typeof urlHint?.Href === "string") {
+                lcpInfo.urlHint = {
+                    href: urlHint.Href,
+                    title: urlHint.Title ?? undefined,
+                    type: urlHint.Type ?? undefined,
+                };
+            }
         }
 
         if (lcp.LSD && lcpInfo.lsd) {
@@ -878,7 +898,7 @@ export class LcpManager {
                         this.store.dispatch(readerActions.closeRequestFromPublication.build(
                             publicationDocumentIdentifier));
 
-                        await new Promise((res, _rej) => {
+                        await new Promise<void>((res, _rej) => {
                             setTimeout(() => {
                                 res();
                             }, 500); // allow extra completion time to ensure the filesystem ZIP streams are closed
@@ -895,9 +915,16 @@ export class LcpManager {
                         const lcplJson = global.JSON.parse(licenseUpdateJson);
                         debug(lcplJson);
 
+                        if (lcpLicenseIsNotWellFormed(lcplJson)) {
+                            const rej = `LCP license malformed: ${JSON.stringify(lcplJson)}`;
+                            debug(rej);
+                            reject(rej);
+                            return;
+                        }
+
                         let r2LCP: LCP;
                         try {
-                            r2LCP = TaJsonDeserialize<LCP>(lcplJson, LCP);
+                            r2LCP = TaJsonDeserialize(lcplJson, LCP);
                         } catch (erorz) {
                             debug(erorz);
                             reject(erorz);

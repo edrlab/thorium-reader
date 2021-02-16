@@ -13,7 +13,7 @@ import PublicationCard from "readium-desktop/renderer/library/components/publica
 
 type NormalOrOpdsPublicationView = PublicationView | IOpdsPublicationView;
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     normalOrOpdsPublicationViews: NormalOrOpdsPublicationView[];
     isOpdsView?: boolean;
@@ -23,7 +23,7 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 

@@ -20,7 +20,7 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
@@ -32,8 +32,8 @@ class EntryList extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         return (
-            <section id={styles.flux_list}>
-                <ul>
+            <section>
+                <ul className={styles.opds_entry_ul}>
                     {this.props.entries.map((entry, index) =>
                         <li key={index} >
                             <Entry entry={entry} level={this.props.level} />

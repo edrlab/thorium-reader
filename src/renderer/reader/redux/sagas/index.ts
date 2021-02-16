@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-// import { error } from "readium-desktop/common/error";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";

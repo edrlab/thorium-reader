@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Resume listening",
             "continueReadingDivina": "Resume divina",
             "continueReadingPdf": "Resume PDF",
-            "lastAdditions": "Recently added",
-            "lastAdditionsAudioBooks": "Recently added audiobooks",
-            "lastAdditionsDivina": "Recently added divina",
-            "lastAdditionsPdf": "Recently added PDF"
+            "lastAdditions": "Recently added"
         },
         "export": "Export",
         "lang": "Language",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Supported extensions:",
         "numberOfPages": "Number of pages",
         "opds": {
+            "auth": {
+                "cancel": "Cancel",
+                "login": "Login"
+            },
             "info": {
                 "availableSince": "Since",
                 "availableState": {
@@ -139,7 +140,8 @@
             "hint": "(Hint : {{hint}})",
             "password": "Passphrase",
             "sentence": "This publication needs an LCP passphrase to be opened: ",
-            "submit": "Submit"
+            "submit": "Submit",
+            "urlHint": "Forgot you're passphrase? find some help here"
         }
     },
     "message": {
@@ -175,6 +177,7 @@
             "addExtract": "Import the extract",
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
+            "goRevokeLoanBook": "Revoke loan",
             "goSubBook": "Subscribe"
         },
         "network": {
@@ -249,6 +252,8 @@
         "navigation": {
             "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
+            "currentPage": "Current page: {{- current}}",
+            "currentPageTotal": "Current page: ({{- current}}/{{- total}})",
             "detachWindowTitle": "show library / bookshelf window",
             "fullscreenTitle": "open fullscreen mode",
             "goTo": "Go to",
@@ -258,6 +263,7 @@
             "infoTitle": "information",
             "magnifyingGlassButton": "search in publication",
             "openTableOfContentsTitle": "navigation",
+            "pdfscalemode": "Page fit or width",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
             "settingsTitle": "settings"
@@ -294,7 +300,9 @@
             "letterSpacing": "Letter spacing",
             "lineSpacing": "Line spacing",
             "margin": "Margin",
+            "noFootnotes": "Disable footnotes",
             "paginated": "Paginated",
+            "paraSpacing": "Paragraph spacing",
             "pdfZoom": {
                 "name": {
                     "100pct": "100 %",
@@ -308,6 +316,7 @@
                 },
                 "title": "Zoom"
             },
+            "reduceMotion": "Reduce motion",
             "save": {
                 "apply": "save",
                 "reset": "reset",
@@ -344,6 +353,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": "Wipe authentication data"
+        },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Cancel",

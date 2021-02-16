@@ -11,7 +11,7 @@ import { IPickerState } from "../../state/picker";
 export const ID = "READER_PICKER";
 
 type TP = Pick<IPickerState, "open"> & Partial<IPickerState>;
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPayload extends TP {
 }
 

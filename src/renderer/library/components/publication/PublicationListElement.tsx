@@ -27,7 +27,7 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 import { v4 as uuidv4 } from "uuid";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: TPublication;
     menuContent: JSX.Element;
@@ -37,7 +37,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 

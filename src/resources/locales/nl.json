@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Ga door met luisteren",
             "continueReadingDivina": "",
             "continueReadingPdf": "",
-            "lastAdditions": "Recent toegevoegd",
-            "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken",
-            "lastAdditionsDivina": "",
-            "lastAdditionsPdf": ""
+            "lastAdditions": "Recent toegevoegd"
         },
         "export": "Exporteer",
         "lang": "Taal",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Ondersteunde uitbreidingen:",
         "numberOfPages": "Aantal pagina's",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Sinds",
                 "availableState": {
@@ -139,7 +140,8 @@
             "hint": "(Hint : {{hint}})",
             "password": "Wachtwoordzin",
             "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
-            "submit": "Verzend"
+            "submit": "Verzend",
+            "urlHint": ""
         }
     },
     "message": {
@@ -175,6 +177,7 @@
             "addExtract": "Voeg de samenvatting toe",
             "goBuyBook": "Koop dit boek",
             "goLoanBook": "Leen dit boek",
+            "goRevokeLoanBook": "",
             "goSubBook": "Abonneer"
         },
         "network": {
@@ -249,6 +252,8 @@
         "navigation": {
             "backHomeTitle": "terug naar de boekenplank",
             "bookmarkTitle": "bladwijzer",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "maak het venster los",
             "fullscreenTitle": "gebruik volledig scherm",
             "goTo": "Ga naar",
@@ -258,6 +263,7 @@
             "infoTitle": "informatie",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navigatie",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "verlaat volledig scherm modus",
             "readBookTitle": "begin met het lezen van het boek",
             "settingsTitle": "instellingen"
@@ -294,7 +300,9 @@
             "letterSpacing": "Letter afstand",
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
+            "noFootnotes": "",
             "paginated": "Als pagina's",
+            "paraSpacing": "",
             "pdfZoom": {
                 "name": {
                     "100pct": "",
@@ -308,6 +316,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "",
                 "reset": "",
@@ -344,6 +353,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",

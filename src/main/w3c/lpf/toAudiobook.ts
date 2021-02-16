@@ -109,7 +109,7 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string,
         try {
             await fsp.unlink(audiobookPath);
             await fsp.rmdir(dirname(audiobookPath));
-        } catch (err) {
+        } catch (_err) {
             // ignore
         }
     };

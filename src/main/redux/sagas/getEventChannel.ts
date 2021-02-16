@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { app, powerMonitor } from "electron";
+import { app, powerMonitor, protocol } from "electron";
 import { channel as channelSaga, eventChannel } from "redux-saga";
 
 export function getWindowAllClosedEventChannel() {
@@ -89,4 +89,30 @@ export function getShutdownEventChannel() {
 
     return channel;
 
+}
+
+export const ODPS_AUTH_SCHEME = "opds";
+
+interface TregisterHttpProtocolHandler {
+    request: Electron.ProtocolRequest;
+    callback: (response: Electron.ProtocolResponse) => void;
+}
+
+export function getOpdsRequestCustomProtocolEventChannel() {
+
+    const channel = eventChannel<TregisterHttpProtocolHandler>(
+        (emit) => {
+            const handler = (
+                request: Electron.ProtocolRequest,
+                callback: (response: Electron.ProtocolResponse) => void,
+            ) => emit({ request, callback });
+            protocol.registerHttpProtocol(ODPS_AUTH_SCHEME, handler);
+
+            return () => {
+                protocol.unregisterProtocol(ODPS_AUTH_SCHEME);
+            };
+        },
+    );
+
+    return channel;
 }

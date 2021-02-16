@@ -12,7 +12,7 @@ import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
     pubId: string;
     __: I18nTyped;

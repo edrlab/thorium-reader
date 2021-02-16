@@ -13,6 +13,7 @@ interface IObj {
 
 export function shallowEqual<ObjA extends IObj, ObjB extends IObj>(objA: ObjA, objB: ObjB) {
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (objA === objB) {
         return true;

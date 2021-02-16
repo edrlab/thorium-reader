@@ -14,6 +14,8 @@ import { all, call, put, take } from "redux-saga/effects";
 import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
+import * as auth from "./auth";
+import * as events from "./event";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as keyboard from "./keyboard";
@@ -21,9 +23,6 @@ import * as persist from "./persist";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
-
-// import { netStatusWatcher } from "./net";
-// import { updateStatusWatcher } from "./update";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -56,9 +55,6 @@ export function* rootSaga() {
 
         app.exit(code);
     }
-
-    // send initSucess first
-    yield put(appActions.initSuccess.build());
 
     // watch all electon exit event
     yield appSaga.exit();
@@ -94,9 +90,18 @@ export function* rootSaga() {
     yield persist.saga();
     // yield spawnLeading(persist.watchers, (e) => error("main:rootSaga:persist", e));
 
-    // dispatch at the end
+    // OPDS authentication flow
+    yield auth.saga();
+
+    // rehydrate shorcuts in redux
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
 
     // enjoy the app !
     yield put(winActions.library.openRequest.build());
+
+    // app initialized
+    yield put(appActions.initSuccess.build());
+
+    // open reader from CLI or open-file event on MACOS
+    yield events.saga();
 }

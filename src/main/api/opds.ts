@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as debug_ from "debug";
-
 import { inject, injectable } from "inversify";
 import { IOpdsApi, TOpdsLinkSearch } from "readium-desktop/common/api/interface/opdsApi.interface";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
@@ -18,6 +16,7 @@ import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsService } from "readium-desktop/main/services/opds";
 
+// import * as debug_ from "debug";
 // Logger
 // const debug = debug_("readium-desktop:src/main/api/opds");
 
@@ -80,27 +79,5 @@ export class OpdsApi implements IOpdsApi {
         : Promise<string | undefined> {
         const link = Array.isArray(searchLink) ? searchLink : [searchLink];
         return this.opdsService.parseOpdsSearchUrl(link);
-    }
-
-    // tslint:disable-next-line: max-line-length
-    public async oauth(
-        opdsUrl: string,
-        login: string | undefined,
-        passwordEncrypted: string | undefined,
-        oAuthUrl: string,
-        oAuthRefreshUrl: string | undefined,
-        OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
-        OPDS_AUTH_ENCRYPTION_IV_HEX: string,
-        refreshToken?: string): Promise<boolean> {
-
-        return this.opdsService.oauth(
-            opdsUrl,
-            login,
-            passwordEncrypted,
-            oAuthUrl,
-            oAuthRefreshUrl,
-            OPDS_AUTH_ENCRYPTION_KEY_HEX,
-            OPDS_AUTH_ENCRYPTION_IV_HEX,
-            refreshToken);
     }
 }
