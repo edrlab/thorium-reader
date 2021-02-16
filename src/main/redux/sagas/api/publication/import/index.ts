@@ -229,7 +229,7 @@ const importFromFormHtml = (submitUrl = "") => `
 </html>
 `;
 
-export function* importFromForm(): SagaGenerator<void> {
+export function* importFromForm(): SagaGenerator<PublicationView[]> {
 
     const translate = diMainGet("translator").translate;
 

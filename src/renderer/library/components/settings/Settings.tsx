@@ -12,6 +12,7 @@ import {
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 
 import AuthSettings from "./AuthSettings";
+import ImportPublicationFormSettings from "./ImportPublicationFormSettings";
 import KeyboardSettings from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
 import SessionSettings from "./SessionSettings";
@@ -40,6 +41,8 @@ class Settings extends React.Component<IProps, undefined> {
                     <SessionSettings></SessionSettings>
                     <KeyboardSettings></KeyboardSettings>
                     <AuthSettings></AuthSettings>
+                    <ImportPublicationFormSettings></ImportPublicationFormSettings>
+                    <br></br>
                 </LibraryLayout>
             </>
         );

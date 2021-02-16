@@ -44,7 +44,7 @@ class ImportPublicationFormSettings extends React.Component<IProps> {
                             classNames(styles.keyboard_shortcuts_button,
                                 styles.keyboard_shortcuts_button_primary)
                         }
-                        onClick={() => apiAction()}>
+                        onClick={() => apiAction("publication/importFromForm")}>
                         Open window form
                     </button>
                 </section>
@@ -61,7 +61,6 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        apiDispatch:
     };
 };
 
