@@ -5,44 +5,36 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { remote, shell, WillNavigateEvent } from "electron";
+import { ipcRenderer, shell, WillNavigateEvent } from "electron";
 import * as path from "path";
 import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-import { keyDownEventHandler, keyUpEventHandler } from "readium-desktop/renderer/common/keyboard";
 
-import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
+import { CONTEXT_MENU_SETUP } from "@r2-navigator-js/electron/common/context-menu";
+import {
+    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
 
 import { eventBus } from "./common/eventBus";
-import { IEventBusPdfPlayer, TToc } from "./common/pdfReader.type";
+import { IEventBusPdfPlayer } from "./common/pdfReader.type";
 
 // bridge between webview tx-rx communication and reader.tsx
 
-export async function pdfMountWebview(
+export async function pdfMountAndReturnBus(
     pdfPath: string,
     publicationViewport: HTMLDivElement,
-    clipboardInterceptor: (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => void,
-): Promise<[bus: IEventBusPdfPlayer, toc: TToc | undefined]> {
+): Promise<IEventBusPdfPlayer> {
+
+    if (pdfPath.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)) {
+        pdfPath = convertCustomSchemeToHttpUrl(pdfPath);
+    }
+
+    console.log("pdfPath ADJUSTED", pdfPath);
 
     const webview = document.createElement("webview");
     webview.setAttribute("style",
         "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
-
-    let htmlPath = "index_pdf.html";
-    if (_PACKAGING === "1") {
-        htmlPath = "file://" + path.normalize(path.join((global as any).__dirname, htmlPath));
-    } else {
-        if (_RENDERER_PDF_WEBVIEW_BASE_URL === "file://") {
-            // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-            htmlPath = "file://" +
-                path.normalize(path.join((global as any).__dirname, _DIST_RELATIVE_URL, htmlPath));
-        } else {
-            // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-            htmlPath = "file://" + path.normalize(path.join(process.cwd(), "dist", htmlPath));
-        }
-    }
-    htmlPath = htmlPath.replace(/\\/g, "/");
 
     // tslint:disable-next-line:max-line-length
     // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#3-enable-context-isolation-for-remote-content
@@ -70,58 +62,7 @@ export async function pdfMountWebview(
         console.log("pdf-webview", e.message);
     });
 
-    webview.addEventListener("dom-ready", () => {
-        // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webcontents
-
-        webview.clearHistory();
-
-        if (IS_DEV) {
-            const wc = remote.webContents.fromId(webview.getWebContentsId());
-            // const wc = wv.getWebContents();
-
-            wc.on("context-menu", (_ev, params) => {
-                const { x, y } = params;
-                const openDevToolsAndInspect = () => {
-                    const devToolsOpened = () => {
-                        wc.off("devtools-opened", devToolsOpened);
-                        wc.inspectElement(x, y);
-
-                        setTimeout(() => {
-                            if (wc.devToolsWebContents && wc.isDevToolsOpened()) {
-                                wc.devToolsWebContents.focus();
-                            }
-                        }, 500);
-                    };
-                    wc.on("devtools-opened", devToolsOpened);
-                    wc.openDevTools({ activate: true, mode: "detach" });
-                };
-                remote.Menu.buildFromTemplate([{
-                    click: () => {
-                        const wasOpened = wc.isDevToolsOpened();
-                        if (!wasOpened) {
-                            openDevToolsAndInspect();
-                        } else {
-                            if (!wc.isDevToolsFocused()) {
-                                // wc.toggleDevTools();
-                                wc.closeDevTools();
-
-                                setImmediate(() => {
-                                    openDevToolsAndInspect();
-                                });
-                            } else {
-                                // right-click context menu normally occurs when focus
-                                // is in BrowserWindow / WebView's WebContents,
-                                // but some platforms (e.g. MacOS) allow mouse interaction
-                                // when the window is in the background.
-                                wc.inspectElement(x, y);
-                            }
-                        }
-                    },
-                    label: "Inspect element",
-                }]).popup({ window: remote.getCurrentWindow() });
-            });
-        }
-    });
+    webview.addEventListener("dom-ready", webviewDomReadyDebugger);
 
     const bus: IEventBusPdfPlayer = eventBus(
         (key, ...a) => {
@@ -158,14 +99,6 @@ export async function pdfMountWebview(
         },
     );
 
-    bus.subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
-    bus.subscribe("keydown", (payload) => {
-        keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
-    });
-    bus.subscribe("keyup", (payload) => {
-        keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
-    });
-
     webview.addEventListener("did-finish-load", () => {
 
         console.log("did-finish-load bus.dispatch start pdfPath", pdfPath);
@@ -186,23 +119,43 @@ export async function pdfMountWebview(
         }
     }
     preloadPath = preloadPath.replace(/\\/g, "/");
+    // let htmlPath = "index_pdf.html";
+    // if (_PACKAGING === "1") {
+    //     htmlPath = "file://" + path.normalize(path.join((global as any).__dirname, htmlPath));
+    // } else {
+    //     if (_RENDERER_PDF_WEBVIEW_BASE_URL === "file://") {
+    //         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+    //         htmlPath = "file://" +
+    //             path.normalize(path.join((global as any).__dirname, _DIST_RELATIVE_URL, htmlPath));
+    //     } else {
+    //         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+    //         htmlPath = "file://" + path.normalize(path.join(process.cwd(), "dist", htmlPath));
+    //     }
+    // }
+    // htmlPath = htmlPath.replace(/\\/g, "/");
 
     webview.setAttribute("preload", preloadPath);
-
-    // webview.src = rendererBaseUrl;
-    webview.setAttribute("src", htmlPath);
+    webview.setAttribute("style",
+        "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
+    // webview.setAttribute("partition", "persist:pdfjsreader");
+    webview.setAttribute("src", "pdfjs://local/web/viewer.html?file=" + encodeURIComponent(pdfPath));
+    webview.setAttribute("worldSafeExecuteJavaScript", "");
+    webview.setAttribute("webpreferences", "allowRunningInsecureContent");
+    webview.setAttribute("disablewebsecurity", "");
 
     publicationViewport.append(webview);
 
-    const toc = await Promise.race([
-        new Promise<void>((_r, reject) => setTimeout(() => reject("TIMEOUT"), 50000)),
-        new Promise<TToc>((resolve) => bus.subscribe("ready", (t) => resolve(t))),
-    ]);
-
-    if (Array.isArray(toc)) {
-        return [bus, toc];
-    }
-
-    return [bus, undefined];
-
+    return bus;
 }
+
+const webviewDomReadyDebugger = (ev: Electron.Event) => {
+    // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webcontents
+
+    const webview = ev.target as Electron.WebviewTag;
+
+    webview.clearHistory();
+
+    if (IS_DEV) {
+        ipcRenderer.send(CONTEXT_MENU_SETUP, webview.getWebContentsId());
+    }
+};

@@ -25,9 +25,25 @@ import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
-// tslint:disable-next-line: no-empty-interface
+function throttle(callback: (...args: any) => void, limit: number) {
+    let waiting = false;
+    return function(this: any) {
+        if (!waiting) {
+            // eslint-disable-next-line prefer-rest-params
+            callback.apply(this, arguments);
+            waiting = true;
+            setTimeout(() => {
+                waiting = false;
+            }, limit);
+        }
+    };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
+    gotoBegin: () => void;
+    gotoEnd: () => void;
     fullscreen: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
@@ -44,7 +60,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -62,6 +78,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         };
 
         this.handleMoreInfoClick = this.handleMoreInfoClick.bind(this);
+
+        this.navLeftOrRightThrottled = throttle(this.navLeftOrRightThrottled, 500).bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -82,7 +100,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         if (isDivina) {
             try {
                 spineTitle = (parseInt(spineTitle, 10) + 1).toString();
-            } catch (e) {
+            } catch (_e) {
                 // ignore
             }
         }
@@ -91,13 +109,42 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         return (
             <div className={classNames(styles.reader_footer,
-                this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}>
+                this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}
+                onWheel={(ev) => {
+                    if (ev.deltaY > 0 || ev.deltaX < 0) {
+                        this.navLeftOrRightThrottled(true);
+                    } else if (ev.deltaY < 0 || ev.deltaX > 0) {
+                        this.navLeftOrRightThrottled(false);
+                    }
+                }}>
                 {!isAudioBook &&
                     <div className={styles.arrows}>
-                        <button onClick={() => this.props.navLeftOrRight(true)}>
+                        <button onClick={(ev) => {
+                            if (ev.shiftKey) {
+                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                if (isRTL) {
+                                    this.props.gotoEnd();
+                                } else {
+                                    this.props.gotoBegin();
+                                }
+                            } else {
+                                this.props.navLeftOrRight(true);
+                            }
+                        }}>
                             <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
                         </button>
-                        <button onClick={() => this.props.navLeftOrRight(false)}>
+                        <button onClick={(ev) => {
+                            if (ev.shiftKey) {
+                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                if (isRTL) {
+                                    this.props.gotoBegin();
+                                } else {
+                                    this.props.gotoEnd();
+                                }
+                            } else {
+                                this.props.navLeftOrRight(false);
+                            }
+                        }}>
                             <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
                         </button>
                     </div>
@@ -239,6 +286,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }
             </div>
         );
+    }
+
+    private navLeftOrRightThrottled(dir: boolean) {
+        this.props.navLeftOrRight(dir);
     }
 
     private getProgressionStyle(): React.CSSProperties {

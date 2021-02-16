@@ -7,7 +7,27 @@
 
 import * as debug_ from "debug";
 
-export async function tryCatch<R>(fn: () => (R | Promise<R>), errorPath: string, errMessage: string = ""): Promise<R> {
+export function tryCatchSync<R>(fn: () => (R), errorPath: string, errMessage = ""): R {
+
+    // Logger
+    const debug = debug_(errorPath);
+
+    try {
+        const res = fn();
+        return res;
+
+    } catch (e) {
+        if (e instanceof Error) {
+            debug(errMessage, e.message, e.stack);
+        } else {
+            debug(errMessage, e);
+        }
+    }
+
+    return undefined;
+}
+
+export async function tryCatch<R>(fn: () => (R | Promise<R>), errorPath: string, errMessage = ""): Promise<R> {
 
     // Logger
     const debug = debug_(errorPath);

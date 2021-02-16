@@ -13,7 +13,7 @@ import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { call, debounce  } from "redux-saga/effects";
 
-const DEBOUNCE_TIME = 1000;
+const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 
 // Logger
 const filename_ = "readium-desktop:main:saga:persist";

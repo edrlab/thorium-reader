@@ -10,7 +10,6 @@ import { inject, injectable } from "inversify";
 import { ILcpApi } from "readium-desktop/common/api/interface/lcpApi.interface";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { readerActions } from "readium-desktop/common/redux/actions/";
-import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { LcpManager } from "readium-desktop/main/services/lcp";
@@ -31,9 +30,6 @@ export class LcpApi implements ILcpApi {
 
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
-
-    @inject(diSymbolTable.translator)
-    private readonly translator!: Translator;
 
     @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
@@ -63,8 +59,9 @@ export class LcpApi implements ILcpApi {
                 await this.lcpManager.unlockPublication(publicationDocument, passphrase);
 
             if (typeof unlockPublicationRes !== "undefined") {
-                const message = unlockPublicationRes === 11 ?
-                    this.translator.translate("publication.expiredLcp") :
+                const message =
+                    // unlockPublicationRes === 11 ?
+                    // this.translator.translate("publication.expiredLcp") :
                     this.lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
                 debug(message);
 
@@ -73,7 +70,7 @@ export class LcpApi implements ILcpApi {
                 // tslint:disable-next-line: max-line-length
                 // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
                 // const r2PublicationJson = JSON.parse(r2PublicationStr);
-                // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+                // const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 // const epubPath = this.publicationStorage.getPublicationEpubPath(publicationView.identifier);
                 // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
@@ -95,6 +92,7 @@ export class LcpApi implements ILcpApi {
                     const action = lcpActions.userKeyCheckRequest.build(
                         publicationView,
                         publicationView.lcp.textHint, // r2Publication.LCP.Encryption.UserKey.TextHint,
+                        publicationView.lcp.urlHint,
                         message,
                     );
                     this.store.dispatch(action);

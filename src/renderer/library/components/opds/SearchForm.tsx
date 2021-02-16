@@ -26,14 +26,14 @@ import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/render
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 // tslint:disable-next-line: max-line-length
 interface IProps extends IBaseProps,
     ReturnType<typeof mapStateToProps>,

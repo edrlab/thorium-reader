@@ -52,7 +52,8 @@ jobs:
         node-version: '12'
         #check-latest: true
     - run: node --version && npm --version
-    - run: npm --global install npm@latest
+    #- run: npm --global install npm@latest v7 breaks the build! (infinite loop of doom)
+    - run: npm --global install npm@^6
     - run: npm --version
     # - run: npm --global install asar
     - run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json

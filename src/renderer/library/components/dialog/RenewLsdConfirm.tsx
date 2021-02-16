@@ -19,14 +19,14 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -63,7 +63,7 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
     public renew(e: TMouseEventOnButton) {
         e.preventDefault();
         apiAction("lcp/renewPublicationLicense", this.props.publicationView.identifier).catch((error) => {
-            console.error(`Error API lcp/renewPublicationLicense`, error);
+            console.error("Error API lcp/renewPublicationLicense", error);
         });
         this.props.closeDialog();
     }

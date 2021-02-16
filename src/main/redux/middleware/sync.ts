@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
-    apiActions, dialogActions, downloadActions, i18nActions, keyboardActions, lcpActions,
+    apiActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     readerActions, toastActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
@@ -24,6 +24,7 @@ const debug = debug_("readium-desktop:sync");
 const SYNCHRONIZABLE_ACTIONS: string[] = [
     apiActions.result.ID,
 
+    historyActions.refresh.ID,
     dialogActions.openRequest.ID,
 
     readerActions.detachModeSuccess.ID,
@@ -87,7 +88,7 @@ export const reduxSyncMiddleware: Middleware
                         try {
                             const readerWin = getReaderWindowFromDi(readers[key].identifier);
                             browserWin.set(readers[key].identifier, readerWin);
-                        } catch (err) {
+                        } catch (_err) {
                             // ignore
                             debug("ERROR: Can't found ther reader win from di: ", readers[key].identifier);
                         }
@@ -105,11 +106,13 @@ export const reduxSyncMiddleware: Middleware
                         ) {
 
                             debug("send to", id);
+                            const a = ActionSerializer.serialize(action);
+                            // debug(a);
                             try {
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
-                                        action: ActionSerializer.serialize(action),
+                                        action: a,
                                     },
                                     sender: {
                                         type: SenderType.Main,

@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import * as moment from "moment";
 import { extname } from "path";
-import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
@@ -21,6 +20,7 @@ import { Subject } from "@r2-shared-js/models/metadata-subject";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
+
 import { htmlTocToLinkArray } from "./toc";
 
 // Logger

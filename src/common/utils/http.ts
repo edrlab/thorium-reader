@@ -22,6 +22,7 @@ export interface IHttpGetResult<TData> {
     readonly statusCode?: number;
     readonly statusMessage?: string;
     contentType?: string;
+    // cookies?: string;
     body?: NodeJS.ReadableStream;
     response?: THttpResponse;
     data?: TData;

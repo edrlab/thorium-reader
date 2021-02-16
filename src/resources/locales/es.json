@@ -59,10 +59,7 @@
             "continueReadingAudioBooks": "Reanudar reproducción",
             "continueReadingDivina": "Reanudar divina",
             "continueReadingPdf": "Reanudar PDF",
-            "lastAdditions": "Añadidos recientemente",
-            "lastAdditionsAudioBooks": "Audiolibros añadidos recientemente",
-            "lastAdditionsDivina": "Divina añadidos recientemente",
-            "lastAdditionsPdf": "PDF añadidos recientemente"
+            "lastAdditions": "Añadidos recientemente"
         },
         "export": "Exportar",
         "lang": "Idioma",
@@ -74,6 +71,10 @@
         "noPublicationHelpL4": "Extensiones admitidas:",
         "numberOfPages": "Número de páginas",
         "opds": {
+            "auth": {
+                "cancel": "Cancelar",
+                "login": "Iniciar sesión"
+            },
             "info": {
                 "availableSince": "Desde",
                 "availableState": {
@@ -139,7 +140,8 @@
             "hint": "(Pista : {{hint}})",
             "password": "Contraseña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
-            "submit": "Enviar"
+            "submit": "Enviar",
+            "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí"
         }
     },
     "message": {
@@ -175,6 +177,7 @@
             "addExtract": "Importar extracto",
             "goBuyBook": "Comprar este libro",
             "goLoanBook": "Pedir prestado este libro",
+            "goRevokeLoanBook": "",
             "goSubBook": "Suscribirse"
         },
         "network": {
@@ -249,6 +252,8 @@
         "navigation": {
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
+            "currentPage": "Página actual: {{- current}}",
+            "currentPageTotal": "Página actual: ({{- current}}/{{- total}})",
             "detachWindowTitle": "Separar la ventana",
             "fullscreenTitle": "Abrir modo pantalla completa",
             "goTo": "Ir a",
@@ -258,6 +263,7 @@
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",
+            "pdfscalemode": "Ajuste o ancho de página",
             "quitFullscreenTitle": "Salir del modo pantalla completa",
             "readBookTitle": "Empezar a leer el libro",
             "settingsTitle": "Opciones de configuración"
@@ -294,8 +300,9 @@
             "letterSpacing": "Espaciado de letras",
             "lineSpacing": "Interlineado",
             "margin": "Margen",
+            "noFootnotes": "Desactivar notas al pie",
             "paginated": "Paginado",
-            "paraSpacing": "",
+            "paraSpacing": "Espaciado de párrafos",
             "pdfZoom": {
                 "name": {
                     "100pct": "100%",
@@ -309,6 +316,7 @@
                 },
                 "title": "Zum"
             },
+            "reduceMotion": "Disminuir movimiento",
             "save": {
                 "apply": "Guardar",
                 "reset": "Restablecer",
@@ -345,6 +353,9 @@
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": "Limpiar datos de autenticación"
+        },
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancelar",

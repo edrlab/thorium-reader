@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { nanoid } from "nanoid";
 import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { extractCrc32OnZip } from "readium-desktop/main/crc";
@@ -111,6 +112,11 @@ export async function importPublicationFromFS(
 
                     const lcpString = lcpBuffer.toString();
                     const lcpJson = JSON.parse(lcpString);
+
+                    if (lcpLicenseIsNotWellFormed(lcpJson)) {
+                        throw new Error(`LCP license malformed: ${JSON.stringify(lcpJson)}`);
+                    }
+
                     const lcpl = TaJsonDeserialize(lcpJson, LCP);
 
                     lcpl.ZipPath = lcpEntryName;

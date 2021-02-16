@@ -14,8 +14,9 @@ import {
     closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
+import { fetchCookieJarPersistence } from "readium-desktop/main/network/fetch";
 import { needToPersistState } from "readium-desktop/main/redux/sagas/persist.ts";
-import { _APP_NAME, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
 import { all, call, race, spawn, take } from "redux-saga/effects";
 import { delay, put } from "typed-redux-saga";
 
@@ -46,10 +47,6 @@ export function* init() {
     //     setTimeout(() => app.exit(0), 2000);
     // });
 
-    app.on("accessibility-support-changed", (_ev, accessibilitySupportEnabled) => {
-        debug(`accessibilitySupportEnabled: ${accessibilitySupportEnabled}`);
-    });
-
     yield call(() => app.whenReady());
 
     debug("Main app ready");
@@ -73,6 +70,33 @@ export function* init() {
         debug("#####");
     });
 
+    // const sessionPDFWebview = session.fromPartition("persist:pdfjsreader");
+    // const protocolFromPDFWebview = sessionPDFWebview.protocol;
+    protocol.registerFileProtocol("pdfjs", async (request, callback) => {
+
+        const url = (new URL(request.url)).pathname;
+        debug("PDFJS request this file:", url);
+
+        const pdfjsFolder = "assets/lib/pdfjs";
+        let folderPath: string = path.join(__dirname, pdfjsFolder);
+        if (_PACKAGING === "0") {
+            folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
+        }
+        const pathname = path.normalize(`${folderPath}/${url}`);
+
+        callback(pathname);
+    });
+
+    protocol.registerFileProtocol("pdfjs-extract", async (request, callback) => {
+
+        debug("register file protocol pdfjs-extract");
+        debug("request", request);
+        const p = request.url.split("pdfjs-extract://")[1];
+        debug(p);
+
+        callback(p);
+    });
+
 }
 
 function* closeProcess() {
@@ -92,6 +116,13 @@ function* closeProcess() {
                     }
                 }),
                 call(function*() {
+
+                    try {
+                        yield call(fetchCookieJarPersistence);
+                        debug("Success to persist fetch cookieJar");
+                    } catch (e) {
+                        debug("ERROR to persist fetch cookieJar", e);
+                    }
 
                     try {
                         yield call(needToPersistState);

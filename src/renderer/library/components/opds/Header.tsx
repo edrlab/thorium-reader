@@ -24,14 +24,14 @@ import { DisplayType, IOpdsBrowse, routes } from "readium-desktop/renderer/libra
 
 import SearchForm from "./SearchForm";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 // tslint:disable-next-line: max-line-length
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
@@ -169,11 +169,10 @@ class Header extends React.Component<IProps, undefined> {
 
     private refresh = () => {
         const { self } = this.props.headerLinks;
+        const { __ } = this.props;
 
         let refreshComponet = <></>;
         if (self) {
-
-            const { __ } = this.props;
 
             const param = matchPath<IOpdsBrowse>(
                 this.props.location.pathname, routes["/opds/browse"],
@@ -196,6 +195,17 @@ class Header extends React.Component<IProps, undefined> {
                     to={{
                         ...this.props.location,
                         pathname: route,
+                    }}
+                    style={{ marginLeft: "16px" }}
+                >
+                    <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
+                </Link>
+            );
+        } else {
+            refreshComponet = (
+                <Link
+                    to={{
+                        ...this.props.location,
                     }}
                     style={{ marginLeft: "16px" }}
                 >

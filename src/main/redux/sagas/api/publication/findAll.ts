@@ -6,13 +6,15 @@
 // ==LICENSE-END==
 
 import { diMainGet } from "readium-desktop/main/di";
+import { aboutFiltered } from "readium-desktop/main/filter";
 import { call } from "typed-redux-saga";
 
 export function* findAll() {
 
     const docs = yield* call(() => diMainGet("publication-repository").findAll());
     const pubConverter = yield* call(() => diMainGet("publication-view-converter"));
-    return docs.map((doc) => {
+    const pubs = docs.map((doc) => {
         return pubConverter.convertDocumentToView(doc);
     });
+    return aboutFiltered(pubs);
 }

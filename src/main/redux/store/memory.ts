@@ -198,6 +198,8 @@ export async function initStore(configRepository: ConfigRepository<any>)
         sagaMiddleware,
         reduxPersistMiddleware,
     );
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const middleware = IS_DEV ? require("remote-redux-devtools").composeWithDevTools(
         {
             port: REDUX_REMOTE_DEVTOOLS_PORT,

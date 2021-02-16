@@ -7,6 +7,7 @@
 
 import { Action } from "redux";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ActionWithPayload<Type = string>
     extends Action<Type> {
 }

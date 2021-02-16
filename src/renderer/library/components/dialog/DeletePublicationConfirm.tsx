@@ -19,14 +19,14 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -52,8 +52,8 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
                         <span>{this.props.publicationView.title}</span>
                     </p>
                     <div>
-                        <button onClick={this.remove}>{__("dialog.yes")}</button>
-                        <button className={styles.primary} onClick={closeDialog}>{__("dialog.no")}</button>
+                        <button className={styles.primary} onClick={this.remove}>{__("dialog.yes")}</button>
+                        <button onClick={closeDialog}>{__("dialog.no")}</button>
                     </div>
                 </div>
             </Dialog>
@@ -63,7 +63,7 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
     public remove(e: TMouseEventOnButton) {
         e.preventDefault();
         apiAction("publication/delete", this.props.publicationView.identifier).catch((error) => {
-            console.error(`Error to fetch publication/delete`, error);
+            console.error("Error to fetch publication/delete", error);
         });
         this.props.closeDialog();
     }
