@@ -7,6 +7,7 @@ Version `1.6.0` was released on **16 February 2021**.
 This release includes the following (notable) new features, improvements and bug fixes:
 
 * Thorium is now based on Electron version 11.
+* The Windows installer is now code-signed (no more scary warning messages)
 * Localization: updated Japanese and Spanish translations, added Finnish, Russian, Chinese translation.
 * Accessibility: improved screen reader detection to trigger force-refresh in the content webview.
 * Support for DAISY3 audio-only, audio+text and text-only talking books.
