@@ -5,18 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { notStrictEqual } from "assert";
 import * as debug_ from "debug";
-import { BrowserWindow, globalShortcut } from "electron";
-import { join } from "ramda";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
-import { allTyped, callTyped, forkTyped, takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { allTyped, callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { call, cancel, delay, put, race } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
+import { openWindowModalAndReturnResult } from "../../../modal/open";
+import { importFromFormService } from "./importFromForm";
 
 import { importFromFsService } from "./importFromFs";
 import { importFromLinkService } from "./importFromLink";
@@ -229,111 +229,43 @@ const importFromFormHtml = (submitUrl = "") => `
 </html>
 `;
 
-function createWinForm(url: string): BrowserWindow | undefined {
-
-    const win = new BrowserWindow(
-        {
-            width: 800,
-            height: 600,
-        });
-
-    const handler = () => win.close();
-    globalShortcut.register("esc", handler);
-    win.on("close", () => {
-        globalShortcut.unregister("esc");
-    });
-
-    win.once("ready-to-show", () => {
-        win.show();
-    });
-
-    win.loadURL(url);
-
-    return win;
-}
-
 export function* importFromForm(): SagaGenerator<void> {
 
+    const translate = diMainGet("translator").translate;
+
     // launch new window form with html
-
-    const channel: ReturnType<typeof getImportFromFormRequestCustomProtocolEventChannel> = getImportFromFormRequestCustomProtocolEventChannel();
-
-    const task = yield* forkTyped(function*() {
-
-        const parsedRequest = yield* takeTyped(channel);
-        return {
-            request: parseRequestFromCustomProtocol(parsedRequest.request),
-            callback: parsedRequest.callback,
-        };
-    });
-
     const browserUrl = `data:text/html;charset=utf-8,${importFromFormHtml("importfromform://result")}`;
 
-    const win =
-        tryCatchSync(
-            () => createWinForm(browserUrl),
-            "",
-        );
-    if (!win) {
-        debug("modal win undefined");
-
-        yield cancel(task);
-        return;
-    }
-
     try {
+        const result = yield* callTyped(openWindowModalAndReturnResult, browserUrl);
+        const { request, callback } = result || {};
+        notStrictEqual(request, undefined);
 
-        yield race({
-            a: delay(60000),
-            b: join(task),
-            c: call(
-                async () =>
-                    new Promise<void>((resolve) => win.on("close", () => resolve())),
-            ),
+        yield* callTyped(importFromFormService, request);
+
+        callback({
+            url: undefined,
         });
 
-        if (task.isRunning()) {
-            debug("no authentication credentials received");
-            debug("perhaps timeout or closing authentication window occured");
+        yield put(
+            toastActions.openRequest.build(
+                ToastType.Success,
+                translate("message.import.success",
+                    { title: "" }),
+            ),
+        );
 
-            return;
+    } catch (e) {
 
-        } else {
-            const { request: opdsCustomProtocolRequestParsed, callback } = task.result();
-            if (opdsCustomProtocolRequestParsed) {
-
-                const [, err] = yield* callTyped(opdsSetAuthCredentials,
-                    opdsCustomProtocolRequestParsed,
-                    authCredentials,
-                    authParsed.authenticationType,
-                );
-
-                callback({
-                    url: undefined,
-                });
-
-                if (err instanceof Error) {
-                    debug(err.message);
-
-                    return;
-
-                } else {
-                    yield put(historyActions.refresh.build());
-                }
-            }
-        }
-
-    } finally {
-
-        if (win) {
-            win.close();
-        }
-        if (task.isRunning()) {
-            yield cancel(task);
-        }
+        debug("importFromForm failed", e.toString(), e.trace);
+        yield put(
+            toastActions.openRequest.build(
+                ToastType.Error,
+                translate("message.import.fail",
+                    { path: "", err: e.toString() }),
+            ),
+        );
     }
 
-
-
-
+    return undefined;
 }

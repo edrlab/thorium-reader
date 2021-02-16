@@ -6,29 +6,25 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { SagaGenerator } from "typed-redux-saga";
-
-import { packageFromManifestBuffer } from "../packager/packageLink";
-import { importFromFsService } from "./importFromFs";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromStringService");
 
 export function* importFromFormService(
-    manifest: string,
-    baseFileUrl: string, // MUST be file://
+    requestData: any,
 ): SagaGenerator<[publicationDoc: PublicationDocument, alreadyImported: boolean]> {
 
-    // const baseUrl = baseFileUrl.startsWith("file://") ? baseFileUrl : ("file://" + baseFileUrl.replace(/\\/g, "/"));
-    const packagePath = yield* callTyped(packageFromManifestBuffer, baseFileUrl, Buffer.from(manifest));
-    if (packagePath) {
-        debug(packagePath);
-        return yield* callTyped(importFromFsService, packagePath);
-    } else {
-        debug("package path is empty");
-    }
+
+    // doing something with data
+    debug("@@@@@@@@@@@@22");
+
+    debug("REQUEST FROM IMPORT FROM FORM");
+
+    debug(requestData);
+
+    debug("@@@@@@@@@@@@22");
 
     return [undefined, false];
 }
