@@ -140,7 +140,8 @@
             "hint": "(Indice : {{hint}})",
             "password": "Mot de passe",
             "sentence": "Cette publication a besoin d'un mot de passe : ",
-            "submit": "Valider"
+            "submit": "Valider",
+            "urlHint": "Oubli de votre phrase d'accès ? Vous pouvez trouver de l'aide avec ce lien"
         }
     },
     "message": {
@@ -176,6 +177,7 @@
             "addExtract": "Importer l'extrait",
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
+            "goRevokeLoanBook": "",
             "goSubBook": "Aller sur la page d'abonnement"
         },
         "network": {
@@ -207,7 +209,7 @@
         "lcpRightsCopy": "Copie de caractères",
         "lcpRightsPrint": "Copies d'imprimante",
         "lcpStart": "Début",
-        "licenseOutOfDate": "License expirée",
+        "licenseOutOfDate": "License inutilisable à cette date",
         "licenseSignatureDateInvalid": "Date de signature de license invalide",
         "licenseSignatureInvalid": "Signature de license invalide",
         "progression": {
@@ -298,6 +300,7 @@
             "letterSpacing": "Espacement des lettres",
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
+            "noFootnotes": "",
             "paginated": "Paginé",
             "paraSpacing": "",
             "pdfZoom": {
@@ -313,6 +316,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "Sauvegarder",
                 "reset": "Réinitialiser",

@@ -11,7 +11,7 @@ import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer
 
 export const ID = "MAIN_WIN_READER_OPEN_REQUEST";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
     publicationIdentifier: string;
     identifier?: string;

@@ -140,7 +140,8 @@
             "hint": "(Hint : {{hint}})",
             "password": "Wachtwoordzin",
             "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
-            "submit": "Verzend"
+            "submit": "Verzend",
+            "urlHint": ""
         }
     },
     "message": {
@@ -176,6 +177,7 @@
             "addExtract": "Voeg de samenvatting toe",
             "goBuyBook": "Koop dit boek",
             "goLoanBook": "Leen dit boek",
+            "goRevokeLoanBook": "",
             "goSubBook": "Abonneer"
         },
         "network": {
@@ -298,6 +300,7 @@
             "letterSpacing": "Letter afstand",
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
+            "noFootnotes": "",
             "paginated": "Als pagina's",
             "paraSpacing": "",
             "pdfZoom": {
@@ -313,6 +316,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "",
                 "reset": "",

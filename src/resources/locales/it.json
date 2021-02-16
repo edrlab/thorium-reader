@@ -140,7 +140,8 @@
             "hint": "(Suggerimento : {{hint}})",
             "password": "Passphrase",
             "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta: ",
-            "submit": "Invia"
+            "submit": "Invia",
+            "urlHint": ""
         }
     },
     "message": {
@@ -176,6 +177,7 @@
             "addExtract": "Importa l'estratto",
             "goBuyBook": "Compra questo libro",
             "goLoanBook": "Richiedi questo libro in prestito",
+            "goRevokeLoanBook": "",
             "goSubBook": "Iscriviti"
         },
         "network": {
@@ -298,6 +300,7 @@
             "letterSpacing": "Spaziatura lettere",
             "lineSpacing": "Spaziatura linee",
             "margin": "Margine",
+            "noFootnotes": "",
             "paginated": "Impaginato",
             "paraSpacing": "",
             "pdfZoom": {
@@ -313,6 +316,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "salva",
                 "reset": "ripristina",

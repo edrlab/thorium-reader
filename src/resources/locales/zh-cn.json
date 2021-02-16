@@ -140,7 +140,8 @@
             "hint": "(提示: {{hint}})",
             "password": "密码",
             "sentence": "打开此出版物需要LCP密码: ",
-            "submit": "提交"
+            "submit": "提交",
+            "urlHint": ""
         }
     },
     "message": {
@@ -176,6 +177,7 @@
             "addExtract": "导入摘录",
             "goBuyBook": "购买此书",
             "goLoanBook": "借阅此书",
+            "goRevokeLoanBook": "",
             "goSubBook": "订阅"
         },
         "network": {
@@ -250,6 +252,8 @@
         "navigation": {
             "backHomeTitle": "返回书架",
             "bookmarkTitle": "书签",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "显示 书库/书架 窗口",
             "fullscreenTitle": "开启全屏模式",
             "goTo": "转到",
@@ -259,6 +263,7 @@
             "infoTitle": "信息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "导航",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "退出全屏模式",
             "readBookTitle": "开始阅读图书",
             "settingsTitle": "设置"
@@ -295,6 +300,7 @@
             "letterSpacing": "字符间距",
             "lineSpacing": "行间距",
             "margin": "页边距",
+            "noFootnotes": "",
             "paginated": "分页",
             "paraSpacing": "段落间距",
             "pdfZoom": {
@@ -310,6 +316,7 @@
                 },
                 "title": "放大"
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "保存",
                 "reset": "重置",

@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import * as path from "path";
-import { PDFExtract, PDFExtractOptions } from "pdf.js-extract";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 
@@ -16,28 +15,11 @@ import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
-// https://github.com/mozilla/pdf.js/tree/master/examples/node
-// import * as pdfjs from "pdfjs-dist/es5/build/pdf.js";
+import { IInfo } from "./extract.type";
 
 // Logger
 const _filename = "readium-desktop:main/pdf/manifest";
 const debug = debug_(_filename);
-
-interface IInfo {
-    PDFFormatVersion?: string;
-    IsAcroFormPresent?: boolean;
-    IsCollectionPresent?: boolean;
-    IsLinearized?: boolean;
-    IsXFAPresent?: boolean;
-    Title?: string;
-    Subject?: string;
-    Keywords?: string;
-    Author?: string;
-    Creator?: string;
-    Producer?: string;
-    CreationDate?: string;
-    ModDate?: string;
-}
 
 function pdfDateConverter(dateString: string): Date | undefined {
 
@@ -107,16 +89,7 @@ function pdfDateConverter(dateString: string): Date | undefined {
     return undefined;
 }
 
-export async function pdfManifest(pdfPath: string): Promise<R2Publication> {
-
-    const pdfExtract = new PDFExtract();
-
-    const options: PDFExtractOptions = {};
-    const data = await pdfExtract.extract(pdfPath, options);
-
-    const info = data.meta?.info as IInfo;
-    const pages = data.pages;
-    const pdfInfo = data.pdfInfo;
+export async function pdfManifest(pdfPath: string, info: IInfo): Promise<R2Publication> {
 
     const r2Publication = new R2Publication();
     const { name } = path.parse(pdfPath);
@@ -199,7 +172,7 @@ export async function pdfManifest(pdfPath: string): Promise<R2Publication> {
         }, _filename);
 
         {
-            const numberOfPage = pdfInfo?.numPages || Array.isArray(pages) ? pages.length : undefined;
+            const numberOfPage = info.numberOfPages;
             debug("number of page", numberOfPage);
 
             if (numberOfPage) {
@@ -211,24 +184,24 @@ export async function pdfManifest(pdfPath: string): Promise<R2Publication> {
     }
 
     await tryCatch(() => {
-        const pageOne = pages[0];
-        const pageInfoOne = pageOne?.pageInfo?.num === 1 ? pageOne?.pageInfo : undefined;
-        if (pageInfoOne) {
+        // const pageOne = pages[0];
+        // const pageInfoOne = pageOne?.pageInfo?.num === 1 ? pageOne?.pageInfo : undefined;
+        // if (pageInfoOne) {
 
-            const { width, height } = pageInfoOne;
-            const widthRounded = Math.round(width);
-            const heightRounded = Math.round(height);
+            // const { width, height } = pageInfoOne;
+            // const widthRounded = Math.round(width);
+            // const heightRounded = Math.round(height);
 
             const coverName = "cover.png";
             const link = new Link();
             link.AddRel("cover");
             link.Href = coverName;
             link.TypeLink = mimeTypes.png;
-            link.Height = heightRounded;
-            link.Width = widthRounded;
+            // link.Height = heightRounded;
+            // link.Width = widthRounded;
 
             r2Publication.Resources = [link];
-        }
+        // }
     }, _filename);
 
     {

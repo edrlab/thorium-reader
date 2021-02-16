@@ -1,7 +1,9 @@
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-/* tslint:disable */
+// eslint-disable
 
 // https://github.com/mozilla/pdf.js/blob/c366390f6bb2fa303d0d85879afda2c27ee06c28/web/ui_utils.js#L802
 

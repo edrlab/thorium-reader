@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
-import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
@@ -25,6 +24,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationDocument } from "../db/document/publication";
 import { PublicationRepository } from "../db/repository/publication";
 import { diMainGet } from "../di";
+import { aboutFiltered } from "../filter";
 import { RootState } from "../redux/states";
 
 export const CATALOG_CONFIG_ID = "catalog";
@@ -34,7 +34,7 @@ const NB_PUB = 5;
 const viewToR2Pub = (view: PublicationView) => {
     const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
     const r2PublicationJson = JSON.parse(r2PublicationStr);
-    const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+    const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
     return r2Publication;
 };
@@ -91,8 +91,8 @@ export class CatalogApi implements ICatalogApi {
             },
         } = await this.getPublicationView();
 
-        const _allAdded = allAdded.filter(({title}) => !title.startsWith(ABOUT_BOOK_TITLE_PREFIX));
-        const _epubReaded = epubReaded.filter(({title}) => !title.startsWith(ABOUT_BOOK_TITLE_PREFIX));
+        const _allAdded = aboutFiltered(allAdded);
+        const _epubReaded = aboutFiltered(epubReaded);
 
         const allAdded_ = _allAdded.slice(0, NB_PUB);
         const epubReaded_ = _epubReaded.slice(0, NB_PUB);
@@ -136,11 +136,12 @@ export class CatalogApi implements ICatalogApi {
 
     private async getPublicationView() {
 
-        const errorDeletePub = (doc: PublicationDocument) => {
+        const errorDeletePub = (doc: PublicationDocument | undefined) => {
             debug("Error in convertDocumentToView doc=", doc);
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc.title || ""));
 
-            debug(`${doc.identifier} => ${doc.title} should be removed`);
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc?.title || ""));
+
+            debug(`${doc?.identifier} => ${doc?.title} should be removed`);
             try {
                 // tslint:disable-next-line: no-floating-promises
                 // this.publicationService.deletePublication(doc.identifier);
@@ -159,8 +160,11 @@ export class CatalogApi implements ICatalogApi {
         const lastAddedPublicationsDocument =
             lastAddedPublicationsDocumentRaw.filter(({ identifier }) => !lastReadingPubArray.includes(identifier));
         const lastReadedPublicationDocument =
-            lastReadingPubArray.map(
-                (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier));
+            lastReadingPubArray
+                .map(
+                    (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier),
+                )
+                .filter((v) => !!v);
 
         const lastAddedPublicationsView =
             lastAddedPublicationsDocument.map((doc) => {

@@ -5,15 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
+import { PDFDocumentProxy } from "readium-desktop/typings/pdf.js/display/api";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 
 import { ILink, TToc } from "../common/pdfReader.type";
-import { TdestForPageIndex, TdestObj, TOutlineUnArray } from "./pdfjs.type";
+import { TdestForPageIndex, TdestObj } from "./pdfjs.type";
 
-export interface IOutline extends Partial<TOutlineUnArray> {
+export interface IOutline {
     dest?: string | TdestObj[];
     items?: IOutline[];
+    title?: string;
 }
 
 export function destForPageIndexParse(destRaw: any | any[]): TdestForPageIndex | undefined {
@@ -74,8 +75,10 @@ export async function getToc(pdf: PDFDocumentProxy): Promise<TToc> {
         const outline: IOutline[] = await pdf.getOutline();
         const pageLabels = await pdf.getPageLabels();
         if (Array.isArray(outline)) {
-            const tocPromise = outline.map((item) => tocOutlineItemToLink(item, pdf, pageLabels));
-            return await Promise.all(tocPromise);
+            const tocPromise = outline
+                .map((item) => tryCatch(() => tocOutlineItemToLink(item, pdf, pageLabels), ""));
+            const res = await Promise.all(tocPromise);
+            return res.filter((v) => !!v);
         }
 
         return [];

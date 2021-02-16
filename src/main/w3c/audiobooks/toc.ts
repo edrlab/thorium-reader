@@ -238,7 +238,7 @@ function extract_TOC(toc_element: HTMLElement, uniqueResources: Link[]): ToC {
                         }
 
                     } catch (e) {
-                        debug("error to parse URL:", url);
+                        debug("error to parse URL:", url, e);
                         current_toc_node.url = null;
                     }
                 }

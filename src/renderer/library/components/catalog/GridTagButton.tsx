@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     name: string;
 }
@@ -18,7 +18,7 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 

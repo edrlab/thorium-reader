@@ -7,6 +7,7 @@
 
 import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
+import { aboutFiltered } from "readium-desktop/main/filter";
 
 export function* findByTag(tag: string) {
 
@@ -14,7 +15,9 @@ export function* findByTag(tag: string) {
     const publicationViewConverter = diMainGet("publication-view-converter");
 
     const docs = yield* callTyped(() => publicationRepository.findByTag(tag));
-    return docs.map((doc) => {
+    const publicationViews = docs.map((doc) => {
         return publicationViewConverter.convertDocumentToView(doc);
     });
+
+    return aboutFiltered(publicationViews);
 }

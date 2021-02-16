@@ -14,6 +14,10 @@ import { diMainGet } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
+import {
+    streamerRemovePublications, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "readium-desktop/main/streamerNoHttp";
+import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 import { SagaIterator } from "redux-saga";
 import { all, call, put } from "redux-saga/effects";
 
@@ -36,11 +40,13 @@ async function startStreamer(streamer: Server): Promise<string> {
 }
 
 function* startRequest(): SagaIterator {
-    const streamer = yield* callTyped(() => diMainGet("streamer"));
+    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     try {
+        const streamerUrl = _USE_HTTP_STREAMER ?
+            yield* callTyped(() => startStreamer(streamer)) :
+            `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host`;
 
-        const streamerUrl = yield* callTyped(() => startStreamer(streamer));
         yield put(streamerActions.startSuccess.build(streamerUrl));
     } catch (error) {
 
@@ -51,11 +57,12 @@ function* startRequest(): SagaIterator {
 
 function* stopRequest(): SagaIterator {
 
-    const streamer = yield* callTyped(() => diMainGet("streamer"));
+    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     try {
-
-        yield call(() => streamer.stop);
+        if (_USE_HTTP_STREAMER) {
+            yield call(() => streamer.stop);
+        }
         yield put(streamerActions.stopSuccess.build());
     } catch (error) {
 
@@ -69,23 +76,26 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
     const pubId = action.payload.publicationIdentifier;
     // will decrement on streamerActions.publicationCloseSuccess.build (see below)
     const counter = yield* selectTyped((s: RootState) => s.streamer.openPublicationCounter);
-    const streamer = yield* callTyped(() => diMainGet("streamer"));
+
+    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
+
     const pubStorage = yield* callTyped(() => diMainGet("publication-storage"));
 
     let wasKilled = false;
     if (!counter.hasOwnProperty(pubId) || counter[pubId] <= 1) {
         wasKilled = true;
 
-        // Remove publication from streamer because there is no more readers
-        // open for this publication
-        // Get epub file from publication
         const epubPath = pubStorage.getPublicationEpubPath(pubId);
         // const epubPath = path.join(
         //     pubStorage.getRootPath(),
         //     publicationDocument.files[0].url.substr(6),
         // );
         debug(`EPUB ZIP CLEANUP: ${epubPath}`);
-        streamer.removePublications([epubPath]);
+        if (_USE_HTTP_STREAMER) {
+            streamer.removePublications([epubPath]);
+        } else {
+            streamerRemovePublications([epubPath]);
+        }
     }
 
     const pubIds = Object.keys(counter);

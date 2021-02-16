@@ -88,7 +88,7 @@ export const reduxSyncMiddleware: Middleware
                         try {
                             const readerWin = getReaderWindowFromDi(readers[key].identifier);
                             browserWin.set(readers[key].identifier, readerWin);
-                        } catch (err) {
+                        } catch (_err) {
                             // ignore
                             debug("ERROR: Can't found ther reader win from di: ", readers[key].identifier);
                         }
@@ -106,11 +106,13 @@ export const reduxSyncMiddleware: Middleware
                         ) {
 
                             debug("send to", id);
+                            const a = ActionSerializer.serialize(action);
+                            // debug(a);
                             try {
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
-                                        action: ActionSerializer.serialize(action),
+                                        action: a,
                                     },
                                     sender: {
                                         type: SenderType.Main,

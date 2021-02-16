@@ -21,7 +21,7 @@ import { IPickerState } from "../../redux/state/picker";
 import AnnotationPicker from "./Annotation";
 import SearchPicker from "./Search";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     showSearchResults: () => void;
     pdfEventBus: IEventBusPdfPlayer;
@@ -31,12 +31,12 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 // tslint:disable-next-line: max-line-length
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps>, TranslatorProps {
 }
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IState {
     // pickerTop: number;
     // pickerLeft: number;

@@ -48,8 +48,8 @@ var _app_options = __webpack_require__(1);
 
 var _app = __webpack_require__(3);
 
-const pdfjsVersion = '2.7.518';
-const pdfjsBuild = 'dcd1589b2';
+const pdfjsVersion = '2.8.18';
+const pdfjsBuild = '1d017b3b4';
 window.PDFViewerApplication = _app.PDFViewerApplication;
 window.PDFViewerApplicationOptions = _app_options.AppOptions;
 ;
@@ -570,8 +570,6 @@ var _secondary_toolbar = __webpack_require__(31);
 
 var _toolbar = __webpack_require__(33);
 
-var _viewer_compatibility = __webpack_require__(2);
-
 var _view_history = __webpack_require__(34);
 
 const DEFAULT_SCALE_DELTA = 1.1;
@@ -717,6 +715,7 @@ const PDFViewerApplication = {
     });
 
     this._initializedCapability.resolve();
+
     this.eventBus.dispatch("__ready");
   },
 
@@ -1035,7 +1034,7 @@ const PDFViewerApplication = {
   },
 
   get supportsPrinting() {
-    return PDFPrintServiceFactory.instance.supportsPrinting;
+    return false;
   },
 
   get supportsFullscreen() {
@@ -2332,8 +2331,6 @@ const PDFViewerApplication = {
 
     eventBus._on("presentationmode", webViewerPresentationMode);
 
-    eventBus._on("print", webViewerPrint);
-
     eventBus._on("download", webViewerDownload);
 
     eventBus._on("save", webViewerSave);
@@ -2388,9 +2385,44 @@ const PDFViewerApplication = {
       eventBus._on("pagechanging", _boundEvents.reportPageStatsPDFBug);
     }
 
-    // eventBus._on("fileinputchange", webViewerFileInputChange);
+    const pageRenderedExtract = async ev => {
+      try {
+        if (ev.pageNumber === 1) {
+          const page = ev.source;
 
-    // eventBus._on("openfile", webViewerOpenFile);
+          if (!page || !page.canvas) {
+            throw Error("PDF PAGE CANVAS??!");
+          }
+
+          const blob = await new Promise((res, _rej) => {
+            page.canvas.toBlob(blob => {
+              res(blob);
+            }, "image/png", 0.95);
+          });
+          const img = await blob.arrayBuffer();
+          const doc = page?.annotationLayerFactory?.pdfDocument;
+          const metadata = await doc.getMetadata();
+          const numberofpages = doc?.numPages;
+          const numberOfPagesChecked = typeof numberofpages === "number" ? numberofpages : 0;
+          const data = { ...metadata,
+            img,
+            numberofpages: numberOfPagesChecked
+          };
+          const ipc = window.electronIpcRenderer;
+
+          if (ipc) {
+            ipc.send("pdfjs-extract-data", data);
+          }
+
+          eventBus._off("pagerendered", pageRenderedExtract);
+        }
+      } catch (e) {
+        console.log("ERROR TO EXTRACT COVER AND METADATA FROM PDF");
+        console.log("ERROR", e);
+      }
+    };
+
+    eventBus._on("pagerendered", pageRenderedExtract);
   },
 
   bindWindowEvents() {
@@ -2482,8 +2514,6 @@ const PDFViewerApplication = {
 
     eventBus._off("presentationmode", webViewerPresentationMode);
 
-    eventBus._off("print", webViewerPrint);
-
     eventBus._off("download", webViewerDownload);
 
     eventBus._off("save", webViewerSave);
@@ -2537,10 +2567,6 @@ const PDFViewerApplication = {
 
       _boundEvents.reportPageStatsPDFBug = null;
     }
-
-    // eventBus._off("fileinputchange", webViewerFileInputChange);
-
-    // eventBus._off("openfile", webViewerOpenFile);
 
     _boundEvents.beforePrint = null;
     _boundEvents.afterPrint = null;
@@ -2963,57 +2989,8 @@ function webViewerHashchange(evt) {
   }
 }
 
-let webViewerFileInputChange, webViewerOpenFile;
-{
-  webViewerFileInputChange = function (evt) {
-    if (PDFViewerApplication.pdfViewer && PDFViewerApplication.pdfViewer.isInPresentationMode) {
-      return;
-    }
-
-    const file = evt.fileInput.files[0];
-
-    if (!_viewer_compatibility.viewerCompatibilityParams.disableCreateObjectURL) {
-      let url = URL.createObjectURL(file);
-
-      if (file.name) {
-        url = {
-          url,
-          originalUrl: file.name
-        };
-      }
-
-      PDFViewerApplication.open(url);
-    } else {
-      PDFViewerApplication.setTitleUsingUrl(file.name);
-      const fileReader = new FileReader();
-
-      fileReader.onload = function webViewerChangeFileReaderOnload(event) {
-        const buffer = event.target.result;
-        PDFViewerApplication.open(new Uint8Array(buffer));
-      };
-
-      fileReader.readAsArrayBuffer(file);
-    }
-
-    const appConfig = PDFViewerApplication.appConfig;
-    appConfig.toolbar.viewBookmark.setAttribute("hidden", "true");
-    appConfig.secondaryToolbar.viewBookmarkButton.setAttribute("hidden", "true");
-    appConfig.toolbar.download.setAttribute("hidden", "true");
-    appConfig.secondaryToolbar.downloadButton.setAttribute("hidden", "true");
-  };
-
-  webViewerOpenFile = function (evt) {
-    const openFileInputName = PDFViewerApplication.appConfig.openFileInputName;
-    document.getElementById(openFileInputName).click();
-  };
-}
-
 function webViewerPresentationMode() {
   PDFViewerApplication.requestPresentationMode();
-}
-
-function webViewerPrint() {
-  PDFViewerApplication.triggerPrinting();
 }
 
 function webViewerDownload() {
@@ -3041,11 +3018,11 @@ function webViewerLastPage() {
 }
 
 function webViewerNextPage() {
-  PDFViewerApplication.page++;
+  PDFViewerApplication.pdfViewer.nextPage();
 }
 
 function webViewerPreviousPage() {
-  PDFViewerApplication.page--;
+  PDFViewerApplication.pdfViewer.previousPage();
 }
 
 function webViewerZoomIn() {
@@ -3533,13 +3510,9 @@ function webViewerKeyDown(evt) {
 
     if (turnPage !== 0 && (!turnOnlyIfPageFit || pdfViewer.currentScaleValue === "page-fit")) {
       if (turnPage > 0) {
-        if (PDFViewerApplication.page < PDFViewerApplication.pagesCount) {
-          PDFViewerApplication.page++;
-        }
+        pdfViewer.nextPage();
       } else {
-        if (PDFViewerApplication.page > 1) {
-          PDFViewerApplication.page--;
-        }
+        pdfViewer.previousPage();
       }
 
       handled = true;
@@ -4045,13 +4018,16 @@ function getVisibleElements({
 
     const hiddenHeight = Math.max(0, top - currentHeight) + Math.max(0, viewBottom - bottom);
     const hiddenWidth = Math.max(0, left - currentWidth) + Math.max(0, viewRight - right);
-    const percent = (viewHeight - hiddenHeight) * (viewWidth - hiddenWidth) * 100 / viewHeight / viewWidth | 0;
+    const fractionHeight = (viewHeight - hiddenHeight) / viewHeight,
+          fractionWidth = (viewWidth - hiddenWidth) / viewWidth;
+    const percent = fractionHeight * fractionWidth * 100 | 0;
     visible.push({
       id: view.id,
       x: currentWidth,
       y: currentHeight,
       view,
-      percent
+      percent,
+      widthPercent: fractionWidth * 100 | 0
     });
   }
 
@@ -7727,13 +7703,6 @@ class PDFLinkService {
         this.page = pageNumber;
       }
 
-      // if ("pagemode" in params) {
-      //   this.eventBus.dispatch("pagemode", {
-      //     source: this,
-      //     mode: params.pagemode
-      //   });
-      // }
-
       if ("nameddest" in params) {
         this.goToDestination(params.nameddest);
       }
@@ -7774,17 +7743,11 @@ class PDFLinkService {
         break;
 
       case "NextPage":
-        if (this.page < this.pagesCount) {
-          this.page++;
-        }
-
+        this.pdfViewer.nextPage();
         break;
 
       case "PrevPage":
-        if (this.page > 1) {
-          this.page--;
-        }
-
+        this.pdfViewer.previousPage();
         break;
 
       case "LastPage":
@@ -8397,7 +8360,7 @@ class PDFPresentationMode {
 
       this._resetMouseScrollState();
 
-      const success = totalDelta > 0 ? this._goToPreviousPage() : this._goToNextPage();
+      const success = totalDelta > 0 ? this.pdfViewer.previousPage() : this.pdfViewer.nextPage();
 
       if (success) {
         this.mouseScrollTimeStamp = currentTime;
@@ -8407,28 +8370,6 @@ class PDFPresentationMode {
 
   get isFullscreen() {
     return !!(document.fullscreenElement || document.mozFullScreen || document.webkitIsFullScreen);
-  }
-
-  _goToPreviousPage() {
-    const page = this.pdfViewer.currentPageNumber;
-
-    if (page <= 1) {
-      return false;
-    }
-
-    this.pdfViewer.currentPageNumber = page - 1;
-    return true;
-  }
-
-  _goToNextPage() {
-    const page = this.pdfViewer.currentPageNumber;
-
-    if (page >= this.pdfViewer.pagesCount) {
-      return false;
-    }
-
-    this.pdfViewer.currentPageNumber = page + 1;
-    return true;
   }
 
   _notifyStateChange() {
@@ -8537,9 +8478,9 @@ class PDFPresentationMode {
         evt.preventDefault();
 
         if (evt.shiftKey) {
-          this._goToPreviousPage();
+          this.pdfViewer.previousPage();
         } else {
-          this._goToNextPage();
+          this.pdfViewer.nextPage();
         }
       }
     }
@@ -8624,9 +8565,9 @@ class PDFPresentationMode {
         }
 
         if (delta > 0) {
-          this._goToPreviousPage();
+          this.pdfViewer.previousPage();
         } else if (delta < 0) {
-          this._goToNextPage();
+          this.pdfViewer.nextPage();
         }
 
         break;
@@ -8720,8 +8661,7 @@ class PDFSidebar {
     pdfViewer,
     pdfThumbnailViewer,
     eventBus,
-    l10n = _ui_utils.NullL10n,
-    disableNotification = false
+    l10n = _ui_utils.NullL10n
   }) {
     this.isOpen = false;
     this.active = _ui_utils.SidebarView.THUMBS;
@@ -8744,7 +8684,6 @@ class PDFSidebar {
     this._currentOutlineItemButton = elements.currentOutlineItemButton;
     this.eventBus = eventBus;
     this.l10n = l10n;
-    this._disableNotification = disableNotification;
 
     this._addEventListeners();
   }
@@ -8752,7 +8691,7 @@ class PDFSidebar {
   reset() {
     this.isInitialViewSet = false;
 
-    this._hideUINotification(null);
+    this._hideUINotification(true);
 
     this.switchView(_ui_utils.SidebarView.THUMBS);
     this.outlineButton.disabled = false;
@@ -8876,8 +8815,6 @@ class PDFSidebar {
       this._dispatchEvent();
     }
 
-    this._hideUINotification(this.active);
-
     return isViewChanged;
   }
 
@@ -8898,7 +8835,7 @@ class PDFSidebar {
 
     this._dispatchEvent();
 
-    this._hideUINotification(this.active);
+    this._hideUINotification();
   }
 
   close() {
@@ -8959,75 +8896,26 @@ class PDFSidebar {
     pdfThumbnailViewer.scrollThumbnailIntoView(pdfViewer.currentPageNumber);
   }
 
-  _showUINotification(view) {
-    if (this._disableNotification) {
-      return;
-    }
-
+  _showUINotification() {
     this.l10n.get("toggle_sidebar_notification2.title", null, "Toggle Sidebar (document contains outline/attachments/layers)").then(msg => {
       this.toggleButton.title = msg;
     });
 
     if (!this.isOpen) {
       this.toggleButton.classList.add(UI_NOTIFICATION_CLASS);
-    } else if (view === this.active) {
-      return;
-    }
-
-    switch (view) {
-      case _ui_utils.SidebarView.OUTLINE:
-        this.outlineButton.classList.add(UI_NOTIFICATION_CLASS);
-        break;
-
-      case _ui_utils.SidebarView.ATTACHMENTS:
-        this.attachmentsButton.classList.add(UI_NOTIFICATION_CLASS);
-        break;
-
-      case _ui_utils.SidebarView.LAYERS:
-        this.layersButton.classList.add(UI_NOTIFICATION_CLASS);
-        break;
     }
   }
 
-  _hideUINotification(view) {
-    if (this._disableNotification) {
-      return;
+  _hideUINotification(reset = false) {
+    if (this.isOpen || reset) {
+      this.toggleButton.classList.remove(UI_NOTIFICATION_CLASS);
     }
 
-    const removeNotification = sidebarView => {
-      switch (sidebarView) {
-        case _ui_utils.SidebarView.OUTLINE:
-          this.outlineButton.classList.remove(UI_NOTIFICATION_CLASS);
-          break;
-
-        case _ui_utils.SidebarView.ATTACHMENTS:
-          this.attachmentsButton.classList.remove(UI_NOTIFICATION_CLASS);
-          break;
-
-        case _ui_utils.SidebarView.LAYERS:
-          this.layersButton.classList.remove(UI_NOTIFICATION_CLASS);
-          break;
-      }
-    };
-
-    if (!this.isOpen && view !== null) {
-      return;
+    if (reset) {
+      this.l10n.get("toggle_sidebar.title", null, "Toggle Sidebar").then(msg => {
+        this.toggleButton.title = msg;
+      });
     }
-
-    this.toggleButton.classList.remove(UI_NOTIFICATION_CLASS);
-
-    if (view !== null) {
-      removeNotification(view);
-      return;
-    }
-
-    for (view in _ui_utils.SidebarView) {
-      removeNotification(_ui_utils.SidebarView[view]);
-    }
-
-    this.l10n.get("toggle_sidebar.title", null, "Toggle Sidebar").then(msg => {
-      this.toggleButton.title = msg;
-    });
   }
 
   _addEventListeners() {
@@ -9072,7 +8960,7 @@ class PDFSidebar {
       button.disabled = !count;
 
       if (count) {
-        this._showUINotification(view);
+        this._showUINotification();
       } else if (this.active === view) {
         this.switchView(_ui_utils.SidebarView.THUMBS);
       }
@@ -9961,6 +9849,8 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports.PDFViewer = void 0;
 
+var _ui_utils = __webpack_require__(4);
+
 var _base_viewer = __webpack_require__(27);
 
 var _pdfjsLib = __webpack_require__(5);
@@ -10019,7 +9909,7 @@ class PDFViewer extends _base_viewer.BaseViewer {
         break;
       }
 
-      if (page.id === currentId) {
+      if (page.id === currentId && this._scrollMode === _ui_utils.ScrollMode.VERTICAL && this._spreadMode === _ui_utils.SpreadMode.NONE) {
         stillFullyVisible = true;
         break;
       }
@@ -10123,7 +10013,7 @@ class BaseViewer {
       throw new Error("Cannot initialize BaseViewer.");
     }
 
-    const viewerVersion = '2.7.518';
+    const viewerVersion = '2.8.18';
 
     if (_pdfjsLib.version !== viewerVersion) {
       throw new Error(`The API version "${_pdfjsLib.version}" does not match the Viewer version "${viewerVersion}".`);
@@ -11281,6 +11171,163 @@ class BaseViewer {
     this._setCurrentPageNumber(pageNumber, true);
 
     this.update();
+  }
+
+  _getPageAdvance(currentPageNumber, previous = false) {
+    if (this.isInPresentationMode) {
+      return 1;
+    }
+
+    switch (this._scrollMode) {
+      case _ui_utils.ScrollMode.WRAPPED:
+        {
+          const {
+            views
+          } = this._getVisiblePages(),
+                pageLayout = new Map();
+
+          for (const {
+            id,
+            y,
+            percent,
+            widthPercent
+          } of views) {
+            if (percent === 0 || widthPercent < 100) {
+              continue;
+            }
+
+            let yArray = pageLayout.get(y);
+
+            if (!yArray) {
+              pageLayout.set(y, yArray || (yArray = []));
+            }
+
+            yArray.push(id);
+          }
+
+          for (const yArray of pageLayout.values()) {
+            const currentIndex = yArray.indexOf(currentPageNumber);
+
+            if (currentIndex === -1) {
+              continue;
+            }
+
+            const numPages = yArray.length;
+
+            if (numPages === 1) {
+              break;
+            }
+
+            if (previous) {
+              for (let i = currentIndex - 1, ii = 0; i >= ii; i--) {
+                const currentId = yArray[i],
+                      expectedId = yArray[i + 1] - 1;
+
+                if (currentId < expectedId) {
+                  return currentPageNumber - expectedId;
+                }
+              }
+            } else {
+              for (let i = currentIndex + 1, ii = numPages; i < ii; i++) {
+                const currentId = yArray[i],
+                      expectedId = yArray[i - 1] + 1;
+
+                if (currentId > expectedId) {
+                  return expectedId - currentPageNumber;
+                }
+              }
+            }
+
+            if (previous) {
+              const firstId = yArray[0];
+
+              if (firstId < currentPageNumber) {
+                return currentPageNumber - firstId + 1;
+              }
+            } else {
+              const lastId = yArray[numPages - 1];
+
+              if (lastId > currentPageNumber) {
+                return lastId - currentPageNumber + 1;
+              }
+            }
+
+            break;
+          }
+
+          break;
+        }
+
+      case _ui_utils.ScrollMode.HORIZONTAL:
+        {
+          break;
+        }
+
+      case _ui_utils.ScrollMode.VERTICAL:
+        {
+          if (this._spreadMode === _ui_utils.SpreadMode.NONE) {
+            break;
+          }
+
+          const parity = this._spreadMode - 1;
+
+          if (previous && currentPageNumber % 2 !== parity) {
+            break;
+          } else if (!previous && currentPageNumber % 2 === parity) {
+            break;
+          }
+
+          const {
+            views
+          } = this._getVisiblePages(),
+                expectedId = previous ? currentPageNumber - 1 : currentPageNumber + 1;
+
+          for (const {
+            id,
+            percent,
+            widthPercent
+          } of views) {
+            if (id !== expectedId) {
+              continue;
+            }
+
+            if (percent > 0 && widthPercent === 100) {
+              return 2;
+            }
+
+            break;
+          }
+
+          break;
+        }
+    }
+
+    return 1;
+  }
+
+  nextPage() {
+    const currentPageNumber = this._currentPageNumber,
+          pagesCount = this.pagesCount;
+
+    if (currentPageNumber >= pagesCount) {
+      return false;
+    }
+
+    const advance = this._getPageAdvance(currentPageNumber, false) || 1;
+    this.currentPageNumber = Math.min(currentPageNumber + advance, pagesCount);
+    return true;
+  }
+
+  previousPage() {
+    const currentPageNumber = this._currentPageNumber;
+
+    if (currentPageNumber <= 1) {
+      return false;
+    }
+
+    const advance = this._getPageAdvance(currentPageNumber, true) || 1;
+    this.currentPageNumber = Math.max(currentPageNumber - advance, 1);
+    return true;
   }
 
   initializeScriptingEvents() {
@@ -12942,6 +12989,10 @@ class PDFSinglePageViewer extends _base_viewer.BaseViewer {
   _updateScrollMode() {}
 
   _updateSpreadMode() {}
+
+  _getPageAdvance() {
+    return 1;
+  }
 
 }
 

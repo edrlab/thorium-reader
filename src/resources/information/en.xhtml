@@ -2,8 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
     <title>About Thorium Reader</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+      }
+      p,
+      ul {
+        margin: 15px 0;
+      }
+      ul.nobullet {
+        list-style-type: none;
+      }
+    </style>
   </head>
-  <body style="font-family: 'Gill Sans', sans-serif">
+  <body>
     <h1>About Thorium Reader</h1>
 
     <h2>Introduction</h2>
@@ -15,12 +27,13 @@
     <p>
       This <a href="https://edrlab.org">EDRLab</a> application is in constant
       development and aims at becoming a reference for accessing EPUB
-      publications , PDF documents, audiobooks and visual narratives, LCP
-      protected or not.
+      publications, PDF documents, audiobooks and visual narratives, optionally
+      protected by the <a href="https://edrlab.org/readium-lcp">LCP DRM</a> (DRM
+      meaning Digital Rights Management).
     </p>
     <p>
-      It is localized in a large set of languages, each version offering new
-      languages.
+      It is localized in a large set of languages; each version is offering new
+      languages, thanks to the help of our community.
     </p>
     <p>
       Huge efforts are also made to get Thorium Reader highly accessible for
@@ -34,22 +47,23 @@
     <h2>Supported publication formats</h2>
 
     <p>
-      EPUB 2: this is a legacy format, only adequate for basic ebooks. Textual
-      content is formatted in XHTML 1 and no multimedia feature is supported.
-      EPUB 2 ebooks are still accessible if properly formatted.
+      <b>EPUB 2</b>: this is a legacy format, only adequate for basic ebooks.
+      Textual content is formatted in XHTML 1 and no multimedia feature is
+      supported. EPUB 2 ebooks are still accessible if properly formatted.
     </p>
     <p>
-      EPUB 3: this is the recommended format for the 21st century. Textual
-      content is formatted in (X)HTML 5, it is possible to create fixed-layout
-      ebooks, enriched ebooks and accessibiltiy features are well designed.
+      <b>EPUB 3</b>: this is the recommended format for the 21st century.
+      Textual content is formatted in (X)HTML 5, it is possible to create
+      fixed-layout ebooks, enriched ebooks and accessibiltiy features are well
+      designed.
     </p>
     <p>
-      PDF: despite a well-known lack of flexibility (no reflow option) and
-      accessibility, many ebooks are still available in PDF only, especially in
-      public libraries.
+      <b>PDF</b>: despite a well-known lack of flexibility (no reflow option)
+      and accessibility, many ebooks are still available in PDF only, especially
+      in public libraries.
     </p>
     <p>
-      audiobooks: a
+      <b>Audiobooks</b>: a
       <a href="https://www.w3.org/TR/audiobooks/"
         >standardized format for audiobooks</a
       >
@@ -59,25 +73,32 @@
       which will soon be widely used by booksellers, or so we hope.
     </p>
     <p>
-      visual narratives: EDRLab has designed a standard format for comics,
-      manga, webtoons and other styles of digital works based on sequances of
-      images. <a href="https://www.edrlab.org/open-standards/">Divina</a> is the
-      name of this format. This is still an experimental format, and we hope
-      that publishers will size it in 2021+.
+      <b>Visual narratives</b>: EDRLab has designed a standard format for
+      comics, manga, webtoons and other styles of digital works based on
+      sequances of images.
+      <a href="https://www.edrlab.org/open-standards/">Divina</a> is the name of
+      this format. This is still an experimental format, and we hope that
+      publishers will size it in 2021+.
     </p>
 
     <h2>Accessibility</h2>
 
     <p>
-      EDRLab has strong relationships with the
-      <a href="https://daisy.org/">DAISY Consortium</a>, and we want to make
-      Thorium Reader one on the most accessible reading application on the
-      market; better than most commercial products.
+      Thorium Reader is for everyone, including people who are blind or have
+      other print disabilities. The application is compatible with screen
+      readers including JAWS, NVDA, Narrator and VoiceOver, and it includes a
+      read aloud feature with visual highlighting. Thorium Reader can be used
+      with the mouse or keyboard, and keyboard shortcuts are configurable. The
+      display can be personalized to suit user’s needs, including colors, text
+      size, spacing, font and layout.
     </p>
+
     <p>
-      The application is therefore fully adapted to screen readers like JAWS,
-      NVDA or VoiceOver and is entirely usable from the keyboard. Keyboard
-      shortcuts are configurable by the user to fit his personal preferences.
+      EDRLab has strong relationships with the
+      <a href="https://daisy.org/">DAISY Consortium</a>. Together with people
+      with print disabilities who participate in our design and testing, we are
+      making Thorium Reader one of the most accessible reading applications
+      available.
     </p>
 
     <h2>OPDS Catalogs</h2>
@@ -140,21 +161,42 @@
       based on the open-source Readium Desktop toolkit.
     </p>
 
+    <h2>Who has developed this app</h2>
+
+    <p>Thorium Reader is currently developed by:</p>
+
+    <ul class="nobullet">
+      <li>Daniel Weck, lead developer.</li>
+      <li>Pierre Leroux, node.js developer.</li>
+    </ul>
+
+    <p>Several other developers have helped making Thorium what it is today:</p>
+
+    <ul class="nobullet">
+      <li>Simon Le Roux, UI designer.</li>
+      <li>Cyrille Lebeaupin, CEO of noop.fr, senior developer.</li>
+      <li>Jiminy Panoz, creator of Readium CSS.</li>
+      <li>Léo Stéfani, node.js, React developer.</li>
+      <li>Manuel Lagrand, intern, node.js developer.</li>
+    </ul>
+
+    <p>The project is supervised by Laurent Le Meur, EDROab CTO.</p>
+
     <h2>Who is financing this app</h2>
 
     <p>
       EDRLab is a non-profit organization. Our budget essentially originates
-      from our members. EDRLab started in France, but its members are now from
-      Europe, North America, South America and Asia.
+      from our members. EDRLab started in France, but is now counting 60 members
+      from Europe, North America, South America and Asia.
     </p>
 
     <p>This project would have not seen the light without:</p>
     <p>
-      1- The financial implication of our French founding members: Editis,
-      Hachette Livre, Magrigall, Media-Participations, Cercle de la Librarie,
-      Syndicat national de l'Edition. They understand that financing
-      open-standards and open-source is the best way to energize an open and
-      innovative market for the publishing industry.
+      1- The financial implication of our founding members: Editis, Hachette
+      Livre, Magrigall, Media-Participations, Cercle de la Librarie, Syndicat
+      national de l'Edition. They understand that financing open-standards and
+      open-source is the best way to energize an open and innovative market for
+      the publishing industry.
     </p>
 
     <p>2- Financial grants from the following French public organizations:</p>
@@ -163,7 +205,10 @@
       <li>Ministère de la Culture</li>
     </ul>
 
-    <p>3- Additional grants from our members:</p>
+    <p>
+      3- Additional grants from EDRLab members interested by the addition of
+      specific features:
+    </p>
     <ul>
       <li>Fênix Editorial, Brazil</li>
       <li>Canadian Electronic library, Canada</li>

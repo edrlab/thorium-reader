@@ -316,7 +316,8 @@ declare namespace typed_i18n {
     readonly "hint": string,
     readonly "password": string,
     readonly "sentence": string,
-    readonly "submit": string
+    readonly "submit": string,
+    readonly "urlHint": string
   }
 };
   (_: "library.lcp", __?: {}): {
@@ -324,13 +325,15 @@ declare namespace typed_i18n {
   readonly "hint": string,
   readonly "password": string,
   readonly "sentence": string,
-  readonly "submit": string
+  readonly "submit": string,
+  readonly "urlHint": string
 };
   (_: "library.lcp.cancel", __?: {}): string;
   (_: "library.lcp.hint", __?: {}): string;
   (_: "library.lcp.password", __?: {}): string;
   (_: "library.lcp.sentence", __?: {}): string;
   (_: "library.lcp.submit", __?: {}): string;
+  (_: "library.lcp.urlHint", __?: {}): string;
   (_: "message", __?: {}): {
   readonly "download": { readonly "error": string },
   readonly "import": {
@@ -372,6 +375,7 @@ declare namespace typed_i18n {
     readonly "addExtract": string,
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
+    readonly "goRevokeLoanBook": string,
     readonly "goSubBook": string
   },
   readonly "network": {
@@ -408,12 +412,14 @@ declare namespace typed_i18n {
   readonly "addExtract": string,
   readonly "goBuyBook": string,
   readonly "goLoanBook": string,
+  readonly "goRevokeLoanBook": string,
   readonly "goSubBook": string
 };
   (_: "opds.menu.aboutBook", __?: {}): string;
   (_: "opds.menu.addExtract", __?: {}): string;
   (_: "opds.menu.goBuyBook", __?: {}): string;
   (_: "opds.menu.goLoanBook", __?: {}): string;
+  (_: "opds.menu.goRevokeLoanBook", __?: {}): string;
   (_: "opds.menu.goSubBook", __?: {}): string;
   (_: "opds.network", __?: {}): {
   readonly "error": string,
@@ -508,6 +514,8 @@ declare namespace typed_i18n {
   readonly "navigation": {
     readonly "backHomeTitle": string,
     readonly "bookmarkTitle": string,
+    readonly "currentPage": string,
+    readonly "currentPageTotal": string,
     readonly "detachWindowTitle": string,
     readonly "fullscreenTitle": string,
     readonly "goTo": string,
@@ -520,9 +528,7 @@ declare namespace typed_i18n {
     readonly "pdfscalemode": string,
     readonly "quitFullscreenTitle": string,
     readonly "readBookTitle": string,
-    readonly "settingsTitle": string,
-    readonly "currentPageTotal": string,
-    readonly "currentPage": string
+    readonly "settingsTitle": string
   },
   readonly "picker": {
     readonly "annotationTitle": string,
@@ -554,6 +560,7 @@ declare namespace typed_i18n {
     readonly "letterSpacing": string,
     readonly "lineSpacing": string,
     readonly "margin": string,
+    readonly "noFootnotes": string,
     readonly "paginated": string,
     readonly "paraSpacing": string,
     readonly "pdfZoom": {
@@ -569,6 +576,7 @@ declare namespace typed_i18n {
       },
       readonly "title": string
     },
+    readonly "reduceMotion": string,
     readonly "save": {
       readonly "apply": string,
       readonly "reset": string,
@@ -643,6 +651,8 @@ declare namespace typed_i18n {
   (_: "reader.navigation", __?: {}): {
   readonly "backHomeTitle": string,
   readonly "bookmarkTitle": string,
+  readonly "currentPage": string,
+  readonly "currentPageTotal": string,
   readonly "detachWindowTitle": string,
   readonly "fullscreenTitle": string,
   readonly "goTo": string,
@@ -655,12 +665,12 @@ declare namespace typed_i18n {
   readonly "pdfscalemode": string,
   readonly "quitFullscreenTitle": string,
   readonly "readBookTitle": string,
-  readonly "settingsTitle": string,
-  readonly "currentPageTotal": string,
-  readonly "currentPage": string
+  readonly "settingsTitle": string
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
+  (_: "reader.navigation.currentPage", __?: {}): string;
+  (_: "reader.navigation.currentPageTotal", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;
   (_: "reader.navigation.fullscreenTitle", __?: {}): string;
   (_: "reader.navigation.goTo", __?: {}): string;
@@ -674,8 +684,6 @@ declare namespace typed_i18n {
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;
   (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
-  (_: "reader.navigation.currentPageTotal", __?: {}): string;
-  (_: "reader.navigation.currentPage", __?: {}): string;
   (_: "reader.picker", __?: {}): {
   readonly "annotationTitle": string,
   readonly "search": {
@@ -722,6 +730,7 @@ declare namespace typed_i18n {
   readonly "letterSpacing": string,
   readonly "lineSpacing": string,
   readonly "margin": string,
+  readonly "noFootnotes": string,
   readonly "paginated": string,
   readonly "paraSpacing": string,
   readonly "pdfZoom": {
@@ -737,6 +746,7 @@ declare namespace typed_i18n {
     },
     readonly "title": string
   },
+  readonly "reduceMotion": string,
   readonly "save": {
     readonly "apply": string,
     readonly "reset": string,
@@ -779,6 +789,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.letterSpacing", __?: {}): string;
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
+  (_: "reader.settings.noFootnotes", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
   (_: "reader.settings.paraSpacing", __?: {}): string;
   (_: "reader.settings.pdfZoom", __?: {}): {
@@ -813,6 +824,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.pdfZoom.name.fit", __?: {}): string;
   (_: "reader.settings.pdfZoom.name.width", __?: {}): string;
   (_: "reader.settings.pdfZoom.title", __?: {}): string;
+  (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.save", __?: {}): {
   readonly "apply": string,
   readonly "reset": string,

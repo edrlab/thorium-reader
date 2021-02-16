@@ -54,12 +54,12 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
         const url = parsedResult.url;
         debug("opds browse url=", url);
         const { b: opdsBrowseAction } = yield* raceTyped({
-            a: delay(5000),
+            a: delay(10000),
             b: call(opdsBrowse, url, BROWSE_OPDS_API_REQUEST_ID),
         });
 
         if (!opdsBrowseAction) {
-            debug("opds browse url=", url, "timeout 5s");
+            debug("opds opdsBrowseAction url=", url, "timeout 5s");
             return;
         }
 
@@ -90,12 +90,12 @@ function* updateHeaderLinkWatcher(action: apiActions.result.TAction<THttpGetOpds
             if (links.search?.length) {
 
                 const { b: getUrlAction } = yield* raceTyped({
-                    a: delay(5000),
+                    a: delay(10000),
                     b: call(getUrlApi, links.search),
                 });
 
                 if (!getUrlAction) {
-                    debug("opds browse url=", links.search, "timeout 5s");
+                    debug("opds getUrlAction url=", links.search, "timeout 5s");
                     return;
                 }
 
@@ -130,7 +130,7 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
         if (new URL(searchRaw)) {
             returnUrl = searchRaw;
         }
-    } catch (err) {
+    } catch (_err) {
         try {
             const xmlDom = (new DOMParser()).parseFromString(searchRaw, ContentType.TextXml);
             const urlsElem = xmlDom.documentElement.querySelectorAll("Url");
@@ -155,7 +155,7 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
                 }
             }
         } catch (errXml) {
-            debug("error to parse searchRaw (xml or url)");
+            debug("error to parse searchRaw (xml or url)", errXml);
         }
     }
 

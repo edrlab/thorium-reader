@@ -16,7 +16,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialo
 const debug = debug_("readium-desktop:renderer:publicationInfoDescription");
 debug("_");
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
     publication: TPublication;
     __: I18nTyped;

@@ -19,7 +19,7 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 
 import NoPublicationInfo from "./NoPublicationInfo";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
@@ -29,7 +29,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 

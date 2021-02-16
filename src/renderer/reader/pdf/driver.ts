@@ -5,15 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { remote, shell, WillNavigateEvent } from "electron";
+import { ipcRenderer, shell, WillNavigateEvent } from "electron";
 import * as path from "path";
-import {
-    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "r2-navigator-js/dist/es6-es2015/src/electron/common/sessions";
 import {
     _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-import { keyDownEventHandler, keyUpEventHandler } from "readium-desktop/renderer/common/keyboard";
+
+import { CONTEXT_MENU_SETUP } from "@r2-navigator-js/electron/common/context-menu";
+import {
+    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
 
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer } from "./common/pdfReader.type";
@@ -98,13 +99,6 @@ export async function pdfMountAndReturnBus(
         },
     );
 
-    bus.subscribe("keydown", (payload) => {
-        keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
-    });
-    bus.subscribe("keyup", (payload) => {
-        keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
-    });
-
     webview.addEventListener("did-finish-load", () => {
 
         console.log("did-finish-load bus.dispatch start pdfPath", pdfPath);
@@ -162,49 +156,6 @@ const webviewDomReadyDebugger = (ev: Electron.Event) => {
     webview.clearHistory();
 
     if (IS_DEV) {
-        const wc = remote.webContents.fromId(webview.getWebContentsId());
-        // const wc = wv.getWebContents();
-
-        wc.on("context-menu", (_ev, params) => {
-            const { x, y } = params;
-            const openDevToolsAndInspect = () => {
-                const devToolsOpened = () => {
-                    wc.off("devtools-opened", devToolsOpened);
-                    wc.inspectElement(x, y);
-
-                    setTimeout(() => {
-                        if (wc.devToolsWebContents && wc.isDevToolsOpened()) {
-                            wc.devToolsWebContents.focus();
-                        }
-                    }, 500);
-                };
-                wc.on("devtools-opened", devToolsOpened);
-                wc.openDevTools({ activate: true, mode: "detach" });
-            };
-            remote.Menu.buildFromTemplate([{
-                click: () => {
-                    const wasOpened = wc.isDevToolsOpened();
-                    if (!wasOpened) {
-                        openDevToolsAndInspect();
-                    } else {
-                        if (!wc.isDevToolsFocused()) {
-                            // wc.toggleDevTools();
-                            wc.closeDevTools();
-
-                            setImmediate(() => {
-                                openDevToolsAndInspect();
-                            });
-                        } else {
-                            // right-click context menu normally occurs when focus
-                            // is in BrowserWindow / WebView's WebContents,
-                            // but some platforms (e.g. MacOS) allow mouse interaction
-                            // when the window is in the background.
-                            wc.inspectElement(x, y);
-                        }
-                    }
-                },
-                label: "Inspect element",
-            }]).popup({ window: remote.getCurrentWindow() });
-        });
+        ipcRenderer.send(CONTEXT_MENU_SETUP, webview.getWebContentsId());
     }
 };

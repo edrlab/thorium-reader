@@ -81,9 +81,10 @@
         padding: 0;
 
         position: absolute;
-        top:10px;
+        top:0px;
         right:0;
         width:24px;
+        margin-right: -8px;
 
         & svg {
             fill: rgb(107, 107, 107)
@@ -104,13 +105,70 @@
             margin: 0;
 
         &.book_title {
-            padding-top:10px;
+            margin-top:10px;
             font-weight: 600;
+            overflow-wrap: break-word;
+            line-height: 1.2em;
+            max-height: 2.4em;
+            overflow: hidden;
+            /*
+            multiline ellipsis!
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            */
+            padding-right: 1em;
         }
-
+        &.book_title:before {
+          content: '…';
+          position: absolute;
+          opacity: 0.5;
+          bottom: 0;
+          inset-block-end: 0; /* "bottom" */
+          right: 0;
+          inset-inline-end: 0; /* "right" */
+        }
+        &.book_title:after {
+          content: '';
+          position: absolute;
+          background: white;
+          opacity: 1;
+          width: 1em;
+          height: 1em;
+          right: 0;
+          inset-inline-end: 0; /* "right" */
+        }
         &.book_author {
             font-weight: 300;
             color:#616161;
+            overflow-wrap: break-word;
+            line-height: 1.2em;
+            max-height: 2.4em;
+            overflow: hidden;
+            /*
+            multiline ellipsis!
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            */
+            padding-right: 1em;
+        }
+        &.book_author:before {
+          content: '…';
+          position: absolute;
+          opacity: 0.5;
+          bottom: 0;
+          inset-block-end: 0; /* "bottom" */
+          right: 0;
+          inset-inline-end: 0; /* "right" */
+        }
+        &.book_author:after {
+          content: '';
+          position: absolute;
+          background: white;
+          opacity: 1;
+          width: 1em;
+          height: 1em;
+          right: 0;
+          inset-inline-end: 0; /* "right" */
         }
     }
 }
@@ -149,7 +207,6 @@
             border-bottom: 1px solid #E5E3E3;
         }
     }
-
     & button[disabled] {
         cursor: not-allowed;
     }

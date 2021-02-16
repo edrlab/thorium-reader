@@ -29,6 +29,7 @@ function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
     return function(this: any) {
         if (!waiting) {
+            // eslint-disable-next-line prefer-rest-params
             callback.apply(this, arguments);
             waiting = true;
             setTimeout(() => {
@@ -38,9 +39,11 @@ function throttle(callback: (...args: any) => void, limit: number) {
     };
 }
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
+    gotoBegin: () => void;
+    gotoEnd: () => void;
     fullscreen: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
@@ -57,7 +60,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -97,7 +100,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         if (isDivina) {
             try {
                 spineTitle = (parseInt(spineTitle, 10) + 1).toString();
-            } catch (e) {
+            } catch (_e) {
                 // ignore
             }
         }
@@ -116,10 +119,32 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }}>
                 {!isAudioBook &&
                     <div className={styles.arrows}>
-                        <button onClick={() => this.props.navLeftOrRight(true)}>
+                        <button onClick={(ev) => {
+                            if (ev.shiftKey) {
+                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                if (isRTL) {
+                                    this.props.gotoEnd();
+                                } else {
+                                    this.props.gotoBegin();
+                                }
+                            } else {
+                                this.props.navLeftOrRight(true);
+                            }
+                        }}>
                             <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
                         </button>
-                        <button onClick={() => this.props.navLeftOrRight(false)}>
+                        <button onClick={(ev) => {
+                            if (ev.shiftKey) {
+                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                if (isRTL) {
+                                    this.props.gotoBegin();
+                                } else {
+                                    this.props.gotoEnd();
+                                }
+                            } else {
+                                this.props.navLeftOrRight(false);
+                            }
+                        }}>
                             <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
                         </button>
                     </div>

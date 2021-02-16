@@ -26,6 +26,7 @@ import {
 import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
+import { URL } from "url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 
@@ -41,13 +42,15 @@ type TLabelName = "login" | "password";
 type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/implicit"
     | "http://opds-spec.org/auth/basic"
-    | "http://opds-spec.org/auth/local";
+    | "http://opds-spec.org/auth/local"
+    | "http://librarysimplified.org/authtype/SAML-2.0";
 
 const AUTHENTICATION_TYPE: TAuthenticationType[] = [
     "http://opds-spec.org/auth/oauth/password",
     "http://opds-spec.org/auth/oauth/implicit",
     "http://opds-spec.org/auth/basic",
     "http://opds-spec.org/auth/local",
+    "http://librarysimplified.org/authtype/SAML-2.0",
 ];
 
 const LINK_TYPE: TLinkType[] = [
@@ -98,7 +101,10 @@ const opdsAuthFlow =
             const task = yield* forkTyped(function*() {
 
                 const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
-                return parseRequestFromCustomProtocol(parsedRequest);
+                return {
+                    request: parseRequestFromCustomProtocol(parsedRequest.request),
+                    callback: parsedRequest.callback,
+                };
             });
 
             const win =
@@ -131,7 +137,7 @@ const opdsAuthFlow =
                     return;
 
                 } else {
-                    const opdsCustomProtocolRequestParsed = task.result();
+                    const { request: opdsCustomProtocolRequestParsed, callback } = task.result();
                     if (opdsCustomProtocolRequestParsed) {
 
                         const [, err] = yield* callTyped(opdsSetAuthCredentials,
@@ -139,6 +145,10 @@ const opdsAuthFlow =
                             authCredentials,
                             authParsed.authenticationType,
                         );
+
+                        callback({
+                            url: undefined,
+                        });
 
                         if (err instanceof Error) {
                             debug(err.message);
@@ -230,7 +240,10 @@ async function opdsSetAuthCredentials(
             if (authenticationType === "http://opds-spec.org/auth/basic") {
 
                 postDataCredential = {
-                    accessToken: Buffer.from(`${data.login}:${data.password}`).toString("base64"),
+                    accessToken:
+                        Buffer.from(
+                            `${data.login}:${data.password}`,
+                            ).toString("base64"),
                     refreshToken: undefined,
                     tokenType: "basic",
                 };
@@ -357,6 +370,13 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
             break;
         }
 
+        case "http://librarysimplified.org/authtype/SAML-2.0": {
+            browserUrl = `${
+                auth.links?.authenticate?.url
+            }&redirect_uri=${encodeURI("opds://authorize")}`;
+            break;
+        }
+
         case "http://opds-spec.org/auth/local":
         case "http://opds-spec.org/auth/basic":
         case "http://opds-spec.org/auth/oauth/password": {
@@ -436,7 +456,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
                 && typeof cv.Href === "string"
             ) {
 
-                const [l] = viewConvert.convertLinkToView([cv], baseUrl);
+                const l = viewConvert.convertLinkToView(cv, baseUrl);
 
                 return { ...pv, [rel]: l } as IOPDSAuthDocParsed["links"]; // typing error why ?
             }
@@ -461,7 +481,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
             })
             : undefined;
         if (ln) {
-            const [linkView] = viewConvert.convertLinkToView([ln], baseUrl);
+            const linkView = viewConvert.convertLinkToView(ln, baseUrl);
             return linkView;
         }
         return undefined;
@@ -518,7 +538,7 @@ interface IParseRequestFromCustomProtocol<T = string> {
         [key in T & string]?: string;
     };
 }
-function parseRequestFromCustomProtocol(req: Electron.Request)
+function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
     : IParseRequestFromCustomProtocol<TLabelName> | undefined {
 
     debug("########");
@@ -563,11 +583,15 @@ function parseRequestFromCustomProtocol(req: Electron.Request)
                     const keyValue = data.split("&");
                     const values = tryCatchSync(
                         () => keyValue.reduce(
-                            (pv, cv) =>
-                                ({
+                            (pv, cv) => {
+                                const splt = cv.split("=");
+                                const key = decodeURIComponent(splt[0]);
+                                const val = decodeURIComponent(splt[1]);
+                                return {
                                     ...pv,
-                                    [cv.split("=")[0]]: cv.split("=")[1],
-                                }),
+                                    [key]: val,
+                                };
+                            },
                             {},
                         ),
                         filename_,
@@ -586,11 +610,15 @@ function parseRequestFromCustomProtocol(req: Electron.Request)
 
         if (method === "GET") {
             if (host === "authorize") {
-
+                const urlObject = new URL(url);
+                const data: Record<string, string> = {};
+                for (const [key, value] of urlObject.searchParams) {
+                    data[key] = value;
+                }
                 return {
                     url: urlParsed,
                     method: "GET",
-                    data: {},
+                    data,
                 };
             }
         }
@@ -601,7 +629,7 @@ function parseRequestFromCustomProtocol(req: Electron.Request)
 
 // tslint:disable-next-line: max-line-length
 const htmlLoginTemplate = (
-    urlToSubmit: string = "",
+    urlToSubmit = "",
     loginLabel = "login",
     passLabel = "password",
     logoUrl?: string,
@@ -803,7 +831,7 @@ const htmlLoginTemplate = (
         <div class="login">
         <h1>${title}</h1>
         <form method="post" action="${urlToSubmit}">
-        ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ``}
+        ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ""}
         <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
         <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
         <p class="submit">

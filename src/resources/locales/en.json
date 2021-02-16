@@ -140,7 +140,8 @@
             "hint": "(Hint : {{hint}})",
             "password": "Passphrase",
             "sentence": "This publication needs an LCP passphrase to be opened: ",
-            "submit": "Submit"
+            "submit": "Submit",
+            "urlHint": "Forgot you're passphrase? find some help here"
         }
     },
     "message": {
@@ -176,6 +177,7 @@
             "addExtract": "Import the extract",
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
+            "goRevokeLoanBook": "Revoke loan",
             "goSubBook": "Subscribe"
         },
         "network": {
@@ -298,6 +300,7 @@
             "letterSpacing": "Letter spacing",
             "lineSpacing": "Line spacing",
             "margin": "Margin",
+            "noFootnotes": "Disable footnotes",
             "paginated": "Paginated",
             "paraSpacing": "Paragraph spacing",
             "pdfZoom": {
@@ -313,6 +316,7 @@
                 },
                 "title": "Zoom"
             },
+            "reduceMotion": "Reduce motion",
             "save": {
                 "apply": "save",
                 "reset": "reset",

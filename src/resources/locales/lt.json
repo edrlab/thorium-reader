@@ -140,7 +140,8 @@
             "hint": "(Užuomina : {{hint}})",
             "password": "Slaptažodis",
             "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
-            "submit": "Pateikti"
+            "submit": "Pateikti",
+            "urlHint": ""
         }
     },
     "message": {
@@ -176,6 +177,7 @@
             "addExtract": "Importuoti ištrauką",
             "goBuyBook": "Pirkti šią knygą",
             "goLoanBook": "Pasiskolinti knygą",
+            "goRevokeLoanBook": "",
             "goSubBook": "Prenumeruoti"
         },
         "network": {
@@ -298,6 +300,7 @@
             "letterSpacing": "Raidžių išretinimas",
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
+            "noFootnotes": "",
             "paginated": "Skaidyti į puslapius",
             "paraSpacing": "",
             "pdfZoom": {
@@ -313,6 +316,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "įrašyti",
                 "reset": "grįžti į pradinę būseną",

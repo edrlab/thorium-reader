@@ -89,8 +89,7 @@ export function winSessionReaderReducer(
                 const reduxState: IReaderStateReader = { ...state[id].reduxState };
                 Object.entries(action.payload.reduxState).forEach(([key, value]) => {
                     if (value) {
-                        // @ts-ignore
-                        reduxState[key] = value;
+                        (reduxState as any)[key] = value;
                     }
                 });
 

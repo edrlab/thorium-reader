@@ -140,7 +140,8 @@
             "hint": "Dein Kennwort",
             "password": "",
             "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
-            "submit": "Absenden"
+            "submit": "Absenden",
+            "urlHint": ""
         }
     },
     "message": {
@@ -176,6 +177,7 @@
             "addExtract": "Zur Bibliothek hinzufügen",
             "goBuyBook": "Dieses Buch kaufen",
             "goLoanBook": "Dieses Buch ausleihen",
+            "goRevokeLoanBook": "",
             "goSubBook": "Abonnieren"
         },
         "network": {
@@ -298,6 +300,7 @@
             "letterSpacing": "Buchstabenabstand",
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
+            "noFootnotes": "",
             "paginated": "Seitendarstellung",
             "paraSpacing": "",
             "pdfZoom": {
@@ -313,6 +316,7 @@
                 },
                 "title": ""
             },
+            "reduceMotion": "",
             "save": {
                 "apply": "Speichern",
                 "reset": "Zurücksetzen",

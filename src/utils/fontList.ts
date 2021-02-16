@@ -11,39 +11,46 @@ import { Font } from "readium-desktop/common/models/font";
 // import { diRendererSymbolTable } from "readium-desktop/renderer/library/diSymbolTable";
 // console.log(diRendererSymbolTable["react-library-app"]);
 
+export const FONT_ID_DEFAULT = "DEFAULT";
+export const FONT_ID_VOID = "VOID";
+
 const fontList: Font[] =
 [{
-    id: "DEFAULT",
+    id: FONT_ID_DEFAULT,
     label: "Default font",
 }, {
     id: "OLD",
     label: "Old Style",
-    style: "font-family: \"Iowan Old Style\", \"Sitka Text\", Palatino, \"Book Antiqua\", serif;",
+    fontFamily: "\"Iowan Old Style\", \"Sitka Text\", Palatino, \"Book Antiqua\", serif",
 }, {
     id: "MODERN",
     label: "Modern",
-    style: "font-family: Athelas, Constantia, Georgia, serif;",
+    fontFamily: "Athelas, Constantia, Georgia, serif",
 }, {
     id: "SANS",
     label: "Sans",
-    style: "font-family: -apple-system, system-ui, BlinkMacSystemFont," +
-        " \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif;",
+    // tslint:disable-next-line:max-line-length
+    fontFamily: "-apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
 }, {
     id: "HUMAN",
     label: "Humanist",
-    style: "font-family: Seravek, Calibri, Roboto, Arial, sans-serif;",
+    fontFamily: "Seravek, Calibri, Roboto, Arial, sans-serif",
 }, {
     id: "DYS",
     label: "Readable (dys)",
-    style: "font-family: AccessibleDfa;",
+    fontFamily: "AccessibleDfa",
 }, {
     id: "DUO",
     label: "Duospace",
-    style: "font-family: \"IA Writer Duospace\", Consolas, monospace;",
+    fontFamily: "\"IA Writer Duospace\", Consolas, monospace",
 }, {
     id: "MONO",
     label: "Monospace",
-    style: "font-family: \"Andale Mono\", Consolas, monospace;",
+    fontFamily: "\"Andale Mono\", Consolas, monospace",
+}, {
+    id: FONT_ID_VOID,
+    label: "...",
+    fontFamily: "Consolas, monospace",
 }];
 
 export default fontList;

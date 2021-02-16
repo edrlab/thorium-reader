@@ -183,6 +183,8 @@ let config = Object.assign(
 
         devServer: {
             contentBase: __dirname,
+            contentBasePublicPath: "/",
+            publicPath: "/",
             hot: _enableHot,
             watchContentBase: true,
             watchOptions: {
@@ -236,6 +238,8 @@ if (nodeEnv !== "production") {
 
         devServer: {
             contentBase: __dirname,
+            contentBasePublicPath: "/",
+            publicPath: "/",
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
@@ -257,7 +261,10 @@ if (nodeEnv !== "production") {
 
     config.output.pathinfo = true;
 
-    config.output.publicPath = preprocessorDirectives.rendererReaderBaseUrl;
+    // same as devServer.publicPath
+    // preprocessorDirectives.rendererReaderBaseUrl (full HTTP locahost + port)
+    config.output.publicPath = "/";
+
     if (_enableHot) {
         config.plugins.push(new webpack.HotModuleReplacementPlugin());
     }

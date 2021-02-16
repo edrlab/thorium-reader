@@ -43,6 +43,9 @@ export interface IPublicationApi {
     search: (
         title: string,
     ) => SagaGenerator<PublicationView[]>;
+    searchEqTitle: (
+        title: string,
+    ) => SagaGenerator<PublicationView[]>;
     exportPublication: (
         publicationView: PublicationView,
     ) => SagaGenerator<void>;
@@ -59,5 +62,6 @@ export interface IPublicationModuleApi {
     "publication/importFromFs": IPublicationApi["importFromFs"];
     "publication/importFromString": IPublicationApi["importFromString"];
     "publication/search": IPublicationApi["search"];
+    "publication/searchEqTitle": IPublicationApi["searchEqTitle"];
     "publication/exportPublication": IPublicationApi["exportPublication"];
 }

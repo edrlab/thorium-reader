@@ -40,7 +40,7 @@ import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     menuOpen: boolean;
     infoOpen: boolean;
@@ -91,7 +91,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
