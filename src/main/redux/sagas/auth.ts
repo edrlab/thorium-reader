@@ -32,6 +32,7 @@ import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authenticati
 import { IParseRequestFromCustomProtocol } from "readium-desktop/main/redux/sagas/modal/request";
 import { openWindowModalAndReturnResult } from "./modal/open";
 import { notStrictEqual, strictEqual } from "assert";
+import { SCHEME } from "./getEventChannel";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -324,7 +325,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
 
             const html = encodeURIComponent(
                 htmlLoginTemplate(
-                    "opds://authorize",
+                    `${SCHEME}://authorize`,
                     auth.labels?.login,
                     auth.labels?.password,
                     auth.logo?.url,

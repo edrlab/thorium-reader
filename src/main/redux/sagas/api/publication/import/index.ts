@@ -15,6 +15,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
+import { SCHEME } from "../../../getEventChannel";
 import { openWindowModalAndReturnResult } from "../../../modal/open";
 import { importFromFormService } from "./importFromForm";
 
@@ -232,28 +233,46 @@ const importFromFormHtml = (submitUrl = "") => `
 export function* importFromForm(): SagaGenerator<PublicationView[]> {
 
     const translate = diMainGet("translator").translate;
+    const publicationViewConverter = diMainGet("publication-view-converter");
 
     // launch new window form with html
-    const browserUrl = `data:text/html;charset=utf-8,${importFromFormHtml("importfromform://result")}`;
+    const browserUrl = `data:text/html;charset=utf-8,${importFromFormHtml(`${SCHEME}://authorize`)}`;
 
     try {
         const result = yield* callTyped(openWindowModalAndReturnResult, browserUrl);
         const { request, callback } = result || {};
         notStrictEqual(request, undefined);
 
-        yield* callTyped(importFromFormService, request);
+        const [publicationDocument, alreadyImported] = yield* callTyped(importFromFormService, request);
 
         callback({
             url: undefined,
         });
 
-        yield put(
-            toastActions.openRequest.build(
-                ToastType.Success,
-                translate("message.import.success",
-                    { title: "" }),
-            ),
-        );
+        if (!publicationDocument) {
+            throw new Error("publicationDocument not imported on db");
+        }
+        const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+
+        if (alreadyImported) {
+            yield put(
+                toastActions.openRequest.build(
+                    ToastType.Success,
+                    translate("message.import.alreadyImport",
+                        { title: publicationView.title }),
+                ),
+            );
+
+        } else {
+            yield put(
+                toastActions.openRequest.build(
+                    ToastType.Success,
+                    translate("message.import.success",
+                        { title: publicationView.title }),
+                ),
+            );
+
+        }
 
     } catch (e) {
 

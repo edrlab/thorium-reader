@@ -6,8 +6,11 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { SagaGenerator } from "typed-redux-saga";
+import { importFromLinkService } from "./importFromLink";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromStringService");
@@ -15,7 +18,6 @@ const debug = debug_("readium-desktop:main#saga/api/publication/importFromString
 export function* importFromFormService(
     requestData: any,
 ): SagaGenerator<[publicationDoc: PublicationDocument, alreadyImported: boolean]> {
-
 
     // doing something with data
     debug("@@@@@@@@@@@@22");
@@ -26,5 +28,16 @@ export function* importFromFormService(
 
     debug("@@@@@@@@@@@@22");
 
+    const { data } = requestData;
+
+    const { url, title, des, author, cover, reading } = data;
+
+    if (url) {
+        const link: IOpdsLinkView = {
+            url,
+        };
+
+        return yield* callTyped(importFromLinkService, link);
+    }
     return [undefined, false];
 }

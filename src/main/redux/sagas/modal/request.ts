@@ -37,9 +37,11 @@ export function parseRequestFromCustomProtocol<T = string>(req: Electron.Protoco
     const urlParsed = tryCatchSync(() => new URL(url), filename_);
     ok(urlParsed instanceof URL, `to parse the ${SCHEME}:// request url`);
 
+    debug(urlParsed);
+
     const { protocol: urlProtocol, host } = urlParsed;
-    ok(host !== hostExpected, "host is not equal to " + hostExpected);
-    ok(urlProtocol !== SCHEME, "bad custom protocol " + urlProtocol + " but how can this happen");
+    ok(host === hostExpected, "host is not equal to " + hostExpected);
+    ok(urlProtocol === `${SCHEME}:`, "bad custom protocol " + urlProtocol + " but how can this happen");
 
     if (method === "POST") {
 
