@@ -29,6 +29,7 @@ import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
 import { URL } from "url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
 
@@ -373,7 +374,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
         case "http://librarysimplified.org/authtype/SAML-2.0": {
             browserUrl = `${
                 auth.links?.authenticate?.url
-            }&redirect_uri=${encodeURI("opds://authorize")}`;
+            }&redirect_uri=${encodeURIComponent_RFC3986("opds://authorize")}`;
             break;
         }
 
@@ -381,7 +382,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
         case "http://opds-spec.org/auth/basic":
         case "http://opds-spec.org/auth/oauth/password": {
 
-            const html = encodeURIComponent(
+            const html = encodeURIComponent_RFC3986(
                 htmlLoginTemplate(
                     "opds://authorize",
                     auth.labels?.login,

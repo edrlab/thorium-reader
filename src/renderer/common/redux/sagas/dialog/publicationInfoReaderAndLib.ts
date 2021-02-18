@@ -43,7 +43,7 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
             });
 
             if (!getAction) {
-                debug("timeout 5s");
+                debug("checkReaderAndLibPublication timeout?", id);
                 return;
             }
 

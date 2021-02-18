@@ -10,6 +10,7 @@ import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { raceTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { IOpdsLinkView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/opdsBrowse";
@@ -37,7 +38,7 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
 
     if (path.startsWith("/opds") && path.indexOf("/browse") > 0) {
         const parsedResult = parseOpdsBrowserRoute(path);
-        parsedResult.title = decodeURI(parsedResult.title);
+        parsedResult.title = decodeURIComponent(parsedResult.title);
         debug("request opds browse", parsedResult);
 
         // re-render opds navigator
@@ -54,12 +55,12 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
         const url = parsedResult.url;
         debug("opds browse url=", url);
         const { b: opdsBrowseAction } = yield* raceTyped({
-            a: delay(10000),
+            a: delay(20000),
             b: call(opdsBrowse, url, BROWSE_OPDS_API_REQUEST_ID),
         });
 
         if (!opdsBrowseAction) {
-            debug("opds opdsBrowseAction url=", url, "timeout 5s");
+            debug("browseWatcher timeout?", url);
             return;
         }
 
@@ -90,12 +91,12 @@ function* updateHeaderLinkWatcher(action: apiActions.result.TAction<THttpGetOpds
             if (links.search?.length) {
 
                 const { b: getUrlAction } = yield* raceTyped({
-                    a: delay(10000),
+                    a: delay(20000),
                     b: call(getUrlApi, links.search),
                 });
 
                 if (!getUrlAction) {
-                    debug("opds getUrlAction url=", links.search, "timeout 5s");
+                    debug("updateHeaderLinkWatcher timeout?", links.search);
                     return;
                 }
 
@@ -122,7 +123,7 @@ function* getUrlApi(links: IOpdsLinkView[]) {
 
 function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
 
-    const searchRaw = action.payload;
+    let searchRaw = action.payload;
     debug("opds search raw data received", searchRaw);
 
     let returnUrl: string;
@@ -132,17 +133,28 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
         }
     } catch (_err) {
         try {
+            searchRaw = removeUTF8BOM(searchRaw);
+            // debug(Buffer.from(searchRaw).toString("hex"));
+
             const xmlDom = (new DOMParser()).parseFromString(searchRaw, ContentType.TextXml);
+            // debug(xmlDom);
+            // debug(new XMLSerializer().serializeToString(xmlDom));
             const urlsElem = xmlDom.documentElement.querySelectorAll("Url");
+            // debug(urlsElem);
 
             for (const urlElem of urlsElem.values()) {
                 const type = urlElem.getAttribute("type");
+                debug(type);
 
                 if (type && type.includes(ContentType.AtomXml)) {
                     const searchUrl = urlElem.getAttribute("template");
-                    const url = new URL(searchUrl);
+                    debug(searchUrl);
 
-                    if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
+                    const url = new URL(searchUrl);
+                    debug(url, url.search, url.pathname);
+
+                    if (url.search.includes(SEARCH_TERM) ||
+                        decodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
 
                         // remove search filter not handle yet
                         let searchLink = searchUrl.replace("{atom:author}", "");
@@ -150,7 +162,7 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
                         searchLink = searchLink.replace("{atom:title}", "");
 
                         returnUrl = searchLink;
-
+                        debug(returnUrl);
                     }
                 }
             }

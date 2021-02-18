@@ -8,6 +8,8 @@
 import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
 
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+
 import { IInfo } from "./extract.type";
 
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
@@ -18,7 +20,7 @@ export const extractPDFData =
     async (pdfPath: string)
         : Promise<TExtractPdfData> => {
 
-        pdfPath = "pdfjs-extract://" + encodeURIComponent(pdfPath);
+        pdfPath = "pdfjs-extract://" + encodeURIComponent_RFC3986(pdfPath);
 
         let win: BrowserWindow;
 
