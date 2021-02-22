@@ -137,7 +137,7 @@
     "library": {
         "lcp": {
             "cancel": "取消",
-            "hint": "(提示: {{hint}})",
+            "hint": "(提示: {{- hint}})",
             "password": "密码",
             "sentence": "打开此出版物需要LCP密码: ",
             "submit": "提交",

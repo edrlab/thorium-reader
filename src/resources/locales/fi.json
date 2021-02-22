@@ -137,7 +137,7 @@
     "library": {
         "lcp": {
             "cancel": "Peru",
-            "hint": "(Vihje : {{hint}})",
+            "hint": "(Vihje : {{- hint}})",
             "password": "Salasana",
             "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
             "submit": "Lähetä",
