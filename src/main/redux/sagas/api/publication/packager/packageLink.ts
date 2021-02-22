@@ -283,8 +283,8 @@ export function* packageFromManifestBuffer(
     const resourcesHrefMap = yield* callTyped(
         downloadResources,
         r2Publication,
-        baseUrl,
-        manifestUrlAbsolutized,
+        baseUrl, // title
+        manifestUrlAbsolutized, // url
     );
 
     const r2PublicationUpdated = updateManifest(r2Publication, resourcesHrefMap);

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { notStrictEqual } from "assert";
+import { notStrictEqual, ok } from "assert";
 import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
@@ -199,11 +199,13 @@ const importFromFormHtml = (submitUrl = "") => `
 	            <label for="url">enter URL : </label>
 	            <input type="url" name="url" id="url"/>
             </fieldset>
+            <br>
 	        <fieldset>
                 <legend>From JSON MANIFEST</legend>
 	            <label for="manifestjson">JSON manifest : </label>
 		        <textarea type="text" name="manifestjson" id="manifestjson"></textarea>
             </fieldset>
+            <br>
 	        <fieldset>
                 <legend>From RAW INFORMATION</legend>
                 <fieldset>
@@ -224,6 +226,13 @@ const importFromFormHtml = (submitUrl = "") => `
                     <textarea type="text" name="reading" id="reading"></textarea>
 		        </fieldset>
             </fieldset>
+            <br>
+            <fieldset>
+                <legend>Base URL</legend>
+	            <label for="baseurl">enter URL : </label>
+	            <input type="url" name="baseurl" id="baseurl"/>
+            </fieldset>
+            <br>
 	        <input type="submit" value="Submit">
         </form>
     </body>
@@ -238,10 +247,15 @@ export function* importFromForm(): SagaGenerator<PublicationView[]> {
     // launch new window form with html
     const browserUrl = `data:text/html;charset=utf-8,${importFromFormHtml(`${SCHEME}://authorize`)}`;
 
+    const result = yield* callTyped(openWindowModalAndReturnResult, browserUrl);
+    if (!result) {
+        return undefined;
+    }
+
     try {
-        const result = yield* callTyped(openWindowModalAndReturnResult, browserUrl);
-        const { request, callback } = result || {};
-        notStrictEqual(request, undefined);
+
+        const { request, callback } = result;
+        ok(typeof request === "object", "request not defined");
 
         const [publicationDocument, alreadyImported] = yield* callTyped(importFromFormService, request);
 
@@ -276,12 +290,12 @@ export function* importFromForm(): SagaGenerator<PublicationView[]> {
 
     } catch (e) {
 
-        debug("importFromForm failed", e.toString(), e.trace);
+        debug("importFromForm failed", e.toString());
+        debug(e);
         yield put(
             toastActions.openRequest.build(
                 ToastType.Error,
-                translate("message.import.fail",
-                    { path: "", err: e.toString() }),
+                e.toString(),
             ),
         );
     }
