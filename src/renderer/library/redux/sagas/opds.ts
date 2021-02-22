@@ -20,6 +20,7 @@ import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { call, put, take } from "redux-saga/effects";
 import { delay } from "typed-redux-saga";
+import { parse } from "urijs";
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
@@ -27,6 +28,27 @@ export const SEARCH_TERM = "{searchTerms}";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:redux:saga:opds");
+
+function* resetSearchUrl(rootFeedIdentifier: string) {
+
+    try {
+
+        const previousLocationPathname = yield* selectTyped(
+            (state: ILibraryRootState) => state.history[0]?.pathname);
+        const { rootFeedIdentifier: previousRootFeedIdentifier } =
+            parseOpdsBrowserRoute(previousLocationPathname);
+
+        if (previousRootFeedIdentifier != rootFeedIdentifier) {
+            yield put(opdsActions.search.build({
+                url: undefined,
+                level: undefined,
+            }));
+        }
+    } catch (_e) {
+        // ignore
+    }
+
+}
 
 // https://reacttraining.com/react-router/web/api/withRouter
 // withRouter does not subscribe to location changes like React Redux’s connect does for state changes.
@@ -37,15 +59,17 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
 
     if (path.startsWith("/opds") && path.indexOf("/browse") > 0) {
         const parsedResult = parseOpdsBrowserRoute(path);
-        parsedResult.title = decodeURI(parsedResult.title);
+        const newParsedResultTitle = decodeURI(parsedResult.title);
         debug("request opds browse", parsedResult);
+
+        yield call(resetSearchUrl, parsedResult.rootFeedIdentifier);
 
         // re-render opds navigator
         yield put(
             opdsActions.browseRequest.build(
                 parsedResult.rootFeedIdentifier,
                 parsedResult.level,
-                parsedResult.title,
+                newParsedResultTitle,
                 parsedResult.url,
             ));
 
