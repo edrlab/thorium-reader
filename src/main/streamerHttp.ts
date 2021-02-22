@@ -53,5 +53,7 @@ if (_USE_HTTP_STREAMER) {
     };
     streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(MATHJAX_FILE_PATH, staticOptions));
 
-    setupMathJaxTransformer(`${streamer.serverUrl()}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`);
+    setupMathJaxTransformer(
+        () => `${streamer.serverUrl()}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
+    );
 }

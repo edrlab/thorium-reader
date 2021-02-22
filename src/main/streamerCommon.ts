@@ -81,7 +81,7 @@ debug("readium css path:", rcssPath);
 
 export const READIUMCSS_FILE_PATH = rcssPath;
 
-export function setupMathJaxTransformer(url: string) {
+export function setupMathJaxTransformer(getUrl: () => string) {
 
     const transformerMathJax = (
         _publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
@@ -122,7 +122,7 @@ export function setupMathJaxTransformer(url: string) {
         }
     };
             </script>
-            <script type="text/javascript" async="async" src="${url}"> </script>`;
+            <script type="text/javascript" async="async" src="${getUrl()}"> </script>`;
             return str.replace(/<\/head>/, `${script}</head>`);
         } else {
             return str;
