@@ -131,7 +131,8 @@ if (!_USE_HTTP_STREAMER) {
     Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
     setupMathJaxTransformer(
-        `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`);
+        () => `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
+    );
 }
 
 function getPreFetchResources(publication: R2Publication): Link[] {
