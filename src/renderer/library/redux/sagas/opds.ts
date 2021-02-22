@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { stat } from "fs";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -34,16 +35,23 @@ function* resetSearchUrl(rootFeedIdentifier: string) {
     try {
 
         const previousLocationPathname = yield* selectTyped(
-            (state: ILibraryRootState) => state.history[0]?.pathname);
+            (state: ILibraryRootState) => state.history);
+
         const { rootFeedIdentifier: previousRootFeedIdentifier } =
-            parseOpdsBrowserRoute(previousLocationPathname);
+            parseOpdsBrowserRoute(previousLocationPathname[previousLocationPathname.length - 1]?.pathname) || {};
+
+
+        debug("RESET search url: ", previousRootFeedIdentifier, " != ", rootFeedIdentifier);
 
         if (previousRootFeedIdentifier != rootFeedIdentifier) {
             yield put(opdsActions.search.build({
                 url: undefined,
                 level: undefined,
             }));
+
+            debug("search url reset DONE");
         }
+
     } catch (_e) {
         // ignore
     }
