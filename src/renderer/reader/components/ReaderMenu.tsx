@@ -12,7 +12,6 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
-import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark-24px-grey.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
@@ -384,8 +383,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         tabIndex={0}
                         onClick={(e) => this.handleBookmarkClick(e, bookmark)}
                     >
-                        <SVG svg={BookmarkIcon} title={""} aria-hidden />
-
+                        <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
                         <div className={styles.chapter_marker}>
                             <p className={styles.bookmark_name}>
                                 {bookmark.name ? bookmark.name : `Bookmark ${i}`}
