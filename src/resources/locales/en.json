@@ -105,7 +105,7 @@
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
-        "import": "Do you really want to import these files :",
+        "import": "Do you really want to import these files:",
         "importError": "an error occured, verify your file extension ({{acceptedExtension}})",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
@@ -137,11 +137,11 @@
     "library": {
         "lcp": {
             "cancel": "Cancel",
-            "hint": "(Hint : {{hint}})",
+            "hint": "(Hint: {{- hint}})",
             "password": "Passphrase",
             "sentence": "This publication needs an LCP passphrase to be opened: ",
             "submit": "Submit",
-            "urlHint": "Forgot you're passphrase? find some help here"
+            "urlHint": "Forgot your passphrase? Find some help here"
         }
     },
     "message": {
@@ -154,16 +154,16 @@
             "success": "The import of {{- title}} is finished."
         },
         "open": {
-            "error": "The publication can't be opened : {{- err}}"
+            "error": "The publication can't be opened: {{- err}}"
         }
     },
     "opds": {
         "addForm": {
             "addButton": "Add",
-            "name": "Name :",
+            "name": "Name:",
             "namePlaceholder": "Name",
             "title": "Add an OPDS feed",
-            "url": "Link :",
+            "url": "Link:",
             "urlPlaceholder": "Link"
         },
         "addMenu": "Add OPDS feed",
@@ -183,7 +183,7 @@
         "network": {
             "error": "Unable to access to opds feed",
             "noInternet": "No internet",
-            "noInternetMessage": "Try : checking the network cable, modem, router or wifi",
+            "noInternetMessage": "Try: checking the network cable, modem, router or wifi",
             "reject": "Sorry, there was an unexpected error when trying to process the OPDS feed",
             "timeout": "There was a network timeout, please try again later"
         },
