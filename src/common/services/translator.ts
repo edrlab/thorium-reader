@@ -73,8 +73,6 @@ if ((i18next as unknown as i18n).createInstance) {
 }
 // -----------------------------------------------------------
 
-console.log("enCatalog enCatalog enCatalog enCatalog", enCatalog);
-
 // https://www.i18next.com/overview/configuration-options
 i18nextInstance.init({
     debug: false,

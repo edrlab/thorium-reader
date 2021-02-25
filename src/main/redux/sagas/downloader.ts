@@ -16,7 +16,6 @@ import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
 import { AbortSignal, httpGet } from "readium-desktop/main/network/http";
-import { mapGenerator } from "readium-desktop/utils/generator";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancelled, delay, join, take } from "redux-saga/effects";
@@ -161,16 +160,17 @@ function* downloaderServiceProcessChannelProgressLoop(
 
 function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?: string): SagaGenerator<string[]> {
 
-    const downloadProcessEffects = linkHrefArray.map((linkHref) => {
-        return forkTyped(downloadLinkProcess, linkHref, id);
-    });
-    const downloadProcessTasks = yield* mapGenerator(downloadProcessEffects);
+    const downloadProcessTasks: FixedTask<TReturnDownloadLinkStream>[] = [];
+    for (const linkHref of linkHrefArray) {
+        const f = yield* forkTyped(downloadLinkProcess, linkHref, id);
+        downloadProcessTasks.push(f);
+    }
 
-    const streamPipelineEffects = downloadProcessTasks.map((task) => {
-        return forkTyped(downloaderServiceProcessTaskStreamPipeline, task);
-    });
-
-    const streamPipelineTasks = yield* mapGenerator(streamPipelineEffects);
+    const streamPipelineTasks: FixedTask<void>[] = [];
+    for (const task of downloadProcessTasks) {
+        const f = yield* forkTyped(downloaderServiceProcessTaskStreamPipeline, task);
+        streamPipelineTasks.push(f);
+    }
 
     yield* raceTyped([
         call(function*() {

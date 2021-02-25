@@ -28,9 +28,9 @@ module.exports = {
         }
         const typedNames = {};
         function getCalleeKey(callee) {
-            return callee.type === 'MemberExpression'
+            return callee ? (callee.type === 'MemberExpression'
                 ? `${callee.object.name}.${callee.property.name}`
-                : callee.name;
+                : callee.name) : undefined;
         }
         return {
             ImportDefaultSpecifier(node) {
