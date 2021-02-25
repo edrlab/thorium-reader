@@ -44,8 +44,8 @@ import { i18n } from "i18next"; // named export: just the TypeScript type
 // ... depends on WebPack bundler strategy, matrix: DEV vs. PROD, and MAIN vs. RENDERER
 
 // ##### technique 1:
-// import i18next from "i18next";
-import i18next from "i18next";
+// import i18next from "i18next"; // doesn't work with unit tests
+import * as i18next from "i18next";
 //
 // ##### technique 2:
 // import i18next = require("i18next");
