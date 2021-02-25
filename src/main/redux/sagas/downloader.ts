@@ -13,8 +13,8 @@ import { acceptedExtension } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
 import {
-    callTyped, cancelTyped, forkTyped, putTyped, raceTyped,
-} from "readium-desktop/common/redux/sagas/typed-saga";
+    call as callTyped, cancel as cancelTyped, fork as forkTyped, put as putTyped, race as raceTyped,
+} from "typed-redux-saga/macro";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
@@ -43,6 +43,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
     debug("Downloader ID=", id);
 
     try {
+        debug(putTyped);
         yield* putTyped(downloadActions.progress.build({
             downloadUrl: href || "",
             progress: 0,
@@ -51,6 +52,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
             contentLengthHumanReadable: "",
         }));
 
+        debug(callTyped);
         // redux-saga : use call to execute sagaGenerator tasked (forked)
         const pathArray = yield* callTyped(downloaderService, linkHrefArray, id, href);
         debug("filePath Array to return from downloader", pathArray);
@@ -160,17 +162,19 @@ function* downloaderServiceProcessChannelProgressLoop(
 
 function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?: string): SagaGenerator<string[]> {
 
+    debug("downloaderService 1");
     const downloadProcessEffects = linkHrefArray.map((linkHref) => {
         return forkTyped(downloadLinkProcess, linkHref, id);
     });
+    debug("downloaderService 2", downloadProcessEffects);
     const downloadProcessTasks = yield* mapGenerator(downloadProcessEffects);
-
+    debug("downloaderService 3", downloadProcessTasks);
     const streamPipelineEffects = downloadProcessTasks.map((task) => {
         return forkTyped(downloaderServiceProcessTaskStreamPipeline, task);
     });
-
+    debug("downloaderService 4", streamPipelineEffects);
     const streamPipelineTasks = yield* mapGenerator(streamPipelineEffects);
-
+    debug("downloaderService 5", streamPipelineTasks);
     yield* raceTyped([
         call(function*() {
 
@@ -184,7 +188,7 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
         call(downloaderServiceProcessChannelProgressLoop, downloadProcessTasks, id, href),
         join(streamPipelineTasks),
     ]);
-
+    debug("downloaderService 6");
     const filesPathArray = downloadProcessTasks
         .map((t) => t.isCancelled() ? undefined : t.result<TReturnDownloadLinkStream>())
         .map((downloadData) => downloadData ? downloadData[0] : undefined);

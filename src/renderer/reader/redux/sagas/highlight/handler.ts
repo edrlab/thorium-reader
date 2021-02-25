@@ -8,7 +8,7 @@
 import {
     takeSpawnEvery, takeSpawnEveryChannel,
 } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { select as selectTyped } from "typed-redux-saga/macro";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { all, call, put } from "redux-saga/effects";
 

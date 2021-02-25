@@ -7,7 +7,7 @@
 
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 import { call } from "redux-saga/effects";
 

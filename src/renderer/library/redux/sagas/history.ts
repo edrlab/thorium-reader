@@ -8,7 +8,7 @@
 import { push } from "connected-react-router";
 import { historyActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { select as selectTyped } from "typed-redux-saga/macro";
 import { routerActions, winActions } from "readium-desktop/renderer/library/redux/actions";
 import { all, put } from "redux-saga/effects";
 import { ILibraryRootState } from "../states";

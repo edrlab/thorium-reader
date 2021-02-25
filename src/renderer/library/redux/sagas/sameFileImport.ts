@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { importActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { select as selectTyped } from "typed-redux-saga/macro";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";

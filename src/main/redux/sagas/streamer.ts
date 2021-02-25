@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import * as portfinder from "portfinder";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { diMainGet } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
 import { streamerActions } from "readium-desktop/main/redux/actions";

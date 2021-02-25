@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { BrowserWindow, Event, shell } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { diMainGet, saveLibraryWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";

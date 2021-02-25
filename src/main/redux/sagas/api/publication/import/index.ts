@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
-import { allTyped, callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { all as allTyped, call as callTyped } from "typed-redux-saga/macro";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";

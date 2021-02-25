@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { delayTyped, putTyped, raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
 import {
     closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";

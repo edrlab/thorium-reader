@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import * as path from "path";
 import { isAcceptedExtension } from "readium-desktop/common/extension";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { computeFileHash, extractCrc32OnZip } from "readium-desktop/main/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";

@@ -12,7 +12,7 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { callTyped, forkTyped, takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import {

@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { zipWith } from "ramda";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { eventChannel, SagaIterator } from "redux-saga";
 import { put } from "redux-saga/effects";

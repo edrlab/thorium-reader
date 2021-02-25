@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
-import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { race as raceTyped } from "typed-redux-saga/macro";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { call, delay, put, race, take } from "redux-saga/effects";
 

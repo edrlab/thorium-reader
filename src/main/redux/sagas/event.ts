@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { callTyped, takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlFromMacEventChannel } from "readium-desktop/main/event";
 import { all, put, spawn } from "redux-saga/effects";

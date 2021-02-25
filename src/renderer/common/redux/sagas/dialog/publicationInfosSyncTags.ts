@@ -10,7 +10,7 @@ import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { select as selectTyped } from "typed-redux-saga/macro";
 import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";

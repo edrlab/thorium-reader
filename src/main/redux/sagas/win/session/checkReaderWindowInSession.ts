@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { IWinSessionReaderState } from "readium-desktop/main/redux/states/win/session/reader";

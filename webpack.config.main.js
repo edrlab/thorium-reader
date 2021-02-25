@@ -121,6 +121,7 @@ let config = Object.assign(
         stats: {
             // all: true,
             // warningsFilter: /export .* was not found in/,
+            // warningsFilter: /was not found in 'typed-redux-saga\/macro'/,
         },
         module: {
             rules: [

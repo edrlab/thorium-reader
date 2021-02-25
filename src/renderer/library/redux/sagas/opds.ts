@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { raceTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { IOpdsLinkView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/opdsBrowse";

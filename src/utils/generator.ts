@@ -8,10 +8,16 @@
 export function* mapGenerator<T = unknown, TReturn = any, TNext = unknown>(
     effects: Array<Generator<T, TReturn, TNext>>,
 ) {
+    console.log("mapGenerator 1", effects);
     const tasks: TReturn[] = [];
     for (const e of effects) {
+        console.log("mapGenerator 2", e);
         const res = yield* e;
+        console.log("mapGenerator 3");
         tasks.push(res);
+        console.log("mapGenerator 4");
     }
+
+    console.log("mapGenerator 5", tasks);
     return tasks;
 }

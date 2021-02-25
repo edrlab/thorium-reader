@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { call } from "typed-redux-saga/macro";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 
@@ -19,7 +19,7 @@ export function* getPublication(identifier: string, checkLcpLsd = false) {
 
     let doc: PublicationDocument;
     try {
-        doc = yield* call(() => publicationRepository.get(identifier));
+        doc = yield* callTyped(() => publicationRepository.get(identifier));
     } catch (e) {
         debug(`can't get ${identifier}`, e);
         throw new Error("publication not found"); // TODO translation
@@ -29,7 +29,7 @@ export function* getPublication(identifier: string, checkLcpLsd = false) {
 
     try {
         if (checkLcpLsd && doc.lcp) {
-            doc = yield* call(() => lcpManager.checkPublicationLicenseUpdate(doc));
+            doc = yield* callTyped(() => lcpManager.checkPublicationLicenseUpdate(doc));
         }
     } catch (e) {
         debug("error on checkPublicationLicenseUpdate", e);
