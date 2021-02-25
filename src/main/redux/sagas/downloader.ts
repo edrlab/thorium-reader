@@ -12,18 +12,19 @@ import * as path from "path";
 import { acceptedExtension } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
-import {
-    call as callTyped, cancel as cancelTyped, fork as forkTyped, put as putTyped, race as raceTyped,
-} from "typed-redux-saga/macro";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
 import { AbortSignal, httpGet } from "readium-desktop/main/network/http";
 import { mapGenerator } from "readium-desktop/utils/generator";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancelled, delay, join, take } from "redux-saga/effects";
 import * as stream from "stream";
 import { FixedTask, SagaGenerator } from "typed-redux-saga";
+import {
+    call as callTyped, cancel as cancelTyped, fork as forkTyped, put as putTyped, race as raceTyped,
+} from "typed-redux-saga/macro";
 import * as util from "util";
 
 // Logger

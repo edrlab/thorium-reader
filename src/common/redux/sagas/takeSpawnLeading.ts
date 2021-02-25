@@ -7,6 +7,7 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 import { TakeableChannel } from "redux-saga";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { ActionPattern, call, spawn, take } from "redux-saga/effects";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function

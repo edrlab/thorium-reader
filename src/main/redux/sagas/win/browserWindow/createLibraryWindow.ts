@@ -9,7 +9,6 @@ import * as debug_ from "debug";
 import { BrowserWindow, Event, shell } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
-import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { diMainGet, saveLibraryWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -18,7 +17,9 @@ import {
     _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";
 

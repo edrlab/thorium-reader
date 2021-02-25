@@ -13,6 +13,7 @@ import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { error } from "readium-desktop/main/error";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, cancelled, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 

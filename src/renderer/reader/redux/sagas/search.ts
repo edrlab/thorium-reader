@@ -7,14 +7,16 @@
 
 import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import {
-    all as allTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped, takeLatest as takeLatestTyped,
-} from "typed-redux-saga/macro";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { search } from "readium-desktop/utils/search/search";
 import { ISearchDocument, ISearchResult } from "readium-desktop/utils/search/search.interface";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, join, put, take } from "redux-saga/effects";
+import {
+    all as allTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
+    takeLatest as takeLatestTyped,
+} from "typed-redux-saga/macro";
 
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
 import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";

@@ -9,7 +9,6 @@ import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
 import {
     closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";
@@ -17,7 +16,9 @@ import { error } from "readium-desktop/main/error";
 import { fetchCookieJarPersistence } from "readium-desktop/main/network/fetch";
 import { needToPersistState } from "readium-desktop/main/redux/sagas/persist";
 import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, race, spawn, take } from "redux-saga/effects";
+import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
 
 import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 

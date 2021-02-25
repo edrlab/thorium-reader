@@ -6,12 +6,13 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { select as selectTyped } from "typed-redux-saga/macro";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import { call, debounce  } from "redux-saga/effects";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
+import { call, debounce } from "redux-saga/effects";
+import { select as selectTyped } from "typed-redux-saga/macro";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 

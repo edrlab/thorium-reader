@@ -16,14 +16,15 @@ import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { types } from "util";
 
 import {

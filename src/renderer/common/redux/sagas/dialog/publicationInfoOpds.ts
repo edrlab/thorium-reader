@@ -9,9 +9,10 @@ import * as debug_ from "debug";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
-import { race as raceTyped } from "typed-redux-saga/macro";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, delay, put, race, take } from "redux-saga/effects";
+import { race as raceTyped } from "typed-redux-saga/macro";
 
 import { opdsBrowse } from "../opdsBrowse";
 
