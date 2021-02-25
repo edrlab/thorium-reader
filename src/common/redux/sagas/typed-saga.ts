@@ -15,3 +15,6 @@ export { actionChannel as actionChannelTyped } from "typed-redux-saga";
 export { all as allTyped } from "typed-redux-saga";
 export { join as joinTyped } from "typed-redux-saga";
 export { fork as forkTyped } from "typed-redux-saga";
+export { delay as delayTyped } from "typed-redux-saga";
+export { cancel as cancelTyped } from "typed-redux-saga";
+export { spawn as spawnTyped } from "typed-redux-saga";

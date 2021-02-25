@@ -7,7 +7,7 @@
 
 import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { allTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { search } from "readium-desktop/utils/search/search";
@@ -55,7 +55,7 @@ function* searchRequest(action: readerLocalActionSearch.request.TAction) {
             }),
     );
 
-    const res = yield all(searchMap);
+    const res = yield* allTyped(searchMap);
 
     yield put(readerLocalActionSearch.found.build(flatten(res)));
 }

@@ -13,7 +13,7 @@ import { acceptedExtension } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
 import {
-    callTyped, forkTyped, putTyped, raceTyped,
+    callTyped, cancelTyped, forkTyped, putTyped, raceTyped,
 } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
@@ -23,7 +23,7 @@ import { mapGenerator } from "readium-desktop/utils/generator";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
 import { all, call, cancelled, delay, join, take } from "redux-saga/effects";
 import * as stream from "stream";
-import { cancel, FixedTask, SagaGenerator } from "typed-redux-saga";
+import { FixedTask, SagaGenerator } from "typed-redux-saga";
 import * as util from "util";
 
 // Logger
@@ -177,8 +177,8 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
             yield take(downloadActions.abort.ID);
 
             yield all([
-                cancel(downloadProcessTasks),
-                cancel(streamPipelineTasks),
+                cancelTyped(downloadProcessTasks),
+                cancelTyped(streamPipelineTasks),
             ]);
         }),
         call(downloaderServiceProcessChannelProgressLoop, downloadProcessTasks, id, href),
