@@ -43,7 +43,6 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
     debug("Downloader ID=", id);
 
     try {
-        debug(putTyped);
         yield* putTyped(downloadActions.progress.build({
             downloadUrl: href || "",
             progress: 0,
@@ -52,7 +51,6 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
             contentLengthHumanReadable: "",
         }));
 
-        debug(callTyped);
         // redux-saga : use call to execute sagaGenerator tasked (forked)
         const pathArray = yield* callTyped(downloaderService, linkHrefArray, id, href);
         debug("filePath Array to return from downloader", pathArray);
@@ -162,19 +160,17 @@ function* downloaderServiceProcessChannelProgressLoop(
 
 function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?: string): SagaGenerator<string[]> {
 
-    debug("downloaderService 1");
     const downloadProcessEffects = linkHrefArray.map((linkHref) => {
         return forkTyped(downloadLinkProcess, linkHref, id);
     });
-    debug("downloaderService 2", downloadProcessEffects);
     const downloadProcessTasks = yield* mapGenerator(downloadProcessEffects);
-    debug("downloaderService 3", downloadProcessTasks);
+
     const streamPipelineEffects = downloadProcessTasks.map((task) => {
         return forkTyped(downloaderServiceProcessTaskStreamPipeline, task);
     });
-    debug("downloaderService 4", streamPipelineEffects);
+
     const streamPipelineTasks = yield* mapGenerator(streamPipelineEffects);
-    debug("downloaderService 5", streamPipelineTasks);
+
     yield* raceTyped([
         call(function*() {
 
@@ -188,7 +184,7 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
         call(downloaderServiceProcessChannelProgressLoop, downloadProcessTasks, id, href),
         join(streamPipelineTasks),
     ]);
-    debug("downloaderService 6");
+
     const filesPathArray = downloadProcessTasks
         .map((t) => t.isCancelled() ? undefined : t.result<TReturnDownloadLinkStream>())
         .map((downloadData) => downloadData ? downloadData[0] : undefined);
