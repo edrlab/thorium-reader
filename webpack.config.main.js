@@ -122,13 +122,33 @@ let config = Object.assign(
         module: {
             rules: [
                 {
-                    test: /\.tsx?$/,
+                    test: /\.tsx$/,
                     loader: useLegacyTypeScriptLoader
                         ? "awesome-typescript-loader"
                         : "ts-loader",
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
                     },
+                },
+                {
+                    test: /\.ts$/,
+                    loaders: [
+                        // {
+                        //     loader: "babel-loader",
+                        //     options: {
+                        //         presets: [],
+                        //         plugins: ["macros"],
+                        //     },
+                        // },
+                        {
+                            loader: useLegacyTypeScriptLoader
+                                ? "awesome-typescript-loader"
+                                : "ts-loader",
+                            options: {
+                                transpileOnly: true, // checkTypeScriptSkip
+                            },
+                        },
+                    ],
                 },
                 { test: /\.node$/, loaders: ["node-loader"] },
             ],

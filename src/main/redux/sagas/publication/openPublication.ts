@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { lcpActions } from "readium-desktop/common/redux/actions/";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
@@ -145,7 +146,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         yield put(streamerActions.startRequest.build());
 
         // Wait for streamer
-        const streamerStartAction = yield take([
+        const streamerStartAction: Action<any> = yield take([
             streamerActions.startSuccess.ID,
             streamerActions.startError.ID,
         ]);

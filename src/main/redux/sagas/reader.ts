@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { screen } from "electron";
 import * as ramda from "ramda";
 import { ReaderMode } from "readium-desktop/common/models/reader";
+import { Action } from "readium-desktop/common/models/redux";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
@@ -288,7 +289,7 @@ function* readerCloseRequest(identifier?: string) {
         }
     }
 
-    const streamerAction = yield take([
+    const streamerAction: Action<any> = yield take([
         streamerActions.publicationCloseSuccess.ID,
         streamerActions.publicationCloseError.ID,
     ]);

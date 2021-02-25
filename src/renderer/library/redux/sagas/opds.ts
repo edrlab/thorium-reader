@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { delayTyped, raceTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { raceTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/opdsBrowse";
@@ -18,7 +18,7 @@ import { opdsActions, routerActions } from "readium-desktop/renderer/library/red
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { ContentType } from "readium-desktop/utils/contentType";
-import { call, put, take } from "redux-saga/effects";
+import { call, delay, put, take } from "redux-saga/effects";
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
@@ -89,7 +89,7 @@ function* updateHeaderLinkWatcher(action: apiActions.result.TAction<THttpGetOpds
             if (links.search?.length) {
 
                 const { b: getUrlAction } = yield* raceTyped({
-                    a: delayTyped(10000),
+                    a: delay(10000),
                     b: call(getUrlApi, links.search),
                 });
 

@@ -7,14 +7,14 @@
 
 import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { allTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import {
+    allTyped, forkTyped, selectTyped, takeEveryTyped, takeLatestTyped,
+} from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { search } from "readium-desktop/utils/search/search";
 import { ISearchDocument, ISearchResult } from "readium-desktop/utils/search/search.interface";
-import {
-    all, call, cancel, fork, join, put, take, takeEvery, takeLatest,
-} from "redux-saga/effects";
+import { all, call, cancel, join, put, take } from "redux-saga/effects";
 
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
 import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";
@@ -204,15 +204,15 @@ function* requestPublicationData() {
         return ret;
     }));
 
-    const result = yield all(request);
+    const result = yield* allTyped(request);
     yield put(readerLocalActionSearch.setCache.build(...result));
 }
 
 function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 
-    const taskRequest = yield fork(requestPublicationData);
+    const taskRequest = yield* forkTyped(requestPublicationData);
 
-    const taskSearch = yield takeLatest(readerLocalActionSearch.request.build,
+    const taskSearch = yield* takeLatestTyped(readerLocalActionSearch.request.build,
         function*(action: readerLocalActionSearch.request.TAction) {
             yield join(taskRequest);
 
@@ -220,9 +220,9 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
         },
     );
 
-    const taskFound = yield takeEvery(readerLocalActionSearch.found.build, searchFound);
+    const taskFound = yield* takeEveryTyped(readerLocalActionSearch.found.build, searchFound);
 
-    const taskFocus = yield takeEvery(readerLocalActionSearch.focus.build, searchFocus);
+    const taskFocus = yield* takeEveryTyped(readerLocalActionSearch.focus.build, searchFocus);
 
     // wait the search cancellation
     yield take(readerLocalActionSearch.cancel.ID);
