@@ -14,7 +14,9 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
-import classNames = require("classnames");
+import classNames from "classnames";
+// import * as classNames from "classnames";
+// import classNames = require("classnames");
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 

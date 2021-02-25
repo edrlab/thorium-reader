@@ -289,6 +289,7 @@
     "yazl": "^2.5.1"
   },
   "devDependencies": {
+    "@babel/generator": "^7.13.0",
     "@kogai/typed_i18n": "^0.6.0",
     "@octokit/rest": "^18.2.1",
     "@types/classnames": "^2.2.11",

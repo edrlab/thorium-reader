@@ -92,6 +92,8 @@ console.log(JSON.stringify(externals, null, "  "));
 let config = Object.assign(
     {},
     {
+        bail: true,
+
         entry: "./src/main.ts",
         name: "main",
         mode: nodeEnv,
@@ -117,6 +119,7 @@ let config = Object.assign(
             alias: aliases,
         },
         stats: {
+            // all: true,
             // warningsFilter: /export .* was not found in/,
         },
         module: {
@@ -132,14 +135,14 @@ let config = Object.assign(
                 },
                 {
                     test: /\.ts$/,
-                    loaders: [
-                        // {
-                        //     loader: "babel-loader",
-                        //     options: {
-                        //         presets: [],
-                        //         plugins: ["macros"],
-                        //     },
-                        // },
+                    use: [
+                        {
+                            loader: "babel-loader",
+                            options: {
+                                presets: [],
+                                plugins: ["macros"],
+                            },
+                        },
                         {
                             loader: useLegacyTypeScriptLoader
                                 ? "awesome-typescript-loader"

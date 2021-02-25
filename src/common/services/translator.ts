@@ -7,19 +7,19 @@
 
 import { injectable } from "inversify";
 
-import * as deCatalog from "readium-desktop/resources/locales/de.json";
-import * as enCatalog from "readium-desktop/resources/locales/en.json";
-import * as esCatalog from "readium-desktop/resources/locales/es.json";
-import * as fiCatalog from "readium-desktop/resources/locales/fi.json";
-import * as frCatalog from "readium-desktop/resources/locales/fr.json";
-import * as itCatalog from "readium-desktop/resources/locales/it.json";
-import * as jaCatalog from "readium-desktop/resources/locales/ja.json";
-import * as ltCatalog from "readium-desktop/resources/locales/lt.json";
-import * as nlCatalog from "readium-desktop/resources/locales/nl.json";
-import * as ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
-import * as ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
-import * as ruCatalog from "readium-desktop/resources/locales/ru.json";
-import * as zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
+import deCatalog from "readium-desktop/resources/locales/de.json";
+import enCatalog from "readium-desktop/resources/locales/en.json";
+import esCatalog from "readium-desktop/resources/locales/es.json";
+import fiCatalog from "readium-desktop/resources/locales/fi.json";
+import frCatalog from "readium-desktop/resources/locales/fr.json";
+import itCatalog from "readium-desktop/resources/locales/it.json";
+import jaCatalog from "readium-desktop/resources/locales/ja.json";
+import ltCatalog from "readium-desktop/resources/locales/lt.json";
+import nlCatalog from "readium-desktop/resources/locales/nl.json";
+import ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
+import ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
+import ruCatalog from "readium-desktop/resources/locales/ru.json";
+import zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
@@ -44,14 +44,15 @@ import { i18n } from "i18next"; // named export: just the TypeScript type
 // ... depends on WebPack bundler strategy, matrix: DEV vs. PROD, and MAIN vs. RENDERER
 
 // ##### technique 1:
-// import * as i18next from "i18next";
+// import i18next from "i18next";
+import i18next from "i18next";
 //
 // ##### technique 2:
 // import i18next = require("i18next");
 //
 // ##### technique 3:
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const i18next: i18n = require("i18next");
+// const i18next: i18n = require("i18next");
 
 // ##### technique 4 (force CJS):
 // const i18next: i18n = require("i18next/dist/cjs/i18next");
@@ -61,16 +62,18 @@ const i18next: i18n = require("i18next");
 
 // const i18nextInstance = i18next.createInstance(); // it should be as simple as that :(
 let i18nextInstance: i18n | undefined;
-if (i18next.createInstance) {
-    i18nextInstance = i18next.createInstance();
+if ((i18next as unknown as i18n).createInstance) {
+    i18nextInstance = (i18next as unknown as i18n).createInstance();
 
 } else if (((i18next as any).default as i18n).createInstance) {
     i18nextInstance = ((i18next as any).default as i18n).createInstance();
 
 } else { // Fallback for TS compiler only (not an actual runtime occurrence)
-    i18nextInstance = i18next;
+    i18nextInstance = i18next as unknown as i18n;
 }
 // -----------------------------------------------------------
+
+console.log("enCatalog enCatalog enCatalog enCatalog", enCatalog);
 
 // https://www.i18next.com/overview/configuration-options
 i18nextInstance.init({

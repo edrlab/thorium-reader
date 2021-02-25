@@ -38,7 +38,9 @@ import optionsValues, { IReaderOptionsProps, TdivinaReadingMode } from "./option
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
-import classNames = require("classnames");
+import classNames from "classnames";
+// import * as classNames from "classnames";
+// import classNames = require("classnames");
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {

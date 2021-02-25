@@ -44,7 +44,8 @@
     "disableSizeLimit": false,
     "removeComments": true,
     "skipLibCheck": false,
-    "module": "commonjs",
+    "module": "ES2020",
+    "moduleResolution": "Node",
     "lib": [
       "es2017",
       "es6",
