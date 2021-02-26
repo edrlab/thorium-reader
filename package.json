@@ -261,7 +261,7 @@
     "r2-navigator-js": "^1.6.0",
     "r2-opds-js": "^1.0.33",
     "r2-shared-js": "^1.0.49",
-    "r2-streamer-js": "^1.0.32",
+    "r2-streamer-js": "^1.0.33",
     "r2-utils-js": "^1.0.24",
     "ramda": "^0.27.1",
     "react": "^16.14.0",
