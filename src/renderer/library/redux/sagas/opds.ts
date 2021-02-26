@@ -28,34 +28,6 @@ export const SEARCH_TERM = "{searchTerms}";
 // Logger
 const debug = debug_("readium-desktop:renderer:redux:saga:opds");
 
-function* resetSearchUrl(rootFeedIdentifier: string) {
-
-    try {
-
-        const previousLocationPathname = yield* selectTyped(
-            (state: ILibraryRootState) => state.history);
-
-        const { rootFeedIdentifier: previousRootFeedIdentifier } =
-            parseOpdsBrowserRoute(previousLocationPathname[previousLocationPathname.length - 1]?.pathname) || {};
-
-
-        debug("RESET search url: ", previousRootFeedIdentifier, " != ", rootFeedIdentifier);
-
-        if (previousRootFeedIdentifier != rootFeedIdentifier) {
-            yield put(opdsActions.search.build({
-                url: undefined,
-                level: undefined,
-            }));
-
-            debug("search url reset DONE");
-        }
-
-    } catch (_e) {
-        // ignore
-    }
-
-}
-
 // https://reacttraining.com/react-router/web/api/withRouter
 // withRouter does not subscribe to location changes like React Redux’s connect does for state changes.
 // Instead, re-renders after location changes propagate out from the <Router> component.
@@ -67,8 +39,11 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
         const parsedResult = parseOpdsBrowserRoute(path);
         const newParsedResultTitle = decodeURI(parsedResult.title);
         debug("request opds browse", parsedResult);
-
-        yield call(resetSearchUrl, parsedResult.rootFeedIdentifier);
+        
+        yield put(opdsActions.search.build({
+            url: undefined,
+            level: undefined,
+        }));
 
         // re-render opds navigator
         yield put(
