@@ -7,12 +7,13 @@
 
 import * as debug_ from "debug";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { IWinSessionReaderState } from "readium-desktop/main/redux/states/win/session/reader";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { fork, put } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { streamerOpenPublicationAndReturnManifestUrl } from "../../publication/openPublication";
 

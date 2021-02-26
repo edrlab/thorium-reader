@@ -8,12 +8,13 @@
 import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
-import { allTyped, callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
+import { all as allTyped, call as callTyped } from "typed-redux-saga/macro";
 
 import { importFromFsService } from "./importFromFs";
 import { importFromLinkService } from "./importFromLink";

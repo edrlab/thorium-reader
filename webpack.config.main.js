@@ -92,6 +92,8 @@ console.log(JSON.stringify(externals, null, "  "));
 let config = Object.assign(
     {},
     {
+        bail: true,
+
         entry: "./src/main.ts",
         name: "main",
         mode: nodeEnv,
@@ -117,18 +119,40 @@ let config = Object.assign(
             alias: aliases,
         },
         stats: {
+            // all: true,
             // warningsFilter: /export .* was not found in/,
+            // warningsFilter: /was not found in 'typed-redux-saga\/macro'/,
         },
         module: {
             rules: [
                 {
-                    test: /\.tsx?$/,
+                    test: /\.tsx$/,
                     loader: useLegacyTypeScriptLoader
                         ? "awesome-typescript-loader"
                         : "ts-loader",
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
                     },
+                },
+                {
+                    test: /\.ts$/,
+                    use: [
+                        {
+                            loader: "babel-loader",
+                            options: {
+                                presets: [],
+                                plugins: ["macros"],
+                            },
+                        },
+                        {
+                            loader: useLegacyTypeScriptLoader
+                                ? "awesome-typescript-loader"
+                                : "ts-loader",
+                            options: {
+                                transpileOnly: true, // checkTypeScriptSkip
+                            },
+                        },
+                    ],
                 },
                 { test: /\.node$/, loaders: ["node-loader"] },
             ],

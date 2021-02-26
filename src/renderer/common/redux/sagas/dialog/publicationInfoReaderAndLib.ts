@@ -10,10 +10,11 @@ import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, delay, put, take } from "redux-saga/effects";
+import { race as raceTyped } from "typed-redux-saga/macro";
 
 import { apiSaga } from "../api";
 

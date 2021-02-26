@@ -9,7 +9,7 @@ import { ok } from "assert";
 import * as crypto from "crypto";
 import * as debug_ from "debug";
 import * as path from "path";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
     getUniqueResourcesFromR2Publication, w3cPublicationManifestToReadiumPublicationManifest,

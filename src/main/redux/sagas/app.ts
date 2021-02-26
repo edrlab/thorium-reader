@@ -9,7 +9,6 @@ import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import {
     closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";
@@ -17,8 +16,9 @@ import { error } from "readium-desktop/main/error";
 import { fetchCookieJarPersistence } from "readium-desktop/main/network/fetch";
 import { needToPersistState } from "readium-desktop/main/redux/sagas/persist";
 import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, race, spawn, take } from "redux-saga/effects";
-import { delay, put } from "typed-redux-saga";
+import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
 
 import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 
@@ -141,7 +141,7 @@ function* closeProcess() {
                 }),
                 call(function*() {
 
-                    yield put(streamerActions.stopRequest.build());
+                    yield* putTyped(streamerActions.stopRequest.build());
 
                     const [success, failed] = yield race([
                         take(streamerActions.stopSuccess.ID),
@@ -154,7 +154,7 @@ function* closeProcess() {
                     }
                 }),
             ]),
-            delay(30000), // 30 seconds timeout to force quit
+            delayTyped(30000), // 30 seconds timeout to force quit
         ]);
 
         if (!done) {

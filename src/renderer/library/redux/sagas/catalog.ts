@@ -7,6 +7,7 @@
 
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce, spawn } from "redux-saga/effects";
 
 export const CATALOG_GET_API_ID_CHANNEL = "CATALOG_API_ID";

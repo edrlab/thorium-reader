@@ -9,11 +9,12 @@ import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { importActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
+import { select as selectTyped } from "typed-redux-saga/macro";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 

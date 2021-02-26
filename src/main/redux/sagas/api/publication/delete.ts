@@ -8,6 +8,7 @@
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { publicationActions } from "readium-desktop/main/redux/actions";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, delay, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 

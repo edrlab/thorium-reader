@@ -7,14 +7,16 @@
 
 import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { search } from "readium-desktop/utils/search/search";
 import { ISearchDocument, ISearchResult } from "readium-desktop/utils/search/search.interface";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
+import { all, call, cancel, join, put, take } from "redux-saga/effects";
 import {
-    all, call, cancel, fork, join, put, take, takeEvery, takeLatest,
-} from "redux-saga/effects";
+    all as allTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
+    takeLatest as takeLatestTyped,
+} from "typed-redux-saga/macro";
 
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
 import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";
@@ -55,7 +57,7 @@ function* searchRequest(action: readerLocalActionSearch.request.TAction) {
             }),
     );
 
-    const res = yield all(searchMap);
+    const res = yield* allTyped(searchMap);
 
     yield put(readerLocalActionSearch.found.build(flatten(res)));
 }
@@ -204,15 +206,15 @@ function* requestPublicationData() {
         return ret;
     }));
 
-    const result = yield all(request);
+    const result = yield* allTyped(request);
     yield put(readerLocalActionSearch.setCache.build(...result));
 }
 
 function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 
-    const taskRequest = yield fork(requestPublicationData);
+    const taskRequest = yield* forkTyped(requestPublicationData);
 
-    const taskSearch = yield takeLatest(readerLocalActionSearch.request.build,
+    const taskSearch = yield* takeLatestTyped(readerLocalActionSearch.request.build,
         function*(action: readerLocalActionSearch.request.TAction) {
             yield join(taskRequest);
 
@@ -220,9 +222,9 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
         },
     );
 
-    const taskFound = yield takeEvery(readerLocalActionSearch.found.build, searchFound);
+    const taskFound = yield* takeEveryTyped(readerLocalActionSearch.found.build, searchFound);
 
-    const taskFocus = yield takeEvery(readerLocalActionSearch.focus.build, searchFocus);
+    const taskFocus = yield* takeEveryTyped(readerLocalActionSearch.focus.build, searchFocus);
 
     // wait the search cancellation
     yield take(readerLocalActionSearch.cancel.ID);

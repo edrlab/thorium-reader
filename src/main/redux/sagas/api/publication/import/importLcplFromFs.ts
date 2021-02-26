@@ -12,12 +12,13 @@ import * as path from "path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { extractCrc32OnZip } from "readium-desktop/main/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
