@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { app, dialog } from "electron";
 import { keyboardActions } from "readium-desktop/common/redux/actions";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
 
 import { appActions, winActions } from "../actions";

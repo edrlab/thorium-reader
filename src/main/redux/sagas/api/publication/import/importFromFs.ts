@@ -8,14 +8,15 @@
 import * as debug_ from "debug";
 import * as path from "path";
 import { isAcceptedExtension } from "readium-desktop/common/extension";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { computeFileHash, extractCrc32OnZip } from "readium-desktop/main/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { pdfPackager } from "readium-desktop/main/pdf/packager";
 import { lpfToAudiobookConverter } from "readium-desktop/main/w3c/lpf/toAudiobook";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 import { importLcplFromFS } from "./importLcplFromFs";
 import { importPublicationFromFS } from "./importPublicationFromFs";

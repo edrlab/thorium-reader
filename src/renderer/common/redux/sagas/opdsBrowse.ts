@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { take } from "redux-saga/effects";
 
 import { apiSaga } from "./api";

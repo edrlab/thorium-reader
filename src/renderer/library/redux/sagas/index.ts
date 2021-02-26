@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
 
 import * as publicationInfoOpds from "../../../common/redux/sagas/dialog/publicationInfoOpds";

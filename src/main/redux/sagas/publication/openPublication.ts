@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { lcpActions } from "readium-desktop/common/redux/actions/";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { streamerActions } from "readium-desktop/main/redux/actions";
@@ -18,7 +18,9 @@ import {
     THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "readium-desktop/main/streamerNoHttp";
 import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, take } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -145,7 +147,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         yield put(streamerActions.startRequest.build());
 
         // Wait for streamer
-        const streamerStartAction = yield take([
+        const streamerStartAction: Action<any> = yield take([
             streamerActions.startSuccess.ID,
             streamerActions.startError.ID,
         ]);

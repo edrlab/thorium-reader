@@ -12,7 +12,6 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { callTyped, forkTyped, takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import {
@@ -25,7 +24,9 @@ import {
 } from "readium-desktop/main/network/http";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
+import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { URL } from "url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
