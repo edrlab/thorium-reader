@@ -39,7 +39,7 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
         const parsedResult = parseOpdsBrowserRoute(path);
         const newParsedResultTitle = decodeURI(parsedResult.title);
         debug("request opds browse", parsedResult);
-        
+
         yield put(opdsActions.search.build({
             url: undefined,
             level: undefined,
