@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { deepEqual, deepStrictEqual, ok } from "assert";
 import * as debug_ from "debug";
 import { DOMWindow, JSDOM } from "jsdom";
-
-import { deepEqual, deepStrictEqual, ok } from "assert";
+import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 
 // Logger
 const debug = debug_("readium-desktop:main#w3c/audiobook/entry");
@@ -28,7 +28,7 @@ export function findPublicationUrlInHtmlEntry(window: DOMWindow): string {
 
     const el: HTMLLinkElement = window.document.querySelector("link[rel=\"publication\"]");
     if (el) {
-        const url = el.hasAttribute("href") ? decodeURIComponent(el.href) : undefined;
+        const url = el.hasAttribute("href") ? tryDecodeURIComponent(el.href) : undefined;
         return url;
 
     }

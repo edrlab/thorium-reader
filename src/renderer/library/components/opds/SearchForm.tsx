@@ -26,6 +26,8 @@ import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/render
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
@@ -116,20 +118,22 @@ class SearchForm extends React.Component<IProps, undefined> {
     }
     private submitSearch = (e: TFormEvent) => {
         e.preventDefault();
-        if (!this.inputRef?.current) {
+        if (!this.inputRef?.current || !this.props.search?.url) {
             return;
         }
         const searchWords = this.inputRef.current.value;
-        const url = this.props.search?.url.replace(SEARCH_TERM, encodeURI(searchWords));
-        const level = this.props.search?.level
+        const url = this.props.search.url.replace(SEARCH_TERM, encodeURIComponent_RFC3986(searchWords));
+        debug("SubmitSearch 1", searchWords, url, this.props.search.url);
+
+        if (searchWords && url) {
+            debug("SubmitSearch 2", searchWords, url);
+
+            const level = this.props.search.level
             || parseInt(
                 matchPath<IOpdsBrowse>(
                     this.props.location.pathname, routes["/opds/browse"],
                 ).params.level,
                 10);
-
-        if (searchWords && url) {
-            debug("SubmitSearch", searchWords, url);
 
             this.props.historyPush({
                 ...this.props.location,

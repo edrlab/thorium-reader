@@ -34,11 +34,12 @@ function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
         debug("updateOpdsInfoWithEntryLink", link);
         if (link?.url) {
             const { b: action } = yield* raceTyped({
-                a: delay(5000),
+                a: delay(20000),
                 b: call(opdsBrowse, link.url, REQUEST_ID),
             });
 
             if (!action) {
+                debug("updateOpdsInfoWithEntryLink timeout?", link.url);
                 continue;
             }
 
