@@ -38,15 +38,20 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
 
     if (path.startsWith("/opds") && path.indexOf("/browse") > 0) {
         const parsedResult = parseOpdsBrowserRoute(path);
-        parsedResult.title = decodeURIComponent(parsedResult.title);
+        const newParsedResultTitle = decodeURIComponent(parsedResult.title);
         debug("request opds browse", parsedResult);
+
+        yield put(opdsActions.search.build({
+            url: undefined,
+            level: undefined,
+        }));
 
         // re-render opds navigator
         yield put(
             opdsActions.browseRequest.build(
                 parsedResult.rootFeedIdentifier,
                 parsedResult.level,
-                parsedResult.title,
+                newParsedResultTitle,
                 parsedResult.url,
             ));
 

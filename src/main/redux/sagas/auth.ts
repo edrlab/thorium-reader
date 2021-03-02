@@ -142,6 +142,14 @@ const opdsAuthFlow =
                     const { request: opdsCustomProtocolRequestParsed, callback } = task.result();
                     if (opdsCustomProtocolRequestParsed) {
 
+                        if (!opdsCustomProtocolRequestParsed.data ||
+                            !Object.keys(opdsCustomProtocolRequestParsed.data).length) {
+
+                            debug("authentication window was cancelled");
+
+                            return;
+                        }
+
                         const [, err] = yield* callTyped(opdsSetAuthCredentials,
                             opdsCustomProtocolRequestParsed,
                             authCredentials,
@@ -792,7 +800,7 @@ const htmlLoginTemplate = (
             outline-offset: 0;
         }
 
-        input[type=submit] {
+        input[type=submit], input[type=button] {
             padding: 0 18px;
             height: 29px;
             font-size: 12px;
@@ -816,7 +824,7 @@ const htmlLoginTemplate = (
             padding-left: 1em;
         }
 
-        input[type=submit]:active {
+        input[type=submit]:active, input[type=button]:active {
             background: #cde5ef;
             border-color: #9eb9c2 #b3c0c8 #b4ccce;
             -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
@@ -837,7 +845,7 @@ const htmlLoginTemplate = (
         <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
         <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
         <p class="submit">
-        <input type="submit" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}">
+        <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
         <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
         </p>
         </form>
