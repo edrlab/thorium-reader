@@ -8,6 +8,7 @@
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
+import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import {
     IOpdsLinkView, IOpdsResultView, THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
@@ -145,7 +146,7 @@ export class OpdsService {
                 debug("parseOpdsSearchUrl", atomLink.url, url.search, url.pathname);
 
                 if (url.search.includes(SEARCH_TERM) ||
-                    decodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
+                    tryDecodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
 
                     debug("parseOpdsSearchUrl (atomLink): ", atomLink.url);
                     return (atomLink.url);

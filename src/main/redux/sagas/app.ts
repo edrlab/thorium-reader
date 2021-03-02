@@ -91,7 +91,7 @@ export function* init() {
 
         debug("register file protocol pdfjs-extract");
         debug("request", request);
-        const p = request.url.split("pdfjs-extract://")[1];
+        const p = decodeURIComponent(request.url.split("pdfjs-extract://")[1]);
         debug(p);
 
         callback(p);

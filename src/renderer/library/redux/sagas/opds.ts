@@ -10,6 +10,7 @@ import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
+import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { IOpdsLinkView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/opdsBrowse";
@@ -159,7 +160,7 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
                     debug(url, url.search, url.pathname);
 
                     if (url.search.includes(SEARCH_TERM) ||
-                        decodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
+                        tryDecodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
 
                         // remove search filter not handle yet
                         let searchLink = searchUrl.replace("{atom:author}", "");
