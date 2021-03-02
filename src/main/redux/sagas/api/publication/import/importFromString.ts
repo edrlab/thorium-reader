@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { SagaGenerator } from "typed-redux-saga";
 

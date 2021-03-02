@@ -137,7 +137,7 @@
     "library": {
         "lcp": {
             "cancel": "Annulla",
-            "hint": "(Suggerimento : {{hint}})",
+            "hint": "(Suggerimento : {{- hint}})",
             "password": "Passphrase",
             "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta: ",
             "submit": "Invia",

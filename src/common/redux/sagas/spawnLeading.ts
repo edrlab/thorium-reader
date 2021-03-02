@@ -5,7 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { call, ForkEffect, spawn } from "redux-saga/effects";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
+import { call, spawn } from "redux-saga/effects";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => { };
@@ -13,7 +14,7 @@ const noop = () => { };
 export function spawnLeading(
     worker: () => any,
     cbErr: (e: any) => void = noop,
-): ForkEffect<never> {
+) {
     return spawn(function*() {
         while (true) {
             try {

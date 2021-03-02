@@ -1,7 +1,7 @@
 // const path = require('path');
 
 const { getOptions } = require("loader-utils");
-const { validate } = require("schema-utils");
+const validate = require("schema-utils");
 
 const schema = {
     type: "object",
