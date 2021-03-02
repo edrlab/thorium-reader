@@ -39,8 +39,16 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
 
     if (path.startsWith("/opds") && path.indexOf("/browse") > 0) {
         const parsedResult = parseOpdsBrowserRoute(path);
-        const newParsedResultTitle = decodeURIComponent(parsedResult.title);
-        debug("request opds browse", parsedResult);
+        debug("request opds browse", path, parsedResult);
+        // parsedResult.title can for example be a search terms "この世界の謎 %2F %20 % ?abc=def&zz=yyé"
+        // which is escaped by encodeURIComponent() to
+        // %E3%81%93%E3%81%AE%E4%B8%96%E7%95%8C%E3%81%AE%E8%AC%8E%20%252F%20%2520%20%25%20%3Fabc%3Ddef%26zz%3Dyy%C3%A9
+        // (and passed to search URL as query param or path segment)
+        // TODO: the decodeURIComponent() is not necessary for search, but is it for other cases?
+        // (this is why tryDecodeURIComponent() is used instead,
+        // otherwise crash if string contains percent char not used for escaping)
+        const newParsedResultTitle = tryDecodeURIComponent(parsedResult.title);
+        debug(newParsedResultTitle);
 
         yield put(opdsActions.search.build({
             url: undefined,
@@ -163,9 +171,10 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
                         tryDecodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
 
                         // remove search filter not handle yet
-                        let searchLink = searchUrl.replace("{atom:author}", "");
-                        searchLink = searchLink.replace("{atom:contributor}", "");
-                        searchLink = searchLink.replace("{atom:title}", "");
+                        const searchLink = searchUrl
+                            .replace("{atom:author}", "")
+                            .replace("{atom:contributor}", "")
+                            .replace("{atom:title}", "");
 
                         returnUrl = searchLink;
                         debug(returnUrl);

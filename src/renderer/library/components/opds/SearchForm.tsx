@@ -123,17 +123,17 @@ class SearchForm extends React.Component<IProps, undefined> {
         }
         const searchWords = this.inputRef.current.value;
         const url = this.props.search.url.replace(SEARCH_TERM, encodeURIComponent_RFC3986(searchWords));
-        debug("SubmitSearch", url, this.props.search.url);
+        debug("SubmitSearch 1", searchWords, url, this.props.search.url);
 
-        const level = this.props.search.level
+        if (searchWords && url) {
+            debug("SubmitSearch 2", searchWords, url);
+
+            const level = this.props.search.level
             || parseInt(
                 matchPath<IOpdsBrowse>(
                     this.props.location.pathname, routes["/opds/browse"],
                 ).params.level,
                 10);
-
-        if (searchWords && url) {
-            debug("SubmitSearch", searchWords, url);
 
             this.props.historyPush({
                 ...this.props.location,

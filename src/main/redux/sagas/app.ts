@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import {
     closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";
@@ -91,7 +92,9 @@ export function* init() {
 
         debug("register file protocol pdfjs-extract");
         debug("request", request);
-        const p = decodeURIComponent(request.url.split("pdfjs-extract://")[1]);
+        const arg = request.url.split("pdfjs-extract://host/")[1];
+        debug(arg);
+        const p = tryDecodeURIComponent(arg);
         debug(p);
 
         callback(p);
