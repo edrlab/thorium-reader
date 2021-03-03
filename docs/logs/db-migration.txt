@@ -1,0 +1,2 @@
+
+how to migrate the pouch-db database ?
