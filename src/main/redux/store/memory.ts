@@ -116,6 +116,8 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
         },
     );
 
+    let counter = 0;
+
     for (const locator of bookmarkFromDb) {
         if (locator.publicationIdentifier) {
 
@@ -128,10 +130,14 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
                 const bookmarkFromRedux = reader.bookmark;
                 const bookmarkFromPouchdb = bookmarkFromDb.reduce<TBookmarkState>((pv, cv) => [
                     ...pv,
-                    [cv.identifier, {
-                        name: cv.name || "",
-                        locator: cv.locator,
-                    }],
+                    [
+                        ++counter,
+                        {
+                            uuid: cv.identifier,
+                            name: cv.name || "",
+                            locator: cv.locator,
+                        },
+                    ],
                 ], []);
 
                 const bookmarkFromPouchdbFiltered = bookmarkFromPouchdb.filter(([identifierSrc]) =>

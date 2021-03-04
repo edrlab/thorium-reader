@@ -6,11 +6,15 @@
 // ==LICENSE-END==
 
 import { Locator } from "readium-desktop/common/models/locator";
-import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
+import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
-export type TID = string;
-export type TBookmarkState = TMapState<TID, IBookmarkState>;
-export interface IBookmarkState {
+export type TBookmarkState = TPQueueState<number, IBookmarkState>;
+
+export interface IBookmarkBaseState {
+    uuid: string;
+}
+
+export interface IBookmarkState extends IBookmarkBaseState {
     name: string;
     locator: Locator;
 }

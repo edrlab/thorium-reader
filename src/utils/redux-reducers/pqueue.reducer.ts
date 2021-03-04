@@ -25,9 +25,11 @@ export interface IPQueueData
     Key = number,
     Value = string,
     ActionType = string,
+    TUpdateAction extends ActionWithPayload<ActionType> = undefined,
 > {
     push: IPQueueAction<TPushAction, Key, Value, ActionType>;
     pop: IPQueueAction<TPopAction, Key, Value, ActionType>;
+    update?: IPQueueAction<TUpdateAction, Key, Value, ActionType>
     sortFct?: (a: IPQueueState<Key, Value>, b: IPQueueState<Key, Value>) => number;
 }
 
@@ -41,14 +43,15 @@ export function priorityQueueReducer
         Key = number,
         Value = string,
         ActionType = string,
+        TUpdateAction extends ActionWithPayload<ActionType> = undefined,
     >(
-        data: IPQueueData<TPushAction, TPopAction, Key, Value, ActionType>,
+        data: IPQueueData<TPushAction, TPopAction, Key, Value, ActionType, TUpdateAction>,
 ) {
 
     const reducer =
         (
                 queue: TPQueueState<Key, Value>,
-                action: TPopAction | TPushAction,
+                action: TPopAction | TPushAction | TUpdateAction,
         ): TPQueueState<Key, Value> => {
 
             if (!queue || !Array.isArray(queue)) {
@@ -86,6 +89,17 @@ export function priorityQueueReducer
 
                     return left.concat(right);
                 }
+            } else if (action.type === data.update.type) {
+
+
+                const selectorItem = data.update.selector(action as TUpdateAction);
+                const index = queue.findIndex((item) => item[1] === selectorItem[1]);
+
+                if (index > -1) {
+
+                    queue[index][1] = selectorItem[1];
+                }
+
             }
 
             return queue;

@@ -9,7 +9,6 @@ import classnames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark-24px-grey.svg";
@@ -18,8 +17,6 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { apiAction } from "readium-desktop/renderer/reader/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
 import { Unsubscribe } from "redux";
 
@@ -32,6 +29,10 @@ import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
+import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { readerLocalActionBookmarks } from "../redux/actions";
+import { Locator } from "readium-desktop/common/models/locator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
@@ -47,14 +48,13 @@ interface IBaseProps extends TranslatorProps, IReaderMenuProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
     bookmarkToUpdate: number;
     pageError: boolean;
     refreshError: boolean;
-    bookmarks: LocatorView[] | undefined;
 }
 
 export class ReaderMenu extends React.Component<IProps, IState> {
@@ -70,24 +70,14 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             bookmarkToUpdate: undefined,
             pageError: false,
             refreshError: false,
-            bookmarks: undefined,
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
         this.handleSubmitPage = this.handleSubmitPage.bind(this);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     public componentDidMount() {
-
-        this.unsubscribe = apiSubscribe([
-            "reader/addBookmark",
-            "reader/deleteBookmark",
-            "reader/updateBookmark",
-        ], () => {
-            apiAction("reader/findBookmarks", this.props.pubId)
-            .then((bookmarks) => this.setState({bookmarks}))
-            .catch((error) => console.error("Error to fetch api reader/findBookmark", error));
-        });
     }
 
     public componentDidUpdate() {
@@ -111,7 +101,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __, r2Publication, toggleMenu, pdfToc, isPdf } = this.props;
-        const { bookmarks } = this.state;
+        const { bookmarks } = this.props;
         if (!r2Publication) {
             return <></>;
         }
@@ -338,9 +328,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
     private createBookmarkList(): JSX.Element[] {
         const { __ } = this.props;
-        if (this.props.r2Publication && this.state.bookmarks) {
+        if (this.props.r2Publication && this.props.bookmarks) {
             const { bookmarkToUpdate } = this.state;
-            return this.state.bookmarks.sort((a, b) => {
+            return this.props.bookmarks.sort((a, b) => {
                 if (!a.locator || !b.locator) {
                     return 0;
                 }
@@ -382,7 +372,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     <button
                         className={styles.bookmark_infos}
                         tabIndex={0}
-                        onClick={(e) => this.handleBookmarkClick(e, bookmark)}
+                        onClick={(e) => this.handleBookmarkClick(e, bookmark.locator)}
                     >
                         <SVG svg={BookmarkIcon} title={""} aria-hidden />
 
@@ -398,18 +388,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     <button onClick={() => this.setState({bookmarkToUpdate: i})}>
                         <SVG title={ __("reader.marks.edit")} svg={ EditIcon }/>
                     </button>
-                    <button onClick={() => this.deleteBookmark(bookmark.identifier)}>
+                    <button onClick={() => this.props.deleteBookmark(bookmark)}>
                         <SVG title={ __("reader.marks.delete")} svg={ DeleteIcon }/>
                     </button>
                 </div>,
             );
         }
         return undefined;
-    }
-
-    private deleteBookmark = (bookmarkId: string) => {
-        apiAction("reader/deleteBookmark", bookmarkId)
-            .catch((error) => console.error("Error to fetch api reader/deleteBookmark", error));
     }
 
     private buildGoToPageSection(totalPages?: string) {
@@ -629,9 +614,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
     }
 
-    private handleBookmarkClick(e: TMouseEventOnButton, bookmark: LocatorView) {
+    private handleBookmarkClick(e: TMouseEventOnButton, locator: Locator) {
         e.preventDefault();
-        this.props.handleBookmarkClick(bookmark.locator);
+        this.props.handleBookmarkClick(locator);
     }
 }
 
@@ -645,8 +630,22 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         pubId: state.reader.info.publicationIdentifier,
         searchEnable: state.search.enable,
+        bookmarks: state.reader.bookmark.map(([, v]) => v),
         // isDivina,
     };
 };
 
-export default connect(mapStateToProps)(withTranslator(ReaderMenu));
+const mapDispatchToProps = (dispatch: TDispatch) => {
+
+
+    return {
+        setBookmark: (bookmark: IBookmarkState) => {
+            dispatch(readerLocalActionBookmarks.push.build(bookmark));
+        },
+        deleteBookmark: (bookmark: IBookmarkState) => {
+            dispatch(readerLocalActionBookmarks.pop.build(bookmark));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderMenu));
