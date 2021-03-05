@@ -60,8 +60,11 @@ export const rootReducer = () => {
                             sortFct: (a, b) => b[0] - a[0],
                             update: {
                                 type: readerLocalActionBookmarks.update.ID,
-                                selector: (action) =>
-                                    [undefined, action.payload],
+                                selector: (action, queue) =>
+                                    [
+                                        queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),
+                                        action.payload,
+                                    ],
                             },
                         },
                     ),
