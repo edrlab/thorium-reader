@@ -45,6 +45,11 @@ export const reduxPersistMiddleware: Middleware
                     readerState.locator = nextState.reader.locator;
                     dispatchFlag = true;
                 }
+                if (!ramda.equals(prevState.reader.bookmark, nextState.reader.bookmark)) {
+
+                    readerState.bookmark = nextState.reader.bookmark;
+                    dispatchFlag = true;
+                }
                 if (dispatchFlag) {
 
                     dispatchSetReduxState(store, readerState);
