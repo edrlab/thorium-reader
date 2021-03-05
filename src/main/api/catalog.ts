@@ -55,12 +55,6 @@ export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    // @inject(diSymbolTable["config-repository"])
-    // private readonly configRepository!: ConfigRepository<CatalogConfig>;
-
-    // @inject(diSymbolTable["locator-repository"])
-    // private readonly locatorRepository!: LocatorRepository;
-
     @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
 

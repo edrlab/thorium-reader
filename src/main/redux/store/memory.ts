@@ -7,13 +7,9 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import * as Ramda from "ramda";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { LocatorType } from "readium-desktop/common/models/locator";
-import {
-    LocatorExtendedWithLocatorOnly,
-} from "readium-desktop/common/redux/states/locatorInitialState";
-import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
@@ -25,7 +21,6 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { PromiseAllSettled } from "readium-desktop/utils/promise";
-import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
@@ -48,62 +43,119 @@ const defaultLocale = (): LocaleConfigValueType => {
     };
 };
 
-async function absorbLocatorRepositoryToReduxState() {
+// can be safely removed
+// introduce in a thorium previous version
+//
+// async function absorbLocatorRepositoryToReduxState() {
+
+//     const locatorRepository = diMainGet("locator-repository");
+//     const locatorFromDb = await locatorRepository.find(
+//         {
+//             selector: { locatorType: LocatorType.LastReadingLocation },
+//             sort: [{ updatedAt: "asc" }],
+//         },
+//     );
+
+
+//     const lastReadingQueue: TPQueueState = [];
+//     const registryReader: IDictWinRegistryReaderState = {};
+
+//     for (const locator of locatorFromDb) {
+//         if (locator.publicationIdentifier) {
+
+//             lastReadingQueue.push([locator.createdAt, locator.publicationIdentifier]);
+
+//             registryReader[locator.publicationIdentifier] = {
+//                 windowBound: {
+//                     width: 800,
+//                     height: 600,
+//                     x: 0,
+//                     y: 0,
+//                 },
+//                 reduxState: {
+//                     config: readerConfigInitialState,
+//                     locator: LocatorExtendedWithLocatorOnly(locator.locator),
+//                     bookmark: undefined,
+//                     info: {
+//                         publicationIdentifier: locator.publicationIdentifier,
+//                         manifestUrlR2Protocol: undefined,
+//                         manifestUrlHttp: undefined,
+//                         filesystemPath: undefined,
+//                         r2Publication: undefined,
+//                         publicationView: undefined,
+//                     },
+//                     highlight: {
+//                         handler: undefined,
+//                         mounter: undefined,
+//                     },
+//                 },
+//             };
+
+//             await locatorRepository.delete(locator.identifier);
+//         }
+//     }
+
+//     if (lastReadingQueue.length === 0 && ObjectKeys(registryReader).length === 0) {
+//         return undefined;
+//     }
+
+//     return {
+//         lastReadingQueue,
+//         registryReader,
+//     };
+// }
+
+const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReaderState) => {
 
     const locatorRepository = diMainGet("locator-repository");
-    const locatorFromDb = await locatorRepository.find(
+
+    const bookmarkFromDb = await locatorRepository.find(
         {
-            selector: { locatorType: LocatorType.LastReadingLocation },
+            selector: { locatorType: LocatorType.Bookmark },
             sort: [{ updatedAt: "asc" }],
         },
     );
 
-    const lastReadingQueue: TPQueueState = [];
-    const registryReader: IDictWinRegistryReaderState = {};
+    let counter = 0;
 
-    for (const locator of locatorFromDb) {
+    for (const locator of bookmarkFromDb) {
         if (locator.publicationIdentifier) {
 
-            lastReadingQueue.push([locator.createdAt, locator.publicationIdentifier]);
+            const reader = registryReader[locator.publicationIdentifier]?.reduxState;
+            if (reader) {
 
-            registryReader[locator.publicationIdentifier] = {
-                windowBound: {
-                    width: 800,
-                    height: 600,
-                    x: 0,
-                    y: 0,
-                },
-                reduxState: {
-                    config: readerConfigInitialState,
-                    locator: LocatorExtendedWithLocatorOnly(locator.locator),
-                    info: {
-                        publicationIdentifier: locator.publicationIdentifier,
-                        manifestUrlR2Protocol: undefined,
-                        manifestUrlHttp: undefined,
-                        filesystemPath: undefined,
-                        r2Publication: undefined,
-                        publicationView: undefined,
-                    },
-                    highlight: {
-                        handler: undefined,
-                        mounter: undefined,
-                    },
-                },
-            };
 
-            await locatorRepository.delete(locator.identifier);
+                // this is not a set reducer but a map reducer
+                // so there is no merge with union set method
+                const bookmarkFromRedux = reader.bookmark;
+                const bookmarkFromPouchdbFiltered = bookmarkFromDb.filter((_v) => {
+                    return !bookmarkFromRedux.find(([,v]) => v.uuid === _v.identifier);
+                });
+                const bookmarkFromPouchdbConverted = bookmarkFromPouchdbFiltered.reduce<TBookmarkState>((pv, cv) => [
+                    ...pv,
+                    [
+                        ++counter,
+                        {
+                            uuid: cv.identifier,
+                            name: cv.name || "",
+                            locator: cv.locator,
+                        },
+                    ],
+                ], []);
+
+                const bookmark = [
+                    ...bookmarkFromRedux,
+                    ...bookmarkFromPouchdbConverted,
+                ];
+
+                reader.bookmark = bookmark;
+            }
         }
+
     }
 
-    if (lastReadingQueue.length === 0 && ObjectKeys(registryReader).length === 0) {
-        return undefined;
-    }
-
-    return {
-        lastReadingQueue,
-        registryReader,
-    };
-}
+    return registryReader;
+};
 
 export async function initStore(configRepository: ConfigRepository<any>)
 : Promise<[Store<RootState>, SagaMiddleware<object>]> {
@@ -138,7 +190,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("ERR when get state from FS", err);
     }
 
-    let reduxStateWin = reduxStateWinRepository?.value?.win
+    const reduxStateWin = reduxStateWinRepository?.value?.win
         ? reduxStateWinRepository.value
         : undefined;
 
@@ -146,42 +198,56 @@ export async function initStore(configRepository: ConfigRepository<any>)
                 ? i18nStateRepository.value
                 : defaultLocale();
 
-    try {
-        // executed once time for locatorRepository to ReduxState migration
-        const locatorRepositoryAbsorbed = await absorbLocatorRepositoryToReduxState();
+    // new version of THORIUM
+    // the migration can be safely removed
+    //
+    // try {
+    //     // executed once time for locatorRepository to ReduxState migration
+    //     const locatorRepositoryAbsorbed = await absorbLocatorRepositoryToReduxState();
 
-        if (locatorRepositoryAbsorbed) {
-            reduxStateWin = {
-                ...reduxStateWin,
-                ...{
-                    publication: {
-                        lastReadingQueue: Ramda.uniqBy(
-                            (item) => item[1],
-                            Ramda.concat(
-                                reduxStateWin.publication.lastReadingQueue,
-                                locatorRepositoryAbsorbed.lastReadingQueue,
-                            ),
-                        ),
-                    },
-                },
-                ...{
-                    win: {
-                        session: {
-                            library: reduxStateWin.win.session.library,
-                            reader: reduxStateWin.win.session.reader,
-                        },
-                        registry: {
-                            reader: {
-                                ...locatorRepositoryAbsorbed.registryReader,
-                                ...reduxStateWin.win.registry.reader,
-                            },
-                        },
-                    },
-                },
-            };
-        }
-    } catch (err) {
-        debug("ERR on absorbLocatorRepositoryToReduxState", err);
+    //     if (locatorRepositoryAbsorbed) {
+    //         reduxStateWin = {
+    //             ...reduxStateWin,
+    //             ...{
+    //                 publication: {
+    //                     lastReadingQueue: Ramda.uniqBy(
+    //                         (item) => item[1],
+    //                         Ramda.concat(
+    //                             reduxStateWin.publication.lastReadingQueue,
+    //                             locatorRepositoryAbsorbed.lastReadingQueue,
+    //                         ),
+    //                     ),
+    //                 },
+    //             },
+    //             ...{
+    //                 win: {
+    //                     session: {
+    //                         library: reduxStateWin.win.session.library,
+    //                         reader: reduxStateWin.win.session.reader,
+    //                     },
+    //                     registry: {
+    //                         reader: {
+    //                             ...locatorRepositoryAbsorbed.registryReader,
+    //                             ...reduxStateWin.win.registry.reader,
+    //                         },
+    //                     },
+    //                 },
+    //             },
+    //         };
+    //     }
+    // } catch (err) {
+    //     debug("ERR on absorbLocatorRepositoryToReduxState", err);
+    // }
+
+    try {
+
+        // Be carefull not an object copy / same reference
+        reduxStateWin.win.registry.reader =
+            await absorbBookmarkToReduxState(reduxStateWin.win.registry.reader);
+
+    } catch (e) {
+
+        debug("ERR on absorb bookmark to redux state", e);
     }
 
     const preloadedState = {

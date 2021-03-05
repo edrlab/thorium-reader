@@ -14,6 +14,7 @@ import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { TBookmarkState } from "../bookmark";
 
 export interface IReaderRootState extends ICommonRootState {
     reader: IReaderStateReader;
@@ -25,6 +26,7 @@ export interface IReaderStateReader {
     config: ReaderConfig;
     info: ReaderInfo;
     locator: LocatorExtended;
+    bookmark: TBookmarkState;
     highlight: {
         handler: TMapState<string, IHighlightHandlerState>;
         mounter: TMapState<string, IHighlight>;

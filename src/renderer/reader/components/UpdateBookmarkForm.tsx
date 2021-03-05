@@ -6,14 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { LocatorView } from "readium-desktop/common/views/locator";
-import { apiAction } from "readium-desktop/renderer/reader/apiAction";
+import { connect } from "react-redux";
+import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TFormEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { readerLocalActionBookmarks } from "../redux/actions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     close: () => void;
-    bookmark: LocatorView;
+    bookmark: IBookmarkState;
 }
 
 // IProps may typically extend:
@@ -21,7 +23,7 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -73,18 +75,25 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
         const { bookmark } = this.props;
         const value: string = this.inputRef.current.value;
         const normalizedValue = value.trim().replace(/\s\s+/g, " ");
+
         if (normalizedValue.length > 0) {
-            bookmark.name = normalizedValue;
-            apiAction("reader/updateBookmark",
-                bookmark.identifier,
-                bookmark.publicationIdentifier,
-                bookmark.locator,
-                bookmark.name,
-            ).catch((error) => console.error("Error to fetch api reader/updateBookmark", error));
+            const newBookmark = { ...bookmark };
+            newBookmark.name = normalizedValue;
+            this.props.updateBookmark(newBookmark);
         }
 
         this.props.close();
     }
 }
 
-export default UpdateBookmarkForm;
+const mapDispatchToProps = (dispatch: TDispatch) => {
+
+
+    return {
+        updateBookmark: (bookmark: IBookmarkState) => {
+            dispatch(readerLocalActionBookmarks.update.build(bookmark));
+        },
+    };
+};
+
+export default connect(undefined, mapDispatchToProps)(UpdateBookmarkForm);
