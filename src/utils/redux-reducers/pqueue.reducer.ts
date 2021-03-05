@@ -89,7 +89,8 @@ export function priorityQueueReducer
 
                     return left.concat(right);
                 }
-            } else if (action.type === data.update.type) {
+
+            } else if (action.type === data.update?.type) {
 
 
                 const selectorItem = data.update.selector(action as TUpdateAction);
