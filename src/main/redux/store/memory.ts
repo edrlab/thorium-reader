@@ -140,8 +140,8 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
                     ],
                 ], []);
 
-                const bookmarkFromPouchdbFiltered = bookmarkFromPouchdb.filter(([identifierSrc]) =>
-                    !bookmarkFromRedux.find(([identifier]) => identifierSrc === identifier));
+                const bookmarkFromPouchdbFiltered = bookmarkFromPouchdb.filter(([,identifierSrc]) =>
+                    !bookmarkFromRedux.find(([,identifier]) => identifierSrc === identifier));
 
 
                 const bookmark = [
