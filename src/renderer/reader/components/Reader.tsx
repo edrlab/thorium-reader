@@ -335,6 +335,8 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         this.getReaderMode();
+
+        await this.checkBookmarks();
     }
 
     public async componentDidUpdate(oldProps: IProps, _oldState: IState) {
