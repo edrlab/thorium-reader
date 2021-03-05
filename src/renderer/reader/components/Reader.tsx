@@ -1456,11 +1456,11 @@ class Reader extends React.Component<IProps, IState> {
                     name = `${timestamp} (${percent}%)`;
                 }
 
-                try {
-                    await apiAction("reader/addBookmark", this.props.pubId, locator, name);
-                } catch (e) {
-                    console.error("Error to fetch api reader/addBookmark", e);
-                }
+                this.props.setBookmark({
+                    uuid: nanoid(),
+                    locator,
+                    name,
+                });
             }
         }
     }
