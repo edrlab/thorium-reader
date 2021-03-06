@@ -7,13 +7,11 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { ReactReduxContext } from "react-redux";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import { apiActionFactory } from "readium-desktop/renderer/common/apiAction";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
@@ -66,22 +64,11 @@ const Duration = (props: {
 };
 
 const Progression = (props: {
-    pubId: string;
+    locatorExt: LocatorExtended,
     __: I18nTyped;
 }) => {
 
-    const { __, pubId } = props;
-    const [locatorExt, setLocatorExt] = React.useState<LocatorExtended>(undefined);
-
-    const store = React.useContext(ReactReduxContext);
-
-    const apiAction = apiActionFactory(() => store.store);
-
-    React.useEffect(() => {
-        apiAction("reader/getLastReadingLocation", pubId)
-            .then((_locator) => setLocatorExt(_locator))
-            .catch((err) => console.error("Error to fetch api reader/getLastReadingLocation", err));
-    }, [pubId]);
+    const { __, locatorExt } = props;
 
     if (locatorExt?.locator?.locations?.progression && locatorExt?.audioPlaybackInfo) {
 
@@ -213,7 +200,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                         />
                         <Progression
                             __={__}
-                            pubId={publication.identifier}
+                            locatorExt={publication.lastReadingLocation}
                         />
                         {
                             publication.nbOfTracks ?

@@ -15,6 +15,8 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { diMainGet } from "../di";
+import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 @injectable()
 export class PublicationViewConverter {
@@ -45,6 +47,12 @@ export class PublicationViewConverter {
             };
         }
 
+        // become a side effect function : AIE !!
+        // could be refactored when the publications documents will be in the state
+        const store = diMainGet("store");
+        const state = store.getState();
+        const locator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
+
         return {
             identifier: document.identifier, // preserve Identifiable identifier
             title: document.title || "-", // default title
@@ -68,6 +76,8 @@ export class PublicationViewConverter {
             // doc: r2Publiction.Metadata,
 
             r2PublicationBase64,
+
+            lastReadingLocation: locator,
         };
     }
 }

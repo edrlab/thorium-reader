@@ -18,7 +18,6 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 @injectable()
 export class ReaderApi implements IReaderApi {
@@ -61,24 +60,6 @@ export class ReaderApi implements IReaderApi {
     //     const savedDoc = await this.locatorRepository.save(newDoc);
     //     return this.locatorViewConverter.convertDocumentToView(savedDoc);
     // }
-
-    public async getLastReadingLocation(publicationIdentifier: string): Promise<LocatorExtended | undefined> {
-        // const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-        //     publicationIdentifier,
-        //     LocatorType.LastReadingLocation,
-        // );
-
-        // if (docs.length === 0) {
-        //     return null;
-        // }
-
-        // return this.locatorViewConverter.convertDocumentToView(docs[0]);
-
-        const state = this.store.getState();
-        const locator = state.win.registry.reader[publicationIdentifier]?.reduxState.locator;
-
-        return locator;
-    }
 
     // TODO
     // clipboard can be an action catched in saga, nothing to return

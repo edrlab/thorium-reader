@@ -6,18 +6,13 @@
 // ==LICENSE-END==
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 export interface IReaderApi {
-    // setLastReadingLocation: (publicationIdentifier: string, locator: R2Locator) => Promise<LocatorView>;
-    getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorExtended | undefined>;
     clipboardCopy: (
         publicationIdentifier: string,
         clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => Promise<boolean>;
 }
 
 export interface IReaderModuleApi {
-    // "reader/setLastReadingLocation": IReaderApi["setLastReadingLocation"];
-    "reader/getLastReadingLocation": IReaderApi["getLastReadingLocation"];
     "reader/clipboardCopy": IReaderApi["clipboardCopy"];
 }
