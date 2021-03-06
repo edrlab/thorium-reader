@@ -137,10 +137,4 @@ export class ReaderApi implements IReaderApi {
 
         return true;
     }
-
-    // TODO
-    // may be removed and replaced with a action dispatched to every reader
-    public async getMode() {
-        return this.store.getState().mode;
-    }
 }

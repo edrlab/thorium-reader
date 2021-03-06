@@ -7,6 +7,7 @@
 
 import * as classNames from "classnames";
 import divinaPlayer from "divina-player-js";
+import { nanoid } from "nanoid";
 import * as path from "path";
 import * as r from "ramda";
 import * as React from "react";
@@ -17,9 +18,9 @@ import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/k
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings, ReaderConfigStringsAdjustables,
-    ReaderMode,
 } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
+import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
@@ -68,13 +69,13 @@ import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMountAndReturnBus } from "../pdf/driver";
-import { readerLocalActionBookmarks, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
+import {
+    readerLocalActionBookmarks, readerLocalActionSetConfig, readerLocalActionSetLocator,
+} from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
-import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
-import { nanoid } from "nanoid";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -107,8 +108,6 @@ interface IState {
 
     visibleBookmarkList: IBookmarkState[];
     currentLocation: LocatorExtended;
-
-    readerMode: ReaderMode;
 
     divinaReadingMode: TdivinaReadingMode;
     divinaReadingModeSupported: TdivinaReadingMode[];
@@ -179,8 +178,6 @@ class Reader extends React.Component<IProps, IState> {
 
             visibleBookmarkList: [],
             currentLocation: undefined,
-
-            readerMode: ReaderMode.Attached,
 
             divinaNumberOfPages: 0,
             divinaReadingMode: "single",
@@ -334,12 +331,13 @@ class Reader extends React.Component<IProps, IState> {
             await this.loadPublicationIntoViewport();
         }
 
-        this.getReaderMode();
-
         await this.checkBookmarks();
     }
 
     public async componentDidUpdate(oldProps: IProps, _oldState: IState) {
+        // if (oldProps.readerMode !== this.props.readerMode) {
+            // console.log("READER MODE = ", this.props.readerMode === ReaderMode.Detached ? "detached" : "attached");
+        // }
         if (oldProps.bookmarks !== this.props.bookmarks) {
             await this.checkBookmarks();
         }
@@ -443,7 +441,7 @@ class Reader extends React.Component<IProps, IState> {
                         handleMenuClick={this.handleMenuButtonClick}
                         handleSettingsClick={this.handleSettingsClick}
                         fullscreen={this.state.fullscreen}
-                        mode={this.state.readerMode}
+                        mode={this.props.readerMode}
                         handleFullscreenClick={this.handleFullscreenClick}
                         handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
@@ -1473,7 +1471,6 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleReaderDetach() {
         this.props.detachReader();
-        this.setState({ readerMode: ReaderMode.Detached });
     }
 
     private handleFullscreenClick() {
@@ -1644,14 +1641,6 @@ class Reader extends React.Component<IProps, IState> {
 
         this.handleSettingsSave(readerConfig);
     }
-
-    // TODO
-    // replaced getMode API with an action broadcasted to every reader and catch by reducers
-    private getReaderMode = () => {
-        apiAction("reader/getMode")
-            .then((mode) => this.setState({ readerMode: mode }))
-            .catch((error) => console.error("Error to fetch api reader/getMode", error));
-    }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
@@ -1705,6 +1694,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         manifestUrlR2Protocol: state.reader.info.manifestUrlR2Protocol,
         winId: state.win.identifier,
         bookmarks: state.reader.bookmark.map(([, v]) => v),
+        readerMode: state.mode,
     };
 };
 

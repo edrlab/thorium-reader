@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ReaderConfig, ReaderInfo } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
 import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { IHighlightHandlerState } from "readium-desktop/renderer/reader/redux/state/highlight";
 import { IPickerState } from "readium-desktop/renderer/reader/redux/state/picker";
@@ -20,6 +20,7 @@ export interface IReaderRootState extends ICommonRootState {
     reader: IReaderStateReader;
     picker: IPickerState;
     search: ISearchState;
+    mode: ReaderMode;
 }
 
 export interface IReaderStateReader {

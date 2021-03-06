@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ReaderMode } from "readium-desktop/common/models/reader";
-
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
@@ -16,12 +14,10 @@ export interface IReaderApi {
     clipboardCopy: (
         publicationIdentifier: string,
         clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => Promise<boolean>;
-    getMode: () => Promise<ReaderMode>;
 }
 
 export interface IReaderModuleApi {
     // "reader/setLastReadingLocation": IReaderApi["setLastReadingLocation"];
     "reader/getLastReadingLocation": IReaderApi["getLastReadingLocation"];
     "reader/clipboardCopy": IReaderApi["clipboardCopy"];
-    "reader/getMode": IReaderApi["getMode"];
 }

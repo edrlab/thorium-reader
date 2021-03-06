@@ -28,6 +28,7 @@ import { readerLocatorReducer } from "./readerLocator";
 import { searchReducer } from "./search";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
+import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeReducer";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
@@ -125,5 +126,6 @@ export const rootReducer = () => {
         dialog: dialogReducer,
         toast: toastReducer,
         keyboard: keyboardReducer,
+        mode: winModeReducer,
     });
 };
