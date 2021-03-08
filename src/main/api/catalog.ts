@@ -231,10 +231,7 @@ export class CatalogApi implements ICatalogApi {
 
     private async getLastAddedPublicationDocument() {
 
-        const lastAddedPublications = await this.publicationRepository.find({
-            sort: [{ createdAt: "desc" }],
-            selector: {},
-        });
+        const lastAddedPublications = await this.publicationRepository.findAllSortDesc();
 
         return lastAddedPublications;
     }

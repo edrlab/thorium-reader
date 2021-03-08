@@ -164,7 +164,7 @@ const absorbPublicationToReduxState = async (pubs: PublicationDocument[] | undef
 
     const publicationRepository = diMainGet("publication-repository");
 
-    const pubsFromDb = await publicationRepository.findAll();
+    const pubsFromDb = await publicationRepository.findAllFromPouchdb();
 
     let newPubs = pubs || [];
     for (const pub of pubsFromDb) {

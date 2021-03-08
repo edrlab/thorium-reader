@@ -8,10 +8,14 @@
 import { ok } from "assert";
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
+import { Identifiable } from "readium-desktop/common/models/identifiable";
+import { Timestampable } from "readium-desktop/common/models/timestampable";
+import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { publicationActions } from "readium-desktop/main/redux/actions";
 import { Unsubscribe } from "redux";
+import { ExcludeTimestampableAndIdentifiable } from "./base";
 
 // const CREATED_AT_INDEX = "created_at_index";
 
@@ -23,8 +27,10 @@ import { Unsubscribe } from "redux";
 
 @injectable()
 export class PublicationRepository  /* extends BaseRepository<PublicationDocument> */ {
-    public constructor(_db: PouchDB.Database<PublicationDocument>) {// INJECTED!
+    db: PouchDB.Database<PublicationDocument>;
+    public constructor(db: PouchDB.Database<PublicationDocument>) {// INJECTED!
 
+        this.db = db;
         // const indexes = [
             // {
             //     fields: ["createdAt"], // Timestampable
@@ -88,6 +94,18 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         store.dispatch(publicationActions.deletePublication.build(identifier));
 
         await p.finally(() => unsub && unsub());
+    }
+
+    public async findAllFromPouchdb(): Promise<PublicationDocument[]> {
+
+        const result = await this.db.allDocs({
+            include_docs: true,
+            startkey: "publication" + "_",
+            endkey: "publication" + "_\ufff0",
+        });
+        return result.rows.map((row) => {
+            return this.convertToDocument(row.doc);
+        });
     }
 
     public async findAll(): Promise<PublicationDocument[]> {
@@ -263,31 +281,39 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         return tags;
     }
 
-    // protected convertToDocument(_dbDoc: PouchDB.Core.Document<PublicationDocument>): PublicationDocument {
-    //     // return Object.assign(
-    //     //     {},
-    //     //     super.convertToMinimalDocument(dbDoc),
-    //     //     {
-    //     //         resources: dbDoc.resources ? {
-    //     //             // legacy names fallback
-    //     //             r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||
-    //     //                 (dbDoc.resources as any).filePublication, // legacy obsolete field
-    //     //             r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 ||
-    //     //                 (dbDoc.resources as any).opdsPublication, // legacy obsolete field
-    //     //             r2LCPBase64: dbDoc.resources.r2LCPBase64,
-    //     //             r2LSDBase64: dbDoc.resources.r2LSDBase64,
-    //     //         } : undefined,
-    //     //         title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
-    //     //         tags: dbDoc.tags,
-    //     //         files: dbDoc.files,
-    //     //         coverFile: dbDoc.coverFile,
-    //     //         customCover: dbDoc.customCover,
+    protected convertToMinimalDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): Timestampable & Identifiable {
+        return {
+            identifier: dbDoc.identifier,
+            createdAt: dbDoc.createdAt,
+            updatedAt: dbDoc.updatedAt,
+        } as Timestampable & Identifiable;
+    }
 
-    //     //         lcp: dbDoc.lcp,
-    //     //         lcpRightsCopies: dbDoc.lcpRightsCopies,
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): PublicationDocument {
+        return Object.assign(
+            {},
+            this.convertToMinimalDocument(dbDoc),
+            {
+                resources: dbDoc.resources ? {
+                    // legacy names fallback
+                    r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||
+                        (dbDoc.resources as any).filePublication, // legacy obsolete field
+                    r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 ||
+                        (dbDoc.resources as any).opdsPublication, // legacy obsolete field
+                    r2LCPBase64: dbDoc.resources.r2LCPBase64,
+                    r2LSDBase64: dbDoc.resources.r2LSDBase64,
+                } : undefined,
+                title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
+                tags: dbDoc.tags,
+                files: dbDoc.files,
+                coverFile: dbDoc.coverFile,
+                customCover: dbDoc.customCover,
 
-    //     //         hash: dbDoc.hash,
-    //     //     } as ExcludeTimestampableAndIdentifiable<PublicationDocument>,
-    //     // );
-    // }
+                lcp: dbDoc.lcp,
+                lcpRightsCopies: dbDoc.lcpRightsCopies,
+
+                hash: dbDoc.hash,
+            } as ExcludeTimestampableAndIdentifiable<PublicationDocument>,
+        );
+    }
 }
