@@ -20,6 +20,10 @@ export interface Payload {
 export function build(publicationIdentifier: string, bound: Rectangle, reduxStateReader: IReaderStateReader):
     Action<typeof ID, Payload> {
 
+    delete reduxStateReader.highlight;
+    // https://github.com/edrlab/thorium-reader/blob/fd9d82beb95d5d2ee4c927a2eed91ebf3ffa8424/src/main/redux/actions/win/session/registerReader.ts#L57
+    delete reduxStateReader.info;
+
     return {
         type: ID,
         payload: {
