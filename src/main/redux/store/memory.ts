@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as eleasticlunr from "elasticlunr-idream";
 import * as debug_ from "debug";
 import { app } from "electron";
 import { clone } from "ramda";
@@ -298,6 +299,29 @@ export async function initStore(configRepository: ConfigRepository<any>)
     } catch (e) {
 
         debug("ERR on absorb publication to redux state", e);
+    }
+
+    try {
+
+        const index = eleasticlunr();
+
+        index.addField("title");
+        index.setRef("id");
+
+        const docs = reduxStateWin.publication.db.map((v) => ({
+            id: v.identifier,
+            title: v.title,
+        }));
+
+        docs.forEach((v) => {
+            index.addDoc(v);
+        });
+
+        reduxStateWin.publication.indexer = index;
+
+    } catch (e) {
+
+        debug("ERR on publication indexing to redux state", e);
     }
 
     const preloadedState = {

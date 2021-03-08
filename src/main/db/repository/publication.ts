@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ok } from "assert";
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { diMainGet } from "readium-desktop/main/di";
 
 import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
@@ -64,16 +66,41 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
     }
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
-        const dbDocs = await this.db.search({
-            query: title,
-            fields: ["title"],
-            include_docs: true,
-            highlighting: false,
-        });
+        // const dbDocs = await this.db.search({
+        //     query: title,
+        //     fields: ["title"],
+        //     include_docs: true,
+        //     highlighting: false,
+        // });
 
-        return dbDocs.rows.map((dbDoc) => {
-            return this.convertToDocument(dbDoc.doc);
-        });
+        // return dbDocs.rows.map((dbDoc) => {
+        //     return this.convertToDocument(dbDoc.doc);
+        // });
+
+        try {
+
+            const store = diMainGet("store");
+            const state = store.getState();
+
+            const indexer = state.publication.indexer;
+
+            const res = indexer.search(title);
+
+            ok(Array.isArray(res));
+            const docs = res
+                .map((v: any) => state.publication.db.find((f) => v.ref === f.identifier))
+                .filter((v) => !!v);
+
+            return docs;
+
+        } catch (e) {
+
+            console.log("####");
+            console.log("searchByTitle error ", e);
+            console.log("####");
+
+            return [];
+        }
     }
 
     /** Returns all publication tags */
