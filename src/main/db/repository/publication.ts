@@ -11,7 +11,7 @@ import * as PouchDB from "pouchdb-core";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationDocument, PublicationDocumentWithoutTimestampable } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { publicationActions } from "readium-desktop/main/redux/actions";
 import { Unsubscribe } from "redux";
@@ -52,10 +52,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         // super(db, "publication", indexes);
     }
 
-    public async save(document: PublicationDocument): Promise<PublicationDocument> {
+    public async save(document: PublicationDocumentWithoutTimestampable): Promise<PublicationDocument> {
 
         const store = diMainGet("store");
-
         let unsub: Unsubscribe;
         const p = new Promise<PublicationDocument>(
             (res) => (unsub = store.subscribe(() =>

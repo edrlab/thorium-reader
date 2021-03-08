@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationDocument, PublicationDocumentWithoutTimestampable } from "readium-desktop/main/db/document/publication";
 
 export const ID = "PUBLICATION_ADD";
 
@@ -16,12 +16,18 @@ interface IPayload extends Array<PublicationDocument> {};
 /**
  * add or update a publicationDocument in the redux main state database
  */
-export function build(...publicationDocument: PublicationDocument[]):
+export function build(...publicationDocument: (PublicationDocumentWithoutTimestampable | PublicationDocument)[]):
     Action<typeof ID, IPayload> {
+
+    const pubs = publicationDocument.map((v) => ({
+        ...v,
+        createdAt: (v as PublicationDocument).createdAt || (new Date()).getTime(),
+        updatedAt: (new Date()).getTime(),
+    }));
 
     return {
         type: ID,
-        payload: publicationDocument,
+        payload: pubs,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
