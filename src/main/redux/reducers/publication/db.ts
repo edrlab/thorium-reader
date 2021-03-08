@@ -24,9 +24,9 @@ export function publicationDbReducers(
             for (const pub of action.payload) {
 
                 const { identifier } = pub;
-                const idx = state.findIndex((v) => v.identifier === identifier);
+                const idx = newState.findIndex((v) => v.identifier === identifier);
 
-                if (state[idx]) {
+                if (newState[idx]) {
                     newState = [
                         ...newState.slice(0, idx),
                         ...[
