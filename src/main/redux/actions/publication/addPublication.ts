@@ -13,6 +13,9 @@ export const ID = "PUBLICATION_ADD";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPayload extends Array<PublicationDocument> {};
 
+/**
+ * add or update a publicationDocument in the redux main state database
+ */
 export function build(...publicationDocument: PublicationDocument[]):
     Action<typeof ID, IPayload> {
 
