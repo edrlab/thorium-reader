@@ -12,7 +12,8 @@ const initialState: IDictWinRegistryReaderState = {};
 
 export function winRegistryReaderReducer(
     state: IDictWinRegistryReaderState = initialState,
-    action: winActions.registry.registerReaderPublication.TAction,
+    action: winActions.registry.registerReaderPublication.TAction
+    | winActions.registry.unregisterReaderPublication.TAction,
 ): IDictWinRegistryReaderState {
     switch (action.type) {
 
@@ -29,6 +30,19 @@ export function winRegistryReaderReducer(
                     },
                 },
             };
+
+        case winActions.registry.unregisterReaderPublication.ID:
+
+            const id = action.payload.publicationIdentifier;
+
+            if (state[id]) {
+                const ret = {
+                    ...state,
+                };
+                delete ret[id];
+                return ret;
+            }
+            return state;
 
         default:
             return state;
