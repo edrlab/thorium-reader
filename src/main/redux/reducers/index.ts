@@ -21,6 +21,7 @@ import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
 import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
+import { publicationDbReducers } from "./publication/db";
 
 export const rootReducer = combineReducers<RootState>({
     session: sessionReducer,
@@ -62,6 +63,7 @@ export const rootReducer = combineReducers<RootState>({
                     sortFct: (a, b) => b[0] - a[0],
                 },
             ),
+        db: publicationDbReducers,
     }),
     keyboard: keyboardReducer,
 });

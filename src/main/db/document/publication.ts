@@ -13,8 +13,8 @@ import { Timestampable } from "readium-desktop/common/models/timestampable";
 
 export interface Resources {
     r2PublicationBase64?: string;
-    r2LCPBase64?: string;
-    r2LSDBase64?: string;
+    r2LCPBase64?: string; // already saved in lcpInfo
+    r2LSDBase64?: string; // already saved in lcpInfo
     r2OpdsPublicationBase64?: string;
 }
 
