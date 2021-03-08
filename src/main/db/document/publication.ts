@@ -30,5 +30,8 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     lcpRightsCopies?: number;
 
     hash: string;
+
+    // specific to publication db migration from pouch-db to redux main state
+    doNotMigrateAnymore?: boolean;
 }
 export type PublicationDocumentWithoutTimestampable = Omit<PublicationDocument, keyof Timestampable>;

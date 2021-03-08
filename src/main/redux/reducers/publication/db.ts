@@ -26,11 +26,14 @@ export function publicationDbReducers(
                 const { identifier } = pub;
                 const idx = newState.findIndex((v) => v.identifier === identifier);
 
+                const newPub = clone(pub);
+                newPub.doNotMigrateAnymore = true;
+
                 if (newState[idx]) {
                     newState = [
                         ...newState.slice(0, idx),
                         ...[
-                            clone(pub),
+                            newPub,
                         ],
                         ...newState.slice(idx + 1),
                     ];
@@ -38,7 +41,7 @@ export function publicationDbReducers(
                     newState = [
                         ...newState,
                         ...[
-                            clone(pub),
+                            newPub,
                         ],
                     ];
                 }

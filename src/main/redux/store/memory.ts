@@ -7,11 +7,13 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
+import { clone } from "ramda";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
@@ -157,8 +159,45 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
     return registryReader;
 };
 
+const absorbPublicationToReduxState = async (pubs: PublicationDocument[]) => {
+
+    const publicationRepository = diMainGet("publication-repository");
+
+    const pubsFromDb = await publicationRepository.findAll();
+
+    let newPubs = pubs;
+    for (const pub of pubsFromDb) {
+        const { identifier } = pub;
+        const idx = newPubs.findIndex((v) => v.identifier === identifier);
+
+        if (newPubs[idx]) {
+
+            if (newPubs[idx].doNotMigrateAnymore) {
+                continue;
+            }
+
+            newPubs = [
+                ...newPubs.slice(0, idx),
+                ...[
+                    clone(pub),
+                ],
+                ...newPubs.slice(idx + 1),
+            ];
+        } else {
+            newPubs = [
+                ...newPubs,
+                ...[
+                    clone(pub),
+                ],
+            ];
+        }
+    }
+
+    return newPubs;
+};
+
 export async function initStore(configRepository: ConfigRepository<any>)
-: Promise<[Store<RootState>, SagaMiddleware<object>]> {
+    : Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
     let reduxStateWinRepository: ConfigDocument<Partial<RootState>>;
     let i18nStateRepository: ConfigDocument<LocaleConfigValueType>;
@@ -195,8 +234,8 @@ export async function initStore(configRepository: ConfigRepository<any>)
         : undefined;
 
     const i18n = i18nStateRepository?.value?.locale
-                ? i18nStateRepository.value
-                : defaultLocale();
+        ? i18nStateRepository.value
+        : defaultLocale();
 
     // new version of THORIUM
     // the migration can be safely removed
@@ -248,6 +287,17 @@ export async function initStore(configRepository: ConfigRepository<any>)
     } catch (e) {
 
         debug("ERR on absorb bookmark to redux state", e);
+    }
+
+    try {
+
+        // Be carefull not an object copy / same reference
+        reduxStateWin.publication.db =
+            await absorbPublicationToReduxState(reduxStateWin.publication.db);
+
+    } catch (e) {
+
+        debug("ERR on absorb publication to redux state", e);
     }
 
     const preloadedState = {
