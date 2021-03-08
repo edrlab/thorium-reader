@@ -38,6 +38,11 @@ const persistStateToFs = async (nextState: RootState) => {
             session: nextState.session,
         },
     });
+
+    // const path = "/home/pierre/state.json";
+    // writeFileSync(path, Buffer.from(JSON.stringify(
+        // nextState.publication,
+    // )));
     debug("end of persist reduxState in disk");
 };
 

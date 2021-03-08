@@ -159,13 +159,13 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
     return registryReader;
 };
 
-const absorbPublicationToReduxState = async (pubs: PublicationDocument[]) => {
+const absorbPublicationToReduxState = async (pubs: PublicationDocument[] | undefined) => {
 
     const publicationRepository = diMainGet("publication-repository");
 
     const pubsFromDb = await publicationRepository.findAll();
 
-    let newPubs = pubs;
+    let newPubs = pubs || [];
     for (const pub of pubsFromDb) {
         const { identifier } = pub;
         const idx = newPubs.findIndex((v) => v.identifier === identifier);
