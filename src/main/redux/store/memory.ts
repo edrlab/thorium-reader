@@ -186,7 +186,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
     } catch (err) {
 
-        debug("ERR when try to get the state from Pouchb configRepository", err);
+        debug("ERR when trying to get the state in Pouchb configRepository", err);
     }
 
     const reduxStateWin = reduxStateWinRepository?.value?.win
