@@ -191,7 +191,8 @@ export const deleteAuthenticationToken = async (host: string) => {
 };
 
 export const wipeAuthenticationTokenStorage = async () => {
-    authenticationTokenInitialized = false;
+    // authenticationTokenInitialized = false;
+    authenticationToken = {};
     return fsp.writeFile(defaultsFilePath, "{}", { encoding: "utf8" });
 };
 
