@@ -132,6 +132,9 @@ export const httpSetAuthenticationToken =
         //     });
         // },
         // filename_);
+        if (!data.opdsAuthenticationUrl) {
+            throw new Error("no opdsAutenticationUrl !!");
+        }
 
         await authenticationTokenInit();
 
@@ -141,7 +144,7 @@ export const httpSetAuthenticationToken =
         debug("SET opds authentication credentials for", host); // data
 
         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-        const res = authenticationToken[id];
+        const res = authenticationToken[id] = data;
 
         fsp.writeFile(defaultsFilePath, JSON.stringify(authenticationToken), { encoding: "utf8" });
 
