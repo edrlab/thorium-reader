@@ -172,6 +172,8 @@ const absorbI18nToReduxState = async (
         ? i18nStateRepository.value
         : defaultLocale();
 
+    debug("LOCALE FROM POUCHDB", i18n);
+
     return i18n;
 };
 
@@ -189,8 +191,6 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("ERR when trying to get the state in Pouchb configRepository", err);
     }
 
-    debug(reduxStateWinRepository);
-
     const reduxState = reduxStateWinRepository?.value
         ? reduxStateWinRepository.value
         : undefined;
@@ -201,6 +201,8 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("There are no DATABASE on the filesystem");
         debug("####### WARNING ######");
     }
+
+    debug(reduxState);
 
     // new version of THORIUM
     // the migration can be safely removed
