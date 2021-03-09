@@ -7,9 +7,10 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
+import { LocaleConfigValueType } from "readium-desktop/common/config";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
+import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
@@ -20,7 +21,6 @@ import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { RootState } from "readium-desktop/main/redux/states";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-import { PromiseAllSettled } from "readium-desktop/utils/promise";
 import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
@@ -157,46 +157,48 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
     return registryReader;
 };
 
+const absorbI18nToReduxState = async (
+    configRepository: ConfigRepository<LocaleConfigValueType>,
+    i18n: I18NState) => {
+
+
+    if (i18n) {
+        return i18n;
+    }
+
+
+    const i18nStateRepository = await configRepository.get(CONFIGREPOSITORY_REDUX_PERSISTENCE);
+    i18n = i18nStateRepository?.value?.locale
+        ? i18nStateRepository.value
+        : defaultLocale();
+
+    return i18n;
+};
+
 export async function initStore(configRepository: ConfigRepository<any>)
 : Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
     let reduxStateWinRepository: ConfigDocument<Partial<RootState>>;
-    let i18nStateRepository: ConfigDocument<LocaleConfigValueType>;
 
     try {
-        const reduxStateRepositoryPromise = configRepository.get(CONFIGREPOSITORY_REDUX_PERSISTENCE);
+        const reduxStateRepositoryResult = await configRepository.get(CONFIGREPOSITORY_REDUX_PERSISTENCE);
+        reduxStateWinRepository = reduxStateRepositoryResult.value;
 
-        const i18nStateRepositoryPromise = configRepository.get(LocaleConfigIdentifier);
-
-        const [
-            reduxStateRepositoryResult,
-            i18nStateRepositoryResult,
-        ] = await PromiseAllSettled(
-            [
-                reduxStateRepositoryPromise,
-                i18nStateRepositoryPromise,
-            ],
-        );
-
-        if (reduxStateRepositoryResult.status === "fulfilled") {
-            reduxStateWinRepository = reduxStateRepositoryResult.value;
-        }
-        if (i18nStateRepositoryResult.status === "fulfilled") {
-            i18nStateRepository = i18nStateRepositoryResult.value;
-        }
     } catch (err) {
-        // ignore
-        // first init
-        debug("ERR when get state from FS", err);
+
+        debug("ERR when try to get the state from Pouchb configRepository", err);
     }
 
     const reduxStateWin = reduxStateWinRepository?.value?.win
         ? reduxStateWinRepository.value
         : undefined;
 
-    const i18n = i18nStateRepository?.value?.locale
-                ? i18nStateRepository.value
-                : defaultLocale();
+    if (!reduxStateWin) {
+        debug("####### WARNING ######");
+        debug("Thorium starts with a fresh new session");
+        debug("There are no DATABASE on the filesystem");
+        debug("####### WARNING ######");
+    }
 
     // new version of THORIUM
     // the migration can be safely removed
@@ -250,11 +252,16 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("ERR on absorb bookmark to redux state", e);
     }
 
+    try {
+
+        reduxStateWin.i18n = await absorbI18nToReduxState(configRepository, reduxStateWin.i18n);
+    } catch (e) {
+
+        debug("ERR on absorb i18n to redux state", e);
+    }
+
     const preloadedState = {
         ...reduxStateWin,
-        ...{
-            i18n,
-        },
     };
 
     const sagaMiddleware = createSagaMiddleware();
