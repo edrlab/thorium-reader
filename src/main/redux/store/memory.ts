@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import { LocaleConfigValueType } from "readium-desktop/common/config";
+import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
@@ -167,7 +167,7 @@ const absorbI18nToReduxState = async (
     }
 
 
-    const i18nStateRepository = await configRepository.get(CONFIGREPOSITORY_REDUX_PERSISTENCE);
+    const i18nStateRepository = await configRepository.get(LocaleConfigIdentifier);
     i18n = i18nStateRepository?.value?.locale
         ? i18nStateRepository.value
         : defaultLocale();
