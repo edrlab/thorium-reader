@@ -64,4 +64,7 @@ export const rootReducer = combineReducers<RootState>({
             ),
     }),
     keyboard: keyboardReducer,
+    opds: combineReducers({
+        catalog: priorityQueueReducer
+    })
 });
