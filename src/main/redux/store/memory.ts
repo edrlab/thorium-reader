@@ -182,18 +182,20 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
     try {
         const reduxStateRepositoryResult = await configRepository.get(CONFIGREPOSITORY_REDUX_PERSISTENCE);
-        reduxStateWinRepository = reduxStateRepositoryResult.value;
+        reduxStateWinRepository = reduxStateRepositoryResult;
 
     } catch (err) {
 
         debug("ERR when trying to get the state in Pouchb configRepository", err);
     }
 
-    const reduxStateWin = reduxStateWinRepository?.value?.win
+    debug(reduxStateWinRepository);
+
+    const reduxState = reduxStateWinRepository?.value
         ? reduxStateWinRepository.value
         : undefined;
 
-    if (!reduxStateWin) {
+    if (!reduxState) {
         debug("####### WARNING ######");
         debug("Thorium starts with a fresh new session");
         debug("There are no DATABASE on the filesystem");
@@ -244,8 +246,8 @@ export async function initStore(configRepository: ConfigRepository<any>)
     try {
 
         // Be carefull not an object copy / same reference
-        reduxStateWin.win.registry.reader =
-            await absorbBookmarkToReduxState(reduxStateWin.win.registry.reader);
+        reduxState.win.registry.reader =
+            await absorbBookmarkToReduxState(reduxState.win.registry.reader);
 
     } catch (e) {
 
@@ -254,14 +256,14 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
     try {
 
-        reduxStateWin.i18n = await absorbI18nToReduxState(configRepository, reduxStateWin.i18n);
+        reduxState.i18n = await absorbI18nToReduxState(configRepository, reduxState.i18n);
     } catch (e) {
 
         debug("ERR on absorb i18n to redux state", e);
     }
 
     const preloadedState = {
-        ...reduxStateWin,
+        ...reduxState,
     };
 
     const sagaMiddleware = createSagaMiddleware();
