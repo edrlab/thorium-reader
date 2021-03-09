@@ -80,14 +80,15 @@ const authenticationTokenInit = async () => {
     }
 
     const docsFS = await tryCatch(() => fsp.readFile(defaultsFilePath, { encoding: "utf8" }), "");
-    let docs: Record<string, IOpdsAuthenticationToken> = JSON.parse(docsFS);
-
-    const isValid = typeof docs === "object" &&
+    let docs: Record<string, IOpdsAuthenticationToken>;
+    const isValid = typeof docsFS === "string" && (
+        docs = JSON.parse(docsFS),
+        typeof docs === "object" &&
         Object.entries(docs)
             .reduce((pv, [k, v]) =>
                 pv &&
                 k.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)
-                && typeof v === "object", true);
+                && typeof v === "object", true));
 
     if (!isValid) {
 
