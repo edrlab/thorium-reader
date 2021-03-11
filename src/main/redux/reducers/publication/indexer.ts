@@ -8,7 +8,6 @@
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { publicationActions } from "readium-desktop/main/redux/actions";
 
-
 export function publicationIndexerReducers(
     state: any = null, // hydrated
     action: publicationActions.addPublication.TAction
@@ -24,7 +23,7 @@ export function publicationIndexerReducers(
 
                     const docCloned = {
                         title: doc.title,
-                        id: doc.identifier,
+                        id: doc.publicationIdentifier,
                     };
 
                     state.addDoc(docCloned);

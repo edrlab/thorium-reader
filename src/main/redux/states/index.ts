@@ -8,11 +8,11 @@
 import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { KeyboardState } from "readium-desktop/common/redux/states/keyboard";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 import { AppState } from "./app";
 import { ILcpState } from "./lcp";
+import { IDictPublicationState } from "./publication";
 import { ISessionState } from "./session";
 import { StreamerState } from "./streamer";
 import { IDictWinRegistryReaderState } from "./win/registry/reader";
@@ -42,7 +42,7 @@ export interface RootState {
     lcp: ILcpState;
     publication: {
         lastReadingQueue: TPQueueState;
-        db: PublicationDocument[];
+        db: IDictPublicationState;
         indexer: any;
     };
     keyboard: KeyboardState;

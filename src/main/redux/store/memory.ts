@@ -8,13 +8,11 @@
 import * as eleasticlunr from "elasticlunr-idream";
 import * as debug_ from "debug";
 import { app } from "electron";
-import { clone } from "ramda";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
@@ -29,6 +27,7 @@ import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
+import { IDictPublicationState } from "../states/publication";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -160,37 +159,37 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
     return registryReader;
 };
 
-const absorbPublicationToReduxState = async (pubs: PublicationDocument[] | undefined) => {
+const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undefined) => {
 
     const publicationRepository = diMainGet("publication-repository");
+    const PublicationViewConverter = diMainGet("publication-view-converter");
 
     const pubsFromDb = await publicationRepository.findAllFromPouchdb();
 
-    let newPubs = pubs || [];
+    const newPubs = pubs || {};
     for (const pub of pubsFromDb) {
         const { identifier } = pub;
-        const idx = newPubs.findIndex((v) => v.identifier === identifier);
 
-        if (newPubs[idx]) {
+        if (!newPubs[identifier]?.doNotMigrateAnymore) {
+            const view = PublicationViewConverter.convertDocumentToView(pub);
+            newPubs[identifier] = {
+                publicationIdentifier: identifier,
+                title: pub.title,
+                authors: view.authors,
+                description: view.description,
+                tags: view.tags,
+                files: pub.files,
+                coverFile: pub.coverFile,
+                customCover: pub.customCover,
+                lcpRightsCopies: pub.lcpRightsCopies,
+                hash: pub.hash,
+                doNotMigrateAnymore: false,
+            };
 
-            if (newPubs[idx].doNotMigrateAnymore) {
-                continue;
-            }
 
-            newPubs = [
-                ...newPubs.slice(0, idx),
-                ...[
-                    clone(pub),
-                ],
-                ...newPubs.slice(idx + 1),
-            ];
-        } else {
-            newPubs = [
-                ...newPubs,
-                ...[
-                    clone(pub),
-                ],
-            ];
+            // save resources to filesystem
+
+
         }
     }
 
@@ -308,8 +307,8 @@ export async function initStore(configRepository: ConfigRepository<any>)
         index.addField("title");
         index.setRef("id");
 
-        const docs = reduxStateWin.publication.db.map((v) => ({
-            id: v.identifier,
+        const docs = Object.values(reduxStateWin.publication.db).map((v) => ({
+            id: v.publicationIdentifier,
             title: v.title,
         }));
 

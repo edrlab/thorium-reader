@@ -6,64 +6,46 @@
 // ==LICENSE-END==
 
 import { clone } from "ramda";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { publicationActions } from "readium-desktop/main/redux/actions";
+import { IDictPublicationState } from "../../states/publication";
 
-const initialState: PublicationDocument[] = [];
+const initialState: IDictPublicationState = {};
 
 export function publicationDbReducers(
-    state: PublicationDocument[] = initialState,
+    state: IDictPublicationState = initialState,
     action: publicationActions.addPublication.TAction
         | publicationActions.deletePublication.TAction,
-): PublicationDocument[] {
+): IDictPublicationState {
     switch (action.type) {
 
         case publicationActions.addPublication.ID: {
 
-            let newState = state;
-            for (const pub of action.payload) {
+            const newState = clone(state);
+            for (const payload of action.payload) {
 
-                const { identifier } = pub;
-                const idx = newState.findIndex((v) => v.identifier === identifier);
+                payload.doNotMigrateAnymore = true;
 
-                const newPub = clone(pub);
-                newPub.doNotMigrateAnymore = true;
-
-                if (newState[idx]) {
-                    newState = [
-                        ...newState.slice(0, idx),
-                        ...[
-                            newPub,
-                        ],
-                        ...newState.slice(idx + 1),
-                    ];
-                } else {
-                    newState = [
-                        ...newState,
-                        ...[
-                            newPub,
-                        ],
-                    ];
-                }
+                const id = payload.publicationIdentifier;
+                newState[id] = {
+                    ...newState[id],
+                    ...payload,
+                };
             }
             return newState;
         }
 
         case publicationActions.deletePublication.ID: {
 
-            const identifier = action.payload.publicationIdentifier;
-            const idx = state.findIndex((v) => v.identifier === identifier);
+            const id = action.payload.publicationIdentifier;
 
-            if (state[idx]) {
-                return [
-                    ...state.slice(0, idx),
-                    ...state.slice(idx + 1),
-                ];
+            if (state[id]) {
+                const ret = {
+                    ...state,
+                };
+                delete ret[id];
+                return ret;
             }
-            return state;
         }
-
-        default:
-            return state;
     }
+    return state;
 }
