@@ -304,7 +304,9 @@ export async function initStore(configRepository: ConfigRepository<any>)
     }
 
     try {
-        reduxState.opds.catalog = await absorbOpdsFeedToReduxState(reduxState.opds.catalog);
+        reduxState.opds = {
+            catalog: await absorbOpdsFeedToReduxState(reduxState.opds?.catalog),
+        };
     } catch (e) {
 
         debug("ERR on absorb opds to redux state", e);
