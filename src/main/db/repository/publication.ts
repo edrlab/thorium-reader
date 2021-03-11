@@ -58,8 +58,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         let unsub: Unsubscribe;
         const p = new Promise<PublicationDocument>(
             (res) => (unsub = store.subscribe(() =>
-                    res(store.getState().publication.db.find((v) =>
-                        v.identifier === document.identifier)))));
+                    res(store.getState().publication.db[document.identifier]))));
         store.dispatch(publicationActions.addPublication.build(document));
 
         return p.finally(() => unsub && unsub());
@@ -76,7 +75,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const store = diMainGet("store");
         const state = store.getState();
 
-        const pub = state.publication.db.find((f) => f.identifier === identifier);
+        const pub = state.publication.db[identifier];
 
         return pub;
 
@@ -119,9 +118,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const store = diMainGet("store");
         const state = store.getState();
 
-        const docs = state.publication.db;
-
-        return docs;
+        return Object.values(state.publication.db);
     }
 
     public async findAllSortDesc(): Promise<PublicationDocument[]> {
@@ -142,7 +139,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const store = diMainGet("store");
             const state = store.getState();
 
-            const pub = state.publication.db.find((f) => f.hash === hash);
+            const pub = Object.values(state.publication.db).find((f) => f.hash === hash);
 
             ok(pub);
 
@@ -167,7 +164,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const store = diMainGet("store");
             const state = store.getState();
 
-            const pubs = state.publication.db.filter((f) => f.tags.includes(tag));
+            const pubs = Object.values(state.publication.db).filter((f) => f.tags.includes(tag));
 
             return pubs;
 
@@ -190,7 +187,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const store = diMainGet("store");
             const state = store.getState();
 
-            const pubs = state.publication.db.filter((f) => f.title === title);
+            const pubs = Object.values(state.publication.db).filter((f) => f.title === title);
 
             return pubs;
 
@@ -227,7 +224,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
 
             ok(Array.isArray(res));
             const docs = res
-                .map((v: any) => state.publication.db.find((f) => v.ref === f.identifier))
+                .map((v: any) => Object.values(state.publication.db).find((f) => v.ref === f.identifier))
                 .filter((v) => !!v);
 
             return docs;
@@ -251,7 +248,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const store = diMainGet("store");
             const state = store.getState();
 
-            docs = state.publication.db;
+            docs = Object.values(state.publication.db);
 
         } catch (e) {
 
