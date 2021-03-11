@@ -5,26 +5,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { File } from "readium-desktop/common/models/file";
-import { CustomCover } from "readium-desktop/common/models/custom-cover";
+// import { File } from "readium-desktop/common/models/file";
+// import { CustomCover } from "readium-desktop/common/models/custom-cover";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
-export interface IPublicationState {
-    publicationIdentifier: string;
-    title: string;
-    authors: string[];
-    description: string;
-    tags: string[];
-    files: File[];
-    coverFile?: File;
-    customCover?: CustomCover;
+// export interface IPublicationState {
+//     publicationIdentifier: string;
+//     title: string;
+//     authors: string[];
+//     description: string;
+//     tags: string[];
+//     files: File[];
+//     coverFile?: File;
+//     customCover?: CustomCover;
 
-    lcpRightsCopies?: number;
+//     lcpRightsCopies?: number;
 
-    hash: string;
+//     hash: string;
 
-    doNotMigrateAnymore?: boolean;
-}
+//     doNotMigrateAnymore?: boolean;
+// }
 
 export interface IDictPublicationState {
-    [publicationIdentifier: string]: IPublicationState
+    [publicationIdentifier: string]: PublicationDocument;
 }

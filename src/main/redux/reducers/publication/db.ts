@@ -25,7 +25,7 @@ export function publicationDbReducers(
 
                 payload.doNotMigrateAnymore = true;
 
-                const id = payload.publicationIdentifier;
+                const id = payload.identifier;
                 newState[id] = {
                     ...newState[id],
                     ...payload,
