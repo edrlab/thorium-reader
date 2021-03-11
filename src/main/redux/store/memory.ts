@@ -28,6 +28,7 @@ import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
 import { IDictPublicationState } from "../states/publication";
+import { clone } from "ramda";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -162,7 +163,7 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
 const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undefined) => {
 
     const publicationRepository = diMainGet("publication-repository");
-    const PublicationViewConverter = diMainGet("publication-view-converter");
+    // const PublicationViewConverter = diMainGet("publication-view-converter");
 
     const pubsFromDb = await publicationRepository.findAllFromPouchdb();
 
@@ -171,25 +172,8 @@ const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undef
         const { identifier } = pub;
 
         if (!newPubs[identifier]?.doNotMigrateAnymore) {
-            const view = PublicationViewConverter.convertDocumentToView(pub);
-            newPubs[identifier] = {
-                publicationIdentifier: identifier,
-                title: pub.title,
-                authors: view.authors,
-                description: view.description,
-                tags: view.tags,
-                files: pub.files,
-                coverFile: pub.coverFile,
-                customCover: pub.customCover,
-                lcpRightsCopies: pub.lcpRightsCopies,
-                hash: pub.hash,
-                doNotMigrateAnymore: false,
-            };
 
-
-            // save resources to filesystem
-
-
+            newPubs[identifier] = clone(pub);
         }
     }
 
@@ -308,7 +292,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
         index.setRef("id");
 
         const docs = Object.values(reduxStateWin.publication.db).map((v) => ({
-            id: v.publicationIdentifier,
+            id: v.identifier,
             title: v.title,
         }));
 
