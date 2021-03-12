@@ -40,7 +40,7 @@ const persistStateToFs = async (nextState: RootState) => {
     };
     // });
 
-    await fsp.writeFile(stateFilePath, value, {encoding: "utf8"});
+    await fsp.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
     debug("end of persist reduxState in disk");
 };
 
