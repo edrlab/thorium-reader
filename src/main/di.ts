@@ -78,6 +78,11 @@ export const patchFilePath = path.join(
     "state.patch.json",
 );
 
+export const runtimeStateFilePath = path.join(
+    userDataPath,
+    "state.runtime.json",
+);
+
 //
 // Create databases
 //

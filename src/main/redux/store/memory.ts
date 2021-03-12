@@ -14,7 +14,7 @@ import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, patchFilePath, stateFilePath } from "readium-desktop/main/di";
+import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, patchFilePath, runtimeStateFilePath, stateFilePath } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
@@ -26,7 +26,6 @@ import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
-import * as path from "path";
 import { promises as fsp } from "fs";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { deepStrictEqual, ok } from "assert";
@@ -37,12 +36,6 @@ const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
 
 // Logger
 const debug = debug_("readium-desktop:main:store:memory");
-
-const userDataPath = app.getPath("userData");
-const runtimeStateFilePath = path.join(
-    userDataPath,
-    "state.runtime.json",
-);
 
 const defaultLocale = (): LocaleConfigValueType => {
     const loc = app.getLocale().split("-")[0];
