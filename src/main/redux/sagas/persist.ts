@@ -33,7 +33,11 @@ const persistStateToFs = async (nextState: RootState) => {
         identifier: CONFIGREPOSITORY_REDUX_PERSISTENCE,
         value: {
             win: nextState.win,
-            publication: nextState.publication,
+            publication: {
+                db: nextState.publication.db,
+                indexer: null,
+                lastReadingQueue: nextState.publication.lastReadingQueue,
+            },
             reader: nextState.reader,
             session: nextState.session,
             i18n: nextState.i18n,
