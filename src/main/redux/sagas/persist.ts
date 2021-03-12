@@ -36,6 +36,7 @@ const persistStateToFs = async (nextState: RootState) => {
             publication: nextState.publication,
             reader: nextState.reader,
             session: nextState.session,
+            i18n: nextState.i18n,
         },
     });
 
