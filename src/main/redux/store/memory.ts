@@ -14,11 +14,11 @@ import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
+import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, patchFilePath, stateFilePath } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
-import { RootState } from "readium-desktop/main/redux/states";
+import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { applyMiddleware, createStore, Store } from "redux";
@@ -26,12 +26,23 @@ import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
+import * as path from "path";
+import { promises as fsp } from "fs";
+import { tryCatch } from "readium-desktop/utils/tryCatch";
+import { deepStrictEqual, ok } from "assert";
+import { applyPatch } from "rfc6902";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
 
 // Logger
 const debug = debug_("readium-desktop:main:store:memory");
+
+const userDataPath = app.getPath("userData");
+const runtimeStateFilePath = path.join(
+    userDataPath,
+    "state.runtime.json",
+);
 
 const defaultLocale = (): LocaleConfigValueType => {
     const loc = app.getLocale().split("-")[0];
@@ -177,10 +188,33 @@ const absorbI18nToReduxState = async (
     return i18n;
 };
 
+const checksReduxState = async (reduxState: PersistRootState) => {
+
+    const runtimeStateStr = await tryCatch(() => fsp.readFile(runtimeStateFilePath, { encoding: "utf8" }), "");
+    const runtimeState = await tryCatch(() => JSON.parse(runtimeStateStr), "");
+
+    ok(typeof runtimeState === "object");
+
+    const patchFileStr = await tryCatch(() => fsp.readFile(patchFilePath, { encoding: "utf8" }), "");
+    const patch = await tryCatch(() => JSON.parse(patchFileStr), "");
+
+    ok(Array.isArray(patch));
+
+    const errors = applyPatch(runtimeStateStr, patch);
+
+    ok(errors.reduce((pv, cv) => pv && !cv, true));
+
+    deepStrictEqual(runtimeStateStr, reduxState);
+
+    debug("reduxState is certified valid");
+
+    return reduxState;
+};
+
 export async function initStore(configRepository: ConfigRepository<any>)
 : Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
-    let reduxStateWinRepository: ConfigDocument<Partial<RootState>>;
+    let reduxStateWinRepository: ConfigDocument<PersistRootState>;
 
     try {
         const reduxStateRepositoryResult = await configRepository.get(CONFIGREPOSITORY_REDUX_PERSISTENCE);
@@ -191,9 +225,43 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("ERR when trying to get the state in Pouchb configRepository", err);
     }
 
-    const reduxState = reduxStateWinRepository?.value
+    let reduxState = reduxStateWinRepository?.value
         ? reduxStateWinRepository.value
         : undefined;
+
+    if (!reduxState) {
+        const stateFromFs = await tryCatch(() => fsp.readFile(stateFilePath, {encoding: "utf8"}), "");
+
+        const json = await tryCatch(() => JSON.parse(stateFromFs), "");
+
+        if (typeof json === "object") {
+            reduxState = json;
+        }
+    }
+
+    if (reduxState) {
+
+        try {
+
+            reduxState = await checksReduxState(reduxState);
+        } catch (e) {
+            // how to deal with rejection ?
+
+            debug("####### ERROR ######");
+            debug("Your database is corrupted");
+            debug("");
+            debug("####### ERROR ######");
+
+            debug(e);
+
+            reduxState = undefined; // TODO
+        } finally {
+
+            await tryCatch(() => fsp.writeFile(runtimeStateFilePath, reduxState ? JSON.stringify(reduxState): "", { encoding: "utf8" }), "");
+
+            await tryCatch(() => fsp.writeFile(patchFilePath, "", { encoding: "utf8"}), "");
+        }
+    }
 
     if (!reduxState) {
         debug("####### WARNING ######");

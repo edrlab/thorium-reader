@@ -68,6 +68,16 @@ if (!fs.existsSync(userDataPath)) {
     fs.mkdirSync(userDataPath);
 }
 
+export const stateFilePath = path.join(
+    userDataPath,
+    "state.json",
+);
+
+export const patchFilePath = path.join(
+    userDataPath,
+    "state.patch.json",
+);
+
 //
 // Create databases
 //

@@ -6,13 +6,13 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
+import { patchFilePath, stateFilePath } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { RootState } from "readium-desktop/main/redux/states";
+import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce } from "redux-saga/effects";
 import { select as selectTyped } from "typed-redux-saga/macro";
+import { promises as fsp } from "fs";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 
@@ -28,28 +28,37 @@ const persistStateToFs = async (nextState: RootState) => {
     // rather need to save by chunck of data in many json file
 
     debug("start of persist reduxState in disk");
-    const configRepository: ConfigRepository<Partial<RootState>> = diMainGet("config-repository");
-    await configRepository.save({
-        identifier: CONFIGREPOSITORY_REDUX_PERSISTENCE,
-        value: {
-            win: nextState.win,
-            publication: nextState.publication,
-            reader: nextState.reader,
-            session: nextState.session,
-            i18n: nextState.i18n,
-        },
-    });
+    // const configRepository: ConfigRepository<Partial<RootState>> = diMainGet("config-repository");
+    // await configRepository.save({
+    // identifier: CONFIGREPOSITORY_REDUX_PERSISTENCE,
+    const value: PersistRootState = {
+        win: nextState.win,
+        publication: nextState.publication,
+        reader: nextState.reader,
+        session: nextState.session,
+        i18n: nextState.i18n,
+    };
+    // });
+
+    await fsp.writeFile(stateFilePath, value, {encoding: "utf8"});
     debug("end of persist reduxState in disk");
 };
 
-export function* needToPersistState() {
+export function* needToPersistFinalState() {
+
+    const nextState = yield* selectTyped((store: RootState) => store);
+    yield call(() => persistStateToFs(nextState));
+}
+
+export function* needToPersistPatch() {
 
     try {
 
-        const nextState = yield* selectTyped((store: RootState) => store);
-        yield call(() => persistStateToFs(nextState));
+        const patch = yield* selectTyped((store: RootState) => store.patch);
+        yield call(() => fsp.writeFile(patchFilePath, JSON.stringify(patch), { encoding: "utf8" }));
+
     } catch (e) {
-        debug("error persist state in user filesystem", e);
+        debug("ERROR to persist patch state in the filesystem", e);
     }
 }
 
@@ -57,6 +66,6 @@ export function saga() {
     return debounce(
         DEBOUNCE_TIME,
         winActions.persistRequest.ID,
-        needToPersistState,
+        needToPersistPatch,
     );
 }
