@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as lunr from "lunr";
 import { ok } from "assert";
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
@@ -218,7 +219,21 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const store = diMainGet("store");
             const state = store.getState();
 
-            const indexer = state.publication.indexer;
+            const pubs = Object.values(state.publication.db);
+
+            const indexer = lunr(function () {
+                this.field("title", { boost: 10 });
+                // this.setRef("id");
+
+                const docs = pubs.map((v) => ({
+                    id: v.identifier,
+                    title: v.title,
+                }));
+
+                docs.forEach((v) => {
+                    this.add(v);
+                });
+            });
 
             const res = indexer.search(title);
 

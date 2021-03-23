@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as eleasticlunr from "elasticlunr-idream";
 import * as debug_ from "debug";
 import { app } from "electron";
+import { clone } from "ramda";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
@@ -26,9 +26,8 @@ import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
-import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
 import { IDictPublicationState } from "../states/publication";
-import { clone } from "ramda";
+import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -292,18 +291,18 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
     try {
 
-        const index = eleasticlunr();
+        const index = lunr(function() {
+            this.field("title", { boost: 10});
+            // this.setRef("id");
 
-        index.addField("title");
-        index.setRef("id");
+            const docs = Object.values(reduxState.publication.db).map((v) => ({
+                id: v.identifier,
+                title: v.title,
+            }));
 
-        const docs = Object.values(reduxState.publication.db).map((v) => ({
-            id: v.identifier,
-            title: v.title,
-        }));
-
-        docs.forEach((v) => {
-            index.addDoc(v);
+            docs.forEach((v) => {
+                this.add(v);
+            });
         });
 
         reduxState.publication.indexer = index;
