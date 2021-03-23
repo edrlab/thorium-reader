@@ -239,7 +239,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
 
             ok(Array.isArray(res));
             const docs = res
-                .map((v: any) => Object.values(state.publication.db).find((f) => v.ref === f.identifier))
+                .map((v: any) => pubs.find((f) => v.ref === f.identifier))
                 .filter((v) => !!v);
 
             return docs;

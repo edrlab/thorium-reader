@@ -35,7 +35,6 @@ const persistStateToFs = async (nextState: RootState) => {
             win: nextState.win,
             publication: {
                 db: nextState.publication.db,
-                indexer: null,
                 lastReadingQueue: nextState.publication.lastReadingQueue,
             },
             reader: nextState.reader,

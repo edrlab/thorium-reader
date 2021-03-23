@@ -43,7 +43,6 @@ export interface RootState {
     publication: {
         lastReadingQueue: TPQueueState;
         db: IDictPublicationState;
-        indexer: any;
     };
     keyboard: KeyboardState;
 }

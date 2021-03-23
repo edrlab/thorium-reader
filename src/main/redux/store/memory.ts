@@ -291,29 +291,6 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
     try {
 
-        const index = lunr(function() {
-            this.field("title", { boost: 10});
-            // this.setRef("id");
-
-            const docs = Object.values(reduxState.publication.db).map((v) => ({
-                id: v.identifier,
-                title: v.title,
-            }));
-
-            docs.forEach((v) => {
-                this.add(v);
-            });
-        });
-
-        reduxState.publication.indexer = index;
-
-    } catch (e) {
-
-        debug("ERR on publication indexing to redux state", e);
-    }
-
-    try {
-
         reduxState.i18n = await absorbI18nToReduxState(configRepository, reduxState.i18n);
     } catch (e) {
 
