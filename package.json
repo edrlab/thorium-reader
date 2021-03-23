@@ -247,6 +247,7 @@
     "inversify-inject-decorators": "^3.1.0",
     "leveldown": "^5.6.0",
     "lunr": "^2.3.9",
+    "lunr-languages": "^1.4.0",
     "mathjax": "^3.1.2",
     "mime-types": "^2.1.29",
     "nanoid": "^3.1.20",

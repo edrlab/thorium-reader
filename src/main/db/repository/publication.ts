@@ -6,6 +6,10 @@
 // ==LICENSE-END==
 
 import * as lunr from "lunr";
+import * as lunrfr from "@lunr-languages/lunr.fr.js";
+import * as lunrde from "@lunr-languages/lunr.de.js";
+import * as lunrstemmer from "@lunr-languages/lunr.stemmer.support.js";
+import * as lunrmulti from "@lunr-languages/lunr.multi.js";
 import { ok } from "assert";
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
@@ -17,6 +21,11 @@ import { diMainGet } from "readium-desktop/main/di";
 import { publicationActions } from "readium-desktop/main/redux/actions";
 import { Unsubscribe } from "redux";
 import { ExcludeTimestampableAndIdentifiable } from "./base";
+
+lunrstemmer(lunr);
+lunrfr(lunr);
+lunrde(lunr);
+lunrmulti(lunr);
 
 // const CREATED_AT_INDEX = "created_at_index";
 
@@ -222,6 +231,13 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const pubs = Object.values(state.publication.db);
 
             const indexer = lunr(function () {
+
+                try {
+                    this.use((lunr as any).multiLanguage("en", "fr", "de"));
+                } catch (e) {
+                    console.log("lunr multilang not available", e);
+                }
+
                 this.field("title", { boost: 10 });
                 // this.setRef("id");
 
