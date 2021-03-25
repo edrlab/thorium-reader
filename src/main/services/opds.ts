@@ -36,6 +36,7 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
+import { ok } from "assert";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/opds");
@@ -75,9 +76,11 @@ export class OpdsService {
             undefined, // options
             async (opdsFeedData) => {
 
-                const { url: _baseUrl, responseUrl, contentType: _contentType } = opdsFeedData;
+                const { url: _baseUrl, responseUrl, contentType: _contentType, statusMessage, isFailure, isNetworkError, isAbort, isTimeout} = opdsFeedData;
                 const baseUrl = `${_baseUrl}`;
                 const contentType = parseContentType(_contentType);
+
+                ok(opdsFeedData.response, `message: ${statusMessage} | url: ${baseUrl} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
 
                 if (contentTypeisXml(contentType)) {
 
