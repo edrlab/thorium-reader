@@ -75,6 +75,14 @@ if ((i18next as unknown as i18n).createInstance) {
 
 // https://www.i18next.com/overview/configuration-options
 i18nextInstance.init({
+    // --
+    // https://github.com/i18next/i18next/pull/1584
+    // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#2000
+    // --
+    // https://github.com/i18next/i18next/issues/1589
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ignoreJSONStructure: false,
     debug: false,
     resources: {
         "en": {
