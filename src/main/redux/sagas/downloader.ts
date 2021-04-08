@@ -19,16 +19,14 @@ import { createTempDir } from "readium-desktop/main/fs/path";
 import { AbortSignal, httpGet } from "readium-desktop/main/network/http";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { cancelled, delay, take } from "redux-saga/effects";
-import * as stream from "stream";
+import { cancel, cancelled, delay, take } from "redux-saga/effects";
 import { FixedTask, SagaGenerator } from "typed-redux-saga";
 import {
-    call as callTyped, cancel as cancelTyped, flush as flushTyped, fork as forkTyped, join as joinTyped,
+    call as callTyped, flush as flushTyped, fork as forkTyped, join as joinTyped,
     put as putTyped, race as raceTyped,
 } from "typed-redux-saga/macro";
-import * as util from "util";
 
-import { Channel, channel } from "@redux-saga/core";
+import { Channel, channel, eventChannel } from "@redux-saga/core";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
@@ -103,7 +101,7 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
         callTyped(function*() {
 
             yield take(downloadActions.abort.ID);
-            yield* cancelTyped(downloadProcessTasks);
+            yield cancel(downloadProcessTasks);
         }),
         callTyped(downloaderServiceProcessStatusProgressLoop, statusTaskChannel, id, href),
         joinTyped(downloadProcessTasks),
@@ -130,27 +128,31 @@ function* downloaderServiceDownloadProcessTask(chan: Channel<TDownloaderChannel>
 
 function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStream, writeStream: WriteStream): SagaGenerator<void> {
 
+    if (!readStream || !writeStream) return;
+
+    readStream.pipe(writeStream);
+    const chan = eventChannel((emit) => {
+        const f = () => emit(0);
+        readStream.on("end", f);
+        readStream.on("close", f);
+        readStream.on("error", f);
+
+        return () => {
+
+            debug("DESTROY FROM CHANNEL");
+            readStream.destroy();
+            readStream.off("close", f);
+            readStream.off("error", f);
+            readStream.off("end", f);
+        };
+    });
+
     try {
-        const pipeline = util.promisify(stream.pipeline);
-        if (readStream && writeStream) {
 
-            // TODO: fix it
-            // pipeline is not cancellable
-            yield* callTyped(async () => pipeline(
-                readStream,
-                writeStream,
-            ));
-
-        }
-
+        yield take(chan);
+        debug("pipeline done");
     } finally {
-
-        debug("downloaderServiceProcessTaskStreamPipeline finally");
-
-        if (yield cancelled()) {
-            debug("downloaderService cancelled -> abort");
-
-        }
+        if (yield cancelled()) chan.close();
     }
 }
 
@@ -333,6 +335,9 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
                 });
             });
 
+            readStream.on("close", () => {
+                clearInterval(iv);
+            });
         },
         // buffers.sliding(1),
     );
