@@ -93,7 +93,7 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
 
     const statusTaskChannel = (yield* callTyped(channel)) as Channel<TDownloaderChannel>;
 
-    const downloadProcessTasks: FixedTask<string>[] = [];
+    const downloadProcessTasks: FixedTask<string | undefined>[] = [];
     for (const linkHref of linkHrefArray) {
         const f = yield* forkTyped(downloaderServiceDownloadProcessTask, statusTaskChannel, linkHref, id);
         downloadProcessTasks.push(f);
@@ -116,7 +116,9 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
     return filesPathArray;
 }
 
-function* downloaderServiceDownloadProcessTask(chan: Channel<TDownloaderChannel>, linkHref: IDownloaderLink, id?: number): SagaGenerator<string> {
+function* downloaderServiceDownloadProcessTask(chan: Channel<TDownloaderChannel>, linkHref: IDownloaderLink, id?: number): SagaGenerator<string | undefined> {
+
+    if (!linkHref) return undefined;
 
     const [pathFile, channel, readStream] = yield* callTyped(downloadLinkProcess, linkHref, id);
     if (channel) yield* putTyped(chan, channel);
