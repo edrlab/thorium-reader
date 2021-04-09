@@ -277,7 +277,7 @@ const getLibraryWindowFromDi =
     () => {
         ok(libraryWin, "library window not defined");
         return libraryWin;
-    }
+    };
 
 const readerWinMap = new Map<string, BrowserWindow>();
 
