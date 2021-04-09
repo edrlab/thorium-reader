@@ -127,7 +127,7 @@ i18nextInstance.init({
         },
         "ko": {
             translation: koCatalog,
-        }
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
