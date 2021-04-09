@@ -392,7 +392,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         {
                             this.props.isPdf
                                 ? <li
-                                    {...(this.props.isOnBookmark &&
+                                    {...(this.state.pdfScaleMode === "page-width" &&
                                         { style: { backgroundColor: "rgb(193, 193, 193)" } })}
                                 >
                                     <input
