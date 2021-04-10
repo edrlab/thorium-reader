@@ -349,7 +349,8 @@
             "play": "Tocar Texto para fala",
             "previous": "Texto para fala anterior",
             "speed": "Velocidade de Texto para fala",
-            "stop": "Parar Texto para fala"
+            "stop": "Parar Texto para fala",
+            "voice": ""
         }
     },
     "settings": {

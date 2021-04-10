@@ -604,7 +604,8 @@ declare namespace typed_i18n {
     readonly "play": string,
     readonly "previous": string,
     readonly "speed": string,
-    readonly "stop": string
+    readonly "stop": string,
+    readonly "voice": string
   }
 };
   (_: "reader.footerInfo", __?: {}): { readonly "lessInfo": string, readonly "moreInfo": string };
@@ -866,7 +867,8 @@ declare namespace typed_i18n {
   readonly "play": string,
   readonly "previous": string,
   readonly "speed": string,
-  readonly "stop": string
+  readonly "stop": string,
+  readonly "voice": string
 };
   (_: "reader.tts.activate", __?: {}): string;
   (_: "reader.tts.next", __?: {}): string;
@@ -875,6 +877,7 @@ declare namespace typed_i18n {
   (_: "reader.tts.previous", __?: {}): string;
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
+  (_: "reader.tts.voice", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {

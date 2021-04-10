@@ -349,7 +349,8 @@
             "play": "Reproducir texto a voz",
             "previous": "Anterior texto a voz",
             "speed": "Velocidad de reproducción para texto a voz",
-            "stop": "Detener texto a voz"
+            "stop": "Detener texto a voz",
+            "voice": ""
         }
     },
     "settings": {

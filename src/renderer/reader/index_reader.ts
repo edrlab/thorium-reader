@@ -23,11 +23,13 @@ import {
 } from "@r2-shared-js/init-globals";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-let devTron: any;
+// let devTron: any;
 let axe: any;
 if (IS_DEV) {
+    // requires electron.remote!
+    // enableRemoteModule: false
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    devTron = require("devtron");
+    // devTron = require("devtron");
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     axe = require("react-axe");
@@ -37,11 +39,11 @@ initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
 initGlobalConverters_GENERIC();
 
-if (IS_DEV) {
-    setTimeout(() => {
-        devTron.install();
-    }, 5000);
-}
+// if (IS_DEV) {
+//     setTimeout(() => {
+//         devTron.install();
+//     }, 5000);
+// }
 
 ipcRenderer.on(readerIpc.CHANNEL,
     (_0: any, data: readerIpc.EventPayload) => {

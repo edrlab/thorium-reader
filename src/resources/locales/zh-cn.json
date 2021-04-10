@@ -349,7 +349,8 @@
             "play": "播放",
             "previous": "上一段",
             "speed": "语速",
-            "stop": "停止"
+            "stop": "停止",
+            "voice": ""
         }
     },
     "settings": {

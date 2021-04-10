@@ -328,7 +328,15 @@ button {
       & > li.ttsSelectRate {
         display: flex;
         align-items: center;
-        width: 100px;
+        width: auto;
+      }
+      & > li.ttsSelectVoice {
+        display: flex;
+        align-items: center;
+        width: auto;
+        & > select {
+          width: 180px;
+        }
       }
 
       & > li.button_audio {
@@ -342,6 +350,7 @@ button {
         padding: 0;
         margin: 0;
         margin-left: 1em;
+        margin-right: 1em;
 
         text-align: center !important;
 

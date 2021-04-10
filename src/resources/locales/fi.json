@@ -349,7 +349,8 @@
             "play": "Jatka",
             "previous": "Edellinen",
             "speed": "Tekstistä puheeksi nopeuden säätö",
-            "stop": "Lopeta tekstistä puheeksi"
+            "stop": "Lopeta tekstistä puheeksi",
+            "voice": ""
         }
     },
     "settings": {
