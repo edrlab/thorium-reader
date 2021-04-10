@@ -349,7 +349,8 @@
             "play": "Riproduci Testo a Voce",
             "previous": "Precedente Testo a Voce",
             "speed": "Velocità di riproduzione Testo a Voce",
-            "stop": "Interrompi Testo a Voce"
+            "stop": "Interrompi Testo a Voce",
+            "voice": ""
         }
     },
     "settings": {

@@ -349,7 +349,8 @@
             "play": "",
             "previous": "",
             "speed": "",
-            "stop": ""
+            "stop": "",
+            "voice": ""
         }
     },
     "settings": {

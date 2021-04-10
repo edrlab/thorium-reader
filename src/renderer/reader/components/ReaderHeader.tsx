@@ -59,8 +59,10 @@ interface IBaseProps extends TranslatorProps {
     handleTTSPrevious: () => void;
     handleTTSNext: () => void;
     handleTTSPlaybackRate: (speed: string) => void;
+    handleTTSVoice: (voice: SpeechSynthesisVoice | null) => void;
     ttsState: TTSStateEnum;
     ttsPlaybackRate: string;
+    ttsVoice: SpeechSynthesisVoice | null;
 
     publicationHasMediaOverlays: boolean;
     handleMediaOverlaysPlay: () => void;
@@ -169,6 +171,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+
+        const _orderedVoices = speechSynthesis.getVoices().sort((a: SpeechSynthesisVoice, b: SpeechSynthesisVoice) => {
+            if(a.lang < b.lang) { return -1; }
+            if(a.lang > b.lang) { return 1; }
+            return 0;
+        });
 
         const showAudioTTSToolbar = (this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo) &&
             !this.props.isDivina && !this.props.isPdf;
@@ -360,10 +368,36 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <option value="0.5">0.5x</option>
                                     </select>
                                 </li>
+                                {!this.props.publicationHasMediaOverlays && (
+                                <li className={styles.ttsSelectVoice}>
+                                    <select title={__("reader.tts.voice")}
+                                        onChange={(ev) => {
+                                            const i = parseInt(ev.target.value.toString(), 10);
+                                            const voice = i === 0 ? null : _orderedVoices[i-1];
+                                            // alert(`${i} ${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
+                                            this.props.handleTTSVoice(voice ? voice : null);
+                                        }}
+                                        value={
+                                            this.props.ttsVoice ?
+                                            _orderedVoices.findIndex((voice) => {
+                                                // exact match
+                                                return voice.name === this.props.ttsVoice.name && voice.lang === this.props.ttsVoice.lang && voice.voiceURI === this.props.ttsVoice.voiceURI && voice.default === this.props.ttsVoice.default && voice.localService === this.props.ttsVoice.localService;
+                                            }) + 1 : 0
+                                        }
+                                    >
+                                        {
+                                        [].concat((<option key={"tts0"} value="{i}">{`${__("reader.tts.voice")}`}</option>),
+                                        _orderedVoices.map((voice, i) => {
+                                            // SpeechSynthesisVoice
+                                            return (<option key={`tts${i+1}`} value={i+1}>{`${voice.name} (${voice.lang})${voice.default ? " *" : ""}`}</option>);
+                                        }))
+                                        }
+                                    </select>
+                                </li>
+                                )}
                             </>
                         }
                     </ul>
-
                     <ul className={styles.menu_option}>
                         <li
                             {...(this.props.isOnSearch && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
