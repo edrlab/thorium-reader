@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { BrowserWindow, Event, shell } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
-import { diMainGet, saveLibraryWindowInDi } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -93,8 +93,6 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     }
 
     yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
-
-    yield* callTyped(() => saveLibraryWindowInDi(libWindow));
 
     const readers = yield* selectTyped(
         (state: RootState) => state.win.session.reader,

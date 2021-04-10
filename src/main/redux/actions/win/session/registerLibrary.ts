@@ -7,7 +7,9 @@
 // ==LICENSE-END==
 
 import { BrowserWindow } from "electron";
+import { ok } from "assert";
 import { Action } from "readium-desktop/common/models/redux";
+import { saveLibraryWindowInDi } from "readium-desktop/main/di";
 
 import * as uuid from "uuid";
 
@@ -21,6 +23,9 @@ export interface Payload {
 
 export function build(win: BrowserWindow, winBound: Electron.Rectangle):
     Action<typeof ID, Payload> {
+
+    ok(win, "lib win not defined");
+    saveLibraryWindowInDi(win);
 
     return {
         type: ID,
