@@ -46,6 +46,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
+            enableRemoteModule: false,
             backgroundThrottling: true,
             devTools: IS_DEV,
             nodeIntegration: true, // Required to use IPC
