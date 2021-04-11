@@ -344,6 +344,7 @@
         },
         "tts": {
             "activate": "",
+            "default": "",
             "next": "",
             "pause": "",
             "play": "",

@@ -599,6 +599,7 @@ declare namespace typed_i18n {
   readonly "toc": { readonly "publicationNoToc": string },
   readonly "tts": {
     readonly "activate": string,
+    readonly "default": string,
     readonly "next": string,
     readonly "pause": string,
     readonly "play": string,
@@ -862,6 +863,7 @@ declare namespace typed_i18n {
   (_: "reader.toc.publicationNoToc", __?: {}): string;
   (_: "reader.tts", __?: {}): {
   readonly "activate": string,
+  readonly "default": string,
   readonly "next": string,
   readonly "pause": string,
   readonly "play": string,
@@ -871,6 +873,7 @@ declare namespace typed_i18n {
   readonly "voice": string
 };
   (_: "reader.tts.activate", __?: {}): string;
+  (_: "reader.tts.default", __?: {}): string;
   (_: "reader.tts.next", __?: {}): string;
   (_: "reader.tts.pause", __?: {}): string;
   (_: "reader.tts.play", __?: {}): string;

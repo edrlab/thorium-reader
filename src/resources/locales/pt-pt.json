@@ -344,6 +344,7 @@
         },
         "tts": {
             "activate": "Ativar Texto para fala",
+            "default": "",
             "next": "Próximo Texto para fala",
             "pause": "Pausar Texto para fala",
             "play": "Tocar Texto para fala",

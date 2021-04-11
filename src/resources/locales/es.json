@@ -344,6 +344,7 @@
         },
         "tts": {
             "activate": "Activar texto a voz",
+            "default": "",
             "next": "Siguiente texto a voz",
             "pause": "Pausar texto a voz",
             "play": "Reproducir texto a voz",

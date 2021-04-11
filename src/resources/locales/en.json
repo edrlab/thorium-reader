@@ -344,6 +344,7 @@
         },
         "tts": {
             "activate": "Activate Text To Speech",
+            "default": "Voice: system default",
             "next": "Next Text To Speech",
             "pause": "Pause Text To Speech",
             "play": "Play Text To Speech",

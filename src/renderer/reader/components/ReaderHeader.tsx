@@ -172,11 +172,29 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
+        const LANG_DIVIDER_PREFIX = "------------";
+        let prevLang: string | undefined;
         const _orderedVoices = speechSynthesis.getVoices().sort((a: SpeechSynthesisVoice, b: SpeechSynthesisVoice) => {
             if(a.lang < b.lang) { return -1; }
             if(a.lang > b.lang) { return 1; }
+            // a.lang === b.lang ...
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
             return 0;
-        });
+        }).reduce((acc, curr) => {
+            if (!prevLang || prevLang !== curr.lang) {
+                acc.push({
+                    default: false,
+                    lang: curr.lang,
+                    localService: false,
+                    name: LANG_DIVIDER_PREFIX,
+                    voiceURI: "",
+                });
+            }
+            prevLang = curr.lang;
+            acc.push(curr);
+            return acc;
+        }, [] as SpeechSynthesisVoice[]);
 
         const showAudioTTSToolbar = (this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo) &&
             !this.props.isDivina && !this.props.isPdf;
@@ -373,8 +391,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     <select title={__("reader.tts.voice")}
                                         onChange={(ev) => {
                                             const i = parseInt(ev.target.value.toString(), 10);
-                                            const voice = i === 0 ? null : _orderedVoices[i-1];
+                                            let voice = i === 0 ? null : _orderedVoices[i-1];
                                             // alert(`${i} ${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
+                                            if (voice && voice.name === LANG_DIVIDER_PREFIX) {
+                                                // voice = null;
+                                                voice = _orderedVoices[i];
+                                            }
                                             this.props.handleTTSVoice(voice ? voice : null);
                                         }}
                                         value={
@@ -386,10 +408,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         }
                                     >
                                         {
-                                        [].concat((<option key={"tts0"} value="{i}">{`${__("reader.tts.voice")}`}</option>),
+                                        [].concat((<option key={"tts0"} value="{i}">{`${__("reader.tts.default")}`}</option>),
                                         _orderedVoices.map((voice, i) => {
                                             // SpeechSynthesisVoice
-                                            return (<option key={`tts${i+1}`} value={i+1}>{`${voice.name} (${voice.lang})${voice.default ? " *" : ""}`}</option>);
+                                            return (<option key={`tts${i+1}`} value={i+1}>{`${voice.name}${voice.name === LANG_DIVIDER_PREFIX ? ` [${voice.lang}]` : ""}${voice.default ? " *" : ""}`}</option>);
                                         }))
                                         }
                                     </select>

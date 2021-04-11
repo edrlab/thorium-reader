@@ -344,6 +344,7 @@
         },
         "tts": {
             "activate": "Käynnistä tekstistä puheeksi",
+            "default": "",
             "next": "Seuraava",
             "pause": "Pysäytä",
             "play": "Jatka",

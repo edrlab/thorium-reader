@@ -344,6 +344,7 @@
         },
         "tts": {
             "activate": "激活文本语音转换",
+            "default": "",
             "next": "下一段",
             "pause": "暂停",
             "play": "播放",

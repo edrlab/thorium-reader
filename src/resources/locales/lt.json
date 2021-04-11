@@ -344,6 +344,7 @@
         },
         "tts": {
             "activate": "Aktyvuoti teksto įgarsinimą",
+            "default": "",
             "next": "Tolesnis teksto įgarsinimas",
             "pause": "Pristabdyti teksto įgarsinimą",
             "play": "Atkurti teksto įgarsinimą",
