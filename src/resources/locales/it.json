@@ -344,12 +344,14 @@
         },
         "tts": {
             "activate": "Attiva Testo a Voce",
+            "default": "",
             "next": "Prossimo Testo a Voce",
             "pause": "Metti in pausa Testo a Voce",
             "play": "Riproduci Testo a Voce",
             "previous": "Precedente Testo a Voce",
             "speed": "Velocità di riproduzione Testo a Voce",
-            "stop": "Interrompi Testo a Voce"
+            "stop": "Interrompi Testo a Voce",
+            "voice": ""
         }
     },
     "settings": {

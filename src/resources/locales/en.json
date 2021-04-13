@@ -344,12 +344,14 @@
         },
         "tts": {
             "activate": "Activate Text To Speech",
+            "default": "Voice: system default",
             "next": "Next Text To Speech",
             "pause": "Pause Text To Speech",
             "play": "Play Text To Speech",
             "previous": "Previous Text To Speech",
             "speed": "Text To Speech playback rate",
-            "stop": "Stop Text To Speech"
+            "stop": "Stop Text To Speech",
+            "voice": "Text To Speech voice"
         }
     },
     "settings": {
