@@ -466,6 +466,8 @@ export class AbortSignal implements IAbortSignal {
         this.aborted = false;
     }
 
+    public onabort: IAbortSignal["onabort"] = null;
+
     // public get aborted() {
     //     return this._aborted;
     // }
