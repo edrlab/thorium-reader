@@ -29,11 +29,13 @@ if (IS_DEV) {
     cr.consoleRedirect("readium-desktop:renderer:bookshelf", process.stdout, process.stderr, true);
 }
 
-let devTron: any;
+// let devTron: any;
 let axe: any;
 if (IS_DEV) {
+    // requires electron.remote!
+    // enableRemoteModule: false
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    devTron = require("devtron");
+    // devTron = require("devtron");
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     axe = require("react-axe");
@@ -48,11 +50,11 @@ initGlobalConverters_GENERIC();
 // const lcpNativePluginPath = path.normalize(path.join((global as any).__dirname, "external-assets", "lcp.node"));
 // setLcpNativePluginPath(lcpNativePluginPath);
 
-if (IS_DEV) {
-    setTimeout(() => {
-        devTron.install();
-    }, 5000);
-}
+// if (IS_DEV) {
+//     setTimeout(() => {
+//         devTron.install();
+//     }, 5000);
+// }
 
 ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {

@@ -45,6 +45,7 @@ export const extractPDFData =
                 height: 600,
                 // show: false,
                 webPreferences: {
+                    enableRemoteModule: false,
                     nodeIntegration: true,
                 },
             });

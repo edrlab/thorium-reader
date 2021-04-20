@@ -58,9 +58,17 @@ export async function importPublicationFromFS(
 
             break;
 
+        // eslint-disable-next-line no-fallthrough
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore-next-line
+        case acceptedExtensionObject.opf:
+            // DaisyParsePromise allows fake zip to filesystem folder
+            filePath = path.dirname(filePath);
+            /* falls through */
         case acceptedExtensionObject.daisy:
+        case acceptedExtensionObject.zip:
 
-            debug("daisy extension", ext);
+            debug("daisy extension: ", ext);
 
             r2Publication = await DaisyParsePromise(filePath);
 

@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classnames from "classnames";
 import { debounce } from "debounce";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -25,6 +24,8 @@ import { ISearchResult } from "readium-desktop/utils/search/search.interface";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { readerLocalActionSearch } from "../redux/actions";
+
+import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -235,7 +236,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                 >
                                     <a
                                         className={
-                                            classnames(styles.line,
+                                            classNames(styles.line,
                                                 styles.active,
                                                 isRTL ? styles.rtlDir : " ")
                                         }
@@ -327,7 +328,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //                                         className={
     //                                             link.Href
     //                                                 ? styles.subheading
-    //                                             : classnames(styles.subheading, styles.inert)
+    //                                             : classNames(styles.subheading, styles.inert)
     //                                         }
     //                                         tabIndex={0}
     //                                     >
@@ -342,8 +343,8 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //                                     <a
     //                                         className={
     //                                             link.Href ?
-    //                                                 classnames(styles.line, styles.active) :
-    //                                                 classnames(styles.line, styles.active, styles.inert)
+    //                                                 classNames(styles.line, styles.active) :
+    //                                                 classNames(styles.line, styles.active, styles.inert)
     //                                         }
     //                                         onClick=
     //                                         {(e) => this.handleSearchClick(e, link.Href, false)}

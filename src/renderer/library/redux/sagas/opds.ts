@@ -50,9 +50,10 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
         const newParsedResultTitle = tryDecodeURIComponent(parsedResult.title);
         debug(newParsedResultTitle);
 
+        // reset
         yield put(opdsActions.search.build({
-            url: undefined,
-            level: undefined,
+        }));
+        yield put(opdsActions.headerLinksUpdate.build({
         }));
 
         // re-render opds navigator
