@@ -245,7 +245,10 @@ export async function httpFetchFormattedResponse<TData = undefined>(
 
         const errStr = err.toString();
 
+        debug("### HTTP FETCH ERROR ###");
         debug(errStr);
+        debug("url: ", url);
+        debug("options: ", options);
 
         if (err.name === "AbortError") {
             result = {
@@ -277,6 +280,10 @@ export async function httpFetchFormattedResponse<TData = undefined>(
                 statusMessage: errStr,
             };
         }
+
+        debug("HTTP FAIL RESUlT");
+        debug(result);
+        debug("#################");
 
     } finally {
         result = await handleCallback(result, callback);
@@ -458,6 +465,8 @@ export class AbortSignal implements IAbortSignal {
         this.listenerArray = [];
         this.aborted = false;
     }
+
+    public onabort: IAbortSignal["onabort"] = null;
 
     // public get aborted() {
     //     return this._aborted;

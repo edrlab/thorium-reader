@@ -37,6 +37,7 @@ export function* importFromFsService(
     const isLCPLicense = isAcceptedExtension("lcpLicence", ext); // || (ext === ".part" && isLcpFile);
     const isLPF = isAcceptedExtension("w3cAudiobook", ext);
     const isPDF = isAcceptedExtension("pdf", ext);
+    const isOPF = isAcceptedExtension("opf", ext);
 
     debug("extension", ext);
     debug("lcp/lpf/pdf", isLCPLicense, isLPF, isPDF);
@@ -47,13 +48,12 @@ export function* importFromFsService(
             undefined :
             (isPDF ?
                 yield* callTyped(() => computeFileHash(filePath)) :
-                yield* callTyped(() => extractCrc32OnZip(filePath))
+                (isOPF ? undefined : yield* callTyped(() => extractCrc32OnZip(filePath)))
             );
     const [publicationDocumentInRepository] = hash
         ? yield* callTyped(() => publicationRepository.findByHashId(hash))
         : [];
     if (publicationDocumentInRepository) {
-
         return [publicationDocumentInRepository, true];
     }
 

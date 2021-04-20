@@ -66,7 +66,8 @@ const fetchFactory = async () => {
         cookieJar = new tougth.CookieJar();
     }
 
-    const _fetch = nodeFetchCookie(nodeFetch, cookieJar, false) as typeof nodeFetch; // doesn't ignore errors
+    // https://github.com/edrlab/thorium-reader/issues/1424
+    const _fetch = nodeFetchCookie(nodeFetch, cookieJar, true) as typeof nodeFetch; // ignore errors
 
     return _fetch;
 };

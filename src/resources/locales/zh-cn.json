@@ -344,12 +344,14 @@
         },
         "tts": {
             "activate": "激活文本语音转换",
+            "default": "",
             "next": "下一段",
             "pause": "暂停",
             "play": "播放",
             "previous": "上一段",
             "speed": "语速",
-            "stop": "停止"
+            "stop": "停止",
+            "voice": ""
         }
     },
     "settings": {
