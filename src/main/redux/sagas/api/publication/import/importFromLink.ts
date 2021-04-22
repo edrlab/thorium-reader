@@ -46,10 +46,17 @@ function* importLinkFromPath(
             publicationDocument,
             {
                 resources: {
-                    r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
-                    r2LCPBase64: publicationDocument.resources.r2LCPBase64,
-                    r2LSDBase64: publicationDocument.resources.r2LSDBase64,
-                    r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
+                    r2PublicationJson: publicationDocument.resources.r2PublicationJson,
+                    r2LCPJson: publicationDocument.resources.r2LCPJson,
+                    r2LSDJson: publicationDocument.resources.r2LSDJson,
+                    r2OpdsPublicationJson: pub?.r2OpdsPublicationJson || undefined,
+
+                    // Legacy Base64 data blobs
+                    //
+                    // r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
+                    // r2LCPBase64: publicationDocument.resources.r2LCPBase64,
+                    // r2LSDBase64: publicationDocument.resources.r2LSDBase64,
+                    // r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
                 },
                 tags,
             },

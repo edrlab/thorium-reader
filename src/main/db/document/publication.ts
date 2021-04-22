@@ -10,12 +10,21 @@ import { File } from "readium-desktop/common/models/file";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
+import { JsonMap } from "readium-desktop/typings/json";
 
 export interface Resources {
-    r2PublicationBase64?: string;
-    r2LCPBase64?: string;
-    r2LSDBase64?: string;
-    r2OpdsPublicationBase64?: string;
+
+    r2PublicationJson?: JsonMap;
+    r2LCPJson?: JsonMap;
+    r2LSDJson?: JsonMap;
+    r2OpdsPublicationJson?: JsonMap;
+
+    // Legacy Base64 data blobs
+    //
+    // r2PublicationBase64?: string;
+    // r2LCPBase64?: string;
+    // r2LSDBase64?: string;
+    // r2OpdsPublicationBase64?: string;
 }
 
 export interface PublicationDocument extends Identifiable, Timestampable {

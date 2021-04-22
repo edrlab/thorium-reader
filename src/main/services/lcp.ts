@@ -26,6 +26,7 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { _USE_HTTP_STREAMER, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { JsonMap } from "readium-desktop/typings/json";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
@@ -172,19 +173,27 @@ export class LcpManager {
             publicationDocument.resources = {};
         }
         if (r2Lcp) {
-            const r2LCPStr = r2Lcp.JsonSource ?? JSON.stringify(TaJsonSerialize(r2Lcp));
-            publicationDocument.resources.r2LCPBase64 = Buffer.from(r2LCPStr).toString("base64");
+            // Legacy Base64 data blobs
+            // const r2LCPStr = r2Lcp.JsonSource ?? JSON.stringify(TaJsonSerialize(r2Lcp));
+            // publicationDocument.resources.r2LCPBase64 = Buffer.from(r2LCPStr).toString("base64");
+            const r2LCPJson = r2Lcp.JsonSource ? JSON.parse(r2Lcp.JsonSource) : TaJsonSerialize(r2Lcp);
+            publicationDocument.resources.r2LCPJson = r2LCPJson;
 
             if (r2Lcp.LSD) {
+                // Legacy Base64 data blobs
+                // const r2LSDStr = JSON.stringify(r2LSDJson);
+                // publicationDocument.resources.r2LSDBase64 = Buffer.from(r2LSDStr).toString("base64");
                 const r2LSDJson = TaJsonSerialize(r2Lcp.LSD);
-                const r2LSDStr = JSON.stringify(r2LSDJson);
-                publicationDocument.resources.r2LSDBase64 = Buffer.from(r2LSDStr).toString("base64");
+                publicationDocument.resources.r2LSDJson = r2LSDJson;
             }
 
             publicationDocument.lcp = this.convertLcpLsdInfo(
                 r2Lcp,
-                publicationDocument.resources.r2LCPBase64,
-                publicationDocument.resources.r2LSDBase64);
+                // Legacy Base64 data blobs
+                // publicationDocument.resources.r2LCPBase64,
+                // publicationDocument.resources.r2LSDBase64
+                publicationDocument.resources.r2LCPJson,
+                publicationDocument.resources.r2LSDJson);
         }
     }
 
@@ -195,9 +204,13 @@ export class LcpManager {
 
         let r2Publication: R2Publication;
 
+        // Legacy Base64 data blobs
+        // const mustParse = !publicationDocument.resources ||
+        //     !publicationDocument.resources.r2PublicationBase64 ||
+        //     (requiresLCP && !publicationDocument.resources.r2LCPBase64);
         const mustParse = !publicationDocument.resources ||
-            !publicationDocument.resources.r2PublicationBase64 ||
-            (requiresLCP && !publicationDocument.resources.r2LCPBase64);
+            !publicationDocument.resources.r2PublicationJson ||
+            (requiresLCP && !publicationDocument.resources.r2LCPJson);
 
         if (mustParse) {
             const epubPath = this.publicationStorage.getPublicationEpubPath(
@@ -214,33 +227,42 @@ export class LcpManager {
             // (no need to fetch ZIP data beyond this point)
             r2Publication.freeDestroy();
         } else {
-            const r2PublicationBase64 = publicationDocument.resources.r2PublicationBase64;
-            const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
-            const r2PublicationJson = JSON.parse(r2PublicationStr);
-            r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+            // Legacy Base64 data blobs
+            // const r2PublicationBase64 = publicationDocument.resources.r2PublicationBase64;
+            // const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
+            // const r2PublicationJson = JSON.parse(r2PublicationStr);
+            r2Publication = TaJsonDeserialize(publicationDocument.resources.r2PublicationJson, R2Publication);
         }
         if (!r2Publication.LCP &&
-            publicationDocument.resources && publicationDocument.resources.r2LCPBase64) {
+            publicationDocument.resources &&
+            publicationDocument.resources.r2LCPJson) {
 
-            const r2LCPBase64 = publicationDocument.resources.r2LCPBase64;
-            const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
-            const r2LCPJson = JSON.parse(r2LCPStr);
+            // Legacy Base64 data blobs
+            // const r2LCPBase64 = publicationDocument.resources.r2LCPBase64;
+            // const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
+            // const r2LCPJson = JSON.parse(r2LCPStr);
+            const r2LCPJson = publicationDocument.resources.r2LCPJson;
 
             if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
                 throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
             }
 
             const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
+
+            const r2LCPStr = JSON.stringify(r2LCPJson);
             r2LCP.JsonSource = r2LCPStr;
 
             r2Publication.LCP = r2LCP;
         }
         if (r2Publication.LCP &&
-            publicationDocument.resources && publicationDocument.resources.r2LSDBase64) {
+            publicationDocument.resources &&
+            publicationDocument.resources.r2LSDJson) {
 
-            const r2LSDBase64 = publicationDocument.resources.r2LSDBase64;
-            const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
-            const r2LSDJson = JSON.parse(r2LSDStr);
+            // Legacy Base64 data blobs
+            // const r2LSDBase64 = publicationDocument.resources.r2LSDBase64;
+            // const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
+            // const r2LSDJson = JSON.parse(r2LSDStr);
+            const r2LSDJson = publicationDocument.resources.r2LSDJson;
             const r2LSD = TaJsonDeserialize(r2LSDJson, LSD);
 
             r2Publication.LCP.LSD = r2LSD;
@@ -735,7 +757,7 @@ export class LcpManager {
         return undefined;
     }
 
-    public convertLcpLsdInfo(lcp: LCP, r2LCPBase64: string, r2LSDBase64: string): LcpInfo {
+    public convertLcpLsdInfo(lcp: LCP, r2LCPJson: JsonMap, r2LSDJson: JsonMap): LcpInfo {
 
         let dateStr1 = "";
         try {
@@ -771,7 +793,11 @@ export class LcpManager {
                 start: dateStr3,
                 end: dateStr4,
             } : undefined,
-            r2LCPBase64,
+
+            r2LCPJson,
+            // Legacy Base64 data blobs
+            // r2LCPBase64,
+
             textHint: lcp.Encryption.UserKey.TextHint ? lcp.Encryption.UserKey.TextHint : "",
         };
 
@@ -782,7 +808,10 @@ export class LcpManager {
             if (statusLink) {
                 lcpInfo.lsd = {
                     statusUrl: statusLink.Href,
-                    r2LSDBase64,
+
+                    r2LSDJson,
+                    // Legacy Base64 data blobs
+                    // r2LSDBase64,
                 };
             }
 

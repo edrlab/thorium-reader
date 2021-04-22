@@ -149,8 +149,9 @@ export async function importPublicationFromFS(
     }
 
     const r2PublicationJson = TaJsonSerialize(r2Publication);
-    const r2PublicationStr = JSON.stringify(r2PublicationJson);
-    const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
+    // Legacy Base64 data blobs
+    // const r2PublicationStr = JSON.stringify(r2PublicationJson);
+    // const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
 
     const lcpManager = diMainGet("lcp-manager");
     const publicationRepository = diMainGet("publication-repository");
@@ -159,10 +160,18 @@ export async function importPublicationFromFS(
     const pubDocument: PublicationDocumentWithoutTimestampable = {
         identifier: uuidv4(),
         resources: {
-            r2PublicationBase64,
-            r2LCPBase64: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
-            r2LSDBase64: null, // may be updated via lcpManager.processStatusDocument()
-            r2OpdsPublicationBase64: null, // remains null as publication not originate from OPDS
+            // Legacy Base64 data blobs
+
+            r2PublicationJson,
+
+            // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+            r2LCPJson: null,
+
+            // may be updated via lcpManager.processStatusDocument()
+            r2LSDJson: null,
+
+            // remains null as publication not originate from OPDS
+            r2OpdsPublicationJson: null,
         },
         title: convertMultiLangStringToString(r2Publication.Metadata.Title),
         tags: [],

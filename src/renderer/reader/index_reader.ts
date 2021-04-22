@@ -51,9 +51,10 @@ ipcRenderer.on(readerIpc.CHANNEL,
             case readerIpc.EventType.request:
                 // Initialize window
 
-                // create an instance of r2Publication
-                const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf-8");
-                const r2PublicationJson = JSON.parse(r2PublicationStr);
+                // Legacy Base64 data blobs
+                // const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf-8");
+                // const r2PublicationJson = JSON.parse(r2PublicationStr);
+                const r2PublicationJson = data.payload.reader.info.publicationView.r2PublicationJson;
                 const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 data.payload.reader.info.r2Publication = r2Publication;

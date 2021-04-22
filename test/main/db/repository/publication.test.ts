@@ -3,9 +3,7 @@ import "reflect-metadata";
 import * as moment from "moment";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
-import {
-    ExcludeTimestampableWithPartialIdentifiable,
-} from "readium-desktop/main/db/repository/base";
+import { ExcludeTimestampableWithPartialIdentifiable } from "readium-desktop/main/db/repository/base";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
@@ -27,10 +25,17 @@ const dbDoc1: PouchDB.Core.PutDocument<PublicationDocument> = {
     coverFile: null,
     customCover: null,
     resources: {
-        r2PublicationBase64: "",
-        r2LCPBase64: "",
-        r2LSDBase64: "",
-        r2OpdsPublicationBase64: "",
+        r2PublicationJson: undefined,
+        r2LCPJson: undefined,
+        r2LSDJson: undefined,
+        r2OpdsPublicationJson: undefined,
+
+        // Legacy Base64 data blobs
+        //
+        // r2PublicationBase64: "",
+        // r2LCPBase64: "",
+        // r2LSDBase64: "",
+        // r2OpdsPublicationBase64: "",
     },
     hash: "",
     createdAt: now,
@@ -50,10 +55,17 @@ const dbDoc2: PouchDB.Core.PutDocument<PublicationDocument> = {
     coverFile: null,
     customCover: null,
     resources: {
-        r2PublicationBase64: "",
-        r2LCPBase64: "",
-        r2LSDBase64: "",
-        r2OpdsPublicationBase64: "",
+        r2PublicationJson: undefined,
+        r2LCPJson: undefined,
+        r2LSDJson: undefined,
+        r2OpdsPublicationJson: undefined,
+
+        // Legacy Base64 data blobs
+        //
+        // r2PublicationBase64: "",
+        // r2LCPBase64: "",
+        // r2LSDBase64: "",
+        // r2OpdsPublicationBase64: "",
     },
     hash: "",
     createdAt: now - 10,
@@ -216,10 +228,17 @@ test("repository.save create", async () => {
         coverFile: null,
         customCover: null,
         resources: {
-            r2PublicationBase64: "",
-            r2LCPBase64: "",
-            r2LSDBase64: "",
-            r2OpdsPublicationBase64: "",
+            r2PublicationJson: undefined,
+            r2LCPJson: undefined,
+            r2LSDJson: undefined,
+            r2OpdsPublicationJson: undefined,
+
+            // Legacy Base64 data blobs
+            //
+            // r2PublicationBase64: "",
+            // r2LCPBase64: "",
+            // r2LSDBase64: "",
+            // r2OpdsPublicationBase64: "",
         },
         hash: "",
     };
@@ -248,10 +267,17 @@ test("repository.save update", async () => {
         coverFile: null,
         customCover: null,
         resources: {
-            r2PublicationBase64: "",
-            r2LCPBase64: "",
-            r2LSDBase64: "",
-            r2OpdsPublicationBase64: "",
+            r2PublicationJson: undefined,
+            r2LCPJson: undefined,
+            r2LSDJson: undefined,
+            r2OpdsPublicationJson: undefined,
+
+            // Legacy Base64 data blobs
+            //
+            // r2PublicationBase64: "",
+            // r2LCPBase64: "",
+            // r2LSDBase64: "",
+            // r2OpdsPublicationBase64: "",
         },
         hash: "",
     };

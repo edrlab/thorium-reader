@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { JsonMap } from "readium-desktop/typings/json";
+
 import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
 import { OPDSCurrencyEnum } from "@r2-opds-js/opds/opds2/opds2-price";
 
@@ -23,7 +25,9 @@ export interface IOpdsCoverView {
 
 export interface IOpdsPublicationView {
     baseUrl: string;
-    r2OpdsPublicationBase64?: string;
+    r2OpdsPublicationJson?: JsonMap;
+    // Legacy Base64 data blobs
+    // r2OpdsPublicationBase64?: string;
     title: string;
     authors: IOpdsContributorView[];
     publishers?: IOpdsContributorView[];

@@ -348,12 +348,13 @@ export class OpdsFeedViewConverter {
         });
 
         const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
-        const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
-        const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
+        // Legacy Base64 data blobs
+        // const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
+        // const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
 
         return {
             baseUrl,
-            r2OpdsPublicationBase64,
+            r2OpdsPublicationJson,
             title,
             authors,
             publishers,
