@@ -101,3 +101,15 @@ export const test = () => {
         throw new Error("PERSIST CRYPTO OKAY :)");
     }
 };
+
+// CLI test:
+// npx sucrase ./src/main/fs/ -d ./dist --transforms typescript,imports
+// &&
+// sed -i.old 's/debug = debug_/debug = debug_.default/g' dist/persistCrypto.js
+// &&
+// node -e "const x = require('./dist/persistCrypto');\
+// const fs = require('fs');\
+// const p = '.../cookie_jar.json';\
+// const txt = x.decryptPersist(fs.readFileSync(p), 'CONFIGREPOSITORY_COOKIEJAR', p); console.log(txt);\
+// const p2 = '.../opds_auth.json';\
+// const txt2 = x.decryptPersist(fs.readFileSync(p2), 'CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN', p2); console.log(txt2);"\

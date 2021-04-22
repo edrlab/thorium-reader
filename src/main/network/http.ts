@@ -6,12 +6,16 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { app } from "electron";
+import { promises as fsp } from "fs";
 import * as https from "https";
 import { Headers, RequestInit } from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
+import * as path from "path";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
+import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { resolve } from "url";
@@ -19,10 +23,6 @@ import { resolve } from "url";
 import { ConfigRepository } from "../db/repository/config";
 import { diMainGet } from "../di";
 import { fetchWithCookie } from "./fetch";
-
-import { app } from "electron";
-import * as path from "path";
-import { promises as fsp } from "fs";
 
 // Logger
 const filename_ = "readium-desktop:main/http";
@@ -56,7 +56,7 @@ const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
     (host: string) => `${CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN}.${Buffer.from(host).toString("base64")}`;
 
 const userDataPath = app.getPath("userData");
-const DEFAULTS_FILENAME = "opdsauth.json";
+const DEFAULTS_FILENAME = "opds_auth.json";
 const defaultsFilePath = path.join(
     userDataPath,
     DEFAULTS_FILENAME,
@@ -79,7 +79,16 @@ const authenticationTokenInit = async () => {
         return;
     }
 
-    const docsFS = await tryCatch(() => fsp.readFile(defaultsFilePath, { encoding: "utf8" }), "");
+    const data = await tryCatch(() => fsp.readFile(defaultsFilePath), "");
+    let docsFS: string | undefined;
+    if (data) {
+        try {
+            docsFS = decryptPersist(data, CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
+        } catch (_err) {
+            docsFS = undefined;
+        }
+    }
+
     let docs: Record<string, IOpdsAuthenticationToken>;
     const isValid = typeof docsFS === "string" && (
         docs = JSON.parse(docsFS),
@@ -146,7 +155,8 @@ export const httpSetAuthenticationToken =
         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
         const res = authenticationToken[id] = data;
 
-        fsp.writeFile(defaultsFilePath, JSON.stringify(authenticationToken), { encoding: "utf8" });
+        const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
+        fsp.writeFile(defaultsFilePath, encrypted);
 
         return res;
     };
@@ -190,14 +200,16 @@ export const deleteAuthenticationToken = async (host: string) => {
     const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
     delete authenticationToken[id];
 
-    return fsp.writeFile(defaultsFilePath, JSON.stringify(authenticationToken), { encoding: "utf8" });
+    const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
+    return fsp.writeFile(defaultsFilePath, encrypted);
 
 };
 
 export const wipeAuthenticationTokenStorage = async () => {
     // authenticationTokenInitialized = false;
     authenticationToken = {};
-    return fsp.writeFile(defaultsFilePath, "{}", { encoding: "utf8" });
+    const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
+    return fsp.writeFile(defaultsFilePath, encrypted);
 };
 
 export async function httpFetchRawResponse(
