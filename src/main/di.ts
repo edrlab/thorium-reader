@@ -51,6 +51,7 @@ import { SessionApi } from "./api/session";
 import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
+import { ok } from "assert";
 
 // Logger
 const debug = debug_("readium-desktop:main:di");
@@ -288,7 +289,10 @@ const saveLibraryWindowInDi =
     (libWin: BrowserWindow) => (libraryWin = libWin, libraryWin);
 
 const getLibraryWindowFromDi =
-    () => libraryWin;
+    () => {
+        ok(libraryWin, "library window not defined");
+        return libraryWin;
+    };
 
 const readerWinMap = new Map<string, BrowserWindow>();
 

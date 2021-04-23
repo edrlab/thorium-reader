@@ -45,7 +45,7 @@ function* appActivate() {
 
         // if there is no libWin, so must be recreated
         if (libWinState.browserWindowId && libWinState.identifier) {
-            const libWin = getLibraryWindowFromDi();
+            const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
             if (libWin.isMinimized()) {
                 libWin.restore();

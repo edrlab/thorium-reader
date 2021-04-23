@@ -344,12 +344,14 @@
         },
         "tts": {
             "activate": "",
+            "default": "",
             "next": "",
             "pause": "",
             "play": "",
             "previous": "",
             "speed": "",
-            "stop": ""
+            "stop": "",
+            "voice": ""
         }
     },
     "settings": {

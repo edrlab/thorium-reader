@@ -34,6 +34,7 @@ export enum ContentType {
     lcppdf = "application/pdf+lcp",
     pdf = "application/pdf",
     ApiProblem = "application/api-problem+json",
+    Opf = "application/oebps-package+xml",
 }
 
 export const parseContentType = (RawContentType: string): ContentType | undefined => {

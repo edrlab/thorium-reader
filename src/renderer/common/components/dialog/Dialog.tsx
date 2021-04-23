@@ -14,8 +14,6 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
 import classNames from "classnames";
-// import * as classNames from "classnames";
-// import classNames = require("classnames");
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {

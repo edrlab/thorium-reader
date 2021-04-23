@@ -8,7 +8,7 @@
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationDocument, Resources } from "readium-desktop/main/db/document/publication";
 
 import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
@@ -105,19 +105,86 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
     }
 
     protected convertToDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): PublicationDocument {
+
+        let r2PublicationJson = dbDoc.resources.r2PublicationJson;
+        if (!r2PublicationJson) {
+            const r2PublicationBase64 =
+                (dbDoc.resources as any).r2PublicationBase64 ||
+                (dbDoc.resources as any).filePublication; // legacy obsolete field;
+            if (r2PublicationBase64) {
+                try {
+                    const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
+                    r2PublicationJson = JSON.parse(r2PublicationStr);
+                } catch (_err) {
+                    r2PublicationJson = undefined;
+                }
+            }
+        }
+
+        // let r2OpdsPublicationJson = dbDoc.resources.r2OpdsPublicationJson;
+        // if (!r2OpdsPublicationJson) {
+        //     const r2OpdsPublicationBase64 =
+        //         (dbDoc.resources as any).r2OpdsPublicationBase64 ||
+        //         (dbDoc.resources as any).opdsPublication; // legacy obsolete field;
+        //     if (r2OpdsPublicationBase64) {
+        //         try {
+        //             const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
+        //             r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
+        //         } catch (_err) {
+        //             r2OpdsPublicationJson = undefined;
+        //         }
+        //     }
+        // }
+
+        let r2LCPJson = dbDoc.resources.r2LCPJson;
+        if (!r2LCPJson) {
+            const r2LCPBase64 =
+                (dbDoc.resources as any).r2LCPBase64;
+            if (r2LCPBase64) {
+                try {
+                    const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
+                    r2LCPJson = JSON.parse(r2LCPStr);
+                } catch (_err) {
+                    r2LCPJson = undefined;
+                }
+            }
+        }
+
+        let r2LSDJson = dbDoc.resources.r2LSDJson;
+        if (!r2LSDJson) {
+            const r2LSDBase64 =
+                (dbDoc.resources as any).r2LSDBase64;
+            if (r2LSDBase64) {
+                try {
+                    const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
+                    r2LSDJson = JSON.parse(r2LSDStr);
+                } catch (_err) {
+                    r2LSDJson = undefined;
+                }
+            }
+        }
+
+        const resources: Resources | undefined = dbDoc.resources ? {
+
+            r2PublicationJson,
+            // r2OpdsPublicationJson,
+            r2LCPJson,
+            r2LSDJson,
+
+            // Legacy Base64 data blobs
+            // r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||
+            //     (dbDoc.resources as any).filePublication, // legacy obsolete field
+            // r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 ||
+            //     (dbDoc.resources as any).opdsPublication, // legacy obsolete field
+            // r2LCPBase64: dbDoc.resources.r2LCPBase64,
+            // r2LSDBase64: dbDoc.resources.r2LSDBase64,
+        } : undefined;
+
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
             {
-                resources: dbDoc.resources ? {
-                    // legacy names fallback
-                    r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||
-                        (dbDoc.resources as any).filePublication, // legacy obsolete field
-                    r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 ||
-                        (dbDoc.resources as any).opdsPublication, // legacy obsolete field
-                    r2LCPBase64: dbDoc.resources.r2LCPBase64,
-                    r2LSDBase64: dbDoc.resources.r2LSDBase64,
-                } : undefined,
+                resources,
                 title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
                 tags: dbDoc.tags,
                 files: dbDoc.files,

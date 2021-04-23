@@ -32,9 +32,10 @@ export const CATALOG_CONFIG_ID = "catalog";
 const NB_PUB = 5;
 
 const viewToR2Pub = (view: PublicationView) => {
-    const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
-    const r2PublicationJson = JSON.parse(r2PublicationStr);
-    const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+    // Legacy Base64 data blobs
+    // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+    // const r2PublicationJson = JSON.parse(r2PublicationStr);
+    const r2Publication = TaJsonDeserialize(view.r2PublicationJson, R2Publication);
 
     return r2Publication;
 };
