@@ -130,7 +130,7 @@ if (require.main === module) {
                 }
         `);
 
-        const manifestParsed = JSON.parse(manifestBuffer.toString());
+        const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
 
         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, () => manifestBuffer);
 
@@ -190,7 +190,7 @@ if (require.main === module) {
                 }
         `);
 
-        const manifestParsed = JSON.parse(manifestBuffer.toString());
+        const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
 
         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, (url) => {
             deepStrictEqual(url, "http://helloworld/");

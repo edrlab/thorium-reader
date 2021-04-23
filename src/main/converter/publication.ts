@@ -23,10 +23,13 @@ export class PublicationViewConverter {
 
     // Note: PublicationDocument and PublicationView are both Identifiable, with identical `identifier`
     public convertDocumentToView(document: PublicationDocument): PublicationView {
-        const r2PublicationBase64 = document.resources.r2PublicationBase64;
-        const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
-        const r2PublicationJson = JSON.parse(r2PublicationStr);
+        // Legacy Base64 data blobs
+        // const r2PublicationBase64 = document.resources.r2PublicationBase64;
+        // const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
+        // const r2PublicationJson = JSON.parse(r2PublicationStr);
+        const r2PublicationJson = document.resources.r2PublicationJson;
         const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,
         );
@@ -75,7 +78,9 @@ export class PublicationViewConverter {
 
             // doc: r2Publiction.Metadata,
 
-            r2PublicationBase64,
+            r2PublicationJson,
+            // Legacy Base64 data blobs
+            // r2PublicationBase64,
 
             lastReadingLocation: locator,
         };
