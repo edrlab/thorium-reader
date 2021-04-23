@@ -26,7 +26,6 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { _USE_HTTP_STREAMER, IS_DEV } from "readium-desktop/preprocessor-directives";
-import { JsonMap } from "readium-desktop/typings/json";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
@@ -46,6 +45,8 @@ import { extractCrc32OnZip } from "../crc";
 import { lcpActions } from "../redux/actions";
 import { streamerCachedPublication } from "../streamerNoHttp";
 import { DeviceIdManager } from "./device";
+
+// import { JsonMap } from "readium-desktop/typings/json";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/lcp");
@@ -192,7 +193,9 @@ export class LcpManager {
                 // Legacy Base64 data blobs
                 // publicationDocument.resources.r2LCPBase64,
                 // publicationDocument.resources.r2LSDBase64
-                publicationDocument.resources.r2LCPJson); // publicationDocument.resources.r2LSDJson
+                // publicationDocument.resources.r2LCPJson,
+                // publicationDocument.resources.r2LSDJson,
+                );
         }
     }
 
@@ -757,7 +760,8 @@ export class LcpManager {
     }
 
     // , r2LSDJson: JsonMap
-    public convertLcpLsdInfo(lcp: LCP, r2LCPJson: JsonMap): LcpInfo {
+    // , r2LCPJson: JsonMap
+    public convertLcpLsdInfo(lcp: LCP): LcpInfo {
 
         let dateStr1 = "";
         try {
@@ -794,7 +798,7 @@ export class LcpManager {
                 end: dateStr4,
             } : undefined,
 
-            r2LCPJson,
+            // r2LCPJson,
             // Legacy Base64 data blobs
             // r2LCPBase64,
 

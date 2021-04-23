@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { JsonMap } from "readium-desktop/typings/json";
-
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
+
+// import { JsonMap } from "readium-desktop/typings/json";
 
 export interface LsdInfo {
     statusUrl: string;
@@ -40,7 +40,7 @@ export interface LcpInfo {
 
     // Legacy Base64 data blobs
     // r2LCPBase64: string;
-    r2LCPJson: JsonMap;
+    // r2LCPJson: JsonMap;
 }
 
 export interface LsdEvent {
