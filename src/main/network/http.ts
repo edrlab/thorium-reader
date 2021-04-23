@@ -6,12 +6,16 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { app } from "electron";
+import { promises as fsp } from "fs";
 import * as https from "https";
 import { Headers, RequestInit } from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
+import * as path from "path";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
+import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { resolve } from "url";
@@ -28,6 +32,8 @@ const DEFAULT_HTTP_TIMEOUT = 30000;
 
 // https://github.com/node-fetch/node-fetch/blob/master/src/utils/is-redirect.js
 const redirectStatus = new Set([301, 302, 303, 307, 308]);
+
+let authenticationToken: Record<string, IOpdsAuthenticationToken> = {};
 
 /**
  * Redirect code matching
@@ -49,6 +55,13 @@ export const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN = "CONFIGREPOSITORY_OPDS
 const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
     (host: string) => `${CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN}.${Buffer.from(host).toString("base64")}`;
 
+const userDataPath = app.getPath("userData");
+const DEFAULTS_FILENAME = "opds_auth.json";
+const defaultsFilePath = path.join(
+    userDataPath,
+    DEFAULTS_FILENAME,
+);
+
 export interface IOpdsAuthenticationToken {
     id?: string;
     opdsAuthenticationUrl?: string; // application/opds-authentication+json
@@ -59,54 +72,145 @@ export interface IOpdsAuthenticationToken {
     tokenType?: string;
 }
 
-export const httpSetToConfigRepoOpdsAuthenticationToken =
-(data: IOpdsAuthenticationToken) => tryCatch(
-    async () => {
+let authenticationTokenInitialized = false;
+const authenticationTokenInit = async () => {
 
+    if (authenticationTokenInitialized) {
+        return;
+    }
+
+    const data = await tryCatch(() => fsp.readFile(defaultsFilePath), "");
+    let docsFS: string | undefined;
+    if (data) {
+        try {
+            docsFS = decryptPersist(data, CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
+        } catch (_err) {
+            docsFS = undefined;
+        }
+    }
+
+    let docs: Record<string, IOpdsAuthenticationToken>;
+    const isValid = typeof docsFS === "string" && (
+        docs = JSON.parse(docsFS),
+        typeof docs === "object" &&
+        Object.entries(docs)
+            .reduce((pv, [k, v]) =>
+                pv &&
+                k.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)
+                && typeof v === "object", true));
+
+    if (!isValid) {
+
+        const configDoc = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
+
+        docs = await tryCatch(async () => (await configDoc.findAll())
+            .filter((v) => v.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN))
+            .map<[string, IOpdsAuthenticationToken]>((v) => [v.identifier, v.value])
+            .reduce<Record<string, IOpdsAuthenticationToken>>((pv, [k, v]) => ({
+                ...pv,
+                [k]: v,
+            }), {}), "");
+    }
+
+    if (!docs) {
+        docs = {};
+    }
+
+    authenticationToken = docs;
+    authenticationTokenInitialized = true;
+
+};
+
+export const httpSetAuthenticationToken =
+    async (data: IOpdsAuthenticationToken) => {
+        // return tryCatch(
+        // async () => {
+
+        //     if (!data.opdsAuthenticationUrl) {
+        //         throw new Error("no opdsAutenticationUrl !!");
+        //     }
+
+        //     // const url = new URL(data.opdsAuthenticationUrl);
+        //     const { host } = url;
+        //     // do not risk showing plaintext access/refresh tokens in console / command line shell
+        //     debug("SET opds authentication credentials for", host); // data
+        //     const configRepo = diMainGet("config-repository");
+        //     await configRepo.save({
+        //         identifier: CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host),
+        //         value: data,
+        //     });
+        // },
+        // filename_);
         if (!data.opdsAuthenticationUrl) {
             throw new Error("no opdsAutenticationUrl !!");
         }
+
+        await authenticationTokenInit();
 
         const url = new URL(data.opdsAuthenticationUrl);
         const { host } = url;
         // do not risk showing plaintext access/refresh tokens in console / command line shell
         debug("SET opds authentication credentials for", host); // data
-        const configRepo = diMainGet("config-repository");
-        await configRepo.save({
-            identifier: CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host),
-            value: data,
-        });
-    },
-    filename_,
-);
 
-export const getConfigRepoOpdsAuthenticationToken =
-    async (host: string) => await tryCatch(
-        async () => {
-
-            const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-            const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
-            const doc = await configRepo.get(id);
-            debug("GET opds authentication credentials for", host);
-            // do not risk showing plaintext access/refresh tokens in console / command line shell
-            // debug("Credentials: ", doc?.value);
-            return doc?.value;
-        },
-        filename_,
-    );
-
-export const deleteConfigRepoOpdsAuthenticationToken = async (host: string) =>
-    await tryCatch(async () => {
         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-        const configRepo = diMainGet(
-            "config-repository",
-        ) as ConfigRepository<IOpdsAuthenticationToken>;
-        const doc = await configRepo.get(id);
-        debug("DELETE opds authentication credentials for", host);
-        // do not risk showing plaintext access/refresh tokens in console / command line shell
-        // debug("Credentials: ", doc?.value);
-        await configRepo.delete(doc.identifier);
-    }, filename_);
+        const res = authenticationToken[id] = data;
+
+        const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
+        fsp.writeFile(defaultsFilePath, encrypted);
+
+        return res;
+    };
+
+export const getAuthenticationToken =
+    async (host: string) => {
+        // return await tryCatch(
+        //     async () => {
+
+        //         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
+        //         const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
+        //         const doc = await configRepo.get(id);
+        //         debug("GET opds authentication credentials for", host);
+        //         // do not risk showing plaintext access/refresh tokens in console / command line shell
+        //         // debug("Credentials: ", doc?.value);
+        //         return doc?.value;
+        //     },
+        //     filename_);
+
+        await authenticationTokenInit();
+
+        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
+        return authenticationToken[id];
+    };
+
+export const deleteAuthenticationToken = async (host: string) => {
+    // return await tryCatch(async () => {
+    //     const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
+    //     const configRepo = diMainGet(
+    //         "config-repository",
+    //     ) as ConfigRepository<IOpdsAuthenticationToken>;
+    //     const doc = await configRepo.get(id);
+    //     debug("DELETE opds authentication credentials for", host);
+    //     // do not risk showing plaintext access/refresh tokens in console / command line shell
+    //     // debug("Credentials: ", doc?.value);
+    //     await configRepo.delete(doc.identifier);
+    // }, filename_);
+
+    await authenticationTokenInit();
+
+    const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
+    delete authenticationToken[id];
+
+    const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
+    return fsp.writeFile(defaultsFilePath, encrypted);
+
+};
+
+export const wipeAuthenticationTokenStorage = async () => {
+    // authenticationTokenInitialized = false;
+    authenticationToken = {};
+    const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
+    return fsp.writeFile(defaultsFilePath, encrypted);
+};
 
 export async function httpFetchRawResponse(
     url: string | URL,
@@ -245,7 +349,10 @@ export async function httpFetchFormattedResponse<TData = undefined>(
 
         const errStr = err.toString();
 
+        debug("### HTTP FETCH ERROR ###");
         debug(errStr);
+        debug("url: ", url);
+        debug("options: ", options);
 
         if (err.name === "AbortError") {
             result = {
@@ -277,6 +384,10 @@ export async function httpFetchFormattedResponse<TData = undefined>(
                 statusMessage: errStr,
             };
         }
+
+        debug("HTTP FAIL RESUlT");
+        debug(result);
+        debug("#################");
 
     } finally {
         result = await handleCallback(result, callback);
@@ -311,7 +422,7 @@ export const httpGetWithAuth =
                 const url = _url instanceof URL ? _url : new URL(_url);
                 const { host } = url;
 
-                const auth = await getConfigRepoOpdsAuthenticationToken(host);
+                const auth = await getAuthenticationToken(host);
 
                 if (
                     typeof auth === "object"
@@ -373,7 +484,7 @@ const httpGetUnauthorized =
                         // Most likely because of a wrong access token.
                         // In some cases the returned content won't launch a new authentication process
                         // It's safer to just delete the access token and start afresh now.
-                        await deleteConfigRepoOpdsAuthenticationToken(url.host);
+                        await deleteAuthenticationToken(url.host);
                         options.headers.delete("Authorization");
                         const responseWithoutAuth = await httpGetWithAuth(
                             false,
@@ -423,7 +534,7 @@ const httpGetUnauthorizedRefresh =
 
                     debug("authenticate with the new access_token");
                     debug("saved it into db");
-                    await httpSetToConfigRepoOpdsAuthenticationToken(auth);
+                    await httpSetAuthenticationToken(auth);
                 }
                 return httpGetResponse;
             }
@@ -458,6 +569,8 @@ export class AbortSignal implements IAbortSignal {
         this.listenerArray = [];
         this.aborted = false;
     }
+
+    public onabort: IAbortSignal["onabort"] = null;
 
     // public get aborted() {
     //     return this._aborted;

@@ -17,7 +17,7 @@ import { convertMultiLangStringToString } from "readium-desktop/main/converter/t
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
 
-import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { IWithAdditionalJSON } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
@@ -347,13 +347,14 @@ export class OpdsFeedViewConverter {
             rel: ["http://librarysimplified.org/terms/rel/revoke"],
         });
 
-        const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
-        const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
-        const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
+        // const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
+        // Legacy Base64 data blobs
+        // const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
+        // const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
 
         return {
             baseUrl,
-            r2OpdsPublicationBase64,
+            // r2OpdsPublicationJson,
             title,
             authors,
             publishers,

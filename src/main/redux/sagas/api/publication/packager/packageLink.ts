@@ -209,39 +209,39 @@ function updateManifest(
 
 }
 
-function* BufferManifestToR2Publication(manifest: Buffer, href: string): SagaGenerator<R2Publication | undefined> {
+function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: string): SagaGenerator<R2Publication | undefined> {
 
     let r2Publication: R2Publication;
 
     const fetch = fetcher(href);
 
-    let manifestJson: any;
+    let r2PublicationJson: any;
     try {
 
-        const manifestStr = manifest.toString();
-        manifestJson = JSON.parse(manifestStr);
+        const r2PublicationStr = r2PublicationBuffer.toString("utf-8");
+        r2PublicationJson = JSON.parse(r2PublicationStr);
 
     } catch (e) {
 
-        debug("error to parse manifest", e, manifest);
+        debug("error to parse manifest", e, r2PublicationBuffer);
         return undefined;
     }
 
-    const [isR2, isW3] = manifestContext(manifestJson);
+    const [isR2, isW3] = manifestContext(r2PublicationJson);
 
     if (isW3) {
         debug("w3cManifest found");
 
         r2Publication = yield* callTyped(
             w3cPublicationManifestToReadiumPublicationManifest,
-            manifestJson,
+            r2PublicationJson,
             async (resources) => findHtmlTocInRessources(resources, fetch),
         );
 
     } else if (isR2) {
         debug("readium manifest found");
 
-        r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
+        r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
     }
 
     return r2Publication;

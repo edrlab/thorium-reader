@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classnames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -33,6 +32,8 @@ import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { readerLocalActionBookmarks } from "../redux/actions";
 import { Locator } from "readium-desktop/common/models/locator";
+
+import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
@@ -220,7 +221,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     >
                         <a
                             className={
-                                classnames(styles.line,
+                                classNames(styles.line,
                                     styles.active,
                                     link.Href ? " " : styles.inert,
                                     isRTL ? styles.rtlDir : " ")
@@ -271,7 +272,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        classnames(styles.subheading,
+                                        classNames(styles.subheading,
                                             link.Href ? " " : styles.inert,
                                             isRTL ? styles.rtlDir : " ")
                                     }
@@ -298,7 +299,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        classnames(styles.line,
+                                        classNames(styles.line,
                                             styles.active,
                                             link.Href ? " " : styles.inert,
                                             isRTL ? styles.rtlDir : " ")

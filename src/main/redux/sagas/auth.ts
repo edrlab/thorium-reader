@@ -19,8 +19,9 @@ import {
 } from "readium-desktop/main/event";
 import { cleanCookieJar } from "readium-desktop/main/network/fetch";
 import {
-    CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, httpPost,
-    httpSetToConfigRepoOpdsAuthenticationToken, IOpdsAuthenticationToken,
+    httpPost,
+    httpSetAuthenticationToken,
+    IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
 } from "readium-desktop/main/network/http";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
@@ -98,7 +99,7 @@ const opdsAuthFlow =
                 authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
             };
             debug("authentication credential config", authCredentials);
-            yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
+            yield* callTyped(httpSetAuthenticationToken, authCredentials);
 
             const task = yield* forkTyped(function*() {
 
@@ -189,20 +190,22 @@ function* opdsAuthWipeData() {
 
     yield* callTyped(cleanCookieJar);
 
-    const configDoc = yield* callTyped(() => diMainGet("config-repository"));
+    yield* callTyped(wipeAuthenticationTokenStorage);
 
-    const docs = yield* callTyped(() => configDoc.findAll());
+    // const configDoc = yield* callTyped(() => diMainGet("config-repository"));
 
-    if (Array.isArray(docs)) {
-        for (const doc of docs) {
+    // const docs = yield* callTyped(() => configDoc.findAll());
 
-            if (doc.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)) {
+    // if (Array.isArray(docs)) {
+    //     for (const doc of docs) {
 
-                debug("delete", doc.identifier);
-                yield call(() => configDoc.delete(doc.identifier));
-            }
-        }
-    }
+    //         if (doc.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)) {
+
+    //             debug("delete", doc.identifier);
+    //             yield call(() => configDoc.delete(doc.identifier));
+    //         }
+    //     }
+    // }
 
     yield put(toastActions.openRequest.build(ToastType.Success, "👍"));
     debug("End of wipping auth data");
@@ -328,7 +331,7 @@ async function opdsSetAuthCredentials(
                 if (typeof newCredentials.accessToken === "string") {
 
                     debug("new opds authentication credentials");
-                    await httpSetToConfigRepoOpdsAuthenticationToken(newCredentials);
+                    await httpSetAuthenticationToken(newCredentials);
 
                     return [, undefined];
                 }
@@ -354,7 +357,7 @@ async function opdsSetAuthCredentials(
             if (typeof newCredentials.accessToken === "string") {
 
                 debug("new opds authentication credentials");
-                await httpSetToConfigRepoOpdsAuthenticationToken(newCredentials);
+                await httpSetAuthenticationToken(newCredentials);
 
                 return [, undefined];
             }
