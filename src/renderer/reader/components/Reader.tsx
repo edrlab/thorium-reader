@@ -1089,16 +1089,6 @@ class Reader extends React.Component<IProps, IState> {
                 language: this.props.lang,
             };
 
-            // let manifestJson: any;
-            // try {
-
-            //     const manifestBuffer = Buffer.from(this.props.publicationView.r2PublicationBase64, "base64");
-            //     const manifestStr = manifestBuffer.toString();
-            //     manifestJson = JSON.parse(manifestStr);
-            // } catch (e) {
-            //     console.log("divina manifest parsing error");
-            // }
-
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
 
             let manifestUrl = this.props.manifestUrlR2Protocol;

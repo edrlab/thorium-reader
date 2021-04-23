@@ -5,8 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
+import { JsonMap } from "readium-desktop/typings/json";
+
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import { Identifiable } from "../models/identifiable";
 
@@ -39,7 +41,9 @@ export interface PublicationView extends Identifiable {
     lcp?: LcpInfo;
     lcpRightsCopies?: number;
 
-    r2PublicationBase64: string;
+    r2PublicationJson: JsonMap;
+    // Legacy Base64 data blobs
+    // r2PublicationBase64: string;
 
     lastReadingLocation?: LocatorExtended;
 }

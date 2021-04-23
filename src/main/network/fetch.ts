@@ -45,6 +45,10 @@ export const fetchCookieJarPersistence = async () => {
     //     value: cookieJar.serializeSync(),
     // });
 
+    if (!cookieJar) {
+        return;
+    }
+
     const str = JSON.stringify(cookieJar.serializeSync());
     const encrypted = encryptPersist(str, CONFIGREPOSITORY_COOKIEJAR, defaultsFilePath);
     return fsp.writeFile(defaultsFilePath, encrypted);
@@ -67,6 +71,7 @@ const fetchFactory = async () => {
 
     }, "src/main/network/fetch");
 
+    // lazy global var init
     if (!cookieJar) {
         cookieJar = new tough.CookieJar();
     }
