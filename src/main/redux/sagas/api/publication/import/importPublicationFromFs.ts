@@ -114,24 +114,24 @@ export async function importPublicationFromFS(
                 // lcp licence extraction
 
                 const lcpEntryName = "license.lcpl";
-                const r2LcpBuffer = await extractFileFromZipToBuffer(filePath, lcpEntryName);
-                if (r2LcpBuffer) {
+                const r2LCPBuffer = await extractFileFromZipToBuffer(filePath, lcpEntryName);
+                if (r2LCPBuffer) {
                     debug("lcp licence found in zip");
 
-                    const r2LcpStr = r2LcpBuffer.toString("utf-8");
-                    const r2LcpJson = JSON.parse(r2LcpStr);
+                    const r2LCPStr = r2LCPBuffer.toString("utf-8");
+                    const r2LCPJson = JSON.parse(r2LCPStr);
 
-                    if (lcpLicenseIsNotWellFormed(r2LcpJson)) {
-                        throw new Error(`LCP license malformed: ${JSON.stringify(r2LcpJson)}`);
+                    if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
+                        throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
                     }
 
-                    const lcpl = TaJsonDeserialize(r2LcpJson, LCP);
+                    const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
 
-                    lcpl.ZipPath = lcpEntryName;
-                    lcpl.JsonSource = r2LcpStr;
-                    lcpl.init();
+                    r2LCP.ZipPath = lcpEntryName;
+                    r2LCP.JsonSource = r2LCPStr;
+                    r2LCP.init();
 
-                    r2Publication.LCP = lcpl;
+                    r2Publication.LCP = r2LCP;
                 }
             }
 

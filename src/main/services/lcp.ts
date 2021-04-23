@@ -168,28 +168,28 @@ export class LcpManager {
 
     public updateDocumentLcpLsdBase64Resources(
         publicationDocument: PublicationDocumentWithoutTimestampable,
-        r2Lcp: LCP,
+        r2LCP: LCP,
     ) {
         if (!publicationDocument.resources) {
             publicationDocument.resources = {};
         }
-        if (r2Lcp) {
+        if (r2LCP) {
             // Legacy Base64 data blobs
-            // const r2LCPStr = r2Lcp.JsonSource ?? JSON.stringify(TaJsonSerialize(r2Lcp));
+            // const r2LCPStr = r2LCP.JsonSource ?? JSON.stringify(TaJsonSerialize(r2LCP));
             // publicationDocument.resources.r2LCPBase64 = Buffer.from(r2LCPStr).toString("base64");
-            const r2LCPJson = r2Lcp.JsonSource ? JSON.parse(r2Lcp.JsonSource) : TaJsonSerialize(r2Lcp);
+            const r2LCPJson = r2LCP.JsonSource ? JSON.parse(r2LCP.JsonSource) : TaJsonSerialize(r2LCP);
             publicationDocument.resources.r2LCPJson = r2LCPJson;
 
-            if (r2Lcp.LSD) {
+            if (r2LCP.LSD) {
                 // Legacy Base64 data blobs
                 // const r2LSDStr = JSON.stringify(r2LSDJson);
                 // publicationDocument.resources.r2LSDBase64 = Buffer.from(r2LSDStr).toString("base64");
-                const r2LSDJson = TaJsonSerialize(r2Lcp.LSD);
+                const r2LSDJson = TaJsonSerialize(r2LCP.LSD);
                 publicationDocument.resources.r2LSDJson = r2LSDJson;
             }
 
             publicationDocument.lcp = this.convertLcpLsdInfo(
-                r2Lcp,
+                r2LCP,
                 // Legacy Base64 data blobs
                 // publicationDocument.resources.r2LCPBase64,
                 // publicationDocument.resources.r2LSDBase64
@@ -911,11 +911,11 @@ export class LcpManager {
         // },
 
         return new Promise(async (resolve, reject) => {
-            const callback = async (r2LcpStr: string | undefined) => {
+            const callback = async (r2LCPStr: string | undefined) => {
                 debug("launchStatusDocumentProcessing DONE.");
-                debug(r2LcpStr);
+                debug(r2LCPStr);
 
-                if (r2LcpStr) {
+                if (r2LCPStr) {
 
                     let atLeastOneReaderIsOpen = false;
                     const readers = this.store.getState().win.session.reader;
@@ -945,11 +945,11 @@ export class LcpManager {
                         //     r2Publication,
                         //     epubPath);
 
-                        const r2LcpJson = global.JSON.parse(r2LcpStr);
-                        debug(r2LcpJson);
+                        const r2LCPJson = global.JSON.parse(r2LCPStr);
+                        debug(r2LCPJson);
 
-                        if (lcpLicenseIsNotWellFormed(r2LcpJson)) {
-                            const rej = `LCP license malformed: ${JSON.stringify(r2LcpJson)}`;
+                        if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
+                            const rej = `LCP license malformed: ${JSON.stringify(r2LCPJson)}`;
                             debug(rej);
                             reject(rej);
                             return;
@@ -957,13 +957,13 @@ export class LcpManager {
 
                         let r2LCP: LCP;
                         try {
-                            r2LCP = TaJsonDeserialize(r2LcpJson, LCP);
+                            r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
                         } catch (erorz) {
                             debug(erorz);
                             reject(erorz);
                             return;
                         }
-                        r2LCP.JsonSource = r2LcpStr;
+                        r2LCP.JsonSource = r2LCPStr;
                         r2Publication.LCP = r2LCP;
 
                         // will be updated below via another round of processStatusDocument_()
@@ -972,7 +972,7 @@ export class LcpManager {
                         const epubPath = this.publicationStorage.getPublicationEpubPath(
                             publicationDocumentIdentifier,
                         );
-                        await this.injectLcplIntoZip_(epubPath, r2LcpStr);
+                        await this.injectLcplIntoZip_(epubPath, r2LCPStr);
 
                         // Protect against infinite loop due to incorrect LCP / LSD server dates
                         if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {

@@ -37,15 +37,15 @@ export function* importLcplFromFS(
     const lcpManager = diMainGet("lcp-manager");
     const publicationRepository = diMainGet("publication-repository");
 
-    const r2LcpStr = yield* callTyped(() => fsp.readFile(filePath, { encoding: "utf8" }));
-    const r2LcpJson = JSON.parse(r2LcpStr);
+    const r2LCPStr = yield* callTyped(() => fsp.readFile(filePath, { encoding: "utf8" }));
+    const r2LCPJson = JSON.parse(r2LCPStr);
 
-    if (lcpLicenseIsNotWellFormed(r2LcpJson)) {
-        throw new Error(`LCP license malformed: ${JSON.stringify(r2LcpJson)}`);
+    if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
+        throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
     }
 
-    const r2LCP = TaJsonDeserialize(r2LcpJson, LCP);
-    r2LCP.JsonSource = r2LcpStr;
+    const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
+    r2LCP.JsonSource = r2LCPStr;
     r2LCP.init();
 
     // LCP license checks to avoid unnecessary download:
