@@ -911,11 +911,11 @@ export class LcpManager {
         // },
 
         return new Promise(async (resolve, reject) => {
-            const callback = async (licenseUpdateJson: string | undefined) => {
+            const callback = async (r2LcpStr: string | undefined) => {
                 debug("launchStatusDocumentProcessing DONE.");
-                debug(licenseUpdateJson);
+                debug(r2LcpStr);
 
-                if (licenseUpdateJson) {
+                if (r2LcpStr) {
 
                     let atLeastOneReaderIsOpen = false;
                     const readers = this.store.getState().win.session.reader;
@@ -945,11 +945,11 @@ export class LcpManager {
                         //     r2Publication,
                         //     epubPath);
 
-                        const lcplJson = global.JSON.parse(licenseUpdateJson);
-                        debug(lcplJson);
+                        const r2LcpJson = global.JSON.parse(r2LcpStr);
+                        debug(r2LcpJson);
 
-                        if (lcpLicenseIsNotWellFormed(lcplJson)) {
-                            const rej = `LCP license malformed: ${JSON.stringify(lcplJson)}`;
+                        if (lcpLicenseIsNotWellFormed(r2LcpJson)) {
+                            const rej = `LCP license malformed: ${JSON.stringify(r2LcpJson)}`;
                             debug(rej);
                             reject(rej);
                             return;
@@ -957,13 +957,13 @@ export class LcpManager {
 
                         let r2LCP: LCP;
                         try {
-                            r2LCP = TaJsonDeserialize(lcplJson, LCP);
+                            r2LCP = TaJsonDeserialize(r2LcpJson, LCP);
                         } catch (erorz) {
                             debug(erorz);
                             reject(erorz);
                             return;
                         }
-                        r2LCP.JsonSource = licenseUpdateJson;
+                        r2LCP.JsonSource = r2LcpStr;
                         r2Publication.LCP = r2LCP;
 
                         // will be updated below via another round of processStatusDocument_()
@@ -972,7 +972,7 @@ export class LcpManager {
                         const epubPath = this.publicationStorage.getPublicationEpubPath(
                             publicationDocumentIdentifier,
                         );
-                        await this.injectLcplIntoZip_(epubPath, licenseUpdateJson);
+                        await this.injectLcplIntoZip_(epubPath, r2LcpStr);
 
                         // Protect against infinite loop due to incorrect LCP / LSD server dates
                         if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {

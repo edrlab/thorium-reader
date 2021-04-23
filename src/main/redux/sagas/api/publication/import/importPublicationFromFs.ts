@@ -99,13 +99,13 @@ export async function importPublicationFromFS(
 
             debug("extension of type readium publication", ext);
 
-            const manifest = await extractFileFromZipToBuffer(filePath, "manifest.json");
-            if (manifest) {
+            const r2PublicationBuffer = await extractFileFromZipToBuffer(filePath, "manifest.json");
+            if (r2PublicationBuffer) {
                 debug("r2Publication found in zip");
 
-                const manifestString = manifest.toString();
-                const manifestJson = JSON.parse(manifestString);
-                r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
+                const r2PublicationStr = r2PublicationBuffer.toString("utf-8");
+                const r2PublicationJson = JSON.parse(r2PublicationStr);
+                r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 // tslint:disable-next-line: max-line-length
                 // https://github.com/readium/r2-shared-js/blob/1aa1a1c10fe56ccb99ef0ed2c15a198c46600e7a/src/parser/divina.ts#L137
@@ -114,21 +114,21 @@ export async function importPublicationFromFS(
                 // lcp licence extraction
 
                 const lcpEntryName = "license.lcpl";
-                const lcpBuffer = await extractFileFromZipToBuffer(filePath, lcpEntryName);
-                if (lcpBuffer) {
+                const r2LcpBuffer = await extractFileFromZipToBuffer(filePath, lcpEntryName);
+                if (r2LcpBuffer) {
                     debug("lcp licence found in zip");
 
-                    const lcpString = lcpBuffer.toString();
-                    const lcpJson = JSON.parse(lcpString);
+                    const r2LcpStr = r2LcpBuffer.toString("utf-8");
+                    const r2LcpJson = JSON.parse(r2LcpStr);
 
-                    if (lcpLicenseIsNotWellFormed(lcpJson)) {
-                        throw new Error(`LCP license malformed: ${JSON.stringify(lcpJson)}`);
+                    if (lcpLicenseIsNotWellFormed(r2LcpJson)) {
+                        throw new Error(`LCP license malformed: ${JSON.stringify(r2LcpJson)}`);
                     }
 
-                    const lcpl = TaJsonDeserialize(lcpJson, LCP);
+                    const lcpl = TaJsonDeserialize(r2LcpJson, LCP);
 
                     lcpl.ZipPath = lcpEntryName;
-                    lcpl.JsonSource = lcpString;
+                    lcpl.JsonSource = r2LcpStr;
                     lcpl.init();
 
                     r2Publication.LCP = lcpl;
@@ -171,7 +171,7 @@ export async function importPublicationFromFS(
             r2LSDJson: null,
 
             // remains null as publication not originate from OPDS
-            r2OpdsPublicationJson: null,
+            // r2OpdsPublicationJson: null,
         },
         title: convertMultiLangStringToString(r2Publication.Metadata.Title),
         tags: [],

@@ -121,20 +121,20 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
             }
         }
 
-        let r2OpdsPublicationJson = dbDoc.resources.r2OpdsPublicationJson;
-        if (!r2OpdsPublicationJson) {
-            const r2OpdsPublicationBase64 =
-                (dbDoc.resources as any).r2OpdsPublicationBase64 ||
-                (dbDoc.resources as any).opdsPublication; // legacy obsolete field;
-            if (r2OpdsPublicationBase64) {
-                try {
-                    const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
-                    r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
-                } catch (_err) {
-                    r2OpdsPublicationJson = undefined;
-                }
-            }
-        }
+        // let r2OpdsPublicationJson = dbDoc.resources.r2OpdsPublicationJson;
+        // if (!r2OpdsPublicationJson) {
+        //     const r2OpdsPublicationBase64 =
+        //         (dbDoc.resources as any).r2OpdsPublicationBase64 ||
+        //         (dbDoc.resources as any).opdsPublication; // legacy obsolete field;
+        //     if (r2OpdsPublicationBase64) {
+        //         try {
+        //             const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
+        //             r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
+        //         } catch (_err) {
+        //             r2OpdsPublicationJson = undefined;
+        //         }
+        //     }
+        // }
 
         let r2LCPJson = dbDoc.resources.r2LCPJson;
         if (!r2LCPJson) {
@@ -167,7 +167,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         const resources: Resources | undefined = dbDoc.resources ? {
 
             r2PublicationJson,
-            r2OpdsPublicationJson,
+            // r2OpdsPublicationJson,
             r2LCPJson,
             r2LSDJson,
 
