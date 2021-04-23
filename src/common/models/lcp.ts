@@ -15,7 +15,7 @@ export interface LsdInfo {
 
     // Legacy Base64 data blobs
     // r2LSDBase64: string;
-    r2LSDJson: JsonMap;
+    // r2LSDJson: JsonMap;
 }
 
 export interface LcpRights {

@@ -192,8 +192,7 @@ export class LcpManager {
                 // Legacy Base64 data blobs
                 // publicationDocument.resources.r2LCPBase64,
                 // publicationDocument.resources.r2LSDBase64
-                publicationDocument.resources.r2LCPJson,
-                publicationDocument.resources.r2LSDJson);
+                publicationDocument.resources.r2LCPJson); // publicationDocument.resources.r2LSDJson
         }
     }
 
@@ -757,7 +756,8 @@ export class LcpManager {
         return undefined;
     }
 
-    public convertLcpLsdInfo(lcp: LCP, r2LCPJson: JsonMap, r2LSDJson: JsonMap): LcpInfo {
+    // , r2LSDJson: JsonMap
+    public convertLcpLsdInfo(lcp: LCP, r2LCPJson: JsonMap): LcpInfo {
 
         let dateStr1 = "";
         try {
@@ -809,7 +809,7 @@ export class LcpManager {
                 lcpInfo.lsd = {
                     statusUrl: statusLink.Href,
 
-                    r2LSDJson,
+                    // r2LSDJson,
                     // Legacy Base64 data blobs
                     // r2LSDBase64,
                 };
