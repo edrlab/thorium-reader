@@ -26,7 +26,7 @@ const dbDoc1: PouchDB.Core.PutDocument<PublicationDocument> = {
     customCover: null,
     resources: {
         r2PublicationJson: undefined,
-        r2LCPJson: undefined,
+        // r2LCPJson: undefined,
         // r2LSDJson: undefined,
         // r2OpdsPublicationJson: undefined,
 
@@ -56,7 +56,7 @@ const dbDoc2: PouchDB.Core.PutDocument<PublicationDocument> = {
     customCover: null,
     resources: {
         r2PublicationJson: undefined,
-        r2LCPJson: undefined,
+        // r2LCPJson: undefined,
         // r2LSDJson: undefined,
         // r2OpdsPublicationJson: undefined,
 
@@ -229,7 +229,7 @@ test("repository.save create", async () => {
         customCover: null,
         resources: {
             r2PublicationJson: undefined,
-            r2LCPJson: undefined,
+            // r2LCPJson: undefined,
             // r2LSDJson: undefined,
             // r2OpdsPublicationJson: undefined,
 
@@ -268,7 +268,7 @@ test("repository.save update", async () => {
         customCover: null,
         resources: {
             r2PublicationJson: undefined,
-            r2LCPJson: undefined,
+            // r2LCPJson: undefined,
             // r2LSDJson: undefined,
             // r2OpdsPublicationJson: undefined,
 

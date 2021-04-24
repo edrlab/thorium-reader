@@ -15,7 +15,7 @@ import { JsonMap } from "readium-desktop/typings/json";
 export interface Resources {
 
     r2PublicationJson?: JsonMap;
-    r2LCPJson?: JsonMap;
+    // r2LCPJson?: JsonMap;
     // r2LSDJson?: JsonMap;
     // r2OpdsPublicationJson?: JsonMap;
 

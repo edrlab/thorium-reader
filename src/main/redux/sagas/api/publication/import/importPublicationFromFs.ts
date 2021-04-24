@@ -165,7 +165,7 @@ export async function importPublicationFromFS(
             r2PublicationJson,
 
             // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
-            r2LCPJson: null,
+            // r2LCPJson: null,
 
             // may be updated via lcpManager.processStatusDocument()
             // r2LSDJson: null,

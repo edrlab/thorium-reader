@@ -47,7 +47,7 @@ function* importLinkFromPath(
             {
                 resources: {
                     r2PublicationJson: publicationDocument.resources.r2PublicationJson,
-                    r2LCPJson: publicationDocument.resources.r2LCPJson,
+                    // r2LCPJson: publicationDocument.resources.r2LCPJson,
                     // r2LSDJson: publicationDocument.resources.r2LSDJson,
                     // r2OpdsPublicationJson: pub?.r2OpdsPublicationJson || undefined,
 

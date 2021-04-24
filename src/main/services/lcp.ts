@@ -177,8 +177,8 @@ export class LcpManager {
             // Legacy Base64 data blobs
             // const r2LCPStr = r2LCP.JsonSource ?? JSON.stringify(TaJsonSerialize(r2LCP));
             // publicationDocument.resources.r2LCPBase64 = Buffer.from(r2LCPStr).toString("base64");
-            const r2LCPJson = r2LCP.JsonSource ? JSON.parse(r2LCP.JsonSource) : TaJsonSerialize(r2LCP);
-            publicationDocument.resources.r2LCPJson = r2LCPJson;
+            // const r2LCPJson = r2LCP.JsonSource ? JSON.parse(r2LCP.JsonSource) : TaJsonSerialize(r2LCP);
+            // publicationDocument.resources.r2LCPJson = r2LCPJson;
 
             // if (r2LCP.LSD) {
             //     // Legacy Base64 data blobs
@@ -212,7 +212,10 @@ export class LcpManager {
         //     (requiresLCP && !publicationDocument.resources.r2LCPBase64);
         const mustParse = !publicationDocument.resources ||
             !publicationDocument.resources.r2PublicationJson ||
-            (requiresLCP && !publicationDocument.resources.r2LCPJson);
+            (
+                requiresLCP
+                // && !publicationDocument.resources.r2LCPJson
+            );
 
         if (mustParse) {
             const epubPath = this.publicationStorage.getPublicationEpubPath(
@@ -235,27 +238,27 @@ export class LcpManager {
             // const r2PublicationJson = JSON.parse(r2PublicationStr);
             r2Publication = TaJsonDeserialize(publicationDocument.resources.r2PublicationJson, R2Publication);
         }
-        if (!r2Publication.LCP &&
-            publicationDocument.resources &&
-            publicationDocument.resources.r2LCPJson) {
+        // if (!r2Publication.LCP &&
+        //     publicationDocument.resources &&
+        //     publicationDocument.resources.r2LCPJson) {
 
-            // Legacy Base64 data blobs
-            // const r2LCPBase64 = publicationDocument.resources.r2LCPBase64;
-            // const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
-            // const r2LCPJson = JSON.parse(r2LCPStr);
-            const r2LCPJson = publicationDocument.resources.r2LCPJson;
+        //     // Legacy Base64 data blobs
+        //     // const r2LCPBase64 = publicationDocument.resources.r2LCPBase64;
+        //     // const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
+        //     // const r2LCPJson = JSON.parse(r2LCPStr);
+        //     const r2LCPJson = publicationDocument.resources.r2LCPJson;
 
-            if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
-                throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
-            }
+        //     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
+        //         throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+        //     }
 
-            const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
+        //     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
 
-            const r2LCPStr = JSON.stringify(r2LCPJson);
-            r2LCP.JsonSource = r2LCPStr;
+        //     const r2LCPStr = JSON.stringify(r2LCPJson);
+        //     r2LCP.JsonSource = r2LCPStr;
 
-            r2Publication.LCP = r2LCP;
-        }
+        //     r2Publication.LCP = r2LCP;
+        // }
         // if (r2Publication.LCP &&
         //     publicationDocument.resources &&
         //     publicationDocument.resources.r2LSDJson) {
