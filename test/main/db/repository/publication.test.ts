@@ -27,7 +27,7 @@ const dbDoc1: PouchDB.Core.PutDocument<PublicationDocument> = {
     resources: {
         r2PublicationJson: undefined,
         r2LCPJson: undefined,
-        r2LSDJson: undefined,
+        // r2LSDJson: undefined,
         // r2OpdsPublicationJson: undefined,
 
         // Legacy Base64 data blobs
@@ -57,7 +57,7 @@ const dbDoc2: PouchDB.Core.PutDocument<PublicationDocument> = {
     resources: {
         r2PublicationJson: undefined,
         r2LCPJson: undefined,
-        r2LSDJson: undefined,
+        // r2LSDJson: undefined,
         // r2OpdsPublicationJson: undefined,
 
         // Legacy Base64 data blobs
@@ -230,7 +230,7 @@ test("repository.save create", async () => {
         resources: {
             r2PublicationJson: undefined,
             r2LCPJson: undefined,
-            r2LSDJson: undefined,
+            // r2LSDJson: undefined,
             // r2OpdsPublicationJson: undefined,
 
             // Legacy Base64 data blobs
@@ -269,7 +269,7 @@ test("repository.save update", async () => {
         resources: {
             r2PublicationJson: undefined,
             r2LCPJson: undefined,
-            r2LSDJson: undefined,
+            // r2LSDJson: undefined,
             // r2OpdsPublicationJson: undefined,
 
             // Legacy Base64 data blobs

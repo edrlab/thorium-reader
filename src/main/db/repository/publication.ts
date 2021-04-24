@@ -150,26 +150,26 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
             }
         }
 
-        let r2LSDJson = dbDoc.resources.r2LSDJson;
-        if (!r2LSDJson) {
-            const r2LSDBase64 =
-                (dbDoc.resources as any).r2LSDBase64;
-            if (r2LSDBase64) {
-                try {
-                    const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
-                    r2LSDJson = JSON.parse(r2LSDStr);
-                } catch (_err) {
-                    r2LSDJson = undefined;
-                }
-            }
-        }
+        // let r2LSDJson = dbDoc.resources.r2LSDJson;
+        // if (!r2LSDJson) {
+        //     const r2LSDBase64 =
+        //         (dbDoc.resources as any).r2LSDBase64;
+        //     if (r2LSDBase64) {
+        //         try {
+        //             const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
+        //             r2LSDJson = JSON.parse(r2LSDStr);
+        //         } catch (_err) {
+        //             r2LSDJson = undefined;
+        //         }
+        //     }
+        // }
 
         const resources: Resources | undefined = dbDoc.resources ? {
 
             r2PublicationJson,
             // r2OpdsPublicationJson,
             r2LCPJson,
-            r2LSDJson,
+            // r2LSDJson,
 
             // Legacy Base64 data blobs
             // r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||

@@ -180,13 +180,13 @@ export class LcpManager {
             const r2LCPJson = r2LCP.JsonSource ? JSON.parse(r2LCP.JsonSource) : TaJsonSerialize(r2LCP);
             publicationDocument.resources.r2LCPJson = r2LCPJson;
 
-            if (r2LCP.LSD) {
-                // Legacy Base64 data blobs
-                // const r2LSDStr = JSON.stringify(r2LSDJson);
-                // publicationDocument.resources.r2LSDBase64 = Buffer.from(r2LSDStr).toString("base64");
-                const r2LSDJson = TaJsonSerialize(r2LCP.LSD);
-                publicationDocument.resources.r2LSDJson = r2LSDJson;
-            }
+            // if (r2LCP.LSD) {
+            //     // Legacy Base64 data blobs
+            //     // const r2LSDStr = JSON.stringify(r2LSDJson);
+            //     // publicationDocument.resources.r2LSDBase64 = Buffer.from(r2LSDStr).toString("base64");
+            //     const r2LSDJson = TaJsonSerialize(r2LCP.LSD);
+            //     publicationDocument.resources.r2LSDJson = r2LSDJson;
+            // }
 
             publicationDocument.lcp = this.convertLcpLsdInfo(
                 r2LCP,
@@ -256,19 +256,19 @@ export class LcpManager {
 
             r2Publication.LCP = r2LCP;
         }
-        if (r2Publication.LCP &&
-            publicationDocument.resources &&
-            publicationDocument.resources.r2LSDJson) {
+        // if (r2Publication.LCP &&
+        //     publicationDocument.resources &&
+        //     publicationDocument.resources.r2LSDJson) {
 
-            // Legacy Base64 data blobs
-            // const r2LSDBase64 = publicationDocument.resources.r2LSDBase64;
-            // const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
-            // const r2LSDJson = JSON.parse(r2LSDStr);
-            const r2LSDJson = publicationDocument.resources.r2LSDJson;
-            const r2LSD = TaJsonDeserialize(r2LSDJson, LSD);
+        //     // Legacy Base64 data blobs
+        //     // const r2LSDBase64 = publicationDocument.resources.r2LSDBase64;
+        //     // const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
+        //     // const r2LSDJson = JSON.parse(r2LSDStr);
+        //     const r2LSDJson = publicationDocument.resources.r2LSDJson;
+        //     const r2LSD = TaJsonDeserialize(r2LSDJson, LSD);
 
-            r2Publication.LCP.LSD = r2LSD;
-        }
+        //     r2Publication.LCP.LSD = r2LSD;
+        // }
 
         return r2Publication;
     }

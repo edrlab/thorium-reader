@@ -168,7 +168,7 @@ export async function importPublicationFromFS(
             r2LCPJson: null,
 
             // may be updated via lcpManager.processStatusDocument()
-            r2LSDJson: null,
+            // r2LSDJson: null,
 
             // remains null as publication not originate from OPDS
             // r2OpdsPublicationJson: null,

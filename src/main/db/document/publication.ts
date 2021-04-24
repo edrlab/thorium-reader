@@ -16,7 +16,7 @@ export interface Resources {
 
     r2PublicationJson?: JsonMap;
     r2LCPJson?: JsonMap;
-    r2LSDJson?: JsonMap;
+    // r2LSDJson?: JsonMap;
     // r2OpdsPublicationJson?: JsonMap;
 
     // Legacy Base64 data blobs
