@@ -9,9 +9,14 @@ import * as debug_ from "debug";
 import { call as callTyped } from "typed-redux-saga/macro";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/get");
+
+const convertDoc = async (doc: PublicationDocument, publicationViewConverter: PublicationViewConverter) => {
+    return await publicationViewConverter.convertDocumentToView(doc);
+};
 
 export function* getPublication(identifier: string, checkLcpLsd = false) {
 
@@ -39,7 +44,7 @@ export function* getPublication(identifier: string, checkLcpLsd = false) {
     const publicationViewConverter = diMainGet("publication-view-converter");
 
     try {
-        return publicationViewConverter.convertDocumentToView(doc);
+        return yield* callTyped(() => convertDoc(doc, publicationViewConverter));
     } catch (e) {
         debug("error on convertDocumentToView", e);
 
