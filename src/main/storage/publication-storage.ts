@@ -55,15 +55,15 @@ export class PublicationStorage {
         const pubDirPath = this.buildPublicationPath(identifier);
         fs.mkdirSync(pubDirPath);
 
-        // Store publication file and extract its cover
+        const files: File[] = [];
+
         const bookFile = await this.storePublicationBook(
             identifier, srcPath);
-        const coverFile = await this.storePublicationCover(
-            identifier, srcPath);
-        const files: File[] = [];
         files.push(bookFile);
 
-        if (coverFile != null) {
+        const coverFile = await this.storePublicationCover(
+            identifier, srcPath);
+        if (coverFile) {
             files.push(coverFile);
         }
 
@@ -80,6 +80,7 @@ export class PublicationStorage {
     public getPublicationEpubPath(identifier: string): string {
 
         const root = this.buildPublicationPath(identifier);
+        // --
         const pathEpub = path.join(
             root,
             `book${acceptedExtensionObject.epub}`,
@@ -87,27 +88,7 @@ export class PublicationStorage {
         if (fs.existsSync(pathEpub)) {
             return pathEpub;
         }
-        const pathEpub3 = path.join(
-            root,
-            `book${acceptedExtensionObject.epub3}`,
-        );
-        if (fs.existsSync(pathEpub3)) {
-            return pathEpub3;
-        }
-        const pathDaisy = path.join(
-            root,
-            `book${acceptedExtensionObject.daisy}`,
-        );
-        if (fs.existsSync(pathDaisy)) {
-            return pathDaisy;
-        }
-        const pathAudioBook = path.join(
-            root,
-            `book${acceptedExtensionObject.audiobook}`,
-        );
-        if (fs.existsSync(pathAudioBook)) {
-            return pathAudioBook;
-        }
+        // --
         const pathWebpub = path.join(
             root,
             `book${acceptedExtensionObject.webpub}`,
@@ -115,6 +96,15 @@ export class PublicationStorage {
         if (fs.existsSync(pathWebpub)) {
             return pathWebpub;
         }
+        // --
+        const pathAudioBook = path.join(
+            root,
+            `book${acceptedExtensionObject.audiobook}`,
+        );
+        if (fs.existsSync(pathAudioBook)) {
+            return pathAudioBook;
+        }
+        // --
         const pathAudioBookLcp = path.join(
             root,
             `book${acceptedExtensionObject.audiobookLcp}`,
@@ -122,6 +112,7 @@ export class PublicationStorage {
         if (fs.existsSync(pathAudioBookLcp)) {
             return pathAudioBookLcp;
         }
+        // --
         const pathAudioBookLcpAlt = path.join(
             root,
             `book${acceptedExtensionObject.audiobookLcpAlt}`,
@@ -129,6 +120,7 @@ export class PublicationStorage {
         if (fs.existsSync(pathAudioBookLcpAlt)) {
             return pathAudioBookLcpAlt;
         }
+        // --
         const pathDivina = path.join(
             root,
             `book${acceptedExtensionObject.divina}`,
@@ -136,6 +128,7 @@ export class PublicationStorage {
         if (fs.existsSync(pathDivina)) {
             return pathDivina;
         }
+        // --
         const pathLcpPdf = path.join(
             root,
             `book${acceptedExtensionObject.pdfLcp}`,
@@ -143,6 +136,23 @@ export class PublicationStorage {
         if (fs.existsSync(pathLcpPdf)) {
             return pathLcpPdf;
         }
+        // --
+        const pathEpub3 = path.join(
+            root,
+            `book${acceptedExtensionObject.epub3}`,
+        );
+        if (fs.existsSync(pathEpub3)) {
+            return pathEpub3;
+        }
+        // --
+        const pathDaisy = path.join(
+            root,
+            `book${acceptedExtensionObject.daisy}`,
+        );
+        if (fs.existsSync(pathDaisy)) {
+            return pathDaisy;
+        }
+        // --
         throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
@@ -162,7 +172,7 @@ export class PublicationStorage {
         });
     }
 
-    private buildPublicationPath(identifier: string): string {
+    public buildPublicationPath(identifier: string): string {
         return path.join(this.rootPath, identifier);
     }
 

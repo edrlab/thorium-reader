@@ -32,4 +32,8 @@ export function* deletePublication(identifier: string): SagaGenerator<void> {
         const publicationStorage = diMainGet("publication-storage");
         // Remove from storage
         yield call(() => publicationStorage.removePublication(identifier));
+
+        const publicationViewConverter = diMainGet("publication-view-converter");
+        // Remove from memory cache
+        yield call(() => publicationViewConverter.removeFromMemoryCache(identifier));
 }
