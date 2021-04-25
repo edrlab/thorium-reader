@@ -30,11 +30,24 @@ import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 
 const debug = debug_("readium-desktop:main#converter/publication");
 
+// memory cache, to minimize filesystem access
+interface ICache {
+    r2PublicationStr?: string;
+    r2LCPStr?: string;
+}
+const _pubCache: Record<string, ICache> = {};
+
 @injectable()
 export class PublicationViewConverter {
 
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
+
+    public removeFromMemoryCache(identifier: string) {
+        if (_pubCache[identifier]) {
+            delete _pubCache[identifier];
+        }
+    }
 
     public updateLcpCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2LCP: LCP) {
 
@@ -45,14 +58,17 @@ export class PublicationViewConverter {
         debug("====> updateLcpCache: ", pubFolder);
         const lcpPath = path.join(pubFolder, "license.lcpl");
 
-        if (r2LCP.JsonSource) {
-            fs.writeFileSync(lcpPath, r2LCP.JsonSource, { encoding: "utf-8"});
-        } else {
-            fs.writeFileSync(lcpPath, JSON.stringify(TaJsonSerialize(r2LCP)), { encoding: "utf-8"});
+        const r2LCPStr = r2LCP.JsonSource ? r2LCP.JsonSource : JSON.stringify(TaJsonSerialize(r2LCP));
+
+        if (_pubCache[publicationDocument.identifier]?.r2PublicationStr) {
+            _pubCache[publicationDocument.identifier].r2LCPStr = r2LCPStr;
         }
+
+        fs.writeFileSync(lcpPath, r2LCPStr, { encoding: "utf-8"});
     }
 
     public updatePublicationCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2Publication: R2Publication) {
+        _pubCache[publicationDocument.identifier] = {};
 
         const pubFolder = this.publicationStorage.buildPublicationPath(
             publicationDocument.identifier,
@@ -61,7 +77,11 @@ export class PublicationViewConverter {
         debug("====> updatePublicationCache: ", pubFolder);
         const manifestPath = path.join(pubFolder, "manifest.json");
 
-        fs.writeFileSync(manifestPath, JSON.stringify(TaJsonSerialize(r2Publication), null, 2), { encoding: "utf-8"});
+        const r2PublicationStr = JSON.stringify(TaJsonSerialize(r2Publication), null, 2);
+
+        _pubCache[publicationDocument.identifier].r2PublicationStr = r2PublicationStr;
+
+        fs.writeFileSync(manifestPath, r2PublicationStr, { encoding: "utf-8"});
 
         if (r2Publication.LCP) {
             this.updateLcpCache(publicationDocument, r2Publication.LCP);
@@ -77,16 +97,45 @@ export class PublicationViewConverter {
         );
 
         debug("====> unmarshallR2Publication: ", pubFolder);
-        const manifestPath = path.join(pubFolder, "manifest.json");
-        const lcpPath = path.join(pubFolder, "license.lcpl");
+
+        if (_pubCache[publicationDocument.identifier]?.r2PublicationStr) {
+            const r2PublicationStr = _pubCache[publicationDocument.identifier].r2PublicationStr;
+            debug("====> manifest (memory cache)");
+            const r2PublicationJson = JSON.parse(r2PublicationStr);
+            const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+
+            const r2LCPStr = _pubCache[publicationDocument.identifier]?.r2LCPStr;
+            if (r2LCPStr) {
+                try {
+                    debug("====> LCP (memory cache)");
+                    const r2LCPJson = JSON.parse(r2LCPStr);
+
+                    if (!lcpLicenseIsNotWellFormed(r2LCPJson)) {
+                        const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
+
+                        r2LCP.ZipPath = "dummy/license.lcpl";
+                        r2LCP.JsonSource = r2LCPStr;
+                        r2LCP.init();
+
+                        r2Publication.LCP = r2LCP;
+                    } else {
+                        debug("NOT WELL FORMED LCP?");
+                    }
+                } catch (_err) {}
+            }
+
+            return r2Publication;
+        }
 
         try {
+            const manifestPath = path.join(pubFolder, "manifest.json");
             const r2PublicationStr = fs.readFileSync(manifestPath, { encoding: "utf-8"});
             debug("====> manifest: ", manifestPath);
             const r2PublicationJson = JSON.parse(r2PublicationStr);
             const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
             try {
+                const lcpPath = path.join(pubFolder, "license.lcpl");
                 const r2LCPStr = fs.readFileSync(lcpPath, { encoding: "utf-8"});
                 debug("====> LCP: ", lcpPath);
                 const r2LCPJson = JSON.parse(r2LCPStr);
