@@ -156,6 +156,7 @@ export async function importPublicationFromFS(
     const lcpManager = diMainGet("lcp-manager");
     const publicationRepository = diMainGet("publication-repository");
     const publicationStorage = diMainGet("publication-storage");
+    const publicationViewConverter = diMainGet("publication-view-converter");
 
     const pubDocument: PublicationDocumentWithoutTimestampable = {
         identifier: uuidv4(),
@@ -164,7 +165,7 @@ export async function importPublicationFromFS(
 
         //     r2PublicationJson,
 
-        //     // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+        //     // updated below via lcpManager.updateDocumentLcp()
         //     // r2LCPJson: null,
 
         //     // may be updated via lcpManager.processStatusDocument()
@@ -180,10 +181,9 @@ export async function importPublicationFromFS(
         customCover: null,
         hash: hash ? hash : await extractCrc32OnZip(filePath),
 
-        lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+        lcp: null, // updated below via lcpManager.updateDocumentLcp()
         lcpRightsCopies: 0,
     };
-    lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
 
     debug(`publication document ID=${pubDocument.identifier} HASH=${pubDocument.hash}`);
 
@@ -213,7 +213,14 @@ export async function importPublicationFromFS(
         ];
     }
 
+    // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
+    publicationViewConverter.updatePublicationCache(pubDocument, r2Publication);
+
     if (r2Publication.LCP) {
+        // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
+        // note: normally calls updateLcpCache(), but skip as updatePublicationCache() above did this already (avoid unnecessary filesystem writes)
+        lcpManager.updateDocumentLcp(pubDocument, r2Publication.LCP, true);
+
         try {
             await lcpManager.processStatusDocument(
                 pubDocument.identifier,
@@ -223,7 +230,7 @@ export async function importPublicationFromFS(
             debug(r2Publication.LCP);
             debug(r2Publication.LCP.LSD);
 
-            lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
+            lcpManager.updateDocumentLcp(pubDocument, r2Publication.LCP);
         } catch (err) {
             debug(err);
         }

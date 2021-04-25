@@ -5,22 +5,30 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
+import * as path from "path";
+import * as fs from "fs";
+
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import {
     convertContributorArrayToStringArray,
 } from "readium-desktop/main/converter/tools/localisation";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationDocument, PublicationDocumentWithoutTimestampable } from "readium-desktop/main/db/document/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
-import { TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 
 import { diMainGet } from "../di";
+import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
+import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+
+const debug = debug_("readium-desktop:main#converter/publication");
 
 @injectable()
 export class PublicationViewConverter {
@@ -28,25 +36,96 @@ export class PublicationViewConverter {
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
 
+    public updateLcpCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2LCP: LCP) {
+
+        const pubFolder = this.publicationStorage.buildPublicationPath(
+            publicationDocument.identifier,
+        );
+
+        debug("====> updateLcpCache: ", pubFolder);
+        const lcpPath = path.join(pubFolder, "license.lcpl");
+
+        if (r2LCP.JsonSource) {
+            fs.writeFileSync(lcpPath, r2LCP.JsonSource, { encoding: "utf-8"});
+        } else {
+            fs.writeFileSync(lcpPath, JSON.stringify(TaJsonSerialize(r2LCP)), { encoding: "utf-8"});
+        }
+    }
+
+    public updatePublicationCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2Publication: R2Publication) {
+
+        const pubFolder = this.publicationStorage.buildPublicationPath(
+            publicationDocument.identifier,
+        );
+
+        debug("====> updatePublicationCache: ", pubFolder);
+        const manifestPath = path.join(pubFolder, "manifest.json");
+
+        fs.writeFileSync(manifestPath, JSON.stringify(TaJsonSerialize(r2Publication), null, 2), { encoding: "utf-8"});
+
+        if (r2Publication.LCP) {
+            this.updateLcpCache(publicationDocument, r2Publication.LCP);
+        }
+    }
+
     public async unmarshallR2Publication(
         publicationDocument: PublicationDocument,
     ): Promise<R2Publication> {
 
-        const epubPath = this.publicationStorage.getPublicationEpubPath(
+        const pubFolder = this.publicationStorage.buildPublicationPath(
             publicationDocument.identifier,
         );
 
-        const r2Publication = await PublicationParsePromise(epubPath);
-        // just like when calling lsdLcpUpdateInject():
-        // r2Publication.LCP.ZipPath is set to META-INF/license.lcpl
-        // r2Publication.LCP.init(); is called to prepare for decryption (native NodeJS plugin)
-        // r2Publication.LCP.JsonSource is set
+        debug("====> unmarshallR2Publication: ", pubFolder);
+        const manifestPath = path.join(pubFolder, "manifest.json");
+        const lcpPath = path.join(pubFolder, "license.lcpl");
 
-        // after PublicationParsePromise, cleanup zip handler
-        // (no need to fetch ZIP data beyond this point)
-        r2Publication.freeDestroy();
+        try {
+            const r2PublicationStr = fs.readFileSync(manifestPath, { encoding: "utf-8"});
+            debug("====> manifest: ", manifestPath);
+            const r2PublicationJson = JSON.parse(r2PublicationStr);
+            const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
-        return r2Publication;
+            try {
+                const r2LCPStr = fs.readFileSync(lcpPath, { encoding: "utf-8"});
+                debug("====> LCP: ", lcpPath);
+                const r2LCPJson = JSON.parse(r2LCPStr);
+
+                if (!lcpLicenseIsNotWellFormed(r2LCPJson)) {
+                    const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
+
+                    r2LCP.ZipPath = "dummy/license.lcpl";
+                    r2LCP.JsonSource = r2LCPStr;
+                    r2LCP.init();
+
+                    r2Publication.LCP = r2LCP;
+                } else {
+                    debug("NOT WELL FORMED LCP?");
+                }
+            } catch (_err) {}
+
+            return r2Publication;
+        } catch (err) {
+            debug(err, " FALLBACK: parsing publication from filesystem ...");
+
+            const epubPath = this.publicationStorage.getPublicationEpubPath(
+                publicationDocument.identifier,
+            );
+
+            const r2Publication = await PublicationParsePromise(epubPath);
+            // just like when calling lsdLcpUpdateInject():
+            // r2Publication.LCP.ZipPath is set to META-INF/license.lcpl
+            // r2Publication.LCP.init(); is called to prepare for decryption (native NodeJS plugin)
+            // r2Publication.LCP.JsonSource is set
+
+            // after PublicationParsePromise, cleanup zip handler
+            // (no need to fetch ZIP data beyond this point)
+            r2Publication.freeDestroy();
+
+            this.updatePublicationCache(publicationDocument, r2Publication);
+
+            return r2Publication;
+        }
     }
 
     // Note: PublicationDocument and PublicationView are both Identifiable, with identical `identifier`
@@ -58,7 +137,7 @@ export class PublicationViewConverter {
         // const r2PublicationJson = document.resources.r2PublicationJson;
         // const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
         const r2Publication = await this.unmarshallR2Publication(document);
-        const r2PublicationJson = TaJsonSerialize(r2Publication);
+        const r2PublicationJson = TaJsonSerialize(r2Publication); // note: does not include r2Publication.LCP
 
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,

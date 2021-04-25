@@ -164,14 +164,15 @@ export class LcpManager {
     //             hash: await extractCrc32OnZip(epubPath),
     //         },
     //     );
-    //     this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
+    //     this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
     //     return this.publicationRepository.save(newPublicationDocument);
     // }
 
-    public updateDocumentLcpLsdBase64Resources(
+    public updateDocumentLcp(
         publicationDocument: PublicationDocumentWithoutTimestampable,
         r2LCP: LCP,
+        skipFilesystemCache = false,
     ) {
         // if (!publicationDocument.resources) {
         //     publicationDocument.resources = {};
@@ -182,6 +183,9 @@ export class LcpManager {
             // publicationDocument.resources.r2LCPBase64 = Buffer.from(r2LCPStr).toString("base64");
             // const r2LCPJson = r2LCP.JsonSource ? JSON.parse(r2LCP.JsonSource) : TaJsonSerialize(r2LCP);
             // publicationDocument.resources.r2LCPJson = r2LCPJson;
+            if (!skipFilesystemCache) {
+                this.publicationViewConverter.updateLcpCache(publicationDocument, r2LCP);
+            }
 
             // if (r2LCP.LSD) {
             //     // Legacy Base64 data blobs
@@ -335,7 +339,7 @@ export class LcpManager {
                 hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
             },
         );
-        this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
+        this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
         const newPubDocument = await this.publicationRepository.save(newPublicationDocument);
         return Promise.resolve(newPubDocument);
@@ -447,7 +451,7 @@ export class LcpManager {
                             hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
                         },
                     );
-                    this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
+                    this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
                 } else {
@@ -561,7 +565,7 @@ export class LcpManager {
                             hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
                         },
                     );
-                    this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
+                    this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
                 } else {
