@@ -24,12 +24,17 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:publication:open";
 const debug = debug_(filename_);
 
 export const ERROR_MESSAGE_ON_USERKEYCHECKREQUEST = "ERROR_MESSAGE_ON_USERKEYCHECKREQUEST";
+
+const convertDoc = async (doc: PublicationDocument, publicationViewConverter: PublicationViewConverter) => {
+    return await publicationViewConverter.convertDocumentToView(doc);
+};
 
 export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
@@ -107,7 +112,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                     lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
 
                 try {
-                    const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+                    const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
                     // will call API.unlockPublicationWithPassphrase()
                     yield put(lcpActions.userKeyCheckRequest.build(
@@ -195,7 +200,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                 debug(message);
 
                 try {
-                    const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+                    const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
                     // will call API.unlockPublicationWithPassphrase()
                     yield put(lcpActions.userKeyCheckRequest.build(

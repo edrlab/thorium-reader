@@ -8,7 +8,7 @@
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
-import { PublicationDocument, Resources } from "readium-desktop/main/db/document/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
@@ -106,20 +106,20 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
 
     protected convertToDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): PublicationDocument {
 
-        let r2PublicationJson = dbDoc.resources.r2PublicationJson;
-        if (!r2PublicationJson) {
-            const r2PublicationBase64 =
-                (dbDoc.resources as any).r2PublicationBase64 ||
-                (dbDoc.resources as any).filePublication; // legacy obsolete field;
-            if (r2PublicationBase64) {
-                try {
-                    const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
-                    r2PublicationJson = JSON.parse(r2PublicationStr);
-                } catch (_err) {
-                    r2PublicationJson = undefined;
-                }
-            }
-        }
+        // let r2PublicationJson = dbDoc.resources.r2PublicationJson;
+        // if (!r2PublicationJson) {
+        //     const r2PublicationBase64 =
+        //         (dbDoc.resources as any).r2PublicationBase64 ||
+        //         (dbDoc.resources as any).filePublication; // legacy obsolete field;
+        //     if (r2PublicationBase64) {
+        //         try {
+        //             const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
+        //             r2PublicationJson = JSON.parse(r2PublicationStr);
+        //         } catch (_err) {
+        //             r2PublicationJson = undefined;
+        //         }
+        //     }
+        // }
 
         // let r2OpdsPublicationJson = dbDoc.resources.r2OpdsPublicationJson;
         // if (!r2OpdsPublicationJson) {
@@ -164,27 +164,27 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         //     }
         // }
 
-        const resources: Resources | undefined = dbDoc.resources ? {
+        // const resources: Resources | undefined = dbDoc.resources ? {
 
-            r2PublicationJson,
-            // r2OpdsPublicationJson,
-            // r2LCPJson,
-            // r2LSDJson,
+        //     r2PublicationJson,
+        //     // r2OpdsPublicationJson,
+        //     // r2LCPJson,
+        //     // r2LSDJson,
 
-            // Legacy Base64 data blobs
-            // r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||
-            //     (dbDoc.resources as any).filePublication, // legacy obsolete field
-            // r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 ||
-            //     (dbDoc.resources as any).opdsPublication, // legacy obsolete field
-            // r2LCPBase64: dbDoc.resources.r2LCPBase64,
-            // r2LSDBase64: dbDoc.resources.r2LSDBase64,
-        } : undefined;
+        //     // Legacy Base64 data blobs
+        //     // r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||
+        //     //     (dbDoc.resources as any).filePublication, // legacy obsolete field
+        //     // r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 ||
+        //     //     (dbDoc.resources as any).opdsPublication, // legacy obsolete field
+        //     // r2LCPBase64: dbDoc.resources.r2LCPBase64,
+        //     // r2LSDBase64: dbDoc.resources.r2LSDBase64,
+        // } : undefined;
 
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
             {
-                resources,
+                // resources,
                 title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
                 tags: dbDoc.tags,
                 files: dbDoc.files,
