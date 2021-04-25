@@ -22,7 +22,7 @@ import { extractFileFromZipToBuffer } from "readium-desktop/main/zip/extract";
 import { v4 as uuidv4 } from "uuid";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
-import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { DaisyParsePromise } from "@r2-shared-js/parser/daisy";
 import { convertDaisyToReadiumWebPub } from "@r2-shared-js/parser/daisy-convert-to-epub";
@@ -148,7 +148,7 @@ export async function importPublicationFromFS(
         throw new Error("publication manifest not defined");
     }
 
-    const r2PublicationJson = TaJsonSerialize(r2Publication);
+    // const r2PublicationJson = TaJsonSerialize(r2Publication);
     // Legacy Base64 data blobs
     // const r2PublicationStr = JSON.stringify(r2PublicationJson);
     // const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
@@ -159,20 +159,20 @@ export async function importPublicationFromFS(
 
     const pubDocument: PublicationDocumentWithoutTimestampable = {
         identifier: uuidv4(),
-        resources: {
-            // Legacy Base64 data blobs
+        // resources: {
+        //     // Legacy Base64 data blobs
 
-            r2PublicationJson,
+        //     r2PublicationJson,
 
-            // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
-            // r2LCPJson: null,
+        //     // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+        //     // r2LCPJson: null,
 
-            // may be updated via lcpManager.processStatusDocument()
-            // r2LSDJson: null,
+        //     // may be updated via lcpManager.processStatusDocument()
+        //     // r2LSDJson: null,
 
-            // remains null as publication not originate from OPDS
-            // r2OpdsPublicationJson: null,
-        },
+        //     // remains null as publication not originate from OPDS
+        //     // r2OpdsPublicationJson: null,
+        // },
         title: convertMultiLangStringToString(r2Publication.Metadata.Title),
         tags: [],
         files: [],

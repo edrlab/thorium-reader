@@ -5,30 +5,60 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import {
     convertContributorArrayToStringArray,
 } from "readium-desktop/main/converter/tools/localisation";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-
-import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { diMainGet } from "../di";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
+
+import { TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
+
+import { diMainGet } from "../di";
 
 @injectable()
 export class PublicationViewConverter {
 
+    @inject(diSymbolTable["publication-storage"])
+    private readonly publicationStorage!: PublicationStorage;
+
+    public async unmarshallR2Publication(
+        publicationDocument: PublicationDocument,
+    ): Promise<R2Publication> {
+
+        const epubPath = this.publicationStorage.getPublicationEpubPath(
+            publicationDocument.identifier,
+        );
+
+        const r2Publication = await PublicationParsePromise(epubPath);
+        // just like when calling lsdLcpUpdateInject():
+        // r2Publication.LCP.ZipPath is set to META-INF/license.lcpl
+        // r2Publication.LCP.init(); is called to prepare for decryption (native NodeJS plugin)
+        // r2Publication.LCP.JsonSource is set
+
+        // after PublicationParsePromise, cleanup zip handler
+        // (no need to fetch ZIP data beyond this point)
+        r2Publication.freeDestroy();
+
+        return r2Publication;
+    }
+
     // Note: PublicationDocument and PublicationView are both Identifiable, with identical `identifier`
-    public convertDocumentToView(document: PublicationDocument): PublicationView {
+    public async convertDocumentToView(document: PublicationDocument): Promise<PublicationView> {
         // Legacy Base64 data blobs
         // const r2PublicationBase64 = document.resources.r2PublicationBase64;
         // const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
         // const r2PublicationJson = JSON.parse(r2PublicationStr);
-        const r2PublicationJson = document.resources.r2PublicationJson;
-        const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+        // const r2PublicationJson = document.resources.r2PublicationJson;
+        // const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+        const r2Publication = await this.unmarshallR2Publication(document);
+        const r2PublicationJson = TaJsonSerialize(r2Publication);
 
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,

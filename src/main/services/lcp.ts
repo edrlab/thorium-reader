@@ -134,7 +134,7 @@ export class LcpManager {
 
     //     await this.injectLcplIntoZip(epubPath, lcp);
 
-    //     const r2Publication = await this.unmarshallR2Publication(publicationDocument, false);
+    //     const r2Publication = await this.unmarshallR2Publication(publicationDocument); // , false
     //     r2Publication.LCP = lcp;
 
     //     try {
@@ -170,9 +170,9 @@ export class LcpManager {
         publicationDocument: PublicationDocumentWithoutTimestampable,
         r2LCP: LCP,
     ) {
-        if (!publicationDocument.resources) {
-            publicationDocument.resources = {};
-        }
+        // if (!publicationDocument.resources) {
+        //     publicationDocument.resources = {};
+        // }
         if (r2LCP) {
             // Legacy Base64 data blobs
             // const r2LCPStr = r2LCP.JsonSource ?? JSON.stringify(TaJsonSerialize(r2LCP));
@@ -201,43 +201,44 @@ export class LcpManager {
 
     public async unmarshallR2Publication(
         publicationDocument: PublicationDocument,
-        requiresLCP: boolean,
+        // requiresLCP: boolean,
     ): Promise<R2Publication> {
 
-        let r2Publication: R2Publication;
-
+        // let r2Publication: R2Publication;
         // Legacy Base64 data blobs
         // const mustParse = !publicationDocument.resources ||
         //     !publicationDocument.resources.r2PublicationBase64 ||
         //     (requiresLCP && !publicationDocument.resources.r2LCPBase64);
-        const mustParse = !publicationDocument.resources ||
-            !publicationDocument.resources.r2PublicationJson ||
-            (
-                requiresLCP
-                // && !publicationDocument.resources.r2LCPJson
-            );
+        // const mustParse = !publicationDocument.resources ||
+        //     !publicationDocument.resources.r2PublicationJson ||
+        //     (
+        //         requiresLCP
+        //         // && !publicationDocument.resources.r2LCPJson
+        //     );
 
-        if (mustParse) {
-            const epubPath = this.publicationStorage.getPublicationEpubPath(
-                publicationDocument.identifier,
-            );
+        // if (mustParse) {
 
-            r2Publication = await PublicationParsePromise(epubPath);
-            // just like when calling lsdLcpUpdateInject():
-            // r2Publication.LCP.ZipPath is set to META-INF/license.lcpl
-            // r2Publication.LCP.init(); is called to prepare for decryption (native NodeJS plugin)
-            // r2Publication.LCP.JsonSource is set
+        const epubPath = this.publicationStorage.getPublicationEpubPath(
+            publicationDocument.identifier,
+        );
 
-            // after PublicationParsePromise, cleanup zip handler
-            // (no need to fetch ZIP data beyond this point)
-            r2Publication.freeDestroy();
-        } else {
-            // Legacy Base64 data blobs
-            // const r2PublicationBase64 = publicationDocument.resources.r2PublicationBase64;
-            // const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
-            // const r2PublicationJson = JSON.parse(r2PublicationStr);
-            r2Publication = TaJsonDeserialize(publicationDocument.resources.r2PublicationJson, R2Publication);
-        }
+        const r2Publication = await PublicationParsePromise(epubPath);
+        // just like when calling lsdLcpUpdateInject():
+        // r2Publication.LCP.ZipPath is set to META-INF/license.lcpl
+        // r2Publication.LCP.init(); is called to prepare for decryption (native NodeJS plugin)
+        // r2Publication.LCP.JsonSource is set
+
+        // after PublicationParsePromise, cleanup zip handler
+        // (no need to fetch ZIP data beyond this point)
+        r2Publication.freeDestroy();
+
+        // } else {
+        //     // Legacy Base64 data blobs
+        //     // const r2PublicationBase64 = publicationDocument.resources.r2PublicationBase64;
+        //     // const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
+        //     // const r2PublicationJson = JSON.parse(r2PublicationStr);
+        //     r2Publication = TaJsonDeserialize(publicationDocument.resources.r2PublicationJson, R2Publication);
+        // }
         // if (!r2Publication.LCP &&
         //     publicationDocument.resources &&
         //     publicationDocument.resources.r2LCPJson) {
@@ -287,7 +288,7 @@ export class LcpManager {
         }
         this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
-            const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
+            const r2Publication = await this.unmarshallR2Publication(publicationDocument); // , true
             return await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
         } finally {
             this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
@@ -357,7 +358,7 @@ export class LcpManager {
             //     rejectUnauthorized: IS_DEV ? false : true,
             // },
 
-            const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
+            const r2Publication = await this.unmarshallR2Publication(publicationDocument); // , true
 
             let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
@@ -479,7 +480,7 @@ export class LcpManager {
             //     rejectUnauthorized: IS_DEV ? false : true,
             // },
 
-            const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
+            const r2Publication = await this.unmarshallR2Publication(publicationDocument); // , true
 
             let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
@@ -676,10 +677,10 @@ export class LcpManager {
             this.streamer.cachedPublication(epubPath) :
             streamerCachedPublication(epubPath);
         if (!r2Publication) {
-            r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
-            if (r2Publication.LCP) {
-                r2Publication.LCP.init();
-            }
+            r2Publication = await this.unmarshallR2Publication(publicationDocument); // , true
+            // if (r2Publication.LCP) {
+            //     r2Publication.LCP.init();
+            // }
         } else {
             // The streamer at this point should not host an instance of this R2Publication,
             // because we normally ensure readers are closed before performing LCP/LSD

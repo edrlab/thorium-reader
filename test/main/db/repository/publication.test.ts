@@ -24,19 +24,19 @@ const dbDoc1: PouchDB.Core.PutDocument<PublicationDocument> = {
     files: [],
     coverFile: null,
     customCover: null,
-    resources: {
-        r2PublicationJson: undefined,
-        // r2LCPJson: undefined,
-        // r2LSDJson: undefined,
-        // r2OpdsPublicationJson: undefined,
+    // resources: {
+    //     r2PublicationJson: undefined,
+    //     // r2LCPJson: undefined,
+    //     // r2LSDJson: undefined,
+    //     // r2OpdsPublicationJson: undefined,
 
-        // Legacy Base64 data blobs
-        //
-        // r2PublicationBase64: "",
-        // r2LCPBase64: "",
-        // r2LSDBase64: "",
-        // r2OpdsPublicationBase64: "",
-    },
+    //     // Legacy Base64 data blobs
+    //     //
+    //     // r2PublicationBase64: "",
+    //     // r2LCPBase64: "",
+    //     // r2LSDBase64: "",
+    //     // r2OpdsPublicationBase64: "",
+    // },
     hash: "",
     createdAt: now,
     updatedAt: now,
@@ -54,19 +54,19 @@ const dbDoc2: PouchDB.Core.PutDocument<PublicationDocument> = {
     files: [],
     coverFile: null,
     customCover: null,
-    resources: {
-        r2PublicationJson: undefined,
-        // r2LCPJson: undefined,
-        // r2LSDJson: undefined,
-        // r2OpdsPublicationJson: undefined,
+    // resources: {
+    //     r2PublicationJson: undefined,
+    //     // r2LCPJson: undefined,
+    //     // r2LSDJson: undefined,
+    //     // r2OpdsPublicationJson: undefined,
 
-        // Legacy Base64 data blobs
-        //
-        // r2PublicationBase64: "",
-        // r2LCPBase64: "",
-        // r2LSDBase64: "",
-        // r2OpdsPublicationBase64: "",
-    },
+    //     // Legacy Base64 data blobs
+    //     //
+    //     // r2PublicationBase64: "",
+    //     // r2LCPBase64: "",
+    //     // r2LSDBase64: "",
+    //     // r2OpdsPublicationBase64: "",
+    // },
     hash: "",
     createdAt: now - 10,
     updatedAt: now - 10,
@@ -227,19 +227,19 @@ test("repository.save create", async () => {
         files: [],
         coverFile: null,
         customCover: null,
-        resources: {
-            r2PublicationJson: undefined,
-            // r2LCPJson: undefined,
-            // r2LSDJson: undefined,
-            // r2OpdsPublicationJson: undefined,
+        // resources: {
+        //     r2PublicationJson: undefined,
+        //     // r2LCPJson: undefined,
+        //     // r2LSDJson: undefined,
+        //     // r2OpdsPublicationJson: undefined,
 
-            // Legacy Base64 data blobs
-            //
-            // r2PublicationBase64: "",
-            // r2LCPBase64: "",
-            // r2LSDBase64: "",
-            // r2OpdsPublicationBase64: "",
-        },
+        //     // Legacy Base64 data blobs
+        //     //
+        //     // r2PublicationBase64: "",
+        //     // r2LCPBase64: "",
+        //     // r2LSDBase64: "",
+        //     // r2OpdsPublicationBase64: "",
+        // },
         hash: "",
     };
     const result = await repository.save(dbDoc);
@@ -266,19 +266,19 @@ test("repository.save update", async () => {
         files: [],
         coverFile: null,
         customCover: null,
-        resources: {
-            r2PublicationJson: undefined,
-            // r2LCPJson: undefined,
-            // r2LSDJson: undefined,
-            // r2OpdsPublicationJson: undefined,
+        // resources: {
+        //     r2PublicationJson: undefined,
+        //     // r2LCPJson: undefined,
+        //     // r2LSDJson: undefined,
+        //     // r2OpdsPublicationJson: undefined,
 
-            // Legacy Base64 data blobs
-            //
-            // r2PublicationBase64: "",
-            // r2LCPBase64: "",
-            // r2LSDBase64: "",
-            // r2OpdsPublicationBase64: "",
-        },
+        //     // Legacy Base64 data blobs
+        //     //
+        //     // r2PublicationBase64: "",
+        //     // r2LCPBase64: "",
+        //     // r2LSDBase64: "",
+        //     // r2OpdsPublicationBase64: "",
+        // },
         hash: "",
     };
     const result = await repository.save(dbDoc);
