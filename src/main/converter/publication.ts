@@ -153,6 +153,8 @@ export class PublicationViewConverter {
                 }
             } catch (_err) {}
 
+            this.updatePublicationCache(publicationDocument, r2Publication);
+
             return r2Publication;
         } catch (err) {
             debug(err, " FALLBACK: parsing publication from filesystem ...");

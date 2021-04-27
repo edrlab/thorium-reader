@@ -62,7 +62,7 @@ export interface LsdLink {
 }
 
 export interface LsdStatus {
-    events?: LsdEvent[];
+    // events?: LsdEvent[];
     id: string;
     links: LsdLink[];
     message: string;
