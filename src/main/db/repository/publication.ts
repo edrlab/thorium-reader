@@ -67,8 +67,12 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const store = diMainGet("store");
         let unsub: Unsubscribe;
         const p = new Promise<PublicationDocument>(
-            (res) => (unsub = store.subscribe(() =>
-                    res(store.getState().publication.db[document.identifier]))));
+            (res) => (unsub = store.subscribe(() => {
+                const o = store.getState().publication.db[document.identifier];
+                if (o) {
+                    res(o);
+                }
+            })));
         store.dispatch(publicationActions.addPublication.build(document));
 
         return p.finally(() => unsub && unsub());

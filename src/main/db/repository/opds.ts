@@ -29,13 +29,18 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
 
     public async save(feed: OpdsFeed): Promise<OpdsFeedDocument> {
 
+        const feedAction = opdsActions.addOpdsFeed.build(feed);
         const store = diMainGet("store");
         let unsub: Unsubscribe;
         const p = new Promise<OpdsFeedDocument>(
-            (res) => (unsub = store.subscribe(() =>
-                    res(store.getState().opds.catalog.find((v) =>
-                        v.identifier === feed.identifier)))));
-        store.dispatch(opdsActions.addOpdsFeed.build(feed));
+            (res) => (unsub = store.subscribe(() => {
+                const o = store.getState().opds.catalog.find((v) =>
+                    v.identifier === feedAction.payload[0]?.identifier);
+                if (o) {
+                    res(o);
+                }
+            })));
+        store.dispatch(feedAction);
 
         return p.finally(() => unsub && unsub());
     }
@@ -57,7 +62,7 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
 
     }
 
-        public async findAll(): Promise<OpdsFeedDocument[]> {
+    public async findAll(): Promise<OpdsFeedDocument[]> {
         // const result = await this.db.allDocs({
         //     include_docs: true,
         //     startkey: this.idPrefix + "_",
