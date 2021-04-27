@@ -40,6 +40,7 @@ const persistStateToFs = async (nextState: RootState) => {
             reader: nextState.reader,
             session: nextState.session,
             i18n: nextState.i18n,
+            opds: nextState.opds,
         },
     });
 

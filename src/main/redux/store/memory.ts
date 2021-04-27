@@ -14,6 +14,7 @@ import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
+import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
@@ -106,6 +107,43 @@ const defaultLocale = (): LocaleConfigValueType => {
 //         registryReader,
 //     };
 // }
+
+const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) => {
+
+    const opdsFeedRepository = diMainGet("opds-feed-repository");
+
+    const opdsFromDb = await opdsFeedRepository.findAllFromPouchdb();
+
+    let newDocs = docs || [];
+    for (const doc of opdsFromDb) {
+        const { identifier } = doc;
+        const idx = newDocs.findIndex((v) => v.identifier === identifier);
+
+        if (newDocs[idx]) {
+
+            if (newDocs[idx].doNotMigrateAnymore) {
+                continue;
+            }
+
+            newDocs = [
+                ...newDocs.slice(0, idx),
+                ...[
+                    clone(doc),
+                ],
+                ...newDocs.slice(idx + 1),
+            ];
+        } else {
+            newDocs = [
+                ...newDocs,
+                ...[
+                    clone(doc),
+                ],
+            ];
+        }
+    }
+
+    return newDocs;
+};
 
 const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReaderState) => {
 
@@ -295,6 +333,15 @@ export async function initStore(configRepository: ConfigRepository<any>)
     } catch (e) {
 
         debug("ERR on absorb i18n to redux state", e);
+    }
+
+    try {
+        reduxState.opds = {
+            catalog: await absorbOpdsFeedToReduxState(reduxState.opds?.catalog),
+        };
+    } catch (e) {
+
+        debug("ERR on absorb opds to redux state", e);
     }
 
     const preloadedState = {
