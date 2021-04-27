@@ -50,68 +50,6 @@ const defaultLocale = (): LocaleConfigValueType => {
     };
 };
 
-// can be safely removed
-// introduce in a thorium previous version
-//
-// async function absorbLocatorRepositoryToReduxState() {
-
-//     const locatorRepository = diMainGet("locator-repository");
-//     const locatorFromDb = await locatorRepository.find(
-//         {
-//             selector: { locatorType: LocatorType.LastReadingLocation },
-//             sort: [{ updatedAt: "asc" }],
-//         },
-//     );
-
-
-//     const lastReadingQueue: TPQueueState = [];
-//     const registryReader: IDictWinRegistryReaderState = {};
-
-//     for (const locator of locatorFromDb) {
-//         if (locator.publicationIdentifier) {
-
-//             lastReadingQueue.push([locator.createdAt, locator.publicationIdentifier]);
-
-//             registryReader[locator.publicationIdentifier] = {
-//                 windowBound: {
-//                     width: 800,
-//                     height: 600,
-//                     x: 0,
-//                     y: 0,
-//                 },
-//                 reduxState: {
-//                     config: readerConfigInitialState,
-//                     locator: LocatorExtendedWithLocatorOnly(locator.locator),
-//                     bookmark: undefined,
-//                     info: {
-//                         publicationIdentifier: locator.publicationIdentifier,
-//                         manifestUrlR2Protocol: undefined,
-//                         manifestUrlHttp: undefined,
-//                         filesystemPath: undefined,
-//                         r2Publication: undefined,
-//                         publicationView: undefined,
-//                     },
-//                     highlight: {
-//                         handler: undefined,
-//                         mounter: undefined,
-//                     },
-//                 },
-//             };
-
-//             await locatorRepository.delete(locator.identifier);
-//         }
-//     }
-
-//     if (lastReadingQueue.length === 0 && ObjectKeys(registryReader).length === 0) {
-//         return undefined;
-//     }
-
-//     return {
-//         lastReadingQueue,
-//         registryReader,
-//     };
-// }
-
 const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) => {
 
     const opdsFeedRepository = diMainGet("opds-feed-repository");
@@ -338,7 +276,6 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
             debug("####### ERROR ######");
             debug("Your database is corrupted");
-            debug("");
             debug("####### ERROR ######");
 
             debug(e);
@@ -361,9 +298,6 @@ export async function initStore(configRepository: ConfigRepository<any>)
                     debug("RECOVERY : the state is provided from the pouchdb database or from potentially corrupted state.json file");
                     debug("There should be data loss !");
                     debug("REVOVERY WORKS lvl 3/4");
-
-
-                    // TODO : copy the state file for debug
 
                 } catch {
                     try {
@@ -416,47 +350,6 @@ export async function initStore(configRepository: ConfigRepository<any>)
     }
 
     debug(reduxState);
-
-    // new version of THORIUM
-    // the migration can be safely removed
-    //
-    // try {
-    //     // executed once time for locatorRepository to ReduxState migration
-    //     const locatorRepositoryAbsorbed = await absorbLocatorRepositoryToReduxState();
-
-    //     if (locatorRepositoryAbsorbed) {
-    //         reduxStateWin = {
-    //             ...reduxStateWin,
-    //             ...{
-    //                 publication: {
-    //                     lastReadingQueue: Ramda.uniqBy(
-    //                         (item) => item[1],
-    //                         Ramda.concat(
-    //                             reduxStateWin.publication.lastReadingQueue,
-    //                             locatorRepositoryAbsorbed.lastReadingQueue,
-    //                         ),
-    //                     ),
-    //                 },
-    //             },
-    //             ...{
-    //                 win: {
-    //                     session: {
-    //                         library: reduxStateWin.win.session.library,
-    //                         reader: reduxStateWin.win.session.reader,
-    //                     },
-    //                     registry: {
-    //                         reader: {
-    //                             ...locatorRepositoryAbsorbed.registryReader,
-    //                             ...reduxStateWin.win.registry.reader,
-    //                         },
-    //                     },
-    //                 },
-    //             },
-    //         };
-    //     }
-    // } catch (err) {
-    //     debug("ERR on absorbLocatorRepositoryToReduxState", err);
-    // }
 
     try {
 
