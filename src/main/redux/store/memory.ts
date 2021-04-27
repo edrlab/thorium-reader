@@ -16,7 +16,7 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, patchFilePath, runtimeStateFilePath, stateFilePath } from "readium-desktop/main/di";
+import { backupStateFilePathFn, CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, patchFilePath, runtimeStateFilePath, stateFilePath } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
@@ -245,7 +245,7 @@ const checkReduxState = async (runtimeState: object, reduxState: PersistRootStat
 
     deepStrictEqual(runtimeState, reduxState);
 
-    debug("reduxState is certified valid");
+    debug("hydration state is certified compliant");
 
     return reduxState;
 };
@@ -275,41 +275,63 @@ const recoveryReduxState = async (runtimeState: object): Promise<object>  => {
     return runtimeState;
 };
 
+const test = (stateRaw: any): stateRaw is PersistRootState => {
+    ok(typeof stateRaw === "object");
+    ok(stateRaw.win)
+    ok(stateRaw.publication);
+    ok(stateRaw.reader);
+    ok(stateRaw.session);
+    ok(stateRaw.opds);
+    ok(stateRaw.i18n);
+
+    return stateRaw;
+}
+
 export async function initStore(configRepository: ConfigRepository<any>)
     : Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
     let reduxStateWinRepository: ConfigDocument<PersistRootState>;
+    let reduxState: PersistRootState | undefined;
 
     try {
-        const reduxStateRepositoryResult = await configRepository.get(CONFIGREPOSITORY_REDUX_PERSISTENCE);
-        reduxStateWinRepository = reduxStateRepositoryResult;
 
-    } catch (err) {
-
-        debug("ERR when trying to get the state in Pouchb configRepository", err);
-    }
-
-    let reduxState = reduxStateWinRepository?.value
-        ? reduxStateWinRepository.value
-        : undefined;
-
-    if (!reduxState) {
-        const stateFromFs = await tryCatch(() => fsp.readFile(stateFilePath, {encoding: "utf8"}), "");
-
-        const json = await tryCatch(() => JSON.parse(stateFromFs), "");
-
-        if (typeof json === "object") {
+        const jsonStr = await fsp.readFile(stateFilePath, { encoding: "utf8" });
+        const json = JSON.parse(jsonStr);
+        if (test(json))
             reduxState = json;
+
+        debug("STATE LOADED FROM FS");
+        debug("the state doesn't come from pouchDb !");
+        debug("😍😍😍😍😍😍😍😍");
+
+    } catch {
+
+        try {
+            const reduxStateRepositoryResult = await configRepository.get(CONFIGREPOSITORY_REDUX_PERSISTENCE);
+            reduxStateWinRepository = reduxStateRepositoryResult;
+            reduxState = reduxStateWinRepository?.value
+                ? reduxStateWinRepository.value
+                : undefined;
+
+            if (reduxState) {
+                debug("STATE LOADED FROM POUCHDB");
+                debug("the state doesn't come from the new json filesystem database");
+                debug("😩😩😩😩😩😩😩");
+            }
+
+        } catch (err) {
+
+            debug("ERR when trying to get the state in Pouchb configRepository", err);
         }
     }
 
     if (reduxState) {
 
         try {
-            const state = await recoveryReduxState( await runtimeState());
+            const state = await recoveryReduxState(await runtimeState());
             reduxState = await checkReduxState(state, reduxState);
-            
-            debug("RECOVERY WORKS lvl 1/3");
+
+            debug("RECOVERY WORKS lvl 1/4");
         } catch (e) {
 
             debug("####### ERROR ######");
@@ -319,16 +341,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
             debug(e);
 
-            const test = (stateRaw: any) => {
-                ok(typeof stateRaw === "object");
-                ok(stateRaw.win)
-                ok(stateRaw.publication);
-                ok(stateRaw.reader);
-                ok(stateRaw.session);
-                ok(stateRaw.opds);
-                ok(stateRaw.i18n);
-            }
-            try { 
+            try {
                 const stateRawFirst = await runtimeState()
                 test(stateRawFirst);
                 const stateRaw: any = await recoveryReduxState(stateRawFirst);
@@ -337,22 +350,45 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
                 debug("RECOVERY : the state is the previous runtime snapshot + patch events");
                 debug("There should be no data loss")
-                debug("REVOVERY WORKS lvl 2/3");
+                debug("REVOVERY WORKS lvl 2/4");
             } catch {
                 try {
-                    const stateRawFirst: any = await runtimeState()
-                    test(stateRawFirst);
-                    reduxState = stateRawFirst;
 
-                    debug("RECOVERY : the state is the previous runtime snapshot");
+                    test(reduxState);
+
+                    debug("RECOVERY : the state is provided from the pouchdb database or from potentially corrupted state.json file");
                     debug("There should be data loss !")
-                    debug("REVOVERY WORKS lvl 3/3");
+                    debug("REVOVERY WORKS lvl 3/4");
+
+
+                    // TODO : copy the state file for debug
 
                 } catch {
-                    reduxState = undefined;
+                    try {
 
-                    debug("RECOVERY FAILED none of the 3 recoveries mode worked");
+                        const stateRawFirst: any = await runtimeState()
+                        test(stateRawFirst);
+                        reduxState = stateRawFirst;
+
+                        debug("RECOVERY : the state is the previous runtime snapshot");
+                        debug("There should be data loss !")
+                        debug("RECOVERY WORKS 4/4");
+                    } catch {
+
+                        reduxState = undefined;
+                        debug("RECOVERY FAILED none of the 3 recoveries mode worked");
+                    }
+
                 }
+            } finally {
+
+                const p = backupStateFilePathFn();
+                await tryCatch(() => 
+                    fsp.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
+                "");
+
+                debug("RECOVERY : a state backup is copied in " + p);
+                debug("keep it safe, you may restore a corrupted state with it");
             }
 
         } finally {
@@ -364,7 +400,9 @@ export async function initStore(configRepository: ConfigRepository<any>)
                     { encoding: "utf8" },
                 )
                 , "");
-            await tryCatch(() => fsp.writeFile(patchFilePath, "", { encoding: "utf8" }), "");
+                
+            // empty array by default !!
+            await tryCatch(() => fsp.writeFile(patchFilePath, "[]", { encoding: "utf8" }), "");
         }
     }
 

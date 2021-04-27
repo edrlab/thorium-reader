@@ -49,6 +49,7 @@ export function* needToPersistFinalState() {
 
     const nextState = yield* selectTyped((store: RootState) => store);
     yield call(() => persistStateToFs(nextState));
+    yield call(() => needToPersistPatch());
 }
 
 export function* needToPersistPatch() {
