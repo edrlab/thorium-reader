@@ -95,8 +95,12 @@ export class LcpManager {
     private readonly translator!: Translator;
 
     public async getAllSecrets(): Promise<TLCPSecrets> {
+        debug("LCP getAllSecrets ...");
+
         const buff = await tryCatch(() => fs.promises.readFile(defaultsFilePath), "");
         if (buff) {
+            debug("LCP getAllSecrets from JSON");
+
             const str = decryptPersist(buff, CONFIGREPOSITORY_LCP_SECRETS, defaultsFilePath);
             if (!str) {
                 return {};
@@ -104,6 +108,8 @@ export class LcpManager {
             const json = JSON.parse(str);
             return json;
         }
+
+        debug("LCP getAllSecrets from DB (migration) ...");
 
         const lcpSecretDocs = await this.lcpSecretRepository.findAll();
         const json: TLCPSecrets = {};
@@ -133,6 +139,7 @@ export class LcpManager {
             }
         }
 
+        debug("LCP getAllSecrets DB TO JSON", json);
         const str = JSON.stringify(json);
         const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, defaultsFilePath);
         fs.promises.writeFile(defaultsFilePath, encrypted);
@@ -141,6 +148,8 @@ export class LcpManager {
     }
 
     public async getSecrets(doc: PublicationDocument): Promise<string[]> {
+        debug("LCP getSecrets ... ", doc.identifier);
+
         const secrets: string[] = [];
 
         const allSecrets = await this.getAllSecrets();
@@ -157,6 +166,7 @@ export class LcpManager {
             }
         }
 
+        debug("LCP getSecrets: ", secrets);
         return secrets;
 
         // const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
@@ -167,6 +177,7 @@ export class LcpManager {
     }
 
     public async saveSecret(doc: PublicationDocument, lcpHashedPassphrase: string) {
+        debug("LCP saveSecret ... ", doc.identifier);
 
         // await this.lcpSecretRepository.save({
         //     publicationIdentifier: doc.identifier,
@@ -181,6 +192,8 @@ export class LcpManager {
         if (doc.lcp?.provider) {
             allSecrets[doc.identifier].provider = doc.lcp.provider;
         }
+
+        debug("LCP saveSecret: ", allSecrets);
 
         const str = JSON.stringify(allSecrets);
         const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, defaultsFilePath);
@@ -793,11 +806,12 @@ export class LcpManager {
             // if (r2Publication.LCP) {
             //     r2Publication.LCP.init();
             // }
-        } else {
-            // The streamer at this point should not host an instance of this R2Publication,
-            // because we normally ensure readers are closed before performing LCP/LSD
-            debug(`>>>>>>> streamer.cachedPublication() ?! ${publicationIdentifier} ${epubPath}`);
         }
+        // else {
+        //     // The streamer at this point should not host an instance of this R2Publication,
+        //     // because we normally ensure readers are closed before performing LCP/LSD
+        //     debug(`>>>>>>> streamer.cachedPublication() ?! ${publicationIdentifier} ${epubPath}`);
+        // }
         if (!r2Publication) {
             debug("unlockPublication !r2Publication ?");
             return null;
