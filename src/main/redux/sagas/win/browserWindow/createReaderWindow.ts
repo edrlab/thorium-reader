@@ -92,7 +92,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     yield* callTyped(() => readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" }));
 
     yield* putTyped(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
-    if () {
+    if (IS_DEV) {
 
         readerWindow.webContents.on("did-finish-load", () => {
 
