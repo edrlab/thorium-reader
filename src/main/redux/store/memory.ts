@@ -287,6 +287,8 @@ export async function initStore(configRepository: ConfigRepository<any>)
         try {
             const state = await recoveryReduxState( await runtimeState());
             reduxState = await checkReduxState(state, reduxState);
+            
+            debug("RECOVERY WORKS lvl 1/3");
         } catch (e) {
 
             debug("####### ERROR ######");
@@ -306,19 +308,29 @@ export async function initStore(configRepository: ConfigRepository<any>)
                 ok(stateRaw.i18n);
             }
             try { 
-                const stateRaw: any = await recoveryReduxState(await runtimeState());
+                const stateRawFirst = await runtimeState()
+                test(stateRawFirst);
+                const stateRaw: any = await recoveryReduxState(stateRawFirst);
                 test(stateRaw);
                 reduxState = stateRaw;
 
+                debug("RECOVERY : the state is the previous runtime snapshot + patch events");
+                debug("There should be no data loss")
+                debug("REVOVERY WORKS lvl 2/3");
             } catch {
                 try {
-                    const stateRaw: any = await runtimeState();
-                    test(stateRaw);
-                    reduxState = stateRaw;
+                    const stateRawFirst: any = await runtimeState()
+                    test(stateRawFirst);
+                    reduxState = stateRawFirst;
+
+                    debug("RECOVERY : the state is the previous runtime snapshot");
+                    debug("There should be data loss !")
+                    debug("REVOVERY WORKS lvl 3/3");
 
                 } catch {
                     reduxState = undefined;
-                    debug("RECOVERY FAILED");
+
+                    debug("RECOVERY FAILED none of the 3 recoveries mode worked");
                 }
             }
 
