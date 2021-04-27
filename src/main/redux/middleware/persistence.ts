@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as ramda from "ramda";
+// import * as ramda from "ramda";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+import { createPatch } from "rfc6902";
 
-import { RootState } from "../states";
+import { PersistRootState, RootState } from "../states";
 
 export const reduxPersistMiddleware: Middleware
     = (store: MiddlewareAPI<Dispatch<AnyAction>, RootState>) =>
@@ -23,19 +24,46 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                if (
-                        !ramda.equals(prevState.win, nextState.win)
-                    ||  !ramda.equals(prevState.publication.lastReadingQueue, nextState.publication.lastReadingQueue)
-                    ||  !ramda.equals(prevState.publication.db, nextState.publication.db)
-                    ||  !ramda.equals(prevState.reader, nextState.reader)
-                    ||  !ramda.equals(prevState.session, nextState.session)
-                    ||  !ramda.equals(prevState.i18n, nextState.i18n)
-                    ||  !ramda.equals(prevState.opds, nextState.opds)
-                ) {
+                const persistPrevState: PersistRootState = {
+                    win: prevState.win,
+                    reader: prevState.reader,
+                    i18n: prevState.i18n,
+                    session: prevState.session,
+                    publication: {
+                        db: prevState.publication.db,
+                        lastReadingQueue: prevState.publication.lastReadingQueue,
+                    },
+                    opds: prevState.opds,
+                };
 
-                    // dispatch a new round in middleware
-                    store.dispatch(winActions.persistRequest.build());
+                const persistNextState: PersistRootState = {
+                    win: nextState.win,
+                    reader: nextState.reader,
+                    i18n: nextState.i18n,
+                    session: nextState.session,
+                    publication: {
+                        db: nextState.publication.db,
+                        lastReadingQueue: nextState.publication.lastReadingQueue,
+                    },
+                    opds: nextState.opds,
+                };
+
+                // if (
+                //         !ramda.equals(prevState.win, nextState.win)
+                //     ||  !ramda.equals(prevState.publication, nextState.publication)
+                //     ||  !ramda.equals(prevState.reader, nextState.reader)
+                //     ||  !ramda.equals(prevState.session, nextState.session)
+                //     ||  !ramda.equals(prevState.i18n, nextState.i18n)
+                // ) {
+
+                // dispatch a new round in middleware
+
+                const ops = createPatch(persistPrevState, persistNextState);
+                if (ops.length) {
+
+                    store.dispatch(winActions.persistRequest.build(ops));
                 }
+                // }
 
                 return returnValue;
             };
