@@ -211,6 +211,31 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         }
     }
 
+    public async findByPublicationIdentifier(publicationIdentifier: string): Promise<PublicationDocument[]> {
+        // return this.find({
+        //     selector: { publicationIdentifier },
+        // });
+
+        try {
+
+            const store = diMainGet("store");
+            const state = store.getState();
+
+            const pubs = Object.values(state.publication.db).filter((f) => f.identifier === publicationIdentifier);
+
+            return pubs;
+
+        } catch (e) {
+
+            console.log("####");
+            console.log("findByPublicationIdentifier error ", e);
+            console.log("####");
+
+            return [];
+        }
+    }
+
+
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
         // const dbDocs = await this.db.search({
         //     query: title,

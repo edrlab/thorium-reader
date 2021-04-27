@@ -26,11 +26,11 @@ export class LcpSecretRepository extends BaseRepository<LcpSecretDocument> {
         super(db, "lcp_secret", indexes);
     }
 
-    public async findByPublicationIdentifier(publicationIdentifier: string): Promise<LcpSecretDocument[]> {
-        return this.find({
-            selector: { publicationIdentifier },
-        });
-    }
+    // public async findByPublicationIdentifier(publicationIdentifier: string): Promise<LcpSecretDocument[]> {
+    //     return this.find({
+    //         selector: { publicationIdentifier },
+    //     });
+    // }
 
     protected convertToDocument(dbDoc: PouchDB.Core.Document<LcpSecretDocument>): LcpSecretDocument {
         return Object.assign(

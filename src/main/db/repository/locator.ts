@@ -42,30 +42,30 @@ export class LocatorRepository extends BaseRepository<LocatorDocument> {
         super(db, "locator", indexes);
     }
 
-    public async findByPublicationIdentifierAndLocatorType(
-        publicationIdentifier: string,
-        locatorType: string,
-    ): Promise<LocatorDocument[]> {
-        return this.find({
-            selector: { publicationIdentifier, locatorType },
-        });
-    }
+    // public async findByPublicationIdentifierAndLocatorType(
+    //     publicationIdentifier: string,
+    //     locatorType: string,
+    // ): Promise<LocatorDocument[]> {
+    //     return this.find({
+    //         selector: { publicationIdentifier, locatorType },
+    //     });
+    // }
 
-    public async findByPublicationIdentifier(
-        publicationIdentifier: string,
-    ): Promise<LocatorDocument[]> {
-        return this.find({
-            selector: { publicationIdentifier },
-        });
-    }
+    // public async findByPublicationIdentifier(
+    //     publicationIdentifier: string,
+    // ): Promise<LocatorDocument[]> {
+    //     return this.find({
+    //         selector: { publicationIdentifier },
+    //     });
+    // }
 
-    public async findByLocatorType(
-        locatorType: string,
-    ): Promise<LocatorDocument[]> {
-        return this.find({
-            selector: { locatorType },
-        });
-    }
+    // public async findByLocatorType(
+    //     locatorType: string,
+    // ): Promise<LocatorDocument[]> {
+    //     return this.find({
+    //         selector: { locatorType },
+    //     });
+    // }
 
     protected convertToDocument(dbDoc: PouchDB.Core.Document<LocatorDocument>): LocatorDocument {
         return Object.assign(
