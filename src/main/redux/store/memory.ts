@@ -220,27 +220,38 @@ const absorbI18nToReduxState = async (
     return i18n;
 };
 
-const checksReduxState = async (reduxState: PersistRootState) => {
+const checkReduxState = async (runtimeState: object, reduxState: PersistRootState) => {
 
+    deepStrictEqual(runtimeState, reduxState);
+
+    debug("reduxState is certified valid");
+
+    return reduxState;
+};
+
+const runtimeState = async (): Promise<object> => {
     const runtimeStateStr = await tryCatch(() => fsp.readFile(runtimeStateFilePath, { encoding: "utf8" }), "");
     const runtimeState = await tryCatch(() => JSON.parse(runtimeStateStr), "");
 
     ok(typeof runtimeState === "object");
+
+    return runtimeState;
+};
+
+const recoveryReduxState = async (runtimeState: object): Promise<object>  => {
 
     const patchFileStr = await tryCatch(() => fsp.readFile(patchFilePath, { encoding: "utf8" }), "");
     const patch = await tryCatch(() => JSON.parse(patchFileStr), "");
 
     ok(Array.isArray(patch));
 
-    const errors = applyPatch(runtimeStateStr, patch);
+    const errors = applyPatch(runtimeState, patch);
 
     ok(errors.reduce((pv, cv) => pv && !cv, true));
 
-    deepStrictEqual(runtimeStateStr, reduxState);
+    ok(typeof runtimeState === "object", "state not defined after patch");
 
-    debug("reduxState is certified valid");
-
-    return reduxState;
+    return runtimeState;
 };
 
 export async function initStore(configRepository: ConfigRepository<any>)
@@ -274,10 +285,9 @@ export async function initStore(configRepository: ConfigRepository<any>)
     if (reduxState) {
 
         try {
-
-            reduxState = await checksReduxState(reduxState);
+            const state = await recoveryReduxState( await runtimeState());
+            reduxState = await checkReduxState(state, reduxState);
         } catch (e) {
-            // how to deal with rejection ?
 
             debug("####### ERROR ######");
             debug("Your database is corrupted");
@@ -286,12 +296,42 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
             debug(e);
 
-            reduxState = undefined; // TODO
+            const test = (stateRaw: any) => {
+                ok(typeof stateRaw === "object");
+                ok(stateRaw.win)
+                ok(stateRaw.publication);
+                ok(stateRaw.reader);
+                ok(stateRaw.session);
+                ok(stateRaw.opds);
+                ok(stateRaw.i18n);
+            }
+            try { 
+                const stateRaw: any = await recoveryReduxState(await runtimeState());
+                test(stateRaw);
+                reduxState = stateRaw;
+
+            } catch {
+                try {
+                    const stateRaw: any = await runtimeState();
+                    test(stateRaw);
+                    reduxState = stateRaw;
+
+                } catch {
+                    reduxState = undefined;
+                    debug("RECOVERY FAILED");
+                }
+            }
+
         } finally {
 
-            await tryCatch(() => fsp.writeFile(runtimeStateFilePath, reduxState ? JSON.stringify(reduxState): "", { encoding: "utf8" }), "");
-
-            await tryCatch(() => fsp.writeFile(patchFilePath, "", { encoding: "utf8"}), "");
+            await tryCatch(() =>
+                fsp.writeFile(
+                    runtimeStateFilePath,
+                    reduxState ? JSON.stringify(reduxState) : "",
+                    { encoding: "utf8" },
+                )
+                , "");
+            await tryCatch(() => fsp.writeFile(patchFilePath, "", { encoding: "utf8" }), "");
         }
     }
 
