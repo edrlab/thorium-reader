@@ -33,13 +33,21 @@ const persistStateToFs = async (nextState: RootState) => {
         identifier: CONFIGREPOSITORY_REDUX_PERSISTENCE,
         value: {
             win: nextState.win,
-            publication: nextState.publication,
+            publication: {
+                db: nextState.publication.db,
+                lastReadingQueue: nextState.publication.lastReadingQueue,
+            },
             reader: nextState.reader,
             session: nextState.session,
             i18n: nextState.i18n,
             opds: nextState.opds,
         },
     });
+
+    // const path = "/home/pierre/state.json";
+    // writeFileSync(path, Buffer.from(JSON.stringify(
+        // nextState.publication,
+    // )));
     debug("end of persist reduxState in disk");
 };
 

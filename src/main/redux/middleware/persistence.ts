@@ -25,7 +25,8 @@ export const reduxPersistMiddleware: Middleware
 
                 if (
                         !ramda.equals(prevState.win, nextState.win)
-                    ||  !ramda.equals(prevState.publication, nextState.publication)
+                    ||  !ramda.equals(prevState.publication.lastReadingQueue, nextState.publication.lastReadingQueue)
+                    ||  !ramda.equals(prevState.publication.db, nextState.publication.db)
                     ||  !ramda.equals(prevState.reader, nextState.reader)
                     ||  !ramda.equals(prevState.session, nextState.session)
                     ||  !ramda.equals(prevState.i18n, nextState.i18n)

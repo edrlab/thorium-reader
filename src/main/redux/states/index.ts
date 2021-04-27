@@ -13,6 +13,7 @@ import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reduce
 
 import { AppState } from "./app";
 import { ILcpState } from "./lcp";
+import { IDictPublicationState } from "./publication";
 import { ISessionState } from "./session";
 import { StreamerState } from "./streamer";
 import { IDictWinRegistryReaderState } from "./win/registry/reader";
@@ -42,6 +43,7 @@ export interface RootState {
     lcp: ILcpState;
     publication: {
         lastReadingQueue: TPQueueState;
+        db: IDictPublicationState;
     };
     keyboard: KeyboardState;
     opds: {
