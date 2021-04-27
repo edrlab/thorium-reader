@@ -69,6 +69,26 @@ if (!fs.existsSync(userDataPath)) {
     fs.mkdirSync(userDataPath);
 }
 
+export const stateFilePath = path.join(
+    userDataPath,
+    "state.json",
+);
+
+export const patchFilePath = path.join(
+    userDataPath,
+    "state.patch.json",
+);
+
+export const runtimeStateFilePath = path.join(
+    userDataPath,
+    "state.runtime.json",
+);
+
+export const backupStateFilePathFn = () => path.join(
+    userDataPath,
+    `state.${+new Date()}.json`,
+);
+
 //
 // Create databases
 //
@@ -97,8 +117,20 @@ if (!fs.existsSync(rootDbPath)) {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pouchDbSearch = require("pouchdb-quick-search");
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pouchDbFind = require("pouchdb-find");
+
 // Load PouchDB plugins
 PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
+
+PouchDB.plugin(pouchDbSearch.default ? pouchDbSearch.default : pouchDbSearch);
+
+
+// indexes bookmarks
+PouchDB.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
 
 const dbOpts = {
     adapter: _POUCHDB_ADAPTER_NAME,
