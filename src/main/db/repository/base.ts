@@ -9,7 +9,7 @@ import * as moment from "moment";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 
 interface Index  {
     name: string;
@@ -35,53 +35,53 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         return this.idPrefix + "_" + documentIdentifier;
     }
 
-    public async save(document: ExcludeTimestampableWithPartialIdentifiable<D>):
-        Promise<D> {
+    // public async save(document: ExcludeTimestampableWithPartialIdentifiable<D>):
+    //     Promise<D> {
 
-        if (!document.identifier) {
-            document.identifier = uuidv4();
-        }
+    //     if (!document.identifier) {
+    //         document.identifier = uuidv4();
+    //     }
 
-        let dbDoc: PouchDB.Core.PutDocument<D> = this.convertFromDocument(document);
+    //     let dbDoc: PouchDB.Core.PutDocument<D> = this.convertFromDocument(document);
 
-        // Search if there is an existing document with the same identifier
-        try {
-            const origDbDoc = await this.db.get(
-                this.buildId(document.identifier),
-            );
+    //     // Search if there is an existing document with the same identifier
+    //     try {
+    //         const origDbDoc = await this.db.get(
+    //             this.buildId(document.identifier),
+    //         );
 
-            dbDoc = Object.assign(
-                dbDoc,
-                {
-                    createdAt: origDbDoc.createdAt,
-                } as Timestampable,
-                {
-                    _id: origDbDoc._id,
-                } as PouchDB.Core.IdMeta,
-                {
-                    _rev: origDbDoc._rev,
-                } as PouchDB.Core.GetMeta,
-            );
-        } catch (_error) {
-            // Not found, so this is a new one
-            dbDoc = Object.assign(
-                dbDoc,
-                {
-                    _id: this.buildId(document.identifier),
-                } as PouchDB.Core.IdMeta,
-                {
-                    createdAt: dbDoc.updatedAt,
-                } as Timestampable,
-                {
-                    identifier: document.identifier,
-                } as Identifiable,
-            );
-        }
+    //         dbDoc = Object.assign(
+    //             dbDoc,
+    //             {
+    //                 createdAt: origDbDoc.createdAt,
+    //             } as Timestampable,
+    //             {
+    //                 _id: origDbDoc._id,
+    //             } as PouchDB.Core.IdMeta,
+    //             {
+    //                 _rev: origDbDoc._rev,
+    //             } as PouchDB.Core.GetMeta,
+    //         );
+    //     } catch (_error) {
+    //         // Not found, so this is a new one
+    //         dbDoc = Object.assign(
+    //             dbDoc,
+    //             {
+    //                 _id: this.buildId(document.identifier),
+    //             } as PouchDB.Core.IdMeta,
+    //             {
+    //                 createdAt: dbDoc.updatedAt,
+    //             } as Timestampable,
+    //             {
+    //                 identifier: document.identifier,
+    //             } as Identifiable,
+    //         );
+    //     }
 
-        await this.db.put(dbDoc);
+    //     await this.db.put(dbDoc);
 
-        return this.get(document.identifier);
-    }
+    //     return this.get(document.identifier);
+    // }
 
     public async get(identifier: string): Promise<D> {
         try {

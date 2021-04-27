@@ -967,20 +967,20 @@ export class LcpManager {
                     license: dateStr5,
                     status: dateStr6,
                 },
-                events: lcp.LSD.Events ? lcp.LSD.Events.map((ev) => {
-                    let dateStr7 = "";
-                    try {
-                        dateStr7 = ev.TimeStamp?.toISOString();
-                    } catch (err) {
-                        debug(err);
-                    }
-                    return {
-                        id: ev.ID,
-                        name: ev.Name,
-                        timeStamp: dateStr7,
-                        type: ev.Type, // r2-lcp-js TypeEnum
-                    };
-                }) : undefined,
+                // events: lcp.LSD.Events ? lcp.LSD.Events.map((ev) => {
+                //     let dateStr7 = "";
+                //     try {
+                //         dateStr7 = ev.TimeStamp?.toISOString();
+                //     } catch (err) {
+                //         debug(err);
+                //     }
+                //     return {
+                //         id: ev.ID,
+                //         name: ev.Name,
+                //         timeStamp: dateStr7,
+                //         type: ev.Type, // r2-lcp-js TypeEnum
+                //     };
+                // }) : undefined,
                 links: lcp.LSD.Links ? lcp.LSD.Links.map((link) => {
                     return {
                         length: link.Length,

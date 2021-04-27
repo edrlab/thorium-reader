@@ -71,45 +71,59 @@ if (!fs.existsSync(userDataPath)) {
     fs.mkdirSync(userDataPath);
 }
 
+const configDataFolderPath = path.join(
+    userDataPath,
+    "config-data",
+);
+if (!fs.existsSync(configDataFolderPath)) {
+    fs.mkdirSync(configDataFolderPath);
+}
+
 const STATE_FILENAME = IS_DEV ? "state.dev.json" : "state.json";
 export const stateFilePath = path.join(
-    userDataPath,
+    configDataFolderPath,
     STATE_FILENAME,
 );
 
 const PATCH_FILENAME = IS_DEV ? "state.patch.dev.json" : "state.patch.json";
 export const patchFilePath = path.join(
-    userDataPath,
+    configDataFolderPath,
     PATCH_FILENAME,
 );
 
 const RUN_FILENAME = IS_DEV ? "state.runtime.dev.json" : "state.runtime.json";
 export const runtimeStateFilePath = path.join(
-    userDataPath,
+    configDataFolderPath,
     RUN_FILENAME,
 );
 
 export const backupStateFilePathFn = () => path.join(
-    userDataPath,
+    configDataFolderPath,
     IS_DEV ? `state.${+new Date()}.dev.json` : `state.${+new Date()}.json`,
 );
 
 const COOKIE_JAR_FILENAME = IS_DEV ? "cookie_jar.dev.json" : "cookie_jar.json";
 export const cookiejarFilePath = path.join(
-    userDataPath,
+    configDataFolderPath,
     COOKIE_JAR_FILENAME,
 );
 
 const OPDS_AUTH_FILENAME = IS_DEV ? "opds_auth.dev.json" : "opds_auth.json";
 export const opdsAuthFilePath = path.join(
-    userDataPath,
+    configDataFolderPath,
     OPDS_AUTH_FILENAME,
 );
 
 const LCP_HASHES_FILENAME = IS_DEV ? "lcp_hashes.dev.json" : "lcp_hashes.json";
 export const lcpHashesFilePath = path.join(
-    userDataPath,
+    configDataFolderPath,
     LCP_HASHES_FILENAME,
+);
+
+const LCP_LSD_DEVICES_FILENAME = IS_DEV ? "lcp_lsd_devices.dev.json" : "lcp_lsd_devices.json";
+export const lcpLsdDevicesFilePath = path.join(
+    configDataFolderPath,
+    LCP_LSD_DEVICES_FILENAME,
 );
 
 //
