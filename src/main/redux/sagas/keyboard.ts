@@ -33,7 +33,7 @@ function setShortcuts(action: keyboardActions.setShortcuts.TAction) {
         debug("Keyboard shortcuts saving:", action.payload.shortcuts);
         keyboardShortcuts.saveUser(action.payload.shortcuts);
     } else {
-        debug("Keyboard shortcuts NOT saving (defaults):", action.payload.shortcuts);
+        debug("Keyboard shortcuts NOT saving (defaults):" /*action.payload.shortcuts*/);
     }
 
 }
@@ -44,7 +44,7 @@ function* keyboardReload(action: keyboardActions.reloadShortcuts.TAction) {
     }
     const okay = action.payload.defaults || keyboardShortcuts.loadUser();
 
-    debug(`Keyboard shortcuts reload JSON (defaults: ${action.payload.defaults}) => ${okay}`);
+    debug(`Keyboard shortcuts reload JSON (defaults: ${/*action.payload.defaults*/""}) => ${okay}`);
 
     // if (DEBUG_KEYBOARD) {
     //     const jsonDiff = require("json-diff");

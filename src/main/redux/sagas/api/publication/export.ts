@@ -14,7 +14,7 @@ import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 
 export function* exportPublication(publicationView: PublicationView) {
 
-    const libraryAppWindow = getLibraryWindowFromDi();
+    const libraryAppWindow = yield* callTyped(() => getLibraryWindowFromDi());
 
     // Open a dialog to select a folder then copy the publication in it
     const res = yield* callTyped(() => dialog.showOpenDialog(

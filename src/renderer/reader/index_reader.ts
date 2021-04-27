@@ -23,11 +23,13 @@ import {
 } from "@r2-shared-js/init-globals";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-let devTron: any;
+// let devTron: any;
 let axe: any;
 if (IS_DEV) {
+    // requires electron.remote!
+    // enableRemoteModule: false
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    devTron = require("devtron");
+    // devTron = require("devtron");
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     axe = require("react-axe");
@@ -37,11 +39,11 @@ initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
 initGlobalConverters_GENERIC();
 
-if (IS_DEV) {
-    setTimeout(() => {
-        devTron.install();
-    }, 5000);
-}
+// if (IS_DEV) {
+//     setTimeout(() => {
+//         devTron.install();
+//     }, 5000);
+// }
 
 ipcRenderer.on(readerIpc.CHANNEL,
     (_0: any, data: readerIpc.EventPayload) => {
@@ -49,9 +51,10 @@ ipcRenderer.on(readerIpc.CHANNEL,
             case readerIpc.EventType.request:
                 // Initialize window
 
-                // create an instance of r2Publication
-                const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf-8");
-                const r2PublicationJson = JSON.parse(r2PublicationStr);
+                // Legacy Base64 data blobs
+                // const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf-8");
+                // const r2PublicationJson = JSON.parse(r2PublicationStr);
+                const r2PublicationJson = data.payload.reader.info.publicationView.r2PublicationJson;
                 const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 data.payload.reader.info.r2Publication = r2Publication;

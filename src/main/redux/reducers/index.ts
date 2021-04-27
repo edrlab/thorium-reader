@@ -22,6 +22,7 @@ import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
 import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
 import { Patch } from "rfc6902";
+import { opdsDbReducers } from "./opds/db";
 
 export const rootReducer = combineReducers<RootState>({
     session: sessionReducer,
@@ -69,4 +70,7 @@ export const rootReducer = combineReducers<RootState>({
         state: Patch = [],
         action: winActions.persistRequest.TAction,
     ) => action.type === winActions.persistRequest.ID ? [...state, ...action.payload.ops] : state,
+    opds: combineReducers({
+        catalog: opdsDbReducers,
+    }),
 });

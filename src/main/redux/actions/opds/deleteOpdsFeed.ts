@@ -1,4 +1,3 @@
-
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
@@ -6,33 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BrowserWindow } from "electron";
-import { ok } from "assert";
 import { Action } from "readium-desktop/common/models/redux";
-import { saveLibraryWindowInDi } from "readium-desktop/main/di";
 
-import * as uuid from "uuid";
+export const ID = "OPDSFEED_DELETE";
 
-export const ID = "WIN_SESSION_REGISTER_LIBRARY";
-
-export interface Payload {
-    win: BrowserWindow;
+interface Payload {
     identifier: string;
-    winBound: Electron.Rectangle;
 }
 
-export function build(win: BrowserWindow, winBound: Electron.Rectangle):
+export function build(identifier: string):
     Action<typeof ID, Payload> {
-
-    ok(win, "lib win not defined");
-    saveLibraryWindowInDi(win);
 
     return {
         type: ID,
         payload: {
-            win,
-            winBound,
-            identifier: uuid.v4(),
+            identifier,
         },
     };
 }

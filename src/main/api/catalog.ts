@@ -32,9 +32,10 @@ export const CATALOG_CONFIG_ID = "catalog";
 const NB_PUB = 5;
 
 const viewToR2Pub = (view: PublicationView) => {
-    const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
-    const r2PublicationJson = JSON.parse(r2PublicationStr);
-    const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+    // Legacy Base64 data blobs
+    // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+    // const r2PublicationJson = JSON.parse(r2PublicationStr);
+    const r2Publication = TaJsonDeserialize(view.r2PublicationJson, R2Publication);
 
     return r2Publication;
 };
@@ -160,28 +161,25 @@ export class CatalogApi implements ICatalogApi {
                 )
                 .filter((v) => !!v);
 
-        const lastAddedPublicationsView =
-            lastAddedPublicationsDocument.map((doc) => {
-                try {
-                    return this.publicationViewConverter.convertDocumentToView(doc);
-                } catch (e) {
-                    debug("lastadded publication view converter", e);
-                    errorDeletePub(doc);
-                }
+        const lastAddedPublicationsView = [];
+        for (const doc of lastAddedPublicationsDocument) {
+            try {
+                lastAddedPublicationsView.push(await this.publicationViewConverter.convertDocumentToView(doc));
+            } catch (e) {
+                debug("lastadded publication view converter", e);
+                errorDeletePub(doc);
+            }
+        }
 
-                return undefined;
-            }).filter((v) => !!v);
-        const lastReadedPublicationsView =
-            lastReadedPublicationDocument.map((doc) => {
-                try {
-                    return this.publicationViewConverter.convertDocumentToView(doc);
-                } catch (e) {
-                    debug("lastreaded publication view converter", e);
-                    errorDeletePub(doc);
-                }
-
-                return undefined;
-            }).filter((v) => !!v);
+        const lastReadedPublicationsView = [];
+        for (const doc of lastReadedPublicationDocument) {
+            try {
+                lastReadedPublicationsView.push(await this.publicationViewConverter.convertDocumentToView(doc));
+            } catch (e) {
+                debug("lastreaded publication view converter", e);
+                errorDeletePub(doc);
+            }
+        }
 
         const audio = {
             readed: lastReadedPublicationsView.filter(isAudiobookFn),
