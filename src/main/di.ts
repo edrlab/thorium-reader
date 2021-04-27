@@ -86,8 +86,8 @@ export const runtimeStateFilePath = path.join(
 
 export const backupStateFilePathFn = () => path.join(
     userDataPath,
-    `state.${+new Date()}.json`
-)
+    `state.${+new Date()}.json`,
+);
 
 //
 // Create databases

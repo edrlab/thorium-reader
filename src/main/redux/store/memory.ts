@@ -173,7 +173,7 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
                 // so there is no merge with union set method
                 const bookmarkFromRedux = reader.bookmark;
                 const bookmarkFromPouchdbFiltered = bookmarkFromDb.filter((_v) => {
-                    return !bookmarkFromRedux.find(([,v]) => v.uuid === _v.identifier);
+                    return !bookmarkFromRedux.find(([, v]) => v.uuid === _v.identifier);
                 });
                 const bookmarkFromPouchdbConverted = bookmarkFromPouchdbFiltered.reduce<TBookmarkState>((pv, cv) => [
                     ...pv,
@@ -185,7 +185,9 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
                             locator: cv.locator,
                         },
                     ],
-                ], []);
+                ],
+                    [],
+                );
 
                 const bookmark = [
                     ...bookmarkFromRedux,
@@ -259,7 +261,7 @@ const runtimeState = async (): Promise<object> => {
     return runtimeState;
 };
 
-const recoveryReduxState = async (runtimeState: object): Promise<object>  => {
+const recoveryReduxState = async (runtimeState: object): Promise<object> => {
 
     const patchFileStr = await tryCatch(() => fsp.readFile(patchFilePath, { encoding: "utf8" }), "");
     const patch = await tryCatch(() => JSON.parse(patchFileStr), "");
@@ -277,7 +279,7 @@ const recoveryReduxState = async (runtimeState: object): Promise<object>  => {
 
 const test = (stateRaw: any): stateRaw is PersistRootState => {
     ok(typeof stateRaw === "object");
-    ok(stateRaw.win)
+    ok(stateRaw.win);
     ok(stateRaw.publication);
     ok(stateRaw.reader);
     ok(stateRaw.session);
@@ -285,7 +287,7 @@ const test = (stateRaw: any): stateRaw is PersistRootState => {
     ok(stateRaw.i18n);
 
     return stateRaw;
-}
+};
 
 export async function initStore(configRepository: ConfigRepository<any>)
     : Promise<[Store<RootState>, SagaMiddleware<object>]> {
@@ -342,14 +344,14 @@ export async function initStore(configRepository: ConfigRepository<any>)
             debug(e);
 
             try {
-                const stateRawFirst = await runtimeState()
+                const stateRawFirst = await runtimeState();
                 test(stateRawFirst);
                 const stateRaw: any = await recoveryReduxState(stateRawFirst);
                 test(stateRaw);
                 reduxState = stateRaw;
 
                 debug("RECOVERY : the state is the previous runtime snapshot + patch events");
-                debug("There should be no data loss")
+                debug("There should be no data loss");
                 debug("REVOVERY WORKS lvl 2/4");
             } catch {
                 try {
@@ -357,7 +359,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
                     test(reduxState);
 
                     debug("RECOVERY : the state is provided from the pouchdb database or from potentially corrupted state.json file");
-                    debug("There should be data loss !")
+                    debug("There should be data loss !");
                     debug("REVOVERY WORKS lvl 3/4");
 
 
@@ -366,12 +368,12 @@ export async function initStore(configRepository: ConfigRepository<any>)
                 } catch {
                     try {
 
-                        const stateRawFirst: any = await runtimeState()
+                        const stateRawFirst: any = await runtimeState();
                         test(stateRawFirst);
                         reduxState = stateRawFirst;
 
                         debug("RECOVERY : the state is the previous runtime snapshot");
-                        debug("There should be data loss !")
+                        debug("There should be data loss !");
                         debug("RECOVERY WORKS 4/4");
                     } catch {
 
@@ -383,11 +385,11 @@ export async function initStore(configRepository: ConfigRepository<any>)
             } finally {
 
                 const p = backupStateFilePathFn();
-                await tryCatch(() => 
+                await tryCatch(() =>
                     fsp.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
-                "");
+                    "");
 
-                debug("RECOVERY : a state backup is copied in " + p);
+                debug("RECOVERY : a state backup file is copied in " + p);
                 debug("keep it safe, you may restore a corrupted state with it");
             }
 
@@ -400,7 +402,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
                     { encoding: "utf8" },
                 )
                 , "");
-                
+
             // empty array by default !!
             await tryCatch(() => fsp.writeFile(patchFilePath, "[]", { encoding: "utf8" }), "");
         }
