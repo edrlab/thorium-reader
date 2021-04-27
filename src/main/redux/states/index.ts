@@ -52,4 +52,4 @@ export interface RootState {
 }
 
 
-export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n">;
+export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds">;
