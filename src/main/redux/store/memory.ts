@@ -154,6 +154,21 @@ const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undef
 
         if (!newPubs[identifier]?.doNotMigrateAnymore) {
 
+            if (pub.lcp) {
+                if (typeof ((pub.lcp as any)["r2LCPBase64"]) !== "undefined") {
+                    delete (pub.lcp as any)["r2LCPBase64"];
+                }
+                if (pub.lcp.lsd) {
+                    if (typeof ((pub.lcp.lsd as any)["r2LSDBase64"]) !== "undefined") {
+                        delete (pub.lcp.lsd as any)["r2LSDBase64"];
+                    }
+                    if (pub.lcp.lsd.lsdStatus) {
+                        if (typeof ((pub.lcp.lsd.lsdStatus as any)["events"]) !== "undefined") {
+                            delete (pub.lcp.lsd.lsdStatus as any)["events"];
+                        }
+                    }
+                }
+            }
             newPubs[identifier] = clone(pub);
         }
     }
