@@ -246,18 +246,7 @@ export async function importPublicationFromFS(
     debug("[END] Store publication in database", filePath);
 
     if (lcpHashedPassphrase) {
-        const lcpSecretRepository = diMainGet("lcp-secret-repository");
-        const lcpSecretDocs = await lcpSecretRepository.findByPublicationIdentifier(
-            newPubDocument.identifier,
-        );
-        const secrets = lcpSecretDocs.map((doc) => doc.secret).filter((secret) => secret);
-
-        if (!secrets || !secrets.includes(lcpHashedPassphrase)) {
-            await lcpSecretRepository.save({
-                publicationIdentifier: newPubDocument.identifier,
-                secret: lcpHashedPassphrase,
-            });
-        }
+        await lcpManager.saveSecret(newPubDocument, lcpHashedPassphrase);
     }
 
     debug("Publication imported", filePath);

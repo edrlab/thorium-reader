@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { shell } from "electron";
+import { app, shell } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
@@ -17,17 +17,20 @@ import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { _USE_HTTP_STREAMER, IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
+import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { Store } from "redux";
 
 import { lsdRenew_ } from "@r2-lcp-js/lsd/renew";
@@ -44,12 +47,26 @@ import { extractCrc32OnZip } from "../crc";
 import { lcpActions } from "../redux/actions";
 import { streamerCachedPublication } from "../streamerNoHttp";
 import { DeviceIdManager } from "./device";
-import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
 // import { JsonMap } from "readium-desktop/typings/json";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/lcp");
+
+const CONFIGREPOSITORY_LCP_SECRETS = "CONFIGREPOSITORY_LCP_SECRETS";
+const userDataPath = app.getPath("userData");
+const DEFAULTS_FILENAME = "lcp_hashes.json";
+const defaultsFilePath = path.join(
+    userDataPath,
+    DEFAULTS_FILENAME,
+);
+
+// object map with keys = PublicationDocument.identifier,
+// and values = object tuple of single passphrase + provider (cached here to avoid costly lookup in Publication DB)
+// this way, we can query all passphrases associated with a particular publication,
+// or alternatively query all passphrases known for a given LCP provider
+// (as in practice passphrases are sometimes shared between different publications from the same provider)
+type TLCPSecrets = Record<string, { passphrase?: string, provider?: string }>;
 
 @injectable()
 export class LcpManager {
@@ -76,6 +93,112 @@ export class LcpManager {
 
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
+
+    public async getAllSecrets(): Promise<TLCPSecrets> {
+        debug("LCP getAllSecrets ...");
+
+        const buff = await tryCatch(() => fs.promises.readFile(defaultsFilePath), "");
+        if (buff) {
+            debug("LCP getAllSecrets from JSON");
+
+            const str = decryptPersist(buff, CONFIGREPOSITORY_LCP_SECRETS, defaultsFilePath);
+            if (!str) {
+                return {};
+            }
+            const json = JSON.parse(str);
+            return json;
+        }
+
+        debug("LCP getAllSecrets from DB (migration) ...");
+
+        const lcpSecretDocs = await this.lcpSecretRepository.findAll();
+        const json: TLCPSecrets = {};
+        for (const lcpSecretDoc of lcpSecretDocs) {
+            const id = lcpSecretDoc.publicationIdentifier;
+            if (!json[id]) {
+                json[id] = {};
+            }
+            if (lcpSecretDoc.secret) {
+                // note: due to the old DB schema,
+                // in theory a single publication ID could have multiple secrets
+                // so this potentially overrides the previous one.
+                // however in practice a given LCP-protected publication only has a single working passphrase
+                json[id].passphrase = lcpSecretDoc.secret;
+
+                if (!json[id].provider) {
+                    const pubs = await this.publicationRepository.findByPublicationIdentifier(id);
+                    if (pubs) {
+                        for (const pub of pubs) { // should be just one
+                            if (pub.lcp?.provider) {
+                                json[id].provider = pub.lcp.provider;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        debug("LCP getAllSecrets DB TO JSON", json);
+        const str = JSON.stringify(json);
+        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, defaultsFilePath);
+        fs.promises.writeFile(defaultsFilePath, encrypted);
+
+        return json;
+    }
+
+    public async getSecrets(doc: PublicationDocument): Promise<string[]> {
+        debug("LCP getSecrets ... ", doc.identifier);
+
+        const secrets: string[] = [];
+
+        const allSecrets = await this.getAllSecrets();
+        const ids = Object.keys(allSecrets);
+        for (const id of ids) {
+            const val = allSecrets[id];
+            if (val.passphrase) {
+                const provider = doc.lcp?.provider;
+
+                if (doc.identifier === id ||
+                    provider && val.provider && provider === val.provider) {
+                    secrets.push(val.passphrase);
+                }
+            }
+        }
+
+        debug("LCP getSecrets: ", secrets);
+        return secrets;
+
+        // const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
+        //     doc.identifier,
+        // );
+        // const secrets = lcpSecretDocs.map((doc) => doc.secret).filter((secret) => secret);
+        // return secrets;
+    }
+
+    public async saveSecret(doc: PublicationDocument, lcpHashedPassphrase: string) {
+        debug("LCP saveSecret ... ", doc.identifier);
+
+        // await this.lcpSecretRepository.save({
+        //     publicationIdentifier: doc.identifier,
+        //     secret: lcpHashedPassphrase,
+        // });
+
+        const allSecrets = await this.getAllSecrets();
+        if (!allSecrets[doc.identifier]) {
+            allSecrets[doc.identifier] = {};
+        }
+        allSecrets[doc.identifier].passphrase = lcpHashedPassphrase;
+        if (doc.lcp?.provider) {
+            allSecrets[doc.identifier].provider = doc.lcp.provider;
+        }
+
+        debug("LCP saveSecret: ", allSecrets);
+
+        const str = JSON.stringify(allSecrets);
+        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, defaultsFilePath);
+        fs.promises.writeFile(defaultsFilePath, encrypted);
+    }
 
     public async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
 
@@ -659,25 +782,20 @@ export class LcpManager {
     public async unlockPublication(publicationDocument: PublicationDocument, passphrase: string | undefined):
         Promise<string | number | null | undefined> {
 
-        const publicationIdentifier = publicationDocument.identifier;
-
-        const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
-            publicationIdentifier,
-        );
-        const secrets = lcpSecretDocs.map((doc) => doc.secret).filter((secret) => secret);
-
         let lcpPasses: string[] | undefined;
         let passphraseHash: string | undefined;
         if (passphrase) {
             passphraseHash = toSha256Hex(passphrase);
             lcpPasses = [passphraseHash];
         } else {
+            const secrets = await this.getSecrets(publicationDocument);
             if (!secrets || !secrets.length) {
                 return null;
             }
             lcpPasses = secrets;
         }
 
+        const publicationIdentifier = publicationDocument.identifier;
         const epubPath = this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
         // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
         let r2Publication = _USE_HTTP_STREAMER ?
@@ -688,11 +806,12 @@ export class LcpManager {
             // if (r2Publication.LCP) {
             //     r2Publication.LCP.init();
             // }
-        } else {
-            // The streamer at this point should not host an instance of this R2Publication,
-            // because we normally ensure readers are closed before performing LCP/LSD
-            debug(`>>>>>>> streamer.cachedPublication() ?! ${publicationIdentifier} ${epubPath}`);
         }
+        // else {
+        //     // The streamer at this point should not host an instance of this R2Publication,
+        //     // because we normally ensure readers are closed before performing LCP/LSD
+        //     debug(`>>>>>>> streamer.cachedPublication() ?! ${publicationIdentifier} ${epubPath}`);
+        // }
         if (!r2Publication) {
             debug("unlockPublication !r2Publication ?");
             return null;
@@ -706,12 +825,7 @@ export class LcpManager {
             await r2Publication.LCP.tryUserKeys(lcpPasses);
             debug("LCP pass okay");
             if (passphraseHash) {
-                if (!secrets.includes(passphraseHash)) {
-                    await this.lcpSecretRepository.save({
-                        publicationIdentifier,
-                        secret: passphraseHash,
-                    });
-                }
+                await this.saveSecret(publicationDocument, passphraseHash);
             }
         } catch (err) {
             debug("FAIL publication.LCP.tryUserKeys()", err);
@@ -756,12 +870,7 @@ export class LcpManager {
         //     );
         //     debug("LCP pass okay");
         //     if (passphraseHash) {
-        //         if (!secrets.includes(passphraseHash)) {
-        //             await this.lcpSecretRepository.save({
-        //                 publicationIdentifier,
-        //                 secret: passphraseHash,
-        //             });
-        //         }
+        //         await this.saveSecret(publicationDocument, passphraseHash);
         //     }
         // } catch (err) {
         //     return err;
