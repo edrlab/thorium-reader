@@ -30,8 +30,10 @@ export const reduxPersistMiddleware: Middleware
                     i18n: prevState.i18n,
                     session: prevState.session,
                     publication: {
+                        db: prevState.publication.db,
                         lastReadingQueue: prevState.publication.lastReadingQueue,
                     },
+                    opds: prevState.opds,
                 };
 
                 const persistNextState: PersistRootState = {
@@ -40,8 +42,10 @@ export const reduxPersistMiddleware: Middleware
                     i18n: nextState.i18n,
                     session: nextState.session,
                     publication: {
+                        db: nextState.publication.db,
                         lastReadingQueue: nextState.publication.lastReadingQueue,
                     },
+                    opds: nextState.opds,
                 };
 
                 // if (

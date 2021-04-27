@@ -5,91 +5,295 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as lunr from "lunr";
+import * as lunrfr from "@lunr-languages/lunr.fr.js";
+import * as lunrde from "@lunr-languages/lunr.de.js";
+import * as lunrstemmer from "@lunr-languages/lunr.stemmer.support.js";
+import * as lunrmulti from "@lunr-languages/lunr.multi.js";
+import { ok } from "assert";
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
+import { Identifiable } from "readium-desktop/common/models/identifiable";
+import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationDocument, PublicationDocumentWithoutTimestampable } from "readium-desktop/main/db/document/publication";
+import { diMainGet } from "readium-desktop/main/di";
+import { publicationActions } from "readium-desktop/main/redux/actions";
+import { Unsubscribe } from "redux";
+import { ExcludeTimestampableAndIdentifiable } from "./base";
 
-import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
+lunrstemmer(lunr);
+lunrfr(lunr);
+lunrde(lunr);
+lunrmulti(lunr);
 
-const CREATED_AT_INDEX = "created_at_index";
+// const CREATED_AT_INDEX = "created_at_index";
 
-const TAG_INDEX = "tag_index";
+// const TAG_INDEX = "tag_index";
 
-const TITLE_INDEX = "title_index";
+// const TITLE_INDEX = "title_index";
 
-const HASH_INDEX = "hash_index";
+// const HASH_INDEX = "hash_index";
 
 @injectable()
-export class PublicationRepository extends BaseRepository<PublicationDocument> {
+export class PublicationRepository  /* extends BaseRepository<PublicationDocument> */ {
+    db: PouchDB.Database<PublicationDocument>;
     public constructor(db: PouchDB.Database<PublicationDocument>) {// INJECTED!
 
-        const indexes = [
-            {
-                fields: ["createdAt"], // Timestampable
-                name: CREATED_AT_INDEX,
-            },
-            {
-                fields: ["title"], // PublicationDocument
-                name: TITLE_INDEX,
-            },
-            {
-                fields: ["tags"], // PublicationDocument
-                name: TAG_INDEX,
-            },
-            {
-                fields: ["hash"], // PublicationDocument
-                name: HASH_INDEX,
-            },
-        ];
-        super(db, "publication", indexes);
+        this.db = db;
+        // const indexes = [
+            // {
+            //     fields: ["createdAt"], // Timestampable
+            //     name: CREATED_AT_INDEX,
+            // },
+            // {
+            //     fields: ["title"], // PublicationDocument
+            //     name: TITLE_INDEX,
+            // },
+            // {
+            //     fields: ["tags"], // PublicationDocument
+            //     name: TAG_INDEX,
+            // },
+            // {
+            //     fields: ["hash"], // PublicationDocument
+            //     name: HASH_INDEX,
+            // },
+        // ];
+        // super(db, "publication", indexes);
+    }
+
+    public async save(document: PublicationDocumentWithoutTimestampable): Promise<PublicationDocument> {
+
+        const store = diMainGet("store");
+        let unsub: Unsubscribe;
+        const p = new Promise<PublicationDocument>(
+            (res) => (unsub = store.subscribe(() =>
+                    res(store.getState().publication.db[document.identifier]))));
+        store.dispatch(publicationActions.addPublication.build(document));
+
+        return p.finally(() => unsub && unsub());
+    }
+
+    public async get(identifier: string): Promise<PublicationDocument> {
+        // try {
+        //     const dbDoc = await this.db.get(this.buildId(identifier));
+        //     return this.convertToDocument(dbDoc);
+        // } catch (_error) {
+        //     throw new NotFoundError("document not found");
+        // }
+
+        const store = diMainGet("store");
+        const state = store.getState();
+
+        const pub = state.publication.db[identifier];
+
+        return pub;
+
+    }
+
+    public async delete(identifier: string): Promise<void> {
+        // const dbDoc = await this.db.get(this.buildId(identifier));
+        // await this.db.remove(dbDoc);
+        const store = diMainGet("store");
+
+        let unsub: Unsubscribe;
+        const p = new Promise<void>(
+            (res) => (unsub = store.subscribe(res)));
+        store.dispatch(publicationActions.deletePublication.build(identifier));
+
+        await p.finally(() => unsub && unsub());
+    }
+
+    public async findAllFromPouchdb(): Promise<PublicationDocument[]> {
+
+        const result = await this.db.allDocs({
+            include_docs: true,
+            startkey: "publication" + "_",
+            endkey: "publication" + "_\ufff0",
+        });
+        return result.rows.map((row) => {
+            return this.convertToDocument(row.doc);
+        });
+    }
+
+    public async findAll(): Promise<PublicationDocument[]> {
+        // const result = await this.db.allDocs({
+        //     include_docs: true,
+        //     startkey: this.idPrefix + "_",
+        //     endkey: this.idPrefix + "_\ufff0",
+        // });
+        // return result.rows.map((row) => {
+        //     return this.convertToDocument(row.doc);
+        // });
+        const store = diMainGet("store");
+        const state = store.getState();
+
+        return Object.values(state.publication.db);
+    }
+
+    public async findAllSortDesc(): Promise<PublicationDocument[]> {
+
+        const docs = await this.findAll();
+
+        const docsSorted = docs.sort((a,b) => b.createdAt - a.createdAt);
+
+        return docsSorted;
     }
 
     public async findByHashId(hash: string): Promise<PublicationDocument[]> {
-        return this.find({
-            selector: { hash: { $eq: hash }},
-        });
+        // return this.find({
+            // selector: { hash: { $eq: hash }},
+        // });
+        try {
+
+            const store = diMainGet("store");
+            const state = store.getState();
+
+            const pub = Object.values(state.publication.db).find((f) => f.hash === hash);
+
+            ok(pub);
+
+            return [pub];
+
+        } catch (e) {
+
+            console.log("####");
+            console.log("findByHashId error ", e);
+            console.log("####");
+
+            return [];
+        }
     }
 
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
-        return this.find({
-            selector: { tags: { $elemMatch: { $eq: tag }}},
-        });
+        // return this.find({
+            // selector: { tags: { $elemMatch: { $eq: tag }}},
+        // });
+        try {
+
+            const store = diMainGet("store");
+            const state = store.getState();
+
+            const pubs = Object.values(state.publication.db).filter((f) => f.tags.includes(tag));
+
+            return pubs;
+
+        } catch (e) {
+
+            console.log("####");
+            console.log("findByTag error ", e);
+            console.log("####");
+
+            return [];
+        }
     }
 
     public async findByTitle(title: string): Promise<PublicationDocument[]> {
-        return this.find({
-            selector: { title: { $eq: title }},
-        });
+        // return this.find({
+        //     selector: { title: { $eq: title }},
+        // });
+        try {
+
+            const store = diMainGet("store");
+            const state = store.getState();
+
+            const pubs = Object.values(state.publication.db).filter((f) => f.title === title);
+
+            return pubs;
+
+        } catch (e) {
+
+            console.log("####");
+            console.log("findByTitle error ", e);
+            console.log("####");
+
+            return [];
+        }
     }
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
-        const dbDocs = await this.db.search({
-            query: title,
-            fields: ["title"],
-            include_docs: true,
-            highlighting: false,
-        });
+        // const dbDocs = await this.db.search({
+        //     query: title,
+        //     fields: ["title"],
+        //     include_docs: true,
+        //     highlighting: false,
+        // });
 
-        return dbDocs.rows.map((dbDoc) => {
-            return this.convertToDocument(dbDoc.doc);
-        });
+        // return dbDocs.rows.map((dbDoc) => {
+        //     return this.convertToDocument(dbDoc.doc);
+        // });
+
+        try {
+
+            const store = diMainGet("store");
+            const state = store.getState();
+
+            const pubs = Object.values(state.publication.db);
+
+            const indexer = lunr(function (this: any) {
+
+                try {
+                    this.use((lunr as any).multiLanguage("en", "fr", "de"));
+                } catch (e) {
+                    console.log("lunr multilang not available", e);
+                }
+
+                this.field("title", { boost: 10 });
+                // this.setRef("id");
+
+                const docs = pubs.map((v) => ({
+                    id: v.identifier,
+                    title: v.title,
+                }));
+
+                docs.forEach((v) => {
+                    this.add(v);
+                });
+            });
+
+            const res = indexer.search(title);
+
+            ok(Array.isArray(res));
+            const docs = res
+                .map((v: any) => pubs.find((f) => v.ref === f.identifier))
+                .filter((v) => !!v);
+
+            return docs;
+
+        } catch (e) {
+
+            console.log("####");
+            console.log("searchByTitle error ", e);
+            console.log("####");
+
+            return [];
+        }
     }
 
     /** Returns all publication tags */
     public async getAllTags(): Promise<string[]> {
-        await this.checkIndexes();
-        const dbResponse = await this.db.find({
-            selector: {
-                tags: {
-                    $exists: true,
-                },
-            },
-            fields: ["tags"],
-        });
+
+        let docs: PublicationDocument[];
+        try {
+
+            const store = diMainGet("store");
+            const state = store.getState();
+
+            docs = Object.values(state.publication.db);
+
+        } catch (e) {
+
+            console.log("####");
+            console.log("getAllTags error ", e);
+            console.log("####");
+
+            return [];
+        }
+
+
         const tags: string[] = [];
 
-        for (const doc of dbResponse.docs) {
+        for (const doc of docs) {
             for (const tag of doc.tags) {
                 if (tags.indexOf(tag) >= 0) {
                     continue;
@@ -102,6 +306,14 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         // Sort asc
         tags.sort();
         return tags;
+    }
+
+    protected convertToMinimalDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): Timestampable & Identifiable {
+        return {
+            identifier: dbDoc.identifier,
+            createdAt: dbDoc.createdAt,
+            updatedAt: dbDoc.updatedAt,
+        } as Timestampable & Identifiable;
     }
 
     protected convertToDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): PublicationDocument {
@@ -182,7 +394,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
 
         return Object.assign(
             {},
-            super.convertToMinimalDocument(dbDoc),
+            this.convertToMinimalDocument(dbDoc),
             {
                 // resources,
                 title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),

@@ -27,6 +27,7 @@ import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
+import { IDictPublicationState } from "../states/publication";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
 import { promises as fsp } from "fs";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
@@ -200,6 +201,26 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
     return registryReader;
 };
 
+const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undefined) => {
+
+    const publicationRepository = diMainGet("publication-repository");
+    // const PublicationViewConverter = diMainGet("publication-view-converter");
+
+    const pubsFromDb = await publicationRepository.findAllFromPouchdb();
+
+    const newPubs = pubs || {};
+    for (const pub of pubsFromDb) {
+        const { identifier } = pub;
+
+        if (!newPubs[identifier]?.doNotMigrateAnymore) {
+
+            newPubs[identifier] = clone(pub);
+        }
+    }
+
+    return newPubs;
+};
+
 const absorbI18nToReduxState = async (
     configRepository: ConfigRepository<LocaleConfigValueType>,
     i18n: I18NState) => {
@@ -255,7 +276,7 @@ const recoveryReduxState = async (runtimeState: object): Promise<object>  => {
 };
 
 export async function initStore(configRepository: ConfigRepository<any>)
-: Promise<[Store<RootState>, SagaMiddleware<object>]> {
+    : Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
     let reduxStateWinRepository: ConfigDocument<PersistRootState>;
 
@@ -406,6 +427,17 @@ export async function initStore(configRepository: ConfigRepository<any>)
     } catch (e) {
 
         debug("ERR on absorb bookmark to redux state", e);
+    }
+
+    try {
+
+        // Be carefull not an object copy / same reference
+        reduxState.publication.db =
+            await absorbPublicationToReduxState(reduxState.publication.db);
+
+    } catch (e) {
+
+        debug("ERR on absorb publication to redux state", e);
     }
 
     try {
