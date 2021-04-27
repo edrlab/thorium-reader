@@ -6,28 +6,21 @@
 // ==LICENSE-END==
 
 import { ok } from "assert";
-import { app } from "electron";
 import * as nodeFetchCookie from "fetch-cookie";
 import { promises as fsp } from "fs";
 import nodeFetch from "node-fetch";
-import * as path from "path";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import * as tough from "tough-cookie";
 
-import { diMainGet } from "../di";
+import { cookiejarFilePath, diMainGet } from "../di";
 
 let fetchLocal: typeof nodeFetch;
 let cookieJar: tough.CookieJar;
 
 const CONFIGREPOSITORY_COOKIEJAR = "CONFIGREPOSITORY_COOKIEJAR";
 
-const userDataPath = app.getPath("userData");
-const DEFAULTS_FILENAME = "cookie_jar.json";
-const defaultsFilePath = path.join(
-    userDataPath,
-    DEFAULTS_FILENAME,
-);
+
 
 export const cleanCookieJar = async () => {
 
@@ -50,8 +43,8 @@ export const fetchCookieJarPersistence = async () => {
     }
 
     const str = JSON.stringify(cookieJar.serializeSync());
-    const encrypted = encryptPersist(str, CONFIGREPOSITORY_COOKIEJAR, defaultsFilePath);
-    return fsp.writeFile(defaultsFilePath, encrypted);
+    const encrypted = encryptPersist(str, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
+    return fsp.writeFile(cookiejarFilePath, encrypted);
 };
 
 const fetchFactory = async () => {
@@ -60,11 +53,11 @@ const fetchFactory = async () => {
 
         const configRepo = diMainGet("config-repository");
 
-        let data: Buffer | string | undefined = await tryCatch(() => fsp.readFile(defaultsFilePath), "");
+        let data: Buffer | string | undefined = await tryCatch(() => fsp.readFile(cookiejarFilePath), "");
         if (!data) {
             data = (await configRepo.get(CONFIGREPOSITORY_COOKIEJAR))?.value as string | undefined;
         } else {
-            data = decryptPersist(data, CONFIGREPOSITORY_COOKIEJAR, defaultsFilePath);
+            data = decryptPersist(data, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
         }
         ok(data, "NO COOKIE JAR FOUND ON FS");
         cookieJar = tough.CookieJar.deserializeSync(data);

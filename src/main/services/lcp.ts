@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, shell } from "electron";
+import { shell } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
@@ -47,6 +47,7 @@ import { extractCrc32OnZip } from "../crc";
 import { lcpActions } from "../redux/actions";
 import { streamerCachedPublication } from "../streamerNoHttp";
 import { DeviceIdManager } from "./device";
+import { lcpHashesFilePath } from "../di";
 
 // import { JsonMap } from "readium-desktop/typings/json";
 
@@ -54,12 +55,6 @@ import { DeviceIdManager } from "./device";
 const debug = debug_("readium-desktop:main#services/lcp");
 
 const CONFIGREPOSITORY_LCP_SECRETS = "CONFIGREPOSITORY_LCP_SECRETS";
-const userDataPath = app.getPath("userData");
-const DEFAULTS_FILENAME = "lcp_hashes.json";
-const defaultsFilePath = path.join(
-    userDataPath,
-    DEFAULTS_FILENAME,
-);
 
 // object map with keys = PublicationDocument.identifier,
 // and values = object tuple of single passphrase + provider (cached here to avoid costly lookup in Publication DB)
@@ -97,11 +92,11 @@ export class LcpManager {
     public async getAllSecrets(): Promise<TLCPSecrets> {
         debug("LCP getAllSecrets ...");
 
-        const buff = await tryCatch(() => fs.promises.readFile(defaultsFilePath), "");
+        const buff = await tryCatch(() => fs.promises.readFile(lcpHashesFilePath), "");
         if (buff) {
             debug("LCP getAllSecrets from JSON");
 
-            const str = decryptPersist(buff, CONFIGREPOSITORY_LCP_SECRETS, defaultsFilePath);
+            const str = decryptPersist(buff, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
             if (!str) {
                 return {};
             }
@@ -141,8 +136,8 @@ export class LcpManager {
 
         debug("LCP getAllSecrets DB TO JSON", json);
         const str = JSON.stringify(json);
-        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, defaultsFilePath);
-        fs.promises.writeFile(defaultsFilePath, encrypted);
+        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
+        fs.promises.writeFile(lcpHashesFilePath, encrypted);
 
         return json;
     }
@@ -196,8 +191,8 @@ export class LcpManager {
         debug("LCP saveSecret: ", allSecrets);
 
         const str = JSON.stringify(allSecrets);
-        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, defaultsFilePath);
-        fs.promises.writeFile(defaultsFilePath, encrypted);
+        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
+        fs.promises.writeFile(lcpHashesFilePath, encrypted);
     }
 
     public async injectLcplIntoZip_(epubPath: string, lcpStr: string) {

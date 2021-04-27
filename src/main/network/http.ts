@@ -6,12 +6,10 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app } from "electron";
 import { promises as fsp } from "fs";
 import * as https from "https";
 import { Headers, RequestInit } from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
-import * as path from "path";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
@@ -21,7 +19,7 @@ import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { resolve } from "url";
 
 import { ConfigRepository } from "../db/repository/config";
-import { diMainGet } from "../di";
+import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
 
 // Logger
@@ -55,13 +53,6 @@ export const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN = "CONFIGREPOSITORY_OPDS
 const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
     (host: string) => `${CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN}.${Buffer.from(host).toString("base64")}`;
 
-const userDataPath = app.getPath("userData");
-const DEFAULTS_FILENAME = "opds_auth.json";
-const defaultsFilePath = path.join(
-    userDataPath,
-    DEFAULTS_FILENAME,
-);
-
 export interface IOpdsAuthenticationToken {
     id?: string;
     opdsAuthenticationUrl?: string; // application/opds-authentication+json
@@ -79,11 +70,11 @@ const authenticationTokenInit = async () => {
         return;
     }
 
-    const data = await tryCatch(() => fsp.readFile(defaultsFilePath), "");
+    const data = await tryCatch(() => fsp.readFile(opdsAuthFilePath), "");
     let docsFS: string | undefined;
     if (data) {
         try {
-            docsFS = decryptPersist(data, CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
+            docsFS = decryptPersist(data, CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
         } catch (_err) {
             docsFS = undefined;
         }
@@ -155,8 +146,8 @@ export const httpSetAuthenticationToken =
         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
         const res = authenticationToken[id] = data;
 
-        const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
-        fsp.writeFile(defaultsFilePath, encrypted);
+        const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
+        fsp.writeFile(opdsAuthFilePath, encrypted);
 
         return res;
     };
@@ -200,16 +191,16 @@ export const deleteAuthenticationToken = async (host: string) => {
     const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
     delete authenticationToken[id];
 
-    const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
-    return fsp.writeFile(defaultsFilePath, encrypted);
+    const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
+    return fsp.writeFile(opdsAuthFilePath, encrypted);
 
 };
 
 export const wipeAuthenticationTokenStorage = async () => {
     // authenticationTokenInitialized = false;
     authenticationToken = {};
-    const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, defaultsFilePath);
-    return fsp.writeFile(defaultsFilePath, encrypted);
+    const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
+    return fsp.writeFile(opdsAuthFilePath, encrypted);
 };
 
 export async function httpFetchRawResponse(
