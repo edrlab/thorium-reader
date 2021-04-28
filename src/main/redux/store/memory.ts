@@ -279,81 +279,77 @@ export async function initStore(configRepository: ConfigRepository<any>)
         }
     }
 
-    if (reduxState) {
+    try {
+        const state = await recoveryReduxState(await runtimeState());
+        reduxState = await checkReduxState(state, reduxState);
+
+        debug("RECOVERY WORKS lvl 1/4");
+    } catch (e) {
+
+        debug("N-1 STATE + PATCH != STATE");
+        debug("Your state is probably corrupted");
+        debug("If it is a fresh thorium installation do not worry");
+        debug(e);
 
         try {
-            const state = await recoveryReduxState(await runtimeState());
-            reduxState = await checkReduxState(state, reduxState);
+            const stateRawFirst = await runtimeState();
+            test(stateRawFirst);
+            const stateRaw: any = await recoveryReduxState(stateRawFirst);
+            test(stateRaw);
+            reduxState = stateRaw;
 
-            debug("RECOVERY WORKS lvl 1/4");
-        } catch (e) {
-
-            debug("####### ERROR ######");
-            debug("Your database is corrupted");
-            debug("####### ERROR ######");
-
-            debug(e);
-
+            debug("RECOVERY : the state is the previous runtime snapshot + patch events");
+            debug("There should be no data loss");
+            debug("REVOVERY WORKS lvl 2/4");
+        } catch {
             try {
-                const stateRawFirst = await runtimeState();
-                test(stateRawFirst);
-                const stateRaw: any = await recoveryReduxState(stateRawFirst);
-                test(stateRaw);
-                reduxState = stateRaw;
 
-                debug("RECOVERY : the state is the previous runtime snapshot + patch events");
-                debug("There should be no data loss");
-                debug("REVOVERY WORKS lvl 2/4");
+                test(reduxState);
+
+                debug("RECOVERY : the state is provided from the pouchdb database or from potentially corrupted state.json file");
+                debug("There should be data loss !");
+                debug("REVOVERY WORKS lvl 3/4");
+
             } catch {
                 try {
 
-                    test(reduxState);
+                    const stateRawFirst: any = await runtimeState();
+                    test(stateRawFirst);
+                    reduxState = stateRawFirst;
 
-                    debug("RECOVERY : the state is provided from the pouchdb database or from potentially corrupted state.json file");
+                    debug("RECOVERY : the state is the previous runtime snapshot");
                     debug("There should be data loss !");
-                    debug("REVOVERY WORKS lvl 3/4");
-
+                    debug("RECOVERY WORKS 4/4");
                 } catch {
-                    try {
 
-                        const stateRawFirst: any = await runtimeState();
-                        test(stateRawFirst);
-                        reduxState = stateRawFirst;
-
-                        debug("RECOVERY : the state is the previous runtime snapshot");
-                        debug("There should be data loss !");
-                        debug("RECOVERY WORKS 4/4");
-                    } catch {
-
-                        reduxState = undefined;
-                        debug("RECOVERY FAILED none of the 4 recoveries mode worked");
-                    }
-
+                    reduxState = undefined;
+                    debug("RECOVERY FAILED none of the 4 recoveries mode worked");
                 }
-            } finally {
 
-                const p = backupStateFilePathFn();
-                await tryCatch(() =>
-                    fsp.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
-                    "");
-
-                debug("RECOVERY : a state backup file is copied in " + p);
-                debug("keep it safe, you may restore a corrupted state with it");
             }
-
         } finally {
 
+            const p = backupStateFilePathFn();
             await tryCatch(() =>
-                fsp.writeFile(
-                    runtimeStateFilePath,
-                    reduxState ? JSON.stringify(reduxState) : "",
-                    { encoding: "utf8" },
-                )
-                , "");
+                fsp.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
+                "");
 
-            // empty array by default !!
-            await tryCatch(() => fsp.writeFile(patchFilePath, "[]", { encoding: "utf8" }), "");
+            debug("RECOVERY : a state backup file is copied in " + p);
+            debug("keep it safe, you may restore a corrupted state with it");
         }
+
+    } finally {
+
+        await tryCatch(() =>
+            fsp.writeFile(
+                runtimeStateFilePath,
+                reduxState ? JSON.stringify(reduxState) : "",
+                { encoding: "utf8" },
+            )
+            , "");
+
+        // empty array by default !!
+        await tryCatch(() => fsp.writeFile(patchFilePath, "[]", { encoding: "utf8" }), "");
     }
 
     if (!reduxState) {
