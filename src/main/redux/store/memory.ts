@@ -272,6 +272,22 @@ export async function initStore(configRepository: ConfigRepository<any>)
                 ? reduxStateWinRepository.value
                 : undefined;
 
+            // TODO:
+            // see main/redux/actions/win/registry/registerReaderPublication.ts
+            // action creator also deletes highlight + info
+            if (reduxState?.win?.registry?.reader) {
+                const keys = Object.keys(reduxState.win.registry.reader);
+                for (const key of keys) {
+                    const obj = reduxState.win.registry.reader[key];
+                    if (obj?.reduxState?.info) {
+                        delete obj.reduxState.info;
+                    }
+                    if (obj?.reduxState?.highlight) {
+                        delete obj.reduxState.highlight;
+                    }
+                }
+            }
+
             if (reduxState) {
                 debug("STATE LOADED FROM POUCHDB");
                 debug("the state doesn't come from the new json filesystem database");
