@@ -5,8 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { deepStrictEqual, ok } from "assert";
 import * as debug_ from "debug";
 import { app } from "electron";
+import { appendFileSync, promises as fsp } from "fs";
 import { clone } from "ramda";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { LocatorType } from "readium-desktop/common/models/locator";
@@ -16,29 +18,37 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { backupStateFilePathFn, CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, patchFilePath, runtimeStateFilePath, stateFilePath } from "readium-desktop/main/di";
+import {
+    backupStateFilePathFn, CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, memoryLoggerFilename,
+    patchFilePath, runtimeStateFilePath, stateFilePath,
+} from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
+import { applyPatch } from "rfc6902";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { IDictPublicationState } from "../states/publication";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
-import { promises as fsp } from "fs";
-import { tryCatch } from "readium-desktop/utils/tryCatch";
-import { deepStrictEqual, ok } from "assert";
-import { applyPatch } from "rfc6902";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
 
+const debugStdout = debug_("readium-desktop:main:store:memory");
 // Logger
-const debug = debug_("readium-desktop:main:store:memory");
+const debug = (...a: Parameters<debug_.Debugger>) => {
+    debugStdout(...a);
+    tryCatchSync(() =>
+        appendFileSync(memoryLoggerFilename, a.map((v) => `${+new Date()} ${typeof v === "object" ? JSON.stringify(v) : v.toString() }`).join("\n") + "\n"),
+        "",
+    );
+};
 
 const defaultLocale = (): LocaleConfigValueType => {
     const loc = app.getLocale().split("-")[0];
@@ -252,6 +262,9 @@ export async function initStore(configRepository: ConfigRepository<any>)
     let reduxStateWinRepository: ConfigDocument<PersistRootState>;
     let reduxState: PersistRootState | undefined;
 
+    debug("");
+    debug("MEMORY INIT STORE");
+
     try {
 
         const jsonStr = await fsp.readFile(stateFilePath, { encoding: "utf8" });
@@ -387,8 +400,8 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("####### WARNING ######");
     }
 
-    debug("REDUX STATE VALUE ::");
-    debug(reduxState);
+    debug("REDUX STATE VALUE :: ", typeof reduxState, Object.keys(reduxState));
+    // debug(reduxState);
 
     try {
 

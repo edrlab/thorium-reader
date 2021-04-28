@@ -126,6 +126,12 @@ export const lcpLsdDevicesFilePath = path.join(
     LCP_LSD_DEVICES_FILENAME,
 );
 
+const MEMORY_LOGGGER_FILENAME = "log.json";
+export const memoryLoggerFilename = path.join(
+    configDataFolderPath,
+    MEMORY_LOGGGER_FILENAME,
+);
+
 //
 // Create databases
 //
