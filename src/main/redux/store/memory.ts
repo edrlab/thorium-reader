@@ -119,7 +119,7 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
 
                 // this is not a set reducer but a map reducer
                 // so there is no merge with union set method
-                const bookmarkFromRedux = reader.bookmark;
+                const bookmarkFromRedux = reader.bookmark || [];
                 const bookmarkFromPouchdbFiltered = bookmarkFromDb.filter((_v) => {
                     return !bookmarkFromRedux.find(([, v]) => v.uuid === _v.identifier);
                 });
