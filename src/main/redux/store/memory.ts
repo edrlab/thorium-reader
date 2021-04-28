@@ -45,7 +45,7 @@ const debugStdout = debug_("readium-desktop:main:store:memory");
 const debug = (...a: Parameters<debug_.Debugger>) => {
     debugStdout(...a);
     tryCatchSync(() =>
-        appendFileSync(memoryLoggerFilename, a.map((v) => `${+new Date()} ${typeof v === "object" ? JSON.stringify(v) : v.toString() }`).join("\n") + "\n"),
+        appendFileSync(memoryLoggerFilename, a.map((v) => `${+new Date()} ${JSON.stringify(v)}`).join("\n") + "\n"),
         "",
     );
 };
