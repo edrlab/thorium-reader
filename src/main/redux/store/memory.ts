@@ -116,24 +116,22 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
             const reader = registryReader[locator.publicationIdentifier]?.reduxState;
             if (reader) {
 
-
-                // this is not a set reducer but a map reducer
-                // so there is no merge with union set method
                 const bookmarkFromRedux = reader.bookmark || [];
-                const bookmarkFromPouchdbFiltered = bookmarkFromDb.filter((_v) => {
-                    return !bookmarkFromRedux.find(([, v]) => v.uuid === _v.identifier);
-                });
-                const bookmarkFromPouchdbConverted = bookmarkFromPouchdbFiltered.reduce<TBookmarkState>((pv, cv) => [
-                    ...pv,
-                    [
-                        ++counter,
-                        {
-                            uuid: cv.identifier,
-                            name: cv.name || "",
-                            locator: cv.locator,
-                        },
-                    ],
-                ],
+                const bookmarkFromPouchdbConverted = bookmarkFromDb.reduce<TBookmarkState>((pv, cv) =>
+                    cv.publicationIdentifier === locator.publicationIdentifier
+                        && !bookmarkFromRedux.find(([, v]) => v.uuid === cv.identifier)
+                        ? [
+                            ...pv,
+                            [
+                                ++counter,
+                                {
+                                    uuid: cv.identifier,
+                                    name: cv.name || "",
+                                    locator: cv.locator,
+                                },
+                            ]
+                        ]
+                        : pv,
                     [],
                 );
 
