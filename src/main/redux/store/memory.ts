@@ -236,7 +236,6 @@ const test = (stateRaw: any): stateRaw is PersistRootState => {
     ok(stateRaw.publication);
     ok(stateRaw.reader);
     ok(stateRaw.session);
-    ok(stateRaw.opds);
     ok(stateRaw.i18n);
 
     return stateRaw;
@@ -327,7 +326,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
                     } catch {
 
                         reduxState = undefined;
-                        debug("RECOVERY FAILED none of the 3 recoveries mode worked");
+                        debug("RECOVERY FAILED none of the 4 recoveries mode worked");
                     }
 
                 }
