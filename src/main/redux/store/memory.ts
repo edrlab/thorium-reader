@@ -330,6 +330,8 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
                 debug("RECOVERY : the state is provided from the pouchdb database or from potentially corrupted state.json file");
                 debug("There should be data loss !");
+                debug("OR");
+                debug("If you migrate from thorium 1.6 to thorium 1.7 do not worry. There are no data loss");
                 debug("REVOVERY WORKS lvl 3/4");
 
             } catch {
