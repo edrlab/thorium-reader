@@ -377,6 +377,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 this.props.ttsPlaybackRate
                                         }
                                     >
+                                        <option value="3">3x</option>
+                                        <option value="2.75">2.75x</option>
+                                        <option value="2.5">2.5x</option>
+                                        <option value="2.25">2.25x</option>
                                         <option value="2">2x</option>
                                         <option value="1.75">1.75x</option>
                                         <option value="1.5">1.5x</option>
