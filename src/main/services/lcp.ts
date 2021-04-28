@@ -90,8 +90,8 @@ export class LcpManager {
     private readonly translator!: Translator;
 
     public async absorbDBToJson() {
-        const secs = await this.getAllSecrets();
-        debug("+++++ LCP secrets absorbDBToJson ... ", secs);
+        await this.getAllSecrets();
+        debug("+++++ LCP secrets absorbDBToJson");
     }
 
     public async getAllSecrets(): Promise<TLCPSecrets> {
