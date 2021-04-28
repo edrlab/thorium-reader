@@ -323,7 +323,11 @@ export async function initStore(configRepository: ConfigRepository<any>)
                     debug("RECOVERY WORKS 4/4");
                 } catch {
 
-                    reduxState = undefined;
+                    // do not erase reduxState for security purpose
+                    // reduxState = undefined;
+                    debug("REDUX STATE IS CORRUPTED THE TEST FAILED");
+                    debug("For security purpose the state is not erase");
+                    debug("Be carefull, an unexpected behaviour may occur");
                     debug("RECOVERY FAILED none of the 4 recoveries mode worked");
                 }
 
@@ -360,6 +364,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("####### WARNING ######");
     }
 
+    debug("REDUX STATE VALUE ::");
     debug(reduxState);
 
     try {
