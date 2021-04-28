@@ -331,8 +331,23 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const { __ } = this.props;
         if (this.props.r2Publication && this.props.bookmarks) {
             const { bookmarkToUpdate } = this.state;
-            return this.props.bookmarks.map((bookmark, i) =>
-                <div
+
+            return this.props.bookmarks.map((bookmark, i) => {
+                let percent = 100;
+                if (this.props.r2Publication.Spine?.length && bookmark.locator?.href) {
+                    const index = this.props.r2Publication.Spine.findIndex((item) => item.Href === bookmark.locator?.href);
+                    if (index >= 0) {
+                        if (typeof bookmark.locator?.locations?.progression === "number") {
+                            percent = 100 * ((index + bookmark.locator.locations.progression) / this.props.r2Publication.Spine.length);
+                        } else {
+                            percent = 100 * (index / this.props.r2Publication.Spine.length);
+                        }
+                    }
+                }
+                percent = Math.round(percent * 100) / 100;
+                const style = { width: `${percent}%` };
+
+                return (<div
                     className={styles.bookmarks_line}
                     key={i}
                 >
@@ -351,10 +366,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
                         <div className={styles.chapter_marker}>
                             <p className={styles.bookmark_name}>
-                                {bookmark.name ? bookmark.name : `Bookmark ${i}`}
+                                {bookmark.name ? bookmark.name : `${__("reader.navigation.bookmarkTitle")} [${i+1}]`}
                             </p>
                             <div className={styles.gauge}>
-                                <div className={styles.fill}></div>
+                                <div className={styles.fill} style={style}></div>
                             </div>
                         </div>
                     </button>
@@ -364,7 +379,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     <button onClick={() => this.props.deleteBookmark(bookmark)}>
                         <SVG title={ __("reader.marks.delete")} svg={ DeleteIcon }/>
                     </button>
-                </div>,
+                </div>);
+                },
             );
         }
         return undefined;
