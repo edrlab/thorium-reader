@@ -289,6 +289,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("N-1 STATE + PATCH != STATE");
         debug("Your state is probably corrupted");
         debug("If it is a fresh thorium installation do not worry");
+        debug("If it is a migration from Thorium 1.6 to Thorium 1.7 do not worry too, migrtion process will start");
         debug(e);
 
         try {
