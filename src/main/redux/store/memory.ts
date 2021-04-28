@@ -236,7 +236,6 @@ const test = (stateRaw: any): stateRaw is PersistRootState => {
     ok(stateRaw.publication);
     ok(stateRaw.reader);
     ok(stateRaw.session);
-    ok(stateRaw.i18n);
 
     return stateRaw;
 };
