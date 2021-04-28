@@ -129,7 +129,7 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
                                     name: cv.name || "",
                                     locator: cv.locator,
                                 },
-                            ]
+                            ],
                         ]
                         : pv,
                     [],
