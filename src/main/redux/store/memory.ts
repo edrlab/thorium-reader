@@ -154,6 +154,12 @@ const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undef
 
         if (!newPubs[identifier]?.doNotMigrateAnymore) {
 
+            if (typeof ((pub as any)["r2PublicationBase64"]) !== "undefined") {
+                delete (pub as any)["r2PublicationBase64"];
+            }
+            if (typeof ((pub as any)["r2OpdsPublicationBase64"]) !== "undefined") {
+                delete (pub as any)["r2OpdsPublicationBase64"];
+            }
             if (pub.lcp) {
                 if (typeof ((pub.lcp as any)["r2LCPBase64"]) !== "undefined") {
                     delete (pub.lcp as any)["r2LCPBase64"];
