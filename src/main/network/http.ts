@@ -146,11 +146,21 @@ export const httpSetAuthenticationToken =
         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
         const res = authenticationToken[id] = data;
 
-        const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-        fsp.writeFile(opdsAuthFilePath, encrypted);
+        await persistJson();
 
         return res;
     };
+
+const persistJson = () => tryCatch(() => {
+    if (!authenticationToken) return Promise.resolve();
+    const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
+    return fsp.writeFile(opdsAuthFilePath, encrypted);
+}, "");
+
+export const absorbDBToJson = async () => {
+    await authenticationTokenInit();
+    await persistJson();
+};
 
 export const getAuthenticationToken =
     async (host: string) => {

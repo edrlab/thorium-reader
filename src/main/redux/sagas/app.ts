@@ -14,7 +14,10 @@ import {
     closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
-import { fetchCookieJarPersistence } from "readium-desktop/main/network/fetch";
+import {
+    absorbDBToJson as absorbDBToJsonCookieJar, fetchCookieJarPersistence,
+} from "readium-desktop/main/network/fetch";
+import { absorbDBToJson as absorbDBToJsonOpdsAuth } from "readium-desktop/main/network/http";
 import { needToPersistFinalState } from "readium-desktop/main/redux/sagas/persist";
 import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -100,6 +103,23 @@ export function* init() {
         callback(p);
     });
 
+    yield call(() => {
+        const deviceIdManager = diMainGet("device-id-manager");
+        return deviceIdManager.absorbDBToJson();
+    });
+
+    yield call(() => {
+        const lcpManager = diMainGet("lcp-manager");
+        return lcpManager.absorbDBToJson();
+    });
+
+    yield call(() => {
+        return absorbDBToJsonCookieJar();
+    });
+
+    yield call(() => {
+        return absorbDBToJsonOpdsAuth();
+    });
 }
 
 function* closeProcess() {

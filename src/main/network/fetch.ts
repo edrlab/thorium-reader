@@ -75,6 +75,12 @@ const fetchFactory = async () => {
     return _fetch;
 };
 
+export const absorbDBToJson = async () => {
+    console.log("+++++ CookieJar absorbDBToJson ... ");
+    fetchLocal = await fetchFactory();
+    await fetchCookieJarPersistence();
+};
+
 export const fetchWithCookie =
     async (...arg: Parameters<typeof nodeFetch>) =>
         (fetchLocal = fetchLocal || await fetchFactory())(...arg);

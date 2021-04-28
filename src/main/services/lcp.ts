@@ -89,6 +89,11 @@ export class LcpManager {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
+    public async absorbDBToJson() {
+        const secs = await this.getAllSecrets();
+        debug("+++++ LCP secrets absorbDBToJson ... ", secs);
+    }
+
     public async getAllSecrets(): Promise<TLCPSecrets> {
         debug("LCP getAllSecrets ...");
 

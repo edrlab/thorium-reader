@@ -120,6 +120,12 @@ export class DeviceIdManager implements IDeviceIDManager {
         debug(newDeviceConfig);
     }
 
+    public async absorbDBToJson() {
+        const config = await this.getDeviceConfigJson();
+        debug("+++++ LCP LSD absorbDBToJson ... ", config);
+        // await this.saveDeviceConfigJson(config);
+    }
+
     private async saveDeviceConfigJson(conf: DeviceConfig) {
         debug("LCP LSD saveDeviceConfigJson ... ", conf);
 
