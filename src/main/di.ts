@@ -73,25 +73,25 @@ if (!fs.existsSync(userDataPath)) {
 
 const configDataFolderPath = path.join(
     userDataPath,
-    "config-data",
+    `config-data${IS_DEV ? "-dev" : ""}`,
 );
 if (!fs.existsSync(configDataFolderPath)) {
     fs.mkdirSync(configDataFolderPath);
 }
 
-const STATE_FILENAME = IS_DEV ? "state.dev.json" : "state.json";
+const STATE_FILENAME = "state.json";
 export const stateFilePath = path.join(
     configDataFolderPath,
     STATE_FILENAME,
 );
 
-const PATCH_FILENAME = IS_DEV ? "state.patch.dev.json" : "state.patch.json";
+const PATCH_FILENAME = "state.patch.json";
 export const patchFilePath = path.join(
     configDataFolderPath,
     PATCH_FILENAME,
 );
 
-const RUN_FILENAME = IS_DEV ? "state.runtime.dev.json" : "state.runtime.json";
+const RUN_FILENAME = "state.runtime.json";
 export const runtimeStateFilePath = path.join(
     configDataFolderPath,
     RUN_FILENAME,
@@ -99,28 +99,28 @@ export const runtimeStateFilePath = path.join(
 
 export const backupStateFilePathFn = () => path.join(
     configDataFolderPath,
-    IS_DEV ? `state.${+new Date()}.dev.json` : `state.${+new Date()}.json`,
+    `state.${+new Date()}.json`,
 );
 
-const COOKIE_JAR_FILENAME = IS_DEV ? "cookie_jar.dev.json" : "cookie_jar.json";
+const COOKIE_JAR_FILENAME = "cookie_jar.json";
 export const cookiejarFilePath = path.join(
     configDataFolderPath,
     COOKIE_JAR_FILENAME,
 );
 
-const OPDS_AUTH_FILENAME = IS_DEV ? "opds_auth.dev.json" : "opds_auth.json";
+const OPDS_AUTH_FILENAME = "opds_auth.json";
 export const opdsAuthFilePath = path.join(
     configDataFolderPath,
     OPDS_AUTH_FILENAME,
 );
 
-const LCP_HASHES_FILENAME = IS_DEV ? "lcp_hashes.dev.json" : "lcp_hashes.json";
+const LCP_HASHES_FILENAME = "lcp_hashes.json";
 export const lcpHashesFilePath = path.join(
     configDataFolderPath,
     LCP_HASHES_FILENAME,
 );
 
-const LCP_LSD_DEVICES_FILENAME = IS_DEV ? "lcp_lsd_devices.dev.json" : "lcp_lsd_devices.json";
+const LCP_LSD_DEVICES_FILENAME = "lcp_lsd_devices.json";
 export const lcpLsdDevicesFilePath = path.join(
     configDataFolderPath,
     LCP_LSD_DEVICES_FILENAME,
