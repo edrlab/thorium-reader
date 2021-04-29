@@ -398,7 +398,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("####### WARNING ######");
     }
 
-    debug("REDUX STATE VALUE :: ", typeof reduxState, Object.keys(reduxState));
+    debug("REDUX STATE VALUE :: ", typeof reduxState, reduxState ? Object.keys(reduxState) : "nil");
     // debug(reduxState);
 
     try {
@@ -440,9 +440,9 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("ERR on absorb opds to redux state", e);
     }
 
-    const preloadedState = {
+    const preloadedState = reduxState ? {
         ...reduxState,
-    };
+    } : {};
 
     const sagaMiddleware = createSagaMiddleware();
 
