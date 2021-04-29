@@ -5,8 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+import { Locator } from "readium-desktop/common/models/locator";
+import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
@@ -17,23 +21,19 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
+import { readerLocalActionBookmarks } from "../redux/actions";
 import { IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
-import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
-import { TDispatch } from "readium-desktop/typings/redux";
-import { readerLocalActionBookmarks } from "../redux/actions";
-import { Locator } from "readium-desktop/common/models/locator";
-
-import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
@@ -330,22 +330,54 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     private createBookmarkList(): JSX.Element[] {
         const { __ } = this.props;
         if (this.props.r2Publication && this.props.bookmarks) {
-            const { bookmarkToUpdate } = this.state;
 
-            return this.props.bookmarks.map((bookmark, i) => {
+            const isAudioBook = isAudiobookFn(this.props.r2Publication);
+
+            const { bookmarkToUpdate } = this.state;
+            const sortedBookmarks = this.props.bookmarks.sort((a, b) => {
+                // -1 : a < b
+                // 0 : a === b
+                // 1 : a > b
+                if (!a.locator?.href || !b.locator?.href) {
+                    return -1;
+                }
+                const indexA = this.props.r2Publication.Spine.findIndex((item) => item.Href === a.locator.href);
+                const indexB = this.props.r2Publication.Spine.findIndex((item) => item.Href === b.locator.href);
+                if (indexA < indexB) {
+                    return -1;
+                }
+                if (indexA > indexB) {
+                    return 1;
+                }
+                if (typeof a.locator?.locations?.progression === "number" && typeof b.locator?.locations?.progression === "number") {
+                    if (a.locator.locations.progression < b.locator.locations.progression) {
+                        return -1;
+                    }
+                    if (a.locator.locations.progression > b.locator.locations.progression) {
+                        return 1;
+                    }
+                }
+                return 0;
+            });
+            let n = 1;
+            return sortedBookmarks.map((bookmark, i) => {
                 let percent = 100;
+                let p = -1;
                 if (this.props.r2Publication.Spine?.length && bookmark.locator?.href) {
-                    const index = this.props.r2Publication.Spine.findIndex((item) => item.Href === bookmark.locator?.href);
+                    const index = this.props.r2Publication.Spine.findIndex((item) => item.Href === bookmark.locator.href);
                     if (index >= 0) {
                         if (typeof bookmark.locator?.locations?.progression === "number") {
                             percent = 100 * ((index + bookmark.locator.locations.progression) / this.props.r2Publication.Spine.length);
                         } else {
                             percent = 100 * (index / this.props.r2Publication.Spine.length);
                         }
+                        percent = Math.round(percent * 100) / 100;
+                        p = Math.round(percent);
                     }
                 }
-                percent = Math.round(percent * 100) / 100;
                 const style = { width: `${percent}%` };
+
+                const bname = (p >= 0 && !isAudioBook ? `${p}% ` : "") + (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${n++}`);
 
                 return (<div
                     className={styles.bookmarks_line}
@@ -365,9 +397,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         <SVG svg={BookmarkIcon} title={""} aria-hidden />
 
                         <div className={styles.chapter_marker}>
-                            <p className={styles.bookmark_name}>
-                                {bookmark.name ? bookmark.name : `${__("reader.navigation.bookmarkTitle")} [${i+1}]`}
-                            </p>
+                            <p className={styles.bookmark_name} title={bname}>{bname}</p>
                             <div className={styles.gauge}>
                                 <div className={styles.fill} style={style}></div>
                             </div>
