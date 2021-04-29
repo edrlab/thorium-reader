@@ -138,6 +138,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
     public async findAllSortDesc(): Promise<PublicationDocument[]> {
 
         const docs = await this.findAll();
+        if (!docs) {
+            return [];
+        }
 
         const docsSorted = docs.sort((a,b) => b.createdAt - a.createdAt);
 
@@ -154,8 +157,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const state = store.getState();
 
             const pub = Object.values(state.publication.db).find((f) => f.hash === hash);
-
-            ok(pub);
+            if (!pub) {
+                return [];
+            }
 
             return [pub];
 
@@ -179,6 +183,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const state = store.getState();
 
             const pubs = Object.values(state.publication.db).filter((f) => f.tags.includes(tag));
+            if (!pubs) {
+                return [];
+            }
 
             return pubs;
 
@@ -202,6 +209,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const state = store.getState();
 
             const pubs = Object.values(state.publication.db).filter((f) => f.title === title);
+            if (!pubs) {
+                return [];
+            }
 
             return pubs;
 
@@ -226,6 +236,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const state = store.getState();
 
             const pubs = Object.values(state.publication.db).filter((f) => f.identifier === publicationIdentifier);
+            if (!pubs) {
+                return [];
+            }
 
             return pubs;
 
@@ -281,6 +294,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             });
 
             const res = indexer.search(title);
+            if (!res) {
+                return [];
+            }
 
             ok(Array.isArray(res));
             const docs = res
