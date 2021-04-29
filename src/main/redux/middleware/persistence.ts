@@ -54,6 +54,11 @@ export const reduxPersistMiddleware: Middleware
                     patchChannel.put(o);
                 }
                 if (ops?.length) {
+                    // We have to dispatch an action because the buffer fifo queue of saga (signal)
+                    // can not allow to trigger a function when data is available and then flush it.
+                    // We can't start a trigger on buffer new data.
+                    // Each data in the fifo queue can be triggered with a take + data exploitation.
+                    // But in your case we expect a generic flushable function.
                     store.dispatch(winActions.persistRequest.build(ops));
                 }
 
