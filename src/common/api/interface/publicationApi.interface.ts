@@ -17,6 +17,7 @@ export interface IPublicationApi {
     ) => SagaGenerator<PublicationView>;
     delete: (
         identifier: string,
+        preservePublicationOnFileSystem?: string,
     ) => SagaGenerator<void>;
     findAll: (
     ) => SagaGenerator<PublicationView[]>;

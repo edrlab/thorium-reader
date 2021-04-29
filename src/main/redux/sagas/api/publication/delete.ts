@@ -12,7 +12,7 @@ import { publicationActions, winActions } from "readium-desktop/main/redux/actio
 import { call, delay, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 
-export function* deletePublication(identifier: string): SagaGenerator<void> {
+export function* deletePublication(identifier: string, preservePublicationOnFileSystem?: string): SagaGenerator<void> {
 
         yield put(readerActions.closeRequestFromPublication.build(identifier));
 
@@ -31,7 +31,7 @@ export function* deletePublication(identifier: string): SagaGenerator<void> {
 
         const publicationStorage = diMainGet("publication-storage");
         // Remove from storage
-        yield call(() => publicationStorage.removePublication(identifier));
+        yield call(() => publicationStorage.removePublication(identifier, preservePublicationOnFileSystem));
 
         const publicationViewConverter = diMainGet("publication-view-converter");
         // Remove from memory cache

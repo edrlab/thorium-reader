@@ -49,7 +49,7 @@ export function* getPublication(identifier: string, checkLcpLsd = false) {
         debug("error on convertDocumentToView", e);
 
         // tslint:disable-next-line: no-floating-promises
-        // this.deletePublication(identifier);
+        // this.deletePublication(identifier, e.toString());
 
         throw new Error(`${doc.title} is corrupted and should be removed`); // TODO translation
     }

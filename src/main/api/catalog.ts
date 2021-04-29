@@ -131,19 +131,22 @@ export class CatalogApi implements ICatalogApi {
 
     private async getPublicationView() {
 
-        const errorDeletePub = (doc: PublicationDocument | undefined) => {
+        // eslint-disable-next-line unused-imports/no-unused-vars
+        const errorDeletePub = (doc: PublicationDocument | undefined, e: any) => {
             debug("Error in convertDocumentToView doc=", doc);
 
             this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc?.title || ""));
 
             debug(`${doc?.identifier} => ${doc?.title} should be removed`);
             try {
+                const str = typeof e.toString === "function" ? e.toString() : (typeof e.message === "string" ? e.message : (typeof e === "string" ? e : JSON.stringify(e)));
+
                 // tslint:disable-next-line: no-floating-promises
-                // this.publicationService.deletePublication(doc.identifier);
+                // this.publicationService.deletePublication(doc.identifier, str);
                 const sagaMiddleware = diMainGet("saga-middleware");
                 const pubApi = diMainGet("publication-api");
                 // tslint:disable-next-line: no-floating-promises
-                sagaMiddleware.run(pubApi.delete, doc.identifier).toPromise();
+                sagaMiddleware.run(pubApi.delete, doc.identifier, str).toPromise();
             } catch {
                 // ignore
             }
@@ -167,7 +170,7 @@ export class CatalogApi implements ICatalogApi {
                 lastAddedPublicationsView.push(await this.publicationViewConverter.convertDocumentToView(doc));
             } catch (e) {
                 debug("lastadded publication view converter", e);
-                errorDeletePub(doc);
+                errorDeletePub(doc, e);
             }
         }
 
@@ -177,7 +180,7 @@ export class CatalogApi implements ICatalogApi {
                 lastReadedPublicationsView.push(await this.publicationViewConverter.convertDocumentToView(doc));
             } catch (e) {
                 debug("lastreaded publication view converter", e);
-                errorDeletePub(doc);
+                errorDeletePub(doc, e);
             }
         }
 

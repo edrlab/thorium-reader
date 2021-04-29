@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { dialog } from "electron";
+import { dialog, shell } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
@@ -70,8 +70,32 @@ export class PublicationStorage {
         return files;
     }
 
-    public removePublication(identifier: string) {
-        rmDirSync(this.buildPublicationPath(identifier));
+    public removePublication(identifier: string, preservePublicationOnFileSystem?: string) {
+        const p = this.buildPublicationPath(identifier);
+
+        if (preservePublicationOnFileSystem) {
+            const log = path.join(p, "error.txt");
+            fs.writeFileSync(log, preservePublicationOnFileSystem, { encoding: "utf-8" });
+            shell.showItemInFolder(log);
+
+            // const parent = path.dirname(p) + "_REMOVED";
+            // if (!fs.existsSync(parent)) {
+            //     fs.mkdirSync(parent);
+            // }
+
+            // setTimeout(async () => {
+            //     await shell.openPath(parent);
+            // }, 0);
+            // shell.showItemInFolder(parent);
+
+            // const f = path.basename(p);
+            // const n = path.join(parent, f);
+            // shell.showItemInFolder(n);
+
+            return;
+        }
+
+        rmDirSync(p);
     }
 
     // TODO: fs.existsSync() is really costly,
