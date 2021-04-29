@@ -9,6 +9,7 @@
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 import { createPatch } from "rfc6902";
+import { winActions } from "../actions";
 import { patchChannel } from "../sagas/patch";
 
 import { PersistRootState, RootState } from "../states";
@@ -47,10 +48,13 @@ export const reduxPersistMiddleware: Middleware
                     },
                     opds: nextState.opds,
                 };
-                
+
                 const ops = createPatch(persistPrevState, persistNextState);
                 for (const o of ops) {
                     patchChannel.put(o);
+                }
+                if (ops?.length) {
+                    store.dispatch(winActions.persistRequest.build(ops));
                 }
 
                 return returnValue;

@@ -8,14 +8,13 @@
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
 import { patchFilePath, stateFilePath } from "readium-desktop/main/di";
-import { winActions } from "readium-desktop/main/redux/actions";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce } from "redux-saga/effects";
 import { flush as flushTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { winActions } from "../actions";
 
 import { patchChannel } from "./patch";
-import { EOL } from "os";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 
@@ -63,18 +62,22 @@ export function* needToPersistPatch() {
         let data = "";
         let i = 0;
         while (i < ops.length) {
-            data += JSON.stringify(ops[i]);
-            if (i < ops.length - 1) {
-                data += ',' + EOL;
-            }
+            data += JSON.stringify(ops[i]) + ",\n";
             ++i;
         }
 
-        yield call(() => fsp.appendFile(patchFilePath, data, { encoding: "utf8" }));
+        debug(data);
+        if (data) {
+            debug("start of patch persistence");
+            yield call(() => fsp.appendFile(patchFilePath, data, { encoding: "utf8" }));
+            debug("end of patch persistence");
+        }
+
 
     } catch (e) {
         debug("ERROR to persist patch state in the filesystem", e);
     }
+
 }
 
 export function saga() {
@@ -84,3 +87,4 @@ export function saga() {
         needToPersistPatch,
     );
 }
+

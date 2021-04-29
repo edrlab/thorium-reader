@@ -231,7 +231,7 @@ const runtimeState = async (): Promise<object> => {
 const recoveryReduxState = async (runtimeState: object): Promise<object> => {
 
     const patchFileStrRaw = await tryCatch(() => fsp.readFile(patchFilePath, { encoding: "utf8" }), "");
-    const patchFileStr = "[" + patchFileStrRaw + "]";
+    const patchFileStr = "[" + patchFileStrRaw.slice(0, -2) + "]"; // remove the last comma
     const patch = await tryCatch(() => JSON.parse(patchFileStr), "");
 
     ok(Array.isArray(patch));
