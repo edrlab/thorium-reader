@@ -230,7 +230,8 @@ const runtimeState = async (): Promise<object> => {
 
 const recoveryReduxState = async (runtimeState: object): Promise<object> => {
 
-    const patchFileStr = await tryCatch(() => fsp.readFile(patchFilePath, { encoding: "utf8" }), "");
+    const patchFileStrRaw = await tryCatch(() => fsp.readFile(patchFilePath, { encoding: "utf8" }), "");
+    const patchFileStr = "[" + patchFileStrRaw.slice(0, -2) + "]"; // remove the last comma
     const patch = await tryCatch(() => JSON.parse(patchFileStr), "");
 
     ok(Array.isArray(patch));
@@ -387,8 +388,9 @@ export async function initStore(configRepository: ConfigRepository<any>)
             )
             , "");
 
-        // empty array by default !!
-        await tryCatch(() => fsp.writeFile(patchFilePath, "[]", { encoding: "utf8" }), "");
+        // the file doen't have a top array [...]
+        // we need to add it before the parsing
+        await tryCatch(() => fsp.writeFile(patchFilePath, "", { encoding: "utf8" }), "");
     }
 
     if (!reduxState) {

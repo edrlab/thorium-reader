@@ -6,13 +6,15 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { promises as fsp } from "fs";
 import { patchFilePath, stateFilePath } from "readium-desktop/main/di";
-import { winActions } from "readium-desktop/main/redux/actions";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce } from "redux-saga/effects";
-import { select as selectTyped } from "typed-redux-saga/macro";
-import { promises as fsp } from "fs";
+import { flush as flushTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { winActions } from "../actions";
+
+import { patchChannel } from "./patch";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 
@@ -39,7 +41,6 @@ const persistStateToFs = async (nextState: RootState) => {
         i18n: nextState.i18n,
         opds: nextState.opds,
     };
-    // });
 
     await fsp.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
     debug("end of persist reduxState in disk");
@@ -56,12 +57,27 @@ export function* needToPersistPatch() {
 
     try {
 
-        const patch = yield* selectTyped((store: RootState) => store.patch);
-        yield call(() => fsp.writeFile(patchFilePath, JSON.stringify(patch), { encoding: "utf8" }));
+        const ops = yield* flushTyped(patchChannel);
+
+        let data = "";
+        let i = 0;
+        while (i < ops.length) {
+            data += JSON.stringify(ops[i]) + ",\n";
+            ++i;
+        }
+
+        debug(data);
+        if (data) {
+            debug("start of patch persistence");
+            yield call(() => fsp.appendFile(patchFilePath, data, { encoding: "utf8" }));
+            debug("end of patch persistence");
+        }
+
 
     } catch (e) {
         debug("ERROR to persist patch state in the filesystem", e);
     }
+
 }
 
 export function saga() {
@@ -71,3 +87,4 @@ export function saga() {
         needToPersistPatch,
     );
 }
+

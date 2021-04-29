@@ -21,7 +21,6 @@ import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
 import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
-import { Patch } from "rfc6902";
 import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
 
@@ -68,10 +67,6 @@ export const rootReducer = combineReducers<RootState>({
         db: publicationDbReducers,
     }),
     keyboard: keyboardReducer,
-    patch: (
-        state: Patch = [],
-        action: winActions.persistRequest.TAction,
-    ) => action.type === winActions.persistRequest.ID ? [...state, ...action.payload.ops] : state,
     opds: combineReducers({
         catalog: opdsDbReducers,
     }),
