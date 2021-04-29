@@ -50,10 +50,10 @@ export const reduxPersistMiddleware: Middleware
                 };
 
                 const ops = createPatch(persistPrevState, persistNextState);
-                for (const o of ops) {
-                    patchChannel.put(o);
-                }
                 if (ops?.length) {
+                    for (const o of ops) {
+                        patchChannel.put(o);
+                    }
                     // We have to dispatch an action because the buffer fifo queue of saga (signal)
                     // can not allow to trigger a function when data is available and then flush it.
                     // We can't start a trigger on buffer new data.
