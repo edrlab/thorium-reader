@@ -10,7 +10,6 @@ import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { KeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
-import { Patch } from "rfc6902";
 
 import { AppState } from "./app";
 import { ILcpState } from "./lcp";
@@ -47,7 +46,6 @@ export interface RootState {
         db: IDictPublicationState;
     };
     keyboard: KeyboardState;
-    patch: Patch;
     opds: {
         catalog: OpdsFeedDocument[];
     }
