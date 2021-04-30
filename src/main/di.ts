@@ -7,6 +7,7 @@
 
 import "reflect-metadata";
 
+import { ok } from "assert";
 import * as debug_ from "debug";
 import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
@@ -37,7 +38,6 @@ import { LcpManager } from "readium-desktop/main/services/lcp";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamerHttp";
 import {
-    IS_DEV,
     _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
 } from "readium-desktop/preprocessor-directives";
 import { PromiseAllSettled } from "readium-desktop/utils/promise";
@@ -52,7 +52,6 @@ import { SessionApi } from "./api/session";
 import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
-import { ok } from "assert";
 
 // Logger
 const debug = debug_("readium-desktop:main:di");
@@ -73,7 +72,7 @@ if (!fs.existsSync(userDataPath)) {
 
 const configDataFolderPath = path.join(
     userDataPath,
-    `config-data${IS_DEV ? "-dev" : ""}`,
+    `config-data${(_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "-dev" : ""}`,
 );
 if (!fs.existsSync(configDataFolderPath)) {
     fs.mkdirSync(configDataFolderPath);
