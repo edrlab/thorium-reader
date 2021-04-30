@@ -19,6 +19,9 @@ import slugify from "slugify";
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
+import * as debug_ from "debug";
+
+const debug = debug_("readium-desktop:main/storage/pub-storage");
 
 // Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
@@ -72,30 +75,34 @@ export class PublicationStorage {
 
     public removePublication(identifier: string, preservePublicationOnFileSystem?: string) {
         const p = this.buildPublicationPath(identifier);
+        try {
+            if (preservePublicationOnFileSystem) {
+                const log = path.join(p, "error.txt");
+                fs.writeFileSync(log, preservePublicationOnFileSystem, { encoding: "utf-8" });
+                shell.showItemInFolder(log);
 
-        if (preservePublicationOnFileSystem) {
-            const log = path.join(p, "error.txt");
-            fs.writeFileSync(log, preservePublicationOnFileSystem, { encoding: "utf-8" });
-            shell.showItemInFolder(log);
+                // const parent = path.dirname(p) + "_REMOVED";
+                // if (!fs.existsSync(parent)) {
+                //     fs.mkdirSync(parent);
+                // }
 
-            // const parent = path.dirname(p) + "_REMOVED";
-            // if (!fs.existsSync(parent)) {
-            //     fs.mkdirSync(parent);
-            // }
+                // setTimeout(async () => {
+                //     await shell.openPath(parent);
+                // }, 0);
+                // shell.showItemInFolder(parent);
 
-            // setTimeout(async () => {
-            //     await shell.openPath(parent);
-            // }, 0);
-            // shell.showItemInFolder(parent);
+                // const f = path.basename(p);
+                // const n = path.join(parent, f);
+                // shell.showItemInFolder(n);
 
-            // const f = path.basename(p);
-            // const n = path.join(parent, f);
-            // shell.showItemInFolder(n);
+                return;
+            }
 
-            return;
+            rmDirSync(p);
+        } catch (e) {
+            debug(e);
+            debug(`removePublication error (ignore) ${identifier} ${p}`);
         }
-
-        rmDirSync(p);
     }
 
     // TODO: fs.existsSync() is really costly,
