@@ -72,7 +72,7 @@ if (!fs.existsSync(userDataPath)) {
 
 const configDataFolderPath = path.join(
     userDataPath,
-    `config-data${(_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "-dev" : ""}`,
+    `config-data-json${(_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "-dev" : ""}`,
 );
 if (!fs.existsSync(configDataFolderPath)) {
     fs.mkdirSync(configDataFolderPath);
