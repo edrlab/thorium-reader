@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { injectable } from "inversify";
-import { ok } from "node:assert";
+import { ok } from "assert";
 import * as PouchDB from "pouchdb-core";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
