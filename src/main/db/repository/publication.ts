@@ -50,7 +50,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const p = new Promise<PublicationDocument>(
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().publication.db[document.identifier];
-                if (o.removed !== true) {
+                if (o && o.removed !== true) {
                     res(o);
                 }
             })));
@@ -76,6 +76,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const p = new Promise<void>(
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().publication.db[identifier];
+                if (!o) {
+                    res();
+                }
                 if (o.removed === true) {
                     res();
                 }

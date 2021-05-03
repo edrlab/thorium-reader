@@ -37,7 +37,7 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().opds.catalog.find((v) =>
                     v.identifier === feedAction.payload[0]?.identifier);
-                if (o.removed !== true) {
+                if (o && o.removed !== true) {
                     res(o);
                 }
             })));
@@ -73,6 +73,9 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().opds.catalog.find((v) =>
                     v.identifier === identifier);
+                if (!o) {
+                    res();
+                }
                 if (o.removed === true) {
                     res();
                 }
