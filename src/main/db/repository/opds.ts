@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { injectable } from "inversify";
+import { ok } from "node:assert";
 import * as PouchDB from "pouchdb-core";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
@@ -36,7 +37,7 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().opds.catalog.find((v) =>
                     v.identifier === feedAction.payload[0]?.identifier);
-                if (o) {
+                if (o.removed !== true) {
                     res(o);
                 }
             })));
@@ -45,53 +46,41 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
         return p.finally(() => unsub && unsub());
     }
 
-    public async get(identifier: string): Promise<OpdsFeedDocument> {
-        // try {
-        //     const dbDoc = await this.db.get(this.buildId(identifier));
-        //     return this.convertToDocument(dbDoc);
-        // } catch (_error) {
-        //     throw new NotFoundError("document not found");
-        // }
-
-        const store = diMainGet("store");
-        const state = store.getState();
-
-        const pub = state.opds.catalog.find((f) => f.identifier === identifier);
-
-        return pub;
-
-    }
-
     public async findAll(): Promise<OpdsFeedDocument[]> {
-        // const result = await this.db.allDocs({
-        //     include_docs: true,
-        //     startkey: this.idPrefix + "_",
-        //     endkey: this.idPrefix + "_\ufff0",
-        // });
-        // return result.rows.map((row) => {
-        //     return this.convertToDocument(row.doc);
-        // });
+
         const store = diMainGet("store");
         const state = store.getState();
-
-        const docs = state.opds.catalog;
-
+        const docs = state.opds.catalog
+            .filter((v) => v.removed !== true);
         return docs;
     }
 
+    public async get(identifier: string): Promise<OpdsFeedDocument> {
+
+        const pubs = await this.findAll();
+        ok(Array.isArray(pubs));
+        const pub = pubs.find((f) => f.identifier === identifier);
+
+        return pub;
+    }
+
     public async delete(identifier: string): Promise<void> {
-        // const dbDoc = await this.db.get(this.buildId(identifier));
-        // await this.db.remove(dbDoc);
+
         const store = diMainGet("store");
 
         let unsub: Unsubscribe;
         const p = new Promise<void>(
-            (res) => (unsub = store.subscribe(res)));
+            (res) => (unsub = store.subscribe(() => {
+                const o = store.getState().opds.catalog.find((v) =>
+                    v.identifier === identifier);
+                if (o?.removed !== true) {
+                    res();
+                }
+            })));
         store.dispatch(opdsActions.deleteOpdsFeed.build(identifier));
 
         await p.finally(() => unsub && unsub());
     }
-
 
     public async findAllFromPouchdb() {
 

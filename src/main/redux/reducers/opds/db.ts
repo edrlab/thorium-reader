@@ -20,31 +20,35 @@ export function opdsDbReducers(
 
         case opdsActions.addOpdsFeed.ID: {
 
-            let newState = state;
+            const newState = clone(state);
             for (const doc of action.payload) {
-
-                const { identifier } = doc;
-                const idx = newState.findIndex((v) => v.identifier === identifier);
 
                 const newDoc = clone(doc);
                 newDoc.doNotMigrateAnymore = true;
+                newState.push(doc);
 
-                if (newState[idx]) {
-                    newState = [
-                        ...newState.slice(0, idx),
-                        ...[
-                            newDoc,
-                        ],
-                        ...newState.slice(idx + 1),
-                    ];
-                } else {
-                    newState = [
-                        ...newState,
-                        ...[
-                            newDoc,
-                        ],
-                    ];
-                }
+                // const { identifier } = doc;
+                // const idx = newState.findIndex((v) => v.identifier === identifier);
+
+                // const newDoc = clone(doc);
+                // newDoc.doNotMigrateAnymore = true;
+
+                // if (newState[idx]) {
+                //     newState = [
+                //         ...newState.slice(0, idx),
+                //         ...[
+                //             newDoc,
+                //         ],
+                //         ...newState.slice(idx + 1),
+                //     ];
+                // } else {
+                //     newState = [
+                //         ...newState,
+                //         ...[
+                //             newDoc,
+                //         ],
+                //     ];
+                // }
             }
             return newState;
         }
@@ -53,17 +57,16 @@ export function opdsDbReducers(
 
             const identifier = action.payload.identifier;
             const idx = state.findIndex((v) => v.identifier === identifier);
+            const newState = clone(state);
 
             if (state[idx]) {
-                return [
-                    ...state.slice(0, idx),
-                    ...state.slice(idx + 1),
-                ];
+                newState[idx].removed = true;
             }
-            return state;
+            return newState;
         }
 
         default:
-            return state;
+            // nothing
     }
+    return state;
 }

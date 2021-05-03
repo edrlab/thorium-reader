@@ -21,14 +21,13 @@ export function publicationDbReducers(
         case publicationActions.addPublication.ID: {
 
             const newState = clone(state);
-            for (const payload of action.payload) {
+            for (const pub of action.payload) {
 
-                payload.doNotMigrateAnymore = true;
-
-                const id = payload.identifier;
+                pub.doNotMigrateAnymore = true;
+                const id = pub.identifier;
                 newState[id] = {
                     ...newState[id],
-                    ...payload,
+                    ...pub,
                 };
             }
             return newState;
@@ -38,14 +37,13 @@ export function publicationDbReducers(
 
             const id = action.payload.publicationIdentifier;
 
-            if (state[id]) {
-                const ret = {
-                    ...state,
-                };
-                delete ret[id];
-                return ret;
-            }
+            const newState = clone(state);
+            newState[id].removed = true;
+            return newState;
         }
+
+        default:
+            // nothing
     }
     return state;
 }

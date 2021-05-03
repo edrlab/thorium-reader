@@ -41,25 +41,6 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
     public constructor(db: PouchDB.Database<PublicationDocument>) {// INJECTED!
 
         this.db = db;
-        // const indexes = [
-            // {
-            //     fields: ["createdAt"], // Timestampable
-            //     name: CREATED_AT_INDEX,
-            // },
-            // {
-            //     fields: ["title"], // PublicationDocument
-            //     name: TITLE_INDEX,
-            // },
-            // {
-            //     fields: ["tags"], // PublicationDocument
-            //     name: TAG_INDEX,
-            // },
-            // {
-            //     fields: ["hash"], // PublicationDocument
-            //     name: HASH_INDEX,
-            // },
-        // ];
-        // super(db, "publication", indexes);
     }
 
     public async save(document: PublicationDocumentWithoutTimestampable): Promise<PublicationDocument> {
@@ -69,7 +50,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const p = new Promise<PublicationDocument>(
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().publication.db[document.identifier];
-                if (o) {
+                if (o.removed !== true) {
                     res(o);
                 }
             })));
@@ -78,31 +59,27 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         return p.finally(() => unsub && unsub());
     }
 
-    public async get(identifier: string): Promise<PublicationDocument> {
-        // try {
-        //     const dbDoc = await this.db.get(this.buildId(identifier));
-        //     return this.convertToDocument(dbDoc);
-        // } catch (_error) {
-        //     throw new NotFoundError("document not found");
-        // }
+    public async get(identifier: string): Promise<PublicationDocument | undefined> {
 
         const store = diMainGet("store");
         const state = store.getState();
 
         const pub = state.publication.db[identifier];
-
         return pub;
-
     }
 
     public async delete(identifier: string): Promise<void> {
-        // const dbDoc = await this.db.get(this.buildId(identifier));
-        // await this.db.remove(dbDoc);
+
         const store = diMainGet("store");
 
         let unsub: Unsubscribe;
         const p = new Promise<void>(
-            (res) => (unsub = store.subscribe(res)));
+            (res) => (unsub = store.subscribe(() => {
+                const o = store.getState().publication.db[identifier];
+                if (o?.removed) {
+                    res();
+                }
+            })));
         store.dispatch(publicationActions.deletePublication.build(identifier));
 
         await p.finally(() => unsub && unsub());
@@ -121,149 +98,57 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
     }
 
     public async findAll(): Promise<PublicationDocument[]> {
-        // const result = await this.db.allDocs({
-        //     include_docs: true,
-        //     startkey: this.idPrefix + "_",
-        //     endkey: this.idPrefix + "_\ufff0",
-        // });
-        // return result.rows.map((row) => {
-        //     return this.convertToDocument(row.doc);
-        // });
+
         const store = diMainGet("store");
         const state = store.getState();
 
-        return Object.values(state.publication.db);
+        return Object.values(state.publication.db)
+            .filter((v) => v.removed !== true);
     }
 
     public async findAllSortDesc(): Promise<PublicationDocument[]> {
 
-        const docs = await this.findAll();
-        if (!docs) {
-            return [];
-        }
-
-        const docsSorted = docs.sort((a,b) => b.createdAt - a.createdAt);
+        const pubs = await this.findAll();
+        ok(Array.isArray(pubs));
+        const docsSorted = pubs.sort((a,b) => b.createdAt - a.createdAt);
 
         return docsSorted;
     }
 
-    public async findByHashId(hash: string): Promise<PublicationDocument[]> {
-        // return this.find({
-            // selector: { hash: { $eq: hash }},
-        // });
-        try {
+    public async findByHashId(hash: string): Promise<PublicationDocument | undefined> {
 
-            const store = diMainGet("store");
-            const state = store.getState();
-
-            const pub = Object.values(state.publication.db).find((f) => f.hash === hash);
-            if (!pub) {
-                return [];
-            }
-
-            return [pub];
-
-        } catch (e) {
-
-            console.log("####");
-            console.log("findByHashId error ", e);
-            console.log("####");
-
-            return [];
-        }
+        const pubs = await this.findAll();
+        ok(Array.isArray(pubs));
+        const pub = pubs.find((f) => f.hash === hash);
+        return pub;
     }
 
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
-        // return this.find({
-            // selector: { tags: { $elemMatch: { $eq: tag }}},
-        // });
-        try {
 
-            const store = diMainGet("store");
-            const state = store.getState();
-
-            const pubs = Object.values(state.publication.db).filter((f) => f.tags.includes(tag));
-            if (!pubs) {
-                return [];
-            }
-
-            return pubs;
-
-        } catch (e) {
-
-            console.log("####");
-            console.log("findByTag error ", e);
-            console.log("####");
-
-            return [];
-        }
+        const pubs = await this.findAll();
+        ok(Array.isArray(pubs));
+        const pubsFiltered = pubs.filter((f) => f.tags.includes(tag));
+        return pubsFiltered;
     }
 
     public async findByTitle(title: string): Promise<PublicationDocument[]> {
-        // return this.find({
-        //     selector: { title: { $eq: title }},
-        // });
-        try {
 
-            const store = diMainGet("store");
-            const state = store.getState();
-
-            const pubs = Object.values(state.publication.db).filter((f) => f.title === title);
-            if (!pubs) {
-                return [];
-            }
-
-            return pubs;
-
-        } catch (e) {
-
-            console.log("####");
-            console.log("findByTitle error ", e);
-            console.log("####");
-
-            return [];
-        }
+        const pubs = await this.findAll();
+        ok(Array.isArray(pubs));
+        const pubsFiltered = pubs.filter((f) => f.title === title);
+        return pubsFiltered;
     }
 
     public async findByPublicationIdentifier(publicationIdentifier: string): Promise<PublicationDocument[]> {
-        // return this.find({
-        //     selector: { publicationIdentifier },
-        // });
 
-        try {
-
-            const store = diMainGet("store");
-            const state = store.getState();
-
-            const pubs = Object.values(state.publication.db).filter((f) => f.identifier === publicationIdentifier);
-            if (!pubs) {
-                return [];
-            }
-
-            return pubs;
-
-        } catch (e) {
-
-            console.log("####");
-            console.log("findByPublicationIdentifier error ", e);
-            console.log("####");
-
-            return [];
-        }
+        const pubs = await this.findAll();
+        ok(Array.isArray(pubs));
+        const pubsFiltered = pubs.filter((f) => f.identifier === publicationIdentifier);
+        return pubsFiltered;
     }
 
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
-        // const dbDocs = await this.db.search({
-        //     query: title,
-        //     fields: ["title"],
-        //     include_docs: true,
-        //     highlighting: false,
-        // });
-
-        // return dbDocs.rows.map((dbDoc) => {
-        //     return this.convertToDocument(dbDoc.doc);
-        // });
 
         try {
 
@@ -318,27 +203,11 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
     /** Returns all publication tags */
     public async getAllTags(): Promise<string[]> {
 
-        let docs: PublicationDocument[];
-        try {
-
-            const store = diMainGet("store");
-            const state = store.getState();
-
-            docs = Object.values(state.publication.db);
-
-        } catch (e) {
-
-            console.log("####");
-            console.log("getAllTags error ", e);
-            console.log("####");
-
-            return [];
-        }
-
-
+        const pubs = await this.findAll();
+        ok(Array.isArray(pubs));
         const tags: string[] = [];
 
-        for (const doc of docs) {
+        for (const doc of pubs) {
             for (const tag of doc.tags) {
                 if (tags.indexOf(tag) >= 0) {
                     continue;

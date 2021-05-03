@@ -42,5 +42,8 @@ export interface PublicationDocument extends Identifiable, Timestampable {
 
     // specific to publication db migration from pouch-db to redux main state
     doNotMigrateAnymore?: boolean;
+
+    // removed boolean to keep data in database
+    removed?: boolean;
 }
 export type PublicationDocumentWithoutTimestampable = Omit<PublicationDocument, keyof Timestampable>;

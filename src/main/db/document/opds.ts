@@ -13,4 +13,6 @@ export interface OpdsFeedDocument extends Identifiable, Timestampable {
     url: string;
 
     doNotMigrateAnymore?: boolean;
+
+    removed?: boolean;
 }
