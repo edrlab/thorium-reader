@@ -78,6 +78,12 @@ if (!fs.existsSync(configDataFolderPath)) {
     fs.mkdirSync(configDataFolderPath);
 }
 
+const RECOVERY_FILENAME = "recovery";
+export const recoveryFilePath = path.join(
+    configDataFolderPath,
+    RECOVERY_FILENAME,
+);
+
 const STATE_FILENAME = "state.json";
 export const stateFilePath = path.join(
     configDataFolderPath,

@@ -15,6 +15,7 @@ import AuthSettings from "./AuthSettings";
 import KeyboardSettings from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
 import SessionSettings from "./SessionSettings";
+import RecoverySettings from "./RecoverySettings";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -40,6 +41,22 @@ class Settings extends React.Component<IProps, undefined> {
                     <SessionSettings></SessionSettings>
                     <KeyboardSettings></KeyboardSettings>
                     <AuthSettings></AuthSettings>
+
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+
+                    <h1>Expert MODE</h1>
+                    <RecoverySettings></RecoverySettings>
                 </LibraryLayout>
             </>
         );

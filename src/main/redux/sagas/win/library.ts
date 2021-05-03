@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { dialog } from "electron";
+import { app, dialog } from "electron";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -108,6 +108,8 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
             action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
         },
     } as syncIpc.EventPayload);
+
+    webContents.send("GETPATH", app.getPath("userData"));
 
     // // Init network on window
     // let actionNet = null;

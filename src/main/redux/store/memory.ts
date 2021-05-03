@@ -20,7 +20,7 @@ import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import {
     backupStateFilePathFn, CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet, memoryLoggerFilename,
-    patchFilePath, runtimeStateFilePath, stateFilePath,
+    patchFilePath, recoveryFilePath, runtimeStateFilePath, stateFilePath,
 } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
@@ -266,7 +266,24 @@ export async function initStore(configRepository: ConfigRepository<any>)
 
     try {
 
-        const jsonStr = await fsp.readFile(stateFilePath, { encoding: "utf8" });
+        let stateFilePathRecovery = stateFilePath;
+        try {
+            stateFilePathRecovery = await fsp.readFile(recoveryFilePath, { encoding: "utf8"});
+            ok(typeof stateFilePathRecovery === "string");
+            ok(stateFilePathRecovery.endsWith(".json"));
+        } catch {
+            stateFilePathRecovery = stateFilePath;
+        } finally {
+            try {
+                await fsp.writeFile(recoveryFilePath, "", { encoding: "utf8" });
+            } catch {
+                // ignore
+            }
+        }
+
+        debug("STATE PATH = ", stateFilePathRecovery);
+
+        const jsonStr = await fsp.readFile(stateFilePathRecovery, { encoding: "utf8" });
         const json = JSON.parse(jsonStr);
         if (test(json))
             reduxState = json;
