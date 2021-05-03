@@ -76,7 +76,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const p = new Promise<void>(
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().publication.db[identifier];
-                if (o?.removed) {
+                if (o.removed === true) {
                     res();
                 }
             })));

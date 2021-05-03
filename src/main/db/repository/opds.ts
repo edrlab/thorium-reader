@@ -73,7 +73,7 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().opds.catalog.find((v) =>
                     v.identifier === identifier);
-                if (o?.removed !== true) {
+                if (o.removed === true) {
                     res();
                 }
             })));
