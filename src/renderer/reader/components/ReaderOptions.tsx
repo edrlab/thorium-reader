@@ -34,7 +34,7 @@ import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/re
 
 import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
 import { readerLocalActionSetConfig } from "../redux/actions";
-import optionsValues, { IReaderOptionsProps } from "./options-values";
+import optionsValues, { IReaderOptionsProps, TdivinaReadingMode } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
@@ -60,6 +60,7 @@ enum themeType {
 }
 
 interface IState {
+    divinaReadingMode: TdivinaReadingMode | undefined;
     pdfScale: IPdfPlayerScale | undefined;
     pdfView: IPdfPlayerView | undefined;
     pdfCol: IPdfPlayerColumn | undefined;
@@ -77,6 +78,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.handleSettingChangeDebounced = debounce(this.props.handleSettingChange, 500);
 
         this.state = {
+            divinaReadingMode: undefined,
             pdfScale: undefined,
             pdfCol: undefined,
             pdfView: undefined,
@@ -292,7 +294,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         aria-disabled={!this.props.divinaReadingModeSupported.includes("double")}
                         htmlFor={"radio-" + "double"}
                     >
-                        {this.props.divinaReadingMode === "double" && <SVG svg={DoneIcon} ariaHidden />}
+                        {this.state.divinaReadingMode === "double" && <SVG svg={DoneIcon} ariaHidden />}
                         { "double" }
                     </label>
                 </div>
@@ -324,7 +326,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         onChange={() => {
                             this.props.handleDivinaReadingMode("scroll");
                         }}
-                        checked={this.props.divinaReadingMode === "scroll"}
+                        checked={this.state.divinaReadingMode === "scroll"}
                     />
                     <label
                         aria-disabled={!this.props.divinaReadingModeSupported.includes("scroll")}
