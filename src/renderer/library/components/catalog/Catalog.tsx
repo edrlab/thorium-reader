@@ -79,6 +79,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
         "publication/importFromFs",
         "publication/importFromLink",
         "publication/delete",
+        "publication/findAll",
         // "catalog/addEntry",
         "publication/updateTags",
         // "reader/setLastReadingLocation",

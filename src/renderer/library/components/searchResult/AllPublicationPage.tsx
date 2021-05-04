@@ -52,6 +52,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         this.unsubscribe = apiSubscribe([
             "publication/importFromFs",
             "publication/delete",
+            "publication/importFromLink",
             // "catalog/addEntry",
             "publication/updateTags",
         ], () => {
