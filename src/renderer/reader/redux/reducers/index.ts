@@ -29,6 +29,7 @@ import { searchReducer } from "./search";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeReducer";
+import { readerDivinaReducer } from "./divina";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
@@ -119,6 +120,7 @@ export const rootReducer = () => {
                         },
                     ),
             }),
+            divina: readerDivinaReducer,
         }),
         search: searchReducer,
         picker: pickerReducer,
