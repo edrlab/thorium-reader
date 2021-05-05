@@ -184,6 +184,8 @@ class Reader extends React.Component<IProps, IState> {
             currentLocation: undefined,
 
             divinaNumberOfPages: 0,
+
+            // default reading mode
             divinaReadingMode: "single",
             divinaReadingModeSupported: [],
 
@@ -1112,6 +1114,10 @@ class Reader extends React.Component<IProps, IState> {
 
                 // Page navigators creation { readingModesArray: [ 'scroll' ], languagesArray: [ 'unspecified' ] }
                 this.setState({ divinaReadingModeSupported: data.readingModesArray });
+
+                console.log("data.readingModesArray");
+                console.log(data.readingModesArray);
+                
             });
             eventEmitter.on("initialload", (data: any) => {
                 console.log("Initial load", data);
