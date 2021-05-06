@@ -955,7 +955,9 @@ class Reader extends React.Component<IProps, IState> {
             && typeof data.locator.href === "string"
             && typeof data.locator.locations === "object"
             && typeof data.locator.locations.position === "number"
-            && typeof data.locator.locations.progression === "number";
+            && typeof data.locator.locations.progression === "number"
+            && data.locator.locations.progression >= 0
+            && data.locator.locations.progression <= 1
         };
 
         if (isDivinaLocation(data)) {
