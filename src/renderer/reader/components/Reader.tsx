@@ -297,29 +297,35 @@ class Reader extends React.Component<IProps, IState> {
 
             if (this.currentDivinaPlayer) {
 
-                this.currentDivinaPlayer.eventEmitter.on("pagechange", this.divinaSetLocation);
+                this.currentDivinaPlayer.eventEmitter.on("pagechange", (data: any) => {
+                    console.log("DIVINA: 'pagechange'", data);
+
+                    this.divinaSetLocation(data);
+                });
 
                 this.currentDivinaPlayer.eventEmitter.on(
                     "initialload",
                     () => {
 
                         console.log("divina loaded");
-                        // nextTick update
-                        setTimeout(() => {
+                        // // nextTick update
+                        // setTimeout(() => {
 
-                            try {
+                        //     try {
 
-                                const index = parseInt(this.props.locator?.locator?.href, 10);
-                                if (typeof index !== "undefined" && index >= 0) {
-                                    console.log("index divina", index);
-                                    this.currentDivinaPlayer.goToPageWithIndex(index);
-                                }
-                            } catch (e) {
-                                // ignore
-                                console.log("currentDivinaPlayer.goToPageWithIndex", e);
-                            }
+                        //         const index = parseInt(this.props.locator?.locator?.href, 10);
+                        //         if (typeof index !== "undefined" && index >= 0) {
+                        //             console.log("index divina", index);
+                        //             this.currentDivinaPlayer.goToPageWithIndex(index);
+                        //         }
+                        //     } catch (e) {
+                        //         // ignore
+                        //         console.log("currentDivinaPlayer.goToPageWithIndex", e);
+                        //     }
 
-                        }, 0);
+                        // }, 0);
+
+                        // Locator injected at initialization
 
                     },
                 );
@@ -1100,7 +1106,8 @@ class Reader extends React.Component<IProps, IState> {
 
             const [url] = manifestUrl.split("/manifest.json");
             // Load the divina from its folder path
-            this.currentDivinaPlayer.openDivinaFromFolderPath(url, null, options);
+            const locator = this.props.locator;
+            this.currentDivinaPlayer.openDivinaFromFolderPath(url, locator, options);
 
             // Handle events emitted by the currentDivinaPlayer
             const eventEmitter = this.currentDivinaPlayer.eventEmitter;
