@@ -1087,7 +1087,6 @@ class Reader extends React.Component<IProps, IState> {
                 isPaginationSticky: true,
                 isPaginationGridBased: true,
                 language: this.props.lang,
-                loadingMode: "segment",
             };
 
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
