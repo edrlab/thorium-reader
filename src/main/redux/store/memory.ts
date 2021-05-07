@@ -60,50 +60,6 @@ const defaultLocale = (): LocaleConfigValueType => {
     };
 };
 
-const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) => {
-
-    const opdsFeedRepository = diMainGet("opds-feed-repository");
-
-    const opdsFromDb = await opdsFeedRepository.findAllFromPouchdb();
-
-    let newDocs = docs || [];
-    for (const doc of opdsFromDb) {
-        const { identifier } = doc;
-        const idx = newDocs.findIndex((v) => v.identifier === identifier);
-
-        if (newDocs[idx]) {
-
-            if (newDocs[idx].doNotMigrateAnymore) {
-                debug(`DB ABSORB OPDS doNotMigrateAnymore: ${identifier} ${idx}`);
-                continue;
-            }
-
-            debug(`DB ABSORB OPDS insert: ${identifier} ${idx}`);
-
-            const newDoc = clone(doc);
-            // newDoc.doNotMigrateAnymore = true;
-
-            newDocs = [
-                ...newDocs.slice(0, idx),
-                newDoc,
-                ...newDocs.slice(idx + 1),
-            ];
-        } else {
-            debug(`DB ABSORB OPDS append: ${identifier} ${idx}`);
-
-            const newDoc = clone(doc);
-            // newDoc.doNotMigrateAnymore = true;
-
-            newDocs = [
-                ...newDocs,
-                newDoc,
-            ];
-        }
-    }
-
-    return newDocs;
-};
-
 const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReaderState) => {
 
     const locatorRepository = diMainGet("locator-repository");
@@ -156,6 +112,52 @@ const absorbBookmarkToReduxState = async (registryReader: IDictWinRegistryReader
     return registryReader;
 };
 
+const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) => {
+
+    const opdsFeedRepository = diMainGet("opds-feed-repository");
+
+    const opdsFromDb = await opdsFeedRepository.findAllFromPouchdb();
+
+    let newDocs = docs || [];
+    debug("DB ABSORB OPDS init", newDocs);
+
+    for (const doc of opdsFromDb) {
+        const { identifier } = doc;
+        const idx = newDocs.findIndex((v) => v.identifier === identifier);
+
+        if (newDocs[idx]) {
+
+            if (newDocs[idx].doNotMigrateAnymore) {
+                debug(`DB ABSORB OPDS doNotMigrateAnymore: ${identifier} ${idx}`);
+                continue;
+            }
+
+            debug(`DB ABSORB OPDS override: ${identifier} ${idx}`);
+
+            const newDoc = clone(doc);
+            // newDoc.doNotMigrateAnymore = true;
+
+            newDocs = [
+                ...newDocs.slice(0, idx),
+                newDoc,
+                ...newDocs.slice(idx + 1),
+            ];
+        } else {
+            debug(`DB ABSORB OPDS append: ${identifier} ${idx}`);
+
+            const newDoc = clone(doc);
+            // newDoc.doNotMigrateAnymore = true;
+
+            newDocs = [
+                ...newDocs,
+                newDoc,
+            ];
+        }
+    }
+
+    return newDocs;
+};
+
 const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undefined) => {
 
     const publicationRepository = diMainGet("publication-repository");
@@ -164,6 +166,8 @@ const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undef
     const pubsFromDb = await publicationRepository.findAllFromPouchdb();
 
     const newPubs = pubs || {};
+    debug("DB ABSORB PUB init", newPubs);
+
     for (const pub of pubsFromDb) {
         const { identifier } = pub;
 
