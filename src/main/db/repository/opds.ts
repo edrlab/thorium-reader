@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { ok } from "assert";
+import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
@@ -18,6 +19,8 @@ import { Unsubscribe } from "redux";
 
 import { ExcludeTimestampableAndIdentifiable } from "./base";
 
+const debug = debug_("readium-desktop:main:db:repository:opds");
+
 @injectable()
 export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
     db: PouchDB.Database<OpdsFeedDocument>;
@@ -29,17 +32,28 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
     }
 
     public async save(feed: OpdsFeed): Promise<OpdsFeedDocument> {
+        debug("OpdsFeed SAVE: ", feed);
 
         const feedAction = opdsActions.addOpdsFeed.build(feed);
+        const id = feedAction.payload[0]?.identifier;
         const store = diMainGet("store");
         let unsub: Unsubscribe;
         const p = new Promise<OpdsFeedDocument>(
             (res) => (unsub = store.subscribe(() => {
+                debug("OpdsFeed SAVE store.subscribe ", id);
+
                 const o = store.getState().opds.catalog.find((v) =>
-                    v.identifier === feedAction.payload[0]?.identifier);
+                    v.identifier === id);
                 if (o && !o.removedButPreservedToAvoidReMigration) {
+                    debug("OpdsFeed SAVE store.subscribe RESOLVE");
+                    if (unsub) {
+                        unsub();
+                    }
                     res(o);
+                    return;
                 }
+                debug("OpdsFeed SAVE store.subscribe PROMISE STALLED? ", id, " ?!".repeat(1000));
+
                 // TODO: Promise 'p' can possibly never resolve or reject
                 // (i.e. if the reducer associated with the 'addOpdsFeed' action somehow fails to insert in the catalog store),
                 // consequently consumers of save() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
@@ -47,9 +61,51 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
                 // More importantly: Promise 'p' forever remains unresolved
                 // when the feed identifier is found (i.e. was successfully added) but the flag 'removedButPreservedToAvoidReMigration' is true
             })));
+        debug("OpdsFeed SAVE action: ", id, feedAction);
         store.dispatch(feedAction);
 
-        return p.finally(() => unsub && unsub());
+        return p.finally(() => {
+            debug("OpdsFeed SAVE finally unsub?: ", id, unsub ? "true" : "false");
+        });
+    }
+
+    public async delete(identifier: string): Promise<void> {
+        debug("OpdsFeed DELETE: ", identifier);
+
+        const store = diMainGet("store");
+
+        let unsub: Unsubscribe;
+        const p = new Promise<void>(
+            (res) => (unsub = store.subscribe(() => {
+                debug("OpdsFeed DELETE store.subscribe ", identifier);
+
+                const o = store.getState().opds.catalog.find((v) =>
+                    v.identifier === identifier);
+                if (!o || o.removedButPreservedToAvoidReMigration) {
+                    debug("OpdsFeed DELETE store.subscribe RESOLVE");
+                    if (unsub) {
+                        unsub();
+                    }
+                    res();
+                    return;
+                }
+                debug("OpdsFeed DELETE store.subscribe PROMISE STALLED? ", identifier, " ?!".repeat(1000));
+
+                // TODO: Promise 'p' can possibly never resolve or reject
+                // (i.e. if the reducer associated with the 'deleteOpdsFeed' action somehow fails to insert in the catalog store),
+                // consequently consumers of delete() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
+                //
+                // More importantly: Promise 'p' forever remains unresolved
+                // when the feed identifier is found but the flag 'removedButPreservedToAvoidReMigration' is false
+                // (in other words, feed not successfully deleted)
+            })));
+        const feedAction = opdsActions.deleteOpdsFeed.build(identifier);
+        debug("OpdsFeed DELETE action: ", identifier, feedAction);
+        store.dispatch(feedAction);
+
+        await p.finally(() => {
+            debug("OpdsFeed DELETE finally unsub?: ", identifier, unsub ? "true" : "false");
+        });
     }
 
     public async findAll(): Promise<OpdsFeedDocument[]> {
@@ -68,36 +124,6 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
         const pub = pubs.find((f) => f.identifier === identifier);
 
         return pub;
-    }
-
-    public async delete(identifier: string): Promise<void> {
-
-        const store = diMainGet("store");
-
-        let unsub: Unsubscribe;
-        const p = new Promise<void>(
-            (res) => (unsub = store.subscribe(() => {
-                const o = store.getState().opds.catalog.find((v) =>
-                    v.identifier === identifier);
-                if (!o) {
-                    res();
-                    return;
-                }
-                if (o.removedButPreservedToAvoidReMigration) {
-                    res();
-                }
-
-                // TODO: Promise 'p' can possibly never resolve or reject
-                // (i.e. if the reducer associated with the 'deleteOpdsFeed' action somehow fails to insert in the catalog store),
-                // consequently consumers of delete() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
-                //
-                // More importantly: Promise 'p' forever remains unresolved
-                // when the feed identifier is found but the flag 'removedButPreservedToAvoidReMigration' is false
-                // (in other words, feed not successfully deleted)
-            })));
-        store.dispatch(opdsActions.deleteOpdsFeed.build(identifier));
-
-        await p.finally(() => unsub && unsub());
     }
 
     public async findAllFromPouchdb() {

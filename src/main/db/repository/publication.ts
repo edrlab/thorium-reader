@@ -5,22 +5,29 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as lunr from "lunr";
-import * as lunrfr from "@lunr-languages/lunr.fr.js";
-import * as lunrde from "@lunr-languages/lunr.de.js";
-import * as lunrstemmer from "@lunr-languages/lunr.stemmer.support.js";
-import * as lunrmulti from "@lunr-languages/lunr.multi.js";
 import { ok } from "assert";
+import * as debug_ from "debug";
 import { injectable } from "inversify";
+import * as lunr from "lunr";
 import * as PouchDB from "pouchdb-core";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
-import { PublicationDocument, PublicationDocumentWithoutTimestampable } from "readium-desktop/main/db/document/publication";
+import {
+    PublicationDocument, PublicationDocumentWithoutTimestampable,
+} from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { publicationActions } from "readium-desktop/main/redux/actions";
 import { Unsubscribe } from "redux";
+
+import * as lunrde from "@lunr-languages/lunr.de.js";
+import * as lunrfr from "@lunr-languages/lunr.fr.js";
+import * as lunrmulti from "@lunr-languages/lunr.multi.js";
+import * as lunrstemmer from "@lunr-languages/lunr.stemmer.support.js";
+
 import { ExcludeTimestampableAndIdentifiable } from "./base";
+
+const debug = debug_("readium-desktop:main:db:repository:publication");
 
 lunrstemmer(lunr);
 lunrfr(lunr);
