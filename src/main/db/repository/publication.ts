@@ -53,6 +53,13 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
                 if (o && !o.removedButPreservedToAvoidReMigration) {
                     res(o);
                 }
+
+                // TODO: Promise 'p' can possibly never resolve or reject
+                // (i.e. if the reducer associated with the 'addPublication' action somehow fails to insert in the publication store),
+                // consequently consumers of save() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
+                //
+                // More importantly: Promise 'p' forever remains unresolved
+                // when the pub identifier is found (i.e. was successfully added) but the flag 'removedButPreservedToAvoidReMigration' is true
             })));
         store.dispatch(publicationActions.addPublication.build(document));
 
@@ -78,10 +85,19 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
                 const o = store.getState().publication.db[identifier];
                 if (!o) {
                     res();
+                    return;
                 }
                 if (o.removedButPreservedToAvoidReMigration) {
                     res();
                 }
+
+                // TODO: Promise 'p' can possibly never resolve or reject
+                // (i.e. if the reducer associated with the 'deletePublication' action somehow fails to insert in the publication store),
+                // consequently consumers of delete() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
+                //
+                // More importantly: Promise 'p' forever remains unresolved
+                // when the feed identifier is found but the flag 'removedButPreservedToAvoidReMigration' is false
+                // (in other words, pub not successfully deleted)
             })));
         store.dispatch(publicationActions.deletePublication.build(identifier));
 

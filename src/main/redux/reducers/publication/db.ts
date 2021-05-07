@@ -26,7 +26,7 @@ export function publicationDbReducers(
                 pub.doNotMigrateAnymore = true;
                 const id = pub.identifier;
                 newState[id] = {
-                    ...newState[id],
+                    ...newState[id], // can be undefined
                     ...pub,
                 };
             }

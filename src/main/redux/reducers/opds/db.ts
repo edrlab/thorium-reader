@@ -25,7 +25,7 @@ export function opdsDbReducers(
 
                 const newDoc = clone(doc);
                 newDoc.doNotMigrateAnymore = true;
-                newState.push(doc);
+                newState.push(newDoc);
 
                 // const { identifier } = doc;
                 // const idx = newState.findIndex((v) => v.identifier === identifier);

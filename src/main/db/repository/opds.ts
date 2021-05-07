@@ -81,10 +81,19 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
                     v.identifier === identifier);
                 if (!o) {
                     res();
+                    return;
                 }
                 if (o.removedButPreservedToAvoidReMigration) {
                     res();
                 }
+
+                // TODO: Promise 'p' can possibly never resolve or reject
+                // (i.e. if the reducer associated with the 'deleteOpdsFeed' action somehow fails to insert in the catalog store),
+                // consequently consumers of delete() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
+                //
+                // More importantly: Promise 'p' forever remains unresolved
+                // when the feed identifier is found but the flag 'removedButPreservedToAvoidReMigration' is false
+                // (in other words, feed not successfully deleted)
             })));
         store.dispatch(opdsActions.deleteOpdsFeed.build(identifier));
 
