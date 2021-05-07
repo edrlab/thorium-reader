@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable } from "inversify";
 import { ok } from "assert";
+import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
