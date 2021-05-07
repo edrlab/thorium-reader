@@ -127,6 +127,11 @@ const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) 
 
         if (newDocs[idx]) {
 
+            if (newDocs[idx].removedButPreservedToAvoidReMigration) {
+                debug(`DB ABSORB OPDS removedButPreservedToAvoidReMigration: ${identifier} ${idx}`);
+                continue;
+            }
+
             // note that this actually never occurs because OPDS feeds are immutable (no dynamic tags, no title rename)
             if (newDocs[idx].doNotMigrateAnymore) {
                 debug(`DB ABSORB OPDS doNotMigrateAnymore: ${identifier} ${idx}`);
@@ -173,6 +178,11 @@ const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undef
 
     for (const pub of pubsFromDb) {
         const { identifier } = pub;
+
+        if (newPubs[identifier]?.removedButPreservedToAvoidReMigration) {
+            debug(`DB ABSORB PUB removedButPreservedToAvoidReMigration: ${identifier}`);
+            continue;
+        }
 
         if (newPubs[identifier]?.doNotMigrateAnymore) {
             debug(`DB ABSORB PUB doNotMigrateAnymore: ${identifier}`);
