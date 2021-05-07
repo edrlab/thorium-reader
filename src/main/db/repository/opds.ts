@@ -96,7 +96,7 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
                 // consequently consumers of delete() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
                 //
                 // More importantly: Promise 'p' forever remains unresolved
-                // when the feed identifier is found but the flag 'removedButPreservedToAvoidReMigration' is false
+                // when the feed identifier is found or the flag 'removedButPreservedToAvoidReMigration' is false
                 // (in other words, feed not successfully deleted)
             })));
         const feedAction = opdsActions.deleteOpdsFeed.build(identifier);

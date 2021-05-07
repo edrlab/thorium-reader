@@ -51,15 +51,27 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
     }
 
     public async save(document: PublicationDocumentWithoutTimestampable): Promise<PublicationDocument> {
+        debug("Publication SAVE: ", document);
+
+        const pubAction = publicationActions.addPublication.build(document);
+        const id = pubAction.payload[0]?.identifier;
 
         const store = diMainGet("store");
         let unsub: Unsubscribe;
         const p = new Promise<PublicationDocument>(
             (res) => (unsub = store.subscribe(() => {
+                debug("Publication SAVE store.subscribe ", id);
+
                 const o = store.getState().publication.db[document.identifier];
                 if (o && !o.removedButPreservedToAvoidReMigration) {
+                    debug("Publication SAVE store.subscribe RESOLVE");
+                    if (unsub) {
+                        unsub();
+                    }
                     res(o);
+                    return;
                 }
+                debug("Publication SAVE store.subscribe PROMISE STALLED? ", id, " ?!".repeat(1000));
 
                 // TODO: Promise 'p' can possibly never resolve or reject
                 // (i.e. if the reducer associated with the 'addPublication' action somehow fails to insert in the publication store),
@@ -68,9 +80,52 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
                 // More importantly: Promise 'p' forever remains unresolved
                 // when the pub identifier is found (i.e. was successfully added) but the flag 'removedButPreservedToAvoidReMigration' is true
             })));
-        store.dispatch(publicationActions.addPublication.build(document));
 
-        return p.finally(() => unsub && unsub());
+        debug("Publication SAVE action: ", id, pubAction);
+        store.dispatch(pubAction);
+
+        return p.finally(() => {
+            debug("Publication SAVE finally unsub?: ", id, unsub ? "true" : "false");
+        });
+    }
+
+    public async delete(identifier: string): Promise<void> {
+        debug("Publication DELETE: ", identifier);
+
+        const store = diMainGet("store");
+
+        let unsub: Unsubscribe;
+        const p = new Promise<void>(
+            (res) => (unsub = store.subscribe(() => {
+                debug("Publication DELETE store.subscribe ", identifier);
+
+                const o = store.getState().publication.db[identifier];
+                if (!o || o.removedButPreservedToAvoidReMigration) {
+                    debug("Publication DELETE store.subscribe RESOLVE");
+                    if (unsub) {
+                        unsub();
+                    }
+                    res();
+                    return;
+                }
+                debug("Publication DELETE store.subscribe PROMISE STALLED? ", identifier, " ?!".repeat(1000));
+
+                // TODO: Promise 'p' can possibly never resolve or reject
+                // (i.e. if the reducer associated with the 'deletePublication' action somehow fails to insert in the publication store),
+                // consequently consumers of delete() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
+                //
+                // More importantly: Promise 'p' forever remains unresolved
+                // when the feed identifier is found or the flag 'removedButPreservedToAvoidReMigration' is false
+                // (in other words, pub not successfully deleted)
+            })));
+
+        const feedAction = publicationActions.deletePublication.build(identifier);
+        debug("Publication DELETE action: ", identifier, feedAction);
+        store.dispatch(feedAction);
+
+        await p.finally(() => {
+            debug("Publication DELETE finally unsub?: ", identifier, unsub ? "true" : "false");
+        });
     }
 
     public async get(identifier: string): Promise<PublicationDocument | undefined> {
@@ -83,35 +138,6 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             return undefined;
         }
         return pub;
-    }
-
-    public async delete(identifier: string): Promise<void> {
-
-        const store = diMainGet("store");
-
-        let unsub: Unsubscribe;
-        const p = new Promise<void>(
-            (res) => (unsub = store.subscribe(() => {
-                const o = store.getState().publication.db[identifier];
-                if (!o) {
-                    res();
-                    return;
-                }
-                if (o.removedButPreservedToAvoidReMigration) {
-                    res();
-                }
-
-                // TODO: Promise 'p' can possibly never resolve or reject
-                // (i.e. if the reducer associated with the 'deletePublication' action somehow fails to insert in the publication store),
-                // consequently consumers of delete() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
-                //
-                // More importantly: Promise 'p' forever remains unresolved
-                // when the feed identifier is found but the flag 'removedButPreservedToAvoidReMigration' is false
-                // (in other words, pub not successfully deleted)
-            })));
-        store.dispatch(publicationActions.deletePublication.build(identifier));
-
-        await p.finally(() => unsub && unsub());
     }
 
     public async findAllFromPouchdb(): Promise<PublicationDocument[]> {
