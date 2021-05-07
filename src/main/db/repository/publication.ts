@@ -72,6 +72,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const state = store.getState();
 
         const pub = state.publication.db[identifier];
+        if (pub?.removedButPreservedToAvoidReMigration) {
+            return undefined;
+        }
         return pub;
     }
 
@@ -174,7 +177,8 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
             const store = diMainGet("store");
             const state = store.getState();
 
-            const pubs = Object.values(state.publication.db);
+            const pubs = Object.values(state.publication.db)
+                .filter((v) => !v.removedButPreservedToAvoidReMigration);
 
             const indexer = lunr(function (this: any) {
 
