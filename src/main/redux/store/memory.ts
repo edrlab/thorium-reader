@@ -71,25 +71,28 @@ const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) 
         const { identifier } = doc;
         const idx = newDocs.findIndex((v) => v.identifier === identifier);
 
+        debug(`DB ABSORB OPDS: ${identifier} ${idx}`);
         if (newDocs[idx]) {
 
             if (newDocs[idx].doNotMigrateAnymore) {
                 continue;
             }
 
+            const newDoc = clone(doc);
+            newDoc.doNotMigrateAnymore = true;
+
             newDocs = [
                 ...newDocs.slice(0, idx),
-                ...[
-                    clone(doc),
-                ],
+                newDoc,
                 ...newDocs.slice(idx + 1),
             ];
         } else {
+            const newDoc = clone(doc);
+            newDoc.doNotMigrateAnymore = true;
+
             newDocs = [
                 ...newDocs,
-                ...[
-                    clone(doc),
-                ],
+                newDoc,
             ];
         }
     }

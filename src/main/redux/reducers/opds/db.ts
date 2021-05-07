@@ -36,17 +36,13 @@ export function opdsDbReducers(
                 // if (newState[idx]) {
                 //     newState = [
                 //         ...newState.slice(0, idx),
-                //         ...[
-                //             newDoc,
-                //         ],
+                //         newDoc,
                 //         ...newState.slice(idx + 1),
                 //     ];
                 // } else {
                 //     newState = [
                 //         ...newState,
-                //         ...[
-                //             newDoc,
-                //         ],
+                //         newDoc,
                 //     ];
                 // }
             }
