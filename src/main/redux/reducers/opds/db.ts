@@ -5,9 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { clone } from "ramda";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { opdsActions } from "readium-desktop/main/redux/actions";
+
+const debug = debug_("readium-desktop:main:redux:reducers:opds:db");
 
 const initialState: OpdsFeedDocument[] = [];
 
@@ -22,29 +25,11 @@ export function opdsDbReducers(
 
             const newState = clone(state);
             for (const doc of action.payload) {
+                debug("opdsActions.addOpdsFeed: ", doc, state);
 
                 const newDoc = clone(doc);
                 newDoc.doNotMigrateAnymore = true;
                 newState.push(newDoc);
-
-                // const { identifier } = doc;
-                // const idx = newState.findIndex((v) => v.identifier === identifier);
-
-                // const newDoc = clone(doc);
-                // newDoc.doNotMigrateAnymore = true;
-
-                // if (newState[idx]) {
-                //     newState = [
-                //         ...newState.slice(0, idx),
-                //         newDoc,
-                //         ...newState.slice(idx + 1),
-                //     ];
-                // } else {
-                //     newState = [
-                //         ...newState,
-                //         newDoc,
-                //     ];
-                // }
             }
             return newState;
         }
@@ -55,7 +40,9 @@ export function opdsDbReducers(
             const idx = state.findIndex((v) => v.identifier === identifier);
             const newState = clone(state);
 
-            if (state[idx]) {
+            debug("opdsActions.deleteOpdsFeed: ", identifier, idx, newState[idx]);
+
+            if (newState[idx]) {
                 newState[idx].removedButPreservedToAvoidReMigration = true;
             }
             return newState;

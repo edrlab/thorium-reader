@@ -135,6 +135,7 @@ const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) 
             debug(`DB ABSORB OPDS override: ${identifier} ${idx}`);
 
             const newDoc = clone(doc);
+            // we DO NOT set this here (see opdsActions.addOpdsFeed, and comment for OpdsFeedDocument.doNotMigrateAnymore)
             // newDoc.doNotMigrateAnymore = true;
 
             newDocs = [
@@ -146,6 +147,7 @@ const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) 
             debug(`DB ABSORB OPDS append: ${identifier} ${idx}`);
 
             const newDoc = clone(doc);
+            // we DO NOT set this here (see opdsActions.addOpdsFeed, and comment for OpdsFeedDocument.doNotMigrateAnymore)
             // newDoc.doNotMigrateAnymore = true;
 
             newDocs = [
@@ -171,7 +173,12 @@ const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undef
     for (const pub of pubsFromDb) {
         const { identifier } = pub;
 
-        if (!newPubs[identifier]?.doNotMigrateAnymore) {
+        if (newPubs[identifier]?.doNotMigrateAnymore) {
+            debug(`DB ABSORB PUB doNotMigrateAnymore: ${identifier}`);
+            continue;
+        }
+
+        if (!newPubs[identifier] || !newPubs[identifier].doNotMigrateAnymore) {
 
             if (typeof ((pub as any)["r2PublicationBase64"]) !== "undefined") {
                 delete (pub as any)["r2PublicationBase64"];
@@ -198,6 +205,7 @@ const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undef
             debug(`DB ABSORB PUB override: ${identifier}`);
 
             const newDoc = clone(pub);
+            // we DO NOT set this here (see publicationActions.addPublication, and comment for PublicationDocument.doNotMigrateAnymore)
             // newDoc.doNotMigrateAnymore = true;
             newPubs[identifier] = newDoc;
         }
