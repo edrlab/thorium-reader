@@ -60,7 +60,7 @@ export function opdsDbReducers(
             const newState = clone(state);
 
             if (state[idx]) {
-                newState[idx].removed = true;
+                newState[idx].removedButPreservedToAvoidReMigration = true;
             }
             return newState;
         }

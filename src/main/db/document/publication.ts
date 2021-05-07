@@ -40,10 +40,11 @@ export interface PublicationDocument extends Identifiable, Timestampable {
 
     hash: string;
 
-    // specific to publication db migration from pouch-db to redux main state
+    // when true, was migrated from PouchDB (Sqlite3 / Leveldown database storage adapters) to Redux state (with JSON serialization)
     doNotMigrateAnymore?: boolean;
 
-    // removed boolean to keep data in database
-    removed?: boolean;
+    // TODO: change this design in Thorium 1.8+ to avoid unbounded database growth when deleting publications
+    // when true, was removed via Thorium 1.7+ but data is preserved here to avoid re-migration from PouchDB (Sqlite3 / Leveldown database storage adapters) to Redux state (with JSON serialization) at subsequent app launches
+    removedButPreservedToAvoidReMigration?: boolean;
 }
 export type PublicationDocumentWithoutTimestampable = Omit<PublicationDocument, keyof Timestampable>;

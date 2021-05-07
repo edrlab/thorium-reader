@@ -37,9 +37,15 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().opds.catalog.find((v) =>
                     v.identifier === feedAction.payload[0]?.identifier);
-                if (o && o.removed !== true) {
+                if (o && !o.removedButPreservedToAvoidReMigration) {
                     res(o);
                 }
+                // TODO: Promise 'p' can possibly never resolve or reject
+                // (i.e. if the reducer associated with the 'addOpdsFeed' action somehow fails to insert in the catalog store),
+                // consequently consumers of save() (e.g. Redux Saga) can hang forever and cause the Unsubscribe memory leak
+                //
+                // More importantly: Promise 'p' forever remains unresolved
+                // when the feed identifier is found (i.e. was successfully added) but the flag 'removedButPreservedToAvoidReMigration' is true
             })));
         store.dispatch(feedAction);
 
@@ -51,7 +57,7 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
         const store = diMainGet("store");
         const state = store.getState();
         const docs = state.opds.catalog
-            .filter((v) => v.removed !== true);
+            .filter((v) => !v.removedButPreservedToAvoidReMigration);
         return docs;
     }
 
@@ -76,7 +82,7 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
                 if (!o) {
                     res();
                 }
-                if (o.removed === true) {
+                if (o.removedButPreservedToAvoidReMigration) {
                     res();
                 }
             })));

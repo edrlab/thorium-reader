@@ -38,7 +38,7 @@ export function publicationDbReducers(
             const id = action.payload.publicationIdentifier;
 
             const newState = clone(state);
-            newState[id].removed = true;
+            newState[id].removedButPreservedToAvoidReMigration = true;
             return newState;
         }
 

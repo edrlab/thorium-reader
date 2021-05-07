@@ -50,7 +50,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const p = new Promise<PublicationDocument>(
             (res) => (unsub = store.subscribe(() => {
                 const o = store.getState().publication.db[document.identifier];
-                if (o && o.removed !== true) {
+                if (o && !o.removedButPreservedToAvoidReMigration) {
                     res(o);
                 }
             })));
@@ -79,7 +79,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
                 if (!o) {
                     res();
                 }
-                if (o.removed === true) {
+                if (o.removedButPreservedToAvoidReMigration) {
                     res();
                 }
             })));
@@ -106,7 +106,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const state = store.getState();
 
         return Object.values(state.publication.db)
-            .filter((v) => v.removed !== true);
+            .filter((v) => !v.removedButPreservedToAvoidReMigration);
     }
 
     public async findAllSortDesc(): Promise<PublicationDocument[]> {

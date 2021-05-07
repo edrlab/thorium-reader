@@ -12,7 +12,10 @@ export interface OpdsFeedDocument extends Identifiable, Timestampable {
     title: string;
     url: string;
 
+    // when true, was migrated from PouchDB (Sqlite3 / Leveldown database storage adapters) to Redux state (with JSON serialization)
     doNotMigrateAnymore?: boolean;
 
-    removed?: boolean;
+    // TODO: change this design in Thorium 1.8+ to avoid unbounded database growth when deleting publications
+    // when true, was removed via Thorium 1.7+ but data is preserved here to avoid re-migration from PouchDB (Sqlite3 / Leveldown database storage adapters) to Redux state (with JSON serialization) at subsequent app launches
+    removedButPreservedToAvoidReMigration?: boolean;
 }

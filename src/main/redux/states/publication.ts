@@ -22,8 +22,6 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 //     lcpRightsCopies?: number;
 
 //     hash: string;
-
-//     doNotMigrateAnymore?: boolean;
 // }
 
 export interface IDictPublicationState {
