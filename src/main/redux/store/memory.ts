@@ -127,6 +127,7 @@ const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) 
 
         if (newDocs[idx]) {
 
+            // note that this actually never occurs because OPDS feeds are immutable (no dynamic tags, no title rename)
             if (newDocs[idx].doNotMigrateAnymore) {
                 debug(`DB ABSORB OPDS doNotMigrateAnymore: ${identifier} ${idx}`);
                 continue;
