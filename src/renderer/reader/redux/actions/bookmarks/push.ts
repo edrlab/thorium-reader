@@ -22,7 +22,7 @@ export function build(param: IBookmarkStateWithoutUUID):
 
     return {
         type: ID,
-        payload: param,
+        payload: param as IBookmarkState,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
