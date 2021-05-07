@@ -71,15 +71,17 @@ const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) 
         const { identifier } = doc;
         const idx = newDocs.findIndex((v) => v.identifier === identifier);
 
-        debug(`DB ABSORB OPDS: ${identifier} ${idx}`);
         if (newDocs[idx]) {
 
             if (newDocs[idx].doNotMigrateAnymore) {
+                debug(`DB ABSORB OPDS doNotMigrateAnymore: ${identifier} ${idx}`);
                 continue;
             }
 
+            debug(`DB ABSORB OPDS insert: ${identifier} ${idx}`);
+
             const newDoc = clone(doc);
-            newDoc.doNotMigrateAnymore = true;
+            // newDoc.doNotMigrateAnymore = true;
 
             newDocs = [
                 ...newDocs.slice(0, idx),
@@ -87,8 +89,10 @@ const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) 
                 ...newDocs.slice(idx + 1),
             ];
         } else {
+            debug(`DB ABSORB OPDS append: ${identifier} ${idx}`);
+
             const newDoc = clone(doc);
-            newDoc.doNotMigrateAnymore = true;
+            // newDoc.doNotMigrateAnymore = true;
 
             newDocs = [
                 ...newDocs,
@@ -186,7 +190,12 @@ const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undef
                     }
                 }
             }
-            newPubs[identifier] = clone(pub);
+
+            debug(`DB ABSORB PUB override: ${identifier}`);
+
+            const newDoc = clone(pub);
+            // newDoc.doNotMigrateAnymore = true;
+            newPubs[identifier] = newDoc;
         }
     }
 
