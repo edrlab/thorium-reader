@@ -1105,19 +1105,20 @@ class Reader extends React.Component<IProps, IState> {
                 publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow: hidden;");
             }
 
+            // Options for the Divina Player
             const options = {
-                // Variables
+                //maxNbOfUnitsToLoadAfter: null, // Forcing null for this value will load all units
+                initialNbOfResourcesToLoad: 1000,//null, // If 0 or null, the normal nb of initial resources will load
                 allowsDestroy: true,
-                allowsParallel: false,
-                maxNbOfPagesAfter: 6,
-                videoLoadTimeout: 2000,
-                alWlowsZoom: true,
+                allowsParallel: true,
+                allowsZoomOnDoubleTap: true,
+                allowsZoomOnCtrlOrAltScroll: true,
                 allowsSwipe: true,
                 allowsWheelScroll: true,
                 allowsPaginatedScroll: true,
-                isPaginationSticky: true,
                 isPaginationGridBased: true,
-                language: this.props.lang,
+                isPaginationSticky: true,
+                videoLoadTimeout: 2000,
             };
 
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
