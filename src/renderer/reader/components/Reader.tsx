@@ -82,6 +82,19 @@ import PickerManager from "./picker/PickerManager";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
+const isDivinaLocation = (data: any): data is { pageIndex: number, nbOfPages: number, locator: Locator } => {
+    return typeof data === "object"
+        && typeof data.pageIndex === "number"
+        && typeof data.nbOfPages === "number"
+        && typeof data.locator === "object"
+        && typeof data.locator.href === "string"
+        && typeof data.locator.locations === "object"
+        && typeof data.locator.locations.position === "number"
+        && typeof data.locator.locations.progression === "number"
+        && data.locator.locations.progression >= 0
+        && data.locator.locations.progression <= 1;
+};
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
@@ -948,18 +961,6 @@ class Reader extends React.Component<IProps, IState> {
 
     private divinaSetLocation = (data: any) => {
 
-        const isDivinaLocation = (data: any): data is { pageIndex: number, nbOfPages: number, locator: Locator } => {
-            return typeof data === "object"
-            && typeof data.pageIndex === "number"
-            && typeof data.nbOfPages === "number"
-            && typeof data.locator === "object"
-            && typeof data.locator.href === "string"
-            && typeof data.locator.locations === "object"
-            && typeof data.locator.locations.position === "number"
-            && typeof data.locator.locations.progression === "number"
-            && data.locator.locations.progression >= 0
-            && data.locator.locations.progression <= 1
-        };
 
         if (isDivinaLocation(data)) {
 
@@ -1138,20 +1139,32 @@ class Reader extends React.Component<IProps, IState> {
 
             // Handle events emitted by the currentDivinaPlayer
             const eventEmitter = this.currentDivinaPlayer.eventEmitter;
-            eventEmitter.on("jsonload", (data: any) => {
-                console.log("JSON load", data);
-            });
-            eventEmitter.on("pagenavigatorscreation", (data: any) => {
-                console.log("Page navigators creation", data);
+            // deprecated
+            // eventEmitter.on("jsonload", (data: any) => {
+            //     console.log("JSON load", data);
+            // });
 
-                // Page navigators creation { readingModesArray: [ 'scroll' ], languagesArray: [ 'unspecified' ] }
+            eventEmitter.on("dataparsing", (data: any) => {
 
-                const modes = data.readingModesArray;
-                if (
-                    Array.isArray(modes) &&
-                    modes.reduce((pv, cv) => pv && isDivinaReadingMode(cv), true)
-                ) {
+                /**
+                 * once the Divina JSON has been parsed and pageNavigatorsData created
+                 * Data: { readingProgression, readingModesArray, languagesArray }, where readingProgression can be used to position navigation controls,
+                 * readingModesArray the list of all possible page navigators for the story, and languages the list of all possible languages for the story
+                 */
 
+                console.log("DIVINA: 'dataparsing'", data);
+
+                const isDataParsing = (data: any): data is { readingModesArray: TdivinaReadingMode[] } => {
+                    return typeof data === "object" &&
+                        Array.isArray(data.readingModesArray) &&
+                        data.readingModesArray.reduce((pv: any, cv: any) => pv && isDivinaReadingMode(cv), true);
+                };
+
+                if (isDataParsing(data)) {
+
+                    // readingMode
+
+                    const modes = data.readingModesArray;
                     this.setState({ divinaReadingModeSupported: modes });
 
                     const readingMode = this.props.divinaReadingMode;
@@ -1169,10 +1182,17 @@ class Reader extends React.Component<IProps, IState> {
                     }
                     console.log("DIVINA ReadingModeSupported", modes);
                 } else {
-                    console.log("DIVINA NO Reading mode supported ", modes);
+                    console.error("DIVINA: 'dataparsing' evnt => unknow data", data);
                 }
 
             });
+            // deprecated
+            // eventEmitter.on("pagenavigatorscreation", (data: any) => {
+            //     console.log("Page navigators creation", data);
+
+            //     // Page navigators creation { readingModesArray: [ 'scroll' ], languagesArray: [ 'unspecified' ] }
+
+            // });
             eventEmitter.on("initialload", (data: any) => {
                 console.log("Initial load", data);
             });
@@ -1182,34 +1202,91 @@ class Reader extends React.Component<IProps, IState> {
                 // Language change { language: 'unspecified' }
             });
             eventEmitter.on("readingmodechange", (data: any) => {
-                console.log("Reading mode change", data);
+                console.log("DIVINA: 'readingmodechange'", data);
 
-                const readingMode = data.readingMode;
-                if (isDivinaReadingMode(readingMode)) {
+                /**
+                 * once a reading mode change has been validated (do note that, on opening a Divina, this event does happen after dataparsing)
+                 * Data: { readingMode, nbOfPages, hasSounds, isMuted }, where
+                 *  readingMode is “single” | “double” | “scroll” | “guided”,
+                 *  nbOfPages is that for the corresponding page navigator,
+                 *  hasSounds is a boolean that specifies whether the page navigator has sound animations,
+                 *  isMuted a boolead that specified whether the player is currently muted or not)
+                 */
+
+                const isReadingModeChangeData = (data: any): data is {readingMode: TdivinaReadingMode, nbOfPages: number, hasSounds: boolean, isMuted: boolean} => {
+
+                    return typeof data === "object" &&
+                        isDivinaReadingMode(data.readingMode) &&
+                        typeof data.nbOfPages === "number" &&
+                        typeof data.hasSounds === "boolean" &&
+                        typeof data.isMuted === "boolean";
+                };
+
+                if (isReadingModeChangeData(data)) {
+
+                    const readingMode = data.readingMode;
                     this.props.setReadingMode(readingMode);
+
+                    this.setState({ divinaNumberOfPages: data.nbOfPages });
+                } else {
+                    console.error("DIVINA: readingModeChange event => unknow data", data);
                 }
 
+                // deprecated ??
                 // Reading mode change { readingMode: 'scroll', nbOfPages: 1 }
-                this.setState({ divinaNumberOfPages: data.nbOfPages });
-                const index = parseInt(this.props.locator?.locator?.href, 10);
-                if (typeof index === "number" && index >= 0) {
-                    console.log("index divina", index);
-                } else {
-                    this.divinaSetLocation({ pageIndex: 0, nbOfPages: data.nbOfPages });
-                }
+                // const index = parseInt(this.props.locator?.locator?.href, 10);
+                // if (typeof index === "number" && index >= 0) {
+                //     console.log("index divina", index);
+                // } else {
+                //     this.divinaSetLocation({ pageIndex: 0, nbOfPages: data.nbOfPages });
+                // }
             });
             eventEmitter.on("readingmodeupdate", (data: any) => {
                 console.log("Reading mode update", data);
 
-                const readingMode = data.readingMode;
-                if (isDivinaReadingMode(readingMode)) {
+                const isReadingModeUpdateData = (data: any): data is {readingMode: TdivinaReadingMode} => {
+                    return typeof data === "object" &&
+                    isDivinaReadingMode(data.readingMode);
+                };
+
+                if (isReadingModeUpdateData(data)) {
+                    const readingMode = data.readingMode;
                     this.props.setReadingMode(readingMode);
                 }
 
-                this.setState({ divinaNumberOfPages: data.nbOfPages });
+                // deprecated
+                // this.setState({ divinaNumberOfPages: data.nbOfPages });
             });
             eventEmitter.on("pagechange", (data: any) => {
-                console.log("Page change", data);
+                console.log("DIVINA: 'pagechange'", data);
+
+                const isInPageChangeData = (data: any): data is {percent: number, locator: Locator} => {
+                    return typeof data === "object" &&
+                        typeof data.pageIndex === "number" &&
+                        typeof data.nbOfPages === "number" &&
+                        isDivinaLocation(locator);
+                };
+
+                if (isInPageChangeData(data)) {
+                    this.divinaSetLocation(data.locator);
+                } else
+                    console.error("DIVINA: pagechange event => unknow data", data);
+
+            });
+            eventEmitter.on("inpagesscroll", (data: any) => {
+                console.log("DIVINA: 'inpagesscroll'", data);
+
+                const isInPagesScrollData = (data: any): data is {percent: number, locator: Locator} => {
+                    return typeof data === "object" &&
+                        typeof data.percent === "number" &&
+                        isDivinaLocation(locator);
+                };
+
+                if (isInPagesScrollData(data)) {
+
+                    this.divinaSetLocation(data.locator);
+                } else
+                    console.error("DIVINA: inpagesscroll event => unknow data", data);
             });
 
         } else {
