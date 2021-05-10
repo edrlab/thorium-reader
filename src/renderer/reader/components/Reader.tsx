@@ -70,10 +70,13 @@ import { Locator, Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMountAndReturnBus } from "../pdf/driver";
 import {
-    readerLocalActionBookmarks, readerLocalActionSetConfig, readerLocalActionSetLocator,
+    readerLocalActionBookmarks, readerLocalActionDivina, readerLocalActionSetConfig,
+    readerLocalActionSetLocator,
 } from "../redux/actions";
+import { defaultReadingMode } from "../redux/state/divina";
 import optionsValues, {
-    AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
+    AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, isDivinaReadingMode,
+    TdivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
 
@@ -111,7 +114,6 @@ interface IState {
     visibleBookmarkList: IBookmarkState[];
     currentLocation: LocatorExtended;
 
-    divinaReadingMode: TdivinaReadingMode;
     divinaReadingModeSupported: TdivinaReadingMode[];
     divinaNumberOfPages: number;
 
@@ -184,7 +186,6 @@ class Reader extends React.Component<IProps, IState> {
             currentLocation: undefined,
 
             divinaNumberOfPages: 0,
-            divinaReadingMode: "single",
             divinaReadingModeSupported: [],
 
             pdfPlayerBusEvent: undefined,
@@ -393,7 +394,7 @@ class Reader extends React.Component<IProps, IState> {
             r2Publication: this.props.r2Publication,
             handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
 
-            divinaReadingMode: this.state.divinaReadingMode,
+            divinaReadingMode: this.props.divinaReadingMode,
             divinaReadingModeSupported: this.state.divinaReadingModeSupported,
 
             isDivina: this.props.isDivina,
@@ -1144,7 +1145,33 @@ class Reader extends React.Component<IProps, IState> {
                 console.log("Page navigators creation", data);
 
                 // Page navigators creation { readingModesArray: [ 'scroll' ], languagesArray: [ 'unspecified' ] }
-                this.setState({ divinaReadingModeSupported: data.readingModesArray });
+
+                const modes = data.readingModesArray;
+                if (
+                    Array.isArray(modes) &&
+                    modes.reduce((pv, cv) => pv && isDivinaReadingMode(cv), true)
+                ) {
+
+                    this.setState({ divinaReadingModeSupported: modes });
+
+                    const readingMode = this.props.divinaReadingMode;
+
+                    console.log("Reading mode from persistence : ", readingMode);
+
+                    if (modes.includes(readingMode)) {
+                        this.props.setReadingMode(readingMode);
+                    } else if (modes.includes(defaultReadingMode)) {
+                        this.props.setReadingMode(defaultReadingMode);
+                    } else if (modes[0]) {
+                        this.props.setReadingMode(modes[0]);
+                    } else {
+                        this.props.setReadingMode(defaultReadingMode);
+                    }
+                    console.log("DIVINA ReadingModeSupported", modes);
+                } else {
+                    console.log("DIVINA NO Reading mode supported ", modes);
+                }
+
             });
             eventEmitter.on("initialload", (data: any) => {
                 console.log("Initial load", data);
@@ -1157,8 +1184,13 @@ class Reader extends React.Component<IProps, IState> {
             eventEmitter.on("readingmodechange", (data: any) => {
                 console.log("Reading mode change", data);
 
+                const readingMode = data.readingMode;
+                if (isDivinaReadingMode(readingMode)) {
+                    this.props.setReadingMode(readingMode);
+                }
+
                 // Reading mode change { readingMode: 'scroll', nbOfPages: 1 }
-                this.setState({ divinaReadingMode: data.readingMode, divinaNumberOfPages: data.nbOfPages });
+                this.setState({ divinaNumberOfPages: data.nbOfPages });
                 const index = parseInt(this.props.locator?.locator?.href, 10);
                 if (typeof index === "number" && index >= 0) {
                     console.log("index divina", index);
@@ -1169,7 +1201,12 @@ class Reader extends React.Component<IProps, IState> {
             eventEmitter.on("readingmodeupdate", (data: any) => {
                 console.log("Reading mode update", data);
 
-                this.setState({ divinaReadingMode: data.readingMode, divinaNumberOfPages: data.nbOfPages });
+                const readingMode = data.readingMode;
+                if (isDivinaReadingMode(readingMode)) {
+                    this.props.setReadingMode(readingMode);
+                }
+
+                this.setState({ divinaNumberOfPages: data.nbOfPages });
             });
             eventEmitter.on("pagechange", (data: any) => {
                 console.log("Page change", data);
@@ -1737,6 +1774,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         winId: state.win.identifier,
         bookmarks: state.reader.bookmark.map(([, v]) => v),
         readerMode: state.mode,
+        divinaReadingMode: state.reader.divina.readingMode,
     };
 };
 
@@ -1774,6 +1812,11 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         deleteBookmark: (bookmark: IBookmarkState) => {
             dispatch(readerLocalActionBookmarks.pop.build(bookmark));
+        },
+        setReadingMode: (readingMode: TdivinaReadingMode) => {
+
+            console.log("Persist the reading mode", readingMode);
+            dispatch(readerLocalActionDivina.setReadingMode.build({readingMode}));
         },
     };
 };

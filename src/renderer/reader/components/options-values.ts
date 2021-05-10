@@ -122,6 +122,9 @@ export interface IReaderMenuProps {
 }
 
 export type TdivinaReadingMode = "single" | "double" | "scroll" | "guided";
+export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
+    return typeof v === "string" && ["single", "double", "scroll", "guided"].includes(v);
+};
 
 export interface IReaderOptionsProps {
     indexes: AdjustableSettingsNumber;
