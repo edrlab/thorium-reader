@@ -326,24 +326,25 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug(e);
 
         try {
-            const stateRawFirst = await runtimeState();
-            test(stateRawFirst);
-            const stateRaw: any = await recoveryReduxState(stateRawFirst);
-            test(stateRaw);
-            reduxState = stateRaw;
 
-            debug("RECOVERY : the state is the previous runtime snapshot + patch events");
-            debug("There should be no data loss");
+            test(reduxState);
+
+            debug("RECOVERY : the state is provided from the pouchdb database or from potentially corrupted state.json file");
+            debug("the last state.json seems good after a quick test on it !");
+            debug("state - 1 + patch is not used");
+            debug("recovery state come from state.json");
             debug("REVOVERY WORKS lvl 2/4");
         } catch {
             try {
 
-                test(reduxState);
+                const stateRawFirst = await runtimeState();
+                test(stateRawFirst);
+                const stateRaw: any = await recoveryReduxState(stateRawFirst);
+                test(stateRaw);
+                reduxState = stateRaw;
 
-                debug("RECOVERY : the state is provided from the pouchdb database or from potentially corrupted state.json file");
-                debug("There should be data loss !");
-                debug("OR");
-                debug("If you migrate from thorium 1.6 to thorium 1.7 do not worry. There are no data loss");
+                debug("RECOVERY : the state is provided from the state - 1 + patch");
+                debug("There should be no data loss");
                 debug("REVOVERY WORKS lvl 3/4");
 
             } catch {

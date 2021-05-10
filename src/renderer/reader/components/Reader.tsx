@@ -65,7 +65,7 @@ import {
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, TTSStateEnum, ttsStop, ttsVoice,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
-import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Locator, Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMountAndReturnBus } from "../pdf/driver";
@@ -298,29 +298,35 @@ class Reader extends React.Component<IProps, IState> {
 
             if (this.currentDivinaPlayer) {
 
-                this.currentDivinaPlayer.eventEmitter.on("pagechange", this.divinaSetLocation);
+                this.currentDivinaPlayer.eventEmitter.on("pagechange", (data: any) => {
+                    console.log("DIVINA: 'pagechange'", data);
+
+                    this.divinaSetLocation(data);
+                });
 
                 this.currentDivinaPlayer.eventEmitter.on(
                     "initialload",
                     () => {
 
                         console.log("divina loaded");
-                        // nextTick update
-                        setTimeout(() => {
+                        // // nextTick update
+                        // setTimeout(() => {
 
-                            try {
+                        //     try {
 
-                                const index = parseInt(this.props.locator?.locator?.href, 10);
-                                if (typeof index !== "undefined" && index >= 0) {
-                                    console.log("index divina", index);
-                                    this.currentDivinaPlayer.goToPageWithIndex(index);
-                                }
-                            } catch (e) {
-                                // ignore
-                                console.log("currentDivinaPlayer.goToPageWithIndex", e);
-                            }
+                        //         const index = parseInt(this.props.locator?.locator?.href, 10);
+                        //         if (typeof index !== "undefined" && index >= 0) {
+                        //             console.log("index divina", index);
+                        //             this.currentDivinaPlayer.goToPageWithIndex(index);
+                        //         }
+                        //     } catch (e) {
+                        //         // ignore
+                        //         console.log("currentDivinaPlayer.goToPageWithIndex", e);
+                        //     }
 
-                        }, 0);
+                        // }, 0);
+
+                        // Locator injected at initialization
 
                     },
                 );
@@ -940,24 +946,49 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private divinaSetLocation = ({ pageIndex, nbOfPages }: { pageIndex: number, nbOfPages: number }) => {
-        const loc = {
-            locator: {
-                href: pageIndex.toString(),
-                locations: {
-                    position: pageIndex,
-                    progression: pageIndex / nbOfPages,
-                },
-            },
-        };
-        console.log("pageChange", pageIndex, nbOfPages);
+    private divinaSetLocation = (data: any) => {
 
-        // TODO: this is a hack! Forcing type LocatorExtended on this non-matching object shape
-        // only "works" because data going into the persistent store (see saveReadingLocation())
-        // is used appropriately and selectively when extracted back out ...
-        // however this may trip / crash future code
-        // if strict LocatorExtended model structure is expected when reading from the persistence layer.
-        this.handleReadingLocationChange(loc as LocatorExtended);
+        const isDivinaLocation = (data: any): data is { pageIndex: number, nbOfPages: number, locator: Locator } => {
+            return typeof data === "object"
+            && typeof data.pageIndex === "number"
+            && typeof data.nbOfPages === "number"
+            && typeof data.locator === "object"
+            && typeof data.locator.href === "string"
+            && typeof data.locator.locations === "object"
+            && typeof data.locator.locations.position === "number"
+            && typeof data.locator.locations.progression === "number"
+            && data.locator.locations.progression >= 0
+            && data.locator.locations.progression <= 1
+        };
+
+        if (isDivinaLocation(data)) {
+
+            // const loc = {
+            //     locator: {
+            //         href: pageIndex.toString(),
+            //         locations: {
+            //             position: pageIndex,
+            //             progression: pageIndex / nbOfPages,
+            //         },
+            //     },
+            // };
+            // console.log("pageChange", pageIndex, nbOfPages);
+
+            const LocatorExtended: LocatorExtended = {
+                audioPlaybackInfo: undefined,
+                locator: data.locator,
+                paginationInfo: undefined,
+                selectionInfo: undefined,
+                selectionIsNew: undefined,
+                docInfo: undefined,
+                epubPage: undefined,
+                secondWebViewHref: undefined,
+            };
+            this.handleReadingLocationChange(LocatorExtended);
+        } else {
+            console.log("DIVINA: location bad formated ", data);
+        }
+
     }
 
     private async loadPublicationIntoViewport() {
@@ -1075,20 +1106,20 @@ class Reader extends React.Component<IProps, IState> {
                 publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow: hidden;");
             }
 
+            // Options for the Divina Player
             const options = {
-                // Variables
+                //maxNbOfUnitsToLoadAfter: null, // Forcing null for this value will load all units
+                initialNbOfResourcesToLoad: 1000,//null, // If 0 or null, the normal nb of initial resources will load
                 allowsDestroy: true,
-                allowsParallel: false,
-                maxNbOfPagesAfter: 6,
-                videoLoadTimeout: 2000,
-                allowsZoom: true,
+                allowsParallel: true,
+                allowsZoomOnDoubleTap: true,
+                allowsZoomOnCtrlOrAltScroll: true,
                 allowsSwipe: true,
                 allowsWheelScroll: true,
                 allowsPaginatedScroll: true,
-                isPaginationSticky: true,
                 isPaginationGridBased: true,
-                language: this.props.lang,
-                readingMode: "guided",
+                isPaginationSticky: true,
+                videoLoadTimeout: 2000,
             };
 
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
@@ -1102,7 +1133,8 @@ class Reader extends React.Component<IProps, IState> {
 
             const [url] = manifestUrl.split("/manifest.json");
             // Load the divina from its folder path
-            this.currentDivinaPlayer.openDivinaFromFolderPath(url, null, options);
+            const locator = this.props.locator;
+            this.currentDivinaPlayer.openDivinaFromFolderPath(url, locator, options);
 
             // Handle events emitted by the currentDivinaPlayer
             const eventEmitter = this.currentDivinaPlayer.eventEmitter;
