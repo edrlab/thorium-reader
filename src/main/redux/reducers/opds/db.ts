@@ -38,14 +38,26 @@ export function opdsDbReducers(
 
             const identifier = action.payload.identifier;
             const idx = state.findIndex((v) => v.identifier === identifier);
-            const newState = clone(state);
 
-            debug("opdsActions.deleteOpdsFeed: ", identifier, idx, newState[idx]);
+            debug("opdsActions.deleteOpdsFeed: ", identifier, idx, state[idx]);
 
-            if (newState[idx]) {
-                newState[idx].removedButPreservedToAvoidReMigration = true;
+            if (state[idx]) {
+                if (state[idx].migratedFrom1_6Database) {
+                    debug("opdsActions.deleteOpdsFeed - migratedFrom1_6Database => removedButPreservedToAvoidReMigration");
+                    const newState = clone(state);
+                    newState[idx].removedButPreservedToAvoidReMigration = true;
+                    return newState;
+                } else {
+                    debug("opdsActions.deleteOpdsFeed - !migratedFrom1_6Database => DELETE");
+                    return [
+                        ...state.slice(0, idx),
+                        ...state.slice(idx + 1),
+                    ];
+                }
             }
-            return newState;
+
+            // fallback
+            return state;
         }
 
         default:

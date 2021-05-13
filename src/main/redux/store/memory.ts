@@ -143,6 +143,7 @@ const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) 
             const newDoc = clone(doc);
             // we DO NOT set this here (see opdsActions.addOpdsFeed, and comment for OpdsFeedDocument.doNotMigrateAnymore)
             // newDoc.doNotMigrateAnymore = true;
+            newDoc.migratedFrom1_6Database = true;
 
             newDocs = [
                 ...newDocs.slice(0, idx),
@@ -155,6 +156,7 @@ const absorbOpdsFeedToReduxState = async (docs: OpdsFeedDocument[] | undefined) 
             const newDoc = clone(doc);
             // we DO NOT set this here (see opdsActions.addOpdsFeed, and comment for OpdsFeedDocument.doNotMigrateAnymore)
             // newDoc.doNotMigrateAnymore = true;
+            newDoc.migratedFrom1_6Database = true;
 
             newDocs = [
                 ...newDocs,
@@ -218,6 +220,8 @@ const absorbPublicationToReduxState = async (pubs: IDictPublicationState | undef
             const newDoc = clone(pub);
             // we DO NOT set this here (see publicationActions.addPublication, and comment for PublicationDocument.doNotMigrateAnymore)
             // newDoc.doNotMigrateAnymore = true;
+            newDoc.migratedFrom1_6Database = true;
+
             newPubs[identifier] = newDoc;
         }
     }

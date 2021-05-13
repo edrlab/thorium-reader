@@ -40,10 +40,26 @@ export function publicationDbReducers(
         case publicationActions.deletePublication.ID: {
 
             const id = action.payload.publicationIdentifier;
-            const newState = clone(state);
-            debug("publicationActions.deletePublication: ", id, newState[id]);
-            newState[id].removedButPreservedToAvoidReMigration = true;
-            return newState;
+            debug("publicationActions.deletePublication: ", id, state[id]);
+
+            if (state[id]) {
+                if (state[id].migratedFrom1_6Database) {
+                    debug("publicationActions.deletePublication - migratedFrom1_6Database => removedButPreservedToAvoidReMigration");
+                    const newState = clone(state);
+                    newState[id].removedButPreservedToAvoidReMigration = true;
+                    return newState;
+                } else {
+                    debug("publicationActions.deletePublication - !migratedFrom1_6Database => DELETE");
+                    const ret = {
+                        ...state,
+                    };
+                    delete ret[id];
+                    return ret;
+                }
+            }
+
+            // fallback
+            return state;
         }
 
         default:
