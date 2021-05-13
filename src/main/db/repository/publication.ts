@@ -59,9 +59,12 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         const store = diMainGet("store");
         let unsub: Unsubscribe;
         const p = new Promise<PublicationDocument>(
-            (res) => (unsub = store.subscribe(() => {
+            (res, rej) => (unsub = store.subscribe(() => {
                 debug("Publication SAVE store.subscribe ", id);
 
+                // Logically this check is non-sensical, because save() should never be called for removed publications.
+                // This is for safeguard consistency with usages of `store.getState().publication.db[document.identifier]`
+                // (i.e. direct library access, not via the `findAll()` variants)
                 const o = store.getState().publication.db[document.identifier];
                 if (o && !o.removedButPreservedToAvoidReMigration) {
                     debug("Publication SAVE store.subscribe RESOLVE");
@@ -71,7 +74,12 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
                     res(o);
                     return;
                 }
-                debug("Publication SAVE store.subscribe PROMISE STALLED? ", id, " ?!".repeat(1000));
+
+                debug("Publication SAVE store.subscribe PROMISE REJECT? ", id, " ?!".repeat(1000));
+                if (unsub) {
+                    unsub();
+                }
+                rej("!!?? PUBLICATION SAVE() o && !o.removedButPreservedToAvoidReMigration");
 
                 // TODO: Promise 'p' can possibly never resolve or reject
                 // (i.e. if the reducer associated with the 'addPublication' action somehow fails to insert in the publication store),

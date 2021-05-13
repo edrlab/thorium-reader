@@ -41,7 +41,7 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     hash: string;
 
     // when true, signifies that pub was added or modified in 1.7 (both via publicationActions.addPublication, for modified see repository.save())
-    // and should not be migrated from 1.6 PouchDB (Sqlite3 / Leveldown database storage adapters) to Redux state (with JSON serialization)
+    // and should not be migrated anymore from 1.6 PouchDB (Sqlite3 / Leveldown database storage adapters) to Redux state (with JSON serialization)
     doNotMigrateAnymore?: boolean;
 
     // TODO: change this design in Thorium 1.8+ to avoid unbounded database growth when deleting publications

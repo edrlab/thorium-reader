@@ -39,11 +39,15 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
         const store = diMainGet("store");
         let unsub: Unsubscribe;
         const p = new Promise<OpdsFeedDocument>(
-            (res) => (unsub = store.subscribe(() => {
+            (res, rej) => (unsub = store.subscribe(() => {
                 debug("OpdsFeed SAVE store.subscribe ", id);
 
                 const o = store.getState().opds.catalog.find((v) =>
                     v.identifier === id);
+
+                // Logically this check is non-sensical, because save() should never be called for removed feeds.
+                // This is for safeguard consistency with usages of `store.getState().opds.catalog.find()`
+                // (i.e. direct catalog access, not via the `findAll()` variants)
                 if (o && !o.removedButPreservedToAvoidReMigration) {
                     debug("OpdsFeed SAVE store.subscribe RESOLVE");
                     if (unsub) {
@@ -52,7 +56,12 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
                     res(o);
                     return;
                 }
-                debug("OpdsFeed SAVE store.subscribe PROMISE STALLED? ", id, " ?!".repeat(1000));
+
+                debug("OpdsFeed SAVE store.subscribe PROMISE REJECT? ", id, " ?!".repeat(1000));
+                if (unsub) {
+                    unsub();
+                }
+                rej("!!?? OPDS FEED SAVE() o && !o.removedButPreservedToAvoidReMigration");
 
                 // TODO: Promise 'p' can possibly never resolve or reject
                 // (i.e. if the reducer associated with the 'addOpdsFeed' action somehow fails to insert in the catalog store),
