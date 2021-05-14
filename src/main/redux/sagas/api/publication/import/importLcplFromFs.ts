@@ -124,7 +124,7 @@ export function* importLcplFromFS(
 
             yield call(() => lcpManager.injectLcplIntoZip(downloadFilePath, r2LCP));
             const hash = yield* callTyped(() => extractCrc32OnZip(downloadFilePath));
-            const [pubDocument] = yield* callTyped(() => publicationRepository.findByHashId(hash));
+            const pubDocument = yield* callTyped(() => publicationRepository.findByHashId(hash));
 
             debug("importLcplFromFS", hash);
             if (pubDocument) {
