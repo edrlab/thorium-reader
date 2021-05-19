@@ -803,38 +803,38 @@ p.chapters_description {
   font-size: 0.8rem;
   min-width: 300px;
   margin-top: 2px;
-	margin-bottom: 30px;
+  margin-bottom: 30px;
 
-	& label {
-		display: inline-flex;
-		margin: 0 3px 3px 3px;
-		padding: 5px 10px 5px 2rem;
-		font-size: 1.25em;
-		height: 1.2rem;
-		width: 14rem;
-		cursor: pointer;
+  & label {
+    display: inline-flex;
+    margin: 0 3px 3px 3px;
+    padding: 5px 10px 5px 2rem;
+    font-size: 1.25em;
+    height: 1.2rem;
+    width: 14rem;
+    cursor: pointer;
 
-		& svg {
-			height: 1rem;
-			width: 1rem;
-			margin-left: -1.3rem;
-			margin-right: 0.3rem;
-		}
-	}
+    & svg {
+      height: 1rem;
+      width: 1rem;
+      margin-left: -1.3rem;
+      margin-right: 0.3rem;
+    }
+  }
 
-	& input {
-		position: absolute;
-		left: -2000px;
+  & input {
+    position: absolute;
+    left: -2000px;
 
-		&:focus + label {
-			@mixin R2_MIXIN_FOCUS_OUTLINE;
-		}
+    &:focus + label {
+      @mixin R2_MIXIN_FOCUS_OUTLINE;
+    }
 
     &:disabled + label {
-			color: gray;
+      color: gray;
       cursor: not-allowed;
-		}
-	}
+    }
+  }
 }
 
 #read_settings_list > li, #chapter_settings_list > li{
