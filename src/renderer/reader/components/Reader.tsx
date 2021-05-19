@@ -1252,6 +1252,9 @@ class Reader extends React.Component<IProps, IState> {
                 if (isReadingModeUpdateData(data)) {
                     const readingMode = data.readingMode;
                     this.props.setReadingMode(readingMode);
+                } else {
+                    console.error("DIVINA: readingModeUpdate event => unknow data", data);
+                    
                 }
 
                 // deprecated
