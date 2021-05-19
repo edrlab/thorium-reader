@@ -468,8 +468,8 @@ if (require.main === module) {
 <li><a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">Flatland 2</li>
 <li><a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">Flatland 3</li>
                 </ol>
-              </nav>
-          </body>
+            </nav>
+        </body>
         </html>`);
 
     const el = window.document.querySelector<HTMLElement>(toc_query_selector);
@@ -503,23 +503,23 @@ if (require.main === module) {
         "accessibilitySummary": "This is just a test summary",
         "readingProgression": "ltr",
         "resources": [
-          {
+        {
             "rel": "cover",
             "url": "http://ia800704.us.archive.org/9/items/LibrivoxCdCoverArt12/Flatland_1109.jpg",
             "encodingFormat": "image/jpeg",
             "name": "Cover page with title and author"
-          },
-          "./a4.2.02.html"
+        },
+        "./a4.2.02.html"
         ],
         "readingOrder": [
-          {
+        {
             "url": "http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3",
             "encodingFormat": "audio/mpeg",
             "duration": "PT1371S",
             "name": "Part 1, Sections 1 - 3"
-          }
+        }
         ]
-      }
+    }
     `;
 
     const manifestParsed = JSON.parse(w3cManifest);
