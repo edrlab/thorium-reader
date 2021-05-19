@@ -3,18 +3,18 @@
 @import "./variable.css";
 
 .anchor_link {
-	position: absolute;
-	display: block;
-	width: 1px;
-	height: 1px;
-	top: 0px;
-	left: 0px;
-	opacity: 0.6;
-	background: transparent;
-	overflow: hidden;
-	color: transparent;
-	padding: 0;
-	margin: 0;
+  position: absolute;
+  display: block;
+  width: 1px;
+  height: 1px;
+  top: 0px;
+  left: 0px;
+  opacity: 0.6;
+  background: transparent;
+  overflow: hidden;
+  color: transparent;
+  padding: 0;
+  margin: 0;
 }
 
 :root {
@@ -34,8 +34,8 @@
 *,
 *::after,
 *::before {
-	-webkit-user-drag: none;
-	-webkit-app-region: no-drag;
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
 }
 
 .nightMode {
@@ -291,16 +291,16 @@ button {
 /* ========== Navigation ==========*/
 
 .main_navigation {
-	z-index:102;
-	width:100%;
-	top:0;
-	padding-top:0;
-	padding-bottom:0;
-	height:auto;
-	background-color: var(--reader-secondaryColor);
-	-webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
-	-moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
-	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
+  z-index:102;
+  width:100%;
+  top:0;
+  padding-top:0;
+  padding-bottom:0;
+  height:auto;
+  background-color: var(--reader-secondaryColor);
+  -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
+  -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
+  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
   min-width: 600px;
 
   & > ul:not(.noAudio) {
@@ -466,16 +466,16 @@ button {
 }
 
 .chapters_settings, .read_settings{
-	width: 21rem;
-	border-left: 1px solid #e5e5e5;
-	position: fixed;
-	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch;
-	top:60px;
-	right:0;
-	height: calc(100vh - 60px);
-	background-color: white;
-	z-index:100;
+  width: 21rem;
+  border-left: 1px solid #e5e5e5;
+  position: fixed;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  top:60px;
+  right:0;
+  height: calc(100vh - 60px);
+  background-color: white;
+  z-index:100;
   font-family: Arial;
   color: var(--reader-fontColor);
   background-color: var(--reader-secondaryColor);
@@ -578,56 +578,56 @@ button {
 }
 
 .tab_content {
-	position: relative;
-	background-color: var(--reader-menuPartColor);
+  position: relative;
+  background-color: var(--reader-menuPartColor);
   color: var(--reader-fontColor);
   overflow: hidden;
   transition: max-height 0.5s;
 
-	& > div {
-		position: relative;
-		text-align: center;
-		height:auto;
-		padding: 20px;
-		border-bottom: 1px solid #e5e5e5;
+  & > div {
+    position: relative;
+    text-align: center;
+    height:auto;
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
 
-		& label, & .subheading {
-			display: block;
-			font-weight: 600;
-			text-align: center;
-		}
-	}
+    & label, & .subheading {
+      display: block;
+      font-weight: 600;
+      text-align: center;
+    }
+  }
 }
 
 .go_to_page {
-	display: inline-block;
-	position: relative;
-	left:15%;
-	width:70%;
-	font-size: 1rem;
-	margin-top: 10px;
-	margin-bottom: 30px;
+  display: inline-block;
+  position: relative;
+  left:15%;
+  width:70%;
+  font-size: 1rem;
+  margin-top: 10px;
+  margin-bottom: 30px;
 }
 
 .go_to_page input[type=number] {
-	background-color: transparent;
-	border:none;
-	border-bottom: 1px solid #c1c1c1;
-	border-radius: 0;
-	width:50px;
-	padding:10px;
-	font-size: 1rem;
-	text-align: center;
+  background-color: transparent;
+  border:none;
+  border-bottom: 1px solid #c1c1c1;
+  border-radius: 0;
+  width:50px;
+  padding:10px;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .go_to_page input[type=number]::placeholder {
-	overflow: visible;
-	color:#c1c1c1;
+  overflow: visible;
+  color:#c1c1c1;
 }
 
 .chapters_content {
   padding: 0;
-	height:auto;
+  height:auto;
   list-style: none;
 
   & > li > div > a > span {
@@ -636,7 +636,7 @@ button {
   }
 
   & .chapters_content {
-	  padding: 0 0 0 20px;
+    padding: 0 0 0 20px;
   }
 
   & .subheading:not(.inert) {
@@ -714,38 +714,38 @@ button {
 }
 
 .chapters_content .line {
-	text-align: left;
-	font-size: 0.9rem;
+  text-align: left;
+  font-size: 0.9rem;
   display: block;
-	font-weight: bold;
-	color: #c1c1c1;
-	padding: 0.625rem 0.3125rem;
-	border-bottom: 1px solid #e5e5e5;
+  font-weight: bold;
+  color: #c1c1c1;
+  padding: 0.625rem 0.3125rem;
+  border-bottom: 1px solid #e5e5e5;
 }
 .chapters_content .line:not(.inert) {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .chapters_content .line:last-child {
-	border-bottom: 0;
+  border-bottom: 0;
 }
 
 p.chapters_description {
-	font-weight: 500;
+  font-weight: 500;
 }
 
 .bookmarks_line:last-child {
-	border-bottom: 0;
+  border-bottom: 0;
 }
 
 .bookmarks_line {
-	width:calc(100% - 40px);
-	margin-left:20px;
-	position: relative;
-	text-align: left;
-	padding:20px 0 20px 0;
-	font-size: 1rem;
-	border-bottom: 1px solid #e5e5e5;
+  width:calc(100% - 40px);
+  margin-left:20px;
+  position: relative;
+  text-align: left;
+  padding:20px 0 20px 0;
+  font-size: 1rem;
+  border-bottom: 1px solid #e5e5e5;
 
   & > button {
     border: none;
@@ -782,10 +782,10 @@ p.chapters_description {
 }
 
 .chapter_marker .gauge {
-	width:100%;
-	margin-top:2px;
-	height:4px;
-	background-color: #ECECEC;
+  width:100%;
+  margin-top:2px;
+  height:4px;
+  background-color: #ECECEC;
 
   & .fill {
     height:100%;
@@ -798,50 +798,50 @@ p.chapters_description {
 /* ============= SETTINGS MENU =================== */
 
 #themes_list {
-	width: 30%;
-	list-style-type: none;
-	font-size: 0.8rem;
+  width: 30%;
+  list-style-type: none;
+  font-size: 0.8rem;
   min-width: 300px;
   margin-top: 2px;
-	margin-bottom: 30px;
+  margin-bottom: 30px;
 
-	& label {
-		display: inline-flex;
-		margin: 0 3px 3px 3px;
-		padding: 5px 10px 5px 2rem;
-		font-size: 1.25em;
-		height: 1.2rem;
-		width: 14rem;
-		cursor: pointer;
+  & label {
+    display: inline-flex;
+    margin: 0 3px 3px 3px;
+    padding: 5px 10px 5px 2rem;
+    font-size: 1.25em;
+    height: 1.2rem;
+    width: 14rem;
+    cursor: pointer;
 
-		& svg {
-			height: 1rem;
-			width: 1rem;
-			margin-left: -1.3rem;
-			margin-right: 0.3rem;
-		}
-	}
+    & svg {
+      height: 1rem;
+      width: 1rem;
+      margin-left: -1.3rem;
+      margin-right: 0.3rem;
+    }
+  }
 
-	& input {
-		position: absolute;
-		left: -2000px;
+  & input {
+    position: absolute;
+    left: -2000px;
 
-		&:focus + label {
-			@mixin R2_MIXIN_FOCUS_OUTLINE;
-		}
+    &:focus + label {
+      @mixin R2_MIXIN_FOCUS_OUTLINE;
+    }
 
     &:disabled + label {
-			color: gray;
+      color: gray;
       cursor: not-allowed;
-		}
-	}
+    }
+  }
 }
 
 #read_settings_list > li, #chapter_settings_list > li{
-	border-bottom: 1px solid #e5e5e5;
-	font-size: 1.1rem;
-	font-weight: 600;
-	cursor: auto;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: auto;
 
   & > span {
     flex: 1;
@@ -859,15 +859,15 @@ p.chapters_description {
 }
 
 #read_settings_list .tab_content > div {
-	padding: 0;
+  padding: 0;
   border-bottom: none;
 }
 
 .center_in_tab {
   position: relative;
-	text-align: center;
+  text-align: center;
   display: flex;
-	font-size: 0.9rem;
+  font-size: 0.9rem;
   justify-content: center;
   align-items: center;
 
@@ -951,11 +951,11 @@ p.chapters_description {
 }
 
 #option_colonne, #option_colonne1, #option_colonne2 {
-	display: inline-block;
-	text-align: center;
+  display: inline-block;
+  text-align: center;
   margin: 0 10px 20px 10px;
-	line-height: 2rem;
-	vertical-align: baseline;
+  line-height: 2rem;
+  vertical-align: baseline;
   height: 70px;
   width: 63px;
 }
@@ -972,17 +972,17 @@ p.chapters_description {
 }
 
 input[type=number] {
-	padding:10px;
-	margin-top:10px;
-	background-color: white;
-	/* outline:none; */
-	border:1px solid #c1c1c1;
-	border-radius: 5px;
-	text-align: center;
+  padding:10px;
+  margin-top:10px;
+  background-color: white;
+  /* outline:none; */
+  border:1px solid #c1c1c1;
+  border-radius: 5px;
+  text-align: center;
 }
 
 input[type=radio] + label {
-	display: inline-block;
+  display: inline-block;
 }
 
 #read_settings_list .line_tab_content {
@@ -994,22 +994,22 @@ input[type=radio] + label {
 }
 
 .line_tab_content .subheading {
-	display: block;
-	font-size: 0.9rem;
-	font-weight: 600;
-	text-align: left;
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
   margin-bottom: 1rem;
   color: var(--reader-fontColor);
 }
 
 .line_tab_content select {
-	background-color: white;
-	border-radius: none;
-	width:40%;
-	text-align: center;
-	text-align-last: center;
-	font-size: 0.8rem;
-	height:30px;
+  background-color: white;
+  border-radius: none;
+  width:40%;
+  text-align: center;
+  text-align-last: center;
+  font-size: 0.8rem;
+  height:30px;
 }
 
 .line_tab_content.config_save button {
@@ -1023,10 +1023,10 @@ input[type=radio] + label {
 }
 
 .out_of_screen {
-	float:left;
-	width:0px;
-	height:3px;
-	overflow: hidden;
+  float:left;
+  width:0px;
+  height:3px;
+  overflow: hidden;
 }
 
 /* ========= FOOTER ========= */
@@ -1080,32 +1080,32 @@ input[type=radio] + label {
 }
 
 #track_reading {
-	position: relative;
-	width:100%;
-	height:10px;
-	background-color: #c1c1c1;
+  position: relative;
+  width:100%;
+  height:10px;
+  background-color: #c1c1c1;
 }
 
 #track_reading + span {
-	font-style: italic;
-	font-size: 0.8rem;
-	padding-bottom: 10px;
-	cursor: pointer;
+  font-style: italic;
+  font-size: 0.8rem;
+  padding-bottom: 10px;
+  cursor: pointer;
 }
 
 /*
 #current {
-	position: relative;
+  position: relative;
 }
 */
 
 #chapters_markers {
-	display: flex;
-	position: absolute;
-	width:100%;
-	height:16px;
-	margin-top:-3px;
-	top:0;
+  display: flex;
+  position: absolute;
+  width:100%;
+  height:16px;
+  margin-top:-3px;
+  top:0;
 
   &.more_information > span {
     border-right: 1px solid #929292;
@@ -1136,21 +1136,21 @@ input[type=radio] + label {
 }
 
 #arrow_box {
-	position: absolute;
+  position: absolute;
   width: 450px;
-	height: auto;
-	padding: 10px 0 5px 0;
-	margin: -76px 0 0 0;
-	left:50%;
-	background: white;
-	font-size: 16px;
-	color: black;
-	text-align: center;
-	-webkit-box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
-	-moz-box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
-	box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
-	transform: translateX(-50%) translateY(0%);
-	-webkit-transform: translateX(-50%) translateY(0%);
+  height: auto;
+  padding: 10px 0 5px 0;
+  margin: -76px 0 0 0;
+  left:50%;
+  background: white;
+  font-size: 16px;
+  color: black;
+  text-align: center;
+  -webkit-box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
+  -moz-box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
+  box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
+  transform: translateX(-50%) translateY(0%);
+  -webkit-transform: translateX(-50%) translateY(0%);
 
   & .after {
     content: " ";
@@ -1190,21 +1190,21 @@ input[type=radio] + label {
 }
 
 .skip_link {
-	position: absolute;
-	left: -2000px;
+  position: absolute;
+  left: -2000px;
 
-	&:focus {
-		left: unset;
-		left: 0;
-		width: fit-content;
-		top: 0;
-		opacity: 1;
-		height: unset;
-		z-index: 150;
-		font-size: 1rem;
-		padding: 1rem;
-		color: white;
-		background-color: #0366d6;
+  &:focus {
+    left: unset;
+    left: 0;
+    width: fit-content;
+    top: 0;
+    opacity: 1;
+    height: unset;
+    z-index: 150;
+    font-size: 1rem;
+    padding: 1rem;
+    color: white;
+    background-color: #0366d6;
   }
 }
 

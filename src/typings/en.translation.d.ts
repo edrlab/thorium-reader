@@ -36,11 +36,11 @@ declare namespace typed_i18n {
   readonly "quit": string,
   readonly "session": {
     readonly "exit": {
-      readonly "askBox": {
+    readonly "askBox": {
         readonly "button": { readonly "no": string, readonly "yes": string },
         readonly "message": string,
         readonly "title": string
-      }
+    }
     }
   },
   readonly "window": { readonly "showLibrary": string }
@@ -65,9 +65,9 @@ declare namespace typed_i18n {
   (_: "app.session", __?: {}): {
   readonly "exit": {
     readonly "askBox": {
-      readonly "button": { readonly "no": string, readonly "yes": string },
-      readonly "message": string,
-      readonly "title": string
+    readonly "button": { readonly "no": string, readonly "yes": string },
+    readonly "message": string,
+    readonly "title": string
     }
   }
 };
@@ -121,22 +121,22 @@ declare namespace typed_i18n {
   readonly "opds": {
     readonly "auth": { readonly "cancel": string, readonly "login": string },
     readonly "info": {
-      readonly "availableSince": string,
-      readonly "availableState": {
+    readonly "availableSince": string,
+    readonly "availableState": {
         readonly "available": string,
         readonly "ready": string,
         readonly "reserved": string,
         readonly "unavailable": string,
         readonly "unknown": string
-      },
-      readonly "availableUntil": string,
-      readonly "copyAvalaible": string,
-      readonly "copyTotal": string,
-      readonly "holdPosition": string,
-      readonly "holdTotal": string,
-      readonly "numberOfItems": string,
-      readonly "priveValue": string,
-      readonly "state": string
+    },
+    readonly "availableUntil": string,
+    readonly "copyAvalaible": string,
+    readonly "copyTotal": string,
+    readonly "holdPosition": string,
+    readonly "holdTotal": string,
+    readonly "numberOfItems": string,
+    readonly "priveValue": string,
+    readonly "state": string
     }
   },
   readonly "publisher": string,
@@ -185,11 +185,11 @@ declare namespace typed_i18n {
   readonly "info": {
     readonly "availableSince": string,
     readonly "availableState": {
-      readonly "available": string,
-      readonly "ready": string,
-      readonly "reserved": string,
-      readonly "unavailable": string,
-      readonly "unknown": string
+    readonly "available": string,
+    readonly "ready": string,
+    readonly "reserved": string,
+    readonly "unavailable": string,
+    readonly "unknown": string
     },
     readonly "availableUntil": string,
     readonly "copyAvalaible": string,
@@ -533,23 +533,23 @@ declare namespace typed_i18n {
   readonly "picker": {
     readonly "annotationTitle": string,
     readonly "search": {
-      readonly "founds": string,
-      readonly "input": string,
-      readonly "next": string,
-      readonly "notFound": string,
-      readonly "previous": string,
-      readonly "submit": string
+    readonly "founds": string,
+    readonly "input": string,
+    readonly "next": string,
+    readonly "notFound": string,
+    readonly "previous": string,
+    readonly "submit": string
     },
     readonly "searchTitle": string
   },
   readonly "settings": {
     readonly "column": {
-      readonly "auto": string,
-      readonly "one": string,
-      readonly "oneTitle": string,
-      readonly "title": string,
-      readonly "two": string,
-      readonly "twoTitle": string
+    readonly "auto": string,
+    readonly "one": string,
+    readonly "oneTitle": string,
+    readonly "title": string,
+    readonly "two": string,
+    readonly "twoTitle": string
     },
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
@@ -564,7 +564,7 @@ declare namespace typed_i18n {
     readonly "paginated": string,
     readonly "paraSpacing": string,
     readonly "pdfZoom": {
-      readonly "name": {
+    readonly "name": {
         readonly "100pct": string,
         readonly "150pct": string,
         readonly "200pct": string,
@@ -573,25 +573,25 @@ declare namespace typed_i18n {
         readonly "50pct": string,
         readonly "fit": string,
         readonly "width": string
-      },
-      readonly "title": string
+    },
+    readonly "title": string
     },
     readonly "reduceMotion": string,
     readonly "save": {
-      readonly "apply": string,
-      readonly "reset": string,
-      readonly "title": string
+    readonly "apply": string,
+    readonly "reset": string,
+    readonly "title": string
     },
     readonly "scrolled": string,
     readonly "spacing": string,
     readonly "text": string,
     readonly "theme": {
-      readonly "name": {
+    readonly "name": {
         readonly "Neutral": string,
         readonly "Night": string,
         readonly "Sepia": string
-      },
-      readonly "title": string
+    },
+    readonly "title": string
     },
     readonly "wordSpacing": string
   },
@@ -737,14 +737,14 @@ declare namespace typed_i18n {
   readonly "paraSpacing": string,
   readonly "pdfZoom": {
     readonly "name": {
-      readonly "100pct": string,
-      readonly "150pct": string,
-      readonly "200pct": string,
-      readonly "300pct": string,
-      readonly "500pct": string,
-      readonly "50pct": string,
-      readonly "fit": string,
-      readonly "width": string
+    readonly "100pct": string,
+    readonly "150pct": string,
+    readonly "200pct": string,
+    readonly "300pct": string,
+    readonly "500pct": string,
+    readonly "50pct": string,
+    readonly "fit": string,
+    readonly "width": string
     },
     readonly "title": string
   },
@@ -759,9 +759,9 @@ declare namespace typed_i18n {
   readonly "text": string,
   readonly "theme": {
     readonly "name": {
-      readonly "Neutral": string,
-      readonly "Night": string,
-      readonly "Sepia": string
+    readonly "Neutral": string,
+    readonly "Night": string,
+    readonly "Sepia": string
     },
     readonly "title": string
   },
