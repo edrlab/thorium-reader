@@ -77,11 +77,11 @@ export function* importFromFormService(
             coverLink.TypeLink = findMimeTypeWithExtension(cover);
             pub.Resources = [
                 coverLink,
-            ]
+            ];
 
         }
 
-        const urls = reading.replace(new RegExp("\r\n", 'g'), '\n').split("\n") as string[];
+        const urls = reading.replace(new RegExp("\r\n", "g"), "\n").split("\n") as string[];
         debug("Reading orders ", urls);
         pub.Spine = urls.map((u) => {
 

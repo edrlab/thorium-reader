@@ -186,7 +186,7 @@ export function exit() {
         - before-quit
         - window-all-closed
         - quit
-        */
+         */
 
         const exitNow = () => {
 

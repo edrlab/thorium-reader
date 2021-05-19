@@ -10,7 +10,7 @@ import { BrowserWindow, globalShortcut } from "electron";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { getLibraryWindowFromDi } from "../../../di";
 
-const filename_ = "readium-desktop:main/modal/createModalWin.ts"
+const filename_ = "readium-desktop:main/modal/createModalWin.ts";
 const debug = debug_(filename_);
 
 export function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefined {

@@ -10,7 +10,7 @@ import * as debug_ from "debug";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { SCHEME } from "../getEventChannel";
 
-const filename_ = "readium-desktop:main/modal/request.ts"
+const filename_ = "readium-desktop:main/modal/request.ts";
 const debug = debug_(filename_);
 
 export interface IParseRequestFromCustomProtocol<T = string> {

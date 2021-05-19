@@ -14,7 +14,7 @@ import { getRequestCustomProtocolEventChannel } from "../getEventChannel";
 import { createOpdsAuthenticationModalWin } from "./createModalWin";
 import { IParseRequestFromCustomProtocol, parseRequestFromCustomProtocol } from "./request";
 
-const filename_ = "readium-desktop:main/modal/flow.ts"
+const filename_ = "readium-desktop:main/modal/flow.ts";
 const debug = debug_(filename_);
 
 

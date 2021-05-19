@@ -98,13 +98,13 @@ interface TregisterHttpProtocolHandler {
     callback: (response: Electron.ProtocolResponse) => void;
 }
 
-let channel: EventChannel<TregisterHttpProtocolHandler>
+let channel: EventChannel<TregisterHttpProtocolHandler>;
 export const getRequestCustomProtocolEventChannel = () => {
     if (channel) {
         return channel;
     }
     return initRequestCustomProtocolEventChannel();
-}
+};
 export function initRequestCustomProtocolEventChannel() {
 
     channel = eventChannel<TregisterHttpProtocolHandler>(

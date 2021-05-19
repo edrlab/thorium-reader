@@ -12,10 +12,11 @@ import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
-import { TChangeEventOnInput } from "readium-desktop/typings/react";
+import { TChangeEventOnInput, TMouseEventOnDiv } from "readium-desktop/typings/react";
 import { Dispatch } from "redux";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
+import { apiAction } from "../../apiAction";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
@@ -39,7 +40,9 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <div className={styles.addEpubButton}>
+            <div
+                className={styles.addEpubButton}
+                onClick={this.openImportForm}>
                 <input
                     id="epubInput"
                     type="file"
@@ -53,6 +56,15 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
                 </label>
             </div>
         );
+    }
+
+    private async openImportForm(event: TMouseEventOnDiv) {
+
+        if (event.altKey) {
+            event.preventDefault();
+            event.stopPropagation();
+            await apiAction("publication/importFromForm");
+        }
     }
 
     private importFile(event: TChangeEventOnInput) {

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { notStrictEqual, ok } from "assert";
+import { ok } from "assert";
 import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
@@ -89,7 +89,7 @@ export function* importFromString(
     if (manifest) {
 
         try {
-            const [publicationDocument]  = yield* callTyped(importFromStringService, manifest, baseFileUrl);
+            const [publicationDocument] = yield* callTyped(importFromStringService, manifest, baseFileUrl);
 
             if (!publicationDocument) {
                 throw new Error("publicationDocument not imported on db");
@@ -116,7 +116,7 @@ export function* importFromFs(
 
     const effects = filePathArray.map(
         (fpath: string) =>
-            callTyped(function*(): SagaGenerator<PublicationView> {
+            callTyped(function* (): SagaGenerator<PublicationView> {
 
                 const translate = diMainGet("translator").translate;
 
@@ -184,56 +184,56 @@ export function* importFromFs(
 const importFromFormHtml = (submitUrl = "") => `
 <!DOCTYPE html>
     <html>
-	<head>
-		<meta charset="utf-8" />
-		<title>Import publication</title>
-		<style type="text/css">
-		</style>
-		<script type="text/javascript">
-		</script>
-	</head>
-	<body>
+<head>
+    <meta charset="utf-8" />
+    <title>Import publication</title>
+    <style type="text/css">
+    </style>
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
         <form action="${submitUrl}" method="post">
             <fieldset>
                 <legend>From URL</legend>
-	            <label for="url">enter URL : </label>
-	            <input type="url" name="url" id="url"/>
+            <label for="url">enter URL : </label>
+            <input type="url" name="url" id="url"/>
             </fieldset>
             <br>
-	        <fieldset>
+        <fieldset>
                 <legend>From JSON MANIFEST</legend>
-	            <label for="manifestjson">JSON manifest : </label>
-		        <textarea type="text" name="manifestjson" id="manifestjson"></textarea>
+            <label for="manifestjson">JSON manifest : </label>
+        <textarea type="text" name="manifestjson" id="manifestjson"></textarea>
             </fieldset>
             <br>
-	        <fieldset>
+        <fieldset>
                 <legend>From RAW INFORMATION</legend>
                 <fieldset>
-	                <legend>Metadata</legend>
-			        <label for="title">title : </label><input type="text" name="title" id="title">
-	                <br>
-	                <label for="desc">description : </label><input type="text" name="desc" id="desc">
-	                <br>
-	                <label for="author">author : </label><input type="text" name="author" id="author">
+                <legend>Metadata</legend>
+            <label for="title">title : </label><input type="text" name="title" id="title">
+                <br>
+                <label for="desc">description : </label><input type="text" name="desc" id="desc">
+                <br>
+                <label for="author">author : </label><input type="text" name="author" id="author">
                 </fieldset>
-		        <fieldset>
-	                <legend>Cover</legend>
-			        <label for="cover">cover URL : </label><input type="text" name="cover" id="cover">
-		        </fieldset>
-		        <fieldset>
-	                <legend>Reading Order</legend>
-			        <label for="reading"> URLs (split with \n) : </label>
+        <fieldset>
+                <legend>Cover</legend>
+            <label for="cover">cover URL : </label><input type="text" name="cover" id="cover">
+        </fieldset>
+        <fieldset>
+                <legend>Reading Order</legend>
+            <label for="reading"> URLs (split with \n) : </label>
                     <textarea type="text" name="reading" id="reading"></textarea>
-		        </fieldset>
+        </fieldset>
             </fieldset>
             <br>
             <fieldset>
                 <legend>Base URL</legend>
-	            <label for="baseurl">enter URL : </label>
-	            <input type="url" name="baseurl" id="baseurl"/>
+            <label for="baseurl">enter URL : </label>
+            <input type="url" name="baseurl" id="baseurl"/>
             </fieldset>
             <br>
-	        <input type="submit" value="Submit">
+        <input type="submit" value="Submit">
         </form>
     </body>
 </html>
