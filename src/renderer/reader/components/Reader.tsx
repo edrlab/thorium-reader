@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
 import * as path from "path";
 import * as r from "ramda";
@@ -17,12 +17,13 @@ import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/k
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings, ReaderConfigStringsAdjustables,
-    ReaderMode,
 } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
+import {
+    IBookmarkState, IBookmarkStateWithoutUUID,
+} from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { formatTime } from "readium-desktop/common/utils/time";
-import { LocatorView } from "readium-desktop/common/views/locator";
 import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
@@ -36,7 +37,6 @@ import {
     registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { apiAction } from "readium-desktop/renderer/reader/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import {
@@ -63,14 +63,16 @@ import {
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight, publicationHasMediaOverlays,
     readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
-    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, TTSStateEnum, ttsStop,
+    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, TTSStateEnum, ttsStop, ttsVoice,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMountAndReturnBus } from "../pdf/driver";
-import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
+import {
+    readerLocalActionBookmarks, readerLocalActionSetConfig, readerLocalActionSetLocator,
+} from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, TdivinaReadingMode,
 } from "./options-values";
@@ -102,14 +104,13 @@ interface IState {
 
     ttsState: TTSStateEnum;
     ttsPlaybackRate: string;
+    ttsVoice: SpeechSynthesisVoice | null;
+
     mediaOverlaysState: MediaOverlaysStateEnum;
     mediaOverlaysPlaybackRate: string;
 
-    visibleBookmarkList: LocatorView[];
+    visibleBookmarkList: IBookmarkState[];
     currentLocation: LocatorExtended;
-    bookmarks: LocatorView[] | undefined;
-
-    readerMode: ReaderMode;
 
     divinaReadingMode: TdivinaReadingMode;
     divinaReadingModeSupported: TdivinaReadingMode[];
@@ -175,14 +176,13 @@ class Reader extends React.Component<IProps, IState> {
 
             ttsState: TTSStateEnum.STOPPED,
             ttsPlaybackRate: "1",
+            ttsVoice: null,
+
             mediaOverlaysState: MediaOverlaysStateEnum.STOPPED,
             mediaOverlaysPlaybackRate: "1",
 
             visibleBookmarkList: [],
             currentLocation: undefined,
-            bookmarks: undefined,
-
-            readerMode: ReaderMode.Attached,
 
             divinaNumberOfPages: 0,
             divinaReadingMode: "single",
@@ -210,6 +210,7 @@ class Reader extends React.Component<IProps, IState> {
         this.handleTTSPrevious = this.handleTTSPrevious.bind(this);
         this.handleTTSNext = this.handleTTSNext.bind(this);
         this.handleTTSPlaybackRate = this.handleTTSPlaybackRate.bind(this);
+        this.handleTTSVoice = this.handleTTSVoice.bind(this);
 
         this.handleMediaOverlaysPlay = this.handleMediaOverlaysPlay.bind(this);
         this.handleMediaOverlaysPause = this.handleMediaOverlaysPause.bind(this);
@@ -232,7 +233,6 @@ class Reader extends React.Component<IProps, IState> {
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
         this.handleLinkClick = this.handleLinkClick.bind(this);
-        this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
 
     }
@@ -337,16 +337,14 @@ class Reader extends React.Component<IProps, IState> {
             await this.loadPublicationIntoViewport();
         }
 
-        this.unsubscribe = apiSubscribe([
-            "reader/deleteBookmark",
-            "reader/addBookmark",
-        ], this.findBookmarks);
-
-        this.getReaderMode();
+        await this.checkBookmarks();
     }
 
-    public async componentDidUpdate(oldProps: IProps, oldState: IState) {
-        if (oldState.bookmarks !== this.state.bookmarks) {
+    public async componentDidUpdate(oldProps: IProps, _oldState: IState) {
+        // if (oldProps.readerMode !== this.props.readerMode) {
+            // console.log("READER MODE = ", this.props.readerMode === ReaderMode.Detached ? "detached" : "attached");
+        // }
+        if (oldProps.bookmarks !== this.props.bookmarks) {
             await this.checkBookmarks();
         }
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
@@ -432,8 +430,10 @@ class Reader extends React.Component<IProps, IState> {
                         handleTTSNext={this.handleTTSNext}
                         handleTTSPause={this.handleTTSPause}
                         handleTTSPlaybackRate={this.handleTTSPlaybackRate}
+                        handleTTSVoice={this.handleTTSVoice}
                         ttsState={this.state.ttsState}
                         ttsPlaybackRate={this.state.ttsPlaybackRate}
+                        ttsVoice={this.state.ttsVoice}
 
                         handleMediaOverlaysPlay={this.handleMediaOverlaysPlay}
                         handleMediaOverlaysResume={this.handleMediaOverlaysResume}
@@ -449,7 +449,7 @@ class Reader extends React.Component<IProps, IState> {
                         handleMenuClick={this.handleMenuButtonClick}
                         handleSettingsClick={this.handleSettingsClick}
                         fullscreen={this.state.fullscreen}
-                        mode={this.state.readerMode}
+                        mode={this.props.readerMode}
                         handleFullscreenClick={this.handleFullscreenClick}
                         handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
@@ -1090,16 +1090,6 @@ class Reader extends React.Component<IProps, IState> {
                 language: this.props.lang,
             };
 
-            // let manifestJson: any;
-            // try {
-
-            //     const manifestBuffer = Buffer.from(this.props.publicationView.r2PublicationBase64, "base64");
-            //     const manifestStr = manifestBuffer.toString();
-            //     manifestJson = JSON.parse(manifestStr);
-            // } catch (e) {
-            //     console.log("divina manifest parsing error");
-            // }
-
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
 
             let manifestUrl = this.props.manifestUrlR2Protocol;
@@ -1236,7 +1226,6 @@ class Reader extends React.Component<IProps, IState> {
         }
         this.ttsOverlayEnableNeedsSync = false;
 
-        this.findBookmarks();
         this.saveReadingLocation(loc);
         this.setState({ currentLocation: getCurrentReadingLocation() });
         // No need to explicitly refresh the bookmarks status here,
@@ -1246,14 +1235,14 @@ class Reader extends React.Component<IProps, IState> {
 
     // check if a bookmark is on the screen
     private async checkBookmarks() {
-        if (!this.state.bookmarks) {
+        if (!this.props.bookmarks) {
             return;
         }
 
         const locator = this.state.currentLocation ? this.state.currentLocation.locator : undefined;
 
         const visibleBookmarkList = [];
-        for (const bookmark of this.state.bookmarks) {
+        for (const bookmark of this.props.bookmarks) {
             // calling into the webview via IPC is expensive,
             // let's filter out ahead of time based on document href
             if (!locator || locator.href === bookmark.locator.href) {
@@ -1388,17 +1377,12 @@ class Reader extends React.Component<IProps, IState> {
 
                 const found = visibleBookmark.find(({ locator: { href: _href } }) => href === _href);
                 if (found) {
-                    try {
-                        await apiAction("reader/deleteBookmark", found.identifier);
-                    } catch (e) {
-                        console.error("Error to fetch api reader/deleteBookmark", e);
-                    }
+                    this.props.deleteBookmark(found);
                 } else {
-                    try {
-                        await apiAction("reader/addBookmark", this.props.pubId, locator, name);
-                    } catch (e) {
-                        console.error("Error to fetch api reader/addBookmark", e);
-                    }
+                    this.props.setBookmark({
+                        locator,
+                        name,
+                    });
                 }
             }
 
@@ -1433,11 +1417,7 @@ class Reader extends React.Component<IProps, IState> {
 
             if (deleteAllVisibleBookmarks) {
                 for (const bookmark of visibleBookmark) {
-                    try {
-                        await apiAction("reader/deleteBookmark", bookmark.identifier);
-                    } catch (e) {
-                        console.error("Error to fetch api reader/deleteBookmark", e);
-                    }
+                    this.props.deleteBookmark(bookmark);
                 }
 
                 // we do not add the current reading location to bookmarks (just toggle)
@@ -1473,11 +1453,10 @@ class Reader extends React.Component<IProps, IState> {
                     name = `${timestamp} (${percent}%)`;
                 }
 
-                try {
-                    await apiAction("reader/addBookmark", this.props.pubId, locator, name);
-                } catch (e) {
-                    console.error("Error to fetch api reader/addBookmark", e);
-                }
+                this.props.setBookmark({
+                    locator,
+                    name,
+                });
             }
         }
     }
@@ -1488,7 +1467,6 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleReaderDetach() {
         this.props.detachReader();
-        this.setState({ readerMode: ReaderMode.Detached });
     }
 
     private handleFullscreenClick() {
@@ -1507,7 +1485,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleTTSPlay() {
         ttsClickEnable(true);
-        ttsPlay(parseFloat(this.state.ttsPlaybackRate));
+        ttsPlay(parseFloat(this.state.ttsPlaybackRate), this.state.ttsVoice);
     }
     private handleTTSPause() {
         ttsPause();
@@ -1528,6 +1506,18 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSPlaybackRate(speed: string) {
         ttsPlaybackRate(parseFloat(speed));
         this.setState({ ttsPlaybackRate: speed });
+    }
+    private handleTTSVoice(voice: SpeechSynthesisVoice | null) {
+        // alert(`${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
+        const v = voice ? {
+            default: voice.default,
+            lang: voice.lang,
+            localService: voice.localService,
+            name: voice.name,
+            voiceURI: voice.voiceURI,
+        } : null;
+        ttsVoice(v);
+        this.setState({ ttsVoice: v });
     }
 
     private handleMediaOverlaysPlay() {
@@ -1573,7 +1563,7 @@ class Reader extends React.Component<IProps, IState> {
         if (ttsWasPlaying) {
             ttsStop();
             setTimeout(() => {
-                ttsPlay(parseFloat(this.state.ttsPlaybackRate));
+                ttsPlay(parseFloat(this.state.ttsPlaybackRate), this.state.ttsVoice);
             }, 300);
         }
 
@@ -1659,20 +1649,6 @@ class Reader extends React.Component<IProps, IState> {
 
         this.handleSettingsSave(readerConfig);
     }
-
-    private findBookmarks() {
-        apiAction("reader/findBookmarks", this.props.pubId)
-            .then((bookmarks) => this.setState({ bookmarks }))
-            .catch((error) => console.error("Error to fetch api reader/findBookmarks", error));
-    }
-
-    // TODO
-    // replaced getMode API with an action broadcasted to every reader and catch by reducers
-    private getReaderMode = () => {
-        apiAction("reader/getMode")
-            .then((mode) => this.setState({ readerMode: mode }))
-            .catch((error) => console.error("Error to fetch api reader/getMode", error));
-    }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
@@ -1725,6 +1701,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         searchEnable: state.search.enable,
         manifestUrlR2Protocol: state.reader.info.manifestUrlR2Protocol,
         winId: state.win.identifier,
+        bookmarks: state.reader.bookmark.map(([, v]) => v),
+        readerMode: state.mode,
     };
 };
 
@@ -1756,6 +1734,12 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
                 dispatch(readerActions.configSetDefault.build(config));
             }
+        },
+        setBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
+            dispatch(readerLocalActionBookmarks.push.build(bookmark));
+        },
+        deleteBookmark: (bookmark: IBookmarkState) => {
+            dispatch(readerLocalActionBookmarks.pop.build(bookmark));
         },
     };
 };

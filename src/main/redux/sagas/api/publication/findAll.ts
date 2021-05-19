@@ -5,16 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { call as callTyped } from "typed-redux-saga/macro";
 import { diMainGet } from "readium-desktop/main/di";
 import { aboutFiltered } from "readium-desktop/main/filter";
-import { call } from "typed-redux-saga";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
+const convertDocs = async (docs: PublicationDocument[], publicationViewConverter: PublicationViewConverter) => {
+    const pubs = [];
+    for (const doc of docs) {
+        pubs.push(await publicationViewConverter.convertDocumentToView(doc));
+    }
+    return pubs;
+};
 export function* findAll() {
 
-    const docs = yield* call(() => diMainGet("publication-repository").findAll());
-    const pubConverter = yield* call(() => diMainGet("publication-view-converter"));
-    const pubs = docs.map((doc) => {
-        return pubConverter.convertDocumentToView(doc);
-    });
-    return aboutFiltered(pubs);
+    const docs = yield* callTyped(() => diMainGet("publication-repository").findAll());
+    const publicationViewConverter = yield* callTyped(() => diMainGet("publication-view-converter"));
+    const publicationViews = yield* callTyped(() => convertDocs(docs, publicationViewConverter));
+    return aboutFiltered(publicationViews);
 }

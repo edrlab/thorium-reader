@@ -24,7 +24,7 @@ module.exports = {
         "prettier",
         "plugin:prettier/recommended",
     ],
-    plugins: ["unused-imports", "prettier"],
+    plugins: ["unused-imports", "prettier", "eslint-plugin-local-rules"],
     rules: {
         quotes: ["error", "double"],
         "comma-dangle": ["error", "always-multiline"],
@@ -96,6 +96,16 @@ module.exports = {
 
         "prettier/prettier": "error",
     },
+    overrides: [
+        {
+            files: ["./**/*.ts"],
+            excludedFiles: ["./**/*.spec.ts"],
+            rules: {
+                "local-rules/typed-redux-saga-use-typed-effects": "error",
+                "local-rules/typed-redux-saga-delegate-effects": "error",
+            },
+        },
+    ],
     // overrides: [
     //     {
     //         files: ["*.ts", "*.tsx"],

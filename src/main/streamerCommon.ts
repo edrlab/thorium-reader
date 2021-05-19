@@ -106,23 +106,79 @@ export function setupMathJaxTransformer(getUrl: () => string) {
         const settings = store.getState().reader.defaultConfig;
 
         if (settings.enableMathJax) {
-
+            const thorium_mathJax_script = "thorium_mathJax_script";
             const script = `
-            <script type="text/javascript">
-    window.MathJax = {
-        startup: {
-            ready: () => {
-                console.log('MathJax is loaded, but not yet initialized');
-                window.MathJax.startup.defaultReady();
-                console.log('MathJax is initialized, and the initial typeset is queued');
-                window.MathJax.startup.promise.then(() => {
-                    console.log('MathJax initial typesetting complete');
-                });
+<script id='${thorium_mathJax_script}' type="text/javascript">
+// document.addEventListener("DOMContentLoaded", () => {
+// });
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        var thisEl = document.getElementById('${thorium_mathJax_script}');
+
+        if (window.MathJax) {
+            var msg = 'window.MathJax already exist, SKIP.';
+            if (thisEl) {
+                thisEl.setAttribute('data-msg', msg);
             }
+            console.log(msg);
+            return;
         }
-    };
-            </script>
-            <script type="text/javascript" async="async" src="${getUrl()}"> </script>`;
+
+        if (document.getElementById('__${thorium_mathJax_script}')) {
+            var msg = '${thorium_mathJax_script} already exist, SKIP.';
+            if (thisEl) {
+                thisEl.setAttribute('data-msg', msg);
+            }
+            console.log(msg);
+            return;
+        }
+
+        window.MathJax = {
+            startup: {
+                ready: () => {
+
+                    var msg = 'MathJax is loaded, but not yet initialized';
+                    if (thisEl) {
+                        thisEl.setAttribute('data-msg', msg);
+                    }
+                    console.log(msg);
+
+                    window.MathJax.startup.defaultReady();
+
+                    msg = 'MathJax is initialized, and the initial typeset is queued';
+                    if (thisEl) {
+                        thisEl.setAttribute('data-msg', msg);
+                    }
+                    console.log(msg);
+
+                    window.MathJax.startup.promise.then(() => {
+                        var msg = 'MathJax initial typesetting complete';
+                        if (thisEl) {
+                            thisEl.setAttribute('data-msg', msg);
+                        }
+                        console.log(msg);
+                    });
+                }
+            }
+        };
+
+        var msg = 'Thorium MathJax ...';
+        if (thisEl) {
+            thisEl.setAttribute('data-msg', msg);
+        }
+        console.log(msg);
+
+        var scriptEl = document.createElement('script');
+        scriptEl.setAttribute('id', '__${thorium_mathJax_script}');
+        // scriptEl.setAttribute('async', 'async');
+        scriptEl.setAttribute('onload', 'javascript:console.log("Thorium MathJax LOADED.")');
+        scriptEl.setAttribute('src', '${getUrl()}');
+        document.head.appendChild(scriptEl);
+    }, 500);
+});
+</script>
+`;
+            // <script type="text/javascript" async="async" src="${getUrl()}"> </script>
             return str.replace(/<\/head>/, `${script}</head>`);
         } else {
             return str;

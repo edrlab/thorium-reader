@@ -147,14 +147,33 @@ let config = Object.assign(
                     ],
                 },
                 {
-                    exclude: /node_modules/,
-                    test: /\.tsx?$/,
+                    test: /\.tsx$/,
                     loader: useLegacyTypeScriptLoader
                         ? "awesome-typescript-loader"
                         : "ts-loader",
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
                     },
+                },
+                {
+                    test: /\.ts$/,
+                    use: [
+                        {
+                            loader: "babel-loader",
+                            options: {
+                                presets: [],
+                                plugins: ["macros"],
+                            },
+                        },
+                        {
+                            loader: useLegacyTypeScriptLoader
+                                ? "awesome-typescript-loader"
+                                : "ts-loader",
+                            options: {
+                                transpileOnly: true, // checkTypeScriptSkip
+                            },
+                        },
+                    ],
                 },
                 {
                     loader: "file-loader?name=assets/[name].[md5:hash].[ext]",

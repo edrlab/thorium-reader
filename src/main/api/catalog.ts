@@ -32,9 +32,10 @@ export const CATALOG_CONFIG_ID = "catalog";
 const NB_PUB = 5;
 
 const viewToR2Pub = (view: PublicationView) => {
-    const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
-    const r2PublicationJson = JSON.parse(r2PublicationStr);
-    const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+    // Legacy Base64 data blobs
+    // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+    // const r2PublicationJson = JSON.parse(r2PublicationStr);
+    const r2Publication = TaJsonDeserialize(view.r2PublicationJson, R2Publication);
 
     return r2Publication;
 };
@@ -54,12 +55,6 @@ const debug = debug_("readium-desktop:main:api:catalog");
 export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
-
-    // @inject(diSymbolTable["config-repository"])
-    // private readonly configRepository!: ConfigRepository<CatalogConfig>;
-
-    // @inject(diSymbolTable["locator-repository"])
-    // private readonly locatorRepository!: LocatorRepository;
 
     @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
@@ -136,19 +131,22 @@ export class CatalogApi implements ICatalogApi {
 
     private async getPublicationView() {
 
-        const errorDeletePub = (doc: PublicationDocument | undefined) => {
+        // eslint-disable-next-line unused-imports/no-unused-vars
+        const errorDeletePub = (doc: PublicationDocument | undefined, e: any) => {
             debug("Error in convertDocumentToView doc=", doc);
 
             this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc?.title || ""));
 
             debug(`${doc?.identifier} => ${doc?.title} should be removed`);
             try {
+                const str = typeof e.toString === "function" ? e.toString() : (typeof e.message === "string" ? e.message : (typeof e === "string" ? e : JSON.stringify(e)));
+
                 // tslint:disable-next-line: no-floating-promises
-                // this.publicationService.deletePublication(doc.identifier);
+                // this.publicationService.deletePublication(doc.identifier, str);
                 const sagaMiddleware = diMainGet("saga-middleware");
                 const pubApi = diMainGet("publication-api");
                 // tslint:disable-next-line: no-floating-promises
-                sagaMiddleware.run(pubApi.delete, doc.identifier).toPromise();
+                sagaMiddleware.run(pubApi.delete, doc.identifier, str).toPromise();
             } catch {
                 // ignore
             }
@@ -166,28 +164,25 @@ export class CatalogApi implements ICatalogApi {
                 )
                 .filter((v) => !!v);
 
-        const lastAddedPublicationsView =
-            lastAddedPublicationsDocument.map((doc) => {
-                try {
-                    return this.publicationViewConverter.convertDocumentToView(doc);
-                } catch (e) {
-                    debug("lastadded publication view converter", e);
-                    errorDeletePub(doc);
-                }
+        const lastAddedPublicationsView = [];
+        for (const doc of lastAddedPublicationsDocument) {
+            try {
+                lastAddedPublicationsView.push(await this.publicationViewConverter.convertDocumentToView(doc));
+            } catch (e) {
+                debug("lastadded publication view converter", e);
+                errorDeletePub(doc, e);
+            }
+        }
 
-                return undefined;
-            }).filter((v) => !!v);
-        const lastReadedPublicationsView =
-            lastReadedPublicationDocument.map((doc) => {
-                try {
-                    return this.publicationViewConverter.convertDocumentToView(doc);
-                } catch (e) {
-                    debug("lastreaded publication view converter", e);
-                    errorDeletePub(doc);
-                }
-
-                return undefined;
-            }).filter((v) => !!v);
+        const lastReadedPublicationsView = [];
+        for (const doc of lastReadedPublicationDocument) {
+            try {
+                lastReadedPublicationsView.push(await this.publicationViewConverter.convertDocumentToView(doc));
+            } catch (e) {
+                debug("lastreaded publication view converter", e);
+                errorDeletePub(doc, e);
+            }
+        }
 
         const audio = {
             readed: lastReadedPublicationsView.filter(isAudiobookFn),
@@ -237,10 +232,7 @@ export class CatalogApi implements ICatalogApi {
 
     private async getLastAddedPublicationDocument() {
 
-        const lastAddedPublications = await this.publicationRepository.find({
-            sort: [{ createdAt: "desc" }],
-            selector: {},
-        });
+        const lastAddedPublications = await this.publicationRepository.findAllSortDesc();
 
         return lastAddedPublications;
     }

@@ -7,11 +7,15 @@
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
+// import { JsonMap } from "readium-desktop/typings/json";
+
 export interface LsdInfo {
     statusUrl: string;
     lsdStatus?: LsdStatus;
 
-    r2LSDBase64: string;
+    // Legacy Base64 data blobs
+    // r2LSDBase64: string;
+    // r2LSDJson: JsonMap;
 }
 
 export interface LcpRights {
@@ -34,7 +38,9 @@ export interface LcpInfo {
         type?: string,
     };
 
-    r2LCPBase64: string;
+    // Legacy Base64 data blobs
+    // r2LCPBase64: string;
+    // r2LCPJson: JsonMap;
 }
 
 export interface LsdEvent {
@@ -56,7 +62,7 @@ export interface LsdLink {
 }
 
 export interface LsdStatus {
-    events?: LsdEvent[];
+    // events?: LsdEvent[];
     id: string;
     links: LsdLink[];
     message: string;

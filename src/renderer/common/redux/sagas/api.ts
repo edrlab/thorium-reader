@@ -9,6 +9,7 @@ import { TApiMethod, TApiMethodName } from "readium-desktop/common/api/api.type"
 import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
 import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
 
 /**

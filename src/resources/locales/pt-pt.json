@@ -344,12 +344,14 @@
         },
         "tts": {
             "activate": "Ativar Texto para fala",
+            "default": "",
             "next": "Próximo Texto para fala",
             "pause": "Pausar Texto para fala",
             "play": "Tocar Texto para fala",
             "previous": "Texto para fala anterior",
             "speed": "Velocidade de Texto para fala",
-            "stop": "Parar Texto para fala"
+            "stop": "Parar Texto para fala",
+            "voice": ""
         }
     },
     "settings": {

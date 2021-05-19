@@ -5,33 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { app, clipboard } from "electron";
+import { clipboard } from "electron";
 import { inject, injectable } from "inversify";
 import { IReaderApi } from "readium-desktop/common/api/interface/readerApi.interface";
-import { LocatorType } from "readium-desktop/common/models/locator";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { Translator } from "readium-desktop/common/services/translator";
-import { LocatorView } from "readium-desktop/common/views/locator";
-import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
-import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 @injectable()
 export class ReaderApi implements IReaderApi {
-    @inject(diSymbolTable["locator-repository"])
-    private readonly locatorRepository!: LocatorRepository;
-
-    @inject(diSymbolTable["locator-view-converter"])
-    private readonly locatorViewConverter!: LocatorViewConverter;
 
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
@@ -71,81 +60,6 @@ export class ReaderApi implements IReaderApi {
     //     const savedDoc = await this.locatorRepository.save(newDoc);
     //     return this.locatorViewConverter.convertDocumentToView(savedDoc);
     // }
-
-    public async getLastReadingLocation(publicationIdentifier: string): Promise<LocatorExtended | undefined> {
-        // const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-        //     publicationIdentifier,
-        //     LocatorType.LastReadingLocation,
-        // );
-
-        // if (docs.length === 0) {
-        //     return null;
-        // }
-
-        // return this.locatorViewConverter.convertDocumentToView(docs[0]);
-
-        const state = this.store.getState();
-        const locator = state.win.registry.reader[publicationIdentifier]?.reduxState.locator;
-
-        return locator;
-    }
-
-    public async findBookmarks(publicationIdentifier: string): Promise<LocatorView[]> {
-        const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-            publicationIdentifier,
-            LocatorType.Bookmark,
-        );
-
-        return docs.map((doc) => {
-            return this.locatorViewConverter.convertDocumentToView(doc);
-        });
-    }
-
-    public async updateBookmark(
-        identifier: string,
-        publicationIdentifier: string,
-        locator: R2Locator,
-        name?: string,
-    ): Promise<void> {
-
-        const newDoc = {
-            identifier,
-            publicationIdentifier,
-            locatorType: LocatorType.Bookmark,
-            locator: Object.assign({}, locator),
-            name,
-        };
-        await this.locatorRepository.save(newDoc);
-    }
-
-    public async addBookmark(
-        publicationIdentifier: string,
-        locator: R2Locator,
-        name?: string,
-    ): Promise<void> {
-
-        const loc = {
-            publicationIdentifier,
-            locatorType: LocatorType.Bookmark,
-            locator: Object.assign({}, locator),
-            name,
-        };
-        await this.locatorRepository.save(loc);
-
-        if (app.accessibilitySupportEnabled) {
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("catalog.addTagsButton")})`));
-        }
-    }
-
-    public async deleteBookmark(identifier: string): Promise<void> {
-        await this.locatorRepository.delete(identifier);
-
-        if (app.accessibilitySupportEnabled) {
-            this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                `${this.translator.translate("reader.navigation.bookmarkTitle")} (${this.translator.translate("reader.marks.delete")})`));
-        }
-    }
 
     // TODO
     // clipboard can be an action catched in saga, nothing to return
@@ -203,11 +117,5 @@ export class ReaderApi implements IReaderApi {
             publicationIdentifier));
 
         return true;
-    }
-
-    // TODO
-    // may be removed and replaced with a action dispatched to every reader
-    public async getMode() {
-        return this.store.getState().mode;
     }
 }

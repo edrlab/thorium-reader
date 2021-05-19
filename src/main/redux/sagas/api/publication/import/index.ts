@@ -9,22 +9,29 @@ import { ok } from "assert";
 import * as debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
-import { allTyped, callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 import { SCHEME } from "../../../getEventChannel";
 import { openWindowModalAndReturnResult } from "../../../modal/open";
 import { importFromFormService } from "./importFromForm";
+import { all as allTyped, call as callTyped } from "typed-redux-saga/macro";
 
 import { importFromFsService } from "./importFromFs";
 import { importFromLinkService } from "./importFromLink";
 import { importFromStringService } from "./importFromString";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import");
+
+const convertDoc = async (doc: PublicationDocument, publicationViewConverter: PublicationViewConverter) => {
+    return await publicationViewConverter.convertDocumentToView(doc);
+};
 
 export function* importFromLink(
     link: IOpdsLinkView,
@@ -42,7 +49,7 @@ export function* importFromLink(
         }
 
         const publicationViewConverter = diMainGet("publication-view-converter");
-        const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+        const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
         if (alreadyImported) {
             yield put(
@@ -96,7 +103,8 @@ export function* importFromString(
             }
 
             const publicationViewConverter = diMainGet("publication-view-converter");
-            return publicationViewConverter.convertDocumentToView(publicationDocument);
+
+            return yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
         } catch (error) {
             throw new Error(`importFromLink error ${error}`);
@@ -135,7 +143,8 @@ export function* importFromFs(
                     if (!publicationDocument) {
                         throw new Error("publicationDocument not imported on db");
                     }
-                    const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+
+                    const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
                     if (alreadyImported) {
                         yield put(
@@ -266,7 +275,7 @@ export function* importFromForm(): SagaGenerator<PublicationView[]> {
         if (!publicationDocument) {
             throw new Error("publicationDocument not imported on db");
         }
-        const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+        const publicationView = yield* callTyped(() => publicationViewConverter.convertDocumentToView(publicationDocument));
 
         if (alreadyImported) {
             yield put(

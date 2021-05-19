@@ -13,7 +13,9 @@ import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { error } from "readium-desktop/main/error";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, cancelled, put } from "redux-saga/effects";
+import { SagaGenerator } from "typed-redux-saga";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:api";
@@ -28,7 +30,7 @@ const getSymbolName = (apiName: string) => {
     throw new Error("Wrong API name called " + apiName);
 };
 
-function* processRequest(requestAction: apiActions.request.TAction) {
+function* processRequest(requestAction: apiActions.request.TAction): SagaGenerator<void> {
     const { api } = requestAction.meta;
 
     try {
@@ -37,7 +39,7 @@ function* processRequest(requestAction: apiActions.request.TAction) {
         const apiModule = yield call(() => diMainGet(getSymbolName(api.moduleId)));
 
         const result = yield call(
-            () => apiModule[api.methodId](...(requestAction.payload || [])),
+            () => (apiModule as any)[api.methodId](...(requestAction.payload || [])),
         );
 
         yield put(apiActions.result.build(api, result));

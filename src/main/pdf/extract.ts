@@ -8,6 +8,8 @@
 import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
 
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+
 import { IInfo } from "./extract.type";
 
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
@@ -18,7 +20,21 @@ export const extractPDFData =
     async (pdfPath: string)
         : Promise<TExtractPdfData> => {
 
-        pdfPath = "pdfjs-extract://" + encodeURIComponent(pdfPath);
+        // e.g.
+        // /PATH/TO/この世界の謎 %_%20-%2F=.pdf
+        // encodeURIComponent():
+        // %2FPATH%2FTO%2F%E3%81%93%E3%81%AE%E4%B8%96%E7%95%8C%E3%81%AE%E8%AC%8E%20%25_%2520-%252F%3D.pdf
+        // ( https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent )
+        //
+        // ... but the Electron registerFileProtocol() handler receives:
+        // /PATH/TO/%E3%81%93%E3%81%AE%E4%B8%96%E7%95%8C%E3%81%AE%E8%AC%8E %_%20-%2F=.pdf
+        // => unicode chars remain escaped!
+        // So these must be decodeURIComponent() for filesystem API calls,
+        // ...but the lonely non-encoded percent char triggers a crash if not handled correctly!
+        // We double-encode the path in order to work around the registerFileProtocol() decoding behaviour:
+
+        pdfPath = "pdfjs-extract://host/" + encodeURIComponent_RFC3986(encodeURIComponent_RFC3986(pdfPath));
+        debug("extractPDFData", pdfPath);
 
         let win: BrowserWindow;
 
@@ -29,6 +45,7 @@ export const extractPDFData =
                 height: 600,
                 // show: false,
                 webPreferences: {
+                    enableRemoteModule: false,
                     nodeIntegration: true,
                 },
             });

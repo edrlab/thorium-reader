@@ -15,3 +15,4 @@ src/renderer/assets/*
 src/renderer/reader/pdf/*
 
 src/*
+webpack.config.*

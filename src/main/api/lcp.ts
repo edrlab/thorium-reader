@@ -75,7 +75,7 @@ export class LcpApi implements ILcpApi {
                 // const epubPath = this.publicationStorage.getPublicationEpubPath(publicationView.identifier);
                 // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
 
-                const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
+                const publicationView = await this.publicationViewConverter.convertDocumentToView(publicationDocument);
                 if (!publicationView.lcp) {
                     debug("LCP !!?");
                     return;

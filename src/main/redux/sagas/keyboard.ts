@@ -10,12 +10,12 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";
-import { put } from "typed-redux-saga";
+import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
 
 const filename_ = "readium-desktop:main:redux:sagas:keyboard";
 const debug = debug_(filename_);
@@ -33,7 +33,7 @@ function setShortcuts(action: keyboardActions.setShortcuts.TAction) {
         debug("Keyboard shortcuts saving:", action.payload.shortcuts);
         keyboardShortcuts.saveUser(action.payload.shortcuts);
     } else {
-        debug("Keyboard shortcuts NOT saving (defaults):", action.payload.shortcuts);
+        debug("Keyboard shortcuts NOT saving (defaults):" /*action.payload.shortcuts*/);
     }
 
 }
@@ -44,7 +44,7 @@ function* keyboardReload(action: keyboardActions.reloadShortcuts.TAction) {
     }
     const okay = action.payload.defaults || keyboardShortcuts.loadUser();
 
-    debug(`Keyboard shortcuts reload JSON (defaults: ${action.payload.defaults}) => ${okay}`);
+    debug(`Keyboard shortcuts reload JSON (defaults: ${/*action.payload.defaults*/""}) => ${okay}`);
 
     // if (DEBUG_KEYBOARD) {
     //     const jsonDiff = require("json-diff");
@@ -57,10 +57,10 @@ function* keyboardReload(action: keyboardActions.reloadShortcuts.TAction) {
 
     if (okay) {
         const currentKeyboardShortcuts = keyboardShortcuts.getAll();
-        yield put(keyboardActions.setShortcuts.build(currentKeyboardShortcuts, true)); // !action.payload.defaults
+        yield* putTyped(keyboardActions.setShortcuts.build(currentKeyboardShortcuts, true)); // !action.payload.defaults
 
         const translator = yield* callTyped(() => diMainGet("translator"));
-        yield put(toastActions.openRequest.build(ToastType.Success,
+        yield* putTyped(toastActions.openRequest.build(ToastType.Success,
             `${translator.translate("settings.keyboard.keyboardShortcuts")}`));
     }
 }

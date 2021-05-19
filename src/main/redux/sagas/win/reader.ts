@@ -11,13 +11,14 @@ import { ReaderMode } from "readium-desktop/common/models/reader";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
 
@@ -36,6 +37,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
+    const mode = yield* selectTyped((state: RootState) => state.mode);
 
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
@@ -48,6 +50,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             },
             reader: reader?.reduxState,
             keyboard,
+            mode,
         },
     } as readerIpc.EventPayload);
 }

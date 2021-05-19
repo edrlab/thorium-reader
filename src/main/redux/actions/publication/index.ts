@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as deletePublication from "./deletePublication";
+import * as addPublication from "./addPublication";
 
 export {
     deletePublication,
+    addPublication,
 };

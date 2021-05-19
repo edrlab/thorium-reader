@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { SagaGenerator } from "typed-redux-saga";

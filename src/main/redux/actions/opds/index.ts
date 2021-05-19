@@ -5,13 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export function* mapGenerator<T = unknown, TReturn = any, TNext = unknown>(
-    effects: Array<Generator<T, TReturn, TNext>>,
-) {
-    const tasks: TReturn[] = [];
-    for (const e of effects) {
-        const res = yield* e;
-        tasks.push(res);
-    }
-    return tasks;
-}
+import * as deleteOpdsFeed from "./deleteOpdsFeed";
+import * as addOpdsFeed from "./addOpdsFeed";
+
+export {
+    deleteOpdsFeed,
+    addOpdsFeed,
+};

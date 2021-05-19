@@ -344,12 +344,14 @@
         },
         "tts": {
             "activate": "Aktyvuoti teksto įgarsinimą",
+            "default": "",
             "next": "Tolesnis teksto įgarsinimas",
             "pause": "Pristabdyti teksto įgarsinimą",
             "play": "Atkurti teksto įgarsinimą",
             "previous": "Ankstesnis teksto įgarsinimas",
             "speed": "Teksto įgarsinimo atkūrimo sparta",
-            "stop": "Sustabdyti teksto įgarsinimą"
+            "stop": "Sustabdyti teksto įgarsinimą",
+            "voice": ""
         }
     },
     "settings": {

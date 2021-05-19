@@ -11,7 +11,6 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
 import {
@@ -19,15 +18,19 @@ import {
 } from "readium-desktop/main/event";
 import { cleanCookieJar } from "readium-desktop/main/network/fetch";
 import {
-    CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, httpPost,
-    httpSetToConfigRepoOpdsAuthenticationToken, IOpdsAuthenticationToken,
+    httpPost,
+    httpSetAuthenticationToken,
+    IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
 } from "readium-desktop/main/network/http";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { all, call, put } from "redux-saga/effects";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
+import { all, put } from "redux-saga/effects";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { URL } from "url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IParseRequestFromCustomProtocol } from "readium-desktop/main/redux/sagas/modal/request";
 import { openWindowModalAndReturnResult } from "./modal/open";
@@ -91,7 +94,7 @@ export function* opdsAuthFlow([doc, baseUrl]: TOpdsAuthenticationChannel) {
         authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
     };
     debug("authentication credential config", authCredentials);
-    yield* callTyped(httpSetToConfigRepoOpdsAuthenticationToken, authCredentials);
+    yield* callTyped(httpSetAuthenticationToken, authCredentials);
 
     try {
         const result = yield* callTyped(openWindowModalAndReturnResult, browserUrl);
@@ -123,20 +126,22 @@ function* opdsAuthWipeData() {
 
     yield* callTyped(cleanCookieJar);
 
-    const configDoc = yield* callTyped(() => diMainGet("config-repository"));
+    yield* callTyped(wipeAuthenticationTokenStorage);
 
-    const docs = yield* callTyped(() => configDoc.findAll());
+    // const configDoc = yield* callTyped(() => diMainGet("config-repository"));
 
-    if (Array.isArray(docs)) {
-        for (const doc of docs) {
+    // const docs = yield* callTyped(() => configDoc.findAll());
 
-            if (doc.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)) {
+    // if (Array.isArray(docs)) {
+    //     for (const doc of docs) {
 
-                debug("delete", doc.identifier);
-                yield call(() => configDoc.delete(doc.identifier));
-            }
-        }
-    }
+    //         if (doc.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)) {
+
+    //             debug("delete", doc.identifier);
+    //             yield call(() => configDoc.delete(doc.identifier));
+    //         }
+    //     }
+    // }
 
     yield put(toastActions.openRequest.build(ToastType.Success, "👍"));
     debug("End of wipping auth data");
@@ -261,7 +266,7 @@ async function opdsSetAuthCredentials(
                 if (typeof newCredentials.accessToken === "string") {
 
                     debug("new opds authentication credentials");
-                    await httpSetToConfigRepoOpdsAuthenticationToken(newCredentials);
+                    await httpSetAuthenticationToken(newCredentials);
 
                     return [, undefined];
                 }
@@ -287,7 +292,7 @@ async function opdsSetAuthCredentials(
             if (typeof newCredentials.accessToken === "string") {
 
                 debug("new opds authentication credentials");
-                await httpSetToConfigRepoOpdsAuthenticationToken(newCredentials);
+                await httpSetAuthenticationToken(newCredentials);
 
                 return [, undefined];
             }
@@ -314,8 +319,9 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
         }
 
         case "http://librarysimplified.org/authtype/SAML-2.0": {
-            browserUrl = `${auth.links?.authenticate?.url
-                }&redirect_uri=${encodeURI("opds://authorize")}`;
+            browserUrl = `${
+                auth.links?.authenticate?.url
+            }&redirect_uri=${encodeURIComponent_RFC3986("opds://authorize")}`;
             break;
         }
 
@@ -323,7 +329,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
         case "http://opds-spec.org/auth/basic":
         case "http://opds-spec.org/auth/oauth/password": {
 
-            const html = encodeURIComponent(
+            const html = encodeURIComponent_RFC3986(
                 htmlLoginTemplate(
                     `${SCHEME}://authorize`,
                     auth.labels?.login,
@@ -605,7 +611,7 @@ const htmlLoginTemplate = (
             outline-offset: 0;
         }
 
-        input[type=submit] {
+        input[type=submit], input[type=button] {
             padding: 0 18px;
             height: 29px;
             font-size: 12px;
@@ -629,7 +635,7 @@ const htmlLoginTemplate = (
             padding-left: 1em;
         }
 
-        input[type=submit]:active {
+        input[type=submit]:active, input[type=button]:active {
             background: #cde5ef;
             border-color: #9eb9c2 #b3c0c8 #b4ccce;
             -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
@@ -650,7 +656,7 @@ const htmlLoginTemplate = (
         <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
         <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
         <p class="submit">
-        <input type="submit" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}">
+        <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
         <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
         </p>
         </form>

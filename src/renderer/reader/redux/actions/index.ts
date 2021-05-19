@@ -11,6 +11,7 @@ import * as readerLocalActionPicker from "./picker";
 import * as readerLocalActionSearch from "./search";
 import * as readerLocalActionSetConfig from "./setConfig";
 import * as readerLocalActionSetLocator from "./setLocator";
+import * as readerLocalActionBookmarks from "./bookmarks";
 
 export {
     readerLocalActionSetConfig,
@@ -19,4 +20,5 @@ export {
     readerLocalActionLocatorHrefChanged,
     readerLocalActionPicker,
     readerLocalActionSearch,
+    readerLocalActionBookmarks,
 };

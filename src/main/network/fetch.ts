@@ -5,16 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ok } from "assert";
 import * as nodeFetchCookie from "fetch-cookie";
+import { promises as fsp } from "fs";
 import nodeFetch from "node-fetch";
+import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
-import * as tougth from "tough-cookie";
-import { diMainGet } from "../di";
+import * as tough from "tough-cookie";
+
+import { cookiejarFilePath, diMainGet } from "../di";
 
 let fetchLocal: typeof nodeFetch;
-let cookieJar: tougth.CookieJar;
+let cookieJar: tough.CookieJar;
 
 const CONFIGREPOSITORY_COOKIEJAR = "CONFIGREPOSITORY_COOKIEJAR";
+
+
 
 export const cleanCookieJar = async () => {
 
@@ -26,14 +32,19 @@ export const cleanCookieJar = async () => {
 // src/main/redux/sagas/app.ts
 export const fetchCookieJarPersistence = async () => {
 
-    if (cookieJar) {
+    // const configRepo = diMainGet("config-repository");
+    // await configRepo.save({
+    //     identifier: CONFIGREPOSITORY_COOKIEJAR,
+    //     value: cookieJar.serializeSync(),
+    // });
 
-        const configRepo = diMainGet("config-repository");
-        await configRepo.save({
-            identifier: CONFIGREPOSITORY_COOKIEJAR,
-            value: cookieJar.serializeSync(),
-        });
+    if (!cookieJar) {
+        return;
     }
+
+    const str = JSON.stringify(cookieJar.serializeSync());
+    const encrypted = encryptPersist(str, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
+    return fsp.writeFile(cookiejarFilePath, encrypted);
 };
 
 const fetchFactory = async () => {
@@ -41,20 +52,33 @@ const fetchFactory = async () => {
     await tryCatch(async () => {
 
         const configRepo = diMainGet("config-repository");
-        const data = await configRepo.get(CONFIGREPOSITORY_COOKIEJAR);
-        if (data?.value) {
-            cookieJar = tougth.CookieJar.deserializeSync(data.value);
+
+        let data: Buffer | string | undefined = await tryCatch(() => fsp.readFile(cookiejarFilePath), "");
+        if (!data) {
+            data = (await configRepo.get(CONFIGREPOSITORY_COOKIEJAR))?.value as string | undefined;
+        } else {
+            data = decryptPersist(data, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
         }
+        ok(data, "NO COOKIE JAR FOUND ON FS");
+        cookieJar = tough.CookieJar.deserializeSync(data);
 
     }, "src/main/network/fetch");
 
+    // lazy global var init
     if (!cookieJar) {
-        cookieJar = new tougth.CookieJar();
+        cookieJar = new tough.CookieJar();
     }
 
-    const _fetch = nodeFetchCookie(nodeFetch, cookieJar, false) as typeof nodeFetch; // doesn't ignore errors
+    // https://github.com/edrlab/thorium-reader/issues/1424
+    const _fetch = nodeFetchCookie(nodeFetch, cookieJar, true) as typeof nodeFetch; // ignore errors
 
     return _fetch;
+};
+
+export const absorbDBToJson = async () => {
+    console.log("+++++ CookieJar absorbDBToJson ... ");
+    fetchLocal = await fetchFactory();
+    await fetchCookieJarPersistence();
 };
 
 export const fetchWithCookie =

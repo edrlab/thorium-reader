@@ -12,6 +12,7 @@ import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { eventChannel } from "redux-saga";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
 
 // Logger

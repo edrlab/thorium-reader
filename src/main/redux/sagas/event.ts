@@ -7,10 +7,14 @@
 
 import * as debug_ from "debug";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { callTyped, takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
-import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlFromMacEventChannel } from "readium-desktop/main/event";
+import {
+    getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlFromMacEventChannel,
+} from "readium-desktop/main/event";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
+import { call as callTyped, take as takeTyped } from "typed-redux-saga/macro";
+
 import { importFromFs, importFromLink } from "./api/publication/import";
 import { search } from "./api/publication/search";
 

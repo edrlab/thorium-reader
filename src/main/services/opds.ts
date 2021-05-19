@@ -7,17 +7,15 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
+import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
+import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import {
     IOpdsLinkView, IOpdsResultView, THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
-    ContentType,
-    contentTypeisApiProblem,
-    contentTypeisOpds,
-    contentTypeisOpdsAuth,
-    contentTypeisXml,
-    parseContentType,
+    ContentType, contentTypeisApiProblem, contentTypeisOpds, contentTypeisOpdsAuth,
+    contentTypeisXml, parseContentType,
 } from "readium-desktop/utils/contentType";
 import * as URITemplate from "urijs/src/URITemplate";
 import * as xmldom from "xmldom";
@@ -38,6 +36,7 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
+import { ok } from "assert";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/opds");
@@ -77,9 +76,11 @@ export class OpdsService {
             undefined, // options
             async (opdsFeedData) => {
 
-                const { url: _baseUrl, responseUrl, contentType: _contentType } = opdsFeedData;
+                const { url: _baseUrl, responseUrl, contentType: _contentType, statusMessage, isFailure, isNetworkError, isAbort, isTimeout} = opdsFeedData;
                 const baseUrl = `${_baseUrl}`;
                 const contentType = parseContentType(_contentType);
+
+                ok(opdsFeedData.response, `message: ${statusMessage} | url: ${baseUrl} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
 
                 if (contentTypeisXml(contentType)) {
 
@@ -123,7 +124,7 @@ export class OpdsService {
 
                 debug(`unknown url content-type : ${baseUrl} - ${contentType}`);
                 throw new Error(
-                    `Not a valid OPDS HTTP Content-Type for ${baseUrl}} (${contentType})`,
+                    `Not a valid OPDS HTTP Content-Type for ${baseUrl} (${contentType})`,
                 );
             },
         );
@@ -143,13 +144,21 @@ export class OpdsService {
         try {
             // http://examples.net/opds/search.php?q={searchTerms}
             if (atomLink?.url) {
+
                 const url = new URL(atomLink.url);
-                if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
+                debug("parseOpdsSearchUrl", atomLink.url, url.search, url.pathname);
+
+                if (url.search.includes(SEARCH_TERM) ||
+                    tryDecodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
+
+                    debug("parseOpdsSearchUrl (atomLink): ", atomLink.url);
                     return (atomLink.url);
                 }
 
                 // http://static.wolnelektury.pl/opensearch.xml
             } else if (opensearchLink?.url) {
+
+                debug("parseOpdsSearchUrl (opensearchLink): ", opensearchLink);
                 return (await OpdsService.getOpenSearchUrl(opensearchLink));
 
                 // https://catalog.feedbooks.com/search.json{?query}
@@ -159,6 +168,7 @@ export class OpdsService {
                 const uriExpanded = uriTemplate.expand({ query: "\{searchTerms\}" });
                 const url = uriExpanded.toString().replace("%7B", "{").replace("%7D", "}");
 
+                debug("parseOpdsSearchUrl (opdsLink): ", url);
                 return url;
             }
         } catch {
@@ -344,7 +354,9 @@ export class OpdsService {
             debug("no data");
             return undefined;
         }
-        const xmlDom = new xmldom.DOMParser().parseFromString(buffer.toString());
+
+        const str = removeUTF8BOM(buffer.toString());
+        const xmlDom = new xmldom.DOMParser().parseFromString(str);
 
         if (!xmlDom || !xmlDom.documentElement) {
             debug(`Unable to parse ${baseUrl}`);

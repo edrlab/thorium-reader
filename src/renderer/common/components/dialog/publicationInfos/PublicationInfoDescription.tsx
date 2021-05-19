@@ -7,6 +7,7 @@
 
 import classNames from "classnames";
 import * as debug_ from "debug";
+import * as DOMPurify from "dompurify";
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
@@ -59,6 +60,8 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
         const { publication, __ } = this.props;
 
         if (publication.description) {
+
+            const textSanitize = DOMPurify.sanitize(publication.description);
             return (
                 <>
                     <h3>{__("catalog.description")}</h3>
@@ -73,8 +76,8 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
                         <p
                             ref={this.descriptionRef}
                             className={classNames(styles.allowUserSelect, styles.description)}
+                            dangerouslySetInnerHTML={{__html: textSanitize}}
                         >
-                            {publication.description}
                         </p>
                     </div>
                     {

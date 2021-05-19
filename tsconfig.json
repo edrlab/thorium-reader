@@ -21,6 +21,7 @@
     "forceConsistentCasingInFileNames": false,
     "inlineSources": true,
     "inlineSourceMap": false,
+    "preserveConstEnums": true,
     "isolatedModules": true,
     "allowJs": false,
     "maxNodeModuleJsDepth": 0,
@@ -41,10 +42,10 @@
     "listEmittedFiles": false,
     "traceResolution": false,
     "disableSizeLimit": false,
-    "preserveConstEnums": false,
     "removeComments": true,
     "skipLibCheck": false,
-    "module": "commonjs",
+    "module": "ES2020",
+    "moduleResolution": "Node",
     "lib": [
       "es2017",
       "es6",
@@ -83,6 +84,9 @@
       ],
       "@r2-lcp-js/*": [
         "node_modules/r2-lcp-js/dist/es6-es2015/src/*"
+      ],
+      "@lunr-languages/*": [
+        "node_modules/lunr-languages/*"
       ]
     }
   },

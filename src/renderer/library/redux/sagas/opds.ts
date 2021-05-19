@@ -9,7 +9,8 @@ import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { raceTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
+import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { IOpdsLinkView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/opdsBrowse";
@@ -18,8 +19,9 @@ import { opdsActions, routerActions } from "readium-desktop/renderer/library/red
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { ContentType } from "readium-desktop/utils/contentType";
-import { call, put, take } from "redux-saga/effects";
-import { delay } from "typed-redux-saga";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
+import { call, delay, put, take } from "redux-saga/effects";
+import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
@@ -37,15 +39,29 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
 
     if (path.startsWith("/opds") && path.indexOf("/browse") > 0) {
         const parsedResult = parseOpdsBrowserRoute(path);
-        parsedResult.title = decodeURI(parsedResult.title);
-        debug("request opds browse", parsedResult);
+        debug("request opds browse", path, parsedResult);
+        // parsedResult.title can for example be a search terms "この世界の謎 %2F %20 % ?abc=def&zz=yyé"
+        // which is escaped by encodeURIComponent() to
+        // %E3%81%93%E3%81%AE%E4%B8%96%E7%95%8C%E3%81%AE%E8%AC%8E%20%252F%20%2520%20%25%20%3Fabc%3Ddef%26zz%3Dyy%C3%A9
+        // (and passed to search URL as query param or path segment)
+        // TODO: the decodeURIComponent() is not necessary for search, but is it for other cases?
+        // (this is why tryDecodeURIComponent() is used instead,
+        // otherwise crash if string contains percent char not used for escaping)
+        const newParsedResultTitle = tryDecodeURIComponent(parsedResult.title);
+        debug(newParsedResultTitle);
+
+        // reset
+        yield put(opdsActions.search.build({
+        }));
+        yield put(opdsActions.headerLinksUpdate.build({
+        }));
 
         // re-render opds navigator
         yield put(
             opdsActions.browseRequest.build(
                 parsedResult.rootFeedIdentifier,
                 parsedResult.level,
-                parsedResult.title,
+                newParsedResultTitle,
                 parsedResult.url,
             ));
 
@@ -54,12 +70,12 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
         const url = parsedResult.url;
         debug("opds browse url=", url);
         const { b: opdsBrowseAction } = yield* raceTyped({
-            a: delay(10000),
+            a: delay(20000),
             b: call(opdsBrowse, url, BROWSE_OPDS_API_REQUEST_ID),
         });
 
         if (!opdsBrowseAction) {
-            debug("opds opdsBrowseAction url=", url, "timeout 5s");
+            debug("browseWatcher timeout?", url);
             return;
         }
 
@@ -90,12 +106,12 @@ function* updateHeaderLinkWatcher(action: apiActions.result.TAction<THttpGetOpds
             if (links.search?.length) {
 
                 const { b: getUrlAction } = yield* raceTyped({
-                    a: delay(10000),
+                    a: delay(20000),
                     b: call(getUrlApi, links.search),
                 });
 
                 if (!getUrlAction) {
-                    debug("opds getUrlAction url=", links.search, "timeout 5s");
+                    debug("updateHeaderLinkWatcher timeout?", links.search);
                     return;
                 }
 
@@ -122,7 +138,7 @@ function* getUrlApi(links: IOpdsLinkView[]) {
 
 function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
 
-    const searchRaw = action.payload;
+    let searchRaw = action.payload;
     debug("opds search raw data received", searchRaw);
 
     let returnUrl: string;
@@ -132,25 +148,37 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
         }
     } catch (_err) {
         try {
+            searchRaw = removeUTF8BOM(searchRaw);
+            // debug(Buffer.from(searchRaw).toString("hex"));
+
             const xmlDom = (new DOMParser()).parseFromString(searchRaw, ContentType.TextXml);
+            // debug(xmlDom);
+            // debug(new XMLSerializer().serializeToString(xmlDom));
             const urlsElem = xmlDom.documentElement.querySelectorAll("Url");
+            // debug(urlsElem);
 
             for (const urlElem of urlsElem.values()) {
                 const type = urlElem.getAttribute("type");
+                debug(type);
 
                 if (type && type.includes(ContentType.AtomXml)) {
                     const searchUrl = urlElem.getAttribute("template");
-                    const url = new URL(searchUrl);
+                    debug(searchUrl);
 
-                    if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
+                    const url = new URL(searchUrl);
+                    debug(url, url.search, url.pathname);
+
+                    if (url.search.includes(SEARCH_TERM) ||
+                        tryDecodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
 
                         // remove search filter not handle yet
-                        let searchLink = searchUrl.replace("{atom:author}", "");
-                        searchLink = searchLink.replace("{atom:contributor}", "");
-                        searchLink = searchLink.replace("{atom:title}", "");
+                        const searchLink = searchUrl
+                            .replace("{atom:author}", "")
+                            .replace("{atom:contributor}", "")
+                            .replace("{atom:title}", "");
 
                         returnUrl = searchLink;
-
+                        debug(returnUrl);
                     }
                 }
             }

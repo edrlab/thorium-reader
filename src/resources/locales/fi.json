@@ -344,12 +344,14 @@
         },
         "tts": {
             "activate": "Käynnistä tekstistä puheeksi",
+            "default": "",
             "next": "Seuraava",
             "pause": "Pysäytä",
             "play": "Jatka",
             "previous": "Edellinen",
             "speed": "Tekstistä puheeksi nopeuden säätö",
-            "stop": "Lopeta tekstistä puheeksi"
+            "stop": "Lopeta tekstistä puheeksi",
+            "voice": ""
         }
     },
     "settings": {

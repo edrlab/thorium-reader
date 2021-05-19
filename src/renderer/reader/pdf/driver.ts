@@ -15,6 +15,7 @@ import { CONTEXT_MENU_SETUP } from "@r2-navigator-js/electron/common/context-men
 import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer } from "./common/pdfReader.type";
@@ -138,7 +139,7 @@ export async function pdfMountAndReturnBus(
     webview.setAttribute("style",
         "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
     // webview.setAttribute("partition", "persist:pdfjsreader");
-    webview.setAttribute("src", "pdfjs://local/web/viewer.html?file=" + encodeURIComponent(pdfPath));
+    webview.setAttribute("src", "pdfjs://local/web/viewer.html?file=" + encodeURIComponent_RFC3986(pdfPath));
     webview.setAttribute("worldSafeExecuteJavaScript", "");
     webview.setAttribute("webpreferences", "allowRunningInsecureContent");
     webview.setAttribute("disablewebsecurity", "");

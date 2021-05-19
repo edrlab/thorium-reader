@@ -5,11 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classnames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+import { Locator } from "readium-desktop/common/models/locator";
+import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark-24px-grey.svg";
@@ -18,15 +20,15 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { apiAction } from "readium-desktop/renderer/reader/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
+import { readerLocalActionBookmarks } from "../redux/actions";
 import { IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";
@@ -47,14 +49,13 @@ interface IBaseProps extends TranslatorProps, IReaderMenuProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
     bookmarkToUpdate: number;
     pageError: boolean;
     refreshError: boolean;
-    bookmarks: LocatorView[] | undefined;
 }
 
 export class ReaderMenu extends React.Component<IProps, IState> {
@@ -70,24 +71,14 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             bookmarkToUpdate: undefined,
             pageError: false,
             refreshError: false,
-            bookmarks: undefined,
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
         this.handleSubmitPage = this.handleSubmitPage.bind(this);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     public componentDidMount() {
-
-        this.unsubscribe = apiSubscribe([
-            "reader/addBookmark",
-            "reader/deleteBookmark",
-            "reader/updateBookmark",
-        ], () => {
-            apiAction("reader/findBookmarks", this.props.pubId)
-            .then((bookmarks) => this.setState({bookmarks}))
-            .catch((error) => console.error("Error to fetch api reader/findBookmark", error));
-        });
     }
 
     public componentDidUpdate() {
@@ -111,7 +102,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __, r2Publication, toggleMenu, pdfToc, isPdf } = this.props;
-        const { bookmarks } = this.state;
+        const { bookmarks } = this.props;
         if (!r2Publication) {
             return <></>;
         }
@@ -230,7 +221,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     >
                         <a
                             className={
-                                classnames(styles.line,
+                                classNames(styles.line,
                                     styles.active,
                                     link.Href ? " " : styles.inert,
                                     isRTL ? styles.rtlDir : " ")
@@ -281,7 +272,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        classnames(styles.subheading,
+                                        classNames(styles.subheading,
                                             link.Href ? " " : styles.inert,
                                             isRTL ? styles.rtlDir : " ")
                                     }
@@ -308,7 +299,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        classnames(styles.line,
+                                        classNames(styles.line,
                                             styles.active,
                                             link.Href ? " " : styles.inert,
                                             isRTL ? styles.rtlDir : " ")
@@ -338,78 +329,91 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
     private createBookmarkList(): JSX.Element[] {
         const { __ } = this.props;
-        if (this.props.r2Publication && this.state.bookmarks) {
+        if (this.props.r2Publication && this.props.bookmarks) {
+
+            const isAudioBook = isAudiobookFn(this.props.r2Publication);
+
             const { bookmarkToUpdate } = this.state;
-            return this.state.bookmarks.sort((a, b) => {
-                if (!a.locator || !b.locator) {
-                    return 0;
-                }
-                if (!a.locator.locations || !b.locator.locations) {
-                    return 0;
-                }
-                const aLink = this.props.r2Publication.Spine.find((link) => {
-                    return link.Href === a.locator.href;
-                });
-                const aLinkIndex = this.props.r2Publication.Spine.indexOf(aLink);
-                const bLink = this.props.r2Publication.Spine.find((link) => {
-                    return link.Href === b.locator.href;
-                });
-                const bLinkIndex = this.props.r2Publication.Spine.indexOf(bLink);
-                if (aLinkIndex > bLinkIndex) {
-                    return 1;
-                }
-                if (aLinkIndex < bLinkIndex) {
+            const sortedBookmarks = this.props.bookmarks.sort((a, b) => {
+                // -1 : a < b
+                // 0 : a === b
+                // 1 : a > b
+                if (!a.locator?.href || !b.locator?.href) {
                     return -1;
                 }
-                // aLinkIndex === bLinkIndex
-                if (a.locator.locations.progression > b.locator.locations.progression) {
-                    return 1;
-                } else if (a.locator.locations.progression < b.locator.locations.progression) {
+                const indexA = this.props.r2Publication.Spine.findIndex((item) => item.Href === a.locator.href);
+                const indexB = this.props.r2Publication.Spine.findIndex((item) => item.Href === b.locator.href);
+                if (indexA < indexB) {
                     return -1;
+                }
+                if (indexA > indexB) {
+                    return 1;
+                }
+                if (typeof a.locator?.locations?.progression === "number" && typeof b.locator?.locations?.progression === "number") {
+                    if (a.locator.locations.progression < b.locator.locations.progression) {
+                        return -1;
+                    }
+                    if (a.locator.locations.progression > b.locator.locations.progression) {
+                        return 1;
+                    }
                 }
                 return 0;
-            }).map((bookmark, i) =>
-                <div
+            });
+            let n = 1;
+            return sortedBookmarks.map((bookmark, i) => {
+                let percent = 100;
+                let p = -1;
+                if (this.props.r2Publication.Spine?.length && bookmark.locator?.href) {
+                    const index = this.props.r2Publication.Spine.findIndex((item) => item.Href === bookmark.locator.href);
+                    if (index >= 0) {
+                        if (typeof bookmark.locator?.locations?.progression === "number") {
+                            percent = 100 * ((index + bookmark.locator.locations.progression) / this.props.r2Publication.Spine.length);
+                        } else {
+                            percent = 100 * (index / this.props.r2Publication.Spine.length);
+                        }
+                        percent = Math.round(percent * 100) / 100;
+                        p = Math.round(percent);
+                    }
+                }
+                const style = { width: `${percent}%` };
+
+                const bname = (p >= 0 && !isAudioBook ? `${p}% ` : "") + (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${n++}`);
+
+                return (<div
                     className={styles.bookmarks_line}
                     key={i}
                 >
                     { bookmarkToUpdate === i &&
                         <UpdateBookmarkForm
                             close={ this.closeBookarkEditForm }
-                            bookmark={ bookmark }
+                        bookmark={bookmark}
                         />
                     }
                     <button
                         className={styles.bookmark_infos}
                         tabIndex={0}
-                        onClick={(e) => this.handleBookmarkClick(e, bookmark)}
+                        onClick={(e) => this.handleBookmarkClick(e, bookmark.locator)}
                     >
                         <SVG svg={BookmarkIcon} title={""} aria-hidden />
 
                         <div className={styles.chapter_marker}>
-                            <p className={styles.bookmark_name}>
-                                {bookmark.name ? bookmark.name : `Bookmark ${i}`}
-                            </p>
+                            <p className={styles.bookmark_name} title={bname}>{bname}</p>
                             <div className={styles.gauge}>
-                                <div className={styles.fill}></div>
+                                <div className={styles.fill} style={style}></div>
                             </div>
                         </div>
                     </button>
                     <button onClick={() => this.setState({bookmarkToUpdate: i})}>
                         <SVG title={ __("reader.marks.edit")} svg={ EditIcon }/>
                     </button>
-                    <button onClick={() => this.deleteBookmark(bookmark.identifier)}>
+                    <button onClick={() => this.props.deleteBookmark(bookmark)}>
                         <SVG title={ __("reader.marks.delete")} svg={ DeleteIcon }/>
                     </button>
-                </div>,
+                </div>);
+                },
             );
         }
         return undefined;
-    }
-
-    private deleteBookmark = (bookmarkId: string) => {
-        apiAction("reader/deleteBookmark", bookmarkId)
-            .catch((error) => console.error("Error to fetch api reader/deleteBookmark", error));
     }
 
     private buildGoToPageSection(totalPages?: string) {
@@ -629,9 +633,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
     }
 
-    private handleBookmarkClick(e: TMouseEventOnButton, bookmark: LocatorView) {
+    private handleBookmarkClick(e: TMouseEventOnButton, locator: Locator) {
         e.preventDefault();
-        this.props.handleBookmarkClick(bookmark.locator);
+        this.props.handleBookmarkClick(locator);
     }
 }
 
@@ -645,8 +649,22 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         pubId: state.reader.info.publicationIdentifier,
         searchEnable: state.search.enable,
+        bookmarks: state.reader.bookmark.map(([, v]) => v),
         // isDivina,
     };
 };
 
-export default connect(mapStateToProps)(withTranslator(ReaderMenu));
+const mapDispatchToProps = (dispatch: TDispatch) => {
+
+
+    return {
+        setBookmark: (bookmark: IBookmarkState) => {
+            dispatch(readerLocalActionBookmarks.push.build(bookmark));
+        },
+        deleteBookmark: (bookmark: IBookmarkState) => {
+            dispatch(readerLocalActionBookmarks.pop.build(bookmark));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderMenu));

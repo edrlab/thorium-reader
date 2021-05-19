@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+
 // Encode without padding
 // And apply RFC 4648
 export function encodeB64(data: string) {

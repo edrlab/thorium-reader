@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { dialog } from "electron";
+import { dialog, shell } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
@@ -19,6 +19,9 @@ import slugify from "slugify";
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
+import * as debug_ from "debug";
+
+const debug = debug_("readium-desktop:main/storage/pub-storage");
 
 // Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
@@ -55,23 +58,52 @@ export class PublicationStorage {
         const pubDirPath = this.buildPublicationPath(identifier);
         fs.mkdirSync(pubDirPath);
 
-        // Store publication file and extract its cover
+        const files: File[] = [];
+
         const bookFile = await this.storePublicationBook(
             identifier, srcPath);
-        const coverFile = await this.storePublicationCover(
-            identifier, srcPath);
-        const files: File[] = [];
         files.push(bookFile);
 
-        if (coverFile != null) {
+        const coverFile = await this.storePublicationCover(
+            identifier, srcPath);
+        if (coverFile) {
             files.push(coverFile);
         }
 
         return files;
     }
 
-    public removePublication(identifier: string) {
-        rmDirSync(this.buildPublicationPath(identifier));
+    public removePublication(identifier: string, preservePublicationOnFileSystem?: string) {
+        const p = this.buildPublicationPath(identifier);
+        try {
+            if (preservePublicationOnFileSystem) {
+                const log = path.join(p, "error.txt");
+                fs.writeFileSync(log, preservePublicationOnFileSystem, { encoding: "utf-8" });
+                shell.showItemInFolder(log);
+
+                // const parent = path.dirname(p) + "_REMOVED";
+                // if (!fs.existsSync(parent)) {
+                //     fs.mkdirSync(parent);
+                // }
+
+                // setTimeout(async () => {
+                //     await shell.openPath(parent);
+                // }, 0);
+                // shell.showItemInFolder(parent);
+
+                // const f = path.basename(p);
+                // const n = path.join(parent, f);
+                // shell.showItemInFolder(n);
+
+                return;
+            }
+
+            rmDirSync(p);
+        } catch (e) {
+            debug(e);
+            debug(preservePublicationOnFileSystem);
+            debug(`removePublication error (ignore) ${identifier} ${p}`);
+        }
     }
 
     // TODO: fs.existsSync() is really costly,
@@ -80,6 +112,7 @@ export class PublicationStorage {
     public getPublicationEpubPath(identifier: string): string {
 
         const root = this.buildPublicationPath(identifier);
+        // --
         const pathEpub = path.join(
             root,
             `book${acceptedExtensionObject.epub}`,
@@ -87,27 +120,7 @@ export class PublicationStorage {
         if (fs.existsSync(pathEpub)) {
             return pathEpub;
         }
-        const pathEpub3 = path.join(
-            root,
-            `book${acceptedExtensionObject.epub3}`,
-        );
-        if (fs.existsSync(pathEpub3)) {
-            return pathEpub3;
-        }
-        const pathDaisy = path.join(
-            root,
-            `book${acceptedExtensionObject.daisy}`,
-        );
-        if (fs.existsSync(pathDaisy)) {
-            return pathDaisy;
-        }
-        const pathAudioBook = path.join(
-            root,
-            `book${acceptedExtensionObject.audiobook}`,
-        );
-        if (fs.existsSync(pathAudioBook)) {
-            return pathAudioBook;
-        }
+        // --
         const pathWebpub = path.join(
             root,
             `book${acceptedExtensionObject.webpub}`,
@@ -115,6 +128,15 @@ export class PublicationStorage {
         if (fs.existsSync(pathWebpub)) {
             return pathWebpub;
         }
+        // --
+        const pathAudioBook = path.join(
+            root,
+            `book${acceptedExtensionObject.audiobook}`,
+        );
+        if (fs.existsSync(pathAudioBook)) {
+            return pathAudioBook;
+        }
+        // --
         const pathAudioBookLcp = path.join(
             root,
             `book${acceptedExtensionObject.audiobookLcp}`,
@@ -122,6 +144,7 @@ export class PublicationStorage {
         if (fs.existsSync(pathAudioBookLcp)) {
             return pathAudioBookLcp;
         }
+        // --
         const pathAudioBookLcpAlt = path.join(
             root,
             `book${acceptedExtensionObject.audiobookLcpAlt}`,
@@ -129,6 +152,7 @@ export class PublicationStorage {
         if (fs.existsSync(pathAudioBookLcpAlt)) {
             return pathAudioBookLcpAlt;
         }
+        // --
         const pathDivina = path.join(
             root,
             `book${acceptedExtensionObject.divina}`,
@@ -136,6 +160,7 @@ export class PublicationStorage {
         if (fs.existsSync(pathDivina)) {
             return pathDivina;
         }
+        // --
         const pathLcpPdf = path.join(
             root,
             `book${acceptedExtensionObject.pdfLcp}`,
@@ -143,6 +168,23 @@ export class PublicationStorage {
         if (fs.existsSync(pathLcpPdf)) {
             return pathLcpPdf;
         }
+        // --
+        const pathEpub3 = path.join(
+            root,
+            `book${acceptedExtensionObject.epub3}`,
+        );
+        if (fs.existsSync(pathEpub3)) {
+            return pathEpub3;
+        }
+        // --
+        const pathDaisy = path.join(
+            root,
+            `book${acceptedExtensionObject.daisy}`,
+        );
+        if (fs.existsSync(pathDaisy)) {
+            return pathDaisy;
+        }
+        // --
         throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
@@ -162,7 +204,7 @@ export class PublicationStorage {
         });
     }
 
-    private buildPublicationPath(identifier: string): string {
+    public buildPublicationPath(identifier: string): string {
         return path.join(this.rootPath, identifier);
     }
 

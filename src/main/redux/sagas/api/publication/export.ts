@@ -8,13 +8,13 @@
 import { dialog } from "electron";
 import { promises as fsp } from "fs";
 import * as path from "path";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 
 export function* exportPublication(publicationView: PublicationView) {
 
-    const libraryAppWindow = getLibraryWindowFromDi();
+    const libraryAppWindow = yield* callTyped(() => getLibraryWindowFromDi());
 
     // Open a dialog to select a folder then copy the publication in it
     const res = yield* callTyped(() => dialog.showOpenDialog(

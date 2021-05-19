@@ -7,9 +7,10 @@
 
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call } from "redux-saga/effects";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
     const translator = yield* callTyped(() => diReaderGet("translator"));

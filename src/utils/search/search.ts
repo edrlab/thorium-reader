@@ -8,8 +8,9 @@
 // import { JSDOM } from "jsdom";
 // import * as xmldom from "xmldom";
 
-import { ContentType } from "../contentType";
+import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 
+import { ContentType } from "../contentType";
 import { ISearchDocument, ISearchResult } from "./search.interface";
 import { searchDocDomSeek } from "./searchWithDomSeek";
 
@@ -26,7 +27,7 @@ export async function search(searchInput: string, data: ISearchDocument): Promis
     // TODO: this is a hack...
     // but rendered reflowable documents have a top-level invisible accessible link injected by the navigator
     // so we need it here to compute CSS Selectors
-    const toParse = data.isFixedLayout ? data.xml : data.xml.replace(
+    let toParse = data.isFixedLayout ? data.xml : data.xml.replace(
         /<body([\s\S]*?)>/gm,
         "<body$1><a href=\"DUMMY_URL\">DUMMY LNIK</a>",
     );
@@ -42,6 +43,7 @@ export async function search(searchInput: string, data: ISearchDocument): Promis
         //     contentType,
         // ) : new JSDOM(toParse, { contentType: contentType }).window.document);
 
+        toParse = removeUTF8BOM(toParse);
         const xmlDom = (new window.DOMParser()).parseFromString(
             toParse,
             contentType,

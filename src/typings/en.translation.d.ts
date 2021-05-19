@@ -599,12 +599,14 @@ declare namespace typed_i18n {
   readonly "toc": { readonly "publicationNoToc": string },
   readonly "tts": {
     readonly "activate": string,
+    readonly "default": string,
     readonly "next": string,
     readonly "pause": string,
     readonly "play": string,
     readonly "previous": string,
     readonly "speed": string,
-    readonly "stop": string
+    readonly "stop": string,
+    readonly "voice": string
   }
 };
   (_: "reader.footerInfo", __?: {}): { readonly "lessInfo": string, readonly "moreInfo": string };
@@ -861,20 +863,24 @@ declare namespace typed_i18n {
   (_: "reader.toc.publicationNoToc", __?: {}): string;
   (_: "reader.tts", __?: {}): {
   readonly "activate": string,
+  readonly "default": string,
   readonly "next": string,
   readonly "pause": string,
   readonly "play": string,
   readonly "previous": string,
   readonly "speed": string,
-  readonly "stop": string
+  readonly "stop": string,
+  readonly "voice": string
 };
   (_: "reader.tts.activate", __?: {}): string;
+  (_: "reader.tts.default", __?: {}): string;
   (_: "reader.tts.next", __?: {}): string;
   (_: "reader.tts.pause", __?: {}): string;
   (_: "reader.tts.play", __?: {}): string;
   (_: "reader.tts.previous", __?: {}): string;
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
+  (_: "reader.tts.voice", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {

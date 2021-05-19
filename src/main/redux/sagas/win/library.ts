@@ -11,7 +11,6 @@ import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import {
     closeProcessLock, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi,
 } from "readium-desktop/main/di";
@@ -19,7 +18,9 @@ import { error } from "readium-desktop/main/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, delay, put, spawn } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { IWinSessionReaderState } from "../../states/win/session/reader";
 import { getAppActivateEventChannel } from "../getEventChannel";
@@ -44,7 +45,7 @@ function* appActivate() {
 
         // if there is no libWin, so must be recreated
         if (libWinState.browserWindowId && libWinState.identifier) {
-            const libWin = getLibraryWindowFromDi();
+            const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
             if (libWin.isMinimized()) {
                 libWin.restore();

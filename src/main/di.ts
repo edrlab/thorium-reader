@@ -7,6 +7,7 @@
 
 import "reflect-metadata";
 
+import { ok } from "assert";
 import * as debug_ from "debug";
 import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
@@ -60,6 +61,7 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
+// const IS_DEV = (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY);
 //
 // Check that user data directory is created
 //
@@ -67,6 +69,67 @@ const userDataPath = app.getPath("userData");
 if (!fs.existsSync(userDataPath)) {
     fs.mkdirSync(userDataPath);
 }
+
+const configDataFolderPath = path.join(
+    userDataPath,
+    `config-data-json${(_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "-dev" : ""}`,
+);
+if (!fs.existsSync(configDataFolderPath)) {
+    fs.mkdirSync(configDataFolderPath);
+}
+
+const STATE_FILENAME = "state.json";
+export const stateFilePath = path.join(
+    configDataFolderPath,
+    STATE_FILENAME,
+);
+
+const PATCH_FILENAME = "state.patch.json";
+export const patchFilePath = path.join(
+    configDataFolderPath,
+    PATCH_FILENAME,
+);
+
+const RUN_FILENAME = "state.runtime.json";
+export const runtimeStateFilePath = path.join(
+    configDataFolderPath,
+    RUN_FILENAME,
+);
+
+export const backupStateFilePathFn = () => path.join(
+    configDataFolderPath,
+    `state.${+new Date()}.json`,
+);
+
+const COOKIE_JAR_FILENAME = "cookie_jar.json";
+export const cookiejarFilePath = path.join(
+    configDataFolderPath,
+    COOKIE_JAR_FILENAME,
+);
+
+const OPDS_AUTH_FILENAME = "opds_auth.json";
+export const opdsAuthFilePath = path.join(
+    configDataFolderPath,
+    OPDS_AUTH_FILENAME,
+);
+
+const LCP_HASHES_FILENAME = "lcp_hashes.json";
+export const lcpHashesFilePath = path.join(
+    configDataFolderPath,
+    LCP_HASHES_FILENAME,
+);
+
+const LCP_LSD_DEVICES_FILENAME = "lcp_lsd_devices.json";
+export const lcpLsdDevicesFilePath = path.join(
+    configDataFolderPath,
+    LCP_LSD_DEVICES_FILENAME,
+);
+
+const MEMORY_LOGGGER_FILENAME = "log.json";
+export const memoryLoggerFilename = path.join(
+    configDataFolderPath,
+    MEMORY_LOGGGER_FILENAME,
+);
 
 //
 // Create databases
@@ -97,15 +160,19 @@ if (!fs.existsSync(rootDbPath)) {
 const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const pouchDbFind = require("pouchdb-find");
+const pouchDbSearch = require("pouchdb-quick-search");
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const pouchDbSearch = require("pouchdb-quick-search");
+const pouchDbFind = require("pouchdb-find");
 
 // Load PouchDB plugins
 PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
-PouchDB.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
+
 PouchDB.plugin(pouchDbSearch.default ? pouchDbSearch.default : pouchDbSearch);
+
+
+// indexes bookmarks
+PouchDB.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
 
 const dbOpts = {
     adapter: _POUCHDB_ADAPTER_NAME,
@@ -273,7 +340,10 @@ const saveLibraryWindowInDi =
     (libWin: BrowserWindow) => (libraryWin = libWin, libraryWin);
 
 const getLibraryWindowFromDi =
-    () => libraryWin;
+    () => {
+        ok(libraryWin, "library window not defined");
+        return libraryWin;
+    };
 
 const readerWinMap = new Map<string, BrowserWindow>();
 

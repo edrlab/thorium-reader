@@ -7,12 +7,12 @@
 
 import * as debug_ from "debug";
 import fetch from "node-fetch";
-import { callTyped, raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { delay, SagaGenerator } from "typed-redux-saga";
+import { call as callTyped, race as raceTyped } from "typed-redux-saga/macro";
 
 import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
@@ -45,12 +45,19 @@ function* importLinkFromPath(
             {},
             publicationDocument,
             {
-                resources: {
-                    r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
-                    r2LCPBase64: publicationDocument.resources.r2LCPBase64,
-                    r2LSDBase64: publicationDocument.resources.r2LSDBase64,
-                    r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
-                },
+                // resources: {
+                //     r2PublicationJson: publicationDocument.resources.r2PublicationJson,
+                //     // r2LCPJson: publicationDocument.resources.r2LCPJson,
+                //     // r2LSDJson: publicationDocument.resources.r2LSDJson,
+                //     // r2OpdsPublicationJson: pub?.r2OpdsPublicationJson || undefined,
+
+                //     // Legacy Base64 data blobs
+                //     //
+                //     // r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
+                //     // r2LCPBase64: publicationDocument.resources.r2LCPBase64,
+                //     // r2LSDBase64: publicationDocument.resources.r2LSDBase64,
+                //     // r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
+                // } as Resources,
                 tags,
             },
         );

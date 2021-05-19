@@ -22,7 +22,7 @@ import { extractFileFromZipToBuffer } from "readium-desktop/main/zip/extract";
 import { v4 as uuidv4 } from "uuid";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
-import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { DaisyParsePromise } from "@r2-shared-js/parser/daisy";
 import { convertDaisyToReadiumWebPub } from "@r2-shared-js/parser/daisy-convert-to-epub";
@@ -58,9 +58,17 @@ export async function importPublicationFromFS(
 
             break;
 
+        // eslint-disable-next-line no-fallthrough
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore-next-line
+        case acceptedExtensionObject.opf:
+            // DaisyParsePromise allows fake zip to filesystem folder
+            filePath = path.dirname(filePath);
+            /* falls through */
         case acceptedExtensionObject.daisy:
+        case acceptedExtensionObject.zip:
 
-            debug("daisy extension", ext);
+            debug("daisy extension: ", ext);
 
             r2Publication = await DaisyParsePromise(filePath);
 
@@ -91,13 +99,13 @@ export async function importPublicationFromFS(
 
             debug("extension of type readium publication", ext);
 
-            const manifest = await extractFileFromZipToBuffer(filePath, "manifest.json");
-            if (manifest) {
+            const r2PublicationBuffer = await extractFileFromZipToBuffer(filePath, "manifest.json");
+            if (r2PublicationBuffer) {
                 debug("r2Publication found in zip");
 
-                const manifestString = manifest.toString();
-                const manifestJson = JSON.parse(manifestString);
-                r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
+                const r2PublicationStr = r2PublicationBuffer.toString("utf-8");
+                const r2PublicationJson = JSON.parse(r2PublicationStr);
+                r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 // tslint:disable-next-line: max-line-length
                 // https://github.com/readium/r2-shared-js/blob/1aa1a1c10fe56ccb99ef0ed2c15a198c46600e7a/src/parser/divina.ts#L137
@@ -106,24 +114,24 @@ export async function importPublicationFromFS(
                 // lcp licence extraction
 
                 const lcpEntryName = "license.lcpl";
-                const lcpBuffer = await extractFileFromZipToBuffer(filePath, lcpEntryName);
-                if (lcpBuffer) {
+                const r2LCPBuffer = await extractFileFromZipToBuffer(filePath, lcpEntryName);
+                if (r2LCPBuffer) {
                     debug("lcp licence found in zip");
 
-                    const lcpString = lcpBuffer.toString();
-                    const lcpJson = JSON.parse(lcpString);
+                    const r2LCPStr = r2LCPBuffer.toString("utf-8");
+                    const r2LCPJson = JSON.parse(r2LCPStr);
 
-                    if (lcpLicenseIsNotWellFormed(lcpJson)) {
-                        throw new Error(`LCP license malformed: ${JSON.stringify(lcpJson)}`);
+                    if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
+                        throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
                     }
 
-                    const lcpl = TaJsonDeserialize(lcpJson, LCP);
+                    const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
 
-                    lcpl.ZipPath = lcpEntryName;
-                    lcpl.JsonSource = lcpString;
-                    lcpl.init();
+                    r2LCP.ZipPath = lcpEntryName;
+                    r2LCP.JsonSource = r2LCPStr;
+                    r2LCP.init();
 
-                    r2Publication.LCP = lcpl;
+                    r2Publication.LCP = r2LCP;
                 }
             }
 
@@ -140,22 +148,32 @@ export async function importPublicationFromFS(
         throw new Error("publication manifest not defined");
     }
 
-    const r2PublicationJson = TaJsonSerialize(r2Publication);
-    const r2PublicationStr = JSON.stringify(r2PublicationJson);
-    const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
+    // const r2PublicationJson = TaJsonSerialize(r2Publication);
+    // Legacy Base64 data blobs
+    // const r2PublicationStr = JSON.stringify(r2PublicationJson);
+    // const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
 
     const lcpManager = diMainGet("lcp-manager");
     const publicationRepository = diMainGet("publication-repository");
     const publicationStorage = diMainGet("publication-storage");
+    const publicationViewConverter = diMainGet("publication-view-converter");
 
     const pubDocument: PublicationDocumentWithoutTimestampable = {
         identifier: uuidv4(),
-        resources: {
-            r2PublicationBase64,
-            r2LCPBase64: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
-            r2LSDBase64: null, // may be updated via lcpManager.processStatusDocument()
-            r2OpdsPublicationBase64: null, // remains null as publication not originate from OPDS
-        },
+        // resources: {
+        //     // Legacy Base64 data blobs
+
+        //     r2PublicationJson,
+
+        //     // updated below via lcpManager.updateDocumentLcp()
+        //     // r2LCPJson: null,
+
+        //     // may be updated via lcpManager.processStatusDocument()
+        //     // r2LSDJson: null,
+
+        //     // remains null as publication not originate from OPDS
+        //     // r2OpdsPublicationJson: null,
+        // },
         title: convertMultiLangStringToString(r2Publication.Metadata.Title),
         tags: [],
         files: [],
@@ -163,10 +181,9 @@ export async function importPublicationFromFS(
         customCover: null,
         hash: hash ? hash : await extractCrc32OnZip(filePath),
 
-        lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+        lcp: null, // updated below via lcpManager.updateDocumentLcp()
         lcpRightsCopies: 0,
     };
-    lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
 
     debug(`publication document ID=${pubDocument.identifier} HASH=${pubDocument.hash}`);
 
@@ -196,7 +213,14 @@ export async function importPublicationFromFS(
         ];
     }
 
+    // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
+    publicationViewConverter.updatePublicationCache(pubDocument, r2Publication);
+
     if (r2Publication.LCP) {
+        // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
+        // note: normally calls updateLcpCache(), but skip as updatePublicationCache() above did this already (avoid unnecessary filesystem writes)
+        lcpManager.updateDocumentLcp(pubDocument, r2Publication.LCP, true);
+
         try {
             await lcpManager.processStatusDocument(
                 pubDocument.identifier,
@@ -206,7 +230,7 @@ export async function importPublicationFromFS(
             debug(r2Publication.LCP);
             debug(r2Publication.LCP.LSD);
 
-            lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
+            lcpManager.updateDocumentLcp(pubDocument, r2Publication.LCP);
         } catch (err) {
             debug(err);
         }
@@ -222,18 +246,7 @@ export async function importPublicationFromFS(
     debug("[END] Store publication in database", filePath);
 
     if (lcpHashedPassphrase) {
-        const lcpSecretRepository = diMainGet("lcp-secret-repository");
-        const lcpSecretDocs = await lcpSecretRepository.findByPublicationIdentifier(
-            newPubDocument.identifier,
-        );
-        const secrets = lcpSecretDocs.map((doc) => doc.secret).filter((secret) => secret);
-
-        if (!secrets || !secrets.includes(lcpHashedPassphrase)) {
-            await lcpSecretRepository.save({
-                publicationIdentifier: newPubDocument.identifier,
-                secret: lcpHashedPassphrase,
-            });
-        }
+        await lcpManager.saveSecret(newPubDocument, lcpHashedPassphrase);
     }
 
     debug("Publication imported", filePath);

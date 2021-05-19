@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { lcpActions } from "readium-desktop/common/redux/actions/";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { streamerActions } from "readium-desktop/main/redux/actions";
@@ -18,16 +18,23 @@ import {
     THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "readium-desktop/main/streamerNoHttp";
 import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, take } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:publication:open";
 const debug = debug_(filename_);
 
 export const ERROR_MESSAGE_ON_USERKEYCHECKREQUEST = "ERROR_MESSAGE_ON_USERKEYCHECKREQUEST";
+
+const convertDoc = async (doc: PublicationDocument, publicationViewConverter: PublicationViewConverter) => {
+    return await publicationViewConverter.convertDocumentToView(doc);
+};
 
 export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
@@ -105,7 +112,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                     lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
 
                 try {
-                    const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+                    const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
                     // will call API.unlockPublicationWithPassphrase()
                     yield put(lcpActions.userKeyCheckRequest.build(
@@ -145,7 +152,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         yield put(streamerActions.startRequest.build());
 
         // Wait for streamer
-        const streamerStartAction = yield take([
+        const streamerStartAction: Action<any> = yield take([
             streamerActions.startSuccess.ID,
             streamerActions.startError.ID,
         ]);
@@ -193,7 +200,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                 debug(message);
 
                 try {
-                    const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+                    const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
                     // will call API.unlockPublicationWithPassphrase()
                     yield put(lcpActions.userKeyCheckRequest.build(

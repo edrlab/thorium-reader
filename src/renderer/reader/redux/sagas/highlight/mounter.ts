@@ -6,10 +6,11 @@
 // ==LICENSE-END==
 
 import { zipWith } from "ramda";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { eventChannel, SagaIterator } from "redux-saga";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import {

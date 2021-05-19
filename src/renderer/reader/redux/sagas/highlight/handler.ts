@@ -8,9 +8,10 @@
 import {
     takeSpawnEvery, takeSpawnEveryChannel,
 } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put } from "redux-saga/effects";
+import { select as selectTyped } from "typed-redux-saga/macro";
 
 import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged } from "../../actions";
 import {

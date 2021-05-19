@@ -21,6 +21,8 @@ export const acceptedExtensionObject = {
     w3cAudiobook: ".lpf",
     divina: ".divina",
     daisy: ".daisy",
+    zip: ".zip",
+    opf: ".opf",
 
     // cbz: ".cbz",
 };

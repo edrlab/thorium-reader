@@ -5,9 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export function encodeURIComponent_RFC3986(str: string): string {
-    return encodeURIComponent(str)
-        .replace(/[!'()*]/g, (c: string) => {
-            return "%" + c.charCodeAt(0).toString(16);
-        });
-}
+import { buffers, channel } from "@redux-saga/core";
+import { Operation } from "rfc6902";
+
+export const patchChannel = channel<Operation>(buffers.expanding(1000));
+
