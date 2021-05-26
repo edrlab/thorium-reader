@@ -32,3 +32,4 @@ export function build(...publicationDocument: (PublicationDocumentWithoutTimesta
 }
 build.toString = () => ID; // Redux StringableActionCreator
 export type TAction = ReturnType<typeof build>;
+

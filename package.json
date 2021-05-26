@@ -30,7 +30,9 @@
     "start": "npm run build:prod && cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "start:quick": "cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "eslint \"src/**/*.{ts,tsx}\"",
-    "lint:editorconfig": "eclint check '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*' '!src/main/w3c/**' '!src/resources/**/*'",
+    "lint:eslint:fix": "eslint --fix \"src/**/*.{ts,tsx}\"",
+    "lint:editorconfig": "eclint check '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*' '!src/main/w3c/**' '!src/resources/**/*' '!src/**/*.bcmap' '!src/**/*.svg'",
+    "lint:editorconfig:fix": "eclint fix '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*' '!src/main/w3c/**' '!src/resources/**/*' '!src/**/*.bcmap' '!src/**/*.svg'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer:library-reader-pdf": "npm run start:dev:renderer:pdf && concurrently --kill-others \"npm run start:dev:renderer:library\" \"npm run start:dev:renderer:reader\"",
     "start:dev:renderer:library": "webpack-dev-server --config webpack.config.renderer-library.js",
@@ -74,9 +76,7 @@
     "bundle-stats_renderer-pdf": "webpack-bundle-analyzer dist/stats_renderer-pdf.json dist --report dist/stats_renderer-pdf.html --mode static --default-sizes stat --log-level debug",
     "bundle-stats_renderer-preload": "webpack-bundle-analyzer dist/stats_renderer-preload.json dist --report dist/stats_renderer-preload.html --mode static --default-sizes stat --log-level debug",
     "bundle-stats_main": "webpack-bundle-analyzer dist/stats_main.json dist --report dist/stats_main.html --mode static --default-sizes stat --log-level debug",
-    "eclint:fix": "eclint fix src/**/*",
-    "eslint:fix": "eslint --fix \"src/**/*.{ts,tsx}\"",
-    "lint:fix": "npm run eclint:fix && npm run eslint:fix"
+    "lint:fix": "npm run lint:editorconfig:fix && npm run lint:eslint:fix"
   },
   "repository": {
     "type": "git",
