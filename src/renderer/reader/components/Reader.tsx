@@ -1335,7 +1335,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     // tslint:disable-next-line: max-line-length
-    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) {
+    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeMenu = true) {
         if (event) {
             event.preventDefault();
         }
@@ -1357,7 +1357,8 @@ class Reader extends React.Component<IProps, IState> {
             this.currentDivinaPlayer.goTo(newUrl);
 
         } else {
-            this.focusMainAreaLandmarkAndCloseMenu();
+            if (closeMenu)
+                this.focusMainAreaLandmarkAndCloseMenu();
             const newUrl = this.props.manifestUrlR2Protocol + "/../" + url;
             handleLinkUrl(newUrl);
 
