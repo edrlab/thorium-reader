@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { forkTyped, takeTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { call, cancel, delay, join, race } from "redux-saga/effects";
+import { call, cancel, delay, join, race } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga/dist";
 import { getRequestCustomProtocolEventChannel } from "../getEventChannel";
 import { createOpdsAuthenticationModalWin } from "./createModalWin";
@@ -47,7 +47,7 @@ export function* openWindowModalAndReturnResult<T = string>
             throw "";
         }
 
-        yield race({
+        yield* race({
             a: delay(60000),
             b: join(task),
             c: call(
@@ -71,7 +71,7 @@ export function* openWindowModalAndReturnResult<T = string>
             win.close();
         }
         if (task.isRunning()) {
-            yield cancel(task);
+            yield* cancel(task);
         }
     }
 
