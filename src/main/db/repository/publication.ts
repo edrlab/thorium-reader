@@ -26,6 +26,7 @@ import * as lunrmulti from "@lunr-languages/lunr.multi.js";
 import * as lunrstemmer from "@lunr-languages/lunr.stemmer.support.js";
 
 import { ExcludeTimestampableAndIdentifiable } from "./base";
+import { aboutFilteredDocs } from "readium-desktop/main/filter";
 
 const debug = debug_("readium-desktop:main:db:repository:publication");
 
@@ -267,7 +268,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
     /** Returns all publication tags */
     public async getAllTags(): Promise<string[]> {
 
-        const pubs = await this.findAll();
+        const pubs = aboutFilteredDocs(await this.findAll());
         ok(Array.isArray(pubs));
         const tags: string[] = [];
 
