@@ -43,10 +43,10 @@
 
 .opds_list {
     display: flex;
-    width: 100%;
-    flex-flow: row wrap;
-    height: auto;
-    justify-content: space-between;
+   	width: 100%;
+  	flex-flow: row wrap;
+  	height: auto;
+  	justify-content: space-between;
     margin-top: 3rem;
     & ul {
         display: flex;
@@ -131,9 +131,9 @@
 }
 
 #flux_list {
-  width: calc(100% + 120px);
-  margin-left:-60px;
-  border-top:1px solid #c1c1c1;
+	width: calc(100% + 120px);
+	margin-left:-60px;
+	border-top:1px solid #c1c1c1;
 
     & li {
         padding:20px 60px 20px 60px;

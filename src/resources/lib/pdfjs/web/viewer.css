@@ -77,7 +77,7 @@
   z-index: -1;
   cursor: default;
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
@@ -209,18 +209,18 @@
 
 .annotationLayer .textWidgetAnnotation input.comb:focus {
   /*
-  * Letter spacing is placed on the right side of each character. Hence, the
-  * letter spacing of the last character may be placed outside the visible
-  * area, causing horizontal scrolling. We avoid this by extending the width
-  * when the element has focus and revert this when it loses focus.
-  */
+   * Letter spacing is placed on the right side of each character. Hence, the
+   * letter spacing of the last character may be placed outside the visible
+   * area, causing horizontal scrolling. We avoid this by extending the width
+   * when the element has focus and revert this when it loses focus.
+   */
   width: 115%;
 }
 
 .annotationLayer .buttonWidgetAnnotation.checkBox input,
 .annotationLayer .buttonWidgetAnnotation.radioButton input {
   -webkit-appearance: none;
-    -moz-appearance: none;
+     -moz-appearance: none;
           appearance: none;
   padding: 0;
 }
@@ -296,7 +296,7 @@
   border: 9px solid transparent;
   background-clip: content-box;
   -o-border-image: url(images/shadow.png) 9 9 repeat;
-    border-image: url(images/shadow.png) 9 9 repeat;
+     border-image: url(images/shadow.png) 9 9 repeat;
   background-color: rgba(255, 255, 255, 1);
 }
 
@@ -531,8 +531,8 @@
     --overlay-button-hover-color: rgba(115, 115, 115, 1);
 
     * This image is used in <input> elements, which unfortunately means that
-    * the `mask-image` approach used with all of the other images doesn't work
-    * here; hence why we still have two versions of this particular image. *
+     * the `mask-image` approach used with all of the other images doesn't work
+     * here; hence why we still have two versions of this particular image. *
     --loading-icon: url(images/loading-dark.svg);
   }
 }
@@ -594,7 +594,7 @@ select {
 
 .pdfViewer.enablePermissions .textLayer > span {
   -webkit-user-select: none !important;
-    -moz-user-select: none !important;
+     -moz-user-select: none !important;
       -ms-user-select: none !important;
           user-select: none !important;
   cursor: not-allowed;
@@ -621,7 +621,7 @@ select {
   overflow: hidden;
   cursor: none;
   -moz-user-select: none;
-      user-select: none;
+       user-select: none;
 }
 
 #viewerContainer.pdfPresentationMode:-ms-fullscreen {
@@ -645,7 +645,7 @@ select {
   overflow: hidden;
   cursor: none;
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
@@ -723,7 +723,7 @@ html[dir="rtl"] #sidebarContainer {
   transition-duration: 0s;
   /* Prevent e.g. the thumbnails being selected when the sidebar is resized. */
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
@@ -1081,7 +1081,7 @@ html[dir="rtl"] .findbar .splitToolbarButton > .findNext {
 
 .findbar label {
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
@@ -1417,7 +1417,7 @@ html[dir="rtl"] .splitToolbarButtonSeparator {
   font-size: 12px;
   line-height: 14px;
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   cursor: default;
@@ -1435,7 +1435,7 @@ html[dir="rtl"] .splitToolbarButtonSeparator {
   font-size: 12px;
   line-height: 14px;
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   cursor: default;
@@ -1453,7 +1453,7 @@ html[dir="rtl"] .splitToolbarButtonSeparator {
   font-size: 12px;
   line-height: 14px;
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   cursor: default;
@@ -1471,7 +1471,7 @@ html[dir="rtl"] .splitToolbarButtonSeparator {
   font-size: 12px;
   line-height: 14px;
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   cursor: default;
@@ -1608,7 +1608,7 @@ html[dir="rtl"] .dropdownToolbarButton > select {
 
 .toolbarButton::before {
   /* All matching images have a size of 16x16
-  * All relevant containers have a size of 28x28 */
+   * All relevant containers have a size of 28x28 */
   position: absolute;
   display: inline-block;
   width: 16px;
@@ -1623,7 +1623,7 @@ html[dir="rtl"] .dropdownToolbarButton > select {
 
 .secondaryToolbarButton::before {
   /* All matching images have a size of 16x16
-  * All relevant containers have a size of 28x28 */
+   * All relevant containers have a size of 28x28 */
   position: absolute;
   display: inline-block;
   width: 16px;
@@ -1638,7 +1638,7 @@ html[dir="rtl"] .dropdownToolbarButton > select {
 
 .dropdownToolbarButton::after {
   /* All matching images have a size of 16x16
-  * All relevant containers have a size of 28x28 */
+   * All relevant containers have a size of 28x28 */
   position: absolute;
   display: inline-block;
   width: 16px;
@@ -1653,7 +1653,7 @@ html[dir="rtl"] .dropdownToolbarButton > select {
 
 .treeItemToggler::before {
   /* All matching images have a size of 16x16
-  * All relevant containers have a size of 28x28 */
+   * All relevant containers have a size of 28x28 */
   position: absolute;
   display: inline-block;
   width: 16px;
@@ -2105,7 +2105,7 @@ html[dir="rtl"] .toolbarField[type="checkbox"] {
   line-height: 14px;
   text-align: left;
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   cursor: default;
@@ -2211,7 +2211,7 @@ a:focus > .thumbnail > .thumbnailSelectionRing {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
@@ -2240,7 +2240,7 @@ html[dir="rtl"] .treeItem > .treeItems {
   font-size: 13px;
   line-height: 15px;
   -webkit-user-select: none;
-    -moz-user-select: none;
+     -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
   white-space: normal;
@@ -2344,8 +2344,8 @@ html[dir="rtl"] .treeItemToggler::before {
 }
 
 /* TODO: file FF bug to support ::-moz-selection:window-inactive
-  so we can override the opaque grey background when the window is inactive;
-  see https://bugzilla.mozilla.org/show_bug.cgi?id=706209 */
+   so we can override the opaque grey background when the window is inactive;
+   see https://bugzilla.mozilla.org/show_bug.cgi?id=706209 */
 ::-moz-selection {
   background: rgba(0, 0, 255, 0.3);
 }
