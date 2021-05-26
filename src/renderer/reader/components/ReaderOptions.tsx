@@ -701,7 +701,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     }
                     <div className={styles.focus_element}>
                         <input
-                            {...(!readerConfig.paged && { disabled: true })}
+                            disabled={!isPdf && !readerConfig.paged ? true : false}
                             id={"radio-" + styles.option_colonne1}
                             type="radio"
                             name="column"
@@ -729,7 +729,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             id={"radio-" + styles.option_colonne2}
                             type="radio"
                             name="column"
-                            {...(!readerConfig.paged && { disabled: true })}
+                            disabled={!isPdf && !readerConfig.paged ? true : false}
                             onChange={(e) => isPdf
                                 ? this.props.pdfEventBus.dispatch("column", "2")
                                 : this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
