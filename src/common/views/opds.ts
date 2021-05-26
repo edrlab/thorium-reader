@@ -45,6 +45,9 @@ export interface IOpdsPublicationView {
     openAccessLinks?: IOpdsLinkView[];
     revokeLoanLinks?: IOpdsLinkView[];
     cover?: IOpdsCoverView;
+
+    duration?: number;
+    nbOfTracks?: number;
 }
 
 export interface IOpdsNavigationLinkView {
