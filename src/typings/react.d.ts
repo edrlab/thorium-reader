@@ -15,6 +15,8 @@ export type TMouseEventOnAnchor = React.MouseEvent<HTMLAnchorElement, MouseEvent
 
 export type TKeyboardEventOnAnchor = React.KeyboardEvent<HTMLAnchorElement>;
 
+export type TKeyboardEventButton = React.KeyboardEvent<HTMLButtonElement>;
+
 export type TFormEvent = React.FormEvent<HTMLFormElement>;
 
 export type TChangeEventOnInput = React.ChangeEvent<HTMLInputElement>;

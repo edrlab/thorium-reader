@@ -20,7 +20,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
+import { TFormEvent, TKeyboardEventButton, TMouseEventOnButton  } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
@@ -392,7 +392,15 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     <button
                         className={styles.bookmark_infos}
                         tabIndex={0}
-                        onClick={(e) => this.handleBookmarkClick(e, bookmark.locator)}
+                        onClick={(e) => this.handleBookmarkClick(e, bookmark.locator, false)}
+                        onKeyPress=
+                        {
+                            (e) => {
+                                if (e.key === "Enter") {
+                                    this.handleBookmarkClick(e, bookmark.locator, true);
+                                }
+                            }
+                        }
                     >
                         <SVG svg={BookmarkIcon} title={""} aria-hidden />
 
@@ -633,9 +641,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
     }
 
-    private handleBookmarkClick(e: TMouseEventOnButton, locator: Locator) {
+    private handleBookmarkClick(e: TKeyboardEventButton | TMouseEventOnButton, locator: Locator, closeMenu = true) {
         e.preventDefault();
-        this.props.handleBookmarkClick(locator);
+        this.props.handleBookmarkClick(locator, closeMenu);
     }
 }
 
