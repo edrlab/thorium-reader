@@ -7,7 +7,6 @@
 
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
-import { nanoid } from "nanoid";
 import * as path from "path";
 import * as r from "ramda";
 import * as React from "react";
@@ -20,7 +19,9 @@ import {
     ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings, ReaderConfigStringsAdjustables,
 } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
-import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
+import {
+    IBookmarkState, IBookmarkStateWithoutUUID,
+} from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
@@ -1087,7 +1088,6 @@ class Reader extends React.Component<IProps, IState> {
                 isPaginationSticky: true,
                 isPaginationGridBased: true,
                 language: this.props.lang,
-                loadingMode: "segment",
             };
 
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
@@ -1335,7 +1335,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     // tslint:disable-next-line: max-line-length
-    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) {
+    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeMenu = true) {
         if (event) {
             event.preventDefault();
         }
@@ -1357,7 +1357,8 @@ class Reader extends React.Component<IProps, IState> {
             this.currentDivinaPlayer.goTo(newUrl);
 
         } else {
-            this.focusMainAreaLandmarkAndCloseMenu();
+            if (closeMenu)
+                this.focusMainAreaLandmarkAndCloseMenu();
             const newUrl = this.props.manifestUrlR2Protocol + "/../" + url;
             handleLinkUrl(newUrl);
 
@@ -1380,7 +1381,6 @@ class Reader extends React.Component<IProps, IState> {
                     this.props.deleteBookmark(found);
                 } else {
                     this.props.setBookmark({
-                        uuid: nanoid(),
                         locator,
                         name,
                     });
@@ -1455,7 +1455,6 @@ class Reader extends React.Component<IProps, IState> {
                 }
 
                 this.props.setBookmark({
-                    uuid: nanoid(),
                     locator,
                     name,
                 });
@@ -1737,7 +1736,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dispatch(readerActions.configSetDefault.build(config));
             }
         },
-        setBookmark: (bookmark: IBookmarkState) => {
+        setBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
             dispatch(readerLocalActionBookmarks.push.build(bookmark));
         },
         deleteBookmark: (bookmark: IBookmarkState) => {

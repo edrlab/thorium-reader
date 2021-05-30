@@ -50,9 +50,9 @@ export function* importFromFsService(
                 yield* callTyped(() => computeFileHash(filePath)) :
                 (isOPF ? undefined : yield* callTyped(() => extractCrc32OnZip(filePath)))
             );
-    const [publicationDocumentInRepository] = hash
+    const publicationDocumentInRepository = hash
         ? yield* callTyped(() => publicationRepository.findByHashId(hash))
-        : [];
+        : undefined;
     if (publicationDocumentInRepository) {
         return [publicationDocumentInRepository, true];
     }

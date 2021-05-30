@@ -5,13 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { nanoid } from "nanoid";
 import { Action } from "readium-desktop/common/models/redux";
-import { IBookmarkBaseState, IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
+import { IBookmarkStateWithoutUUID, IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
+import { v4 as uuidv4 } from "uuid";
 
 export const ID = "READER_BOOKMARKS_PUSH";
-
-type IBookmarkStateWithoutUUID = Partial<IBookmarkBaseState> & Required<IBookmarkState>;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPayload extends IBookmarkState {
@@ -20,11 +18,11 @@ interface IPayload extends IBookmarkState {
 export function build(param: IBookmarkStateWithoutUUID):
     Action<typeof ID, IPayload> {
 
-    param.uuid = param.uuid || nanoid();
+    param.uuid = param.uuid || uuidv4();
 
     return {
         type: ID,
-        payload: param,
+        payload: param as IBookmarkState,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

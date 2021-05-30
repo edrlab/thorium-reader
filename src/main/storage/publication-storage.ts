@@ -101,6 +101,7 @@ export class PublicationStorage {
             rmDirSync(p);
         } catch (e) {
             debug(e);
+            debug(preservePublicationOnFileSystem);
             debug(`removePublication error (ignore) ${identifier} ${p}`);
         }
     }

@@ -41,7 +41,7 @@ if (_PACKAGING !== "0") {
     console.warn = (_message?: any, ..._optionalParams: any[]) => { return; };
     console.error = (_message?: IArrayWinRegistryReaderState,any, ..._optionalParams: any[]) => { return; };
     console.info = (_message?: any, ..._optionalParams: any[]) => { return; };
-    */
+     */
 }
 
 // Logger

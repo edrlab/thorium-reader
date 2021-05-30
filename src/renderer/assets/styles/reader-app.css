@@ -829,6 +829,11 @@ p.chapters_description {
 		&:focus + label {
 			@mixin R2_MIXIN_FOCUS_OUTLINE;
 		}
+
+    &:disabled + label {
+			color: gray;
+      cursor: not-allowed;
+		}
 	}
 }
 

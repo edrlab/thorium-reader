@@ -7,6 +7,11 @@
 
 import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationDocument } from "./db/document/publication";
 
 export const aboutFiltered =
     (pubs: PublicationView[]) => pubs.filter(({ title }) => !title.startsWith(ABOUT_BOOK_TITLE_PREFIX));
+
+export const aboutFilteredDocs =
+    (pubs: PublicationDocument[]) => pubs.filter(({ title }) => !title.startsWith(ABOUT_BOOK_TITLE_PREFIX));
+

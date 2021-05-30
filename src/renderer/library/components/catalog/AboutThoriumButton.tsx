@@ -69,7 +69,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
 
         let aboutLocale = locale;
 
-        const setTitle = (l: string) => `${ABOUT_BOOK_TITLE_PREFIX}${l}`;
+        const setTitle = (l: string) => `${ABOUT_BOOK_TITLE_PREFIX}${_APP_VERSION}${l}`;
         try {
 
             let title = setTitle(aboutLocale);

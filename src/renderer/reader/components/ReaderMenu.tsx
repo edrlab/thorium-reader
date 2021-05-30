@@ -227,13 +227,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                     isRTL ? styles.rtlDir : " ")
                             }
                             onClick=
-                                {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                                {link.Href ? (e) => this.props.handleLinkClick(e, link.Href, false) : undefined}
                             tabIndex={0}
                             onKeyPress=
                                 {
                                     (e) => {
                                         if (link.Href && e.key === "Enter") {
-                                            this.props.handleLinkClick(e, link.Href);
+                                            this.props.handleLinkClick(e, link.Href, true);
                                         }
                                     }
                                 }
@@ -277,13 +277,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                             isRTL ? styles.rtlDir : " ")
                                     }
                                     onClick=
-                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href, false) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
                                         {
                                             (e) => {
                                                 if (link.Href && e.key === "Enter") {
-                                                    this.props.handleLinkClick(e, link.Href);
+                                                    this.props.handleLinkClick(e, link.Href, true);
                                                 }
                                             }
                                         }
@@ -305,13 +305,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                             isRTL ? styles.rtlDir : " ")
                                     }
                                     onClick=
-                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href, false) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
                                         {
                                             (e) => {
                                                 if (link.Href && e.key === "Enter") {
-                                                    this.props.handleLinkClick(e, link.Href);
+                                                    this.props.handleLinkClick(e, link.Href, true);
                                                 }
                                             }
                                         }

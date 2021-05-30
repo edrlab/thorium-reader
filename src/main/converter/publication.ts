@@ -216,6 +216,9 @@ export class PublicationViewConverter {
         const state = store.getState();
         const locator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
 
+        const duration = typeof r2Publication.Metadata.Duration === "number" ? r2Publication.Metadata.Duration : undefined;
+        const nbOfTracks = typeof r2Publication.Metadata.AdditionalJSON?.tracks === "number" ? r2Publication.Metadata.AdditionalJSON?.tracks : undefined;
+
         return {
             identifier: document.identifier, // preserve Identifiable identifier
             title: document.title || "-", // default title
@@ -233,8 +236,9 @@ export class PublicationViewConverter {
             lcpRightsCopies: document.lcpRightsCopies,
 
             RDFType: r2Publication.Metadata.RDFType,
-            duration: r2Publication.Metadata.Duration,
-            nbOfTracks: r2Publication.Metadata.AdditionalJSON?.tracks as number | undefined,
+
+            duration,
+            nbOfTracks,
 
             // doc: r2Publiction.Metadata,
 

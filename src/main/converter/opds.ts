@@ -352,6 +352,9 @@ export class OpdsFeedViewConverter {
         // const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
         // const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
 
+        const duration = typeof r2OpdsPublication.Metadata.Duration === "number" ? r2OpdsPublication.Metadata.Duration : undefined;
+        const nbOfTracks = typeof r2OpdsPublication.Metadata.AdditionalJSON?.tracks === "number" ? r2OpdsPublication.Metadata.AdditionalJSON?.tracks : undefined;
+
         return {
             baseUrl,
             // r2OpdsPublicationJson,
@@ -372,6 +375,8 @@ export class OpdsFeedViewConverter {
             sampleOrPreviewLinks: sampleLinkView,
             openAccessLinks: acquisitionLinkView,
             revokeLoanLinks: revokeLoanLinkView,
+            duration,
+            nbOfTracks,
         };
     }
     public convertOpdsAuthToView(r2OpdsAuth: OPDSAuthenticationDoc, baseUrl: string): IOpdsResultView {

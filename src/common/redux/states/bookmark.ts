@@ -10,11 +10,10 @@ import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reduce
 
 export type TBookmarkState = TPQueueState<number, IBookmarkState>;
 
-export interface IBookmarkBaseState {
+export interface IBookmarkState {
     uuid: string;
-}
-
-export interface IBookmarkState extends IBookmarkBaseState {
     name: string;
     locator: Locator;
 }
+
+export type IBookmarkStateWithoutUUID = Partial<Pick<IBookmarkState, "uuid">> & Pick<IBookmarkState, "name" | "locator">;
