@@ -85,6 +85,7 @@ export function lockInstance() {
             debug("comandLine", argv, _workingDir);
 
             try {
+                // second-instance event can be called before library window created
                 const libraryAppWindow = getLibraryWindowFromDi();
                 if (libraryAppWindow) {
                     if (libraryAppWindow.isMinimized()) {
