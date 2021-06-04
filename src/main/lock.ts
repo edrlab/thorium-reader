@@ -93,6 +93,8 @@ export function lockInstance() {
                     }
                     libraryAppWindow.show(); // focuses as well
                 }
+                
+                // TODO: need to wait the end of global init
             } catch (e) {
                 debug("open second instance event : getLib error ", e);
             }
