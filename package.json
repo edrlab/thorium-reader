@@ -169,11 +169,6 @@
         "mimeType": "application/daisy+zip"
       },
       {
-        "ext": "zip",
-        "role": "Viewer",
-        "mimeType": "application/zip"
-      },
-      {
         "ext": "opf",
         "role": "Viewer",
         "mimeType": "application/oebps-package+xml"
