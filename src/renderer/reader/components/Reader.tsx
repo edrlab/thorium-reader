@@ -1312,7 +1312,7 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private goToLocator(locator: R2Locator) {
+    private goToLocator(locator: R2Locator, closeMenu = true) {
 
         if (this.props.isPdf) {
 
@@ -1327,7 +1327,8 @@ class Reader extends React.Component<IProps, IState> {
                 this.currentDivinaPlayer.goToPageWithIndex(index);
             }
         } else {
-            this.focusMainAreaLandmarkAndCloseMenu();
+            if (closeMenu)
+                this.focusMainAreaLandmarkAndCloseMenu();
 
             handleLinkLocator(locator);
         }
