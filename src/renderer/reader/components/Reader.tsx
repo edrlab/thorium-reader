@@ -240,6 +240,57 @@ class Reader extends React.Component<IProps, IState> {
 
     public async componentDidMount() {
 
+        const handleMouseKeyboard = (isKey: boolean) => {
+
+            if (_mouseMoveTimeout) {
+                window.clearTimeout(_mouseMoveTimeout);
+                _mouseMoveTimeout = undefined;
+            }
+            window.document.documentElement.classList.remove("HIDE_CURSOR_CLASS");
+
+            const nav = window.document.querySelector(`.${styles.main_navigation}`);
+            if (nav) {
+                nav.classList.remove(styles.HIDE_CURSOR_CLASS_head);
+            }
+            const foot = window.document.querySelector(`.${styles.reader_footer}`);
+            if (foot) {
+                foot.classList.remove(styles.HIDE_CURSOR_CLASS_foot);
+            }
+
+            // if (!window.document.fullscreenElement && !window.document.fullscreen) {
+            if (!this.state.fullscreen) {
+                return;
+            }
+
+            if (isKey) {
+                return;
+            }
+
+            _mouseMoveTimeout = window.setTimeout(() => {
+                window.document.documentElement.classList.add("HIDE_CURSOR_CLASS");
+                const nav = window.document.querySelector(`.${styles.main_navigation}`);
+                if (nav) {
+                    nav.classList.add(styles.HIDE_CURSOR_CLASS_head);
+                }
+                const foot = window.document.querySelector(`.${styles.reader_footer}`);
+                if (foot) {
+                    foot.classList.add(styles.HIDE_CURSOR_CLASS_foot);
+                }
+            }, 1000);
+        };
+
+        let _mouseMoveTimeout: number | undefined;
+        window.document.addEventListener("keydown", (_ev: KeyboardEvent) => {
+            handleMouseKeyboard(true);
+        }, {
+            once: false,
+            passive: false,
+            capture: true,
+        });
+        window.document.documentElement.addEventListener("mousemove", (_ev: MouseEvent) => {
+            handleMouseKeyboard(false);
+        });
+
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
         // but narrow it down specically to a reader window instance (not application-wide)

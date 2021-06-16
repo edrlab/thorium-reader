@@ -2,6 +2,11 @@
 @import "./focus.css";
 @import "./variable.css";
 
+:global :root.HIDE_CURSOR_CLASS,
+:global :root.HIDE_CURSOR_CLASS * {
+    cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=), none !important;
+}
+
 .anchor_link {
 	position: absolute;
 	display: block;
@@ -291,6 +296,10 @@ button {
 /* ========== Navigation ==========*/
 
 .main_navigation {
+  &.HIDE_CURSOR_CLASS_head {
+    visibility: hidden !important;
+  }
+  
 	z-index:102;
 	width:100%;
 	top:0;
@@ -1032,6 +1041,10 @@ input[type=radio] + label {
 /* ========= FOOTER ========= */
 
 .reader_footer {
+  &.HIDE_CURSOR_CLASS_foot {
+    visibility: hidden !important;
+  }
+  
     position: fixed;
     bottom: 0;
     right: 0;
