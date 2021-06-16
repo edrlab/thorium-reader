@@ -169,11 +169,6 @@
         "mimeType": "application/daisy+zip"
       },
       {
-        "ext": "opf",
-        "role": "Viewer",
-        "mimeType": "application/oebps-package+xml"
-      },
-      {
         "ext": "lcpl",
         "role": "Viewer",
         "mimeType": "application/vnd.readium.lcp.license.v1.0+json"
@@ -197,11 +192,6 @@
         "ext": "lcpaudiobook",
         "role": "Viewer",
         "mimeType": "application/audiobook+lcp"
-      },
-      {
-        "ext": "pdf",
-        "role": "Viewer",
-        "mimeType": "application/pdf"
       },
       {
         "ext": "lcpdf",
