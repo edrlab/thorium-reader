@@ -244,15 +244,19 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                             fontWeight: "normal",
                                         }}
                                         onClick=
-                                            {(e) => this.handleSearchClickDebounced(e, v.uuid, false)}
+                                            {(e) => {
+                                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                this.handleSearchClickDebounced(e, v.uuid, closeNavPanel);
+                                            }}
                                         onDoubleClick=
-                                            {(e) => this.handleSearchClickDebounced(e, v.uuid, true)}
+                                            {(e) => this.handleSearchClickDebounced(e, v.uuid, false)}
                                         tabIndex={0}
                                         onKeyPress=
                                             {
                                                 (e) => {
                                                     if (e.key === "Enter") {
-                                                        this.handleSearchClick(e, v.uuid, true);
+                                                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                        this.handleSearchClick(e, v.uuid, closeNavPanel);
                                                     }
                                                 }
                                             }
@@ -353,7 +357,8 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //                                         {
     //                                             (e) => {
     //                                                 if (link.Href && e.key === "Enter") {
-    //                                                     this.handleSearchClick(e, link.Href, true);
+    //                                                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+    //                                                     this.handleSearchClick(e, link.Href, closeNavPanel);
     //                                                 }
     //                                             }
     //                                         }
@@ -374,17 +379,17 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     private handleSearchClick(
         e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>,
         href: string,
-        escape: boolean) {
+        closeNavPanel: boolean) {
 
-        handleSearchClickFunc(this, e, href, escape);
+        handleSearchClickFunc(this, e, href, closeNavPanel);
     }
 
     private handleSearchClickDebounced(
         e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>,
         href: string,
-        escape: boolean) {
+        closeNavPanel: boolean) {
 
-        handleSearchClickFuncDebounced(this, e, href, escape);
+        handleSearchClickFuncDebounced(this, e, href, closeNavPanel);
     }
 }
 
@@ -392,12 +397,12 @@ const handleSearchClickFunc = (
     thiz: ReaderMenuSearch,
     e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>,
     href: string,
-    escape: boolean) => {
+    closeNavPanel: boolean) => {
 
     e.preventDefault();
     console.log(href);
     thiz.props.focus(href); // search uuid
-    if (escape) {
+    if (closeNavPanel) {
         thiz.props.focusMainAreaLandmarkAndCloseMenu();
     }
 };

@@ -20,7 +20,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { TFormEvent, TKeyboardEventButton, TMouseEventOnButton  } from "readium-desktop/typings/react";
+import { TKeyboardEventButton, TMouseEventOnButton  } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
@@ -227,13 +227,19 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                     isRTL ? styles.rtlDir : " ")
                             }
                             onClick=
+                                {link.Href ? (e) => {
+                                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                    this.props.handleLinkClick(e, link.Href, closeNavPanel);
+                                } : undefined}
+                            onDoubleClick=
                                 {link.Href ? (e) => this.props.handleLinkClick(e, link.Href, false) : undefined}
                             tabIndex={0}
                             onKeyPress=
                                 {
                                     (e) => {
                                         if (link.Href && e.key === "Enter") {
-                                            this.props.handleLinkClick(e, link.Href, true);
+                                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                            this.props.handleLinkClick(e, link.Href, closeNavPanel);
                                         }
                                     }
                                 }
@@ -277,13 +283,19 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                             isRTL ? styles.rtlDir : " ")
                                     }
                                     onClick=
+                                        {link.Href ? (e) => {
+                                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                            this.props.handleLinkClick(e, link.Href, closeNavPanel);
+                                        } : undefined}
+                                    onDoubleClick=
                                         {link.Href ? (e) => this.props.handleLinkClick(e, link.Href, false) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
                                         {
                                             (e) => {
                                                 if (link.Href && e.key === "Enter") {
-                                                    this.props.handleLinkClick(e, link.Href, true);
+                                                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                    this.props.handleLinkClick(e, link.Href, closeNavPanel);
                                                 }
                                             }
                                         }
@@ -305,13 +317,19 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                             isRTL ? styles.rtlDir : " ")
                                     }
                                     onClick=
+                                        {link.Href ? (e) => {
+                                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                            this.props.handleLinkClick(e, link.Href, closeNavPanel);
+                                        } : undefined}
+                                    onDoubleClick=
                                         {link.Href ? (e) => this.props.handleLinkClick(e, link.Href, false) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
                                         {
                                             (e) => {
                                                 if (link.Href && e.key === "Enter") {
-                                                    this.props.handleLinkClick(e, link.Href, true);
+                                                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                    this.props.handleLinkClick(e, link.Href, closeNavPanel);
                                                 }
                                             }
                                         }
@@ -392,12 +410,17 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     <button
                         className={styles.bookmark_infos}
                         tabIndex={0}
-                        onClick={(e) => this.handleBookmarkClick(e, bookmark.locator, false)}
+                        onClick={(e) => {
+                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                            this.handleBookmarkClick(e, bookmark.locator, closeNavPanel);
+                        }}
+                        onDoubleClick={(e) => this.handleBookmarkClick(e, bookmark.locator, false)}
                         onKeyPress=
                         {
                             (e) => {
-                                if (e.key === "Enter") {
-                                    this.handleBookmarkClick(e, bookmark.locator, true);
+                                if (e.key === "Enter" || e.key === "Space") {
+                                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                    this.handleBookmarkClick(e, bookmark.locator, closeNavPanel);
                                 }
                             }
                         }
@@ -477,7 +500,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 }
             </label>
 
-            <form onSubmit={this.handleSubmitPage}>
+            <form id="gotoPageForm">
                 {(isFixedLayout || this.props.r2Publication?.PageList) &&
                 <select
                     onChange={(ev) => {
@@ -545,7 +568,24 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
-                    type="submit"
+                    type="button"
+
+                    onClick=
+                        {(e) => {
+                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                            this.handleSubmitPage(e, closeNavPanel);
+                        }}
+                    onDoubleClick=
+                        {(e) => this.handleSubmitPage(e, false)}
+                    onKeyPress=
+                        {
+                            (e) => {
+                                if (e.key === "Enter" || e.key === "Space") {
+                                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                    this.handleSubmitPage(e, closeNavPanel);
+                                }
+                            }
+                        }
                     disabled={
                         !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
                     }
@@ -571,7 +611,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         this.setState({ bookmarkToUpdate: undefined });
     }
 
-    private handleSubmitPage(e: TFormEvent) {
+    private handleSubmitPage(e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>, closeNavPanel = true) {
         e.preventDefault();
         if (!this.goToRef?.current?.value) {
             return;
@@ -588,7 +628,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 const spineLink = this.props.r2Publication.Spine[spineIndex];
                 if (spineLink) {
                     this.setState({pageError: false});
-                    this.props.handleLinkClick(undefined, spineLink.Href);
+                    this.props.handleLinkClick(undefined, spineLink.Href, closeNavPanel);
                     return;
                 }
             } catch (_e) {
@@ -620,7 +660,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     href: (page || pageNbr).toString(),
                     // progression generate in divina pagechange event
                 };
-                this.props.handleBookmarkClick(loc as any);
+                this.props.handleBookmarkClick(loc as any, closeNavPanel);
 
                 return;
             }
@@ -632,7 +672,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 undefined;
             if (foundPage) {
                 this.setState({pageError: false});
-                this.props.handleLinkClick(undefined, foundPage.Href);
+                this.props.handleLinkClick(undefined, foundPage.Href, closeNavPanel);
 
                 return;
             }
@@ -641,9 +681,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
     }
 
-    private handleBookmarkClick(e: TKeyboardEventButton | TMouseEventOnButton, locator: Locator, closeMenu = true) {
+    private handleBookmarkClick(e: TKeyboardEventButton | TMouseEventOnButton, locator: Locator, closeNavPanel = true) {
         e.preventDefault();
-        this.props.handleBookmarkClick(locator, closeMenu);
+        this.props.handleBookmarkClick(locator, closeNavPanel);
     }
 }
 
