@@ -60,6 +60,7 @@ export interface ReaderConfigBooleans {
     noFootnotes: boolean;
     darken: boolean;
     mediaOverlaysEnableSkippability: boolean;
+    ttsEnableSentenceDetection: boolean;
     mediaOverlaysEnableCaptionsMode: boolean;
     ttsEnableOverlayMode: boolean;
 }

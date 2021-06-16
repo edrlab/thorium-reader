@@ -349,6 +349,7 @@
             "pause": "Pausar Texto para voz",
             "play": "Executar Texto para voz",
             "previous": "Texto para voz - anterior",
+            "sentenceDetect": "",
             "speed": "Velocidade de Texto para voz",
             "stop": "Parar Texto para voz",
             "voice": "Voz de Texto para voz"

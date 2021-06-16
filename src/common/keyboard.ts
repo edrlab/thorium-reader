@@ -238,6 +238,18 @@ const _defaults_ = Object.freeze({
         shift: false,
         key: "Digit3",
     }),
+    AudioPreviousAlt: Object.freeze<TKeyboardShortcut>({
+        alt: true,
+        control: true,
+        shift: true,
+        key: "Digit1",
+    }),
+    AudioNextAlt: Object.freeze<TKeyboardShortcut>({
+        alt: true,
+        control: true,
+        shift: true,
+        key: "Digit3",
+    }),
     AudioStop: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,

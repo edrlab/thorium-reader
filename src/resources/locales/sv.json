@@ -349,6 +349,7 @@
             "pause": "Pausa text-till-tal",
             "play": "Spela text-till-tal",
             "previous": "Föregående text-till-tal",
+            "sentenceDetect": "",
             "speed": "Spelhastighet text-till-tal",
             "stop": "Stoppa text-till-tal",
             "voice": "Textröst"

@@ -270,6 +270,17 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     this.props.__("reader.media-overlays.skip")
                 }</label>
             </div>
+            <div className={styles.mathml_section}>
+                <input
+                    id="ttsEnableSentenceDetectionCheckBox"
+                    type="checkbox"
+                    checked={readerConfig.ttsEnableSentenceDetection}
+                    onChange={() => this.toggleTTSEnableSentenceDetection()}
+                />
+                <label htmlFor="ttsEnableSentenceDetectionCheckBox">{
+                    this.props.__("reader.tts.sentenceDetect")
+                }</label>
+            </div>
         </>);
     }
 
@@ -901,6 +912,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
 
         readerConfig.mediaOverlaysEnableSkippability = !readerConfig.mediaOverlaysEnableSkippability;
+        this.props.setSettings(readerConfig);
+    }
+    private toggleTTSEnableSentenceDetection() {
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
+        readerConfig.ttsEnableSentenceDetection = !readerConfig.ttsEnableSentenceDetection;
         this.props.setSettings(readerConfig);
     }
     private toggleMediaOverlaysEnableCaptionsMode() {

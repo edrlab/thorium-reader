@@ -349,6 +349,7 @@
             "pause": "暂停",
             "play": "播放",
             "previous": "上一段",
+            "sentenceDetect": "",
             "speed": "语速",
             "stop": "停止",
             "voice": "声音"
