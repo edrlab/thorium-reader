@@ -27,6 +27,13 @@ export function opdsDbReducers(
             for (const doc of action.payload) {
                 debug("opdsActions.addOpdsFeed: ", doc, state);
 
+                // CANNOT DO THIS HERE, see OpdsFeedRepository.save() implementation comments (store.dispatch(feedAction))
+                // ensures no duplicates (same URL ... but may be different titles)
+                // const found = state.find((v) => v.url === doc.url);
+                // if (found) {
+                //     continue;
+                // }
+
                 const newDoc = clone(doc);
                 newDoc.doNotMigrateAnymore = true;
                 newState.push(newDoc);

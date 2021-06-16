@@ -25,9 +25,9 @@ export interface IOpdsApi {
     addFeed: (
         data: OpdsFeed,
     ) => Promise<IOpdsFeedView>;
-    updateFeed: (
-        data: OpdsFeed,
-    ) => Promise<IOpdsFeedView>;
+    // updateFeed: (
+    //     data: OpdsFeed,
+    // ) => Promise<IOpdsFeedView>;
     browse: (
         url: string,
     ) => Promise<THttpGetOpdsResultView>;
@@ -41,7 +41,7 @@ export interface IOpdsModuleApi {
     "opds/deleteFeed": IOpdsApi["deleteFeed"];
     "opds/findAllFeeds": IOpdsApi["findAllFeeds"];
     "opds/addFeed": IOpdsApi["addFeed"];
-    "opds/updateFeed": IOpdsApi["updateFeed"];
+    // "opds/updateFeed": IOpdsApi["updateFeed"];
     "opds/browse": IOpdsApi["browse"];
     "opds/getUrlWithSearchLinks": IOpdsApi["getUrlWithSearchLinks"];
 }

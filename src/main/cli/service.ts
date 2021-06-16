@@ -75,8 +75,15 @@ export async function cliOpds(title: string, url: string) {
     if (hostname) {
 
         const opdsRepository = diMainGet("opds-feed-repository");
-        const opdsFeedDocument = await opdsRepository.save({ title, url });
 
+        // ensures no duplicates (same URL ... but may be different titles)
+        const opdsFeeds = await opdsRepository.findAll();
+        const found = opdsFeeds.find((o) => o.url === url);
+        if (found) {
+            return true;
+        }
+
+        const opdsFeedDocument = await opdsRepository.save({ title, url });
         return !!opdsFeedDocument;
     }
     return false;

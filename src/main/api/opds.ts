@@ -60,14 +60,22 @@ export class OpdsApi implements IOpdsApi {
     }
 
     public async addFeed(data: OpdsFeed): Promise<IOpdsFeedView> {
+
+        // ensures no duplicates (same URL ... but may be different titles)
+        const opdsFeeds = await this.opdsFeedRepository.findAll();
+        const found = opdsFeeds.find((o) => o.url === data.url);
+        if (found) {
+            return this.opdsFeedViewConverter.convertDocumentToView(found);
+        }
+
         const doc = await this.opdsFeedRepository.save(data);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async updateFeed(data: OpdsFeed): Promise<IOpdsFeedView> {
-        const doc = await this.opdsFeedRepository.save(data);
-        return this.opdsFeedViewConverter.convertDocumentToView(doc);
-    }
+    // public async updateFeed(data: OpdsFeed): Promise<IOpdsFeedView> {
+    //     const doc = await this.opdsFeedRepository.save(data);
+    //     return this.opdsFeedViewConverter.convertDocumentToView(doc);
+    // }
 
     public async browse(url: string): Promise<THttpGetOpdsResultView> {
         url = checkUrl(url);
