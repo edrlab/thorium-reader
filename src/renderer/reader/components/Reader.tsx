@@ -1312,7 +1312,7 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private goToLocator(locator: R2Locator, closeMenu = true) {
+    private goToLocator(locator: R2Locator, closeNavPanel = true) {
 
         if (this.props.isPdf) {
 
@@ -1327,8 +1327,9 @@ class Reader extends React.Component<IProps, IState> {
                 this.currentDivinaPlayer.goToPageWithIndex(index);
             }
         } else {
-            if (closeMenu)
+            if (closeNavPanel) {
                 this.focusMainAreaLandmarkAndCloseMenu();
+            }
 
             handleLinkLocator(locator);
         }
@@ -1336,7 +1337,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     // tslint:disable-next-line: max-line-length
-    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeMenu = true) {
+    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel = true) {
         if (event) {
             event.preventDefault();
         }
@@ -1358,8 +1359,9 @@ class Reader extends React.Component<IProps, IState> {
             this.currentDivinaPlayer.goTo(newUrl);
 
         } else {
-            if (closeMenu)
+            if (closeNavPanel) {
                 this.focusMainAreaLandmarkAndCloseMenu();
+            }
             const newUrl = this.props.manifestUrlR2Protocol + "/../" + url;
             handleLinkUrl(newUrl);
 
