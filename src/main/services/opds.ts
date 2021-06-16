@@ -178,14 +178,14 @@ export class OpdsService {
     }
 
     private sendWwwAuthenticationToAuthenticationProcess(
-        realm: string,
+        _realm: string,
         responseUrl: string,
     ) {
 
         const opdsAuthDoc = new OPDSAuthenticationDoc();
 
         opdsAuthDoc.Id = "";
-        opdsAuthDoc.Title = realm || "basic authenticate";
+        opdsAuthDoc.Title = ""; // realm || "basic authenticate"; NOT HUMAN-READABLE!
 
         const opdsAuth = new OPDSAuthentication();
 
