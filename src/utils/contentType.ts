@@ -31,7 +31,7 @@ export enum ContentType {
     webpubPacked = "application/webpub+zip",
     Lcp = "application/vnd.readium.lcp.license.v1.0+json",
     Lsd = "application/vnd.readium.license.status.v1.0+json",
-    lcppdf = "application/pdf+lcp",
+    lcpdf = "application/pdf+lcp",
     pdf = "application/pdf",
     ApiProblem = "application/api-problem+json",
     Opf = "application/oebps-package+xml",

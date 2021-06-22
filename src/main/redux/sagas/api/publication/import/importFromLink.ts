@@ -112,8 +112,7 @@ export function* importFromLinkService(
         || contentTypeArray.includes(ContentType.AudioBook)
         || contentTypeArray.includes(ContentType.JsonLd)
         || contentTypeArray.includes(ContentType.Divina)
-        || contentTypeArray.includes(ContentType.webpub)
-        || contentTypeArray.includes(ContentType.lcppdf);
+        || contentTypeArray.includes(ContentType.webpub);
 
     debug(contentTypeArray, isHtml, isJson);
 

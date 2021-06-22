@@ -273,7 +273,7 @@ export class PublicationStorage {
                                         : isWebpub
                                             ? ContentType.webpubPacked
                                             : isLcpPdf
-                                                ? ContentType.lcppdf
+                                                ? ContentType.lcpdf
                                                 : ContentType.Epub
                             ),
                     size: getFileSize(dstPath),
