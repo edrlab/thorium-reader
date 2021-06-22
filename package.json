@@ -31,7 +31,7 @@
     "start:quick": "cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:eslint:fix": "eslint --fix \"src/**/*.{ts,tsx}\"",
-    "lint:editorconfig": "eclint check '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*' '!src/main/w3c/**' '!src/resources/**/*' '!src/**/*.bcmap' '!src/**/*.svg'",
+    "lint:editorconfig": "eclint check '**/*' '!changelogs/**/*' '!.idea/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*' '!src/main/w3c/**' '!src/resources/**/*' '!src/**/*.bcmap' '!src/**/*.svg'",
     "lint:editorconfig:fix": "eclint fix '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*' '!src/main/w3c/**' '!src/resources/**/*' '!src/**/*.bcmap' '!src/**/*.svg'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer:library-reader-pdf": "npm run start:dev:renderer:pdf && concurrently --kill-others \"npm run start:dev:renderer:library\" \"npm run start:dev:renderer:reader\"",
