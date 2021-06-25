@@ -399,8 +399,8 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
                     "opds://authorize",
                     auth.labels?.login,
                     auth.labels?.password,
-                    auth.logo?.url,
                     auth.title,
+                    auth.logo?.url,
                 ),
             );
             browserUrl = `data:text/html;charset=utf-8,${html}`;
@@ -645,9 +645,14 @@ const htmlLoginTemplate = (
     urlToSubmit = "",
     loginLabel = "login",
     passLabel = "password",
+    title: string | undefined,
     logoUrl?: string,
-    title: string = diMainGet("translator").translate("catalog.opds.auth.login"),
-) => `
+) => {
+    if (!title) { // includes empty string
+        title = diMainGet("translator").translate("catalog.opds.auth.login");
+    }
+
+    return `
 <html lang="en">
 
 <head>
@@ -656,7 +661,7 @@ const htmlLoginTemplate = (
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sign in</title>
+    <title>${title}</title>
 
     <!-- Custom styles for this template -->
     <style>
@@ -856,3 +861,4 @@ const htmlLoginTemplate = (
     </body>
 
 </html>`;
+};

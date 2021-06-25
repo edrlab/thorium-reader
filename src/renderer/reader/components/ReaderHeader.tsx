@@ -56,8 +56,8 @@ interface IBaseProps extends TranslatorProps {
     handleTTSPause: () => void;
     handleTTSStop: () => void;
     handleTTSResume: () => void;
-    handleTTSPrevious: () => void;
-    handleTTSNext: () => void;
+    handleTTSPrevious: (skipSentences?: boolean) => void;
+    handleTTSNext: (skipSentences?: boolean) => void;
     handleTTSPlaybackRate: (speed: string) => void;
     handleTTSVoice: (voice: SpeechSynthesisVoice | null) => void;
     ttsState: TTSStateEnum;
@@ -287,11 +287,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 <li >
                                     <button
                                         className={styles.menu_button}
-                                        onClick={
-                                            this.props.publicationHasMediaOverlays ?
-                                                this.props.handleMediaOverlaysPrevious :
-                                                this.props.handleTTSPrevious
-                                        }
+                                        onClick={(e)=>{
+                                            if (this.props.publicationHasMediaOverlays) {
+                                                this.props.handleMediaOverlaysPrevious();
+                                            } else {
+                                                this.props.handleTTSPrevious(e.shiftKey && e.altKey);
+                                            }
+                                        }}
                                     >
                                         <SVG svg={SkipPrevious} title={
                                             this.props.publicationHasMediaOverlays ?
@@ -341,11 +343,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 <li >
                                     <button
                                         className={styles.menu_button}
-                                        onClick={
-                                            this.props.publicationHasMediaOverlays ?
-                                                this.props.handleMediaOverlaysNext :
-                                                this.props.handleTTSNext
-                                        }
+
+                                        onClick={(e)=>{
+                                            if (this.props.publicationHasMediaOverlays) {
+                                                this.props.handleMediaOverlaysNext();
+                                            } else {
+                                                this.props.handleTTSNext(e.shiftKey && e.altKey);
+                                            }
+                                        }}
                                     >
                                         <SVG svg={SkipNext} title={
                                             this.props.publicationHasMediaOverlays ?

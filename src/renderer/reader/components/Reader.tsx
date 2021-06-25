@@ -63,7 +63,8 @@ import {
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight, publicationHasMediaOverlays,
     readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
-    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, TTSStateEnum, ttsStop, ttsVoice,
+    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSentenceDetectionEnable, TTSStateEnum,
+    ttsStop, ttsVoice,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
@@ -238,6 +239,57 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
+
+        const handleMouseKeyboard = (isKey: boolean) => {
+
+            if (_mouseMoveTimeout) {
+                window.clearTimeout(_mouseMoveTimeout);
+                _mouseMoveTimeout = undefined;
+            }
+            window.document.documentElement.classList.remove("HIDE_CURSOR_CLASS");
+
+            const nav = window.document.querySelector(`.${styles.main_navigation}`);
+            if (nav) {
+                nav.classList.remove(styles.HIDE_CURSOR_CLASS_head);
+            }
+            const foot = window.document.querySelector(`.${styles.reader_footer}`);
+            if (foot) {
+                foot.classList.remove(styles.HIDE_CURSOR_CLASS_foot);
+            }
+
+            // if (!window.document.fullscreenElement && !window.document.fullscreen) {
+            if (!this.state.fullscreen) {
+                return;
+            }
+
+            if (isKey) {
+                return;
+            }
+
+            _mouseMoveTimeout = window.setTimeout(() => {
+                window.document.documentElement.classList.add("HIDE_CURSOR_CLASS");
+                const nav = window.document.querySelector(`.${styles.main_navigation}`);
+                if (nav) {
+                    nav.classList.add(styles.HIDE_CURSOR_CLASS_head);
+                }
+                const foot = window.document.querySelector(`.${styles.reader_footer}`);
+                if (foot) {
+                    foot.classList.add(styles.HIDE_CURSOR_CLASS_foot);
+                }
+            }, 1000);
+        };
+
+        let _mouseMoveTimeout: number | undefined;
+        window.document.addEventListener("keydown", (_ev: KeyboardEvent) => {
+            handleMouseKeyboard(true);
+        }, {
+            once: false,
+            passive: false,
+            capture: true,
+        });
+        window.document.documentElement.addEventListener("mousemove", (_ev: MouseEvent) => {
+            handleMouseKeyboard(false);
+        });
 
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == CloseRequest,
@@ -633,6 +685,14 @@ class Reader extends React.Component<IProps, IState> {
             this.onKeyboardAudioNext);
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.AudioPreviousAlt,
+            this.onKeyboardAudioPreviousAlt);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.AudioNextAlt,
+            this.onKeyboardAudioNextAlt);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AudioStop,
             this.onKeyboardAudioStop);
     }
@@ -654,6 +714,8 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAudioPlayPause);
         unregisterKeyboardListener(this.onKeyboardAudioPrevious);
         unregisterKeyboardListener(this.onKeyboardAudioNext);
+        unregisterKeyboardListener(this.onKeyboardAudioPreviousAlt);
+        unregisterKeyboardListener(this.onKeyboardAudioNextAlt);
         unregisterKeyboardListener(this.onKeyboardAudioStop);
     }
 
@@ -715,7 +777,10 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private onKeyboardAudioPrevious = () => {
+    private onKeyboardAudioPreviousAlt = () => {
+        this.onKeyboardAudioPrevious(true);
+    }
+    private onKeyboardAudioPrevious = (skipSentences = false) => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardAudioPrevious)");
@@ -732,11 +797,16 @@ class Reader extends React.Component<IProps, IState> {
         } else if (this.state.currentLocation.audioPlaybackInfo) {
             audioRewind();
         } else {
-            this.handleTTSPrevious();
+            // const doc = document as TKeyboardDocument;
+            // const skipSentences = doc._keyModifierShift && doc._keyModifierAlt;
+            this.handleTTSPrevious(skipSentences);
         }
     }
 
-    private onKeyboardAudioNext = () => {
+    private onKeyboardAudioNextAlt = () => {
+        this.onKeyboardAudioNext(true);
+    }
+    private onKeyboardAudioNext = (skipSentences = false) => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardAudioNext)");
@@ -753,7 +823,9 @@ class Reader extends React.Component<IProps, IState> {
         } else if (this.state.currentLocation.audioPlaybackInfo) {
             audioForward();
         } else {
-            this.handleTTSNext();
+            // const doc = document as TKeyboardDocument;
+            // const skipSentences = doc._keyModifierShift && doc._keyModifierAlt;
+            this.handleTTSNext(skipSentences);
         }
     }
 
@@ -1223,6 +1295,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleReadingLocationChange(loc: LocatorExtended) {
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
+            ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
         }
         this.ttsOverlayEnableNeedsSync = false;
 
@@ -1312,7 +1385,7 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private goToLocator(locator: R2Locator) {
+    private goToLocator(locator: R2Locator, closeNavPanel = true) {
 
         if (this.props.isPdf) {
 
@@ -1327,7 +1400,9 @@ class Reader extends React.Component<IProps, IState> {
                 this.currentDivinaPlayer.goToPageWithIndex(index);
             }
         } else {
-            this.focusMainAreaLandmarkAndCloseMenu();
+            if (closeNavPanel) {
+                this.focusMainAreaLandmarkAndCloseMenu();
+            }
 
             handleLinkLocator(locator);
         }
@@ -1335,7 +1410,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     // tslint:disable-next-line: max-line-length
-    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeMenu = true) {
+    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel = true) {
         if (event) {
             event.preventDefault();
         }
@@ -1357,8 +1432,9 @@ class Reader extends React.Component<IProps, IState> {
             this.currentDivinaPlayer.goTo(newUrl);
 
         } else {
-            if (closeMenu)
+            if (closeNavPanel) {
                 this.focusMainAreaLandmarkAndCloseMenu();
+            }
             const newUrl = this.props.manifestUrlR2Protocol + "/../" + url;
             handleLinkUrl(newUrl);
 
@@ -1498,11 +1574,11 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSResume() {
         ttsResume();
     }
-    private handleTTSNext() {
-        ttsNext();
+    private handleTTSNext(skipSentences = false) {
+        ttsNext(skipSentences);
     }
-    private handleTTSPrevious() {
-        ttsPrevious();
+    private handleTTSPrevious(skipSentences = false) {
+        ttsPrevious(skipSentences);
     }
     private handleTTSPlaybackRate(speed: string) {
         ttsPlaybackRate(parseFloat(speed));
@@ -1552,6 +1628,7 @@ class Reader extends React.Component<IProps, IState> {
         const ttsWasPlaying = this.state.ttsState !== TTSStateEnum.STOPPED;
 
         mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
+        ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
         mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
         ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
 
@@ -1679,6 +1756,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // too early in navigator lifecycle (READIUM2 context not instantiated)
     // see this.ttsOverlayEnableNeedsSync
     // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
+    // ttsSentenceDetectionEnable(state.reader.config.ttsEnableSentenceDetection);
 
     // extension or @type ?
     // const isDivina = isDivinaFn(state.r2Publication);
