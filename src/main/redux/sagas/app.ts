@@ -30,6 +30,7 @@ import { streamerActions } from "../actions";
 import {
     getBeforeQuitEventChannel, getQuitEventChannel, getShutdownEventChannel,
     getWindowAllClosedEventChannel,
+    initRequestCustomProtocolEventChannel,
 } from "./getEventChannel";
 
 // Logger
@@ -102,6 +103,11 @@ export function* init() {
 
         callback(p);
     });
+
+
+    // init global request protocol hook
+    // used in opds auth and import a publication with a form window
+    initRequestCustomProtocolEventChannel();
 
     yield call(() => {
         const deviceIdManager = diMainGet("device-id-manager");

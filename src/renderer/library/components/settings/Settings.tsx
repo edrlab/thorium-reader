@@ -40,6 +40,7 @@ class Settings extends React.Component<IProps, undefined> {
                     <SessionSettings></SessionSettings>
                     <KeyboardSettings></KeyboardSettings>
                     <AuthSettings></AuthSettings>
+                    <br></br>
                 </LibraryLayout>
             </>
         );

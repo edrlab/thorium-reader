@@ -9,6 +9,8 @@ export type TMouseEventOnButton = React.MouseEvent<HTMLButtonElement, MouseEvent
 
 export type TMouseEventOnInput = React.MouseEvent<HTMLInputElement, MouseEvent>;
 
+export type TMouseEventOnDiv = React.MouseEvent<HTMLDivElement, MouseEvent>;
+
 export type TMouseEventOnSpan = React.MouseEvent<HTMLSpanElement, MouseEvent>;
 
 export type TMouseEventOnAnchor = React.MouseEvent<HTMLAnchorElement, MouseEvent>;

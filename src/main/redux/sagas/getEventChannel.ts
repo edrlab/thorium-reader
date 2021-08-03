@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { app, powerMonitor, protocol } from "electron";
-import { channel as channelSaga, eventChannel } from "redux-saga";
+import { channel as channelSaga, EventChannel, eventChannel } from "redux-saga";
 
 export function getWindowAllClosedEventChannel() {
 
@@ -91,28 +91,37 @@ export function getShutdownEventChannel() {
 
 }
 
-export const ODPS_AUTH_SCHEME = "opds";
+export const SCHEME = "thor";
 
 interface TregisterHttpProtocolHandler {
     request: Electron.ProtocolRequest;
     callback: (response: Electron.ProtocolResponse) => void;
 }
 
-export function getOpdsRequestCustomProtocolEventChannel() {
+let channel: EventChannel<TregisterHttpProtocolHandler>;
+export const getRequestCustomProtocolEventChannel = () => {
+    if (channel) {
+        return channel;
+    }
+    return initRequestCustomProtocolEventChannel();
+};
+export function initRequestCustomProtocolEventChannel() {
 
-    const channel = eventChannel<TregisterHttpProtocolHandler>(
+    channel = eventChannel<TregisterHttpProtocolHandler>(
         (emit) => {
             const handler = (
                 request: Electron.ProtocolRequest,
                 callback: (response: Electron.ProtocolResponse) => void,
             ) => emit({ request, callback });
-            protocol.registerHttpProtocol(ODPS_AUTH_SCHEME, handler);
+            protocol.registerHttpProtocol(SCHEME, handler);
 
             return () => {
-                protocol.unregisterProtocol(ODPS_AUTH_SCHEME);
+                protocol.unregisterProtocol(SCHEME);
             };
         },
     );
 
     return channel;
 }
+
+export type TGetRequestCustomProtocolEventChannel = ReturnType<typeof getRequestCustomProtocolEventChannel>

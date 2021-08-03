@@ -6,14 +6,13 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { BrowserWindow, globalShortcut } from "electron";
 import { Headers } from "node-fetch";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
-import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import {
     getOpdsAuthenticationChannel, TOpdsAuthenticationChannel,
 } from "readium-desktop/main/event";
@@ -26,14 +25,17 @@ import {
 import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
-import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { all, put } from "redux-saga/effects";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { URL } from "url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
+import { IParseRequestFromCustomProtocol } from "readium-desktop/main/redux/sagas/modal/request";
+import { openWindowModalAndReturnResult } from "./modal/open";
+import { notStrictEqual, strictEqual } from "assert";
+import { SCHEME } from "./getEventChannel";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -61,128 +63,62 @@ const LINK_TYPE: TLinkType[] = [
     "authenticate",
 ];
 
-// const LABEL_NAME: TLabelName[] = [
-//     "login",
-//     "password",
-// ];
+export function* opdsAuthFlow([doc, baseUrl]: TOpdsAuthenticationChannel) {
 
-const opdsAuthFlow =
-    (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRequestCustomProtocolEventChannel>) =>
-        function*([doc, baseUrl]: TOpdsAuthenticationChannel) {
+    debug("opds authenticate flow");
+    const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
+    if (!baseUrlParsed) {
+        debug("no valid base url");
+        return;
+    }
 
-            debug("opds authenticate flow");
-            const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
-            if (!baseUrlParsed) {
-                debug("no valid base url");
-                return;
-            }
+    const authParsed = tryCatchSync(() => opdsAuthDocConverter(doc, baseUrl), filename_);
+    if (!authParsed) {
+        debug("authentication doc parsing error");
+        return;
+    }
+    debug("authentication doc parsed", authParsed);
 
-            const authParsed = tryCatchSync(() => opdsAuthDocConverter(doc, baseUrl), filename_);
-            if (!authParsed) {
-                debug("authentication doc parsing error");
-                return;
-            }
-            debug("authentication doc parsed", authParsed);
+    const browserUrl = getHtmlAuthenticationUrl(authParsed);
+    if (!browserUrl) {
+        debug("no valid authentication html url");
+        return;
+    }
+    debug("Browser URL", browserUrl);
 
-            const browserUrl = getHtmlAuthenticationUrl(authParsed);
-            if (!browserUrl) {
-                debug("no valid authentication html url");
-                return;
-            }
-            debug("Browser URL", browserUrl);
+    const authCredentials: IOpdsAuthenticationToken = {
+        id: authParsed?.id || undefined,
+        opdsAuthenticationUrl: baseUrl,
+        tokenType: "Bearer",
+        refreshUrl: authParsed?.links?.refresh?.url || undefined,
+        authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
+    };
+    debug("authentication credential config", authCredentials);
+    yield* callTyped(httpSetAuthenticationToken, authCredentials);
 
-            const authCredentials: IOpdsAuthenticationToken = {
-                id: authParsed?.id || undefined,
-                opdsAuthenticationUrl: baseUrl,
-                tokenType: "Bearer",
-                refreshUrl: authParsed?.links?.refresh?.url || undefined,
-                authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
-            };
-            debug("authentication credential config", authCredentials);
-            yield* callTyped(httpSetAuthenticationToken, authCredentials);
+    try {
+        const result = yield* callTyped(openWindowModalAndReturnResult, browserUrl);
+        const { request: opdsCustomProtocolRequestParsed, callback } = result || {};
+        notStrictEqual(opdsCustomProtocolRequestParsed, undefined);
 
-            const task = yield* forkTyped(function*() {
+        const [, err] = yield* callTyped(opdsSetAuthCredentials,
+            opdsCustomProtocolRequestParsed,
+            authCredentials,
+            authParsed.authenticationType,
+        );
 
-                const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
-                return {
-                    request: parseRequestFromCustomProtocol(parsedRequest.request),
-                    callback: parsedRequest.callback,
-                };
-            });
+        callback({
+            url: undefined,
+        });
 
-            const win =
-                tryCatchSync(
-                    () => createOpdsAuthenticationModalWin(browserUrl),
-                    filename_,
-                );
-            if (!win) {
-                debug("modal win undefined");
+        strictEqual(err instanceof Error, false, err.message);
+        yield put(historyActions.refresh.build());
 
-                yield cancel(task);
-                return;
-            }
+    } catch (e) {
 
-            try {
-
-                yield race({
-                    a: delay(60000),
-                    b: join(task),
-                    c: call(
-                        async () =>
-                            new Promise<void>((resolve) => win.on("close", () => resolve())),
-                    ),
-                });
-
-                if (task.isRunning()) {
-                    debug("no authentication credentials received");
-                    debug("perhaps timeout or closing authentication window occured");
-
-                    return;
-
-                } else {
-                    const { request: opdsCustomProtocolRequestParsed, callback } = task.result();
-                    if (opdsCustomProtocolRequestParsed) {
-
-                        if (!opdsCustomProtocolRequestParsed.data ||
-                            !Object.keys(opdsCustomProtocolRequestParsed.data).length) {
-
-                            debug("authentication window was cancelled");
-
-                            return;
-                        }
-
-                        const [, err] = yield* callTyped(opdsSetAuthCredentials,
-                            opdsCustomProtocolRequestParsed,
-                            authCredentials,
-                            authParsed.authenticationType,
-                        );
-
-                        callback({
-                            url: undefined,
-                        });
-
-                        if (err instanceof Error) {
-                            debug(err.message);
-
-                            return;
-
-                        } else {
-                            yield put(historyActions.refresh.build());
-                        }
-                    }
-                }
-
-            } finally {
-
-                if (win) {
-                    win.close();
-                }
-                if (task.isRunning()) {
-                    yield cancel(task);
-                }
-            }
-
-        };
+        yield put(toastActions.openRequest.build(ToastType.Error, e.toString()));
+    }
+};
 
 function* opdsAuthWipeData() {
 
@@ -214,12 +150,11 @@ function* opdsAuthWipeData() {
 export function saga() {
 
     const opdsAuthChannel = getOpdsAuthenticationChannel();
-    const opdsRequestChannel = getOpdsRequestCustomProtocolEventChannel();
 
     return all([
         takeSpawnLeadingChannel(
             opdsAuthChannel,
-            opdsAuthFlow(opdsRequestChannel),
+            opdsAuthFlow,
             (e) => debug("redux OPDS authentication channel error", e),
         ),
         takeSpawnEvery(
@@ -256,7 +191,7 @@ async function opdsSetAuthCredentials(
                     accessToken:
                         Buffer.from(
                             `${data.login}:${data.password}`,
-                            ).toString("base64"),
+                        ).toString("base64"),
                     refreshToken: undefined,
                     tokenType: "basic",
                 };
@@ -396,7 +331,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
 
             const html = encodeURIComponent_RFC3986(
                 htmlLoginTemplate(
-                    "opds://authorize",
+                    `${SCHEME}://authorize`,
                     auth.labels?.login,
                     auth.labels?.password,
                     auth.title,
@@ -511,134 +446,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     };
 }
 
-function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefined {
 
-    const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
-    if (!libWin) {
-        debug("no lib win !!");
-        return undefined;
-    }
-
-    const win = new BrowserWindow(
-        {
-            width: 800,
-            height: 600,
-            parent: libWin,
-            modal: true,
-            show: false,
-        });
-
-    const handler = () => win.close();
-    globalShortcut.register("esc", handler);
-    win.on("close", () => {
-        globalShortcut.unregister("esc");
-    });
-
-    win.once("ready-to-show", () => {
-        win.show();
-    });
-
-    // tslint:disable-next-line: no-floating-promises
-    win.loadURL(url);
-
-    return win;
-}
-
-interface IParseRequestFromCustomProtocol<T = string> {
-    url: URL;
-    method: "GET" | "POST";
-    data: {
-        [key in T & string]?: string;
-    };
-}
-function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
-    : IParseRequestFromCustomProtocol<TLabelName> | undefined {
-
-    debug("########");
-    debug("opds:// request:", req);
-    debug("########");
-
-    if (typeof req === "object") {
-        const { method, url, uploadData } = req;
-
-        const urlParsed = tryCatchSync(() => new URL(url), filename_);
-        if (!urlParsed) {
-            debug("authentication: can't parse the opds:// request url", url);
-            return undefined;
-        }
-        const { protocol: urlProtocol, host } = urlParsed;
-
-        if (urlProtocol !== `${ODPS_AUTH_SCHEME}:`) {
-            debug("bad opds protocol !!", urlProtocol);
-            return undefined;
-        }
-
-        if (method === "POST") {
-            if (host === "authorize") {
-
-                debug("POST request", uploadData);
-
-                if (Array.isArray(uploadData)) {
-
-                    const [res] = uploadData;
-
-                    if ((res as any).type === "rawData") {
-                        debug("RAW DATA received");
-                    }
-                    const data =
-                        tryCatchSync(
-                            () => Buffer.from(res.bytes).toString(),
-                            filename_,
-                        ) || "";
-                    // do not risk showing plaintext password in console / command line shell
-                    // debug("data", data);
-
-                    const keyValue = data.split("&");
-                    const values = tryCatchSync(
-                        () => keyValue.reduce(
-                            (pv, cv) => {
-                                const splt = cv.split("=");
-                                const key = decodeURIComponent(splt[0]);
-                                const val = decodeURIComponent(splt[1]);
-                                return {
-                                    ...pv,
-                                    [key]: val,
-                                };
-                            },
-                            {},
-                        ),
-                        filename_,
-                    ) || {};
-                    // do not risk showing plaintext password in console / command line shell
-                    // debug(values);
-
-                    return {
-                        url: urlParsed,
-                        method: "POST",
-                        data: values,
-                    };
-                }
-            }
-        }
-
-        if (method === "GET") {
-            if (host === "authorize") {
-                const urlObject = new URL(url);
-                const data: Record<string, string> = {};
-                for (const [key, value] of urlObject.searchParams) {
-                    data[key] = value;
-                }
-                return {
-                    url: urlParsed,
-                    method: "GET",
-                    data,
-                };
-            }
-        }
-    }
-
-    return undefined;
-}
 
 // tslint:disable-next-line: max-line-length
 const htmlLoginTemplate = (
