@@ -133,9 +133,20 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         event.preventDefault();
         await shell.openExternal(url);
     };
-
     libWindow.webContents.on("will-navigate", handleRedirect);
+
+    // https://www.electronjs.org/releases/stable?version=12&page=4#breaking-changes-1200
+    // https://github.com/electron/electron/blob/main/docs/breaking-changes.md#deprecated-webcontents-new-window-event
     libWindow.webContents.on("new-window", handleRedirect);
+    // const handleRedirect_ = async (details) => {
+    //     if (url === libWindow.webContents.getURL()) {
+    //         return;
+    //     }
+
+    //     await shell.openExternal(url);
+    //     return { action: "deny" };
+    // };
+    // libWindow.webContents.setWindowOpenHandler(handleRedirect_);
 
     // Clear all cache to prevent weird behaviours
     // Fully handled in r2-navigator-js initSessions();

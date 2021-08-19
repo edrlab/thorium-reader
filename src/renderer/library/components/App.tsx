@@ -10,7 +10,7 @@ import "reflect-metadata";
 import { ConnectedRouter } from "connected-react-router";
 import * as path from "path";
 import * as React from "react";
-import Dropzone from "react-dropzone";
+import Dropzone, { DropzoneRootProps } from "react-dropzone";
 import { Provider } from "react-redux";
 import { acceptedExtension } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -82,7 +82,7 @@ export default class App extends React.Component<{}, undefined> {
                             onDrop={this.onDrop}
                         >
                             {({ getRootProps, getInputProps }) => {
-                                const rootProps = getRootProps({ onClick: (e) => e.stopPropagation() });
+                                const rootProps = getRootProps({ onClick: (e) => e.stopPropagation() } as DropzoneRootProps);
                                 rootProps.tabIndex = -1;
                                 // FIXME : css in code
                                 return <div
