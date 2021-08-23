@@ -110,6 +110,7 @@ export function setupMathJaxTransformer(getUrl: () => string) {
             document.addEventListener("dragstart", (e) => {
                 const sel = document.getSelection();
                 if (sel &amp;&amp; !sel.isCollapsed) {
+                    // e.dataTransfer.setData("Text", "_");
                     e.preventDefault();
                 }
             });
