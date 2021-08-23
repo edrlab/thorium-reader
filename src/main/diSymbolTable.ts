@@ -15,7 +15,7 @@ export const diSymbolTable = {
     "locator-view-converter": Symbol("locator-view-converter"),
     "opds-feed-view-converter": Symbol("opds-feed-view-converter"),
     "publication-storage": Symbol("publication-storage"),
-    "streamer": Symbol("streamer"),
+    // "streamer": Symbol("streamer"),
     "device-id-manager": Symbol("device-id-manager"),
     "lcp-manager": Symbol("lcp-manager"),
     "publication-service": Symbol("publication-service"),

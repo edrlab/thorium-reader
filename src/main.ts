@@ -11,13 +11,10 @@ import * as path from "path";
 import { cli } from "readium-desktop/main/cli/process";
 import { createStoreFromDi, diMainGet } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
-import {
-    _PACKAGING, _USE_HTTP_STREAMER, _VSCODE_LAUNCH,
-} from "readium-desktop/preprocessor-directives";
+import { _PACKAGING, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
-import { initSessions as initSessionsHTTP } from "@r2-navigator-js/electron/main/sessions";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
@@ -27,6 +24,8 @@ import { appActions } from "./main/redux/actions";
 import { RootState } from "./main/redux/states";
 import { initSessions as initSessionsNoHTTP } from "./main/streamerNoHttp";
 import { tryCatch } from "./utils/tryCatch";
+
+// import { initSessions as initSessionsHTTP } from "@r2-navigator-js/electron/main/sessions";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -65,11 +64,12 @@ setLcpNativePluginPath(lcpNativePluginPath);
 // });
 
 // protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions
-if (_USE_HTTP_STREAMER) {
-    initSessionsHTTP();
-} else {
-    initSessionsNoHTTP();
-}
+// if (_USE_HTTP_STREAMER) {
+//     initSessionsHTTP();
+// } else {
+//     initSessionsNoHTTP();
+// }
+initSessionsNoHTTP();
 
 export const main = async (flushSession = false): Promise<Store<RootState>> => {
 
