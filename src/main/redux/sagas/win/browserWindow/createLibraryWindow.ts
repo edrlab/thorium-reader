@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { BrowserWindow, Event, shell } from "electron";
+import { BrowserWindow, Event, HandlerDetails, shell } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
@@ -50,6 +50,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             backgroundThrottling: true,
             devTools: IS_DEV,
             nodeIntegration: true, // Required to use IPC
+            contextIsolation: false,
             webSecurity: true,
             allowRunningInsecureContent: false,
         },
@@ -137,16 +138,18 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
     // https://www.electronjs.org/releases/stable?version=12&page=4#breaking-changes-1200
     // https://github.com/electron/electron/blob/main/docs/breaking-changes.md#deprecated-webcontents-new-window-event
-    libWindow.webContents.on("new-window", handleRedirect);
-    // const handleRedirect_ = async (details) => {
-    //     if (url === libWindow.webContents.getURL()) {
-    //         return;
-    //     }
+    // libWindow.webContents.on("new-window", handleRedirect);
+    libWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+        if (details.url === libWindow.webContents.getURL()) {
+            return { action: "allow" };
+        }
 
-    //     await shell.openExternal(url);
-    //     return { action: "deny" };
-    // };
-    // libWindow.webContents.setWindowOpenHandler(handleRedirect_);
+        setTimeout(async () => {
+            await shell.openExternal(details.url);
+        }, 0);
+
+        return { action: "deny" };
+    });
 
     // Clear all cache to prevent weird behaviours
     // Fully handled in r2-navigator-js initSessions();

@@ -11,7 +11,6 @@ import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "elect
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
-import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
@@ -37,6 +36,8 @@ import {
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
 
+// import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
+
 const debug = debug_("readium-desktop:main#streamerNoHttp");
 
 const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
@@ -51,7 +52,7 @@ export const THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL = "thoriumhttps";
 
 const READIUM_CSS_URL_PATH = "readium-css";
 
-if (!_USE_HTTP_STREAMER) {
+if (true) { // !_USE_HTTP_STREAMER) {
     function isFixedLayout(publication: R2Publication, link: Link | undefined): boolean {
         if (link && link.Properties) {
             if (link.Properties.Layout === "fixed") {
@@ -170,19 +171,34 @@ const streamProtocolHandler = async (
     debug("streamProtocolHandler req.url", req.url);
     const u = new URL(req.url);
 
+    // https://github.com/readium/r2-streamer-js/commit/e214b7e1f8133a8400baec3c6f2d7c8204da01ad
+    // At this point, route relative path is already normalised with respect to /../ and /./ dot segments,
+    // but not double slashes (which seems to be an easy mistake to make at authoring time in EPUBs),
+    // so we collapse multiple slashes into a single one.
+    let uPathname = u.pathname;
+    if (uPathname) {
+        uPathname = uPathname.replace(/\/\/+/g, "/");
+        try {
+            uPathname = decodeURIComponent(uPathname);
+        } catch (e) {
+            debug("u.pathname decodeURIComponent!?");
+            debug(e);
+        }
+    }
+
     const publicationAssetsPrefix = "/pub/";
-    const isPublicationAssets = u.pathname.startsWith(publicationAssetsPrefix);
+    const isPublicationAssets = uPathname.startsWith(publicationAssetsPrefix);
 
     const mathJaxPrefix = `/${MATHJAX_URL_PATH}/`;
-    const isMathJax = u.pathname.startsWith(mathJaxPrefix);
+    const isMathJax = uPathname.startsWith(mathJaxPrefix);
 
     const readiumCssPrefix = `/${READIUM_CSS_URL_PATH}/`;
-    const isReadiumCSS = u.pathname.startsWith(readiumCssPrefix);
+    const isReadiumCSS = uPathname.startsWith(readiumCssPrefix);
 
     const mediaOverlaysPrefix = `/${mediaOverlayURLPath}`;
-    const isMediaOverlays = u.pathname.endsWith(mediaOverlaysPrefix);
+    const isMediaOverlays = uPathname.endsWith(mediaOverlaysPrefix);
 
-    debug("streamProtocolHandler u.pathname", u.pathname);
+    debug("streamProtocolHandler uPathname", uPathname);
     debug("streamProtocolHandler isPublicationAssets", isPublicationAssets);
     debug("streamProtocolHandler isMathJax", isMathJax);
     debug("streamProtocolHandler isReadiumCSS", isReadiumCSS);
@@ -200,15 +216,17 @@ const streamProtocolHandler = async (
         debug("streamProtocolHandler req.referrer", ref);
     }
 
-    Object.keys(req.headers).forEach((header: string) => {
-        const val = req.headers[header];
+    if (IS_DEV) {
+        Object.keys(req.headers).forEach((header: string) => {
+            const val = req.headers[header];
 
-        debug("streamProtocolHandler req.header: " + header + " => " + val);
+            debug("streamProtocolHandler req.header: " + header + " => " + val);
 
-        // if (val) {
-        //     headers[header] = val;
-        // }
-    });
+            // if (val) {
+            //     headers[header] = val;
+            // }
+        });
+    }
 
     const headers: Record<string, (string) | (string[])> = {};
     if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
@@ -226,7 +244,7 @@ const streamProtocolHandler = async (
     headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
 
     if (isPublicationAssets || isMediaOverlays) {
-        let b64Path = u.pathname.substr(publicationAssetsPrefix.length);
+        let b64Path = uPathname.substr(publicationAssetsPrefix.length);
         const i = b64Path.indexOf("/");
         let pathInZip = "";
         if (i >= 0) {
@@ -239,7 +257,7 @@ const streamProtocolHandler = async (
         debug("streamProtocolHandler pathInZip", pathInZip);
 
         if (!pathInZip) {
-            const err = "PATH IN ZIP?? " + u.pathname;
+            const err = "PATH IN ZIP?? " + uPathname;
             debug(err);
             const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
             headers["Content-Length"] = buff.length.toString();
@@ -720,7 +738,7 @@ const streamProtocolHandler = async (
 
         if (doTransform && link) {
 
-            const fullUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host${u.pathname}`;
+            const fullUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host${uPathname}`;
 
             let transformedStream: IStreamAndLength;
             try {
@@ -826,7 +844,7 @@ const streamProtocolHandler = async (
     } else if (isMathJax || isReadiumCSS) {
 
         const p = path.join(isReadiumCSS ? READIUMCSS_FILE_PATH : MATHJAX_FILE_PATH,
-            u.pathname.substr((isReadiumCSS ? readiumCssPrefix : mathJaxPrefix).length));
+            uPathname.substr((isReadiumCSS ? readiumCssPrefix : mathJaxPrefix).length));
         debug("streamProtocolHandler isMathJax || isReadiumCSS", p);
 
         if (!fs.existsSync(p)) {
@@ -894,7 +912,7 @@ const streamProtocolHandler = async (
             callback(obj);
         });
     } else {
-        const err = "WTF?! " + u.pathname;
+        const err = "NOPE :( " + uPathname;
         debug(err);
         const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
         headers["Content-Length"] = buff.length.toString();
