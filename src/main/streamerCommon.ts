@@ -86,6 +86,7 @@ export function setupMathJaxTransformer(getUrl: () => string) {
     const transformerMathJax = (
         _publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
 
+        // TODO: extract this drag logic somewhere else ...
         const cssElectronMouseDrag =
             `
     <style type="text/css">
@@ -97,8 +98,26 @@ export function setupMathJaxTransformer(getUrl: () => string) {
     }
     </style>
     `;
-
         str = str.replace(/<\/head>/, `${cssElectronMouseDrag}</head>`);
+
+        const scriptTextDrag =
+            `
+    <script type="text/javascript">
+    // document.addEventListener("DOMContentLoaded", () => {
+    // });
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            document.addEventListener("dragstart", (e) => {
+                const sel = document.getSelection();
+                if (sel &amp;&amp; !sel.isCollapsed) {
+                    e.preventDefault();
+                }
+            });
+        }, 100);
+    });
+    </script>
+    `;
+        str = str.replace(/<\/head>/, `${scriptTextDrag}</head>`);
 
         const store = diMainGet("store");
         // TODO
