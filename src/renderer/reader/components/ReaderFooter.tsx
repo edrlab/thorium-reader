@@ -111,9 +111,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             <div className={classNames(styles.reader_footer,
                 this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}
                 onWheel={(ev) => {
-                    if (ev.deltaY > 0 || ev.deltaX < 0) {
+                    if (ev.deltaY < 0 || ev.deltaX < 0) {
                         this.navLeftOrRightThrottled(true);
-                    } else if (ev.deltaY < 0 || ev.deltaX > 0) {
+                    } else if (ev.deltaY > 0 || ev.deltaX > 0) {
                         this.navLeftOrRightThrottled(false);
                     }
                 }}>

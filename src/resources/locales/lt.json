@@ -349,6 +349,7 @@
             "pause": "Pristabdyti teksto įgarsinimą",
             "play": "Atkurti teksto įgarsinimą",
             "previous": "Ankstesnis teksto įgarsinimas",
+            "sentenceDetect": "",
             "speed": "Teksto įgarsinimo atkūrimo sparta",
             "stop": "Sustabdyti teksto įgarsinimą",
             "voice": ""

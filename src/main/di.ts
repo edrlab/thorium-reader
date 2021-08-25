@@ -36,7 +36,6 @@ import { initStore } from "readium-desktop/main/redux/store/memory";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { streamer } from "readium-desktop/main/streamerHttp";
 import {
     _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
 } from "readium-desktop/preprocessor-directives";
@@ -44,14 +43,15 @@ import { PromiseAllSettled } from "readium-desktop/utils/promise";
 import { Store } from "redux";
 import { SagaMiddleware } from "redux-saga";
 
-import { Server } from "@r2-streamer-js/http/server";
-
 import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { SessionApi } from "./api/session";
 import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
+
+// import { streamer } from "readium-desktop/main/streamerHttp";
+// import { Server } from "@r2-streamer-js/http/server";
 
 // Logger
 const debug = debug_("readium-desktop:main:di");
@@ -311,7 +311,7 @@ container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConst
 );
 
 // Bind services
-container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
+// container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
 const deviceIdManager = new DeviceIdManager(capitalizedAppName, configRepository);
 container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
@@ -371,7 +371,7 @@ interface IGet {
     (s: "locator-view-converter"): LocatorViewConverter;
     (s: "opds-feed-view-converter"): OpdsFeedViewConverter;
     (s: "publication-storage"): PublicationStorage;
-    (s: "streamer"): Server;
+    // (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;
     (s: "lcp-manager"): LcpManager;
     (s: "catalog-api"): CatalogApi;

@@ -5,9 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { clone } from "ramda";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { opdsActions } from "readium-desktop/main/redux/actions";
+
+const debug = debug_("readium-desktop:main:redux:reducers:opds:db");
 
 const initialState: OpdsFeedDocument[] = [];
 
@@ -20,31 +23,20 @@ export function opdsDbReducers(
 
         case opdsActions.addOpdsFeed.ID: {
 
-            let newState = state;
+            const newState = clone(state);
             for (const doc of action.payload) {
+                debug("opdsActions.addOpdsFeed: ", doc, state);
 
-                const { identifier } = doc;
-                const idx = newState.findIndex((v) => v.identifier === identifier);
+                // CANNOT DO THIS HERE, see OpdsFeedRepository.save() implementation comments (store.dispatch(feedAction))
+                // ensures no duplicates (same URL ... but may be different titles)
+                // const found = state.find((v) => v.url === doc.url);
+                // if (found) {
+                //     continue;
+                // }
 
                 const newDoc = clone(doc);
                 newDoc.doNotMigrateAnymore = true;
-
-                if (newState[idx]) {
-                    newState = [
-                        ...newState.slice(0, idx),
-                        ...[
-                            newDoc,
-                        ],
-                        ...newState.slice(idx + 1),
-                    ];
-                } else {
-                    newState = [
-                        ...newState,
-                        ...[
-                            newDoc,
-                        ],
-                    ];
-                }
+                newState.push(newDoc);
             }
             return newState;
         }
@@ -54,16 +46,29 @@ export function opdsDbReducers(
             const identifier = action.payload.identifier;
             const idx = state.findIndex((v) => v.identifier === identifier);
 
+            debug("opdsActions.deleteOpdsFeed: ", identifier, idx, state[idx]);
+
             if (state[idx]) {
-                return [
-                    ...state.slice(0, idx),
-                    ...state.slice(idx + 1),
-                ];
+                if (state[idx].migratedFrom1_6Database) {
+                    debug("opdsActions.deleteOpdsFeed - migratedFrom1_6Database => removedButPreservedToAvoidReMigration");
+                    const newState = clone(state);
+                    newState[idx].removedButPreservedToAvoidReMigration = true;
+                    return newState;
+                } else {
+                    debug("opdsActions.deleteOpdsFeed - !migratedFrom1_6Database => DELETE");
+                    return [
+                        ...state.slice(0, idx),
+                        ...state.slice(idx + 1),
+                    ];
+                }
             }
+
+            // fallback
             return state;
         }
 
         default:
-            return state;
+            // nothing
     }
+    return state;
 }

@@ -270,6 +270,17 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     this.props.__("reader.media-overlays.skip")
                 }</label>
             </div>
+            <div className={styles.mathml_section}>
+                <input
+                    id="ttsEnableSentenceDetectionCheckBox"
+                    type="checkbox"
+                    checked={readerConfig.ttsEnableSentenceDetection}
+                    onChange={() => this.toggleTTSEnableSentenceDetection()}
+                />
+                <label htmlFor="ttsEnableSentenceDetectionCheckBox">{
+                    this.props.__("reader.tts.sentenceDetect")
+                }</label>
+            </div>
         </>);
     }
 
@@ -581,55 +592,60 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const {__, readerConfig, isPdf} = this.props;
 
         return <>
-            <section className={styles.line_tab_content}>
-                <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
-                <div className={styles.center_in_tab}>
-                    <div className={styles.focus_element}>
-                        <input
-                            id={styles.scroll_option}
-                            type="radio"
-                            name="disposition"
-                            onChange={(e) => isPdf
-                                ? this.props.pdfEventBus.dispatch("view", "scrolled")
-                                : this.props.handleSettingChange(e, "paged", false)}
-                            checked={isPdf
-                                ? this.state.pdfView === "scrolled"
-                                : !readerConfig.paged}
-                        />
-                        <label
-                            htmlFor={styles.scroll_option}
-                            className={isPdf
-                                ? this.getButtonClassNamePdf(this.state.pdfView === "scrolled")
-                                : this.getButtonClassName("paged", false)}
-                        >
-                            <SVG svg={DefileIcon} />
-                            {__("reader.settings.scrolled")}
-                        </label>
-                    </div>
-                    <div className={styles.focus_element}>
-                        <input
-                            id={styles.page_option}
-                            type="radio"
-                            name="disposition"
-                            onChange={(e) => isPdf
-                                ? this.props.pdfEventBus.dispatch("view", "paginated")
-                                : this.props.handleSettingChange(e, "paged", true)}
-                            checked={isPdf
-                                ? this.state.pdfView === "paginated"
-                                : readerConfig.paged}
-                        />
-                        <label
-                            htmlFor={styles.page_option}
-                            className={isPdf
-                                ? this.getButtonClassNamePdf(this.state.pdfView === "paginated")
-                                : this.getButtonClassName("paged", true)}
-                        >
-                            <SVG svg={PagineIcon} />
-                            {__("reader.settings.paginated")}
-                        </label>
-                    </div>
-                </div>
-            </section>
+            {
+                isPdf
+                    ? <></>
+                    :
+                    <section className={styles.line_tab_content}>
+                        <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
+                        <div className={styles.center_in_tab}>
+                            <div className={styles.focus_element}>
+                                <input
+                                    id={styles.scroll_option}
+                                    type="radio"
+                                    name="disposition"
+                                    onChange={(e) => isPdf
+                                        ? this.props.pdfEventBus.dispatch("view", "scrolled")
+                                        : this.props.handleSettingChange(e, "paged", false)}
+                                    checked={isPdf
+                                        ? this.state.pdfView === "scrolled"
+                                        : !readerConfig.paged}
+                                />
+                                <label
+                                    htmlFor={styles.scroll_option}
+                                    className={isPdf
+                                        ? this.getButtonClassNamePdf(this.state.pdfView === "scrolled")
+                                        : this.getButtonClassName("paged", false)}
+                                >
+                                    <SVG svg={DefileIcon} />
+                                    {__("reader.settings.scrolled")}
+                                </label>
+                            </div>
+                            <div className={styles.focus_element}>
+                                <input
+                                    id={styles.page_option}
+                                    type="radio"
+                                    name="disposition"
+                                    onChange={(e) => isPdf
+                                        ? this.props.pdfEventBus.dispatch("view", "paginated")
+                                        : this.props.handleSettingChange(e, "paged", true)}
+                                    checked={isPdf
+                                        ? this.state.pdfView === "paginated"
+                                        : readerConfig.paged}
+                                />
+                                <label
+                                    htmlFor={styles.page_option}
+                                    className={isPdf
+                                        ? this.getButtonClassNamePdf(this.state.pdfView === "paginated")
+                                        : this.getButtonClassName("paged", true)}
+                                >
+                                    <SVG svg={PagineIcon} />
+                                    {__("reader.settings.paginated")}
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+            }
             <section className={styles.line_tab_content} hidden={this.props.isPdf}>
                 <div className={styles.subheading}>{__("reader.settings.justification")}</div>
                 <div className={styles.center_in_tab}>
@@ -701,7 +717,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     }
                     <div className={styles.focus_element}>
                         <input
-                            {...(!readerConfig.paged && { disabled: true })}
+                            disabled={!isPdf && !readerConfig.paged ? true : false}
                             id={"radio-" + styles.option_colonne1}
                             type="radio"
                             name="column"
@@ -729,7 +745,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             id={"radio-" + styles.option_colonne2}
                             type="radio"
                             name="column"
-                            {...(!readerConfig.paged && { disabled: true })}
+                            disabled={!isPdf && !readerConfig.paged ? true : false}
                             onChange={(e) => isPdf
                                 ? this.props.pdfEventBus.dispatch("column", "2")
                                 : this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
@@ -786,7 +802,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     }
 
     private spacingContent() {
-        const {__, readerConfig} = this.props;
+        const { __, readerConfig } = this.props;
         return <>
             <div className={styles.line_tab_content}>
                 <div className={styles.subheading}>
@@ -896,6 +912,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
 
         readerConfig.mediaOverlaysEnableSkippability = !readerConfig.mediaOverlaysEnableSkippability;
+        this.props.setSettings(readerConfig);
+    }
+    private toggleTTSEnableSentenceDetection() {
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
+        readerConfig.ttsEnableSentenceDetection = !readerConfig.ttsEnableSentenceDetection;
         this.props.setSettings(readerConfig);
     }
     private toggleMediaOverlaysEnableCaptionsMode() {

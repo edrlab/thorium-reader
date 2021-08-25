@@ -29,6 +29,7 @@ export const readerConfigInitialState: ReaderConfig = {
     paraSpacing: "0",
     darken: undefined,
     mediaOverlaysEnableSkippability: true,
+    ttsEnableSentenceDetection: true,
     mediaOverlaysEnableCaptionsMode: false,
     ttsEnableOverlayMode: false,
 };

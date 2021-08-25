@@ -47,6 +47,7 @@ export const extractPDFData =
                 webPreferences: {
                     enableRemoteModule: false,
                     nodeIntegration: true,
+                    contextIsolation: false,
                 },
             });
 

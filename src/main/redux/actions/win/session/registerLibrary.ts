@@ -6,12 +6,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BrowserWindow } from "electron";
 import { ok } from "assert";
+import { BrowserWindow } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { saveLibraryWindowInDi } from "readium-desktop/main/di";
-
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export const ID = "WIN_SESSION_REGISTER_LIBRARY";
 
@@ -32,7 +31,7 @@ export function build(win: BrowserWindow, winBound: Electron.Rectangle):
         payload: {
             win,
             winBound,
-            identifier: uuid.v4(),
+            identifier: uuidv4(),
         },
     };
 }

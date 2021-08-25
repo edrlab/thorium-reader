@@ -51,8 +51,8 @@ export const _APP_NAME = __APP_NAME__;
 // declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 // export const _POUCHDB_ADAPTER_PACKAGE = __POUCHDB_ADAPTER_PACKAGE__;
 
-declare const __USE_HTTP_STREAMER__: boolean;
-export const _USE_HTTP_STREAMER = __USE_HTTP_STREAMER__;
+// declare const __USE_HTTP_STREAMER__: boolean;
+// export const _USE_HTTP_STREAMER = __USE_HTTP_STREAMER__;
 
 declare const __NODE_ENV__: string;
 export const _NODE_ENV = __NODE_ENV__;

@@ -349,6 +349,7 @@
             "pause": "멈춤",
             "play": "재생",
             "previous": "이전",
+            "sentenceDetect": "",
             "speed": "음성 속도",
             "stop": "종료",
             "voice": ""

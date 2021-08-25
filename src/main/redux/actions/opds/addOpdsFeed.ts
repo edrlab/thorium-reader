@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { nanoid } from "nanoid";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import { Action } from "readium-desktop/common/models/redux";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
+import { v4 as uuidv4 } from "uuid";
 
 export const ID = "OPDSFEED_ADD";
 
@@ -22,7 +22,7 @@ export function build(...feed: Array<OpdsFeedDocument | OpdsFeed>):
         ...v,
         createdAt: (v as OpdsFeedDocument).createdAt || (new Date()).getTime(),
         updatedAt: (new Date()).getTime(),
-        identifier: v.identifier || nanoid(),
+        identifier: v.identifier || uuidv4(),
     }));
 
     return {
