@@ -15,7 +15,7 @@ jobs:
     if: "github.event_name == 'pull_request' || !contains(github.event.head_commit.message, 'skip ci')"
     # runs-on: ubuntu-latest # / ubuntu-18.04 ... or ubuntu-16.04, ubuntu-20.04
     # runs-on: macos-latest # / macos-10.15
-    # runs-on: windows-2016 # ... or window-latest / windows-2019
+    # runs-on: windows-2016 # not window-latest / windows-2019, see https://github.com/actions/virtual-environments/blob/main/images/win/Windows2016-Readme.md#visual-studio-enterprise-2017
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
