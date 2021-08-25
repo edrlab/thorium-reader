@@ -81,6 +81,7 @@ import optionsValues, {
     TdivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
+import { ok } from "assert";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -364,11 +365,20 @@ class Reader extends React.Component<IProps, IState> {
 
             if (this.currentDivinaPlayer) {
 
-                this.currentDivinaPlayer.eventEmitter.on("pagechange", (data: any) => {
-                    console.log("DIVINA: 'pagechange'", data);
+                // let pageChangeEventDropFirst = false;
+                // this.currentDivinaPlayer.eventEmitter.on("pagechange", (data: any) => {
+                //     console.log("DIVINA: 'pagechange'", data);
 
-                    this.divinaSetLocation(data);
-                });
+                //     if (pageChangeEventDropFirst) {
+                //         this.divinaSetLocation(data);
+                //         console.log("PAGECHANGE setLocation not the first event");
+
+                //     } else {
+                //         pageChangeEventDropFirst = true;
+                //         console.log("PAGECHANGE drop first");
+                //     }
+
+                // });
 
                 this.currentDivinaPlayer.eventEmitter.on(
                     "initialload",
@@ -1208,6 +1218,14 @@ class Reader extends React.Component<IProps, IState> {
             const [url] = manifestUrl.split("/manifest.json");
             // Load the divina from its folder path
             const locator = this.props.locator;
+
+            console.log("LOCATOR");
+            console.log("LOCATOR");
+            console.log(locator);
+
+            console.log("LOCATOR");
+            console.log("LOCATOR");
+
             this.currentDivinaPlayer.openDivinaFromFolderPath(url, locator, options);
 
             // Handle events emitted by the currentDivinaPlayer
@@ -1332,7 +1350,12 @@ class Reader extends React.Component<IProps, IState> {
                 // deprecated
                 // this.setState({ divinaNumberOfPages: data.nbOfPages });
             });
+            let pageChangeDropFirst = false;
             eventEmitter.on("pagechange", (data: any) => {
+                if (!pageChangeDropFirst) {
+                    pageChangeDropFirst = true;
+                    return;
+                }
                 console.log("DIVINA: 'pagechange'", data);
 
                 const isInPageChangeData = (data: any): data is {percent: number, locator: Locator} => {
@@ -1445,6 +1468,8 @@ class Reader extends React.Component<IProps, IState> {
     // See Reader RootState reader.locator (readerLocatorReducer merges the action data payload
     // as-is, without type checking ... but consumers might expect strict LocatorExtended!)
     private handleReadingLocationChange(loc: LocatorExtended) {
+
+        ok(loc, "handleReadingLocationChange loc KO");
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
@@ -1452,7 +1477,17 @@ class Reader extends React.Component<IProps, IState> {
         this.ttsOverlayEnableNeedsSync = false;
 
         this.saveReadingLocation(loc);
-        this.setState({ currentLocation: getCurrentReadingLocation() });
+        this.setState({ currentLocation: getCurrentReadingLocation() || loc });
+
+        console.log("SET READING LOCATION");
+        console.log("SET READING LOCATION");
+        try {
+            console.log((loc.locator.locations as any).totalProgression, getCurrentReadingLocation());
+        } catch {}
+
+        console.log("SET READING LOCATION");
+        console.log("SET READING LOCATION");
+
         // No need to explicitly refresh the bookmarks status here,
         // as componentDidUpdate() will call the function after setState():
         // await this.checkBookmarks();
