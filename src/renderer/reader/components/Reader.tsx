@@ -86,15 +86,15 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 
 const isDivinaLocation = (data: any): data is { pageIndex: number, nbOfPages: number, locator: Locator } => {
     return typeof data === "object"
-        && typeof data.pageIndex === "number"
-        && typeof data.nbOfPages === "number"
+        // && typeof data.pageIndex === "number"
+        // && typeof data.nbOfPages === "number"
         && typeof data.locator === "object"
         && typeof data.locator.href === "string"
         && typeof data.locator.locations === "object"
         && typeof data.locator.locations.position === "number"
-        && typeof data.locator.locations.progression === "number"
-        && data.locator.locations.progression >= 0
-        && data.locator.locations.progression <= 1;
+        && typeof data.locator.locations.totalProgression === "number"
+        && data.locator.locations.totalProgression >= 0
+        && data.locator.locations.totalProgression <= 1;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -1327,7 +1327,6 @@ class Reader extends React.Component<IProps, IState> {
                     this.props.setReadingMode(readingMode);
                 } else {
                     console.error("DIVINA: readingModeUpdate event => unknow data", data);
-                    
                 }
 
                 // deprecated
@@ -1338,15 +1337,18 @@ class Reader extends React.Component<IProps, IState> {
 
                 const isInPageChangeData = (data: any): data is {percent: number, locator: Locator} => {
                     return typeof data === "object" &&
-                        typeof data.pageIndex === "number" &&
-                        typeof data.nbOfPages === "number" &&
-                        isDivinaLocation(locator);
+                        isDivinaLocation(data);
                 };
 
                 if (isInPageChangeData(data)) {
-                    this.divinaSetLocation(data.locator);
-                } else
+                    this.divinaSetLocation(data);
+                } else {
                     console.error("DIVINA: pagechange event => unknow data", data);
+                    try {
+                        console.error(isDivinaLocation(data));
+                        console.dir(data);
+                    } catch {};
+                }
 
             });
             eventEmitter.on("inpagesscroll", (data: any) => {
@@ -1355,12 +1357,12 @@ class Reader extends React.Component<IProps, IState> {
                 const isInPagesScrollData = (data: any): data is {percent: number, locator: Locator} => {
                     return typeof data === "object" &&
                         typeof data.percent === "number" &&
-                        isDivinaLocation(locator);
+                        isDivinaLocation(data.locator);
                 };
 
                 if (isInPagesScrollData(data)) {
 
-                    this.divinaSetLocation(data.locator);
+                    this.divinaSetLocation(data);
                 } else
                     console.error("DIVINA: inpagesscroll event => unknow data", data);
             });
