@@ -251,6 +251,8 @@ class Reader extends React.Component<IProps, IState> {
         this.handleLinkClick = this.handleLinkClick.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
 
+        this.handleDivinaSound = this.handleDivinaSound.bind(this);
+
     }
 
     public async componentDidMount() {
@@ -546,6 +548,7 @@ class Reader extends React.Component<IProps, IState> {
                         isDivina={this.props.isDivina}
                         isPdf={this.props.isPdf}
                         pdfEventBus={this.state.pdfPlayerBusEvent}
+                        divinaSoundPlay={this.handleDivinaSound}
                     />
                     <div className={classNames(styles.content_root,
                         this.state.fullscreen ? styles.content_root_fullscreen : undefined,
@@ -1723,6 +1726,15 @@ class Reader extends React.Component<IProps, IState> {
                 });
             }
         }
+    }
+
+    private handleDivinaSound(play: boolean) {
+
+        console.log(play ? "divina sound unmuted" : "divina sound muted");
+        if (play)
+            this.currentDivinaPlayer.unmute();
+        else
+            this.currentDivinaPlayer.mute();
     }
 
     private handleReaderClose() {
