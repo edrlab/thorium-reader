@@ -592,7 +592,7 @@ class Reader extends React.Component<IProps, IState> {
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled
                                         ?
-                                        <div className={styles.divina_grid_container}>
+                                        <div className={styles.divina_grid_container} onClick={() => this.setState({divinaArrowEnabled: false})}>
                                             <div></div>
                                             <div>
                                                 {
@@ -1315,20 +1315,23 @@ class Reader extends React.Component<IProps, IState> {
                     const modes = data.readingModesArray;
                     this.setState({ divinaReadingModeSupported: modes });
 
-                    const readingMode = this.props.divinaReadingMode;
+                    const readingModeFromPersistence = this.props.divinaReadingMode;
 
-                    console.log("Reading mode from persistence : ", readingMode);
+                    console.log("Reading mode from persistence : ", readingModeFromPersistence);
 
-                    if (modes.includes(readingMode)) {
-                        this.props.setReadingMode(readingMode);
+                    let readingMode = readingModeFromPersistence;
+                    if (modes.includes(readingModeFromPersistence)) {
+                        readingMode = readingModeFromPersistence;
                     } else if (modes.includes(defaultReadingMode)) {
-                        this.props.setReadingMode(defaultReadingMode);
+                        readingMode = defaultReadingMode;
                     } else if (modes[0]) {
-                        this.props.setReadingMode(modes[0]);
+                        readingMode = modes[0];
                     } else {
-                        this.props.setReadingMode(defaultReadingMode);
+                        readingMode = defaultReadingMode;
                     }
-                    console.log("DIVINA ReadingModeSupported", modes);
+                    this.props.setReadingMode(readingMode);
+                    this.handleDivinaReadingMode(readingMode);
+                    console.log("DIVINA ReadingModeSupported", modes, "reading mode applied:", readingMode);
                 } else {
                     console.error("DIVINA: 'dataparsing' evnt => unknow data", data);
                 }
@@ -1349,7 +1352,14 @@ class Reader extends React.Component<IProps, IState> {
 
                 // Language change { language: 'unspecified' }
             });
+            let readingmodeDropFirst = false;
             eventEmitter.on("readingmodechange", (data: any) => {
+                console.log("READING MODE BEFORE DROP FIRST TEST");
+
+                if (!readingmodeDropFirst) {
+                    readingmodeDropFirst = true;
+                    return;
+                }
                 console.log("DIVINA: 'readingmodechange'", data);
 
                 /**
@@ -1970,6 +1980,8 @@ class Reader extends React.Component<IProps, IState> {
     private handleDivinaReadingMode(v: TdivinaReadingMode) {
 
         if (this.currentDivinaPlayer) {
+            console.log("Set readingMode: ", v);
+
             this.currentDivinaPlayer.setReadingMode(v);
         }
     }
