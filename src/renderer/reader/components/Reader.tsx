@@ -82,7 +82,10 @@ import optionsValues, {
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
 import { ok } from "assert";
-import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
+import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
+import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
+import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
+import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
@@ -141,6 +144,8 @@ interface IState {
 
     openedSectionSettings: number | undefined;
     openedSectionMenu: number | undefined;
+
+    divinaArrowEnabled: boolean;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -212,6 +217,8 @@ class Reader extends React.Component<IProps, IState> {
 
             openedSectionSettings: undefined,
             openedSectionMenu: undefined,
+
+            divinaArrowEnabled: true,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -582,9 +589,48 @@ class Reader extends React.Component<IProps, IState> {
                                 >
                                 </div>
 
-                                <div style={{ zIndex: 1, position: "absolute", width: "50px", bottom: "0"}}>
-                                    <SVG svg={AudioIcon} title="test" />
-                                </div>
+                                {
+                                    this.props.isDivina && this.state.divinaArrowEnabled
+                                        ?
+                                        <div className={styles.divina_grid_container}>
+                                            <div></div>
+                                            <div>
+                                                {
+                                                    this.props.r2Publication.Metadata.Direction === "ttb"
+                                                    ? <SVG className={styles.divina_grid_item} svg={DoubleArrowUpIcon}></SVG>
+                                                    : <></>
+                                                }
+                                            </div>
+                                            <div></div>
+                                            <div>
+                                                {
+                                                    this.props.r2Publication.Metadata.Direction === "rtl"
+                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowLeftIcon}></SVG>
+                                                        : <></>
+                                                }
+                                            </div>
+                                            <div></div>
+                                            <div>
+                                                {
+                                                    this.props.r2Publication.Metadata.Direction === "ltr"
+                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowRightIcon}></SVG>
+                                                        : <></>
+                                                }
+                                            </div>
+                                            <div></div>
+                                            <div>
+                                                {
+                                                    this.props.r2Publication.Metadata.Direction === "btt"
+                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowDownIcon}></SVG>
+                                                        : <></>
+                                                }
+                                            </div>
+                                            <div></div>
+                                        </div>
+
+                                        : <></>
+                                }
+
                             </main>
                         </div>
                     </div>
@@ -1132,8 +1178,8 @@ class Reader extends React.Component<IProps, IState> {
                 pdfPlayerBusEvent,
             });
             pdfPlayerBusEvent.subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
-            pdfPlayerBusEvent.subscribe("toc", (toc) => this.setState({pdfPlayerToc: toc}));
-            pdfPlayerBusEvent.subscribe("numberofpages", (pages) => this.setState({pdfPlayerNumberOfPages: pages}));
+            pdfPlayerBusEvent.subscribe("toc", (toc) => this.setState({ pdfPlayerToc: toc }));
+            pdfPlayerBusEvent.subscribe("numberofpages", (pages) => this.setState({ pdfPlayerNumberOfPages: pages }));
 
             // previously loaded in driver.ts. @danielWeck do you think is it possible to execute it here ?
             pdfPlayerBusEvent.subscribe("keydown", (payload) => {
@@ -1315,7 +1361,7 @@ class Reader extends React.Component<IProps, IState> {
                  *  isMuted a boolead that specified whether the player is currently muted or not)
                  */
 
-                const isReadingModeChangeData = (data: any): data is {readingMode: TdivinaReadingMode, nbOfPages: number, hasSounds: boolean, isMuted: boolean} => {
+                const isReadingModeChangeData = (data: any): data is { readingMode: TdivinaReadingMode, nbOfPages: number, hasSounds: boolean, isMuted: boolean } => {
 
                     return typeof data === "object" &&
                         isDivinaReadingMode(data.readingMode) &&
@@ -1346,9 +1392,9 @@ class Reader extends React.Component<IProps, IState> {
             eventEmitter.on("readingmodeupdate", (data: any) => {
                 console.log("Reading mode update", data);
 
-                const isReadingModeUpdateData = (data: any): data is {readingMode: TdivinaReadingMode} => {
+                const isReadingModeUpdateData = (data: any): data is { readingMode: TdivinaReadingMode } => {
                     return typeof data === "object" &&
-                    isDivinaReadingMode(data.readingMode);
+                        isDivinaReadingMode(data.readingMode);
                 };
 
                 if (isReadingModeUpdateData(data)) {
@@ -1369,7 +1415,9 @@ class Reader extends React.Component<IProps, IState> {
                 }
                 console.log("DIVINA: 'pagechange'", data);
 
-                const isInPageChangeData = (data: any): data is {percent: number, locator: Locator} => {
+                this.setState({divinaArrowEnabled: false});
+
+                const isInPageChangeData = (data: any): data is { percent: number, locator: Locator } => {
                     return typeof data === "object" &&
                         isDivinaLocation(data);
                 };
@@ -1381,14 +1429,14 @@ class Reader extends React.Component<IProps, IState> {
                     try {
                         console.error(isDivinaLocation(data));
                         console.dir(data);
-                    } catch {};
+                    } catch { };
                 }
 
             });
             eventEmitter.on("inpagesscroll", (data: any) => {
                 console.log("DIVINA: 'inpagesscroll'", data);
 
-                const isInPagesScrollData = (data: any): data is {percent: number, locator: Locator} => {
+                const isInPagesScrollData = (data: any): data is { percent: number, locator: Locator } => {
                     return typeof data === "object" &&
                         typeof data.percent === "number" &&
                         isDivinaLocation(data.locator);
@@ -1494,7 +1542,7 @@ class Reader extends React.Component<IProps, IState> {
         console.log("SET READING LOCATION");
         try {
             console.log((loc.locator.locations as any).totalProgression, getCurrentReadingLocation());
-        } catch {}
+        } catch { }
 
         console.log("SET READING LOCATION");
         console.log("SET READING LOCATION");
