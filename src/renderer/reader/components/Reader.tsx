@@ -82,6 +82,8 @@ import optionsValues, {
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
 import { ok } from "assert";
+import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -572,11 +574,16 @@ class Reader extends React.Component<IProps, IState> {
                                     title={this.props.__("accessibility.mainContent")}
                                     aria-label={this.props.__("accessibility.mainContent")}
                                     tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
+
                                 <div
                                     id="publication_viewport"
                                     className={styles.publication_viewport}
                                     ref={this.mainElRef}
                                 >
+                                </div>
+
+                                <div style={{ zIndex: 1, position: "absolute", width: "50px", bottom: "0"}}>
+                                    <SVG svg={AudioIcon} title="test" />
                                 </div>
                             </main>
                         </div>
@@ -1224,12 +1231,13 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log("LOCATOR");
             console.log("LOCATOR");
-            console.log(locator);
+            console.log("IS DIVINA LOCATOR", isDivinaLocation(locator));
+            console.log(locator?.locator);
 
             console.log("LOCATOR");
             console.log("LOCATOR");
 
-            this.currentDivinaPlayer.openDivinaFromFolderPath(url, locator, options);
+            this.currentDivinaPlayer.openDivinaFromFolderPath(url, locator?.locator, options);
 
             // Handle events emitted by the currentDivinaPlayer
             const eventEmitter = this.currentDivinaPlayer.eventEmitter;
