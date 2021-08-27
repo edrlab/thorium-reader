@@ -1302,7 +1302,7 @@ class Reader extends React.Component<IProps, IState> {
 
                 console.log("DIVINA: 'dataparsing'", data);
 
-                const isDataParsing = (data: any): data is { readingModesArray: TdivinaReadingMode[] } => {
+                const isDataParsing = (data: any): data is { readingModesArray: TdivinaReadingMode[], languagesArray: string[] } => {
                     return typeof data === "object" &&
                         Array.isArray(data.readingModesArray) &&
                         data.readingModesArray.reduce((pv: any, cv: any) => pv && isDivinaReadingMode(cv), true);
@@ -1332,6 +1332,16 @@ class Reader extends React.Component<IProps, IState> {
                     this.props.setReadingMode(readingMode);
                     this.handleDivinaReadingMode(readingMode);
                     console.log("DIVINA ReadingModeSupported", modes, "reading mode applied:", readingMode);
+
+                    let locale = (data.languagesArray || [""])[0];
+                    if ((data.languagesArray || []
+                    ).includes(this.props.locale)) {
+                        locale = this.props.locale;
+                    }
+                    if (locale) {
+                        this.currentDivinaPlayer.setLanguage(locale);
+                    }
+
                 } else {
                     console.error("DIVINA: 'dataparsing' evnt => unknow data", data);
                 }
@@ -2050,6 +2060,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         bookmarks: state.reader.bookmark.map(([, v]) => v),
         readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
+        locale: state.i18n.locale,
     };
 };
 
