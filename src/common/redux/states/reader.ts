@@ -15,7 +15,7 @@ export const readerConfigInitialState: ReaderConfig = {
     font: FONT_ID_DEFAULT,
     fontSize: "100%",
     invert: false,
-    lineHeight: "1.5",
+    lineHeight: "0",
     night: false,
     paged: true, // https://github.com/edrlab/thorium-reader/issues/1222
     readiumcss: true,

@@ -1732,7 +1732,7 @@ class Reader extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
     const indexes: AdjustableSettingsNumber = {
-        fontSize: 3,
+        fontSize: 2,
         pageMargins: 0,
         wordSpacing: 0,
         letterSpacing: 0,

@@ -481,11 +481,12 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             " " : readiumCSSFontName;
         const fontFamily = fontListItem?.fontFamily ? fontListItem.fontFamily : `'${readiumCSSFontName}', serif`;
 
+        // <output id={styles.valeur_taille} className={styles.out_of_screen}>14</output>
         return <>
             <div className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.fontSize")}</div>
                 <div className={styles.center_in_tab}>
-                    <span className={styles.slider_marker}>a</span>
+                    <span className={styles.slider_marker} style={{fontSize: "150%"}}>a</span>
                     <input type="range"
                         onChange={(e) => this.props.handleIndexChange(e, "fontSize")}
                         id="text_length"
@@ -497,8 +498,11 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         aria-valuemax={optionsValues.fontSize.length - 1}
                         aria-valuenow={this.props.indexes.fontSize}
                     />
-                    <output id={styles.valeur_taille} className={styles.out_of_screen}>14</output>
                     <span className={styles.slider_marker} style={{fontSize: "250%"}}>a</span>
+
+                    <span className={styles.reader_settings_value}>
+                        {readerConfig.fontSize}
+                    </span>
                 </div>
             </div>
             <div className={styles.line_tab_content}>
@@ -991,13 +995,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     // round the value to the hundredth
     private roundRemValue(value: string | undefined) {
         if (!value) {
-            return "0";
+            return "-";
         }
 
         // TODO: other potential CSS units?
-        const nbr = parseFloat(value.replace("rem", "").replace("em", "").replace("px", ""));
+        const nbr = parseFloat(value.replace("%", "").replace("rem", "").replace("em", "").replace("px", ""));
         const roundNumber = (Math.round(nbr * 100) / 100);
-        return roundNumber;
+        return roundNumber ? roundNumber : " ";
     }
 
     private getButtonClassName(

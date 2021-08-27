@@ -77,6 +77,7 @@ export const paraSpacing: string[] = [
 ];
 
 export const lineHeight: string[] = [
+    "0", // noop
     "1",
     "1.125",
     "1.25",
