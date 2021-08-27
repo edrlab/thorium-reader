@@ -1338,7 +1338,11 @@ class Reader extends React.Component<IProps, IState> {
                     ).includes(this.props.locale)) {
                         locale = this.props.locale;
                     }
+                    console.log("LOCALE: ", locale);
+                    
                     if (locale) {
+                        console.log("SET LANGUAGE: ", locale);
+                        
                         this.currentDivinaPlayer.setLanguage(locale);
                     }
 
