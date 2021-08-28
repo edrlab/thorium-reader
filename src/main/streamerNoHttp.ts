@@ -13,10 +13,18 @@ import * as mime from "mime-types";
 import * as path from "path";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { parseDOM, serializeDOM } from "@r2-navigator-js/electron/common/dom";
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
 import { readiumCssTransformHtml } from "@r2-navigator-js/electron/common/readium-css-inject";
+import {
+    convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
 import { clearSessions, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
-import { URL_PARAM_IS_IFRAME } from "@r2-navigator-js/electron/renderer/common/url-params";
+import {
+    URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS,
+    URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_IS_IFRAME, URL_PARAM_SECOND_WEBVIEW,
+    URL_PARAM_WEBVIEW_SLOT,
+} from "@r2-navigator-js/electron/renderer/common/url-params";
 import { zipHasEntry } from "@r2-shared-js/_utils/zipHasEntry";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -112,7 +120,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
         if (readiumcssJson) {
             if (!readiumcssJson.urlRoot) {
                 // `/${READIUM_CSS_URL_PATH}/`
-                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://host";
+                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://0.0.0.0";
             }
             if (IS_DEV) {
                 console.log("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
@@ -132,7 +140,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
     Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
     setupMathJaxTransformer(
-        () => `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
+        () => `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
     );
 }
 
@@ -158,9 +166,24 @@ function getPreFetchResources(publication: R2Publication): Link[] {
     return links;
 }
 
+const streamProtocolHandlerTunnel = async (
+    req: ProtocolRequest,
+    callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void) => {
+
+    debug("............... streamProtocolHandlerTunnel req.url", req.url);
+    req.url = convertCustomSchemeToHttpUrl(req.url);
+    streamProtocolHandler(req, callback);
+};
+
+// super hacky!! :(
+// see usages of this boolean...
+let _customUrlProtocolSchemeHandlerWasCalled = false;
+
 const streamProtocolHandler = async (
     req: ProtocolRequest,
     callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void) => {
+
+    _customUrlProtocolSchemeHandlerWasCalled = true;
 
     // debug("streamProtocolHandler:");
     // debug(req.url);
@@ -232,7 +255,7 @@ const streamProtocolHandler = async (
     if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
         headers.referer = ref;
     } else {
-        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host/`;
+        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/`;
     }
 
     // CORS everything!
@@ -397,7 +420,7 @@ const streamProtocolHandler = async (
 
         if (pathInZip === "manifest.json") {
 
-            const rootUrl = "THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL://host/pub/" + encodeURIComponent_RFC3986(b64Path);
+            const rootUrl = "THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL://0.0.0.0/pub/" + encodeURIComponent_RFC3986(b64Path);
             const manifestURL = rootUrl + "/" + "manifest.json";
 
             const contentType =
@@ -738,7 +761,7 @@ const streamProtocolHandler = async (
 
         if (doTransform && link) {
 
-            const fullUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host${uPathname}`;
+            const fullUrl = req.url; // `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${uPathname}`;
 
             let transformedStream: IStreamAndLength;
             try {
@@ -926,8 +949,154 @@ const streamProtocolHandler = async (
     }
 };
 
+const transformerIFrames: TTransformFunction = (
+    _publication: R2Publication,
+    link: Link,
+    url: string | undefined,
+    htmlStr: string,
+    _sessionInfo: string | undefined,
+): string => {
+    // super hacky! (guarantees that convertCustomSchemeToHttpUrl() is necessary,
+    // unlike this `url` function parameter which is always HTTP as it originates
+    // from the streamer/server)
+    if (!_customUrlProtocolSchemeHandlerWasCalled) {
+        return htmlStr;
+    }
+
+    if (!url) {
+        return htmlStr;
+    }
+
+    if (htmlStr.indexOf("<iframe") < 0) {
+        return htmlStr;
+    }
+
+    // let's remove the DOCTYPE (which can contain entities)
+
+    const iHtmlStart = htmlStr.indexOf("<html");
+    if (iHtmlStart < 0) {
+        return htmlStr;
+    }
+    const iBodyStart = htmlStr.indexOf("<body");
+    if (iBodyStart < 0) {
+        return htmlStr;
+    }
+    const parseableChunk = htmlStr.substr(iHtmlStart);
+    const htmlStrToParse = `<?xml version="1.0" encoding="utf-8"?>${parseableChunk}`;
+
+    // import * as mime from "mime-types";
+    let mediaType = "application/xhtml+xml"; // mime.lookup(link.Href);
+    if (link && link.TypeLink) {
+        mediaType = link.TypeLink;
+    }
+
+    // debug(htmlStrToParse);
+    const documant = parseDOM(htmlStrToParse, mediaType);
+
+    // debug(url);
+    let urlHttp = url;
+    if (!urlHttp.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+        // urlHttp = convertCustomSchemeToHttpUrl(urlHttp);
+        urlHttp = convertHttpUrlToCustomScheme(urlHttp);
+    }
+    const url_ = new URL(urlHttp);
+
+    // const r2_GOTO = url_.searchParams.get(URL_PARAM_GOTO);
+    // const r2_GOTO_DOM_RANGE = url_.searchParams.get(URL_PARAM_GOTO_DOM_RANGE);
+    // const r2_REFRESH = url_.searchParams.get(URL_PARAM_REFRESH);
+    const r2CSS = url_.searchParams.get(URL_PARAM_CSS);
+    const r2ERS = url_.searchParams.get(URL_PARAM_EPUBREADINGSYSTEM);
+    const r2DEBUG = url_.searchParams.get(URL_PARAM_DEBUG_VISUALS);
+    const r2CLIPBOARDINTERCEPT = url_.searchParams.get(URL_PARAM_CLIPBOARD_INTERCEPT);
+    const r2SESSIONINFO = url_.searchParams.get(URL_PARAM_SESSION_INFO);
+    const r2WEBVIEWSLOT = url_.searchParams.get(URL_PARAM_WEBVIEW_SLOT);
+    const r2SECONDWEBVIEW = url_.searchParams.get(URL_PARAM_SECOND_WEBVIEW);
+
+    url_.search = "";
+    url_.hash = "";
+    const urlStr = url_.toString();
+    // debug(urlStr);
+
+    const patchElementSrc = (el: Element) => {
+        const src = el.getAttribute("src");
+        if (!src || src[0] === "/" ||
+            /^http[s]?:\/\//.test(src) || /^data:\/\//.test(src)) {
+            return;
+        }
+        let src_ = src;
+        if (src_.startsWith("./")) {
+            src_ = src_.substr(2);
+        }
+        src_ = `${urlStr}/../${src_}`;
+        const iframeUrl = new URL(src_);
+
+        if (r2CLIPBOARDINTERCEPT) {
+            iframeUrl.searchParams.append(URL_PARAM_CLIPBOARD_INTERCEPT, r2CLIPBOARDINTERCEPT);
+        }
+        if (r2SESSIONINFO) {
+            iframeUrl.searchParams.append(URL_PARAM_SESSION_INFO, r2SESSIONINFO);
+        }
+        if (r2DEBUG) {
+            iframeUrl.searchParams.append(URL_PARAM_DEBUG_VISUALS, r2DEBUG);
+        }
+        if (r2ERS) {
+            iframeUrl.searchParams.append(URL_PARAM_EPUBREADINGSYSTEM, r2ERS);
+        }
+        if (r2CSS) {
+            iframeUrl.searchParams.append(URL_PARAM_CSS, r2CSS);
+        }
+        if (r2WEBVIEWSLOT) {
+            iframeUrl.searchParams.append(URL_PARAM_WEBVIEW_SLOT, r2WEBVIEWSLOT);
+        }
+        if (r2SECONDWEBVIEW) {
+            iframeUrl.searchParams.append(URL_PARAM_SECOND_WEBVIEW, r2SECONDWEBVIEW);
+        }
+
+        iframeUrl.searchParams.append(URL_PARAM_IS_IFRAME, "1");
+        // debug(iframeUrl.search);
+
+        src_ = iframeUrl.toString();
+        debug(`IFRAME SRC PATCH: ${src} ==> ${src_}`);
+        el.setAttribute("src", src_);
+    };
+    const processTree = (el: Element) => {
+        const elName = el.nodeName.toLowerCase();
+        if (elName === "iframe") {
+            patchElementSrc(el);
+        } else {
+            if (!el.childNodes) {
+                return;
+            }
+            // tslint:disable-next-line: prefer-for-of
+            for (let i = 0; i < el.childNodes.length; i++) {
+                const childNode = el.childNodes[i];
+                if (childNode.nodeType === 1) { // Node.ELEMENT_NODE
+                    processTree(childNode as Element);
+                }
+            }
+        }
+    };
+    processTree(documant.body);
+
+    const serialized = serializeDOM(documant);
+
+    const prefix = htmlStr.substr(0, iHtmlStart);
+
+    const iHtmlStart_ = serialized.indexOf("<html");
+    if (iHtmlStart_ < 0) {
+        return htmlStr;
+    }
+
+    const remaining = serialized.substr(iHtmlStart_);
+    const newStr = `${prefix}${remaining}`;
+    // debug(newStr);
+    return newStr;
+};
+
 export function initSessions() {
     app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
+
+    Transformers.instance().add(new TransformerHTML(transformerIFrames));
 
     protocol.registerSchemesAsPrivileged([{
         privileges: {
@@ -940,6 +1109,17 @@ export function initSessions() {
             supportFetchAPI: true,
         },
         scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+    }, {
+        privileges: {
+            allowServiceWorkers: false,
+            bypassCSP: false,
+            corsEnabled: true,
+            secure: true,
+            standard: true,
+            stream: true,
+            supportFetchAPI: true,
+        },
+        scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);
 
     app.on("ready", async () => {
@@ -955,12 +1135,19 @@ export function initSessions() {
             session.defaultSession.protocol.registerStreamProtocol(
                 THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
                 streamProtocolHandler);
+            session.defaultSession.protocol.registerStreamProtocol(
+                READIUM2_ELECTRON_HTTP_PROTOCOL,
+                streamProtocolHandlerTunnel);
         }
         const webViewSession = getWebViewSession();
         if (webViewSession) {
             webViewSession.protocol.registerStreamProtocol(
                 THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
                 streamProtocolHandler);
+
+            webViewSession.protocol.registerStreamProtocol(
+                READIUM2_ELECTRON_HTTP_PROTOCOL,
+                streamProtocolHandlerTunnel);
 
             webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
                 debug("setPermissionRequestHandler");

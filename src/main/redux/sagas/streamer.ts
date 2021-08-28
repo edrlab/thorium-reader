@@ -46,8 +46,8 @@ function* startRequest(): SagaIterator {
     try {
         // const streamerUrl = _USE_HTTP_STREAMER ?
         //     yield* callTyped(() => startStreamer(streamer)) :
-        //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host`;
-        const streamerUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host`;
+        //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0`;
+        const streamerUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0`;
 
         yield put(streamerActions.startSuccess.build(streamerUrl));
     } catch (error) {
