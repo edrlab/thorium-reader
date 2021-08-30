@@ -31,15 +31,32 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
+import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
 import {
     LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
+import { debug } from "console";
+
+function throttle(callback: (...args: any) => void, limit: number) {
+    let waiting = false;
+    return function(this: any) {
+        if (!waiting) {
+            // eslint-disable-next-line prefer-rest-params
+            callback.apply(this, arguments);
+            waiting = true;
+            setTimeout(() => {
+                waiting = false;
+            }, limit);
+        }
+    };
+}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -97,11 +114,13 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
+    r2Publication: R2Publication;
 }
 
 interface IState {
     pdfScaleMode: IPdfPlayerScale | undefined;
     divinaSoundEnabled: boolean;
+    fxlZoomPercent: number;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -111,6 +130,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     private settingsMenuButtonRef: React.RefObject<HTMLButtonElement>;
     private navigationMenuButtonRef: React.RefObject<HTMLButtonElement>;
     private infoMenuButtonRef: React.RefObject<HTMLButtonElement>;
+
+    private onwheel: React.WheelEventHandler<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
@@ -126,7 +147,29 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.state = {
             pdfScaleMode: undefined,
             divinaSoundEnabled: false,
+            fxlZoomPercent: 0,
         };
+
+        let _timerWheel: number | undefined;
+        this.onwheel = throttle((ev) => {
+            const step = 10;
+            if (ev.deltaY < 0) { // "natural" gesture on MacOS :(
+                if (this.state.fxlZoomPercent >= step) {
+                    this.setState({ fxlZoomPercent: this.state.fxlZoomPercent - step });
+                }
+            } else if (ev.deltaY > 0) {
+                if (this.state.fxlZoomPercent <= 220) {
+                    this.setState({ fxlZoomPercent: this.state.fxlZoomPercent + step });
+                }
+            }
+            if (_timerWheel) {
+                clearTimeout(_timerWheel);
+            }
+            _timerWheel = window.setTimeout(() => {
+                _timerWheel = undefined;
+                fixedLayoutZoomPercent(this.state.fxlZoomPercent);
+            }, 600);
+        }, 200).bind(this);
     }
 
     public componentDidMount() {
@@ -462,6 +505,64 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         }
                     </ul>
                     <ul className={styles.menu_option}>
+                        {
+                            this.props.isPdf
+                                ? <li
+                                    {...(this.state.pdfScaleMode === "page-width" &&
+                                        { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                                >
+                                    <input
+                                        id="pdfScaleButton"
+                                        className={styles.bookmarkButton}
+                                        type="checkbox"
+                                        checked={this.state.pdfScaleMode === "page-width"}
+                                        // tslint:disable-next-line: max-line-length
+                                        onChange={() => this.props.pdfEventBus.dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
+                                        aria-label={__("reader.navigation.pdfscalemode")}
+                                    />
+                                    <label
+                                        htmlFor="pdfScaleButton"
+                                        className={styles.menu_button}
+                                    >
+                                        <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} />
+                                    </label>
+                                </li>
+                                : (this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed"
+                                    ? <li
+                                        {...(this.state.fxlZoomPercent !== 0 &&
+                                            { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                                    >
+                                        <label
+                                            htmlFor="buttonFXLZoom"
+                                            style={{ pointerEvents: "none", position: "absolute", paddingLeft: "12px", paddingTop: "4px", fontSize: "80%", color: "#333333" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
+                                        <button
+                                            id="buttonFXLZoom"
+                                            className={classNames(styles.menu_button)}
+                                            onWheel={this.onwheel}
+                                            onClick={() => {
+                                                // toggle
+                                                debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
+                                                if (this.state.fxlZoomPercent === 0) {
+                                                    this.setState({ fxlZoomPercent: 200 });
+                                                    fixedLayoutZoomPercent(200); // twice (zoom in)
+                                                } else if (this.state.fxlZoomPercent === 200) {
+                                                    this.setState({ fxlZoomPercent: 100 });
+                                                    fixedLayoutZoomPercent(100); // content natural dimensions (usually larger, so equivalent to zoom in)
+                                                } else if (this.state.fxlZoomPercent === 100) {
+                                                    this.setState({ fxlZoomPercent: 50 });
+                                                    fixedLayoutZoomPercent(50); // half (zoom out, but if the content is massive then it may still be perceived as zoom in)
+                                                } else {
+                                                    this.setState({ fxlZoomPercent: 0 });
+                                                    fixedLayoutZoomPercent(0); // special value: fit inside available viewport dimensions (default)
+                                                }
+                                            }}
+                                            aria-label={__("reader.navigation.pdfscalemode")}
+                                        >
+                                            <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} />
+                                        </button>
+                                    </li>
+                                    : <></>)
+                        }
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "rgb(193, 193, 193)" } })}
                         >
@@ -486,30 +587,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 <SVG svg={MarkIcon} title={__("reader.navigation.bookmarkTitle")} />
                             </label>
                         </li>
-                        {
-                            this.props.isPdf
-                                ? <li
-                                    {...(this.state.pdfScaleMode === "page-width" &&
-                                        { style: { backgroundColor: "rgb(193, 193, 193)" } })}
-                                >
-                                    <input
-                                        id="pdfScaleButton"
-                                        className={styles.bookmarkButton}
-                                        type="checkbox"
-                                        checked={this.state.pdfScaleMode === "page-width"}
-                                        // tslint:disable-next-line: max-line-length
-                                        onChange={() => this.props.pdfEventBus.dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
-                                        aria-label={__("reader.navigation.pdfscalemode")}
-                                    />
-                                    <label
-                                        htmlFor="pdfScaleButton"
-                                        className={styles.menu_button}
-                                    >
-                                        <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} />
-                                    </label>
-                                </li>
-                                : <></>
-                        }
                         <li
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "rgb(193, 193, 193)" } })}

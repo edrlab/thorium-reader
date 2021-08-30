@@ -5,18 +5,26 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { debug } from "console";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { readerLocalActionLocatorHrefChanged } from "../actions";
 
-const dispatchHref = (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) => {
+const dispatchHref = (
+    store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>,
+    prevHref: string | undefined,
+    nextHref: string | undefined,
+    ) => {
 
     const state = store.getState();
     const href = state.reader?.locator?.locator?.href;
     if (href) {
-        store.dispatch(readerLocalActionLocatorHrefChanged.build(href));
+        if (href !== nextHref) {
+            debug("readerLocalActionLocatorHrefChanged state DIFF? ", href, nextHref, prevHref);
+        }
+        store.dispatch(readerLocalActionLocatorHrefChanged.build(prevHref, href));
     }
 };
 
@@ -32,7 +40,7 @@ export const locatorHrefWatcherMiddleware: Middleware
                 const nextState = store.getState();
 
                 if (prevState?.reader?.locator?.locator?.href !== nextState?.reader?.locator?.locator?.href) {
-                    dispatchHref(store);
+                    dispatchHref(store, prevState?.reader?.locator?.locator?.href, nextState?.reader?.locator?.locator?.href);
                 }
 
                 return returnValue;

@@ -557,7 +557,11 @@ class Reader extends React.Component<IProps, IState> {
                         isDivina={this.props.isDivina}
                         isPdf={this.props.isPdf}
                         pdfEventBus={this.state.pdfPlayerBusEvent}
+<<<<<<< HEAD
                         divinaSoundPlay={this.handleDivinaSound}
+=======
+                        r2Publication={this.props.r2Publication}
+>>>>>>> 42b7738ac4e347ab3d72f19c62fe58fd4a66df6e
                     />
                     <div className={classNames(styles.content_root,
                         this.state.fullscreen ? styles.content_root_fullscreen : undefined,
@@ -2013,7 +2017,7 @@ class Reader extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
     const indexes: AdjustableSettingsNumber = {
-        fontSize: 3,
+        fontSize: 2,
         pageMargins: 0,
         wordSpacing: 0,
         letterSpacing: 0,

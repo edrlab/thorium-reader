@@ -229,8 +229,8 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     // const manifestUrl = _USE_HTTP_STREAMER ?
     //     streamer.serverUrl() + manifestPaths[0] :
-    //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host${manifestPaths[0]}`;
-    const manifestUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host${manifestPaths[0]}`;
+    //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${manifestPaths[0]}`;
+    const manifestUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${manifestPaths[0]}`;
 
     debug(pubId, " streamed on ", manifestUrl);
 
