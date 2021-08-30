@@ -1457,8 +1457,8 @@ class Reader extends React.Component<IProps, IState> {
                 }
 
             });
-            eventEmitter.on("inpagesscroll", (data: any) => {
-                console.log("DIVINA: 'inpagesscroll'", data);
+            eventEmitter.on("inpagescroll", (data: any) => {
+                console.log("DIVINA: 'inpagescroll'", data);
 
                 const isInPagesScrollData = (data: any): data is { percent: number, locator: Locator } => {
                     return typeof data === "object" &&
@@ -1470,7 +1470,7 @@ class Reader extends React.Component<IProps, IState> {
 
                     this.divinaSetLocation(data);
                 } else
-                    console.error("DIVINA: inpagesscroll event => unknow data", data);
+                    console.error("DIVINA: inpagescroll event => unknow data", data);
             });
 
         } else {
