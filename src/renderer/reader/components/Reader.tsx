@@ -1247,6 +1247,10 @@ class Reader extends React.Component<IProps, IState> {
                 publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow: hidden;");
             }
 
+            const readingModeFromPersistence = "test" || this.props.divinaReadingMode;
+            console.log("Reading mode from persistence : ", readingModeFromPersistence);
+            const locale = this.props.locale;
+
             // Options for the Divina Player
             const options = {
                 //maxNbOfUnitsToLoadAfter: null, // Forcing null for this value will load all units
@@ -1261,6 +1265,9 @@ class Reader extends React.Component<IProps, IState> {
                 isPaginationGridBased: true,
                 isPaginationSticky: true,
                 videoLoadTimeout: 2000,
+                readingMode: readingModeFromPersistence,
+                language: locale,
+                //loadingMessage: "Loading",
             };
 
             this.currentDivinaPlayer = new divinaPlayer(this.mainElRef.current);
@@ -1318,8 +1325,6 @@ class Reader extends React.Component<IProps, IState> {
 
                     const readingModeFromPersistence = this.props.divinaReadingMode;
 
-                    console.log("Reading mode from persistence : ", readingModeFromPersistence);
-
                     let readingMode = readingModeFromPersistence;
                     if (modes.includes(readingModeFromPersistence)) {
                         readingMode = readingModeFromPersistence;
@@ -1334,18 +1339,20 @@ class Reader extends React.Component<IProps, IState> {
                     this.handleDivinaReadingMode(readingMode);
                     console.log("DIVINA ReadingModeSupported", modes, "reading mode applied:", readingMode);
 
-                    let locale = (data.languagesArray || [""])[0];
-                    if ((data.languagesArray || []
-                    ).includes(this.props.locale)) {
-                        locale = this.props.locale;
-                    }
-                    console.log("LOCALE: ", locale);
+                    // let locale = (data.languagesArray || [""])[0];
+                    // if (
+                    //     (data.languagesArray || []
+                    //     ).includes(this.props.locale)
+                    // ) {
+                    //     locale = this.props.locale;
+                    // }
+                    // console.log("LOCALE: ", locale);
 
-                    if (locale) {
-                        console.log("SET LANGUAGE: ", locale);
+                    // if (locale) {
+                    //     console.log("SET LANGUAGE: ", locale);
 
-                        this.currentDivinaPlayer.setLanguage(locale);
-                    }
+                    //     this.currentDivinaPlayer.setLanguage(locale);
+                    // }
 
                 } else {
                     console.error("DIVINA: 'dataparsing' evnt => unknow data", data);
@@ -1367,14 +1374,13 @@ class Reader extends React.Component<IProps, IState> {
 
                 // Language change { language: 'unspecified' }
             });
-            let readingmodeDropFirst = false;
+            // let readingmodeDropFirst = false;
             eventEmitter.on("readingmodechange", (data: any) => {
-                console.log("READING MODE BEFORE DROP FIRST TEST");
-
-                if (!readingmodeDropFirst) {
-                    readingmodeDropFirst = true;
-                    return;
-                }
+                // console.log("READING MODE BEFORE DROP FIRST TEST");
+                // if (!readingmodeDropFirst) {
+                    // readingmodeDropFirst = true;
+                    // return;
+                // }
                 console.log("DIVINA: 'readingmodechange'", data);
 
                 /**
