@@ -116,7 +116,6 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 content:
                     (isPdf && pdfToc?.length && this.renderLinkTree(__("reader.marks.toc"), pdfToc, 1)) ||
                     (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
-                    (this.props.isDivina && <p>{__("reader.toc.publicationNoToc")}</p>) ||
                     // tslint:disable-next-line: max-line-length
                     (!isPdf && r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1)) ||
                     (!isPdf && r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),

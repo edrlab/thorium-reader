@@ -97,9 +97,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const { moreInfo } = this.state;
 
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
+
         if (isDivina) {
             try {
-                spineTitle = (parseInt(spineTitle, 10) + 1).toString();
+                spineTitle = `${(currentLocation.locator?.locations.position || 0) + 1}`;
             } catch (_e) {
                 // ignore
             }
@@ -170,7 +171,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
                                             let atCurrentLocation = false;
                                             if (isDivina) {
-                                                atCurrentLocation = currentLocation.locator?.href === index.toString();
+                                                atCurrentLocation = `${(currentLocation.locator?.locations.position || 0)}` === index.toString();
                                             } else {
                                                 atCurrentLocation = currentLocation.locator?.href === link.Href;
                                             }
@@ -254,7 +255,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         style={this.getStyle(this.getArrowBoxStyle)}
                                     >
                                         <span title={spineTitle}><em>{`(${(isDivina)
-                                            ? (parseInt(currentLocation.locator?.href, 10) + 1).toString()
+                                            ? `${(currentLocation.locator?.locations.position || 0) + 1}`
                                             : isPdf ?
                                                 parseInt(currentLocation.locator?.href, 10).toString()
                                                 :

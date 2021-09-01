@@ -91,6 +91,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 const isDivinaLocation = (data: any): data is { pageIndex: number, nbOfPages: number, locator: Locator } => {
+
     return typeof data === "object"
         // && typeof data.pageIndex === "number"
         // && typeof data.nbOfPages === "number"
@@ -1115,6 +1116,7 @@ class Reader extends React.Component<IProps, IState> {
             // };
             // console.log("pageChange", pageIndex, nbOfPages);
 
+            data.locator.locations.progression = (data.locator.locations as any).totalProgression;
             const LocatorExtended: LocatorExtended = {
                 audioPlaybackInfo: undefined,
                 locator: data.locator,
@@ -1467,10 +1469,11 @@ class Reader extends React.Component<IProps, IState> {
             eventEmitter.on("inpagescroll", (data: any) => {
                 console.log("DIVINA: 'inpagescroll'", data);
 
+                this.setState({ divinaArrowEnabled: false });
                 const isInPagesScrollData = (data: any): data is { percent: number, locator: Locator } => {
                     return typeof data === "object" &&
-                        typeof data.percent === "number" &&
-                        isDivinaLocation(data.locator);
+                        // typeof data.percent === "number" &&
+                        isDivinaLocation(data);
                 };
 
                 if (isInPagesScrollData(data)) {
@@ -1704,9 +1707,9 @@ class Reader extends React.Component<IProps, IState> {
 
         } else if (this.props.isDivina) {
 
-            const newUrl = this.props.manifestUrlR2Protocol.split("/manifest.json")[1] + url;
+            console.log("HANDLE LINK CLICK DIVINA URL", url);
 
-            this.currentDivinaPlayer.goTo(newUrl);
+            this.currentDivinaPlayer.goTo({ href: url });
 
         } else {
             if (closeNavPanel) {
