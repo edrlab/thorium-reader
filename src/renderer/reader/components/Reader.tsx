@@ -1736,7 +1736,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const locator = this.props.locator?.locator;
             const href = locator?.href;
-            const name = (parseInt(href, 10) + 1).toString();
+            const name = this.props.isDivina ? locator.href : (parseInt(href, 10) + 1).toString();
             if (href) {
 
                 const found = visibleBookmark.find(({ locator: { href: _href } }) => href === _href);
