@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "A senha está incorreta"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "menos informação",
             "moreInfo": "mais informação"

@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "Passphrase is incorrect"
     },
     "reader": {
+        "divina": {
+            "mute": "mute audio",
+            "unmute": "unmute audio"
+        },
         "footerInfo": {
             "lessInfo": "less information",
             "moreInfo": "more information"

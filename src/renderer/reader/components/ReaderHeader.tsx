@@ -308,7 +308,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     onClick={() => this.setState({divinaSoundEnabled: false})}
                                                 >
                                                     <SVG svg={MuteIcon} title={
-                                                            __("reader.tts.stop")
+                                                            __("reader.divina.mute")
                                                     } />
                                                 </button>
                                             </li>
@@ -318,7 +318,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     onClick={() => this.setState({divinaSoundEnabled: true})}
                                                 >
                                                     <SVG svg={AudioIcon} title={
-                                                            __("reader.tts.play")
+                                                            __("reader.divina.unmute")
                                                     } />
                                                 </button>
                                             </li>

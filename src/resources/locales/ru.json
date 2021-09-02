@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "Пароль неверен"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "подробнее",
             "moreInfo": "скрыть"

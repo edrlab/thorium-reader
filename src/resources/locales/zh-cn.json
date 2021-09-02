@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "密码不正确"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "不显示阅读位置",
             "moreInfo": "显示阅读位置"
