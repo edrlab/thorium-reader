@@ -237,7 +237,7 @@
     "connected-react-router": "^6.9.1",
     "debounce": "^1.2.1",
     "debug": "^4.3.2",
-    "divina-player-js": "github:readium/divina-player-js#214912b754734a2c9c553f36a174014119a647d1",
+    "divina-player-js": "github:readium/divina-player-js#4e1f859afb14b916923ec136af0284a72e22a990",
     "dompurify": "^2.3.1",
     "fetch-cookie": "^1.0.0",
     "font-awesome": "^4.7.0",
