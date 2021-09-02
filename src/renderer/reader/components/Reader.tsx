@@ -1682,10 +1682,11 @@ class Reader extends React.Component<IProps, IState> {
             }
 
         } else if (this.props.isDivina) {
-            const index = parseInt(locator?.href, 10);
-            if (index >= 0) {
-                this.currentDivinaPlayer.goToPageWithIndex(index);
-            }
+            // const index = parseInt(locator?.href, 10);
+            // if (index >= 0) {
+            //     this.currentDivinaPlayer.goToPageWithIndex(index);
+            // }
+            this.currentDivinaPlayer.goTo(locator);
         } else {
             if (closeNavPanel) {
                 this.focusMainAreaLandmarkAndCloseMenu();
