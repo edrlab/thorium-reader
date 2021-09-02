@@ -52,6 +52,7 @@ interface IBaseProps extends TranslatorProps {
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
     isDivina: boolean;
     divinaNumberOfPages: number;
+    divinaContinousEqualTrue: boolean;
 
     isPdf: boolean;
 }
@@ -100,7 +101,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         if (isDivina) {
             try {
-                spineTitle = `${(currentLocation.locator?.locations.position || 0) + 1}`;
+                spineTitle = this.props.divinaContinousEqualTrue
+                    ? `${Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)}`
+                    : `${(currentLocation.locator?.locations.position || 0) + 1}`;
             } catch (_e) {
                 // ignore
             }
@@ -171,7 +174,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
                                             let atCurrentLocation = false;
                                             if (isDivina) {
-                                                atCurrentLocation = `${(currentLocation.locator?.locations.position || 0)}` === index.toString();
+                                                atCurrentLocation = this.props.divinaContinousEqualTrue
+                                                    ? Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length) === index
+                                                    : (currentLocation.locator?.locations.position || 0) === index;
                                             } else {
                                                 atCurrentLocation = currentLocation.locator?.href === link.Href;
                                             }
@@ -255,14 +260,14 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         style={this.getStyle(this.getArrowBoxStyle)}
                                     >
                                         <span title={spineTitle}><em>{`(${(isDivina)
-                                            ? `${(currentLocation.locator?.locations.position || 0) + 1}`
+                                            ? spineTitle
                                             : isPdf ?
                                                 parseInt(currentLocation.locator?.href, 10).toString()
                                                 :
                                                 ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
                                             }/${isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
                                             (isDivina
-                                            ? this.props.divinaNumberOfPages
+                                            ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
                                             : r2Publication.Spine.length)
                                             }) `}</em> {` ${spineTitle}`}</span>
                                         <p>

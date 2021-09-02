@@ -147,6 +147,7 @@ interface IState {
     openedSectionMenu: number | undefined;
 
     divinaArrowEnabled: boolean;
+    divinaContinousEqualTrue: boolean;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -220,6 +221,7 @@ class Reader extends React.Component<IProps, IState> {
             openedSectionMenu: undefined,
 
             divinaArrowEnabled: true,
+            divinaContinousEqualTrue: false,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -649,6 +651,7 @@ class Reader extends React.Component<IProps, IState> {
                     goToLocator={this.goToLocator}
                     isDivina={this.props.isDivina}
                     divinaNumberOfPages={this.state.divinaNumberOfPages}
+                    divinaContinousEqualTrue={this.state.divinaContinousEqualTrue}
                     isPdf={this.props.isPdf}
                 />
             </div>
@@ -1306,13 +1309,13 @@ class Reader extends React.Component<IProps, IState> {
 
                 /**
                  * once the Divina JSON has been parsed and pageNavigatorsData created
-                 * Data: { readingProgression, readingModesArray, languagesArray }, where readingProgression can be used to position navigation controls,
+                 * Data: { readingProgression, readingModesArray, languagesArray, continuous }, where readingProgression can be used to position navigation controls,
                  * readingModesArray the list of all possible page navigators for the story, and languages the list of all possible languages for the story
                  */
 
                 console.log("DIVINA: 'dataparsing'", data);
 
-                const isDataParsing = (data: any): data is { readingModesArray: TdivinaReadingMode[], languagesArray: string[] } => {
+                const isDataParsing = (data: any): data is { readingModesArray: TdivinaReadingMode[], languagesArray: string[], continuous: boolean } => {
                     return typeof data === "object" &&
                         Array.isArray(data.readingModesArray) &&
                         data.readingModesArray.reduce((pv: any, cv: any) => pv && isDivinaReadingMode(cv), true);
@@ -1340,6 +1343,10 @@ class Reader extends React.Component<IProps, IState> {
                     this.props.setReadingMode(readingMode);
                     this.handleDivinaReadingMode(readingMode);
                     console.log("DIVINA ReadingModeSupported", modes, "reading mode applied:", readingMode);
+
+                    this.setState({ divinaContinousEqualTrue: data.continuous === true });
+                    console.log("DIVINA is a webtoon with continous = true", this.state.divinaContinousEqualTrue);
+
 
                     // let locale = (data.languagesArray || [""])[0];
                     // if (
