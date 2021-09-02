@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { deepEqual, deepStrictEqual, ok } from "assert";
 import * as debug_ from "debug";
 import { DOMWindow, JSDOM } from "jsdom";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
@@ -79,134 +78,135 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
     return [undefined, undefined];
 }
 
-// TEST
-if (require.main === module) {
+// import { deepEqual, deepStrictEqual, ok } from "assert";
+// // TEST
+// if (require.main === module) {
 
-    // tslint:disable-next-line: no-floating-promises
-    (async () => {
+//     // tslint:disable-next-line: no-floating-promises
+//     (async () => {
 
-        const buff = Buffer.from(`<!DOCTYPE html>
-        <html>
-        <head>
-            <title>Entry point with embedded manifest</title>
-            <link rel="publication" href="#manifest" />
-            <script id='manifest' type='application/ld+json'>
-                {
-                    "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
-                    "type": "CreativeWork",
-                    "name" : "My Wonderful Book",
-                    "id" : "urn:isbn:1234567890",
-                    "url": "https://example.org/book",
-                    "conformsTo": "https://www.w3.org/TR/pub-manifest/",
-                    "readingOrder": [
-                        "chapter1.html"
-                    ],
-                    "resources": [
-                        "./m4.2.5.01.html"
-                    ]
-                }
-            </script>
-        </head>
-        <body>
-            <p>This is just a fake entry point.</p>
-        </body>
-        </html>
-        `);
+//         const buff = Buffer.from(`<!DOCTYPE html>
+//         <html>
+//         <head>
+//             <title>Entry point with embedded manifest</title>
+//             <link rel="publication" href="#manifest" />
+//             <script id='manifest' type='application/ld+json'>
+//                 {
+//                     "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
+//                     "type": "CreativeWork",
+//                     "name" : "My Wonderful Book",
+//                     "id" : "urn:isbn:1234567890",
+//                     "url": "https://example.org/book",
+//                     "conformsTo": "https://www.w3.org/TR/pub-manifest/",
+//                     "readingOrder": [
+//                         "chapter1.html"
+//                     ],
+//                     "resources": [
+//                         "./m4.2.5.01.html"
+//                     ]
+//                 }
+//             </script>
+//         </head>
+//         <body>
+//             <p>This is just a fake entry point.</p>
+//         </body>
+//         </html>
+//         `);
 
-        const manifestBuffer = Buffer.from(`
-                {
-                    "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
-                    "type": "CreativeWork",
-                    "name" : "My Wonderful Book",
-                    "id" : "urn:isbn:1234567890",
-                    "url": "https://example.org/book",
-                    "conformsTo": "https://www.w3.org/TR/pub-manifest/",
-                    "readingOrder": [
-                        "chapter1.html"
-                    ],
-                    "resources": [
-                        "./m4.2.5.01.html"
-                    ]
-                }
-        `);
+//         const manifestBuffer = Buffer.from(`
+//                 {
+//                     "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
+//                     "type": "CreativeWork",
+//                     "name" : "My Wonderful Book",
+//                     "id" : "urn:isbn:1234567890",
+//                     "url": "https://example.org/book",
+//                     "conformsTo": "https://www.w3.org/TR/pub-manifest/",
+//                     "readingOrder": [
+//                         "chapter1.html"
+//                     ],
+//                     "resources": [
+//                         "./m4.2.5.01.html"
+//                     ]
+//                 }
+//         `);
 
-        const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
+//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
 
-        const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, () => manifestBuffer);
+//         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, () => manifestBuffer);
 
-        const manifestFoundParsed = JSON.parse(b.toString());
+//         const manifestFoundParsed = JSON.parse(b.toString());
 
-        console.log("Buffer");
-        console.log(b.toString());
+//         console.log("Buffer");
+//         console.log(b.toString());
 
-        deepEqual(manifestParsed, manifestFoundParsed);
-    })();
+//         deepEqual(manifestParsed, manifestFoundParsed);
+//     })();
 
-    // tslint:disable-next-line: no-floating-promises
-    (async () => {
+//     // tslint:disable-next-line: no-floating-promises
+//     (async () => {
 
-        const buff = Buffer.from(`<!DOCTYPE html>
-        <html>
-        <head>
-            <title>Entry point with embedded manifest</title>
-            <link rel="publication" href="http://helloworld" />
-            <script id='manifest' type='application/ld+json'>
-                {
-                    "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
-                    "type": "CreativeWork",
-                    "name" : "My Wonderful Book",
-                    "id" : "urn:isbn:1234567890",
-                    "url": "https://example.org/book",
-                    "conformsTo": "https://www.w3.org/TR/pub-manifest/",
-                    "readingOrder": [
-                        "chapter1.html"
-                    ],
-                    "resources": [
-                        "./m4.2.5.01.html"
-                    ]
-                }
-            </script>
-        </head>
-        <body>
-            <p>This is just a fake entry point.</p>
-        </body>
-        </html>
-        `);
+//         const buff = Buffer.from(`<!DOCTYPE html>
+//         <html>
+//         <head>
+//             <title>Entry point with embedded manifest</title>
+//             <link rel="publication" href="http://helloworld" />
+//             <script id='manifest' type='application/ld+json'>
+//                 {
+//                     "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
+//                     "type": "CreativeWork",
+//                     "name" : "My Wonderful Book",
+//                     "id" : "urn:isbn:1234567890",
+//                     "url": "https://example.org/book",
+//                     "conformsTo": "https://www.w3.org/TR/pub-manifest/",
+//                     "readingOrder": [
+//                         "chapter1.html"
+//                     ],
+//                     "resources": [
+//                         "./m4.2.5.01.html"
+//                     ]
+//                 }
+//             </script>
+//         </head>
+//         <body>
+//             <p>This is just a fake entry point.</p>
+//         </body>
+//         </html>
+//         `);
 
-        const manifestBuffer = Buffer.from(`
-                {
-                    "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
-                    "type": "CreativeWork",
-                    "name" : "My Wonderful Book",
-                    "id" : "urn:isbn:1234567890",
-                    "url": "https://example.org/book",
-                    "conformsTo": "https://www.w3.org/TR/pub-manifest/",
-                    "readingOrder": [
-                        "chapter1.html"
-                    ],
-                    "resources": [
-                        "./m4.2.5.01.html"
-                    ]
-                }
-        `);
+//         const manifestBuffer = Buffer.from(`
+//                 {
+//                     "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
+//                     "type": "CreativeWork",
+//                     "name" : "My Wonderful Book",
+//                     "id" : "urn:isbn:1234567890",
+//                     "url": "https://example.org/book",
+//                     "conformsTo": "https://www.w3.org/TR/pub-manifest/",
+//                     "readingOrder": [
+//                         "chapter1.html"
+//                     ],
+//                     "resources": [
+//                         "./m4.2.5.01.html"
+//                     ]
+//                 }
+//         `);
 
-        const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
+//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
 
-        const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, (url) => {
-            deepStrictEqual(url, "http://helloworld/");
+//         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, (url) => {
+//             deepStrictEqual(url, "http://helloworld/");
 
-            console.log("url", url, "return manifest");
-            return manifestBuffer;
-        });
+//             console.log("url", url, "return manifest");
+//             return manifestBuffer;
+//         });
 
-        ok(b);
+//         ok(b);
 
-        const manifestFoundParsed = JSON.parse(b.toString());
+//         const manifestFoundParsed = JSON.parse(b.toString());
 
-        console.log("Buffer");
-        console.log(b.toString());
+//         console.log("Buffer");
+//         console.log(b.toString());
 
-        deepEqual(manifestParsed, manifestFoundParsed);
-    })();
+//         deepEqual(manifestParsed, manifestFoundParsed);
+//     })();
 
-}
+// }
