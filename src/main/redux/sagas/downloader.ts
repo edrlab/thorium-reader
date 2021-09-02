@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ok } from "assert";
 import * as debug_ from "debug";
 import { createWriteStream, promises as fsp, WriteStream } from "fs";
 import { RequestInit } from "node-fetch";
@@ -13,6 +12,7 @@ import * as path from "path";
 import { acceptedExtension } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
+import { ok } from "readium-desktop/common/utils/assert";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
@@ -22,8 +22,8 @@ import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
 import { cancel, cancelled, delay, take } from "redux-saga/effects";
 import { FixedTask, SagaGenerator } from "typed-redux-saga";
 import {
-    call as callTyped, flush as flushTyped, fork as forkTyped, join as joinTyped,
-    put as putTyped, race as raceTyped,
+    call as callTyped, flush as flushTyped, fork as forkTyped, join as joinTyped, put as putTyped,
+    race as raceTyped,
 } from "typed-redux-saga/macro";
 
 import { Channel, channel, eventChannel } from "@redux-saga/core";

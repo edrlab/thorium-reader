@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { deepStrictEqual, ok } from "assert";
 import * as debug_ from "debug";
 import { app } from "electron";
 import { appendFileSync, promises as fsp } from "fs";
@@ -15,6 +14,7 @@ import { LocatorType } from "readium-desktop/common/models/locator";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
+import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";

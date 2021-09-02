@@ -5,11 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ok } from "assert";
 import * as crypto from "crypto";
 import * as debug_ from "debug";
 import * as path from "path";
-import { call as callTyped } from "typed-redux-saga/macro";
+import { ok } from "readium-desktop/common/utils/assert";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
     getUniqueResourcesFromR2Publication, w3cPublicationManifestToReadiumPublicationManifest,
@@ -21,6 +20,7 @@ import { findHtmlTocInRessources } from "readium-desktop/main/w3c/audiobooks/toc
 import { createWebpubZip, TResourcesFSCreateZip } from "readium-desktop/main/zip/create";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { SagaGenerator } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";

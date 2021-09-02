@@ -7,7 +7,6 @@
 
 import "reflect-metadata";
 
-import { ok } from "assert";
 import * as debug_ from "debug";
 import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
@@ -15,6 +14,7 @@ import { Container } from "inversify";
 import * as path from "path";
 import * as PouchDBCore from "pouchdb-core";
 import { Translator } from "readium-desktop/common/services/translator";
+import { ok } from "readium-desktop/common/utils/assert";
 import { CatalogApi } from "readium-desktop/main/api/catalog";
 import { LcpApi } from "readium-desktop/main/api/lcp";
 import { OpdsApi } from "readium-desktop/main/api/opds";

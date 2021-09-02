@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ok } from "assert";
 import * as nodeFetchCookie from "fetch-cookie";
 import { promises as fsp } from "fs";
 import nodeFetch from "node-fetch";
+import { ok } from "readium-desktop/common/utils/assert";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import * as tough from "tough-cookie";

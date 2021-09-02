@@ -5,13 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ok } from "assert";
 import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
+import { ok } from "readium-desktop/common/utils/assert";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { diMainGet } from "readium-desktop/main/di";
 import { opdsActions } from "readium-desktop/main/redux/actions";

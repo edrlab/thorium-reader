@@ -23,15 +23,21 @@ import {
     IBookmarkState, IBookmarkStateWithoutUUID,
 } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
+import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
+import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
+import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
+import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
     ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
     registerKeyboardListener, unregisterKeyboardListener,
@@ -67,7 +73,7 @@ import {
     ttsStop, ttsVoice,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
-import { Locator, Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMountAndReturnBus } from "../pdf/driver";
@@ -81,16 +87,10 @@ import optionsValues, {
     TdivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
-import { ok } from "assert";
-import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
-import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
-import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
-import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-const isDivinaLocation = (data: any): data is { pageIndex: number, nbOfPages: number, locator: Locator } => {
+const isDivinaLocation = (data: any): data is { pageIndex: number, nbOfPages: number, locator: R2Locator } => {
 
     return typeof data === "object"
         // && typeof data.pageIndex === "number"
@@ -1456,7 +1456,7 @@ class Reader extends React.Component<IProps, IState> {
 
                 this.setState({divinaArrowEnabled: false});
 
-                const isInPageChangeData = (data: any): data is { percent: number, locator: Locator } => {
+                const isInPageChangeData = (data: any): data is { percent: number, locator: R2Locator } => {
                     return typeof data === "object" &&
                         isDivinaLocation(data);
                 };
@@ -1480,7 +1480,7 @@ class Reader extends React.Component<IProps, IState> {
                 }
                 console.log("DIVINA: 'inpagescroll'", data);
                 this.setState({ divinaArrowEnabled: false });
-                const isInPagesScrollData = (data: any): data is { percent: number, locator: Locator } => {
+                const isInPagesScrollData = (data: any): data is { percent: number, locator: R2Locator } => {
                     return typeof data === "object" &&
                         // typeof data.percent === "number" &&
                         isDivinaLocation(data);

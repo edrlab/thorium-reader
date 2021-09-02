@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
+import { ok } from "readium-desktop/common/utils/assert";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import {
@@ -36,7 +37,6 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
-import { ok } from "assert";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/opds");
