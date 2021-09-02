@@ -600,7 +600,7 @@ class Reader extends React.Component<IProps, IState> {
                                             <div></div>
                                             <div>
                                                 {
-                                                    this.props.r2Publication.Metadata.Direction === "ttb"
+                                                    this.props.r2Publication.Metadata.Direction === "btt"
                                                         ? <SVG className={styles.divina_grid_item} svg={DoubleArrowUpIcon}></SVG>
                                                         : <></>
                                                 }
@@ -624,7 +624,7 @@ class Reader extends React.Component<IProps, IState> {
                                             <div></div>
                                             <div>
                                                 {
-                                                    this.props.r2Publication.Metadata.Direction === "btt"
+                                                    this.props.r2Publication.Metadata.Direction === "ttb"
                                                         ? <SVG className={styles.divina_grid_item} svg={DoubleArrowDownIcon}></SVG>
                                                         : <></>
                                                 }
