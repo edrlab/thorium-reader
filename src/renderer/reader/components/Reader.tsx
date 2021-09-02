@@ -596,13 +596,13 @@ class Reader extends React.Component<IProps, IState> {
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled
                                         ?
-                                        <div className={styles.divina_grid_container} onClick={() => this.setState({divinaArrowEnabled: false})}>
+                                        <div className={styles.divina_grid_container} onClick={() => this.setState({ divinaArrowEnabled: false })}>
                                             <div></div>
                                             <div>
                                                 {
                                                     this.props.r2Publication.Metadata.Direction === "ttb"
-                                                    ? <SVG className={styles.divina_grid_item} svg={DoubleArrowUpIcon}></SVG>
-                                                    : <></>
+                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowUpIcon}></SVG>
+                                                        : <></>
                                                 }
                                             </div>
                                             <div></div>
@@ -631,7 +631,6 @@ class Reader extends React.Component<IProps, IState> {
                                             </div>
                                             <div></div>
                                         </div>
-
                                         : <></>
                                 }
 
@@ -1473,9 +1472,13 @@ class Reader extends React.Component<IProps, IState> {
                 }
 
             });
+            let inpagescrollDropFirst = false;
             eventEmitter.on("inpagescroll", (data: any) => {
+                if (!inpagescrollDropFirst) {
+                    inpagescrollDropFirst = true;
+                    return;
+                }
                 console.log("DIVINA: 'inpagescroll'", data);
-
                 this.setState({ divinaArrowEnabled: false });
                 const isInPagesScrollData = (data: any): data is { percent: number, locator: Locator } => {
                     return typeof data === "object" &&
