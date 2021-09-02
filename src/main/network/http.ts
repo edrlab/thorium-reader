@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
+import * as http from "http";
 import * as https from "https";
 import { Headers, RequestInit } from "node-fetch";
 import { AbortSignal as IAbortSignal } from "node-fetch/externals";
@@ -229,25 +230,29 @@ export async function httpFetchRawResponse(
 
     // https://github.com/node-fetch/node-fetch#custom-agent
     // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
-    // this a nodeJs issues !
-    //
-    // const httpAgent = new http.Agent({
-    //     timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-    // });
-    // options.agent = (parsedURL: URL) => {
-    //     if (parsedURL.protocol === "http:") {
-    //           return httpAgent;
-    //     } else {
-    //           return httpsAgent;
-    //     }
-    // };
-    if (!options.agent && url.toString().startsWith("https:")) {
-        const httpsAgent = new https.Agent({
-            timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-            rejectUnauthorized: IS_DEV ? false : true,
-        });
-        options.agent = httpsAgent;
-    }
+    // https://github.com/edrlab/thorium-reader/issues/1323#issuecomment-911772951
+    const httpsAgent = new https.Agent({
+        timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
+        rejectUnauthorized: IS_DEV ? false : true,
+    });
+    const httpAgent = new http.Agent({
+        timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
+    });
+    options.agent = (parsedURL: URL) => {
+        if (parsedURL.protocol === "http:") {
+            return httpAgent;
+        } else {
+            return httpsAgent;
+        }
+    };
+
+    // if (!options.agent && url.toString().startsWith("https:")) {
+    //     const httpsAgent = new https.Agent({
+    //         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
+    //         rejectUnauthorized: IS_DEV ? false : true,
+    //     });
+    //     options.agent = httpsAgent;
+    // }
     options.timeout = options.timeout || DEFAULT_HTTP_TIMEOUT;
 
     const response = await fetchWithCookie(url, options);
