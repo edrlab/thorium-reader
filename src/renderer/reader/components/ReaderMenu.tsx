@@ -448,7 +448,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private buildGoToPageSection(totalPages?: string) {
-        if (!this.props.r2Publication) {
+        if (!this.props.r2Publication || this.props.isDivina) {
             return <></>;
         }
 
@@ -457,8 +457,12 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
         let currentPage = (this.props.isDivina || this.props.isPdf) ?
-            this.props.currentLocation?.locator?.href :
-            this.props.currentLocation?.epubPage;
+            (
+                this.props.isDivina
+                    ? `${this.props.currentLocation.locator.locations.position}`
+                    : this.props.currentLocation?.locator?.href
+            )
+            : this.props.currentLocation?.epubPage;
         if (isFixedLayout &&
             this.props.currentLocation?.locator?.href &&
             this.props.r2Publication.Spine) {
@@ -484,75 +488,75 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
         const { __ } = this.props;
 
-        return <div className={styles.goToPage}>
+        return < div className={styles.goToPage} >
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
 
             <label className={styles.currentPage}
                 id="gotoPageLabel"
                 htmlFor="gotoPageInput">
                 {
-                currentPage ?
-                (totalPages
-                        // tslint:disable-next-line: max-line-length
-                        ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
-                        : __("reader.navigation.currentPage", { current: `${currentPage}`})) :
-                ""
+                    currentPage ?
+                        (totalPages
+                            // tslint:disable-next-line: max-line-length
+                            ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
+                            : __("reader.navigation.currentPage", { current: `${currentPage}` })) :
+                        ""
                 }
             </label>
-
+            ?
             <form id="gotoPageForm">
                 {(isFixedLayout || this.props.r2Publication?.PageList) &&
-                <select
-                    onChange={(ev) => {
-                        const val = ev.target?.value?.toString();
-                        if (!val || !this.goToRef?.current) {
-                            return;
-                        }
-                        this.goToRef.current.value = val;
-                        this.setState({pageError: false});
+                    <select
+                        onChange={(ev) => {
+                            const val = ev.target?.value?.toString();
+                            if (!val || !this.goToRef?.current) {
+                                return;
+                            }
+                            this.goToRef.current.value = val;
+                            this.setState({ pageError: false });
 
-                        // Warning: Use the `defaultValue` or `value` props on <select>
-                        // instead of setting `selected` on <option>.
-                        // ... BUT: this does not result in the behaviour we want,
-                        // which is to display the current page, OR the user-selected page (not actually current yet)
-                        // value={
-                        //     this.props.r2Publication.PageList.find((pl) => {
-                        //         return pl.Title === currentPage;
-                        //     }) ?
-                        //     currentPage : undefined
-                        // }
-                    }}
-                >
-                    {
-                    isFixedLayout
-                    ?
-                    this.props.r2Publication.Spine.map((_spineLink, idx) => {
-                        const indexStr = (idx + 1).toString();
-                        return (
-                            <option
-                                key={`pageGoto_${idx}`}
-                                value={indexStr}
-                                selected={currentPage === indexStr}
-                            >
-                                {indexStr}
-                            </option>
-                        );
-                    })
-                    :
-                    this.props.r2Publication.PageList.map((pageLink, idx) => {
-                        return (
-                            pageLink.Title ?
-                            <option
-                                key={`pageGoto_${idx}`}
-                                value={pageLink.Title}
-                                selected={currentPage === pageLink.Title}
-                            >
-                                {pageLink.Title}
-                            </option> : <></>
-                        );
-                    })
-                    }
-                </select>
+                            // Warning: Use the `defaultValue` or `value` props on <select>
+                            // instead of setting `selected` on <option>.
+                            // ... BUT: this does not result in the behaviour we want,
+                            // which is to display the current page, OR the user-selected page (not actually current yet)
+                            // value={
+                            //     this.props.r2Publication.PageList.find((pl) => {
+                            //         return pl.Title === currentPage;
+                            //     }) ?
+                            //     currentPage : undefined
+                            // }
+                        }}
+                    >
+                        {
+                            isFixedLayout
+                                ?
+                                this.props.r2Publication.Spine.map((_spineLink, idx) => {
+                                    const indexStr = (idx + 1).toString();
+                                    return (
+                                        <option
+                                            key={`pageGoto_${idx}`}
+                                            value={indexStr}
+                                            selected={currentPage === indexStr}
+                                        >
+                                            {indexStr}
+                                        </option>
+                                    );
+                                })
+                                :
+                                this.props.r2Publication.PageList.map((pageLink, idx) => {
+                                    return (
+                                        pageLink.Title ?
+                                            <option
+                                                key={`pageGoto_${idx}`}
+                                                value={pageLink.Title}
+                                                selected={currentPage === pageLink.Title}
+                                            >
+                                                {pageLink.Title}
+                                            </option> : <></>
+                                    );
+                                })
+                        }
+                    </select>
                 }
                 <input
                     id="gotoPageInput"
@@ -560,7 +564,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     ref={this.goToRef}
                     type="text"
                     aria-invalid={this.state.pageError}
-                    onChange={() => this.setState({pageError: false})}
+                    onChange={() => this.setState({ pageError: false })}
                     disabled={
                         !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
                     }
@@ -571,28 +575,29 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     type="button"
 
                     onClick=
-                        {(e) => {
-                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            this.handleSubmitPage(e, closeNavPanel);
-                        }}
+                    {(e) => {
+                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                        this.handleSubmitPage(e, closeNavPanel);
+                    }}
                     onDoubleClick=
-                        {(e) => this.handleSubmitPage(e, false)}
+                    {(e) => this.handleSubmitPage(e, false)}
                     onKeyPress=
-                        {
-                            (e) => {
-                                if (e.key === "Enter" || e.key === "Space") {
-                                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                    this.handleSubmitPage(e, closeNavPanel);
+                    {
+                        (e) => {
+                            if (e.key === "Enter" || e.key === "Space") {
+                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                        this.handleSubmitPage(e, closeNavPanel);
+                                    }
                                 }
                             }
-                        }
-                    disabled={
-                        !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
-                    }
-                >
-                    { __("reader.navigation.goTo") }
-                </button>
-            </form>
+                            disabled={
+                                !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
+                            }
+                        >
+                            {__("reader.navigation.goTo")}
+                        </button>
+                    </form>
+
             {this.state.pageError &&
                 <p
                     className={styles.goToErrorMessage}
@@ -640,11 +645,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             let page: number | undefined;
 
             if (this.props.isDivina) {
-                try {
-                    page = parseInt(pageNbr, 10) - 1;
-                } catch (_e) {
-                    // ignore error
-                }
+                // try {
+                //     page = parseInt(pageNbr, 10) - 1;
+                // } catch (_e) {
+                //     // ignore error
+                // }
             } else if (this.props.isPdf) {
                 //
             }
