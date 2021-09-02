@@ -75,8 +75,6 @@ export const main = async (flushSession = false): Promise<Store<RootState>> => {
 
     debug("main fct");
 
-    app.allowRendererProcessReuse = true;
-
     let store = await tryCatch(() => diMainGet("store"), "Store not init");
     if (store) {
         return store;

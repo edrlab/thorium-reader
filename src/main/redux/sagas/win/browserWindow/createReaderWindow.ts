@@ -35,7 +35,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
-            enableRemoteModule: false,
+            // enableRemoteModule: false,
             allowRunningInsecureContent: false,
             backgroundThrottling: false,
             devTools: IS_DEV,
