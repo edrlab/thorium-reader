@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "La passphrase non è corretta"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "meno informazioni",
             "moreInfo": "più informazioni"

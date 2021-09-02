@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "Wachtwoordzin is niet correct"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "minder informatie",
             "moreInfo": "meer informatie"

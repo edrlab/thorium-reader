@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "Lösenordet är felaktigt"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "mindre information",
             "moreInfo": "mer information"

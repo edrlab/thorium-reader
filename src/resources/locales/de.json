@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": ""
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "Weniger Informationen",
             "moreInfo": "Mehr Informationen"

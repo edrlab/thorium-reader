@@ -486,6 +486,7 @@ declare namespace typed_i18n {
   (_: "publication.seeMore", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
+  readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "footerInfo": {
     readonly "lessInfo": string,
     readonly "moreInfo": string
@@ -610,6 +611,9 @@ declare namespace typed_i18n {
     readonly "voice": string
   }
 };
+  (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
+  (_: "reader.divina.mute", __?: {}): string;
+  (_: "reader.divina.unmute", __?: {}): string;
   (_: "reader.footerInfo", __?: {}): { readonly "lessInfo": string, readonly "moreInfo": string };
   (_: "reader.footerInfo.lessInfo", __?: {}): string;
   (_: "reader.footerInfo.moreInfo", __?: {}): string;

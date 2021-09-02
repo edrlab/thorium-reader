@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "잘못된 암호입니다."
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "간략한 정보",
             "moreInfo": "자세한 정보"

@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "Mot de passe incorrect"
     },
     "reader": {
+        "divina": {
+            "mute": "desactiver le son",
+            "unmute": "activer le son"
+        },
         "footerInfo": {
             "lessInfo": "Moins d'informations",
             "moreInfo": "Plus d'informations"

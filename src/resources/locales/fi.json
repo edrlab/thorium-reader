@@ -224,6 +224,10 @@
         "userKeyCheckInvalid": "Salasana on väärin"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "vähemmän tietoja",
             "moreInfo": "enemmän tietoja"
