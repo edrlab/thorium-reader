@@ -503,7 +503,6 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         ""
                 }
             </label>
-            ?
             <form id="gotoPageForm">
                 {(isFixedLayout || this.props.r2Publication?.PageList) &&
                     <select
@@ -572,7 +571,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
-                    type="button"
+                    type="submit"
 
                     onClick=
                     {(e) => {
@@ -586,17 +585,17 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         (e) => {
                             if (e.key === "Enter" || e.key === "Space") {
                                 const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                        this.handleSubmitPage(e, closeNavPanel);
-                                    }
-                                }
+                                this.handleSubmitPage(e, closeNavPanel);
                             }
-                            disabled={
-                                !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
-                            }
-                        >
-                            {__("reader.navigation.goTo")}
-                        </button>
-                    </form>
+                        }
+                    }
+                    disabled={
+                        !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
+                    }
+                >
+                    {__("reader.navigation.goTo")}
+                </button>
+            </form>
 
             {this.state.pageError &&
                 <p
@@ -605,7 +604,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     aria-relevant="all"
                     role="alert"
                 >
-                    { __("reader.navigation.goToError") }
+                    {__("reader.navigation.goToError")}
                 </p>
             }
 
