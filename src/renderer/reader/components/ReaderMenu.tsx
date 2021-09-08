@@ -506,7 +506,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             <form
                 id="gotoPageForm"
                 onSubmit={(e) => {
-                    e.preventDefault()
+                    e.preventDefault();
                 }
                 }
                 onKeyPress=
