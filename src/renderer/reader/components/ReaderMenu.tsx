@@ -503,7 +503,25 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         ""
                 }
             </label>
-            <form id="gotoPageForm">
+            <form
+                id="gotoPageForm"
+                onSubmit={(e) => {
+                    e.preventDefault()
+                }
+                }
+                onKeyPress=
+                    {
+                        (e) => {
+                            if (e.key === "Enter" || e.key === "Space") {
+                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+
+                                console.log("CLose panel from button");
+
+                                this.handleSubmitPage(e, closeNavPanel);
+                            }
+                        }
+                    }
+                >
                 {(isFixedLayout || this.props.r2Publication?.PageList) &&
                     <select
                         onChange={(ev) => {
@@ -571,24 +589,17 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
-                    type="submit"
+                    type="button"
 
                     onClick=
                     {(e) => {
                         const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+
+                        console.log("CLOSE NAV PANELL", closeNavPanel);
                         this.handleSubmitPage(e, closeNavPanel);
                     }}
                     onDoubleClick=
                     {(e) => this.handleSubmitPage(e, false)}
-                    onKeyPress=
-                    {
-                        (e) => {
-                            if (e.key === "Enter" || e.key === "Space") {
-                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                this.handleSubmitPage(e, closeNavPanel);
-                            }
-                        }
-                    }
                     disabled={
                         !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
                     }
@@ -615,7 +626,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         this.setState({ bookmarkToUpdate: undefined });
     }
 
-    private handleSubmitPage(e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>, closeNavPanel = true) {
+    private handleSubmitPage(e: React.MouseEvent<any> | React.KeyboardEvent<HTMLFormElement> | React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>, closeNavPanel = true) {
         e.preventDefault();
         if (!this.goToRef?.current?.value) {
             return;
@@ -631,7 +642,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 const spineIndex = parseInt(pageNbr, 10) - 1;
                 const spineLink = this.props.r2Publication.Spine[spineIndex];
                 if (spineLink) {
-                    this.setState({pageError: false});
+                    this.setState({ pageError: false });
                     this.props.handleLinkClick(undefined, spineLink.Href, closeNavPanel);
                     return;
                 }
@@ -639,7 +650,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 // ignore error
             }
 
-            this.setState({refreshError: true});
+            this.setState({ refreshError: true });
         } else if (this.props.isDivina || this.props.isPdf) {
             let page: number | undefined;
 
