@@ -594,8 +594,6 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     onClick=
                     {(e) => {
                         const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-
-                        console.log("CLOSE NAV PANELL", closeNavPanel);
                         this.handleSubmitPage(e, closeNavPanel);
                     }}
                     onDoubleClick=
