@@ -103,6 +103,9 @@ export function* rootSaga() {
     // app initialized
     yield put(appActions.initSuccess.build());
 
+    // wait library window fully opened before to throw events
+    yield take(winActions.library.openSucess.build);
+
     // open reader from CLI or open-file event on MACOS
     yield events.saga();
 }
