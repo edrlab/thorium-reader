@@ -42,6 +42,7 @@ debug("_");
 
 type TLinkType = "refresh" | "authenticate";
 type TLabelName = "login" | "password";
+type TAuthName = "id" | "access_token" | "refresh_token" | "token_type";
 type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/implicit"
     | "http://opds-spec.org/auth/basic"
@@ -233,7 +234,7 @@ export function saga() {
 // -----
 
 async function opdsSetAuthCredentials(
-    opdsCustomProtocolRequestParsed: IParseRequestFromCustomProtocol<TLabelName>,
+    opdsCustomProtocolRequestParsed: IParseRequestFromCustomProtocol<TLabelName | TAuthName>,
     authCredentials: IOpdsAuthenticationToken,
     authenticationType: TAuthenticationType,
 ): Promise<[undefined, Error]> {
@@ -345,10 +346,10 @@ async function opdsSetAuthCredentials(
 
             const newCredentials = {
                 ...authCredentials,
-                id: searchParams?.get("id") || authCredentials.id || undefined,
-                tokenType: searchParams?.get("token_type") || authCredentials.tokenType || "Bearer",
-                refreshToken: searchParams?.get("refresh_token") || undefined,
-                accessToken: searchParams?.get("access_token") || undefined,
+                id: data.id || searchParams?.get("id") || authCredentials.id || undefined,
+                tokenType: data.token_type || searchParams?.get("token_type") || authCredentials.tokenType || "Bearer",
+                refreshToken: data.refresh_token || searchParams?.get("refresh_token") || undefined,
+                accessToken: data.access_token || searchParams?.get("access_token") || undefined,
             };
 
             newCredentials.tokenType =
@@ -623,11 +624,13 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
 
         if (method === "GET") {
             if (host === "authorize") {
-                const urlObject = new URL(url);
+                const urlSearchParam = url.replace("#", "?");
+                const urlObject = new URL(urlSearchParam);
                 const data: Record<string, string> = {};
                 for (const [key, value] of urlObject.searchParams) {
                     data[key] = value;
                 }
+
                 return {
                     url: urlParsed,
                     method: "GET",

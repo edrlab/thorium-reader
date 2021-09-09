@@ -80,8 +80,6 @@ export class OpdsService {
                 const baseUrl = `${_baseUrl}`;
                 const contentType = parseContentType(_contentType);
 
-                ok(opdsFeedData.response, `message: ${statusMessage} | url: ${baseUrl} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
-
                 if (contentTypeisXml(contentType)) {
 
                     const buffer = await opdsFeedData.response.buffer();
@@ -121,6 +119,8 @@ export class OpdsService {
                         }
                     }
                 }
+
+                ok(opdsFeedData.isSuccess, `message: ${statusMessage} | url: ${baseUrl} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
 
                 debug(`unknown url content-type : ${baseUrl} - ${contentType}`);
                 throw new Error(
