@@ -503,8 +503,25 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         ""
                 }
             </label>
-            ?
-            <form id="gotoPageForm">
+            <form
+                id="gotoPageForm"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                }
+                }
+                onKeyPress=
+                    {
+                        (e) => {
+                            if (e.key === "Enter" || e.key === "Space") {
+                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+
+                                console.log("CLose panel from button");
+
+                                this.handleSubmitPage(e, closeNavPanel);
+                            }
+                        }
+                    }
+                >
                 {(isFixedLayout || this.props.r2Publication?.PageList) &&
                     <select
                         onChange={(ev) => {
@@ -581,22 +598,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     }}
                     onDoubleClick=
                     {(e) => this.handleSubmitPage(e, false)}
-                    onKeyPress=
-                    {
-                        (e) => {
-                            if (e.key === "Enter" || e.key === "Space") {
-                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                        this.handleSubmitPage(e, closeNavPanel);
-                                    }
-                                }
-                            }
-                            disabled={
-                                !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
-                            }
-                        >
-                            {__("reader.navigation.goTo")}
-                        </button>
-                    </form>
+                    disabled={
+                        !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
+                    }
+                >
+                    {__("reader.navigation.goTo")}
+                </button>
+            </form>
 
             {this.state.pageError &&
                 <p
@@ -605,7 +613,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     aria-relevant="all"
                     role="alert"
                 >
-                    { __("reader.navigation.goToError") }
+                    {__("reader.navigation.goToError")}
                 </p>
             }
 
@@ -616,7 +624,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         this.setState({ bookmarkToUpdate: undefined });
     }
 
-    private handleSubmitPage(e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>, closeNavPanel = true) {
+    private handleSubmitPage(e: React.MouseEvent<any> | React.KeyboardEvent<HTMLFormElement> | React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>, closeNavPanel = true) {
         e.preventDefault();
         if (!this.goToRef?.current?.value) {
             return;
@@ -632,7 +640,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 const spineIndex = parseInt(pageNbr, 10) - 1;
                 const spineLink = this.props.r2Publication.Spine[spineIndex];
                 if (spineLink) {
-                    this.setState({pageError: false});
+                    this.setState({ pageError: false });
                     this.props.handleLinkClick(undefined, spineLink.Href, closeNavPanel);
                     return;
                 }
@@ -640,7 +648,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 // ignore error
             }
 
-            this.setState({refreshError: true});
+            this.setState({ refreshError: true });
         } else if (this.props.isDivina || this.props.isPdf) {
             let page: number | undefined;
 
