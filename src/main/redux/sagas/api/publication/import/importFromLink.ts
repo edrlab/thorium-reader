@@ -108,16 +108,16 @@ export function* importFromLinkService(
     const isHtml = contentTypeArray.includes(ContentType.Html);
     const isDivinaPacked = contentTypeArray.includes(ContentType.DivinaPacked);
     const isPdf = contentTypeArray.includes(ContentType.pdf);
+    const isLcpPdf = contentTypeArray.includes(ContentType.lcppdf);
     const isJson = contentTypeArray.includes(ContentType.Json)
         || contentTypeArray.includes(ContentType.AudioBook)
         || contentTypeArray.includes(ContentType.JsonLd)
         || contentTypeArray.includes(ContentType.Divina)
-        || contentTypeArray.includes(ContentType.webpub)
-        || contentTypeArray.includes(ContentType.lcppdf);
+        || contentTypeArray.includes(ContentType.webpub);
 
     debug(contentTypeArray, isHtml, isJson);
 
-    if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp && !isDivinaPacked && !isPdf) {
+    if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp && !isDivinaPacked && !isPdf && !isLcpPdf) {
         debug(`OPDS download link is not EPUB or AudioBook or Divina or Pdf ! ${link.url} ${link.type}`);
     }
 
