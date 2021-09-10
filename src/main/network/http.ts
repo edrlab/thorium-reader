@@ -505,7 +505,7 @@ const httpGetUnauthorized =
         };
 
 const httpGetUnauthorizedRefresh =
-    (auth: IOpdsAuthenticationToken): typeof httpFetchFormattedResponse =>
+    (auth: IOpdsAuthenticationToken): typeof httpFetchFormattedResponse | undefined =>
         async (...arg) => {
 
             const { refreshToken, refreshUrl } = auth;

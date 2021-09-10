@@ -81,7 +81,7 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public convertOpdsPropertiesToView(properties: TProperties | undefined): IOPDSPropertiesView {
+    public convertOpdsPropertiesToView(properties: TProperties | undefined): IOPDSPropertiesView | undefined {
 
         if (properties) {
 
@@ -511,28 +511,30 @@ export class OpdsFeedViewConverter {
             (item) =>
                 this.convertOpdsFacetsToView(item, baseUrl));
 
-        const links: IOpdsNavigationLink | undefined = r2OpdsFeed.Links &&
-        {
-            next: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "next" }),
-            previous: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "previous" }),
-            first: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "first" }),
-            last: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "last" }),
-            start: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "start" }),
-            up: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
-            search: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
-            bookshelf: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
-            text: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
-            self: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
-        };
-        const metadata: IOpdsFeedMetadataView | undefined = r2OpdsFeed.Metadata &&
-        {
-            numberOfItems: typeof r2OpdsFeed.Metadata.NumberOfItems === "number" &&
-                r2OpdsFeed.Metadata.NumberOfItems,
-            itemsPerPage: typeof r2OpdsFeed.Metadata.ItemsPerPage === "number" &&
-                r2OpdsFeed.Metadata.ItemsPerPage,
-            currentPage: typeof r2OpdsFeed.Metadata.CurrentPage === "number" &&
-                r2OpdsFeed.Metadata.CurrentPage,
-        };
+        const links: IOpdsNavigationLink | undefined = r2OpdsFeed.Links
+            ? {
+                next: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "next" }),
+                previous: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "previous" }),
+                first: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "first" }),
+                last: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "last" }),
+                start: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "start" }),
+                up: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
+                search: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
+                bookshelf: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
+                text: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
+                self: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
+            }
+            : undefined;
+        const metadata: IOpdsFeedMetadataView | undefined = r2OpdsFeed.Metadata
+            ? {
+                numberOfItems: typeof r2OpdsFeed.Metadata.NumberOfItems === "number" &&
+                    r2OpdsFeed.Metadata.NumberOfItems,
+                itemsPerPage: typeof r2OpdsFeed.Metadata.ItemsPerPage === "number" &&
+                    r2OpdsFeed.Metadata.ItemsPerPage,
+                currentPage: typeof r2OpdsFeed.Metadata.CurrentPage === "number" &&
+                    r2OpdsFeed.Metadata.CurrentPage,
+            }
+            : undefined;
 
         return {
             title,
