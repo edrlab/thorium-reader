@@ -345,9 +345,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const percent = Math.round((currentLocation.locator.locations?.progression || 0) * 100);
 
         if (currentLocation.paginationInfo) {
-            return `${percent}% (${currentLocation.paginationInfo.currentColumn + 1} / ${currentLocation.paginationInfo.totalColumns})`;
+            return `${percent}% (${(currentLocation.paginationInfo.currentColumn || 0) + 1} / ${currentLocation.paginationInfo.totalColumns || 0})`;
         } else if (currentLocation.audioPlaybackInfo) {
-            return `${percent}% (${formatTime(currentLocation.audioPlaybackInfo.localTime)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration)})`;
+            return `${percent}% (${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)})`;
         } else {
             return `${percent}%`;
         }
