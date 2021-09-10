@@ -70,7 +70,10 @@ const Progression = (props: {
 
     const { __, locatorExt } = props;
 
-    if (locatorExt?.locator?.locations?.progression && locatorExt?.audioPlaybackInfo) {
+    if (locatorExt?.locator?.locations?.progression && locatorExt?.audioPlaybackInfo
+        // total duration can be undefined with badly-constructed publications,
+        // for example we found some LibriVox W3C LPF audiobooks missing duration property on reading order resources
+        && locatorExt.audioPlaybackInfo.globalDuration) {
 
         const percent = Math.round(locatorExt.locator.locations.position * 100);
         const time = Math.round(locatorExt.audioPlaybackInfo.globalTime);
