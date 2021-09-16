@@ -144,4 +144,11 @@ export interface IOpdsNavigationLink {
     self: IOpdsLinkView[];
 }
 
-export type THttpGetOpdsResultView = THttpGetResultAfterCallback<IOpdsResultView>;
+// https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+export interface IOpdsProblemDetailsResultView {
+    type?: string;
+    title?: string;
+    status?: number;
+    detail?: string;
+    instance?: string;
+}
