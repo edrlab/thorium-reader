@@ -13,7 +13,7 @@ export interface IBrowserApi {
     ) => Promise<THttpGetBrowserResultView>;
 }
 
-export interface IOpdsModuleApi {
+export interface IBrowserModuleApi {
     // "opds/updateFeed": IOpdsApi["updateFeed"];
     "browser/browse": IBrowserApi["browse"];
 }

@@ -33,7 +33,9 @@ export enum ContentType {
     Lsd = "application/vnd.readium.license.status.v1.0+json",
     lcppdf = "application/pdf+lcp",
     pdf = "application/pdf",
+    problemDetails = "application/problem+json", // https://datatracker.ietf.org/doc/html/rfc7807#section-6.1
     ApiProblem = "application/api-problem+json",
+
     Opf = "application/oebps-package+xml",
 }
 
@@ -71,4 +73,5 @@ export const contentTypeisOpdsAuth = (contentType: ContentType | undefined) =>
     contentType === ContentType.Opds2AuthVendorV1_0;
 
 export const contentTypeisApiProblem = (contentType: ContentType | undefined) =>
+    contentType === ContentType.problemDetails ||
     contentType === ContentType.ApiProblem;

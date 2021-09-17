@@ -18,12 +18,12 @@ import { apiSaga } from "./api";
 const filename_ = "readium-desktop:renderer:redux:saga:opds-browse";
 const debug = debug_(filename_);
 
-type TA = apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["opds/browse"]>>;
+type TA = apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["browser/browse"]>>;
 
 export function* opdsBrowse(link: string, REQUEST_ID: string) {
 
     debug("opds-browse", link);
-    yield apiSaga("opds/browse", REQUEST_ID, link);
+    yield apiSaga("browser/browse", REQUEST_ID, link);
     while (true) {
         const action: TA = yield take(apiActions.result.build);
 

@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IBrowserApi } from "./interface/browser.interface";
 import { ICatalogApi } from "./interface/catalog.interface";
 import { IKeyboardApi } from "./interface/keyboardApi.interface";
 import { ILcpApi } from "./interface/lcpApi.interface";
@@ -17,6 +18,7 @@ export type TMethodApi =
     keyof ICatalogApi |
     keyof IPublicationApi |
     keyof IOpdsApi |
+    keyof IBrowserApi |
     keyof IKeyboardApi |
     keyof ILcpApi |
     keyof IReaderApi |

@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
-import { ok } from "readium-desktop/common/utils/assert";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import {
@@ -15,7 +14,7 @@ import {
 } from "readium-desktop/common/views/opds";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
-    ContentType, contentTypeisApiProblem, contentTypeisOpds, contentTypeisOpdsAuth,
+    ContentType, contentTypeisOpds, contentTypeisOpdsAuth,
     contentTypeisXml, parseContentType,
 } from "readium-desktop/utils/contentType";
 import * as URITemplate from "urijs/src/URITemplate";

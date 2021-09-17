@@ -19,7 +19,7 @@ const checkUrl = (url: string) => {
             url = url.replace("opds://", "http://");
         }
     } catch (e) {
-        throw new Error(`opds-api-url-invalid ${e.message}`);
+        throw new Error(`Not a valid URL ${e.message || e}`);
     }
     return url;
 };
@@ -49,13 +49,13 @@ export class BrowserApi implements IBrowserApi {
                 const baseUrl = `${_baseUrl}`;
                 const contentType = parseContentType(_contentType);
 
-                // parse Problem details and return 
+                // parse Problem details and return
                 if (contentTypeisApiProblem(contentType)) {
                     const json = await data.response.json();
                     const {
                         type,
                         title,
-                        status,  
+                        status,
                         detail,
                         instance,
                     } = json as IOpdsProblemDetailsResultView;
@@ -80,16 +80,16 @@ export class BrowserApi implements IBrowserApi {
                     return data;
                 }
 
-                // Failed : 
+                // Failed :
 
-                ok(data.isSuccess, `message: ${statusMessage} | url: ${baseUrl} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
+                ok(data.isSuccess, `message: ${statusMessage} | url: ${baseUrl} | type: ${_contentType} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
 
                 debug(`unknown url content-type : ${baseUrl} - ${contentType}`);
                 throw new Error(
                     `Not a valid OPDS HTTP Content-Type for ${baseUrl} (${contentType})`,
                 );
-            }
-        )
+            },
+        );
         return result;
     }
 }

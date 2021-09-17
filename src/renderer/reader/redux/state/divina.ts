@@ -12,4 +12,3 @@ export const defaultReadingMode: TdivinaReadingMode = "single";
 export interface IDivinaState {
     readingMode: TdivinaReadingMode;
 }
-

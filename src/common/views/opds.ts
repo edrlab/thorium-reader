@@ -9,7 +9,6 @@ import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability"
 import { OPDSCurrencyEnum } from "@r2-opds-js/opds/opds2/opds2-price";
 
 import { Identifiable } from "../models/identifiable";
-import { THttpGetResultAfterCallback } from "../utils/http";
 
 // import { JsonMap } from "readium-desktop/typings/json";
 

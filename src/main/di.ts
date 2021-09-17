@@ -49,6 +49,7 @@ import { SessionApi } from "./api/session";
 import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
+import { BrowserApi } from "./api/browser";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -329,6 +330,7 @@ container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingle
 container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi);
 
 container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
+container.bind<BrowserApi>(diSymbolTable["browser-api"]).to(BrowserApi).inSingletonScope();
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
@@ -377,6 +379,7 @@ interface IGet {
     (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): typeof publicationApi;
     (s: "opds-api"): OpdsApi;
+    (s: "browser-api"): BrowserApi;
     (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;
