@@ -77,7 +77,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                         <h4>Title: {title}</h4>
                         <h4>Status: {status}</h4>
                         <h4>Details: {detail}</h4>
-                        <h4>instance: {instance}</h4>
+                        <h4>Instance: {instance}</h4>
                     </>
                 );
 
