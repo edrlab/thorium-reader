@@ -151,6 +151,7 @@ export class OpdsService {
                 if (url.search.includes(SEARCH_TERM) ||
                     tryDecodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
 
+                    atomLink.url = atomLink.url.replace("%7B", "{").replace("%7D", "}")
                     debug("parseOpdsSearchUrl (atomLink): ", atomLink.url);
                     return (atomLink.url);
                 }
