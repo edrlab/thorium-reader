@@ -454,10 +454,7 @@ export const httpGetWithAuth =
 
         };
 
-
-// @TODO: handle file://hostname/path/to/the/file.txt
-// const url = new URL(url [, base]) -> works well with file://"
-export const httpGetFactory =
+const httpGetFactory =
     (): typeof httpFetchFormattedResponse =>
         async (...arg) => {
             const [_url, _options, _callback, ..._arg] = arg;
@@ -503,7 +500,7 @@ export const httpGetFactory =
         };
 
 
-
+export const httpGet: typeof httpFetchFormattedResponse = httpGetFactory();
 
 const httpGetUnauthorized =
     (auth: IOpdsAuthenticationToken, enableRefresh = true): typeof httpFetchFormattedResponse =>
