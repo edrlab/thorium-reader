@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import { createReadStream, promises as fsp } from "fs";
 import * as http from "http";
 import * as https from "https";
 import { Headers, RequestInit } from "node-fetch";
@@ -16,6 +16,7 @@ import {
 } from "readium-desktop/common/utils/http";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { resolve } from "url";
 
@@ -456,7 +457,53 @@ export const httpGetWithAuth =
 
 // @TODO: handle file://hostname/path/to/the/file.txt
 // const url = new URL(url [, base]) -> works well with file://"
-export const httpGet = httpGetWithAuth(true);
+export const httpGetFactory =
+    (): typeof httpFetchFormattedResponse =>
+        async (...arg) => {
+            const [_url, _options, _callback, ..._arg] = arg;
+
+            let url: URL | undefined;
+            try {
+                url = new URL(_url);
+            } catch (e) {
+                // wrong URL : fallback to httpGetWithAuth
+                debug("wrong URL : fallback to httpGetWithAuth");
+                debug(e);
+            }
+
+            if (url?.protocol === "file:") {
+
+                let isFailure = false;
+                let stream: NodeJS.ReadableStream | undefined;
+                try {
+                    stream = createReadStream(url.pathname);
+                } catch (e) {
+                    isFailure = true;
+                    debug(`CreateReadStream(${url.pathname}) ==> FAILED`);
+                    debug(e);
+                }
+
+                return {
+                    url: _url,
+                    isFailure,
+                    isSuccess: !isFailure,
+                    isNetworkError: false,
+                    isTimeout: false,
+                    isAbort: false,
+                    timeoutConnect: false,
+                    responseUrl: url.toString(),
+                    statusCode: isFailure ? 400 : 200,
+                    statusMessage: "",
+                    contentType: findMimeTypeWithExtension(url.toString()),
+                    body: stream,
+                    response: undefined,
+                };
+            }
+            return httpGetWithAuth(true)(...arg);
+        };
+
+
+
 
 const httpGetUnauthorized =
     (auth: IOpdsAuthenticationToken, enableRefresh = true): typeof httpFetchFormattedResponse =>
