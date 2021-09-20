@@ -490,7 +490,7 @@ const httpGetFactory =
                     timeoutConnect: false,
                     responseUrl: url.toString(),
                     statusCode: isFailure ? 400 : 200,
-                    statusMessage: "",
+                    statusMessage: isFailure ? "fs.createReadStream failure" : "ok",
                     contentType: findMimeTypeWithExtension(url.toString()),
                     body: stream,
                     response: undefined,
