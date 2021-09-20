@@ -453,6 +453,9 @@ export const httpGetWithAuth =
 
         };
 
+
+// @TODO: handle file://hostname/path/to/the/file.txt
+// const url = new URL(url [, base]) -> works well with file://"
 export const httpGet = httpGetWithAuth(true);
 
 const httpGetUnauthorized =
