@@ -25,7 +25,7 @@ export function* search(title: string): SagaGenerator<PublicationView[]> {
     const titleFormated = title?.trim() || "";
 
     const publicationRepository = diMainGet("publication-repository");
-    const publicationDocuments = yield* callTyped(() => publicationRepository.searchByTitle(titleFormated));
+    const publicationDocuments = yield* callTyped(() => publicationRepository.searchByTitleAndAuthor(titleFormated));
 
     const publicationViewConverter = diMainGet("publication-view-converter");
 
