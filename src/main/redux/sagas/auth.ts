@@ -285,10 +285,12 @@ async function opdsSetAuthCredentials(
                         const headers = new Headers();
                         headers.set("Content-Type", ContentType.FormUrlEncoded);
 
+                        const body = Object.entries(payload).reduce((pv, [k,v]) => `${pv}${pv ? "&" : pv}${k}=${v}`, "");
+
                         const { data: postData } = await httpPost<IOpdsAuthenticationToken>(
                             authenticateUrl,
                             {
-                                body: Object.entries(payload).reduce((pv, [k,v]) => `${pv === "" ? "" : "&"}${k}=${v}`, ""),
+                                body,
                                 headers,
                             },
                             async (res) => {
