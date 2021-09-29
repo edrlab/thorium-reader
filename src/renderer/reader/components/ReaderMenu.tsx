@@ -524,6 +524,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 >
                 {(isFixedLayout || this.props.r2Publication?.PageList) &&
                     <select
+                        title={__("reader.navigation.goToTitle")}
                         onChange={(ev) => {
                             const val = ev.target?.value?.toString();
                             if (!val || !this.goToRef?.current) {
