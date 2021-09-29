@@ -151,8 +151,10 @@ export class OpdsService {
                 if (url.search.includes(SEARCH_TERM) ||
                     tryDecodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
 
-                    debug("parseOpdsSearchUrl (atomLink): ", atomLink.url);
-                    return (atomLink.url);
+                    const urlDecoded = atomLink.url.replace(/%7B/g, "{").replace(/%7D/g, "}");
+
+                    debug("parseOpdsSearchUrl (atomLink): ", urlDecoded);
+                    return urlDecoded;
                 }
 
                 // http://static.wolnelektury.pl/opensearch.xml
@@ -166,7 +168,7 @@ export class OpdsService {
 
                 const uriTemplate = new URITemplate(opdsLink.url);
                 const uriExpanded = uriTemplate.expand({ query: "\{searchTerms\}" });
-                const url = uriExpanded.toString().replace("%7B", "{").replace("%7D", "}");
+                const url = uriExpanded.toString().replace(/%7B/g, "{").replace(/%7D/g, "}");
 
                 debug("parseOpdsSearchUrl (opdsLink): ", url);
                 return url;
