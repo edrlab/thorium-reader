@@ -1,6 +1,6 @@
 import { ok } from "assert";
 import { inject, injectable } from "inversify";
-import { IBrowserApi } from "readium-desktop/common/api/interface/browser.interface";
+import { IHttpBrowserApi } from "readium-desktop/common/api/interface/httpBrowser.interface";
 import { IBrowserResultView, THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
 import { diSymbolTable } from "../diSymbolTable";
@@ -8,7 +8,8 @@ import { httpGet } from "../network/http";
 import { OpdsService } from "../services/opds";
 import * as debug_ from "debug";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
-import { IOpdsProblemDetailsResultView, IOpdsResultView } from "readium-desktop/common/views/opds";
+import { IOpdsResultView } from "readium-desktop/common/views/opds";
+import { IProblemDetailsResultView } from "readium-desktop/common/views/problemDetails";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/browser");
@@ -25,7 +26,7 @@ const checkUrl = (url: string) => {
 };
 
 @injectable()
-export class BrowserApi implements IBrowserApi {
+export class HttpBrowserApi implements IHttpBrowserApi {
 
     @inject(diSymbolTable["opds-service"])
     private readonly opdsService!: OpdsService;
@@ -58,7 +59,7 @@ export class BrowserApi implements IBrowserApi {
                         status,
                         detail,
                         instance,
-                    } = json as IOpdsProblemDetailsResultView;
+                    } = json as IProblemDetailsResultView;
                     data.data = {
                         problemDetails: {
                             type: typeof type === "string" ? type : undefined,

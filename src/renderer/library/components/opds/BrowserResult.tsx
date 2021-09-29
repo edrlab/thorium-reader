@@ -214,7 +214,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 
-    const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("browser/browse");
+    const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("httpbrowser/browse");
     return {
         browserData: apiBrowseData?.data,
         location: state.router.location,

@@ -7,13 +7,13 @@
 
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 
-export interface IBrowserApi {
+export interface IHttpBrowserApi {
     browse: (
         url: string,
     ) => Promise<THttpGetBrowserResultView>;
 }
 
-export interface IBrowserModuleApi {
+export interface IHttpBrowserModuleApi {
     // "opds/updateFeed": IOpdsApi["updateFeed"];
-    "browser/browse": IBrowserApi["browse"];
+    "httpbrowser/browse": IHttpBrowserApi["browse"];
 }

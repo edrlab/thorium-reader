@@ -6,11 +6,12 @@
 // ==LICENSE-END==
 
 import { THttpGetResultAfterCallback } from "../utils/http";
-import { IOpdsProblemDetailsResultView, IOpdsResultView } from "./opds";
+import { IOpdsResultView } from "./opds";
+import { IProblemDetailsResultView } from "./problemDetails";
 
 export interface IBrowserResultView {
     opds?: IOpdsResultView;
-    problemDetails?: IOpdsProblemDetailsResultView;
+    problemDetails?: IProblemDetailsResultView;
 }
 
 export type THttpGetBrowserResultView = THttpGetResultAfterCallback<IBrowserResultView>;

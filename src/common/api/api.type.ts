@@ -9,7 +9,7 @@ import { ICatalogModuleApi } from "./interface/catalog.interface";
 import { IKeyboardModuleApi } from "./interface/keyboardApi.interface";
 import { ILcpModuleApi } from "./interface/lcpApi.interface";
 import { IOpdsModuleApi } from "./interface/opdsApi.interface";
-import { IBrowserModuleApi } from "./interface/browser.interface";
+import { IHttpBrowserModuleApi } from "./interface/httpBrowser.interface";
 import { IPublicationModuleApi } from "./interface/publicationApi.interface";
 import { IReaderModuleApi } from "./interface/readerApi.interface";
 import { ISessionModuleApi } from "./interface/session.interface";
@@ -18,7 +18,7 @@ export type TApiMethod =
     ICatalogModuleApi &
     ILcpModuleApi &
     IOpdsModuleApi &
-    IBrowserModuleApi &
+    IHttpBrowserModuleApi &
     IKeyboardModuleApi &
     IPublicationModuleApi &
     IReaderModuleApi &
