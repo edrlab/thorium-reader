@@ -98,6 +98,7 @@ class HeaderSearch extends React.Component<IProps, undefined> {
         return (
             <button
                 aria-pressed={this.props.isOnSearch}
+                aria-label={__("reader.navigation.magnifyingGlassButton")}
                 className={styles.menu_button}
                 onClick={this.enableSearch}
             // ref={this.settingsMenuButtonRef}

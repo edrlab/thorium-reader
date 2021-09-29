@@ -593,6 +593,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         >
                             <button
                                 aria-pressed={this.props.settingsOpen}
+                                aria-label={__("reader.navigation.settingsTitle")}
                                 className={styles.menu_button}
                                 onClick={this.props.handleSettingsClick.bind(this)}
                                 ref={this.settingsMenuButtonRef}
@@ -610,6 +611,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         >
                             <button
                                 aria-pressed={this.props.menuOpen}
+                                aria-label={__("reader.navigation.openTableOfContentsTitle")}
                                 className={styles.menu_button}
                                 onClick={this.props.handleMenuClick.bind(this)}
                                 ref={this.navigationMenuButtonRef}
@@ -630,6 +632,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     className={classNames(styles.menu_button)}
                                     onClick={this.props.handleFullscreenClick}
                                     ref={this.disableFullscreenRef}
+                                    aria-pressed={this.props.fullscreen}
+                                    aria-label={__("reader.navigation.quitFullscreenTitle")}
                                 >
                                     <SVG svg={QuitFullscreenIcon}
                                         title={__("reader.navigation.quitFullscreenTitle")} />
@@ -642,6 +646,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     onClick={this.props.handleFullscreenClick}
                                     ref={this.enableFullscreenRef}
                                     aria-pressed={this.props.fullscreen}
+                                    aria-label={__("reader.navigation.fullscreenTitle")}
                                 >
                                     <SVG svg={FullscreenIcon}
                                         title={__("reader.navigation.fullscreenTitle")} />

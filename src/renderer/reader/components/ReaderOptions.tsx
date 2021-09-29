@@ -118,7 +118,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         if (isDivina) {
 
             sections.push({
-                    title: "readingMode",
+                    title: __("reader.settings.disposition.title"),
                     content: this.divinaSetReadingMode(),
                 });
         }
@@ -287,13 +287,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     private divinaSetReadingMode() {
 
         return (
-            <div id={styles.themes_list}>
+            <div id={styles.themes_list} aria-label={this.props.__("reader.settings.disposition.title")} role="radiogroup">
                 <div>
                     <input
                         disabled={!this.props.divinaReadingModeSupported.includes("double")}
                         id={"radio-" + "double"}
                         type="radio"
-                        name="theme"
+                        name="divinaReadingMode"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("double");
                         }}
@@ -312,7 +312,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         disabled={!this.props.divinaReadingModeSupported.includes("guided")}
                         id={"radio-" + "guided"}
                         type="radio"
-                        name="theme"
+                        name="divinaReadingMode"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("guided");
                         }}
@@ -331,7 +331,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         disabled={!this.props.divinaReadingModeSupported.includes("scroll")}
                         id={"radio-" + "scroll"}
                         type="radio"
-                        name="theme"
+                        name="divinaReadingMode"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("scroll");
                         }}
@@ -350,7 +350,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         disabled={!this.props.divinaReadingModeSupported.includes("single")}
                         id={"radio-" + "single"}
                         type="radio"
-                        name="theme"
+                        name="divinaReadingMode"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("single");
                         }}
@@ -377,7 +377,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     <input
                         id={"radio-" + `${scale}`}
                         type="radio"
-                        name={`${scale}`}
+                        name="pdfZoomRadios"
                         onChange={() => this.props.pdfEventBus.dispatch("scale", scale)}
                         checked={this.state.pdfScale === scale}
                         disabled={disabled}
@@ -404,7 +404,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         };
 
         return (
-            <div id={styles.themes_list}>
+            <div id={styles.themes_list} role="radiogroup" aria-label={__("reader.settings.pdfZoom.title")}>
                 {inputComponent("page-fit")}
                 {inputComponent("page-width", this.state.pdfView === "paginated")}
                 {inputComponent(50, this.state.pdfView === "paginated")}
@@ -421,7 +421,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const { __, readerConfig } = this.props;
         const withoutTheme = !readerConfig.sepia && !readerConfig.night;
         return (
-            <div id={styles.themes_list}>
+            <div id={styles.themes_list} role="radiogroup" aria-label={__("reader.settings.theme.title")}>
                 <div>
                     <input
                         id={"radio-" + themeType.Without}
@@ -484,12 +484,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         // <output id={styles.valeur_taille} className={styles.out_of_screen}>14</output>
         return <>
             <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>{__("reader.settings.fontSize")}</div>
+                <div id="label_fontSize" className={styles.subheading}>{__("reader.settings.fontSize")}</div>
                 <div className={styles.center_in_tab}>
                     <span className={styles.slider_marker} style={{fontSize: "150%"}}>a</span>
-                    <input type="range"
+                    <input
+                        type="range"
+                        aria-labelledby="label_fontSize"
                         onChange={(e) => this.props.handleIndexChange(e, "fontSize")}
-                        id="text_length"
                         min={0}
                         max={optionsValues.fontSize.length - 1}
                         value={this.props.indexes.fontSize}
@@ -517,6 +518,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         alignItems: "center",
                     }}>
                     <select
+                        title={__("reader.settings.font")}
                         style={{
                             width: fontListItem ? "fit-content" : "4em",
                         }}
@@ -601,8 +603,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     ? <></>
                     :
                     <section className={styles.line_tab_content}>
-                        <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
-                        <div className={styles.center_in_tab}>
+                        <div id="label_disposition" className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
+                        <div className={styles.center_in_tab} role="radiogroup" aria-labelledby="label_disposition">
                             <div className={styles.focus_element}>
                                 <input
                                     id={styles.scroll_option}
@@ -651,8 +653,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     </section>
             }
             <section className={styles.line_tab_content} hidden={this.props.isPdf}>
-                <div className={styles.subheading}>{__("reader.settings.justification")}</div>
-                <div className={styles.center_in_tab}>
+                <div id="label_justification" className={styles.subheading}>{__("reader.settings.justification")}</div>
+                <div className={styles.center_in_tab} role="radiogroup" aria-labelledby="label_justification">
                     <div className={styles.focus_element}>
                         <input
                             id={"radio-" + styles.option_auto}
@@ -688,8 +690,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 </div>
             </section>
             <section className={styles.line_tab_content}>
-                <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
-                <div className={styles.center_in_tab}>
+                <div id="label_column" className={styles.subheading}>{__("reader.settings.column.title")}</div>
+                <div className={styles.center_in_tab} role="radiogroup" aria-labelledby="label_column">
                     {
                         isPdf
                             ? <></>
@@ -809,13 +811,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const { __, readerConfig } = this.props;
         return <>
             <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+                <div id="label_pageMargins" className={styles.subheading}>
                     {__("reader.settings.margin")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_pageMargins"
                     onChange={(e) => this.props.handleIndexChange(e, "pageMargins")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.pageMargins.length - 1}
                     value={this.props.indexes.pageMargins}
@@ -829,13 +831,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 </span>
             </div>
             <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+                <div id="label_wordSpacing" className={styles.subheading}>
                     {__("reader.settings.wordSpacing")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_wordSpacing"
                     onChange={(e) => this.props.handleIndexChange(e, "wordSpacing")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.wordSpacing.length - 1}
                     value={this.props.indexes.wordSpacing}
@@ -849,13 +851,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 </span>
             </div>
             <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+                <div id="label_letterSpacing" className={styles.subheading}>
                     {__("reader.settings.letterSpacing")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_letterSpacing"
                     onChange={(e) => this.props.handleIndexChange(e, "letterSpacing")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.letterSpacing.length - 1}
                     value={this.props.indexes.letterSpacing}
@@ -869,13 +871,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 </span>
             </div>
             <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+                <div id="label_paraSpacing" className={styles.subheading}>
                     {__("reader.settings.paraSpacing")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_paraSpacing"
                     onChange={(e) => this.props.handleIndexChange(e, "paraSpacing")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.paraSpacing.length - 1}
                     value={this.props.indexes.paraSpacing}
@@ -889,13 +891,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 </span>
             </div>
             <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+                <div id="label_lineHeight" className={styles.subheading}>
                     {__("reader.settings.lineSpacing")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_lineHeight"
                     onChange={(e) => this.props.handleIndexChange(e, "lineHeight")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.lineHeight.length - 1}
                     value={this.props.indexes.lineHeight}
