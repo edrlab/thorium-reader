@@ -61,7 +61,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
             if (browserResult?.data?.problemDetails) {
                 const { data: { problemDetails: {
-                    // type,
+                    type,
                     title,
                     status,
                     // detail,
@@ -71,7 +71,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 content = (
                     <MessageOpdBrowserResult
                         title={__("opds.network.reject")}
-                        message={`(http ${status}) ${title}`}
+                        message={`(http ${status}) ${title} ${type}`}
                     />
                 );
 
