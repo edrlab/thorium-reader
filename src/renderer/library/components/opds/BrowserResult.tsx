@@ -71,7 +71,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 content = (
                     <MessageOpdBrowserResult
                         title={__("opds.network.reject")}
-                        message={`(http ${status}) ${title} ${type}`}
+                        message={`(http ${status}) ${title || type}`}
                     />
                 );
 
