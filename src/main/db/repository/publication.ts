@@ -213,7 +213,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
     }
 
 
-    public async searchByTitleAndAuthor(title: string): Promise<PublicationDocument[]> {
+    public async searchByTitleAndAuthor(titleOrAuthor: string): Promise<PublicationDocument[]> {
 
         try {
 
@@ -252,7 +252,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
                 });
             });
 
-            const res = indexer.search(title);
+            const res = indexer.search(titleOrAuthor);
             if (!res) {
                 return [];
             }
