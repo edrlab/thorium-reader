@@ -60,25 +60,19 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             const browserResult = browserData.result;
 
             if (browserResult?.data?.problemDetails) {
-                // show problemDetails
-
                 const { data: { problemDetails: {
-                    type,
+                    // type,
                     title,
                     status,
-                    detail,
-                    instance,
+                    // detail,
+                    // instance,
                 } } } = browserResult;
 
                 content = (
-                    <>
-                        <h1>Http error {browserResult.statusCode} problemDetails</h1>
-                        <h4>Type: {type}</h4>
-                        <h4>Title: {title}</h4>
-                        <h4>Status: {status}</h4>
-                        <h4>Details: {detail}</h4>
-                        <h4>Instance: {instance}</h4>
-                    </>
+                    <MessageOpdBrowserResult
+                        title={__("opds.network.reject")}
+                        message={`(http ${status}) ${title}`}
+                    />
                 );
 
             } else if (
