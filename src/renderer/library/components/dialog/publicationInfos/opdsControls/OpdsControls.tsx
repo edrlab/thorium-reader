@@ -57,7 +57,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
         } = this.props;
 
         const addFeedFromCatalogsButton = () => {
-            const url = opdsPublicationView.entryLinks.reduce<string>((pv, cv) => cv.rel === "http://opds-spec.org/catalog" ? cv.url : pv, undefined);
+            const url = Array.isArray(opdsPublicationView.catalogLinks) ? opdsPublicationView.catalogLinks[0]?.url : undefined;
             if (url) {
 
                 return <button

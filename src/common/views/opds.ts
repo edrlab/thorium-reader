@@ -38,6 +38,7 @@ export interface IOpdsPublicationView {
     languages?: string[];
     publishedAt?: string; // ISO8601
     entryLinks?: IOpdsLinkView[];
+    catalogLinks?: IOpdsLinkView[];
     buyLinks?: IOpdsLinkView[];
     borrowLinks?: IOpdsLinkView[];
     subscribeLinks?: IOpdsLinkView[];

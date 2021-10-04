@@ -344,6 +344,18 @@ export class OpdsFeedViewConverter {
                 ],
             }),
         );
+        const catalogLinkView = fallback(
+            this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+                type: ["application/atom+xml;profile=opds-catalog;kind=acquisition", ContentType.Opds2],
+                rel: "http://opds-spec.org/catalog",
+            }),
+            this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+                type: [
+                    ContentType.AtomXml,
+                    ContentType.Opds2,
+                ],
+            }),
+        );
 
         const revokeLoanLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: ["http://librarysimplified.org/terms/rel/revoke"],
@@ -360,8 +372,7 @@ export class OpdsFeedViewConverter {
         debug("@@@@@@@@@@@@@@@@");
         debug("@@@@@@@@@@@@@@@@");
         debug("@@@@@@@@@@@@@@@@");
-        debug(cover);
-        debug(r2OpdsPublication.Images);
+        debug(catalogLinkView);
         debug("@@@@@@@@@@@@@@@@");
         debug("@@@@@@@@@@@@@@@@");
         debug("@@@@@@@@@@@@@@@@");
@@ -381,6 +392,7 @@ export class OpdsFeedViewConverter {
             publishedAt,
             cover,
             entryLinks: entrylinkView,
+            catalogLinks: catalogLinkView,
             buyLinks: buyLinkView,
             borrowLinks: borrowLinkView,
             subscribeLinks: subscribeLinkView,
