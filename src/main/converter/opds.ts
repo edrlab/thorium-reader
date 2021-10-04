@@ -254,6 +254,8 @@ export class OpdsFeedViewConverter {
     // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl!
     public convertOpdsPublicationToView(r2OpdsPublication: OPDSPublication, baseUrl: string): IOpdsPublicationView {
 
+        debug(r2OpdsPublication);
+
         const metadata = r2OpdsPublication.Metadata;
 
         const numberOfPages = metadata.NumberOfPages;
@@ -342,6 +344,18 @@ export class OpdsFeedViewConverter {
                 ],
             }),
         );
+        const catalogLinkView = fallback(
+            this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+                type: ["application/atom+xml;profile=opds-catalog;kind=acquisition", ContentType.Opds2],
+                rel: "http://opds-spec.org/catalog",
+            }),
+            this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+                type: [
+                    ContentType.AtomXml,
+                    ContentType.Opds2,
+                ],
+            }),
+        );
 
         const revokeLoanLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: ["http://librarysimplified.org/terms/rel/revoke"],
@@ -354,6 +368,15 @@ export class OpdsFeedViewConverter {
 
         const duration = typeof r2OpdsPublication.Metadata.Duration === "number" ? r2OpdsPublication.Metadata.Duration : undefined;
         const nbOfTracks = typeof r2OpdsPublication.Metadata.AdditionalJSON?.tracks === "number" ? r2OpdsPublication.Metadata.AdditionalJSON?.tracks : undefined;
+
+        debug("@@@@@@@@@@@@@@@@");
+        debug("@@@@@@@@@@@@@@@@");
+        debug("@@@@@@@@@@@@@@@@");
+        debug(catalogLinkView);
+        debug("@@@@@@@@@@@@@@@@");
+        debug("@@@@@@@@@@@@@@@@");
+        debug("@@@@@@@@@@@@@@@@");
+
 
         return {
             baseUrl,
@@ -369,6 +392,7 @@ export class OpdsFeedViewConverter {
             publishedAt,
             cover,
             entryLinks: entrylinkView,
+            catalogLinks: catalogLinkView,
             buyLinks: buyLinkView,
             borrowLinks: borrowLinkView,
             subscribeLinks: subscribeLinkView,
@@ -536,6 +560,10 @@ export class OpdsFeedViewConverter {
             }
             : undefined;
 
+        const catalogs = r2OpdsFeed.Catalogs?.map(
+            (item) =>
+                this.convertOpdsPublicationToView(item, baseUrl));
+
         return {
             title,
             metadata,
@@ -545,6 +573,7 @@ export class OpdsFeedViewConverter {
             groups,
             facets,
             auth: undefined,
+            catalogs,
         };
     }
 }

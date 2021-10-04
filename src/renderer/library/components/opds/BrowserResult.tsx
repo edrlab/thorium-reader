@@ -105,13 +105,23 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     );
                 } else if (browserResult.data.groups ||
                     browserResult.data.publications ||
-                    browserResult.data.navigation) {
+                    browserResult.data.navigation ||
+                    browserResult.data.catalogs) {
 
                     content = (
                         <>
                             {
                                 browserResult.data.navigation &&
                                 <EntryList entries={browserResult.data.navigation} />
+                            }
+
+                            {
+                                browserResult.data.catalogs &&
+                                <EntryPublicationList
+                                    opdsPublicationView={browserResult.data.catalogs}
+                                    links={browserResult.data.links}
+                                    pageInfo={browserResult.data.metadata}
+                                />
                             }
 
                             {

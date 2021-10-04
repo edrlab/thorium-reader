@@ -69,7 +69,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
         const pub = this.props.publicationViewMaybeOpds;
         const publishers = pub.publishers as Array<string | IOpdsContributorView>;
         const formatedPublishers = publishers
-            .reduce(
+            ?.reduce(
                 (pv, cv) => {
                     if ((cv as IOpdsContributorView)?.name) {
                         return [...pv, `${pv}${(cv as IOpdsContributorView).name}`];
