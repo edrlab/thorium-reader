@@ -254,6 +254,8 @@ export class OpdsFeedViewConverter {
     // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl!
     public convertOpdsPublicationToView(r2OpdsPublication: OPDSPublication, baseUrl: string): IOpdsPublicationView {
 
+        debug(r2OpdsPublication);
+
         const metadata = r2OpdsPublication.Metadata;
 
         const numberOfPages = metadata.NumberOfPages;
@@ -354,6 +356,16 @@ export class OpdsFeedViewConverter {
 
         const duration = typeof r2OpdsPublication.Metadata.Duration === "number" ? r2OpdsPublication.Metadata.Duration : undefined;
         const nbOfTracks = typeof r2OpdsPublication.Metadata.AdditionalJSON?.tracks === "number" ? r2OpdsPublication.Metadata.AdditionalJSON?.tracks : undefined;
+
+        debug("@@@@@@@@@@@@@@@@");
+        debug("@@@@@@@@@@@@@@@@");
+        debug("@@@@@@@@@@@@@@@@");
+        debug(cover);
+        debug(r2OpdsPublication.Images);
+        debug("@@@@@@@@@@@@@@@@");
+        debug("@@@@@@@@@@@@@@@@");
+        debug("@@@@@@@@@@@@@@@@");
+
 
         return {
             baseUrl,
@@ -536,6 +548,10 @@ export class OpdsFeedViewConverter {
             }
             : undefined;
 
+        const catalogs = r2OpdsFeed.Catalogs?.map(
+            (item) =>
+                this.convertOpdsPublicationToView(item, baseUrl));
+
         return {
             title,
             metadata,
@@ -545,6 +561,7 @@ export class OpdsFeedViewConverter {
             groups,
             facets,
             auth: undefined,
+            catalogs,
         };
     }
 }

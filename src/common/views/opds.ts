@@ -72,6 +72,7 @@ export interface IOpdsResultView {
     facets?: IOpdsFacetView[];
     groups?: IOpdsGroupView[];
     auth?: IOpdsAuthView;
+    catalogs?: IOpdsPublicationView[];
 }
 
 export interface IOpdsGroupView {
