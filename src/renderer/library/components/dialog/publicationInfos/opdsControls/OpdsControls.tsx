@@ -7,12 +7,14 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { dialogActions, importActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -36,6 +38,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.addFeedToCatalogs = this.addFeedToCatalogs.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -52,6 +56,22 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             __,
         } = this.props;
 
+        const addFeedFromCatalogsButton = () => {
+            const url = opdsPublicationView.entryLinks.reduce<string>((pv, cv) => cv.rel === "http://opds-spec.org/catalog" ? cv.url : pv, undefined);
+            if (url) {
+
+                return <button
+                    onClick={() => this.addFeedToCatalogs(opdsPublicationView.title, url)}
+                    className={styles.lire}
+                >
+                    Add to catalogs
+                </button>;
+            } else {
+                return <></>;
+            }
+        };
+
+
         const openAccessLinksButton = () =>
             Array.isArray(opdsPublicationView.openAccessLinks)
                 ? opdsPublicationView.openAccessLinks.map(
@@ -66,8 +86,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 disabled={openAccessButtonIsDisabled()}
                             >
                                 {`${__("catalog.addBookToLib")}${ln.properties?.indirectAcquisitionType ?
-                                ` (${findExtWithMimeType(ln.properties.indirectAcquisitionType)})` :
-                                (ln.type ? ` (${findExtWithMimeType(ln.type) || findExtWithMimeType(ln.type.replace("+json", "+zip"))})` : "")}`}
+                                    ` (${findExtWithMimeType(ln.properties.indirectAcquisitionType)})` :
+                                    (ln.type ? ` (${findExtWithMimeType(ln.type) || findExtWithMimeType(ln.type.replace("+json", "+zip"))})` : "")}`}
                             </button>
                             <OpdsLinkProperties
                                 properties={ln.properties}
@@ -233,8 +253,17 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                 {
                     feedLinksList()
                 }
+                {
+                    addFeedFromCatalogsButton()
+                }
             </>
         );
+    }
+
+    public addFeedToCatalogs(title: string, url: string) {
+        apiAction("opds/addFeed", { title, url }).catch((err) => {
+            console.error("Error to fetch api opds/addFeed", err);
+        }).then(() => this.props.toastSuccess());
     }
 }
 
@@ -246,7 +275,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
             dispatchOpdsLink(dispatch)(...data),
+        toastSuccess: () =>
+            dispatch(toastActions.openRequest.build(ToastType.Success, "👍")),
     };
+
 };
 
 const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => {
