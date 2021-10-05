@@ -22,7 +22,7 @@ import { needToPersistFinalState } from "readium-desktop/main/redux/sagas/persis
 import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, race, spawn, take } from "redux-saga/effects";
-import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
+import { delay as delayTyped, put, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
 
 import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 
@@ -31,6 +31,7 @@ import {
     getBeforeQuitEventChannel, getQuitEventChannel, getShutdownEventChannel,
     getWindowAllClosedEventChannel,
 } from "./getEventChannel";
+import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -120,6 +121,20 @@ export function* init() {
     yield call(() => {
         return absorbDBToJsonOpdsAuth();
     });
+
+    try {
+        const opdsCatalogsChan = getOpdsNewCatalogsStringUrlChannel();
+        const catalogsUrl = process.env.THORIUM_OPDS_CATALOGS_URL;
+        new URL(catalogsUrl);
+        if (catalogsUrl) {
+            yield put(opdsCatalogsChan, catalogsUrl);
+        }
+    } catch (e) {
+
+        // 
+        debug("Error: Catalogs URL from env is not an URL", e);
+    }
+
 }
 
 function* closeProcess() {
