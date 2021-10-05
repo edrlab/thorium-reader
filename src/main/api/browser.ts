@@ -1,4 +1,4 @@
-import { ok } from "assert";
+import { ok } from "readium-desktop/common/utils/assert";
 import { inject, injectable } from "inversify";
 import { IHttpBrowserApi } from "readium-desktop/common/api/interface/httpBrowser.interface";
 import { IBrowserResultView, THttpGetBrowserResultView } from "readium-desktop/common/views/browser";

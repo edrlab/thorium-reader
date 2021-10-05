@@ -14,7 +14,7 @@ import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
-import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/browse";
+import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/httpBrowser";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";

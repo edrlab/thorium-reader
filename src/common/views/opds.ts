@@ -142,12 +142,3 @@ export interface IOpdsNavigationLink {
     text: IOpdsLinkView[];
     self: IOpdsLinkView[];
 }
-
-// https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
-export interface IOpdsProblemDetailsResultView {
-    type?: string;
-    title?: string;
-    status?: number;
-    detail?: string;
-    instance?: string;
-}

@@ -14,7 +14,7 @@ import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { call, delay, put, race, take } from "redux-saga/effects";
 import { race as raceTyped } from "typed-redux-saga/macro";
 
-import { opdsBrowse } from "../browse";
+import { opdsBrowse } from "../httpBrowser";
 
 // Test URL : http://readium2.herokuapp.com/opds-v1-v2-convert/http%3A%2F%2Fmanybooks.net%2Fopds%2Fnew_titles.php
 

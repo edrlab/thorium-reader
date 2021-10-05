@@ -15,14 +15,14 @@ import { take } from "redux-saga/effects";
 import { apiSaga } from "./api";
 
 // Logger
-const filename_ = "readium-desktop:renderer:redux:saga:opds-browse";
+const filename_ = "readium-desktop:renderer:redux:saga:httpBrowser-browse";
 const debug = debug_(filename_);
 
 type TA = apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["httpbrowser/browse"]>>;
 
 export function* opdsBrowse(link: string, REQUEST_ID: string) {
 
-    debug("opds-browse", link);
+    debug("http-browse", link);
     yield apiSaga("httpbrowser/browse", REQUEST_ID, link);
     while (true) {
         const action: TA = yield take(apiActions.result.build);
