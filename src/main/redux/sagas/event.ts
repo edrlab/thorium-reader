@@ -6,9 +6,12 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
+import { url } from "inspector";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { ok } from "readium-desktop/common/utils/assert";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import {
+    getOpdsNewCatalogsStringUrlChannel,
     getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlFromMacEventChannel,
 } from "readium-desktop/main/event";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -92,6 +95,32 @@ export function saga() {
                 } catch (e) {
 
                     debug("ERROR to importFromLink and to open the publication");
+                    debug(e);
+                }
+            }
+
+        }),
+        spawn(function*() {
+
+            const chan = getOpdsNewCatalogsStringUrlChannel();
+
+            while (true) {
+
+                try {
+                    const catalogsUrl = yield* takeTyped(chan);
+
+                    new URL(catalogsUrl);
+
+                    // call api opds/browse in saga
+                    // TODO : need to move api class to saga function (like import api)
+                    // const httpOpdsResult = yield* callTyped(browse, catalogsUrl);
+
+                    // extract catalogs (publications) info from the httpOpdsResult
+                    // then map each entry with opds/addFeed api functions (need to migrate functions from class to saga fct)
+
+                } catch (e) {
+
+                    debug("ERROR to import the opds catalogs");
                     debug(e);
                 }
             }
