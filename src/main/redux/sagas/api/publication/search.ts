@@ -21,11 +21,11 @@ const convertDocs = async (docs: PublicationDocument[], publicationViewConverter
     return pubs;
 };
 
-export function* search(title: string): SagaGenerator<PublicationView[]> {
-    const titleFormated = title?.trim() || "";
+export function* search(titleOrAuthor: string): SagaGenerator<PublicationView[]> {
+    const titleOrAuthorFormated = titleOrAuthor?.trim() || "";
 
     const publicationRepository = diMainGet("publication-repository");
-    const publicationDocuments = yield* callTyped(() => publicationRepository.searchByTitle(titleFormated));
+    const publicationDocuments = yield* callTyped(() => publicationRepository.searchByTitleAndAuthor(titleOrAuthorFormated));
 
     const publicationViewConverter = diMainGet("publication-view-converter");
 
