@@ -14,4 +14,3 @@ export const aboutFiltered =
 
 export const aboutFilteredDocs =
     (pubs: PublicationDocument[]) => pubs.filter(({ title }) => !title.startsWith(ABOUT_BOOK_TITLE_PREFIX));
-

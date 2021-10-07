@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { TdivinaReadingMode } from "../../components/options-values";
-
-export const defaultReadingMode: TdivinaReadingMode = "single";
-
-export interface IDivinaState {
-    readingMode: TdivinaReadingMode;
+// https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+export interface IProblemDetailsResultView {
+    type?: string;
+    title?: string;
+    status?: number;
+    detail?: string;
+    instance?: string;
 }
