@@ -292,7 +292,7 @@
   "devDependencies": {
     "@babel/generator": "^7.15.8",
     "@kogai/typed_i18n": "^0.6.0",
-    "@octokit/rest": "^18.11.4",
+    "@octokit/rest": "^18.12.0",
     "@types/classnames": "^2.3.1",
     "@types/commonmark": "^0.27.5",
     "@types/debounce": "^1.2.1",
@@ -310,7 +310,7 @@
     "@types/react": "^16.14.16",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^16.9.14",
-    "@types/react-redux": "^7.1.18",
+    "@types/react-redux": "^7.1.19",
     "@types/react-router": "^5.1.17",
     "@types/react-router-dom": "^5.3.1",
     "@types/redux": "^3.6.31",
