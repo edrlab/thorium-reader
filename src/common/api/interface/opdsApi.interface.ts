@@ -7,7 +7,7 @@
 
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
-    IOpdsFeedView, IOpdsLinkView, THttpGetOpdsResultView,
+    IOpdsFeedView, IOpdsLinkView,
 } from "readium-desktop/common/views/opds";
 
 // quite useless
@@ -28,9 +28,6 @@ export interface IOpdsApi {
     // updateFeed: (
     //     data: OpdsFeed,
     // ) => Promise<IOpdsFeedView>;
-    browse: (
-        url: string,
-    ) => Promise<THttpGetOpdsResultView>;
     getUrlWithSearchLinks: (
         searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch,
     ) => Promise<string | undefined>;
@@ -42,6 +39,5 @@ export interface IOpdsModuleApi {
     "opds/findAllFeeds": IOpdsApi["findAllFeeds"];
     "opds/addFeed": IOpdsApi["addFeed"];
     // "opds/updateFeed": IOpdsApi["updateFeed"];
-    "opds/browse": IOpdsApi["browse"];
     "opds/getUrlWithSearchLinks": IOpdsApi["getUrlWithSearchLinks"];
 }

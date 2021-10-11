@@ -5,10 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { TdivinaReadingMode } from "../../components/options-values";
+import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 
-export const defaultReadingMode: TdivinaReadingMode = "single";
+export interface IHttpBrowserApi {
+    browse: (
+        url: string,
+    ) => Promise<THttpGetBrowserResultView>;
+}
 
-export interface IDivinaState {
-    readingMode: TdivinaReadingMode;
+export interface IHttpBrowserModuleApi {
+    // "opds/updateFeed": IOpdsApi["updateFeed"];
+    "httpbrowser/browse": IHttpBrowserApi["browse"];
 }
