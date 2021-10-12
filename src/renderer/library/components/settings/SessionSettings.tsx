@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -50,8 +50,10 @@ class SessionSettings extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <>
-                <h3>{__("settings.session.title")}</h3>
-                <form className={styles.languages_list}>
+                <div className={styles.heading}>
+                    <h2>{__("settings.session.title")}</h2>
+                </div>
+                <form className={styles.radio_list}>
                     <div>
                         <input
                             id={"session-true"}

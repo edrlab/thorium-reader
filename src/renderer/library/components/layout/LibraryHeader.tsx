@@ -9,7 +9,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import * as styles from "readium-desktop/renderer/assets/styles/header.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

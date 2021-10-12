@@ -1,0 +1,45 @@
+@define-mixin main_navigation {
+	z-index:102;
+	width:100%;
+	top:0;
+	padding-top:0;
+	padding-bottom:0;
+	height:auto;
+	background-color: var(--color-secondary);
+	-webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
+	-moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
+	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
+	min-width: 600px;
+}
+
+@define-mixin button_primary {
+	position: relative;
+	display: inline;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+    color: black;
+    text-decoration: none;
+    overflow: hidden;
+	cursor: pointer;
+	width: auto;
+	height: auto;
+	transition: all .2s;
+
+	&.button_primary + .button_primary,
+	&.button_primary + .button_primary_small,
+	&.button_primary_small + .button_primary,
+	&.button_primary_small + .button_primary_small {
+		margin-left: 1.5rem;
+	}
+	&:hover {
+		background: rgba(0,0,0,.05);
+	}
+}
+
+@define-mixin R2_MIXIN_FOCUS_OUTLINE {
+	outline-color: blue !important;
+	outline-style: solid !important;
+	outline-width: 2px !important;
+	outline-offset: -2px !important;
+}

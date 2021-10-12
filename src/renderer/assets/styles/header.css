@@ -1,16 +1,6 @@
 .main_navigation {
 	position: fixed;
-	z-index:102;
-	width:100%;
-	top:0;
-	padding-top:0;
-	padding-bottom:0;
-	height:auto;
-	background-color: white;
-	-webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
-	-moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
-	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
-	min-width: 600px;
+	@include main_navigation;
 
 	& ul {
 		padding-left:60px;

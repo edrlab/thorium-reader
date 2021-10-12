@@ -6,10 +6,11 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TChangeEventOnInput } from "readium-desktop/typings/react";
@@ -39,7 +40,11 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <div className={styles.addEpubButton}>
+            <label 
+                htmlFor="epubInput" 
+                className={classNames(styles.button_primary_small, styles.button_icon)}
+            >
+                <SVG svg={PlusIcon} title={__("header.importTitle")} />
                 <input
                     id="epubInput"
                     type="file"
@@ -48,10 +53,7 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
                     multiple
                     accept={acceptedExtensionArray.join(", ")}
                 />
-                <label htmlFor="epubInput">
-                    <SVG svg={PlusIcon} title={__("header.importTitle")} />
-                </label>
-            </div>
+            </label>
         );
     }
 

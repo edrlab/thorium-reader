@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -87,11 +87,10 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                     <section key={entryIndex}>
                                         {
 
-                                            <div className={styles.title}>
+                                            <div className={styles.heading}>
                                                 <h2>{entry.title}</h2>
-
                                                 <Link
-                                                    className={styles.titlelink}
+                                                    className={styles.button_primary_small}
                                                     to={{
                                                         ...this.props.location,
                                                         pathname: "/library/search/all",

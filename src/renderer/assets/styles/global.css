@@ -1,0 +1,342 @@
+@import "./partials/variables.css";
+@import "./partials/mixins.css";
+@import "./partials/focus.css";
+/* Components */
+@import "./components/buttons.css";
+@import "./components/inputs.css";
+@import "./components/breadcrumb.css";
+
+/* ============ GLOBAL ELEMENTS ===============*/
+
+:root {
+    user-select: none;
+}
+  
+*,
+*::after,
+*::before {
+    -webkit-user-drag: none;
+    -webkit-app-region: no-drag;
+}
+  
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font: 1.1rem "Open Sans", sans-serif;
+    background: #fbfbfb;
+}
+
+.main {
+    height: calc(100vh - 57px - (60px * 2));
+    width: calc(100% - (60px * 2));
+    padding-top: calc(57px + 60px);
+    padding-right: 60px;
+    padding-bottom: 60px;
+    padding-left: 60px;
+	overflow-y: auto;
+}
+
+
+/* ============== FAST CLASS =================*/
+
+.primary {
+    color: var(--color-accent);
+}
+
+.anchor_link {
+	position: absolute;
+	display: block;
+	width: 1px;
+	height: 1px;
+	top: 0px;
+	left: 0px;
+	opacity: 0.6;
+	background: transparent;
+	overflow: hidden;
+	color: transparent;
+	padding: 0;
+	margin: 0;
+}
+.rotate180 {
+    transform: rotate(180deg);
+}
+
+
+/* ============== NAVIGATION =================*/
+
+.main_navigation {
+	position: fixed;
+	@mixin main_navigation;
+
+	& ul {
+		padding-left:60px;
+		padding-right:60px;
+		margin: 0;
+		& a {
+			text-decoration: none;
+			color:inherit;
+			padding:1.125rem 0.3125rem;
+		}
+
+		& li {
+			display: inline-block;
+			padding-bottom:18px;
+			padding-top:18px;
+			font-weight: 600;
+			color: var(--disabled-color);
+			cursor: pointer;
+
+			margin-right:60px;
+
+			&.active {
+				color:black;
+				border-bottom:3px solid black;
+				padding-bottom:15px;
+			}
+		}
+	}
+}
+
+.nav_secondary {
+	position: fixed;
+	left: 0;
+	top: 57px;
+	z-index: 101;
+	height: 3.5rem;
+	width: calc(100% - 120px);
+	min-width: 600px;
+	padding: 5px 60px;
+	background-color: var(--color-secondary);
+    display: flex;
+    align-items: center;
+
+    & form[role="search"] {
+        margin: 0 30px;
+    }
+}
+
+
+
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 3px solid var(--color-light-grey);
+
+    & h2 {
+        position: relative;
+        font-weight: 700;
+        margin: 0;
+        font-size: 1.5rem;
+    }
+}
+
+& section ul {
+    padding: 0;
+    margin: 0;
+}
+
+.keyboard_shortcuts_section {
+	display: flex;
+	/* align-items: center; */
+	/* justify-content: center; */
+
+	& .keyboard_shortcuts_button {
+		display: inline-block;
+		width: 23%;
+		height: auto;
+		cursor: pointer;
+		font-size: 1rem;
+		border: 1px solid rgb(50, 50, 50);
+		border-radius: 5px;
+		color: black;
+		padding: 10px;
+		margin: 0;
+		margin-left: 0.5em;
+		margin-right: 0.5em;
+	}
+	& .keyboard_shortcuts_button_primary {
+		font-weight: bold;
+	}
+	& .keyboard_shortcuts_button_active {
+		background-color: #e5e5e5;
+	}
+}
+
+.keyboard_shortcuts_menu {
+	height: fit-content;
+	width: 180px;
+	display: flex;
+	flex-direction: column;
+	background-color: white;
+	font-size: 0.9rem;
+	box-shadow: 0px 0px 10px 0px #cfcfcf;
+	overflow: hidden;
+	& button, & a, & span label {
+		text-decoration: none;
+		color: black;
+		padding: 0.7rem;
+		text-align: center;
+		cursor: pointer;
+		height: 2.5rem;
+		box-sizing: border-box;
+		width: 100%;
+		font-size: 0.9rem;
+		opacity: 1;
+		margin: 0;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		display: inline-block;
+
+		&:hover {
+			background-color: #CECECE;
+		}
+
+		&:not(:last-child){
+			border-bottom: 1px solid #E5E3E3;
+		}
+	}
+
+	& button[disabled] {
+		cursor: not-allowed;
+	}
+
+	& span {
+		cursor: pointer;
+		& input {
+			height: 0;
+			width: 0;
+			position: absolute;
+			left: -2000px;
+		}
+
+		& input:focus + label {
+			@mixin R2_MIXIN_FOCUS_OUTLINE;
+		}
+	}
+}
+
+.keyboard_shortcuts_list {
+	margin-top: 2em !important;
+	margin-bottom: 2em !important;
+	margin-left: 0em !important;
+	list-style: none;
+
+	& li {
+		margin-bottom: 1.5em;
+		padding-left: 0.5em;
+		padding-top: 0.5em;
+		padding-bottom: 0.8em;
+		border: 1px solid rgb(159, 159, 159);
+		border-radius: 8px;
+
+		& .keyboard_shortcuts_edit_title {
+			/* text-decoration: underline; */
+			margin-right: 1em;
+		}
+		& .keyboard_shortcuts_buttons_container {
+			display: block;
+			width: 100%;
+			text-align: right;
+			margin-top: -0.1em;
+		}
+
+		& .keyboard_shortcuts_edit_save_button {
+			width: auto;
+			height: auto;
+			padding: 0.4em;
+			border: 1px solid grey;
+			border-radius: 3px;
+			margin-right: 0.7em;
+			font-size: initial;
+		}
+
+		& .keyboard_shortcuts_key,
+		& select {
+			width: auto;
+			height: auto;
+			font-size: 80%;
+			display: inline;
+			padding: 0.3em;
+			margin-right: 1em;
+			border: 2px solid rgb(171, 171, 171);
+			border-bottom: 2px solid rgb(41, 41, 41);
+			border-right: 2px solid rgb(41, 41, 41);
+			border-radius: 3px;
+			background-color: #d0d0d0;
+		}
+		& .keyboard_shortcuts_separator {
+			font-size: 80%;
+			margin-right: 1em;
+			font-weight: bold;
+		}
+		& .hiddenInput {
+			position: absolute;
+			left: -2000px;
+			
+			& + label {
+				width: auto;
+				height: auto;
+				font-size: 80%;
+				display: inline;
+				padding: 0.3em;
+				margin-right: 1em;
+
+				border-radius: 3px;
+				cursor: pointer;
+
+				background-color: #ffd4d4;
+
+				border: 2px solid rgb(171, 171, 171);
+				border-bottom: 2px solid rgb(41, 41, 41);
+				border-right: 2px solid rgb(41, 41, 41);
+				/* border: 2px solid rgb(41, 41, 41);
+				border-bottom: 2px solid rgb(171, 171, 171);
+				border-right: 2px solid rgb(171, 171, 171); */
+			}
+			
+			&:checked + label {
+				background-color: #d4ffc6;
+
+				/* border: 2px solid rgb(171, 171, 171);
+				border-bottom: 2px solid rgb(41, 41, 41);
+				border-right: 2px solid rgb(41, 41, 41); */
+			}
+			
+			&:focus + label {
+				@mixin R2_MIXIN_FOCUS_OUTLINE;
+			}
+		}
+
+		& select {
+			appearance: none;
+			cursor: pointer;
+			/* width: 100px; */
+		}
+
+		& .keyboard_shortcuts_sink {
+			border: 1px solid silver;
+			margin-right: 1em;
+			width: 1em;
+		}
+
+		& .keyboard_shortcuts_sink:hover {
+			outline: 2px solid blue;
+		}
+
+		& .keyboard_shortcuts_sink:focus {
+			outline: 4px solid blue !important;
+			background-color: rgb(162, 162, 255);
+		}
+	}
+
+	& li.keyboard_shortcuts_edit_li {
+		outline: 2pt dashed rgb(0, 56, 74);
+		border: 0;
+	}
+}
