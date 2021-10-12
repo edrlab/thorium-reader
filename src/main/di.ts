@@ -17,7 +17,6 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { ok } from "readium-desktop/common/utils/assert";
 import { CatalogApi } from "readium-desktop/main/api/catalog";
 import { LcpApi } from "readium-desktop/main/api/lcp";
-import { OpdsApi } from "readium-desktop/main/api/opds";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -49,6 +48,7 @@ import { SessionApi } from "./api/session";
 import { publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
+import { opdsApi } from "./redux/sagas/api/opds";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -327,8 +327,8 @@ container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingle
 // container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
 
 container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi);
+container.bind<OpdsApi>(diSymbolTable["opds-api"]).toConstantValue(opdsApi);
 
-container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
