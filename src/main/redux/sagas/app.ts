@@ -127,11 +127,11 @@ export function* init() {
         const catalogsUrl = process.env.THORIUM_OPDS_CATALOGS_URL;
         new URL(catalogsUrl);
         if (catalogsUrl) {
-            yield put(opdsCatalogsChan, catalogsUrl);
+            yield* put(opdsCatalogsChan, catalogsUrl);
         }
     } catch (e) {
 
-        // 
+        //
         debug("Error: Catalogs URL from env is not an URL", e);
     }
 

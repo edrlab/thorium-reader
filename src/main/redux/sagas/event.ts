@@ -6,9 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { url } from "inspector";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { ok } from "readium-desktop/common/utils/assert";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import {
     getOpdsNewCatalogsStringUrlChannel,
@@ -17,6 +15,8 @@ import {
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
 import { call as callTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { browse } from "./api/opds/browse";
+import { addFeed } from "./api/opds/feed";
 
 import { importFromFs, importFromLink } from "./api/publication/import";
 import { search } from "./api/publication/search";
@@ -112,15 +112,38 @@ export function saga() {
                     new URL(catalogsUrl);
 
                     // call api opds/browse in saga
-                    // TODO : need to move api class to saga function (like import api)
-                    // const httpOpdsResult = yield* callTyped(browse, catalogsUrl);
 
-                    // extract catalogs (publications) info from the httpOpdsResult
-                    // then map each entry with opds/addFeed api functions (need to migrate functions from class to saga fct)
+                    const httpOpdsResult = yield* callTyped(browse, catalogsUrl);
+
+                    if (httpOpdsResult.isFailure) continue;
+
+                    const catalogs = httpOpdsResult.data.catalogs;
+
+                    if (!Array.isArray(catalogs)) continue;
+
+                    for (const feed of catalogs) {
+
+                        try {
+
+                            const feedUrl = feed.catalogLinkView[0].url;
+                            new URL(feedUrl);
+
+                            // addFeed has a security to not duplicate a feed
+                            yield* callTyped(addFeed, {
+                                title: feed.title,
+                                url: feedUrl,
+                            });
+
+                        } catch (e) {
+                            debug("loop into catalogs list: Wrong feed format:", feed);
+                            debug(e);
+                        }
+
+                    }
 
                 } catch (e) {
 
-                    debug("ERROR to import the opds catalogs");
+                    debug("ERROR to import an opds catalogs from an OPDSFeed");
                     debug(e);
                 }
             }
