@@ -327,7 +327,7 @@ container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingle
 // container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
 
 container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi);
-container.bind<OpdsApi>(diSymbolTable["opds-api"]).toConstantValue(opdsApi);
+container.bind(diSymbolTable["opds-api"]).toConstantValue(opdsApi);
 
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
@@ -376,7 +376,7 @@ interface IGet {
     (s: "lcp-manager"): LcpManager;
     (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): typeof publicationApi;
-    (s: "opds-api"): OpdsApi;
+    (s: "opds-api"): typeof opdsApi;
     (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;

@@ -111,6 +111,9 @@ export function saga() {
 
                     new URL(catalogsUrl);
 
+                    debug("CATALOGS URL CHANNEL ", catalogsUrl);
+                    debug("start to import each feed from 'catalogs' key");
+
                     // call api opds/browse in saga
 
                     const httpOpdsResult = yield* callTyped(browse, catalogsUrl);
@@ -127,6 +130,8 @@ export function saga() {
 
                             const feedUrl = feed.catalogLinkView[0].url;
                             new URL(feedUrl);
+
+                            debug("import the feed", feed.title, feedUrl);
 
                             // addFeed has a security to not duplicate a feed
                             yield* callTyped(addFeed, {

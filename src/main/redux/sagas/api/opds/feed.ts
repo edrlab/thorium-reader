@@ -8,7 +8,7 @@
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
-import { call, SagaGenerator } from "typed-redux-saga/dist";
+import { call, SagaGenerator } from "typed-redux-saga";
 
 /*
 

@@ -22,7 +22,7 @@ import { needToPersistFinalState } from "readium-desktop/main/redux/sagas/persis
 import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, race, spawn, take } from "redux-saga/effects";
-import { delay as delayTyped, put, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
+import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
 
 import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 
@@ -122,17 +122,22 @@ export function* init() {
         return absorbDBToJsonOpdsAuth();
     });
 
+    const envName = "THORIUM_OPDS_CATALOGS_URL";
+    debug("SEARCH FROM ENV=", envName);
     try {
+
         const opdsCatalogsChan = getOpdsNewCatalogsStringUrlChannel();
-        const catalogsUrl = process.env.THORIUM_OPDS_CATALOGS_URL;
-        new URL(catalogsUrl);
+        const catalogsUrl = process.env[envName];
+
+        debug("CATALOGS URL FROM ENV FOUND =>", catalogsUrl);
         if (catalogsUrl) {
-            yield* put(opdsCatalogsChan, catalogsUrl);
+            new URL(catalogsUrl);
+            opdsCatalogsChan.put(catalogsUrl);
         }
     } catch (e) {
 
         //
-        debug("Error: Catalogs URL from env is not an URL", e);
+        debug("CATALOGS URL FROM ENV NOT FOUND", e);
     }
 
 }

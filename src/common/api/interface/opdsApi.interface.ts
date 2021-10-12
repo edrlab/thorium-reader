@@ -9,7 +9,7 @@ import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
     IOpdsFeedView, IOpdsLinkView, THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
-import { SagaGenerator } from "typed-redux-saga/dist";
+import { SagaGenerator } from "typed-redux-saga";
 
 // quite useless
 export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;

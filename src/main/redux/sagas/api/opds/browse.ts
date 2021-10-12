@@ -17,7 +17,7 @@ import { TOpdsLinkSearch } from "readium-desktop/common/api/interface/opdsApi.in
 import { THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
 import { OpdsService } from "readium-desktop/main/services/opds";
-import { call, SagaGenerator } from "typed-redux-saga/dist";
+import { call, SagaGenerator } from "typed-redux-saga";
 
 const checkUrl = (url: string) => {
     try {
