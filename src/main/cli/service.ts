@@ -52,7 +52,6 @@ export async function cliImport(filePath: string[] | string) {
     debug("cliImport", filePath);
 
     // import a publication from local path
-    let returnValue = true;
     const filePathArray = Array.isArray(filePath) ? filePath : [filePath];
 
     const sagaMiddleware = diMainGet("saga-middleware");
@@ -63,10 +62,10 @@ export async function cliImport(filePath: string[] | string) {
         const pubViews = await sagaMiddleware.run(pubApi.importFromFs, fp).toPromise<PublicationView[]>();
 
         if (!pubViews && pubViews.length === 0) {
-            returnValue = false;
+            return false;
         }
     }
-    return returnValue;
+    return true;
 }
 
 export async function cliOpds(title: string, url: string) {
@@ -74,17 +73,15 @@ export async function cliOpds(title: string, url: string) {
     const hostname = (new URL(url)).hostname;
     if (hostname) {
 
-        const opdsRepository = diMainGet("opds-feed-repository");
+        const sagaMiddleware = diMainGet("saga-middleware");
+        const opdsApi = diMainGet("opds-api");
 
-        // ensures no duplicates (same URL ... but may be different titles)
-        const opdsFeeds = await opdsRepository.findAll();
-        const found = opdsFeeds.find((o) => o.url === url);
-        if (found) {
-            return true;
+        const opdsViews = await sagaMiddleware.run(opdsApi.addFeed, { title, url }).toPromise<PublicationView[]>();
+
+        if (!opdsViews && opdsViews.length === 0) {
+            return false;
         }
 
-        const opdsFeedDocument = await opdsRepository.save({ title, url });
-        return !!opdsFeedDocument;
     }
-    return false;
+    return true;
 }
