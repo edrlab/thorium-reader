@@ -105,7 +105,8 @@
     "protocols": {
       "name": "thorium",
       "schemes": [
-        "thorium"
+        "thorium",
+        "opds"
       ]
     },
     "afterSign": "scripts/notarize.js",

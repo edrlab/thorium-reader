@@ -17,6 +17,7 @@ import { SagaMiddleware } from "@redux-saga/core";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { start } from "../start";
 import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "../event";
+import * as path from "path";
 
 // Logger
 const debug = debug_("readium-desktop:cli:command");
@@ -153,8 +154,8 @@ export const mainCommand = async (argv: yargs.Arguments<{
         debug("loading main");
 
         // flush session because user ask to read one publication
-        const { path } = argv;
-        const openPublicationRequestedBool = Array.isArray(path) ? path.length > 0 : path.length > 0;
+        const { path: pathArgv } = argv;
+        const openPublicationRequestedBool = Array.isArray(pathArgv) ? pathArgv.length > 0 : pathArgv.length > 0;
 
         await Promise.all([
             start(openPublicationRequestedBool),
@@ -165,10 +166,23 @@ export const mainCommand = async (argv: yargs.Arguments<{
 
         if (openPublicationRequestedBool) {
 
+            // pathArgv can be an url with deepLinkInvocation in windows
+            // https://github.com/oikonomopo/electron-deep-linking-mac-win
+
+            //
+            // TODO
+            // handle opds://
+            // to add the feed and open it
+
+            // same as open-file event on MacOS
+
             const openFileFromCliChannel = getOpenFileFromCliChannel();
-            const pathArray = Array.isArray(path) ? path : [path];
-            for (const pathName of pathArray)
-                openFileFromCliChannel.put(pathName);
+            const pathArgvArray = Array.isArray(pathArgv) ? pathArgv : [pathArgv];
+            for (const pathArgvName of pathArgvArray) {
+
+                const pathArgvNameResolve = path.resolve(pathArgvName);
+                openFileFromCliChannel.put(pathArgvNameResolve);
+            }
         }
 
     } catch (e) {

@@ -104,7 +104,7 @@ const yargsInit = () =>
                     describe: "path of your publication, it can be an absolute, relative path",
                     type: "string",
                     array: true,
-                    coerce: (arg) => path.resolve(arg),
+                    // coerce: (arg) => path.resolve(arg),
                 })
                     .completion()
             ,

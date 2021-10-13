@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { app } from "electron";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 
-import { commandLineMainEntry } from "./run";
+import { commandLineMainEntry } from ".";
 import { getOpenFileFromCliChannel, getOpenUrlFromMacEventChannel } from "../event";
 
 // Logger
@@ -54,6 +54,11 @@ export function lockInstance() {
                     const openUrlChannel = getOpenUrlFromMacEventChannel();
                     openUrlChannel.put(url);
                 }
+
+
+                // TODO
+                // handle opds://
+                // to add the feed and open it
             });
 
             app.on("open-file", async (event, filePath) => {

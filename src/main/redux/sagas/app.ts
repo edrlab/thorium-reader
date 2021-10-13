@@ -40,6 +40,12 @@ export function* init() {
 
     app.setAppUserModelId("io.github.edrlab.thorium");
 
+    // 'thorium' is registered for MacOS too
+    if (!app.isDefaultProtocolClient("opds")) {
+        // Define custom protocol handler. Deep linking works on packaged versions of the application!
+        app.setAsDefaultProtocolClient("opds");
+    }
+
     // moved to saga/persist.ts
     // app.on("window-all-closed", async () => {
     //     // At the moment, there are no menu items to revive / re-open windows,
