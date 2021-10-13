@@ -12,7 +12,7 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 // import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call } from "redux-saga/effects";
 import { call as callTyped } from "typed-redux-saga/macro";

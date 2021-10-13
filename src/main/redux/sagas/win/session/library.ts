@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel, Task } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects

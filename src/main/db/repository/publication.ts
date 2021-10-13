@@ -17,7 +17,7 @@ import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { aboutFilteredDocs } from "readium-desktop/main/filter";
+import { aboutFilteredDocs } from "readium-desktop/main/tools/filter";
 import { publicationActions } from "readium-desktop/main/redux/actions";
 import { Unsubscribe } from "redux";
 

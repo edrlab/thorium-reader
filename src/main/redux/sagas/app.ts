@@ -13,7 +13,7 @@ import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import {
     closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import {
     absorbDBToJson as absorbDBToJsonCookieJar, fetchCookieJarPersistence,
 } from "readium-desktop/main/network/fetch";

@@ -9,8 +9,8 @@ import * as debug_ from "debug";
 import { app } from "electron";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 
-import { cli } from "./cli/process";
-import { getOpenFileFromCliChannel, getOpenUrlFromMacEventChannel } from "./event";
+import { commandLineMainEntry } from "./run";
+import { getOpenFileFromCliChannel, getOpenUrlFromMacEventChannel } from "../event";
 
 // Logger
 const debug = debug_("readium-desktop:main:lock");
@@ -92,7 +92,7 @@ export function lockInstance() {
                 libraryAppWindow.show(); // focuses as well
             }
 
-            cli(argv.filter((arg) => !arg.startsWith("--")));
+            commandLineMainEntry(argv.filter((arg) => !arg.startsWith("--")));
         });
     }
     return gotTheLock;

@@ -14,7 +14,7 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import {
     closeProcessLock, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi,
 } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
