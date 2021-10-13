@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { diMainGet } from "test/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import { winActions } from "../redux/actions";
 
 export const flushSession = async () => {

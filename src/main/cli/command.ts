@@ -9,14 +9,14 @@ import * as glob from "glob";
 import * as debug_ from "debug";
 import { app } from "electron";
 import { EOL } from "os";
-import { diMainGet } from "test/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import * as yargs from "yargs";
 import { OpdsApi } from "../api/opds";
 import { createStoreFromDi } from "../di";
 import { SagaMiddleware } from "@redux-saga/core";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { start } from "../start";
-import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "../event";
+import { start } from "readium-desktop/main/start";
+import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "readium-desktop/main/event";
 import * as path from "path";
 
 // Logger
@@ -155,7 +155,7 @@ export const mainCommand = async (argv: yargs.Arguments<{
 
         // flush session because user ask to read one publication
         const { path: pathArgv } = argv;
-        const openPublicationRequestedBool = Array.isArray(pathArgv) ? pathArgv.length > 0 : pathArgv.length > 0;
+        const openPublicationRequestedBool = Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv;
 
         await Promise.all([
             start(openPublicationRequestedBool),
