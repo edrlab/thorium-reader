@@ -14,7 +14,7 @@ import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
     streamerRemovePublications, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "readium-desktop/main/streamerNoHttp";
+} from "readium-desktop/main/streamer/streamerNoHttp";
 import { SagaIterator } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";

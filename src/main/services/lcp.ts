@@ -45,7 +45,7 @@ import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import { extractCrc32OnZip } from "../tools/crc";
 import { lcpActions } from "../redux/actions";
-import { streamerCachedPublication } from "../streamerNoHttp";
+import { streamerCachedPublication } from "readium-desktop/main/streamer/streamerNoHttp";
 import { DeviceIdManager } from "./device";
 import { lcpHashesFilePath } from "../di";
 

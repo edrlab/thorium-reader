@@ -16,7 +16,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import {
     streamerAddPublications, streamerLoadOrGetCachedPublication,
     THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "readium-desktop/main/streamerNoHttp";
+} from "readium-desktop/main/streamer/streamerNoHttp";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
