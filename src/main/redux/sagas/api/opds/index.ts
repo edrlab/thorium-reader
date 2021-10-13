@@ -8,13 +8,12 @@
 import { IOpdsApi } from "readium-desktop/common/api/interface/opdsApi.interface";
 
 import { getFeed, addFeed, findAllFeeds, deleteFeed } from "./feed";
-import { browse, getUrlWithSearchLinks } from "./browse";
+import { getUrlWithSearchLinks } from "./getUrlWithSearchLinks";
 
 export const opdsApi: IOpdsApi = {
     getFeed,
     addFeed,
     findAllFeeds,
     deleteFeed,
-    browse,
     getUrlWithSearchLinks,
 };

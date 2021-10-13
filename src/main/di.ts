@@ -45,7 +45,7 @@ import { SagaMiddleware } from "redux-saga";
 import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { SessionApi } from "./api/session";
-import { publicationApi } from "./redux/sagas/api";
+import { httpBrowserApi, publicationApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 import { opdsApi } from "./redux/sagas/api/opds";
@@ -328,6 +328,7 @@ container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingle
 
 container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi);
 container.bind(diSymbolTable["opds-api"]).toConstantValue(opdsApi);
+container.bind(diSymbolTable["httpbrowser-api"]).toConstantValue(httpBrowserApi);
 
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
@@ -377,6 +378,7 @@ interface IGet {
     (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): typeof publicationApi;
     (s: "opds-api"): typeof opdsApi;
+    (s: "httpbrowser-api"): typeof httpBrowserApi;
     (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;

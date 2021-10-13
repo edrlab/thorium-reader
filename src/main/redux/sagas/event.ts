@@ -15,7 +15,7 @@ import {
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
 import { call as callTyped, take as takeTyped } from "typed-redux-saga/macro";
-import { browse } from "./api/opds/browse";
+import { browse } from "./api/browser/browse";
 import { addFeed } from "./api/opds/feed";
 
 import { importFromFs, importFromLink } from "./api/publication/import";
@@ -120,7 +120,7 @@ export function saga() {
 
                     if (httpOpdsResult.isFailure) continue;
 
-                    const catalogs = httpOpdsResult.data.catalogs;
+                    const catalogs = httpOpdsResult.data?.opds?.catalogs;
 
                     if (!Array.isArray(catalogs)) continue;
 

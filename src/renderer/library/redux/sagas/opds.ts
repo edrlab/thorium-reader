@@ -11,9 +11,10 @@ import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
-import { IOpdsLinkView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
-import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/opdsBrowse";
+import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/httpBrowser";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
@@ -84,39 +85,35 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
     }
 }
 
-function* updateHeaderLinkWatcher(action: apiActions.result.TAction<THttpGetOpdsResultView>) {
+function* updateHeaderLinkWatcher(action: apiActions.result.TAction<THttpGetBrowserResultView>) {
 
-    const httpRes = action.payload;
-    const opdsResultView = httpRes.data;
-    // debug("opdsResult:", opdsResultView); large dump!
+    if (action.payload.isFailure) return;
+    if (typeof action.payload?.data?.opds?.links !== "object") return;
 
-    if (httpRes?.isSuccess && opdsResultView) {
+    const { payload: { data: { opds: { links } } } } = action;
+    if (links) {
+        const putLinks = {
+            start: links.start[0]?.url,
+            up: links.up[0]?.url,
+            bookshelf: links.bookshelf[0]?.url,
+            self: links.self[0]?.url,
+        };
+        debug("opds browse data received with feed links", putLinks);
+        yield put(opdsActions.headerLinksUpdate.build(putLinks));
 
-        const links = opdsResultView.links;
-        if (links) {
-            const putLinks = {
-                start: links.start[0]?.url,
-                up: links.up[0]?.url,
-                bookshelf: links.bookshelf[0]?.url,
-                self: links.self[0]?.url,
-            };
-            debug("opds browse data received with feed links", putLinks);
-            yield put(opdsActions.headerLinksUpdate.build(putLinks));
+        if (links.search?.length) {
 
-            if (links.search?.length) {
+            const { b: getUrlAction } = yield* raceTyped({
+                a: delay(20000),
+                b: call(getUrlApi, links.search),
+            });
 
-                const { b: getUrlAction } = yield* raceTyped({
-                    a: delay(20000),
-                    b: call(getUrlApi, links.search),
-                });
-
-                if (!getUrlAction) {
-                    debug("updateHeaderLinkWatcher timeout?", links.search);
-                    return;
-                }
-
-                yield call(setSearchLinkInHeader, getUrlAction);
+            if (!getUrlAction) {
+                debug("updateHeaderLinkWatcher timeout?", links.search);
+                return;
             }
+
+            yield call(setSearchLinkInHeader, getUrlAction);
         }
     }
 }
