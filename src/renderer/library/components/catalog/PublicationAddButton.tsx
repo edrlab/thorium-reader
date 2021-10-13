@@ -40,8 +40,8 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <label 
-                htmlFor="epubInput" 
+            <label
+                htmlFor="epubInput"
                 className={classNames(styles.button_primary_small, styles.button_icon)}
             >
                 <SVG svg={PlusIcon} title={__("header.importTitle")} />

@@ -55,7 +55,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
             <section id={styles.aboutThoriumButton}>
                 <div className={styles.heading}>
                     <h2>{__("catalog.about.title", { appName: capitalizedAppName })}</h2>
-                    <button 
+                    <button
                         onClick={this.about}
                         className={styles.button_primary_small}
                     >

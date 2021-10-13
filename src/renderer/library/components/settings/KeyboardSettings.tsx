@@ -105,10 +105,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                     }
                     onClick={() => this.onClickKeyboardShortcutsShowHide()}
                 >
-                    <SVG 
+                    <SVG
                         svg={ChevronDownIcon}
                         className={this.state.displayKeyboardShortcuts ? styles.rotate180 : null  }
-                     />
+                    />
                     {this.state.displayKeyboardShortcuts ? __("settings.keyboard.hide") : __("settings.keyboard.show")}
                 </button>
                 {
@@ -122,7 +122,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                         `${__("settings.keyboard.advancedMenu")}`
                                     }
                                     className={styles.button_icon_primary}
-                                    svg={MenuIcon} 
+                                    svg={MenuIcon}
                                 />)
                             }
                             content={(
