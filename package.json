@@ -375,7 +375,6 @@
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-css-modules": "^1.2.0-globals",
-    "stylelint-scss": "^3.21.0",
     "svg-sprite-loader": "^6.0.9",
     "terser-webpack-plugin": "^4.2.3",
     "ts-jest": "^24.3.0",
