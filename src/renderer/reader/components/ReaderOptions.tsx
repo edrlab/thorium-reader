@@ -522,7 +522,6 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         style={{
                             width: fontListItem ? "fit-content" : "4em",
                         }}
-                        id={styles.police_texte}
                         onChange={(e) => {
                             this.props.handleSettingChange(e, "font");
                         }}
