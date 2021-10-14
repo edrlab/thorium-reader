@@ -1,3 +1,5 @@
+@import "../partials/variables.css";
+
 /* All styles for inputs */
 
 /*
@@ -20,7 +22,6 @@
 
 */
 
-
 /* 1. input[type="text"] ... */
 
 input[type="text"],
@@ -34,83 +35,87 @@ input[type="week"],
 input[type="color"],
 input[type="url"],
 input[type="search"] {
-	display: inline-block;
-	position: relative;
-	width: auto;
-    height: 35px;
-    background-color: transparent;
-    border-top: none;
-    border-right: none;
-    border-left: none;
-    border-bottom: 1px solid var(--color-medium-grey);
-    border-radius: 0;
-    /* outline: inherit; */
-    color: black;
-    font-size: 0.9rem;
+  display: inline-block;
+  position: relative;
+  width: auto;
+  height: 35px;
+  background-color: transparent;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 1px solid var(--color-medium-grey);
+  border-radius: 0;
 
-	&::placeholder {
-		color:var(--color-medium-grey);
-	}
+  /* outline: inherit; */
+  color: black;
+  font-size: 0.9rem;
+
+  &::placeholder {
+    color: var(--color-medium-grey);
+  }
 }
+
 form[role="search"] {
-	position: relative;
-	width: auto;
-    display: inline-block;
+  position: relative;
+  width: auto;
+  display: inline-block;
 
-	& input[type="search"] {
-		width: 225px;
-	}
-	& button {
-		position: absolute;
-		top: 0;
-		right: 0;
-		height: 38px;
-		width: 36px;
-		background-color: transparent;
-		margin: 0;
-	}
+  & input[type="search"] {
+    width: 225px;
+  }
+
+  & button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 38px;
+    width: 36px;
+    background-color: transparent;
+    margin: 0;
+  }
 }
-
 
 /* 3. input[type="radio"] (list) */
 
 .radio_list {
-	list-style-type: none; 
-	margin-bottom: 20px;
+  list-style-type: none;
+  margin-bottom: 20px;
 
-	& label {
-		display: inline-flex;
-		margin-bottom: 3px;
-		padding: 5px 10px 5px 2rem; 
-		font-size: 16px; 
-		height: 1.2rem; 
-		width: 14rem;
-		background: var(--color-medium-grey);
-		cursor: pointer;
+  & label {
+    display: inline-flex;
+    margin-bottom: 3px;
+    padding: 5px 10px 5px 2rem;
+    font-size: 16px;
+    height: 1.2rem;
+    width: 14rem;
+    background: var(--color-medium-grey);
+    cursor: pointer;
 
-		& svg {
-			height: 1rem;
-			width: 1rem;
-			margin-left: -1.3rem;
-			margin-right: 0.3rem;
-		}
-		&:hover {
-			background: var(--color-light-grey);
-		}
-	}
+    & svg {
+      height: 1rem;
+      width: 1rem;
+      margin-left: -1.3rem;
+      margin-right: 0.3rem;
+    }
 
-	& input {
-		position: absolute;
-		-webkit-appearance: none;
-		opacity: 0;
-		width: 1px;
-		height: 1px;
+    &:hover {
+      background: var(--color-light-grey);
+    }
+  }
 
-		&:focus + label {
-			@mixin R2_MIXIN_FOCUS_OUTLINE;
-		}
-		&:checked + label {
-			background: var(--color-light-grey);
-		}
-	}
+  & input {
+    position: absolute;
+    -webkit-appearance: none;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+
+    &:focus + label {
+      @mixin R2_MIXIN_FOCUS_OUTLINE;
+    }
+
+    &:checked + label {
+      background: var(--color-light-grey);
+    }
+  }
 }

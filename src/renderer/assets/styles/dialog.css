@@ -1,140 +1,100 @@
 @import "./variable.css";
 
 .c_dialog {
-    position: fixed;
-    z-index: 102;
-    top: 0;
-    left:0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    padding: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    background-color: rgba(0,0,0,0.5);
-    transition: .2s;
-    min-width: 700px;
-    display: flex;
-    align-items: center;
+  position: fixed;
+  z-index: 102;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  padding: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: 0.2s;
+  min-width: 700px;
+  align-items: center;
 }
 
 .c_dialog_background {
-    position: fixed;
-    z-index: 101;
-    top: 0;
-    left:0;
-    right: 0;
-    bottom: 0;
-    /* filter: blur(2px); */
+  position: fixed;
+  z-index: 101;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  /* filter: blur(2px); */
 }
 
 .c_dialog__box {
-    z-index: 102;
-    display: flex;
-    width: 90%;
-    max-width: 85rem;
-    margin: 0 auto;
-    padding: 5rem 6rem;
-    background-color: white;
-    overflow-y: auto;
-    overflow-x: hidden;
-    align-content: flex-start;
-    color: #3B3B3B;
-    position: relative;
-    height: fit-content;
-    max-height: 90%;
-    box-sizing: border-box;
-    margin-top: 66px;
-    & .close_button {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        height: 50px;
-        display: block;
-        width: 50px;
-        cursor: pointer;
-        fill: #3B3B3B;
-        background-color: transparent;
-        border: none;
-    }
-    & button svg {
-        width: 80%;
-    }
+  z-index: 102;
+  display: flex;
+  width: 90%;
+  max-width: 85rem;
+  margin: 0 auto;
+  padding: 5rem 6rem;
+  background-color: white;
+  overflow-y: auto;
+  overflow-x: hidden;
+  align-content: flex-start;
+  color: #3b3b3b;
+  position: relative;
+  height: fit-content;
+  max-height: 90%;
+  box-sizing: border-box;
+  margin-top: 66px;
+
+  & .close_button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    height: 50px;
+    display: block;
+    width: 50px;
+    cursor: pointer;
+    fill: #3b3b3b;
+    background-color: transparent;
+    border: none;
+  }
+
+  & button svg {
+    width: 80%;
+  }
 }
 
 /* DIALOGS */
 
-#choice_dialog, #lcp_dialog, #opds_form_dialog, #add_dialog {
-    width: fit-content;
-    min-width: 47rem;
-    padding: 60px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    & > div {
-        & p {
-            margin-top: 0;
-            & span {
-                font-weight: bold;
-                display: block;
-            }
-        }
-        & form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            margin-top: 2rem;
-            & > input {
-                font-size: 1rem;
-                padding-bottom: 4px;
-                padding-left: 0.3rem;
-                border: none;
-                border-bottom: 1px solid grey;
-                width: 20rem;
-            }
+#choice_dialog,
+#lcp_dialog,
+#opds_form_dialog,
+#add_dialog {
+  width: fit-content;
+  min-width: 47rem;
+  padding: 60px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
 
-            & > div {
-                margin-top: 4rem;
-            }
-        }
-        & button, & input[type="submit"] {
-            width: 9rem;
-            border: 2px #E1E1E1 solid;
-            font-size: 1.2rem;
-            padding: 0.5rem 0;
-            height: 40px;
-            border-radius: 0.3rem;
-            &:not(:last-child) {
-                margin-right: 1rem;
-            }
-        }
-        & input[type="submit"], & .primary {
-            background-color: #4D8FE0;
-            color: white;
-            border: none;
-            cursor: pointer;
-            &:hover {
-                background-color: #417dc7;
-            }
-            &:disabled {
-                background-color: var(--disabled-color);
-                cursor: not-allowed;
-            }
-        }
-    }
-}
+  & > div {
+    & p {
+      margin-top: 0;
 
-#opds_form_dialog {
-  & .field {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      & label {
-        flex: 1;
-        max-width: 10rem;
+      & span {
+        font-weight: bold;
+        display: block;
       }
-      & input {
+    }
+
+    & form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      margin-top: 2rem;
+
+      & > input {
         font-size: 1rem;
         padding-bottom: 4px;
         padding-left: 0.3rem;
@@ -142,15 +102,74 @@
         border-bottom: 1px solid grey;
         width: 20rem;
       }
+
+      & > div {
+        margin-top: 4rem;
+      }
+    }
+
+    & button,
+    & input[type="submit"] {
+      width: 9rem;
+      border: 2px #e1e1e1 solid;
+      font-size: 1.2rem;
+      padding: 0.5rem 0;
+      height: 40px;
+      border-radius: 0.3rem;
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+
+    & input[type="submit"],
+    & .primary {
+      background-color: #4d8fe0;
+      color: white;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #417dc7;
+      }
+
+      &:disabled {
+        background-color: var(--disabled-color);
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+#opds_form_dialog {
+  & .field {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    & label {
+      flex: 1;
+      max-width: 10rem;
+    }
+
+    & input {
+      font-size: 1rem;
+      padding-bottom: 4px;
+      padding-left: 0.3rem;
+      border: none;
+      border-bottom: 1px solid grey;
+      width: 20rem;
+    }
   }
 }
 
 #add_dialog {
-    & ul {
-        padding: 0;
-        & li {
-            font-weight: bold;
-            list-style: none;
-        }
+  & ul {
+    padding: 0;
+
+    & li {
+      font-weight: bold;
+      list-style: none;
     }
+  }
 }
