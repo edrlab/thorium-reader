@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -53,6 +53,7 @@ class Header extends React.Component<IProps, undefined> {
                         },
                     }}
                     replace={true}
+                    className={styles.button_transparency_icon}
                     style={(displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
                     title={__("header.gridTitle")}
 
@@ -69,6 +70,7 @@ class Header extends React.Component<IProps, undefined> {
                         },
                     }}
                     replace={true}
+                    className={styles.button_transparency_icon}
                     style={displayType !== DisplayType.List ? {fill: "grey"} : {}}
                     title={__("header.listTitle")}
 
@@ -90,6 +92,7 @@ class Header extends React.Component<IProps, undefined> {
             return (
                 <Link
                     id={styles.all_link_button}
+                    className={styles.button_primary_small}
                     to={{
                         ...this.props.location,
                         pathname: "/library/search/all",

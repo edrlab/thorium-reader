@@ -1,0 +1,27 @@
+.breadcrumb {
+    padding: 30px 0;
+    display: flex;
+    align-items: center;
+    color: rgb(59, 59, 59);
+
+    & svg {
+        height: 20px;
+        margin-right: 30px;
+    }
+    & a {
+        text-decoration: none;
+        color: inherit;
+        margin: 0 2px;
+        cursor: pointer;
+        padding: 0.3125rem;
+
+        &:first-child {
+            padding-left: 0;
+            margin-left: 0;
+        }
+    }
+    & span {
+        font-weight: bold;
+        margin: 0 2px;
+    }
+}

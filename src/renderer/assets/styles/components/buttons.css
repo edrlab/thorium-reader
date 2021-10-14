@@ -1,0 +1,122 @@
+/* All Buttons Styles */
+
+button {
+    padding: 0;
+    background: none;
+    border: 0;
+    height: 30px;
+    width: 30px;
+    fill: black;
+    margin: 3px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+}
+
+.commonButton {
+	background-color: transparent;
+	border: 0;
+	height: 2.3rem;
+	font-size: 0.9rem;
+	cursor: pointer;
+	padding: 6px 10px;
+	text-transform: uppercase;
+  
+	&:hover {
+	  background-color: rgba(0, 0, 0, 0.1);
+	}
+}
+
+.button_primary {
+	@mixin button_primary;
+    font: 1rem Arial;
+	padding: 10px 15px;
+
+	& svg {
+		vertical-align: -2px;
+		width: auto;
+		height: 14px;
+		margin-right: 8px;
+		transition: all .2s;
+	}
+}
+
+.button_primary_small {
+	@mixin button_primary;
+    font: 14px Arial;
+    padding: 8px 15px;
+
+	&.button_icon {
+		height: 16px;
+		padding: 8px 20px;
+		
+		& input {
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			z-index: -1;
+			position: absolute;
+		}
+		& svg {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 18px;
+			height: 18px;
+			margin: 0;
+			vertical-align: 0;
+		}
+	}
+}
+.button_transparency_icon {
+	display: inline-block;
+	height: 34px;
+	width: 34px;
+	color: #000;
+
+	& svg {
+		height: 34px;
+		width: 34px;
+		transition: all .2s .05s;
+	}
+	&.button_refresh {
+		&:hover svg {
+			transform: rotate(90deg);
+		}
+	}
+}
+.button_icon_primary {
+	position: relative;
+	display: inline;
+    border: 1px solid black;
+    font: 1rem Arial;
+	padding: 10px 15px;
+    border-radius: 5px;
+    color: black;
+    text-decoration: none;
+	cursor: pointer;
+	width: 18px;
+	height: 18px;
+	transition: all .2s;
+}
+.skip_link {
+	position: absolute;
+	left: -2000px;
+
+	&:focus {
+		left: unset;
+		left: 0;
+		width: fit-content;
+		top: 0;
+		opacity: 1;
+		height: unset;
+		z-index: 150;
+		font-size: 1rem;
+		padding: 1rem;
+		color: white;
+		background-color: #0366d6;
+	}
+}

@@ -16,7 +16,7 @@ body {
   padding: 0;
   width: 100%;
   font: 1.1rem "Open Sans", sans-serif;
-	background:#fbfbfb;
+	background: #fbfbfb;
 }
 
 .downloadsPanel {
@@ -35,7 +35,7 @@ body {
   z-index: 110;
 
   & li {
-    backgroundxx: red;
+    /* backgroundxx: red; */
     display: inline-block;
     width: 100%;
     list-style-type: none;
@@ -43,7 +43,7 @@ body {
     padding: 0;
 
     & span.percent {
-      backgroundxx: blue;
+      /* backgroundxx: blue; */
       display: inline-block;
       width: 40px;
       margin: 0;
@@ -72,7 +72,7 @@ body {
     }
 
     & span.title {
-      backgroundxx: green;
+      /* backgroundxx: green; */
       display: inline-block;
       width: auto;
       margin: 0;

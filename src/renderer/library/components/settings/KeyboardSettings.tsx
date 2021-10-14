@@ -16,7 +16,8 @@ import {
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -90,52 +91,65 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <>
-            <h3>{ __("settings.keyboard.keyboardShortcuts")}</h3>
+            <div className={styles.heading}>
+                <h2>{__("settings.keyboard.keyboardShortcuts")}</h2>
+            </div>
             <section className={styles.keyboard_shortcuts_section}>
                 <button
                     className={
-                        classNames(styles.keyboard_shortcuts_button,
-                            styles.keyboard_shortcuts_button_primary,
+                        classNames(
+                            styles.button_primary,
+                            styles.button_accordion,
                             this.state.displayKeyboardShortcuts ?
                                 styles.keyboard_shortcuts_button_active : null)
                     }
-                    onClick={() => this.onClickKeyboardShortcutsShowHide()}>
+                    onClick={() => this.onClickKeyboardShortcutsShowHide()}
+                >
+                    <SVG
+                        svg={ChevronDownIcon}
+                        className={this.state.displayKeyboardShortcuts ? styles.rotate180 : null  }
+                    />
                     {this.state.displayKeyboardShortcuts ? __("settings.keyboard.hide") : __("settings.keyboard.show")}
                 </button>
-                {(this.state.displayKeyboardShortcuts && !this.state.editKeyboardShortcutId) &&
-                (
-                <Menu
-                button={
-                    (<SVG
-                        title={
-                        `${__("settings.keyboard.advancedMenu")}`
-                        }
-                        svg={MenuIcon} />)
-                    }
-                content={(
-                    <div
-                        className={styles.keyboard_shortcuts_menu}
-                        >
-                        <button
-                            className={styles.keyboard_shortcuts_button}
-                            onClick={() => this.onClickKeyboardShortcutsReload(true)}>
-                            {__("settings.keyboard.resetDefaults")}
-                        </button>
-                        <button
-                            onClick={() => this.onClickKeyboardShortcutsShow()}>
-                            {__("settings.keyboard.editUserJson")}
-                        </button>
-                        <button
-                            onClick={() => this.onClickKeyboardShortcutsReload(false)}>
-                                {__("settings.keyboard.loadUserJson")}
-                        </button>
-                    </div>
-                )}
-                open={this.state.menuOpen}
-                dir="left"
-                toggle={this.openCloseMenu}
-                />
-                )}
+                {
+                    (
+                        this.state.displayKeyboardShortcuts && !this.state.editKeyboardShortcutId
+                    ) && (
+                        <Menu
+                            button={
+                                (<SVG
+                                    title={
+                                        `${__("settings.keyboard.advancedMenu")}`
+                                    }
+                                    className={styles.button_icon_primary}
+                                    svg={MenuIcon}
+                                />)
+                            }
+                            content={(
+                                <div
+                                    className={styles.keyboard_shortcuts_menu}
+                                    >
+                                    <button
+                                        className={styles.keyboard_shortcuts_button}
+                                        onClick={() => this.onClickKeyboardShortcutsReload(true)}>
+                                        {__("settings.keyboard.resetDefaults")}
+                                    </button>
+                                    <button
+                                        onClick={() => this.onClickKeyboardShortcutsShow()}>
+                                        {__("settings.keyboard.editUserJson")}
+                                    </button>
+                                    <button
+                                        onClick={() => this.onClickKeyboardShortcutsReload(false)}>
+                                            {__("settings.keyboard.loadUserJson")}
+                                    </button>
+                                </div>
+                            )}
+                            open={this.state.menuOpen}
+                            dir="left"
+                            toggle={this.openCloseMenu}
+                        />
+                    )
+                }
             </section>
             {this.state.displayKeyboardShortcuts && (
                 <div>

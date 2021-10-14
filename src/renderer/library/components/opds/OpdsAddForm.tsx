@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -38,7 +39,10 @@ export class OpdsAddForm extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <section className={ styles.opds_form }>
-                <button onClick={this.props.openOpdsFeedAddForm}>
+                <button
+                    onClick={this.props.openOpdsFeedAddForm}
+                    className={styles.button_primary}
+                >
                     <SVG svg={AddIcon}/>
                     <span>{ __("opds.addForm.title")}</span>
                 </button>
