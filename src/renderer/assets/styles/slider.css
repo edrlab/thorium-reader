@@ -42,7 +42,7 @@
 /************  GridTagView  ************/
 
 .badge {
-  padding-top: 20% 1.5rem 1.5rem 1.5rem;
+  padding: 1.5rem;
   margin-right: 0;
   margin-left: 0;
   border-width: 0.2rem;
