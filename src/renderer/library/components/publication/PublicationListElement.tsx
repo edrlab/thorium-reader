@@ -110,7 +110,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                     >
                         <div className={styles.list_book_title}>
                             <p className={styles.book_title}>{pub.title}</p>
-                            <p className={`${styles.book_author} ${styles.lightgrey}`}>
+                            <p className={styles.book_author}>
                                 {authors}
                             </p>
                         </div>

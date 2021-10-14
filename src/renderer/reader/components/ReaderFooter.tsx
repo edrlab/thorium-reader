@@ -284,7 +284,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
                         <span
                             onClick={this.handleMoreInfoClick}
-                            id={styles.more_info_chapters}
                         >
                             {moreInfo ? __("reader.footerInfo.lessInfo") : __("reader.footerInfo.moreInfo")}
                         </span>
