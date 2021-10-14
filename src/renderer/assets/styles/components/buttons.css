@@ -75,10 +75,17 @@ button {
 	display: inline-block;
 	height: 34px;
 	width: 34px;
+	color: #000;
 
 	& svg {
 		height: 34px;
 		width: 34px;
+		transition: all .2s .05s;
+	}
+	&.button_refresh {
+		&:hover svg {
+			transform: rotate(90deg);
+		}
 	}
 }
 .button_icon_primary {

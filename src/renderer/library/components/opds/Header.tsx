@@ -6,13 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
-import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-circle.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh.svg";
+import * as RefreshIcon from "readium-desktop/renderer/assets/icons/arrow-clockwise.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -57,6 +59,7 @@ class Header extends React.Component<IProps, undefined> {
                         },
                     }}
                     replace={true}
+                    className={styles.button_transparency_icon}
                     style={(displayType !== DisplayType.Grid) ? { fill: "#767676" } : {}}
 
                     aria-pressed={displayType === DisplayType.Grid}
@@ -72,21 +75,22 @@ class Header extends React.Component<IProps, undefined> {
                         },
                     }}
                     replace={true}
+                    className={styles.button_transparency_icon}
                     style={displayType !== DisplayType.List ?
-                        { fill: "#757575", marginLeft: "16px" } : { marginLeft: "16px" }}
+                        { fill: "#757575" } : {}}
 
                     aria-pressed={displayType === DisplayType.List}
                     role={"button"}
                 >
                     <SVG svg={ListIcon} title={__("header.listTitle")} />
                 </Link>
+                <SearchForm />
                 {
                     this.home()
                 }
                 {
                     this.refresh()
                 }
-                <SearchForm />
                 {
                     this.bookshelf()
                 }
@@ -121,6 +125,8 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
+                    className={styles.button_transparency_icon}
+                    style={ {transform: "scale(.85)"} }
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
@@ -157,7 +163,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    style={{ marginLeft: "16px" }}
+                    className={styles.button_transparency_icon}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
                 </Link>
@@ -196,7 +202,8 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    style={{ marginLeft: "16px" }}
+                    className={classNames(styles.button_transparency_icon, styles.button_refresh)}
+                    style={ {transform: "scale(.85)"} }
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>
@@ -207,7 +214,7 @@ class Header extends React.Component<IProps, undefined> {
                     to={{
                         ...this.props.location,
                     }}
-                    style={{ marginLeft: "16px" }}
+                    className={classNames(styles.button_transparency_icon, styles.button_refresh)}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>
