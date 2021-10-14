@@ -9,7 +9,7 @@ import { inject, injectable } from "inversify";
 import { IOpdsApi, TOpdsLinkSearch } from "readium-desktop/common/api/interface/opdsApi.interface";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
-    IOpdsFeedView, THttpGetOpdsResultView,
+    IOpdsFeedView,
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
@@ -20,16 +20,6 @@ import { OpdsService } from "readium-desktop/main/services/opds";
 // Logger
 // const debug = debug_("readium-desktop:src/main/api/opds");
 
-const checkUrl = (url: string) => {
-    try {
-        if (new URL(url).protocol === "opds:") {
-            url = url.replace("opds://", "http://");
-        }
-    } catch (e) {
-        throw new Error(`opds-api-url-invalid ${e.message}`);
-    }
-    return url;
-};
 
 @injectable()
 export class OpdsApi implements IOpdsApi {
@@ -76,12 +66,6 @@ export class OpdsApi implements IOpdsApi {
     //     const doc = await this.opdsFeedRepository.save(data);
     //     return this.opdsFeedViewConverter.convertDocumentToView(doc);
     // }
-
-    public async browse(url: string): Promise<THttpGetOpdsResultView> {
-        url = checkUrl(url);
-
-        return this.opdsService.opdsRequest(url);
-    }
 
     public async getUrlWithSearchLinks(searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch)
         : Promise<string | undefined> {

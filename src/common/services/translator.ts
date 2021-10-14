@@ -14,6 +14,7 @@ import fiCatalog from "readium-desktop/resources/locales/fi.json";
 import frCatalog from "readium-desktop/resources/locales/fr.json";
 import itCatalog from "readium-desktop/resources/locales/it.json";
 import jaCatalog from "readium-desktop/resources/locales/ja.json";
+import kaCatalog from "readium-desktop/resources/locales/ka.json";
 import ltCatalog from "readium-desktop/resources/locales/lt.json";
 import nlCatalog from "readium-desktop/resources/locales/nl.json";
 import ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
@@ -108,6 +109,9 @@ i18nextInstance.init({
         "ja": {
             translation: jaCatalog,
         },
+        "ka": {
+            translation: kaCatalog,
+        },
         "lt": {
             translation: ltCatalog,
         },
@@ -171,6 +175,7 @@ export const AvailableLanguages = {
     "es": "Español",
     "nl": "Dutch",
     "ja": "日本語",
+    "ka": "ქართული",
     "lt": "Lietuvių",
     "pt-BR": "Português Brasileiro",
     "pt-PT": "Português",
