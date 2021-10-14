@@ -1,0 +1,35 @@
+declare const styles: {
+  readonly "anchor_link": string;
+  readonly "main": string;
+  readonly "title": string;
+  readonly "titlelink": string;
+  readonly "slider": string;
+  readonly "catalog_header": string;
+  readonly "all_link_button": string;
+  readonly "addEpubButton": string;
+  readonly "block_book_list": string;
+  readonly "book_title": string;
+  readonly "book_author": string;
+  readonly "infos_sup": string;
+  readonly "list_book_title": string;
+  readonly "titre_selection": string;
+  readonly "icon_edit": string;
+  readonly "list_menu": string;
+  readonly "menu_open": string;
+  readonly "publicationLine": string;
+  readonly "publicationLineLink": string;
+  readonly "tag_add_button": string;
+  readonly "tag_search": string;
+  readonly "tag_inputs": string;
+  readonly "launch": string;
+  readonly "myTags": string;
+  readonly "sortMenu": string;
+  readonly "sortType": string;
+  readonly "value": string;
+  readonly "content": string;
+  readonly "count": string;
+  readonly "noPublicationHelp": string;
+  readonly "aboutThoriumButton": string;
+};
+export = styles;
+
