@@ -28,13 +28,14 @@ body {
 }
 
 .main {
-    height: calc(100vh - 57px - (60px * 2));
-    width: calc(100% - (60px * 2));
-    padding-top: calc(57px + 60px);
-    padding-right: 60px;
-    padding-bottom: 60px;
-    padding-left: 60px;
-	overflow-y: auto;
+    width: calc(100% - 120px);
+    padding: 30px 60px;
+    overflow-y: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 123px;
 }
 
 
