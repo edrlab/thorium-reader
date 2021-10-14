@@ -319,8 +319,6 @@ button {
   padding-bottom: 0;
   height: auto;
   background-color: var(--reader-secondaryColor);
-  -webkit-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
-  -moz-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
   min-width: 600px;
 
@@ -1185,11 +1183,8 @@ input[type=radio] + label {
   font-size: 16px;
   color: black;
   text-align: center;
-  -webkit-box-shadow: 0 0 46px 0 rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 0 46px 0 rgba(0, 0, 0, 0.12);
   box-shadow: 0 0 46px 0 rgba(0, 0, 0, 0.12);
   transform: translateX(-50%) translateY(0%);
-  -webkit-transform: translateX(-50%) translateY(0%);
 
   & .after {
     content: " ";
