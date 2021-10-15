@@ -24,9 +24,10 @@ declare const styles: {
   readonly "landmarks_tabs_button": string;
   readonly "main_navigation": string;
   readonly "HIDE_CURSOR_CLASS_head": string;
+  readonly "hasTtsAudio": string;
+  readonly "tts_toolbar": string;
   readonly "noAudio": string;
   readonly "menu_option": string;
-  readonly "tts_toolbar": string;
   readonly "ttsSelectRate": string;
   readonly "ttsSelectVoice": string;
   readonly "button_audio": string;
@@ -41,7 +42,6 @@ declare const styles: {
   readonly "read_settings": string;
   readonly "menu_section_svg": string;
   readonly "main_navigation_fullscreen": string;
-  readonly "hasTtsAudio": string;
   readonly "showInFullScreen": string;
   readonly "ttsAudioActivated": string;
   readonly "tab_content": string;
