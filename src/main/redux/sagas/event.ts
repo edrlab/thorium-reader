@@ -130,7 +130,8 @@ export function saga() {
                         try {
 
                             const feedUrl = feed.catalogLinkView[0].url;
-                            new URL(feedUrl);
+                            const u = new URL(feedUrl);
+                            if (!u) continue;
 
                             debug("import the feed", feed.title, feedUrl);
 
