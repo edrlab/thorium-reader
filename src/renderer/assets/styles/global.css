@@ -64,6 +64,22 @@ body {
   transform: rotate(180deg);
 }
 
+.fw_bold {
+  font-weight: 700;
+}
+
+.text_right {
+  text-align: right;
+}
+
+.mr_10 {
+  margin-right: 10px;
+}
+
+.mt_10 {
+  margin-top: 10px;
+}
+
 /* ============== NAVIGATION ================= */
 
 .main_navigation {
@@ -229,124 +245,33 @@ body {
   }
 }
 
-.keyboard_shortcuts_list {
-  margin-top: 2em !important;
-  margin-bottom: 2em !important;
-  margin-left: 0 !important;
-  list-style: none;
+/* Blocks */
 
-  & li {
+.block_line {
+  padding: 0.5em;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--color-disabled);
+}
+
+.block_line_edit {
+  padding: 0.5em;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: dashed;
+  border-color: var(--color-primary);
+}
+
+.block_line,
+.block_line_edit {
+  &:not(:last-child) {
     margin-bottom: 1.5em;
-    padding-left: 0.5em;
-    padding-top: 0.5em;
-    padding-bottom: 0.8em;
-    border: 1px solid rgb(159, 159, 159);
-    border-radius: 8px;
-
-    & .keyboard_shortcuts_edit_title {
-      /* text-decoration: underline; */
-      margin-right: 1em;
-    }
-
-    & .keyboard_shortcuts_buttons_container {
-      display: block;
-      width: 100%;
-      text-align: right;
-      margin-top: -0.1em;
-    }
-
-    & .keyboard_shortcuts_edit_save_button {
-      width: auto;
-      height: auto;
-      padding: 0.4em;
-      border: 1px solid grey;
-      border-radius: 3px;
-      margin-right: 0.7em;
-      font-size: initial;
-    }
-
-    & .keyboard_shortcuts_key,
-    & select {
-      width: auto;
-      height: auto;
-      font-size: 80%;
-      display: inline;
-      padding: 0.3em;
-      margin-right: 1em;
-      border: 2px solid rgb(171, 171, 171);
-      border-bottom: 2px solid rgb(41, 41, 41);
-      border-right: 2px solid rgb(41, 41, 41);
-      border-radius: 3px;
-      background-color: #d0d0d0;
-    }
-
-    & .keyboard_shortcuts_separator {
-      font-size: 80%;
-      margin-right: 1em;
-      font-weight: bold;
-    }
-
-    & .hiddenInput {
-      position: absolute;
-      left: -2000px;
-
-      & + label {
-        width: auto;
-        height: auto;
-        font-size: 80%;
-        display: inline;
-        padding: 0.3em;
-        margin-right: 1em;
-        border-radius: 3px;
-        cursor: pointer;
-        background-color: #ffd4d4;
-        border: 2px solid rgb(171, 171, 171);
-        border-bottom: 2px solid rgb(41, 41, 41);
-        border-right: 2px solid rgb(41, 41, 41);
-
-        /* border: 2px solid rgb(41, 41, 41);
-				border-bottom: 2px solid rgb(171, 171, 171);
-				border-right: 2px solid rgb(171, 171, 171); */
-      }
-
-      &:checked + label {
-        background-color: #d4ffc6;
-
-        /* border: 2px solid rgb(171, 171, 171);
-				border-bottom: 2px solid rgb(41, 41, 41);
-				border-right: 2px solid rgb(41, 41, 41); */
-      }
-
-      &:focus + label {
-        @mixin R2_MIXIN_FOCUS_OUTLINE;
-      }
-    }
-
-    & select {
-      appearance: none;
-      cursor: pointer;
-
-      /* width: 100px; */
-    }
-
-    & .keyboard_shortcuts_sink {
-      border: 1px solid silver;
-      margin-right: 1em;
-      width: 1em;
-    }
-
-    & .keyboard_shortcuts_sink:hover {
-      outline: 2px solid blue;
-    }
-
-    & .keyboard_shortcuts_sink:focus {
-      outline: 4px solid blue !important;
-      background-color: rgb(162, 162, 255);
-    }
   }
+}
 
-  & li.keyboard_shortcuts_edit_li {
-    outline: 2pt dashed rgb(0, 56, 74);
-    border: 0;
-  }
+/* List: ul / ol / li */
+
+li.no_list_style {
+  list-style: none;
 }
