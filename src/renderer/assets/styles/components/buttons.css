@@ -1,5 +1,15 @@
 /* All Buttons Styles */
 
+button,
+.button_primary,
+.button_primary,
+.button_primary_small,
+.button_primary_small {
+	&:not(:last-child) {
+		margin-right: 10px;
+	}
+}
+
 button {
     padding: 0;
     background: none;
@@ -7,7 +17,6 @@ button {
     height: 30px;
     width: 30px;
     fill: black;
-    margin: 3px;
     cursor: pointer;
 
     &:hover {
@@ -102,6 +111,21 @@ button {
 	height: 18px;
 	transition: all .2s;
 }
+
+.button_keyboard {
+	width: auto;
+	height: auto;
+	font-size: 80%;
+	display: inline-block;
+	padding: 0.3em;
+	margin-right: 1em;
+	border: 2px solid rgb(171, 171, 171);
+	border-bottom: 2px solid rgb(41, 41, 41);
+	border-right: 2px solid rgb(41, 41, 41);
+	border-radius: 3px;
+	background-color: #d0d0d0;
+}
+
 .skip_link {
 	position: absolute;
 	left: -2000px;

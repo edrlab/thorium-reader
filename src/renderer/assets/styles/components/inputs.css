@@ -18,6 +18,8 @@
 
 	3. input[type="radio"] (list)
 
+	4. select & option
+
 */
 
 
@@ -51,6 +53,12 @@ input[type="search"] {
 	&::placeholder {
 		color:var(--color-medium-grey);
 	}
+	&.outline {
+		border: 1px solid var(--color-medium-grey);
+	}
+	&:focus {
+		@mixin R2_MIXIN_FOCUS_OUTLINE;
+	}
 }
 form[role="search"] {
 	position: relative;
@@ -70,6 +78,48 @@ form[role="search"] {
 		margin: 0;
 	}
 }
+
+
+/* 2. input[type="checkbox"] */
+
+.checkbox_keyboard {
+	position: absolute;
+	left: -2000px;
+	
+	& + label {
+		width: auto;
+		height: auto;
+		font-size: 80%;
+		display: inline;
+		padding: 0.3em;
+		margin-right: 1em;
+
+		border-radius: 3px;
+		cursor: pointer;
+
+		background-color: #ffd4d4;
+
+		border: 2px solid rgb(171, 171, 171);
+		border-bottom: 2px solid rgb(41, 41, 41);
+		border-right: 2px solid rgb(41, 41, 41);
+		/* border: 2px solid rgb(41, 41, 41);
+		border-bottom: 2px solid rgb(171, 171, 171);
+		border-right: 2px solid rgb(171, 171, 171); */
+	}
+	
+	&:checked + label {
+		background-color: #d4ffc6;
+
+		/* border: 2px solid rgb(171, 171, 171);
+		border-bottom: 2px solid rgb(41, 41, 41);
+		border-right: 2px solid rgb(41, 41, 41); */
+	}
+	
+	&:focus + label {
+		@mixin R2_MIXIN_FOCUS_OUTLINE;
+	}
+}
+
 
 
 /* 3. input[type="radio"] (list) */
@@ -113,4 +163,11 @@ form[role="search"] {
 			background: var(--color-light-grey);
 		}
 	}
+}
+
+
+/* 4. select & option */
+
+select {
+	appearance: none;
 }

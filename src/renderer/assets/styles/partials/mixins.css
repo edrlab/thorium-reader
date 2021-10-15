@@ -24,12 +24,6 @@
 	height: auto;
 	transition: all .2s;
 
-	&.button_primary + .button_primary,
-	&.button_primary + .button_primary_small,
-	&.button_primary_small + .button_primary,
-	&.button_primary_small + .button_primary_small {
-		margin-left: 1.5rem;
-	}
 	&:hover {
 		background: rgba(0,0,0,.05);
 	}
