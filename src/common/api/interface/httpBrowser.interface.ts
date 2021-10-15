@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
-import { SagaGenerator } from "typed-redux-saga/dist";
+import { SagaGenerator } from "typed-redux-saga";
 
 export interface IHttpBrowserApi {
     browse: (
