@@ -11,7 +11,6 @@ import { app } from "electron";
 import { EOL } from "os";
 import { diMainGet } from "readium-desktop/main/di";
 import * as yargs from "yargs";
-import { OpdsApi } from "../api/opds";
 import { createStoreFromDi } from "../di";
 import { SagaMiddleware } from "@redux-saga/core";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -36,9 +35,11 @@ export const opdsCommand = async (argv: yargs.Arguments<{
         const hostname = (new URL(url)).hostname;
         if (hostname) {
 
-            const opdsService: OpdsApi = diMainGet("opds-service");
-            const feed = await opdsService.addFeed({ title, url });
-            if (feed) {
+            const sagaMiddleware = diMainGet("saga-middleware");
+            const opdsApi = diMainGet("opds-api");
+
+            const feed = await sagaMiddleware.run(opdsApi.addFeed, { title, url }).toPromise<PublicationView[]>();
+            if (!feed && feed?.length === 0) {
                 process.stdout.write("OPDS import done." + EOL);
                 return;
             }
@@ -96,7 +97,7 @@ export const importCommand = async (argv: yargs.Arguments<{
             debug("cliImport filePath in filePathArray: ", fp);
             const pubViews = await sagaMiddleware.run(pubApi.importFromFs, fp).toPromise<PublicationView[]>();
 
-            if (!pubViews && pubViews.length === 0) {
+            if (!pubViews && pubViews?.length === 0) {
                 process.stdout.write("Publication(s) import done." + EOL);
                 return;
             }

@@ -342,6 +342,18 @@ export class OpdsFeedViewConverter {
                 ],
             }),
         );
+        const catalogLinkView = fallback(
+            this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+                type: ["application/atom+xml;profile=opds-catalog;kind=acquisition", ContentType.Opds2],
+                rel: "http://opds-spec.org/catalog",
+            }),
+            this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+                type: [
+                    ContentType.AtomXml,
+                    ContentType.Opds2,
+                ],
+            }),
+        );
 
         const revokeLoanLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: ["http://librarysimplified.org/terms/rel/revoke"],
@@ -377,6 +389,7 @@ export class OpdsFeedViewConverter {
             revokeLoanLinks: revokeLoanLinkView,
             duration,
             nbOfTracks,
+            catalogLinkView,
         };
     }
     public convertOpdsAuthToView(r2OpdsAuth: OPDSAuthenticationDoc, baseUrl: string): IOpdsResultView {
@@ -535,6 +548,9 @@ export class OpdsFeedViewConverter {
                     r2OpdsFeed.Metadata.CurrentPage,
             }
             : undefined;
+        const catalogs = r2OpdsFeed.Catalogs?.map(
+            (item) =>
+                this.convertOpdsPublicationToView(item, baseUrl));
 
         return {
             title,
@@ -545,6 +561,7 @@ export class OpdsFeedViewConverter {
             groups,
             facets,
             auth: undefined,
+            catalogs,
         };
     }
 }

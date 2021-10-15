@@ -41,7 +41,7 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
             aria-live="polite"
             role="alert"
             >
-            <div className={styles.section_title}>{ __("header.downloads")}</div>
+            <div>{ __("header.downloads")}</div>
             <ul>
                 {
                 downloadState.map(([dl, id]) => {

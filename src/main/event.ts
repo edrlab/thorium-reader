@@ -34,3 +34,8 @@ export type TOpdsAuthenticationChannel = [doc: OPDSAuthenticationDoc, baseUrl: s
 const opdsAuthenticationChannel = channel<TOpdsAuthenticationChannel>();
 
 export const getOpdsAuthenticationChannel = () => opdsAuthenticationChannel;
+
+const opdsNewCatalogsStringUrlChannel = channel<string>();
+
+export const getOpdsNewCatalogsStringUrlChannel = () => opdsNewCatalogsStringUrlChannel;
+
