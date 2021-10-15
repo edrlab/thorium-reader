@@ -17,6 +17,7 @@ import {
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
 import { call as callTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { opdsApi } from "./api";
 import { browse } from "./api/browser/browse";
 import { addFeed } from "./api/opds/feed";
 
@@ -110,15 +111,12 @@ export function saga() {
                 try {
                     const url = yield* takeTyped(chan);
 
-                    const link: IOpdsLinkView = {
-                        url,
-                    };
+                    const feed = yield* callTyped(opdsApi.addFeed, { title : url, url});
+                    if (feed) {
 
-                    const pubViewArray = (yield* callTyped(importFromLink, link)) as PublicationView | PublicationView[];
-                    const pubView = Array.isArray(pubViewArray) ? pubViewArray[0] : pubViewArray;
-                    if (pubView) {
-
-                        yield put(readerActions.openRequest.build(pubView.identifier));
+                        debug("Feed added ", feed);
+                        debug("Open in library catalogs");
+                        // open the feed in libraryWindow
                     }
 
                 } catch (e) {
