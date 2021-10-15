@@ -131,8 +131,9 @@ export function* init() {
 
         debug("CATALOGS URL FROM ENV FOUND =>", catalogsUrl);
         if (catalogsUrl) {
-            new URL(catalogsUrl);
-            opdsCatalogsChan.put(catalogsUrl);
+            const u = new URL(catalogsUrl);
+            if (u)
+                opdsCatalogsChan.put(catalogsUrl);
         }
     } catch (e) {
 
