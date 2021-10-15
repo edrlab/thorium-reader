@@ -15,8 +15,9 @@ import { createStoreFromDi } from "../di";
 import { SagaMiddleware } from "@redux-saga/core";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { start } from "readium-desktop/main/start";
-import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "readium-desktop/main/event";
+import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlWithOpdsSchemeEventChannel } from "readium-desktop/main/event";
 import * as path from "path";
+import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 // Logger
 const debug = debug_("readium-desktop:cli:command");
@@ -169,14 +170,18 @@ export const mainCommand = async (argv: yargs.Arguments<{
 
             // pathArgv can be an url with deepLinkInvocation in windows
             // https://github.com/oikonomopo/electron-deep-linking-mac-win
-
             //
-            // TODO
             // handle opds://
             // to add the feed and open it
+            const url = pathArgv[0];
+            if (tryCatchSync(() => new URL(url), "")) {
+                
+                const openUrlChan = getOpenUrlWithOpdsSchemeEventChannel();
+                openUrlChan.put(url);
+                return;
+            } 
 
-            // same as open-file event on MacOS
-
+            // not an URL 
             const openFileFromCliChannel = getOpenFileFromCliChannel();
             const pathArgvArray = Array.isArray(pathArgv) ? pathArgv : [pathArgv];
             for (const pathArgvName of pathArgvArray) {

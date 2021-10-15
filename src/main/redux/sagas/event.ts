@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { historyActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -117,6 +117,7 @@ export function saga() {
                         debug("Feed added ", feed);
                         debug("Open in library catalogs");
                         // open the feed in libraryWindow
+                        yield put(historyActions.push.build(feed))
                     }
 
                 } catch (e) {

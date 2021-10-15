@@ -8,10 +8,12 @@
 import { push } from "connected-react-router";
 import { historyActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { routerActions, winActions } from "readium-desktop/renderer/library/redux/actions";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
 import { select as selectTyped } from "typed-redux-saga/macro";
+import { buildOpdsBrowserRoute } from "../../opds/route";
 
 import { ILibraryRootState } from "../states";
 
@@ -27,6 +29,25 @@ function* historyRefresh() {
     }
 }
 
+function* historyPush(feed: IOpdsFeedView) {
+
+    const location = yield* selectTyped((state: ILibraryRootState) => state?.router?.location);
+    if (location) {
+        
+        const newLocation = {
+            ...location,
+            pathname: buildOpdsBrowserRoute(
+                feed.identifier,
+                feed.title,
+                feed.url,
+            )
+        }
+
+        yield put(push(newLocation));
+    }
+
+}
+
 export function saga() {
     return all(
         [
@@ -38,6 +59,10 @@ export function saga() {
                 historyActions.refresh.ID,
                 historyRefresh,
             ),
+            takeSpawnEvery(
+                historyActions.push.ID,
+                historyPush,
+            )
         ],
     );
 }
