@@ -109,7 +109,8 @@ export function saga() {
                 try {
                     const catalogsUrl = yield* takeTyped(chan);
 
-                    new URL(catalogsUrl);
+                    const u = new URL(catalogsUrl);
+                    if (!u) continue;
 
                     debug("CATALOGS URL CHANNEL ", catalogsUrl);
                     debug("start to import each feed from 'catalogs' key");
