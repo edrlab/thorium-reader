@@ -9,6 +9,7 @@ import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
     IOpdsFeedView, IOpdsLinkView,
 } from "readium-desktop/common/views/opds";
+import { SagaGenerator } from "typed-redux-saga";
 
 // quite useless
 export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;
@@ -16,21 +17,21 @@ export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;
 export interface IOpdsApi {
     getFeed: (
         identifier: string,
-    ) => Promise<IOpdsFeedView>;
+    ) => SagaGenerator<IOpdsFeedView>;
     deleteFeed: (
         identifier: string,
-    ) => Promise<void>;
+    ) => SagaGenerator<void>;
     findAllFeeds: (
-    ) => Promise<IOpdsFeedView[]>;
+    ) => SagaGenerator<IOpdsFeedView[]>;
     addFeed: (
         data: OpdsFeed,
-    ) => Promise<IOpdsFeedView>;
+    ) => SagaGenerator<IOpdsFeedView>;
     // updateFeed: (
     //     data: OpdsFeed,
     // ) => Promise<IOpdsFeedView>;
     getUrlWithSearchLinks: (
         searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch,
-    ) => Promise<string | undefined>;
+    ) => SagaGenerator<string | undefined>;
 }
 
 export interface IOpdsModuleApi {
