@@ -1,35 +1,37 @@
 :root *:focus {
   outline: none;
 }
-:global :root.R2_CSS_CLASS__KEYBOARD_INTERACT *.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE:focus {
-  outline: none !important;
-}
-:global :root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
-  @mixin R2_MIXIN_FOCUS_OUTLINE;
-}
-:global :root:not(.R2_CSS_CLASS__KEYBOARD_INTERACT) #body_element *:focus + label {
-  outline: none !important;
-}
 
-@keyframes readium2ElectronAnimation_TARGET {
-  0% {
-  }
-  100% {
-      outline: inherit;
-  }
-}
 :root *:target {
   outline-color: green !important;
   outline-style: solid !important;
   outline-width: 2px !important;
-  outline-offset: 0px !important;
-
+  outline-offset: 0 !important;
   animation-name: readium2ElectronAnimation_TARGET;
   animation-duration: 3s;
   animation-delay: 1s;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
 }
+
+:global :root.R2_CSS_CLASS__KEYBOARD_INTERACT *.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE:focus {
+  outline: none !important;
+}
+
+:global :root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
+  @mixin R2_MIXIN_FOCUS_OUTLINE;
+}
+
+:global :root:not(.R2_CSS_CLASS__KEYBOARD_INTERACT) #body_element *:focus + label {
+  outline: none !important;
+}
+
+@keyframes readium2ElectronAnimation_TARGET {
+  100% {
+    outline: inherit;
+  }
+}
+
 :global :root *.R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE:target {
   outline: inherit !important;
 }

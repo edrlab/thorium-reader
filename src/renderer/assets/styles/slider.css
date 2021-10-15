@@ -1,60 +1,55 @@
 .wrapper {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    & > button {
-        margin-bottom: 50px;
-    }
+  & > button {
+    margin-bottom: 50px;
+  }
 }
 
 .content {
-    display: inline-flex;
-    position: absolute;
-    top: 0;
-    left: 0;
+  display: inline-flex;
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    & > * {
-        margin-right: 15px;
-    }
+  & > * {
+    margin-right: 15px;
+  }
 
-    & > *:not(:first-child) {
-        margin-left: 15px;
-    }
+  & > *:not(:first-child) {
+    margin-left: 15px;
+  }
 }
 
 .content_wrapper {
-    flex: 1;
-    overflow-x: hidden;
-    overflow-y:hidden;
-    position: relative;
-    height: 340px;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+  height: 340px;
 }
 
 .button_substitute {
-    height: 36px;
-    width: 36px;
+  height: 36px;
+  width: 36px;
 }
-
-
 
 .back {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
-/************GridTagView************/
+/************  GridTagView  ************/
 
 .badge {
-    padding-top: 20%;
-    padding: 1.5rem;
-    margin-right: 0;
-    margin-left: 0;
-    border-width: .2rem;
-    background-color: #6c757d;
-    color: white;
+  padding: 1.5rem;
+  margin-right: 0;
+  margin-left: 0;
+  border-width: 0.2rem;
+  background-color: #6c757d;
+  color: white;
 
-    & div {
-        text-align: center;
-    }
+  & div {
+    text-align: center;
+  }
 }
-
-

@@ -1,265 +1,281 @@
-@import "./focus-mixin.css";
+@import './focus-mixin.css';
 
 .block_book_list {
-	display: block;
-	width: calc(100% + 120px);
-	margin-left:-60px;
-	height:40px;
-	padding: 10px 50px 10px 50px;
-	min-width: 600px;
-	font-size: 0.8rem;
+  display: block;
+  width: calc(100% + 120px);
+  margin-left: -60px;
+  height: 40px;
+  padding: 10px 50px 10px 50px;
+  min-width: 600px;
+  font-size: 0.8rem;
 }
 
 .block_book_list button {
-	float:left;
+  float: left;
 }
 
-.block_book_list:nth-child(odd){
-	background-color: #f3f3f3;
+.block_book_list:nth-child(odd) {
+  background-color: #f3f3f3;
 }
 
 .block_book_list .icon_seemore {
-	position: relative;
-	float:left;
-	display: inline-block;
-	width:20px;
-	height:30px;
-	margin:-5px 10px 0 10px;
-	top:2px !important;
+  position: relative;
+  float: left;
+  display: inline-block;
+  width: 20px;
+  height: 30px;
+  margin: -5px 10px 0 10px;
+  top: 2px !important;
 }
 
 .block_book_list p.book_title {
-	display: inline-block;
-	font-weight: 600;
+  display: inline-block;
+  font-weight: 600;
 }
 
 .block_book_list p.book_author {
-	display: inline-block;
+  display: inline-block;
 }
 
 .block_book_list p.infos_sup {
-	display: inline-block;
-	width:15%;
-	color:grey;
+  display: inline-block;
+  width: 15%;
+  color: grey;
 }
 
 .block_book {
-    width: 175px;
-    & .image_wrapper {
-        width: 100%;
-        position: relative;
+  width: 175px;
 
-        & > a {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            cursor: pointer;
-            & img {
-                max-height: 100%;
-                max-width: 100%;
-                display: block;
-            }
-        }
-    }
+  & .image_wrapper {
+    width: 100%;
+    position: relative;
 
-    & .image_wrapper:before{
-        content: "";
+    & > a {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      cursor: pointer;
+
+      & img {
+        max-height: 100%;
+        max-width: 100%;
         display: block;
-        padding-top: 150%; 	/* initial ratio of 1:1*/
+      }
     }
+  }
 
-    & button {
-        cursor: pointer;
-        z-index:100;
-        background: none;
-        border: 0;
-        padding: 0;
+  & .image_wrapper::before {
+    content: "";
+    display: block;
+    padding-top: 150%; 	/* initial ratio of 1:1 */
+  }
 
-        position: absolute;
-        top:0px;
-        right:0;
-        width:24px;
-        margin-right: -8px;
+  & button {
+    cursor: pointer;
+    z-index: 100;
+    background: none;
+    border: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 24px;
+    margin-right: -8px;
 
-        & svg {
-            fill: rgb(107, 107, 107)
-        }
+    & svg {
+      fill: rgb(107, 107, 107);
     }
+  }
 }
 
 .legend {
-	width: 100%;
-	position: relative;
-    cursor: pointer;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
 
-    & p {
-            position: relative;
-            width: calc(100% - 24px);
-            font-size: 0.9rem;
-            overflow: hidden;
-            margin: 0;
+  & p {
+    position: relative;
+    width: calc(100% - 24px);
+    font-size: 0.9rem;
+    overflow: hidden;
+    margin: 0;
 
-        &.book_title {
-            margin-top:10px;
-            font-weight: 600;
-            overflow-wrap: break-word;
-            line-height: 1.2em;
-            max-height: 2.4em;
-            overflow: hidden;
-            /*
+    &.book_title {
+      margin-top: 10px;
+      font-weight: 600;
+      overflow-wrap: break-word;
+      line-height: 1.2em;
+      max-height: 2.4em;
+      overflow: hidden;
+
+      /*
             multiline ellipsis!
             white-space: nowrap;
             text-overflow: ellipsis;
             */
-            padding-right: 1em;
-        }
-        &.book_title:before {
-          content: '…';
-          position: absolute;
-          opacity: 0.5;
-          bottom: 0;
-          inset-block-end: 0; /* "bottom" */
-          right: 0;
-          inset-inline-end: 0; /* "right" */
-        }
-        &.book_title:after {
-          content: '';
-          position: absolute;
-          background: white;
-          opacity: 1;
-          width: 1em;
-          height: 1em;
-          right: 0;
-          inset-inline-end: 0; /* "right" */
-        }
-        &.book_author {
-            font-weight: 300;
-            color:#616161;
-            overflow-wrap: break-word;
-            line-height: 1.2em;
-            max-height: 2.4em;
-            overflow: hidden;
-            /*
-            multiline ellipsis!
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            */
-            padding-right: 1em;
-        }
-        &.book_author:before {
-          content: '…';
-          position: absolute;
-          opacity: 0.5;
-          bottom: 0;
-          inset-block-end: 0; /* "bottom" */
-          right: 0;
-          inset-inline-end: 0; /* "right" */
-        }
-        &.book_author:after {
-          content: '';
-          position: absolute;
-          background: white;
-          opacity: 1;
-          width: 1em;
-          height: 1em;
-          right: 0;
-          inset-inline-end: 0; /* "right" */
-        }
+      padding-right: 1em;
     }
+
+    &.book_title::before {
+      content: '…';
+      position: absolute;
+      opacity: 0.5;
+      bottom: 0;
+      inset-block-end: 0; /* "bottom" */
+      right: 0;
+      inset-inline-end: 0; /* "right" */
+    }
+
+    &.book_title::after {
+      content: '';
+      position: absolute;
+      background: white;
+      opacity: 1;
+      width: 1em;
+      height: 1em;
+      right: 0;
+      inset-inline-end: 0; /* "right" */
+    }
+
+    &.book_author {
+      font-weight: 300;
+      color: #616161;
+      overflow-wrap: break-word;
+      line-height: 1.2em;
+      max-height: 2.4em;
+      overflow: hidden;
+
+      /*
+            multiline ellipsis!
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            */
+      padding-right: 1em;
+    }
+
+    &.book_author::before {
+      content: '…';
+      position: absolute;
+      opacity: 0.5;
+      bottom: 0;
+      inset-block-end: 0; /* "bottom" */
+      right: 0;
+      inset-inline-end: 0; /* "right" */
+    }
+
+    &.book_author::after {
+      content: '';
+      position: absolute;
+      background: white;
+      opacity: 1;
+      width: 1em;
+      height: 1em;
+      right: 0;
+      inset-inline-end: 0; /* "right" */
+    }
+  }
 }
 
 .menu {
-    height: fit-content;
-    width: 180px;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
+  height: fit-content;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  font-size: 0.9rem;
+  box-shadow: 0 0 10px 0 #cfcfcf;
+  overflow: hidden;
+
+  & button,
+  & a,
+  & span label {
+    text-decoration: none;
+    color: black;
+    padding: 0.7rem;
+    text-align: center;
+    cursor: pointer;
+    height: 2.5rem;
+    box-sizing: border-box;
+    width: 100%;
     font-size: 0.9rem;
-    box-shadow: 0px 0px 10px 0px #cfcfcf;
+    opacity: 1;
+    margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     overflow: hidden;
-    & button, & a, & span label {
-        text-decoration: none;
-        color: black;
-        padding: 0.7rem;
-        text-align: center;
-        cursor: pointer;
-        height: 2.5rem;
-        box-sizing: border-box;
-        width: 100%;
-        font-size: 0.9rem;
-        opacity: 1;
-        margin: 0;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        display: inline-block;
+    display: inline-block;
 
-        &:hover {
-            background-color: #CECECE;
-        }
-
-        &:not(:last-child){
-            border-bottom: 1px solid #E5E3E3;
-        }
-    }
-    & button[disabled] {
-        cursor: not-allowed;
+    &:hover {
+      background-color: #cecece;
     }
 
-    & span {
-        cursor: pointer;
-        & input {
-            height: 0;
-            width: 0;
-            position: absolute;
-            left: -2000px;
-        }
-
-        & input:focus + label {
-            @mixin R2_MIXIN_FOCUS_OUTLINE;
-        }
+    &:not(:last-child) {
+      border-bottom: 1px solid #e5e3e3;
     }
+  }
+
+  & button[disabled] {
+    cursor: not-allowed;
+  }
+
+  & span {
+    cursor: pointer;
+
+    & input {
+      height: 0;
+      width: 0;
+      position: absolute;
+      left: -2000px;
+    }
+
+    & input:focus + label {
+      @mixin R2_MIXIN_FOCUS_OUTLINE;
+    }
+  }
 }
 
 .cover {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 5%;
+  border: 1px solid silver;
+  border-radius: 6px;
+
+  & p {
+    word-break: break-all;
+    display: -webkit-inline-box;
+    -webkit-line-clamp: 3;
+
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     text-align: center;
-    box-sizing: border-box;
-    padding: 5%;
-    border: 1px solid silver;
-    border-radius: 6px;
+    margin: 10px 5%;
+    color: black;
+  }
 
-    & p {
-        word-break: break-all;
-        display: -webkit-inline-box;
-        -webkit-line-clamp: 3;
-         /* autoprefixer: ignore next */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-align: center;
-        margin: 10px 5%;
-        color: black;
-    }
+  & .box {
+    border: 1px black solid;
+    width: 100%;
+    height: 100%;
+    line-height: inital;
+  }
 
-    & .box {
-        border: 1px black solid;
-        width: 100%;
-        height: 100%;
-        line-height: inital;
-    }
-    & .title {
-        margin-top: 10%;
-    }
-    & .author {
-        font-size: 90%;
-        bottom: 10px;
-    }
+  & .title {
+    margin-top: 10%;
+  }
+
+  & .author {
+    font-size: 90%;
+    bottom: 10px;
+  }
 }
 
 .cover_img {

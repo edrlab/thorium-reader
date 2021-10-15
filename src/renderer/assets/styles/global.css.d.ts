@@ -19,6 +19,20 @@ declare const styles: {
   readonly "block_line": string;
   readonly "block_line_edit": string;
   readonly "no_list_style": string;
+  readonly "button_primary": string;
+  readonly "button_primary_small": string;
+  readonly "readium2ElectronAnimation_TARGET": string;
+  readonly "commonButton": string;
+  readonly "button_transparency_icon": string;
+  readonly "button_icon": string;
+  readonly "button_refresh": string;
+  readonly "button_icon_primary": string;
+  readonly "button_keyboard": string;
+  readonly "skip_link": string;
+  readonly "outline": string;
+  readonly "checkbox_keyboard": string;
+  readonly "radio_list": string;
+  readonly "breadcrumb": string;
 };
 export = styles;
 

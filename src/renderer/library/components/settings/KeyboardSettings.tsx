@@ -184,7 +184,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 this.prettifyKeyboardShortcut(def)
                             }</div>
                         </>;
-                        return <li 
+                        return <li
                                 className={
                                     hit ?
                                         classNames(styles.block_line_edit, styles.no_list_style)
