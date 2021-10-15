@@ -8,8 +8,9 @@
 import * as debug_ from "debug";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import {
-    getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlFromMacEventChannel,
+    getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeFromMacEventChannel,
 } from "readium-desktop/main/event";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
@@ -71,7 +72,7 @@ export function saga() {
 
         }),
         spawn(function*() {
-            const chan = getOpenUrlFromMacEventChannel();
+            const chan = getOpenUrlWithThoriumSchemeFromMacEventChannel();
 
             while (true) {
 
@@ -82,7 +83,34 @@ export function saga() {
                         url,
                     };
 
-                    const pubViewArray = yield* callTyped(importFromLink, link);
+                    const pubViewArray = (yield* callTyped(importFromLink, link)) as PublicationView | PublicationView[];
+                    const pubView = Array.isArray(pubViewArray) ? pubViewArray[0] : pubViewArray;
+                    if (pubView) {
+
+                        yield put(readerActions.openRequest.build(pubView.identifier));
+                    }
+
+                } catch (e) {
+
+                    debug("ERROR to importFromLink and to open the publication");
+                    debug(e);
+                }
+            }
+
+        }),
+        spawn(function*() {
+            const chan = getOpenUrlWithOpdsSchemeEventChannel();
+
+            while (true) {
+
+                try {
+                    const url = yield* takeTyped(chan);
+
+                    const link: IOpdsLinkView = {
+                        url,
+                    };
+
+                    const pubViewArray = (yield* callTyped(importFromLink, link)) as PublicationView | PublicationView[];
                     const pubView = Array.isArray(pubViewArray) ? pubViewArray[0] : pubViewArray;
                     if (pubView) {
 

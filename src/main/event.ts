@@ -17,9 +17,13 @@ const openTitleFromCliChannel = channel<string>();
 
 export const getOpenTitleFromCliChannel = () => openTitleFromCliChannel;
 
-const openUrlFromMacEventChannel = channel<string>();
+const openUrlWithThoriumSchemeFromMacEventChannel = channel<string>();
 
-export const getOpenUrlFromMacEventChannel = () => openUrlFromMacEventChannel;
+export const getOpenUrlWithThoriumSchemeFromMacEventChannel = () => openUrlWithThoriumSchemeFromMacEventChannel;
+
+const openUrlWithOpdsSchemeEventChannel = channel<string>();
+
+export const getOpenUrlWithOpdsSchemeEventChannel = () => openUrlWithOpdsSchemeEventChannel;
 
 //
 // OPDS2 authentication

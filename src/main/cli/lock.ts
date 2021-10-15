@@ -8,12 +8,14 @@
 import * as debug_ from "debug";
 import { app } from "electron";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { commandLineMainEntry } from ".";
-import { getOpenFileFromCliChannel, getOpenUrlFromMacEventChannel } from "../event";
+import { getOpenFileFromCliChannel, getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeFromMacEventChannel } from "../event";
 
 // Logger
-const debug = debug_("readium-desktop:main:lock");
+const filename = "readium-desktop:main:lock";
+const debug = debug_(filename);
 
 export function lockInstance() {
     const gotTheLock = app.requestSingleInstanceLock();
@@ -47,18 +49,40 @@ export function lockInstance() {
                 debug("OPEN URL", url);
                 debug("#####");
 
-                url = url.split("thorium:")[1];
-                if (url) {
+                const checkUrl = (u: string): string | undefined => {
 
-                    debug("open url", url);
-                    const openUrlChannel = getOpenUrlFromMacEventChannel();
-                    openUrlChannel.put(url);
+                    const testUrl = (a: string) => tryCatchSync(() => new URL(a), filename);
+                    const urlWithHttps = "https://" + u;
+                    const checkedUrl = testUrl(u) ? u : testUrl(urlWithHttps) ? urlWithHttps : undefined;
+
+                    return checkedUrl;
                 }
 
+                if (url.startsWith("thorium:")) {
+                    const importUrl = url.split("thorium:")[1];
+                    const importUrlChecked = checkUrl(importUrl);
 
-                // TODO
-                // handle opds://
-                // to add the feed and open it
+                    if (importUrlChecked) {
+                        
+                        debug("open url with thorium:// protocol scheme", importUrlChecked);
+                        debug("This url will be imported in thorium with importFromLink entry point");
+                        const openUrlChannel = getOpenUrlWithThoriumSchemeFromMacEventChannel();
+                        openUrlChannel.put(importUrlChecked);
+                    }
+                }
+
+                if (url.startsWith("opds:")) {
+                    const importUrl = url.split("opds:")[1];
+                    const importUrlChecked = checkUrl(importUrl);
+
+                    if (importUrlChecked) {
+                        
+                        debug("open url with opds:// protocol scheme", importUrlChecked);
+                        debug("This url will be imported in thorium with opds/addFeed entry point");
+                        const openUrlChannel = getOpenUrlWithOpdsSchemeEventChannel();
+                        openUrlChannel.put(importUrlChecked);
+                    }
+                }
             });
 
             app.on("open-file", async (event, filePath) => {
