@@ -1,4 +1,4 @@
-@import "./variables.css";
+@import './variables.css';
 
 @define-mixin main_navigation {
   z-index: 102;

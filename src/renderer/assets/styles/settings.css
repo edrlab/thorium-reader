@@ -1,4 +1,4 @@
-@import "./focus-mixin.css";
+@import './focus-mixin.css';
 
 .main {
   & ul {

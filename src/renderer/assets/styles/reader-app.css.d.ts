@@ -96,6 +96,7 @@ declare const styles: {
   readonly "divina_grid_container": string;
   readonly "divina_grid_item": string;
   readonly "colorChange": string;
+  readonly "readium2ElectronAnimation_TARGET": string;
 };
 export = styles;
 

@@ -4,6 +4,7 @@ declare const styles: {
   readonly "title": string;
   readonly "commonButton": string;
   readonly "primary": string;
+  readonly "readium2ElectronAnimation_TARGET": string;
 };
 export = styles;
 

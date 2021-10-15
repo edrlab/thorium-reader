@@ -1,6 +1,6 @@
-@import "./focus-mixin.css";
-@import "./focus.css";
-@import "./variable.css";
+@import './focus-mixin.css';
+@import './focus.css';
+@import './variable.css';
 
 :global :root.HIDE_CURSOR_CLASS,
 :global :root.HIDE_CURSOR_CLASS * {

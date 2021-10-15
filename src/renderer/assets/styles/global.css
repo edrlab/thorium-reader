@@ -1,11 +1,11 @@
-@import "./partials/variables.css";
-@import "./partials/mixins.css";
-@import "./partials/focus.css";
+@import './partials/variables.css';
+@import './partials/mixins.css';
+@import './partials/focus.css';
 
 /* Components */
-@import "./components/buttons.css";
-@import "./components/inputs.css";
-@import "./components/breadcrumb.css";
+@import './components/buttons.css';
+@import './components/inputs.css';
+@import './components/breadcrumb.css';
 
 /* ============ GLOBAL ELEMENTS =============== */
 
