@@ -106,14 +106,14 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                             <div className={Array.isArray(facetsRender) ? styles.publicationgrid : ""}>
                                 {
                                     Array.isArray(facetsRender)
-                                        ? <div className={styles.publicationgriditem}>
+                                        ? <div>
                                             {
                                                 facetsRender
                                             }
                                         </div>
                                         : <></>
                                 }
-                                <div className={Array.isArray(facetsRender) ? styles.publicationgriditem : ""}>
+                                <div>
                                     <EntryPublicationList
                                         opdsPublicationView={opds.publications}
                                         links={opds.links}
@@ -162,7 +162,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                                     || DisplayType.Grid
                                                 ) === DisplayType.Grid ?
                                                 <Slider
-                                                    className={styles.slider}
+                                                    className={styles.flux_slider}
                                                     content={group.publications.map((pub, pubId) =>
                                                         <PublicationCard
                                                             key={`opds-group-${i}-${pubId}`}
