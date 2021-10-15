@@ -5,7 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export * from "./publication";
-export * from "./api";
-export * from "./opds";
-export * from "./browser";
+import { IOpdsApi } from "readium-desktop/common/api/interface/opdsApi.interface";
+
+import { getFeed, addFeed, findAllFeeds, deleteFeed } from "./feed";
+import { getUrlWithSearchLinks } from "./getUrlWithSearchLinks";
+
+export const opdsApi: IOpdsApi = {
+    getFeed,
+    addFeed,
+    findAllFeeds,
+    deleteFeed,
+    getUrlWithSearchLinks,
+};

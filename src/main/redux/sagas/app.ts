@@ -31,6 +31,7 @@ import {
     getBeforeQuitEventChannel, getQuitEventChannel, getShutdownEventChannel,
     getWindowAllClosedEventChannel,
 } from "./getEventChannel";
+import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -120,6 +121,26 @@ export function* init() {
     yield call(() => {
         return absorbDBToJsonOpdsAuth();
     });
+
+    const envName = "THORIUM_OPDS_CATALOGS_URL";
+    debug("SEARCH FROM ENV=", envName);
+    try {
+
+        const opdsCatalogsChan = getOpdsNewCatalogsStringUrlChannel();
+        const catalogsUrl = process.env[envName];
+
+        debug("CATALOGS URL FROM ENV FOUND =>", catalogsUrl);
+        if (catalogsUrl) {
+            const u = new URL(catalogsUrl);
+            if (u)
+                opdsCatalogsChan.put(catalogsUrl);
+        }
+    } catch (e) {
+
+        //
+        debug("CATALOGS URL FROM ENV NOT FOUND", e);
+    }
+
 }
 
 function* closeProcess() {
