@@ -89,7 +89,7 @@ console.log(JSON.stringify(externals, null, "  "));
 
 const cssLoaderConfig = [
     {
-        loader: MiniCssExtractPlugin.loader,
+        loader: nodeEnv !== "production" ? "style-loader" : MiniCssExtractPlugin.loader,
         options: {
             // publicPath: "./styling", // preprocessorDirectives.rendererReaderBaseUrl,
             // hmr: _enableHot,
@@ -101,7 +101,9 @@ const cssLoaderConfig = [
         loader: "css-loader",
         options: {
             importLoaders: 1,
-            modules: true,
+            modules: nodeEnv !== "production" ? {
+                localIdentName: "[path][name]__[local]--[hash:base64:5]",
+            } : true,
             esModule: false,
         },
     },
@@ -232,9 +234,6 @@ let config = Object.assign(
                 template: "./src/renderer/reader/index_reader.ejs",
                 filename: "index_reader.html",
             }),
-            new MiniCssExtractPlugin({
-                filename: "styles_reader.css",
-            }),
             preprocessorDirectives.definePlugin,
         ],
     }
@@ -317,6 +316,10 @@ if (nodeEnv !== "production") {
     // {
     //     minimize: false,
     // };
+
+    config.plugins.push(new MiniCssExtractPlugin({
+        filename: "styles_reader.css",
+    }));
 
     config.plugins.push(
         new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ })
