@@ -129,7 +129,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
         this.inputRef.current.focus();
         // this.inputRef.current.select();
         this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
-    }
+    };
 
     private search(e: TFormEvent) {
         e.preventDefault();

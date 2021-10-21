@@ -142,12 +142,12 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         if (this.fastLinkRef?.current) {
             this.fastLinkRef.current.focus();
         }
-    }
+    };
     private onKeyboardFocusToolbar = () => {
         if (this.refToolbar?.current) {
             this.refToolbar.current.focus();
         }
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({

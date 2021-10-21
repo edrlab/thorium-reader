@@ -191,7 +191,7 @@ class SearchPicker extends React.Component<IProps, IState> {
     private setFoundNumber = (foundNumber: number) => {
 
         this.setState({foundNumber, notFound: !foundNumber});
-    }
+    };
 
     private registerAllKeyboardListeners() {
         registerKeyboardListener(
@@ -223,10 +223,10 @@ class SearchPicker extends React.Component<IProps, IState> {
 
     private onKeyboardSearchPrevious = () => {
         this.props.previous();
-    }
+    };
     private onKeyboardSearchNext = () => {
         this.props.next();
-    }
+    };
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {

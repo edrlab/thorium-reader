@@ -148,7 +148,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
                 this.props.openReader(this.manifestView);
             }
         }
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {

@@ -56,7 +56,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
     private displayPublicationInfo = (e: TMouseEventOnButton) => {
         e.preventDefault();
         this.props.displayPublicationInfo();
-    }
+    };
 }
 
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {

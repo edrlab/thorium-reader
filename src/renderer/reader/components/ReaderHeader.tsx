@@ -672,7 +672,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     private setScaleMode = (mode: IPdfPlayerScale) => {
         this.setState({ pdfScaleMode: mode });
-    }
+    };
 
     private focusSettingMenuButton() {
         if (!this.settingsMenuButtonRef?.current) {

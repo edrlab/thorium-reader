@@ -103,10 +103,10 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
         }
         const need = this.descriptionWrapperRef.current.offsetHeight < this.descriptionRef.current.offsetHeight;
         this.setState({ needSeeMore: need });
-    }
+    };
 
     private toggleSeeMore = () =>
         this.setState({
             seeMore: !this.state.seeMore,
-        })
+        });
 }
