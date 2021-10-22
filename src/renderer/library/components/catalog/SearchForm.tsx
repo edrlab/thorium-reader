@@ -99,7 +99,7 @@ class SearchForm extends React.Component<IProps, undefined> {
         this.inputRef.current.focus();
         // this.inputRef.current.select();
         this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
-    }
+    };
 
     private search(e: TFormEvent) {
         e.preventDefault();

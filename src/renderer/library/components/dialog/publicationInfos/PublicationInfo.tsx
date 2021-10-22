@@ -96,7 +96,7 @@ class PublicationInfo extends React.Component<IProps> {
         }
 
         return controlsComponent;
-    }
+    };
 
 }
 

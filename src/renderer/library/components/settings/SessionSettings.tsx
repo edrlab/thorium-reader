@@ -99,7 +99,7 @@ class SessionSettings extends React.Component<IProps, IState> {
         apiAction("session/isEnabled")
             .then((sessionEnabled) => this.setState({ sessionEnabled }))
             .catch((error) => console.error("Error to fetch api publication/findAll", error));
-    }
+    };
 
     private setSession = async (bool: boolean) => {
         this.setState({ sessionEnabled: bool });
@@ -110,7 +110,7 @@ class SessionSettings extends React.Component<IProps, IState> {
 
             this.getSession();
         }
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {

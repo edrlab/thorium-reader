@@ -97,10 +97,10 @@ export default class AddTag extends React.Component<IProps, IState> {
             tagsName.push(tagName);
             this.props.setTags(tagsName);
         }
-    }
+    };
 
     private handleChangeName = (e: TChangeEventOnInput) => {
         this.setState({ newTagName: e.target.value });
-    }
+    };
 
 }

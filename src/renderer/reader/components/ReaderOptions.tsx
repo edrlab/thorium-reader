@@ -194,7 +194,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.setState({
             pdfScale: scale,
         });
-    }
+    };
 
     private setView = (view: IPdfPlayerView) => {
 
@@ -203,7 +203,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.setState({
             pdfView: view,
         });
-    }
+    };
 
     private setCol = (col: IPdfPlayerColumn) => {
 
@@ -212,7 +212,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.setState({
             pdfCol: col,
         });
-    }
+    };
 
     private saveConfig() {
 
