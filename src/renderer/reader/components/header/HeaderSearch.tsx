@@ -114,11 +114,11 @@ class HeaderSearch extends React.Component<IProps, undefined> {
             this.props.keyboardShortcuts.FocusSearch,
             this.enableSearch,
         );
-    }
+    };
 
     private unregisterAllKeyboardListeners = () => {
         unregisterKeyboardListener(this.enableSearch);
-    }
+    };
 
     private enableSearch = () => {
 
@@ -129,7 +129,7 @@ class HeaderSearch extends React.Component<IProps, undefined> {
             return;
         }
         this.props.enableSearch(!this.props.isOnSearch);
-    }
+    };
 
 }
 

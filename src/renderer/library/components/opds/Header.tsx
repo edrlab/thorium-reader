@@ -134,7 +134,7 @@ class Header extends React.Component<IProps, undefined> {
         }
 
         return bookshelfComponent;
-    }
+    };
 
     private home = () => {
         const { start } = this.props.headerLinks;
@@ -171,7 +171,7 @@ class Header extends React.Component<IProps, undefined> {
         }
 
         return homeComponent;
-    }
+    };
 
     private refresh = () => {
         const { self } = this.props.headerLinks;
@@ -222,7 +222,7 @@ class Header extends React.Component<IProps, undefined> {
         }
 
         return refreshComponet;
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({

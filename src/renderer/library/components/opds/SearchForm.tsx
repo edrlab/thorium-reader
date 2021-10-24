@@ -115,7 +115,7 @@ class SearchForm extends React.Component<IProps, undefined> {
         this.inputRef.current.focus();
         // this.inputRef.current.select();
         this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
-    }
+    };
     private submitSearch = (e: TFormEvent) => {
         e.preventDefault();
         if (!this.inputRef?.current || !this.props.search?.url) {
@@ -140,7 +140,7 @@ class SearchForm extends React.Component<IProps, undefined> {
                 pathname: this.route(searchWords, url, level),
             });
         }
-    }
+    };
 
     private route = (title: string, url: string, level: number) =>
         buildOpdsBrowserRoute(
@@ -150,7 +150,7 @@ class SearchForm extends React.Component<IProps, undefined> {
             title,
             url,
             level,
-        )
+        );
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({

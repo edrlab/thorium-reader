@@ -159,10 +159,10 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
     private onKeyboardPageNavigationNext = () => {
         this.onKeyboardPageNavigationPreviousNext(false);
-    }
+    };
     private onKeyboardPageNavigationPrevious = () => {
         this.onKeyboardPageNavigationPreviousNext(true);
-    }
+    };
     private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
         const { pageLinks } = this.props;
 
@@ -179,7 +179,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                 pathname: buildRoute(pageLinks.next[0]),
             });
         }
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({

@@ -37,6 +37,7 @@ export interface IOpdsPublicationView {
     languages?: string[];
     publishedAt?: string; // ISO8601
     entryLinks?: IOpdsLinkView[];
+    catalogLinkView: IOpdsLinkView[];
     buyLinks?: IOpdsLinkView[];
     borrowLinks?: IOpdsLinkView[];
     subscribeLinks?: IOpdsLinkView[];
@@ -71,6 +72,7 @@ export interface IOpdsResultView {
     facets?: IOpdsFacetView[];
     groups?: IOpdsGroupView[];
     auth?: IOpdsAuthView;
+    catalogs?: IOpdsPublicationView[];
 }
 
 export interface IOpdsGroupView {

@@ -832,7 +832,7 @@ class Reader extends React.Component<IProps, IState> {
                 this.handleTTSStop();
             }
         }
-    }
+    };
 
     private onKeyboardAudioPlayPause = () => {
         if (!this.state.shortcutEnable) {
@@ -865,11 +865,11 @@ class Reader extends React.Component<IProps, IState> {
                 this.handleTTSPlay();
             }
         }
-    }
+    };
 
     private onKeyboardAudioPreviousAlt = () => {
         this.onKeyboardAudioPrevious(true);
-    }
+    };
     private onKeyboardAudioPrevious = (skipSentences = false) => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -891,11 +891,11 @@ class Reader extends React.Component<IProps, IState> {
             // const skipSentences = doc._keyModifierShift && doc._keyModifierAlt;
             this.handleTTSPrevious(skipSentences);
         }
-    }
+    };
 
     private onKeyboardAudioNextAlt = () => {
         this.onKeyboardAudioNext(true);
-    }
+    };
     private onKeyboardAudioNext = (skipSentences = false) => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -917,11 +917,11 @@ class Reader extends React.Component<IProps, IState> {
             // const skipSentences = doc._keyModifierShift && doc._keyModifierAlt;
             this.handleTTSNext(skipSentences);
         }
-    }
+    };
 
     private onKeyboardFullScreen = () => {
         this.handleFullscreenClick();
-    }
+    };
 
     private onKeyboardCloseReader = () => {
         // if (!this.state.shortcutEnable) {
@@ -931,7 +931,7 @@ class Reader extends React.Component<IProps, IState> {
         //     return;
         // }
         this.handleReaderClose();
-    }
+    };
 
     private onKeyboardInfo = () => {
         if (!this.state.shortcutEnable) {
@@ -941,7 +941,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
         this.displayPublicationInfo();
-    }
+    };
 
     private onKeyboardFocusNav = () => {
         if (!this.state.shortcutEnable) {
@@ -951,7 +951,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
         this.handleMenuButtonClick();
-    }
+    };
     private onKeyboardFocusSettings = () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -960,7 +960,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
         this.handleSettingsClick();
-    }
+    };
 
     private onKeyboardBookmark = async () => {
         if (!this.state.shortcutEnable) {
@@ -970,7 +970,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
         await this.handleToggleBookmark(true);
-    }
+    };
 
     private onKeyboardFocusMain = () => {
         if (!this.state.shortcutEnable) {
@@ -983,7 +983,7 @@ class Reader extends React.Component<IProps, IState> {
         if (this.fastLinkRef?.current) {
             this.fastLinkRef.current.focus();
         }
-    }
+    };
 
     private onKeyboardFocusToolbar = () => {
         if (!this.state.shortcutEnable) {
@@ -996,14 +996,14 @@ class Reader extends React.Component<IProps, IState> {
         if (this.refToolbar?.current) {
             this.refToolbar.current.focus();
         }
-    }
+    };
 
     private onKeyboardPageNavigationNext = () => {
         this.onKeyboardPageNavigationPreviousNext(false);
-    }
+    };
     private onKeyboardPageNavigationPrevious = () => {
         this.onKeyboardPageNavigationPreviousNext(true);
-    }
+    };
     private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
         if (this.props.isDivina) {
             return;
@@ -1017,7 +1017,7 @@ class Reader extends React.Component<IProps, IState> {
 
         this.navLeftOrRight_(isPrevious, false);
 
-    }
+    };
 
     private onKeyboardNavigationToBegin = () => {
 
@@ -1038,7 +1038,7 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
         }
-    }
+    };
     private onKeyboardNavigationToEnd = () => {
 
         if (this.props.isPdf) {
@@ -1062,14 +1062,14 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
         }
-    }
+    };
 
     private onKeyboardSpineNavigationNext = () => {
         this.onKeyboardSpineNavigationPreviousNext(false);
-    }
+    };
     private onKeyboardSpineNavigationPrevious = () => {
         this.onKeyboardSpineNavigationPreviousNext(true);
-    }
+    };
     private onKeyboardSpineNavigationPreviousNext = (isPrevious: boolean) => {
         if (this.props.isDivina) {
             return;
@@ -1088,7 +1088,7 @@ class Reader extends React.Component<IProps, IState> {
                 this.onKeyboardFocusMain();
             }, 200);
         }
-    }
+    };
 
     private displayPublicationInfo() {
         if (this.props.publicationView) {
@@ -1134,7 +1134,7 @@ class Reader extends React.Component<IProps, IState> {
             console.log("DIVINA: location bad formated ", data);
         }
 
-    }
+    };
 
     private async loadPublicationIntoViewport() {
 

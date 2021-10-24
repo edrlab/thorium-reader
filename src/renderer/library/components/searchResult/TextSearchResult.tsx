@@ -116,7 +116,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
         apiAction("publication/search", text)
             .then((publicationViews) => this.setState({ publicationViews }))
             .catch((error) => console.error("Error to fetch api publication/search", error));
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({
