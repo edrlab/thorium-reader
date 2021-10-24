@@ -50,47 +50,49 @@ class SessionSettings extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <>
-                <div className={styles.heading}>
-                    <h2>{__("settings.session.title")}</h2>
-                </div>
-                <form className={styles.radio_list}>
-                    <div>
-                        <input
-                            id={"session-true"}
-                            type="radio"
-                            lang={__("settings.session.yes")}
-                            name="language"
-                            onChange={() => this.setSession(true)}
-                            checked={this.state.sessionEnabled === true}
-                        />
-                        <label htmlFor={"session-true"}>
-                            {
-                                this.state.sessionEnabled === true && <SVG svg={DoneIcon} ariaHidden />
-                            }
-                            {
-                                __("settings.session.yes")
-                            }
-                        </label>
+                <section>
+                    <div className={styles.heading}>
+                        <h2>{__("settings.session.title")}</h2>
                     </div>
-                    <div>
-                        <input
-                            id={"session-false"}
-                            type="radio"
-                            lang={__("settings.session.no")}
-                            name="language"
-                            onChange={() => this.setSession(false)}
-                            checked={this.state.sessionEnabled === false}
-                        />
-                        <label htmlFor={"session-false"}>
-                            {
-                                this.state.sessionEnabled === false && <SVG svg={DoneIcon} ariaHidden />
-                            }
-                            {
-                                __("settings.session.no")
-                            }
-                        </label>
-                    </div>
-                </form>
+                    <form className={styles.radio_list}>
+                        <div>
+                            <input
+                                id={"session-true"}
+                                type="radio"
+                                lang={__("settings.session.yes")}
+                                name="language"
+                                onChange={() => this.setSession(true)}
+                                checked={this.state.sessionEnabled === true}
+                            />
+                            <label htmlFor={"session-true"}>
+                                {
+                                    this.state.sessionEnabled === true && <SVG svg={DoneIcon} ariaHidden />
+                                }
+                                {
+                                    __("settings.session.yes")
+                                }
+                            </label>
+                        </div>
+                        <div>
+                            <input
+                                id={"session-false"}
+                                type="radio"
+                                lang={__("settings.session.no")}
+                                name="language"
+                                onChange={() => this.setSession(false)}
+                                checked={this.state.sessionEnabled === false}
+                            />
+                            <label htmlFor={"session-false"}>
+                                {
+                                    this.state.sessionEnabled === false && <SVG svg={DoneIcon} ariaHidden />
+                                }
+                                {
+                                    __("settings.session.no")
+                                }
+                            </label>
+                        </div>
+                    </form>
+                </section>
             </>
         );
     }

@@ -13,7 +13,7 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import Cover from "readium-desktop/renderer/common/components/Cover";
 import {
     TranslatorProps, withTranslator,
@@ -54,6 +54,7 @@ class PublicationCard extends React.Component<IProps, IState> {
         };
         this.openCloseMenu = this.openCloseMenu.bind(this);
         // this.truncateTitle = this.truncateTitle.bind(this);
+        this.truncateAuthors = this.truncateAuthors.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -62,33 +63,29 @@ class PublicationCard extends React.Component<IProps, IState> {
         const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
 
         return (
-            <div className={styles.block_book}
+            <div className={styles.publication_wrapper}
                 aria-haspopup="dialog"
                 aria-controls="dialog"
             >
-                <div className={styles.image_wrapper}>
-                    <a
-                        tabIndex={0}
-                        onClick={(e) => this.handleBookClick(e)}
-                        onKeyPress={
-                            (e) =>
-                                (e.key === "Enter") && this.handleBookClick(e)
-                        }
-                        title={`${publicationViewMaybeOpds.title} - ${authors}`}
-                    >
-                        <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
-                    </a>
-                </div>
-                <div className={styles.legend}>
-                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
-                        <p aria-hidden className={styles.book_title}>
-                            {
-                                // this.truncateTitle()
-                                publicationViewMaybeOpds.title
-                            }
+                <a
+                    tabIndex={0}
+                    onClick={(e) => this.handleBookClick(e)}
+                    onKeyPress={
+                        (e) =>
+                            (e.key === "Enter") && this.handleBookClick(e)
+                    }
+                    title={`${publicationViewMaybeOpds.title} - ${authors}`}
+                    className={styles.publication_image_wrapper}
+                >
+                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                </a>
+                <div className={styles.publication_infos_wrapper}>
+                    <a aria-hidden onClick={(e) => this.handleBookClick(e)} className={styles.publication_infos}>
+                        <p aria-hidden className={styles.publication_title}>
+                            {publicationViewMaybeOpds.title}
                         </p>
-                        <p aria-hidden className={styles.book_author}>
-                            {authors}
+                        <p aria-hidden className={styles.publication_description}>
+                            {this.truncateAuthors(authors)}
                         </p>
                     </a>
                     <Menu
@@ -140,6 +137,18 @@ class PublicationCard extends React.Component<IProps, IState> {
     //     }
     //     return (newTitle);
     // }
+
+    /* function Truncate very long authors at 60 characters */
+    private truncateAuthors(authors: string): string {
+        let newAuthors = authors;
+        const truncate = 28;
+
+        if (newAuthors && newAuthors.length > truncate) {
+            newAuthors = authors.substr(0, truncate);
+            newAuthors += "...";
+        }
+        return (newAuthors);
+    }
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {

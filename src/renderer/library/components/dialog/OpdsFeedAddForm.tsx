@@ -6,10 +6,13 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -56,45 +59,59 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
         const { __, closeDialog } = this.props;
         const { name, url } = this.state;
         return (
-            <Dialog open={true} close={closeDialog} id={styles.opds_form_dialog}>
-                <div>
-                    <h2>{__("opds.addMenu")}</h2>
-                    <form>
-                        <div className={styles.field}>
-                            <label>{__("opds.addForm.name")}</label>
-                            <input
-                                onChange={(e) => this.setState({
-                                    name: e.target.value,
-                                })}
-                                type="text"
-                                aria-label={__("opds.addForm.name")}
-                                placeholder={__("opds.addForm.namePlaceholder")}
-                                defaultValue={name}
-                            />
+            <Dialog
+                open={true}
+                close={closeDialog} 
+                id={styles.opds_form_dialog}
+                title={__("opds.addMenu")}
+            >
+                <form className={styles.modal_dialog_form_wrapper}>
+                    <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>
+                        <div className={styles.w_50}>
+                            <div className={styles.form_group}>
+                                <label>{__("opds.addForm.name")}</label>
+                                <input
+                                    onChange={(e) => this.setState({
+                                        name: e.target.value,
+                                    })}
+                                    type="text"
+                                    aria-label={__("opds.addForm.name")}
+                                    placeholder={__("opds.addForm.namePlaceholder")}
+                                    defaultValue={name}
+                                />
+                            </div>
+                            <div className={styles.form_group}>
+                                <label>{__("opds.addForm.url")}</label>
+                                <input
+                                    onChange={(e) => this.setState({
+                                        url: e.target.value,
+                                    })}
+                                    type="text"
+                                    aria-label={__("opds.addForm.url")}
+                                    placeholder={__("opds.addForm.urlPlaceholder")}
+                                    defaultValue={url}
+                                />
+                            </div>
                         </div>
-                        <div className={styles.field}>
-                            <label>{__("opds.addForm.url")}</label>
-                            <input
-                                onChange={(e) => this.setState({
-                                    url: e.target.value,
-                                })}
-                                type="text"
-                                aria-label={__("opds.addForm.url")}
-                                placeholder={__("opds.addForm.urlPlaceholder")}
-                                defaultValue={url}
-                            />
-                        </div>
-                        <div>
-                            <input
-                                disabled={!name || !url}
-                                type="submit"
-                                value={__("opds.addForm.addButton")}
-                                onClick={this.add}
-                            />
-                            <button onClick={closeDialog}>{__("opds.back")}</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div className={styles.modal_dialog_footer}>
+                        <button
+                            onClick={closeDialog}
+                            className={styles.button_transparency}
+                        >
+                            {__("opds.back")}
+                        </button>
+                        <button
+                            disabled={!name || !url}
+                            type="submit"
+                            onClick={this.add}
+                            className={styles.button_secondary}
+                        >
+                            <SVG svg={DoneIcon} />
+                            {__("opds.addForm.addButton")}
+                        </button>
+                    </div>
+                </form>
             </Dialog>
         );
     }

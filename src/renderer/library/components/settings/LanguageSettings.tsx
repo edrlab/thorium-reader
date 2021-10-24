@@ -37,27 +37,29 @@ class LanguageSettings extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <>
-            <div className={styles.heading}>
-                <h2>{__("settings.language.languageChoice")}</h2>
-            </div>
-            <form className={styles.radio_list}>
-                { ObjectKeys(AvailableLanguages).map((lang, i) =>
-                    <div key={i}>
-                        <input
-                            id={"radio-" + lang}
-                            type="radio"
-                            lang={lang}
-                            name="language"
-                            onChange={() => this.props.setLocale(lang)}
-                            checked={this.props.locale === lang}
-                        />
-                        <label htmlFor={"radio-" + lang}>
-                            { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
-                            { AvailableLanguages[lang] }
-                        </label>
-                    </div>,
-                )}
-            </form>
+                <section>
+                    <div className={styles.heading}>
+                        <h2>{__("settings.language.languageChoice")}</h2>
+                    </div>
+                    <form className={styles.radio_list}>
+                        { ObjectKeys(AvailableLanguages).map((lang, i) =>
+                            <div key={i}>
+                                <input
+                                    id={"radio-" + lang}
+                                    type="radio"
+                                    lang={lang}
+                                    name="language"
+                                    onChange={() => this.props.setLocale(lang)}
+                                    checked={this.props.locale === lang}
+                                />
+                                <label htmlFor={"radio-" + lang}>
+                                    { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
+                                    { AvailableLanguages[lang] }
+                                </label>
+                            </div>,
+                        )}
+                    </form>
+                </section>
             </>
         );
     }

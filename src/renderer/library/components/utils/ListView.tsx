@@ -8,7 +8,7 @@
 import * as React from "react";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import CatalogMenu from "readium-desktop/renderer/library/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/library/components/publication/menu/OpdsMenu";
 import PublicationListElement from "readium-desktop/renderer/library/components/publication/PublicationListElement";
@@ -40,10 +40,10 @@ export class ListView extends React.Component<IProps, undefined> {
         return (
             <>
             {
-                <ul>
+                <ul className={styles.p_0}>
                     { this.props.normalOrOpdsPublicationViews?.map((pub, i: number) => {
                         return (
-                            <li className={styles.block_book_list} key={ i }>
+                            <li className={styles.publication_list_wrapper} key={ i }>
                                 <PublicationListElement
                                     publicationViewMaybeOpds={pub}
                                     menuContent={

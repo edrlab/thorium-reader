@@ -6,13 +6,14 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -70,11 +71,11 @@ class FeedList extends React.Component<IProps, IState> {
         }
         const { __ } = this.props;
         return (
-            <section className={styles.opds_list}>
-                <ul>
+            <section>
+                <ul className={classNames(styles.flex_wrap, styles.p_0)}>
                     {this.state.feedsResult.map((item, index) => {
                         return (
-                            <li key={"feed-" + index}>
+                            <li key={"feed-" + index} className={styles.block_full_wrapper}>
                                 <Link
                                     to={{
                                         ...this.props.location,
@@ -84,11 +85,13 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
+                                    className={styles.block_full}
                                 >
                                     <p>{item.title}</p>
                                 </Link>
                                 <button
                                     onClick={(e) => this.deleteFeed(e, item)}
+                                    className={classNames(styles.button_transparency_icon, styles.block_full_close)}
                                 >
                                     <SVG svg={DeleteIcon} title={__("catalog.delete")} />
                                 </button>

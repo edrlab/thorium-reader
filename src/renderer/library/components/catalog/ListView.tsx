@@ -65,10 +65,10 @@ class CatalogListView extends React.Component<IProps, undefined> {
                             </div>
                         }
                         {
-                            <ul>
+                            <ul className={styles.p_0}>
                                 { entry.publicationViews.map((pub, i: number) => {
                                     return (
-                                        <li className={styles.block_book_list} key={ i }>
+                                        <li className={styles.publication_list_wrapper} key={ i }>
                                             <PublicationListElement
                                                 publicationViewMaybeOpds={pub}
                                                 menuContent={<CatalogMenu publicationView={pub}/>}

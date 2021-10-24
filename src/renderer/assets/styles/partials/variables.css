@@ -2,8 +2,9 @@
   /* Colors */
   --color-primary: #4d4d4d;
   --color-secondary: #fff;
-  --color-disabled: #767676;
+  --color-disabled: #b7b7b7;
   --color-light-grey: #f1f1f1;
   --color-medium-grey: #e5e5e5;
   --color-accent: rgb(0, 188, 212);
+  --color-accent-contrast: #fff;
 }

@@ -1,5 +1,25 @@
 /* All Buttons Styles */
 
+/*
+
+  1. button
+
+  2. .button_primary
+     .button_primary_small
+
+  3. .button_secondary
+
+  4. .button_tertiary
+
+  5. .button_transparency
+     .button_transparncy_icon
+
+  6. .button_keyboard
+
+*/
+
+/* button */
+
 button,
 .button_primary,
 .button_primary_small {
@@ -36,6 +56,14 @@ button {
   }
 }
 
+/* 
+
+  2. .button_primary
+     .button_primary_small
+     .button_primary_icon
+
+*/
+
 .button_primary {
   @mixin button_primary;
 
@@ -48,19 +76,6 @@ button {
     height: 14px;
     margin-right: 8px;
     transition: all 0.2s;
-  }
-}
-
-.button_transparency_icon {
-  display: inline-block;
-  height: 34px;
-  width: 34px;
-  color: #000;
-
-  & svg {
-    height: 34px;
-    width: 34px;
-    transition: all 0.2s 0.05s;
   }
 }
 
@@ -95,26 +110,99 @@ button {
   }
 }
 
-.button_transparency_icon.button_refresh {
-  &:hover svg {
+.button_primary_icon {
+  @mixin button_primary;
+
+  padding: 10px 15px;
+  width: 18px;
+  height: 18px;
+}
+
+/* 4. .button_secondary */
+
+.button_secondary {
+  font: 1rem Arial, sans-serif;
+  padding: 10px 15px;
+
+  position: relative;
+  display: inline;
+  background-color: var(--color-accent);
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  color: var(--color-accent-contrast);
+  fill: var(--color-accent-contrast);
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  transition: all 0.2s;
+
+  & svg {
+    vertical-align: -2px;
+    fill: var(--color-accent-contrast);
+    width: auto;
+    height: 14px;
+    margin-right: 8px;
+    transition: all 0.2s;
+  }
+  &[disabled],
+  &.disabled {
+    color: #fff;
+    background-color: var(--color-disabled);
+  }
+}
+
+/* 
+
+  5. .button_transparncy
+     .button_transparency_icon
+     .button_primary_icon
+
+*/
+
+.button_transparency,
+.button_transparency_icon {
+  display: inline-block;
+  color: #000;
+  transition: all .2s;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0);
+  font-weight: 600;
+  font: 1rem Arial, sans-serif;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.button_transparency {
+  padding: 10px 15px;
+  width: auto;
+  height: auto;
+
+  &.button_refresh:hover svg {
     transform: rotate(90deg);
   }
 }
 
-.button_icon_primary {
-  position: relative;
-  display: inline;
-  border: 1px solid black;
-  font: 1rem Arial, sans-serif;
-  padding: 10px 15px;
-  border-radius: 5px;
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-  width: 18px;
-  height: 18px;
-  transition: all 0.2s;
+.button_transparency_icon {
+  height: 34px;
+  width: 34px;
+
+  & svg {
+    height: 34px;
+    width: 34px;
+    transition: all 0.2s 0.05s;
+  }
 }
+
+/* 
+
+  6. .button_keyboard
+
+*/
 
 .button_keyboard {
   width: auto;

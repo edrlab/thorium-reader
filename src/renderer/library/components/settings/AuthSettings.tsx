@@ -37,15 +37,12 @@ class AuthSettings extends React.Component<IProps> {
         const { __ } = this.props;
         return (
             <>
-                <div className={styles.heading}>
-                    <h2>{__("catalog.opds.auth.login")}</h2>
-                </div>
-                <section className={styles.keyboard_shortcuts_section}>
+                <section>
+                    <div className={styles.heading}>
+                        <h2>{__("catalog.opds.auth.login")}</h2>
+                    </div>
                     <button
-                        className={
-                            classNames(styles.keyboard_shortcuts_button,
-                                styles.keyboard_shortcuts_button_primary)
-                        }
+                        className={styles.button_primary}
                         onClick={() => this.props.wipeData()}>
                         {__("settings.auth.wipeData")}
                     </button>
