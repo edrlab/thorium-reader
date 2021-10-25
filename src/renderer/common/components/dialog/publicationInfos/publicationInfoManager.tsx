@@ -33,7 +33,7 @@ export const PublicationInfoManager: React.FC<IProps> = (props) => {
                     ? toggleCoverZoomCb(coverZoom)
                     : closeDialogCb()
             }
-            title={publication.title}
+            title={publication?.title}
         >
             <div className={styles.modal_dialog_body}>
                 {
