@@ -63,6 +63,8 @@ declare const styles: {
   readonly "dropdown_menu": string;
   readonly "publication_wrapper": string;
   readonly "publication_image_wrapper": string;
+  readonly "no_img_wrapper": string;
+  readonly "no_img": string;
   readonly "publication_infos_wrapper": string;
   readonly "publication_infos": string;
   readonly "publication_title": string;
