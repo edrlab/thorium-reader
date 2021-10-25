@@ -62,6 +62,7 @@ class FileImport extends React.Component<IProps, undefined> {
                             }
                         </div>
                     ) : (
+                        <>
                         <div className={styles.modal_dialog_body}>
                             <div>
                                 <p>{this.props.__("dialog.import")}</p>
@@ -70,14 +71,17 @@ class FileImport extends React.Component<IProps, undefined> {
                                 </ul>
                             </div>
                             <div>
-                                <button className={styles.button_primary} onClick={this.importFiles}>
-                                    {this.props.__("dialog.yes")}
-                                </button>
-                                <button className={styles.button_primary} onClick={closeDialog}>
-                                    {this.props.__("dialog.no")}
-                                </button>
                             </div>
                         </div>
+                        <div className={styles.modal_dialog_footer}>
+                            <button className={styles.button_transparency} onClick={closeDialog}>
+                                {this.props.__("dialog.no")}
+                            </button>
+                            <button className={styles.button_primary} onClick={this.importFiles}>
+                                {this.props.__("dialog.yes")}
+                            </button>
+                        </div>
+                        </>
                     )
                 }
             </Dialog>
