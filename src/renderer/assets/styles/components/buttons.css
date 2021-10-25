@@ -1,3 +1,5 @@
+@import '../partials/variables.css';
+
 /* All Buttons Styles */
 
 /*
@@ -56,7 +58,7 @@ button {
   }
 }
 
-/* 
+/*
 
   2. .button_primary
      .button_primary_small
@@ -123,7 +125,6 @@ button {
 .button_secondary {
   font: 1rem Arial, sans-serif;
   padding: 10px 15px;
-
   position: relative;
   display: inline;
   background-color: var(--color-accent);
@@ -147,6 +148,7 @@ button {
     margin-right: 8px;
     transition: all 0.2s;
   }
+
   &[disabled],
   &.disabled {
     color: #fff;
@@ -154,7 +156,7 @@ button {
   }
 }
 
-/* 
+/*
 
   5. .button_transparncy
      .button_transparency_icon
@@ -166,11 +168,12 @@ button {
 .button_transparency_icon {
   display: inline-block;
   color: #000;
-  transition: all .2s;
+  transition: all 0.2s;
   border-radius: 5px;
   background: rgba(0, 0, 0, 0);
+  font-size: 1rem;
+  font-family: "Arial", sans-serif;
   font-weight: 600;
-  font: 1rem Arial, sans-serif;
 
   &:hover {
     background: rgba(0, 0, 0, 0.1);
@@ -198,7 +201,7 @@ button {
   }
 }
 
-/* 
+/*
 
   6. .button_keyboard
 

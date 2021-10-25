@@ -1,3 +1,5 @@
+@import '../partials/variables.css';
+
 /* All Modals Styles */
 
 .modal_dialog_overlay {
@@ -80,7 +82,7 @@
 
   & h2 {
     font-weight: bold;
-    margin: 10px 0px;
+    margin: 10px 0;
     font-size: 22px;
     margin-left: 10px;
     overflow: hidden;
@@ -98,7 +100,6 @@
 }
 
 .c_dialog__box {
-
   & .close_button {
     position: absolute;
     top: 15px;

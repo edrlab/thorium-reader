@@ -35,7 +35,6 @@
     align-items: flex-end;
     justify-content: center;
     cursor: pointer;
-
     height: 100%;
     width: 100%;
     max-width: 100%;
@@ -73,7 +72,7 @@
       word-break: break-all;
       display: -webkit-inline-box;
       -webkit-line-clamp: 3;
-  
+
       /* autoprefixer: ignore next */
       -webkit-box-orient: vertical;
       overflow: hidden;
@@ -104,6 +103,7 @@
     & p {
       margin: 0;
     }
+
     & .publication_title {
       font-weight: 600;
       max-width: 100%;
@@ -112,6 +112,7 @@
       overflow: hidden;
       line-height: 1.2em;
     }
+
     & .publication_description {
       font-weight: 300;
       overflow-wrap: break-word;
@@ -128,12 +129,11 @@
 /* 2. list */
 
 .publication_list_wrapper {
-  display: block;
+  display: flex;
   margin-left: 0;
   height: 40px;
   padding: 10px 20px;
   font-size: 0.8rem;
-  display: flex;
   align-items: center;
 
   &:nth-child(odd) {
@@ -143,7 +143,6 @@
 
 .publication_list_infos {
   flex: 1;
-  display: block;
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -161,10 +160,12 @@
   & p {
     margin: 0;
   }
+
   & .publication_list_title_authors {
     margin-right: 20px;
     width: calc(60% - 20px);
   }
+
   & div:last-child {
     width: 40%;
     display: flex;
@@ -172,20 +173,6 @@
     align-items: center;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .block_book_list {
   display: block;

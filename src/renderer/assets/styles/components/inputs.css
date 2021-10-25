@@ -176,7 +176,6 @@ select {
   appearance: none;
 }
 
-
 /* 5. form_group */
 
 .form_group {
@@ -189,9 +188,11 @@ select {
     margin-right: 10px;
     flex: none;
   }
+
   & input {
     flex: 1;
   }
+
   &:not(:last-child):not(:only-child) {
     margin-bottom: 2rem;
   }
