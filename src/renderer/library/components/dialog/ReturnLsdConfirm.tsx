@@ -52,8 +52,10 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
                 title={__("publication.returnButton")}
             >
                 <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>
-                    <p><strong>{__("dialog.return")}</strong></p>
-                    <p>{this.props.publicationView.title}</p>
+                    <div className={styles.w_50}>
+                        <p><strong>{__("dialog.return")}</strong></p>
+                        <p>{this.props.publicationView.title}</p>
+                    </div>
                 </div>
                 <div className={styles.modal_dialog_footer}>
                     <button className={styles.button_transparency} onClick={closeDialog}>
