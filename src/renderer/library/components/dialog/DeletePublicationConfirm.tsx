@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -18,6 +18,7 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -45,16 +46,24 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
 
         const { __, closeDialog } = this.props;
         return (
-            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
-                <div>
+            <Dialog
+                open={true}
+                close={closeDialog}
+                id={styles.choice_dialog}
+                title={__("dialog.deletePublication")}
+            >
+                <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>
                     <p>
-                        {__("dialog.deletePublication")}
                         <span>{this.props.publicationView.title}</span>
                     </p>
-                    <div>
-                        <button className={styles.primary} onClick={this.remove}>{__("dialog.yes")}</button>
-                        <button onClick={closeDialog}>{__("dialog.no")}</button>
-                    </div>
+                </div>
+                <div className={styles.modal_dialog_footer}>
+                    <button className={styles.button_transparency} onClick={closeDialog}>
+                        {this.props.__("dialog.no")}
+                    </button>
+                    <button className={styles.button_primary} onClick={this.remove}>
+                        {this.props.__("dialog.yes")}
+                    </button>
                 </div>
             </Dialog>
         );
