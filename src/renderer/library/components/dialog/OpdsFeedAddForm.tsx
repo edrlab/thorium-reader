@@ -61,7 +61,7 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
         return (
             <Dialog
                 open={true}
-                close={closeDialog} 
+                close={closeDialog}
                 id={styles.opds_form_dialog}
                 title={__("opds.addMenu")}
             >

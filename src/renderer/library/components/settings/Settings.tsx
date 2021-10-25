@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
