@@ -52,7 +52,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
     public render() {
         const { __ } = this.props;
         return (
-            <section id={styles.aboutThoriumButton}>
+            <section>
                 <div className={styles.heading}>
                     <h2>{__("catalog.about.title", { appName: capitalizedAppName })}</h2>
                     <button

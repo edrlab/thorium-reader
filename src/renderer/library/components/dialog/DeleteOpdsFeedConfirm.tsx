@@ -51,7 +51,6 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
             <Dialog
                 open={true}
                 close={closeDialog}
-                id={styles.choice_dialog}
                 title={__("dialog.deleteFeed")}
             >
                 <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>

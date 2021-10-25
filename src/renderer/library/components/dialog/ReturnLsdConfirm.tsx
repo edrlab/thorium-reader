@@ -45,10 +45,14 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
 
         const { __, closeDialog } = this.props;
         return (
-            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
+            <Dialog
+                open={true}
+                close={closeDialog}
+                id={styles.choice_dialog}
+                title={__("dialog.return")}
+            >
                 <div>
                     <p>
-                        {__("dialog.return")}
                         <span>{this.props.publicationView.title}</span>
                     </p>
                     <div>

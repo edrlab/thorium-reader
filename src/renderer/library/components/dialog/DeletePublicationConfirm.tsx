@@ -49,7 +49,6 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
             <Dialog
                 open={true}
                 close={closeDialog}
-                id={styles.choice_dialog}
                 title={__("dialog.deletePublication")}
             >
                 <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>

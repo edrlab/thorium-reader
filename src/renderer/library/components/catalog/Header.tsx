@@ -44,7 +44,7 @@ class Header extends React.Component<IProps, undefined> {
         const displayType = location?.state?.displayType || DisplayType.Grid;
 
         return (
-            <SecondaryHeader id={styles.catalog_header}>
+            <SecondaryHeader>
                 <Link
                     to={{
                         ...this.props.location,
@@ -91,7 +91,6 @@ class Header extends React.Component<IProps, undefined> {
         if (search === -1) {
             return (
                 <Link
-                    id={styles.all_link_button}
                     className={styles.button_primary_small}
                     to={{
                         ...this.props.location,
