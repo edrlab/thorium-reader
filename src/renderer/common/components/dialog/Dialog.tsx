@@ -60,7 +60,7 @@ class Dialog extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const content = this.props.children;
-        const dialogTitle = this.props.children;
+        // const dialogTitle = this.props.children;
         const className = this.props.className;
         const { __ } = this.props;
         return ReactDOM.createPortal(

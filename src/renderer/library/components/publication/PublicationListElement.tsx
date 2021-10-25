@@ -161,7 +161,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
     private openCloseMenu() {
         this.setState({ menuOpen: !this.state.menuOpen });
     }
-    
+
     private toggleMenu() {
         this.setState({ menuOpen: !this.state.menuOpen });
     }
