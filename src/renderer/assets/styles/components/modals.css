@@ -33,6 +33,8 @@
   margin: 30px;
   min-height: 512px;
   min-width: 739px;
+  width: calc(100vw - 60px);
+  height: calc(100vh - 60px);
   max-width: calc(100vw - 60px);
   max-height: calc(100vh - 60px);
   border-radius: 10px;
