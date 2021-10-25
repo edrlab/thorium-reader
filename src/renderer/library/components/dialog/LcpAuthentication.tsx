@@ -65,7 +65,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                 <form className={styles.modal_dialog_form_wrapper} onSubmit={this.submit}>
                     <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>
                         <div className={styles.w_50}>
-                            <p>{__("library.lcp.sentence")}</p>
+                            <p><strong>{__("library.lcp.sentence")}</strong></p>
                             {
                                 typeof this.props.message === "string" ?
                                     <p>
@@ -76,14 +76,6 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             <p>
                                 <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                             </p>
-                            {
-                                this.props.urlHint?.href
-                                    ?
-                                    <a href={this.props.urlHint.href}>
-                                        {this.props.urlHint.title || __("library.lcp.urlHint")}
-                                    </a>
-                                    : <></>
-                            }
                             <div className={styles.form_group}>
                                 <label>{__("library.lcp.password")}</label>
                                 <input
@@ -93,6 +85,14 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                     placeholder={__("library.lcp.password")}
                                 />
                             </div>
+                            {
+                                this.props.urlHint?.href
+                                    ?
+                                    <a href={this.props.urlHint.href}>
+                                        {this.props.urlHint.title || __("library.lcp.urlHint")}
+                                    </a>
+                                    : <></>
+                            }
                         </div>
                     </div>
                     <div className={styles.modal_dialog_footer}>

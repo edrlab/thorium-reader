@@ -52,10 +52,8 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
                 title={__("publication.renewButton")}
             >
                 <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>
-                    <p>{__("dialog.renew")}</p>
-                    <p>
-                        <span>{this.props.publicationView.title}</span>
-                    </p>
+                    <p><strong>{__("dialog.renew")}</strong></p>
+                    <p>{this.props.publicationView.title}</p>
                 </div>
                 <div className={styles.modal_dialog_footer}>
                     <button className={styles.button_transparency} onClick={closeDialog}>
