@@ -9,8 +9,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -18,6 +20,7 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -57,46 +60,58 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             <Dialog
                 open={true}
                 close={closeDialog}
-                id={styles.lcp_dialog}
-                title={__("library.lcp.sentence")}
+                title={__("library.lcp.password")}
             >
-                <div>
-                    {
-                        typeof this.props.message === "string" ?
+                <form className={styles.modal_dialog_form_wrapper} onSubmit={this.submit}>
+                    <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>
+                        <div className={styles.w_50}>
+                            <p>{__("library.lcp.sentence")}</p>
+                            {
+                                typeof this.props.message === "string" ?
+                                    <p>
+                                        <span>{this.props.message}</span>
+                                    </p>
+                                    : <></>
+                            }
                             <p>
-                                <span>{this.props.message}</span>
+                                <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                             </p>
-                            : <></>
-                    }
-                    <p>
-                        <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
-                    </p>
-                    {
-                        this.props.urlHint?.href
-                            ?
-                            <a href={this.props.urlHint.href}>
-                                {this.props.urlHint.title || __("library.lcp.urlHint")}
-                            </a>
-                            : <></>
-                    }
-                    <form onSubmit={this.submit}>
-                        <input
-                            type="password"
-                            onChange={this.onPasswordChange}
-                            placeholder={__("library.lcp.password")}
-                        />
-                        <div>
-                            <input
-                                type="submit"
-                                value={__("library.lcp.submit")}
-                                disabled={!this.state.password}
-                            />
-                            <button
-                                onClick={(e) => { e.preventDefault(); closeDialog(); }}
-                            >{__("library.lcp.cancel")}</button>
+                            {
+                                this.props.urlHint?.href
+                                    ?
+                                    <a href={this.props.urlHint.href}>
+                                        {this.props.urlHint.title || __("library.lcp.urlHint")}
+                                    </a>
+                                    : <></>
+                            }
+                            <div className={styles.form_group}>
+                                <label>{__("library.lcp.password")}</label>
+                                <input
+                                    aria-label={__("library.lcp.password")}
+                                    type="password"
+                                    onChange={this.onPasswordChange}
+                                    placeholder={__("library.lcp.password")}
+                                />
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div className={styles.modal_dialog_footer}>
+                        <button
+                            onClick={(e) => { e.preventDefault(); closeDialog(); }}
+                            className={styles.button_transparency}
+                        >
+                            {__("library.lcp.cancel")}
+                        </button>
+                        <button
+                            disabled={!this.state.password}
+                            type="submit"
+                            className={styles.button_secondary}
+                        >
+                            <SVG svg={DoneIcon} />
+                            {__("library.lcp.submit")}
+                        </button>
+                    </div>
+                </form>
             </Dialog>
         );
     }
