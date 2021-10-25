@@ -111,7 +111,7 @@ class Slider extends React.Component<IProps, IState> {
                     >
                         <SVG svg={ArrowRightIcon}/>
                     </button>
-                : <div className={styles.button_substitute}/>
+                : <></>
                 }
                 <div ref={this.wrapperRef} className={styles.slider_wrapper}>
                     <div ref={this.contentRef} className={styles.slider_items} style={varStyle}>
@@ -126,7 +126,7 @@ class Slider extends React.Component<IProps, IState> {
                     >
                         <SVG svg={ArrowRightIcon}/>
                     </button>
-                : <div className={styles.button_substitute}/>
+                : <></>
                 }
             </div>
         );
