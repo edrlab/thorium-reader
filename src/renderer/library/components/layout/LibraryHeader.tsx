@@ -40,7 +40,7 @@ const headerNav: NavigationHeader[] = [
         route: "/settings",
         label: "settings",
         matchRoutes: ["/settings"],
-        styles: [styles.preferences],
+        styles: [],
     },
 ];
 

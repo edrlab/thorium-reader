@@ -45,10 +45,14 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
 
         const { __, closeDialog } = this.props;
         return (
-            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
+            <Dialog
+                open={true}
+                close={closeDialog}
+                id={styles.choice_dialog}
+                title={__("dialog.renew")}
+            >
                 <div>
                     <p>
-                        {__("dialog.renew")}
                         <span>{this.props.publicationView.title}</span>
                     </p>
                     <div>

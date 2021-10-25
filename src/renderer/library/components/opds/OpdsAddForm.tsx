@@ -37,7 +37,7 @@ export class OpdsAddForm extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
-            <section className={ styles.opds_form }>
+            <section>
                 <button
                     onClick={this.props.openOpdsFeedAddForm}
                     className={styles.button_primary}

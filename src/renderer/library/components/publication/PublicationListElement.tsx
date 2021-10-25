@@ -94,7 +94,6 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                     button={
                         (<SVG
                             title={`${pub.title} - ${authors}`}
-                            ref={this.buttonRef}
                             className={styles.button_transparency_icon}
                             svg={MenuIcon}
                         />)
@@ -102,7 +101,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                     content={(
                         <div
                             id={this.menuId}
-                            className={(this.state.menuOpen ? styles.dropdown_menu + " " : "") + styles.list_menu}
+                            className={(this.state.menuOpen ? styles.dropdown_menu : null )}
                         >
                             {this.props.menuContent}
                         </div>

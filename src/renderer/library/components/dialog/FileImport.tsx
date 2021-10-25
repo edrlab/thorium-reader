@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import * as styles from "readium-desktop/renderer/assets/styles/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -45,9 +45,15 @@ class FileImport extends React.Component<IProps, undefined> {
 
         const { files, closeDialog } = this.props;
         return (
-            <Dialog open={true} close={closeDialog} id={styles.add_dialog}>
+            <Dialog
+                open={true}
+                close={closeDialog}
+                id={styles.add_dialog}
+                title={this.props.__("catalog.addBookToLib")}
+            >
                 {
-                    (!files || files.length === 0) ?
+                    <div className={styles.modal_dialog_body}>
+                        (!files || files.length === 0) ?
                         (<div>
                             {
                                 this.props.__("dialog.importError", {
@@ -71,6 +77,7 @@ class FileImport extends React.Component<IProps, undefined> {
                                 </div>
                             </>
                         )
+                    </div>
                 }
             </Dialog>
         );

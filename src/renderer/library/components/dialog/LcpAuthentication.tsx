@@ -54,7 +54,12 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
 
         const { __, closeDialog } = this.props;
         return (
-            <Dialog open={true} close={closeDialog} id={styles.lcp_dialog}>
+            <Dialog
+                open={true}
+                close={closeDialog}
+                id={styles.lcp_dialog}
+                title={__("library.lcp.sentence")}
+            >
                 <div>
                     {
                         typeof this.props.message === "string" ?
@@ -64,7 +69,6 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             : <></>
                     }
                     <p>
-                        {__("library.lcp.sentence")}
                         <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                     </p>
                     {
