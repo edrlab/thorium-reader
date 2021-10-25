@@ -6,6 +6,11 @@
 @import './components/buttons.css';
 @import './components/inputs.css';
 @import './components/breadcrumb.css';
+@import './components/modals.css';
+@import './components/blocks.css';
+@import './components/slider.css';
+@import './components/dropdown.css';
+@import './components/publications.css';
 
 /* ============ GLOBAL ELEMENTS =============== */
 
@@ -28,6 +33,10 @@ body {
   background: #fbfbfb;
 }
 
+section {
+  margin-bottom: 40px;
+}
+
 .main {
   width: calc(100% - 120px);
   padding: 30px 60px;
@@ -36,6 +45,10 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
+  top: 57px;
+}
+
+nav + nav + .main {
   top: 123px;
 }
 
@@ -72,12 +85,39 @@ body {
   text-align: right;
 }
 
+.p_0 {
+  padding: 0;
+}
+
 .mr_10 {
   margin-right: 10px;
 }
 
 .mt_10 {
   margin-top: 10px;
+}
+
+.w_50 {
+  width: 50%;
+}
+
+.d-flex,
+.justify_content_between,
+.align_items_center,
+.flex_wrap {
+  display: flex;
+}
+
+.justify_content_betwen {
+  justify-content: space-between;
+}
+
+.align_items_center {
+  align-items: center;
+}
+
+.flex_wrap {
+  flex-wrap: wrap;
 }
 
 /* ============== NAVIGATION ================= */
@@ -128,6 +168,7 @@ body {
   background-color: var(--color-secondary);
   display: flex;
   align-items: center;
+  border-bottom: 1px solid var(--color-light-grey);
 
   & form[role="search"] {
     margin: 0 30px;
@@ -138,7 +179,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 40px;
   padding-bottom: 5px;
   margin-bottom: 15px;
   border-bottom: 3px solid var(--color-light-grey);
@@ -148,125 +188,6 @@ body {
     font-weight: 700;
     margin: 0;
     font-size: 1.5rem;
-  }
-}
-
-& section ul {
-  padding: 0;
-  margin: 0;
-}
-
-.keyboard_shortcuts_section {
-  display: flex;
-
-  /* align-items: center; */
-
-  /* justify-content: center; */
-
-  & .keyboard_shortcuts_button {
-    display: inline-block;
-    width: 23%;
-    height: auto;
-    cursor: pointer;
-    font-size: 1rem;
-    border: 1px solid rgb(50, 50, 50);
-    border-radius: 5px;
-    color: black;
-    padding: 10px;
-    margin: 0;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-  }
-
-  & .keyboard_shortcuts_button_primary {
-    font-weight: bold;
-  }
-
-  & .keyboard_shortcuts_button_active {
-    background-color: #e5e5e5;
-  }
-}
-
-.keyboard_shortcuts_menu {
-  height: fit-content;
-  width: 180px;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  font-size: 0.9rem;
-  box-shadow: 0 0 10px 0 #cfcfcf;
-  overflow: hidden;
-
-  & button,
-  & a,
-  & span label {
-    text-decoration: none;
-    color: black;
-    padding: 0.7rem;
-    text-align: center;
-    cursor: pointer;
-    height: 2.5rem;
-    box-sizing: border-box;
-    width: 100%;
-    font-size: 0.9rem;
-    opacity: 1;
-    margin: 0;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-
-    &:hover {
-      background-color: #cecece;
-    }
-
-    &:not(:last-child) {
-      border-bottom: 1px solid #e5e3e3;
-    }
-  }
-
-  & button[disabled] {
-    cursor: not-allowed;
-  }
-
-  & span {
-    cursor: pointer;
-
-    & input {
-      height: 0;
-      width: 0;
-      position: absolute;
-      left: -2000px;
-    }
-
-    & input:focus + label {
-      @mixin R2_MIXIN_FOCUS_OUTLINE;
-    }
-  }
-}
-
-/* Blocks */
-
-.block_line {
-  padding: 0.5em;
-  border-radius: 8px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--color-disabled);
-}
-
-.block_line_edit {
-  padding: 0.5em;
-  border-radius: 8px;
-  border-width: 1px;
-  border-style: dashed;
-  border-color: var(--color-primary);
-}
-
-.block_line,
-.block_line_edit {
-  &:not(:last-child) {
-    margin-bottom: 1.5em;
   }
 }
 

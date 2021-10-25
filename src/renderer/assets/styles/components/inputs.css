@@ -22,6 +22,8 @@
 
 	4. select & option
 
+  5. form_group
+
 */
 
 /* 1. input[type="text"] ... */
@@ -172,4 +174,25 @@ form[role="search"] {
 
 select {
   appearance: none;
+}
+
+
+/* 5. form_group */
+
+.form_group {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+
+  & label {
+    margin-right: 10px;
+    flex: none;
+  }
+  & input {
+    flex: 1;
+  }
+  &:not(:last-child):not(:only-child) {
+    margin-bottom: 2rem;
+  }
 }

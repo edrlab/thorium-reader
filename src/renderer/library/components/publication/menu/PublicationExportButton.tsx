@@ -34,14 +34,12 @@ class PublicationExportButton extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
-                <span>
-                    <button
-                        role="menuitem"
-                        onClick={this.onExport}
-                    >
-                        { __("catalog.export")}
-                    </button>
-                </span>
+            <button
+                role="menuitem"
+                onClick={this.onExport}
+            >
+                { __("catalog.export")}
+            </button>
         );
     }
 

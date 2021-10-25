@@ -15,11 +15,12 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { IOpdsContributorView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import AccessibleMenu from "readium-desktop/renderer/common/components/menu/AccessibleMenu";
+import Menu from "readium-desktop/renderer/common/components/menu/Menu";
+// import AccessibleMenu from "readium-desktop/renderer/common/components/menu/AccessibleMenu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
     formatContributorToString,
@@ -60,6 +61,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
         // this.deletePublication = this.deletePublication.bind(this);
         this.toggleMenu = this.toggleMenu.bind(this);
+        this.openCloseMenu = this.openCloseMenu.bind(this);
         this.focusButton = this.focusButton.bind(this);
 
         this.menuId = "menu-" + uuidv4();
@@ -88,45 +90,57 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
         return (
             <>
-                <div className={styles.publicationLine}>
-                    <button
-                        type="button"
-                        aria-expanded={this.state.menuOpen}
-                        aria-controls={this.menuId}
-                        title={`${pub.title} - ${authors}`}
-                        onClick={this.toggleMenu}
-                        ref={this.buttonRef}
-                    >
-                        <SVG svg={MenuIcon} />
-                    </button>
-                    <a
-                        className={styles.publicationLineLink}
-                        tabIndex={0}
-                        onClick={(e) => this.handleBookClick(e)}
-                        onKeyPress={
-                            (e) =>
-                                e.key === "Enter" && this.handleBookClick(e)
-                        }
-                    >
-                        <div className={styles.list_book_title}>
-                            <p className={styles.book_title}>{pub.title}</p>
-                            <p className={styles.book_author}>
-                                {authors}
-                            </p>
+                <Menu
+                    button={
+                        (<SVG
+                            title={`${pub.title} - ${authors}`}
+                            ref={this.buttonRef}
+                            className={styles.button_transparency_icon}
+                            svg={MenuIcon}
+                        />)
+                    }
+                    content={(
+                        <div
+                            id={this.menuId}
+                            className={(this.state.menuOpen ? styles.dropdown_menu + " " : "") + styles.list_menu}
+                        >
+                            {this.props.menuContent}
                         </div>
-                        <p className={styles.infos_sup}>
-                            {
-                                formatedPublishedYear
-                            }
-                        </p>
-                        <p className={styles.infos_sup}>
-                            {
-                                formatedPublishers
-                            }
-                        </p>
-                    </a>
-                </div>
-                {this.state.menuOpen &&
+                    )}
+                    open={this.state.menuOpen}
+                    dir="left"
+                    toggle={this.openCloseMenu}
+                />
+                {/* <button
+                    type="button"
+                    aria-expanded={this.state.menuOpen}
+                    aria-controls={this.menuId}
+                    title={`${pub.title} - ${authors}`}
+                    onClick={this.toggleMenu}
+                    ref={this.buttonRef}
+                    className={styles.button_transparency_icon}
+                >
+                    <SVG svg={MenuIcon} />
+                </button> */}
+                <a
+                    className={styles.publication_list_infos}
+                    tabIndex={0}
+                    onClick={(e) => this.handleBookClick(e)}
+                    onKeyPress={
+                        (e) =>
+                            e.key === "Enter" && this.handleBookClick(e)
+                    }
+                >
+                    <div className={styles.publication_list_title_authors}>
+                        <div><strong>{pub.title}</strong></div>
+                        <p>{authors}</p>
+                    </div>
+                    <div>
+                        <p>{formatedPublishedYear}</p>
+                        <p>{formatedPublishers}</p>
+                    </div>
+                </a>
+                {/* {this.state.menuOpen &&
                     <AccessibleMenu
                         toggleMenu={this.toggleMenu}
                         focusMenuButton={this.focusButton}
@@ -139,11 +153,15 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                             {this.props.menuContent}
                         </div>
                     </AccessibleMenu>
-                }
+                } */}
             </>
         );
     }
 
+    private openCloseMenu() {
+        this.setState({ menuOpen: !this.state.menuOpen });
+    }
+    
     private toggleMenu() {
         this.setState({ menuOpen: !this.state.menuOpen });
     }

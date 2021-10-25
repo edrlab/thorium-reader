@@ -91,116 +91,104 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <>
-            <div className={styles.heading}>
-                <h2>{__("settings.keyboard.keyboardShortcuts")}</h2>
-            </div>
-            <section className={styles.keyboard_shortcuts_section}>
-                <button
-                    className={
-                        classNames(
-                            styles.button_primary,
-                            styles.button_accordion,
-                            this.state.displayKeyboardShortcuts ?
-                                styles.keyboard_shortcuts_button_active : null)
-                    }
-                    onClick={() => this.onClickKeyboardShortcutsShowHide()}
-                >
-                    <SVG
-                        svg={ChevronDownIcon}
-                        className={this.state.displayKeyboardShortcuts ? styles.rotate180 : null  }
-                    />
-                    {this.state.displayKeyboardShortcuts ? __("settings.keyboard.hide") : __("settings.keyboard.show")}
-                </button>
-                {
-                    (
-                        this.state.displayKeyboardShortcuts && !this.state.editKeyboardShortcutId
-                    ) && (
-                        <Menu
-                            button={
-                                (<SVG
-                                    title={
-                                        `${__("settings.keyboard.advancedMenu")}`
+                <section>
+                    <div className={styles.heading}>
+                        <h2>{__("settings.keyboard.keyboardShortcuts")}</h2>
+                    </div>
+                    <div className={styles.justify_content_between}>
+                        <button
+                            className={styles.button_primary}
+                            onClick={() => this.onClickKeyboardShortcutsShowHide()}
+                        >
+                            <SVG
+                                svg={ChevronDownIcon}
+                                className={this.state.displayKeyboardShortcuts ? styles.rotate180 : null  }
+                            />
+                            {this.state.displayKeyboardShortcuts ? __("settings.keyboard.hide") : __("settings.keyboard.show")}
+                        </button>
+                        {
+                            (
+                                this.state.displayKeyboardShortcuts && !this.state.editKeyboardShortcutId
+                            ) && (
+                                <Menu
+                                    button={
+                                        (<SVG
+                                            title={
+                                                `${__("settings.keyboard.advancedMenu")}`
+                                            }
+                                            className={styles.button_primary_icon}
+                                            svg={MenuIcon}
+                                        />)
                                     }
-                                    className={styles.button_icon_primary}
-                                    svg={MenuIcon}
-                                />)
-                            }
-                            content={(
-                                <div className={classNames(styles.text_right, styles.mt_10)}>
+                                    content={(
+                                        <div className={styles.dropdown_menu}>
+                                            <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
+                                                {__("settings.keyboard.resetDefaults")}
+                                            </button>
+                                            <button onClick={() => this.onClickKeyboardShortcutsShow()}>
+                                                {__("settings.keyboard.editUserJson")}
+                                            </button>
+                                            <button onClick={() => this.onClickKeyboardShortcutsReload(false)}>
+                                                    {__("settings.keyboard.loadUserJson")}
+                                            </button>
+                                        </div>
+                                    )}
+                                    open={this.state.menuOpen}
+                                    dir="left"
+                                    toggle={this.openCloseMenu}
+                                />
+                            )
+                        }
+                    </div>
+                    {this.state.displayKeyboardShortcuts && (
+                        <div>
+                            <ul className={styles.p_0}>
+                            {this.props.keyboardShortcuts &&
+                            ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap).map((id) => {
+                                const def = this.props.keyboardShortcuts[id];
+                                const hit = this.state.editKeyboardShortcutId === id;
+                                const frag = <>
                                     <button
-                                        className={styles.button_keyboard}
-                                        onClick={() => this.onClickKeyboardShortcutsReload(true)}>
-                                        {__("settings.keyboard.resetDefaults")}
+                                        className={styles.button_primary_small}
+                                        onClick={() => this.onClickKeyboardShortcutEditCancel(id)}>
+                                        {hit ?
+                                        __("settings.keyboard.cancel") : __("settings.keyboard.edit")}
                                     </button>
+                                    {
+                                    hit &&
                                     <button
-                                        onClick={() => this.onClickKeyboardShortcutsShow()}>
-                                        {__("settings.keyboard.editUserJson")}
+                                        className={styles.button_primary_small}
+                                        onClick={() => this.onClickKeyboardShortcutSave(id)}>
+                                        {__("settings.keyboard.save")}
                                     </button>
-                                    <button
-                                        onClick={() => this.onClickKeyboardShortcutsReload(false)}>
-                                            {__("settings.keyboard.loadUserJson")}
-                                    </button>
-                                </div>
-                            )}
-                            open={this.state.menuOpen}
-                            dir="left"
-                            toggle={this.openCloseMenu}
-                        />
-                    )
-                }
-            </section>
-            {this.state.displayKeyboardShortcuts && (
-                <div>
-                    <ul className={styles.keyboard_shortcuts_list}>
-                    {this.props.keyboardShortcuts &&
-                    ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap).map((id) => {
-                        const def = this.props.keyboardShortcuts[id];
-                        const hit = this.state.editKeyboardShortcutId === id;
-                        const frag = <>
-                            <button
-                                className={styles.button_primary_small}
-                                onClick={() => this.onClickKeyboardShortcutEditCancel(id)}>
-                                {hit ?
-                                __("settings.keyboard.cancel") : __("settings.keyboard.edit")}
-                            </button>
-                            {
-                            hit &&
-                            <button
-                                className={styles.button_primary_small}
-                                onClick={() => this.onClickKeyboardShortcutSave(id)}>
-                                {__("settings.keyboard.save")}
-                            </button>
-                            }
+                                    }
 
-                            <strong className={
-                                hit ?
-                                styles.keyboard_shortcuts_edit_title
-                                : null
-                                }>{id}</strong>
-                            <div className={styles.text_right}>{
-                                hit ?
-                                this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)
-                                :
-                                this.prettifyKeyboardShortcut(def)
-                            }</div>
-                        </>;
-                        return <li
-                                className={
-                                    hit ?
-                                        classNames(styles.block_line_edit, styles.no_list_style)
-                                    :
-                                        classNames(styles.block_line, styles.no_list_style)
-                                }
-                            key={`key_${id}`}>{
-                            (hit ? <FocusLock
-                                disabled={false}
-                                autoFocus={false}>{frag}</FocusLock> : frag)
-                            }
-                        </li>;
-                    })}
-                    </ul>
-                </div>
-            )}
+                                    <strong>{id}</strong>
+                                    <div className={styles.text_right}>{
+                                        hit ?
+                                        this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)
+                                        :
+                                        this.prettifyKeyboardShortcut(def)
+                                    }</div>
+                                </>;
+                                return <li
+                                        className={
+                                            hit ?
+                                                classNames(styles.block_line_edit, styles.no_list_style)
+                                            :
+                                                classNames(styles.block_line, styles.no_list_style)
+                                        }
+                                    key={`key_${id}`}>{
+                                    (hit ? <FocusLock
+                                        disabled={false}
+                                        autoFocus={false}>{frag}</FocusLock> : frag)
+                                    }
+                                </li>;
+                            })}
+                            </ul>
+                        </div>
+                    )}
+                </section>
             </>
         );
     }

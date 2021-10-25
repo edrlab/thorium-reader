@@ -1,0 +1,63 @@
+@import '../partials/variables.css';
+
+/* All styles for dropdowns */
+
+.dropdown_menu {
+  height: fit-content;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  font-size: 0.9rem;
+  box-shadow: 0 0 10px 0 var(--color-medium-grey);
+  border-width: 1px;
+  border-color: var(--color-primary);
+  border-style: solid;
+  border-radius: 5px;
+  margin-top: 20px;
+  position: relative;
+
+  &::after {
+    content: " ";
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 7.5px 10px 7.5px;
+    border-color: transparent transparent var(--color-primary) transparent;
+  }
+  & > * {
+    text-decoration: none;
+    color: black;
+    padding: 0.7rem;
+    text-align: center;
+    cursor: pointer;
+    height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+    opacity: 1;
+    margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+  
+    &:first-child {
+      border-radius: 6px 6px 0 0;
+    }
+  
+    &:last-child {
+      border-radius: 0 0 6px 6px;
+    }
+  
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--color-medium-grey);
+    }
+    &:hover {
+      background-color: var(--color-medium-grey);
+    }
+  }
+}
