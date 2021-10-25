@@ -10,7 +10,7 @@ import "reflect-metadata";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import * as styles from "readium-desktop/renderer/assets/styles/components/publications.css";
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";
@@ -56,12 +56,12 @@ class Cover extends React.Component<IProps, undefined> {
             };
 
             return (
-                <div style={backgroundStyle} className={styles.cover}>
-                    <div className={styles.box}>
-                        <p aria-hidden className={styles.title}>
+                <div style={backgroundStyle} className={styles.no_img_wrapper}>
+                    <div className={styles.no_img}>
+                        <p aria-hidden>
                             {this.props.translator.translateContentField(publicationViewMaybeOpds.title)}
                         </p>
-                        <p aria-hidden className={styles.author}>{authors}</p>
+                        <p aria-hidden>{authors}</p>
                     </div>
                 </div>
             );
