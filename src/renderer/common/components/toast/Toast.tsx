@@ -60,7 +60,7 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        setTimeout(this.handleClose, 5000);
+        // setTimeout(this.handleClose, 5000);
         if (this.ref?.current) {
             this.ref?.current.addEventListener("transitionend", this.handleTransitionEnd, false);
         }
@@ -108,8 +108,8 @@ export class Toast extends React.Component<IProps, IState> {
                     toRemove && styles.toRemove,
                     typeClassName,
                 )}
-                aria-live="assertive"
-                aria-relevant="all"
+                // aria-live="assertive"
+                // aria-relevant="all"
                 role="alert"
             >
                 {
@@ -117,6 +117,7 @@ export class Toast extends React.Component<IProps, IState> {
                 }
                 <p>{ this.props.message }</p>
                 <button
+                    aria-label="Close notification"
                     onClick={() => this.handleClose()}
                     className={styles.closeButton}
                 >
