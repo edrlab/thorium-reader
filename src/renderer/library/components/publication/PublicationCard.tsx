@@ -15,6 +15,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import Cover from "readium-desktop/renderer/common/components/Cover";
+import classNames from "classnames";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -89,9 +90,11 @@ class PublicationCard extends React.Component<IProps, IState> {
                         </p>
                     </a>
                     <Menu
-                        button={(<SVG title={__("accessibility.bookMenu")} svg={MenuIcon} />)}
+                        button={(
+                            <SVG title={__("accessibility.bookMenu")} svg={MenuIcon} />
+                        )}
                         content={(
-                            <div className={styles.menu}>
+                            <div className={classNames(styles.dropdown_menu, styles.dropdown_publication)}>
                                 {isOpds ?
                                     <OpdsMenu
                                         opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}

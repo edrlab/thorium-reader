@@ -21,6 +21,16 @@
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-disabled);
+
+  &.description_see_more {
+    position: relative;
+    padding-bottom: 40px;
+    font-size: 1rem;
+
+    & p {
+      margin: 0;
+    }
+  }
 }
 
 .block_line_edit {

@@ -11,7 +11,7 @@ import { I18nTyped, Translator } from "readium-desktop/common/services/translato
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
@@ -48,15 +48,9 @@ const Duration = (props: {
     return (
         sentence
             ? <>
-                <span>
-                    {
-                        `${__("publication.duration.title")}: `
-                    }
-                </span>
+                <strong>{`${__("publication.duration.title")}: `}</strong>
                 <i className={styles.allowUserSelect}>
-                    {
-                        sentence
-                    }
+                    {sentence}
                 </i>
                 <br />
             </>
@@ -82,15 +76,9 @@ const Progression = (props: {
 
         return (
             <>
-                <span>
-                    {
-                        `${__("publication.progression.title")}: `
-                    }
-                </span>
+                <strong>{`${__("publication.progression.title")}: `}</strong>
                 <i className={styles.allowUserSelect}>
-                    {
-                        sentence
-                    }
+                    {sentence}
                 </i>
                 <br />
             </>
@@ -107,127 +95,106 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
     return (
         <>
-            <div className={styles.dialog_left}>
-                <div className={styles.image_wrapper}>
-                    <div>
-                        <Cover
-                            publicationViewMaybeOpds={publication}
-                            onClick={
-                                () => toggleCoverZoomCb(coverZoom)
-                            }
-                            onKeyPress={
-                                (e: React.KeyboardEvent<HTMLImageElement>) =>
-                                    e.key === "Enter" && toggleCoverZoomCb(coverZoom)
-                            }
-                        >
-                        </Cover>
+            <div className={styles.row}>
+                <div className={styles.col_book_img}>
+                    <div className={styles.image_wrapper}>
+                        <div>
+                            <Cover
+                                publicationViewMaybeOpds={publication}
+                                onClick={() => toggleCoverZoomCb(coverZoom)}
+                                onKeyPress={
+                                    (e: React.KeyboardEvent<HTMLImageElement>) =>
+                                        e.key === "Enter" && toggleCoverZoomCb(coverZoom)
+                                }
+                            ></Cover>
+                        </div>
                     </div>
                 </div>
-                {
-                    ControlComponent && <ControlComponent />
-                }
-            </div>
-
-            <div className={styles.dialog_right}>
-                <h2 className={styles.allowUserSelect}>
-                    {publication.title}
-                </h2>
-                <div>
-                    <p className={classNames(styles.allowUserSelect, styles.author)}>
-                        <FormatContributorWithLink
-                            contributors={publication.authors}
-                            translator={translator}
-                            onClickLinkCb={onClikLinkCb}
-                        />
-                    </p>
+                <div className={styles.col}>
+                    <FormatContributorWithLink
+                        contributors={publication.authors}
+                        translator={translator}
+                        onClickLinkCb={onClikLinkCb}
+                    />
+                    <h2 className={classNames(styles.allowUserSelect, styles.mt_10)}>
+                        {publication.title}
+                    </h2>
+                    { ControlComponent && <ControlComponent /> }
                     <FormatPublisherDate publication={publication} __={__} />
-                    <div className={styles.tags}>
-                        <div className={styles.tag_list}>
-                            <span>
+                    <div className={styles.d_flex}>
+                        <div className={styles.flex_none}>
+                            <strong className={styles.mr_10}>
                                 {__("catalog.tags")}
-                            </span>
+                            </strong>
+                        </div>
+                        <div className={styles.flex_1}>
                             <TagManagerComponent />
                         </div>
                     </div>
-
-                    <PublicationInfoDescription publication={publication} __={__} />
-
-                    <h3>{__("catalog.moreInfo")}</h3>
-                    <p>
-                        {
-                            publication.publishers?.length ?
-                                <>
-                                    <span>{`${__("catalog.publisher")}: `}</span>
-                                    <i className={styles.allowUserSelect}>
-                                        <FormatContributorWithLink
-                                            contributors={publication.publishers}
-                                            translator={translator}
-                                            onClickLinkCb={onClikLinkCb}
-                                        />
-                                    </i>
-                                    <br />
-                                </> : undefined
-                        }
-                        {
-                            publication.languages?.length ?
-                                <>
-                                    <span>
-                                        {
-                                            `${__("catalog.lang")}: `
-                                        }
-                                    </span>
-                                    <FormatPublicationLanguage publication={publication} __={__} />
-                                    <br />
-                                </> : undefined
-                        }
-                        {
-                            publication.numberOfPages ?
-                                <>
-                                    <span>
-                                        {
-                                            `${__("catalog.numberOfPages")}: `
-                                        }
-                                    </span>
-                                    <i className={styles.allowUserSelect}>
-                                        {
-                                            publication.numberOfPages
-                                        }
-                                    </i>
-                                    <br />
-
-                                </> : undefined
-                        }
-                        <Duration
-                            __={__}
-                            duration={publication.duration}
-                        />
-                        <Progression
-                            __={__}
-                            locatorExt={publication.lastReadingLocation}
-                        />
-                        {
-                            publication.nbOfTracks ?
-                                <>
-                                    <span>
-                                        {
-                                            `${__("publication.audio.tracks")}: `
-                                        }
-                                    </span>
-                                    <i className={styles.allowUserSelect}>
-                                        {
-                                            publication.nbOfTracks
-                                        }
-                                    </i>
-                                    <br />
-
-                                </> : undefined
-                        }
-                    </p>
-
-                    <LcpInfo publicationLcp={publication} />
-
                 </div>
             </div>
+
+            <section>
+                <PublicationInfoDescription publication={publication} __={__} />
+            </section>
+            <section>
+                <h3>{__("catalog.moreInfo")}</h3>
+                <p>
+                    {
+                        publication.publishers?.length ?
+                            <>
+                                <strong>{`${__("catalog.publisher")}: `}</strong>
+                                <i className={styles.allowUserSelect}>
+                                    <FormatContributorWithLink
+                                        contributors={publication.publishers}
+                                        translator={translator}
+                                        onClickLinkCb={onClikLinkCb}
+                                    />
+                                </i>
+                                <br />
+                            </> : undefined
+                    }
+                    {
+                        publication.languages?.length ?
+                            <>
+                                <strong>{`${__("catalog.lang")}: `}</strong>
+                                <FormatPublicationLanguage publication={publication} __={__} />
+                                <br />
+                            </> : undefined
+                    }
+                    {
+                        publication.numberOfPages ?
+                            <>
+                                <strong>{`${__("catalog.numberOfPages")}: `}</strong>
+                                <i className={styles.allowUserSelect}>
+                                    {publication.numberOfPages}
+                                </i>
+                                <br />
+
+                            </> : undefined
+                    }
+                    <Duration
+                        __={__}
+                        duration={publication.duration}
+                    />
+                    <Progression
+                        __={__}
+                        locatorExt={publication.lastReadingLocation}
+                    />
+                    {
+                        publication.nbOfTracks ?
+                            <>
+                                <strong>{`${__("publication.audio.tracks")}: `}</strong>
+                                <i className={styles.allowUserSelect}>
+                                    {publication.nbOfTracks}
+                                </i>
+                                <br />
+
+                            </> : undefined
+                    }
+                </p>
+                <LcpInfo publicationLcp={publication} />
+            </section>
         </>
     );
 };

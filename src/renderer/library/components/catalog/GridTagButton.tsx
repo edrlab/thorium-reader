@@ -9,6 +9,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -35,7 +37,9 @@ class GridTagButton extends React.Component<IProps, undefined> {
                 to={{
                     ...this.props.location,
                     pathname: `/library/search/tag/${this.props.name}`,
-                }}>
+                }}
+                className={classNames(styles.tag, styles.grid_uniform_item)}
+            >
                 {this.props.name}
                 {/*<div id={style.count}>
                     {this.props.tag.length}

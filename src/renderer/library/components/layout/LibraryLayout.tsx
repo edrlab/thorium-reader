@@ -27,6 +27,7 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     secondaryHeader?: React.ReactElement;
+    breadCrumb?: React.ReactElement;
     title?: string;
     mainClassName?: string;
 
@@ -97,9 +98,13 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     id="main-toolbar"
                     title={this.props.__("accessibility.toolbar")}
                     aria-label={this.props.__("accessibility.toolbar")}
-                    tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
+                    tabIndex={-1}
+                >
+                    {this.props.__("accessibility.toolbar")}
+                </a>
                 <LibraryHeader />
                 { this.props.secondaryHeader }
+                { this.props.breadCrumb }
                 <main
                     id="main"
                     role="main"
@@ -113,7 +118,10 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         id="main-content"
                         title={this.props.__("accessibility.mainContent")}
                         aria-label={this.props.__("accessibility.mainContent")}
-                        tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
+                        tabIndex={-1}
+                    >
+                        {this.props.__("accessibility.mainContent")}
+                    </a>
                     { this.props.children }
                 </main>
             </div>

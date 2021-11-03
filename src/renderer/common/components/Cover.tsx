@@ -10,7 +10,7 @@ import "reflect-metadata";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as styles from "readium-desktop/renderer/assets/styles/components/publications.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";

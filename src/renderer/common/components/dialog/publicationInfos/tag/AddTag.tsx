@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

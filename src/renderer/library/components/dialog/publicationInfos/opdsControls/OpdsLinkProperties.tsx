@@ -44,11 +44,9 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
         const metadataLineComponent = (text: string, property: string | number) =>
             property &&
             <>
-                <span>{`${text}: `}</span>
+                <strong>{`${text}: `}</strong>
                 <i className={styles.allowUserSelect}>
-                    {
-                        property
-                    }
+                    {property}
                 </i>
                 <br />
             </>;

@@ -1,0 +1,54 @@
+@import '../partials/variables.css';
+
+/* All Tags Styles */
+
+.tags_wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  background-color: #e7f1fb;
+  padding: 2px 6px;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  border: 1px solid var(--color-tertiary);
+  color: var(--color-tertiary);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .2s;
+
+  &:hover {
+    background-color: #d0e2f5;
+  }
+
+  &:not(:last-child),
+  &:not(:only-child) {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+.tag_inputs {
+  position: relative;
+  max-width: 300px;
+  flex: 1;
+  border-radius: 0;
+  border: none;
+  height: 35px;
+  background-color: transparent;
+  color: black;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #c1c1c1;
+
+  &::placeholder {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: #c1c1c1;
+  }
+}

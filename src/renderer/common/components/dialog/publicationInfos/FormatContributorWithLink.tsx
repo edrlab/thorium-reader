@@ -8,6 +8,7 @@
 import * as React from "react";
 import { Translator } from "readium-desktop/common/services/translator";
 import { IOpdsContributorView } from "readium-desktop/common/views/opds";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 
 interface IProps {
     contributors: string[] | IOpdsContributorView[] | undefined;
@@ -34,29 +35,23 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
 
                 // FIXME : add pointer hover on 'a' links
                 retElement.push(
-                    <a onClick={
-                            onClickLinkCb(newContributor)
-                    }>
-                        {
-                            translator.translateContentField(newContributor.name)
-                        }
+                    <a onClick={onClickLinkCb(newContributor)}
+                        className={styles.button_link}
+                    >
+                        {translator.translateContentField(newContributor.name)}
                     </a>,
                 );
             } else if (typeof newContributor === "object") {
                 retElement.push(
-                    <>
-                        {
-                            translator.translateContentField(newContributor.name)
-                        }
-                    </>,
+                    <span className={styles.allowUserSelect}>
+                        {translator.translateContentField(newContributor.name)}
+                    </span>,
                 );
             } else {
                 retElement.push(
-                    <>
-                        {
-                            translator.translateContentField(newContributor)
-                        }
-                    </>,
+                    <span className={styles.allowUserSelect}>
+                        {translator.translateContentField(newContributor)}
+                    </span>,
                 );
             }
         }

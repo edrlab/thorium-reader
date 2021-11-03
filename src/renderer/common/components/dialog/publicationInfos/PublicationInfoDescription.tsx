@@ -11,7 +11,7 @@ import * as DOMPurify from "dompurify";
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationInfoDescription");
@@ -65,31 +65,33 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
             return (
                 <>
                     <h3>{__("catalog.description")}</h3>
-                    <div
-                        ref={this.descriptionWrapperRef}
-                        className={classNames(
-                            styles.descriptionWrapper,
-                            this.state.needSeeMore && styles.hideEnd,
-                            this.state.seeMore && styles.seeMore,
-                        )}
-                    >
-                        <p
-                            ref={this.descriptionRef}
-                            className={classNames(styles.allowUserSelect, styles.description)}
-                            dangerouslySetInnerHTML={{__html: textSanitize}}
+                    <div className={classNames(styles.block_line, styles.description_see_more)}>
+                        <div
+                            ref={this.descriptionWrapperRef}
+                            className={classNames(
+                                styles.descriptionWrapper,
+                                this.state.needSeeMore && styles.hideEnd,
+                                this.state.seeMore && styles.seeMore,
+                            )}
                         >
-                        </p>
+                            <div
+                                ref={this.descriptionRef}
+                                className={classNames(styles.allowUserSelect, styles.description)}
+                                dangerouslySetInnerHTML={{__html: textSanitize}}
+                            >
+                            </div>
+                        </div>
+                        {
+                            this.state.needSeeMore &&
+                            <button aria-hidden className={styles.button_see_more} onClick={this.toggleSeeMore}>
+                                {
+                                    this.state.seeMore
+                                        ? __("publication.seeLess")
+                                        : __("publication.seeMore")
+                                }
+                            </button>
+                        }
                     </div>
-                    {
-                        this.state.needSeeMore &&
-                        <button aria-hidden className={styles.seeMoreButton} onClick={this.toggleSeeMore}>
-                            {
-                                this.state.seeMore
-                                    ? __("publication.seeLess")
-                                    : __("publication.seeMore")
-                            }
-                        </button>
-                    }
                 </>
             );
         }

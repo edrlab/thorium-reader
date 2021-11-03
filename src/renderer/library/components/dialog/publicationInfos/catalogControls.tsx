@@ -50,15 +50,13 @@ export class CatalogControls extends React.Component<IProps, undefined> {
 
         return (
             <>
-                <button onClick={this.handleRead} className={styles.lire}>{__("catalog.readBook")}</button>
-                <ul className={styles.liens}>
-                    <li>
-                        <button onClick={this.deletePublication}>
-                            <SVG svg={DeleteIcon} ariaHidden />
-                            {__("catalog.deleteBook")}
-                        </button>
-                    </li>
-                </ul>
+                <button onClick={this.handleRead} className={styles.button_primary}>
+                    {__("catalog.readBook")}
+                </button>
+                <button onClick={this.deletePublication} className={styles.button_primary}>
+                    <SVG svg={DeleteIcon} ariaHidden />
+                    {__("catalog.deleteBook")}
+                </button>
             </>
         );
     }

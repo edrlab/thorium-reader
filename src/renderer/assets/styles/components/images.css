@@ -1,0 +1,15 @@
+@import '../partials/variables.css';
+
+/* All Images Styles */
+
+.cover_img {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-sizing: border-box;
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  background-color: #f1f1f1;
+}

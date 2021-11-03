@@ -1,18 +1,5 @@
 /* All Slider Styles */
 
-/*
-
-	1. .block_line
-     .block_line_edit
-
-	2. .block_full
-     .block_full_wrapper
-     .block_full_close
-
-*/
-
-/* 1. .block_line ... */
-
 .slider {
   display: block;
   width: 100%;

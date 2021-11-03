@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 
 interface IProps {
     tagArray: string[] | IOpdsTagView[];
@@ -23,20 +24,18 @@ export const TagList: React.FC<IProps> = (props) => {
 
         for (const [index, tag] of tagArray.entries()) {
             tags.push(
-                <li key={`tag-${index}`}>
+                <div key={`tag-${index}`} className={styles.tag}>
                     {
                         children(tag, index)
                     }
-                </li>,
+                </div>,
             );
         }
 
         return (
-            <ul>
-                {
-                    tags
-                }
-            </ul>
+            <div className={styles.tags_wrapper}>
+                {tags}
+            </div>
         );
     }
 

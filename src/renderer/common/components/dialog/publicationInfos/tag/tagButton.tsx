@@ -36,9 +36,7 @@ export const TagButton: React.FC<IProps> = (props) => {
     if (pubId && onClickDeleteCb && __) {
         button = (
             <>
-                {
-                    tagString
-                }
+                {tagString}
                 <button
                     onClick={
                         // () => this.deleteTag(index)
@@ -58,20 +56,14 @@ export const TagButton: React.FC<IProps> = (props) => {
                         onClickLinkCb(tag)
                     }
                 >
-                    {
-                        tagString
-                    }
+                    {tagString}
                 </a>
-                <button>
-                </button>
             </>
         );
     } else {
         button = (
             <>
-                {
-                    tagString
-                }
+                {tagString}
             </>
         );
     }

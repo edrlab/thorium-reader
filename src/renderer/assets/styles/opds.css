@@ -204,15 +204,6 @@
   display: flex;
   flex-direction: column;
 
-  & .opdsBrowseBreadcrumb {
-    padding: 30px 60px;
-    flex-wrap: wrap;
-
-    & > div {
-      flex: 1;
-    }
-  }
-
   & .opdsBrowseContent {
     padding: 0 60px;
     overflow-y: auto;

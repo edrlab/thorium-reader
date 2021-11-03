@@ -1,29 +1,42 @@
 .breadcrumb {
-  padding: 30px 0;
+  padding: 10px 60px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   color: rgb(59, 59, 59);
+  position: fixed;
+  top: 123px;
+  width: calc(100% - 120px);
+  border-bottom: 1px solid var(--color-light-grey);
 
-  & svg {
-    height: 20px;
-    margin-right: 30px;
-  }
+  & .button_transparency_icon {
+    position: relative;
+    height: 38px;
+    width: 42px;
+    margin-right: 10px;
 
-  & a {
-    text-decoration: none;
-    color: inherit;
-    margin: 0 2px;
-    cursor: pointer;
-    padding: 0.3125rem;
-
-    &:first-child {
-      padding-left: 0;
-      margin-left: 0;
+    & svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 24px;
+      width: 24px;
     }
   }
+  & .button_transparency {
+    font-weight: 500;
+    text-decoration: none;
+    font-size: inherit;
+    white-space: nowrap;
 
-  & span {
-    font-weight: bold;
-    margin: 0 2px;
+    &::after {
+      content: "/";
+      margin-left: 10px;
+      margin-right: -5px;
+    }
+    & + .button_transparency {
+      margin-left: -10px;
+    }
   }
 }

@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -95,7 +95,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
                     const facetsRender = opds.facets?.map((facet, facetId) =>
                         <section key={`facet-${facetId}`}>
-                            <br></br>
                             <h3>{facet.title}</h3>
                             <EntryList entries={facet.links}></EntryList>
                         </section>,
@@ -146,15 +145,18 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                             {
                                 opds.groups?.map((group, i) =>
                                     <section key={i}>
-                                        <br></br>
-                                        <h3 className={styles.entrygroups}>
+
+                                        <div className={styles.heading_link}>
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
-                                        </h3>
+                                            {/* <h2>{__("settings.session.title")}</h2> */}
+                                        </div>
+                                        {/* <h3 className={styles.entrygroups}>
+                                            
+                                        </h3> */}
                                         {
                                             group.navigation &&
                                             <EntryList entries={group.navigation} />
                                         }
-                                        <hr></hr>
                                         {
                                             group.publications &&
                                                 (

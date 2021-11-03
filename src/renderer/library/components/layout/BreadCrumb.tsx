@@ -50,6 +50,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                             pathname: breadcrumb[breadcrumb.length - 2].path,
                         }}
                         title={__("opds.back")}
+                        className={styles.button_transparency_icon}
                     >
                         <SVG svg={ArrowIcon} />
                     </Link>
@@ -58,20 +59,22 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                     breadcrumb
                     && breadcrumb.map(
                         (item, index) =>
-                            item.path && index !== breadcrumb.length - 1
-                                ? <Link
+                            item.path && index !== breadcrumb.length - 1 ?
+                                <Link
                                     key={index}
                                     to={{
                                         ...this.props.location,
                                         pathname: item.path,
                                     }}
                                     title={item.name}
+                                    className={styles.button_transparency}
                                 >
-                                    {`${item.name} /`}
-                                </Link>
-                                : <span key={index}>
                                     {item.name}
-                                </span>,
+                                </Link>
+                            :
+                                <strong key={index}>
+                                    {item.name}
+                                </strong>,
                     )
                 }
             </div>
