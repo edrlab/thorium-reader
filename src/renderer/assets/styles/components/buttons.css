@@ -87,9 +87,10 @@ button {
       margin-left: 8px;
     }
   }
+
   &.disabled,
   &[disabled] {
-    opacity: .5;
+    opacity: 0.5;
     cursor: default;
     pointer-events: none;
 
@@ -229,6 +230,7 @@ button {
     width: 34px;
     transition: all 0.2s 0.05s;
   }
+
   &.button_refresh:hover svg {
     transform: rotate(90deg);
   }
@@ -321,14 +323,14 @@ button {
   }
 }
 
-@media (min-width:1200px) {
+@media (min-width: 1200px) {
   .buttons_list li {
-    width: 33%
+    width: 33%;
   }
 }
 
-@media (min-width:1500px) {
+@media (min-width: 1500px) {
   .buttons_list li {
-    width: 25%
+    width: 25%;
   }
 }

@@ -74,7 +74,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
             <div className={classNames(styles.justify_content_between, styles.mt_30)}>
                 <div>
                     {
-                        pageLinks?.first[0]?.url ? 
+                        pageLinks?.first[0]?.url ?
                             <Link
                                 to={{
                                     ...this.props.location,
