@@ -199,10 +199,10 @@ nav + nav + .breadcrumb + .main {
   min-width: 600px;
   padding: 5px 60px;
   background-color: var(--color-secondary);
-  align-items: center;
-  border-bottom: 1px solid var(--color-light-grey);
   display: flex;
   flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid var(--color-light-grey);
 
   & form[role="search"] {
     margin: 0 30px;
@@ -237,13 +237,10 @@ nav + nav + .breadcrumb + .main {
   border-bottom: 3px solid var(--color-light-grey);
   position: relative;
   font-weight: 700;
+  margin: 0 0 20px 0;
   font-size: 1.5rem;
-  margin-top: 0;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 20px;
   border-radius: 5px 5px 0 0;
-  padding: 10px 0;
+  padding: 10px 0 5px 0;
   text-decoration: none;
 }
 
