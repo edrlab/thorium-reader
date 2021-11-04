@@ -53,6 +53,7 @@ const supportedFileTypeLinkArray = [
     ContentType.JsonLd,
     ContentType.pdf,
     ContentType.lcppdf,
+    ContentType.Lpf,
 ];
 
 @injectable()

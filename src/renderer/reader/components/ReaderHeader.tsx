@@ -158,7 +158,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     this.setState({ fxlZoomPercent: this.state.fxlZoomPercent - step });
                 }
             } else if (ev.deltaY > 0) {
-                if (this.state.fxlZoomPercent <= 220) {
+                if (this.state.fxlZoomPercent <= 390) {
                     this.setState({ fxlZoomPercent: this.state.fxlZoomPercent + step });
                 }
             }
