@@ -75,7 +75,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                 <span />
                 {
                     pageLinks?.first[0]?.url
-                    && <Link
+                    ? <Link
                         to={{
                             ...this.props.location,
                             pathname: buildRoute(pageLinks.first[0]),
