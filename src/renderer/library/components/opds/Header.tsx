@@ -9,7 +9,7 @@ import * as React from "react";
 import classNames from "classnames";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
-import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-circle.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
@@ -126,7 +126,6 @@ class Header extends React.Component<IProps, undefined> {
                         pathname: route,
                     }}
                     className={styles.button_transparency_icon}
-                    style={ {transform: "scale(.85)"} }
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
@@ -203,7 +202,6 @@ class Header extends React.Component<IProps, undefined> {
                         pathname: route,
                     }}
                     className={classNames(styles.button_transparency_icon, styles.button_refresh)}
-                    style={ {transform: "scale(.85)"} }
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>

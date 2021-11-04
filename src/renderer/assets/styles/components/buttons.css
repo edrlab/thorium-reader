@@ -87,6 +87,16 @@ button {
       margin-left: 8px;
     }
   }
+  &.disabled,
+  &[disabled] {
+    opacity: .5;
+    cursor: default;
+    pointer-events: none;
+
+    &:hover {
+      background: transparent;
+    }
+  }
 }
 
 .button_primary_small,
@@ -202,10 +212,6 @@ button {
   width: auto;
   height: auto;
 
-  &.button_refresh:hover svg {
-    transform: rotate(90deg);
-  }
-
   & svg {
     width: 18px;
     margin-right: 8px;
@@ -222,6 +228,9 @@ button {
     height: 34px;
     width: 34px;
     transition: all 0.2s 0.05s;
+  }
+  &.button_refresh:hover svg {
+    transform: rotate(90deg);
   }
 }
 
@@ -290,5 +299,36 @@ button {
 
   &:hover {
     background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.buttons_list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-flow: wrap;
+  margin: 0;
+  justify-content: left;
+
+  & li {
+    width: 50%;
+  }
+
+  & .button_transparency {
+    margin: 2px 0;
+    text-decoration: none;
+    width: calc(100% - 30px);
+  }
+}
+
+@media (min-width:1200px) {
+  .buttons_list li {
+    width: 33%
+  }
+}
+
+@media (min-width:1500px) {
+  .buttons_list li {
+    width: 25%
   }
 }
