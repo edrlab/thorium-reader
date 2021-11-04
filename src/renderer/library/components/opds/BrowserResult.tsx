@@ -148,11 +148,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
                                         <div className={styles.heading_link}>
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
-                                            {/* <h2>{__("settings.session.title")}</h2> */}
                                         </div>
-                                        {/* <h3 className={styles.entrygroups}>
-                                            
-                                        </h3> */}
                                         {
                                             group.navigation &&
                                             <EntryList entries={group.navigation} />
