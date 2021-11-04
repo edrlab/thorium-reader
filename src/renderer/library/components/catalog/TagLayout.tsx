@@ -74,7 +74,7 @@ class GridTagLayout extends React.Component<IProps, IState> {
                 {this.props.tags.length === 0 ?
                     <> {__("catalog.emptyTagList")} </>
                     :
-                    <div className={styles.grid_uniform_wrapper}>
+                    <div className={styles.tags_wrapper}>
                         {this.props.tags.map((tag, i: number) => {
                             return (
                                 <GridTagButton

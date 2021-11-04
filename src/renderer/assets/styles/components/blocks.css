@@ -112,3 +112,24 @@
     background: rgba(255, 255, 255, 0.2);
   }
 }
+
+.block_dashed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  border: 1px #5c5c5c dashed;
+  min-height: 17rem;
+  max-width: 43rem;
+  margin: 2rem auto;
+  box-sizing: border-box;
+  color: #5c5c5c;
+
+  & p {
+    font-size: 1.1rem;
+  }
+
+  & p:last-child {
+    font-size: 1rem;
+  }
+}

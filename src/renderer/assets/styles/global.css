@@ -15,6 +15,7 @@
 @import './components/publications.css';
 @import './components/slider.css';
 @import './components/tags.css';
+@import './components/toasts.css';
 
 /* ============ GLOBAL ELEMENTS =============== */
 
@@ -112,6 +113,10 @@ nav + nav + .breadcrumb + .main {
   margin-top: 10px;
 }
 
+.mt_30 {
+  margin-top: 30px;
+}
+
 .mb_20 {
   margin-bottom: 20px;
 }
@@ -127,7 +132,7 @@ nav + nav + .breadcrumb + .main {
   display: flex;
 }
 
-.justify_content_betwen {
+.justify_content_between {
   justify-content: space-between;
 }
 
@@ -246,34 +251,6 @@ nav + nav + .breadcrumb + .main {
 li.no_list_style {
   list-style: none;
 }
-.buttons_list {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  flex-flow: wrap;
-  margin: 0;
-  justify-content: left;
-
-  & li {
-    width: 50%;
-  }
-
-  & .button_transparency {
-    margin: 2px 0;
-    text-decoration: none;
-    width: calc(100% - 30px);
-  }
-}
-@media (min-width:1200px) {
-  .buttons_list li {
-    width: 33%
-  }
-}
-@media (min-width:1500px) {
-  .buttons_list li {
-    width: 25%
-  }
-}
 
 .descriptionWrapper {
   max-height: 10rem;
@@ -299,4 +276,28 @@ li.no_list_style {
       content: none;
     }
   }
+}
+
+.loader {
+  text-align: center;
+
+  & svg {
+    width: 5rem;
+  }
+}
+
+.loader_small {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 999;
+
+  & svg {
+    width: 2rem;
+  }
+}
+
+.loader_search_picker {
+  width: 24px;
+  align-self: center;
 }

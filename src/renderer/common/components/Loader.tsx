@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as LoaderIcon from "readium-desktop/renderer/assets/icons/loader.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/loader.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 
 import SVG from "./SVG";
 

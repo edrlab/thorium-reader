@@ -71,68 +71,51 @@ class PageNavigation extends React.Component<IProps, undefined> {
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
         return (
-            <div className={styles.opds_page_navigation}>
-                <span />
-                {
-                    pageLinks?.first[0]?.url
-                    && <Link
-                        to={{
-                            ...this.props.location,
-                            pathname: buildRoute(pageLinks.first[0]),
-                        }}
-                        className={styles.button_primary}
-                    >
-                        <SVG svg={ArrowFirstIcon} />
-                        {__("opds.firstPage")}
-                    </Link>
-                    :
-                    <Link
-                        className={styles.button_primary}
-                        disabled={true}
-                    >
-                        <SVG svg={ArrowFirstIcon} />
-                        {__("opds.firstPage")}
-                    </Link>
-                }
-                {
-                    pageLinks?.previous[0]?.url
-                    && <Link
-                        to={{
-                            ...this.props.location,
-                            pathname: buildRoute(pageLinks.previous[0]),
-                        }}
-                        className={styles.button_primary}
-                    >
-                        <SVG svg={ArrowLeftIcon} />
-                        {__("opds.previous")}
-                    </Link>
-                }
-                {
-                    pageLinks?.next[0]?.url
-                    && <Link
-                        to={{
-                            ...this.props.location,
-                            pathname: buildRoute(pageLinks.next[0]),
-                        }}
-                        className={classNames(styles.button_primary, styles.icon_end)}
-                    >
-                        {__("opds.next")}
-                        <SVG svg={ArrowRightIcon} />
-                    </Link>
-                }
-                {
-                    pageLinks?.last[0]?.url
-                    && <Link
-                        to={{
-                            ...this.props.location,
-                            pathname: buildRoute(pageLinks.last[0]),
-                        }}
-                        className={classNames(styles.button_primary, styles.icon_end)}
-                    >
-                        {__("opds.lastPage")}
-                        <SVG svg={ArrowLastIcon} />
-                    </Link>
-                }
+            <div className={classNames(styles.justify_content_between, styles.mt_30)}>
+                <div>
+                    {
+                        pageLinks?.first[0]?.url ? 
+                            <Link
+                                to={{
+                                    ...this.props.location,
+                                    pathname: buildRoute(pageLinks.first[0]),
+                                }}
+                                className={styles.button_primary}
+                            >
+                                <SVG svg={ArrowFirstIcon} />
+                                {__("opds.firstPage")}
+                            </Link>
+                        :
+                            <Link
+                                className={styles.button_primary}
+                                disabled={true}
+                            >
+                                <SVG svg={ArrowFirstIcon} />
+                                {__("opds.firstPage")}
+                            </Link>
+                    }
+                    {
+                        pageLinks?.previous[0]?.url ?
+                            <Link
+                                to={{
+                                    ...this.props.location,
+                                    pathname: buildRoute(pageLinks.previous[0]),
+                                }}
+                                className={styles.button_primary}
+                            >
+                                <SVG svg={ArrowLeftIcon} />
+                                {__("opds.previous")}
+                            </Link>
+                        :
+                            <Link
+                                className={styles.button_primary}
+                                disabled={true}
+                            >
+                                <SVG svg={ArrowLeftIcon} />
+                                {__("opds.previous")}
+                            </Link>
+                    }
+                </div>
                 {
                     pageInfo?.currentPage
                     && pageInfo.numberOfItems
@@ -145,6 +128,50 @@ class PageNavigation extends React.Component<IProps, undefined> {
                         }
                     </span>
                 }
+                <div>
+                    {
+                        pageLinks?.next[0]?.url ?
+                            <Link
+                                to={{
+                                    ...this.props.location,
+                                    pathname: buildRoute(pageLinks.next[0]),
+                                }}
+                                className={classNames(styles.button_primary, styles.icon_end)}
+                            >
+                                {__("opds.next")}
+                                <SVG svg={ArrowRightIcon} />
+                            </Link>
+                        :
+                            <Link
+                                className={styles.button_primary}
+                                disabled={true}
+                            >
+                                {__("opds.next")}
+                                <SVG svg={ArrowRightIcon} />
+                            </Link>
+                    }
+                    {
+                        pageLinks?.last[0]?.url ?
+                            <Link
+                                to={{
+                                    ...this.props.location,
+                                    pathname: buildRoute(pageLinks.last[0]),
+                                }}
+                                className={classNames(styles.button_primary, styles.icon_end)}
+                            >
+                                {__("opds.lastPage")}
+                                <SVG svg={ArrowLastIcon} />
+                            </Link>
+                        :
+                            <Link
+                                className={styles.button_primary}
+                                disabled={true}
+                            >
+                                {__("opds.lastPage")}
+                                <SVG svg={ArrowLastIcon} />
+                            </Link>
+                    }
+                </div>
             </div>
         );
     }
