@@ -1,3 +1,5 @@
+@import '../partials/variables.css';
+
 .breadcrumb {
   padding: 10px 60px;
   font-size: 16px;
@@ -24,6 +26,7 @@
       width: 24px;
     }
   }
+
   & .button_transparency {
     font-weight: 500;
     text-decoration: none;
@@ -35,6 +38,7 @@
       margin-left: 10px;
       margin-right: -5px;
     }
+
     & + .button_transparency {
       margin-left: -10px;
     }

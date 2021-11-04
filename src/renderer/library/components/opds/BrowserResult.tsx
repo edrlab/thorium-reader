@@ -151,7 +151,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                             {/* <h2>{__("settings.session.title")}</h2> */}
                                         </div>
                                         {/* <h3 className={styles.entrygroups}>
-                                            
+
                                         </h3> */}
                                         {
                                             group.navigation &&

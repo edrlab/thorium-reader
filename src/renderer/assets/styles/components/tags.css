@@ -21,7 +21,7 @@
   color: var(--color-tertiary);
   cursor: pointer;
   text-decoration: none;
-  transition: all .2s;
+  transition: all 0.2s;
 
   &:hover {
     background-color: #d0e2f5;

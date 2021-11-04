@@ -69,7 +69,7 @@ class GridTagLayout extends React.Component<IProps, IState> {
                             toggle={this.togglemenu}
                         />
                     }
-                    
+
                 </div>
                 {this.props.tags.length === 0 ?
                     <> {__("catalog.emptyTagList")} </>

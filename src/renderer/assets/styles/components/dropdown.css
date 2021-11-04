@@ -28,14 +28,17 @@
     border-width: 0 7.5px 10px 7.5px;
     border-color: transparent transparent var(--color-primary) transparent;
   }
+
   &.dropdown_right::after {
     left: auto;
     right: 34px;
   }
+
   &.dropdown_publication::after {
     left: auto;
     right: 25px;
   }
+
   & > * {
     text-decoration: none;
     color: black;

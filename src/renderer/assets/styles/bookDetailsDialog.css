@@ -1,3 +1,5 @@
+@import './partials/variables.css';
+
 .allowUserSelect {
   user-select: text;
 }
