@@ -214,8 +214,8 @@
   padding: 2px 6px;
   font-size: 1.1rem;
   border-radius: 3px;
-  border: 1px solid var(--color-tertiary);
-  color: var(--color-tertiary);
+  border: 1px solid #67a3e0;
+  color: #67a3e0;
   margin: 0.3rem 0;
 }
 

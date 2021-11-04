@@ -12,7 +12,6 @@ declare const styles: {
   readonly "flux_slider": string;
   readonly "entry_details": string;
   readonly "opdsBrowse": string;
-  readonly "opdsBrowseBreadcrumb": string;
   readonly "opdsBrowseContent": string;
   readonly "opds_page_navigation": string;
   readonly "page_count": string;

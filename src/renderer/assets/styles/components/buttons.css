@@ -80,15 +80,17 @@ button {
     margin-right: 8px;
     transition: all 0.2s;
   }
+
   &.icon_end {
     & svg {
       margin-right: 0;
       margin-left: 8px;
     }
   }
+
   &.disabled,
   &[disabled] {
-    opacity: .5;
+    opacity: 0.5;
     cursor: default;
     pointer-events: none;
 
@@ -111,6 +113,7 @@ button {
     vertical-align: -2px;
     margin-left: 5px;
   }
+
   &.button_icon {
     height: 16px;
     padding: 8px 20px;
@@ -227,6 +230,7 @@ button {
     width: 34px;
     transition: all 0.2s 0.05s;
   }
+
   &.button_refresh:hover svg {
     transform: rotate(90deg);
   }
@@ -280,7 +284,6 @@ button {
 
 .button_see_more {
   font-size: 1rem;
-  width: auto;
   height: auto;
   position: absolute;
   bottom: 0;
@@ -293,8 +296,8 @@ button {
   border-radius: 0 0 5px 5px;
   color: #000;
   -webkit-font-smoothing: subpixel-antialiased;
-  box-shadow: 0px -2px 4px 0px rgb(0 0 0 / 10%);
-  transition: all .2s;
+  box-shadow: 0 -2px 4px 0 rgb(0 0 0 / 10%);
+  transition: all 0.2s;
 
   &:hover {
     background: rgba(0, 0, 0, 0.1);
@@ -320,14 +323,14 @@ button {
   }
 }
 
-@media (min-width:1200px) {
+@media (min-width: 1200px) {
   .buttons_list li {
-    width: 33%
+    width: 33%;
   }
 }
 
-@media (min-width:1500px) {
+@media (min-width: 1500px) {
   .buttons_list li {
-    width: 25%
+    width: 25%;
   }
 }

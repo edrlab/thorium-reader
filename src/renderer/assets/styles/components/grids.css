@@ -5,7 +5,7 @@
 .grid_uniform_wrapper {
   display: flex;
   justify-content: start;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
 
 .grid_uniform_item {
@@ -21,13 +21,13 @@
   }
 }
 
-@media (min-width:1200px) {
+@media (min-width: 1200px) {
   .grid_uniform_item {
     flex: 0 0 calc(20% - 10px);
   }
 }
 
-@media (min-width:1500px) {
+@media (min-width: 1500px) {
   .grid_uniform_item {
     flex: 0 0 calc(16.666667% - 10px);
   }
