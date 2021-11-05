@@ -16,6 +16,9 @@ declare const styles: {
   readonly "skip_link": string;
   readonly "button_see_more": string;
   readonly "buttons_list": string;
+  readonly "col_filter": string;
+  readonly "block_line": string;
+  readonly "col_book_img": string;
 };
 export = styles;
 

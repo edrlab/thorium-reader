@@ -237,7 +237,8 @@ nav + nav + .breadcrumb + .main {
     margin: 0;
     font-size: 1.5rem;
   }
-  & h3 {
+
+  & h3 {
     position: relative;
     font-weight: 700;
     margin: 0;

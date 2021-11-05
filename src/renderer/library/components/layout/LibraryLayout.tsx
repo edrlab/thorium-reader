@@ -11,8 +11,6 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
-import BreadCrumb from "readium-desktop/renderer/library/components/layout/BreadCrumb";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

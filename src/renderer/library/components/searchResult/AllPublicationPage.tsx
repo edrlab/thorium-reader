@@ -82,7 +82,6 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                 secondaryHeader={secondaryHeader}
                 breadCrumb={breadCrumb}
             >
-                
                 <div>
                     {this.state.publicationViews ?
                         (displayType === DisplayType.Grid ?

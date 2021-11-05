@@ -13,6 +13,8 @@ declare const styles: {
   readonly "mt_10": string;
   readonly "mt_30": string;
   readonly "mb_20": string;
+  readonly "mb_30": string;
+  readonly "my_10": string;
   readonly "w_50": string;
   readonly "d_flex": string;
   readonly "justify_content_between": string;
@@ -56,8 +58,9 @@ declare const styles: {
   readonly "skip_link": string;
   readonly "button_see_more": string;
   readonly "buttons_list": string;
+  readonly "col_filter": string;
+  readonly "col_book_img": string;
   readonly "row": string;
-  readonly "col_book-img": string;
   readonly "col_1": string;
   readonly "col_2": string;
   readonly "col_3": string;
@@ -71,7 +74,6 @@ declare const styles: {
   readonly "col_11": string;
   readonly "col_12": string;
   readonly "col": string;
-  readonly "col_book_img": string;
   readonly "dropdown_menu": string;
   readonly "dropdown_right": string;
   readonly "dropdown_publication": string;

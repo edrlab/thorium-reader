@@ -36,7 +36,6 @@ button {
   background: none;
   border: 0;
   height: 30px;
-  /* width: 30px; */
   fill: black;
   cursor: pointer;
 
@@ -338,6 +337,7 @@ button {
     border-radius: 0;
     padding: 0;
   }
+
   & .buttons_list {
     display: block;
 
@@ -351,6 +351,7 @@ button {
   .buttons_list li {
     width: 33%;
   }
+
   .col_filter .buttons_list li {
     width: auto;
   }
@@ -360,6 +361,7 @@ button {
   .buttons_list li {
     width: 25%;
   }
+
   .col_filter .buttons_list li {
     width: auto;
   }
@@ -370,9 +372,11 @@ button {
   & .button_transparency {
     width: 100%;
   }
+
   & .button_primary {
     margin: 8px 0;
   }
+
   & .button_transparency {
     margin: 2px 0;
   }
