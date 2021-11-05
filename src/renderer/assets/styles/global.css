@@ -122,6 +122,15 @@ nav + nav + .breadcrumb + .main {
   margin-bottom: 20px;
 }
 
+.mb_30 {
+  margin-bottom: 30px;
+}
+
+.my_10 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .w_50 {
   width: 50%;
 }
@@ -227,6 +236,12 @@ nav + nav + .breadcrumb + .main {
     font-weight: 700;
     margin: 0;
     font-size: 1.5rem;
+  }
+  & h3 {
+    position: relative;
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.27rem;
   }
 }
 

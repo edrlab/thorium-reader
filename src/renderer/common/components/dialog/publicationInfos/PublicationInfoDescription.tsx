@@ -64,12 +64,15 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
             const textSanitize = DOMPurify.sanitize(publication.description);
             return (
                 <>
-                    <h3>{__("catalog.description")}</h3>
+                    <div className={styles.heading}>
+                        <h3>{__("catalog.description")}</h3>
+                    </div>
                     <div className={classNames(styles.block_line, styles.description_see_more)}>
                         <div
                             ref={this.descriptionWrapperRef}
                             className={classNames(
                                 styles.descriptionWrapper,
+                                this.state.needSeeMore && styles.mb_30,
                                 this.state.needSeeMore && styles.hideEnd,
                                 this.state.seeMore && styles.seeMore,
                             )}

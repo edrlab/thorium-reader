@@ -32,6 +32,11 @@
     margin-right: 10px;
     margin-bottom: 10px;
   }
+  & button {
+    width: 21px;
+    height: 21px;
+    margin: 0 0 0 5px;
+  }
 }
 
 .tag_inputs {

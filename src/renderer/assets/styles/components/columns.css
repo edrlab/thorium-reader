@@ -21,7 +21,7 @@
 
 /* 2. .col_x */
 
-.col_book-img,
+.col_book_img,
 .col_1,
 .col_2,
 .col_3,
@@ -49,6 +49,7 @@
   flex-grow: 0.5;
   width: 25%;
   max-width: 280px;
+  text-align: center;
 }
 
 .col {
@@ -71,7 +72,8 @@
   max-width: 16.666667%;
 }
 
-.col_3 {
+.col_3,
+.col_filter {
   -ms-flex: 0 0 25%;
   flex: 0 0 25%;
   max-width: 25%;

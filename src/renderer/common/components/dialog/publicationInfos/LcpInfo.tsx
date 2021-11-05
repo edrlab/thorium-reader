@@ -101,44 +101,58 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
         return (
             <>
-                <h3>LCP</h3>
-                <p className={classNames(styles.allowUserSelect)}
-                >
+                <div className={styles.heading}>
+                    <h3>LCP</h3>
+                </div>
+                <div className={classNames(styles.allowUserSelect)}>
                     {(lsdStatus &&
                         (lsdStatus !== StatusEnum.Active && lsdStatus !== StatusEnum.Ready)) && <>
-                            <span style={{ color: "red" }}>{(lsdStatus === StatusEnum.Expired ?
-                                __("publication.expiredLcp")
-                                : ((lsdStatus === StatusEnum.Cancelled) ?
-                                    __("publication.cancelledLcp")
-                                    : ((lsdStatus === StatusEnum.Revoked) ?
-                                        __("publication.revokedLcp")
-                                        : (lsdStatus === StatusEnum.Returned ?
-                                            __("publication.returnedLcp") :
-                                            `LCP LSD: ${lsdStatus}`))))}</span>
+                            <span style={{ color: "red" }}>
+                                {
+                                    (lsdStatus === StatusEnum.Expired ?
+                                        __("publication.expiredLcp")
+                                    :
+                                        ((lsdStatus === StatusEnum.Cancelled) ?
+                                            __("publication.cancelledLcp")
+                                        :
+                                            ((lsdStatus === StatusEnum.Revoked) ?
+                                                __("publication.revokedLcp")
+                                            :
+                                                (lsdStatus === StatusEnum.Returned ?
+                                                    __("publication.returnedLcp")
+                                                :
+                                                    `LCP LSD: ${lsdStatus}`
+                                                )
+                                            )
+                                        )
+                                    )
+                                }
+                            </span>
                             <br /><br />
-                        </>}
+                        </>
+                    }
 
                     {lcpRightsStartDateStr && <>
-                        <span>{__("publication.lcpStart")}: </span><i>{lcpRightsStartDateStr}</i>
+                        <strong>{__("publication.lcpStart")}: </strong><i>{lcpRightsStartDateStr}</i>
                         <br />
                     </>}
 
                     {lcpRightsEndDateStr && <>
-                        <span>{__("publication.lcpEnd")}: </span><i>{lcpRightsEndDateStr}</i>
+                        <strong>{__("publication.lcpEnd")}: </strong><i>{lcpRightsEndDateStr}</i>
                         <br />
                         <br />
                     </>}
 
                     {lcpRightsCopy ? <>
-                        <span>{__("publication.lcpRightsCopy")}: </span>
+                        <strong>{__("publication.lcpRightsCopy")}: </strong>
                         <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
                     </> : undefined}
 
                     {lcpRightsPrint ? <>
-                        <span>{__("publication.lcpRightsPrint")}: </span>
+                        <strong>{__("publication.lcpRightsPrint")}: </strong>
                         <i>0 / {lcpRightsPrint}</i><br />
                     </> : undefined}
-                </p>
+                </div>
             </>
         );
     }

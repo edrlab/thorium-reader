@@ -36,5 +36,5 @@
   outline-color: blue !important;
   outline-style: solid !important;
   outline-width: 2px !important;
-  outline-offset: -2px !important;
+  outline-offset: -2px;
 }

@@ -26,9 +26,9 @@ export const FormatPublisherDate: React.FC<IProps> = (props) => {
         const date = moment(publication.publishedAt).format("L");
         if (date) {
             formatedPublishedDateComponent = (
-                <p>
+                <div>
                     <strong>{__("catalog.released")}</strong> <i className={styles.allowUserSelect}>{date}</i>
-                </p>
+                </div>
             );
         }
     }

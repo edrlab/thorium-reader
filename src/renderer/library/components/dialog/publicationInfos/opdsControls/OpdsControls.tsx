@@ -186,6 +186,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             >
                                 {__("opds.menu.goRevokeLoanBook")}
                             </button>
+                            <br />
                             <OpdsLinkProperties properties={ln.properties} />
                         </span>
                     ))

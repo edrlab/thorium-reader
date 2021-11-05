@@ -45,6 +45,9 @@
     border-radius: 6px;
     background-color: #f1f1f1;
   }
+  &:focus {
+    outline-offset: 0px !important;
+  }
 }
 
 .no_img_wrapper {

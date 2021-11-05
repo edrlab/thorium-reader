@@ -14,7 +14,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -76,36 +76,42 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
             <>
                 {(!lsdStatus ||
                 (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready)) ?
-                <button  onClick={this.handleRead} className={styles.lire}>{__("catalog.readBook")}</button>
+                <button
+                    onClick={this.handleRead}
+                    className={styles.button_primary}
+                >
+                    {__("catalog.readBook")}
+                </button>
                 : <></>
                 }
-                <ul className={styles.liens}>
-                    {
-                        // lsdStatus === StatusEnum.Expired &&
-                        lsdRenewLink &&
-                        <li>
-                            <button onClick={ this.renewPublicationDialog }>
-                                <SVG svg={LoopIcon} ariaHidden/>
-                                {__("publication.renewButton")}
-                            </button>
-                        </li>
-                    }
-                    {
-                        lsdReturnLink &&
-                        <li>
-                            <button onClick={ this.returnPublicationDialog }>
-                                <SVG svg={ArrowIcon} ariaHidden/>
-                                {__("publication.returnButton")}
-                            </button>
-                        </li>
-                    }
-                    <li>
-                        <button onClick={ this.deletePublication }>
-                            <SVG svg={DeleteIcon} ariaHidden/>
-                            {__("catalog.deleteBook")}
-                        </button>
-                    </li>
-                </ul>
+                {
+                    // lsdStatus === StatusEnum.Expired &&
+                    lsdRenewLink &&
+                    <button
+                        onClick={ this.renewPublicationDialog }
+                        className={styles.button_transparency}
+                    >
+                        <SVG svg={LoopIcon} ariaHidden/>
+                        {__("publication.renewButton")}
+                    </button>
+                }
+                {
+                    lsdReturnLink &&
+                    <button
+                        onClick={ this.returnPublicationDialog }
+                        className={styles.button_transparency}
+                    >
+                        <SVG svg={ArrowIcon} ariaHidden/>
+                        {__("publication.returnButton")}
+                    </button>
+                }
+                <button
+                    onClick={ this.deletePublication }
+                    className={styles.button_transparency}
+                >
+                    <SVG svg={DeleteIcon} ariaHidden/>
+                    {__("catalog.deleteBook")}
+                </button>
             </>
         );
     }

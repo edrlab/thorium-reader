@@ -57,7 +57,7 @@ export default class AddTag extends React.Component<IProps, IState> {
                     />
                     <button
                         type="submit"
-                        className={styles.addTagButton}
+                        className={styles.button_primary_small}
                     >
                         {__("catalog.addTagsButton")}
                     </button>

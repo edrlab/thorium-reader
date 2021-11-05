@@ -95,7 +95,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                     <div className={styles.heading}>
                         <h2>{__("settings.keyboard.keyboardShortcuts")}</h2>
                     </div>
-                    <div className={styles.justify_content_between}>
+                    <div className={styles.d_flex}>
                         <button
                             className={styles.button_primary}
                             onClick={() => this.onClickKeyboardShortcutsShowHide()}

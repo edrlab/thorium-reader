@@ -24,7 +24,6 @@
 
   &.description_see_more {
     position: relative;
-    padding-bottom: 40px;
     font-size: 1rem;
 
     & p {

@@ -95,24 +95,25 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
                     const facetsRender = opds.facets?.map((facet, facetId) =>
                         <section key={`facet-${facetId}`}>
-                            <h3>{facet.title}</h3>
+                            <div className={styles.heading}>
+                                <h3>{facet.title}</h3>
+                            </div>
                             <EntryList entries={facet.links}></EntryList>
                         </section>,
                     );
 
                     content = (
                         <>
-                            <div className={Array.isArray(facetsRender) ? styles.publicationgrid : ""}>
+                            <div className={Array.isArray(facetsRender) ? styles.row : ""}>
                                 {
-                                    Array.isArray(facetsRender)
-                                        ? <div>
-                                            {
-                                                facetsRender
-                                            }
+                                    Array.isArray(facetsRender) ?
+                                        <div className={styles.col_filter}>
+                                            {facetsRender}
                                         </div>
-                                        : <></>
+                                    :
+                                        <></>
                                 }
-                                <div>
+                                <div className={Array.isArray(facetsRender) ? styles.col : ""}>
                                     <EntryPublicationList
                                         opdsPublicationView={opds.publications}
                                         links={opds.links}

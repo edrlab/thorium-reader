@@ -26,7 +26,7 @@
   outline-color: green !important;
   outline-style: solid !important;
   outline-width: 2px !important;
-  outline-offset: 0 !important;
+  outline-offset: 0;
   animation-name: readium2ElectronAnimation_TARGET;
   animation-duration: 3s;
   animation-delay: 1s;
