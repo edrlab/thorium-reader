@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
-import * as HomeIcon from "readium-desktop/renderer/assets/icons/home.svg";
+import * as HomeIcon from "readium-desktop/renderer/assets/icons/house-fill.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import * as RefreshIcon from "readium-desktop/renderer/assets/icons/arrow-clockwise.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/global.css";
@@ -125,7 +125,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    className={styles.button_transparency_icon}
+                    className={classNames(styles.button_transparency_icon, styles.button_small)}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
@@ -162,7 +162,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    className={styles.button_transparency_icon}
+                    className={classNames(styles.button_transparency_icon, styles.button_small)}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
                 </Link>
@@ -201,7 +201,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    className={classNames(styles.button_transparency_icon, styles.button_refresh)}
+                    className={classNames(styles.button_transparency_icon, styles.button_refresh, styles.button_small)}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>
@@ -212,7 +212,7 @@ class Header extends React.Component<IProps, undefined> {
                     to={{
                         ...this.props.location,
                     }}
-                    className={classNames(styles.button_transparency_icon, styles.button_refresh)}
+                    className={classNames(styles.button_transparency_icon, styles.button_refresh, styles.button_small)}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>
