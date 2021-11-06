@@ -74,6 +74,7 @@ button {
   border: 0;
   cursor: pointer;
   color: var(--reader-fontColor) !important;
+  fill: var(--reader-fontColor) !important;
 
   &:hover {
     opacity: 1;
