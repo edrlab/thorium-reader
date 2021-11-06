@@ -88,7 +88,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                         :
                             <Link
                                 className={classNames(styles.button_primary, styles.disabled)}
-                                tabindex="-1"
+                                tabIndex="-1"
                             >
                                 <SVG svg={ArrowFirstIcon} />
                                 {__("opds.firstPage")}
@@ -109,7 +109,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                         :
                             <Link
                                 className={classNames(styles.button_primary, styles.disabled)}
-                                tabindex="-1"
+                                tabIndex="-1"
                             >
                                 <SVG svg={ArrowLeftIcon} />
                                 {__("opds.previous")}
@@ -120,7 +120,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                     pageInfo?.currentPage
                     && pageInfo.numberOfItems
                     && pageInfo.itemsPerPage
-                    && <span className={styles.page_count}>
+                    && <span>
                         {
                             pageInfo.currentPage
                         } / {
@@ -144,7 +144,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                         :
                             <Link
                                 className={classNames(styles.button_primary, styles.disabled)}
-                                tabindex="-1"
+                                tabIndex="-1"
                             >
                                 {__("opds.next")}
                                 <SVG svg={ArrowRightIcon} />
@@ -165,7 +165,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                         :
                             <Link
                                 className={classNames(styles.button_primary, styles.disabled)}
-                                tabindex="-1"
+                                tabIndex="-1"
                             >
                                 {__("opds.lastPage")}
                                 <SVG svg={ArrowLastIcon} />

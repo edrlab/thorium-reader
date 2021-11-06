@@ -22,14 +22,16 @@
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s;
+  margin-right: 10px;
+  margin-bottom: 10px;
 
   &:hover {
     background-color: #d0e2f5;
   }
 
-  &:not(:last-child) {
-    margin-right: 10px;
-    margin-bottom: 10px;
+  &.no_hover:hover {
+    background-color: #e7f1fb;
+    cursor: default;
   }
 
   & button {

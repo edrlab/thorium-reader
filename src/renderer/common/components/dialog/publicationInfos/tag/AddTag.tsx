@@ -43,10 +43,7 @@ export default class AddTag extends React.Component<IProps, IState> {
 
         return (
             this.props.pubId
-                ? <form
-                    onSubmit={this.addTag}
-                    id={styles.flux_search}
-                >
+                ? <form onSubmit={this.addTag}>
                     <input
                         type="text"
                         className={styles.tag_inputs}

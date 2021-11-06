@@ -57,6 +57,7 @@ button {
     background-color: rgba(0, 0, 0, 0.1);
   }
 }
+
 .button_outline_accessibility button {
   width: auto;
   height: 40px;
@@ -245,11 +246,11 @@ button {
   }
 
   &.button_refresh:hover svg {
-    transform: scale(.8) rotate(90deg);
+    transform: scale(0.8) rotate(90deg);
   }
 
   &.button_small svg {
-    transform: scale(.8);
+    transform: scale(0.8);
   }
 }
 

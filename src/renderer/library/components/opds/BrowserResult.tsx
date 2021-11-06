@@ -161,7 +161,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                                     || DisplayType.Grid
                                                 ) === DisplayType.Grid ?
                                                 <Slider
-                                                    className={styles.flux_slider}
                                                     content={group.publications.map((pub, pubId) =>
                                                         <PublicationCard
                                                             key={`opds-group-${i}-${pubId}`}
@@ -199,7 +198,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             }
         }
 
-        return <div className={styles.opdsBrowseContent}>
+        return <div>
             {content}
         </div>;
     }

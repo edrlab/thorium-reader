@@ -79,7 +79,7 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
                         >
                             <div
                                 ref={this.descriptionRef}
-                                className={classNames(styles.allowUserSelect, styles.description)}
+                                className={styles.allowUserSelect}
                                 dangerouslySetInnerHTML={{__html: textSanitize}}
                             >
                             </div>

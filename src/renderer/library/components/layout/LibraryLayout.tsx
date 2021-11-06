@@ -91,17 +91,17 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         window.document.title = helmetTitle;
 
         return (
-            <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
+            <div role="region" aria-label={__("accessibility.toolbar")}>
                 <a
                     role="region"
                     className={styles.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
-                    title={this.props.__("accessibility.toolbar")}
-                    aria-label={this.props.__("accessibility.toolbar")}
+                    title={__("accessibility.toolbar")}
+                    aria-label={__("accessibility.toolbar")}
                     tabIndex={-1}
                 >
-                    {this.props.__("accessibility.toolbar")}
+                    {__("accessibility.toolbar")}
                 </a>
                 <LibraryHeader />
                 { this.props.secondaryHeader }
@@ -109,7 +109,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                 <main
                     id="main"
                     role="main"
-                    aria-label={this.props.__("accessibility.mainContent")}
+                    aria-label={__("accessibility.mainContent")}
                     className={classNames(styles.main, this.props.mainClassName)}
                 >
                     <a
@@ -117,11 +117,11 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         className={styles.anchor_link}
                         ref={this.fastLinkRef}
                         id="main-content"
-                        title={this.props.__("accessibility.mainContent")}
-                        aria-label={this.props.__("accessibility.mainContent")}
+                        title={__("accessibility.mainContent")}
+                        aria-label={__("accessibility.mainContent")}
                         tabIndex={-1}
                     >
-                        {this.props.__("accessibility.mainContent")}
+                        {__("accessibility.mainContent")}
                     </a>
                     { this.props.children }
                 </main>
