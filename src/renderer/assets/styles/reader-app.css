@@ -75,6 +75,7 @@ button {
   cursor: pointer;
   color: var(--reader-fontColor) !important;
   fill: var(--reader-fontColor) !important;
+  height: auto;
 
   &:hover {
     opacity: 1;
