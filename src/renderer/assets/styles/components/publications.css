@@ -27,40 +27,37 @@
 
   & img {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    top: 2px;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     cursor: pointer;
-    height: 100%;
-    width: 100%;
-    max-width: 100%;
-    max-height: 100%;
+    height: calc(100% - 4px);
+    width: calc(100% - 4px);
+    max-width: calc(100% - 4px);
+    max-height: calc(100% - 4px);
     object-fit: contain;
     box-sizing: border-box;
     border: 1px solid #e2e2e2;
     border-radius: 6px;
     background-color: #f1f1f1;
   }
-
-  &:focus {
-    outline-offset: 0 !important;
-  }
 }
 
 .no_img_wrapper {
-  height: 100%;
-  width: 100%;
+  height: calc(100% - 4px);
+  width: calc(100% - 4px);
   text-align: center;
   box-sizing: border-box;
   padding: 5%;
   border: 1px solid silver;
   border-radius: 6px;
   position: absolute;
-  top: 0;
+  top: 2px;
+  left: 2px;
 
   & .no_img {
     border: 1px black solid;

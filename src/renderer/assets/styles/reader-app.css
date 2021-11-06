@@ -73,6 +73,7 @@ button {
   background: none;
   border: 0;
   cursor: pointer;
+  color: var(--reader-fontColor) !important;
 
   &:hover {
     opacity: 1;

@@ -57,6 +57,11 @@ button {
     background-color: rgba(0, 0, 0, 0.1);
   }
 }
+.button_outline_accessibility button {
+  width: auto;
+  height: 40px;
+  border-radius: 5px;
+}
 
 /*
 
@@ -116,13 +121,22 @@ button {
   &.button_icon {
     height: 16px;
     padding: 8px 20px;
+    background: white;
+    overflow: visible;
 
     & input {
-      width: 1px;
-      height: 1px;
       overflow: hidden;
       z-index: -1;
       position: absolute;
+      top: -2px;
+      left: -2px;
+      width: calc(100% + 2px);
+      height: calc(100% + 2px);
+      appearance: none;
+      color: transparent;
+      background: transparent;
+      border-radius: 7px;
+      border: 1px solid transparent;
     }
 
     & svg {

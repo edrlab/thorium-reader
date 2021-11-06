@@ -27,8 +27,7 @@
     background-color: #d0e2f5;
   }
 
-  &:not(:last-child),
-  &:not(:only-child) {
+  &:not(:last-child) {
     margin-right: 10px;
     margin-bottom: 10px;
   }
