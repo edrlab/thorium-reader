@@ -11,6 +11,7 @@ declare const styles: {
   readonly "button_secondary": string;
   readonly "button_transparency": string;
   readonly "button_transparency_icon": string;
+  readonly "button_transparency_icon_inactive": string;
   readonly "button_refresh": string;
   readonly "button_small": string;
   readonly "button_link": string;

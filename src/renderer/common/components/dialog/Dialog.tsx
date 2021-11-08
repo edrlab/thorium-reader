@@ -74,8 +74,7 @@ class Dialog extends React.Component<IProps, undefined> {
                         aria-modal="true"
                         aria-hidden={this.props.open ? "false" : "true"}
                         tabIndex={-1}
-                        className={styles.modal_dialog_overlay}
-                        style={{ visibility: this.props.open ? "visible" : "hidden" }}
+                        className={this.props.open ? styles.modal_dialog_overlay : styles.visibility_hidden}
                     >
                         <div onClick={this.props.close} className={styles.modal_dialog_overlay_hidden} />
                         <div

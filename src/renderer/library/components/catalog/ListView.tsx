@@ -80,7 +80,7 @@ class CatalogListView extends React.Component<IProps, undefined> {
                             </ul>
                         }
                         </section>
-                    ) : <div key={ entryIndex } aria-hidden="true" style={{display: "none"}}></div>;
+                    ) : <div key={ entryIndex } aria-hidden="true" className={styles.d_none}></div>;
             })
             }
             { catalogEntriesIsEmpty &&

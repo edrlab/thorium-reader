@@ -107,7 +107,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
                 <div className={classNames(styles.allowUserSelect)}>
                     {(lsdStatus &&
                         (lsdStatus !== StatusEnum.Active && lsdStatus !== StatusEnum.Ready)) && <>
-                            <span style={{ color: "red" }}>
+                            <span className={styles.color_red}>
                                 {
                                     (lsdStatus === StatusEnum.Expired ?
                                         __("publication.expiredLcp")

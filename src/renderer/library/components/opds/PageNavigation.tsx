@@ -86,13 +86,13 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 {__("opds.firstPage")}
                             </Link>
                         :
-                            <Link
+                            <a
                                 className={classNames(styles.button_primary, styles.disabled)}
                                 tabIndex={-1}
                             >
                                 <SVG svg={ArrowFirstIcon} />
                                 {__("opds.firstPage")}
-                            </Link>
+                            </a>
                     }
                     {
                         pageLinks?.previous[0]?.url ?
@@ -107,13 +107,13 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 {__("opds.previous")}
                             </Link>
                         :
-                            <Link
+                            <a
                                 className={classNames(styles.button_primary, styles.disabled)}
                                 tabIndex={-1}
                             >
                                 <SVG svg={ArrowLeftIcon} />
                                 {__("opds.previous")}
-                            </Link>
+                            </a>
                     }
                 </div>
                 {
@@ -142,13 +142,13 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 <SVG svg={ArrowRightIcon} />
                             </Link>
                         :
-                            <Link
+                            <a
                                 className={classNames(styles.button_primary, styles.disabled)}
                                 tabIndex={-1}
                             >
                                 {__("opds.next")}
                                 <SVG svg={ArrowRightIcon} />
-                            </Link>
+                            </a>
                     }
                     {
                         pageLinks?.last[0]?.url ?
@@ -163,13 +163,13 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 <SVG svg={ArrowLastIcon} />
                             </Link>
                         :
-                            <Link
+                            <a
                                 className={classNames(styles.button_primary, styles.disabled)}
                                 tabIndex={-1}
                             >
                                 {__("opds.lastPage")}
                                 <SVG svg={ArrowLastIcon} />
-                            </Link>
+                            </a>
                     }
                 </div>
             </div>

@@ -135,6 +135,14 @@ nav + nav + .breadcrumb + .main {
   width: 50%;
 }
 
+.color_red {
+  color: red;
+}
+
+.d_none {
+  display: none;
+}
+
 .d_flex,
 .justify_content_between,
 .align_items_center,
@@ -160,6 +168,18 @@ nav + nav + .breadcrumb + .main {
 
 .flex_1 {
   flex: 1;
+}
+
+.text_center {
+  text-align: center;
+}
+
+.visibility_visible {
+  visibility: visible;
+}
+
+.visibility_hidden {
+  visibility: hidden;
 }
 
 /* ============== NAVIGATION ================= */

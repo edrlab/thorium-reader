@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -20,13 +21,6 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-/**
- * FIXME : css in code
- */
-const style: React.CSSProperties = {
-    textAlign: "center",
-};
-
 export default class MessageOpdBrowserResult extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
@@ -36,7 +30,7 @@ export default class MessageOpdBrowserResult extends React.Component<IProps, und
     public render(): React.ReactElement<{}> {
         const { message, title } = this.props;
         return (
-            <div style={style}>
+            <div className={styles.text_center}>
                 <h3>{title}</h3>
                 {message && <p>{message}</p>}
             </div>

@@ -25,6 +25,7 @@ import { diLibraryGet } from "readium-desktop/renderer/library/di";
 
 import DownloadsPanel from "./DownloadsPanel";
 import LoaderMainLoad from "./LoaderMainLoad";
+import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -87,14 +88,7 @@ export default class App extends React.Component<{}, undefined> {
                                 // FIXME : css in code
                                 return <div
                                     {...rootProps}
-                                    style={{
-                                        position: "absolute",
-                                        overflow: "hidden",
-                                        top: 0,
-                                        bottom: 0,
-                                        left: 0,
-                                        right: 0,
-                                    }}
+                                    className={styles.dropzone}
                                 >
                                     <DownloadsPanel />
                                     <input aria-hidden {

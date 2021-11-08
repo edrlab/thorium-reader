@@ -117,7 +117,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 : <div
                                     key={entryIndex}
                                     aria-hidden="true"
-                                    style={{ display: "none" }}
+                                    className={styles.d_none}
                                 >
                                 </div>,
                     )

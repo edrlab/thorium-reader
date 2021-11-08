@@ -16,12 +16,17 @@ declare const styles: {
   readonly "mb_30": string;
   readonly "my_10": string;
   readonly "w_50": string;
+  readonly "color_red": string;
+  readonly "d_none": string;
   readonly "d_flex": string;
   readonly "justify_content_between": string;
   readonly "align_items_center": string;
   readonly "flex_wrap": string;
   readonly "flex_none": string;
   readonly "flex_1": string;
+  readonly "text_center": string;
+  readonly "visibility_visible": string;
+  readonly "visibility_hidden": string;
   readonly "main_navigation": string;
   readonly "active": string;
   readonly "nav_secondary": string;
@@ -53,6 +58,7 @@ declare const styles: {
   readonly "button_secondary": string;
   readonly "button_transparency": string;
   readonly "button_transparency_icon": string;
+  readonly "button_transparency_icon_inactive": string;
   readonly "button_refresh": string;
   readonly "button_small": string;
   readonly "button_link": string;
@@ -87,6 +93,7 @@ declare const styles: {
   readonly "checkbox_keyboard": string;
   readonly "radio_list": string;
   readonly "form_group": string;
+  readonly "dropzone": string;
   readonly "modal_dialog_overlay": string;
   readonly "modal_dialog_overlay_hidden": string;
   readonly "modal_dialog": string;

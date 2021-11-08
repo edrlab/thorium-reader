@@ -235,9 +235,11 @@ button {
   }
 }
 
-.button_transparency_icon {
+.button_transparency_icon,
+.button_transparency_icon_inactive {
   height: 34px;
   width: 34px;
+  transition-duration: 0ms;
 
   & svg {
     height: 34px;
@@ -252,6 +254,10 @@ button {
   &.button_small svg {
     transform: scale(0.8);
   }
+}
+
+.button_transparency_icon_inactive {
+  fill: #767676;
 }
 
 .button_link {

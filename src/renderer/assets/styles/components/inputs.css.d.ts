@@ -3,6 +3,7 @@ declare const styles: {
   readonly "checkbox_keyboard": string;
   readonly "radio_list": string;
   readonly "form_group": string;
+  readonly "dropzone": string;
 };
 export = styles;
 

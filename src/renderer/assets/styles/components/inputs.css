@@ -24,6 +24,8 @@
 
   5. form_group
 
+  6. dropzone
+
 */
 
 /* 1. input[type="text"] ... */
@@ -196,4 +198,15 @@ select {
   &:not(:last-child):not(:only-child) {
     margin-bottom: 2rem;
   }
+}
+
+/* 6. dropzone */
+
+.dropzone {
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

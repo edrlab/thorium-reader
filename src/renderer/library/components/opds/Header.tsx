@@ -59,9 +59,10 @@ class Header extends React.Component<IProps, undefined> {
                         },
                     }}
                     replace={true}
-                    className={styles.button_transparency_icon}
-                    style={(displayType !== DisplayType.Grid) ? { fill: "#767676" } : {}}
-
+                    className={(displayType === DisplayType.Grid) ?
+                        styles.button_transparency_icon :
+                        styles.button_transparency_icon_inactive
+                    }
                     aria-pressed={displayType === DisplayType.Grid}
                     role={"button"}
                 >
@@ -75,10 +76,10 @@ class Header extends React.Component<IProps, undefined> {
                         },
                     }}
                     replace={true}
-                    className={styles.button_transparency_icon}
-                    style={displayType !== DisplayType.List ?
-                        { fill: "#757575" } : {}}
-
+                    className={(displayType === DisplayType.List) ?
+                        styles.button_transparency_icon :
+                        styles.button_transparency_icon_inactive
+                    }
                     aria-pressed={displayType === DisplayType.List}
                     role={"button"}
                 >
