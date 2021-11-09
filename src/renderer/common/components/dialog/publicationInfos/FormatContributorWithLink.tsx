@@ -36,7 +36,7 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                 // FIXME : add pointer hover on 'a' links
                 retElement.push(
                     <a onClick={onClickLinkCb(newContributor)}
-                        className={styles.button_link} tabIndex="0"
+                        className={styles.button_link} tabIndex={0}
                     >
                         {translator.translateContentField(newContributor.name)}
                     </a>,
