@@ -269,7 +269,6 @@
     "react": "^16.14.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^16.14.0",
-    "react-dropdown": "^1.9.2",
     "react-dropzone": "^11.4.2",
     "react-focus-lock": "^2.5.2",
     "react-redux": "^7.2.6",

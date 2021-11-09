@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import "font-awesome/css/font-awesome.css";
-import "react-dropdown/style.css";
 
 import { ipcRenderer } from "electron";
 import * as React from "react";
