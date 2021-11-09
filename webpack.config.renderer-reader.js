@@ -100,9 +100,15 @@ const cssLoaderConfig = [
     {
         loader: "css-loader",
         options: {
+            import: (url, media, resourcePath) => {
+                console.log("css-loader IMPORT (READER): ", url, media, resourcePath);
+                return true;
+            },
             importLoaders: 1,
             modules: nodeEnv !== "production" ? {
                 localIdentName: "[path][name]__[local]--[hash:base64:5]",
+                // namedExport: true,
+                // exportLocalsConvention: "asIs",
             } : true,
             esModule: false,
         },

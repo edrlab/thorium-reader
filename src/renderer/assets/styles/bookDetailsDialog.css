@@ -1,5 +1,11 @@
 @import './partials/variables.css';
 
+/*
+-=-=
+bookDetailsDialog.css
+-=-=
+*/
+
 .allowUserSelect {
   user-select: text;
 }

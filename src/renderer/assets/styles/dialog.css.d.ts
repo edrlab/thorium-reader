@@ -7,7 +7,6 @@ declare const styles: {
   readonly "lcp_dialog": string;
   readonly "opds_form_dialog": string;
   readonly "add_dialog": string;
-  readonly "primary": string;
   readonly "field": string;
 };
 export = styles;

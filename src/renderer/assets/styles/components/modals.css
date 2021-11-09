@@ -1,6 +1,10 @@
 @import '../partials/variables.css';
 
-/* All Modals Styles */
+/*
+-=-=
+components/modals.css
+-=-=
+*/
 
 .modal_dialog_overlay {
   position: fixed;

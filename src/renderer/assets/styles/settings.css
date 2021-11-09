@@ -1,5 +1,11 @@
 @import './focus-mixin.css';
 
+/*
+-=-=
+settings.css
+-=-=
+*/
+
 .main {
   & ul {
     padding: 0;

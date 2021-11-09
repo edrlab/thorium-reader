@@ -1,6 +1,10 @@
 @import '../partials/variables.css';
 
-/* All Grids Styles */
+/*
+-=-=
+components/grids.css
+-=-=
+*/
 
 .grid_uniform_wrapper {
   display: flex;

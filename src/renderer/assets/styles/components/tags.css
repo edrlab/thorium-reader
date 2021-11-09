@@ -1,6 +1,10 @@
 @import '../partials/variables.css';
 
-/* All Tags Styles */
+/*
+-=-=
+components/tags.css
+-=-=
+*/
 
 .tags_wrapper {
   display: flex;

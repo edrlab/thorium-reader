@@ -1,5 +1,11 @@
 @import './variable.css';
 
+/*
+-=-=
+dialog.css
+-=-=
+*/
+
 .c_dialog {
   position: fixed;
   z-index: 102;
@@ -122,8 +128,7 @@
       }
     }
 
-    & input[type="submit"],
-    & .primary {
+    & input[type="submit"] {
       background-color: #4d8fe0;
       color: white;
       border: none;

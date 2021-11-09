@@ -1,5 +1,11 @@
 @import './focus-mixin.css';
 
+/*
+-=-=
+publication.css
+-=-=
+*/
+
 .block_book_list {
   display: block;
   width: calc(100% + 120px);

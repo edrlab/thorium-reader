@@ -1,5 +1,11 @@
 @import '../partials/variables.css';
 
+/*
+-=-=
+components/breadcrumb.css
+-=-=
+*/
+
 .breadcrumb {
   padding: 10px 60px;
   font-size: 16px;

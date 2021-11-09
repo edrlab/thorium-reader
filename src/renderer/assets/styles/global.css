@@ -17,6 +17,12 @@
 @import './components/tags.css';
 @import './components/toasts.css';
 
+/*
+-=-=
+global.css
+-=-=
+*/
+
 /* ============ GLOBAL ELEMENTS =============== */
 
 :root {
@@ -62,10 +68,6 @@ nav + nav + .breadcrumb + .main {
 }
 
 /* ============== FAST CLASS ================= */
-
-.primary {
-  color: var(--color-accent);
-}
 
 .anchor_link {
   position: absolute;

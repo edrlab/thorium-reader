@@ -1,6 +1,10 @@
 @import '../partials/variables.css';
 
-/* All Buttons Styles */
+/*
+-=-=
+components/buttons.css
+-=-=
+*/
 
 /*
 
@@ -41,20 +45,6 @@ button {
 
   &:hover {
     opacity: 1;
-  }
-}
-
-.commonButton {
-  background-color: transparent;
-  border: 0;
-  height: 2.3rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  padding: 6px 10px;
-  text-transform: uppercase;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 

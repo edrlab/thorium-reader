@@ -1,6 +1,10 @@
 @import '../partials/variables.css';
 
-/* All styles for dropdowns */
+/*
+-=-=
+components/dropdown.css
+-=-=
+*/
 
 .dropdown_menu {
   height: fit-content;

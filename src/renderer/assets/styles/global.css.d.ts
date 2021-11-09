@@ -1,7 +1,6 @@
 declare const styles: {
   readonly "main": string;
   readonly "breadcrumb": string;
-  readonly "primary": string;
   readonly "anchor_link": string;
   readonly "allowUserSelect": string;
   readonly "rotate180": string;
@@ -49,7 +48,6 @@ declare const styles: {
   readonly "block_dashed": string;
   readonly "button_primary": string;
   readonly "button_primary_small": string;
-  readonly "commonButton": string;
   readonly "button_outline_accessibility": string;
   readonly "icon_end": string;
   readonly "disabled": string;

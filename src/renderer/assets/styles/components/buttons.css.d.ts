@@ -1,7 +1,6 @@
 declare const styles: {
   readonly "button_primary": string;
   readonly "button_primary_small": string;
-  readonly "commonButton": string;
   readonly "button_outline_accessibility": string;
   readonly "icon_end": string;
   readonly "disabled": string;

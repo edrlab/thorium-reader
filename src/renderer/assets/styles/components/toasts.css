@@ -1,6 +1,10 @@
 @import '../partials/variables.css';
 
-/* All Toasts Styles */
+/*
+-=-=
+components/toasts.css
+-=-=
+*/
 
 .toasts_wrapper {
   position: fixed;

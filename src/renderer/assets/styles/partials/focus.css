@@ -1,3 +1,9 @@
+/*
+-=-=
+partials/focus.css
+-=-=
+*/
+
 :root *:focus {
   outline: none;
 }

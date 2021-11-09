@@ -2,6 +2,12 @@
 @import './focus.css';
 @import './variable.css';
 
+/*
+-=-=
+reader-app.css
+-=-=
+*/
+
 :global :root.HIDE_CURSOR_CLASS,
 :global :root.HIDE_CURSOR_CLASS * {
   cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=), none !important;
