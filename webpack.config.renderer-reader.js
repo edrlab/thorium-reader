@@ -104,29 +104,36 @@ const cssLoaderConfig = [
         options: {
             import: (url, media, resourcePath) => {
                 console.log("css-loader IMPORT (READER): ", url, media, resourcePath);
-                return false;
+                return true;
             },
             importLoaders: 1,
-            modules: nodeEnv !== "production" && false ? { // MUST USE STRICT BASE64, NO PATH DEPENDENT (OTHERWISE BREAK CROSS-FILE CSS CLASSES WITH IDENTICAL NAMES, E.G. SUBCLASSES IN NESTED STATEMENTS)
-                localIdentName: "[path][name]__[local]--[hash:base64:5]",
-            } : {
-                getLocalIdent: (context, localIdentName, localName, options) => {
-                    // const checkSum = crypto.createHash("sha256");
-                    // checkSum.update(localName);
-                    // const hexStr = checkSum.digest("hex");
-                    // const b64Str = Buffer.from(hexStr, "hex").toString("base64");
-                    // const h = "z_" + b64Str;
-                    // console.log("getLocalIdent READER: ", h, context.resourcePath, localName);
-                    // return h;
-                    return localName;
-                },
-                // localIdentName: "[hash:base64]",
-                // localIdentHashPrefix: "hash",
-                // localIdentHashSalt: "_",
-                // localIdentHashFunction: "md4", // sha256
-                // localIdentHashDigest: "hex", // base64
-                // localIdentHashDigestLength: 20,
+            modules: {
+                // auto: false,
+                // mode: "local",
+                // exportOnlyLocals: true,
+                // exportGlobals: true,
+                localIdentName: "[local]",
             },
+            // modules: nodeEnv !== "production" && false ? { // MUST USE STRICT BASE64, NO PATH DEPENDENT (OTHERWISE BREAK CROSS-FILE CSS CLASSES WITH IDENTICAL NAMES, E.G. SUBCLASSES IN NESTED STATEMENTS)
+            //     localIdentName: "[path][name]__[local]--[hash:base64:5]",
+            // } : {
+            //     getLocalIdent: (context, localIdentName, localName, options) => {
+            //         // const checkSum = crypto.createHash("sha256");
+            //         // checkSum.update(localName);
+            //         // const hexStr = checkSum.digest("hex");
+            //         // const b64Str = Buffer.from(hexStr, "hex").toString("base64");
+            //         // const h = "z_" + b64Str;
+            //         // console.log("getLocalIdent READER: ", h, context.resourcePath, localName);
+            //         // return h;
+            //         return localName;
+            //     },
+            //     // localIdentName: "[hash:base64]",
+            //     // localIdentHashPrefix: "hash",
+            //     // localIdentHashSalt: "_",
+            //     // localIdentHashFunction: "md4", // sha256
+            //     // localIdentHashDigest: "hex", // base64
+            //     // localIdentHashDigestLength: 20,
+            // },
             esModule: false,
         },
     },

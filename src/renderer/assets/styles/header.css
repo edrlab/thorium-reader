@@ -15,10 +15,10 @@
 =-=-= header.css
 */
 
-.main_navigation {
+.main_navigation_library {
   position: fixed;
 
-  @mixin main_navigation;
+  @mixin main_navigation_library;
 
   & ul {
     padding-left: 60px;

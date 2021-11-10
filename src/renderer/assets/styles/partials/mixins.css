@@ -10,7 +10,7 @@
 =-=-= partials/mixins.css
 */
 
-@define-mixin main_navigation {
+@define-mixin main_navigation_library {
   z-index: 102;
   width: 100%;
   top: 0;

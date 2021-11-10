@@ -5,8 +5,11 @@ module.exports = {
         require("postcss-import")({
             filter: (p) => {
                 const ok = p && p.indexOf("mixin") >= 0;
-                console.log("POSTCSS IMPORT =====> ", p, ok);
-                return true;
+                console.log("POSTCSS IMPORT? =====> ", p, ok);
+                return ok;
+
+                // console.log("POSTCSS IMPORT (skip) =====> ", p);
+                // return false;
             },
         }),
         require("postcss-mixins")({

@@ -182,10 +182,6 @@ nav + nav + .breadcrumb + .main {
   margin: 0;
 }
 
-.allowUserSelect {
-  user-select: text;
-}
-
 .rotate180 {
   transform: rotate(180deg);
 }
@@ -284,40 +280,6 @@ nav + nav + .breadcrumb + .main {
 
 /* ============== NAVIGATION ================= */
 
-.main_navigation {
-  position: fixed;
-
-  @mixin main_navigation;
-
-  & ul {
-    padding-left: 60px;
-    padding-right: 60px;
-    margin: 0;
-
-    & a {
-      text-decoration: none;
-      color: inherit;
-      padding: 1.125rem 0.3125rem;
-    }
-
-    & li {
-      display: inline-block;
-      padding-bottom: 18px;
-      padding-top: 18px;
-      font-weight: 600;
-      color: var(--color-disabled);
-      cursor: pointer;
-      margin-right: 60px;
-
-      &.active {
-        color: black;
-        border-bottom: 3px solid black;
-        padding-bottom: 15px;
-      }
-    }
-  }
-}
-
 .heading {
   display: flex;
   justify-content: space-between;
@@ -359,32 +321,6 @@ nav + nav + .breadcrumb + .main {
 
 li.no_list_style {
   list-style: none;
-}
-
-.descriptionWrapper {
-  max-height: 10rem;
-  overflow: hidden;
-  position: relative;
-
-  &.hideEnd {
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-      height: 2rem;
-    }
-  }
-
-  &.seeMore {
-    max-height: unset;
-
-    &::after {
-      content: none;
-    }
-  }
 }
 
 .___DEBUG___GLOBAL_CSS {

@@ -1,5 +1,4 @@
 declare const styles: {
-  readonly "allowUserSelect": string;
   readonly "c_dialog": string;
   readonly "c_dialog_background": string;
   readonly "c_dialog__box": string;
@@ -18,7 +17,7 @@ declare const styles: {
   readonly "descriptionWrapper": string;
   readonly "hideEnd": string;
   readonly "seeMore": string;
-  readonly "seeMoreButton": string;
+  readonly "allowUserSelect": string;
   readonly "___DEBUG___BOOK_DETAILS_DIALOG_CSS": string;
 };
 export = styles;

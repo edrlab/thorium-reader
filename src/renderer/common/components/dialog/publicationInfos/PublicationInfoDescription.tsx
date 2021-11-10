@@ -76,7 +76,7 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
                             className={classNames(
                                 stylesBookDetailsDialog.descriptionWrapper,
                                 this.state.needSeeMore && stylesGlobal.mb_30,
-                                this.state.needSeeMore && stylesGlobal.hideEnd,
+                                this.state.needSeeMore && stylesBookDetailsDialog.hideEnd,
                                 this.state.seeMore && stylesBookDetailsDialog.seeMore,
                             )}
                         >

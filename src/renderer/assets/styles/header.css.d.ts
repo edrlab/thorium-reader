@@ -1,5 +1,5 @@
 declare const styles: {
-  readonly "main_navigation": string;
+  readonly "main_navigation_library": string;
   readonly "active": string;
   readonly "preferences": string;
   readonly "nav_secondary": string;

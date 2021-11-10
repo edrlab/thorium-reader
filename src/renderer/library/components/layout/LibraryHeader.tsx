@@ -9,7 +9,6 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
@@ -71,7 +70,7 @@ class Header extends React.Component<IProps, undefined> {
                 anchorId="main-content"
                 label={__("accessibility.skipLink")}
             />
-            <nav className={stylesGlobal.main_navigation} role="navigation" aria-label={__("header.home")}>
+            <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
                 <ul>
                     {
                         headerNav.map(
@@ -106,7 +105,7 @@ class Header extends React.Component<IProps, undefined> {
                 )
             ) {
                 active = true;
-                styleClasses.push(stylesGlobal.active);
+                styleClasses.push(stylesHeader.active);
                 break;
             }
         }
