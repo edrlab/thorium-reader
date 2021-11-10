@@ -9,7 +9,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -87,10 +89,10 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                     <section key={entryIndex}>
                                         {
 
-                                            <div className={styles.heading}>
+                                            <div className={stylesGlobal.heading}>
                                                 <h2>{entry.title}</h2>
                                                 <Link
-                                                    className={styles.button_primary_small}
+                                                    className={stylesButtons.button_primary_small}
                                                     to={{
                                                         ...this.props.location,
                                                         pathname: "/library/search/all",
@@ -102,7 +104,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                         }
                                         {
                                             <Slider
-                                                className={styles.slider}
+                                                className={stylesSlider.slider}
                                                 content={entry.publicationViews.map((pub) =>
                                                     <PublicationCard
                                                         key={pub.identifier}
@@ -117,7 +119,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 : <div
                                     key={entryIndex}
                                     aria-hidden="true"
-                                    className={styles.d_none}
+                                    className={stylesGlobal.d_none}
                                 >
                                 </div>,
                     )

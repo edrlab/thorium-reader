@@ -24,6 +24,7 @@ declare const styles: {
   readonly "title": string;
   readonly "author": string;
   readonly "cover_img": string;
+  readonly "___DEBUG___COMPONENTS_PUBLICATIONS_CSS": string;
 };
 export = styles;
 

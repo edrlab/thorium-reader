@@ -10,7 +10,8 @@ import "reflect-metadata";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesImages from "readium-desktop/renderer/assets/styles/components/images.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";
@@ -56,8 +57,8 @@ class Cover extends React.Component<IProps, undefined> {
             };
 
             return (
-                <div style={backgroundStyle} className={styles.no_img_wrapper}>
-                    <div className={styles.no_img}>
+                <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
+                    <div className={stylesPublications.no_img}>
                         <p aria-hidden>
                             {this.props.translator.translateContentField(publicationViewMaybeOpds.title)}
                         </p>
@@ -79,7 +80,7 @@ class Cover extends React.Component<IProps, undefined> {
             return (
                 <img
                     tabIndex={this.props.onKeyPress ? 0 : -1}
-                    className={styles.cover_img}
+                    className={stylesImages.cover_img}
                     onClick={this.props.onClick}
                     onKeyPress={this.props.onKeyPress}
                     role="presentation"

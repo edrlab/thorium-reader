@@ -8,6 +8,7 @@ declare const styles: {
   readonly "closeButton": string;
   readonly "leave": string;
   readonly "toRemove": string;
+  readonly "___DEBUG___COMPONENTS_TOASTS_CSS": string;
 };
 export = styles;
 

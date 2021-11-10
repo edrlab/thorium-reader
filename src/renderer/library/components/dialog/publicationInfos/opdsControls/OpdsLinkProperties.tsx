@@ -8,7 +8,7 @@
 import * as moment from "moment";
 import * as React from "react";
 import { IOPDSPropertiesView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -45,7 +45,7 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
             property &&
             <>
                 <strong>{`${text}: `}</strong>
-                <i className={styles.allowUserSelect}>
+                <i className={stylesBookDetailsDialog.allowUserSelect}>
                     {property}
                 </i>
                 <br />

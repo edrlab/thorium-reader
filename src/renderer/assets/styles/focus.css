@@ -1,9 +1,10 @@
+/*
+=-=-= focus.css => './focus-mixin.css'
+*/
 @import './focus-mixin.css';
 
 /*
--=-=
-focus.css
--=-=
+=-=-= focus.css
 */
 
 :root *:focus {
@@ -42,4 +43,8 @@ focus.css
 
 :global :root *.R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE:target {
   outline: inherit !important;
+}
+
+.___DEBUG___FOCUS_CSS {
+  display: none;
 }

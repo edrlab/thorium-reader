@@ -1,7 +1,10 @@
 /*
--=-=
-partials/focus.css
--=-=
+=-=-= partials/focus.css => './mixins.css'
+*/
+@import './mixins.css';
+
+/*
+=-=-= partials/focus.css
 */
 
 :root *:focus {
@@ -40,4 +43,8 @@ partials/focus.css
 
 :global :root *.R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE:target {
   outline: inherit !important;
+}
+
+.___DEBUG___PARTIALS_FOCUS_CSS {
+  display: none;
 }

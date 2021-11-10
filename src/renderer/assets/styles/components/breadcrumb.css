@@ -1,9 +1,13 @@
-@import '../partials/variables.css';
+/*
+=-=-= components/breadcrumb.css => '../partials/variables.css'
+*/
 
 /*
--=-=
-components/breadcrumb.css
--=-=
+@import '../partials/variables.css';
+*/
+
+/*
+=-=-= components/breadcrumb.css
 */
 
 .breadcrumb {
@@ -49,4 +53,8 @@ components/breadcrumb.css
       margin-left: -10px;
     }
   }
+}
+
+.___DEBUG___COMPONENTS_BREADCRUMB_CSS {
+  display: none;
 }

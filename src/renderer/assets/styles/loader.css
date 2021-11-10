@@ -1,7 +1,5 @@
 /*
--=-=
-loader.css
--=-=
+=-=-= loader.css
 */
 
 .loader {
@@ -26,4 +24,8 @@ loader.css
 .loader_search_picker {
   width: 24px;
   align-self: center;
+}
+
+.___DEBUG___LOADER_CSS {
+  display: none;
 }

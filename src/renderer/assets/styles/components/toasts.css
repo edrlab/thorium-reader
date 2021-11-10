@@ -1,9 +1,5 @@
-@import '../partials/variables.css';
-
 /*
--=-=
-components/toasts.css
--=-=
+=-=-= components/toasts.css
 */
 
 .toasts_wrapper {
@@ -83,4 +79,8 @@ components/toasts.css
   to {
     transform: translateX(0);
   }
+}
+
+.___DEBUG___COMPONENTS_TOASTS_CSS {
+  display: none;
 }

@@ -19,6 +19,7 @@ declare const styles: {
   readonly "hideEnd": string;
   readonly "seeMore": string;
   readonly "seeMoreButton": string;
+  readonly "___DEBUG___BOOK_DETAILS_DIALOG_CSS": string;
 };
 export = styles;
 

@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 import { v4 as uuidv4 } from "uuid";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
@@ -57,7 +57,7 @@ export class ToastManager extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { toastList } = this.state;
-        return <div className={styles.toasts_wrapper}>
+        return <div className={stylesToasts.toasts_wrapper}>
             { Object.keys(toastList).map((id: string) => {
                 const toast = toastList[id];
                 if (toast) {

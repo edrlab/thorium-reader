@@ -8,7 +8,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { authActions } from "readium-desktop/common/redux/actions";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -37,11 +38,11 @@ class AuthSettings extends React.Component<IProps> {
         return (
             <>
                 <section>
-                    <div className={styles.heading}>
+                    <div className={stylesGlobal.heading}>
                         <h2>{__("catalog.opds.auth.login")}</h2>
                     </div>
                     <button
-                        className={styles.button_primary}
+                        className={stylesButtons.button_primary}
                         onClick={() => this.props.wipeData()}>
                         {__("settings.auth.wipeData")}
                     </button>

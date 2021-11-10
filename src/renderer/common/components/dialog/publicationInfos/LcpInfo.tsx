@@ -10,7 +10,8 @@ import * as debug_ from "debug";
 import * as moment from "moment";
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -101,13 +102,13 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
         return (
             <>
-                <div className={styles.heading}>
+                <div className={stylesGlobal.heading}>
                     <h3>LCP</h3>
                 </div>
-                <div className={classNames(styles.allowUserSelect)}>
+                <div className={classNames(stylesBookDetailsDialog.allowUserSelect)}>
                     {(lsdStatus &&
                         (lsdStatus !== StatusEnum.Active && lsdStatus !== StatusEnum.Ready)) && <>
-                            <span className={styles.color_red}>
+                            <span className={stylesGlobal.color_red}>
                                 {
                                     (lsdStatus === StatusEnum.Expired ?
                                         __("publication.expiredLcp")

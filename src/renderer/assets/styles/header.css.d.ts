@@ -3,8 +3,10 @@ declare const styles: {
   readonly "active": string;
   readonly "preferences": string;
   readonly "nav_secondary": string;
-  readonly "search_img": string;
   readonly "skip_link": string;
+  readonly "___DEBUG___HEADER_CSS": string;
+  readonly "___DEBUG___PARTIALS_MIXINS_CSS": string;
+  readonly "___DEBUG___PARTIALS_VARIABLES_CSS": string;
 };
 export = styles;
 

@@ -5,18 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
 import classNames from "classnames";
+import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnInput } from "readium-desktop/typings/react";
@@ -62,13 +65,13 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
             <Dialog
                 open={true}
                 close={closeDialog}
-                id={styles.opds_form_dialog}
+                id={stylesModals.opds_form_dialog}
                 title={__("opds.addMenu")}
             >
-                <form className={styles.modal_dialog_form_wrapper}>
-                    <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>
-                        <div className={styles.w_50}>
-                            <div className={styles.form_group}>
+                <form className={stylesModals.modal_dialog_form_wrapper}>
+                    <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
+                        <div className={stylesGlobal.w_50}>
+                            <div className={stylesInputs.form_group}>
                                 <label>{__("opds.addForm.name")}</label>
                                 <input
                                     onChange={(e) => this.setState({
@@ -80,7 +83,7 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                                     defaultValue={name}
                                 />
                             </div>
-                            <div className={styles.form_group}>
+                            <div className={stylesInputs.form_group}>
                                 <label>{__("opds.addForm.url")}</label>
                                 <input
                                     onChange={(e) => this.setState({
@@ -94,10 +97,10 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.modal_dialog_footer}>
+                    <div className={stylesModals.modal_dialog_footer}>
                         <button
                             onClick={closeDialog}
-                            className={styles.button_transparency}
+                            className={stylesButtons.button_transparency}
                         >
                             {__("opds.back")}
                         </button>
@@ -105,7 +108,7 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                             disabled={!name || !url}
                             type="submit"
                             onClick={this.add}
-                            className={styles.button_secondary}
+                            className={stylesButtons.button_secondary}
                         >
                             <SVG svg={DoneIcon} />
                             {__("opds.addForm.addButton")}

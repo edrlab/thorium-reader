@@ -21,6 +21,9 @@ declare const styles: {
   readonly "col_filter": string;
   readonly "block_line": string;
   readonly "col_book_img": string;
+  readonly "___DEBUG___COMPONENTS_BUTTONS_CSS": string;
+  readonly "___DEBUG___PARTIALS_MIXINS_CSS": string;
+  readonly "___DEBUG___PARTIALS_VARIABLES_CSS": string;
 };
 export = styles;
 

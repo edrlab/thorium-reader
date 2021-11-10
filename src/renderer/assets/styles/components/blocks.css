@@ -1,9 +1,13 @@
-@import '../partials/variables.css';
+/*
+=-=-= components/blocks.css => '../partials/variables.css'
+*/
 
 /*
--=-=
-components/blocks.css
--=-=
+@import '../partials/variables.css';
+*/
+
+/*
+=-=-= components/blocks.css
 */
 
 /*
@@ -135,4 +139,8 @@ components/blocks.css
   & p:last-child {
     font-size: 1rem;
   }
+}
+
+.___DEBUG___COMPONENTS_BLOCKS_CSS {
+  display: none;
 }

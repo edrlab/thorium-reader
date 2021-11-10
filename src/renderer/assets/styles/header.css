@@ -1,15 +1,24 @@
-@import './partials/variables.css';
+/*
+=-=-= header.css => './partials/mixins.css'
+*/
+@import './partials/mixins.css';
 
 /*
--=-=
-header.css
--=-=
+=-=-= header.css => './partials/variables.css'
+*/
+
+/*
+@import './partials/variables.css';
+*/
+
+/*
+=-=-= header.css
 */
 
 .main_navigation {
   position: fixed;
 
-  @include main_navigation;
+  @mixin main_navigation;
 
   & ul {
     padding-left: 60px;
@@ -48,12 +57,29 @@ header.css
 /* ============ SECONDARY NAVIGATION =============== */
 
 .nav_secondary {
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  border-bottom: 1px solid var(--color-light-grey);
+
+  background-color: var(--color-secondary);
+
   position: fixed;
   left: 0;
-  width: 100%;
+
+  /* width: 100%; */
+  width: calc(100% - 120px);
+
   height: 3.5rem;
+
+  padding: 5px 60px;
+  /*
   padding-top: 0;
   padding-bottom: 10px;
+  */
+
   z-index: 101;
   top: 57px;
   background-color: white;
@@ -94,21 +120,32 @@ header.css
     width: 36px;
     background-color: transparent;
   }
+
+  & form[role="search"] {
+    margin: 0 30px;
+    flex: 1;
+
+    & input {
+      width: 100% !important;
+    }
+  }
 }
 
 .nav_secondary svg {
   display: inline-block;
   position: relative;
-  top: 15px;
+  /* top: 15px; */
   width: 35px;
   height: 35px;
-  margin-left: -5px;
+  /* margin-left: -5px; */
 }
 
+/*
 #search_img svg {
   right: -5px;
   top: 2px;
 }
+*/
 
 .nav_secondary svg:nth-child(2) {
   margin-left: 20px;
@@ -131,4 +168,8 @@ header.css
     color: white;
     background-color: #0366d6;
   }
+}
+
+.___DEBUG___HEADER_CSS {
+  display: none;
 }

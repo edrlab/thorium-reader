@@ -11,7 +11,10 @@ import { I18nTyped, Translator } from "readium-desktop/common/services/translato
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
@@ -49,7 +52,7 @@ const Duration = (props: {
         sentence
             ? <>
                 <strong>{`${__("publication.duration.title")}: `}</strong>
-                <i className={styles.allowUserSelect}>
+                <i className={stylesBookDetailsDialog.allowUserSelect}>
                     {sentence}
                 </i>
                 <br />
@@ -77,7 +80,7 @@ const Progression = (props: {
         return (
             <>
                 <strong>{`${__("publication.progression.title")}: `}</strong>
-                <i className={styles.allowUserSelect}>
+                <i className={stylesBookDetailsDialog.allowUserSelect}>
                     {sentence}
                 </i>
                 <br />
@@ -95,9 +98,9 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
     return (
         <>
-            <div className={styles.row}>
-                <div className={styles.col_book_img}>
-                    <div className={styles.publication_image_wrapper}>
+            <div className={stylesColumns.row}>
+                <div className={stylesColumns.col_book_img}>
+                    <div className={stylesPublications.publication_image_wrapper}>
                         <Cover
                             publicationViewMaybeOpds={publication}
                             onClick={() => toggleCoverZoomCb(coverZoom)}
@@ -109,9 +112,9 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                     </div>
                     { ControlComponent && <ControlComponent /> }
                 </div>
-                <div className={styles.col}>
+                <div className={stylesColumns.col}>
                     <section>
-                        <h2 className={classNames(styles.allowUserSelect, styles.my_10)}>
+                        <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10)}>
                             {publication.title}
                         </h2>
                         <FormatContributorWithLink
@@ -121,7 +124,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                         />
                     </section>
                     <section>
-                        <div className={styles.heading}>
+                        <div className={stylesGlobal.heading}>
                             <h3>{__("catalog.tags")}</h3>
                         </div>
                         <TagManagerComponent />
@@ -130,16 +133,16 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                         <PublicationInfoDescription publication={publication} __={__} />
                     </section>
                     <section>
-                        <div className={styles.heading}>
+                        <div className={stylesGlobal.heading}>
                             <h3>{__("catalog.moreInfo")}</h3>
                         </div>
-                        <p>
+                        <div>
                             <FormatPublisherDate publication={publication} __={__} />
                             {
                                 publication.publishers?.length ?
                                     <>
                                         <strong>{`${__("catalog.publisher")}: `}</strong>
-                                        <i className={styles.allowUserSelect}>
+                                        <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             <FormatContributorWithLink
                                                 contributors={publication.publishers}
                                                 translator={translator}
@@ -161,7 +164,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                                 publication.numberOfPages ?
                                     <>
                                         <strong>{`${__("catalog.numberOfPages")}: `}</strong>
-                                        <i className={styles.allowUserSelect}>
+                                        <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publication.numberOfPages}
                                         </i>
                                         <br />
@@ -180,14 +183,14 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                                 publication.nbOfTracks ?
                                     <>
                                         <strong>{`${__("publication.audio.tracks")}: `}</strong>
-                                        <i className={styles.allowUserSelect}>
+                                        <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publication.nbOfTracks}
                                         </i>
                                         <br />
 
                                     </> : undefined
                             }
-                        </p>
+                        </div>
                     </section>
                     <section>
                         <LcpInfo publicationLcp={publication} />

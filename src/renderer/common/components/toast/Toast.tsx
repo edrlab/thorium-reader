@@ -5,16 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
-
-import classNames from "classnames";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -86,10 +85,10 @@ export class Toast extends React.Component<IProps, IState> {
         let typeClassName: string;
         switch (type) {
             case ToastType.Error:
-                typeClassName = styles.error;
+                typeClassName = stylesToasts.error;
                 break;
             case ToastType.Success:
-                typeClassName = styles.success;
+                typeClassName = stylesToasts.success;
                 break;
             default:
                 break;
@@ -103,9 +102,9 @@ export class Toast extends React.Component<IProps, IState> {
             <div
                 ref={this.ref}
                 className={classNames(
-                    styles.toast,
-                    willLeave && styles.leave,
-                    toRemove && styles.toRemove,
+                    stylesToasts.toast,
+                    willLeave && stylesToasts.leave,
+                    toRemove && stylesToasts.toRemove,
                     typeClassName,
                 )}
                 aria-live="assertive"
@@ -118,7 +117,7 @@ export class Toast extends React.Component<IProps, IState> {
                 <p>{ this.props.message }</p>
                 <button
                     onClick={() => this.handleClose()}
-                    className={styles.closeButton}
+                    className={stylesToasts.closeButton}
                 >
                     <SVG svg={QuitIcon}/>
                 </button>

@@ -96,7 +96,11 @@ declare const styles: {
   readonly "divina_grid_container": string;
   readonly "divina_grid_item": string;
   readonly "colorChange": string;
+  readonly "___DEBUG___READER_APP_CSS": string;
+  readonly "___DEBUG___FOCUS_MIXIN_CSS": string;
   readonly "readium2ElectronAnimation_TARGET": string;
+  readonly "___DEBUG___FOCUS_CSS": string;
+  readonly "___DEBUG___VARIABLE_CSS": string;
 };
 export = styles;
 

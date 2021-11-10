@@ -10,7 +10,8 @@ import { connect } from "react-redux";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -38,10 +39,10 @@ class LanguageSettings extends React.Component<IProps, undefined> {
         return (
             <>
                 <section>
-                    <div className={styles.heading}>
+                    <div className={stylesGlobal.heading}>
                         <h2>{__("settings.language.languageChoice")}</h2>
                     </div>
-                    <form className={styles.radio_list}>
+                    <form className={stylesInputs.radio_list}>
                         { ObjectKeys(AvailableLanguages).map((lang, i) =>
                             <div key={i}>
                                 <input

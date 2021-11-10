@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -40,7 +40,7 @@ export class OpdsAddForm extends React.Component<IProps, undefined> {
             <section>
                 <button
                     onClick={this.props.openOpdsFeedAddForm}
-                    className={styles.button_primary}
+                    className={stylesButtons.button_primary}
                 >
                     <SVG svg={AddIcon}/>
                     <span>{ __("opds.addForm.title")}</span>

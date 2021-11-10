@@ -1,7 +1,5 @@
 /*
--=-=
-publicationView.css
--=-=
+=-=-= publicationView.css
 */
 
 .card_wrapper {
@@ -22,4 +20,8 @@ publicationView.css
 
     margin-bottom: 1.5rem;
   }
+}
+
+.___DEBUG___PUBLICATION_VIEW_CSS {
+  display: none;
 }

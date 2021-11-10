@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
-import classNames from "classnames";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -47,7 +49,7 @@ class GridTagLayout extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <section>
-                <div className={styles.heading}>
+                <div className={stylesGlobal.heading}>
                     <h2>{__("catalog.tags")}</h2>
                     {this.props.tags.length === 0 ?
                         <></>
@@ -60,7 +62,7 @@ class GridTagLayout extends React.Component<IProps, IState> {
                                 </>
                             }
                             content={
-                                <div className={classNames(styles.dropdown_menu, styles.dropdown_right)}>
+                                <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_right)}>
                                     {this.props.content}
                                 </div>
                             }
@@ -73,7 +75,7 @@ class GridTagLayout extends React.Component<IProps, IState> {
                 {this.props.tags.length === 0 ?
                     <> {__("catalog.emptyTagList")} </>
                     :
-                    <div className={styles.tags_wrapper}>
+                    <div className={stylesTags.tags_wrapper}>
                         {this.props.tags.map((tag, i: number) => {
                             return (
                                 <GridTagButton

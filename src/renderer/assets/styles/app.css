@@ -1,7 +1,5 @@
 /*
--=-=
-app.css
--=-=
+=-=-= app.css
 */
 
 .downloadsPanel {
@@ -66,4 +64,8 @@ app.css
       padding: 3px;
     }
   }
+}
+
+.___DEBUG___APP_CSS {
+  display: none;
 }

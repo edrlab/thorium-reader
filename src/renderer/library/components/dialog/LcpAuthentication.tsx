@@ -5,22 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
-import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -62,9 +65,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                 close={closeDialog}
                 title={__("library.lcp.password")}
             >
-                <form className={styles.modal_dialog_form_wrapper} onSubmit={this.submit}>
-                    <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>
-                        <div className={styles.w_50}>
+                <form className={stylesModals.modal_dialog_form_wrapper} onSubmit={this.submit}>
+                    <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
+                        <div className={stylesGlobal.w_50}>
                             <p><strong>{__("library.lcp.sentence")}</strong></p>
                             {
                                 typeof this.props.message === "string" ?
@@ -76,7 +79,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             <p>
                                 <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                             </p>
-                            <div className={styles.form_group}>
+                            <div className={stylesInputs.form_group}>
                                 <label>{__("library.lcp.password")}</label>
                                 <input
                                     aria-label={__("library.lcp.password")}
@@ -95,17 +98,17 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             }
                         </div>
                     </div>
-                    <div className={styles.modal_dialog_footer}>
+                    <div className={stylesModals.modal_dialog_footer}>
                         <button
                             onClick={(e) => { e.preventDefault(); closeDialog(); }}
-                            className={styles.button_transparency}
+                            className={stylesButtons.button_transparency}
                         >
                             {__("library.lcp.cancel")}
                         </button>
                         <button
                             disabled={!this.state.password}
                             type="submit"
-                            className={styles.button_secondary}
+                            className={stylesButtons.button_secondary}
                         >
                             <SVG svg={DoneIcon} />
                             {__("library.lcp.submit")}

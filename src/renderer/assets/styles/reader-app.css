@@ -1,11 +1,20 @@
+/*
+=-=-= reader-app.css => './focus-mixin.css'
+*/
 @import './focus-mixin.css';
+
+/*
+=-=-= reader-app.css => './focus.css'
+*/
 @import './focus.css';
+
+/*
+=-=-= reader-app.css => './variable.css'
+*/
 @import './variable.css';
 
 /*
--=-=
-reader-app.css
--=-=
+=-=-= reader-app.css
 */
 
 :global :root.HIDE_CURSOR_CLASS,
@@ -1329,4 +1338,8 @@ input[type=radio] + label {
 .divina_grid_item {
   animation: colorChange 3s infinite;
   background-color: #d8d8d8;
+}
+
+.___DEBUG___READER_APP_CSS {
+  display: none;
 }

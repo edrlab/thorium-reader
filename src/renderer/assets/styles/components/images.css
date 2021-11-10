@@ -1,9 +1,5 @@
-@import '../partials/variables.css';
-
 /*
--=-=
-components/images.css
--=-=
+=-=-= components/images.css
 */
 
 .cover_img {
@@ -16,4 +12,8 @@ components/images.css
   border: 1px solid #e2e2e2;
   border-radius: 6px;
   background-color: #f1f1f1;
+}
+
+.___DEBUG___COMPONENTS_IMAGES_CSS {
+  display: none;
 }

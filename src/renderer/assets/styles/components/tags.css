@@ -1,9 +1,13 @@
-@import '../partials/variables.css';
+/*
+=-=-= components/tags.css => '../partials/variables.css'
+*/
 
 /*
--=-=
-components/tags.css
--=-=
+@import '../partials/variables.css';
+*/
+
+/*
+=-=-= components/tags.css
 */
 
 .tags_wrapper {
@@ -62,4 +66,8 @@ components/tags.css
     font-weight: 300;
     color: #c1c1c1;
   }
+}
+
+.___DEBUG___COMPONENTS_TAGS_CSS {
+  display: none;
 }

@@ -11,7 +11,10 @@ import * as DOMPurify from "dompurify";
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationInfoDescription");
@@ -64,29 +67,29 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
             const textSanitize = DOMPurify.sanitize(publication.description);
             return (
                 <>
-                    <div className={styles.heading}>
+                    <div className={stylesGlobal.heading}>
                         <h3>{__("catalog.description")}</h3>
                     </div>
-                    <div className={classNames(styles.block_line, styles.description_see_more)}>
+                    <div className={classNames(stylesBlocks.block_line, stylesBlocks.description_see_more)}>
                         <div
                             ref={this.descriptionWrapperRef}
                             className={classNames(
-                                styles.descriptionWrapper,
-                                this.state.needSeeMore && styles.mb_30,
-                                this.state.needSeeMore && styles.hideEnd,
-                                this.state.seeMore && styles.seeMore,
+                                stylesBookDetailsDialog.descriptionWrapper,
+                                this.state.needSeeMore && stylesGlobal.mb_30,
+                                this.state.needSeeMore && stylesGlobal.hideEnd,
+                                this.state.seeMore && stylesBookDetailsDialog.seeMore,
                             )}
                         >
                             <div
                                 ref={this.descriptionRef}
-                                className={styles.allowUserSelect}
+                                className={stylesBookDetailsDialog.allowUserSelect}
                                 dangerouslySetInnerHTML={{__html: textSanitize}}
                             >
                             </div>
                         </div>
                         {
                             this.state.needSeeMore &&
-                            <button aria-hidden className={styles.button_see_more} onClick={this.toggleSeeMore}>
+                            <button aria-hidden className={stylesButtons.button_see_more} onClick={this.toggleSeeMore}>
                                 {
                                     this.state.seeMore
                                         ? __("publication.seeLess")

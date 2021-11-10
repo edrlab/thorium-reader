@@ -1,9 +1,5 @@
-@import './partials/variables.css';
-
 /*
--=-=
-bookDetailsDialog.css
--=-=
+=-=-= bookDetailsDialog.css
 */
 
 .allowUserSelect {
@@ -330,4 +326,8 @@ bookDetailsDialog.css
   height: auto;
   float: right;
   margin-top: 1rem;
+}
+
+.___DEBUG___BOOK_DETAILS_DIALOG_CSS {
+  display: none;
 }

@@ -14,7 +14,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -78,7 +78,7 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                 (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready)) ?
                 <button
                     onClick={this.handleRead}
-                    className={styles.button_primary}
+                    className={stylesButtons.button_primary}
                 >
                     {__("catalog.readBook")}
                 </button>
@@ -89,7 +89,7 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                     lsdRenewLink &&
                     <button
                         onClick={ this.renewPublicationDialog }
-                        className={styles.button_transparency}
+                        className={stylesButtons.button_transparency}
                     >
                         <SVG svg={LoopIcon} ariaHidden/>
                         {__("publication.renewButton")}
@@ -99,7 +99,7 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                     lsdReturnLink &&
                     <button
                         onClick={ this.returnPublicationDialog }
-                        className={styles.button_transparency}
+                        className={stylesButtons.button_transparency}
                     >
                         <SVG svg={ArrowIcon} ariaHidden/>
                         {__("publication.returnButton")}
@@ -107,7 +107,7 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                 }
                 <button
                     onClick={ this.deletePublication }
-                    className={styles.button_transparency}
+                    className={stylesButtons.button_transparency}
                 >
                     <SVG svg={DeleteIcon} ariaHidden/>
                     {__("catalog.deleteBook")}

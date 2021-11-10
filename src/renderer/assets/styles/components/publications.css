@@ -1,9 +1,5 @@
-@import '../partials/variables.css';
-
 /*
--=-=
-components/publications.css
--=-=
+=-=-= components/publications.css
 */
 
 /*
@@ -100,6 +96,10 @@ components/publications.css
   align-items: flex-start;
   justify-content: space-between;
   font-size: 15px;
+
+  & button {
+    width: 30px;
+  }
 
   & .publication_infos {
     flex: 1;
@@ -463,4 +463,8 @@ components/publications.css
   border: 1px solid #e2e2e2;
   border-radius: 6px;
   background-color: #f1f1f1;
+}
+
+.___DEBUG___COMPONENTS_PUBLICATIONS_CSS {
+  display: none;
 }

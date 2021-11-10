@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
-import classNames from "classnames";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
@@ -102,19 +103,19 @@ class Slider extends React.Component<IProps, IState> {
         };
 
         return (
-            <div className={(className ? className + " " : "") + styles.slider}>
+            <div className={(className ? className + " " : "") + stylesSlider.slider}>
                 {this.state.position < 0 ?
                     <button
                         aria-label={__("accessibility.leftSlideButton")}
-                        className={classNames(styles.slider_button_prev, styles.button_transparency_icon)}
+                        className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
                         onClick={this.handleMove.bind(this, false)}
                     >
                         <SVG svg={ArrowRightIcon}/>
                     </button>
                 : <></>
                 }
-                <div ref={this.wrapperRef} className={styles.slider_wrapper}>
-                    <div ref={this.contentRef} className={styles.slider_items} style={varStyle}>
+                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}>
+                    <div ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
                         {list}
                     </div>
                 </div>
@@ -122,7 +123,7 @@ class Slider extends React.Component<IProps, IState> {
                     <button
                         onClick={this.handleMove.bind(this, true)}
                         aria-label={__("accessibility.rightSlideButton")}
-                        className={classNames(styles.slider_button_next, styles.button_transparency_icon)}
+                        className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
                     >
                         <SVG svg={ArrowRightIcon}/>
                     </button>

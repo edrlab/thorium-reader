@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
 import classNames from "classnames";
+import * as React from "react";
 import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TChangeEventOnInput } from "readium-desktop/typings/react";
@@ -42,7 +42,7 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
         return (
             <label
                 htmlFor="epubInput"
-                className={classNames(styles.button_primary_small, styles.button_icon)}
+                className={classNames(stylesButtons.button_primary_small, stylesButtons.button_icon)}
             >
                 <SVG svg={PlusIcon} title={__("header.importTitle")} />
                 <input

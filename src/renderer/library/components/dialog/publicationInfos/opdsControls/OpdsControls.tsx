@@ -5,22 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CartFillIcon from "readium-desktop/renderer/assets/icons/cart-fill.svg";
 import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
-import classNames from "classnames";
 
 import OpdsLinkProperties from "./OpdsLinkProperties";
 
@@ -66,7 +67,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     ln,
                                     opdsPublicationView,
                                 )}
-                                className={styles.button_primary}
+                                className={stylesButtons.button_primary}
                                 disabled={openAccessButtonIsDisabled()}
                             >
                                 {`${__("catalog.addBookToLib")}${ln.properties?.indirectAcquisitionType ?
@@ -90,7 +91,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     ln,
                                     opdsPublicationView,
                                 )}
-                                className={styles.button_primary}
+                                className={stylesButtons.button_primary}
                                 disabled={sampleButtonIsDisabled()}
                             >
                                 <SVG svg={ImportIcon}/>
@@ -111,7 +112,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         (ln, idx) =>
                             <span key={`buyControl-${idx}`}>
                                 <button
-                                    className={classNames(styles.button_primary, styles.mb_20)}
+                                    className={classNames(stylesButtons.button_primary, stylesGlobal.mb_20)}
                                     onClick={
                                         () => this.props.link(
                                             ln,
@@ -136,7 +137,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         (ln, idx) =>
                             <span key={`borrowControl-${idx}`}>
                                 <button
-                                    className={styles.button_primary}
+                                    className={stylesButtons.button_primary}
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
@@ -155,7 +156,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         (ln, idx) =>
                             <span key={`subscribeControl-${idx}`}>
                                 <button
-                                    className={styles.button_primary}
+                                    className={stylesButtons.button_primary}
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
@@ -173,7 +174,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     opdsPublicationView.revokeLoanLinks.map((ln, idx) => (
                         <span key={`revokeControl-${idx}`}>
                             <button
-                                className={styles.button_primary}
+                                className={stylesButtons.button_primary}
                                 onClick={() =>
                                     this.props.link(
                                         ln,

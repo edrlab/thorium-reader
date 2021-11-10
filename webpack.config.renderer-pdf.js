@@ -28,8 +28,6 @@ const aliases = {
 // const nodeExternals = require("webpack-node-externals");
 const nodeExternals = require("./nodeExternals");
 
-const _enableHot = false;
-
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
 console.log(`PDF nodeEnv: ${nodeEnv}`);

@@ -10,7 +10,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -41,7 +42,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
         const { breadcrumb, __ } = this.props;
 
         return (
-            <div className={classNames(styles.breadcrumb, this.props.className)}>
+            <div className={classNames(stylesBreadcrumb.breadcrumb, this.props.className)}>
                 {
                     breadcrumb.length >= 2
                     && <Link
@@ -50,7 +51,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                             pathname: breadcrumb[breadcrumb.length - 2].path,
                         }}
                         title={__("opds.back")}
-                        className={styles.button_transparency_icon}
+                        className={stylesButtons.button_transparency_icon}
                     >
                         <SVG svg={ArrowIcon} />
                     </Link>
@@ -67,7 +68,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                         pathname: item.path,
                                     }}
                                     title={item.name}
-                                    className={styles.button_transparency}
+                                    className={stylesButtons.button_transparency}
                                 >
                                     {item.name}
                                 </Link>

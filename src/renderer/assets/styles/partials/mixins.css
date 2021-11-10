@@ -1,9 +1,13 @@
-@import './variables.css';
+/*
+=-=-= mixins.css => './variables.css'
+*/
 
 /*
--=-=
-partials/mixins.css
--=-=
+@import './variables.css';
+*/
+
+/*
+=-=-= partials/mixins.css
 */
 
 @define-mixin main_navigation {
@@ -43,4 +47,8 @@ partials/mixins.css
   outline-style: solid !important;
   outline-width: 2px !important;
   outline-offset: -2px;
+}
+
+.___DEBUG___PARTIALS_MIXINS_CSS {
+  display: none;
 }

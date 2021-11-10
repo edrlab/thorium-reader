@@ -15,12 +15,12 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark-24px-grey.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { TKeyboardEventButton, TMouseEventOnButton  } from "readium-desktop/typings/react";
+import { TKeyboardEventButton, TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
@@ -162,8 +162,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         return (
             <SideMenu
                 openedSection={this.props.openedSection}
-                className={styles.chapters_settings}
-                listClassName={styles.chapter_settings_list}
+                className={stylesReader.chapters_settings}
+                listClassName={stylesReader.chapter_settings_list}
                 open={this.props.open}
                 sections={sections}
                 toggleMenu={toggleMenu}
@@ -206,7 +206,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
         return <ul
             aria-label={label}
-            className={styles.chapters_content}
+            className={stylesReader.chapters_content}
             role={"list"}
         >
             { links.map((link, i: number) => {
@@ -221,10 +221,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     >
                         <a
                             className={
-                                classNames(styles.line,
-                                    styles.active,
-                                    link.Href ? " " : styles.inert,
-                                    isRTL ? styles.rtlDir : " ")
+                                classNames(stylesReader.line,
+                                    stylesReader.active,
+                                    link.Href ? " " : stylesReader.inert,
+                                    isRTL ? stylesReader.rtlDir : " ")
                             }
                             onClick=
                                 {link.Href ? (e) => {
@@ -262,7 +262,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         return <ul
                     role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
                     aria-label={label}
-                    className={styles.chapters_content}
+                    className={stylesReader.chapters_content}
                 >
             { links.map((link, i: number) => {
 
@@ -278,9 +278,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        classNames(styles.subheading,
-                                            link.Href ? " " : styles.inert,
-                                            isRTL ? styles.rtlDir : " ")
+                                        classNames(stylesReader.subheading,
+                                            link.Href ? " " : stylesReader.inert,
+                                            isRTL ? stylesReader.rtlDir : " ")
                                     }
                                     onClick=
                                         {link.Href ? (e) => {
@@ -311,10 +311,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        classNames(styles.line,
-                                            styles.active,
-                                            link.Href ? " " : styles.inert,
-                                            isRTL ? styles.rtlDir : " ")
+                                        classNames(stylesReader.line,
+                                            stylesReader.active,
+                                            link.Href ? " " : stylesReader.inert,
+                                            isRTL ? stylesReader.rtlDir : " ")
                                     }
                                     onClick=
                                         {link.Href ? (e) => {
@@ -398,7 +398,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 const bname = (p >= 0 && !isAudioBook ? `${p}% ` : "") + (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${n++}`);
 
                 return (<div
-                    className={styles.bookmarks_line}
+                    className={stylesReader.bookmarks_line}
                     key={i}
                 >
                     { bookmarkToUpdate === i &&
@@ -408,7 +408,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         />
                     }
                     <button
-                        className={styles.bookmark_infos}
+                        className={stylesReader.bookmark_infos}
                         tabIndex={0}
                         onClick={(e) => {
                             const closeNavPanel = e.shiftKey && e.altKey ? false : true;
@@ -427,10 +427,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     >
                         <SVG svg={BookmarkIcon} title={""} aria-hidden />
 
-                        <div className={styles.chapter_marker}>
-                            <p className={styles.bookmark_name} title={bname}>{bname}</p>
-                            <div className={styles.gauge}>
-                                <div className={styles.fill} style={style}></div>
+                        <div className={stylesReader.chapter_marker}>
+                            <p className={stylesReader.bookmark_name} title={bname}>{bname}</p>
+                            <div className={stylesReader.gauge}>
+                                <div className={stylesReader.fill} style={style}></div>
                             </div>
                         </div>
                     </button>
@@ -488,10 +488,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
         const { __ } = this.props;
 
-        return < div className={styles.goToPage} >
-            <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
+        return < div className={stylesReader.goToPage} >
+            <p>{__("reader.navigation.goToTitle")}</p>
 
-            <label className={styles.currentPage}
+            <label className={stylesReader.currentPage}
                 id="gotoPageLabel"
                 htmlFor="gotoPageInput">
                 {
@@ -609,7 +609,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
             {this.state.pageError &&
                 <p
-                    className={styles.goToErrorMessage}
+                    className={stylesReader.goToErrorMessage}
                     aria-live="assertive"
                     aria-relevant="all"
                     role="alert"
