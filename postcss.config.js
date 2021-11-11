@@ -15,18 +15,21 @@ module.exports = {
         require("postcss-mixins")({
             // mixinsFiles: path.join(__dirname, "src/renderer/assets/styles", "**/*(mixin|mixins).css"),
         }),
-        require("postcss-preset-env")({
-            stage: 2,
-            browsers: "last 2 Chrome versions",
-            // autoprefixer: false,
-            features: {
-                "nesting-rules": true,
-            },
-            // importFrom: [
-            //     "src/renderer/assets/styles/partials/variables.css",
-            //     "src/renderer/assets/styles/variable.css",
-            // ],
+        require("postcss-nesting")({
+            // mixinsFiles: path.join(__dirname, "src/renderer/assets/styles", "**/*(mixin|mixins).css"),
         }),
+        // require("postcss-preset-env")({
+        //     stage: 2,
+        //     browsers: "last 2 Chrome versions",
+        //     // autoprefixer: false,
+        //     features: {
+        //         "nesting-rules": true,
+        //     },
+        //     // importFrom: [
+        //     //     "src/renderer/assets/styles/partials/variables.css",
+        //     //     "src/renderer/assets/styles/variable.css",
+        //     // ],
+        // }),
         // require("postcss-cssnext")({
         //     // CSS compatible with the last 4 chrome versions
         //     browsers: ["last 4 Chrome versions"],
