@@ -1,8 +1,5 @@
 {
     "extends": "stylelint-config-standard",
-    "plugins": [
-        "stylelint-css-modules"
-    ],
     "rules": {
         "declaration-block-no-redundant-longhand-properties": null,
         "shorthand-property-no-redundant-values": null,
@@ -19,11 +16,6 @@
         "selector-attribute-quotes": null,
         "function-url-quotes": null,
         "font-family-name-quotes": null,
-        "css-modules/css-variables": [true, {
-            "resolve": {
-              "extensions": [".css"]
-            }
-        }],
         "no-descending-specificity": null,
         "at-rule-no-unknown": [
             true,

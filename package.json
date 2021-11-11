@@ -8,15 +8,17 @@
     "audiobook"
   ],
   "engines": {
-    "node": ">=14.0.0",
-    "npm": ">=6.0.0 <7.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   },
   "main": "dist/main.js",
   "scripts": {
     "clean": "rimraf dist && rimraf release",
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
     "testFile": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache ",
-    "postinstall": "npm run rmDupeReactReduxTypes && npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=15.3.1 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "postinstall": "npm run rmDupeReactReduxTypes && npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm run electron-build",
+    "electron-build_": "npm rebuild --runtime=electron --target=15.3.1 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "electron-build": "electron-rebuild --version=15.3.1 --disturl=https://atom.io/download/atom-shell",
     "rmDupeReactReduxTypes": "rimraf \"./node_modules/@types/react-redux/node_modules/@types/react\"",
     "rmLevelDownDeep": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelSQLite3Deep": "rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
@@ -330,7 +332,6 @@
     "@types/yazl": "^2.4.2",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",
-    "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.2.3",
     "babel-plugin-macros": "^3.1.0",
     "concurrently": "^6.3.0",
@@ -344,6 +345,7 @@
     "electron-builder": "^22.13.1",
     "electron-devtools-installer": "^3.2.0",
     "electron-notarize": "^1.1.1",
+    "electron-rebuild": "^3.2.5",
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-local-rules": "^1.1.0",
@@ -377,7 +379,6 @@
     "style-loader": "^2.0.0",
     "stylelint": "^14.0.1",
     "stylelint-config-standard": "^23.0.0",
-    "stylelint-css-modules": "^1.2.0-globals",
     "svg-sprite-loader": "^6.0.11",
     "terser-webpack-plugin": "^4.2.3",
     "ts-jest": "^24.3.0",
