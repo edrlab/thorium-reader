@@ -1,6 +1,19 @@
-@import '../partials/variables.css';
+/*
+=-=-= components/buttons.css => '../partials/mixins.css'
+*/
+@import '../partials/mixins.css';
 
-/* All Buttons Styles */
+/*
+=-=-= components/buttons.css => '../partials/variables.css'
+*/
+
+/*
+@import '../partials/variables.css';
+*/
+
+/*
+=-=-= components/buttons.css
+*/
 
 /*
 
@@ -41,20 +54,6 @@ button {
 
   &:hover {
     opacity: 1;
-  }
-}
-
-.commonButton {
-  background-color: transparent;
-  border: 0;
-  height: 2.3rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  padding: 6px 10px;
-  text-transform: uppercase;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -254,6 +253,10 @@ button {
   &.button_small svg {
     transform: scale(0.8);
   }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
 }
 
 .button_transparency_icon_inactive {
@@ -405,4 +408,8 @@ button {
   & .button_transparency {
     margin: 2px 0;
   }
+}
+
+.___DEBUG___COMPONENTS_BUTTONS_CSS {
+  display: none;
 }

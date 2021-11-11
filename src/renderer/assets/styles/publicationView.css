@@ -1,3 +1,7 @@
+/*
+=-=-= publicationView.css
+*/
+
 .card_wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -16,4 +20,8 @@
 
     margin-bottom: 1.5rem;
   }
+}
+
+.___DEBUG___PUBLICATION_VIEW_CSS {
+  display: none;
 }

@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
-import classNames from "classnames";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
 
 interface IProps {
     tagArray: string[] | IOpdsTagView[];
@@ -25,7 +25,7 @@ export const TagList: React.FC<IProps> = (props) => {
 
         for (const [index, tag] of tagArray.entries()) {
             tags.push(
-                <div key={`tag-${index}`} className={classNames(styles.tag, styles.no_hover)}>
+                <div key={`tag-${index}`} className={classNames(stylesTags.tag, stylesTags.no_hover)}>
                     {
                         children(tag, index)
                     }
@@ -34,7 +34,7 @@ export const TagList: React.FC<IProps> = (props) => {
         }
 
         return (
-            <div className={styles.tags_wrapper}>
+            <div className={stylesTags.tags_wrapper}>
                 {tags}
             </div>
         );

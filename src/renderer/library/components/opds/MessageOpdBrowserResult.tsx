@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -30,7 +30,7 @@ export default class MessageOpdBrowserResult extends React.Component<IProps, und
     public render(): React.ReactElement<{}> {
         const { message, title } = this.props;
         return (
-            <div className={styles.text_center}>
+            <div className={stylesGlobal.text_center}>
                 <h3>{title}</h3>
                 {message && <p>{message}</p>}
             </div>

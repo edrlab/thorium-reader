@@ -15,9 +15,13 @@ import {
 } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
-import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -92,17 +96,17 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         return (
             <>
                 <section>
-                    <div className={styles.heading}>
+                    <div className={stylesGlobal.heading}>
                         <h2>{__("settings.keyboard.keyboardShortcuts")}</h2>
                     </div>
-                    <div className={classNames(styles.d_flex, styles.button_outline_accessibility)}>
+                    <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
                         <button
-                            className={styles.button_primary}
+                            className={stylesButtons.button_primary}
                             onClick={() => this.onClickKeyboardShortcutsShowHide()}
                         >
                             <SVG
                                 svg={ChevronDownIcon}
-                                className={this.state.displayKeyboardShortcuts ? styles.rotate180 : null  }
+                                className={this.state.displayKeyboardShortcuts ? stylesGlobal.rotate180 : null  }
                             />
                             {this.state.displayKeyboardShortcuts ? __("settings.keyboard.hide") : __("settings.keyboard.show")}
                         </button>
@@ -116,12 +120,12 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                             title={
                                                 `${__("settings.keyboard.advancedMenu")}`
                                             }
-                                            className={styles.button_primary_icon}
+                                            className={stylesButtons.button_primary_icon}
                                             svg={MenuIcon}
                                         />)
                                     }
                                     content={(
-                                        <div className={styles.dropdown_menu}>
+                                        <div className={stylesDropDown.dropdown_menu}>
                                             <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
                                                 {__("settings.keyboard.resetDefaults")}
                                             </button>
@@ -142,14 +146,14 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                     </div>
                     {this.state.displayKeyboardShortcuts && (
                         <div>
-                            <ul className={styles.p_0}>
+                            <ul className={stylesGlobal.p_0}>
                             {this.props.keyboardShortcuts &&
                             ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap).map((id) => {
                                 const def = this.props.keyboardShortcuts[id];
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const frag = <>
                                     <button
-                                        className={styles.button_primary_small}
+                                        className={stylesButtons.button_primary_small}
                                         onClick={() => this.onClickKeyboardShortcutEditCancel(id)}>
                                         {hit ?
                                         __("settings.keyboard.cancel") : __("settings.keyboard.edit")}
@@ -157,14 +161,14 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                     {
                                     hit &&
                                     <button
-                                        className={styles.button_primary_small}
+                                        className={stylesButtons.button_primary_small}
                                         onClick={() => this.onClickKeyboardShortcutSave(id)}>
                                         {__("settings.keyboard.save")}
                                     </button>
                                     }
 
                                     <strong>{id}</strong>
-                                    <div className={styles.text_right}>{
+                                    <div className={stylesGlobal.text_right}>{
                                         hit ?
                                         this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)
                                         :
@@ -174,9 +178,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 return <li
                                         className={
                                             hit ?
-                                                classNames(styles.block_line_edit, styles.no_list_style)
+                                                classNames(stylesBlocks.block_line_edit, stylesGlobal.no_list_style)
                                             :
-                                                classNames(styles.block_line, styles.no_list_style)
+                                                classNames(stylesBlocks.block_line, stylesGlobal.no_list_style)
                                         }
                                     key={`key_${id}`}>{
                                     (hit ? <FocusLock
@@ -310,13 +314,13 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this.props.reloadKeyboardShortcuts(defaults);
     }
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        const alt = def.alt ? <span className={styles.button_keyboard}>ALT</span> : null;
-        const shift = def.shift ? <span className={styles.button_keyboard}>SHIFT</span> : null;
-        const control = def.control ? <span className={styles.button_keyboard}>CTRL</span> : null;
-        const meta = def.meta ? <span className={styles.button_keyboard}>META</span> : null;
-        const key = <span className={styles.button_keyboard}>{def.key}</span>;
+        const alt = def.alt ? <span className={stylesButtons.button_keyboard}>ALT</span> : null;
+        const shift = def.shift ? <span className={stylesButtons.button_keyboard}>SHIFT</span> : null;
+        const control = def.control ? <span className={stylesButtons.button_keyboard}>CTRL</span> : null;
+        const meta = def.meta ? <span className={stylesButtons.button_keyboard}>META</span> : null;
+        const key = <span className={stylesButtons.button_keyboard}>{def.key}</span>;
         return <>{shift}{control}{alt}{meta}{(def.shift || def.control || def.alt || def.meta) ?
-            (<span className={classNames(styles.fw_bold, styles.mr_10)}>+</span>) :
+            (<span className={classNames(stylesGlobal.fw_bold, stylesGlobal.mr_10)}>+</span>) :
             null}{key}</>;
     }
     private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
@@ -328,7 +332,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_ALT`}
             type="checkbox"
             checked={def.alt ? true : false}
-            className={styles.checkbox_keyboard}
+            className={stylesInputs.checkbox_keyboard}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -350,7 +354,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_SHIFT`}
             type="checkbox"
             checked={def.shift ? true : false}
-            className={styles.checkbox_keyboard}
+            className={stylesInputs.checkbox_keyboard}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -372,7 +376,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_CTRL`}
             type="checkbox"
             checked={def.control ? true : false}
-            className={styles.checkbox_keyboard}
+            className={stylesInputs.checkbox_keyboard}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -394,7 +398,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_META`}
             type="checkbox"
             checked={def.meta ? true : false}
-            className={styles.checkbox_keyboard}
+            className={stylesInputs.checkbox_keyboard}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -438,7 +442,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 console.log("editifyKeyboardShortcut select FOCUS:", ev.target.value.toString());
             } : null}
             value={def.key}
-            className={styles.button_keyboard}
+            className={stylesButtons.button_keyboard}
         >
             {KEY_CODES.map((keyOption, idx) => {
                 return (
@@ -454,7 +458,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         ;
         const kstring = this.stringifyKeyboardShortcut(def);
         const keySink = <input
-        className={styles.outline}
+        className={stylesInputs.outline}
         type="text"
         value=""
         size={1}

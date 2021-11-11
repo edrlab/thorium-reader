@@ -32,7 +32,7 @@ import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/doub
 import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
 import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -277,13 +277,13 @@ class Reader extends React.Component<IProps, IState> {
             }
             window.document.documentElement.classList.remove("HIDE_CURSOR_CLASS");
 
-            const nav = window.document.querySelector(`.${styles.main_navigation}`);
+            const nav = window.document.querySelector(`.${stylesReader.main_navigation}`);
             if (nav) {
-                nav.classList.remove(styles.HIDE_CURSOR_CLASS_head);
+                nav.classList.remove(stylesReader.HIDE_CURSOR_CLASS_head);
             }
-            const foot = window.document.querySelector(`.${styles.reader_footer}`);
+            const foot = window.document.querySelector(`.${stylesReader.reader_footer}`);
             if (foot) {
-                foot.classList.remove(styles.HIDE_CURSOR_CLASS_foot);
+                foot.classList.remove(stylesReader.HIDE_CURSOR_CLASS_foot);
             }
 
             // if (!window.document.fullscreenElement && !window.document.fullscreen) {
@@ -297,13 +297,13 @@ class Reader extends React.Component<IProps, IState> {
 
             _mouseMoveTimeout = window.setTimeout(() => {
                 window.document.documentElement.classList.add("HIDE_CURSOR_CLASS");
-                const nav = window.document.querySelector(`.${styles.main_navigation}`);
+                const nav = window.document.querySelector(`.${stylesReader.main_navigation}`);
                 if (nav) {
-                    nav.classList.add(styles.HIDE_CURSOR_CLASS_head);
+                    nav.classList.add(stylesReader.HIDE_CURSOR_CLASS_head);
                 }
-                const foot = window.document.querySelector(`.${styles.reader_footer}`);
+                const foot = window.document.querySelector(`.${stylesReader.reader_footer}`);
                 if (foot) {
-                    foot.classList.add(styles.HIDE_CURSOR_CLASS_foot);
+                    foot.classList.add(stylesReader.HIDE_CURSOR_CLASS_foot);
                 }
             }, 1000);
         };
@@ -495,24 +495,24 @@ class Reader extends React.Component<IProps, IState> {
 
         return (
             <div className={classNames(
-                this.props.readerConfig.night && styles.nightMode,
-                this.props.readerConfig.sepia && styles.sepiaMode,
+                this.props.readerConfig.night && stylesReader.nightMode,
+                this.props.readerConfig.sepia && stylesReader.sepiaMode,
             )}
                 role="region" aria-label={this.props.__("accessibility.toolbar")}>
                 <a
                     role="region"
-                    className={styles.anchor_link}
+                    className={stylesReader.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
                     title={this.props.__("accessibility.toolbar")}
                     aria-label={this.props.__("accessibility.toolbar")}
                     tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
                 <SkipLink
-                    className={styles.skip_link}
+                    className={stylesReader.skip_link}
                     anchorId="main-content"
                     label={this.props.__("accessibility.skipLink")}
                 />
-                <div className={styles.root}>
+                <div className={stylesReader.root}>
                     <ReaderHeader
                         shortcutEnable={this.state.shortcutEnable}
                         infoOpen={this.props.infoOpen}
@@ -563,23 +563,23 @@ class Reader extends React.Component<IProps, IState> {
                         divinaSoundPlay={this.handleDivinaSound}
                         r2Publication={this.props.r2Publication}
                     />
-                    <div className={classNames(styles.content_root,
-                        this.state.fullscreen ? styles.content_root_fullscreen : undefined,
-                        this.props.isPdf ? styles.content_root_skip_bottom_spacing : undefined)}>
+                    <div className={classNames(stylesReader.content_root,
+                        this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
+                        this.props.isPdf ? stylesReader.content_root_skip_bottom_spacing : undefined)}>
                         <PickerManager
                             showSearchResults={this.showSearchResults}
                             pdfEventBus={this.state.pdfPlayerBusEvent}
                             isPdf={this.props.isPdf}
                         ></PickerManager>
-                        <div className={styles.reader}>
+                        <div className={stylesReader.reader}>
                             <main
                                 id="main"
                                 role="main"
                                 aria-label={this.props.__("accessibility.mainContent")}
-                                className={styles.publication_viewport_container}>
+                                className={stylesReader.publication_viewport_container}>
                                 <a
                                     role="region"
-                                    className={styles.anchor_link}
+                                    className={stylesReader.anchor_link}
                                     ref={this.fastLinkRef}
                                     id="main-content"
                                     title={this.props.__("accessibility.mainContent")}
@@ -588,7 +588,7 @@ class Reader extends React.Component<IProps, IState> {
 
                                 <div
                                     id="publication_viewport"
-                                    className={styles.publication_viewport}
+                                    className={stylesReader.publication_viewport}
                                     ref={this.mainElRef}
                                 >
                                 </div>
@@ -596,12 +596,12 @@ class Reader extends React.Component<IProps, IState> {
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled
                                         ?
-                                        <div className={styles.divina_grid_container} onClick={() => this.setState({ divinaArrowEnabled: false })}>
+                                        <div className={stylesReader.divina_grid_container} onClick={() => this.setState({ divinaArrowEnabled: false })}>
                                             <div></div>
                                             <div>
                                                 {
                                                     this.props.r2Publication.Metadata.Direction === "btt"
-                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowUpIcon}></SVG>
+                                                        ? <SVG className={stylesReader.divina_grid_item} svg={DoubleArrowUpIcon}></SVG>
                                                         : <></>
                                                 }
                                             </div>
@@ -609,7 +609,7 @@ class Reader extends React.Component<IProps, IState> {
                                             <div>
                                                 {
                                                     this.props.r2Publication.Metadata.Direction === "rtl"
-                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowLeftIcon}></SVG>
+                                                        ? <SVG className={stylesReader.divina_grid_item} svg={DoubleArrowLeftIcon}></SVG>
                                                         : <></>
                                                 }
                                             </div>
@@ -617,7 +617,7 @@ class Reader extends React.Component<IProps, IState> {
                                             <div>
                                                 {
                                                     this.props.r2Publication.Metadata.Direction === "ltr"
-                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowRightIcon}></SVG>
+                                                        ? <SVG className={stylesReader.divina_grid_item} svg={DoubleArrowRightIcon}></SVG>
                                                         : <></>
                                                 }
                                             </div>
@@ -625,7 +625,7 @@ class Reader extends React.Component<IProps, IState> {
                                             <div>
                                                 {
                                                     this.props.r2Publication.Metadata.Direction === "ttb"
-                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowDownIcon}></SVG>
+                                                        ? <SVG className={stylesReader.divina_grid_item} svg={DoubleArrowDownIcon}></SVG>
                                                         : <></>
                                                 }
                                             </div>
@@ -1186,7 +1186,6 @@ class Reader extends React.Component<IProps, IState> {
             pdfPlayerBusEvent.subscribe("toc", (toc) => this.setState({ pdfPlayerToc: toc }));
             pdfPlayerBusEvent.subscribe("numberofpages", (pages) => this.setState({ pdfPlayerNumberOfPages: pages }));
 
-            // previously loaded in driver.ts. @danielWeck do you think is it possible to execute it here ?
             pdfPlayerBusEvent.subscribe("keydown", (payload) => {
                 keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
             });

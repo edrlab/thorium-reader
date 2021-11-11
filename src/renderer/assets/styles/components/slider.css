@@ -1,4 +1,6 @@
-/* All Slider Styles */
+/*
+=-=-= components/slider.css
+*/
 
 .slider {
   display: block;
@@ -38,4 +40,8 @@
 .slider_button_next {
   right: -50px;
   transform: translateY(-50%);
+}
+
+.___DEBUG___COMPONENTS_SLIDER_CSS {
+  display: none;
 }

@@ -1,3 +1,7 @@
+/*
+=-=-= partials/variables.css
+*/
+
 :root {
   /* Colors */
   --color-primary: #4d4d4d;
@@ -8,4 +12,9 @@
   --color-medium-grey: #e5e5e5;
   --color-accent: rgb(0, 188, 212);
   --color-accent-contrast: #fff;
+  --reader-fontColor: #000;
+}
+
+.___DEBUG___PARTIALS_VARIABLES_CSS {
+  display: none;
 }

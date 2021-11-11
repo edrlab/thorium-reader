@@ -4,6 +4,21 @@
         "stylelint-css-modules"
     ],
     "rules": {
+        "declaration-block-no-redundant-longhand-properties": null,
+        "shorthand-property-no-redundant-values": null,
+        "selector-class-pattern": null,
+        "custom-property-pattern": null,
+        "selector-id-pattern": null,
+        "keyframes-name-pattern": null,
+        "property-no-vendor-prefix": null,
+        "value-no-vendor-prefix": null,
+        "number-max-precision": null,
+        "color-function-notation": null,
+        "alpha-value-notation": null,
+        "string-quotes": null,
+        "selector-attribute-quotes": null,
+        "function-url-quotes": null,
+        "font-family-name-quotes": null,
         "css-modules/css-variables": [true, {
             "resolve": {
               "extensions": [".css"]

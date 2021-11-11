@@ -1,6 +1,6 @@
-@import '../partials/variables.css';
-
-/* All styles for publications */
+/*
+=-=-= components/publications.css
+*/
 
 /*
 
@@ -96,6 +96,10 @@
   align-items: flex-start;
   justify-content: space-between;
   font-size: 15px;
+
+  & button {
+    width: 30px;
+  }
 
   & .publication_infos {
     flex: 1;
@@ -195,7 +199,6 @@
 
 .block_book_list .icon_seemore {
   position: relative;
-  float: left;
   display: inline-block;
   width: 20px;
   height: 30px;
@@ -459,4 +462,8 @@
   border: 1px solid #e2e2e2;
   border-radius: 6px;
   background-color: #f1f1f1;
+}
+
+.___DEBUG___COMPONENTS_PUBLICATIONS_CSS {
+  display: none;
 }

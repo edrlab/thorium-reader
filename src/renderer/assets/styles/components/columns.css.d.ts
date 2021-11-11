@@ -15,6 +15,7 @@ declare const styles: {
   readonly "col_12": string;
   readonly "col": string;
   readonly "col_filter": string;
+  readonly "___DEBUG___COMPONENTS_COLUMNS_CSS": string;
 };
 export = styles;
 

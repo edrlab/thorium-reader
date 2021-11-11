@@ -1,6 +1,19 @@
-@import '../partials/variables.css';
+/*
+=-=-= components/inputs.css => '../partials/mixins.css'
+*/
+@import '../partials/mixins.css';
 
-/* All styles for inputs */
+/*
+=-=-= components/inputs.css => '../partials/variables.css'
+*/
+
+/*
+@import '../partials/variables.css';
+*/
+
+/*
+=-=-= components/inputs.css
+*/
 
 /*
 
@@ -209,4 +222,8 @@ select {
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+.___DEBUG___COMPONENTS_INPUTS_CSS {
+  display: none;
 }

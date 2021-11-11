@@ -7,7 +7,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -95,7 +96,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
                     const facetsRender = opds.facets?.map((facet, facetId) =>
                         <section key={`facet-${facetId}`}>
-                            <div className={styles.heading}>
+                            <div className={stylesGlobal.heading}>
                                 <h3>{facet.title}</h3>
                             </div>
                             <EntryList entries={facet.links}></EntryList>
@@ -104,16 +105,16 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
                     content = (
                         <>
-                            <div className={Array.isArray(facetsRender) ? styles.row : ""}>
+                            <div className={Array.isArray(facetsRender) ? stylesColumns.row : ""}>
                                 {
                                     Array.isArray(facetsRender) ?
-                                        <div className={styles.col_filter}>
+                                        <div className={stylesColumns.col_filter}>
                                             {facetsRender}
                                         </div>
                                     :
                                         <></>
                                 }
-                                <div className={Array.isArray(facetsRender) ? styles.col : ""}>
+                                <div className={Array.isArray(facetsRender) ? stylesColumns.col : ""}>
                                     <EntryPublicationList
                                         opdsPublicationView={opds.publications}
                                         links={opds.links}
@@ -147,7 +148,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                 opds.groups?.map((group, i) =>
                                     <section key={i}>
 
-                                        <div className={styles.heading_link}>
+                                        <div className={stylesGlobal.heading_link}>
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
                                         </div>
                                         {

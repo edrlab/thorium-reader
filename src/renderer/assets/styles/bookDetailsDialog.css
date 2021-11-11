@@ -1,8 +1,6 @@
-@import './partials/variables.css';
-
-.allowUserSelect {
-  user-select: text;
-}
+/*
+=-=-= bookDetailsDialog.css
+*/
 
 .c_dialog {
   position: fixed;
@@ -318,10 +316,10 @@
   }
 }
 
-.seeMoreButton {
-  font-size: 1rem;
-  width: auto;
-  height: auto;
-  float: right;
-  margin-top: 1rem;
+.allowUserSelect {
+  user-select: text;
+}
+
+.___DEBUG___BOOK_DETAILS_DIALOG_CSS {
+  display: none;
 }

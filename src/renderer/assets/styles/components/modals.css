@@ -1,6 +1,14 @@
-@import '../partials/variables.css';
+/*
+=-=-= components/modals.css => '../partials/variables.css'
+*/
 
-/* All Modals Styles */
+/*
+@import '../partials/variables.css';
+*/
+
+/*
+=-=-= components/modals.css
+*/
 
 .modal_dialog_overlay {
   position: fixed;
@@ -151,4 +159,8 @@
       list-style: none;
     }
   }
+}
+
+.___DEBUG___COMPONENTS_MODALS_CSS {
+  display: none;
 }

@@ -1,18 +1,31 @@
+/*
+=-=-= focus.css => './focus-mixin.css'
+*/
 @import './focus-mixin.css';
+
+/*
+=-=-= focus.css
+*/
 
 :root *:focus {
   outline: none;
 }
 
-:global :root.R2_CSS_CLASS__KEYBOARD_INTERACT *.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE:focus {
+/* :global */
+
+:root.R2_CSS_CLASS__KEYBOARD_INTERACT *.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE:focus {
   outline: none !important;
 }
 
-:global :root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
+/* :global */
+
+:root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
   @mixin R2_MIXIN_FOCUS_OUTLINE;
 }
 
-:global :root:not(.R2_CSS_CLASS__KEYBOARD_INTERACT) #body_element *:focus + label {
+/* :global */
+
+:root:not(.R2_CSS_CLASS__KEYBOARD_INTERACT) #body_element *:focus + label {
   outline: none !important;
 }
 
@@ -34,6 +47,12 @@
   animation-timing-function: linear;
 }
 
-:global :root *.R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE:target {
+/* :global */
+
+:root *.R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE:target {
   outline: inherit !important;
+}
+
+.___DEBUG___FOCUS_CSS {
+  display: none;
 }

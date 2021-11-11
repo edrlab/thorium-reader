@@ -1,6 +1,16 @@
-@import './variables.css';
+/*
+=-=-= mixins.css => './variables.css'
+*/
 
-@define-mixin main_navigation {
+/*
+@import './variables.css';
+*/
+
+/*
+=-=-= partials/mixins.css
+*/
+
+@define-mixin main_navigation_library {
   z-index: 102;
   width: 100%;
   top: 0;
@@ -37,4 +47,8 @@
   outline-style: solid !important;
   outline-width: 2px !important;
   outline-offset: -2px;
+}
+
+.___DEBUG___PARTIALS_MIXINS_CSS {
+  display: none;
 }

@@ -9,7 +9,8 @@ import * as debug_ from "debug";
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -46,7 +47,7 @@ export default class AddTag extends React.Component<IProps, IState> {
                 ? <form onSubmit={this.addTag}>
                     <input
                         type="text"
-                        className={styles.tag_inputs}
+                        className={stylesTags.tag_inputs}
                         title={__("catalog.addTags")}
                         placeholder={__("catalog.addTags")}
                         onChange={this.handleChangeName}
@@ -54,7 +55,7 @@ export default class AddTag extends React.Component<IProps, IState> {
                     />
                     <button
                         type="submit"
-                        className={styles.button_primary_small}
+                        className={stylesButtons.button_primary_small}
                     >
                         {__("catalog.addTagsButton")}
                     </button>

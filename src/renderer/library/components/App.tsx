@@ -15,6 +15,7 @@ import { Provider } from "react-redux";
 import { acceptedExtension } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
@@ -25,7 +26,6 @@ import { diLibraryGet } from "readium-desktop/renderer/library/di";
 
 import DownloadsPanel from "./DownloadsPanel";
 import LoaderMainLoad from "./LoaderMainLoad";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -88,7 +88,7 @@ export default class App extends React.Component<{}, undefined> {
                                 // FIXME : css in code
                                 return <div
                                     {...rootProps}
-                                    className={styles.dropzone}
+                                    className={stylesInputs.dropzone}
                                 >
                                     <DownloadsPanel />
                                     <input aria-hidden {

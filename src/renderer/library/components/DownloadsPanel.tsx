@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { downloadActions } from "readium-desktop/common/redux/actions";
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import * as stylesApp from "readium-desktop/renderer/assets/styles/app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -37,7 +37,7 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
         if (!downloadState || !downloadState.length) {
             return <></>;
         }
-        return (<div className={styles.downloadsPanel}
+        return (<div className={stylesApp.downloadsPanel}
             aria-live="polite"
             role="alert"
             >
@@ -50,12 +50,12 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
                         progress = 0;
                     }
                     return <li key={id}>
-                        <span className={styles.title}><a onClick={() => abortDownload(id)}>X</a></span>
-                        <span className={styles.percent}>{progress}%</span>
+                        <span className={stylesApp.title}><a onClick={() => abortDownload(id)}>X</a></span>
+                        <span className={stylesApp.percent}>{progress}%</span>
                         <progress max="100" value={progress}>{progress}</progress>
-                        <span className={styles.title}>{dl.downloadUrl}</span>
-                        <span className={styles.title}>{dl.contentLengthHumanReadable}</span>
-                        <span className={styles.title}>{dl.speed + " Kb/s"}</span>
+                        <span className={stylesApp.title}>{dl.downloadUrl}</span>
+                        <span className={stylesApp.title}>{dl.contentLengthHumanReadable}</span>
+                        <span className={stylesApp.title}>{dl.speed + " Kb/s"}</span>
 
                     </li>;
                 })

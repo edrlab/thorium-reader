@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import * as LoaderIcon from "readium-desktop/renderer/assets/icons/loader.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/loader.css";
+import * as stylesLoader from "readium-desktop/renderer/assets/styles/loader.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { ILibraryRootState } from "../redux/states";
@@ -33,7 +33,7 @@ class LoaderMainLoad extends React.Component<IProps, undefined> {
             return (<></>);
         }
         return (
-            <div className={styles.loader_small}>
+            <div className={stylesLoader.loader_small}>
                 <SVG svg={LoaderIcon} />
             </div>
         );

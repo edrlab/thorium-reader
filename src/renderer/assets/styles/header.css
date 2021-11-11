@@ -1,9 +1,24 @@
-@import './partials/variables.css';
+/*
+=-=-= header.css => './partials/mixins.css'
+*/
+@import './partials/mixins.css';
 
-.main_navigation {
+/*
+=-=-= header.css => './partials/variables.css'
+*/
+
+/*
+@import './partials/variables.css';
+*/
+
+/*
+=-=-= header.css
+*/
+
+.main_navigation_library {
   position: fixed;
 
-  @include main_navigation;
+  @mixin main_navigation_library;
 
   & ul {
     padding-left: 60px;
@@ -42,15 +57,18 @@
 /* ============ SECONDARY NAVIGATION =============== */
 
 .nav_secondary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid var(--color-light-grey);
+  background-color: var(--color-secondary);
   position: fixed;
   left: 0;
-  width: 100%;
+  width: calc(100% - 120px);
   height: 3.5rem;
-  padding-top: 0;
-  padding-bottom: 10px;
+  padding: 5px 60px;
   z-index: 101;
   top: 57px;
-  background-color: white;
   min-width: 600px;
   padding-left: 60px;
   padding-right: 60px;
@@ -68,8 +86,6 @@
     border-radius: 0;
     border: none;
     height: 35px;
-
-    /* outline: inherit; */
     background-color: transparent;
     color: black;
     font-size: 0.9rem;
@@ -88,20 +104,22 @@
     width: 36px;
     background-color: transparent;
   }
+
+  & form[role="search"] {
+    margin: 0 30px;
+    flex: 1;
+
+    & input {
+      width: 100% !important;
+    }
+  }
 }
 
 .nav_secondary svg {
   display: inline-block;
   position: relative;
-  top: 15px;
   width: 35px;
   height: 35px;
-  margin-left: -5px;
-}
-
-#search_img svg {
-  right: -5px;
-  top: 2px;
 }
 
 .nav_secondary svg:nth-child(2) {
@@ -125,4 +143,8 @@
     color: white;
     background-color: #0366d6;
   }
+}
+
+.___DEBUG___HEADER_CSS {
+  display: none;
 }

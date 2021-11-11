@@ -5,13 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-// FIXME : Error :
-// translator_1.withTranslator is not a function when ordered
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -20,7 +20,9 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import classNames from "classnames";
+
+// FIXME : Error :
+// translator_1.withTranslator is not a function when ordered
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -53,16 +55,16 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
                 close={closeDialog}
                 title={__("dialog.deleteFeed")}
             >
-                <div className={classNames(styles.modal_dialog_body, styles.modal_dialog_body_centered)}>
+                <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
                     <p>
                         <span>{this.props.feed.title}</span>
                     </p>
                 </div>
-                <div className={styles.modal_dialog_footer}>
-                    <button className={styles.button_transparency} onClick={closeDialog}>
+                <div className={stylesModals.modal_dialog_footer}>
+                    <button className={stylesButtons.button_transparency} onClick={closeDialog}>
                         {this.props.__("dialog.no")}
                     </button>
-                    <button className={styles.button_primary} onClick={this.remove}>
+                    <button className={stylesButtons.button_primary} onClick={this.remove}>
                         {this.props.__("dialog.yes")}
                     </button>
                 </div>

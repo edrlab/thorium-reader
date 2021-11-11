@@ -15,7 +15,9 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { IOpdsContributorView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -94,14 +96,14 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                     button={
                         (<SVG
                             title={`${pub.title} - ${authors}`}
-                            className={styles.button_transparency_icon}
+                            className={stylesButtons.button_transparency_icon}
                             svg={MenuIcon}
                         />)
                     }
                     content={(
                         <div
                             id={this.menuId}
-                            className={(this.state.menuOpen ? styles.dropdown_menu : null )}
+                            className={(this.state.menuOpen ? stylesDropDown.dropdown_menu : null )}
                         >
                             {this.props.menuContent}
                         </div>
@@ -117,12 +119,12 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                     title={`${pub.title} - ${authors}`}
                     onClick={this.toggleMenu}
                     ref={this.buttonRef}
-                    className={styles.button_transparency_icon}
+                    className={stylesButtons.button_transparency_icon}
                 >
                     <SVG svg={MenuIcon} />
                 </button> */}
                 <a
-                    className={styles.publication_list_infos}
+                    className={stylesPublications.publication_list_infos}
                     tabIndex={0}
                     onClick={(e) => this.handleBookClick(e)}
                     onKeyPress={
@@ -130,7 +132,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                             e.key === "Enter" && this.handleBookClick(e)
                     }
                 >
-                    <div className={styles.publication_list_title_authors}>
+                    <div className={stylesPublications.publication_list_title_authors}>
                         <div><strong>{pub.title}</strong></div>
                         <p>{authors}</p>
                     </div>

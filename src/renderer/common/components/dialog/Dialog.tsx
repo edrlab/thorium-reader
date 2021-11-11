@@ -5,15 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import FocusLock from "react-focus-lock";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { TranslatorProps, withTranslator } from "../hoc/translator";
 
-import classNames from "classnames";
+import { TranslatorProps, withTranslator } from "../hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -74,15 +76,15 @@ class Dialog extends React.Component<IProps, undefined> {
                         aria-modal="true"
                         aria-hidden={this.props.open ? "false" : "true"}
                         tabIndex={-1}
-                        className={this.props.open ? styles.modal_dialog_overlay : styles.visibility_hidden}
+                        className={this.props.open ? stylesModals.modal_dialog_overlay : stylesGlobal.visibility_hidden}
                     >
-                        <div onClick={this.props.close} className={styles.modal_dialog_overlay_hidden} />
+                        <div onClick={this.props.close} className={stylesModals.modal_dialog_overlay_hidden} />
                         <div
                             role="document"
                             id={this.props.id}
-                            className={classNames(className, styles.modal_dialog)}
+                            className={classNames(className, stylesModals.modal_dialog)}
                         >
-                            <div className={styles.modal_dialog_header}>
+                            <div className={stylesModals.modal_dialog_header}>
                                 <h2>{this.props.title}</h2>
                                 <button
                                     type="button"
@@ -90,7 +92,7 @@ class Dialog extends React.Component<IProps, undefined> {
                                     title={__("dialog.closeModalWindow")}
                                     data-dismiss="dialog"
                                     onClick={this.props.close}
-                                    className={styles.button_transparency_icon}
+                                    className={stylesButtons.button_transparency_icon}
                                 >
                                     <SVG svg={QuitIcon} />
                                 </button>

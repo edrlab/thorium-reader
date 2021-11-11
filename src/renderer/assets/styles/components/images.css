@@ -1,6 +1,6 @@
-@import '../partials/variables.css';
-
-/* All Images Styles */
+/*
+=-=-= components/images.css
+*/
 
 .cover_img {
   height: 100%;
@@ -12,4 +12,8 @@
   border: 1px solid #e2e2e2;
   border-radius: 6px;
   background-color: #f1f1f1;
+}
+
+.___DEBUG___COMPONENTS_IMAGES_CSS {
+  display: none;
 }

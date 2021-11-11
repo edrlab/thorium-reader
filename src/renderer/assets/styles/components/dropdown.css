@@ -1,6 +1,19 @@
-@import '../partials/variables.css';
+/*
+=-=-= components/dropdown.css => '../partials/mixins.css'
+*/
+@import '../partials/mixins.css';
 
-/* All styles for dropdowns */
+/*
+=-=-= components/dropdown.css => '../partials/variables.css'
+*/
+
+/*
+@import '../partials/variables.css';
+*/
+
+/*
+=-=-= components/dropdown.css
+*/
 
 .dropdown_menu {
   height: fit-content;
@@ -130,4 +143,8 @@
       @mixin R2_MIXIN_FOCUS_OUTLINE;
     }
   }
+}
+
+.___DEBUG___COMPONENTS_DROPDOWN_CSS {
+  display: none;
 }

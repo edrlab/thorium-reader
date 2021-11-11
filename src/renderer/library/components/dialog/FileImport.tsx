@@ -10,7 +10,8 @@ import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -48,13 +49,13 @@ class FileImport extends React.Component<IProps, undefined> {
             <Dialog
                 open={true}
                 close={closeDialog}
-                id={styles.add_dialog}
+                id={stylesModals.add_dialog}
                 title={this.props.__("catalog.addBookToLib")}
             >
                 {
                     (!files || files.length === 0) ?
                     (
-                        <div className={styles.modal_dialog_body}>
+                        <div className={stylesModals.modal_dialog_body}>
                             {
                                 this.props.__("dialog.importError", {
                                     acceptedExtension: acceptedExtensionArray.join(" | "),
@@ -63,7 +64,7 @@ class FileImport extends React.Component<IProps, undefined> {
                         </div>
                     ) : (
                         <>
-                        <div className={styles.modal_dialog_body}>
+                        <div className={stylesModals.modal_dialog_body}>
                             <div>
                                 <p>{this.props.__("dialog.import")}</p>
                                 <ul>
@@ -73,11 +74,11 @@ class FileImport extends React.Component<IProps, undefined> {
                             <div>
                             </div>
                         </div>
-                        <div className={styles.modal_dialog_footer}>
-                            <button className={styles.button_transparency} onClick={closeDialog}>
+                        <div className={stylesModals.modal_dialog_footer}>
+                            <button className={stylesButtons.button_transparency} onClick={closeDialog}>
                                 {this.props.__("dialog.no")}
                             </button>
-                            <button className={styles.button_primary} onClick={this.importFiles}>
+                            <button className={stylesButtons.button_primary} onClick={this.importFiles}>
                                 {this.props.__("dialog.yes")}
                             </button>
                         </div>

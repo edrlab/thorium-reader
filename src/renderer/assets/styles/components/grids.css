@@ -1,6 +1,6 @@
-@import '../partials/variables.css';
-
-/* All Grids Styles */
+/*
+=-=-= components/grids.css
+*/
 
 .grid_uniform_wrapper {
   display: flex;
@@ -31,4 +31,8 @@
   .grid_uniform_item {
     flex: 0 0 calc(16.666667% - 10px);
   }
+}
+
+.___DEBUG___COMPONENTS_GRIDS_CSS {
+  display: none;
 }

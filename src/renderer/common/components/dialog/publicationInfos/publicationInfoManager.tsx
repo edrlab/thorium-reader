@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 
 import Cover from "../../Cover";
 import Loader from "../../Loader";
@@ -35,7 +35,7 @@ export const PublicationInfoManager: React.FC<IProps> = (props) => {
             }
             title={publication?.title}
         >
-            <div className={styles.modal_dialog_body}>
+            <div className={stylesModals.modal_dialog_body}>
                 {
                     publication?.title
                         ? (

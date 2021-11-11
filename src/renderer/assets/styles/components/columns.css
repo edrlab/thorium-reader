@@ -1,6 +1,6 @@
-@import '../partials/variables.css';
-
-/* All Columns Styles */
+/*
+=-=-= components/columns.css
+*/
 
 /*
 
@@ -131,4 +131,8 @@
   -ms-flex: 0 0 100%;
   flex: 0 0 100%;
   max-width: 100%;
+}
+
+.___DEBUG___COMPONENTS_COLUMNS_CSS {
+  display: none;
 }

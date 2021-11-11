@@ -13,7 +13,8 @@ import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -53,11 +54,11 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <section>
-                <div className={styles.heading}>
+                <div className={stylesGlobal.heading}>
                     <h2>{__("catalog.about.title", { appName: capitalizedAppName })}</h2>
                     <button
                         onClick={this.about}
-                        className={styles.button_primary_small}
+                        className={stylesButtons.button_primary_small}
                     >
                         {__("catalog.about.button")}
                     </button>

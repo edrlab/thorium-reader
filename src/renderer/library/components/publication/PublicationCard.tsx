@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -13,15 +14,17 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 import Cover from "readium-desktop/renderer/common/components/Cover";
-import classNames from "classnames";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { formatContributorToString } from "readium-desktop/renderer/common/logics/formatContributor";
+import {
+    formatContributorToString,
+} from "readium-desktop/renderer/common/logics/formatContributor";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
@@ -64,7 +67,7 @@ class PublicationCard extends React.Component<IProps, IState> {
         const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
 
         return (
-            <div className={styles.publication_wrapper}
+            <div className={stylesPublications.publication_wrapper}
                 aria-haspopup="dialog"
                 aria-controls="dialog"
             >
@@ -76,16 +79,16 @@ class PublicationCard extends React.Component<IProps, IState> {
                             (e.key === "Enter") && this.handleBookClick(e)
                     }
                     title={`${publicationViewMaybeOpds.title} - ${authors}`}
-                    className={styles.publication_image_wrapper}
+                    className={stylesPublications.publication_image_wrapper}
                 >
                     <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
                 </a>
-                <div className={styles.publication_infos_wrapper}>
-                    <a aria-hidden onClick={(e) => this.handleBookClick(e)} className={styles.publication_infos}>
-                        <p aria-hidden className={styles.publication_title}>
+                <div className={stylesPublications.publication_infos_wrapper}>
+                    <a aria-hidden onClick={(e) => this.handleBookClick(e)} className={stylesPublications.publication_infos}>
+                        <p aria-hidden className={stylesPublications.publication_title}>
                             {publicationViewMaybeOpds.title}
                         </p>
-                        <p aria-hidden className={styles.publication_description}>
+                        <p aria-hidden className={stylesPublications.publication_description}>
                             {this.truncateAuthors(authors)}
                         </p>
                     </a>
@@ -94,7 +97,7 @@ class PublicationCard extends React.Component<IProps, IState> {
                             <SVG title={__("accessibility.bookMenu")} svg={MenuIcon} />
                         )}
                         content={(
-                            <div className={classNames(styles.dropdown_menu, styles.dropdown_publication)}>
+                            <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_publication)}>
                                 {isOpds ?
                                     <OpdsMenu
                                         opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}

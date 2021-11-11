@@ -1,7 +1,6 @@
 declare const styles: {
   readonly "button_primary": string;
   readonly "button_primary_small": string;
-  readonly "commonButton": string;
   readonly "button_outline_accessibility": string;
   readonly "icon_end": string;
   readonly "disabled": string;
@@ -22,6 +21,9 @@ declare const styles: {
   readonly "col_filter": string;
   readonly "block_line": string;
   readonly "col_book_img": string;
+  readonly "___DEBUG___COMPONENTS_BUTTONS_CSS": string;
+  readonly "___DEBUG___PARTIALS_MIXINS_CSS": string;
+  readonly "___DEBUG___PARTIALS_VARIABLES_CSS": string;
 };
 export = styles;
 

@@ -5,16 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
 import classNames from "classnames";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
-import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
+import * as RefreshIcon from "readium-desktop/renderer/assets/icons/arrow-clockwise.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/house-fill.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-import * as RefreshIcon from "readium-desktop/renderer/assets/icons/arrow-clockwise.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -60,8 +60,8 @@ class Header extends React.Component<IProps, undefined> {
                     }}
                     replace={true}
                     className={(displayType === DisplayType.Grid) ?
-                        styles.button_transparency_icon :
-                        styles.button_transparency_icon_inactive
+                        stylesButtons.button_transparency_icon :
+                        stylesButtons.button_transparency_icon_inactive
                     }
                     aria-pressed={displayType === DisplayType.Grid}
                     role={"button"}
@@ -77,8 +77,8 @@ class Header extends React.Component<IProps, undefined> {
                     }}
                     replace={true}
                     className={(displayType === DisplayType.List) ?
-                        styles.button_transparency_icon :
-                        styles.button_transparency_icon_inactive
+                        stylesButtons.button_transparency_icon :
+                        stylesButtons.button_transparency_icon_inactive
                     }
                     aria-pressed={displayType === DisplayType.List}
                     role={"button"}
@@ -126,7 +126,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    className={classNames(styles.button_transparency_icon, styles.button_small)}
+                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_small)}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
@@ -163,7 +163,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    className={classNames(styles.button_transparency_icon, styles.button_small)}
+                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_small)}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
                 </Link>
@@ -202,7 +202,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    className={classNames(styles.button_transparency_icon, styles.button_refresh, styles.button_small)}
+                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_refresh, stylesButtons.button_small)}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>
@@ -213,7 +213,7 @@ class Header extends React.Component<IProps, undefined> {
                     to={{
                         ...this.props.location,
                     }}
-                    className={classNames(styles.button_transparency_icon, styles.button_refresh, styles.button_small)}
+                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_refresh, stylesButtons.button_small)}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>

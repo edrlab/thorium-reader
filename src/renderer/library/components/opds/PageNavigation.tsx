@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
 import classNames from "classnames";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
@@ -15,7 +15,8 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/chevron-bar-left.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/chevron-bar-right.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -71,7 +72,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
         return (
-            <div className={classNames(styles.justify_content_between, styles.mt_30)}>
+            <div className={classNames(stylesGlobal.justify_content_between, stylesGlobal.mt_30)}>
                 <div>
                     {
                         pageLinks?.first[0]?.url ?
@@ -80,14 +81,14 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.first[0]),
                                 }}
-                                className={styles.button_primary}
+                                className={stylesButtons.button_primary}
                             >
                                 <SVG svg={ArrowFirstIcon} />
                                 {__("opds.firstPage")}
                             </Link>
                         :
                             <a
-                                className={classNames(styles.button_primary, styles.disabled)}
+                                className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
                                 tabIndex={-1}
                             >
                                 <SVG svg={ArrowFirstIcon} />
@@ -101,14 +102,14 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.previous[0]),
                                 }}
-                                className={styles.button_primary}
+                                className={stylesButtons.button_primary}
                             >
                                 <SVG svg={ArrowLeftIcon} />
                                 {__("opds.previous")}
                             </Link>
                         :
                             <a
-                                className={classNames(styles.button_primary, styles.disabled)}
+                                className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
                                 tabIndex={-1}
                             >
                                 <SVG svg={ArrowLeftIcon} />
@@ -136,14 +137,14 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.next[0]),
                                 }}
-                                className={classNames(styles.button_primary, styles.icon_end)}
+                                className={classNames(stylesButtons.button_primary, stylesButtons.icon_end)}
                             >
                                 {__("opds.next")}
                                 <SVG svg={ArrowRightIcon} />
                             </Link>
                         :
                             <a
-                                className={classNames(styles.button_primary, styles.disabled)}
+                                className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
                                 tabIndex={-1}
                             >
                                 {__("opds.next")}
@@ -157,14 +158,14 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.last[0]),
                                 }}
-                                className={classNames(styles.button_primary, styles.icon_end)}
+                                className={classNames(stylesButtons.button_primary, stylesButtons.icon_end)}
                             >
                                 {__("opds.lastPage")}
                                 <SVG svg={ArrowLastIcon} />
                             </Link>
                         :
                             <a
-                                className={classNames(styles.button_primary, styles.disabled)}
+                                className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
                                 tabIndex={-1}
                             >
                                 {__("opds.lastPage")}

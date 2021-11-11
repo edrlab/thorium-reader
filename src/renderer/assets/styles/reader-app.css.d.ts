@@ -1,4 +1,5 @@
 declare const styles: {
+  readonly "HIDE_CURSOR_CLASS": string;
   readonly "anchor_link": string;
   readonly "nightMode": string;
   readonly "sepiaMode": string;
@@ -96,7 +97,15 @@ declare const styles: {
   readonly "divina_grid_container": string;
   readonly "divina_grid_item": string;
   readonly "colorChange": string;
+  readonly "___DEBUG___READER_APP_CSS": string;
+  readonly "___DEBUG___FOCUS_MIXIN_CSS": string;
+  readonly "R2_CSS_CLASS__KEYBOARD_INTERACT": string;
+  readonly "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE": string;
+  readonly "body_element": string;
   readonly "readium2ElectronAnimation_TARGET": string;
+  readonly "R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE": string;
+  readonly "___DEBUG___FOCUS_CSS": string;
+  readonly "___DEBUG___VARIABLE_CSS": string;
 };
 export = styles;
 

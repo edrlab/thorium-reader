@@ -1,9 +1,26 @@
+/*
+=-=-= reader-app.css => './focus-mixin.css'
+*/
 @import './focus-mixin.css';
+
+/*
+=-=-= reader-app.css => './focus.css'
+*/
 @import './focus.css';
+
+/*
+=-=-= reader-app.css => './variable.css'
+*/
 @import './variable.css';
 
-:global :root.HIDE_CURSOR_CLASS,
-:global :root.HIDE_CURSOR_CLASS * {
+/*
+=-=-= reader-app.css
+*/
+
+/* :global */
+
+:root.HIDE_CURSOR_CLASS,
+:root.HIDE_CURSOR_CLASS * {
   cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=), none !important;
 }
 
@@ -1323,4 +1340,8 @@ input[type=radio] + label {
 .divina_grid_item {
   animation: colorChange 3s infinite;
   background-color: #d8d8d8;
+}
+
+.___DEBUG___READER_APP_CSS {
+  display: none;
 }

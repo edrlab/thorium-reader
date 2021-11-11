@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -94,7 +94,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             <div role="region" aria-label={__("accessibility.toolbar")}>
                 <a
                     role="region"
-                    className={styles.anchor_link}
+                    className={stylesGlobal.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
                     title={__("accessibility.toolbar")}
@@ -110,11 +110,11 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     id="main"
                     role="main"
                     aria-label={__("accessibility.mainContent")}
-                    className={classNames(styles.main, this.props.mainClassName)}
+                    className={classNames(stylesGlobal.main, this.props.mainClassName)}
                 >
                     <a
                         role="region"
-                        className={styles.anchor_link}
+                        className={stylesGlobal.anchor_link}
                         ref={this.fastLinkRef}
                         id="main-content"
                         title={__("accessibility.mainContent")}

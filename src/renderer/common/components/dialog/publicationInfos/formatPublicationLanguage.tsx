@@ -8,7 +8,7 @@
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as styles from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
 export interface IProps {
     publication: TPublication;
@@ -42,7 +42,7 @@ export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
 
                 return (<i
                     key={"lang-" + index}
-                    className={styles.allowUserSelect}
+                    className={stylesBookDetailsDialog.allowUserSelect}
                 >
                     {ll + note + suffix}
                 </i>);
