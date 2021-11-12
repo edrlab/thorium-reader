@@ -46,14 +46,20 @@ jobs:
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2-beta #actions/setup-node@v1
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        node-version: '14'
+        persist-credentials: false
+    - name: git HTTP authentication instead SSH (NPM >=7)
+      run: >
+        git config --global url."https://github.com/".insteadOf
+        ssh://git@github.com/
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16'
         #check-latest: true
     - run: node --version && npm --version
-    #- run: npm --global install npm@latest v7 breaks the build! (infinite loop of doom)
-    - run: npm --global install npm@^6
+    - run: npm --global install npm@^8
     - run: npm --version
     # - run: npm --global install asar
     - run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
