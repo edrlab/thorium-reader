@@ -1,0 +1,60 @@
+/*
+=-=-= components/breadcrumb.css => '../partials/variables.css'
+*/
+
+/*
+@import '../partials/variables.css';
+*/
+
+/*
+=-=-= components/breadcrumb.css
+*/
+
+.breadcrumb {
+  padding: 10px 60px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  color: rgb(59, 59, 59);
+  position: fixed;
+  top: 123px;
+  width: calc(100% - 120px);
+  border-bottom: 1px solid var(--color-light-grey);
+
+  & .button_transparency_icon {
+    position: relative;
+    height: 38px;
+    width: 42px;
+    margin-right: 10px;
+
+    & svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 24px;
+      width: 24px;
+    }
+  }
+
+  & .button_transparency {
+    font-weight: 500;
+    text-decoration: none;
+    font-size: inherit;
+    white-space: nowrap;
+
+    &::after {
+      content: "/";
+      margin-left: 10px;
+      margin-right: -5px;
+    }
+
+    & + .button_transparency {
+      margin-left: -10px;
+    }
+  }
+}
+
+.___DEBUG___COMPONENTS_BREADCRUMB_CSS {
+  display: none;
+}

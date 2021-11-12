@@ -1,7 +1,9 @@
+// const crypto = require("crypto");
+
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
-var fs = require("fs");
+// var fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -31,7 +33,7 @@ const aliases = {
 // const nodeExternals = require("webpack-node-externals");
 const nodeExternals = require("./nodeExternals");
 
-const _enableHot = false;
+const _enableHot = true;
 
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
@@ -99,10 +101,38 @@ const cssLoaderConfig = [
     {
         loader: "css-loader",
         options: {
+            import: (url, media, resourcePath) => {
+                console.log("css-loader IMPORT (LIBRARY): ", url, media, resourcePath);
+                return true;
+            },
             importLoaders: 1,
-            modules: nodeEnv !== "production" ? {
-                localIdentName: "[path][name]__[local]--[hash:base64:5]",
-            } : true,
+            modules: {
+                // auto: false,
+                // mode: "local",
+                // exportOnlyLocals: true,
+                // exportGlobals: true,
+                localIdentName: "[local]",
+            },
+            // modules: nodeEnv !== "production" && false ? { // MUST USE STRICT BASE64, NO PATH DEPENDENT (OTHERWISE BREAK CROSS-FILE CSS CLASSES WITH IDENTICAL NAMES, E.G. SUBCLASSES IN NESTED STATEMENTS)
+            //     localIdentName: "[path][name]__[local]--[hash:base64:5]",
+            // } : {
+            //     getLocalIdent: (context, localIdentName, localName, options) => {
+            //         // const checkSum = crypto.createHash("sha256");
+            //         // checkSum.update(localName);
+            //         // const hexStr = checkSum.digest("hex");
+            //         // const b64Str = Buffer.from(hexStr, "hex").toString("base64");
+            //         // const h = "z_" + b64Str;
+            //         // console.log("getLocalIdent LIBRARY: ", h, context.resourcePath, localName);
+            //         // return h;
+            //         return localName;
+            //     },
+            //     // localIdentName: "[hash:base64]",
+            //     // localIdentHashPrefix: "hash",
+            //     // localIdentHashSalt: "_",
+            //     // localIdentHashFunction: "md4", // sha256
+            //     // localIdentHashDigest: "hex", // base64
+            //     // localIdentHashDigestLength: 20,
+            // },
             esModule: false,
         },
     },
@@ -295,12 +325,12 @@ if (nodeEnv !== "production") {
     // preprocessorDirectives.rendererLibraryBaseUrl (full HTTP locahost + port)
     config.output.publicPath = "/";
 
-    if (_enableHot) {
-        config.plugins.push(new webpack.HotModuleReplacementPlugin());
-    }
-    if (_enableHot) {
-        cssLoaderConfig.unshift("css-hot-loader");
-    }
+    // if (_enableHot) {
+    //     config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    // }
+    // if (_enableHot) {
+    //     cssLoaderConfig.unshift("css-hot-loader");
+    // }
     config.module.rules.push({
         test: /\.css$/,
         use: cssLoaderConfig,

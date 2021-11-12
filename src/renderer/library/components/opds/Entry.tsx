@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
@@ -51,16 +51,16 @@ class Entry extends React.Component<IProps, undefined> {
             <>
                 <div>
                     <Link
-                        className={styles.flux_infos}
+                        className={stylesButtons.button_transparency}
                         to={{
                             ...this.props.location,
                             pathname: route,
                         }}
                     >
-                        <span className={styles.flux_title}>{entry.title}</span>
+                        <span>{entry.title}</span>
                         {
                             entry.subtitle && entry.subtitle !== entry.title ?
-                                <span className={styles.flux_subtitle}>
+                                <span>
                                     {entry.subtitle}
                                 </span> :
                                 <></>
@@ -68,7 +68,7 @@ class Entry extends React.Component<IProps, undefined> {
                         {
                             (entry.numberOfItems) ?
                                 (
-                                    <span className={styles.flux_subtitle}>
+                                    <span>
                                         {entry.numberOfItems}
                                     </span>
                                 ) :

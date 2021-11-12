@@ -10,7 +10,8 @@ import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -45,32 +46,44 @@ class FileImport extends React.Component<IProps, undefined> {
 
         const { files, closeDialog } = this.props;
         return (
-            <Dialog open={true} close={closeDialog} id={styles.add_dialog}>
+            <Dialog
+                open={true}
+                close={closeDialog}
+                id={stylesModals.add_dialog}
+                title={this.props.__("catalog.addBookToLib")}
+            >
                 {
                     (!files || files.length === 0) ?
-                        (<div>
+                    (
+                        <div className={stylesModals.modal_dialog_body}>
                             {
                                 this.props.__("dialog.importError", {
                                     acceptedExtension: acceptedExtensionArray.join(" | "),
                                 })
                             }
-                        </div>) :
-                        (
-                            <>
-                                <div>
-                                    <p>{this.props.__("dialog.import")}</p>
-                                    <ul>
-                                        {files.map((file, i) => <li key={i}>{file.name}</li>)}
-                                    </ul>
-                                </div>
-                                <div>
-                                    <button className={styles.primary} onClick={this.importFiles}>
-                                        {this.props.__("dialog.yes")}
-                                    </button>
-                                    <button onClick={closeDialog}>{this.props.__("dialog.no")}</button>
-                                </div>
-                            </>
-                        )
+                        </div>
+                    ) : (
+                        <>
+                        <div className={stylesModals.modal_dialog_body}>
+                            <div>
+                                <p>{this.props.__("dialog.import")}</p>
+                                <ul>
+                                    {files.map((file, i) => <li key={i}>{file.name}</li>)}
+                                </ul>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                        <div className={stylesModals.modal_dialog_footer}>
+                            <button className={stylesButtons.button_transparency} onClick={closeDialog}>
+                                {this.props.__("dialog.no")}
+                            </button>
+                            <button className={stylesButtons.button_primary} onClick={this.importFiles}>
+                                {this.props.__("dialog.yes")}
+                            </button>
+                        </div>
+                        </>
+                    )
                 }
             </Dialog>
         );

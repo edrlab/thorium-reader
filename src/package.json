@@ -8,7 +8,9 @@
   ],
   "main": "./main.js",
   "scripts": {
-    "postinstall": "npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=15.3.0 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "postinstall": "npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm run electron-build",
+    "electron-build_": "npm rebuild --runtime=electron --target=15.3.1 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "electron-build": "electron-rebuild --version=15.3.1 --disturl=https://atom.io/download/atom-shell",
     "rmLevelDownDeep": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelSQLite3Deep": "rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
     "_rmLevelSQLite3Deep": "node ../scripts/sqlite-package-patch.js node_modules/websql/package.json && node ../scripts/sqlite-package-patch.js node_modules/redux-devtools-cli/package.json && rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",

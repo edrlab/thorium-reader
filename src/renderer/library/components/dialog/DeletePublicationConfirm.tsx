@@ -5,11 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -45,16 +47,23 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
 
         const { __, closeDialog } = this.props;
         return (
-            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
-                <div>
+            <Dialog
+                open={true}
+                close={closeDialog}
+                title={__("dialog.deletePublication")}
+            >
+                <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
                     <p>
-                        {__("dialog.deletePublication")}
                         <span>{this.props.publicationView.title}</span>
                     </p>
-                    <div>
-                        <button className={styles.primary} onClick={this.remove}>{__("dialog.yes")}</button>
-                        <button onClick={closeDialog}>{__("dialog.no")}</button>
-                    </div>
+                </div>
+                <div className={stylesModals.modal_dialog_footer}>
+                    <button className={stylesButtons.button_transparency} onClick={closeDialog}>
+                        {this.props.__("dialog.no")}
+                    </button>
+                    <button className={stylesButtons.button_primary} onClick={this.remove}>
+                        {this.props.__("dialog.yes")}
+                    </button>
                 </div>
             </Dialog>
         );

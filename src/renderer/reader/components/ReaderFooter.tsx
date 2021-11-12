@@ -11,7 +11,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { formatTime } from "readium-desktop/common/utils/time";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -112,8 +112,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         let afterCurrentLocation = false;
 
         return (
-            <div className={classNames(styles.reader_footer,
-                this.props.fullscreen ? styles.reader_footer_fullscreen : undefined)}
+            <div className={classNames(stylesReader.reader_footer,
+                this.props.fullscreen ? stylesReader.reader_footer_fullscreen : undefined)}
                 onWheel={(ev) => {
                     if (ev.deltaY < 0 || ev.deltaX < 0) {
                         this.navLeftOrRightThrottled(true);
@@ -122,7 +122,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                     }
                 }}>
                 {!isAudioBook &&
-                    <div className={styles.arrows}>
+                    <div className={stylesReader.arrows}>
                         <button onClick={(ev) => {
                             if (ev.shiftKey) {
                                 const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
@@ -154,13 +154,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                     </div>
                 }
                 {!this.props.fullscreen &&
-                    <div className={classNames(styles.track_reading_wrapper,
-                        isAudioBook ? styles.track_reading_wrapper_noArrows : undefined)}>
+                    <div className={classNames(stylesReader.track_reading_wrapper,
+                        isAudioBook ? stylesReader.track_reading_wrapper_noArrows : undefined)}>
 
-                        { // <div id={styles.current}></div>
-                            <div id={styles.track_reading}>
-                                <div id={styles.chapters_markers}
-                                    className={moreInfo ? styles.more_information : undefined}>
+                        { // <div id={stylesReader.current}></div>
+                            <div id={stylesReader.track_reading}>
+                                <div id={stylesReader.chapters_markers}
+                                    className={moreInfo ? stylesReader.more_information : undefined}>
                                     {
                                         (isPdf
                                             // tslint:disable-next-line: max-line-length
@@ -242,7 +242,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                     className={
                                                         classNames(
                                                             "progressChunkSpineItem",
-                                                            atCurrentLocation ? styles.currentSpineItem : undefined)
+                                                            atCurrentLocation ? stylesReader.currentSpineItem : undefined)
                                                     }
                                                 >
                                                     {
@@ -256,7 +256,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 </div>
                                 {moreInfo &&
                                     <div
-                                        id={styles.arrow_box}
+                                        id={stylesReader.arrow_box}
                                         style={this.getStyle(this.getArrowBoxStyle)}
                                     >
                                         <span title={spineTitle}><em>{`(${(isDivina)
@@ -275,7 +275,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         </p>
                                         <span
                                             style={this.getStyle(this.getArrowStyle)}
-                                            className={styles.after}
+                                            className={stylesReader.after}
                                         />
                                     </div>
                                 }

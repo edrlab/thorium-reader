@@ -8,7 +8,7 @@
 import * as React from "react";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
+import * as stylesPublicationView from "readium-desktop/renderer/assets/styles/publicationView.css";
 import PublicationCard from "readium-desktop/renderer/library/components/publication/PublicationCard";
 
 type NormalOrOpdsPublicationView = PublicationView | IOpdsPublicationView;
@@ -46,7 +46,7 @@ export class GridView extends React.Component<IProps, undefined> {
         const { isOpdsView } = this.props;
 
         return (
-            <div ref={this.ref} className={styles.card_wrapper}>
+            <div ref={this.ref} className={stylesPublicationView.card_wrapper}>
                 {this.props.normalOrOpdsPublicationViews.map((pub, index) =>
                     <PublicationCard
                         key={`gridview-${index}`}
@@ -55,7 +55,7 @@ export class GridView extends React.Component<IProps, undefined> {
                     />,
                 )}
                 {[...Array(6).keys()].map((__, index) => {
-                    return <div key={index} className={styles.card_substitute}></div>;
+                    return <div key={index} className={stylesPublicationView.card_substitute}></div>;
                 })}
             </div>
         );

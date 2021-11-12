@@ -1,0 +1,166 @@
+/*
+=-=-= components/modals.css => '../partials/variables.css'
+*/
+
+/*
+@import '../partials/variables.css';
+*/
+
+/*
+=-=-= components/modals.css
+*/
+
+.modal_dialog_overlay {
+  position: fixed;
+  z-index: 102;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  padding: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: 0.2s;
+  min-width: 700px;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal_dialog_overlay_hidden {
+  position: fixed;
+  z-index: 101;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal_dialog {
+  margin: 30px;
+  min-height: 512px;
+  min-width: 739px;
+  width: calc(100vw - 60px);
+  height: calc(100vh - 60px);
+  max-width: calc(100vw - 60px);
+  max-height: calc(100vh - 60px);
+  border-radius: 10px;
+  z-index: 102;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  overflow-y: auto;
+  overflow-x: hidden;
+  align-content: flex-start;
+  color: #3b3b3b;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.modal_dialog_form_wrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modal_dialog_body {
+  flex: 1;
+  padding: 20px 30px;
+  overflow: scroll;
+
+  &.modal_dialog_body_centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.modal_dialog_header,
+.modal_dialog_footer {
+  display: flex;
+  flex: none;
+  padding: 0 20px;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.modal_dialog_header {
+  border-bottom: 1px solid var(--color-medium-grey);
+
+  & h2 {
+    font-weight: bold;
+    margin: 10px 0;
+    font-size: 22px;
+    margin-left: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.modal_dialog_footer {
+  border-top: 1px solid var(--color-medium-grey);
+
+  & [type="submit"] {
+    min-width: 100px;
+  }
+}
+
+.c_dialog__box {
+  & .close_button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    height: 50px;
+    display: block;
+    width: 50px;
+    cursor: pointer;
+    fill: #3b3b3b;
+    background-color: transparent;
+    border: none;
+  }
+
+  & button svg {
+    width: 80%;
+  }
+}
+
+#opds_form_dialog {
+  & .field {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    & label {
+      flex: 1;
+      max-width: 10rem;
+    }
+
+    & input {
+      font-size: 1rem;
+      padding-bottom: 4px;
+      padding-left: 0.3rem;
+      border: none;
+      border-bottom: 1px solid grey;
+      width: 20rem;
+    }
+  }
+}
+
+#add_dialog {
+  & ul {
+    padding: 0;
+
+    & li {
+      font-weight: bold;
+      list-style: none;
+    }
+  }
+}
+
+.___DEBUG___COMPONENTS_MODALS_CSS {
+  display: none;
+}

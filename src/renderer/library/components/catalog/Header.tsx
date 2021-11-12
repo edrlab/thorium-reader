@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -44,7 +44,7 @@ class Header extends React.Component<IProps, undefined> {
         const displayType = location?.state?.displayType || DisplayType.Grid;
 
         return (
-            <SecondaryHeader id={styles.catalog_header}>
+            <SecondaryHeader>
                 <Link
                     to={{
                         ...this.props.location,
@@ -53,9 +53,11 @@ class Header extends React.Component<IProps, undefined> {
                         },
                     }}
                     replace={true}
-                    style={(displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
+                    className={(displayType === DisplayType.Grid) ?
+                        stylesButtons.button_transparency_icon :
+                        stylesButtons.button_transparency_icon_inactive
+                    }
                     title={__("header.gridTitle")}
-
                     aria-pressed={displayType === DisplayType.Grid}
                     role={"button"}
                 >
@@ -69,9 +71,11 @@ class Header extends React.Component<IProps, undefined> {
                         },
                     }}
                     replace={true}
-                    style={displayType !== DisplayType.List ? {fill: "grey"} : {}}
+                    className={(displayType === DisplayType.List) ?
+                        stylesButtons.button_transparency_icon :
+                        stylesButtons.button_transparency_icon_inactive
+                    }
                     title={__("header.listTitle")}
-
                     aria-pressed={displayType === DisplayType.List}
                     role={"button"}
                 >
@@ -89,7 +93,7 @@ class Header extends React.Component<IProps, undefined> {
         if (search === -1) {
             return (
                 <Link
-                    id={styles.all_link_button}
+                    className={stylesButtons.button_primary_small}
                     to={{
                         ...this.props.location,
                         pathname: "/library/search/all",

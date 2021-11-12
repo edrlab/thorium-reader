@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 
 import Cover from "../../Cover";
 import Loader from "../../Loader";
@@ -32,32 +33,35 @@ export const PublicationInfoManager: React.FC<IProps> = (props) => {
                     ? toggleCoverZoomCb(coverZoom)
                     : closeDialogCb()
             }
+            title={publication?.title}
         >
-            {
-                publication?.title
-                    ? (
-                        coverZoom
-                            ? <Cover
-                                publicationViewMaybeOpds={publication}
-                                coverType="cover"
-                                onClick={
-                                    () => toggleCoverZoomCb(coverZoom)
-                                }
-                                onKeyPress={
-                                    (e: React.KeyboardEvent<HTMLImageElement>) =>
-                                        e.key === "Enter" && toggleCoverZoomCb(coverZoom)
-                                }
-                            >
-                            </Cover>
-                            :
-                            <>
-                                {
-                                    props.children
-                                }
-                            </>
-                    )
-                    : <Loader></Loader>
-            }
+            <div className={stylesModals.modal_dialog_body}>
+                {
+                    publication?.title
+                        ? (
+                            coverZoom
+                                ? <Cover
+                                    publicationViewMaybeOpds={publication}
+                                    coverType="cover"
+                                    onClick={
+                                        () => toggleCoverZoomCb(coverZoom)
+                                    }
+                                    onKeyPress={
+                                        (e: React.KeyboardEvent<HTMLImageElement>) =>
+                                            e.key === "Enter" && toggleCoverZoomCb(coverZoom)
+                                    }
+                                >
+                                </Cover>
+                                :
+                                <>
+                                    {
+                                        props.children
+                                    }
+                                </>
+                        )
+                        : <Loader></Loader>
+                }
+            </div>
         </Dialog>
     );
 };

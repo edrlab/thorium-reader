@@ -1,0 +1,38 @@
+/*
+=-=-= components/grids.css
+*/
+
+.grid_uniform_wrapper {
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+}
+
+.grid_uniform_item {
+  flex: 0 0 calc(25% - 10px);
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0.5rem;
+  box-sizing: border-box;
+
+  & > * {
+    flex-grow: 1;
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid_uniform_item {
+    flex: 0 0 calc(20% - 10px);
+  }
+}
+
+@media (min-width: 1500px) {
+  .grid_uniform_item {
+    flex: 0 0 calc(16.666667% - 10px);
+  }
+}
+
+.___DEBUG___COMPONENTS_GRIDS_CSS {
+  display: none;
+}
