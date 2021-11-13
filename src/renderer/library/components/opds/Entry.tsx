@@ -57,14 +57,16 @@ class Entry extends React.Component<IProps, undefined> {
                             pathname: route,
                         }}
                     >
-                        <span>{entry.title}</span>
-                        {
-                            entry.subtitle && entry.subtitle !== entry.title ?
-                                <span>
-                                    {entry.subtitle}
-                                </span> :
-                                <></>
-                        }
+                        <span>
+                            <span title={entry.subtitle ? entry.subtitle : undefined}>{entry.title}</span>
+                            {
+                                (entry.subtitle && entry.subtitle !== entry.title) ?
+                                (<span title={entry.subtitle} aria-label={entry.subtitle}>
+                                    <br/>{entry.subtitle.substr(0, 40) + (entry.subtitle.length > 40 ? "..." : "")}
+                                </span>) :
+                                (<></>)
+                            }
+                        </span>
                         {
                             (entry.numberOfItems) ?
                                 (
