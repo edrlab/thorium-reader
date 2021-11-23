@@ -50,13 +50,22 @@ jobs:
       uses: actions/checkout@v2
       with:
         persist-credentials: false
-    - run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
-    - run: 'git config --list || echo NO_GIT_LOCAL_CONFIG || true'
+    - name: Git config global dump (pre)
+      run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
+      shell: bash
+    - name: Git config local dump (pre)
+      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
+      shell: bash
     - name: git HTTP authentication instead SSH (NPM >=7)
       run: >
         git config --global url.https://github.com/.insteadOf ssh://git@github.com/
-    - run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
-    - run: 'git config --list || echo NO_GIT_LOCAL_CONFIG || true'
+      shell: bash
+    - name: Git config global dump (post)
+      run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
+      shell: bash
+    - name: Git config local dump (post)
+      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
+      shell: bash
     - uses: actions/setup-node@v2
       with:
         node-version: '16'
