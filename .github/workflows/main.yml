@@ -56,9 +56,21 @@ jobs:
     - name: Git config local dump (pre)
       run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
       shell: bash
-    - name: git HTTP authentication instead SSH (NPM >=7)
+    - name: git HTTP authentication instead SSH (NPM >=7) 1
       run: >
-        git config --global url.https://github.com/.insteadOf ssh://git@github.com/
+        git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+      shell: bash
+    - name: git HTTP authentication instead SSH (NPM >=7) 2
+      run: >
+        git config --global url."https://github.com".insteadOf ssh://git@github.com
+      shell: bash
+    - name: git HTTP authentication instead SSH (NPM >=7) 3
+      run: >
+        git config --global url."http://github.com/".insteadOf git@github.com:
+      shell: bash
+    - name: git HTTP authentication instead SSH (NPM >=7) 4
+      run: >
+        git config --global url."http://".insteadOf git://
       shell: bash
     - name: Git config global dump (post)
       run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
