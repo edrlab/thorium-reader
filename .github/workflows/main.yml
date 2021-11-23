@@ -86,9 +86,16 @@ jobs:
     - run: npm --global install npm@^8
     - run: npm --version
     # - run: npm --global install asar
-    - run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
-    - run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
-    - run: node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js
+    - name: package patch 1
+      run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
+      shell: bash
+    - name: package patch 2
+      run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
+      shell: bash
+    - name: package lock patch
+      run: node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js
+      shell: bash
+    - run: git --no-pager diff
     - run: npm ci
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
