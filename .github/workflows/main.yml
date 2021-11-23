@@ -48,30 +48,30 @@ jobs:
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
     - name: Checkout
       uses: actions/checkout@v2
-      with:
-        persist-credentials: false
-    - name: Git config global dump (pre)
-      run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
-      shell: bash
-    - name: Git config local dump (pre)
-      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
-      shell: bash
-    - name: git HTTP authentication instead SSH (NPM >=7) 1
-      run: >
-        git config --global url."https://github.com/".insteadOf ssh://git@github.com/
-      shell: bash
-    - name: git HTTP authentication instead SSH (NPM >=7) 2
-      run: >
-        git config --global url."https://github.com".insteadOf ssh://git@github.com
-      shell: bash
-    - name: git HTTP authentication instead SSH (NPM >=7) 3
-      run: >
-        git config --global url."http://github.com/".insteadOf git@github.com:
-      shell: bash
-    - name: git HTTP authentication instead SSH (NPM >=7) 4
-      run: >
-        git config --global url."http://".insteadOf git://
-      shell: bash
+    #   with:
+    #     persist-credentials: false
+    # - name: Git config global dump (pre)
+    #   run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
+    #   shell: bash
+    # - name: Git config local dump (pre)
+    #   run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 1
+    #   run: >
+    #     git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 2
+    #   run: >
+    #     git config --global url."https://github.com".insteadOf ssh://git@github.com
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 3
+    #   run: >
+    #     git config --global url."http://github.com/".insteadOf git@github.com:
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 4
+    #   run: >
+    #     git config --global url."http://".insteadOf git://
+    #   shell: bash
     - name: Git config global dump (post)
       run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
       shell: bash
@@ -88,6 +88,7 @@ jobs:
     # - run: npm --global install asar
     - run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
     - run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
+    - run: node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js
     - run: npm ci
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
