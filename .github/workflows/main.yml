@@ -96,6 +96,9 @@ jobs:
       run: node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js
       shell: bash
     - run: git --no-pager diff
+    - run: npm cache clean --force
+    - run: npm cache verify
+    - run: cat package-lock.json | grep -i divina-player-js
     - run: npm ci
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
