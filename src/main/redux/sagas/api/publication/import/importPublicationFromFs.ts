@@ -68,7 +68,7 @@ export async function importPublicationFromFS(
         case acceptedExtensionObject.daisy:
         case acceptedExtensionObject.zip:
 
-            debug("daisy extension: ", ext);
+            debug("daisy extension: ", ext, filePath);
 
             r2Publication = await DaisyParsePromise(filePath);
 
