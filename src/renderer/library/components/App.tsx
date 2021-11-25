@@ -12,7 +12,7 @@ import * as path from "path";
 import * as React from "react";
 import Dropzone, { DropzoneRootProps } from "react-dropzone";
 import { Provider } from "react-redux";
-import { acceptedExtension } from "readium-desktop/common/extension";
+import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
@@ -39,7 +39,7 @@ export default class App extends React.Component<{}, undefined> {
     public onDrop(acceptedFiles: File[]) {
         const filez = acceptedFiles
             .filter(
-                (file) => acceptedExtension(path.extname(file.path)),
+                (file) => file.path.endsWith(acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(file.path)),
             )
             .map(
                 (file) => ({

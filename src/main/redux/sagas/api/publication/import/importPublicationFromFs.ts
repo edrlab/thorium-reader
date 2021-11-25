@@ -42,7 +42,10 @@ export async function importPublicationFromFS(
     // const r2Publication = await PublicationParsePromise(filePath);
     let r2Publication: R2Publication;
 
-    const { ext } = path.parse(filePath);
+    let { ext } = path.parse(filePath);
+    if (filePath.endsWith(acceptedExtensionObject.nccHtml)) {
+        ext = acceptedExtensionObject.nccHtml;
+    }
     switch (ext) {
 
         case acceptedExtensionObject.epub:
@@ -62,6 +65,10 @@ export async function importPublicationFromFS(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore-next-line
         case acceptedExtensionObject.opf:
+        // eslint-disable-next-line no-fallthrough
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore-next-line
+        case acceptedExtensionObject.nccHtml:
             // DaisyParsePromise allows fake zip to filesystem folder
             filePath = path.dirname(filePath);
             /* falls through */

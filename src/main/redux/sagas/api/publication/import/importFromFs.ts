@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import * as path from "path";
-import { isAcceptedExtension } from "readium-desktop/common/extension";
+import { acceptedExtensionObject, isAcceptedExtension } from "readium-desktop/common/extension";
 import { computeFileHash, extractCrc32OnZip } from "readium-desktop/main/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
@@ -38,6 +38,7 @@ export function* importFromFsService(
     const isLPF = isAcceptedExtension("w3cAudiobook", ext);
     const isPDF = isAcceptedExtension("pdf", ext);
     const isOPF = isAcceptedExtension("opf", ext);
+    const isNccHTML = filePath.endsWith(acceptedExtensionObject.nccHtml);
 
     debug("extension", ext);
     debug("lcp/lpf/pdf", isLCPLicense, isLPF, isPDF);
@@ -48,7 +49,7 @@ export function* importFromFsService(
             undefined :
             (isPDF ?
                 yield* callTyped(() => computeFileHash(filePath)) :
-                (isOPF ? undefined : yield* callTyped(() => extractCrc32OnZip(filePath)))
+                ((isOPF || isNccHTML) ? undefined : yield* callTyped(() => extractCrc32OnZip(filePath)))
             );
     const publicationDocumentInRepository = hash
         ? yield* callTyped(() => publicationRepository.findByHashId(hash))
