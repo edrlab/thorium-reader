@@ -153,7 +153,22 @@ window.addEventListener("load", () => {
             return;
         }
 
+        // http://docs.mathjax.org/en/v3.2-latest/options/accessibility.html#explorer-extension-options
         window.MathJax = {
+            options: {
+                // enableAssistiveMml: true,
+                menuOptions: {
+                    settings: {
+                        explorer: true
+                        // assistiveMml: true
+                    }
+                },
+                a11y: {
+                    speech: true,
+                    subtitles: false,
+                    braille: false
+                }
+            },
             startup: {
                 ready: () => {
 
