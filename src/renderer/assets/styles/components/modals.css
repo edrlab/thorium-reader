@@ -68,7 +68,8 @@
 .modal_dialog_body {
   flex: 1;
   padding: 20px 30px;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   &.modal_dialog_body_centered {
     display: flex;
