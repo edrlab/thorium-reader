@@ -41,9 +41,14 @@ interface IState {
 }
 
 export class LCPAuthentication extends React.Component<IProps, IState> {
+    private focusRef: React.RefObject<HTMLInputElement>;
+    private buttonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.focusRef = React.createRef<HTMLInputElement>();
+        this.buttonRef = React.createRef<HTMLButtonElement>();
 
         this.state = {
             password: undefined,
@@ -51,6 +56,12 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
 
         this.submit = this.submit.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
+    }
+
+    public componentDidMount() {
+        if (this.focusRef?.current) {
+            this.focusRef.current.focus();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -86,6 +97,11 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                     type="password"
                                     onChange={this.onPasswordChange}
                                     placeholder={__("library.lcp.password")}
+                                    ref={this.focusRef}
+                                    onKeyPress={
+                                        (e) =>
+                                            e.key === "Enter" && this.buttonRef?.current && this.buttonRef.current.click()
+                                    }
                                 />
                             </div>
                             {
@@ -109,6 +125,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             disabled={!this.state.password}
                             type="submit"
                             className={stylesButtons.button_secondary}
+                            ref={this.buttonRef}
                         >
                             <SVG svg={DoneIcon} />
                             {__("library.lcp.submit")}
