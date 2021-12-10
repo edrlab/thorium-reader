@@ -89,7 +89,7 @@ class FeedList extends React.Component<IProps, IState> {
                                     }}
                                     className={stylesBlocks.block_full}
                                 >
-                                    <p>{item.title}</p>
+                                    <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
                                 </Link>
                                 <button
                                     onClick={(e) => this.deleteFeed(e, item)}

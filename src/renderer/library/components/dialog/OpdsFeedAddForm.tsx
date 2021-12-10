@@ -42,9 +42,14 @@ interface IState {
 }
 
 class OpdsFeedAddForm extends React.Component<IProps, IState> {
+    private focusRef: React.RefObject<HTMLInputElement>;
+    private buttonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.focusRef = React.createRef<HTMLInputElement>();
+        this.buttonRef = React.createRef<HTMLButtonElement>();
 
         this.state = {
             name: undefined,
@@ -52,6 +57,12 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
         };
 
         this.add = this.add.bind(this);
+    }
+
+    public componentDidMount() {
+        if (this.focusRef?.current) {
+            this.focusRef.current.focus();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -81,6 +92,11 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                                     aria-label={__("opds.addForm.name")}
                                     placeholder={__("opds.addForm.namePlaceholder")}
                                     defaultValue={name}
+                                    ref={this.focusRef}
+                                    onKeyPress={
+                                        (e) =>
+                                            e.key === "Enter" && this.buttonRef?.current && this.buttonRef.current.click()
+                                    }
                                 />
                             </div>
                             <div className={stylesInputs.form_group}>
@@ -93,6 +109,10 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                                     aria-label={__("opds.addForm.url")}
                                     placeholder={__("opds.addForm.urlPlaceholder")}
                                     defaultValue={url}
+                                    onKeyPress={
+                                        (e) =>
+                                            e.key === "Enter" && this.buttonRef?.current && this.buttonRef.current.click()
+                                    }
                                 />
                             </div>
                         </div>
@@ -109,6 +129,7 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                             type="submit"
                             onClick={this.add}
                             className={stylesButtons.button_secondary}
+                            ref={this.buttonRef}
                         >
                             <SVG svg={DoneIcon} />
                             {__("opds.addForm.addButton")}
