@@ -261,7 +261,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         stylesReader.ttsAudioActivated : undefined,
                 )}
                 role="navigation"
-                aria-label={__("accessibility.homeMenu")}
+                aria-label={__("accessibility.toolbar")}
             >
                 <ul>
 

@@ -497,10 +497,9 @@ class Reader extends React.Component<IProps, IState> {
             <div className={classNames(
                 this.props.readerConfig.night && stylesReader.nightMode,
                 this.props.readerConfig.sepia && stylesReader.sepiaMode,
-            )}
-                role="region" aria-label={this.props.__("accessibility.toolbar")}>
+            )}>
                 <a
-                    role="region"
+                    role="heading"
                     className={stylesReader.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
@@ -574,11 +573,10 @@ class Reader extends React.Component<IProps, IState> {
                         <div className={stylesReader.reader}>
                             <main
                                 id="main"
-                                role="main"
                                 aria-label={this.props.__("accessibility.mainContent")}
                                 className={stylesReader.publication_viewport_container}>
                                 <a
-                                    role="region"
+                                    role="heading"
                                     className={stylesReader.anchor_link}
                                     ref={this.fastLinkRef}
                                     id="main-content"
@@ -981,6 +979,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.fastLinkRef?.current) {
+            console.log("€€€€€ FOCUS READER MAIN");
             this.fastLinkRef.current.focus();
         }
     };
@@ -1625,16 +1624,14 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private focusMainAreaLandmarkAndCloseMenu() {
-        if (this.fastLinkRef?.current) {
-            setTimeout(() => {
-                this.onKeyboardFocusMain();
-            }, 200);
-        }
 
         if (this.state.menuOpen) {
-            setTimeout(() => {
-                this.handleMenuButtonClick();
-            }, 100);
+            this.handleMenuButtonClick();
+        }
+
+        if (this.fastLinkRef?.current) {
+            // shortcutEnable must be true (see handleMenuButtonClick() above, and this.state.menuOpen))
+            this.onKeyboardFocusMain();
         }
     }
 

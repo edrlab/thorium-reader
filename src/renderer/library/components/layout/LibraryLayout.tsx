@@ -93,7 +93,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         return (
             <div role="region" aria-label={__("accessibility.toolbar")}>
                 <a
-                    role="region"
+                    role="heading"
                     className={stylesGlobal.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
@@ -108,12 +108,11 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                 { this.props.breadCrumb }
                 <main
                     id="main"
-                    role="main"
                     aria-label={__("accessibility.mainContent")}
                     className={classNames(stylesGlobal.main, this.props.mainClassName)}
                 >
                     <a
-                        role="region"
+                        role="heading"
                         className={stylesGlobal.anchor_link}
                         ref={this.fastLinkRef}
                         id="main-content"

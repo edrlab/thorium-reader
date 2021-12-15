@@ -399,11 +399,13 @@ const handleSearchClickFunc = (
     closeNavPanel: boolean) => {
 
     e.preventDefault();
-    console.log(href);
-    thiz.props.focus(href); // search uuid
+
     if (closeNavPanel) {
         thiz.props.focusMainAreaLandmarkAndCloseMenu();
     }
+
+    console.log(href);
+    thiz.props.focus(href); // search uuid
 };
 
 const handleSearchClickFuncDebounced = debounce(handleSearchClickFunc, 300);
