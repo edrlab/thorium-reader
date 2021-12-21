@@ -20,6 +20,9 @@ interface IDataPayload {
     };
     [DialogTypeName.PublicationInfoReader]: {
         publicationIdentifier: string;
+        focusWhereAmI: boolean;
+        pdfPlayerNumberOfPages: number | undefined; // super hacky :(
+        divinaNumberOfPages: number | undefined; // super hacky :(
     };
 }
 

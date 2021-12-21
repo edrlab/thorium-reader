@@ -13,6 +13,11 @@ interface IPubInfoState {
     publication?: TPublication;
     coverZoom?: boolean;
 }
+interface IPubInfoStateReader extends IPubInfoState {
+    focusWhereAmI: boolean;
+    pdfPlayerNumberOfPages: number | undefined; // super hacky :(
+    divinaNumberOfPages: number | undefined; // super hacky :(
+}
 
 export interface IFileImport {
     name: string;
@@ -39,7 +44,7 @@ export interface DialogType {
     };
     [DialogTypeName.PublicationInfoOpds]: IPubInfoState;
     [DialogTypeName.PublicationInfoLib]: IPubInfoState;
-    [DialogTypeName.PublicationInfoReader]: IPubInfoState;
+    [DialogTypeName.PublicationInfoReader]: IPubInfoStateReader;
     [DialogTypeName.OpdsFeedAddForm]: {};
     [DialogTypeName.DeletePublicationConfirm]: {
         publicationView: PublicationView;

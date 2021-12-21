@@ -176,7 +176,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                             if (isDivina) {
                                                 atCurrentLocation = this.props.divinaContinousEqualTrue
                                                     ? Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length) === index
-                                                    : (currentLocation.locator?.locations.position || 0) === index;
+                                                    : (currentLocation.locator?.locations.position || 0) === index; // see divinaNumberOfPages
                                             } else {
                                                 atCurrentLocation = currentLocation.locator?.href === link.Href;
                                             }

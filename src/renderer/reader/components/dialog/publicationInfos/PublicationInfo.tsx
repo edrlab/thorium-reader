@@ -43,7 +43,7 @@ class PublicationInfo extends React.Component<IProps> {
 
     public render() {
 
-        const { publication, toggleCoverZoom, closeDialog, coverZoom, open } = this.props;
+        const { publication, toggleCoverZoom, closeDialog, coverZoom, open, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages } = this.props;
 
         if (!open) {
             return <></>;
@@ -58,10 +58,14 @@ class PublicationInfo extends React.Component<IProps> {
             >
                 <PublicationInfoContent
                     publication={publication}
+                    r2Publication={this.props.r2Publication}
                     toggleCoverZoomCb={toggleCoverZoom}
                     TagManagerComponent={TagManager}
                     coverZoom={coverZoom}
                     translator={this.props.translator}
+                    focusWhereAmI={focusWhereAmI}
+                    pdfPlayerNumberOfPages={pdfPlayerNumberOfPages}
+                    divinaNumberOfPages={divinaNumberOfPages}
                 >
 
                 </PublicationInfoContent>
@@ -93,6 +97,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => ({
     ...{
+        r2Publication: state.reader.info.r2Publication,
         open: state.dialog.type === DialogTypeName.PublicationInfoReader,
         publicationInfoReader: state.dialog.type === DialogTypeName.PublicationInfoReader,
     },

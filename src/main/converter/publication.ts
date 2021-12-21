@@ -210,7 +210,7 @@ export class PublicationViewConverter {
             };
         }
 
-        // become a side effect function : AIE !!
+        // TODO become a side effect function : AIE !!
         // could be refactored when the publications documents will be in the state
         const store = diMainGet("store");
         const state = store.getState();

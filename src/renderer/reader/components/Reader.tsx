@@ -138,6 +138,8 @@ interface IState {
 
     divinaReadingModeSupported: TdivinaReadingMode[];
     divinaNumberOfPages: number;
+    divinaArrowEnabled: boolean;
+    divinaContinousEqualTrue: boolean;
 
     pdfPlayerBusEvent: IEventBusPdfPlayer;
     pdfPlayerToc: TToc | undefined;
@@ -145,9 +147,6 @@ interface IState {
 
     openedSectionSettings: number | undefined;
     openedSectionMenu: number | undefined;
-
-    divinaArrowEnabled: boolean;
-    divinaContinousEqualTrue: boolean;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -181,6 +180,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
         this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
         this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
+        this.onKeyboardInfoWhereAmI = this.onKeyboardInfoWhereAmI.bind(this);
         this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
 
@@ -741,6 +741,11 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.OpenReaderInfoWhereAmI,
+            this.onKeyboardInfoWhereAmI);
+    
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusReaderSettings,
             this.onKeyboardFocusSettings);
 
@@ -795,6 +800,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFullScreen);
         unregisterKeyboardListener(this.onKeyboardBookmark);
         unregisterKeyboardListener(this.onKeyboardInfo);
+        unregisterKeyboardListener(this.onKeyboardInfoWhereAmI);
         unregisterKeyboardListener(this.onKeyboardFocusSettings);
         unregisterKeyboardListener(this.onKeyboardFocusNav);
         unregisterKeyboardListener(this.onKeyboardShowGotoPage);
@@ -931,6 +937,15 @@ class Reader extends React.Component<IProps, IState> {
         this.handleReaderClose();
     };
 
+    private onKeyboardInfoWhereAmI = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardInfoWhereAmI)");
+            }
+            return;
+        }
+        this.displayPublicationInfo(true);
+    };
     private onKeyboardInfo = () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -1089,7 +1104,7 @@ class Reader extends React.Component<IProps, IState> {
         }
     };
 
-    private displayPublicationInfo() {
+    private displayPublicationInfo(focusWhereAmI?: boolean) {
         if (this.props.publicationView) {
             // TODO: subscribe to Redux action type == CloseRequest
             // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
@@ -1097,7 +1112,7 @@ class Reader extends React.Component<IProps, IState> {
             this.setState({
                 shortcutEnable: false,
             });
-            this.props.displayPublicationInfo(this.props.publicationView.identifier);
+            this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, focusWhereAmI);
         }
     }
 
@@ -1571,23 +1586,18 @@ class Reader extends React.Component<IProps, IState> {
     private handleReadingLocationChange(loc: LocatorExtended) {
 
         ok(loc, "handleReadingLocationChange loc KO");
+
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
         }
         this.ttsOverlayEnableNeedsSync = false;
 
+        // note that with Divina, loc has locator.locations.progression set to totalProgression
         this.saveReadingLocation(loc);
-        this.setState({ currentLocation: getCurrentReadingLocation() || loc });
 
-        console.log("SET READING LOCATION");
-        console.log("SET READING LOCATION");
-        try {
-            console.log((loc.locator.locations as any).totalProgression, getCurrentReadingLocation());
-        } catch { }
-
-        console.log("SET READING LOCATION");
-        console.log("SET READING LOCATION");
+        const l = (this.props.isDivina || isDivinaLocation(loc)) ? loc : (this.props.isPdf ? loc : (getCurrentReadingLocation() || loc));
+        this.setState({ currentLocation: l });
 
         // No need to explicitly refresh the bookmarks status here,
         // as componentDidUpdate() will call the function after setState():
@@ -2096,10 +2106,13 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         detachReader: () => {
             dispatch(readerActions.detachModeRequest.build());
         },
-        displayPublicationInfo: (pubId: string) => {
+        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, focusWhereAmI?: boolean) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {
                     publicationIdentifier: pubId,
+                    focusWhereAmI: focusWhereAmI ? true : false,
+                    pdfPlayerNumberOfPages,
+                    divinaNumberOfPages,
                 },
             ));
         },
