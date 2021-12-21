@@ -43,7 +43,7 @@ class PublicationInfo extends React.Component<IProps> {
 
     public render() {
 
-        const { publication, toggleCoverZoom, closeDialog, coverZoom, open, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages } = this.props;
+        const { publication, toggleCoverZoom, closeDialog, coverZoom, open, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation } = this.props;
 
         if (!open) {
             return <></>;
@@ -66,6 +66,8 @@ class PublicationInfo extends React.Component<IProps> {
                     focusWhereAmI={focusWhereAmI}
                     pdfPlayerNumberOfPages={pdfPlayerNumberOfPages}
                     divinaNumberOfPages={divinaNumberOfPages}
+                    divinaContinousEqualTrue={divinaContinousEqualTrue}
+                    readerReadingLocation={readerReadingLocation}
                 >
 
                 </PublicationInfoContent>

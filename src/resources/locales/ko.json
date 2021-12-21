@@ -257,7 +257,7 @@
             "backHomeTitle": "책꽂이로 돌아가기",
             "bookmarkTitle": "북마크",
             "currentPage": "현재 페이지: {{- current}}",
-            "currentPageTotal": "현재 페이지: ({{- current}}/{{- total}})",
+            "currentPageTotal": "현재 페이지: {{- current}}/{{- total}}",
             "detachWindowTitle": "라이브러리 / 책꽂이 창 보기",
             "fullscreenTitle": "전체화면 모드",
             "goTo": "이동",

@@ -257,7 +257,7 @@
             "backHomeTitle": "返回书架",
             "bookmarkTitle": "书签",
             "currentPage": "当前页面: {{- current}}",
-            "currentPageTotal": "当前页面: ({{- current}}/{{- total}})",
+            "currentPageTotal": "当前页面: {{- current}}/{{- total}}",
             "detachWindowTitle": "显示 书库/书架 窗口",
             "fullscreenTitle": "开启全屏模式",
             "goTo": "转到",

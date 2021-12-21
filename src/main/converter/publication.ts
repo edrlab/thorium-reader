@@ -214,7 +214,7 @@ export class PublicationViewConverter {
         // could be refactored when the publications documents will be in the state
         const store = diMainGet("store");
         const state = store.getState();
-        const locator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
+        const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
 
         const duration = typeof r2Publication.Metadata.Duration === "number" ? r2Publication.Metadata.Duration : undefined;
         const nbOfTracks = typeof r2Publication.Metadata.AdditionalJSON?.tracks === "number" ? r2Publication.Metadata.AdditionalJSON?.tracks : undefined;
@@ -246,7 +246,7 @@ export class PublicationViewConverter {
             // Legacy Base64 data blobs
             // r2PublicationBase64,
 
-            lastReadingLocation: locator,
+            lastReadingLocation: readerStateLocator,
         };
     }
 }

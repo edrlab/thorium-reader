@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
-import { debug } from "console";
+import * as debug_ from "debug";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
@@ -43,6 +43,8 @@ import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
+
+const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;

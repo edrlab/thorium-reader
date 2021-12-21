@@ -27,7 +27,6 @@ import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
-import { debug } from "console";
 
 export interface IProps {
     publication: TPublication;
@@ -39,6 +38,8 @@ export interface IProps {
     focusWhereAmI: boolean;
     pdfPlayerNumberOfPages: number | undefined; // super hacky :(
     divinaNumberOfPages: number | undefined; // super hacky :(
+    divinaContinousEqualTrue: boolean;
+    readerReadingLocation: LocatorExtended;
     translator: Translator;
     onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
 }
@@ -71,13 +72,13 @@ const Duration = (props: {
 const Progression = (props: {
     r2Publication: R2Publication | null,
     locatorExt: LocatorExtended,
-    locatorProgression: number,
     focusWhereAmI: boolean,
     pdfPlayerNumberOfPages: number | undefined, // super hacky :(
     divinaNumberOfPages: number | undefined, // super hacky :(
+    divinaContinousEqualTrue: boolean,
     __: I18nTyped;
 }) => {
-    const { __, locatorExt, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, r2Publication, locatorProgression } = props;
+    const { __, locatorExt, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication } = props;
 
     const focusRef = React.useRef<HTMLHeadingElement>(null);
     React.useEffect(() => {
@@ -86,8 +87,7 @@ const Progression = (props: {
         }
     }, [focusWhereAmI]);
 
-    if (typeof locatorExt?.locator?.locations?.progression === "number" &&
-        typeof locatorProgression === "number") { // reactive refresh in reader window
+    if (typeof locatorExt?.locator?.locations?.progression === "number") {
 
         // try/catch until the code is cleaned-up!
         // (Audiobooks, PDF, Divina, EPUB FXL and reflow ... page number vs. string types)
@@ -103,7 +103,7 @@ const Progression = (props: {
         const isPdf = r2Publication && isPdfFn(r2Publication);
     
         // locatorExt.docInfo.isFixedLayout
-        const isFixedLayout = r2Publication && !r2Publication.PageList &&
+        const isFixedLayout = r2Publication && // && !r2Publication.PageList
             r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
         let txtProgression: string | undefined;
@@ -111,33 +111,38 @@ const Progression = (props: {
 
         if (isAudio) {
             const percent = Math.round(locatorExt.locator.locations.position * 100);
-            const p = Math.round(100 * (locatorExt.audioPlaybackInfo.globalTime / locatorExt.audioPlaybackInfo.globalDuration));
-            txtProgression = `${percent}% (${p}%) [${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalTime))} / ${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalDuration))}]`;
+            // const p = Math.round(100 * (locatorExt.audioPlaybackInfo.globalTime / locatorExt.audioPlaybackInfo.globalDuration));
+            txtProgression = `${percent}% [${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalTime))} / ${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalDuration))}]`;
         } else if (isDivina) {
-            let totalPages = divinaNumberOfPages ? divinaNumberOfPages : undefined;
+            // console.log("----- ".repeat(100), divinaNumberOfPages, r2Publication?.Spine?.length);
+            let totalPages = (divinaNumberOfPages && !divinaContinousEqualTrue) ? divinaNumberOfPages : (r2Publication?.Spine?.length ? r2Publication.Spine.length : undefined);
             if (typeof totalPages === "string") {
                 try {
                     totalPages = parseInt(totalPages, 10);
                 } catch (_e) {
-                    // ignore
+                    totalPages = 0;
                 }
             }
 
-            let pageNum = locatorExt.locator.locations.position;
+            let pageNum = !divinaContinousEqualTrue ?
+                (locatorExt.locator.locations.position || 0) :
+                (Math.floor(locatorExt.locator.locations.progression * r2Publication.Spine.length) - 1);
             if (typeof pageNum === "string") {
                 try {
                     pageNum = parseInt(pageNum, 10) + 1;
                 } catch (_e) {
-                    // ignore
+                    pageNum = 0;
                 }
             } else if (typeof pageNum === "number") {
                 pageNum = pageNum + 1;
             }
 
-            // divinaNumberOfPages => NOT divinaContinousEqualTrue
             if (totalPages && typeof pageNum === "number") {
                 txtPagination = __("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
-                txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
+
+                // txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
+                txtProgression = `${Math.round(100 * (locatorExt.locator.locations.progression || 0))}%`;
+
             } else { // divinaContinousEqualTrue (relative to spine items)
                 if (typeof pageNum === "number") {
                     txtPagination = __("reader.navigation.currentPage", { current: `${pageNum}` });
@@ -151,12 +156,15 @@ const Progression = (props: {
             }
 
         } else if (isPdf) {
-            let totalPages = pdfPlayerNumberOfPages ? pdfPlayerNumberOfPages : undefined;
+            let totalPages = pdfPlayerNumberOfPages ?
+                pdfPlayerNumberOfPages :
+                (r2Publication?.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : undefined);
+
             if (typeof totalPages === "string") {
                 try {
                     totalPages = parseInt(totalPages, 10);
                 } catch (_e) {
-                    // ignore
+                    totalPages = 0;
                 }
             }
 
@@ -165,7 +173,7 @@ const Progression = (props: {
                 try {
                     pageNum = parseInt(pageNum, 10);
                 } catch (_e) {
-                    // ignore
+                    pageNum = 0;
                 }
             }
 
@@ -199,7 +207,7 @@ const Progression = (props: {
                     // no virtual global .position in the current implementation,
                     // just local percentage .progression (current reading order item)
                     const percent = Math.round(locatorExt.locator.locations.progression * 100);
-                    txtProgression = `${spineIndex + 1}/${r2Publication.Spine.length} [${percent}%]${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""}`;
+                    txtProgression = `${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
                 }
             }
         }
@@ -230,16 +238,16 @@ const Progression = (props: {
 export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
     // tslint:disable-next-line: max-line-length
-    const { pdfPlayerNumberOfPages, divinaNumberOfPages, r2Publication: r2Publication_, publication, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;
+    const { readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, publication, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;
     const __ = translator.translate;
 
     const r2Publication = React.useMemo(() => {        
         if (!r2Publication_) {
-            debug("!! r2Publication ".repeat(100));
+            // debug("!! r2Publication ".repeat(100));
             return TaJsonDeserialize(publication.r2PublicationJson, R2Publication);
         }
 
-        debug("__r2Publication".repeat(100));
+        // debug("__r2Publication".repeat(100));
         return r2Publication_;
         
     }, [publication, r2Publication_]);
@@ -344,9 +352,9 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                         r2Publication={r2Publication}
                         pdfPlayerNumberOfPages={pdfPlayerNumberOfPages}
                         divinaNumberOfPages={divinaNumberOfPages}
+                        divinaContinousEqualTrue={divinaContinousEqualTrue}
                         focusWhereAmI={focusWhereAmI}
-                        locatorExt={publication.lastReadingLocation}
-                        locatorProgression={publication.lastReadingLocation?.locator?.locations?.progression}
+                        locatorExt={readerReadingLocation || publication.lastReadingLocation}
                     />
                 </div>
             </div>

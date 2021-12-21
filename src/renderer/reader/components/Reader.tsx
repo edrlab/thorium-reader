@@ -1112,7 +1112,9 @@ class Reader extends React.Component<IProps, IState> {
             this.setState({
                 shortcutEnable: false,
             });
-            this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, focusWhereAmI);
+
+            const readerReadingLocation = this.state.currentLocation ? this.state.currentLocation : undefined;
+            this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, this.state.divinaContinousEqualTrue, readerReadingLocation, focusWhereAmI);
         }
     }
 
@@ -2106,13 +2108,16 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         detachReader: () => {
             dispatch(readerActions.detachModeRequest.build());
         },
-        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, focusWhereAmI?: boolean) => {
+        
+        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, focusWhereAmI?: boolean) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {
                     publicationIdentifier: pubId,
                     focusWhereAmI: focusWhereAmI ? true : false,
                     pdfPlayerNumberOfPages,
                     divinaNumberOfPages,
+                    divinaContinousEqualTrue,
+                    readerReadingLocation,
                 },
             ));
         },

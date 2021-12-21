@@ -76,8 +76,9 @@ class PublicationInfo extends React.Component<IProps> {
                     focusWhereAmI={false}
                     pdfPlayerNumberOfPages={undefined}
                     divinaNumberOfPages={undefined}
+                    divinaContinousEqualTrue={undefined}
+                    readerReadingLocation={undefined}
                 >
-
                 </PublicationInfoContent>
             </PublicationInfoManager>
         );
