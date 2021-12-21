@@ -257,7 +257,7 @@
             "backHomeTitle": "tillbaka till bokhyllan",
             "bookmarkTitle": "bokmärke",
             "currentPage": "Aktuell sida: {{- current}}",
-            "currentPageTotal": "Aktuell sida: ({{- current}}/{{- total}})",
+            "currentPageTotal": "Aktuell sida: {{- current}}/{{- total}}",
             "detachWindowTitle": "visa biblioteks-/bokhyllefönstret",
             "fullscreenTitle": "aktivera helskärmsläge",
             "goTo": "Gå till",

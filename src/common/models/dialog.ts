@@ -9,9 +9,18 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
 interface IPubInfoState {
     publication?: TPublication;
     coverZoom?: boolean;
+}
+interface IPubInfoStateReader extends IPubInfoState {
+    focusWhereAmI: boolean;
+    pdfPlayerNumberOfPages: number | undefined; // super hacky :(
+    divinaNumberOfPages: number | undefined; // super hacky :(
+    divinaContinousEqualTrue: boolean;
+    readerReadingLocation: LocatorExtended;
 }
 
 export interface IFileImport {
@@ -39,7 +48,7 @@ export interface DialogType {
     };
     [DialogTypeName.PublicationInfoOpds]: IPubInfoState;
     [DialogTypeName.PublicationInfoLib]: IPubInfoState;
-    [DialogTypeName.PublicationInfoReader]: IPubInfoState;
+    [DialogTypeName.PublicationInfoReader]: IPubInfoStateReader;
     [DialogTypeName.OpdsFeedAddForm]: {};
     [DialogTypeName.DeletePublicationConfirm]: {
         publicationView: PublicationView;

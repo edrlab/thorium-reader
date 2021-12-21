@@ -9,6 +9,8 @@ import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog
 import { Action } from "readium-desktop/common/models/redux";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
 export const ID = "DIALOG_OPEN_REQUEST";
 
 interface IDataPayload {
@@ -20,6 +22,11 @@ interface IDataPayload {
     };
     [DialogTypeName.PublicationInfoReader]: {
         publicationIdentifier: string;
+        focusWhereAmI: boolean;
+        pdfPlayerNumberOfPages: number | undefined; // super hacky :(
+        divinaNumberOfPages: number | undefined; // super hacky :(
+        divinaContinousEqualTrue: boolean;
+        readerReadingLocation: LocatorExtended;
     };
 }
 

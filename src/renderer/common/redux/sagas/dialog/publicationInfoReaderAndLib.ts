@@ -16,6 +16,8 @@ import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { all, call, delay, put, take } from "redux-saga/effects";
 import { race as raceTyped } from "typed-redux-saga/macro";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
 import { apiSaga } from "../api";
 
 const REQUEST_ID = "PUBINFO_READER_AND_LIB_REQUEST_ID";
@@ -34,6 +36,13 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
         const dataPayload = (action.payload as
             dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoReader>).data;
         const id = dataPayload?.publicationIdentifier;
+        const focusWhereAmI = dataPayload?.focusWhereAmI;
+
+        // SUPER HACKY :(
+        const pdfPlayerNumberOfPages = dataPayload?.pdfPlayerNumberOfPages;
+        const divinaNumberOfPages = dataPayload?.divinaNumberOfPages;
+        const divinaContinousEqualTrue = dataPayload?.divinaContinousEqualTrue;
+        const readerReadingLocation = dataPayload?.readerReadingLocation;
 
         // dispatch to API a publication get request
         if (id) {
@@ -48,7 +57,7 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
                 return;
             }
 
-            yield call(updateReaderAndLibPublication, getAction);
+            yield call(updateReaderAndLibPublication, getAction, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation);
         }
     }
 }
@@ -69,7 +78,7 @@ function* getApi(id: string) {
 }
 
 // Triggered when the publication data are available from the API
-function* updateReaderAndLibPublication(action: apiActions.result.TAction<PublicationView>) {
+function* updateReaderAndLibPublication(action: apiActions.result.TAction<PublicationView>, focusWhereAmI: boolean, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined) {
     debug("reader publication from publicationInfo received");
 
     const publicationView = action.payload;
@@ -81,6 +90,11 @@ function* updateReaderAndLibPublication(action: apiActions.result.TAction<Public
 
         yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoReader>({
             publication,
+            focusWhereAmI,
+            pdfPlayerNumberOfPages,
+            divinaNumberOfPages,
+            divinaContinousEqualTrue,
+            readerReadingLocation,
         }));
     }
 }

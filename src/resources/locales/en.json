@@ -257,7 +257,7 @@
             "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
             "currentPage": "Current page: {{- current}}",
-            "currentPageTotal": "Current page: ({{- current}}/{{- total}})",
+            "currentPageTotal": "Current page: {{- current}}/{{- total}}",
             "detachWindowTitle": "show library / bookshelf window",
             "fullscreenTitle": "open fullscreen mode",
             "goTo": "Go to",
