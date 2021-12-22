@@ -101,7 +101,7 @@ const Progression = (props: {
 
         const isDivina = r2Publication && isDivinaFn(r2Publication);
         const isPdf = r2Publication && isPdfFn(r2Publication);
-    
+
         // locatorExt.docInfo.isFixedLayout
         const isFixedLayout = r2Publication && // && !r2Publication.PageList
             r2Publication.Metadata?.Rendition?.Layout === "fixed";
@@ -148,11 +148,11 @@ const Progression = (props: {
                     txtPagination = __("reader.navigation.currentPage", { current: `${pageNum}` });
                 }
 
-               // see (locations as any ).totalProgression Divina HACK
-               if (typeof locatorExt.locator.locations.progression === "number") {
-                   const percent = Math.round(locatorExt.locator.locations.progression * 100);
-                   txtProgression = `${percent}%`;
-               }
+                // see (locations as any ).totalProgression Divina HACK
+                if (typeof locatorExt.locator.locations.progression === "number") {
+                    const percent = Math.round(locatorExt.locator.locations.progression * 100);
+                    txtProgression = `${percent}%`;
+                }
             }
 
         } else if (isPdf) {
@@ -241,7 +241,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
     const { readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, publication, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;
     const __ = translator.translate;
 
-    const r2Publication = React.useMemo(() => {        
+    const r2Publication = React.useMemo(() => {
         if (!r2Publication_) {
             // debug("!! r2Publication ".repeat(100));
             return TaJsonDeserialize(publication.r2PublicationJson, R2Publication);
@@ -249,7 +249,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
         // debug("__r2Publication".repeat(100));
         return r2Publication_;
-        
+
     }, [publication, r2Publication_]);
 
     return (

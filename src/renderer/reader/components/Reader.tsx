@@ -743,7 +743,7 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.OpenReaderInfoWhereAmI,
             this.onKeyboardInfoWhereAmI);
-    
+
         registerKeyboardListener(
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusReaderSettings,
@@ -2108,7 +2108,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         detachReader: () => {
             dispatch(readerActions.detachModeRequest.build());
         },
-        
+
         displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, focusWhereAmI?: boolean) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {
