@@ -21,6 +21,7 @@ interface IPubInfoStateReader extends IPubInfoState {
     divinaNumberOfPages: number | undefined; // super hacky :(
     divinaContinousEqualTrue: boolean;
     readerReadingLocation: LocatorExtended;
+    handleLinkUrl: ((url: string) => void) | undefined;
 }
 
 export interface IFileImport {

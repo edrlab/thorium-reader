@@ -59,6 +59,8 @@ class PublicationInfo extends React.Component<IProps> {
                 <PublicationInfoContent
                     publication={publication}
                     r2Publication={this.props.r2Publication}
+                    manifestUrlR2Protocol={this.props.manifestUrlR2Protocol}
+                    handleLinkUrl={this.props.handleLinkUrl}
                     toggleCoverZoomCb={toggleCoverZoom}
                     TagManagerComponent={TagManager}
                     coverZoom={coverZoom}
@@ -68,6 +70,7 @@ class PublicationInfo extends React.Component<IProps> {
                     divinaNumberOfPages={divinaNumberOfPages}
                     divinaContinousEqualTrue={divinaContinousEqualTrue}
                     readerReadingLocation={readerReadingLocation}
+                    closeDialogCb={closeDialog}
                 >
 
                 </PublicationInfoContent>
@@ -100,6 +103,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => ({
     ...{
         r2Publication: state.reader.info.r2Publication,
+        manifestUrlR2Protocol: state.reader.info.manifestUrlR2Protocol,
         open: state.dialog.type === DialogTypeName.PublicationInfoReader,
         publicationInfoReader: state.dialog.type === DialogTypeName.PublicationInfoReader,
     },

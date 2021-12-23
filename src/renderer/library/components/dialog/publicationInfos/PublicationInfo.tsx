@@ -63,6 +63,8 @@ class PublicationInfo extends React.Component<IProps> {
                 <PublicationInfoContent
                     publication={publication}
                     r2Publication={null}
+                    manifestUrlR2Protocol={null}
+                    handleLinkUrl={null}
                     toggleCoverZoomCb={toggleCoverZoom}
                     ControlComponent={this.controlsComponent}
                     TagManagerComponent={TagManager}
@@ -78,6 +80,7 @@ class PublicationInfo extends React.Component<IProps> {
                     divinaNumberOfPages={undefined}
                     divinaContinousEqualTrue={undefined}
                     readerReadingLocation={undefined}
+                    closeDialogCb={closeDialog}
                 >
                 </PublicationInfoContent>
             </PublicationInfoManager>

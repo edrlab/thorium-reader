@@ -43,6 +43,7 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
         const divinaNumberOfPages = dataPayload?.divinaNumberOfPages;
         const divinaContinousEqualTrue = dataPayload?.divinaContinousEqualTrue;
         const readerReadingLocation = dataPayload?.readerReadingLocation;
+        const handleLinkUrl = dataPayload?.handleLinkUrl;
 
         // dispatch to API a publication get request
         if (id) {
@@ -57,7 +58,7 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
                 return;
             }
 
-            yield call(updateReaderAndLibPublication, getAction, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation);
+            yield call(updateReaderAndLibPublication, getAction, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation, handleLinkUrl);
         }
     }
 }
@@ -78,7 +79,7 @@ function* getApi(id: string) {
 }
 
 // Triggered when the publication data are available from the API
-function* updateReaderAndLibPublication(action: apiActions.result.TAction<PublicationView>, focusWhereAmI: boolean, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined) {
+function* updateReaderAndLibPublication(action: apiActions.result.TAction<PublicationView>, focusWhereAmI: boolean, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined) {
     debug("reader publication from publicationInfo received");
 
     const publicationView = action.payload;
@@ -95,6 +96,7 @@ function* updateReaderAndLibPublication(action: apiActions.result.TAction<Public
             divinaNumberOfPages,
             divinaContinousEqualTrue,
             readerReadingLocation,
+            handleLinkUrl,
         }));
     }
 }

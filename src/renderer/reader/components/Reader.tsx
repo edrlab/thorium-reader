@@ -1114,7 +1114,7 @@ class Reader extends React.Component<IProps, IState> {
             });
 
             const readerReadingLocation = this.state.currentLocation ? this.state.currentLocation : undefined;
-            this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, this.state.divinaContinousEqualTrue, readerReadingLocation, focusWhereAmI);
+            this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, this.state.divinaContinousEqualTrue, readerReadingLocation, handleLinkUrl, focusWhereAmI);
         }
     }
 
@@ -1143,6 +1143,7 @@ class Reader extends React.Component<IProps, IState> {
                 selectionIsNew: undefined,
                 docInfo: undefined,
                 epubPage: undefined,
+                headings: undefined,
                 secondWebViewHref: undefined,
             };
             this.handleReadingLocationChange(LocatorExtended);
@@ -2109,7 +2110,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerActions.detachModeRequest.build());
         },
 
-        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, focusWhereAmI?: boolean) => {
+        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined, focusWhereAmI?: boolean) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {
                     publicationIdentifier: pubId,
@@ -2118,6 +2119,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                     divinaNumberOfPages,
                     divinaContinousEqualTrue,
                     readerReadingLocation,
+                    handleLinkUrl,
                 },
             ));
         },

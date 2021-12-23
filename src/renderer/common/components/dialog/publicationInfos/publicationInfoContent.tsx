@@ -31,6 +31,8 @@ import PublicationInfoDescription from "./PublicationInfoDescription";
 export interface IProps {
     publication: TPublication;
     r2Publication: R2Publication | null;
+    manifestUrlR2Protocol: string | null;
+    handleLinkUrl: ((url: string) => void) | undefined;
     toggleCoverZoomCb: (coverZoom: boolean) => void;
     ControlComponent?: React.ComponentType<any>;
     TagManagerComponent: React.ComponentType<any>;
@@ -42,6 +44,7 @@ export interface IProps {
     readerReadingLocation: LocatorExtended;
     translator: Translator;
     onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
+    closeDialogCb: () => void;
 }
 
 const Duration = (props: {
@@ -71,14 +74,17 @@ const Duration = (props: {
 
 const Progression = (props: {
     r2Publication: R2Publication | null,
+    manifestUrlR2Protocol: string | null,
+    handleLinkUrl: ((url: string) => void) | undefined;
     locatorExt: LocatorExtended,
     focusWhereAmI: boolean,
     pdfPlayerNumberOfPages: number | undefined, // super hacky :(
     divinaNumberOfPages: number | undefined, // super hacky :(
     divinaContinousEqualTrue: boolean,
     __: I18nTyped;
+    closeDialogCb: () => void;
 }) => {
-    const { __, locatorExt, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication } = props;
+    const { __, closeDialogCb, locatorExt, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication, manifestUrlR2Protocol, handleLinkUrl } = props;
 
     const focusRef = React.useRef<HTMLHeadingElement>(null);
     React.useEffect(() => {
@@ -108,6 +114,7 @@ const Progression = (props: {
 
         let txtProgression: string | undefined;
         let txtPagination: string | undefined;
+        let txtHeadings: JSX.Element | undefined;
 
         if (isAudio) {
             const percent = Math.round(locatorExt.locator.locations.position * 100);
@@ -208,6 +215,57 @@ const Progression = (props: {
                     // just local percentage .progression (current reading order item)
                     const percent = Math.round(locatorExt.locator.locations.progression * 100);
                     txtProgression = `${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
+
+                    if (locatorExt.headings && manifestUrlR2Protocol) { // focusWhereAmI
+
+                        // console.log(JSON.stringify(locatorExt.headings, null, 4));
+
+                        let rank = 999;
+                        const hs = locatorExt.headings.filter((h, i) => {
+                            if (h.level < rank
+                                && (h.id || i === locatorExt.headings.length - 1)) {
+
+                                rank = h.level;
+                                // console.log(">>> TRUE: ", rank, JSON.stringify(h, null, 4));
+                                return true;
+                            }
+                            // console.log(">>> FALSE: ", rank, JSON.stringify(h, null, 4));
+                            return false;
+                        }).reverse();
+
+                        // console.log(JSON.stringify(hs, null, 4));
+
+                        let k = 0;
+                        const summary = hs.reduce((arr, h, i) => {
+                            return arr.concat(
+                                <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>,
+                                <span key={`_h${k++}`} style={{fontWeight: "bold"}}>h{h.level} </span>,
+                                <span key={`_h${k++}`} style={{border: "1px solid grey", padding: "2px"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>,
+                                );
+                        }, []);
+
+                        const details = Array.from(locatorExt.headings).reverse().filter((h, i) => {
+                            return h.id || i === 0;
+                        }).reduce((arr, h, i) => {
+                            return arr.concat(
+                                <li key={`_li${i}`}>
+                                <span style={{fontWeight: "bold"}}>h{h.level} </span>
+                                <a
+                                href="#"
+                                onClick={
+                                    (e) => {
+                                        e.preventDefault();
+                                        closeDialogCb();
+                                        const url = manifestUrlR2Protocol + "/../" + locatorExt.locator.href.replace(/#[^#]*$/, "") + `#${h.id ? h.id : ""}`;
+                                        handleLinkUrl(url);
+                                    }
+                                }>
+                                <span style={{padding: "2px"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                </a></li>);
+                        }, []);
+
+                        txtHeadings = <details><summary>{summary}</summary><ul style={{listStyleType: "none"}}>{details}</ul></details>;
+                    }
                 }
             }
         }
@@ -218,12 +276,15 @@ const Progression = (props: {
                 <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")}: `}</h3>
             </div>
             <>
-                {(txtProgression ? (<><i className={stylesBookDetailsDialog.allowUserSelect}>
+                {(txtProgression ? (<p><i className={stylesBookDetailsDialog.allowUserSelect}>
                     {txtProgression}
-                </i></>) : <></>)}
-                {(txtPagination ? (<><br /><i className={stylesBookDetailsDialog.allowUserSelect}>
+                </i></p>) : <></>)}
+                {(txtPagination ? (<p><i className={stylesBookDetailsDialog.allowUserSelect}>
                     {txtPagination}
-                </i></>) : <></>)}
+                </i></p>) : <></>)}
+                {(txtHeadings ? (<><div style={{lineHeight: "2em"}} className={stylesBookDetailsDialog.allowUserSelect}>
+                    {txtHeadings}
+                </div></>) : <></>)}
             </>
             </section>
         );
@@ -238,7 +299,7 @@ const Progression = (props: {
 export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
     // tslint:disable-next-line: max-line-length
-    const { readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, publication, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;
+    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publication, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;
     const __ = translator.translate;
 
     const r2Publication = React.useMemo(() => {
@@ -349,7 +410,10 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                     </section> : <></>)}
                     <Progression
                         __={__}
+                        closeDialogCb={closeDialogCb}
                         r2Publication={r2Publication}
+                        manifestUrlR2Protocol={manifestUrlR2Protocol}
+                        handleLinkUrl={handleLinkUrl}
                         pdfPlayerNumberOfPages={pdfPlayerNumberOfPages}
                         divinaNumberOfPages={divinaNumberOfPages}
                         divinaContinousEqualTrue={divinaContinousEqualTrue}
