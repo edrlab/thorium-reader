@@ -324,7 +324,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
     const __ = translator.translate;
 
     const r2Publication = React.useMemo(() => {
-        if (!r2Publication_) {
+        if (!r2Publication_ && publication.r2PublicationJson) {
             // debug("!! r2Publication ".repeat(100));
             return TaJsonDeserialize(publication.r2PublicationJson, R2Publication);
         }
