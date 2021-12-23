@@ -221,9 +221,10 @@ const Progression = (props: {
                         // console.log(JSON.stringify(locatorExt.headings, null, 4));
 
                         let rank = 999;
-                        const hs = locatorExt.headings.filter((h, i) => {
+                        const hs = locatorExt.headings.filter((h, _i) => {
                             if (h.level < rank
-                                && (h.id || i === locatorExt.headings.length - 1)) {
+                                // && (h.id || i === locatorExt.headings.length - 1)
+                                ) {
 
                                 rank = h.level;
                                 // console.log(">>> TRUE: ", rank, JSON.stringify(h, null, 4));
@@ -244,24 +245,44 @@ const Progression = (props: {
                                 );
                         }, []);
 
-                        const details = Array.from(locatorExt.headings).reverse().filter((h, i) => {
-                            return h.id || i === 0;
-                        }).reduce((arr, h, i) => {
+                        const details = Array.from(locatorExt.headings).reverse().
+                        // filter((h, i) => {
+                        //     return h.id || i === 0;
+                        // }).
+                        reduce((arr, h, i) => {
                             return arr.concat(
                                 <li key={`_li${i}`}>
                                 <span style={{fontWeight: "bold"}}>h{h.level} </span>
+                                {(h.id || i === 0) ? (
                                 <a
-                                href="#"
+                                href={(h.id || i === 0) ? "#" : undefined}
+
+                                data-id={h.id ? h.id : undefined}
+                                data-index={i}
+
                                 onClick={
                                     (e) => {
                                         e.preventDefault();
-                                        closeDialogCb();
-                                        const url = manifestUrlR2Protocol + "/../" + locatorExt.locator.href.replace(/#[^#]*$/, "") + `#${h.id ? h.id : ""}`;
-                                        handleLinkUrl(url);
+
+                                        const id = e.currentTarget?.getAttribute("data-id");
+                                        const idx = e.currentTarget?.getAttribute("data-index");
+                                        const index = idx ? parseInt(idx, 10) : -1;
+                                        if (id || index === 0) {
+                                            closeDialogCb();
+                                            const url = manifestUrlR2Protocol + "/../" + locatorExt.locator.href.replace(/#[^#]*$/, "") + `#${id ? id : ""}`;
+                                            handleLinkUrl(url);
+                                        }
                                     }
                                 }>
-                                <span style={{padding: "2px"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
-                                </a></li>);
+                                    <span style={{padding: "2px"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                </a>
+                                ) : (
+                                    <span
+                                        data-id={h.id ? h.id : undefined}
+                                        data-index={i}
+                                        style={{padding: "2px"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                )}
+                                </li>);
                         }, []);
 
                         txtHeadings = <details><summary>{summary}</summary><ul style={{listStyleType: "none"}}>{details}</ul></details>;
