@@ -148,6 +148,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
 
     private sortbyCount() {
         const { tags } = this.props;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
         const tabTags = tags.sort((a, b) => {
             if (a < b) {
                 return (1);
@@ -164,6 +165,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
 
     private sortByAlpha() {
         const { tags } = this.props;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
         const tabTags = tags.sort((a, b) => {
             if (a > b) {
                 return (1);

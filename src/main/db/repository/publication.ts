@@ -175,6 +175,8 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
 
         const pubs = await this.findAll();
         ok(Array.isArray(pubs));
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
+        // ... which is fine because findAll() creates a local array instance
         const docsSorted = pubs.sort((a,b) => b.createdAt - a.createdAt);
 
         return docsSorted;
@@ -292,6 +294,8 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         }
 
         // Sort asc
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
+        // ... which is fine because this is a local array instance (stack)
         tags.sort();
         return tags;
     }

@@ -227,6 +227,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         const LANG_DIVIDER_PREFIX = "------------";
         let prevLang: string | undefined;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
         const _orderedVoices = speechSynthesis.getVoices().sort((a: SpeechSynthesisVoice, b: SpeechSynthesisVoice) => {
             if(a.lang < b.lang) { return -1; }
             if(a.lang > b.lang) { return 1; }

@@ -250,6 +250,7 @@ class Reader extends React.Component<IProps, IState> {
 
         this.showSearchResults = this.showSearchResults.bind(this);
         this.onKeyboardShowGotoPage = this.onKeyboardShowGotoPage.bind(this);
+        this.onKeyboardShowTOC = this.onKeyboardShowTOC.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -761,6 +762,11 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigationTOC,
+            this.onKeyboardShowTOC);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.CloseReader,
             this.onKeyboardCloseReader);
 
@@ -804,6 +810,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFocusSettings);
         unregisterKeyboardListener(this.onKeyboardFocusNav);
         unregisterKeyboardListener(this.onKeyboardShowGotoPage);
+        unregisterKeyboardListener(this.onKeyboardShowTOC);
         unregisterKeyboardListener(this.onKeyboardCloseReader);
         unregisterKeyboardListener(this.onKeyboardAudioPlayPause);
         unregisterKeyboardListener(this.onKeyboardAudioPrevious);
@@ -1562,6 +1569,16 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
         this.handleMenuButtonClick(5); // "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
+    }
+
+    private onKeyboardShowTOC() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowTOC)");
+            }
+            return;
+        }
+        this.handleMenuButtonClick(0); // "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
     }
 
     private showSearchResults() {

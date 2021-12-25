@@ -233,6 +233,8 @@ const Progression = (props: {
                             // console.log(">>> FALSE: ", rank, JSON.stringify(h, null, 4));
                             return false;
                         }).reverse();
+                        // WARNING: .reverse() is in-place same-array mutation! (not a new array)
+                        // ...but we're chaining with .filter() so that locatorExt.headings is not modified
 
                         // console.log(JSON.stringify(hs, null, 4));
 
@@ -245,7 +247,11 @@ const Progression = (props: {
                                 );
                         }, []);
 
-                        const details = Array.from(locatorExt.headings).reverse().
+                        // WARNING: .reverse() is in-place same-array mutation! (not a new array)
+                        // ...which is why we use .slice() to create an instance copy
+                        // (locatorExt.headings isn't modified)
+                        // Note: instead of .slice(), Array.from() works too
+                        const details = locatorExt.headings.slice().reverse().
                         // filter((h, i) => {
                         //     return h.id || i === 0;
                         // }).
