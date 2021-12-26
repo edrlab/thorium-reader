@@ -18,7 +18,8 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings, ReaderConfigStringsAdjustables,
 } from "readium-desktop/common/models/reader";
-import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import {
     IBookmarkState, IBookmarkStateWithoutUUID,
 } from "readium-desktop/common/redux/states/bookmark";
@@ -147,6 +148,8 @@ interface IState {
 
     openedSectionSettings: number | undefined;
     openedSectionMenu: number | undefined;
+
+    // bookmarkMessage: string | undefined;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -189,6 +192,8 @@ class Reader extends React.Component<IProps, IState> {
         this.mainElRef = React.createRef<HTMLDivElement>();
 
         this.state = {
+            // bookmarkMessage: undefined,
+
             contentTableOpen: false,
             settingsOpen: false,
             shortcutEnable: true,
@@ -434,15 +439,19 @@ class Reader extends React.Component<IProps, IState> {
             await this.loadPublicationIntoViewport();
         }
 
-        await this.checkBookmarks();
+        // sets state visibleBookmarkList
+        await this.updateVisibleBookmarks();
     }
 
-    public async componentDidUpdate(oldProps: IProps, _oldState: IState) {
+    public async componentDidUpdate(oldProps: IProps, oldState: IState) {
         // if (oldProps.readerMode !== this.props.readerMode) {
             // console.log("READER MODE = ", this.props.readerMode === ReaderMode.Detached ? "detached" : "attached");
         // }
-        if (oldProps.bookmarks !== this.props.bookmarks) {
-            await this.checkBookmarks();
+        if (oldProps.bookmarks !== this.props.bookmarks ||
+            oldState.currentLocation !== this.state.currentLocation) {
+
+            // sets state visibleBookmarkList
+            await this.updateVisibleBookmarks();
         }
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             console.log("READER RELOAD KEYBOARD SHORTCUTS");
@@ -494,6 +503,15 @@ class Reader extends React.Component<IProps, IState> {
             openedSection: this.state.openedSectionSettings,
         };
 
+        // {this.state.bookmarkMessage ? <div
+        //     aria-live="assertive"
+        //     aria-relevant="all"
+        //     role="alert"
+
+        //     style={{position: "absolute", left: "-1000px"}}
+        // >
+        //     {this.state.bookmarkMessage}
+        // </div> : <></>}
         return (
             <div className={classNames(
                 this.props.readerConfig.night && stylesReader.nightMode,
@@ -1620,14 +1638,16 @@ class Reader extends React.Component<IProps, IState> {
         this.setState({ currentLocation: l });
 
         // No need to explicitly refresh the bookmarks status here,
-        // as componentDidUpdate() will call the function after setState():
-        // await this.checkBookmarks();
+        // as componentDidUpdate() will call the function after setState()!
+        // sets state visibleBookmarkList:
+        // await this.checkBookmupdateVisibleBookmarksarks();
     }
 
     // check if a bookmark is on the screen
-    private async checkBookmarks() {
+    private async updateVisibleBookmarks(): Promise<IBookmarkState[] | undefined> {
         if (!this.props.bookmarks) {
-            return;
+            this.setState({ visibleBookmarkList: []});
+            return undefined;
         }
 
         const locator = this.state.currentLocation ? this.state.currentLocation.locator : undefined;
@@ -1651,6 +1671,7 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
         this.setState({ visibleBookmarkList });
+        return visibleBookmarkList;
     }
 
     private focusMainAreaLandmarkAndCloseMenu() {
@@ -1760,20 +1781,25 @@ class Reader extends React.Component<IProps, IState> {
 
     private async handleToggleBookmark(fromKeyboard?: boolean) {
 
-        const visibleBookmark = this.state.visibleBookmarkList;
+        // this.setState({bookmarkMessage: undefined});
+
+        // sets state visibleBookmarkList
+        const visibleBookmarks = await this.updateVisibleBookmarks();
 
         if (this.props.isDivina || this.props.isPdf) {
 
             const locator = this.props.locator?.locator;
+            // TODO?? const locator = this.state.currentLocation?.locator;
+
             const href = locator?.href;
             const name = this.props.isDivina ? locator.href : (parseInt(href, 10) + 1).toString();
             if (href) {
 
-                const found = visibleBookmark.find(({ locator: { href: _href } }) => href === _href);
+                const found = visibleBookmarks.find(({ locator: { href: _href } }) => href === _href);
                 if (found) {
                     this.props.deleteBookmark(found);
                 } else {
-                    this.props.setBookmark({
+                    this.props.addBookmark({
                         locator,
                         name,
                     });
@@ -1782,19 +1808,16 @@ class Reader extends React.Component<IProps, IState> {
 
         } else {
 
-            if (!this.state.currentLocation?.locator) {
+            const locator = this.state.currentLocation?.locator;
+            if (!locator) {
                 return;
             }
-
-            const locator = this.state.currentLocation.locator;
-
-            await this.checkBookmarks(); // updates this.state.visibleBookmarkList
 
             const deleteAllVisibleBookmarks =
 
                 // "toggle" only if there is a single bookmark in the content visible inside the viewport
                 // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
-                visibleBookmark.length === 1 &&
+                visibleBookmarks.length === 1 &&
 
                 // CTRL-B (keyboard interaction) and audiobooks:
                 // do not toggle: never delete, just add current reading location to bookmarks
@@ -1803,24 +1826,31 @@ class Reader extends React.Component<IProps, IState> {
                 (!locator.text?.highlight ||
 
                     // "toggle" only if visible bookmark == current reading location
-                    visibleBookmark[0].locator.href === locator.href &&
-                    visibleBookmark[0].locator.locations.cssSelector === locator.locations.cssSelector &&
-                    visibleBookmark[0].locator.text?.highlight === locator.text.highlight
+                    visibleBookmarks[0].locator.href === locator.href &&
+                    visibleBookmarks[0].locator.locations.cssSelector === locator.locations.cssSelector &&
+                    visibleBookmarks[0].locator.text?.highlight === locator.text.highlight
                 )
                 ;
 
             if (deleteAllVisibleBookmarks) {
-                for (const bookmark of visibleBookmark) {
+                const l = visibleBookmarks.length;
+
+                // reader.navigation.bookmarkTitle
+                const msg = `${this.props.__("catalog.delete")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length - l : 0}]`;
+                // this.setState({bookmarkMessage: msg});
+                this.props.toasty(msg);
+
+                for (const bookmark of visibleBookmarks) {
                     this.props.deleteBookmark(bookmark);
                 }
 
-                // we do not add the current reading location to bookmarks (just toggle)
+                // we do not add the current reading location to bookmarks
+                // (just toggle the existing visible ones)
                 return;
             }
 
             const addCurrentLocationToBookmarks =
-                !visibleBookmark.length ||
-                !visibleBookmark.find((b) => {
+                !this.props.bookmarks?.find((b) => {
                     const identical =
                         b.locator.href === locator.href &&
                         (b.locator.locations.progression === locator.locations.progression ||
@@ -1830,7 +1860,11 @@ class Reader extends React.Component<IProps, IState> {
 
                     return identical;
                 }) &&
-                (this.state.currentLocation.audioPlaybackInfo || locator.text?.highlight);
+                (this.state.currentLocation.audioPlaybackInfo ||
+                !visibleBookmarks?.length ||
+                fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
+                locator.text?.highlight
+                );
 
             if (addCurrentLocationToBookmarks) {
 
@@ -1847,7 +1881,12 @@ class Reader extends React.Component<IProps, IState> {
                     name = `${timestamp} (${percent}%)`;
                 }
 
-                this.props.setBookmark({
+                // reader.navigation.bookmarkTitle
+                const msg = `${this.props.__("catalog.addTagsButton")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length + 1 : 1}] ${name ? ` (${name})` : ""}`;
+                // this.setState({bookmarkMessage: msg});
+                this.props.toasty(msg);
+
+                this.props.addBookmark({
                     locator,
                     name,
                 });
@@ -2117,6 +2156,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
+        toasty: (msg: string) => {
+
+            dispatch(toastActions.openRequest.build(ToastType.Success, msg));
+        },
         toggleFullscreen: (fullscreenOn: boolean) => {
                 dispatch(readerActions.fullScreenRequest.build(fullscreenOn));
         },
@@ -2151,7 +2194,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dispatch(readerActions.configSetDefault.build(config));
             }
         },
-        setBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
+        addBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
             dispatch(readerLocalActionBookmarks.push.build(bookmark));
         },
         deleteBookmark: (bookmark: IBookmarkState) => {
