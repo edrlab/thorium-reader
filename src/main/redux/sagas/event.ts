@@ -33,16 +33,23 @@ export function saga() {
 
             const chan = getOpenFileFromCliChannel();
 
+            let i = 0;
+
             while (true) {
 
                 try {
                     const filePath = yield* takeTyped(chan);
+                    ++i;
 
                     const pubViewArray = yield* callTyped(importFromFs, filePath);
                     const pubView = Array.isArray(pubViewArray) ? pubViewArray[0] : pubViewArray;
                     if (pubView) {
 
                         yield put(readerActions.openRequest.build(pubView.identifier));
+
+                        if (i == 2) {
+                            yield put(readerActions.detachModeRequest.build());
+                        }
                     }
 
                 } catch (e) {
