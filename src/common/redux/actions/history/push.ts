@@ -20,7 +20,7 @@ export function build(feed: IOpdsFeedView): Action<typeof ID, Payload> {
     return {
         type: ID,
         payload: {
-            feed
+            feed,
         },
     };
 }

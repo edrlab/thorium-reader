@@ -175,13 +175,13 @@ export const mainCommand = async (argv: yargs.Arguments<{
             // to add the feed and open it
             const url = pathArgv[0];
             if (tryCatchSync(() => new URL(url), "")) {
-                
+
                 const openUrlChan = getOpenUrlWithOpdsSchemeEventChannel();
                 openUrlChan.put(url);
                 return;
-            } 
+            }
 
-            // not an URL 
+            // not an URL
             const openFileFromCliChannel = getOpenFileFromCliChannel();
             const pathArgvArray = Array.isArray(pathArgv) ? pathArgv : [pathArgv];
             for (const pathArgvName of pathArgvArray) {

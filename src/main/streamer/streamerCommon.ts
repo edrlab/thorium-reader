@@ -91,13 +91,13 @@ export function setupMathJaxTransformer(getUrl: () => string) {
             `
     <style type="text/css">
     /*
-    *,
-    *::after,
-    *::before {
+     *,
+     *::after,
+     *::before {
         -webkit-user-drag: none !important;
         -webkit-app-region: no-drag !important;
     }
-    */
+     */
     </style>
     `;
         str = str.replace(/<\/head>/, `${cssElectronMouseDrag}</head>`);
@@ -150,7 +150,7 @@ export function setupMathJaxTransformer(getUrl: () => string) {
                 console.log("dragend not-capture currentTarget", typeof e.currentTarget, e.currentTarget);
                 console.log("dragend not-capture target", typeof e.target, e.target);
             }, false);
-            */
+             */
         }, 100);
     });
     </script>

@@ -56,14 +56,14 @@ export function lockInstance() {
                     const checkedUrl = testUrl(u) ? u : testUrl(urlWithHttps) ? urlWithHttps : undefined;
 
                     return checkedUrl;
-                }
+                };
 
                 if (url.startsWith("thorium:")) {
                     const importUrl = url.split("thorium:")[1];
                     const importUrlChecked = checkUrl(importUrl);
 
                     if (importUrlChecked) {
-                        
+
                         debug("open url with thorium:// protocol scheme", importUrlChecked);
                         debug("This url will be imported in thorium with importFromLink entry point");
                         const openUrlChannel = getOpenUrlWithThoriumSchemeFromMacEventChannel();
@@ -76,7 +76,7 @@ export function lockInstance() {
                     const importUrlChecked = checkUrl(importUrl);
 
                     if (importUrlChecked) {
-                        
+
                         debug("open url with opds:// protocol scheme", importUrlChecked);
                         debug("This url will be imported in thorium with opds/addFeed entry point");
                         const openUrlChannel = getOpenUrlWithOpdsSchemeEventChannel();

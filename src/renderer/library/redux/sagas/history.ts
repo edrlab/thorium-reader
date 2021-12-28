@@ -33,15 +33,15 @@ function* historyPush(feed: IOpdsFeedView) {
 
     const location = yield* selectTyped((state: ILibraryRootState) => state?.router?.location);
     if (location) {
-        
+
         const newLocation = {
             ...location,
             pathname: buildOpdsBrowserRoute(
                 feed.identifier,
                 feed.title,
                 feed.url,
-            )
-        }
+            ),
+        };
 
         yield put(push(newLocation));
     }
@@ -62,7 +62,7 @@ export function saga() {
             takeSpawnEvery(
                 historyActions.push.ID,
                 historyPush,
-            )
+            ),
         ],
     );
 }

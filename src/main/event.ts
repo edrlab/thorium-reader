@@ -38,4 +38,3 @@ export const getOpdsAuthenticationChannel = () => opdsAuthenticationChannel;
 const opdsNewCatalogsStringUrlChannel = channel<string>();
 
 export const getOpdsNewCatalogsStringUrlChannel = () => opdsNewCatalogsStringUrlChannel;
-
