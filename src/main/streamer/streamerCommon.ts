@@ -90,12 +90,14 @@ export function setupMathJaxTransformer(getUrl: () => string) {
         const cssElectronMouseDrag =
             `
     <style type="text/css">
+    /*
     *,
     *::after,
     *::before {
         -webkit-user-drag: none !important;
         -webkit-app-region: no-drag !important;
     }
+    */
     </style>
     `;
         str = str.replace(/<\/head>/, `${cssElectronMouseDrag}</head>`);
@@ -108,12 +110,47 @@ export function setupMathJaxTransformer(getUrl: () => string) {
     window.addEventListener("load", () => {
         setTimeout(() => {
             document.addEventListener("dragstart", (e) => {
+                // console.log("dragstart capture currentTarget", typeof e.currentTarget, e.currentTarget);
+                // console.log("dragstart capture target", typeof e.target, e.target, e.target.tagName?.toLowerCase());
+
                 const sel = document.getSelection();
                 if (sel &amp;&amp; !sel.isCollapsed) {
-                    // e.dataTransfer.setData("Text", "_");
-                    e.preventDefault();
+                    // console.log("dragstart capture document selection preventDefault");
+                    // e.preventDefault();
+                    e.dataTransfer.clearData();
+                    e.dataTransfer.setData("text/plain", " ");
+                } else if (e.target.tagName) {
+                    const n = e.target.tagName.toLowerCase();
+                    if (n === "a") {
+                        // console.log("dragstart capture target preventDefault ", n);
+                        // e.preventDefault();
+                        e.dataTransfer.clearData();
+                        e.dataTransfer.setData("text/plain", "https://www.edrlab.org/software/thorium-reader/");
+                    } else if (n === "img" || n === "video" || n === "svg") {
+                        // console.log("dragstart capture target preventDefault ", n);
+                        // e.preventDefault();
+                        e.dataTransfer.clearData();
+                        e.dataTransfer.setData("text/plain", " ");
+                    }
                 }
-            });
+            }, true);
+
+            /*
+            document.addEventListener("dragend", (e) => {
+                console.log("dragend capture currentTarget", typeof e.currentTarget, e.currentTarget);
+                console.log("dragend capture target", typeof e.target, e.target);
+            }, true);
+
+            document.addEventListener("dragstart", (e) => {
+                console.log("dragstart not-capture currentTarget", typeof e.currentTarget, e.currentTarget);
+                console.log("dragstart not-capture target", typeof e.target, e.target);
+            }, false);
+
+            document.addEventListener("dragend", (e) => {
+                console.log("dragend not-capture currentTarget", typeof e.currentTarget, e.currentTarget);
+                console.log("dragend not-capture target", typeof e.target, e.target);
+            }, false);
+            */
         }, 100);
     });
     </script>
@@ -153,7 +190,22 @@ window.addEventListener("load", () => {
             return;
         }
 
+        // http://docs.mathjax.org/en/v3.2-latest/options/accessibility.html#explorer-extension-options
         window.MathJax = {
+            options: {
+                // enableAssistiveMml: true,
+                menuOptions: {
+                    settings: {
+                        explorer: true
+                        // assistiveMml: true
+                    }
+                },
+                a11y: {
+                    speech: true,
+                    subtitles: false,
+                    braille: false
+                }
+            },
             startup: {
                 ready: () => {
 

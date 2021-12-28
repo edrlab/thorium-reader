@@ -23,6 +23,7 @@ export const acceptedExtensionObject = {
     daisy: ".daisy",
     zip: ".zip",
     opf: ".opf",
+    nccHtml: "ncc.html",
 
     // cbz: ".cbz",
 };
@@ -37,4 +38,6 @@ export const acceptedExtension = (ext: string) =>
     );
 
 export const isAcceptedExtension = (key: keyof typeof acceptedExtensionObject, ext: string) =>
-    (new RegExp(`\\${acceptedExtensionObject[key]}$`)).test(ext);
+    (new RegExp(`${acceptedExtensionObject[key]
+        ? acceptedExtensionObject[key].replace(/\./g, "\\.")
+        : acceptedExtensionObject[key]}$`)).test(ext);

@@ -257,7 +257,7 @@
             "backHomeTitle": "voltar à estante",
             "bookmarkTitle": "marcador",
             "currentPage": "Página atual: {{- current}}",
-            "currentPageTotal": "Página atual: ({{- current}}/{{- total}})",
+            "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
             "detachWindowTitle": "mostrar biblioteca / janela da estante",
             "fullscreenTitle": "abrir modo de ecrã completo",
             "goTo": "Ir para",

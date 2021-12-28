@@ -7,7 +7,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -95,25 +96,25 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
                     const facetsRender = opds.facets?.map((facet, facetId) =>
                         <section key={`facet-${facetId}`}>
-                            <br></br>
-                            <h3>{facet.title}</h3>
+                            <div className={stylesGlobal.heading}>
+                                <h3>{facet.title}</h3>
+                            </div>
                             <EntryList entries={facet.links}></EntryList>
                         </section>,
                     );
 
                     content = (
                         <>
-                            <div className={Array.isArray(facetsRender) ? styles.publicationgrid : ""}>
+                            <div className={Array.isArray(facetsRender) ? stylesColumns.row : ""}>
                                 {
-                                    Array.isArray(facetsRender)
-                                        ? <div>
-                                            {
-                                                facetsRender
-                                            }
+                                    Array.isArray(facetsRender) ?
+                                        <div className={stylesColumns.col_filter}>
+                                            {facetsRender}
                                         </div>
-                                        : <></>
+                                    :
+                                        <></>
                                 }
-                                <div>
+                                <div className={Array.isArray(facetsRender) ? stylesColumns.col : ""}>
                                     <EntryPublicationList
                                         opdsPublicationView={opds.publications}
                                         links={opds.links}
@@ -146,15 +147,14 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                             {
                                 opds.groups?.map((group, i) =>
                                     <section key={i}>
-                                        <br></br>
-                                        <h3 className={styles.entrygroups}>
+
+                                        <div className={stylesGlobal.heading_link}>
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
-                                        </h3>
+                                        </div>
                                         {
                                             group.navigation &&
                                             <EntryList entries={group.navigation} />
                                         }
-                                        <hr></hr>
                                         {
                                             group.publications &&
                                                 (
@@ -162,7 +162,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                                     || DisplayType.Grid
                                                 ) === DisplayType.Grid ?
                                                 <Slider
-                                                    className={styles.flux_slider}
                                                     content={group.publications.map((pub, pubId) =>
                                                         <PublicationCard
                                                             key={`opds-group-${i}-${pubId}`}
@@ -200,7 +199,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             }
         }
 
-        return <div className={styles.opdsBrowseContent}>
+        return <div>
             {content}
         </div>;
     }

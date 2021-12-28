@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -37,17 +36,14 @@ class Browser extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<IProps>  {
         const secondaryHeader = <Header/>;
+        const breadCrumb = <BreadCrumb breadcrumb={this.props.breadrumb} />;
 
         return (
             <LibraryLayout
                 title={this.props.__("header.catalogs")}
                 secondaryHeader={secondaryHeader}
-                mainClassName={styles.opdsBrowse}
+                breadCrumb={breadCrumb}
             >
-                <BreadCrumb
-                    className={styles.opdsBrowseBreadcrumb}
-                    breadcrumb={this.props.breadrumb}
-                />
                 {this.props.breadrumb.length &&
                     <BrowserResult/>
                 }

@@ -1,5 +1,5 @@
 declare const styles: {
-  readonly "toastList": string;
+  readonly "toasts_wrapper": string;
   readonly "toast": string;
   readonly "start": string;
   readonly "error": string;
@@ -8,6 +8,7 @@ declare const styles: {
   readonly "closeButton": string;
   readonly "leave": string;
   readonly "toRemove": string;
+  readonly "___DEBUG___COMPONENTS_TOASTS_CSS": string;
 };
 export = styles;
 

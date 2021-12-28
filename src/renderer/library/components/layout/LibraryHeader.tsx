@@ -9,7 +9,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import * as styles from "readium-desktop/renderer/assets/styles/header.css";
+import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -40,7 +40,7 @@ const headerNav: NavigationHeader[] = [
         route: "/settings",
         label: "settings",
         matchRoutes: ["/settings"],
-        styles: [styles.preferences],
+        styles: [],
     },
 ];
 
@@ -66,11 +66,11 @@ class Header extends React.Component<IProps, undefined> {
 
         return (<>
             <SkipLink
-                className={styles.skip_link}
+                className={stylesHeader.skip_link}
                 anchorId="main-content"
                 label={__("accessibility.skipLink")}
             />
-            <nav className={styles.main_navigation} role="navigation" aria-label={__("header.home")}>
+            <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
                 <ul>
                     {
                         headerNav.map(
@@ -105,7 +105,7 @@ class Header extends React.Component<IProps, undefined> {
                 )
             ) {
                 active = true;
-                styleClasses.push(styles.active);
+                styleClasses.push(stylesHeader.active);
                 break;
             }
         }

@@ -1,41 +1,24 @@
-@import "./focus.css";
-
-:root {
-  user-select: none;
-}
-
-*,
-*::after,
-*::before {
-	-webkit-user-drag: none;
-	-webkit-app-region: no-drag;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  font: 1.1rem "Open Sans", sans-serif;
-	background:#fbfbfb;
-}
+/*
+=-=-= app.css
+*/
 
 .downloadsPanel {
-	display: block;
-	position: absolute;
-	left: 10px;
-	right: 10px;
-	bottom: 0px;
-	height: auto;
-	overflow: hidden;
-	overflow-y: auto;
-	background: white;
-	border: 2px solid black;
-	margin: 0;
-	padding: 10px;
+  display: block;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 0;
+  height: auto;
+  overflow: hidden;
+  overflow-y: auto;
+  background: white;
+  border: 2px solid black;
+  margin: 0;
+  padding: 10px;
   z-index: 110;
 
   & li {
-    backgroundxx: red;
+    /* backgroundxx: red; */
     display: inline-block;
     width: 100%;
     list-style-type: none;
@@ -43,7 +26,7 @@ body {
     padding: 0;
 
     & span.percent {
-      backgroundxx: blue;
+      /* backgroundxx: blue; */
       display: inline-block;
       width: 40px;
       margin: 0;
@@ -53,7 +36,7 @@ body {
 
     & progress {
       background-color: green;
-      border-radius: 0px;
+      border-radius: 0;
       height: 20px;
       display: inline-block;
       border: 0;
@@ -62,17 +45,19 @@ body {
       margin-right: 7px;
       padding: 0;
     }
+
     & progress::-webkit-progress-bar {
       background-color: silver;
-      border-radius: 0px;
+      border-radius: 0;
     }
+
     & progress::-webkit-progress-value {
       background-color: black;
-      border-radius: 0px;
+      border-radius: 0;
     }
 
     & span.title {
-      backgroundxx: green;
+      /* backgroundxx: green; */
       display: inline-block;
       width: auto;
       margin: 0;
@@ -81,35 +66,6 @@ body {
   }
 }
 
-.commonButton {
-  background-color: transparent;
-  border: 0;
-  height: 2.3rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  padding: 6px 10px;
-  text-transform: uppercase;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-}
-
-button {
-    padding: 0;
-    background: none;
-    border: 0;
-    height: 30px;
-    width: 30px;
-    fill: black;
-    margin: 3px;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 1;
-    }
-}
-
-.primary {
-  color: rgb(0, 188, 212);
+.___DEBUG___APP_CSS {
+  display: none;
 }

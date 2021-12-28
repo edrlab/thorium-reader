@@ -257,7 +257,7 @@
             "backHomeTitle": "Takaisin kirjahyllyyn",
             "bookmarkTitle": "Kirjanmerkki",
             "currentPage": "Nykyinen sivu : {{- current}}",
-            "currentPageTotal": "Nykyinen sivu : ({{- current}}/{{- total}})",
+            "currentPageTotal": "Nykyinen sivu : {{- current}}/{{- total}}",
             "detachWindowTitle": "Näytä kirjaston / kirjahyllyn ikkuna",
             "fullscreenTitle": "Avaa kokoruudun tilassa",
             "goTo": "Siirry",

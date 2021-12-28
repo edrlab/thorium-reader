@@ -6,18 +6,19 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
+import * as debug_ from "debug";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
+import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/baseline-pause-24px.svg";
 import * as PlayIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg";
 import * as SkipNext from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 import * as SkipPrevious from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
 import * as StopIcon from "readium-desktop/renderer/assets/icons/baseline-stop-24px.svg";
 import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
-import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
@@ -25,7 +26,7 @@ import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-crop_free-24px.svg";
 import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-uncrop_free-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -42,7 +43,8 @@ import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
-import { debug } from "console";
+
+const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -158,7 +160,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     this.setState({ fxlZoomPercent: this.state.fxlZoomPercent - step });
                 }
             } else if (ev.deltaY > 0) {
-                if (this.state.fxlZoomPercent <= 220) {
+                if (this.state.fxlZoomPercent <= 390) {
                     this.setState({ fxlZoomPercent: this.state.fxlZoomPercent + step });
                 }
             }
@@ -225,6 +227,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         const LANG_DIVIDER_PREFIX = "------------";
         let prevLang: string | undefined;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
         const _orderedVoices = speechSynthesis.getVoices().sort((a: SpeechSynthesisVoice, b: SpeechSynthesisVoice) => {
             if(a.lang < b.lang) { return -1; }
             if(a.lang > b.lang) { return 1; }
@@ -251,24 +254,24 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             !this.props.isDivina && !this.props.isPdf;
         return (
             <nav
-                className={classNames(styles.main_navigation,
-                    this.props.fullscreen ? styles.main_navigation_fullscreen : undefined,
-                    showAudioTTSToolbar || this.props.isDivina ? styles.hasTtsAudio : undefined,
+                className={classNames(stylesReader.main_navigation,
+                    this.props.fullscreen ? stylesReader.main_navigation_fullscreen : undefined,
+                    showAudioTTSToolbar || this.props.isDivina ? stylesReader.hasTtsAudio : undefined,
                     (this.props.publicationHasMediaOverlays &&
                         this.props.mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
                         || !this.props.publicationHasMediaOverlays &&
                         this.props.ttsState !== TTSStateEnum.STOPPED) ?
-                        styles.ttsAudioActivated : undefined,
+                        stylesReader.ttsAudioActivated : undefined,
                 )}
                 role="navigation"
-                aria-label={__("accessibility.homeMenu")}
+                aria-label={__("accessibility.toolbar")}
             >
                 <ul>
 
                     {(this.props.mode === ReaderMode.Attached) ? (
-                        <li className={classNames(styles.showInFullScreen)}>
+                        <li className={classNames(stylesReader.showInFullScreen)}>
                             <button
-                                className={styles.menu_button}
+                                className={stylesReader.menu_button}
                                 onClick={this.props.handleReaderClose}
                             >
                                 <SVG svg={BackIcon} title={__("reader.navigation.backHomeTitle")} />
@@ -278,7 +281,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     }
                     <li>
                         <button
-                            className={styles.menu_button}
+                            className={stylesReader.menu_button}
                             onClick={() => this.props.displayPublicationInfo()}
                             ref={this.infoMenuButtonRef}
                         >
@@ -288,7 +291,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     {(this.props.mode === ReaderMode.Attached) ? (
                         <li>
                             <button
-                                className={styles.menu_button}
+                                className={stylesReader.menu_button}
                                 onClick={this.props.handleReaderDetach}
                             >
                                 <SVG svg={DetachIcon} title={__("reader.navigation.detachWindowTitle")} />
@@ -297,14 +300,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     ) : (<></>)
                     }
 
-                    <ul className={classNames(styles.tts_toolbar, styles.showInFullScreen)}>
+                    <ul className={classNames(stylesReader.tts_toolbar, stylesReader.showInFullScreen)}>
                         {
                             this.props.isDivina
                                 ?
                                 this.state.divinaSoundEnabled
-                                ? <li className={styles.button_audio}>
+                                ? <li className={stylesReader.button_audio}>
                                                 <button
-                                                    className={styles.menu_button}
+                                                    className={stylesReader.menu_button}
                                                     onClick={() => this.setState({divinaSoundEnabled: false})}
                                                 >
                                                     <SVG svg={MuteIcon} title={
@@ -312,9 +315,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     } />
                                                 </button>
                                             </li>
-                                : <li className={styles.button_audio}>
+                                : <li className={stylesReader.button_audio}>
                                                 <button
-                                                    className={styles.menu_button}
+                                                    className={stylesReader.menu_button}
                                                     onClick={() => this.setState({divinaSoundEnabled: true})}
                                                 >
                                                     <SVG svg={AudioIcon} title={
@@ -326,9 +329,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED ||
                                     !this.props.publicationHasMediaOverlays &&
                                     this.props.ttsState === TTSStateEnum.STOPPED) ?
-                                    <li className={styles.button_audio}>
+                                    <li className={stylesReader.button_audio}>
                                         <button
-                                            className={styles.menu_button}
+                                            className={stylesReader.menu_button}
                                             onClick={
                                                 this.props.publicationHasMediaOverlays ?
                                                     this.props.handleMediaOverlaysPlay :
@@ -345,7 +348,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     : <>
                                         <li >
                                             <button
-                                                className={styles.menu_button}
+                                                className={stylesReader.menu_button}
                                                 onClick={
                                                     this.props.publicationHasMediaOverlays ?
                                                         this.props.handleMediaOverlaysStop :
@@ -361,7 +364,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         </li>
                                         <li >
                                             <button
-                                                className={styles.menu_button}
+                                                className={stylesReader.menu_button}
                                                 onClick={(e) => {
                                                     if (this.props.publicationHasMediaOverlays) {
                                                         this.props.handleMediaOverlaysPrevious();
@@ -383,7 +386,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             this.props.ttsState === TTSStateEnum.PLAYING) ?
                                             <li >
                                                 <button
-                                                    className={styles.menu_button}
+                                                    className={stylesReader.menu_button}
                                                     onClick={
                                                         this.props.publicationHasMediaOverlays ?
                                                             this.props.handleMediaOverlaysPause :
@@ -400,7 +403,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             :
                                             <li >
                                                 <button
-                                                    className={styles.menu_button}
+                                                    className={stylesReader.menu_button}
                                                     onClick={
                                                         this.props.publicationHasMediaOverlays ?
                                                             this.props.handleMediaOverlaysResume :
@@ -417,7 +420,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         }
                                         <li >
                                             <button
-                                                className={styles.menu_button}
+                                                className={stylesReader.menu_button}
 
                                                 onClick={(e) => {
                                                     if (this.props.publicationHasMediaOverlays) {
@@ -434,7 +437,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 } />
                                             </button>
                                         </li>
-                                        <li className={styles.ttsSelectRate}>
+                                        <li className={stylesReader.ttsSelectRate}>
                                             <select title={
                                                 this.props.publicationHasMediaOverlays ?
                                                     __("reader.media-overlays.speed") :
@@ -471,7 +474,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             </select>
                                         </li>
                                         {!this.props.publicationHasMediaOverlays && (
-                                            <li className={styles.ttsSelectVoice}>
+                                            <li className={stylesReader.ttsSelectVoice}>
                                                 <select title={__("reader.tts.voice")}
                                                     onChange={(ev) => {
                                                         const i = parseInt(ev.target.value.toString(), 10);
@@ -504,7 +507,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </>
                         }
                     </ul>
-                    <ul className={styles.menu_option}>
+                    <ul className={stylesReader.menu_option}>
                         {
                             this.props.isPdf
                                 ? <li
@@ -513,7 +516,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 >
                                     <input
                                         id="pdfScaleButton"
-                                        className={styles.bookmarkButton}
+                                        className={stylesReader.bookmarkButton}
                                         type="checkbox"
                                         checked={this.state.pdfScaleMode === "page-width"}
                                         // tslint:disable-next-line: max-line-length
@@ -522,7 +525,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     />
                                     <label
                                         htmlFor="pdfScaleButton"
-                                        className={styles.menu_button}
+                                        className={stylesReader.menu_button}
                                     >
                                         <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} />
                                     </label>
@@ -537,7 +540,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             style={{ pointerEvents: "none", position: "absolute", paddingLeft: "12px", paddingTop: "4px", fontSize: "80%", color: "#333333" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
                                         <button
                                             id="buttonFXLZoom"
-                                            className={classNames(styles.menu_button)}
+                                            className={classNames(stylesReader.menu_button)}
                                             onWheel={this.onwheel}
                                             onClick={() => {
                                                 // toggle
@@ -574,7 +577,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         >
                             <input
                                 id="bookmarkButton"
-                                className={styles.bookmarkButton}
+                                className={stylesReader.bookmarkButton}
                                 type="checkbox"
                                 checked={this.props.isOnBookmark}
                                 onChange={this.props.toggleBookmark}
@@ -582,7 +585,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             />
                             <label
                                 htmlFor="bookmarkButton"
-                                className={styles.menu_button}
+                                className={stylesReader.menu_button}
                             >
                                 <SVG svg={MarkIcon} title={__("reader.navigation.bookmarkTitle")} />
                             </label>
@@ -594,7 +597,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             <button
                                 aria-pressed={this.props.settingsOpen}
                                 aria-label={__("reader.navigation.settingsTitle")}
-                                className={styles.menu_button}
+                                className={stylesReader.menu_button}
                                 onClick={this.props.handleSettingsClick.bind(this)}
                                 ref={this.settingsMenuButtonRef}
                             >
@@ -612,7 +615,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             <button
                                 aria-pressed={this.props.menuOpen}
                                 aria-label={__("reader.navigation.openTableOfContentsTitle")}
-                                className={styles.menu_button}
+                                className={stylesReader.menu_button}
                                 onClick={this.props.handleMenuClick.bind(this)}
                                 ref={this.navigationMenuButtonRef}
                             >
@@ -627,9 +630,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         </li>
 
                         {this.props.fullscreen ?
-                            <li className={classNames(styles.showInFullScreen)}>
+                            <li className={classNames(stylesReader.showInFullScreen)}>
                                 <button
-                                    className={classNames(styles.menu_button)}
+                                    className={classNames(stylesReader.menu_button)}
                                     onClick={this.props.handleFullscreenClick}
                                     ref={this.disableFullscreenRef}
                                     aria-pressed={this.props.fullscreen}
@@ -640,9 +643,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </button>
                             </li>
                             :
-                            <li className={classNames(styles.showInFullScreen, styles.blue)}>
+                            <li className={classNames(stylesReader.showInFullScreen, stylesReader.blue)}>
                                 <button
-                                    className={classNames(styles.menu_button)}
+                                    className={classNames(stylesReader.menu_button)}
                                     onClick={this.props.handleFullscreenClick}
                                     ref={this.enableFullscreenRef}
                                     aria-pressed={this.props.fullscreen}
@@ -654,9 +657,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </li>
                         }
                     </ul>
-                    {/*<li className={styles.right}>
+                    {/*<li className={stylesReader.right}>
                             <button
-                                className={styles.menu_button}
+                                className={stylesReader.menu_button}
                             >
                                 <SVG svg={AudioIcon} title={ __("reader.navigation.readBookTitle")}/>
                             </button>
@@ -672,7 +675,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     private setScaleMode = (mode: IPdfPlayerScale) => {
         this.setState({ pdfScaleMode: mode });
-    }
+    };
 
     private focusSettingMenuButton() {
         if (!this.settingsMenuButtonRef?.current) {

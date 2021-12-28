@@ -257,7 +257,7 @@
             "backHomeTitle": "წიგნების თაროში დაბრუნება",
             "bookmarkTitle": "სანიშნე",
             "currentPage": "წინა გვერდი: {{- current}}",
-            "currentPageTotal": "მიმდინარე გვერდი: ({{- current}}/{{- total}})",
+            "currentPageTotal": "მიმდინარე გვერდი: {{- current}}/{{- total}}",
             "detachWindowTitle": "მანახე ბიბლიოთეკა / წიგნების კარადის ფანჯარა",
             "fullscreenTitle": "სრულ ეკრანზე გახსნა",
             "goTo": "გადადით",

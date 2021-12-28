@@ -34,14 +34,12 @@ class PublicationExportButton extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
-                <span>
-                    <button
-                        role="menuitem"
-                        onClick={this.onExport}
-                    >
-                        { __("catalog.export")}
-                    </button>
-                </span>
+            <button
+                role="menuitem"
+                onClick={this.onExport}
+            >
+                { __("catalog.export")}
+            </button>
         );
     }
 
@@ -50,7 +48,7 @@ class PublicationExportButton extends React.Component<IProps, undefined> {
         apiAction("publication/exportPublication", publicationView).catch((error) => {
             console.error("Error to fetch publication/exportPublication", error);
         });
-    }
+    };
 }
 
 export default withTranslator(PublicationExportButton);

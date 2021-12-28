@@ -53,6 +53,7 @@ const supportedFileTypeLinkArray = [
     ContentType.JsonLd,
     ContentType.pdf,
     ContentType.lcppdf,
+    ContentType.Lpf,
 ];
 
 @injectable()
@@ -67,11 +68,9 @@ export class OpdsFeedViewConverter {
     }
 
     public convertOpdsNavigationLinkToView(link: OPDSLink, baseUrl: string): IOpdsNavigationLinkView {
-        // Title could be defined on multiple lines
-        // Only keep the first one
-        const titleParts = link.Title?.split("\n").filter((text) => text);
-        const title = titleParts[0]?.trim() || "";
-        const subtitle = titleParts[1]?.trim();
+        const title = link.Title || "";
+        const summary = link.Properties?.AdditionalJSON ? link.Properties.AdditionalJSON["title_summary"] : undefined;
+        const subtitle = summary as string || "";
 
         return {
             title,

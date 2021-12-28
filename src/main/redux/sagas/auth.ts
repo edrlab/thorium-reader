@@ -522,10 +522,11 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
         return undefined;
     }
 
+    const libWinBound = libWin.getBounds();
     const win = new BrowserWindow(
         {
-            width: 800,
-            height: 600,
+            width: libWinBound?.width || 800,
+            height: libWinBound?.height || 600,
             parent: libWin,
             modal: true,
             show: false,

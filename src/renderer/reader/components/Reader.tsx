@@ -18,7 +18,8 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings, ReaderConfigStringsAdjustables,
 } from "readium-desktop/common/models/reader";
-import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import {
     IBookmarkState, IBookmarkStateWithoutUUID,
 } from "readium-desktop/common/redux/states/bookmark";
@@ -32,7 +33,7 @@ import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/doub
 import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
 import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -138,6 +139,8 @@ interface IState {
 
     divinaReadingModeSupported: TdivinaReadingMode[];
     divinaNumberOfPages: number;
+    divinaArrowEnabled: boolean;
+    divinaContinousEqualTrue: boolean;
 
     pdfPlayerBusEvent: IEventBusPdfPlayer;
     pdfPlayerToc: TToc | undefined;
@@ -146,8 +149,7 @@ interface IState {
     openedSectionSettings: number | undefined;
     openedSectionMenu: number | undefined;
 
-    divinaArrowEnabled: boolean;
-    divinaContinousEqualTrue: boolean;
+    // bookmarkMessage: string | undefined;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -181,6 +183,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
         this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
         this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
+        this.onKeyboardInfoWhereAmI = this.onKeyboardInfoWhereAmI.bind(this);
         this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
 
@@ -189,6 +192,8 @@ class Reader extends React.Component<IProps, IState> {
         this.mainElRef = React.createRef<HTMLDivElement>();
 
         this.state = {
+            // bookmarkMessage: undefined,
+
             contentTableOpen: false,
             settingsOpen: false,
             shortcutEnable: true,
@@ -250,6 +255,7 @@ class Reader extends React.Component<IProps, IState> {
 
         this.showSearchResults = this.showSearchResults.bind(this);
         this.onKeyboardShowGotoPage = this.onKeyboardShowGotoPage.bind(this);
+        this.onKeyboardShowTOC = this.onKeyboardShowTOC.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -277,13 +283,13 @@ class Reader extends React.Component<IProps, IState> {
             }
             window.document.documentElement.classList.remove("HIDE_CURSOR_CLASS");
 
-            const nav = window.document.querySelector(`.${styles.main_navigation}`);
+            const nav = window.document.querySelector(`.${stylesReader.main_navigation}`);
             if (nav) {
-                nav.classList.remove(styles.HIDE_CURSOR_CLASS_head);
+                nav.classList.remove(stylesReader.HIDE_CURSOR_CLASS_head);
             }
-            const foot = window.document.querySelector(`.${styles.reader_footer}`);
+            const foot = window.document.querySelector(`.${stylesReader.reader_footer}`);
             if (foot) {
-                foot.classList.remove(styles.HIDE_CURSOR_CLASS_foot);
+                foot.classList.remove(stylesReader.HIDE_CURSOR_CLASS_foot);
             }
 
             // if (!window.document.fullscreenElement && !window.document.fullscreen) {
@@ -297,13 +303,13 @@ class Reader extends React.Component<IProps, IState> {
 
             _mouseMoveTimeout = window.setTimeout(() => {
                 window.document.documentElement.classList.add("HIDE_CURSOR_CLASS");
-                const nav = window.document.querySelector(`.${styles.main_navigation}`);
+                const nav = window.document.querySelector(`.${stylesReader.main_navigation}`);
                 if (nav) {
-                    nav.classList.add(styles.HIDE_CURSOR_CLASS_head);
+                    nav.classList.add(stylesReader.HIDE_CURSOR_CLASS_head);
                 }
-                const foot = window.document.querySelector(`.${styles.reader_footer}`);
+                const foot = window.document.querySelector(`.${stylesReader.reader_footer}`);
                 if (foot) {
-                    foot.classList.add(styles.HIDE_CURSOR_CLASS_foot);
+                    foot.classList.add(stylesReader.HIDE_CURSOR_CLASS_foot);
                 }
             }, 1000);
         };
@@ -433,15 +439,19 @@ class Reader extends React.Component<IProps, IState> {
             await this.loadPublicationIntoViewport();
         }
 
-        await this.checkBookmarks();
+        // sets state visibleBookmarkList
+        await this.updateVisibleBookmarks();
     }
 
-    public async componentDidUpdate(oldProps: IProps, _oldState: IState) {
+    public async componentDidUpdate(oldProps: IProps, oldState: IState) {
         // if (oldProps.readerMode !== this.props.readerMode) {
             // console.log("READER MODE = ", this.props.readerMode === ReaderMode.Detached ? "detached" : "attached");
         // }
-        if (oldProps.bookmarks !== this.props.bookmarks) {
-            await this.checkBookmarks();
+        if (oldProps.bookmarks !== this.props.bookmarks ||
+            oldState.currentLocation !== this.state.currentLocation) {
+
+            // sets state visibleBookmarkList
+            await this.updateVisibleBookmarks();
         }
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             console.log("READER RELOAD KEYBOARD SHORTCUTS");
@@ -493,26 +503,34 @@ class Reader extends React.Component<IProps, IState> {
             openedSection: this.state.openedSectionSettings,
         };
 
+        // {this.state.bookmarkMessage ? <div
+        //     aria-live="assertive"
+        //     aria-relevant="all"
+        //     role="alert"
+
+        //     style={{position: "absolute", left: "-1000px"}}
+        // >
+        //     {this.state.bookmarkMessage}
+        // </div> : <></>}
         return (
             <div className={classNames(
-                this.props.readerConfig.night && styles.nightMode,
-                this.props.readerConfig.sepia && styles.sepiaMode,
-            )}
-                role="region" aria-label={this.props.__("accessibility.toolbar")}>
+                this.props.readerConfig.night && stylesReader.nightMode,
+                this.props.readerConfig.sepia && stylesReader.sepiaMode,
+            )}>
                 <a
-                    role="region"
-                    className={styles.anchor_link}
+                    role="heading"
+                    className={stylesReader.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
                     title={this.props.__("accessibility.toolbar")}
                     aria-label={this.props.__("accessibility.toolbar")}
                     tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
                 <SkipLink
-                    className={styles.skip_link}
+                    className={stylesReader.skip_link}
                     anchorId="main-content"
                     label={this.props.__("accessibility.skipLink")}
                 />
-                <div className={styles.root}>
+                <div className={stylesReader.root}>
                     <ReaderHeader
                         shortcutEnable={this.state.shortcutEnable}
                         infoOpen={this.props.infoOpen}
@@ -563,23 +581,22 @@ class Reader extends React.Component<IProps, IState> {
                         divinaSoundPlay={this.handleDivinaSound}
                         r2Publication={this.props.r2Publication}
                     />
-                    <div className={classNames(styles.content_root,
-                        this.state.fullscreen ? styles.content_root_fullscreen : undefined,
-                        this.props.isPdf ? styles.content_root_skip_bottom_spacing : undefined)}>
+                    <div className={classNames(stylesReader.content_root,
+                        this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
+                        this.props.isPdf ? stylesReader.content_root_skip_bottom_spacing : undefined)}>
                         <PickerManager
                             showSearchResults={this.showSearchResults}
                             pdfEventBus={this.state.pdfPlayerBusEvent}
                             isPdf={this.props.isPdf}
                         ></PickerManager>
-                        <div className={styles.reader}>
+                        <div className={stylesReader.reader}>
                             <main
                                 id="main"
-                                role="main"
                                 aria-label={this.props.__("accessibility.mainContent")}
-                                className={styles.publication_viewport_container}>
+                                className={stylesReader.publication_viewport_container}>
                                 <a
-                                    role="region"
-                                    className={styles.anchor_link}
+                                    role="heading"
+                                    className={stylesReader.anchor_link}
                                     ref={this.fastLinkRef}
                                     id="main-content"
                                     title={this.props.__("accessibility.mainContent")}
@@ -588,7 +605,7 @@ class Reader extends React.Component<IProps, IState> {
 
                                 <div
                                     id="publication_viewport"
-                                    className={styles.publication_viewport}
+                                    className={stylesReader.publication_viewport}
                                     ref={this.mainElRef}
                                 >
                                 </div>
@@ -596,12 +613,12 @@ class Reader extends React.Component<IProps, IState> {
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled
                                         ?
-                                        <div className={styles.divina_grid_container} onClick={() => this.setState({ divinaArrowEnabled: false })}>
+                                        <div className={stylesReader.divina_grid_container} onClick={() => this.setState({ divinaArrowEnabled: false })}>
                                             <div></div>
                                             <div>
                                                 {
                                                     this.props.r2Publication.Metadata.Direction === "btt"
-                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowUpIcon}></SVG>
+                                                        ? <SVG className={stylesReader.divina_grid_item} svg={DoubleArrowUpIcon}></SVG>
                                                         : <></>
                                                 }
                                             </div>
@@ -609,7 +626,7 @@ class Reader extends React.Component<IProps, IState> {
                                             <div>
                                                 {
                                                     this.props.r2Publication.Metadata.Direction === "rtl"
-                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowLeftIcon}></SVG>
+                                                        ? <SVG className={stylesReader.divina_grid_item} svg={DoubleArrowLeftIcon}></SVG>
                                                         : <></>
                                                 }
                                             </div>
@@ -617,7 +634,7 @@ class Reader extends React.Component<IProps, IState> {
                                             <div>
                                                 {
                                                     this.props.r2Publication.Metadata.Direction === "ltr"
-                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowRightIcon}></SVG>
+                                                        ? <SVG className={stylesReader.divina_grid_item} svg={DoubleArrowRightIcon}></SVG>
                                                         : <></>
                                                 }
                                             </div>
@@ -625,7 +642,7 @@ class Reader extends React.Component<IProps, IState> {
                                             <div>
                                                 {
                                                     this.props.r2Publication.Metadata.Direction === "ttb"
-                                                        ? <SVG className={styles.divina_grid_item} svg={DoubleArrowDownIcon}></SVG>
+                                                        ? <SVG className={stylesReader.divina_grid_item} svg={DoubleArrowDownIcon}></SVG>
                                                         : <></>
                                                 }
                                             </div>
@@ -743,6 +760,11 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.OpenReaderInfoWhereAmI,
+            this.onKeyboardInfoWhereAmI);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusReaderSettings,
             this.onKeyboardFocusSettings);
 
@@ -755,6 +777,11 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusReaderGotoPage,
             this.onKeyboardShowGotoPage);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigationTOC,
+            this.onKeyboardShowTOC);
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
@@ -797,9 +824,11 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFullScreen);
         unregisterKeyboardListener(this.onKeyboardBookmark);
         unregisterKeyboardListener(this.onKeyboardInfo);
+        unregisterKeyboardListener(this.onKeyboardInfoWhereAmI);
         unregisterKeyboardListener(this.onKeyboardFocusSettings);
         unregisterKeyboardListener(this.onKeyboardFocusNav);
         unregisterKeyboardListener(this.onKeyboardShowGotoPage);
+        unregisterKeyboardListener(this.onKeyboardShowTOC);
         unregisterKeyboardListener(this.onKeyboardCloseReader);
         unregisterKeyboardListener(this.onKeyboardAudioPlayPause);
         unregisterKeyboardListener(this.onKeyboardAudioPrevious);
@@ -832,7 +861,7 @@ class Reader extends React.Component<IProps, IState> {
                 this.handleTTSStop();
             }
         }
-    }
+    };
 
     private onKeyboardAudioPlayPause = () => {
         if (!this.state.shortcutEnable) {
@@ -865,11 +894,11 @@ class Reader extends React.Component<IProps, IState> {
                 this.handleTTSPlay();
             }
         }
-    }
+    };
 
     private onKeyboardAudioPreviousAlt = () => {
         this.onKeyboardAudioPrevious(true);
-    }
+    };
     private onKeyboardAudioPrevious = (skipSentences = false) => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -891,11 +920,11 @@ class Reader extends React.Component<IProps, IState> {
             // const skipSentences = doc._keyModifierShift && doc._keyModifierAlt;
             this.handleTTSPrevious(skipSentences);
         }
-    }
+    };
 
     private onKeyboardAudioNextAlt = () => {
         this.onKeyboardAudioNext(true);
-    }
+    };
     private onKeyboardAudioNext = (skipSentences = false) => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -917,11 +946,11 @@ class Reader extends React.Component<IProps, IState> {
             // const skipSentences = doc._keyModifierShift && doc._keyModifierAlt;
             this.handleTTSNext(skipSentences);
         }
-    }
+    };
 
     private onKeyboardFullScreen = () => {
         this.handleFullscreenClick();
-    }
+    };
 
     private onKeyboardCloseReader = () => {
         // if (!this.state.shortcutEnable) {
@@ -931,8 +960,17 @@ class Reader extends React.Component<IProps, IState> {
         //     return;
         // }
         this.handleReaderClose();
-    }
+    };
 
+    private onKeyboardInfoWhereAmI = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardInfoWhereAmI)");
+            }
+            return;
+        }
+        this.displayPublicationInfo(true);
+    };
     private onKeyboardInfo = () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -941,7 +979,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
         this.displayPublicationInfo();
-    }
+    };
 
     private onKeyboardFocusNav = () => {
         if (!this.state.shortcutEnable) {
@@ -951,7 +989,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
         this.handleMenuButtonClick();
-    }
+    };
     private onKeyboardFocusSettings = () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -960,7 +998,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
         this.handleSettingsClick();
-    }
+    };
 
     private onKeyboardBookmark = async () => {
         if (!this.state.shortcutEnable) {
@@ -970,7 +1008,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
         await this.handleToggleBookmark(true);
-    }
+    };
 
     private onKeyboardFocusMain = () => {
         if (!this.state.shortcutEnable) {
@@ -981,9 +1019,10 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.fastLinkRef?.current) {
+            console.log("€€€€€ FOCUS READER MAIN");
             this.fastLinkRef.current.focus();
         }
-    }
+    };
 
     private onKeyboardFocusToolbar = () => {
         if (!this.state.shortcutEnable) {
@@ -996,14 +1035,14 @@ class Reader extends React.Component<IProps, IState> {
         if (this.refToolbar?.current) {
             this.refToolbar.current.focus();
         }
-    }
+    };
 
     private onKeyboardPageNavigationNext = () => {
         this.onKeyboardPageNavigationPreviousNext(false);
-    }
+    };
     private onKeyboardPageNavigationPrevious = () => {
         this.onKeyboardPageNavigationPreviousNext(true);
-    }
+    };
     private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
         if (this.props.isDivina) {
             return;
@@ -1017,7 +1056,7 @@ class Reader extends React.Component<IProps, IState> {
 
         this.navLeftOrRight_(isPrevious, false);
 
-    }
+    };
 
     private onKeyboardNavigationToBegin = () => {
 
@@ -1038,7 +1077,7 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
         }
-    }
+    };
     private onKeyboardNavigationToEnd = () => {
 
         if (this.props.isPdf) {
@@ -1062,14 +1101,14 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
         }
-    }
+    };
 
     private onKeyboardSpineNavigationNext = () => {
         this.onKeyboardSpineNavigationPreviousNext(false);
-    }
+    };
     private onKeyboardSpineNavigationPrevious = () => {
         this.onKeyboardSpineNavigationPreviousNext(true);
-    }
+    };
     private onKeyboardSpineNavigationPreviousNext = (isPrevious: boolean) => {
         if (this.props.isDivina) {
             return;
@@ -1088,9 +1127,9 @@ class Reader extends React.Component<IProps, IState> {
                 this.onKeyboardFocusMain();
             }, 200);
         }
-    }
+    };
 
-    private displayPublicationInfo() {
+    private displayPublicationInfo(focusWhereAmI?: boolean) {
         if (this.props.publicationView) {
             // TODO: subscribe to Redux action type == CloseRequest
             // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
@@ -1098,7 +1137,9 @@ class Reader extends React.Component<IProps, IState> {
             this.setState({
                 shortcutEnable: false,
             });
-            this.props.displayPublicationInfo(this.props.publicationView.identifier);
+
+            const readerReadingLocation = this.state.currentLocation ? this.state.currentLocation : undefined;
+            this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, this.state.divinaContinousEqualTrue, readerReadingLocation, handleLinkUrl, focusWhereAmI);
         }
     }
 
@@ -1127,6 +1168,7 @@ class Reader extends React.Component<IProps, IState> {
                 selectionIsNew: undefined,
                 docInfo: undefined,
                 epubPage: undefined,
+                headings: undefined,
                 secondWebViewHref: undefined,
             };
             this.handleReadingLocationChange(LocatorExtended);
@@ -1134,7 +1176,7 @@ class Reader extends React.Component<IProps, IState> {
             console.log("DIVINA: location bad formated ", data);
         }
 
-    }
+    };
 
     private async loadPublicationIntoViewport() {
 
@@ -1186,7 +1228,6 @@ class Reader extends React.Component<IProps, IState> {
             pdfPlayerBusEvent.subscribe("toc", (toc) => this.setState({ pdfPlayerToc: toc }));
             pdfPlayerBusEvent.subscribe("numberofpages", (pages) => this.setState({ pdfPlayerNumberOfPages: pages }));
 
-            // previously loaded in driver.ts. @danielWeck do you think is it possible to execute it here ?
             pdfPlayerBusEvent.subscribe("keydown", (payload) => {
                 keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
             });
@@ -1548,6 +1589,16 @@ class Reader extends React.Component<IProps, IState> {
         this.handleMenuButtonClick(5); // "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
     }
 
+    private onKeyboardShowTOC() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowTOC)");
+            }
+            return;
+        }
+        this.handleMenuButtonClick(0); // "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
+    }
+
     private showSearchResults() {
         this.handleMenuButtonClick(4); // "search" zero-based index in SectionData[] of ReaderMenu.tsx
     }
@@ -1573,33 +1624,30 @@ class Reader extends React.Component<IProps, IState> {
     private handleReadingLocationChange(loc: LocatorExtended) {
 
         ok(loc, "handleReadingLocationChange loc KO");
+
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
         }
         this.ttsOverlayEnableNeedsSync = false;
 
+        // note that with Divina, loc has locator.locations.progression set to totalProgression
         this.saveReadingLocation(loc);
-        this.setState({ currentLocation: getCurrentReadingLocation() || loc });
 
-        console.log("SET READING LOCATION");
-        console.log("SET READING LOCATION");
-        try {
-            console.log((loc.locator.locations as any).totalProgression, getCurrentReadingLocation());
-        } catch { }
-
-        console.log("SET READING LOCATION");
-        console.log("SET READING LOCATION");
+        const l = (this.props.isDivina || isDivinaLocation(loc)) ? loc : (this.props.isPdf ? loc : (getCurrentReadingLocation() || loc));
+        this.setState({ currentLocation: l });
 
         // No need to explicitly refresh the bookmarks status here,
-        // as componentDidUpdate() will call the function after setState():
-        // await this.checkBookmarks();
+        // as componentDidUpdate() will call the function after setState()!
+        // sets state visibleBookmarkList:
+        // await this.checkBookmupdateVisibleBookmarksarks();
     }
 
     // check if a bookmark is on the screen
-    private async checkBookmarks() {
+    private async updateVisibleBookmarks(): Promise<IBookmarkState[] | undefined> {
         if (!this.props.bookmarks) {
-            return;
+            this.setState({ visibleBookmarkList: []});
+            return undefined;
         }
 
         const locator = this.state.currentLocation ? this.state.currentLocation.locator : undefined;
@@ -1623,19 +1671,18 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
         this.setState({ visibleBookmarkList });
+        return visibleBookmarkList;
     }
 
     private focusMainAreaLandmarkAndCloseMenu() {
-        if (this.fastLinkRef?.current) {
-            setTimeout(() => {
-                this.onKeyboardFocusMain();
-            }, 200);
-        }
 
         if (this.state.menuOpen) {
-            setTimeout(() => {
-                this.handleMenuButtonClick();
-            }, 100);
+            this.handleMenuButtonClick();
+        }
+
+        if (this.fastLinkRef?.current) {
+            // shortcutEnable must be true (see handleMenuButtonClick() above, and this.state.menuOpen))
+            this.onKeyboardFocusMain();
         }
     }
 
@@ -1734,20 +1781,25 @@ class Reader extends React.Component<IProps, IState> {
 
     private async handleToggleBookmark(fromKeyboard?: boolean) {
 
-        const visibleBookmark = this.state.visibleBookmarkList;
+        // this.setState({bookmarkMessage: undefined});
+
+        // sets state visibleBookmarkList
+        const visibleBookmarks = await this.updateVisibleBookmarks();
 
         if (this.props.isDivina || this.props.isPdf) {
 
             const locator = this.props.locator?.locator;
+            // TODO?? const locator = this.state.currentLocation?.locator;
+
             const href = locator?.href;
             const name = this.props.isDivina ? locator.href : (parseInt(href, 10) + 1).toString();
             if (href) {
 
-                const found = visibleBookmark.find(({ locator: { href: _href } }) => href === _href);
+                const found = visibleBookmarks.find(({ locator: { href: _href } }) => href === _href);
                 if (found) {
                     this.props.deleteBookmark(found);
                 } else {
-                    this.props.setBookmark({
+                    this.props.addBookmark({
                         locator,
                         name,
                     });
@@ -1756,19 +1808,16 @@ class Reader extends React.Component<IProps, IState> {
 
         } else {
 
-            if (!this.state.currentLocation?.locator) {
+            const locator = this.state.currentLocation?.locator;
+            if (!locator) {
                 return;
             }
-
-            const locator = this.state.currentLocation.locator;
-
-            await this.checkBookmarks(); // updates this.state.visibleBookmarkList
 
             const deleteAllVisibleBookmarks =
 
                 // "toggle" only if there is a single bookmark in the content visible inside the viewport
                 // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
-                visibleBookmark.length === 1 &&
+                visibleBookmarks.length === 1 &&
 
                 // CTRL-B (keyboard interaction) and audiobooks:
                 // do not toggle: never delete, just add current reading location to bookmarks
@@ -1777,24 +1826,31 @@ class Reader extends React.Component<IProps, IState> {
                 (!locator.text?.highlight ||
 
                     // "toggle" only if visible bookmark == current reading location
-                    visibleBookmark[0].locator.href === locator.href &&
-                    visibleBookmark[0].locator.locations.cssSelector === locator.locations.cssSelector &&
-                    visibleBookmark[0].locator.text?.highlight === locator.text.highlight
+                    visibleBookmarks[0].locator.href === locator.href &&
+                    visibleBookmarks[0].locator.locations.cssSelector === locator.locations.cssSelector &&
+                    visibleBookmarks[0].locator.text?.highlight === locator.text.highlight
                 )
                 ;
 
             if (deleteAllVisibleBookmarks) {
-                for (const bookmark of visibleBookmark) {
+                const l = visibleBookmarks.length;
+
+                // reader.navigation.bookmarkTitle
+                const msg = `${this.props.__("catalog.delete")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length - l : 0}]`;
+                // this.setState({bookmarkMessage: msg});
+                this.props.toasty(msg);
+
+                for (const bookmark of visibleBookmarks) {
                     this.props.deleteBookmark(bookmark);
                 }
 
-                // we do not add the current reading location to bookmarks (just toggle)
+                // we do not add the current reading location to bookmarks
+                // (just toggle the existing visible ones)
                 return;
             }
 
             const addCurrentLocationToBookmarks =
-                !visibleBookmark.length ||
-                !visibleBookmark.find((b) => {
+                !this.props.bookmarks?.find((b) => {
                     const identical =
                         b.locator.href === locator.href &&
                         (b.locator.locations.progression === locator.locations.progression ||
@@ -1804,7 +1860,11 @@ class Reader extends React.Component<IProps, IState> {
 
                     return identical;
                 }) &&
-                (this.state.currentLocation.audioPlaybackInfo || locator.text?.highlight);
+                (this.state.currentLocation.audioPlaybackInfo ||
+                !visibleBookmarks?.length ||
+                fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
+                locator.text?.highlight
+                );
 
             if (addCurrentLocationToBookmarks) {
 
@@ -1821,7 +1881,12 @@ class Reader extends React.Component<IProps, IState> {
                     name = `${timestamp} (${percent}%)`;
                 }
 
-                this.props.setBookmark({
+                // reader.navigation.bookmarkTitle
+                const msg = `${this.props.__("catalog.addTagsButton")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length + 1 : 1}] ${name ? ` (${name})` : ""}`;
+                // this.setState({bookmarkMessage: msg});
+                this.props.toasty(msg);
+
+                this.props.addBookmark({
                     locator,
                     name,
                 });
@@ -2091,6 +2156,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
+        toasty: (msg: string) => {
+
+            dispatch(toastActions.openRequest.build(ToastType.Success, msg));
+        },
         toggleFullscreen: (fullscreenOn: boolean) => {
                 dispatch(readerActions.fullScreenRequest.build(fullscreenOn));
         },
@@ -2100,10 +2169,17 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         detachReader: () => {
             dispatch(readerActions.detachModeRequest.build());
         },
-        displayPublicationInfo: (pubId: string) => {
+
+        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined, focusWhereAmI?: boolean) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {
                     publicationIdentifier: pubId,
+                    focusWhereAmI: focusWhereAmI ? true : false,
+                    pdfPlayerNumberOfPages,
+                    divinaNumberOfPages,
+                    divinaContinousEqualTrue,
+                    readerReadingLocation,
+                    handleLinkUrl,
                 },
             ));
         },
@@ -2118,7 +2194,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dispatch(readerActions.configSetDefault.build(config));
             }
         },
-        setBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
+        addBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
             dispatch(readerLocalActionBookmarks.push.build(bookmark));
         },
         deleteBookmark: (bookmark: IBookmarkState) => {

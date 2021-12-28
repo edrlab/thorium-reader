@@ -15,8 +15,13 @@ import {
 } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
+import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -90,101 +95,104 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <>
-            <h3>{ __("settings.keyboard.keyboardShortcuts")}</h3>
-            <section className={styles.keyboard_shortcuts_section}>
-                <button
-                    className={
-                        classNames(styles.keyboard_shortcuts_button,
-                            styles.keyboard_shortcuts_button_primary,
-                            this.state.displayKeyboardShortcuts ?
-                                styles.keyboard_shortcuts_button_active : null)
-                    }
-                    onClick={() => this.onClickKeyboardShortcutsShowHide()}>
-                    {this.state.displayKeyboardShortcuts ? __("settings.keyboard.hide") : __("settings.keyboard.show")}
-                </button>
-                {(this.state.displayKeyboardShortcuts && !this.state.editKeyboardShortcutId) &&
-                (
-                <Menu
-                button={
-                    (<SVG
-                        title={
-                        `${__("settings.keyboard.advancedMenu")}`
-                        }
-                        svg={MenuIcon} />)
-                    }
-                content={(
-                    <div
-                        className={styles.keyboard_shortcuts_menu}
-                        >
-                        <button
-                            className={styles.keyboard_shortcuts_button}
-                            onClick={() => this.onClickKeyboardShortcutsReload(true)}>
-                            {__("settings.keyboard.resetDefaults")}
-                        </button>
-                        <button
-                            onClick={() => this.onClickKeyboardShortcutsShow()}>
-                            {__("settings.keyboard.editUserJson")}
-                        </button>
-                        <button
-                            onClick={() => this.onClickKeyboardShortcutsReload(false)}>
-                                {__("settings.keyboard.loadUserJson")}
-                        </button>
+                <section>
+                    <div className={stylesGlobal.heading}>
+                        <h2>{__("settings.keyboard.keyboardShortcuts")}</h2>
                     </div>
-                )}
-                open={this.state.menuOpen}
-                dir="left"
-                toggle={this.openCloseMenu}
-                />
-                )}
-            </section>
-            {this.state.displayKeyboardShortcuts && (
-                <div>
-                    <ul className={styles.keyboard_shortcuts_list}>
-                    {this.props.keyboardShortcuts &&
-                    ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap).map((id) => {
-                        const def = this.props.keyboardShortcuts[id];
-                        const hit = this.state.editKeyboardShortcutId === id;
-                        const frag = <>
-                            <button
-                                className={styles.keyboard_shortcuts_edit_save_button}
-                                onClick={() => this.onClickKeyboardShortcutEditCancel(id)}>
-                                {hit ?
-                                __("settings.keyboard.cancel") : __("settings.keyboard.edit")}
-                            </button>
-                            {
-                            hit &&
-                            <button
-                                className={styles.keyboard_shortcuts_edit_save_button}
-                                onClick={() => this.onClickKeyboardShortcutSave(id)}>
-                                {__("settings.keyboard.save")}
-                            </button>
-                            }
+                    <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
+                        <button
+                            className={stylesButtons.button_primary}
+                            onClick={() => this.onClickKeyboardShortcutsShowHide()}
+                        >
+                            <SVG
+                                svg={ChevronDownIcon}
+                                className={this.state.displayKeyboardShortcuts ? stylesGlobal.rotate180 : null  }
+                            />
+                            {this.state.displayKeyboardShortcuts ? __("settings.keyboard.hide") : __("settings.keyboard.show")}
+                        </button>
+                        {
+                            (
+                                this.state.displayKeyboardShortcuts && !this.state.editKeyboardShortcutId
+                            ) && (
+                                <Menu
+                                    button={
+                                        (<SVG
+                                            title={
+                                                `${__("settings.keyboard.advancedMenu")}`
+                                            }
+                                            className={stylesButtons.button_primary_icon}
+                                            svg={MenuIcon}
+                                        />)
+                                    }
+                                    content={(
+                                        <div className={stylesDropDown.dropdown_menu}>
+                                            <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
+                                                {__("settings.keyboard.resetDefaults")}
+                                            </button>
+                                            <button onClick={() => this.onClickKeyboardShortcutsShow()}>
+                                                {__("settings.keyboard.editUserJson")}
+                                            </button>
+                                            <button onClick={() => this.onClickKeyboardShortcutsReload(false)}>
+                                                    {__("settings.keyboard.loadUserJson")}
+                                            </button>
+                                        </div>
+                                    )}
+                                    open={this.state.menuOpen}
+                                    dir="left"
+                                    toggle={this.openCloseMenu}
+                                />
+                            )
+                        }
+                    </div>
+                    {this.state.displayKeyboardShortcuts && (
+                        <div>
+                            <ul className={stylesGlobal.p_0}>
+                            {this.props.keyboardShortcuts &&
+                            ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap).map((id) => {
+                                const def = this.props.keyboardShortcuts[id];
+                                const hit = this.state.editKeyboardShortcutId === id;
+                                const frag = <>
+                                    <button
+                                        className={stylesButtons.button_primary_small}
+                                        onClick={() => this.onClickKeyboardShortcutEditCancel(id)}>
+                                        {hit ?
+                                        __("settings.keyboard.cancel") : __("settings.keyboard.edit")}
+                                    </button>
+                                    {
+                                    hit &&
+                                    <button
+                                        className={stylesButtons.button_primary_small}
+                                        onClick={() => this.onClickKeyboardShortcutSave(id)}>
+                                        {__("settings.keyboard.save")}
+                                    </button>
+                                    }
 
-                            <strong className={
-                                hit ?
-                                styles.keyboard_shortcuts_edit_title
-                                : null
-                                }>{id}</strong>
-                            <div className={styles.keyboard_shortcuts_buttons_container}>{
-                                hit ?
-                                this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)
-                                :
-                                this.prettifyKeyboardShortcut(def)
-                            }</div>
-                        </>;
-                        return <li className={
-                            hit ? styles.keyboard_shortcuts_edit_li : null
-                            }
-                            key={`key_${id}`}>{
-                            (hit ? <FocusLock
-                                disabled={false}
-                                autoFocus={false}>{frag}</FocusLock> : frag)
-                            }
-                        </li>;
-                    })}
-                    </ul>
-                </div>
-            )}
+                                    <strong>{id}</strong>
+                                    <div className={stylesGlobal.text_right}>{
+                                        hit ?
+                                        this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)
+                                        :
+                                        this.prettifyKeyboardShortcut(def)
+                                    }</div>
+                                </>;
+                                return <li
+                                        className={
+                                            hit ?
+                                                classNames(stylesBlocks.block_line_edit, stylesGlobal.no_list_style)
+                                            :
+                                                classNames(stylesBlocks.block_line, stylesGlobal.no_list_style)
+                                        }
+                                    key={`key_${id}`}>{
+                                    (hit ? <FocusLock
+                                        disabled={false}
+                                        autoFocus={false}>{frag}</FocusLock> : frag)
+                                    }
+                                </li>;
+                            })}
+                            </ul>
+                        </div>
+                    )}
+                </section>
             </>
         );
     }
@@ -306,13 +314,13 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this.props.reloadKeyboardShortcuts(defaults);
     }
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        const alt = def.alt ? <span className={styles.keyboard_shortcuts_key}>ALT</span> : null;
-        const shift = def.shift ? <span className={styles.keyboard_shortcuts_key}>SHIFT</span> : null;
-        const control = def.control ? <span className={styles.keyboard_shortcuts_key}>CTRL</span> : null;
-        const meta = def.meta ? <span className={styles.keyboard_shortcuts_key}>META</span> : null;
-        const key = <span className={styles.keyboard_shortcuts_key}>{def.key}</span>;
+        const alt = def.alt ? <span className={stylesButtons.button_keyboard}>ALT</span> : null;
+        const shift = def.shift ? <span className={stylesButtons.button_keyboard}>SHIFT</span> : null;
+        const control = def.control ? <span className={stylesButtons.button_keyboard}>CTRL</span> : null;
+        const meta = def.meta ? <span className={stylesButtons.button_keyboard}>META</span> : null;
+        const key = <span className={stylesButtons.button_keyboard}>{def.key}</span>;
         return <>{shift}{control}{alt}{meta}{(def.shift || def.control || def.alt || def.meta) ?
-            (<span className={styles.keyboard_shortcuts_separator}>+</span>) :
+            (<span className={classNames(stylesGlobal.fw_bold, stylesGlobal.mr_10)}>+</span>) :
             null}{key}</>;
     }
     private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
@@ -324,7 +332,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_ALT`}
             type="checkbox"
             checked={def.alt ? true : false}
-            className={styles.hiddenInput}
+            className={stylesInputs.checkbox_keyboard}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -346,7 +354,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_SHIFT`}
             type="checkbox"
             checked={def.shift ? true : false}
-            className={styles.hiddenInput}
+            className={stylesInputs.checkbox_keyboard}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -368,7 +376,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_CTRL`}
             type="checkbox"
             checked={def.control ? true : false}
-            className={styles.hiddenInput}
+            className={stylesInputs.checkbox_keyboard}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -390,7 +398,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_META`}
             type="checkbox"
             checked={def.meta ? true : false}
-            className={styles.hiddenInput}
+            className={stylesInputs.checkbox_keyboard}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -434,6 +442,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 console.log("editifyKeyboardShortcut select FOCUS:", ev.target.value.toString());
             } : null}
             value={def.key}
+            className={stylesButtons.button_keyboard}
         >
             {KEY_CODES.map((keyOption, idx) => {
                 return (
@@ -449,7 +458,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         ;
         const kstring = this.stringifyKeyboardShortcut(def);
         const keySink = <input
-        className={styles.keyboard_shortcuts_sink}
+        className={stylesInputs.outline}
         type="text"
         value=""
         size={1}

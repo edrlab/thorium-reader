@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -12,7 +13,9 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -70,11 +73,11 @@ class FeedList extends React.Component<IProps, IState> {
         }
         const { __ } = this.props;
         return (
-            <section className={styles.opds_list}>
-                <ul>
+            <section>
+                <ul className={classNames(stylesGlobal.flex_wrap, stylesGlobal.p_0)}>
                     {this.state.feedsResult.map((item, index) => {
                         return (
-                            <li key={"feed-" + index}>
+                            <li key={"feed-" + index} className={stylesBlocks.block_full_wrapper}>
                                 <Link
                                     to={{
                                         ...this.props.location,
@@ -84,11 +87,13 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
+                                    className={stylesBlocks.block_full}
                                 >
-                                    <p>{item.title}</p>
+                                    <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
                                 </Link>
                                 <button
                                     onClick={(e) => this.deleteFeed(e, item)}
+                                    className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_close)}
                                 >
                                     <SVG svg={DeleteIcon} title={__("catalog.delete")} />
                                 </button>

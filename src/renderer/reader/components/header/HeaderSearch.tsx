@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -99,7 +99,7 @@ class HeaderSearch extends React.Component<IProps, undefined> {
             <button
                 aria-pressed={this.props.isOnSearch}
                 aria-label={__("reader.navigation.magnifyingGlassButton")}
-                className={styles.menu_button}
+                className={stylesReader.menu_button}
                 onClick={this.enableSearch}
             // ref={this.settingsMenuButtonRef}
             >
@@ -114,11 +114,11 @@ class HeaderSearch extends React.Component<IProps, undefined> {
             this.props.keyboardShortcuts.FocusSearch,
             this.enableSearch,
         );
-    }
+    };
 
     private unregisterAllKeyboardListeners = () => {
         unregisterKeyboardListener(this.enableSearch);
-    }
+    };
 
     private enableSearch = () => {
 
@@ -129,7 +129,7 @@ class HeaderSearch extends React.Component<IProps, undefined> {
             return;
         }
         this.props.enableSearch(!this.props.isOnSearch);
-    }
+    };
 
 }
 

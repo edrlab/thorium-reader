@@ -11,7 +11,6 @@ import { connect } from "react-redux";
 import { matchPath } from "react-router-dom";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -88,7 +87,6 @@ class SearchForm extends React.Component<IProps, undefined> {
                     placeholder={__("header.searchPlaceholder")}
                 />
                 <button
-                    id={styles.search_img}
                     disabled={!this.props.search?.url}
                 >
                     <SVG svg={SearchIcon} title={__("header.searchTitle")} />
@@ -115,7 +113,7 @@ class SearchForm extends React.Component<IProps, undefined> {
         this.inputRef.current.focus();
         // this.inputRef.current.select();
         this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
-    }
+    };
     private submitSearch = (e: TFormEvent) => {
         e.preventDefault();
         if (!this.inputRef?.current || !this.props.search?.url) {
@@ -140,7 +138,7 @@ class SearchForm extends React.Component<IProps, undefined> {
                 pathname: this.route(searchWords, url, level),
             });
         }
-    }
+    };
 
     private route = (title: string, url: string, level: number) =>
         buildOpdsBrowserRoute(
@@ -150,7 +148,7 @@ class SearchForm extends React.Component<IProps, undefined> {
             title,
             url,
             level,
-        )
+        );
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({

@@ -5,12 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { debug } from "console";
+import * as debug_ from "debug";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { readerLocalActionLocatorHrefChanged } from "../actions";
+
+const debug = debug_("readium-desktop:renderer:reader:redux:middleware:locatorHrefWatcher");
 
 const dispatchHref = (
     store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>,

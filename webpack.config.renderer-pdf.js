@@ -1,12 +1,8 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
-var fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
@@ -31,8 +27,6 @@ const aliases = {
 
 // const nodeExternals = require("webpack-node-externals");
 const nodeExternals = require("./nodeExternals");
-
-const _enableHot = false;
 
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
@@ -86,27 +80,6 @@ console.log("WEBPACK externals (PDF):");
 console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
-
-const cssLoaderConfig = [
-    {
-        loader: MiniCssExtractPlugin.loader,
-        options: {
-            // publicPath: "./styling", // preprocessorDirectives.rendererReaderBaseUrl,
-            // hmr: _enableHot,
-            // reloadAll: true,
-            esModule: false,
-        },
-    },
-    {
-        loader: "css-loader",
-        options: {
-            importLoaders: 1,
-            modules: true,
-            esModule: false,
-        },
-    },
-    "postcss-loader",
-];
 
 let config = Object.assign(
     {},
@@ -202,10 +175,6 @@ if (!checkTypeScriptSkip) {
 }
 
 if (nodeEnv !== "production") {
-    config.module.rules.push({
-        test: /\.css$/,
-        use: cssLoaderConfig,
-    });
 } else {
 
     config.optimization =
@@ -236,13 +205,6 @@ if (nodeEnv !== "production") {
     config.plugins.push(
         new webpack.IgnorePlugin({ resourceRegExp: /^react-axe$/ })
     );
-
-    // Minify and uglify in production environment
-    //config.plugins.push(new UglifyJsPlugin());
-    config.module.rules.push({
-        test: /\.css$/,
-        use: cssLoaderConfig,
-    });
 }
 
 module.exports = config;

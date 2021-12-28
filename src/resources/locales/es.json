@@ -257,7 +257,7 @@
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
             "currentPage": "Página actual: {{- current}}",
-            "currentPageTotal": "Página actual: ({{- current}}/{{- total}})",
+            "currentPageTotal": "Página actual: {{- current}}/{{- total}}",
             "detachWindowTitle": "Separar la ventana",
             "fullscreenTitle": "Abrir modo pantalla completa",
             "goTo": "Ir a",

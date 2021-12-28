@@ -62,6 +62,9 @@ class PublicationInfo extends React.Component<IProps> {
             >
                 <PublicationInfoContent
                     publication={publication}
+                    r2Publication={null}
+                    manifestUrlR2Protocol={null}
+                    handleLinkUrl={null}
                     toggleCoverZoomCb={toggleCoverZoom}
                     ControlComponent={this.controlsComponent}
                     TagManagerComponent={TagManager}
@@ -72,8 +75,13 @@ class PublicationInfo extends React.Component<IProps> {
                             this.props.link(
                             _link.link[0], this.props.location, _link.name)
                     }
+                    focusWhereAmI={false}
+                    pdfPlayerNumberOfPages={undefined}
+                    divinaNumberOfPages={undefined}
+                    divinaContinousEqualTrue={undefined}
+                    readerReadingLocation={undefined}
+                    closeDialogCb={closeDialog}
                 >
-
                 </PublicationInfoContent>
             </PublicationInfoManager>
         );
@@ -96,7 +104,7 @@ class PublicationInfo extends React.Component<IProps> {
         }
 
         return controlsComponent;
-    }
+    };
 
 }
 
