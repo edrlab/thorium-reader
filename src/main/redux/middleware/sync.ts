@@ -25,6 +25,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     apiActions.result.ID,
 
     historyActions.refresh.ID,
+    historyActions.pushFeed.ID,
+
     dialogActions.openRequest.ID,
 
     readerActions.detachModeSuccess.ID,

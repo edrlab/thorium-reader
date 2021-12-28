@@ -124,7 +124,7 @@ export function saga() {
                         debug("Feed added ", feed);
                         debug("Open in library catalogs");
                         // open the feed in libraryWindow
-                        yield put(historyActions.push.build(feed));
+                        yield put(historyActions.pushFeed.build(feed));
                     }
 
                 } catch (e) {

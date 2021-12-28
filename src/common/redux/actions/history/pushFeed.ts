@@ -8,7 +8,7 @@
 import { Action } from "readium-desktop/common/models/redux";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 
-export const ID = "HISTORY_ROUTER_PUSH";
+export const ID = "HISTORY_ROUTER_PUSH_FEED";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {

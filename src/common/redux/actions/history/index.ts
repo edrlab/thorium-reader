@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import * as refresh from "./refresh";
-import * as push from "./push";
+import * as pushFeed from "./pushFeed";
 
 export {
     refresh,
-    push,
+    pushFeed,
 };
