@@ -19,7 +19,7 @@ import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, delay, put, spawn } from "redux-saga/effects";
+import { all, call, delay, put, spawn, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { IWinSessionReaderState } from "../../states/win/session/reader";
@@ -34,7 +34,7 @@ debug("_");
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
 // windows open.
-function* appActivate() {
+export function* appActivate() {
 
     if (closeProcessLock.isLock) {
 
@@ -42,10 +42,14 @@ function* appActivate() {
     } else {
 
         const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
+        const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
         // if there is no libWin, so must be recreated
-        if (libWinState.browserWindowId && libWinState.identifier) {
-            const libWin = yield* callTyped(() => getLibraryWindowFromDi());
+        if (
+            libWinState.browserWindowId &&
+            libWinState.identifier &&
+            !libWin?.isDestroyed()
+        ) {
 
             if (libWin.isMinimized()) {
                 libWin.restore();
@@ -53,6 +57,8 @@ function* appActivate() {
             } else if (libWin.isVisible()) {
                 libWin.show();
             } else {
+
+                // @todo useless ?
 
                 const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
                 const readersArray = ObjectKeys(readers);
@@ -67,6 +73,9 @@ function* appActivate() {
         } else {
 
             yield put(winActions.library.openRequest.build());
+
+            // wait
+            yield take(winActions.library.openSucess.build);
         }
     }
 

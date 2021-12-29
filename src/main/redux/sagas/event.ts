@@ -23,6 +23,7 @@ import { addFeed } from "./api/opds/feed";
 
 import { importFromFs, importFromLink } from "./api/publication/import";
 import { search } from "./api/publication/search";
+import { appActivate } from "./win/library";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -33,23 +34,20 @@ export function saga() {
 
             const chan = getOpenFileFromCliChannel();
 
-            let i = 0;
-
             while (true) {
 
                 try {
                     const filePath = yield* takeTyped(chan);
-                    ++i;
 
                     const pubViewArray = yield* callTyped(importFromFs, filePath);
                     const pubView = Array.isArray(pubViewArray) ? pubViewArray[0] : pubViewArray;
                     if (pubView) {
 
+                        yield* callTyped(appActivate);
                         yield put(readerActions.openRequest.build(pubView.identifier));
+                        yield put(readerActions.detachModeRequest.build());
 
-                        if (i == 2) {
-                            yield put(readerActions.detachModeRequest.build());
-                        }
+
                     }
 
                 } catch (e) {
@@ -71,6 +69,8 @@ export function saga() {
                     const pubViewArray = yield* callTyped(search, title);
                     const pubView = Array.isArray(pubViewArray) ? pubViewArray[0] : pubViewArray;
                     if (pubView) {
+
+                        yield* callTyped(appActivate);
 
                         yield put(readerActions.openRequest.build(pubView.identifier));
                     }
@@ -99,6 +99,8 @@ export function saga() {
                     const pubView = Array.isArray(pubViewArray) ? pubViewArray[0] : pubViewArray;
                     if (pubView) {
 
+                        yield* callTyped(appActivate);
+
                         yield put(readerActions.openRequest.build(pubView.identifier));
                     }
 
@@ -120,6 +122,8 @@ export function saga() {
 
                     const feed = yield* callTyped(opdsApi.addFeed, { title : url, url});
                     if (feed) {
+
+                        yield* callTyped(appActivate);
 
                         debug("Feed added ", feed);
                         debug("Open in library catalogs");
