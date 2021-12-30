@@ -24,7 +24,7 @@ export const start = async (flushSessionBool = false) => {
         if (flushSessionBool) await flushSession();
 
         store.dispatch(appActions.initRequest.build());
-        
+
         debug("STORE MOUNTED -> MOUNTING THE APP NOW");
 
     } catch (err) {

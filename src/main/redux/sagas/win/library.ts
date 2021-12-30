@@ -59,13 +59,13 @@ export function* appActivate() {
                 } else if (libWin.isVisible()) {
                     libWin.show();
                 } else {
-    
+
                     // @todo useless ?
-    
+
                     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
                     const readersArray = ObjectKeys(readers);
                     const readerWin = getReaderWindowFromDi(readersArray[0]);
-    
+
                     if (readerWin.isMinimized()) {
                         readerWin.restore();
                     }
