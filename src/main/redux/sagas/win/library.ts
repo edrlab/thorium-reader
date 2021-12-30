@@ -42,41 +42,44 @@ export function* appActivate() {
     } else {
 
         const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
-        const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
         // if there is no libWin, so must be recreated
         if (
             libWinState.browserWindowId &&
-            libWinState.identifier &&
-            !libWin?.isDestroyed()
+            libWinState.identifier
         ) {
 
-            if (libWin.isMinimized()) {
-                libWin.restore();
-                libWin.show();
-            } else if (libWin.isVisible()) {
-                libWin.show();
-            } else {
+            const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
-                // @todo useless ?
+            if (!libWin?.isDestroyed()) {
 
-                const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-                const readersArray = ObjectKeys(readers);
-                const readerWin = getReaderWindowFromDi(readersArray[0]);
-
-                if (readerWin.isMinimized()) {
-                    readerWin.restore();
+                if (libWin.isMinimized()) {
+                    libWin.restore();
+                    libWin.show();
+                } else if (libWin.isVisible()) {
+                    libWin.show();
+                } else {
+    
+                    // @todo useless ?
+    
+                    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+                    const readersArray = ObjectKeys(readers);
+                    const readerWin = getReaderWindowFromDi(readersArray[0]);
+    
+                    if (readerWin.isMinimized()) {
+                        readerWin.restore();
+                    }
+                    readerWin.show();
                 }
-                readerWin.show();
+
+                return ;
             }
-
-        } else {
-
-            yield put(winActions.library.openRequest.build());
-
-            // wait
-            yield take(winActions.library.openSucess.build);
         }
+
+        yield put(winActions.library.openRequest.build());
+
+        // wait
+        yield take(winActions.library.openSucess.build);
     }
 
 }

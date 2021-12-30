@@ -113,12 +113,17 @@ export function lockInstance() {
             // Someone tried to run a second instance, we should focus our window.
             debug("comandLine", argv, _workingDir);
 
-            const libraryAppWindow = getLibraryWindowFromDi();
-            if (libraryAppWindow) {
-                if (libraryAppWindow.isMinimized()) {
-                    libraryAppWindow.restore();
+            // https://github.com/edrlab/thorium-reader/pull/1573#issuecomment-1003042325
+            try {
+                const libraryAppWindow = getLibraryWindowFromDi();
+                if (libraryAppWindow) {
+                    if (libraryAppWindow.isMinimized()) {
+                        libraryAppWindow.restore();
+                    }
+                    libraryAppWindow.show(); // focuses as well
                 }
-                libraryAppWindow.show(); // focuses as well
+            } catch (_e) {
+                // ignore
             }
 
             commandLineMainEntry(argv.filter((arg) => !arg.startsWith("--")));

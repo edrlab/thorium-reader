@@ -22,6 +22,9 @@ import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 // Logger
 const debug = debug_("readium-desktop:cli:command");
 
+// https://github.com/edrlab/thorium-reader/pull/1573#issuecomment-1003075223
+let __cliMainCommandLockBoolean = false;
+
 export const opdsCommand = async (argv: yargs.Arguments<{
     title: string;
 } & {
@@ -159,8 +162,18 @@ export const mainCommand = async (argv: yargs.Arguments<{
         const { path: pathArgv } = argv;
         const openPublicationRequestedBool = Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv;
 
+        const startPromise = (() => {
+
+            if (__cliMainCommandLockBoolean) {
+                return Promise.resolve();
+            }
+            __cliMainCommandLockBoolean = true;
+            return start(openPublicationRequestedBool);
+        })();
+
         await Promise.all([
-            start(openPublicationRequestedBool),
+            // https://github.com/edrlab/thorium-reader/pull/1573#issuecomment-1003075223
+            startPromise,
             app.whenReady(),
         ]);
 
@@ -174,7 +187,11 @@ export const mainCommand = async (argv: yargs.Arguments<{
             // handle opds://
             // to add the feed and open it
             const url = pathArgv[0];
-            if (tryCatchSync(() => new URL(url), "")) {
+
+            // /hello/world -> failed
+            // C:\hello\world -> works -> protocol=file: but must failed
+            // https://hello/world -> works
+            if (tryCatchSync(() => new URL(url).protocol !== "c:", "")) {
 
                 const openUrlChan = getOpenUrlWithOpdsSchemeEventChannel();
                 openUrlChan.put(url);
