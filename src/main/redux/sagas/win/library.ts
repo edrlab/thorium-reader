@@ -14,12 +14,12 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import {
     closeProcessLock, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi,
 } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, delay, put, spawn } from "redux-saga/effects";
+import { all, call, delay, put, spawn, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { IWinSessionReaderState } from "../../states/win/session/reader";
@@ -34,7 +34,7 @@ debug("_");
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
 // windows open.
-function* appActivate() {
+export function* appActivate() {
 
     if (closeProcessLock.isLock) {
 
@@ -44,30 +44,42 @@ function* appActivate() {
         const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
 
         // if there is no libWin, so must be recreated
-        if (libWinState.browserWindowId && libWinState.identifier) {
+        if (
+            libWinState.browserWindowId &&
+            libWinState.identifier
+        ) {
+
             const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
-            if (libWin.isMinimized()) {
-                libWin.restore();
-                libWin.show();
-            } else if (libWin.isVisible()) {
-                libWin.show();
-            } else {
+            if (!libWin?.isDestroyed()) {
 
-                const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-                const readersArray = ObjectKeys(readers);
-                const readerWin = getReaderWindowFromDi(readersArray[0]);
+                if (libWin.isMinimized()) {
+                    libWin.restore();
+                    libWin.show();
+                } else if (libWin.isVisible()) {
+                    libWin.show();
+                } else {
 
-                if (readerWin.isMinimized()) {
-                    readerWin.restore();
+                    // @todo useless ?
+
+                    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+                    const readersArray = ObjectKeys(readers);
+                    const readerWin = getReaderWindowFromDi(readersArray[0]);
+
+                    if (readerWin.isMinimized()) {
+                        readerWin.restore();
+                    }
+                    readerWin.show();
                 }
-                readerWin.show();
+
+                return ;
             }
-
-        } else {
-
-            yield put(winActions.library.openRequest.build());
         }
+
+        yield put(winActions.library.openRequest.build());
+
+        // wait
+        yield take(winActions.library.openSucess.build);
     }
 
 }

@@ -13,7 +13,7 @@ import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import {
     closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import {
     absorbDBToJson as absorbDBToJsonCookieJar, fetchCookieJarPersistence,
 } from "readium-desktop/main/network/fetch";
@@ -40,6 +40,12 @@ const debug = debug_(filename_);
 export function* init() {
 
     app.setAppUserModelId("io.github.edrlab.thorium");
+
+    // 'thorium' is registered for MacOS too
+    if (!app.isDefaultProtocolClient("opds")) {
+        // Define custom protocol handler. Deep linking works on packaged versions of the application!
+        app.setAsDefaultProtocolClient("opds");
+    }
 
     // moved to saga/persist.ts
     // app.on("window-all-closed", async () => {

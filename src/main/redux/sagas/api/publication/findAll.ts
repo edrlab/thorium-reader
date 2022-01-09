@@ -7,7 +7,7 @@
 
 import { call as callTyped } from "typed-redux-saga/macro";
 import { diMainGet } from "readium-desktop/main/di";
-import { aboutFiltered } from "readium-desktop/main/filter";
+import { aboutFiltered } from "readium-desktop/main/tools/filter";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 

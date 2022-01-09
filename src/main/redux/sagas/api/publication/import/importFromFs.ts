@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import * as path from "path";
 import { acceptedExtensionObject, isAcceptedExtension } from "readium-desktop/common/extension";
-import { computeFileHash, extractCrc32OnZip } from "readium-desktop/main/crc";
+import { computeFileHash, extractCrc32OnZip } from "readium-desktop/main/tools/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { pdfPackager } from "readium-desktop/main/pdf/packager";

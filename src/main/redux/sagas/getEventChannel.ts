@@ -68,7 +68,8 @@ export const getAppActivateEventChannel = (() => {
     const chan = channelSaga<boolean>();
 
     const handler = () => chan.put(true);
-    app.on("activate", handler);
+    if (app.listeners("activate").findIndex((v) => v === handler) === -1)
+        app.on("activate", handler);
 
     return () => chan;
 })();
