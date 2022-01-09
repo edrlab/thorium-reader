@@ -1,6 +1,6 @@
 {
   "name": "EDRLab.ThoriumReader",
-  "version": "1.7.4-alpha.1",
+  "version": "1.8.0-alpha.1",
   "description": "Desktop application to read ebooks",
   "keywords": [
     "readium",
@@ -10,8 +10,8 @@
   "scripts": {
     "postinstall": "npm run pinCompromisedColorPackage && npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm run electron-build",
     "pinCompromisedColorPackage": "rimraf node_modules/electron-rebuild/node_modules/colors",
-    "electron-build_": "npm rebuild --runtime=electron --target=16.0.2 --disturl=https://atom.io/download/atom-shell --build-from-source",
-    "electron-build": "electron-rebuild --version=16.0.2 --disturl=https://atom.io/download/atom-shell",
+    "electron-build_": "npm rebuild --runtime=electron --target=16.0.6 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "electron-build": "electron-rebuild --version=16.0.6 --disturl=https://atom.io/download/atom-shell",
     "rmLevelDownDeep": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelSQLite3Deep": "rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
     "_rmLevelSQLite3Deep": "node ../scripts/sqlite-package-patch.js node_modules/websql/package.json && node ../scripts/sqlite-package-patch.js node_modules/redux-devtools-cli/package.json && rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
