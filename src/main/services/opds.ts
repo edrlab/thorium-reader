@@ -8,17 +8,14 @@
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
+import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
-import {
-    IOpdsLinkView, IOpdsResultView,
-} from "readium-desktop/common/views/opds";
+import { IOpdsLinkView, IOpdsResultView } from "readium-desktop/common/views/opds";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
-    ContentType, contentTypeisOpds, contentTypeisOpdsAuth,
-    contentTypeisXml, parseContentType,
+    ContentType, contentTypeisOpds, contentTypeisOpdsAuth, contentTypeisXml, parseContentType,
 } from "readium-desktop/utils/contentType";
 import * as URITemplate from "urijs/src/URITemplate";
-import * as xmldom from "xmldom";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
@@ -32,11 +29,11 @@ import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authenticati
 import { OPDSAuthenticationLabels } from "@r2-opds-js/opds/opds2/opds2-authentication-labels";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
+import * as xmldom from "@xmldom/xmldom";
 
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
-import { IHttpGetResult } from "readium-desktop/common/utils/http";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/opds");
