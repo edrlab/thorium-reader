@@ -26,7 +26,6 @@ This release includes the following (notable) new features, improvements and bug
 
 Git commit diff since `v1.7.0`:
 https://github.com/edrlab/thorium-reader/compare/v1.7.0...v1.7.1
-https://github.com/edrlab/thorium-reader/compare/v1.7.0...develop
 
 => **24** GitHub Pull Requests or high-level Git commits.
 
