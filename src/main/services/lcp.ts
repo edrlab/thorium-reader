@@ -27,7 +27,8 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { streamerCachedPublication } from "readium-desktop/main/streamer/streamerNoHttp";
+import { IS_DEV, LCP_SKIP_LSD } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
@@ -40,14 +41,12 @@ import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
-import { extractCrc32OnZip } from "../tools/crc";
-import { lcpActions } from "../redux/actions";
-import { streamerCachedPublication } from "readium-desktop/main/streamer/streamerNoHttp";
-import { DeviceIdManager } from "./device";
 import { lcpHashesFilePath } from "../di";
+import { lcpActions } from "../redux/actions";
+import { extractCrc32OnZip } from "../tools/crc";
+import { DeviceIdManager } from "./device";
 
 // import { Server } from "@r2-streamer-js/http/server";
 
@@ -1133,8 +1132,9 @@ export class LcpManager {
                     resolve();
                 }
             };
-            // Uncomment this to bypass LSD checks (just in case of huge network timeouts during tests)
-            if (IS_DEV && process.env.LCP_SKIP_LSD) {
+
+            // use this to temporarily bypass LSD checks during dev
+            if (IS_DEV && LCP_SKIP_LSD) {
                 await callback(undefined);
                 return;
             }
@@ -1147,7 +1147,11 @@ export class LcpManager {
                 );
             } catch (err) {
                 debug(err);
-                reject(err);
+
+                // ignore uncaught promise rejections
+                // (other possible errors in LSD protocol, network issues, etc.)
+                // reject(err);
+                await callback(undefined);
             }
         });
     }

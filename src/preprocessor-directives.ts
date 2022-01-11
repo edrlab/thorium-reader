@@ -57,6 +57,10 @@ export const _APP_NAME = __APP_NAME__;
 declare const __NODE_ENV__: string;
 export const _NODE_ENV = __NODE_ENV__;
 
+// when not in packaged mode (i.e. prod or dev, but no app bundle),
+// then check runtime process.env:
+export const LCP_SKIP_LSD = __PACKAGING__ === "0" && process.env.LCP_SKIP_LSD === "1";
+
 export const IS_DEV =
 
     // ... either build-time "var":

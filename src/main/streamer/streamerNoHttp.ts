@@ -11,6 +11,7 @@ import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "elect
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { parseDOM, serializeDOM } from "@r2-navigator-js/electron/common/dom";
@@ -47,8 +48,6 @@ import {
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 const debug = debug_("readium-desktop:main#streamerNoHttp");
-
-const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
 const URL_PARAM_SESSION_INFO = "r2_SESSION_INFO";
 
