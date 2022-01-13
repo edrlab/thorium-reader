@@ -25,7 +25,7 @@ debug("_");
 
 const persistStateToFs = async (nextState: RootState) => {
 
-    // currently saved with pouchDb in one json file.
+    // currently saved in one json file.
     // may be consuming a lot of I/O
     // rather need to save by chunck of data in many json file
 

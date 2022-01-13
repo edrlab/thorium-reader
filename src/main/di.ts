@@ -12,7 +12,6 @@ import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
 import { Container } from "inversify";
 import * as path from "path";
-import * as PouchDBCore from "pouchdb-core";
 import { Translator } from "readium-desktop/common/services/translator";
 import { ok } from "readium-desktop/common/utils/assert";
 import { CatalogApi } from "readium-desktop/main/api/catalog";
@@ -20,8 +19,6 @@ import { LcpApi } from "readium-desktop/main/api/lcp";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
@@ -32,7 +29,6 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 import {
     _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV,
 } from "readium-desktop/preprocessor-directives";
-import { PromiseAllSettled } from "readium-desktop/utils/promise";
 import { Store } from "redux";
 import { SagaMiddleware } from "redux-saga";
 
@@ -126,18 +122,6 @@ export const memoryLoggerFilename = path.join(
 //
 // Create databases
 //
-let PouchDB = PouchDBCore;
-// object ready to use (no "default" property) when:
-// module.exports = PouchDB$2
-// in the CommonJS require'd "pouchdb-core" package ("main" field in package.json)
-// otherwise ("default" property) then it means:
-// export default PouchDB$2
-// in the native ECMAScript module ("jsnext:main" or "module" field in package.json)
-if ((PouchDB  as any).default) {
-    PouchDB = (PouchDB  as any).default as PouchDB.Static;
-}
-// ==> this way, with process.env.NODE_ENV === DEV we can have "pouchdb-core" as an external,
-// otherwise it gets bundled and the code continues to work in production.
 
 const rootDbPath = path.join(
     userDataPath,
@@ -148,34 +132,9 @@ if (!fs.existsSync(rootDbPath)) {
     fs.mkdirSync(rootDbPath);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pouchDbSearch = require("pouchdb-quick-search");
+const publicationRepository = new PublicationRepository();
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pouchDbFind = require("pouchdb-find");
-
-// Load PouchDB plugins
-PouchDB.plugin(pouchDbSearch.default ? pouchDbSearch.default : pouchDbSearch);
-
-
-// indexes bookmarks
-PouchDB.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
-
-const dbOpts = {};
-
-// Publication db
-const publicationDb = new PouchDB<PublicationDocument>(
-    path.join(rootDbPath, "publication"),
-    dbOpts,
-);
-const publicationRepository = new PublicationRepository(publicationDb);
-
-// OPDS db
-const opdsDb = new PouchDB<OpdsFeedDocument>(
-    path.join(rootDbPath, "opds"),
-    dbOpts,
-);
-const opdsFeedRepository = new OpdsFeedRepository(opdsDb);
+const opdsFeedRepository = new OpdsFeedRepository();
 
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
@@ -189,19 +148,6 @@ if (!fs.existsSync(publicationRepositoryPath)) {
 //
 // end of create database
 //
-
-// https://pouchdb.com/guides/compact-and-destroy.html
-const compactDb = async () => {
-    const res = await PromiseAllSettled([
-        publicationDb.compact(),
-        opdsDb.compact(),
-    ]);
-
-    const done = res.reduce((pv, cv) => pv && cv.status === "fulfilled", true);
-    if (!done) {
-        throw JSON.stringify(res);
-    }
-};
 
 const closeProcessLock = (() => {
     let lock = false;
@@ -342,7 +288,6 @@ const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(d
 
 export {
     closeProcessLock,
-    compactDb,
     diGet as diMainGet,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,

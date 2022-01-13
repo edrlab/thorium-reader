@@ -66,14 +66,12 @@ if (nodeEnv !== "production") {
     // const depsKeysObj = {};
     // depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
     // externals = Object.assign(externals, depsKeysObj);
-    // delete externals["pouchdb-core"];
 
     if (process.env.WEBPACK === "bundle-external") {
         externals = [
             nodeExternals({
                 processName: "LIBRARY",
                 alias: aliases,
-                // whitelist: ["pouchdb-core"],
             }),
         ];
     } else {

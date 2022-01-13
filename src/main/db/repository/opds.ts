@@ -7,27 +7,20 @@
 
 import * as debug_ from "debug";
 import { injectable } from "inversify";
-import * as PouchDB from "pouchdb-core";
-import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { ok } from "readium-desktop/common/utils/assert";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { diMainGet } from "readium-desktop/main/di";
 import { opdsActions } from "readium-desktop/main/redux/actions";
 import { Unsubscribe } from "redux";
 
-import { ExcludeTimestampableAndIdentifiable } from "./base";
-
 const debug = debug_("readium-desktop:main:db:repository:opds");
 
 @injectable()
-export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
-    db: PouchDB.Database<OpdsFeedDocument>;
-    idPrefix: string;
-    public constructor(db: PouchDB.Database<OpdsFeedDocument>) {// INJECTED!
-        this.db = db;
+export class OpdsFeedRepository {
 
+    idPrefix: string;
+    public constructor() {
         this.idPrefix = "opds-feed";
     }
 
@@ -133,36 +126,5 @@ export class OpdsFeedRepository /*extends BaseRepository<OpdsFeedDocument>*/ {
         const pub = pubs.find((f) => f.identifier === identifier);
 
         return pub;
-    }
-
-    public async findAllFromPouchdb() {
-
-        const result = await this.db.allDocs({
-            include_docs: true,
-            startkey: this.idPrefix + "_",
-            endkey: this.idPrefix + "_\ufff0",
-        });
-        return result.rows.map((row) => {
-            return this.convertToDocument(row.doc);
-        });
-    }
-
-    protected convertToMinimalDocument(dbDoc: PouchDB.Core.Document<OpdsFeedDocument>): Timestampable & Identifiable {
-        return {
-            identifier: dbDoc.identifier,
-            createdAt: dbDoc.createdAt,
-            updatedAt: dbDoc.updatedAt,
-        } as Timestampable & Identifiable;
-    }
-
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<OpdsFeedDocument>): OpdsFeedDocument {
-        return Object.assign(
-            {},
-            this.convertToMinimalDocument(dbDoc),
-            {
-                title: dbDoc.title,
-                url: dbDoc.url,
-            } as ExcludeTimestampableAndIdentifiable<OpdsFeedDocument>,
-        );
     }
 }

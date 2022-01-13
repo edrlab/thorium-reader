@@ -97,7 +97,6 @@ export async function initStore()
             reduxState = json;
 
         debug("STATE LOADED FROM FS");
-        debug("the state doesn't come from pouchDb !");
         debug("😍😍😍😍😍😍😍😍");
 
     } catch {
@@ -121,7 +120,7 @@ export async function initStore()
 
             test(reduxState);
 
-            debug("RECOVERY : the state is provided from the pouchdb database or from potentially corrupted state.json file");
+            debug("RECOVERY : the state is provided from potentially corrupted state.json file");
             debug("the last state.json seems good after a quick test on it !");
             debug("state - 1 + patch is not used");
             debug("recovery state come from state.json");
