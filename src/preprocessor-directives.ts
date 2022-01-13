@@ -29,9 +29,6 @@ export const _PACKAGING = __PACKAGING__;
 declare const __VSCODE_LAUNCH__: string;
 export const _VSCODE_LAUNCH = __VSCODE_LAUNCH__;
 
-declare const __POUCHDB_ADAPTER_NAME__: string;
-export const _POUCHDB_ADAPTER_NAME = __POUCHDB_ADAPTER_NAME__;
-
 declare const __GIT_BRANCH__: string;
 export const _GIT_BRANCH = __GIT_BRANCH__;
 
@@ -46,10 +43,6 @@ export const _APP_VERSION = __APP_VERSION__;
 
 declare const __APP_NAME__: string;
 export const _APP_NAME = __APP_NAME__;
-
-// This ones needs to be inlined, no var allowed (because otherwise: dynamic require() import!)
-// declare const __POUCHDB_ADAPTER_PACKAGE__: string;
-// export const _POUCHDB_ADAPTER_PACKAGE = __POUCHDB_ADAPTER_PACKAGE__;
 
 // declare const __USE_HTTP_STREAMER__: boolean;
 // export const _USE_HTTP_STREAMER = __USE_HTTP_STREAMER__;

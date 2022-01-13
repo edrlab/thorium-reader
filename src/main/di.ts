@@ -21,13 +21,9 @@ import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { LcpSecretDocument } from "readium-desktop/main/db/document/lcp-secret";
-import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
@@ -36,7 +32,7 @@ import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import {
-    _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV, _POUCHDB_ADAPTER_NAME,
+    _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV,
 } from "readium-desktop/preprocessor-directives";
 import { PromiseAllSettled } from "readium-desktop/utils/promise";
 import { Store } from "redux";
@@ -46,9 +42,9 @@ import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { SessionApi } from "./api/session";
 import { httpBrowserApi, publicationApi } from "./redux/sagas/api";
+import { opdsApi } from "./redux/sagas/api/opds";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
-import { opdsApi } from "./redux/sagas/api/opds";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -58,8 +54,6 @@ const debug = debug_("readium-desktop:main:di");
 
 export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
-
-declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
 // const IS_DEV = (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY);
 //
@@ -157,26 +151,19 @@ if (!fs.existsSync(rootDbPath)) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pouchDbSearch = require("pouchdb-quick-search");
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pouchDbFind = require("pouchdb-find");
 
 // Load PouchDB plugins
-PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
-
 PouchDB.plugin(pouchDbSearch.default ? pouchDbSearch.default : pouchDbSearch);
 
 
 // indexes bookmarks
 PouchDB.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
 
-const dbOpts = {
-    adapter: _POUCHDB_ADAPTER_NAME,
-};
+const dbOpts = {};
 
 // Publication db
 const publicationDb = new PouchDB<PublicationDocument>(
@@ -199,20 +186,6 @@ const configDb = new PouchDB<ConfigDocument<any>>(
 );
 const configRepository = new ConfigRepository(configDb);
 
-// Locator db
-const locatorDb = new PouchDB<LocatorDocument>(
-    path.join(rootDbPath, "locator"),
-    dbOpts,
-);
-const locatorRepository = new LocatorRepository(locatorDb);
-
-// Lcp secret db
-const lcpSecretDb = new PouchDB<LcpSecretDocument>(
-    path.join(rootDbPath, "lcp-secret"),
-    dbOpts,
-);
-const lcpSecretRepository = new LcpSecretRepository(lcpSecretDb);
-
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     userDataPath,
@@ -232,8 +205,6 @@ const compactDb = async () => {
         publicationDb.compact(),
         opdsDb.compact(),
         configDb.compact(),
-        locatorDb.compact(),
-        lcpSecretDb.compact(),
     ]);
 
     const done = res.reduce((pv, cv) => pv && cv.status === "fulfilled", true);
@@ -286,14 +257,9 @@ container.bind<PublicationRepository>(diSymbolTable["publication-repository"]).t
 container.bind<OpdsFeedRepository>(diSymbolTable["opds-feed-repository"]).toConstantValue(
     opdsFeedRepository,
 );
-container.bind<LocatorRepository>(diSymbolTable["locator-repository"]).toConstantValue(
-    locatorRepository,
-);
+
 container.bind<ConfigRepository<any>>(diSymbolTable["config-repository"]).toConstantValue(
     configRepository,
-);
-container.bind<LcpSecretRepository>(diSymbolTable["lcp-secret-repository"]).toConstantValue(
-    lcpSecretRepository,
 );
 
 // Create converters
@@ -365,9 +331,7 @@ interface IGet {
     (s: "translator"): Translator;
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
-    (s: "locator-repository"): LocatorRepository;
     (s: "config-repository"): ConfigRepository<any>;
-    (s: "lcp-secret-repository"): LcpSecretRepository;
     (s: "publication-view-converter"): PublicationViewConverter;
     (s: "locator-view-converter"): LocatorViewConverter;
     (s: "opds-feed-view-converter"): OpdsFeedViewConverter;
