@@ -47,15 +47,11 @@ const aliases = {
 
 let externals = {
     bindings: "bindings",
-    leveldown: "leveldown",
     yargs: "yargs",
     fsevents: "fsevents",
     conf: "conf",
-    "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
-    "pouchdb-adapter-node-websql": "pouchdb-adapter-node-websql",
-    sqlite3: "sqlite3",
 };
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
