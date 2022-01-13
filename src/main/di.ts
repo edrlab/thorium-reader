@@ -20,10 +20,8 @@ import { LcpApi } from "readium-desktop/main/api/lcp";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
@@ -179,13 +177,6 @@ const opdsDb = new PouchDB<OpdsFeedDocument>(
 );
 const opdsFeedRepository = new OpdsFeedRepository(opdsDb);
 
-// Config db
-const configDb = new PouchDB<ConfigDocument<any>>(
-    path.join(rootDbPath, "config"),
-    dbOpts,
-);
-const configRepository = new ConfigRepository(configDb);
-
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     userDataPath,
@@ -204,7 +195,6 @@ const compactDb = async () => {
     const res = await PromiseAllSettled([
         publicationDb.compact(),
         opdsDb.compact(),
-        configDb.compact(),
     ]);
 
     const done = res.reduce((pv, cv) => pv && cv.status === "fulfilled", true);
@@ -234,7 +224,7 @@ const container = new Container();
 const createStoreFromDi = async () => {
 
     debug("initStore");
-    const [store, sagaMiddleware] = await initStore(configRepository);
+    const [store, sagaMiddleware] = await initStore();
     debug("store loaded");
 
     container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
@@ -258,10 +248,6 @@ container.bind<OpdsFeedRepository>(diSymbolTable["opds-feed-repository"]).toCons
     opdsFeedRepository,
 );
 
-container.bind<ConfigRepository<any>>(diSymbolTable["config-repository"]).toConstantValue(
-    configRepository,
-);
-
 // Create converters
 container.bind<PublicationViewConverter>(diSymbolTable["publication-view-converter"])
     .to(PublicationViewConverter).inSingletonScope();
@@ -279,7 +265,7 @@ container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConst
 // Bind services
 // container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
-const deviceIdManager = new DeviceIdManager(capitalizedAppName, configRepository);
+const deviceIdManager = new DeviceIdManager(capitalizedAppName);
 container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
     deviceIdManager,
 );
@@ -331,7 +317,6 @@ interface IGet {
     (s: "translator"): Translator;
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
-    (s: "config-repository"): ConfigRepository<any>;
     (s: "publication-view-converter"): PublicationViewConverter;
     (s: "locator-view-converter"): LocatorViewConverter;
     (s: "opds-feed-view-converter"): OpdsFeedViewConverter;

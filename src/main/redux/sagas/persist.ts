@@ -30,9 +30,7 @@ const persistStateToFs = async (nextState: RootState) => {
     // rather need to save by chunck of data in many json file
 
     debug("start of persist reduxState in disk");
-    // const configRepository: ConfigRepository<Partial<RootState>> = diMainGet("config-repository");
-    // await configRepository.save({
-    // identifier: CONFIGREPOSITORY_REDUX_PERSISTENCE,
+
     const value: PersistRootState = {
         win: nextState.win,
         publication: nextState.publication,

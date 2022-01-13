@@ -8,11 +8,8 @@
 import * as debug_ from "debug";
 import { appendFileSync, promises as fsp } from "fs";
 import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
-import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import {
-    backupStateFilePathFn, CONFIGREPOSITORY_REDUX_PERSISTENCE, memoryLoggerFilename, patchFilePath,
-    runtimeStateFilePath, stateFilePath,
+    backupStateFilePathFn, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
 } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
@@ -84,10 +81,9 @@ const test = (stateRaw: any): stateRaw is PersistRootState => {
     return stateRaw;
 };
 
-export async function initStore(configRepository: ConfigRepository<any>)
+export async function initStore()
     : Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
-    let reduxStateWinRepository: ConfigDocument<PersistRootState>;
     let reduxState: PersistRootState | undefined;
 
     debug("");
@@ -105,40 +101,7 @@ export async function initStore(configRepository: ConfigRepository<any>)
         debug("😍😍😍😍😍😍😍😍");
 
     } catch {
-
-        try {
-            const reduxStateRepositoryResult = await configRepository.get(CONFIGREPOSITORY_REDUX_PERSISTENCE);
-            reduxStateWinRepository = reduxStateRepositoryResult;
-            reduxState = reduxStateWinRepository?.value
-                ? reduxStateWinRepository.value
-                : undefined;
-
-            // TODO:
-            // see main/redux/actions/win/registry/registerReaderPublication.ts
-            // action creator also deletes highlight + info
-            if (reduxState?.win?.registry?.reader) {
-                const keys = Object.keys(reduxState.win.registry.reader);
-                for (const key of keys) {
-                    const obj = reduxState.win.registry.reader[key];
-                    if (obj?.reduxState?.info) {
-                        delete obj.reduxState.info;
-                    }
-                    if (obj?.reduxState?.highlight) {
-                        delete obj.reduxState.highlight;
-                    }
-                }
-            }
-
-            if (reduxState) {
-                debug("STATE LOADED FROM POUCHDB");
-                debug("the state doesn't come from the new json filesystem database");
-                debug("😩😩😩😩😩😩😩");
-            }
-
-        } catch (err) {
-
-            debug("ERR when trying to get the state in Pouchb configRepository", err);
-        }
+        reduxState = undefined;
     }
 
     try {

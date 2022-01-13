@@ -13,7 +13,7 @@ import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistC
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import * as tough from "tough-cookie";
 
-import { cookiejarFilePath, diMainGet } from "../di";
+import { cookiejarFilePath } from "../di";
 
 let fetchLocal: typeof nodeFetch;
 let cookieJar: tough.CookieJar;
@@ -32,12 +32,6 @@ export const cleanCookieJar = async () => {
 // src/main/redux/sagas/app.ts
 export const fetchCookieJarPersistence = async () => {
 
-    // const configRepo = diMainGet("config-repository");
-    // await configRepo.save({
-    //     identifier: CONFIGREPOSITORY_COOKIEJAR,
-    //     value: cookieJar.serializeSync(),
-    // });
-
     if (!cookieJar) {
         return;
     }
@@ -51,16 +45,12 @@ const fetchFactory = async () => {
 
     await tryCatch(async () => {
 
-        const configRepo = diMainGet("config-repository");
-
         let data: Buffer | string | undefined = await tryCatch(() => fsp.readFile(cookiejarFilePath), "");
-        if (!data) {
-            data = (await configRepo.get(CONFIGREPOSITORY_COOKIEJAR))?.value as string | undefined;
-        } else {
+        if (data) {
             data = decryptPersist(data, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
         }
         ok(data, "NO COOKIE JAR FOUND ON FS");
-        cookieJar = tough.CookieJar.deserializeSync(data);
+        cookieJar = tough.CookieJar.deserializeSync(data as string);
 
     }, "src/main/network/fetch");
 

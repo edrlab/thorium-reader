@@ -8,7 +8,6 @@ export const diSymbolTable = {
     "downloader": Symbol("downloader"),
     "publication-repository": Symbol("publication-repository"),
     "opds-feed-repository": Symbol("opds-feed-repository"),
-    "config-repository": Symbol("config-repository"),
     "publication-view-converter": Symbol("publication-view-converter"),
     "locator-view-converter": Symbol("locator-view-converter"),
     "opds-feed-view-converter": Symbol("opds-feed-view-converter"),
