@@ -53,10 +53,8 @@ const checkTypeScriptSkip =
 
 let externals = {
     bindings: "bindings",
-    leveldown: "leveldown",
     fsevents: "fsevents",
     conf: "conf",
-    sqlite3: "sqlite3",
 };
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
@@ -68,14 +66,12 @@ if (nodeEnv !== "production") {
     // const depsKeysObj = {};
     // depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
     // externals = Object.assign(externals, depsKeysObj);
-    // delete externals["pouchdb-core"];
 
     if (process.env.WEBPACK === "bundle-external") {
         externals = [
             nodeExternals({
                 processName: "LIBRARY",
                 alias: aliases,
-                // whitelist: ["pouchdb-core"],
             }),
         ];
     } else {

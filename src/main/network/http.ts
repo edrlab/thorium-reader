@@ -19,7 +19,6 @@ import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { resolve } from "url";
 
-import { ConfigRepository } from "../db/repository/config";
 import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
 
@@ -91,20 +90,7 @@ const authenticationTokenInit = async () => {
                 k.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)
                 && typeof v === "object", true));
 
-    if (!isValid) {
-
-        const configDoc = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
-
-        docs = await tryCatch(async () => (await configDoc.findAll())
-            .filter((v) => v.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN))
-            .map<[string, IOpdsAuthenticationToken]>((v) => [v.identifier, v.value])
-            .reduce<Record<string, IOpdsAuthenticationToken>>((pv, [k, v]) => ({
-                ...pv,
-                [k]: v,
-            }), {}), "");
-    }
-
-    if (!docs) {
+    if (!docs || !isValid) {
         docs = {};
     }
 
@@ -115,24 +101,6 @@ const authenticationTokenInit = async () => {
 
 export const httpSetAuthenticationToken =
     async (data: IOpdsAuthenticationToken) => {
-        // return tryCatch(
-        // async () => {
-
-        //     if (!data.opdsAuthenticationUrl) {
-        //         throw new Error("no opdsAutenticationUrl !!");
-        //     }
-
-        //     // const url = new URL(data.opdsAuthenticationUrl);
-        //     const { host } = url;
-        //     // do not risk showing plaintext access/refresh tokens in console / command line shell
-        //     debug("SET opds authentication credentials for", host); // data
-        //     const configRepo = diMainGet("config-repository");
-        //     await configRepo.save({
-        //         identifier: CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host),
-        //         value: data,
-        //     });
-        // },
-        // filename_);
         if (!data.opdsAuthenticationUrl) {
             throw new Error("no opdsAutenticationUrl !!");
         }
@@ -165,18 +133,6 @@ export const absorbDBToJson = async () => {
 
 export const getAuthenticationToken =
     async (host: string) => {
-        // return await tryCatch(
-        //     async () => {
-
-        //         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-        //         const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
-        //         const doc = await configRepo.get(id);
-        //         debug("GET opds authentication credentials for", host);
-        //         // do not risk showing plaintext access/refresh tokens in console / command line shell
-        //         // debug("Credentials: ", doc?.value);
-        //         return doc?.value;
-        //     },
-        //     filename_);
 
         await authenticationTokenInit();
 
@@ -185,18 +141,6 @@ export const getAuthenticationToken =
     };
 
 export const deleteAuthenticationToken = async (host: string) => {
-    // return await tryCatch(async () => {
-    //     const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-    //     const configRepo = diMainGet(
-    //         "config-repository",
-    //     ) as ConfigRepository<IOpdsAuthenticationToken>;
-    //     const doc = await configRepo.get(id);
-    //     debug("DELETE opds authentication credentials for", host);
-    //     // do not risk showing plaintext access/refresh tokens in console / command line shell
-    //     // debug("Credentials: ", doc?.value);
-    //     await configRepo.delete(doc.identifier);
-    // }, filename_);
-
     await authenticationTokenInit();
 
     const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);

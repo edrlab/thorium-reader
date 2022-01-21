@@ -8,8 +8,6 @@
 import * as debug_ from "debug";
 import * as fs from "fs";
 import { injectable } from "inversify";
-import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { v4 as uuidv4 } from "uuid";
 
@@ -32,18 +30,10 @@ let _cache: DeviceConfig = undefined;
 @injectable()
 export class DeviceIdManager implements IDeviceIDManager {
 
-    // CONSTRUCTOR INJECTION!
-    // inject(diSymbolTable["config-repository"])
-    private readonly configRepository: ConfigRepository<DeviceConfig>;
-
     private readonly deviceName: string;
 
-    public constructor(
-        deviceName: string,
-        configRepository: ConfigRepository<DeviceConfig>, // INJECTED!
-    ) {
+    public constructor(deviceName: string) {
         this.deviceName = deviceName;
-        this.configRepository = configRepository;
     }
 
     public async checkDeviceID(key: string): Promise<string | undefined> {
@@ -72,13 +62,6 @@ export class DeviceIdManager implements IDeviceIDManager {
         if (!deviceId) {
             deviceId = uuidv4();
 
-            // const newDeviceConfigDocument: ExcludeTimestampableWithPartialIdentifiable<ConfigDocument<DeviceConfig>> = {
-            //     identifier: "device",
-            //     value: {} as DeviceConfig,
-            // };
-            // newDeviceConfigDocument.value[DEVICE_ID_KEY] = deviceId;
-            // await this.configRepository.save(newDeviceConfigDocument);
-
             const deviceConfig: DeviceConfig = {
                 device_id: deviceId,
             };
@@ -103,16 +86,6 @@ export class DeviceIdManager implements IDeviceIDManager {
             deviceConfig,
         );
         newDeviceConfig[deviceIdKey] = "_"; // deviceId
-        // tslint:disable-next-line: max-line-length
-        // const newDeviceConfigDocument: ExcludeTimestampableWithPartialIdentifiable<ConfigDocument<DeviceConfig>> =
-        //     Object.assign(
-        //         {},
-        //         deviceConfigDocument,
-        //         {
-        //             value: newDeviceConfig,
-        //         } as ConfigDocument<DeviceConfig>,
-        //     );
-        // await this.configRepository.save(newDeviceConfigDocument);
         this.saveDeviceConfigJson(newDeviceConfig);
 
         debug("DeviceIdManager recordDeviceID:");
@@ -152,26 +125,7 @@ export class DeviceIdManager implements IDeviceIDManager {
 
         debug("LCP LSD getDeviceConfig from DB (migration) ...");
 
-        const dbConfig = await this.getDeviceConfigDB();
-        if (dbConfig?.value?.device_id) { // DEVICE_ID_KEY
-
-            debug("LCP LSD getDeviceConfig DB TO JSON", dbConfig.value);
-
-            this.saveDeviceConfigJson(dbConfig.value);
-            return dbConfig.value;
-        }
-
         return {} as DeviceConfig;
-    }
-    private async getDeviceConfigDB(): Promise<ConfigDocument<DeviceConfig>> {
-        try {
-            return await this.configRepository.get("device");
-        } catch (_error) {
-            return {
-                identifier: "device",
-                value: {} as DeviceConfig,
-            } as ConfigDocument<DeviceConfig>;
-        }
     }
 
     private async getDeviceConfigValue(key: string): Promise<string> {

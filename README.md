@@ -39,7 +39,7 @@ TravisCI, `develop` branch:
 
 1) NodeJS 14 (check with `node --version`)
 2) NPM 6 (check with `npm --version`)
-3) C++ compiler for native NodeJS modules (SQLite3 and LevelDown database backends), should work out of the box in Linux and MacOS. On Windows, Visual Studio can be installed, or simply call `npm install -g windows-build-tools`.
+3) Optionally: C++ compiler for native NodeJS modules, should work out of the box in Linux and MacOS. On Windows, Visual Studio can be installed, or simply call `npm install -g windows-build-tools`.
 
 ## Technologies
 
@@ -48,7 +48,6 @@ TravisCI, `develop` branch:
 * reactjs
 * redux
 * saga
-* pouchdb
 * i18next
 
 ## Quick start
@@ -57,7 +56,7 @@ TravisCI, `develop` branch:
 
 * `npm install` (or `npm ci`): initialize local `node_modules` packages from dependencies declared in `package.json` (this will also automatically call a long-running compilation stage in `npm run postinstall`)
 * in case of failure to NPM "install" because of "Divina player" SHA integrity mismatch, please try running the following command in your shell: `node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js` (this converts SSH GitHub references to HTTPS ones)
-* in case of NPM / Node GYP failing to compile SQLite3 or LevelDown native libs in Windows under Visual Studio 2019's command line tools: `npm config set msvs_version 2019 --global` and `npm config set msbuild_path "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe"` (adjust with your own path, for example `Enterprise` or `Professional` instead of `Community`)
+* in case of NPM / Node GYP failing to compile native libs in Windows under Visual Studio 2019's command line tools: `npm config set msvs_version 2019 --global` and `npm config set msbuild_path "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe"` (adjust with your own path, for example `Enterprise` or `Professional` instead of `Community`)
 
 ### Start application in development environment
 

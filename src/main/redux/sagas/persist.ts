@@ -25,14 +25,12 @@ debug("_");
 
 const persistStateToFs = async (nextState: RootState) => {
 
-    // currently saved with pouchDb in one json file.
+    // currently saved in one json file.
     // may be consuming a lot of I/O
     // rather need to save by chunck of data in many json file
 
     debug("start of persist reduxState in disk");
-    // const configRepository: ConfigRepository<Partial<RootState>> = diMainGet("config-repository");
-    // await configRepository.save({
-    // identifier: CONFIGREPOSITORY_REDUX_PERSISTENCE,
+
     const value: PersistRootState = {
         win: nextState.win,
         publication: nextState.publication,

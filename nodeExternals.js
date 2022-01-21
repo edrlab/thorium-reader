@@ -143,9 +143,7 @@ module.exports = function nodeExternals(options) {
         // doesn't necessarily mean that WebPack will bundle, just that it won't externalize
         const makeBundle = isWebPack || isSVG || isCSS || isCSSLoader ||
             (!isR2 && !isR2Alias && !isRelativeInNodeModules &&
-            (isRDesk || isRelative || isElectron || isNode ||
-                request === "xxxpouchdb-core" // No need to force-bundle, as we now fixed di.ts to test for "default" property
-            ));
+            (isRDesk || isRelative || isElectron || isNode));
         let makeExternal = !makeBundle;
         if (makeExternal &&
             !isR2 && !isR2Alias && !isRelativeInNodeModules) {
@@ -172,12 +170,6 @@ module.exports = function nodeExternals(options) {
             // mark this module as external
             // https://webpack.github.io/docs/configuration.html#externals
             // https://webpack.js.org/configuration/externals/
-
-            //  MAKES NO DIFFERENCE
-            // if (request === "pouchdb-core") {
-            //     console.log("pouchdb-core CommonJS2");
-            //     return callback(null, "commonjs2 " + request);
-            // }
 
             let request_ = request;
             if (isR2Alias && alias) {

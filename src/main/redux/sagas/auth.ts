@@ -193,21 +193,6 @@ function* opdsAuthWipeData() {
 
     yield* callTyped(wipeAuthenticationTokenStorage);
 
-    // const configDoc = yield* callTyped(() => diMainGet("config-repository"));
-
-    // const docs = yield* callTyped(() => configDoc.findAll());
-
-    // if (Array.isArray(docs)) {
-    //     for (const doc of docs) {
-
-    //         if (doc.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)) {
-
-    //             debug("delete", doc.identifier);
-    //             yield call(() => configDoc.delete(doc.identifier));
-    //         }
-    //     }
-    // }
-
     yield put(toastActions.openRequest.build(ToastType.Success, "👍"));
     debug("End of wipping auth data");
 }

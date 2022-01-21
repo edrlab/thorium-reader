@@ -10,15 +10,14 @@ import { app, protocol } from "electron";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
-import {
-    closeProcessLock, compactDb, diMainGet, getLibraryWindowFromDi,
-} from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/tools/error";
+import { closeProcessLock, diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 import {
     absorbDBToJson as absorbDBToJsonCookieJar, fetchCookieJarPersistence,
 } from "readium-desktop/main/network/fetch";
 import { absorbDBToJson as absorbDBToJsonOpdsAuth } from "readium-desktop/main/network/http";
 import { needToPersistFinalState } from "readium-desktop/main/redux/sagas/persist";
+import { error } from "readium-desktop/main/tools/error";
 import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, race, spawn, take } from "redux-saga/effects";
@@ -31,7 +30,6 @@ import {
     getBeforeQuitEventChannel, getQuitEventChannel, getShutdownEventChannel,
     getWindowAllClosedEventChannel,
 } from "./getEventChannel";
-import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -179,14 +177,6 @@ function* closeProcess() {
                         debug("Success to persistState");
                     } catch (e) {
                         debug("ERROR to persistState", e);
-                    }
-
-                    try {
-                        // clean the db just before to quit
-                        yield call(compactDb);
-                        debug("Success to compactDb");
-                    } catch (e) {
-                        debug("ERROR to compactDb", e);
                     }
                 }),
                 call(function*() {

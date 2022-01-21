@@ -21,7 +21,6 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
-import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
@@ -72,9 +71,6 @@ export class LcpManager {
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
 
-    @inject(diSymbolTable["lcp-secret-repository"])
-    private readonly lcpSecretRepository!: LcpSecretRepository;
-
     // @inject(diSymbolTable.streamer)
     // private readonly streamer!: Server;
 
@@ -110,41 +106,7 @@ export class LcpManager {
             return json;
         }
 
-        debug("LCP getAllSecrets from DB (migration) ...");
-
-        const lcpSecretDocs = await this.lcpSecretRepository.findAll();
         const json: TLCPSecrets = {};
-        for (const lcpSecretDoc of lcpSecretDocs) {
-            const id = lcpSecretDoc.publicationIdentifier;
-            if (!json[id]) {
-                json[id] = {};
-            }
-            if (lcpSecretDoc.secret) {
-                // note: due to the old DB schema,
-                // in theory a single publication ID could have multiple secrets
-                // so this potentially overrides the previous one.
-                // however in practice a given LCP-protected publication only has a single working passphrase
-                json[id].passphrase = lcpSecretDoc.secret;
-
-                if (!json[id].provider) {
-                    const pubs = await this.publicationRepository.findByPublicationIdentifier(id);
-                    if (pubs) {
-                        for (const pub of pubs) { // should be just one
-                            if (pub.lcp?.provider) {
-                                json[id].provider = pub.lcp.provider;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        debug("LCP getAllSecrets DB TO JSON", json);
-        const str = JSON.stringify(json);
-        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
-        fs.promises.writeFile(lcpHashesFilePath, encrypted);
-
         return json;
     }
 
