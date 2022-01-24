@@ -52,9 +52,6 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                 <br />
             </>;
 
-            console.log(properties.indirectAcquisitionType);
-            console.log(properties.indirectAcquisitionType === findMimeTypeWithExtension(MIME_TYPE_ADOBE_OBSOLETE_BORROWING_FORMAT));
-
         return (
             <>
                 {

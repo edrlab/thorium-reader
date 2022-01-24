@@ -259,7 +259,7 @@ const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => {
         location: state.router.location,
         openAccessButtonIsDisabled: () => {
             return !!state.download.find(
-                ([{ downloadUrl }]) => props.opdsPublicationView.openAccessLinks.find(
+                ([{downloadUrl}]) => props.opdsPublicationView.openAccessLinks.find(
                     (ln) => ln.url === downloadUrl,
                 ),
             );
