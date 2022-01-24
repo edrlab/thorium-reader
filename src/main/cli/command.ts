@@ -17,7 +17,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { start } from "readium-desktop/main/start";
 import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlWithOpdsSchemeEventChannel } from "readium-desktop/main/event";
 import * as path from "path";
-import { tryCatchSync } from "readium-desktop/utils/tryCatch";
+import validator from "validator";
 
 // Logger
 const debug = debug_("readium-desktop:cli:command");
@@ -190,8 +190,11 @@ export const mainCommand = async (argv: yargs.Arguments<{
 
             // /hello/world -> failed
             // C:\hello\world -> works -> protocol=file: but must failed
-            // https://hello/world -> works
-            if (tryCatchSync(() => new URL(url).protocol !== "c:", "")) {
+            // https://hello/world -> work
+            const urlIsValid = validator.isURL(url, {
+                protocols: ['http', 'https', 'opds', 'thorium'],
+            });
+            if (urlIsValid) {
 
                 const openUrlChan = getOpenUrlWithOpdsSchemeEventChannel();
                 openUrlChan.put(url);
