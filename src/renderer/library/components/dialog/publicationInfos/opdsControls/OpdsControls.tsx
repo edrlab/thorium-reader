@@ -21,7 +21,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
+import { findExtWithMimeType, findMimeTypeWithExtension, MIME_TYPE_ADOBE_OBSOLETE_BORROWING_FORMAT } from "readium-desktop/utils/mimeTypes";
 
 import OpdsLinkProperties from "./OpdsLinkProperties";
 
@@ -142,6 +142,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         ln,
                                         this.props.location,
                                         `${__("opds.menu.goLoanBook")} (${opdsPublicationView.title})`)}
+                                    disabled={ln.properties.indirectAcquisitionType === findMimeTypeWithExtension(MIME_TYPE_ADOBE_OBSOLETE_BORROWING_FORMAT)}
                                 >
                                     {__("opds.menu.goLoanBook")}
                                 </button>
@@ -258,7 +259,7 @@ const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => {
         location: state.router.location,
         openAccessButtonIsDisabled: () => {
             return !!state.download.find(
-                ([{downloadUrl}]) => props.opdsPublicationView.openAccessLinks.find(
+                ([{ downloadUrl }]) => props.opdsPublicationView.openAccessLinks.find(
                     (ln) => ln.url === downloadUrl,
                 ),
             );

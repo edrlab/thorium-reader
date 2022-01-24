@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+export const MIME_TYPE_ADOBE_OBSOLETE_BORROWING_FORMAT = "_adobe_obsolete_borrowing_format_";
+
 // https://github.com/panaC/node-playground/blob/master/mimeTypes.ipynb
 export const mimeTypes = {
     "123": "application/vnd.lotus-1-2-3",
@@ -1172,6 +1174,7 @@ export const mimeTypes = {
     "divina": "application/divina+zip",
     "lcpdivina": "application/divina+lcp",
     "lcpdf": "application/pdf+lcp",
+    [MIME_TYPE_ADOBE_OBSOLETE_BORROWING_FORMAT]: "application/vnd.adobe.adept+xml",
 };
 
 export const findMimeTypeWithExtension = (ext: string): string | undefined => {

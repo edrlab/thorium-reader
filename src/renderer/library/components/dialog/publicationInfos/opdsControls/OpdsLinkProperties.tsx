@@ -14,6 +14,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 
 import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
+import { findMimeTypeWithExtension, MIME_TYPE_ADOBE_OBSOLETE_BORROWING_FORMAT } from "readium-desktop/utils/mimeTypes";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -51,8 +52,15 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                 <br />
             </>;
 
+            console.log(properties.indirectAcquisitionType);
+            console.log(properties.indirectAcquisitionType === findMimeTypeWithExtension(MIME_TYPE_ADOBE_OBSOLETE_BORROWING_FORMAT));
+
         return (
             <>
+                {
+                    properties.indirectAcquisitionType === findMimeTypeWithExtension(MIME_TYPE_ADOBE_OBSOLETE_BORROWING_FORMAT) &&
+                    <><strong>{__("catalog.opds.info.indirectAcquisitionType")}</strong><br /></>
+                }
                 {
                     metadataLineComponent(__("catalog.opds.info.numberOfItems"), properties.numberOfItems)
                 }

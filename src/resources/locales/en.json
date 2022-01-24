@@ -91,7 +91,8 @@
                 "holdTotal": "Held",
                 "numberOfItems": "Number of items",
                 "priveValue": "Price",
-                "state": "State"
+                "state": "State",
+                "indirectAcquisitionType": "adobe is an obsolete borrowing format"
             }
         },
         "publisher": "Publisher",
