@@ -188,11 +188,8 @@ export const mainCommand = async (argv: yargs.Arguments<{
             // to add the feed and open it
             const url = pathArgv[0];
 
-            // /hello/world -> failed
-            // C:\hello\world -> works -> protocol=file: but must failed
-            // https://hello/world -> work
             const urlIsValid = validator.isURL(url, {
-                protocols: ['http', 'https', 'opds', 'thorium'],
+                protocols: ["http", "https", "opds", "thorium"],
             });
             if (urlIsValid) {
 
