@@ -136,8 +136,7 @@ declare namespace typed_i18n {
       readonly "holdTotal": string,
       readonly "numberOfItems": string,
       readonly "priveValue": string,
-      readonly "state": string,
-      readonly "indirectAcquisitionType": string
+      readonly "state": string
     }
   },
   readonly "publisher": string,
@@ -199,8 +198,7 @@ declare namespace typed_i18n {
     readonly "holdTotal": string,
     readonly "numberOfItems": string,
     readonly "priveValue": string,
-    readonly "state": string,
-    readonly "indirectAcquisitionType": string
+    readonly "state": string
   }
 };
   (_: "catalog.opds.auth", __?: {}): { readonly "cancel": string, readonly "login": string };
@@ -222,8 +220,7 @@ declare namespace typed_i18n {
   readonly "holdTotal": string,
   readonly "numberOfItems": string,
   readonly "priveValue": string,
-  readonly "state": string,
-  readonly "indirectAcquisitionType": string
+  readonly "state": string
 };
   (_: "catalog.opds.info.availableSince", __?: {}): string;
   (_: "catalog.opds.info.availableState", __?: {}): {
@@ -246,7 +243,6 @@ declare namespace typed_i18n {
   (_: "catalog.opds.info.numberOfItems", __?: {}): string;
   (_: "catalog.opds.info.priveValue", __?: {}): string;
   (_: "catalog.opds.info.state", __?: {}): string;
-  (_: "catalog.opds.info.indirectAcquisitionType", __?: {}): string;
   (_: "catalog.publisher", __?: {}): string;
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;

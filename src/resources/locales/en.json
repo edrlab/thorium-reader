@@ -85,14 +85,13 @@
                     "unknown": "Unknown"
                 },
                 "availableUntil": "Until",
-                "copyAvalaible": "Number of availables",
-                "copyTotal": "Number of copies",
+                "copyAvalaible": "Available",
+                "copyTotal": "Copies",
                 "holdPosition": "Your hold position",
                 "holdTotal": "Held",
                 "numberOfItems": "Number of items",
                 "priveValue": "Price",
-                "state": "State",
-                "indirectAcquisitionType": "adobe is an obsolete borrowing format"
+                "state": "State"
             }
         },
         "publisher": "Publisher",
