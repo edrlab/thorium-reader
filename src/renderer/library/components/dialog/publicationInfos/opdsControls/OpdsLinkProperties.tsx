@@ -14,6 +14,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 
 import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
+import { findMimeTypeWithExtension, ADOBE_ADEPT_XML } from "readium-desktop/utils/mimeTypes";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -53,6 +54,10 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
 
         return (
             <>
+                {
+                    properties.indirectAcquisitionType === findMimeTypeWithExtension(ADOBE_ADEPT_XML) ?
+                    <><span title={properties.indirectAcquisitionType.replace(/application\//, "")} style={{textDecoration: "line-through"}}>(Adobe Adept)</span><br /><br /></> : <></>
+                }
                 {
                     metadataLineComponent(__("catalog.opds.info.numberOfItems"), properties.numberOfItems)
                 }
