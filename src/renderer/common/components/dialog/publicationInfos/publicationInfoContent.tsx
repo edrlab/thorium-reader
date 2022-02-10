@@ -218,8 +218,6 @@ const Progression = (props: {
 
                     if (locatorExt.headings && manifestUrlR2Protocol) { // focusWhereAmI
 
-                        // console.log(JSON.stringify(locatorExt.headings, null, 4));
-
                         let rank = 999;
                         const hs = locatorExt.headings.filter((h, _i) => {
                             if (h.level < rank
@@ -227,16 +225,12 @@ const Progression = (props: {
                                 ) {
 
                                 rank = h.level;
-                                // console.log(">>> TRUE: ", rank, JSON.stringify(h, null, 4));
                                 return true;
                             }
-                            // console.log(">>> FALSE: ", rank, JSON.stringify(h, null, 4));
                             return false;
                         }).reverse();
                         // WARNING: .reverse() is in-place same-array mutation! (not a new array)
                         // ...but we're chaining with .filter() so that locatorExt.headings is not modified
-
-                        // console.log(JSON.stringify(hs, null, 4));
 
                         let k = 0;
                         const summary = hs.reduce((arr, h, i) => {

@@ -23,6 +23,7 @@ import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
 import SortMenu from "./SortMenu";
 import TagLayout from "./TagLayout";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -97,6 +98,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                                         ...this.props.location,
                                                         pathname: "/library/search/all",
                                                     }}
+                                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                                 >
                                                     {this.props.__("header.allBooks")}
                                                 </Link>

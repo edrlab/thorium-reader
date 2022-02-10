@@ -101,5 +101,5 @@ export type TRouteList = {
 export const routes: Readonly<TRouteList> = _routes;
 
 export const dispatchHistoryPush = (dispatch: TDispatch) =>
-    (location: Location) =>
-        dispatch(push(location));
+    (location: Location, state: IRouterLocationState) =>
+        dispatch(push(location, state));

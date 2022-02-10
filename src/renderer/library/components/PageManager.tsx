@@ -24,7 +24,6 @@ export default class PageManager extends React.Component<{}, IState> {
         };
     }
 
-    // path={`${routes[path].path}${routes[path].exact ? "" : "*"}`}
     public render(): React.ReactElement<{}> {
         return (
             <Routes>

@@ -15,6 +15,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
 interface NavigationHeader {
     route: string;
@@ -129,6 +130,8 @@ class Header extends React.Component<IProps, undefined> {
             <li className={classNames(...styleClasses)} key={index}>
                 <Link
                     to={nextLocation}
+                    state = {{displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid}}
+
                     replace={true}
 
                     aria-pressed={active}

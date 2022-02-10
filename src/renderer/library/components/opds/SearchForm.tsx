@@ -21,7 +21,7 @@ import {
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { SEARCH_TERM } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
+import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
@@ -137,7 +137,7 @@ class SearchForm extends React.Component<IProps, undefined> {
             this.props.historyPush({
                 ...this.props.location,
                 pathname: this.route(searchWords, url, level),
-            });
+            }, this.props.location.state as IRouterLocationState);
         }
     };
 

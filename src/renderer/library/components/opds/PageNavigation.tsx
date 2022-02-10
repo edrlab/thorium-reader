@@ -26,7 +26,7 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import { buildOpdsBrowserRouteWithLink } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { dispatchHistoryPush } from "readium-desktop/renderer/library/routing";
+import { dispatchHistoryPush, DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 interface IBaseProps extends TranslatorProps {
@@ -81,6 +81,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.first[0]),
                                 }}
+                                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                 className={stylesButtons.button_primary}
                             >
                                 <SVG svg={ArrowFirstIcon} />
@@ -102,6 +103,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.previous[0]),
                                 }}
+                                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                 className={stylesButtons.button_primary}
                             >
                                 <SVG svg={ArrowLeftIcon} />
@@ -137,6 +139,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.next[0]),
                                 }}
+                                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                 className={classNames(stylesButtons.button_primary, stylesButtons.icon_end)}
                             >
                                 {__("opds.next")}
@@ -158,6 +161,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.last[0]),
                                 }}
+                                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                 className={classNames(stylesButtons.button_primary, stylesButtons.icon_end)}
                             >
                                 {__("opds.lastPage")}
@@ -217,12 +221,12 @@ class PageNavigation extends React.Component<IProps, undefined> {
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.previous[0]),
-            });
+            }, this.props.location.state as IRouterLocationState);
         } else if (pageLinks?.next[0]?.url) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.next[0]),
-            });
+            }, this.props.location.state as IRouterLocationState);
         }
     };
 }

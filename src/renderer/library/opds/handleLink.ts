@@ -15,7 +15,7 @@ import { ContentType, parseContentType } from "readium-desktop/utils/contentType
 
 import { Location } from "history";
 
-import { dispatchHistoryPush } from "../routing";
+import { dispatchHistoryPush, IRouterLocationState } from "../routing";
 import { extractParamFromOpdsRoutePathname } from "./route";
 
 const REL_NAVIGATION_TYPES: string[] = [
@@ -52,7 +52,7 @@ export const dispatchOpdsLink =
                     ...location,
                     pathname: route,
                     // state: {} // we preserve the existing route state
-                });
+                }, location.state as IRouterLocationState);
             } else {
                 await shell.openExternal(ln.url);
             }

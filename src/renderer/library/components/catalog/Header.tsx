@@ -91,6 +91,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: "/library/search/all",
                     }}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                 >
                     {this.props.__("header.allBooks")}
                 </Link>

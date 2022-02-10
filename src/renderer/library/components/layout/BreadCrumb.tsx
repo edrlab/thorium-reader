@@ -18,6 +18,7 @@ import {
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -50,6 +51,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                             ...this.props.location,
                             pathname: breadcrumb[breadcrumb.length - 2].path,
                         }}
+                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                         title={__("opds.back")}
                         className={stylesButtons.button_transparency_icon}
                     >
@@ -67,6 +69,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                         ...this.props.location,
                                         pathname: item.path,
                                     }}
+                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                     title={item.name}
                                     className={stylesButtons.button_transparency}
                                 >

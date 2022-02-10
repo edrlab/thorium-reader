@@ -120,6 +120,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_small)}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
@@ -158,6 +159,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_small)}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
@@ -198,6 +200,7 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_refresh, stylesButtons.button_small)}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
@@ -209,6 +212,7 @@ class Header extends React.Component<IProps, undefined> {
                     to={{
                         ...this.props.location,
                     }}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_refresh, stylesButtons.button_small)}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
