@@ -7,35 +7,35 @@
 
 import "reflect-metadata";
 
-import { createHashHistory, History } from "history";
+import { History } from "history";
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 import { Translator } from "readium-desktop/common/services/translator";
 import {
-    diRendererSymbolTable as diSymbolTable,
+    diRendererSymbolTable,
 } from "readium-desktop/renderer/library/diSymbolTable";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { Store } from "redux";
 
 import App from "./components/App";
-import { IRouterLocationState } from "./routing";
 
 // Create container used for dependency injection
 const container = new Container();
 
 // Create store
-const history: History<IRouterLocationState> = createHashHistory();
-container.bind<History>(diSymbolTable.history).toConstantValue(history);
+const [store, reduxHistory] = initStore();
+container.bind<Store<ILibraryRootState>>(diRendererSymbolTable.store).toConstantValue(store);
 
-const store = initStore(history);
-container.bind<Store<ILibraryRootState>>(diSymbolTable.store).toConstantValue(store);
+container.bind<History & {
+    listenObject: boolean;
+}>(diRendererSymbolTable.history).toConstantValue(reduxHistory);
 
 // Create translator
 const translator = new Translator();
-container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator);
+container.bind<Translator>(diRendererSymbolTable.translator).toConstantValue(translator);
 
-container.bind<typeof App>(diSymbolTable["react-library-app"]).toConstantValue(App);
+container.bind<typeof App>(diRendererSymbolTable["react-library-app"]).toConstantValue(App);
 
 // local interface to force type return
 interface IGet {
@@ -47,7 +47,7 @@ interface IGet {
 
 // export function to get back depedency from container
 // the type any for container.get is overloaded by IGet
-const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
+const diGet: IGet = (symbol: keyof typeof diRendererSymbolTable) => container.get<any>(diRendererSymbolTable[symbol]);
 
 const {
     lazyInject,

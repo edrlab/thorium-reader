@@ -128,8 +128,9 @@ class SearchForm extends React.Component<IProps, undefined> {
 
             const level = this.props.search.level
             || parseInt(
-                matchPath<IOpdsBrowse>(
-                    this.props.location.pathname, routes["/opds/browse"],
+                matchPath<keyof IOpdsBrowse, string>(
+                    routes["/opds/browse"].path,
+                    this.props.location.pathname,
                 ).params.level,
                 10);
 
@@ -142,8 +143,9 @@ class SearchForm extends React.Component<IProps, undefined> {
 
     private route = (title: string, url: string, level: number) =>
         buildOpdsBrowserRoute(
-            matchPath<IOpdsBrowse>(
-                this.props.location.pathname, routes["/opds/browse"],
+            matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
             ).params.opdsId,
             title,
             url,

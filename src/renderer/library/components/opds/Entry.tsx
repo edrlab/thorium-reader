@@ -37,9 +37,12 @@ class Entry extends React.Component<IProps, undefined> {
         const { entry } = this.props;
 
         const { level } = this.props;
-        const rootFeedIdentifier = matchPath<IOpdsBrowse>(
-            this.props.location.pathname, routes["/opds/browse"],
+
+        const rootFeedIdentifier = matchPath<keyof IOpdsBrowse, string>(
+            routes["/opds/browse"].path,
+            this.props.location.pathname,
         ).params.opdsId;
+
         const route = buildOpdsBrowserRoute(
             rootFeedIdentifier,
             entry.title,

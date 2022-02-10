@@ -13,7 +13,9 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/rou
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 
-import { dispatchHistoryPush, TLocation } from "../routing";
+import { Location } from "history";
+
+import { dispatchHistoryPush } from "../routing";
 import { extractParamFromOpdsRoutePathname } from "./route";
 
 const REL_NAVIGATION_TYPES: string[] = [
@@ -22,7 +24,7 @@ const REL_NAVIGATION_TYPES: string[] = [
 
 export const dispatchOpdsLink =
     (dispatch: TDispatch) =>
-        async (ln: IOpdsLinkView, location: TLocation, title?: string | undefined) => {
+        async (ln: IOpdsLinkView, location: Location, title?: string | undefined) => {
 
             dispatch(dialogActions.closeRequest.build());
 

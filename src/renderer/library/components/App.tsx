@@ -7,7 +7,7 @@
 
 import "reflect-metadata";
 
-import { ConnectedRouter } from "connected-react-router";
+import { HistoryRouter } from "redux-first-history/rr6";
 import * as path from "path";
 import * as React from "react";
 import Dropzone, { DropzoneRootProps } from "react-dropzone";
@@ -71,14 +71,14 @@ export default class App extends React.Component<{}, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const store = diLibraryGet("store");
-        const history = diLibraryGet("history");
-        const translator = diLibraryGet("translator");
+        const store = diLibraryGet("store"); // diRendererSymbolTable.store
+        const history = diLibraryGet("history"); // diRendererSymbolTable.history
+        const translator = diLibraryGet("translator"); // diRendererSymbolTable.translator
 
         return (
             <Provider store={store} >
                 <TranslatorContext.Provider value={translator}>
-                    <ConnectedRouter history={history}>
+                    <HistoryRouter history={history}>
                         <Dropzone
                             onDrop={this.onDrop}
                         >
@@ -102,7 +102,7 @@ export default class App extends React.Component<{}, undefined> {
                                 </div>;
                             }}
                         </Dropzone>
-                    </ConnectedRouter>
+                    </HistoryRouter>
                 </TranslatorContext.Provider>
             </Provider>
         );

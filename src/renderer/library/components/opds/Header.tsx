@@ -22,7 +22,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType, IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 
 import SearchForm from "./SearchForm";
 
@@ -46,18 +46,15 @@ class Header extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __, location } = this.props;
-        const displayType = location?.state?.displayType || DisplayType.Grid;
+
+        const displayType = (location?.state && (location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         // FIXME : css in code
         return (
             <SecondaryHeader>
                 <Link
-                    to={{
-                        ...this.props.location,
-                        state: {
-                            displayType: DisplayType.Grid,
-                        },
-                    }}
+                    to={this.props.location}
+                    state = {{displayType: DisplayType.Grid}}
                     replace={true}
                     className={(displayType === DisplayType.Grid) ?
                         stylesButtons.button_transparency_icon :
@@ -69,12 +66,8 @@ class Header extends React.Component<IProps, undefined> {
                     <SVG svg={GridIcon} title={__("header.gridTitle")} />
                 </Link>
                 <Link
-                    to={{
-                        ...this.props.location,
-                        state: {
-                            displayType: DisplayType.List,
-                        },
-                    }}
+                    to={this.props.location}
+                    state = {{displayType: DisplayType.List}}
                     replace={true}
                     className={(displayType === DisplayType.List) ?
                         stylesButtons.button_transparency_icon :
@@ -107,8 +100,9 @@ class Header extends React.Component<IProps, undefined> {
 
             const { __ } = this.props;
 
-            const param = matchPath<IOpdsBrowse>(
-                this.props.location.pathname, routes["/opds/browse"],
+            const param = matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
             ).params;
 
             const lvl = parseInt(param.level, 10);
@@ -144,8 +138,9 @@ class Header extends React.Component<IProps, undefined> {
 
             const { __ } = this.props;
 
-            const param = matchPath<IOpdsBrowse>(
-                this.props.location.pathname, routes["/opds/browse"],
+            const param = matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
             ).params;
 
             const home = this.props.breadcrumb[1];
@@ -180,8 +175,9 @@ class Header extends React.Component<IProps, undefined> {
         let refreshComponet = <></>;
         if (self) {
 
-            const param = matchPath<IOpdsBrowse>(
-                this.props.location.pathname, routes["/opds/browse"],
+            const param = matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
             ).params;
 
             const lvl = parseInt(param.level, 10);

@@ -15,7 +15,7 @@ import { Store } from "redux";
 
 import { IReaderRootState } from "../../common/redux/states/renderer/readerRootState";
 import App from "./components/App";
-import { diReaderSymbolTable as diSymbolTable } from "./diSymbolTable";
+import { diReaderSymbolTable } from "./diSymbolTable";
 
 // Create container used for dependency injection
 const container = new Container();
@@ -24,7 +24,7 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
 
     const store = initStore(preloadedState);
 
-    container.bind<Store<IReaderRootState>>(diSymbolTable.store).toConstantValue(store);
+    container.bind<Store<IReaderRootState>>(diReaderSymbolTable.store).toConstantValue(store);
 
     const locale = store.getState().i18n.locale;
     await translator.setLocale(locale);
@@ -34,9 +34,9 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
 
 // Create translator
 const translator = new Translator();
-container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator);
+container.bind<Translator>(diReaderSymbolTable.translator).toConstantValue(translator);
 
-container.bind<typeof App>(diSymbolTable["react-reader-app"]).toConstantValue(App);
+container.bind<typeof App>(diReaderSymbolTable["react-reader-app"]).toConstantValue(App);
 
 // local interface to force type return
 interface IGet {
@@ -47,7 +47,7 @@ interface IGet {
 
 // export function to get back depedency from container
 // the type any for container.get is overloaded by IGet
-const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
+const diGet: IGet = (symbol: keyof typeof diReaderSymbolTable) => container.get<any>(diReaderSymbolTable[symbol]);
 
 const {
     lazyInject,

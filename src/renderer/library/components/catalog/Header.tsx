@@ -17,7 +17,7 @@ import {
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 import PublicationAddButton from "./PublicationAddButton";
 import SearchForm from "./SearchForm";
@@ -41,17 +41,14 @@ class Header extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __, location } = this.props;
-        const displayType = location?.state?.displayType || DisplayType.Grid;
+
+        const displayType = (location?.state && (location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         return (
             <SecondaryHeader>
                 <Link
-                    to={{
-                        ...this.props.location,
-                        state: {
-                            displayType: DisplayType.Grid,
-                        },
-                    }}
+                    to={this.props.location}
+                    state = {{displayType: DisplayType.Grid}}
                     replace={true}
                     className={(displayType === DisplayType.Grid) ?
                         stylesButtons.button_transparency_icon :
@@ -64,12 +61,8 @@ class Header extends React.Component<IProps, undefined> {
                     <SVG svg={GridIcon} ariaHidden/>
                 </Link>
                 <Link
-                    to={{
-                        ...this.props.location,
-                        state: {
-                            displayType: DisplayType.List,
-                        },
-                    }}
+                    to={this.props.location}
+                    state = {{displayType: DisplayType.List}}
                     replace={true}
                     className={(displayType === DisplayType.List) ?
                         stylesButtons.button_transparency_icon :

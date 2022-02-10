@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { push } from "connected-react-router";
+import { push } from "redux-first-history";
 import { historyActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { routerActions, winActions } from "readium-desktop/renderer/library/redux/actions";
