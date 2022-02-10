@@ -12,7 +12,7 @@ import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -37,9 +37,12 @@ class Entry extends React.Component<IProps, undefined> {
         const { entry } = this.props;
 
         const { level } = this.props;
-        const rootFeedIdentifier = matchPath<IOpdsBrowse>(
-            this.props.location.pathname, routes["/opds/browse"],
+
+        const rootFeedIdentifier = matchPath<keyof IOpdsBrowse, string>(
+            routes["/opds/browse"].path,
+            this.props.location.pathname,
         ).params.opdsId;
+
         const route = buildOpdsBrowserRoute(
             rootFeedIdentifier,
             entry.title,
@@ -56,6 +59,7 @@ class Entry extends React.Component<IProps, undefined> {
                             ...this.props.location,
                             pathname: route,
                         }}
+                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     >
                         <span>
                             <span title={entry.subtitle ? entry.subtitle : undefined}>{entry.title}</span>

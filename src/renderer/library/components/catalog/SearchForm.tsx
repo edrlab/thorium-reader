@@ -17,7 +17,7 @@ import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { dispatchHistoryPush } from "readium-desktop/renderer/library/routing";
+import { dispatchHistoryPush, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
@@ -111,13 +111,13 @@ class SearchForm extends React.Component<IProps, undefined> {
             historyPush({
                 ...this.props.location,
                 pathname: "/library/search/all",
-            });
+            }, this.props.location.state as IRouterLocationState);
         } else {
             const target = "/library/search/text/" + value; // + this.props.location.search;
             historyPush({
                 ...this.props.location,
                 pathname: target,
-            });
+            }, this.props.location.state as IRouterLocationState);
         }
     }
 }

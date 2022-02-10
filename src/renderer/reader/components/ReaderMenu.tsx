@@ -216,7 +216,6 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private renderLinkList(label: string, links: Link[]): JSX.Element {
-        // console.log(label, JSON.stringify(links, null, 4));
 
         return <ul
             aria-label={label}
@@ -268,8 +267,6 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private renderLinkTree(label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element {
-        // console.log(label, JSON.stringify(links, null, 4));
-
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
 

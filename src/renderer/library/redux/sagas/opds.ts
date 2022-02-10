@@ -32,7 +32,8 @@ export const SEARCH_TERM = "{searchTerms}";
 const debug = debug_("readium-desktop:renderer:redux:saga:opds");
 
 // https://reacttraining.com/react-router/web/api/withRouter
-// withRouter does not subscribe to location changes like React Redux’s connect does for state changes.
+// withRouter (ReactRouter v5, deprecated in v6 in favour of hooks useLocation(), useNavigate(), and useParams())
+// does not subscribe to location changes like React Redux’s connect does for state changes.
 // Instead, re-renders after location changes propagate out from the <Router> component.
 // This means that withRouter does not re-render on route transitions unless its parent component re-renders.
 function* browseWatcher(action: routerActions.locationChanged.TAction) {

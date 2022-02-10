@@ -8,7 +8,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
@@ -47,7 +47,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class LibraryLayout extends React.Component<IProps, undefined> {
@@ -162,4 +162,4 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     keyboardShortcuts: state.keyboard.shortcuts,
 });
 
-export default connect(mapStateToProps)(withRouter(withTranslator(LibraryLayout)));
+export default connect(mapStateToProps)(withTranslator(LibraryLayout));

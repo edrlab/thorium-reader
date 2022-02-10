@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { routes } from "readium-desktop/renderer/library/routing";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
@@ -26,19 +26,18 @@ export default class PageManager extends React.Component<{}, IState> {
 
     public render(): React.ReactElement<{}> {
         return (
-            <Switch>
+            <Routes>
                 {
                     ObjectKeys(routes).map(
                         (path) =>
                             <Route
                                 key={path}
-                                exact={routes[path].exact}
                                 path={routes[path].path}
-                                component={routes[path].component}
+                                element={React.createElement(routes[path].component)}
                             />,
                     )
                 }
-            </Switch>
+            </Routes>
         );
     }
 }

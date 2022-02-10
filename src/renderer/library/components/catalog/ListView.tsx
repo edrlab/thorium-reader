@@ -20,6 +20,7 @@ import PublicationListElement from "readium-desktop/renderer/library/components/
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import NoPublicationInfo from "./NoPublicationInfo";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -61,6 +62,7 @@ class CatalogListView extends React.Component<IProps, undefined> {
                                         ...this.props.location,
                                         pathname: "/library/search/all",
                                     }}
+                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                 >
                                     {this.props.__("header.allBooks")}
                                 </Link>

@@ -21,7 +21,7 @@ import {
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { SEARCH_TERM } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
+import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
@@ -128,22 +128,24 @@ class SearchForm extends React.Component<IProps, undefined> {
 
             const level = this.props.search.level
             || parseInt(
-                matchPath<IOpdsBrowse>(
-                    this.props.location.pathname, routes["/opds/browse"],
+                matchPath<keyof IOpdsBrowse, string>(
+                    routes["/opds/browse"].path,
+                    this.props.location.pathname,
                 ).params.level,
                 10);
 
             this.props.historyPush({
                 ...this.props.location,
                 pathname: this.route(searchWords, url, level),
-            });
+            }, this.props.location.state as IRouterLocationState);
         }
     };
 
     private route = (title: string, url: string, level: number) =>
         buildOpdsBrowserRoute(
-            matchPath<IOpdsBrowse>(
-                this.props.location.pathname, routes["/opds/browse"],
+            matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
             ).params.opdsId,
             title,
             url,

@@ -15,7 +15,7 @@ import {
 } from "readium-desktop/renderer/common/redux/api/api";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { Dispatch } from "redux";
 import { CATALOG_GET_API_ID_CHANNEL, PUBLICATION_TAGS_API_ID_CHANNEL } from "../../redux/sagas/catalog";
 
@@ -45,7 +45,7 @@ class Catalog extends React.Component<IProps, undefined> {
             this.props.api(PUBLICATION_TAGS_API_ID_CHANNEL)("publication/getAllTags")();
         }
 
-        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
+        const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         const secondaryHeader = <Header/>;
         return (

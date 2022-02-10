@@ -18,7 +18,7 @@ import LibraryLayout from "readium-desktop/renderer/library/components/layout/Li
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { Unsubscribe } from "redux";
 
 import Header from "../catalog/Header";
@@ -69,7 +69,8 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
+        const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
+
         const { __ } = this.props;
         const title = __("catalog.allBooks");
 

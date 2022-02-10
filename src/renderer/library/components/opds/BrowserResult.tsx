@@ -16,7 +16,7 @@ import Loader from "readium-desktop/renderer/common/components/Loader";
 import { apiState } from "readium-desktop/renderer/common/redux/api/api";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 import PublicationCard from "../publication/PublicationCard";
 import { ListView } from "../utils/ListView";
@@ -158,8 +158,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                         {
                                             group.publications &&
                                                 (
-                                                    this.props.location?.state?.displayType
-                                                    || DisplayType.Grid
+                                                    (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid
                                                 ) === DisplayType.Grid ?
                                                 <Slider
                                                     content={group.publications.map((pub, pubId) =>

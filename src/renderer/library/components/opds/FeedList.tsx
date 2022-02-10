@@ -27,6 +27,7 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -87,6 +88,7 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
+                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                     className={stylesBlocks.block_full}
                                 >
                                     <p title={`${item.title} --- ${item.url}`}>{item.title}</p>

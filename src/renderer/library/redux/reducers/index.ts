@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { connectRouter } from "connected-react-router";
-import { History } from "history";
 import { downloadActions } from "readium-desktop/common/redux/actions";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
@@ -19,13 +17,14 @@ import { historyReducer } from "readium-desktop/renderer/library/redux/reducers/
 import {
     opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer,
 } from "readium-desktop/renderer/library/redux/reducers/opds";
-import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
-import { combineReducers } from "redux";
+import { combineReducers, Reducer } from "redux";
 
 import { ILibraryRootState } from "../states";
 
-export const rootReducer = (history: History<IRouterLocationState>) => {
+import { RouterState } from "redux-first-history";
+
+export const rootReducer = (routerReducer: Reducer<RouterState>) => {
     return combineReducers<ILibraryRootState>({
         i18n: i18nReducer,
         opds: combineReducers({
@@ -40,7 +39,7 @@ export const rootReducer = (history: History<IRouterLocationState>) => {
         // update: updateReducer,
         api: apiReducer,
         dialog: dialogReducer,
-        router: connectRouter<IRouterLocationState>(history),
+        router: routerReducer,
         toast: toastReducer,
         download: priorityQueueReducer
             <
