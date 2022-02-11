@@ -55,7 +55,7 @@ export default class App extends React.Component<{}, undefined> {
                         // HTTP localhost:port
                         // rcssPath = _RENDERER_READER_BASE_URL + "dist/ReadiumCSS";
 
-                        // static server (WebPack contentBasePublicPath)
+                        // static server (WebPack publicPath)
                         // rcssPath = "/dist/ReadiumCSS";
                         rcssPath = "/node_modules/" + rcssPath;
                     }

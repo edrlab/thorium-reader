@@ -229,21 +229,24 @@ let config = Object.assign(
         },
 
         devServer: {
-            contentBase: __dirname,
-            contentBasePublicPath: "/",
-            publicPath: "/",
-            hot: _enableHot,
-            watchContentBase: true,
-            watchOptions: {
-                ignored: [
-                    /dist/,
-                    /docs/,
-                    /scripts/,
-                    /test/,
-                    /node_modules/,
-                    /external-assets/,
-                ],
+            static: {
+                directory: __dirname,
+                publicPath: "/",
+                watch: {
+                    ignored: [
+                        /dist/,
+                        /docs/,
+                        /scripts/,
+                        /test/,
+                        /node_modules/,
+                        /external-assets/,
+                    ],
+                },
             },
+            devMiddleware: {
+                publicPath: "/",
+            },
+            hot: _enableHot,
         },
         plugins: [
             new BundleAnalyzerPlugin({
@@ -281,31 +284,34 @@ if (nodeEnv !== "production") {
         devtool: "inline-source-map",
 
         devServer: {
-            contentBase: __dirname,
-            contentBasePublicPath: "/",
-            publicPath: "/",
+            static: {
+                directory: __dirname,
+                publicPath: "/",
+                watch: {
+                    ignored: [
+                        /dist/,
+                        /docs/,
+                        /scripts/,
+                        /test/,
+                        /node_modules/,
+                        /external-assets/,
+                    ],
+                },
+            },
+            devMiddleware: {
+                publicPath: "/",
+            },
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
             hot: _enableHot,
-            watchContentBase: true,
-            watchOptions: {
-                ignored: [
-                    /dist/,
-                    /docs/,
-                    /scripts/,
-                    /test/,
-                    /node_modules/,
-                    /external-assets/,
-                ],
-            },
             port,
         },
     });
 
     config.output.pathinfo = true;
 
-    // same as devServer.publicPath
+    // same as devServer.devMiddleware.publicPath
     // preprocessorDirectives.rendererReaderBaseUrl (full HTTP locahost + port)
     config.output.publicPath = "/";
 

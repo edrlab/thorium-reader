@@ -26,55 +26,9 @@ import svCatalog from "readium-desktop/resources/locales/sv.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
-// -----------------------------------------------------------
-// i18next Typescript definitions woes (esModuleInterop, WebPack bundler):
+import i18next from "i18next";
 
-// https://github.com/i18next/i18next/pull/1291
-// https://github.com/i18next/i18next/issues/1271
-// https://github.com/i18next/i18next/issues/1177
-
-// CHANGES:
-// https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1900
-// https://github.com/i18next/i18next/pull/1352
-
-// import i18next from "i18next"; // the "default" export (unfortunately, WebPack generates i18next_1.default!)
-import { i18n } from "i18next"; // named export: just the TypeScript type
-
-// node_modules/i18next/package.json
-// =>
-// "main" CJS "./dist/cjs/i18next.js",
-// "module" ESM "./dist/esm/i18next.js",
-// ... depends on WebPack bundler strategy, matrix: DEV vs. PROD, and MAIN vs. RENDERER
-
-// ##### technique 1:
-// import i18next from "i18next"; // doesn't work with unit tests
-import * as i18next from "i18next";
-//
-// ##### technique 2:
-// import i18next = require("i18next");
-//
-// ##### technique 3:
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-// const i18next: i18n = require("i18next");
-
-// ##### technique 4 (force CJS):
-// const i18next: i18n = require("i18next/dist/cjs/i18next");
-
-// ##### technique 5 (force ESM):
-// const i18next: i18n = require("i18next/dist/esm/i18next");
-
-// const i18nextInstance = i18next.createInstance(); // it should be as simple as that :(
-let i18nextInstance: i18n | undefined;
-if ((i18next as unknown as i18n).createInstance) {
-    i18nextInstance = (i18next as unknown as i18n).createInstance();
-
-} else if (((i18next as any).default as i18n).createInstance) {
-    i18nextInstance = ((i18next as any).default as i18n).createInstance();
-
-} else { // Fallback for TS compiler only (not an actual runtime occurrence)
-    i18nextInstance = i18next as unknown as i18n;
-}
-// -----------------------------------------------------------
+const i18nextInstance = i18next.createInstance();
 
 // https://www.i18next.com/overview/configuration-options
 i18nextInstance.init({
