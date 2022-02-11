@@ -1,4 +1,4 @@
-const { pathsToModuleNameMapper } = require('ts-jest/utils');
+const { pathsToModuleNameMapper } = require('ts-jest');
 
 // const { defaults: tsjPreset } = require('ts-jest/presets');
 // const { jsWithTs: tsjPreset } = require('ts-jest/presets');
@@ -28,7 +28,7 @@ module.exports = {
     globals: {
         "ts-jest": {
             babelConfig: false,
-            tsConfig: "<rootDir>/tsconfig.json",
+            tsconfig: "<rootDir>/tsconfig.json",
         }
     },
     transform: {
@@ -36,7 +36,6 @@ module.exports = {
         // ...tsjPreset.transform,
         // "^.+\\.tsx?$": ["ts-jest", {}],
     },
-    transformIgnorePatterns: ["<rootDir>/node_modules/"],
     moduleNameMapper,
     moduleFileExtensions: [
         "ts",
@@ -45,9 +44,36 @@ module.exports = {
         "jsx",
         "json",
     ],
+    transformIgnorePatterns: [
+        "<rootDir>/node_modules/",
+        "<rootDir>/dist/",
+        "<rootDir>/resources/",
+        "<rootDir>/changelogs/",
+        "<rootDir>/docs/",
+        "<rootDir>/img/",
+        "<rootDir>/release/",
+        "<rootDir>/scripts/",
+    ],
+    modulePathIgnorePatterns: [
+        "<rootDir>/node_modules/",
+        "<rootDir>/dist/",
+        "<rootDir>/resources/",
+        "<rootDir>/changelogs/",
+        "<rootDir>/docs/",
+        "<rootDir>/img/",
+        "<rootDir>/release/",
+        "<rootDir>/scripts/",
+        "<rootDir>/src/",
+    ],
     testPathIgnorePatterns: [
         "<rootDir>/node_modules/",
         "<rootDir>/dist/",
+        "<rootDir>/resources/",
+        "<rootDir>/changelogs/",
+        "<rootDir>/docs/",
+        "<rootDir>/img/",
+        "<rootDir>/release/",
+        "<rootDir>/scripts/",
         "<rootDir>/src/",
     ],
     setupFilesAfterEnv: ['<rootDir>/scripts/jest_setup.js'],
