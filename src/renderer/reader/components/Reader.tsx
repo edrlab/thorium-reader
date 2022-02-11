@@ -1544,7 +1544,7 @@ class Reader extends React.Component<IProps, IState> {
                 preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
             } else {
                 preloadPath = "r2-navigator-js/dist/" +
-                    "es6-es2015" +
+                    "es8-es2017" +
                     "/src/electron/renderer/webview/preload.js";
 
                 if (_RENDERER_READER_BASE_URL === "file://") {

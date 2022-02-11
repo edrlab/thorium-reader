@@ -10,7 +10,7 @@ const nodeEnv = process.env.NODE_ENV || "development";
 console.log(`PRELOAD nodeEnv: ${nodeEnv}`);
 
 let config = Object.assign({}, {
-    entry: "./node_modules/r2-navigator-js/dist/es6-es2015/src/electron/renderer/webview/preload.js",
+    entry: "./node_modules/r2-navigator-js/dist/es8-es2017/src/electron/renderer/webview/preload.js",
     name: "renderer webview preload",
     mode: nodeEnv,
     output: {

@@ -9,12 +9,12 @@ const preprocessorDirectives = require("./webpack.config-preprocessor-directives
 const aliases = {
     "readium-desktop": path.resolve(__dirname, "src"),
 
-    "@r2-utils-js": "r2-utils-js/dist/es6-es2015/src",
-    "@r2-lcp-js": "r2-lcp-js/dist/es6-es2015/src",
-    "@r2-opds-js": "r2-opds-js/dist/es6-es2015/src",
-    "@r2-shared-js": "r2-shared-js/dist/es6-es2015/src",
-    "@r2-streamer-js": "r2-streamer-js/dist/es6-es2015/src",
-    "@r2-navigator-js": "r2-navigator-js/dist/es6-es2015/src",
+    "@r2-utils-js": "r2-utils-js/dist/es8-es2017/src",
+    "@r2-lcp-js": "r2-lcp-js/dist/es8-es2017/src",
+    "@r2-opds-js": "r2-opds-js/dist/es8-es2017/src",
+    "@r2-shared-js": "r2-shared-js/dist/es8-es2017/src",
+    "@r2-streamer-js": "r2-streamer-js/dist/es8-es2017/src",
+    "@r2-navigator-js": "r2-navigator-js/dist/es8-es2017/src",
 };
 
 ////// ================================
