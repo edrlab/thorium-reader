@@ -77,7 +77,7 @@ const yargsInit = () =>
 
                 const appNotReady = !app.isReady();
                 const noLock = !gotTheLock;
-                if (appNotReady || noLock) importCommand(argv);
+                if (appNotReady || noLock) await importCommand(argv);
             },
         )
         .command("read <title>",
@@ -91,7 +91,7 @@ const yargsInit = () =>
             async (argv) => {
                 // if it's the main instance
                 if (gotTheLock) {
-                    readCommand(argv);
+                    await readCommand(argv);
                 } else {
                     app.exit(0);
                 }
@@ -111,7 +111,7 @@ const yargsInit = () =>
             async (argv) => {
                 // if it's the main instance
                 if (gotTheLock) {
-                    mainCommand(argv);
+                    await mainCommand(argv);
                 } else {
                     app.exit(0);
                 }
