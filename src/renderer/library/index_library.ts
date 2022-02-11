@@ -27,6 +27,15 @@ if (IS_DEV) {
     cr.consoleRedirect("readium-desktop:renderer:bookshelf", process.stdout, process.stderr, true);
 }
 
+// TO TEST ESM (not COMMONJS):
+// // import * as normalizeUrl from "normalize-url";
+// import normalizeUrl from "normalize-url";
+// console.log(normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"), "#".repeat(200));
+// // import("normalize-url").then(({default: normalizeUrl}) => {
+// //     //=> 'http://sindresorhus.com/baz?a=foo&b=bar'
+// //     console.log("#".repeat(2000), normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"));
+// // });
+
 // let devTron: any;
 let axe: any;
 if (IS_DEV) {

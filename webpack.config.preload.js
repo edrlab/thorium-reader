@@ -17,9 +17,11 @@ let config = Object.assign({}, {
         filename: "preload.js",
         path: path.join(__dirname, "dist"),
         // https://github.com/webpack/webpack/issues/1114
-        libraryTarget: "commonjs2",
+        libraryTarget: "commonjs2", // commonjs-module
     },
     target: "electron-renderer",
+
+    externalsPresets: { node: true },
 
     resolve: {
         extensions: [".js"]

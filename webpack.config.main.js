@@ -37,49 +37,68 @@ const aliases = {
     "@lunr-languages": "lunr-languages",
 };
 
-////// ================================
-////// EXTERNALS
-// Some modules cannot be bundled by Webpack
-// for example those that make internal use of NodeJS require() in special ways
-// in order to resolve asset paths, etc.
-// In DEBUG / DEV mode, we just external-ize as much as possible (any non-TypeScript / non-local code),
-// to minimize bundle size / bundler computations / compile times.
-
 let externals = {
     bindings: "bindings",
-    yargs: "yargs",
     fsevents: "fsevents",
-    conf: "conf",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
+    "electron": "electron",
+    yargs: "yargs",
 };
+const _externalsCache = new Set();
 if (nodeEnv !== "production") {
-    // // externals = Object.assign(externals, {
-    // //         "electron-config": "electron-config",
-    // //     }
-    // // );
-    // const { dependencies } = require("./package.json");
-    // const depsKeysArray = Object.keys(dependencies || {});
-    // const depsKeysObj = {};
-    // depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
-    // externals = Object.assign(externals, depsKeysObj);
+    const nodeExternals = require("webpack-node-externals");
+    const neFunc = nodeExternals({
+        allowlist: ["normalize-url"],
+        importType: function (moduleName) {
+            if (!_externalsCache.has(moduleName)) {
+                console.log(`WEBPACK EXTERNAL (MAIN): [${moduleName}]`);
+            }
+            _externalsCache.add(moduleName);
+            // if (moduleName === "normalize-url") {
+            //     return "module normalize-url";
+            // }
+            return "commonjs " + moduleName;
+        },
+    });
+    externals = [externals,
+        function({ context, request, contextInfo, getResolve }, callback) {
+            const isRDesk = request.indexOf("readium-desktop/") === 0;
+            if (isRDesk) {
 
-    // if (process.env.WEBPACK === "bundle-external") {
-    const nodeExternals = require("./nodeExternals");
-    externals = [
-        nodeExternals({
-            processName: "MAIN",
-            alias: aliases,
-        }),
+                if (!_externalsCache.has(request)) {
+                    console.log(`WEBPACK EXTERNAL (MAIN): READIUM-DESKTOP [${request}]`);
+                }
+                _externalsCache.add(request);
+
+                return callback();
+            }
+
+            let request_ = request;
+            if (aliases) {
+                // const isR2 = /^r2-.+-js/.test(request);
+                // const isR2Alias = /^@r2-.+-js/.test(request);
+
+                const iSlash = request.indexOf("/");
+                const key = request.substr(0, (iSlash >= 0) ? iSlash : request.length);
+                if (aliases[key]) {
+                    request_ = request.replace(key, aliases[key]);
+
+                    if (!_externalsCache.has(request)) {
+                        console.log(`WEBPACK EXTERNAL (MAIN): ALIAS [${request}] => [${request_}]`);
+                    }
+                    _externalsCache.add(request);
+
+                    return callback(null, "commonjs " + request_);
+                }
+            }
+
+            neFunc(context, request, callback);
+        },
     ];
-    // } else {
-    //     const nodeExternals = require("webpack-node-externals");
-    //     // electron-devtools-installer
-    //     externals = [nodeExternals()];
-    // }
 }
 
-console.log("WEBPACK externals (MAIN):");
+console.log("WEBPACK externals (MAIN):", "-".repeat(200));
 console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
@@ -97,7 +116,7 @@ let config = Object.assign(
             path: path.join(__dirname, "dist"),
 
             // https://github.com/webpack/webpack/issues/1114
-            libraryTarget: "commonjs2",
+            libraryTarget: "commonjs2", // commonjs-module
         },
         target: "electron-main",
 
@@ -106,7 +125,12 @@ let config = Object.assign(
             __filename: false,
         },
 
+        externalsPresets: { node: true },
         externals: externals,
+        externalsType: "commonjs", // module, node-commonjs
+        experiments: {
+            outputModule: false, // module, node-commonjs
+        },
 
         resolve: {
             // Add '.ts' as resolvable extensions.
@@ -149,7 +173,7 @@ let config = Object.assign(
                         },
                     ],
                 },
-                // { test: /\.node$/, loaders: ["node-loader"] },
+                // { test: /\.node$/, loader: "node-loader" },
             ],
         },
         plugins: [

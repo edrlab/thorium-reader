@@ -21,6 +21,15 @@ import { start } from "./main/start";
 
 // import { initSessions as initSessionsHTTP } from "@r2-navigator-js/electron/main/sessions";
 
+// TO TEST ESM (not COMMONJS):
+// // import * as normalizeUrl from "normalize-url";
+// import normalizeUrl from "normalize-url";
+// console.log(normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"), "#".repeat(200));
+// // import("normalize-url").then(({default: normalizeUrl}) => {
+// //     //=> 'http://sindresorhus.com/baz?a=foo&b=bar'
+// //     console.log("#".repeat(2000), normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"));
+// // });
+
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
     delete process.env.DEBUG;

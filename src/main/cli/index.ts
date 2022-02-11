@@ -10,7 +10,7 @@ import { app } from "electron";
 import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
-import * as yargs from "yargs";
+import yargs from "yargs";
 import { importCommand, mainCommand, opdsCommand, readCommand } from "./command";
 
 // Logger

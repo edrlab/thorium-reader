@@ -11,6 +11,7 @@
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
   },
+  "type": "commonjs",
   "main": "dist/main.js",
   "scripts": {
     "clean": "rimraf dist && rimraf release",
@@ -384,6 +385,7 @@
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4",
+    "webpack-node-externals": "^3.0.0",
     "worker-loader": "^3.0.8"
   }
 }

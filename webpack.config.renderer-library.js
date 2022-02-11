@@ -22,17 +22,6 @@ const aliases = {
     "@r2-navigator-js": "r2-navigator-js/dist/es8-es2017/src",
 };
 
-////// ================================
-////// EXTERNALS
-// Some modules cannot be bundled by Webpack
-// for example those that make internal use of NodeJS require() in special ways
-// in order to resolve asset paths, etc.
-// In DEBUG / DEV mode, we just external-ize as much as possible (any non-TypeScript / non-local code),
-// to minimize bundle size / bundler computations / compile times.
-
-// const nodeExternals = require("webpack-node-externals");
-const nodeExternals = require("./nodeExternals");
-
 const _enableHot = true;
 
 // Get node environment
@@ -54,32 +43,65 @@ const checkTypeScriptSkip =
 let externals = {
     bindings: "bindings",
     fsevents: "fsevents",
-    conf: "conf",
+    "electron-devtools-installer": "electron-devtools-installer",
+    "remote-redux-devtools": "remote-redux-devtools",
+    "electron": "electron",
+    yargs: "yargs",
 };
+const _externalsCache = new Set();
 if (nodeEnv !== "production") {
-    // // externals = Object.assign(externals, {
-    // //         "electron-config": "electron-config",
-    // //     }
-    // // );
-    // const { dependencies } = require("./package.json");
-    // const depsKeysArray = Object.keys(dependencies || {});
-    // const depsKeysObj = {};
-    // depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
-    // externals = Object.assign(externals, depsKeysObj);
+    const nodeExternals = require("webpack-node-externals");
+    const neFunc = nodeExternals({
+        allowlist: ["normalize-url"],
+        importType: function (moduleName) {
+            if (!_externalsCache.has(moduleName)) {
+                console.log(`WEBPACK EXTERNAL (LIBRARY): [${moduleName}]`);
+            }
+            _externalsCache.add(moduleName);
+            // if (moduleName === "normalize-url") {
+            //     return "module normalize-url";
+            // }
+            return "commonjs " + moduleName;
+        },
+    });
+    externals = [externals,
+        function({ context, request, contextInfo, getResolve }, callback) {
+            const isRDesk = request.indexOf("readium-desktop/") === 0;
+            if (isRDesk) {
 
-    if (process.env.WEBPACK === "bundle-external") {
-        externals = [
-            nodeExternals({
-                processName: "LIBRARY",
-                alias: aliases,
-            }),
-        ];
-    } else {
-        externals.devtron = "devtron";
-    }
+                if (!_externalsCache.has(request)) {
+                    console.log(`WEBPACK EXTERNAL (LIBRARY): READIUM-DESKTOP [${request}]`);
+                }
+                _externalsCache.add(request);
+
+                return callback();
+            }
+
+            let request_ = request;
+            if (aliases) {
+                // const isR2 = /^r2-.+-js/.test(request);
+                // const isR2Alias = /^@r2-.+-js/.test(request);
+
+                const iSlash = request.indexOf("/");
+                const key = request.substr(0, (iSlash >= 0) ? iSlash : request.length);
+                if (aliases[key]) {
+                    request_ = request.replace(key, aliases[key]);
+
+                    if (!_externalsCache.has(request)) {
+                        console.log(`WEBPACK EXTERNAL (LIBRARY): ALIAS [${request}] => [${request_}]`);
+                    }
+                    _externalsCache.add(request);
+
+                    return callback(null, "commonjs " + request_);
+                }
+            }
+
+            neFunc(context, request, callback);
+        },
+    ];
 }
 
-console.log("WEBPACK externals (LIBRARY):");
+console.log("WEBPACK externals (LIBRARY):", "-".repeat(200));
 console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
@@ -146,13 +168,18 @@ let config = Object.assign(
             filename: "index_library.js",
             path: path.join(__dirname, "dist"),
             // https://github.com/webpack/webpack/issues/1114
-            libraryTarget: "commonjs2",
+            libraryTarget: "commonjs2", // commonjs-module
         },
         target: "electron-renderer",
 
         mode: nodeEnv,
 
+        externalsPresets: { node: true },
         externals: externals,
+        externalsType: "commonjs", // module, node-commonjs
+        experiments: {
+            outputModule: false, // module, node-commonjs
+        },
 
         resolve: {
             extensions: [".ts", ".tsx", ".js", ".jsx"],
