@@ -29,7 +29,7 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 import {
     _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV,
 } from "readium-desktop/preprocessor-directives";
-import { Store } from "redux";
+import { type Store } from "redux";
 import { SagaMiddleware } from "redux-saga";
 
 import { KeyboardApi } from "./api/keyboard";

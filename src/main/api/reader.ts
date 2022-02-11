@@ -15,7 +15,7 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 

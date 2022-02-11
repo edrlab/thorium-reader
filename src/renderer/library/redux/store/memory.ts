@@ -11,7 +11,7 @@ import { reduxSyncMiddleware } from "readium-desktop/renderer/library/redux/midd
 import { rootReducer } from "readium-desktop/renderer/library/redux/reducers";
 import { rootSaga } from "readium-desktop/renderer/library/redux/sagas";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { applyMiddleware, createStore, Store } from "redux";
+import { applyMiddleware, createStore, type Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 

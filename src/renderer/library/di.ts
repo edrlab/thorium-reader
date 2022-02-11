@@ -16,7 +16,7 @@ import {
 } from "readium-desktop/renderer/library/diSymbolTable";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import App from "./components/App";
 

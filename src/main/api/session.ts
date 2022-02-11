@@ -7,7 +7,7 @@
 
 import { inject, injectable } from "inversify";
 import { ISessionApi } from "readium-desktop/common/api/interface/session.interface";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import { diSymbolTable } from "../diSymbolTable";
 import { sessionActions } from "../redux/actions";

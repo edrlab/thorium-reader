@@ -98,9 +98,11 @@ const cssLoaderConfig = [
     {
         loader: "css-loader",
         options: {
-            import: (url, media, resourcePath) => {
-                console.log("css-loader IMPORT (READER): ", url, media, resourcePath);
-                return true;
+            import: {
+                filter: (url, media, resourcePath) => {
+                    console.log("css-loader IMPORT (READER): ", url, media, resourcePath);
+                    return true;
+                },
             },
             importLoaders: 1,
             modules: {
@@ -111,7 +113,7 @@ const cssLoaderConfig = [
                 localIdentName: "[local]",
             },
             // modules: nodeEnv !== "production" && false ? { // MUST USE STRICT BASE64, NO PATH DEPENDENT (OTHERWISE BREAK CROSS-FILE CSS CLASSES WITH IDENTICAL NAMES, E.G. SUBCLASSES IN NESTED STATEMENTS)
-            //     localIdentName: "[path][name]__[local]--[hash:base64:5]",
+            //     localIdentName: "[path][name]__[local]--[contenthash:base64:5]",
             // } : {
             //     getLocalIdent: (context, localIdentName, localName, options) => {
             //         // const checkSum = crypto.createHash("sha256");
@@ -123,8 +125,8 @@ const cssLoaderConfig = [
             //         // return h;
             //         return localName;
             //     },
-            //     // localIdentName: "[hash:base64]",
-            //     // localIdentHashPrefix: "hash",
+            //     // localIdentName: "[contenthash:base64]",
+            //     // localIdentHashPrefix: "contenthash",
             //     // localIdentHashSalt: "_",
             //     // localIdentHashFunction: "md4", // sha256
             //     // localIdentHashDigest: "hex", // base64
@@ -205,11 +207,16 @@ let config = Object.assign(
                     ],
                 },
                 {
-                    loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
-                    options: {
-                        esModule: false,
-                    },
+                    // loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
+                    // type: 'javascript/auto',
+                    // options: {
+                    //     esModule: false,
+                    // },
                     test: /\.(png|jpe?g|gif|ico)$/,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'assets/[name].[md5:hash].[ext]',
+                    },
                 },
                 {
                     exclude: /node_modules/,
@@ -218,12 +225,17 @@ let config = Object.assign(
                 },
                 {
                     exclude: /src/,
-                    loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
-                    options: {
-                        esModule: false,
-                        outputPath: "fonts",
-                    },
+                    // loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
+                    // type: 'javascript/auto',
+                    // options: {
+                    //     esModule: false,
+                    //     outputPath: "fonts",
+                    // },
                     test: /\.(woff|woff2|ttf|eot|svg)$/,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'assets/[name].[md5:hash].[ext]',
+                    },
                 },
             ],
         },

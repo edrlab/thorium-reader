@@ -16,7 +16,7 @@ import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/cata
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";

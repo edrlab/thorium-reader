@@ -11,7 +11,7 @@ import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 import { Translator } from "readium-desktop/common/services/translator";
 import { initStore } from "readium-desktop/renderer/reader/redux/store/memory";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import { IReaderRootState } from "../../common/redux/states/renderer/readerRootState";
 import App from "./components/App";

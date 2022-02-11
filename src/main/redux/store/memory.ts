@@ -17,7 +17,7 @@ import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { applyMiddleware, createStore, Store } from "redux";
+import { applyMiddleware, createStore, type Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { applyPatch } from "rfc6902";
 

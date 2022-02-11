@@ -23,7 +23,7 @@ const checkTypeScriptSkip =
     : false
     ;
 
-// let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
+// let ignorePlugin = new webpack.IgnorePlugin({ resourceRegExp: new RegExp("/(bindings)/") })
 
 const aliases = {
     "readium-desktop": path.resolve(__dirname, "src"),
@@ -149,7 +149,7 @@ let config = Object.assign(
                         },
                     ],
                 },
-                { test: /\.node$/, loaders: ["node-loader"] },
+                // { test: /\.node$/, loaders: ["node-loader"] },
             ],
         },
         plugins: [

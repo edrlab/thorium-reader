@@ -31,7 +31,7 @@ import { IS_DEV, LCP_SKIP_LSD } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import { lsdRenew_ } from "@r2-lcp-js/lsd/renew";
 import { lsdReturn_ } from "@r2-lcp-js/lsd/return";
