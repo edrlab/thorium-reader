@@ -32,6 +32,15 @@ const i18nextInstance = i18next.createInstance();
 
 // https://www.i18next.com/overview/configuration-options
 i18nextInstance.init({
+    // https://www.i18next.com/misc/migration-guide#v-20-x-x-to-v-21-0-0
+    compatibilityJSON: "v3",
+    interpolation: {
+        skipOnVariables: false,
+    },
+    nsSeparator: ":",
+    keySeparator: ".",
+    // supportedLngs: LANGUAGE_KEYS,
+    // nonExplicitSupportedLngs: true,
     // --
     // https://github.com/i18next/i18next/pull/1584
     // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#2000
@@ -93,8 +102,6 @@ i18nextInstance.init({
     },
     // lng: undefined,
     fallbackLng: "en",
-    // whitelist: LANGUAGE_KEYS,
-    // nonExplicitWhitelist: true,
     // load: "all",
     // preload: LANGUAGE_KEYS,
     // lowerCaseLng: false,
