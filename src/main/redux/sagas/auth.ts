@@ -281,7 +281,7 @@ async function opdsSetAuthCredentials(
                             async (res) => {
                                 if (res.isSuccess) {
 
-                                    const _data = await res.response.json();
+                                    const _data: any = await res.response.json();
                                     if (typeof _data === "object") {
 
                                         res.data = {

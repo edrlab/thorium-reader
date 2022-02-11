@@ -7,7 +7,7 @@
 
 import { RequestInit, Response } from "node-fetch";
 
-export type THttpOptions = RequestInit;
+export type THttpOptions = RequestInit & { timeout?: number, abortController?: AbortController };
 export type THttpResponse = Response;
 
 export interface IHttpGetResult<TData> {

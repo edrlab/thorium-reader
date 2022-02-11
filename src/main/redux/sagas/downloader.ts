@@ -7,16 +7,15 @@
 
 import * as debug_ from "debug";
 import { createWriteStream, promises as fsp, WriteStream } from "fs";
-import { RequestInit } from "node-fetch";
 import * as path from "path";
 import { acceptedExtension } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ok } from "readium-desktop/common/utils/assert";
-import { IHttpGetResult } from "readium-desktop/common/utils/http";
+import { IHttpGetResult, THttpOptions } from "readium-desktop/common/utils/http";
 import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
-import { AbortSignal, httpGet } from "readium-desktop/main/network/http";
+import { httpGet } from "readium-desktop/main/network/http";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { cancel, cancelled, delay, take } from "redux-saga/effects";
@@ -208,10 +207,11 @@ function* downloaderServiceProcessStatusProgressLoop(
     }
 }
 
-function* downloadLinkRequest(linkHref: string, abort: AbortSignal): SagaGenerator<IHttpGetResult<undefined>> {
+function* downloadLinkRequest(linkHref: string, controller: AbortController): SagaGenerator<IHttpGetResult<undefined>> {
 
-    const options: RequestInit = {};
-    options.signal = abort;
+    const options: THttpOptions = {};
+    options.abortController = controller;
+    options.signal = controller.signal;
 
     const data = yield* callTyped(() => httpGet(linkHref, options));
 
@@ -396,14 +396,15 @@ type TReturnDownloadLinkProcess = TReturnDownloadLinkStream | undefined;
 function* downloadLinkProcess(linkHref: IDownloaderLink, id: number): SagaGenerator<TReturnDownloadLinkProcess> {
 
     ok(linkHref);
-    const abort = new AbortSignal();
+
+    const controller = new AbortController();
 
     try {
 
         debug("start to downloadService", linkHref);
         const url = typeof linkHref === "string" ? linkHref : linkHref.href;
         const type = typeof linkHref === "string" ? undefined : linkHref.type;
-        const httpData = yield* callTyped(downloadLinkRequest, url, abort);
+        const httpData = yield* callTyped(downloadLinkRequest, url, controller);
 
         debug("start to stream download");
         return yield* callTyped(downloadLinkStream, httpData, id, type);
@@ -415,7 +416,7 @@ function* downloadLinkProcess(linkHref: IDownloaderLink, id: number): SagaGenera
         if (yield cancelled()) {
             debug("downloaderService cancelled -> abort");
 
-            abort.dispatchEvent();
+            controller.abort();
         }
 
     }

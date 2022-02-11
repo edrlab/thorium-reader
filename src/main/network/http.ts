@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import timeoutSignal from "timeout-signal";
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
 import * as http from "http";
 import * as https from "https";
-import { Headers, RequestInit } from "node-fetch";
-import { AbortSignal as IAbortSignal } from "node-fetch/externals";
+import { AbortError, Headers, RequestInit, Response } from "node-fetch";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
@@ -168,8 +168,8 @@ export async function httpFetchRawResponse(
     options.headers = options.headers instanceof Headers
         ? options.headers
         : new Headers(options.headers || {});
-    options.headers.set("user-agent", "readium-desktop");
-    options.headers.set("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
+    (options.headers as Headers).set("user-agent", "readium-desktop");
+    (options.headers as Headers).set("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
     options.redirect = "manual"; // handle cookies
 
     // https://github.com/node-fetch/node-fetch#custom-agent
@@ -199,7 +199,26 @@ export async function httpFetchRawResponse(
     // }
     options.timeout = options.timeout || DEFAULT_HTTP_TIMEOUT;
 
-    const response = await fetchWithCookie(url, options);
+    let timeout: NodeJS.Timeout | undefined;
+    if (!options.signal) {
+        options.signal = timeoutSignal(options.timeout);
+    } else if (options.abortController) {
+        timeout = setTimeout(() => {
+            timeout = undefined;
+            try {
+                options.abortController.abort();
+            } catch {}
+        }, options.timeout);
+    }
+
+    let response: Response;
+    try {
+        response = await fetchWithCookie(url.toString(), options);
+    } finally {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+    }
 
     debug("fetch URL:", `${url}`);
     debug("Method", options.method);
@@ -234,7 +253,7 @@ export async function httpFetchRawResponse(
                     if (!(options.headers instanceof Headers)) {
                         options.headers = new Headers(options.headers);
                     }
-                    options.headers.delete("content-length");
+                    (options.headers as Headers).delete("content-length");
                 }
             }
 
@@ -304,16 +323,7 @@ export async function httpFetchFormattedResponse<TData = undefined>(
         debug("url: ", url);
         debug("options: ", options);
 
-        if (err.name === "AbortError") {
-            result = {
-                isAbort: true,
-                isNetworkError: false,
-                isTimeout: false,
-                isFailure: true,
-                isSuccess: false,
-                url,
-            };
-        } else if (errStr.includes("timeout")) { // err.name === "FetchError"
+        if (errStr.includes("timeout")) { // err.name === "FetchError"
             result = {
                 isAbort: false,
                 isNetworkError: true,
@@ -322,6 +332,15 @@ export async function httpFetchFormattedResponse<TData = undefined>(
                 isSuccess: false,
                 url,
                 statusMessage: errStr,
+            };
+        } else if (err.name === "AbortError" || err instanceof AbortError) {
+            result = {
+                isAbort: true,
+                isNetworkError: false,
+                isTimeout: false,
+                isFailure: true,
+                isSuccess: false,
+                url,
             };
         } else { // err.name === "FetchError"
             result = {
@@ -414,7 +433,7 @@ const httpGetUnauthorized =
                 ? options.headers
                 : new Headers(options.headers || {});
 
-            options.headers.set("Authorization", httpSetHeaderAuthorization(tokenType || "Bearer", accessToken));
+            (options.headers as Headers).set("Authorization", httpSetHeaderAuthorization(tokenType || "Bearer", accessToken));
 
             const response = await httpGetWithAuth(false)(
                 url,
@@ -435,7 +454,7 @@ const httpGetUnauthorized =
                         // In some cases the returned content won't launch a new authentication process
                         // It's safer to just delete the access token and start afresh now.
                         await deleteAuthenticationToken(url.host);
-                        options.headers.delete("Authorization");
+                        (options.headers as Headers).delete("Authorization");
                         const responseWithoutAuth = await httpGetWithAuth(
                             false,
                         )(url, options, _callback, ..._arg);
@@ -457,7 +476,7 @@ const httpGetUnauthorizedRefresh =
             options.headers = options.headers instanceof Headers
                 ? options.headers
                 : new Headers(options.headers || {});
-            options.headers.set("Content-Type", "application/json");
+            (options.headers as Headers).set("Content-Type", "application/json");
 
             options.body = JSON.stringify({
                 refresh_token: refreshToken,
@@ -466,7 +485,7 @@ const httpGetUnauthorizedRefresh =
 
             const httpPostResponse = await httpPost(refreshUrl, options);
             if (httpPostResponse.isSuccess) {
-                const jsonDataResponse = await httpPostResponse.response.json();
+                const jsonDataResponse: any = await httpPostResponse.response.json();
 
                 const newRefreshToken = typeof jsonDataResponse?.refresh_token === "string"
                     ? jsonDataResponse.refresh_token
@@ -507,44 +526,3 @@ export const httpPost: typeof httpFetchFormattedResponse =
 
         return httpFetchFormattedResponse(...arg);
     };
-
-// fetch checks the class name
-// https://github.com/node-fetch/node-fetch/blob/b7076bb24f75be688d8fc8b175f41b341e853f2b/src/utils/is.js#L78
-export class AbortSignal implements IAbortSignal {
-
-    public aborted: boolean;
-    private listenerArray: any[];
-
-    constructor() {
-        this.listenerArray = [];
-        this.aborted = false;
-    }
-
-    public onabort: IAbortSignal["onabort"] = null;
-
-    // public get aborted() {
-    //     return this._aborted;
-    // }
-
-    public addEventListener(_type: "abort", listener: (a: any[]) => any) {
-        this.listenerArray.push(listener);
-    }
-
-    public removeEventListener(_type: "abort", listener: (a: any[]) => any) {
-        const index = this.listenerArray.findIndex((v) => v === listener);
-        if (index > -1) {
-            this.listenerArray = [...this.listenerArray.slice(0, index), ...this.listenerArray.slice(index + 1)];
-        }
-    }
-
-    public dispatchEvent() {
-        this.listenerArray.forEach((l) => {
-            try {
-                l();
-            } catch (_e) {
-                // ignore
-            }
-        });
-        return this.aborted = true;
-    }
-}
