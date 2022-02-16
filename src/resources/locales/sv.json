@@ -166,7 +166,7 @@
             "url": "Länk:",
             "urlPlaceholder": "Länk"
         },
-        "addMenu": "Lägg till ett OPDS-flödeAdd OPDS feed",
+        "addMenu": "Lägg till ett OPDS-flöde",
         "back": "Tillbaka",
         "breadcrumbRoot": "Kataloger",
         "empty": "Inga publikationer hittades",
@@ -225,8 +225,8 @@
     },
     "reader": {
         "divina": {
-            "mute": "",
-            "unmute": ""
+            "mute": "stäng av ljud",
+            "unmute": "slå på ljud"
         },
         "footerInfo": {
             "lessInfo": "mindre information",
@@ -353,7 +353,7 @@
             "pause": "Pausa text-till-tal",
             "play": "Spela text-till-tal",
             "previous": "Föregående text-till-tal",
-            "sentenceDetect": "",
+            "sentenceDetect": "Dela upp textavsnitt för text-till-tal",
             "speed": "Spelhastighet text-till-tal",
             "stop": "Stoppa text-till-tal",
             "voice": "Textröst"
