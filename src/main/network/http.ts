@@ -18,7 +18,6 @@ import {
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { resolve } from "url";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
@@ -29,22 +28,25 @@ const debug = debug_(filename_);
 
 const DEFAULT_HTTP_TIMEOUT = 30000;
 
-// https://github.com/node-fetch/node-fetch/blob/master/src/utils/is-redirect.js
-const redirectStatus = new Set([301, 302, 303, 307, 308]);
-
 let authenticationToken: Record<string, IOpdsAuthenticationToken> = {};
 
-/**
- * Redirect code matching
- *
- * @param {number} code - Status code
- * @return {boolean}
- */
-const isRedirect = (code: number) => {
-    return redirectStatus.has(code);
-};
+// Redirect now handled internally, see https://github.com/valeriangalliat/fetch-cookie/blob/master/CHANGELOG.md#200---2022-02-17
+//
+// // https://github.com/node-fetch/node-fetch/blob/master/src/utils/is-redirect.js
+// const redirectStatus = new Set([301, 302, 303, 307, 308]);
+// /**
+//  * Redirect code matching
+//  *
+//  * @param {number} code - Status code
+//  * @return {boolean}
+//  */
+// const isRedirect = (code: number) => {
+//     return redirectStatus.has(code);
+// };
 
-const FOLLOW_REDIRECT_COUNTER = 20;
+// 20 is fetch-cookie's default
+// https://github.com/valeriangalliat/fetch-cookie#max-redirects
+const MAX_FOLLOW_REDIRECT = 20;
 
 export const httpSetHeaderAuthorization =
     (type: string, credentials: string) => `${type} ${credentials}`;
@@ -162,7 +164,7 @@ export const wipeAuthenticationTokenStorage = async () => {
 export async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
-    redirectCounter = 0,
+    // redirectCounter = 0,
     locale = tryCatchSync(() => diMainGet("store")?.getState()?.i18n?.locale, filename_) || "en-US",
 ): Promise<THttpResponse> {
 
@@ -171,7 +173,10 @@ export async function httpFetchRawResponse(
         : new Headers(options.headers || {});
     (options.headers as Headers).set("user-agent", "readium-desktop");
     (options.headers as Headers).set("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
-    options.redirect = "manual"; // handle cookies
+
+    // Redirect now handled internally, see https://github.com/valeriangalliat/fetch-cookie/blob/master/CHANGELOG.md#200---2022-02-17
+    //
+    // options.redirect = "manual"; // handle cookies
 
     // https://github.com/node-fetch/node-fetch#custom-agent
     // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
@@ -199,6 +204,8 @@ export async function httpFetchRawResponse(
     //     options.agent = httpsAgent;
     // }
     options.timeout = options.timeout || DEFAULT_HTTP_TIMEOUT;
+
+    options.maxRedirect = MAX_FOLLOW_REDIRECT;
 
     let timeSignal: AbortSignal | undefined;
     let timeout: NodeJS.Timeout | undefined;
@@ -272,39 +279,41 @@ export async function httpFetchRawResponse(
     debug("status code :", response.status);
     debug("status text :", response.statusText);
 
-    // manual Redirect to handle cookies
-    // https://github.com/node-fetch/node-fetch/blob/0d35ddbf7377a483332892d2b625ec8231fa6181/src/index.js#L129
-    if (isRedirect(response.status)) {
+    // Redirect now handled internally, see https://github.com/valeriangalliat/fetch-cookie/blob/master/CHANGELOG.md#200---2022-02-17
+    //
+    // // manual Redirect to handle cookies
+    // // https://github.com/node-fetch/node-fetch/blob/0d35ddbf7377a483332892d2b625ec8231fa6181/src/index.js#L129
+    // if (isRedirect(response.status)) {
 
-        const location = response.headers.get("Location");
-        debug("Redirect", response.status, "to: ", location);
+    //     const location = response.headers.get("Location");
+    //     debug("Redirect", response.status, "to: ", location);
 
-        if (location) {
-            const locationUrl = resolve(response.url, location);
+    //     if (location) {
+    //         const locationUrl = resolve(response.url, location);
 
-            if (redirectCounter > FOLLOW_REDIRECT_COUNTER) {
-                throw new Error(`maximum redirect reached at: ${url}`);
-            }
+    //         if (redirectCounter > FOLLOW_REDIRECT_COUNTER) {
+    //             throw new Error(`maximum redirect reached at: ${url}`);
+    //         }
 
-            if (
-                response.status === 303 ||
-                ((response.status === 301 || response.status === 302) && options.method === "POST")
-            ) {
-                options.method = "GET";
-                options.body = undefined;
-                if (options.headers) {
-                    if (!(options.headers instanceof Headers)) {
-                        options.headers = new Headers(options.headers);
-                    }
-                    (options.headers as Headers).delete("content-length");
-                }
-            }
+    //         if (
+    //             response.status === 303 ||
+    //             ((response.status === 301 || response.status === 302) && options.method === "POST")
+    //         ) {
+    //             options.method = "GET";
+    //             options.body = undefined;
+    //             if (options.headers) {
+    //                 if (!(options.headers instanceof Headers)) {
+    //                     options.headers = new Headers(options.headers);
+    //                 }
+    //                 (options.headers as Headers).delete("content-length");
+    //             }
+    //         }
 
-            return await httpFetchRawResponse(locationUrl, options, redirectCounter + 1, locale);
-        } else {
-            debug("No location URL to redirect");
-        }
-    }
+    //         return await httpFetchRawResponse(locationUrl, options, redirectCounter + 1, locale);
+    //     } else {
+    //         debug("No location URL to redirect");
+    //     }
+    // }
 
     // ALTERNATIVELY, Promise.race()
     //
@@ -359,7 +368,7 @@ export async function httpFetchFormattedResponse<TData = undefined>(
     };
 
     try {
-        const response = await httpFetchRawResponse(url, options, 0, locale);
+        const response = await httpFetchRawResponse(url, options, locale);
 
         debug("Response headers :");
         debug({ ...response.headers.raw() });

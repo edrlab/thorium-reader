@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as nodeFetchCookie from "fetch-cookie";
+import fetchCookie from "fetch-cookie";
 import { promises as fsp } from "fs";
 import nodeFetch from "node-fetch";
 import { ok } from "readium-desktop/common/utils/assert";
@@ -59,9 +59,8 @@ const fetchFactory = async () => {
         cookieJar = new tough.CookieJar();
     }
 
-    // https://github.com/edrlab/thorium-reader/issues/1424
-    const _fetch = nodeFetchCookie(nodeFetch, cookieJar, true) as typeof nodeFetch; // ignore errors
-
+    // ignoreError===true because https://github.com/edrlab/thorium-reader/issues/1424
+    const _fetch = fetchCookie(nodeFetch as unknown as typeof fetch, cookieJar, true) as unknown as typeof nodeFetch;
     return _fetch;
 };
 
