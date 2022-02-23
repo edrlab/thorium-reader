@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { AbortSignal } from "abort-controller";
 import timeoutSignal from "timeout-signal";
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
@@ -199,24 +200,66 @@ export async function httpFetchRawResponse(
     // }
     options.timeout = options.timeout || DEFAULT_HTTP_TIMEOUT;
 
+    let timeSignal: AbortSignal | undefined;
     let timeout: NodeJS.Timeout | undefined;
     if (!options.signal) {
-        options.signal = timeoutSignal(options.timeout);
+        timeSignal = timeoutSignal(options.timeout);
+        options.signal = timeSignal;
+        (options.signal as any).__abortReasonTimeout = true;
     } else if (options.abortController) {
         timeout = setTimeout(() => {
             timeout = undefined;
-            try {
-                options.abortController.abort();
-            } catch {}
+            if (options.abortController?.signal) {
+                (options.abortController.signal as any).__abortReasonTimeout = true;
+            }
+            // normally implied: options.signal === options.abortController.signal (see downloader.ts)
+            // ... but just in case another signal is configured:
+            if (options.signal) {
+                (options.signal as any).__abortReasonTimeout = true;
+            }
+            if (options.abortController && !options.abortController.signal?.aborted) {
+                try {
+                    options.abortController.abort();
+                } catch {}
+            }
         }, options.timeout);
+    } else {
+        // TODO: handle signal without our own downloader.ts AbortController?
+        // (probably not needed as we control the full fetch lifecycle, there are no such occurences in our codebase)
+        // const controller = new AbortController();
+        // timeout = setTimeout(() => {
+        //     timeout = undefined;
+        //     if (controller?.signal) {
+        //         (controller.signal as any).__abortReasonTimeout = true;
+        //     }
+        //     // propagate the timeout state to any other existing signal,
+        //     // so we can test in the fetch catch() / promise rejection
+        //     if (options.signal) {
+        //         (options.signal as any).__abortReasonTimeout = true;
+        //     }
+        //     if (controller) {
+        //         try {
+        //             controller.abort(); // not bound to fetch, so does nothing!
+        //         } catch {}
+        //     }
+        // }, options.timeout);
     }
 
     let response: Response;
     try {
         response = await fetchWithCookie(url.toString(), options);
     } finally {
+        // module-level weakmap of timeouts,
+        // see https://github.com/node-fetch/timeout-signal/blob/main/index.js
+        if (timeSignal) {
+            try {
+                timeoutSignal.clear(timeSignal);
+            } catch {}
+        }
+        // our local, closure-level timeout
         if (timeout) {
             clearTimeout(timeout);
+            timeout = undefined;
         }
     }
 
@@ -263,6 +306,30 @@ export async function httpFetchRawResponse(
         }
     }
 
+    // ALTERNATIVELY, Promise.race()
+    //
+    // See: https://github.com/simonplend/how-to-cancel-an-http-request-in-node-js/blob/main/example-node-fetch.mjs
+    //
+    // import { setTimeout } from "node:timers/promises";
+    // const cancelRequest = new AbortController();
+    // const cancelTimeout = new AbortController();
+    // const fetchWithCookieResponsePromise = async () => {
+    //     try {
+    //         // response
+    //     } finally {
+    //         cancelTimeout.abort();
+    //     }
+    // }
+    // const timeoutPromise = async () => {
+    //     try {
+    //         await setTimeout(options.timeout, undefined, { signal: cancelTimeout.signal });
+    //         cancelRequest.abort();
+    //     } catch (_err) {
+    //         return;
+    //     }
+    //     throw new Error(`HTTP fetch request timeout ${options.timeout}ms`);
+    // };
+    // return Promise.race([fetchWithCookieResponsePromise, timeoutPromise()]);
     return response;
 }
 
@@ -323,7 +390,7 @@ export async function httpFetchFormattedResponse<TData = undefined>(
         debug("url: ", url);
         debug("options: ", options);
 
-        if (errStr.includes("timeout")) { // err.name === "FetchError"
+        if (errStr.includes("timeout") || (options?.signal as any)?.__abortReasonTimeout) { // err.name === "FetchError"
             result = {
                 isAbort: false,
                 isNetworkError: true,
