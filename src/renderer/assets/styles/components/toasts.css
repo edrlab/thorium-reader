@@ -4,17 +4,20 @@
 
 .toasts_wrapper {
   position: fixed;
-  top: 10rem;
-  right: 0;
+  bottom: 1rem;
+  left: 0;
   z-index: 10000;
 }
 
 .toast {
+  overflow: hidden;
   margin-bottom: 1rem;
   position: relative;
   padding: 1rem;
   border: 1px grey solid;
-  border-right: none;
+  border-left: none;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
   width: 20rem;
   height: 4.125rem;
   background: white;
@@ -22,6 +25,10 @@
   align-items: center;
   animation-name: start;
   animation-duration: 0.5s;
+
+  &:focus-within {
+    border-width: 4px;
+  }
 
   &.error {
     background: #fedbd8;
@@ -34,6 +41,9 @@
   & p {
     margin: 0;
     flex: 1;
+    padding-right: 1em;
+    overflow: hidden;
+    user-select: text;
   }
 
   & .icon {
@@ -58,7 +68,7 @@
 }
 
 .leave {
-  transform: translateX(100%);
+  transform: translateX(-100%);
   transition: transform 0.5s;
 }
 
@@ -73,7 +83,7 @@
 
 @keyframes start {
   from {
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
 
   to {

@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { clipboard } from "electron";
 import classNames from "classnames";
 import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -43,6 +44,8 @@ interface IState {
 
 export class Toast extends React.Component<IProps, IState> {
     private ref: React.RefObject<HTMLDivElement>;
+    private timer: number | undefined;
+    private ignoreTimer: boolean | undefined;
 
     constructor(props: IProps) {
         super(props);
@@ -58,12 +61,35 @@ export class Toast extends React.Component<IProps, IState> {
         this.handleClose = this.handleClose.bind(this);
     }
 
+    public cancelTimer(ignoreTimer: boolean) {
+        if (this.timer) {
+            window.clearTimeout(this.timer);
+            this.timer = undefined;
+        }
+        if (ignoreTimer) {
+            this.ignoreTimer = true;
+        }
+    }
+    public triggerTimer(fast: boolean) {
+        this.cancelTimer(false);
+        if (this.ignoreTimer) {
+            return;
+        }
+
+        this.timer = window.setTimeout(() => {
+            this.timer = undefined;
+            this.handleClose();
+        }, fast ? 500 : 5000);
+    }
+
     public componentDidMount() {
-        setTimeout(this.handleClose, 5000);
+        this.triggerTimer(false);
+
         if (this.ref?.current) {
             this.ref?.current.addEventListener("transitionend", this.handleTransitionEnd, false);
         }
 
+        // https://www.electronjs.org/docs/latest/tutorial/notifications
         if (this.props.displaySystemNotification) {
             // tslint:disable-next-line: no-unused-expression
             new Notification(capitalizedAppName, {
@@ -79,6 +105,11 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
+
+        if (this.props.displaySystemNotification) {
+            return (<></>);
+        }
+
         const { type } = this.props;
         const { willLeave, toRemove } = this.state;
 
@@ -94,13 +125,18 @@ export class Toast extends React.Component<IProps, IState> {
                 break;
         }
 
-        if (this.props.displaySystemNotification) {
-            return (<></>);
-        }
-
         return (
             <div
                 ref={this.ref}
+                onMouseMove={() => {
+                    this.cancelTimer(false);
+                }}
+                onClick={() => {
+                    this.cancelTimer(true);
+                }}
+                onMouseOut={() => {
+                    this.triggerTimer(true);
+                }}
                 className={classNames(
                     stylesToasts.toast,
                     willLeave && stylesToasts.leave,
@@ -114,8 +150,37 @@ export class Toast extends React.Component<IProps, IState> {
                 {
                 // icon && <SVG className={styles.icon} svg={icon} />
                 }
-                <p>{ this.props.message }</p>
+                <p
+                    tabIndex={0}
+                    onFocus={() => {
+                        this.cancelTimer(true);
+                    }}
+                    onClick={() => {
+                        const clipBoardType = "clipboard";
+                        try {
+                            clipboard.writeText(this.props.message, clipBoardType);
+
+                            // https://www.electronjs.org/docs/latest/tutorial/notifications
+                            // tslint:disable-next-line: no-unused-expression
+                            new Notification(capitalizedAppName, {
+                                body: `${this.props.translator.translate("app.edit.copy")} [${this.props.message}]`,
+                            });
+                            // this.triggerTimer(true);
+                            // this.handleClose();
+                        } catch (_e) {
+                            // ignore
+                        }
+                    }
+                }>{ this.props.message }</p>
+                {/*
+                    onBlur={() => {
+                        this.triggerTimer(true);
+                    }}
+                */}
                 <button
+                    onFocus={() => {
+                        this.cancelTimer(true);
+                    }}
                     onClick={() => this.handleClose()}
                     className={stylesToasts.closeButton}
                 >
