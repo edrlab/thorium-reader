@@ -98,7 +98,15 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                 secondaryHeader={secondaryHeader}
                 breadCrumb={breadCrumb}
             >
-                <div>
+                <div style={{
+                    overflow: "auto",
+                    position: "absolute",
+                    top: "0",
+                    bottom: "0",
+                    left: "0",
+                    right: "0",
+                    padding: "30px 60px",
+                }}>
                     {
                         this.state.publicationViews ?
                             <TableView displayType={displayType} __={__} translator={this.props.translator} publicationViews={this.state.publicationViews} />
@@ -117,35 +125,43 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
 });
 
+const commonCellStylesMax = (props: {displayType: DisplayType}): React.CSSProperties => {
+    return {
+        maxWidth: props.displayType === DisplayType.Grid ? "200px" : "150px",
+        maxHeight: props.displayType === DisplayType.Grid ? "200px" : "100px",
+    };
+};
+const commonCellStyles = (props: {displayType: DisplayType}): React.CSSProperties => {
+    return {
+        ...commonCellStylesMax(props),
+        padding: "0.4em",
+        overflowY: "scroll",
+        textAlign: "center",
+        userSelect: "text",
+    };
+};
+
 const CellCoverImage: React.FC<{value: string, displayType: DisplayType}> = (props) => {
     return (<div style={{
         padding: "0",
         margin: "0",
         textAlign: "center",
     }}><img src={props.value} alt={""} role="presentation" style={{
-        maxWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
-        maxHeight: props.displayType === DisplayType.Grid ? "200px" : "120px",
+        ...commonCellStylesMax(props),
     }} /></div>);
 };
 const CellDescription: React.FC<{value: string, displayType: DisplayType}> = (props) => {
     return (<div style={{
-        padding: "0.4em",
-        maxHeight: props.displayType === DisplayType.Grid ? "300px" : "100px",
+        ...commonCellStyles(props),
+        paddingBottom: "0",
+        marginBottom: "0.4em",
         minWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
-        overflowY: "scroll",
-        textAlign: "center",
-        userSelect: "text",
-    }}>
-        {props.value}
-    </div>);
+        textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
+    }} dangerouslySetInnerHTML={{__html: props.value}} />);
 };
 const TableCell: React.FC<{value: string, displayType: DisplayType}> = (props) => {
     return (<div style={{
-        padding: "0.4em",
-        maxHeight: props.displayType === DisplayType.Grid ? "300px" : "100px",
-        overflowY: "scroll",
-        textAlign: "center",
-        userSelect: "text",
+        ...commonCellStyles(props),
     }}>
         {props.value}
     </div>);
@@ -318,37 +334,38 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
     return (
-        <table {...getTableProps()} style={{ border: "solid 1px gray", borderRadius: "8px", padding: "2px", borderSpacing: "3px" }}>
-            <thead>{headerGroups.map((headerGroup) =>
-                (<tr {...headerGroup.getHeaderGroupProps()}>{
-                headerGroup.headers.map((column) =>
+        <table {...getTableProps()} style={{ fontSize: "90%", border: "solid 1px gray", borderRadius: "8px", padding: "4px", margin: "0", marginRight: "1em", borderSpacing: "0" }}>
+            <thead>{headerGroups.map((headerGroup, index) =>
+                (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
+                headerGroup.headers.map((column, i) =>
                     // @ts-expect-error TS2322
-                    (<th {...column.getHeaderProps(column.id !== "colCover" ? column.getSortByToggleProps() : undefined)}
+                    (<th key={`headtrth_${i}`} {...column.getHeaderProps(column.id !== "colCover" ? column.getSortByToggleProps() : undefined)}
                         style={{
                             padding: "0.7em",
                             margin: "0",
+                            paddingBottom: "1em",
                             background: "#eeeeee",
                             color: "black",
                             whiteSpace: "nowrap",
                         }}
-                        ><span style={{ cursor: "pointer" }}>{
+                        ><span style={{ cursor: column.id !== "colCover" ? "pointer" : undefined }}>{
                             column.render("Header")
                         }</span>{column.id !== "colCover" ? (<span role="presentation" style={{ cursor: "pointer" }}>
                         {
                         // @ts-expect-error TS2322
-                        column.isSorted ? column.isSortedDesc ? ' ↓' : ' ↑' : ' ⇅'
-                        }</span>) : (<></>)}</th>)
-                )}</tr>)
+                        column.isSorted ? column.isSortedDesc ? " ↓" : " ↑" : " ⇅"
+                        }</span>) : (<></>)}</th>),
+                )}</tr>),
             )}</thead>
-            <tbody {...getTableBodyProps()}>{rows.map((row) => {
+            <tbody {...getTableBodyProps()}>{rows.map((row, index) => {
                 prepareRow(row);
-                return (<tr {...row.getRowProps()} style={{
+                return (<tr key={`bodytr_${index}`} {...row.getRowProps()} style={{
                     outlineColor: "#cccccc",
                     outlineOffset: "0px",
                     outlineStyle: "solid",
                     outlineWidth: "1px",
-                }}>{row.cells.map(cell => 
-                    (<td {...cell.getCellProps()}
+                }}>{row.cells.map((cell, i) => 
+                    (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                         style={{
                             padding: "0",
                             margin: "0",
@@ -356,10 +373,10 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                         }}
                         >{
                             cell.render("Cell", { displayType: props.displayType })
-                        }</td>)
+                        }</td>),
                     )}
                     </tr>
-                )
+                );
             })}</tbody>
         </table>
     );
