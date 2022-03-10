@@ -48,6 +48,11 @@
         "addTagsButton": "Voeg toe",
         "allBooks": "Alle boeken",
         "bookInfo": "Over dit boek",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Verwijder",
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",

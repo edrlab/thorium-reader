@@ -48,6 +48,11 @@
         "addTagsButton": "Add",
         "allBooks": "All books",
         "bookInfo": "About this book",
+        "column": {
+            "ascending": "ascending",
+            "descending": "descending",
+            "unsorted": "unsorted"
+        },
         "delete": "Delete",
         "deleteBook": "Delete",
         "deleteTag": "Delete the tag",

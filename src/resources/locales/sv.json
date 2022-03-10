@@ -48,6 +48,11 @@
         "addTagsButton": "Lägg till",
         "allBooks": "Alla böcker",
         "bookInfo": "Om den här boken",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Ta bort",
         "deleteBook": "Ta bort",
         "deleteTag": "Ta bort taggen",

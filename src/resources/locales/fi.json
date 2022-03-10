@@ -48,6 +48,11 @@
         "addTagsButton": "Lisää",
         "allBooks": "Kaikki kirjat",
         "bookInfo": "Tietoja tästä kirjasta",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Poista",
         "deleteBook": "Poista",
         "deleteTag": "Poista tunniste",

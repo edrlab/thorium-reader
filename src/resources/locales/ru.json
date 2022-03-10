@@ -48,6 +48,11 @@
         "addTagsButton": "Добавить",
         "allBooks": "Все книги",
         "bookInfo": "Об этой книге",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Удалить",
         "deleteBook": "Удалить",
         "deleteTag": "Удалить тег",

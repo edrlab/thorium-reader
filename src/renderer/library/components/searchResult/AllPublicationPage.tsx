@@ -5,10 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { TDispatch } from "readium-desktop/typings/redux";
 import {
     TableInstance,
+    TableState,
     UsePaginationInstanceProps,
     UsePaginationState,
+    UseSortByColumnProps,
+    UseTableColumnProps,
 } from "react-table";
 import { Column, useTable, useFilters, useSortBy, usePagination } from "react-table";
 import { formatTime } from "readium-desktop/common/utils/time";
@@ -17,7 +24,7 @@ import * as moment from "moment";
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";
-import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
+import { AvailableLanguages, I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -46,7 +53,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -105,11 +112,19 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                     bottom: "0",
                     left: "0",
                     right: "0",
-                    padding: "30px 60px",
+                    padding: "0",
+                    margin: "30px 30px",
                 }}>
                     {
                         this.state.publicationViews ?
-                            <TableView displayType={displayType} __={__} translator={this.props.translator} publicationViews={this.state.publicationViews} />
+                            <TableView
+                                displayType={displayType}
+                                __={__}
+                                translator={this.props.translator}
+                                publicationViews={this.state.publicationViews}
+                                displayPublicationInfo={this.props.displayPublicationInfo}
+                                openReader={this.props.openReader}
+                            />
                             // (displayType === DisplayType.Grid ?
                             //     <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
                             //     <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
@@ -125,10 +140,25 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
 });
 
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        displayPublicationInfo: (publicationViewIdentifier: string) => {
+            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib,
+                {
+                    publicationIdentifier: publicationViewIdentifier,
+                },
+            ));
+        },
+        openReader: (publicationViewIdentifier: string) => {
+            dispatch(readerActions.openRequest.build(publicationViewIdentifier));
+        },
+    };
+};
+
 const commonCellStylesMax = (props: {displayType: DisplayType}): React.CSSProperties => {
     return {
-        maxWidth: props.displayType === DisplayType.Grid ? "200px" : "150px",
-        maxHeight: props.displayType === DisplayType.Grid ? "200px" : "100px",
+        maxWidth: props.displayType === DisplayType.Grid ? "150px" : "150px",
+        maxHeight: props.displayType === DisplayType.Grid ? "150px" : "50px",
     };
 };
 const commonCellStyles = (props: {displayType: DisplayType}): React.CSSProperties => {
@@ -141,16 +171,38 @@ const commonCellStyles = (props: {displayType: DisplayType}): React.CSSPropertie
     };
 };
 
-const CellCoverImage: React.FC<{value: string, displayType: DisplayType}> = (props) => {
+const CellCoverImage: React.FC<TableCellId_IProps> = (props) => {
     return (<div style={{
         padding: "0",
         margin: "0",
         textAlign: "center",
-    }}><img src={props.value} alt={""} role="presentation" style={{
+    }}>
+        <a
+            style={{ cursor: "pointer" }}
+            tabIndex={0}
+            onClick={(e) => {
+                e.preventDefault();
+
+                props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                // props.openReader(props.value.publicationViewIdentifier);
+            }}
+            onKeyPress={
+                (e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+
+                        props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                        // props.openReader(props.value.publicationViewIdentifier);
+                    }
+                }
+            }
+            title={`${props.__("catalog.bookInfo")} (${props.value.title})`}
+        ><img src={props.value.label} alt={""} role="presentation" style={{
         ...commonCellStylesMax(props),
-    }} /></div>);
+    }} /></a>
+    </div>);
 };
-const CellDescription: React.FC<{value: string, displayType: DisplayType}> = (props) => {
+const CellDescription: React.FC<TableCell_IProps> = (props) => {
     return (<div style={{
         ...commonCellStyles(props),
         paddingBottom: "0",
@@ -159,7 +211,36 @@ const CellDescription: React.FC<{value: string, displayType: DisplayType}> = (pr
         textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
     }} dangerouslySetInnerHTML={{__html: props.value}} />);
 };
-const TableCell: React.FC<{value: string, displayType: DisplayType}> = (props) => {
+const CellTitle: React.FC<TableCellId_IProps> = (props) => {
+    return (<div style={{
+        ...commonCellStyles(props),
+        fontWeight: "bold",
+    }}><a
+        style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
+        tabIndex={0}
+        onClick={(e) => {
+            e.preventDefault();
+
+            props.displayPublicationInfo(props.value.publicationViewIdentifier);
+            // props.openReader(props.value.publicationViewIdentifier);
+        }}
+        onKeyPress={
+            (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+
+                    props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                    // props.openReader(props.value.publicationViewIdentifier);
+                }
+            }
+        }
+        title={`${props.__("catalog.bookInfo")} (${props.value.title})`}
+    >
+        {props.value.label}
+        </a>
+    </div>);
+};
+const TableCell: React.FC<TableCell_IProps> = (props) => {
     return (<div style={{
         ...commonCellStyles(props),
     }}>
@@ -172,17 +253,34 @@ const TableCell: React.FC<{value: string, displayType: DisplayType}> = (props) =
 // etc. :(
 export type PaginationTableInstance<T extends object> = TableInstance<T> &
 UsePaginationInstanceProps<T> & {
-  state: UsePaginationState<T>;
+    state: UsePaginationState<T>;
 };
-interface TableView_IProps {
-    publicationViews: PublicationView[];
+
+interface TableCommon_IProps {
     __: I18nTyped;
     translator: Translator;
     displayType: DisplayType;
+    displayPublicationInfo: ReturnType<typeof mapDispatchToProps>["displayPublicationInfo"];
+    openReader: ReturnType<typeof mapDispatchToProps>["openReader"];
 }
+interface IColumnValue {
+    label: string,
+    title: string,
+    publicationViewIdentifier: string,
+};
+interface TableCellId_IProps extends TableCommon_IProps {
+    value: IColumnValue;
+}
+interface TableCell_IProps extends TableCommon_IProps {
+    value: string;
+}
+interface TableView_IProps extends TableCommon_IProps {
+    publicationViews: PublicationView[];
+}
+
 interface IColumns {
-    colCover: string;
-    colTitle: string;
+    colCover: IColumnValue,
+    colTitle: IColumnValue;
     colAuthors: string;
     colPublishers: string;
     colLanguages: string;
@@ -204,7 +302,8 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
             const authors = publicationView.authors ? formatContributorToString(publicationView.authors, props.translator) : "";
             const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishers, props.translator) : "";
 
-            const publishedDate = publicationView.publishedAt ? moment(publicationView.publishedAt).year : ""; // .toISOString()
+            const mom = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
+            const publishedDate = mom ? `${mom.year()}-${mom.month().toString().padStart(2, "0")}-${mom.day().toString().padStart(2, "0")}` : ""; // .toISOString()
 
             const languages = publicationView.languages ? publicationView.languages.map((lang) => {
 
@@ -219,7 +318,13 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 const translate = props.__ as (str: string) => string;
 
                 // The backticks is not captured by the i18n scan script (automatic detection of translate("...") calls)
-                const ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
+                let ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
+
+                const lg = AvailableLanguages[l as keyof typeof AvailableLanguages];
+                if (lg && lang == ll) {
+                    ll = lg;
+                }
+
                 const note = (lang !== ll) ? ` (${lang})` : "";
 
                 return ll + note;
@@ -240,8 +345,16 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
             // r2PublicationJson: JsonMap;
             // lastReadingLocation?: LocatorExtended;
             return {
-                colCover: publicationView.cover?.thumbnailUrl ?? publicationView.cover?.coverUrl ?? "x",
-                colTitle: publicationView.title,
+                colCover: {
+                    label: publicationView.cover?.thumbnailUrl ?? publicationView.cover?.coverUrl ?? "",
+                    publicationViewIdentifier: publicationView.identifier,
+                    title: publicationView.title,
+                },
+                colTitle: {
+                    label: publicationView.title,
+                    publicationViewIdentifier: publicationView.identifier,
+                    title: publicationView.title,
+                },
                 colAuthors: authors,
                 colPublishers: publishers,
                 colLanguages: languages,
@@ -253,6 +366,8 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 colTags: tags,
                 colDuration: duration,
                 colProgression: "Progression",
+
+                colPublicationViewIdentifier: publicationView.identifier,
             };
         }) as IColumns[];
     }, [props.publicationViews]);
@@ -267,6 +382,7 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
             {
                 Header: props.__("publication.title"),
                 accessor: "colTitle",
+                Cell: CellTitle,
             },
             {
                 Header: props.__("publication.author"),
@@ -317,63 +433,126 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
         return arr;
     }, [props.displayType]);
 
+    const defaultColumn = React.useMemo(
+        () => ({
+            Cell: TableCell,
+        }),
+        [],
+    );
     const tableInstance = useTable({
         columns: tableColumns,
         data: tableRows,
-        defaultColumn: {
-            Cell: TableCell,
-        },
+        defaultColumn,
         initialState: {
-            // @ts-expect-error TS2322
             pageSize: 10,
             pageIndex: 0,
-        },
+        } as UsePaginationState<IColumns> as TableState<IColumns>,
         // @xxts-expect-error TS2322
         // filterTypes,
-    }, useSortBy); //, useFilters, usePagination) as PaginationTableInstance<object>;
+    }, useFilters, useSortBy, usePagination) as PaginationTableInstance<IColumns>;
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
     return (
         <table {...getTableProps()} style={{ fontSize: "90%", border: "solid 1px gray", borderRadius: "8px", padding: "4px", margin: "0", marginRight: "1em", borderSpacing: "0" }}>
             <thead>{headerGroups.map((headerGroup, index) =>
                 (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
-                headerGroup.headers.map((column, i) =>
-                    // @ts-expect-error TS2322
-                    (<th key={`headtrth_${i}`} {...column.getHeaderProps(column.id !== "colCover" ? column.getSortByToggleProps() : undefined)}
+                headerGroup.headers.map((col, i) => {
+
+                    const column = col as unknown as ({ Header: string } & UseTableColumnProps<IColumns> & UseSortByColumnProps<IColumns>);
+
+                    const columnIsSortable = column.id !== "colCover";
+
+                    return (<th
+                        key={`headtrth_${i}`}
+                        {...column.getHeaderProps(columnIsSortable ? ({...column.getSortByToggleProps(),
+                            // @ts-expect-error TS2322
+                            title: undefined,
+                        }) : undefined)}
                         style={{
                             padding: "0.7em",
                             margin: "0",
-                            paddingBottom: "1em",
                             background: "#eeeeee",
                             color: "black",
                             whiteSpace: "nowrap",
+                            ...{
+                                cursor: columnIsSortable ? "pointer" : undefined },
                         }}
-                        ><span style={{ cursor: column.id !== "colCover" ? "pointer" : undefined }}>{
-                            column.render("Header")
-                        }</span>{column.id !== "colCover" ? (<span role="presentation" style={{ cursor: "pointer" }}>
+                        >
                         {
-                        // @ts-expect-error TS2322
-                        column.isSorted ? column.isSortedDesc ? " ↓" : " ↑" : " ⇅"
-                        }</span>) : (<></>)}</th>),
+                        columnIsSortable ?
+                        <><button
+                        style={{height: "auto", padding: "0.2em", margin: "0", fontWeight: "bold", fontSize: "100%"}}
+                        onClick={() => {
+                            column.toggleSortBy();
+                        }}
+                        aria-label={
+                            `${column.Header}${
+                            column.isSorted ? (column.isSortedDesc ?
+                            ` (${props.__("catalog.column.descending")})`
+                            :
+                            ` (${props.__("catalog.column.ascending")})`)
+                            :
+                            ` (${props.__("catalog.column.unsorted")})`
+                            }`
+                            }
+                            >
+                            {
+                            column.render("Header")
+                            }
+                        </button>
+                        <span aria-hidden="true" role="presentation"
+                        title={
+                            `${
+                            column.isSorted ? (column.isSortedDesc ?
+                            `${props.__("catalog.column.descending")}`
+                            :
+                            `${props.__("catalog.column.ascending")}`)
+                            :
+                            `${props.__("catalog.column.unsorted")}`
+                            }`
+                            }>
+                        {
+                        column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : " ⇅"
+                        }</span></>
+                        :
+                        <span
+                        aria-label={`${column.Header}`}
+                            >
+                            {
+                            props.displayType === DisplayType.List ? "" : column.render("Header")
+                            }
+                        </span>
+                        }
+                        </th>);
+                    },
                 )}</tr>),
             )}</thead>
             <tbody {...getTableBodyProps()}>{rows.map((row, index) => {
                 prepareRow(row);
+
                 return (<tr key={`bodytr_${index}`} {...row.getRowProps()} style={{
                     outlineColor: "#cccccc",
                     outlineOffset: "0px",
                     outlineStyle: "solid",
                     outlineWidth: "1px",
-                }}>{row.cells.map((cell, i) => 
-                    (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
+                }}>{row.cells.map((cell, i) =>
+                    {
+                        return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                         style={{
                             padding: "0",
                             margin: "0",
                             border: "solid 1px #eeeeee",
                         }}
                         >{
-                            cell.render("Cell", { displayType: props.displayType })
-                        }</td>),
+                            cell.render("Cell", {
+                                __: props.__,
+                                translator: props.translator,
+                                displayPublicationInfo: props.displayPublicationInfo,
+                                openReader: props.openReader,
+                                displayType: props.displayType,
+                            })
+                        }</td>);
+                    },
                     )}
                     </tr>
                 );
@@ -382,4 +561,4 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
     );
 };
 
-export default connect(mapStateToProps)(withTranslator(AllPublicationPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(AllPublicationPage));

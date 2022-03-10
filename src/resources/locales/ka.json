@@ -48,6 +48,11 @@
         "addTagsButton": "დამატება",
         "allBooks": "ყველა წიგნი",
         "bookInfo": "ამ წიგნის შესახებ",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "წაშლა",
         "deleteBook": "წაშლა",
         "deleteTag": "იარლიყის წაშლა",

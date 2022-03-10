@@ -48,6 +48,11 @@
         "addTagsButton": "添加",
         "allBooks": "全部图书",
         "bookInfo": "关于此书",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "删除",
         "deleteBook": "删除",
         "deleteTag": "删除标签",

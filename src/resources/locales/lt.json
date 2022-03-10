@@ -48,6 +48,11 @@
         "addTagsButton": "Pridėti",
         "allBooks": "Visos knygos",
         "bookInfo": "Apie knygą",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Šalinti",
         "deleteBook": "Šalinti",
         "deleteTag": "Šalinti žymę",

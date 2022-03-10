@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { I18nTyped } from "readium-desktop/common/services/translator";
+import { AvailableLanguages, I18nTyped } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
@@ -35,7 +35,12 @@ export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
                 const translate = __ as (str: string) => string;
 
                 // The backticks is not captured by the i18n scan script (automatic detection of translate("...") calls)
-                const ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
+                let ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
+
+                const lg = AvailableLanguages[l as keyof typeof AvailableLanguages];
+                if (lg && lang == ll) {
+                    ll = lg;
+                }
 
                 const note = (lang !== ll) ? ` (${lang})` : "";
                 const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");

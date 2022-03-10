@@ -95,6 +95,11 @@ declare namespace typed_i18n {
   readonly "addTagsButton": string,
   readonly "allBooks": string,
   readonly "bookInfo": string,
+  readonly "column": {
+    readonly "ascending": string,
+    readonly "descending": string,
+    readonly "unsorted": string
+  },
   readonly "delete": string,
   readonly "deleteBook": string,
   readonly "deleteTag": string,
@@ -152,6 +157,14 @@ declare namespace typed_i18n {
   (_: "catalog.addTagsButton", __?: {}): string;
   (_: "catalog.allBooks", __?: {}): string;
   (_: "catalog.bookInfo", __?: {}): string;
+  (_: "catalog.column", __?: {}): {
+  readonly "ascending": string,
+  readonly "descending": string,
+  readonly "unsorted": string
+};
+  (_: "catalog.column.ascending", __?: {}): string;
+  (_: "catalog.column.descending", __?: {}): string;
+  (_: "catalog.column.unsorted", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;

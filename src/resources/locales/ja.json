@@ -48,6 +48,11 @@
         "addTagsButton": "追加",
         "allBooks": "すべての本",
         "bookInfo": "この本の情報",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "削除",
         "deleteBook": "削除",
         "deleteTag": "タグを削除",

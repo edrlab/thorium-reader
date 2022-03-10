@@ -48,6 +48,11 @@
         "addTagsButton": "추가",
         "allBooks": "모든 도서",
         "bookInfo": "상세 정보",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "삭제",
         "deleteBook": "삭제",
         "deleteTag": "태그 삭제",
