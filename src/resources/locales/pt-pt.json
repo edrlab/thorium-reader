@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Fechar",
-        "homeMenu": "Menu de visualização de leitura",
         "importFile": "Importar publicação",
         "leftSlideButton": "Deslizar lista para a esquerda",
         "mainContent": "conteúdo principal",
@@ -195,6 +194,7 @@
         "audio": {
             "tracks": "Faixas"
         },
+        "author": "",
         "cancelledLcp": "Este livro não pode ser lido porque a licença LCP foi cancelada.",
         "certificateRevoked": "O certificado foi revogado",
         "certificateSignatureInvalid": "A assinatura do certificado é inválida",
@@ -221,6 +221,7 @@
         "revokedLcp": "Este livro não pode ser lido porque a licença LCP foi revogada.",
         "seeLess": "Ver menos",
         "seeMore": "Ver mais",
+        "title": "",
         "userKeyCheckInvalid": "A frase-senha está incorreta"
     },
     "reader": {

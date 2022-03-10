@@ -172,8 +172,8 @@ interface IColumns {
     colLanguages: string;
     colPublishedDate: string;
     colDescription: string;
-    colIdentifier: string;
-    colPublicationType: string;
+    // colIdentifier: string;
+    // colPublicationType: string;
     colLCP: string;
     colTags: string;
     colDuration: string;
@@ -244,32 +244,32 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
     const tableColumns = React.useMemo<Column<IColumns>[]>(() => {
         const arr: Column<IColumns>[] = [
             {
-                Header: "Cover",
+                Header: props.__("publication.cover.img"),
                 accessor: "colCover",
                 Cell: CellCoverImage,
             },
             {
-                Header: "Title",
+                Header: props.__("publication.title"),
                 accessor: "colTitle",
             },
             {
-                Header: "Authors",
+                Header: props.__("publication.author"),
                 accessor: "colAuthors",
             },
             {
-                Header: "Publishers",
+                Header: props.__("catalog.publisher"),
                 accessor: "colPublishers",
             },
             {
-                Header: "Language",
+                Header: props.__("catalog.lang"),
                 accessor: "colLanguages",
             },
             {
-                Header: "PublishedDate",
+                Header: props.__("catalog.released"),
                 accessor: "colPublishedDate",
             },
             {
-                Header: "Description",
+                Header: props.__("catalog.description"),
                 accessor: "colDescription",
                 Cell: CellDescription,
             },
@@ -282,11 +282,11 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
             //     accessor: "colPublicationType",
             // },
             {
-                Header: "LCP",
+                Header: "LCP (DRM)",
                 accessor: "colLCP",
             },
             {
-                Header: "Tags",
+                Header: props.__("catalog.tags"),
                 accessor: "colTags",
             },
             {
@@ -294,7 +294,7 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 accessor: "colDuration",
             },
             {
-                Header: "Progression",
+                Header: props.__("publication.progression.title"),
                 accessor: "colProgression",
             },
         ];
@@ -331,13 +331,13 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                             color: "black",
                             whiteSpace: "nowrap",
                         }}
-                        >{
+                        ><span style={{ cursor: "pointer" }}>{
                             column.render("Header")
-                        }{column.id !== "colCover" ? <span role="presentation" style={{ cursor: "pointer" }}>
+                        }</span>{column.id !== "colCover" ? (<span role="presentation" style={{ cursor: "pointer" }}>
                         {
                         // @ts-expect-error TS2322
                         column.isSorted ? column.isSortedDesc ? ' ↓' : ' ↑' : ' ⇅'
-                        }</span> : <></>}</th>)
+                        }</span>) : (<></>)}</th>)
                 )}</tr>)
             )}</thead>
             <tbody {...getTableBodyProps()}>{rows.map((row) => {

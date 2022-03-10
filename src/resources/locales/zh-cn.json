@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "菜单",
         "closeDialog": "关闭",
-        "homeMenu": "阅读视图菜单",
         "importFile": "导入出版物",
         "leftSlideButton": "将列表划至左侧",
         "mainContent": "主要内容",
@@ -195,6 +194,7 @@
         "audio": {
             "tracks": "音轨"
         },
+        "author": "",
         "cancelledLcp": "此书无法阅读，因为LCP许可证已被取消。",
         "certificateRevoked": "认证撤销",
         "certificateSignatureInvalid": "认证签名无效",
@@ -221,6 +221,7 @@
         "revokedLcp": "此书无法阅读，因为LCP许可证已被撤销。",
         "seeLess": "察看更少",
         "seeMore": "查看更多",
+        "title": "",
         "userKeyCheckInvalid": "密码不正确"
     },
     "reader": {

@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menü",
         "closeDialog": "Schließen",
-        "homeMenu": "Startmenü",
         "importFile": "Importieren einer EPUB-Datei",
         "leftSlideButton": "Scrolle nach links unten",
         "mainContent": "hauptinhalt",
@@ -195,6 +194,7 @@
         "audio": {
             "tracks": "Spuren"
         },
+        "author": "",
         "cancelledLcp": "",
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
@@ -221,6 +221,7 @@
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
         "seeMore": "Mehr Infos",
+        "title": "",
         "userKeyCheckInvalid": ""
     },
     "reader": {

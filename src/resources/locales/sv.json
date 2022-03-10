@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Meny",
         "closeDialog": "Stäng",
-        "homeMenu": "Huvudmeny",
         "importFile": "Importera publikation",
         "leftSlideButton": "Dra listan åt vänster",
         "mainContent": "huvudinnehåll",
@@ -195,6 +194,7 @@
         "audio": {
             "tracks": "Spår"
         },
+        "author": "",
         "cancelledLcp": "Den här boken kan inte läsas eftersom LCP-licensen inte är giltig längre.",
         "certificateRevoked": "Certifikatet är återkallat",
         "certificateSignatureInvalid": "Certifikatets signatur är ogiltig",
@@ -221,6 +221,7 @@
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "Visa mindre",
         "seeMore": "Visa mer",
+        "title": "",
         "userKeyCheckInvalid": "Lösenordet är felaktigt"
     },
     "reader": {

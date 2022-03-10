@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "메뉴",
         "closeDialog": "닫기",
-        "homeMenu": "보기형태",
         "importFile": "출판물 가져오기",
         "leftSlideButton": "목록 왼쪽으로 밀기 ",
         "mainContent": "메인 콘텐츠",
@@ -195,6 +194,7 @@
         "audio": {
             "tracks": "오디오 트랙"
         },
+        "author": "",
         "cancelledLcp": "이 책은 LCP 라이선스가 취소되어서 읽을 수 없습니다",
         "certificateRevoked": "인증서가 해지되었습니다",
         "certificateSignatureInvalid": "인증서 서명이 잘못되었습니다",
@@ -221,6 +221,7 @@
         "revokedLcp": "이 책은 LCP 라이선스가 취소되어서 읽을 수 없습니다.",
         "seeLess": "접기",
         "seeMore": "더 보기",
+        "title": "",
         "userKeyCheckInvalid": "잘못된 암호입니다."
     },
     "reader": {

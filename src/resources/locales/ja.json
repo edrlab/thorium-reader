@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "メニュー",
         "closeDialog": "閉じる",
-        "homeMenu": "読書画面のメニュー",
         "importFile": "出版物を追加",
         "leftSlideButton": "リストを左にスライド",
         "mainContent": "メインコンテンツ",
@@ -195,6 +194,7 @@
         "audio": {
             "tracks": "トラック"
         },
+        "author": "",
         "cancelledLcp": "LCPライセンスが取り消されたため、この本を読めません。",
         "certificateRevoked": "証明書が取り消されています",
         "certificateSignatureInvalid": "証明書の署名が無効です",
@@ -221,6 +221,7 @@
         "revokedLcp": "LCPライセンスが取り消されているため、この本は読めません。",
         "seeLess": "続きを見ない",
         "seeMore": "続きを見る",
+        "title": "",
         "userKeyCheckInvalid": "パスワードが間違っています"
     },
     "reader": {

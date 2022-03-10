@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Fermer",
-        "homeMenu": "Menu principal",
         "importFile": "Importer un fichier epub",
         "leftSlideButton": "Faire défiler la liste vers la gauche",
         "mainContent": "contenu principal",
@@ -195,6 +194,7 @@
         "audio": {
             "tracks": "Pistes"
         },
+        "author": "",
         "cancelledLcp": "Ce livre ne peut être lu car la licence lcp a été annulée.",
         "certificateRevoked": "Certificat révoqué",
         "certificateSignatureInvalid": "Signature de certificat invalide",
@@ -221,6 +221,7 @@
         "revokedLcp": "Ce livre ne peut être lu car la licence lcp a été révoquée.",
         "seeLess": "Voir moins",
         "seeMore": "Voir plus",
+        "title": "",
         "userKeyCheckInvalid": "Mot de passe incorrect"
     },
     "reader": {
