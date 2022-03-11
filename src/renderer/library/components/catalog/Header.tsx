@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
+import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -20,6 +22,7 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 import PublicationAddButton from "./PublicationAddButton";
+
 import SearchForm from "./SearchForm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -74,30 +77,34 @@ class Header extends React.Component<IProps, undefined> {
                 >
                     <SVG svg={ListIcon} ariaHidden/>
                 </Link>
-                <SearchForm />
-                {this.AllBooksButton(window.location.hash)}
-                <PublicationAddButton />
+                {
+                    window.location.hash.indexOf("search") === -1
+                    ?
+                    <div style={{flex: "1", textAlign: "right"}}>
+                    <SearchForm />
+                    <Link
+                        style={{fontWeight: "bold"}}
+                        className={stylesButtons.button_primary_small}
+                        to={{
+                            ...this.props.location,
+                            pathname: "/library/search/all",
+                        }}
+                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    >
+                        {
+                        <>
+                        <span>{this.props.__("header.searchPlaceholder")}</span>
+                        <SVG svg={magnifyingGlass} title={this.props.__("header.allBooks")} />
+                        </>
+                        }
+                    </Link>
+                    <PublicationAddButton />
+                    </div>
+                    :
+                    <></>
+                }
             </SecondaryHeader>
         );
-    }
-
-    private AllBooksButton(hash: string) {
-        const search = hash.indexOf("search");
-        if (search === -1) {
-            return (
-                <Link
-                    className={stylesButtons.button_primary_small}
-                    to={{
-                        ...this.props.location,
-                        pathname: "/library/search/all",
-                    }}
-                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                >
-                    {this.props.__("header.allBooks")}
-                </Link>
-            );
-        }
-        return (<></>);
     }
 }
 

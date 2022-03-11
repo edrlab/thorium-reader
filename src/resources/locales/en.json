@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Close",
-        "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
         "leftSlideButton": "Slide the list to the left",
         "mainContent": "main content",
@@ -49,6 +48,11 @@
         "addTagsButton": "Add",
         "allBooks": "All books",
         "bookInfo": "About this book",
+        "column": {
+            "ascending": "ascending",
+            "descending": "descending",
+            "unsorted": "unsorted"
+        },
         "delete": "Delete",
         "deleteBook": "Delete",
         "deleteTag": "Delete the tag",
@@ -195,6 +199,7 @@
         "audio": {
             "tracks": "Tracks"
         },
+        "author": "Author",
         "cancelledLcp": "This book can't be read because the LCP license has been cancelled.",
         "certificateRevoked": "Certificate is revoked",
         "certificateSignatureInvalid": "Certificate signature is invalid",
@@ -221,6 +226,7 @@
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
+        "title": "Title",
         "userKeyCheckInvalid": "Passphrase is incorrect"
     },
     "reader": {

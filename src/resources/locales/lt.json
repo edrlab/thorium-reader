@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Meniu",
         "closeDialog": "Užverti",
-        "homeMenu": "Skaitymo meniu",
         "importFile": "Importuoti leidinį",
         "leftSlideButton": "Paslinkti sąrašą į kairę",
         "mainContent": "pagrindinis turinys",
@@ -49,6 +48,11 @@
         "addTagsButton": "Pridėti",
         "allBooks": "Visos knygos",
         "bookInfo": "Apie knygą",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Šalinti",
         "deleteBook": "Šalinti",
         "deleteTag": "Šalinti žymę",
@@ -195,6 +199,7 @@
         "audio": {
             "tracks": "Takeliai"
         },
+        "author": "",
         "cancelledLcp": "Šios knygos negalima skaityti, nes LCP licencija buvo nutraukta.",
         "certificateRevoked": "Sertifikato galiojimas sustabdytas",
         "certificateSignatureInvalid": "Negaliojantis sertifikato parašas",
@@ -221,6 +226,7 @@
         "revokedLcp": "Šios knygos negalima skaityti, nes LCP licencijos galiojimas buvo sustabdytas.",
         "seeLess": "Rodyti mažiau",
         "seeMore": "Rodyti daugiau",
+        "title": "",
         "userKeyCheckInvalid": "Neteisingas slaptažodis"
     },
     "reader": {

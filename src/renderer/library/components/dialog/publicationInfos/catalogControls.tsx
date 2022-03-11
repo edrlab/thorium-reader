@@ -12,6 +12,7 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as ExportIcon from "readium-desktop/renderer/assets/icons/download.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
@@ -19,6 +20,7 @@ import {
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { apiAction } from "readium-desktop/renderer/library/apiAction";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -39,6 +41,7 @@ export class CatalogControls extends React.Component<IProps, undefined> {
 
         this.handleRead = this.handleRead.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
+        this.exportPublication = this.exportPublication.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -57,6 +60,11 @@ export class CatalogControls extends React.Component<IProps, undefined> {
                     <SVG svg={DeleteIcon} ariaHidden />
                     {__("catalog.deleteBook")}
                 </button>
+
+                <button onClick={this.exportPublication} className={stylesButtons.button_transparency}>
+                    <SVG svg={ExportIcon} ariaHidden />
+                    {__("catalog.export")}
+                </button>
             </>
         );
     }
@@ -64,6 +72,14 @@ export class CatalogControls extends React.Component<IProps, undefined> {
     private deletePublication(e: TMouseEventOnButton) {
         e.preventDefault();
         this.props.openDeleteDialog();
+    }
+    private exportPublication(e: TMouseEventOnButton) {
+        e.preventDefault();
+
+        // this.props.exportPub();
+        apiAction("publication/exportPublication", this.props.publicationView).catch((error) => {
+            console.error("Error to fetch publication/exportPublication", error);
+        });
     }
 
     private handleRead(e: TMouseEventOnButton) {

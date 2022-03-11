@@ -3,7 +3,6 @@ declare namespace typed_i18n {
   (_: "accessibility", __?: {}): {
   readonly "bookMenu": string,
   readonly "closeDialog": string,
-  readonly "homeMenu": string,
   readonly "importFile": string,
   readonly "leftSlideButton": string,
   readonly "mainContent": string,
@@ -14,7 +13,6 @@ declare namespace typed_i18n {
 };
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
-  (_: "accessibility.homeMenu", __?: {}): string;
   (_: "accessibility.importFile", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
@@ -97,6 +95,11 @@ declare namespace typed_i18n {
   readonly "addTagsButton": string,
   readonly "allBooks": string,
   readonly "bookInfo": string,
+  readonly "column": {
+    readonly "ascending": string,
+    readonly "descending": string,
+    readonly "unsorted": string
+  },
   readonly "delete": string,
   readonly "deleteBook": string,
   readonly "deleteTag": string,
@@ -154,6 +157,14 @@ declare namespace typed_i18n {
   (_: "catalog.addTagsButton", __?: {}): string;
   (_: "catalog.allBooks", __?: {}): string;
   (_: "catalog.bookInfo", __?: {}): string;
+  (_: "catalog.column", __?: {}): {
+  readonly "ascending": string,
+  readonly "descending": string,
+  readonly "unsorted": string
+};
+  (_: "catalog.column.ascending", __?: {}): string;
+  (_: "catalog.column.descending", __?: {}): string;
+  (_: "catalog.column.unsorted", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
@@ -437,6 +448,7 @@ declare namespace typed_i18n {
   (_: "opds.shelf", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "audio": { readonly "tracks": string },
+  readonly "author": string,
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
@@ -457,10 +469,12 @@ declare namespace typed_i18n {
   readonly "revokedLcp": string,
   readonly "seeLess": string,
   readonly "seeMore": string,
+  readonly "title": string,
   readonly "userKeyCheckInvalid": string
 };
   (_: "publication.audio", __?: {}): { readonly "tracks": string };
   (_: "publication.audio.tracks", __?: {}): string;
+  (_: "publication.author", __?: {}): string;
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
@@ -484,6 +498,7 @@ declare namespace typed_i18n {
   (_: "publication.revokedLcp", __?: {}): string;
   (_: "publication.seeLess", __?: {}): string;
   (_: "publication.seeMore", __?: {}): string;
+  (_: "publication.title", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "divina": { readonly "mute": string, readonly "unmute": string },

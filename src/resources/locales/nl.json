@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Sluiten",
-        "homeMenu": "Leesweergave menu",
         "importFile": "Importeer een publicatie",
         "leftSlideButton": "Schuif lijst naar links",
         "mainContent": "hoofd inhoud",
@@ -49,6 +48,11 @@
         "addTagsButton": "Voeg toe",
         "allBooks": "Alle boeken",
         "bookInfo": "Over dit boek",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Verwijder",
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",
@@ -195,6 +199,7 @@
         "audio": {
             "tracks": "Tracks"
         },
+        "author": "",
         "cancelledLcp": "Dit boek kan niet worden gelezen omdat de LCP licentie is geannuleerd.",
         "certificateRevoked": "Certificaat is ingetrokken",
         "certificateSignatureInvalid": "Certificaat handtekening is ongeldig",
@@ -221,6 +226,7 @@
         "revokedLcp": "Dit boek kan niet gelezen worden omdat LCP licenstie is ingetrokken.",
         "seeLess": "Toon minder",
         "seeMore": "Toon meer",
+        "title": "",
         "userKeyCheckInvalid": "Wachtwoordzin is niet correct"
     },
     "reader": {

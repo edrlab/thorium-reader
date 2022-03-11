@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Valikko",
         "closeDialog": "Sulje",
-        "homeMenu": "Lukutilan valikko",
         "importFile": "Tuo julkaisu",
         "leftSlideButton": "Siirry listalla vasemmalle",
         "mainContent": "Pääsisältö",
@@ -49,6 +48,11 @@
         "addTagsButton": "Lisää",
         "allBooks": "Kaikki kirjat",
         "bookInfo": "Tietoja tästä kirjasta",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Poista",
         "deleteBook": "Poista",
         "deleteTag": "Poista tunniste",
@@ -195,6 +199,7 @@
         "audio": {
             "tracks": "Osat"
         },
+        "author": "",
         "cancelledLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on peruttu.",
         "certificateRevoked": "Varmenne on kumottu",
         "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa",
@@ -221,6 +226,7 @@
         "revokedLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on kumottu",
         "seeLess": "Näytä vähemmän",
         "seeMore": "Näytä enemmän",
+        "title": "",
         "userKeyCheckInvalid": "Salasana on väärin"
     },
     "reader": {

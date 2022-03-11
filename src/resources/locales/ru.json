@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Меню",
         "closeDialog": "Закрыть",
-        "homeMenu": "Главное меню",
         "importFile": "Импортировать книгу",
         "leftSlideButton": "Сдвиньте список влево",
         "mainContent": "Основное содержание",
@@ -49,6 +48,11 @@
         "addTagsButton": "Добавить",
         "allBooks": "Все книги",
         "bookInfo": "Об этой книге",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Удалить",
         "deleteBook": "Удалить",
         "deleteTag": "Удалить тег",
@@ -195,6 +199,7 @@
         "audio": {
             "tracks": "Треки"
         },
+        "author": "",
         "cancelledLcp": "Эту книгу нельзя прочитать, потому что лицензия LCP аннулирована.",
         "certificateRevoked": "Сертификат отозван",
         "certificateSignatureInvalid": "Подпись сертификата недействительна",
@@ -221,6 +226,7 @@
         "revokedLcp": "Эту книгу нельзя прочитать, потому что лицензия LCP была отозвана.",
         "seeLess": "Скрыть",
         "seeMore": "Подробнее",
+        "title": "",
         "userKeyCheckInvalid": "Пароль неверен"
     },
     "reader": {

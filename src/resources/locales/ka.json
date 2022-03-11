@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "მენიუ",
         "closeDialog": "დახურვა",
-        "homeMenu": "ძირითადი საკითხავი მენიუ",
         "importFile": "პუბლიკაციის შემოტანა",
         "leftSlideButton": "სიის მარცხნივ ჩაწევა",
         "mainContent": "ძირითადი შიგთავსი",
@@ -49,6 +48,11 @@
         "addTagsButton": "დამატება",
         "allBooks": "ყველა წიგნი",
         "bookInfo": "ამ წიგნის შესახებ",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "წაშლა",
         "deleteBook": "წაშლა",
         "deleteTag": "იარლიყის წაშლა",
@@ -195,6 +199,7 @@
         "audio": {
             "tracks": "აუდიო ნაკვალევები"
         },
+        "author": "",
         "cancelledLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზია გაუქმებულია.",
         "certificateRevoked": "სერტიფიკატი ანულირებულია",
         "certificateSignatureInvalid": "სერტიფიკატის ხელმოწერა არასწორია",
@@ -221,6 +226,7 @@
         "revokedLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზია ანულირებულია.",
         "seeLess": "ნაკლების ნახვა",
         "seeMore": "მეტის ნახვა",
+        "title": "",
         "userKeyCheckInvalid": "კოდური ფრაზა არასწორია"
     },
     "reader": {

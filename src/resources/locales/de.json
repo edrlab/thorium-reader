@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menü",
         "closeDialog": "Schließen",
-        "homeMenu": "Startmenü",
         "importFile": "Importieren einer EPUB-Datei",
         "leftSlideButton": "Scrolle nach links unten",
         "mainContent": "hauptinhalt",
@@ -49,6 +48,11 @@
         "addTagsButton": "Hinzufügen",
         "allBooks": "Alle Bücher",
         "bookInfo": "Über dieses Buch",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Löschen",
         "deleteBook": "Löschen",
         "deleteTag": "Löschen des Tags",
@@ -195,6 +199,7 @@
         "audio": {
             "tracks": "Spuren"
         },
+        "author": "",
         "cancelledLcp": "",
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
@@ -221,6 +226,7 @@
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
         "seeMore": "Mehr Infos",
+        "title": "",
         "userKeyCheckInvalid": ""
     },
     "reader": {
