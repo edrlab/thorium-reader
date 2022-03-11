@@ -218,17 +218,16 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const commonCellStylesMax = (props: {displayType: DisplayType}): React.CSSProperties => {
+const commonCellStyles =  (props: {displayType: DisplayType}): React.CSSProperties => {
     return {
-        // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "150px",
-        maxHeight: props.displayType === DisplayType.Grid ? "150px" : "50px",
-    };
-};
-const commonCellStyles = (props: {displayType: DisplayType}): React.CSSProperties => {
-    return {
-        ...commonCellStylesMax(props),
+        // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
+        maxHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
+
+        // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
+        // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
+
         padding: "0.4em",
-        overflowY: "scroll",
+        overflowY: "auto",
         textAlign: "center",
         userSelect: "text",
     };
@@ -345,7 +344,9 @@ const CellCoverImage: React.FC<TableCellId_IProps> = (props) => {
         textAlign: "center",
     }}>
         <a
-            style={{ cursor: "pointer" }}
+            style={{
+                cursor: "pointer",
+            }}
             tabIndex={0}
             onClick={(e) => {
                 e.preventDefault();
@@ -364,19 +365,47 @@ const CellCoverImage: React.FC<TableCellId_IProps> = (props) => {
                 }
             }
             title={`${props.__("catalog.bookInfo")} (${props.value.title})`}
-        ><img src={props.value.label} alt={""} role="presentation" style={{
-        ...commonCellStylesMax(props),
-    }} /></a>
+        >
+        <img
+            src={
+                // NOTE! empty string doesn't work with `??` operator, must use ternary!
+                props.value.label
+                ?
+                props.value.label
+                :
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAGUUlEQVR4Xu3UAQ0AIAwDQfCvBx9zBAk2/uag16X7zNzlCBBICmwDkOxdaAJfwAB4BAJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJPOMbVS78Q2ATAAAAAElFTkSuQmCC"
+            }
+            alt={""}
+            role="presentation"
+            style={{
+
+            objectFit: "contain",
+            width: "100%",
+            height: "100%",
+
+            // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
+            // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "50px",
+
+            // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
+            // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
+        }} />
+        </a>
     </div>);
 };
 const CellDescription: React.FC<TableCell_IProps> = (props) => {
     return (<div style={{
         ...commonCellStyles(props),
         paddingBottom: "0",
-        marginBottom: "0.4em",
-        maxWidth: props.displayType === DisplayType.Grid ? "160px" : "120px",
-        minWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
-        textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
+        // marginBottom: "0.4em",
+
+        // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
+        // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "100px",
+
+        // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
+        // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
+
+        // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
+        textAlign: "start",
     }} dangerouslySetInnerHTML={{__html: props.value}} />);
 };
 const CellTitle: React.FC<TableCellId_IProps> = (props) => {
@@ -525,7 +554,7 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 return ll + note;
             }).join(", ") : "";
 
-            const description = publicationView.description ? DOMPurify.sanitize(publicationView.description) : "";
+            const description = publicationView.description ? DOMPurify.sanitize(publicationView.description).replace(/font-size:/g, "font-sizexx:") : "";
 
             const tags = publicationView.tags ? publicationView.tags.join(", ") : "";
 
@@ -617,7 +646,7 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 accessor: "colProgression",
             },
             {
-                Header: "LCP (DRM)",
+                Header: "DRM",
                 accessor: "colLCP",
             },
             {
@@ -926,6 +955,17 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
 
                     const columnIsSortable = column.id !== "colCover";
 
+                    const W = column.id === "colCover" ?
+                        (props.displayType === DisplayType.Grid ? "80px" : "40px") :
+                        column.id === "colLCP" ?
+                        "40px" :
+                        column.id === "colPublishedDate" ?
+                        "100px" :
+                        column.id === "colProgression" ?
+                        "100px" :
+                        column.id === "colDuration" ?
+                        "100px" :
+                        "160px";
                     return (<th
                         key={`headtrth_${i}`}
                         {...column.getHeaderProps(columnIsSortable ? ({...column.getSortByToggleProps(),
@@ -934,6 +974,9 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                             onClick: undefined,
                         }) : undefined)}
                         style={{
+                            width: W,
+                            minWidth: W,
+                            maxWidth: W,
                             borderBottom: "1px solid #bcbcbc",
                             borderLeft: "1px solid #bcbcbc",
                             padding: "0.7em",
@@ -941,7 +984,6 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                             background: "#eeeeee", // columnIsSortable ? "#eeeeee" : "white",
                             color: "black",
                             whiteSpace: "nowrap",
-                            // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "150px",
                             // ...{ cursor: columnIsSortable ? "pointer" : undefined },
                         }}
                         >
