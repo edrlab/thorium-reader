@@ -956,11 +956,11 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                     const columnIsSortable = column.id !== "colCover";
 
                     const W = column.id === "colCover" ?
-                        (props.displayType === DisplayType.Grid ? "80px" : "40px") :
+                        (props.displayType === DisplayType.Grid ? "100px" : "40px") :
                         column.id === "colLCP" ?
-                        "40px" :
+                        "60px" :
                         column.id === "colPublishedDate" ?
-                        "100px" :
+                        "120px" :
                         column.id === "colProgression" ?
                         "100px" :
                         column.id === "colDuration" ?
@@ -1055,6 +1055,17 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                             checked={showColumnFilters ? true : false}
                             onChange={() => {
                                 setShowColumnFilters(!showColumnFilters);
+                                const s = showColumnFilters;
+                                setTimeout(() => {
+                                    if (!s) {
+                                        tableInstance.setGlobalFilter("");
+                                    }
+                                    if (s) {
+                                        for (const col of tableInstance.allColumns) {
+                                            tableInstance.setFilter(col.id, "");
+                                        }
+                                    }
+                                }, 200);
                             }}
                             style={{position: "absolute", left: "-999px"}}
                         /><label

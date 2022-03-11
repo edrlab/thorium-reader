@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
+import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -99,7 +101,12 @@ class Header extends React.Component<IProps, undefined> {
                     }}
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                 >
-                    {this.props.__("header.allBooks")}
+                    {
+                    <>
+                    <span>{this.props.__("header.searchPlaceholder")}</span>
+                    <SVG svg={magnifyingGlass} title={this.props.__("header.allBooks")} />
+                    </>
+                    }
                 </Link>
             );
         }
