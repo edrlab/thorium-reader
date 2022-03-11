@@ -499,7 +499,7 @@ interface IColumns {
     colLCP: string;
     colTags: string;
     colDuration: string;
-    colProgression: string;
+    // colProgression: string;
 }
 
 // https://gist.github.com/ggascoigne/646e14c9d54258e40588a13aabf0102d
@@ -588,7 +588,7 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 colLCP: lcp,
                 colTags: tags,
                 colDuration: duration,
-                colProgression: "Progression",
+                // colProgression: "Progression",
                 colDescription: description,
 
                 // colPublicationViewIdentifier: publicationView.identifier,
@@ -641,10 +641,10 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 Header: props.__("catalog.tags"),
                 accessor: "colTags",
             },
-            {
-                Header: props.__("publication.progression.title"),
-                accessor: "colProgression",
-            },
+            // {
+            //     Header: props.__("publication.progression.title"),
+            //     accessor: "colProgression",
+            // },
             {
                 Header: "DRM",
                 accessor: "colLCP",
