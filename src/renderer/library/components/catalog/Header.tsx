@@ -23,7 +23,7 @@ import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/libr
 
 import PublicationAddButton from "./PublicationAddButton";
 
-// import SearchForm from "./SearchForm";
+import SearchForm from "./SearchForm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -77,40 +77,34 @@ class Header extends React.Component<IProps, undefined> {
                 >
                     <SVG svg={ListIcon} ariaHidden/>
                 </Link>
-                <div style={{flex: "1", textAlign: "right"}}>
                 {
-                    // <SearchForm />
-                    this.AllBooksButton(window.location.hash)
+                    window.location.hash.indexOf("search") === -1
+                    ?
+                    <div style={{flex: "1", textAlign: "right"}}>
+                    <SearchForm />
+                    <Link
+                        style={{fontWeight: "bold"}}
+                        className={stylesButtons.button_primary_small}
+                        to={{
+                            ...this.props.location,
+                            pathname: "/library/search/all",
+                        }}
+                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    >
+                        {
+                        <>
+                        <span>{this.props.__("header.searchPlaceholder")}</span>
+                        <SVG svg={magnifyingGlass} title={this.props.__("header.allBooks")} />
+                        </>
+                        }
+                    </Link>
+                    <PublicationAddButton />
+                    </div>
+                    :
+                    <></>
                 }
-                {window.location.hash.indexOf("search") === -1 ? <PublicationAddButton /> : undefined}
-                </div>
             </SecondaryHeader>
         );
-    }
-
-    private AllBooksButton(hash: string) {
-        const search = hash.indexOf("search");
-        if (search === -1) {
-            return (
-                <Link
-                    style={{fontWeight: "bold"}}
-                    className={stylesButtons.button_primary_small}
-                    to={{
-                        ...this.props.location,
-                        pathname: "/library/search/all",
-                    }}
-                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                >
-                    {
-                    <>
-                    <span>{this.props.__("header.searchPlaceholder")}</span>
-                    <SVG svg={magnifyingGlass} title={this.props.__("header.allBooks")} />
-                    </>
-                    }
-                </Link>
-            );
-        }
-        return (<></>);
     }
 }
 

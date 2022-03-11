@@ -587,6 +587,28 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 colPublicationType: publicationType,
                 colLCP: lcp,
                 colTags: tags,
+                // CSS
+                // div.tags_wrapper
+                // display: flex;
+                // flex-direction: row;
+                // align-items: flex-start;
+                // justify-content: flex-start;
+                // flex-wrap: wrap;
+                //
+                // a.tag
+                // display: flex;
+                // align-items: center;
+                // background-color: #e7f1fb;
+                // padding: 2px 6px;
+                // font-size: 1.1rem;
+                // border-radius: 5px;
+                // border: 1px solid var(--color-tertiary);
+                // color: var(--color-tertiary);
+                // cursor: pointer;
+                // text-decoration: none;
+                // transition: all 0.2s;
+                // margin-right: 10px;
+                // margin-bottom: 10px;
                 colDuration: duration,
                 // colProgression: "Progression",
                 colDescription: description,

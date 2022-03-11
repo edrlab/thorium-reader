@@ -64,7 +64,7 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
 
         if (publication.description) {
 
-            const textSanitize = DOMPurify.sanitize(publication.description);
+            const textSanitize = DOMPurify.sanitize(publication.description).replace(/font-size:/g, "font-sizexx:");
             return (
                 <>
                     <div className={stylesGlobal.heading}>
