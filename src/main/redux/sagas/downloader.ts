@@ -119,7 +119,18 @@ function* downloaderServiceDownloadProcessTask(chan: Channel<TDownloaderChannel>
 
     const [pathFile, channel, readStream] = yield* callTyped(downloadLinkProcess, linkHref, id);
     if (channel) yield* putTyped(chan, channel);
+
     const writeStream = createWriteStream(pathFile);
+    writeStream.on("finish", () => {
+        debug("WriteStream finish");
+    });
+    writeStream.on("close", () => {
+        debug("WriteStream close");
+    });
+    writeStream.on("error", () => {
+        debug("WriteStream error");
+    });
+
     yield* callTyped(downloaderServiceProcessTaskStreamPipeline, readStream, writeStream);
 
     return pathFile;
@@ -130,19 +141,35 @@ function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStre
     if (!readStream || !writeStream) return;
 
     readStream.pipe(writeStream);
+
     const chan = eventChannel((emit) => {
         const f = () => emit(0);
-        readStream.on("end", f);
-        readStream.on("close", f);
+
+        // when 'read' stream finishes,
+        // 'write' stream may not have finished
+        // flushing its filesystem buffers yet!
+
+        // readStream.on("end", f);
+        // readStream.on("close", f);
         readStream.on("error", f);
+
+        writeStream.on("finish", f);
+        writeStream.on("close", f);
+        writeStream.on("error", f);
 
         return () => {
 
             debug("DESTROY FROM CHANNEL");
+
             readStream.destroy();
-            readStream.off("close", f);
+
+            // readStream.off("end", f);
+            // readStream.off("close", f);
             readStream.off("error", f);
-            readStream.off("end", f);
+
+            writeStream.off("finish", f);
+            writeStream.off("close", f);
+            writeStream.off("error", f);
         };
     });
 
@@ -321,7 +348,7 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
             }, 1000);
 
             readStream.on("end", () => {
-                debug("ReadStream end");
+                debug("ReadStream end _");
 
                 clearInterval(iv);
 
@@ -336,6 +363,12 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
             });
 
             readStream.on("close", () => {
+                debug("ReadStream close _");
+                clearInterval(iv);
+            });
+
+            readStream.on("error", () => {
+                debug("ReadStream error _");
                 clearInterval(iv);
             });
         },
@@ -348,8 +381,14 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
         downloadedLength += chunk.length;
     });
 
+    readStream.on("end", () => {
+        debug("ReadStream end");
+    });
     readStream.on("close", () => {
         debug("ReadStream close");
+    });
+    readStream.on("error", () => {
+        debug("ReadStream error");
     });
 
     return channel;

@@ -24,8 +24,13 @@ export const TagList: React.FC<IProps> = (props) => {
         const tags: JSX.Element[] = [];
 
         for (const [index, tag] of tagArray.entries()) {
+
             tags.push(
-                <div key={`tag-${index}`} className={classNames(stylesTags.tag, stylesTags.no_hover)}>
+                <div key={`tag-${index}`} className={classNames(
+                    stylesTags.tag,
+                    // pointer hover style for IOpdsTagView links
+                    typeof tag === "string" || !tag.link?.length ? stylesTags.no_hover : undefined,
+                    )}>
                     {
                         children(tag, index)
                     }
