@@ -11,8 +11,8 @@
     "postinstall": "npm run pinCompromisedColorPackage && npm run electron-build",
     "pinCompromisedColorPackage": "(npm ls colors || echo \"NPM LS?\") && rimraf node_modules/electron-rebuild/node_modules/colors && rimraf node_modules/dir-compare/node_modules/colors",
     "pinCompromisedColorPackage_": "find node_modules -maxdepth 100 -type d -name \"colors\" && npm ls colors",
-    "electron-build_": "npm rebuild --runtime=electron --target=17.1.1 --disturl=https://atom.io/download/atom-shell --build-from-source",
-    "electron-build": "electron-rebuild --version=17.1.1 --disturl=https://atom.io/download/atom-shell"
+    "electron-build_": "npm rebuild --runtime=electron --target=17.1.2 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "electron-build": "electron-rebuild --version=17.1.2 --disturl=https://atom.io/download/atom-shell"
   },
   "repository": {
     "type": "git",
