@@ -20,7 +20,8 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 import PublicationAddButton from "./PublicationAddButton";
-import SearchForm from "./SearchForm";
+
+// import SearchForm from "./SearchForm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -74,9 +75,13 @@ class Header extends React.Component<IProps, undefined> {
                 >
                     <SVG svg={ListIcon} ariaHidden/>
                 </Link>
-                <SearchForm />
-                {this.AllBooksButton(window.location.hash)}
-                <PublicationAddButton />
+                <div style={{flex: "1", textAlign: "right"}}>
+                {
+                    // <SearchForm />
+                    this.AllBooksButton(window.location.hash)
+                }
+                {window.location.hash.indexOf("search") === -1 ? <PublicationAddButton /> : undefined}
+                </div>
             </SecondaryHeader>
         );
     }
@@ -86,6 +91,7 @@ class Header extends React.Component<IProps, undefined> {
         if (search === -1) {
             return (
                 <Link
+                    style={{fontWeight: "bold"}}
                     className={stylesButtons.button_primary_small}
                     to={{
                         ...this.props.location,

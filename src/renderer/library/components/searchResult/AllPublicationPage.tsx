@@ -5,19 +5,43 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg"; // baseline-arrow_forward_ios-24px -- arrow
+// import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
+import { matchSorter } from "match-sorter";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { TDispatch } from "readium-desktop/typings/redux";
 import {
+    FilterTypes,
+    Row,
     TableInstance,
+    TableOptions,
     TableState,
+    UseFiltersColumnProps,
+    UseFiltersInstanceProps,
+    UseFiltersOptions,
+    UseGlobalFiltersInstanceProps,
+    UseGlobalFiltersOptions,
+    UseGlobalFiltersState,
     UsePaginationInstanceProps,
+    UsePaginationOptions,
     UsePaginationState,
     UseSortByColumnProps,
+    UseSortByInstanceProps,
+    UseSortByOptions,
+    UseSortByState,
     UseTableColumnProps,
+    UseFiltersColumnOptions,
+    UseTableColumnOptions,
+    UseSortByColumnOptions,
+    UseGlobalFiltersColumnOptions,
 } from "react-table";
-import { Column, useTable, useFilters, useSortBy, usePagination } from "react-table";
+import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce } from "react-table";
 import { formatTime } from "readium-desktop/common/utils/time";
 import * as DOMPurify from "dompurify";
 import * as moment from "moment";
@@ -41,6 +65,10 @@ import { Unsubscribe } from "redux";
 import Header from "../catalog/Header";
 
 import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+import {
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
 
 // import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 // import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
@@ -62,15 +90,23 @@ interface IState {
 
 export class AllPublicationPage extends React.Component<IProps, IState> {
     private unsubscribe: Unsubscribe;
+    private inputRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.onKeyboardFocusSearch = this.onKeyboardFocusSearch.bind(this);
+        this.inputRef = React.createRef<HTMLInputElement>();
+
         this.state = {
             publicationViews: undefined,
         };
     }
 
     public componentDidMount() {
+        ensureKeyboardListenerIsInstalled();
+        this.registerAllKeyboardListeners();
+
         this.unsubscribe = apiSubscribe([
             "publication/importFromFs",
             "publication/delete",
@@ -79,14 +115,28 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
             "publication/updateTags",
         ], () => {
             apiAction("publication/findAll")
-                .then((publicationViews) => this.setState({publicationViews}))
+                .then((publicationViews) => {
+                    this.setState({publicationViews});
+                    setTimeout(() => {
+                        this.onKeyboardFocusSearch();
+                    }, 400);
+                })
                 .catch((error) => console.error("Error to fetch api publication/findAll", error));
         });
     }
 
     public componentWillUnmount() {
+        this.unregisterAllKeyboardListeners();
+
         if (this.unsubscribe) {
             this.unsubscribe();
+        }
+    }
+
+    public async componentDidUpdate(oldProps: IProps) {
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
         }
     }
 
@@ -114,6 +164,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                             publicationViews={this.state.publicationViews}
                             displayPublicationInfo={this.props.displayPublicationInfo}
                             openReader={this.props.openReader}
+                            inputRef={this.inputRef}
                         />
                         // (displayType === DisplayType.Grid ?
                         //     <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
@@ -123,10 +174,31 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
             </LibraryLayout>
         );
     }
+
+    private registerAllKeyboardListeners() {
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusSearch,
+            this.onKeyboardFocusSearch);
+    }
+
+    private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardFocusSearch);
+    }
+
+    private onKeyboardFocusSearch = () => {
+        if (!this.inputRef?.current) {
+            return;
+        }
+        this.inputRef.current.focus();
+        // this.inputRef.current.select();
+        this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    keyboardShortcuts: state.keyboard.shortcuts,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
@@ -146,7 +218,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
 const commonCellStylesMax = (props: {displayType: DisplayType}): React.CSSProperties => {
     return {
-        maxWidth: props.displayType === DisplayType.Grid ? "150px" : "150px",
+        // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "150px",
         maxHeight: props.displayType === DisplayType.Grid ? "150px" : "50px",
     };
 };
@@ -158,6 +230,88 @@ const commonCellStyles = (props: {displayType: DisplayType}): React.CSSPropertie
         textAlign: "center",
         userSelect: "text",
     };
+};
+
+const CellGlobalFilter: React.FC<TableCellGlobalFilter_IProps> = (props) => {
+
+    const [value, setValue] = React.useState(props.globalFilter);
+
+    const onChange = useAsyncDebounce((value) => {
+        props.setGlobalFilter(value || undefined);
+    }, 500);
+
+    return (
+        <div
+            style={{
+                // border: "1px solid blue",
+                textAlign: "left",
+            }}>
+
+            <span
+                style={{
+                    fontSize: "90%",
+                    fontWeight: "bold",
+                }}>
+                {`${props.__("header.searchPlaceholder")}`}
+            </span>
+            <div
+                    aria-live="polite"
+                    style={{
+                        // border: "1px solid red",
+                        marginLeft: "0.4em",
+                        display: "inline-block",
+                        fontSize: "90%",
+                        // width: "4em",
+                        overflow: "visible",
+                        whiteSpace: "nowrap",
+                    }}>
+                {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
+            </div>
+            <input
+                ref={props.inputRef}
+                type="search"
+                value={value || ""}
+                onChange={(e) => {
+                    setValue(e.target.value);
+                    onChange(e.target.value);
+                }}
+                aria-label={`${props.__("header.searchTitle")}`}
+                placeholder={`${props.__("header.searchTitle")}`}
+                style={{
+                    border: "1px solid gray",
+                    borderRadius: "4px",
+                    margin: "0",
+                    marginLeft: "0.4em",
+                    width: "10em",
+                    padding: "0.2em",
+                }}
+                />
+        </div>
+    );
+};
+
+const CellColumnFilter: React.FC<TableCellFilter_IProps> = (_props) => {
+
+    return <></>;
+    // return (
+    //     <div
+    //         style={{
+    //             border: "1px solid blue",
+    //         }}>
+    //         {`${props.__("header.searchPlaceholder")}`}
+    //         <input
+    //             value={props.column.filterValue || ""}
+    //             onChange={(e) => {
+    //                 props.column.setFilter(e.target.value || undefined);
+    //             }}
+    //             placeholder={`${props.__("header.searchTitle")}`}
+    //             style={{
+    //                 border: "1px solid red",
+    //             }}
+    //             />
+    //         {` (${props.column.preFilteredRows.length})`}
+    //     </div>
+    // );
 };
 
 const CellCoverImage: React.FC<TableCellId_IProps> = (props) => {
@@ -196,6 +350,7 @@ const CellDescription: React.FC<TableCell_IProps> = (props) => {
         ...commonCellStyles(props),
         paddingBottom: "0",
         marginBottom: "0.4em",
+        maxWidth: props.displayType === DisplayType.Grid ? "160px" : "120px",
         minWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
         textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
     }} dangerouslySetInnerHTML={{__html: props.value}} />);
@@ -237,34 +392,43 @@ const TableCell: React.FC<TableCell_IProps> = (props) => {
     </div>);
 };
 
-// https://github.com/TanStack/react-table/issues/3064
-// https://github.com/TanStack/react-table/issues/2912
-// etc. :(
-export type PaginationTableInstance<T extends object> = TableInstance<T> &
-UsePaginationInstanceProps<T> & {
-    state: UsePaginationState<T>;
-};
-
+interface TableAction_IProps {
+    displayPublicationInfo: ReturnType<typeof mapDispatchToProps>["displayPublicationInfo"];
+    openReader: ReturnType<typeof mapDispatchToProps>["openReader"];
+}
 interface TableCommon_IProps {
     __: I18nTyped;
     translator: Translator;
     displayType: DisplayType;
-    displayPublicationInfo: ReturnType<typeof mapDispatchToProps>["displayPublicationInfo"];
-    openReader: ReturnType<typeof mapDispatchToProps>["openReader"];
+}
+interface TableCellGlobalFilter_IProps extends TableCommon_IProps {
+    preGlobalFilteredRows: Row<IColumns>[];
+    globalFilteredRows: Row<IColumns>[];
+    globalFilter: string;
+    setGlobalFilter: (filterValue: string) => void;
+    inputRef: React.RefObject<HTMLInputElement>;
+}
+interface TableCellFilter_IProps extends TableCommon_IProps {
+    column: {
+        filterValue: string | undefined;
+        preFilteredRows: string[];
+        setFilter: (str: string | undefined) => void;
+    };
 }
 interface IColumnValue {
     label: string,
     title: string,
     publicationViewIdentifier: string,
 };
-interface TableCellId_IProps extends TableCommon_IProps {
+interface TableCellId_IProps extends TableCommon_IProps, TableAction_IProps {
     value: IColumnValue;
 }
-interface TableCell_IProps extends TableCommon_IProps {
+interface TableCell_IProps extends TableCommon_IProps, TableAction_IProps {
     value: string;
 }
-interface TableView_IProps extends TableCommon_IProps {
+interface TableView_IProps extends TableCommon_IProps, TableAction_IProps {
     publicationViews: PublicationView[];
+    inputRef: React.RefObject<HTMLInputElement>;
 }
 
 interface IColumns {
@@ -282,9 +446,23 @@ interface IColumns {
     colDuration: string;
     colProgression: string;
 }
+
+// https://gist.github.com/ggascoigne/646e14c9d54258e40588a13aabf0102d
+// https://github.com/TanStack/react-table/issues/3064
+// https://github.com/TanStack/react-table/issues/2912
+// etc. :(
+type MyTableInstance<T extends object> =
+    TableInstance<T> & // UseTableInstanceProps
+    UseGlobalFiltersInstanceProps<T> &
+    UseFiltersInstanceProps<T> &
+    UseSortByInstanceProps<T> &
+    UsePaginationInstanceProps<T> & {
+        state: TableState<T> & UsePaginationState<T> & UseGlobalFiltersState<T> & UseSortByState<T>;
+    };
+
 export const TableView: React.FC<TableView_IProps> = (props) => {
 
-    const tableRows = React.useMemo<IColumns[]>(() => {
+    const tableRows = React.useMemo(() => {
         return props.publicationViews.map((publicationView) => {
 
             // translator.translateContentField(author)
@@ -348,21 +526,25 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 colPublishers: publishers,
                 colLanguages: languages,
                 colPublishedDate: publishedDate,
-                colDescription: description,
                 colIdentifier: identifier,
                 colPublicationType: publicationType,
                 colLCP: lcp,
                 colTags: tags,
                 colDuration: duration,
                 colProgression: "Progression",
+                colDescription: description,
 
-                colPublicationViewIdentifier: publicationView.identifier,
+                // colPublicationViewIdentifier: publicationView.identifier,
             };
         }) as IColumns[];
     }, [props.publicationViews]);
 
-    const tableColumns = React.useMemo<Column<IColumns>[]>(() => {
-        const arr: Column<IColumns>[] = [
+    const tableColumns = React.useMemo(() => {
+        const arr: (Column<IColumns> &
+            UseTableColumnOptions<IColumns>  &
+            UseSortByColumnOptions<IColumns>  &
+            UseGlobalFiltersColumnOptions<IColumns>  &
+            UseFiltersColumnOptions<IColumns>)[] = [
             {
                 Header: props.__("publication.cover.img"),
                 accessor: "colCover",
@@ -372,6 +554,7 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 Header: props.__("publication.title"),
                 accessor: "colTitle",
                 Cell: CellTitle,
+                filter: "text", // because IColumnValue instead of plain string
             },
             {
                 Header: props.__("publication.author"),
@@ -389,11 +572,6 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 Header: props.__("catalog.released"),
                 accessor: "colPublishedDate",
             },
-            {
-                Header: props.__("catalog.description"),
-                accessor: "colDescription",
-                Cell: CellDescription,
-            },
             // {
             //     Header: "Identifier",
             //     accessor: "colIdentifier",
@@ -403,20 +581,25 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
             //     accessor: "colPublicationType",
             // },
             {
-                Header: "LCP (DRM)",
-                accessor: "colLCP",
-            },
-            {
                 Header: props.__("catalog.tags"),
                 accessor: "colTags",
+            },
+            {
+                Header: props.__("publication.progression.title"),
+                accessor: "colProgression",
+            },
+            {
+                Header: "LCP (DRM)",
+                accessor: "colLCP",
             },
             {
                 Header: props.__("publication.duration.title"),
                 accessor: "colDuration",
             },
             {
-                Header: props.__("publication.progression.title"),
-                accessor: "colProgression",
+                Header: props.__("catalog.description"),
+                accessor: "colDescription",
+                Cell: CellDescription,
             },
         ];
         return arr;
@@ -425,26 +608,73 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
     const defaultColumn = React.useMemo(
         () => ({
             Cell: TableCell,
+            Filter: CellColumnFilter,
         }),
         [],
     );
 
-    const pageSize = 20; // props.displayType === DisplayType.List ? 20 : 10;
+    const filterTypes = React.useMemo(() => ({
 
-    const tableInstance = useTable({
-        columns: tableColumns,
-        data: tableRows,
-        defaultColumn,
-        initialState: {
-            pageSize,
-            pageIndex: 0,
-        } as UsePaginationState<IColumns> as TableState<IColumns>,
-        // @xxts-expect-error TS2322
-        // filterTypes,
-    }, useFilters, useSortBy, usePagination) as PaginationTableInstance<IColumns>;
+            globalFilter: (rows: Row<IColumns>[], columnIds: string[], filterValue: string) => {
+                const set = new Set<Row<IColumns>>();
+                columnIds.forEach((columnId) => {
+                    const subRes = filterTypes.text(rows, columnId, filterValue);
+                    subRes.forEach((r) => {
+                        set.add(r);
+                    });
+                });
+                const res = Array.from(set);
+                // console.log(`filterTypes.globalFilter ======= ${rows.length} ${JSON.stringify(columnIds)} ${typeof filterValue} ${res.length}`);
+                return res;
+            },
+            text: (rows: Row<IColumns>[], columnId: string, filterValue: string) => {
+                // const res = rows.filter((row) => {
+                //     let rowValue = row.values[columnId];
+                //     if (typeof rowValue !== "string") {
+                //         rowValue = (rowValue as IColumnValue).label;
+                //     }
+                //     return rowValue
+                //         ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
+                //         : true; // keep (filter in, not out)
+                // });
+                const res = matchSorter<Row<IColumns>>(rows, filterValue, { keys: [(row) => {
+                    let rowValue = row.values[columnId];
+                    if (typeof rowValue !== "string") {
+                        rowValue = (rowValue as IColumnValue).label;
+                    }
+                    return rowValue;
+                }],
+                // https://github.com/kentcdodds/match-sorter#threshold-number
+                threshold: matchSorter.rankings.CONTAINS});
+                // console.log(`filterTypes.text ======= ${rows.length} ${columnId} ${typeof filterValue} ${res.length}`);
+                return res;
+            },
+        }),
+    []);
 
     // infinite render loop
     // tableInstance.setPageSize(pageSize);
+    const initialState: UsePaginationState<IColumns> = {
+        pageSize: 20, // props.displayType === DisplayType.List ? 20 : 10;
+        pageIndex: 0,
+    };
+    const opts:
+        TableOptions<IColumns> &
+        UseFiltersOptions<IColumns> &
+        UseGlobalFiltersOptions<IColumns> &
+        UseSortByOptions<IColumns> &
+        UsePaginationOptions<IColumns> = {
+
+        columns: tableColumns,
+        data: tableRows,
+        defaultColumn,
+        globalFilter: "globalFilter",
+        filterTypes: filterTypes as unknown as FilterTypes<IColumns>, // because typing 'columnIds' instead of 'columnId' in FilterType<D> ?!
+        initialState: initialState as TableState<IColumns>, // again, typing woes :(
+    };
+    const tableInstance =
+        useTable<IColumns>(opts, useFilters, useGlobalFilter, useSortBy, usePagination) as MyTableInstance<IColumns>;
+
 
     // <pre>
     // <code>
@@ -495,6 +725,48 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
             // border: "1px solid red",
             position: "fixed",
             // width: "calc(100% - 50px)",
+            zIndex: "101",
+            // position: "absolute",
+            // top: "-5px",
+            // bottom: "0",
+            // left: "0",
+            right: "0",
+            padding: "0",
+            // paddingBottom: "0.1em",
+            margin: "0",
+            marginTop: "-138px",
+            marginRight: "30px",
+            // display: "flex",
+            // flexDirection: "row",
+            // alignItems: "center",
+            // justifyContent: "flex-end",
+            // pointerEvents: "none",
+        }}>
+        <div style={{
+            // pointerEvents: "all",
+            display: "inline-block",
+            fontSize: "90%",
+        }}>
+            {
+            // ${props.__("catalog.opds.info.numberOfItems")}
+            // `(${tableRows.length})`
+            }
+            <CellGlobalFilter
+                    preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
+                    globalFilteredRows={tableInstance.globalFilteredRows}
+                    globalFilter={tableInstance.state.globalFilter}
+                    setGlobalFilter={tableInstance.setGlobalFilter}
+                    __={props.__}
+                    translator={props.translator}
+                    displayType={props.displayType}
+                    inputRef={props.inputRef}
+                />
+        </div></div>
+
+        <div style={{
+            // border: "1px solid red",
+            position: "fixed",
+            // width: "calc(100% - 50px)",
             // zIndex: "9999",
             // position: "absolute",
             // top: "-5px",
@@ -506,33 +778,45 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
             margin: "0",
             marginTop: "-74px",
             marginRight: "30px",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            pointerEvents: "none",
+            // display: "flex",
+            // flexDirection: "row",
+            // alignItems: "center",
+            // justifyContent: "flex-end",
+            // pointerEvents: "none",
         }}>
-
-            <div style={{pointerEvents: "all", display: "inline-block", fontSize: "90%", marginRight: "1em"}}>{
-            // ${props.__("catalog.opds.info.numberOfItems")}
-            `(${tableRows.length})`
-            }</div>
-            <div style={{pointerEvents: "all", display: "inline-block"}}>
+            <div style={{
+                // pointerEvents: "all",
+                display: "flex",
+                alignItems: "center",
+            }}>
             <button
-            style={{margin:"0", padding: "0.2em"}}
+            style={{
+                margin:"0",
+                padding: "0em",
+                width: "30px",
+                fill: tableInstance.canPreviousPage ? "#333333" : "gray",
+            }}
             aria-label={`${props.__("opds.firstPage")}`}
-            onClick={() => tableInstance.gotoPage(0)} disabled={!tableInstance.canPreviousPage}>
-            {"◁"}
+            onClick={() => tableInstance.gotoPage(0)}
+            disabled={!tableInstance.canPreviousPage}>
+                <SVG svg={ArrowFirstIcon} />
             </button>
             <button
-            style={{margin:"0", padding: "0.2em"}}
+            style={{
+                margin:"0",
+                padding: "0",
+                transform: "rotate(180deg)",
+                width: "30px",
+                fill: tableInstance.canPreviousPage ? "#333333" : "gray",
+            }}
             aria-label={`${props.__("opds.previous")}`}
-            onClick={() => tableInstance.previousPage()} disabled={!tableInstance.canPreviousPage}>
-            {"◀"}
+            onClick={() => tableInstance.previousPage()}
+            disabled={!tableInstance.canPreviousPage}>
+                <SVG svg={ArrowRightIcon} />
             </button>
             <select
                 aria-label={`${props.__("reader.navigation.currentPageTotal", {current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length})}`}
-                style={{cursor: "pointer", padding: "0.2em", margin: "0", marginLeft: "0.6em", marginRight: "0.6em", border: "1px solid gray", borderRadius: "4px"}}
+                style={{cursor: "pointer", minWidth: "5em", textAlign: "center", padding: "0.2em", margin: "0", marginLeft: "0em", marginRight: "0em", border: "1px solid gray", borderRadius: "4px"}}
                 value={tableInstance.state.pageIndex}
                 onChange={(e) => {
                     const pageIndex = e.target.value ? Number(e.target.value) : 0;
@@ -550,16 +834,28 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 }
             </select>
             <button
-            style={{margin:"0", padding: "0.2em"}}
+            style={{
+                margin:"0",
+                padding: "0",
+                width: "30px",
+                fill: tableInstance.canNextPage ? "#333333" : "gray",
+            }}
             aria-label={`${props.__("opds.next")}`}
-            onClick={() => tableInstance.nextPage()} disabled={!tableInstance.canNextPage}>
-            {"▶"}
+            onClick={() => tableInstance.nextPage()}
+            disabled={!tableInstance.canNextPage}>
+                <SVG svg={ArrowRightIcon} />
             </button>
             <button
-            style={{margin:"0", padding: "0.2em"}}
+            style={{
+                margin:"0",
+                padding: "0em",
+                width: "30px",
+                fill: tableInstance.canNextPage ? "#333333" : "gray",
+            }}
             aria-label={`${props.__("opds.lastPage")}`}
-            onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)} disabled={!tableInstance.canNextPage}>
-            {"▷"}
+            onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
+            disabled={!tableInstance.canNextPage}>
+                <SVG svg={ArrowLastIcon} />
             </button>
             </div>
         </div>
@@ -579,12 +875,26 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 marginBottom: "0.4em",
             }}>
         <table {...tableInstance.getTableProps()}
-        style={{ fontSize: "90%", border: "solid 1px gray", borderRadius: "8px", padding: "4px", margin: "0", marginRight: "1em", borderSpacing: "0" }}>
+            style={{
+                fontSize: "90%",
+                border: "solid 1px gray",
+                borderRadius: "8px",
+                padding: "4px",
+                margin: "0",
+                // marginRight: "1em",
+                borderSpacing: "0",
+                // minWidth: "calc(100% - 30px)",
+            }}>
             <thead>{tableInstance.headerGroups.map((headerGroup, index) =>
                 (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
                 headerGroup.headers.map((col, i) => {
 
-                    const column = col as unknown as ({ Header: string } & UseTableColumnProps<IColumns> & UseSortByColumnProps<IColumns>);
+                    const column = col as unknown as (
+                        { Header: string } &
+                        UseTableColumnProps<IColumns> &
+                        UseSortByColumnProps<IColumns> &
+                        UseFiltersColumnProps<IColumns>
+                    );
 
                     const columnIsSortable = column.id !== "colCover";
 
@@ -593,15 +903,18 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                         {...column.getHeaderProps(columnIsSortable ? ({...column.getSortByToggleProps(),
                             // @ts-expect-error TS2322
                             title: undefined,
+                            onClick: undefined,
                         }) : undefined)}
                         style={{
                             borderBottom: "1px solid #bcbcbc",
+                            borderLeft: "1px solid #bcbcbc",
                             padding: "0.7em",
                             margin: "0",
                             background: "#eeeeee", // columnIsSortable ? "#eeeeee" : "white",
                             color: "black",
                             whiteSpace: "nowrap",
-                            ...{ cursor: columnIsSortable ? "pointer" : undefined },
+                            // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "150px",
+                            // ...{ cursor: columnIsSortable ? "pointer" : undefined },
                         }}
                         >
                         {
@@ -626,7 +939,13 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                             column.render("Header")
                             }
                         </button>
-                        <span aria-hidden="true" role="presentation"
+                        <button
+                        style={{height: "auto", padding: "0.2em", margin: "0", fontWeight: "bold", fontSize: "100%"}}
+                        aria-hidden="true"
+                        role="presentation"
+                        onClick={() => {
+                            column.toggleSortBy();
+                        }}
                         title={
                             `${
                             column.isSorted ? (column.isSortedDesc ?
@@ -639,7 +958,17 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                             }>
                         {
                         column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : " ⇅"
-                        }</span></>
+                        }</button>
+                        {
+                        column.canFilter ?
+                        (<div style={{display: "block"}}>{ column.render("Filter", {
+                            __: props.__,
+                            translator: props.translator,
+                            displayType: props.displayType,
+                        }) }</div>)
+                        : <></>
+                        }
+                        </>
                         :
                         <span
                         aria-label={`${column.Header}`}
@@ -654,7 +983,26 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                         </th>);
                     },
                 )}</tr>),
-            )}</thead>
+            )}
+            {
+            // <tr>
+            // <th
+            //     colSpan={tableInstance.visibleColumns.length}
+            //     >
+            //     <CellGlobalFilter
+            //         preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
+            //         globalFilteredRows={tableInstance.globalFilteredRows}
+            //         globalFilter={tableInstance.state.globalFilter}
+            //         setGlobalFilter={tableInstance.setGlobalFilter}
+            //         __={props.__}
+            //         translator={props.translator}
+            //         displayType={props.displayType}
+            //     />
+            // </th>
+            // </tr>
+            }
+
+            </thead>
             <tbody {...tableInstance.getTableBodyProps()}>{tableInstance.page.map((row, index) => {
                 tableInstance.prepareRow(row);
 
