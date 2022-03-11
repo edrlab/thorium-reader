@@ -7,6 +7,8 @@
 
 import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
 import SVG from "readium-desktop/renderer/common/components/SVG";
+// import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
+import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg"; // baseline-arrow_forward_ios-24px -- arrow
 // import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
@@ -290,28 +292,50 @@ const CellGlobalFilter: React.FC<TableCellGlobalFilter_IProps> = (props) => {
     );
 };
 
-const CellColumnFilter: React.FC<TableCellFilter_IProps> = (_props) => {
+const CellColumnFilter: React.FC<TableCellFilter_IProps> = (props) => {
 
-    return <></>;
-    // return (
-    //     <div
-    //         style={{
-    //             border: "1px solid blue",
-    //         }}>
-    //         {`${props.__("header.searchPlaceholder")}`}
-    //         <input
-    //             value={props.column.filterValue || ""}
-    //             onChange={(e) => {
-    //                 props.column.setFilter(e.target.value || undefined);
-    //             }}
-    //             placeholder={`${props.__("header.searchTitle")}`}
-    //             style={{
-    //                 border: "1px solid red",
-    //             }}
-    //             />
-    //         {` (${props.column.preFilteredRows.length})`}
-    //     </div>
-    // );
+// <span
+// style={{
+//     fontSize: "90%",
+//     fontWeight: "bold",
+// }}>
+// {`${props.__("header.searchPlaceholder")}`}
+// </span>
+
+// <div
+// aria-live="polite"
+// style={{
+//     // border: "1px solid red",
+//     marginLeft: "0.4em",
+//     display: "inline-block",
+//     fontSize: "90%",
+//     // width: "4em",
+//     overflow: "visible",
+//     whiteSpace: "nowrap",
+// }}>
+// {props.column.filteredRows.length !== props.column.preFilteredRows.length ? ` (${props.column.filteredRows.length} / ${props.column.preFilteredRows.length})` : ` (${props.column.preFilteredRows.length})`}
+// </div>
+    return props.showColumnFilters ?
+    <>
+    <input
+        type="search"
+        value={props.column.filterValue || ""}
+        onChange={(e) => {
+            props.column.setFilter(e.target.value || undefined);
+        }}
+        aria-label={`${props.__("header.searchPlaceholder")}`}
+        placeholder={`${props.__("header.searchPlaceholder")}`}
+        style={{
+            border: "1px solid gray",
+            borderRadius: "4px",
+            margin: "0",
+            width: "100%",
+            padding: "0.2em",
+            backgroundColor: "white",
+        }}
+    />
+    </>
+    : <></>;
 };
 
 const CellCoverImage: React.FC<TableCellId_IProps> = (props) => {
@@ -409,9 +433,11 @@ interface TableCellGlobalFilter_IProps extends TableCommon_IProps {
     inputRef: React.RefObject<HTMLInputElement>;
 }
 interface TableCellFilter_IProps extends TableCommon_IProps {
+    showColumnFilters: boolean,
     column: {
         filterValue: string | undefined;
         preFilteredRows: string[];
+        filteredRows: string[];
         setFilter: (str: string | undefined) => void;
     };
 }
@@ -461,6 +487,8 @@ type MyTableInstance<T extends object> =
     };
 
 export const TableView: React.FC<TableView_IProps> = (props) => {
+
+    const [showColumnFilters, setShowColumnFilters] = React.useState(false);
 
     const tableRows = React.useMemo(() => {
         return props.publicationViews.map((publicationView) => {
@@ -957,7 +985,7 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                             }`
                             }>
                         {
-                        column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : " ⇅"
+                        column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : "" // " ⇅"
                         }</button>
                         {
                         column.canFilter ?
@@ -965,20 +993,34 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                             __: props.__,
                             translator: props.translator,
                             displayType: props.displayType,
+                            showColumnFilters,
                         }) }</div>)
                         : <></>
                         }
                         </>
                         :
-                        <span
-                        aria-label={`${column.Header}`}
-                            >
-                            {
-                            ""
-                            // props.displayType === DisplayType.List ? "" : column.render("Header")
-                            // column.render("Header")
-                            }
-                        </span>
+                        // <span
+                        // aria-label={`${column.Header}`}
+                        //     >
+                        //     {
+                        //     // props.displayType === DisplayType.List ? "" : column.render("Header")
+                        //     // column.render("Header")
+                        //     }
+                        // </span>
+                        <><input
+                            id="setShowColumnFiltersCheckbox"
+                            type="checkbox"
+                            checked={showColumnFilters ? true : false}
+                            onChange={() => {
+                                setShowColumnFilters(!showColumnFilters);
+                            }}
+                            style={{position: "absolute", left: "-999px"}}
+                        /><label
+                            id="setShowColumnFiltersLabel"
+                            htmlFor="setShowColumnFiltersCheckbox"
+                            style={{cursor: "pointer", padding: "0.2em", paddingBottom: "0", fill: "black", display: "inline-block", width: "16px", border: showColumnFilters ? "2px solid black" : "1px solid gray", borderRadius: "4px"}}>
+                            <SVG svg={magnifyingGlass} title={props.__("header.searchPlaceholder")} />
+                        </label></>
                         }
                         </th>);
                     },
