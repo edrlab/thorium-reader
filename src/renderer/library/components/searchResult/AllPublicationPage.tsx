@@ -105,32 +105,21 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                 secondaryHeader={secondaryHeader}
                 breadCrumb={breadCrumb}
             >
-                <div style={{
-                    overflow: "auto",
-                    position: "absolute",
-                    top: "0",
-                    bottom: "0",
-                    left: "0",
-                    right: "0",
-                    padding: "0",
-                    margin: "30px 30px",
-                }}>
-                    {
-                        this.state.publicationViews ?
-                            <TableView
-                                displayType={displayType}
-                                __={__}
-                                translator={this.props.translator}
-                                publicationViews={this.state.publicationViews}
-                                displayPublicationInfo={this.props.displayPublicationInfo}
-                                openReader={this.props.openReader}
-                            />
-                            // (displayType === DisplayType.Grid ?
-                            //     <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
-                            //     <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
-                        : <></>
-                    }
-                </div>
+                {
+                    this.state.publicationViews ?
+                        <TableView
+                            displayType={displayType}
+                            __={__}
+                            translator={this.props.translator}
+                            publicationViews={this.state.publicationViews}
+                            displayPublicationInfo={this.props.displayPublicationInfo}
+                            openReader={this.props.openReader}
+                        />
+                        // (displayType === DisplayType.Grid ?
+                        //     <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
+                        //     <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
+                    : <></>
+                }
             </LibraryLayout>
         );
     }
@@ -439,22 +428,159 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
         }),
         [],
     );
+
+    const pageSize = 20; // props.displayType === DisplayType.List ? 20 : 10;
+
     const tableInstance = useTable({
         columns: tableColumns,
         data: tableRows,
         defaultColumn,
         initialState: {
-            pageSize: 10,
+            pageSize,
             pageIndex: 0,
         } as UsePaginationState<IColumns> as TableState<IColumns>,
         // @xxts-expect-error TS2322
         // filterTypes,
     }, useFilters, useSortBy, usePagination) as PaginationTableInstance<IColumns>;
 
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
+    // infinite render loop
+    // tableInstance.setPageSize(pageSize);
+
+    // <pre>
+    // <code>
+    //     {JSON.stringify(
+    //     {
+    //         pageIndex: tableInstance.state.pageIndex,
+    //         pageSize: tableInstance.state.pageSize,
+    //         pageCount: tableInstance.pageCount,
+    //         canNextPage: tableInstance.canNextPage,
+    //         canPreviousPage: tableInstance.canPreviousPage,
+    //         pageOptions: tableInstance.pageOptions,
+    //     }, null, 2)}
+    // </code>
+    // </pre>
+    // <span>
+    // {tableInstance.state.pageIndex + 1} / {tableInstance.pageOptions.length}
+    // </span>
+    // <span>
+    // {props.__("reader.navigation.goTo")}
+    // <input
+    //     type="number"
+    //     defaultValue={tableInstance.state.pageIndex + 1}
+    //     onChange={(e) => {
+    //         const page = e.target.value ? Number(e.target.value) - 1 : 0;
+    //         tableInstance.gotoPage(page);
+    //     }}
+    //     style={{ width: "100px" }}
+    // />
+    // </span>
+    //     <select
+    //     value={tableInstance.state.pageSize}
+    //     onChange={e => {
+    //         tableInstance.setPageSize(Number(e.target.value));
+    //     }}
+    // >
+    //     Show
+    //     {[10, 20, 30, 40, 50].map((pageSize) => (
+    //         <option
+    //             key={`p${pageSize}`}
+    //             value={pageSize}>
+    //             {pageSize}
+    //         </option>
+    //     ))}
+    //     </select>
     return (
-        <table {...getTableProps()} style={{ fontSize: "90%", border: "solid 1px gray", borderRadius: "8px", padding: "4px", margin: "0", marginRight: "1em", borderSpacing: "0" }}>
-            <thead>{headerGroups.map((headerGroup, index) =>
+        <>
+        <div style={{
+            // border: "1px solid red",
+            position: "fixed",
+            // width: "calc(100% - 50px)",
+            // zIndex: "9999",
+            // position: "absolute",
+            // top: "-5px",
+            // bottom: "0",
+            // left: "0",
+            right: "0",
+            padding: "0",
+            // paddingBottom: "0.1em",
+            margin: "0",
+            marginTop: "-74px",
+            marginRight: "30px",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            pointerEvents: "none",
+        }}>
+
+            <div style={{pointerEvents: "all", display: "inline-block", fontSize: "90%", marginRight: "1em"}}>{
+            // ${props.__("catalog.opds.info.numberOfItems")}
+            `(${tableRows.length})`
+            }</div>
+            <div style={{pointerEvents: "all", display: "inline-block"}}>
+            <button
+            style={{margin:"0", padding: "0.2em"}}
+            aria-label={`${props.__("opds.firstPage")}`}
+            onClick={() => tableInstance.gotoPage(0)} disabled={!tableInstance.canPreviousPage}>
+            {"◁"}
+            </button>
+            <button
+            style={{margin:"0", padding: "0.2em"}}
+            aria-label={`${props.__("opds.previous")}`}
+            onClick={() => tableInstance.previousPage()} disabled={!tableInstance.canPreviousPage}>
+            {"◀"}
+            </button>
+            <select
+                aria-label={`${props.__("reader.navigation.currentPageTotal", {current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length})}`}
+                style={{cursor: "pointer", padding: "0.2em", margin: "0", marginLeft: "0.6em", marginRight: "0.6em", border: "1px solid gray", borderRadius: "4px"}}
+                value={tableInstance.state.pageIndex}
+                onChange={(e) => {
+                    const pageIndex = e.target.value ? Number(e.target.value) : 0;
+                    tableInstance.gotoPage(pageIndex);
+                }}
+            >
+                {
+                ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
+                    <option
+                        key={`page${i}`}
+                        value={i}>
+                        {i + 1} / {tableInstance.pageOptions.length}
+                    </option>
+                ))
+                }
+            </select>
+            <button
+            style={{margin:"0", padding: "0.2em"}}
+            aria-label={`${props.__("opds.next")}`}
+            onClick={() => tableInstance.nextPage()} disabled={!tableInstance.canNextPage}>
+            {"▶"}
+            </button>
+            <button
+            style={{margin:"0", padding: "0.2em"}}
+            aria-label={`${props.__("opds.lastPage")}`}
+            onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)} disabled={!tableInstance.canNextPage}>
+            {"▷"}
+            </button>
+            </div>
+        </div>
+
+        <div
+            style={{
+                overflow: "auto",
+                position: "absolute",
+                top: "0",
+                bottom: "0",
+                left: "0",
+                right: "0",
+                padding: "0",
+                marginLeft: "30px",
+                marginRight: "30px",
+                marginTop: "0em",
+                marginBottom: "0.4em",
+            }}>
+        <table {...tableInstance.getTableProps()}
+        style={{ fontSize: "90%", border: "solid 1px gray", borderRadius: "8px", padding: "4px", margin: "0", marginRight: "1em", borderSpacing: "0" }}>
+            <thead>{tableInstance.headerGroups.map((headerGroup, index) =>
                 (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
                 headerGroup.headers.map((col, i) => {
 
@@ -469,13 +595,13 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                             title: undefined,
                         }) : undefined)}
                         style={{
+                            borderBottom: "1px solid #bcbcbc",
                             padding: "0.7em",
                             margin: "0",
-                            background: "#eeeeee",
+                            background: "#eeeeee", // columnIsSortable ? "#eeeeee" : "white",
                             color: "black",
                             whiteSpace: "nowrap",
-                            ...{
-                                cursor: columnIsSortable ? "pointer" : undefined },
+                            ...{ cursor: columnIsSortable ? "pointer" : undefined },
                         }}
                         >
                         {
@@ -519,7 +645,9 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                         aria-label={`${column.Header}`}
                             >
                             {
-                            props.displayType === DisplayType.List ? "" : column.render("Header")
+                            ""
+                            // props.displayType === DisplayType.List ? "" : column.render("Header")
+                            // column.render("Header")
                             }
                         </span>
                         }
@@ -527,21 +655,23 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                     },
                 )}</tr>),
             )}</thead>
-            <tbody {...getTableBodyProps()}>{rows.map((row, index) => {
-                prepareRow(row);
+            <tbody {...tableInstance.getTableBodyProps()}>{tableInstance.page.map((row, index) => {
+                tableInstance.prepareRow(row);
 
-                return (<tr key={`bodytr_${index}`} {...row.getRowProps()} style={{
-                    outlineColor: "#cccccc",
-                    outlineOffset: "0px",
-                    outlineStyle: "solid",
-                    outlineWidth: "1px",
+                return (<tr key={`bodytr_${index}`} {...row.getRowProps()}
+                style={{
+                    // outlineColor: "#cccccc",
+                    // outlineOffset: "0px",
+                    // outlineStyle: "solid",
+                    // outlineWidth: "1px",
+                    backgroundColor: index % 2 ? "#efefef" : undefined,
                 }}>{row.cells.map((cell, i) =>
                     {
                         return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                         style={{
                             padding: "0",
                             margin: "0",
-                            border: "solid 1px #eeeeee",
+                            // border: "solid 1px #eeeeee",
                         }}
                         >{
                             cell.render("Cell", {
@@ -558,6 +688,8 @@ export const TableView: React.FC<TableView_IProps> = (props) => {
                 );
             })}</tbody>
         </table>
+        </div>
+        </>
     );
 };
 
