@@ -35,7 +35,7 @@
             }
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca / estante"
+            "showLibrary": "Mostrar biblioteca"
         }
     },
     "catalog": {
@@ -49,9 +49,9 @@
         "allBooks": "Todos los libros",
         "bookInfo": "Acerca de este libro",
         "column": {
-            "ascending": "",
-            "descending": "",
-            "unsorted": ""
+            "ascending": "ascendente",
+            "descending": "descendente",
+            "unsorted": "sin ordenar"
         },
         "delete": "Eliminar",
         "deleteBook": "Eliminar",
@@ -181,7 +181,7 @@
             "addExtract": "Importar extracto",
             "goBuyBook": "Comprar este libro",
             "goLoanBook": "Pedir prestado este libro",
-            "goRevokeLoanBook": "",
+            "goRevokeLoanBook": "Cancelar préstamo",
             "goSubBook": "Suscribirse"
         },
         "network": {
@@ -199,9 +199,9 @@
         "audio": {
             "tracks": "Pistas"
         },
-        "author": "",
+        "author": "Author",
         "cancelledLcp": "Este libro no se puede leer porque la licencia LCP se ha cancelado.",
-        "certificateRevoked": "El certificado está revocado",
+        "certificateRevoked": "El certificado está cancelado",
         "certificateSignatureInvalid": "La firma del certificado no es válida",
         "cover": {
             "img": "Imagen de portada"
@@ -218,21 +218,21 @@
         "licenseSignatureDateInvalid": "La fecha de la firma de la licencia no es válida",
         "licenseSignatureInvalid": "La firma de la licencia no es válida",
         "progression": {
-            "title": "Progresión"
+            "title": "Progreso"
         },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro no se puede leer porque la licencia LCP se ha devuelto.",
-        "revokedLcp": "Este libro no se puede leer porque la licencia LCP Se ha revocado.",
+        "revokedLcp": "Este libro no se puede leer porque la licencia LCP Se ha cancelado.",
         "seeLess": "Ver menos",
         "seeMore": "Ver más",
-        "title": "",
+        "title": "Título",
         "userKeyCheckInvalid": "Contraseña incorrecta"
     },
     "reader": {
         "divina": {
-            "mute": "",
-            "unmute": ""
+            "mute": "silenciar",
+            "unmute": "dejar de silenciar"
         },
         "footerInfo": {
             "lessInfo": "menos información",
@@ -250,10 +250,10 @@
         "media-overlays": {
             "activate": "Activar lectura en voz alta",
             "captions": "Texto sincronizado/presentación diáfana",
-            "next": "Siguiente lectura en voz alta",
-            "pause": "Pausar lectura en voz alta",
-            "play": "Reproducir lectura en voz alta",
-            "previous": "Anterior lectura en voz alta",
+            "next": "Siguiente (Lectura en voz alta)",
+            "pause": "Pausar Lectura en voz alta",
+            "play": "Reproducir (Lectura en voz alta)",
+            "previous": "Anterior (Lectura en voz alta)",
             "skip": "Omitir información auxiliar",
             "speed": "Velocidad de reproducción para lectura en voz alta",
             "stop": "Detener lectura en voz alta",
@@ -264,7 +264,7 @@
             "bookmarkTitle": "Marcador",
             "currentPage": "Página actual: {{- current}}",
             "currentPageTotal": "Página actual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Separar la ventana",
+            "detachWindowTitle": "Mostrar ventana de biblioteca",
             "fullscreenTitle": "Abrir modo pantalla completa",
             "goTo": "Ir a",
             "goToError": "Este salto de página no existe",
@@ -341,7 +341,7 @@
                     "Night": "Noche",
                     "Sepia": "Sepia"
                 },
-                "title": "Diseño"
+                "title": "Disposición"
             },
             "wordSpacing": "Espaciado de palabras"
         },
@@ -354,15 +354,15 @@
         },
         "tts": {
             "activate": "Activar texto a voz",
-            "default": "",
-            "next": "Siguiente texto a voz",
+            "default": "Voz: predeterminada en el sistema",
+            "next": "Siguiente (Texto a voz)",
             "pause": "Pausar texto a voz",
-            "play": "Reproducir texto a voz",
-            "previous": "Anterior texto a voz",
-            "sentenceDetect": "",
+            "play": "Reproducir (Texto a voz)",
+            "previous": "Anterior (Texto a voz)",
+            "sentenceDetect": "Dividir (Texto a voz)",
             "speed": "Velocidad de reproducción para texto a voz",
             "stop": "Detener texto a voz",
-            "voice": ""
+            "voice": "Voz para TTS"
         }
     },
     "settings": {
