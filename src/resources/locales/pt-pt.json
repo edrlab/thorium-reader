@@ -49,11 +49,16 @@
         "addTagsButton": "Adicionar",
         "allBooks": "Todos os livros",
         "bookInfo": "Sobre este livro",
+        "column": {
+            "ascending": "crescente",
+            "descending": "decrescente",
+            "unsorted": "sem ordem"
+        },
         "delete": "Apagar",
         "deleteBook": "Remover",
         "deleteTag": "Apagar etiqueta",
         "description": "Descrição",
-        "emptyTagList": "Você não tem livros marcados.",
+        "emptyTagList": "Não tem livros etiquetados.",
         "entry": {
             "continueReading": "Retomar leitura",
             "continueReadingAudioBooks": "Retomar audição",
@@ -206,11 +211,11 @@
         },
         "expiredLcp": "Este livro não pode ser lido porque a licença LCP expirou.",
         "lcpEnd": "Fim",
-        "lcpRightsCopy": "Copiar caracteres",
-        "lcpRightsPrint": "Impressão",
+        "lcpRightsCopy": "Caracteres copiados",
+        "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Início",
         "licenseOutOfDate": "Licença caducada",
-        "licenseSignatureDateInvalid": "A data da assinatura da licença é inválida",
+        "licenseSignatureDateInvalid": "A data de assinatura da licença é inválida",
         "licenseSignatureInvalid": "A assinatura da licença é inválida",
         "progression": {
             "title": "Progressão"
@@ -221,12 +226,13 @@
         "revokedLcp": "Este livro não pode ser lido porque a licença LCP foi revogada.",
         "seeLess": "Ver menos",
         "seeMore": "Ver mais",
+        "title": "Título",
         "userKeyCheckInvalid": "A frase-senha está incorreta"
     },
     "reader": {
         "divina": {
-            "mute": "",
-            "unmute": ""
+            "mute": "silienciar áudio",
+            "unmute": "ativar áudio"
         },
         "footerInfo": {
             "lessInfo": "menos informações",
@@ -353,7 +359,7 @@
             "pause": "Pausar Texto para voz",
             "play": "Executar Texto para voz",
             "previous": "Texto para voz - anterior",
-            "sentenceDetect": "",
+            "sentenceDetect": "Dividir texto de texto para voz",
             "speed": "Velocidade de Texto para voz",
             "stop": "Parar Texto para voz",
             "voice": "Voz de Texto para voz"
