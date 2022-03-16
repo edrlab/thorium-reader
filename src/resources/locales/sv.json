@@ -20,7 +20,7 @@
             "title": "Redigera",
             "undo": "Ångra"
         },
-        "hide": "Göm {{- appName}}",
+        "hide": "Dölj {{- appName}}",
         "quit": "Avsluta {{- appName}}",
         "session": {
             "exit": {
@@ -49,9 +49,9 @@
         "allBooks": "Alla böcker",
         "bookInfo": "Om den här boken",
         "column": {
-            "ascending": "",
-            "descending": "",
-            "unsorted": ""
+            "ascending": "stigande",
+            "descending": "fallande",
+            "unsorted": "osorterat"
         },
         "delete": "Ta bort",
         "deleteBook": "Ta bort",
@@ -199,7 +199,7 @@
         "audio": {
             "tracks": "Spår"
         },
-        "author": "",
+        "author": "Författare",
         "cancelledLcp": "Den här boken kan inte läsas eftersom LCP-licensen inte är giltig längre.",
         "certificateRevoked": "Certifikatet är återkallat",
         "certificateSignatureInvalid": "Certifikatets signatur är ogiltig",
@@ -226,7 +226,7 @@
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "Visa mindre",
         "seeMore": "Visa mer",
-        "title": "",
+        "title": "Titel",
         "userKeyCheckInvalid": "Lösenordet är felaktigt"
     },
     "reader": {
@@ -374,7 +374,7 @@
             "cancel": "Avbryt",
             "edit": "Redigera",
             "editUserJson": "Redigera användarfil...",
-            "hide": "Göm",
+            "hide": "Dölj",
             "keyboardShortcuts": "Kortkommandon",
             "loadUserJson": "Läs in från användarfil",
             "resetDefaults": "Återställ (läs in standard)",
