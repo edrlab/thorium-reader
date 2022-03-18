@@ -71,6 +71,7 @@ import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
+import { debug } from "console";
 
 // import {
 //     formatContributorToString,
@@ -807,6 +808,23 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
     }} dangerouslySetInnerHTML={{__html: props.value}} />);
 };
 
+interface IColumnValue_Date extends IColumnValue_BaseString {
+
+    date: string,
+};
+interface ITableCellProps_Value_Date {
+    value: IColumnValue_Date;
+}
+const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Date> = (props) => {
+    return (<div style={{
+        ...commonCellStyles(props),
+    }}
+    title={`${props.value.date}`}
+    >
+        {props.value.label}
+    </div>);
+};
+
 interface IColumnValue_Title extends IColumnValue_BaseString {
 
     title: string,
@@ -867,7 +885,7 @@ interface IColumns {
     colAuthors: IColumnValue_Authors;
     colPublishers: IColumnValue_Publishers;
     colLanguages: IColumnValue_Langs;
-    colPublishedDate: string;
+    colPublishedDate: IColumnValue_Date;
     colDescription: string;
     colLCP: string;
     colTags: IColumnValue_Tags;
@@ -943,8 +961,17 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             // const authors = publicationView.authors ? formatContributorToString(publicationView.authors, props.translator) : "";
             // const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishers, props.translator) : "";
 
+            // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).toISOString();
             const mom = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
-            const publishedDate = mom ? `${mom.year()}-${mom.month().toString().padStart(2, "0")}-${mom.day().toString().padStart(2, "0")}` : ""; // .toISOString()
+            const publishedDateCanonical = mom && mom.isValid() ? `${mom.year()}-${mom.month().toString().padStart(2, "0")}-${mom.day().toString().padStart(2, "0")}` : ""; // .toISOString()
+            let publishedDateVisual = publishedDateCanonical;
+            if (publishedDateCanonical) {
+                try {
+                    publishedDateVisual = new Intl.DateTimeFormat(props.translator.getLocale(), { dateStyle: "medium", timeStyle: undefined }).format(new Date(publishedDateCanonical));
+                } catch (err) {
+                    debug(err);
+                }
+            }
 
             const langsArray = publicationView.languages ? publicationView.languages.map((lang) => {
 
@@ -1005,7 +1032,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     label: langsArray ? langsArray.join(", ") : "",
                     langs: langsArray,
                 },
-                colPublishedDate: publishedDate,
+                colPublishedDate: {
+                    label: publishedDateVisual,
+                    date: publishedDateCanonical,
+                },
                 colLCP: lcp,
                 colTags: { // IColumnValue_Tags
                     label: publicationView.tags ? publicationView.tags.join(", ") : "",
@@ -1096,6 +1126,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("catalog.released"),
                 accessor: "colPublishedDate",
+                Cell: CellDate,
+                filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
             },
             {
