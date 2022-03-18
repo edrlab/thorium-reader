@@ -816,13 +816,45 @@ interface ITableCellProps_Value_Date {
     value: IColumnValue_Date;
 }
 const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Date> = (props) => {
-    return (<div style={{
+    return (
+    <div style={{
         ...commonCellStyles(props),
     }}
-    title={`${props.value.date}`}
     >
-        {props.value.label}
-    </div>);
+        <a
+            title={`${props.value.label} (${props.__("header.searchPlaceholder")})`}
+            tabIndex={0}
+            onKeyPress={(e) => { if (e.key === "Enter") {
+                e.preventDefault();
+                props.column.setFilter(props.value.label.substring(0, 4));
+                props.setShowColumnFilters(true);
+            }}}
+
+            onClick={(e) => {
+                e.preventDefault();
+                props.column.setFilter(props.value.label.substring(0, 4));
+                props.setShowColumnFilters(true);
+            }}
+            style={{
+                display: "flex",
+                alignItems: "center",
+                textAlign: "center",
+                padding: "2px 6px",
+                fontSize: "1rem",
+                // backgroundColor: "#e7f1fb",
+                // borderRadius: "5px",
+                // border: "1px solid var(--color-tertiary)",
+                // color: "var(--color-tertiary)",
+                cursor: "pointer",
+                // textDecoration: "none",
+                textDecoration: "underline",
+                textDecorationColor: "var(--color-tertiary)",
+                textDecorationSkip: "ink",
+                marginRight: "6px",
+                marginBottom: "6px",
+        }}>{props.value.date}</a>
+    </div>
+    );
 };
 
 interface IColumnValue_Title extends IColumnValue_BaseString {
@@ -963,7 +995,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
             // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).toISOString();
             const mom = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
-            const publishedDateCanonical = mom && mom.isValid() ? `${mom.year()}-${mom.month().toString().padStart(2, "0")}-${mom.day().toString().padStart(2, "0")}` : ""; // .toISOString()
+            const publishedDateCanonical = mom && mom.isValid() ? `${mom.year().toString().padStart(4, "0")}-${(mom.month() || 1).toString().padStart(2, "0")}-${(mom.day() || 1).toString().padStart(2, "0")}` : ""; // .toISOString()
             let publishedDateVisual = publishedDateCanonical;
             if (publishedDateCanonical) {
                 try {
@@ -1033,8 +1065,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     langs: langsArray,
                 },
                 colPublishedDate: {
-                    label: publishedDateVisual,
-                    date: publishedDateCanonical,
+                    label: publishedDateCanonical,
+                    date: publishedDateVisual,
                 },
                 colLCP: lcp,
                 colTags: { // IColumnValue_Tags
