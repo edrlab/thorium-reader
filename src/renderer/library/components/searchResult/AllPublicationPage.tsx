@@ -72,6 +72,20 @@ import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { debug } from "console";
+import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+
+// MAIN process only, not RENDERER, because of diMainGet("translator")
+// import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
+function convertMultiLangStringToString(translator: Translator, items: string | IStringMap | undefined): string {
+    if (typeof items === "object") {
+        const langs = Object.keys(items);
+        const lang = langs.filter((l) =>
+            l.toLowerCase().includes(translator.getLocale().toLowerCase()));
+        const localeLang = lang[0];
+        return items[localeLang] || items._ || items[langs[0]];
+    }
+    return items;
+}
 
 // import {
 //     formatContributorToString,
@@ -808,6 +822,183 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
     }} dangerouslySetInnerHTML={{__html: props.value}} />);
 };
 
+// interface IColumnValue_A11y_StringArrayArray extends IColumnValue_BaseString {
+
+//     strings: (string[])[],
+// };
+// interface ITableCellProps_Value_StringArrayArray {
+//     value: IColumnValue_A11y_StringArrayArray;
+// }
+// const CellStringArrayArray: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_StringArrayArray> = (props) => {
+
+//     const link = (tt: string[]) => {
+//         const t = tt.join(",");
+//         return <a
+//             title={`${t} (${props.__("header.searchPlaceholder")})`}
+//             tabIndex={0}
+//             onKeyPress={(e) => { if (e.key === "Enter") {
+//                 e.preventDefault();
+//                 props.column.setFilter(t);
+//                 props.setShowColumnFilters(true);
+//             }}}
+
+//             onClick={(e) => {
+//                 e.preventDefault();
+//                 props.column.setFilter(t);
+//                 props.setShowColumnFilters(true);
+//             }}
+//             style={{
+//                 display: "flex",
+//                 alignItems: "center",
+//                 textAlign: "center",
+//                 padding: "2px 6px",
+//                 fontSize: "1rem",
+//                 // backgroundColor: "#e7f1fb",
+//                 // borderRadius: "5px",
+//                 // border: "1px solid var(--color-tertiary)",
+//                 // color: "var(--color-tertiary)",
+//                 cursor: "pointer",
+//                 // textDecoration: "none",
+//                 textDecoration: "underline",
+//                 textDecorationColor: "var(--color-tertiary)",
+//                 textDecorationSkip: "ink",
+//                 marginRight: "6px",
+//                 marginBottom: "6px",
+//         }}>{t}</a>;
+//     };
+
+//     // props.value.label === props.value.tags.join(", ")
+
+//     const flexStyle: React.CSSProperties = {
+//         display: "flex",
+//         flexDirection: "row",
+//         alignItems: "flex-start",
+//         justifyContent: "center",
+//         flexWrap: "wrap",
+//         paddingTop: "0.2em",
+//     };
+
+//     return props.value.strings?.length ?
+//     (
+//     props.value.strings.length === 1 ? (
+//         <div style={{...flexStyle}}>
+//         {
+//         link(props.value.strings[0])
+//         }
+//         </div>
+//     ) : (
+//         <ul style={{
+//             listStyleType: "none",
+//             margin: "0",
+//             padding: "0",
+//             ...flexStyle,
+//         }}>
+//         {
+//         props.value.strings.map((t, i) => {
+//             return <li
+//                 key={`k${i}`}
+//                 style={{
+//                     display: "flex",
+//                     alignItems: "center",
+//                     margin: "0",
+//                     padding: "0",
+//                 }}
+//             >{link(t)}</li>;
+//         })
+//         }
+//         </ul>
+//     ))
+//     : <></>;
+// };
+
+// interface IColumnValue_A11y_StringArray extends IColumnValue_BaseString {
+
+//     strings: string[],
+// };
+// interface ITableCellProps_Value_StringArray {
+//     value: IColumnValue_A11y_StringArray;
+// }
+// const CellStringArray: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_StringArray> = (props) => {
+
+//     const link = (t: string) => {
+//         return <a
+//             title={`${t} (${props.__("header.searchPlaceholder")})`}
+//             tabIndex={0}
+//             onKeyPress={(e) => { if (e.key === "Enter") {
+//                 e.preventDefault();
+//                 props.column.setFilter(t);
+//                 props.setShowColumnFilters(true);
+//             }}}
+
+//             onClick={(e) => {
+//                 e.preventDefault();
+//                 props.column.setFilter(t);
+//                 props.setShowColumnFilters(true);
+//             }}
+//             style={{
+//                 display: "flex",
+//                 alignItems: "center",
+//                 textAlign: "center",
+//                 padding: "2px 6px",
+//                 fontSize: "1rem",
+//                 // backgroundColor: "#e7f1fb",
+//                 // borderRadius: "5px",
+//                 // border: "1px solid var(--color-tertiary)",
+//                 // color: "var(--color-tertiary)",
+//                 cursor: "pointer",
+//                 // textDecoration: "none",
+//                 textDecoration: "underline",
+//                 textDecorationColor: "var(--color-tertiary)",
+//                 textDecorationSkip: "ink",
+//                 marginRight: "6px",
+//                 marginBottom: "6px",
+//         }}>{t}</a>;
+//     };
+
+//     // props.value.label === props.value.tags.join(", ")
+
+//     const flexStyle: React.CSSProperties = {
+//         display: "flex",
+//         flexDirection: "row",
+//         alignItems: "flex-start",
+//         justifyContent: "center",
+//         flexWrap: "wrap",
+//         paddingTop: "0.2em",
+//     };
+
+//     return props.value.strings?.length ?
+//     (
+//     props.value.strings.length === 1 ? (
+//         <div style={{...flexStyle}}>
+//         {
+//         link(props.value.strings[0])
+//         }
+//         </div>
+//     ) : (
+//         <ul style={{
+//             listStyleType: "none",
+//             margin: "0",
+//             padding: "0",
+//             ...flexStyle,
+//         }}>
+//         {
+//         props.value.strings.map((t, i) => {
+//             return <li
+//                 key={`k${i}`}
+//                 style={{
+//                     display: "flex",
+//                     alignItems: "center",
+//                     margin: "0",
+//                     padding: "0",
+//                 }}
+//             >{link(t)}</li>;
+//         })
+//         }
+//         </ul>
+//     ))
+//     : <></>;
+// };
+
 interface IColumnValue_Date extends IColumnValue_BaseString {
 
     date: string,
@@ -922,6 +1113,17 @@ interface IColumns {
     colLCP: string;
     colTags: IColumnValue_Tags;
     colDuration: string;
+
+    col_a11y_accessibilitySummary: string; // string | IStringMap => convertMultiLangStringToString()
+    // col_a11y_accessMode: IColumnValue_A11y_StringArray; // string[]
+    // col_a11y_accessModeSufficient: IColumnValue_A11y_StringArrayArray; // (string[])[]
+    // col_a11y_accessibilityFeature: IColumnValue_A11y_StringArray; // string[]
+    // col_a11y_accessibilityHazard: IColumnValue_A11y_StringArray; // string[]
+    // col_a11y_certifiedBy: IColumnValue_A11y_StringArray; // string[]
+    // col_a11y_certifierCredential: IColumnValue_A11y_StringArray; // string[]
+    // col_a11y_certifierReport: IColumnValue_A11y_StringArray; // string[]
+    // col_a11y_conformsTo: IColumnValue_A11y_StringArray; // string[]
+
     // colIdentifier: string;
     // colPublicationType: string;
     // colProgression: string;
@@ -1064,7 +1266,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     label: langsArray ? langsArray.join(", ") : "",
                     langs: langsArray,
                 },
-                colPublishedDate: {
+                colPublishedDate: { // IColumnValue_Date
                     label: publishedDateCanonical,
                     date: publishedDateVisual,
                 },
@@ -1075,6 +1277,47 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 },
                 colDuration: duration,
                 colDescription: description,
+
+                col_a11y_accessibilitySummary: publicationView.a11y_accessibilitySummary ?
+                    convertMultiLangStringToString(props.translator, publicationView.a11y_accessibilitySummary) :
+                    "",
+                // col_a11y_accessMode: { // IColumnValue_A11y_StringArray
+                //     label: publicationView.a11y_accessMode?.length ? [].concat(publicationView.a11y_accessMode).sort().join(", ") : "",
+                //     strings: publicationView.a11y_accessMode,
+                // },
+                // col_a11y_accessModeSufficient: { // IColumnValue_A11y_StringArrayArray
+                //     label: publicationView.a11y_accessModeSufficient?.length ?
+                //         publicationView.a11y_accessModeSufficient.reduce((acc, cur) => {
+                //             return `${acc}${acc.length ? " / " : ""}${cur.join(",")}`;
+                //         }, "") :
+                //         "",
+                //     strings: publicationView.a11y_accessModeSufficient,
+                // },
+                // col_a11y_accessibilityFeature: { // IColumnValue_A11y_StringArray
+                //     label: publicationView.a11y_accessibilityFeature?.length ? [].concat(publicationView.a11y_accessibilityFeature).sort().join(", ") : "",
+                //     strings: publicationView.a11y_accessibilityFeature,
+                // },
+                // col_a11y_accessibilityHazard: { // IColumnValue_A11y_StringArray
+                //     label: publicationView.a11y_accessibilityHazard?.length ? [].concat(publicationView.a11y_accessibilityHazard).sort().join(", ") : "",
+                //     strings: publicationView.a11y_accessibilityHazard,
+                // },
+                // col_a11y_certifiedBy: { // IColumnValue_A11y_StringArray
+                //     label: publicationView.a11y_certifiedBy?.length ? [].concat(publicationView.a11y_certifiedBy).sort().join(", ") : "",
+                //     strings: publicationView.a11y_certifiedBy,
+                // },
+                // col_a11y_certifierCredential: { // IColumnValue_A11y_StringArray
+                //     label: publicationView.a11y_certifierCredential?.length ? [].concat(publicationView.a11y_certifierCredential).sort().join(", ") : "",
+                //     strings: publicationView.a11y_certifierCredential,
+                // },
+                // col_a11y_certifierReport: { // IColumnValue_A11y_StringArray
+                //     label: publicationView.a11y_certifierReport?.length ? [].concat(publicationView.a11y_certifierReport).sort().join(", ") : "",
+                //     strings: publicationView.a11y_certifierReport,
+                // },
+                // col_a11y_conformsTo: { // IColumnValue_A11y_StringArray
+                //     label: publicationView.a11y_conformsTo?.length ? [].concat(publicationView.a11y_conformsTo).sort().join(", ") : "",
+                //     strings: publicationView.a11y_conformsTo,
+                // },
+
                 // colProgression: "Progression",
                 // colIdentifier: identifier,
                 // colPublicationType: publicationType,
@@ -1185,6 +1428,70 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 Cell: CellDescription,
                 sortType: sortFunction,
             },
+
+            {
+                Header: props.__("catalog.about.button"),
+                accessor: "col_a11y_accessibilitySummary",
+                Cell: CellDescription,
+                sortType: sortFunction,
+            },
+            // {
+            //     Header: "accessMode",
+            //     accessor: "col_a11y_accessMode",
+            //     Cell: CellStringArray,
+            //     filter: "text", // because IColumnValue_BaseString instead of plain string
+            //     sortType: sortFunction,
+            // },
+            // {
+            //     Header: "accessModeSufficient",
+            //     accessor: "col_a11y_accessModeSufficient",
+            //     Cell: CellStringArrayArray,
+            //     filter: "text", // because IColumnValue_BaseString instead of plain string
+            //     sortType: sortFunction,
+            // },
+            // {
+            //     Header: "accessibilityFeature",
+            //     accessor: "col_a11y_accessibilityFeature",
+            //     Cell: CellStringArray,
+            //     filter: "text", // because IColumnValue_BaseString instead of plain string
+            //     sortType: sortFunction,
+            // },
+            // {
+            //     Header: "accessibilityHazard",
+            //     accessor: "col_a11y_accessibilityHazard",
+            //     Cell: CellStringArray,
+            //     filter: "text", // because IColumnValue_BaseString instead of plain string
+            //     sortType: sortFunction,
+            // },
+            // {
+            //     Header: "certifiedBy",
+            //     accessor: "col_a11y_certifiedBy",
+            //     Cell: CellStringArray,
+            //     filter: "text", // because IColumnValue_BaseString instead of plain string
+            //     sortType: sortFunction,
+            // },
+            // {
+            //     Header: "certifierCredential",
+            //     accessor: "col_a11y_certifierCredential",
+            //     Cell: CellStringArray,
+            //     filter: "text", // because IColumnValue_BaseString instead of plain string
+            //     sortType: sortFunction,
+            // },
+            // {
+            //     Header: "certifierReport",
+            //     accessor: "col_a11y_certifierReport",
+            //     Cell: CellStringArray,
+            //     filter: "text", // because IColumnValue_BaseString instead of plain string
+            //     sortType: sortFunction,
+            // },
+            // {
+            //     Header: "conformsTo",
+            //     accessor: "col_a11y_conformsTo",
+            //     Cell: CellStringArray,
+            //     filter: "text", // because IColumnValue_BaseString instead of plain string
+            //     sortType: sortFunction,
+            // },
+
             // {
             //     Header: props.__("publication.progression.title"),
             //     accessor: "colProgression",
@@ -1510,6 +1817,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         "100px" :
                         column.id === "colDuration" ?
                         "100px" :
+                        column.id === "col_a11y_accessibilitySummary" ?
+                        "180px" :
                         "160px";
 
                     return (<th

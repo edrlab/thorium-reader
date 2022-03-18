@@ -368,7 +368,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                         <TagManagerComponent />
                     </section>
                     <section>
-                        <PublicationInfoDescription publication={publication} __={__} />
+                        <PublicationInfoDescription publication={publication} __={__} translator={props.translator} />
                     </section>
                     <section>
                         <div className={stylesGlobal.heading}>

@@ -202,6 +202,11 @@ export class PublicationViewConverter {
             publishedAt = moment(r2Publication.Metadata.PublicationDate).toISOString();
         }
 
+        let modifiedAt: string | undefined;
+        if (r2Publication.Metadata.Modified) {
+            modifiedAt = moment(r2Publication.Metadata.Modified).toISOString();
+        }
+
         let cover: CoverView | undefined;
         if (document.coverFile) {
             cover = {
@@ -220,6 +225,20 @@ export class PublicationViewConverter {
         const nbOfTracks = typeof r2Publication.Metadata.AdditionalJSON?.tracks === "number" ? r2Publication.Metadata.AdditionalJSON?.tracks : undefined;
 
         return {
+            a11y_accessMode: r2Publication.Metadata.AccessMode, // string[]
+            a11y_accessibilityFeature: r2Publication.Metadata.AccessibilityFeature, // string[]
+            a11y_accessibilityHazard: r2Publication.Metadata.AccessibilityHazard, // string[]
+
+            a11y_certifiedBy: r2Publication.Metadata.CertifiedBy, // string[]
+            a11y_certifierCredential: r2Publication.Metadata.CertifierCredential, // string[]
+            a11y_certifierReport: r2Publication.Metadata.CertifierReport, // string[]
+            a11y_conformsTo: r2Publication.Metadata.ConformsTo, // string[]
+
+            a11y_accessModeSufficient: r2Publication.Metadata.AccessModeSufficient, // (string[])[]
+
+            // convertMultiLangStringToString
+            a11y_accessibilitySummary: r2Publication.Metadata.AccessibilitySummary, // string | IStringMap
+
             identifier: document.identifier, // preserve Identifiable identifier
             title: document.title || "-", // default title
             authors,
@@ -228,6 +247,7 @@ export class PublicationViewConverter {
             publishers,
             workIdentifier: r2Publication.Metadata.Identifier,
             publishedAt,
+            modifiedAt,
             tags: document.tags,
             cover,
             customCover: document.customCover,
