@@ -80,8 +80,12 @@ export function* init() {
         }
         browserWindows.forEach((win) => {
             if (win.webContents) {
-                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled);
-                win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled);
+                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, win.id);
+                try {
+                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled);
+                } catch (e) {
+                    debug("webContents.send - accessibility-support-changed ERROR?", e);
+                }
             }
         });
     });

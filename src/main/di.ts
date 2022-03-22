@@ -246,6 +246,7 @@ const getLibraryWindowFromDi =
 
 const readerWinMap = new Map<string, BrowserWindow>();
 
+// todo: infinite growing cache! must implement opposite function to saveReaderWindowInDi()
 const saveReaderWindowInDi =
     (readerWin: BrowserWindow, id: string) => (readerWinMap.set(id, readerWin), readerWin);
 
@@ -253,8 +254,15 @@ const getReaderWindowFromDi =
     (id: string) => readerWinMap.get(id);
 
 const getAllReaderWindowFromDi =
-    () =>
-        container.getAll<BrowserWindow>("WIN_REGISTRY_READER");
+    () => {
+        // ERROR:
+        // No matching bindings found for serviceIdentifier: WIN_REGISTRY_READER
+        // return container.getAll<BrowserWindow>("WIN_REGISTRY_READER");
+
+        return Array.from(readerWinMap.values()).filter((w) => {
+            return !w.isDestroyed();
+        });
+    };
 
 // local interface to force type return
 interface IGet {

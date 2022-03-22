@@ -302,7 +302,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
     const [value, setValue] = React.useState(props.globalFilter);
 
-    const onChange = useAsyncDebounce((v) => {
+    const onInputChange = useAsyncDebounce((v) => {
         if (!props.accessibilitySupportEnabled) {
             props.setGlobalFilter(v || undefined);
         }
@@ -345,7 +345,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 value={value || ""}
                 onChange={(e) => {
                     setValue(e.target.value);
-                    onChange(e.target.value);
+                    onInputChange(e.target.value);
                 }}
                 onKeyUp={(e) => {
                     if (props.accessibilitySupportEnabled && e.key === "Enter") {
@@ -384,6 +384,7 @@ interface ITableCellProps_Filter {
     displayType: DisplayType;
 
     showColumnFilters: boolean,
+    accessibilitySupportEnabled: boolean,
 }
 interface ITableCellProps_Column {
     column: ColumnWithLooseAccessor<IColumns> & UseFiltersColumnProps<IColumns>,
@@ -417,13 +418,32 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
 // }}>
 // {props.column.filteredRows.length !== props.column.preFilteredRows.length ? ` (${props.column.filteredRows.length} / ${props.column.preFilteredRows.length})` : ` (${props.column.preFilteredRows.length})`}
 // </div>
+
+    const [value, setValue] = React.useState(props.column.filterValue);
+
+    const onInputChange = useAsyncDebounce((v) => {
+        if (!props.accessibilitySupportEnabled) {
+            props.column.setFilter(v || undefined);
+        }
+    }, 500);
+
     return props.showColumnFilters ?
-    <>
+    <div style={{
+        display: "flex",
+        alignItems: "center",
+    }}>
     <input
         type="search"
-        value={props.column.filterValue || ""}
+        value={value || ""}
         onChange={(e) => {
-            props.column.setFilter(e.target.value || undefined);
+            setValue(e.target.value);
+            onInputChange(e.target.value || undefined);
+        }}
+        onKeyUp={(e) => {
+            if (props.accessibilitySupportEnabled && e.key === "Enter") {
+                // (e.target as EventTarget & HTMLInputElement).value
+                props.column.setFilter(value || undefined);
+            }
         }}
         aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
         placeholder={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
@@ -431,12 +451,29 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
             border: "1px solid gray",
             borderRadius: "4px",
             margin: "0",
-            width: "100%",
+            width: props.accessibilitySupportEnabled ? "calc(100% - 30px)" : "100%",
             padding: "0.2em",
             backgroundColor: "white",
         }}
     />
-    </>
+    {
+    props.accessibilitySupportEnabled ? <button
+        aria-label={`${props.__("header.searchPlaceholder")}`}
+        style={{
+            border: "1px solid gray",
+            borderRadius: "4px",
+            margin: "0",
+            marginLeft: "0.4em",
+            width: "24px",
+            height: "24px",
+            padding: "0.2em",
+        }}
+        onClick={() => {
+            props.column.setFilter(value || undefined);
+        }}
+    ><SVG ariaHidden svg={magnifyingGlass} /></button> : <></>
+    }
+    </div>
     : <></>;
 };
 
@@ -1059,6 +1096,7 @@ interface ITableCellProps_Value_Date {
 }
 const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Date> = (props) => {
     return (
+    props.value.label ?
     <div style={{
         ...commonCellStyles(props),
     }}
@@ -1096,6 +1134,7 @@ const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                 marginBottom: "6px",
         }}>{props.value.date}</a>
     </div>
+    : <></>
     );
 };
 
@@ -1220,6 +1259,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         displayType: props.displayType,
 
         showColumnFilters,
+        accessibilitySupportEnabled: props.accessibilitySupportEnabled,
     };
 
     const renderProps_Cell: ITableCellProps_GenericCell =
