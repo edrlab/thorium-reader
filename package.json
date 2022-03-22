@@ -361,7 +361,7 @@
     "ncp": "^2.0.0",
     "node-loader": "^2.0.0",
     "postcss": "^8.4.12",
-    "postcss-import": "^14.0.2",
+    "postcss-import": "^14.1.0",
     "postcss-loader": "^6.2.1",
     "postcss-mixins": "^9.0.2",
     "postcss-nesting": "^10.1.3",
