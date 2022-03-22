@@ -71,8 +71,9 @@ import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-import { debug } from "console";
+
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+import { ipcRenderer } from "electron";
 
 // MAIN process only, not RENDERER, because of diMainGet("translator")
 // import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
@@ -109,6 +110,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     publicationViews: PublicationView[] | undefined;
+    accessibilitySupportEnabled: boolean;
 }
 
 export class AllPublicationPage extends React.Component<IProps, IState> {
@@ -123,10 +125,20 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
 
         this.state = {
             publicationViews: undefined,
+            accessibilitySupportEnabled: false,
         };
     }
 
     public componentDidMount() {
+
+        ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
+
+        // note that "@r2-navigator-js/electron/main/browser-window-tracker"
+        // uses "accessibility-support-changed" instead of "accessibility-support-query",
+        // so there is no duplicate event handler.
+        console.log("componentDidMount() ipcRenderer.send - accessibility-support-query");
+        ipcRenderer.send("accessibility-support-query");
+
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
@@ -149,6 +161,8 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
+        ipcRenderer.off("accessibility-support-changed", this.accessibilitySupportChanged);
+
         this.unregisterAllKeyboardListeners();
 
         if (this.unsubscribe) {
@@ -157,6 +171,13 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public async componentDidUpdate(oldProps: IProps) {
+
+        // note that "@r2-navigator-js/electron/main/browser-window-tracker"
+        // uses "accessibility-support-changed" instead of "accessibility-support-query",
+        // so there is no duplicate event handler.
+        console.log("componentDidUpdate() ipcRenderer.send - accessibility-support-query");
+        ipcRenderer.send("accessibility-support-query");
+
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
@@ -181,6 +202,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                 {
                     this.state.publicationViews ?
                         <TableView
+                            accessibilitySupportEnabled={this.state.accessibilitySupportEnabled}
                             location={this.props.location}
                             displayType={displayType}
                             __={__}
@@ -198,6 +220,15 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
             </LibraryLayout>
         );
     }
+
+    private accessibilitySupportChanged = (_e: Electron.IpcRendererEvent, accessibilitySupportEnabled: boolean) => {
+        console.log("ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
+
+        // prevents infinite loop via componentDidUpdate()
+        if (accessibilitySupportEnabled !== this.state.accessibilitySupportEnabled) {
+            this.setState({ accessibilitySupportEnabled });
+        }
+    };
 
     private registerAllKeyboardListeners() {
         registerKeyboardListener(
@@ -265,13 +296,16 @@ interface ITableCellProps_GlobalFilter {
     globalFilter: string;
     setGlobalFilter: (filterValue: string) => void;
     focusInputRef: React.RefObject<HTMLInputElement>;
+    accessibilitySupportEnabled: boolean;
 }
 const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
     const [value, setValue] = React.useState(props.globalFilter);
 
-    const onChange = useAsyncDebounce((value) => {
-        props.setGlobalFilter(value || undefined);
+    const onChange = useAsyncDebounce((v) => {
+        if (!props.accessibilitySupportEnabled) {
+            props.setGlobalFilter(v || undefined);
+        }
     }, 500);
 
     return (
@@ -291,7 +325,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 {`${props.__("header.searchPlaceholder")}`}
             </label>
             <div
-                    aria-live="polite"
+                    aria-live="assertive"
                     style={{
                         // border: "1px solid red",
                         marginLeft: "0.4em",
@@ -313,6 +347,11 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                     setValue(e.target.value);
                     onChange(e.target.value);
                 }}
+                onKeyUp={(e) => {
+                    if (props.accessibilitySupportEnabled && e.key === "Enter") {
+                        props.setGlobalFilter(value || undefined);
+                    }
+                }}
                 placeholder={`${props.__("header.searchTitle")}`}
                 style={{
                     border: "1px solid gray",
@@ -323,6 +362,18 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                     padding: "0.2em",
                 }}
                 />
+            {props.accessibilitySupportEnabled ? <button
+                style={{
+                    border: "1px solid gray",
+                    borderRadius: "4px",
+                    margin: "0",
+                    marginLeft: "0.4em",
+                    padding: "0.6em",
+                }}
+                onClick={() => {
+                    props.setGlobalFilter(value || undefined);
+                }}
+            >{`${props.__("header.searchPlaceholder")}`}</button> : <></>}
         </div>
     );
 };
@@ -1154,6 +1205,7 @@ interface ITableCellProps_TableView {
     publicationViews: PublicationView[];
     focusInputRef: React.RefObject<HTMLInputElement>;
     location: Location;
+    accessibilitySupportEnabled: boolean;
 }
 export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Common> = (props) => {
 
@@ -1203,7 +1255,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 try {
                     publishedDateVisual = new Intl.DateTimeFormat(props.translator.getLocale(), { dateStyle: "medium", timeStyle: undefined }).format(new Date(publishedDateCanonical));
                 } catch (err) {
-                    debug(err);
+                    console.log(err);
                 }
             }
 
@@ -1658,6 +1710,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             // `(${tableRows.length})`
             }
             <CellGlobalFilter
+                    accessibilitySupportEnabled={props.accessibilitySupportEnabled}
                     preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
                     globalFilteredRows={tableInstance.globalFilteredRows}
                     globalFilter={tableInstance.state.globalFilter}

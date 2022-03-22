@@ -6,11 +6,11 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, protocol } from "electron";
+import { app, protocol, ipcMain } from "electron";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
-import { closeProcessLock, diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
 import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 import {
     absorbDBToJson as absorbDBToJsonCookieJar, fetchCookieJarPersistence,
@@ -55,6 +55,44 @@ export function* init() {
 
     //     setTimeout(() => app.exit(0), 2000);
     // });
+
+    app.on("accessibility-support-changed", (_e, accessibilitySupportEnabled) => {
+        console.log("app.on - accessibility-support-changed: ", accessibilitySupportEnabled);
+        if (app.accessibilitySupportEnabled !== accessibilitySupportEnabled) { // .isAccessibilitySupportEnabled()
+            console.log("!!?? app.accessibilitySupportEnabled !== app.on - accessibility-support-changed");
+        }
+        const browserWindows = [];
+        try {
+            const libraryWin = getLibraryWindowFromDi();
+            if (libraryWin) {
+                browserWindows.push(libraryWin);
+            }
+        } catch (e) {
+            debug("getLibraryWindowFromDi ERROR?", e);
+        }
+        try {
+            const readerWins = getAllReaderWindowFromDi();
+            if (readerWins?.length) {
+                browserWindows.push(...readerWins);
+            }
+        } catch (e) {
+            debug("getAllReaderWindowFromDi ERROR?", e);
+        }
+        browserWindows.forEach((win) => {
+            if (win.webContents) {
+                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled);
+                win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled);
+            }
+        });
+    });
+    // note that "@r2-navigator-js/electron/main/browser-window-tracker"
+    // uses "accessibility-support-changed" instead of "accessibility-support-query",
+    // so there is no duplicate event handler.
+    ipcMain.on("accessibility-support-query", (e) => {
+        const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
+        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled);
+        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled);
+    });
 
     yield call(() => app.whenReady());
 
