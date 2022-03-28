@@ -8,7 +8,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import { acceptedExtensionArray } from "readium-desktop/common/extension";
+import { acceptedExtensionArray, acceptedExtensionObject } from "readium-desktop/common/extension";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -50,7 +50,12 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
                     aria-label={__("accessibility.importFile")}
                     onChange={this.importFile}
                     multiple
-                    accept={acceptedExtensionArray.join(", ")}
+                    accept={acceptedExtensionArray.map((ext) => {
+                        if (ext === acceptedExtensionObject.nccHtml) { // !ext.startsWith(".")
+                            return ".html";
+                        }
+                        return ext;
+                    }).join(", ")}
                 />
             </label>
         );
