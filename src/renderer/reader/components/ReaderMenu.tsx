@@ -351,9 +351,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
                 let emphasis = undefined;
                 if (link === headingTrailLink) {
-                    emphasis = { border: "2px dotted silver", outlineColor: "silver", outlineOffset: "1px", outlineWidth: "4px", outlineStyle: "double" };
+                    emphasis = { border: "transparent", outlineColor: "silver", outlineOffset: "0px", outlineWidth: "4px", outlineStyle: "double" };
                 } else if ((link as any).__inHeadingsTrail) {
-                    emphasis = { border: "2px dashed silver" };
+                    emphasis = { border: "1px dashed silver" };
                 }
                 const label = link.Title ? link.Title : `#${level}-${i} ${link.Href}`;
                 return (

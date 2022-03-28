@@ -129,9 +129,9 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                     <SVG svg={ArrowLeftIcon} />
                 </button>
                 <span style={{
-                    marginLeft: "1em",
+                    marginLeft: "0.5em",
                     marginRight: "1em",
-                    verticalAlign: "text-top",
+                    verticalAlign: "super",
                 }}>
                 {
                     begin === end ?
