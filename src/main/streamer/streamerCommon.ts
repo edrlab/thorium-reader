@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import * as path from "path";
+import { app } from "electron";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { diMainGet } from "readium-desktop/main/di";
@@ -164,6 +165,29 @@ export function setupMathJaxTransformer(getUrl: () => string) {
 
         if (settings.enableMathJax) {
             const thorium_mathJax_script = "thorium_mathJax_script";
+            const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
+            const options = !accessibilitySupportEnabled ?
+`
+options: {
+    // enableExplorer: true,
+    // enableAssistiveMml: true,
+    menuOptions: {
+        settings: {
+            explorer: true,
+            // assistiveMml: true
+        }
+    },
+    a11y: {
+        speech: true,
+        subtitles: false,
+        braille: false
+    }
+},
+`
+:
+`
+`
+;
             const script = `
 <script id='${thorium_mathJax_script}' type="text/javascript">
 // document.addEventListener("DOMContentLoaded", () => {
@@ -192,20 +216,7 @@ window.addEventListener("load", () => {
 
         // http://docs.mathjax.org/en/v3.2-latest/options/accessibility.html#explorer-extension-options
         window.MathJax = {
-            options: {
-                // enableAssistiveMml: true,
-                menuOptions: {
-                    settings: {
-                        explorer: true
-                        // assistiveMml: true
-                    }
-                },
-                a11y: {
-                    speech: true,
-                    subtitles: false,
-                    braille: false
-                }
-            },
+            ${options}
             startup: {
                 ready: () => {
 
