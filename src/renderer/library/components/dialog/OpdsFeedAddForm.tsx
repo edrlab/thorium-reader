@@ -10,7 +10,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
@@ -19,7 +18,6 @@ import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnInput } from "readium-desktop/typings/react";
@@ -120,7 +118,7 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                     <div className={stylesModals.modal_dialog_footer}>
                         <button
                             onClick={closeDialog}
-                            className={stylesButtons.button_transparency}
+                            className={stylesButtons.button_primary}
                         >
                             {__("opds.back")}
                         </button>
@@ -128,10 +126,9 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                             disabled={!name || !url}
                             type="submit"
                             onClick={this.add}
-                            className={stylesButtons.button_secondary}
+                            className={stylesButtons.button_primary}
                             ref={this.buttonRef}
                         >
-                            <SVG svg={DoneIcon} />
                             {__("opds.addForm.addButton")}
                         </button>
                     </div>

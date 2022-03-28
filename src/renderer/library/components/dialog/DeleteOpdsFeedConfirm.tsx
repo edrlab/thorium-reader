@@ -61,7 +61,7 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
                     </p>
                 </div>
                 <div className={stylesModals.modal_dialog_footer}>
-                    <button className={stylesButtons.button_transparency} onClick={closeDialog}>
+                    <button className={stylesButtons.button_primary} onClick={closeDialog}>
                         {this.props.__("dialog.no")}
                     </button>
                     <button className={stylesButtons.button_primary} onClick={this.remove}>
