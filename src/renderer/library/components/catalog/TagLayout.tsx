@@ -58,7 +58,7 @@ class GridTagLayout extends React.Component<IProps, IState> {
                             button={
                                 <>
                                     {__("catalog.sort")}
-                                    <SVG svg={ArrowIcon} />
+                                    <SVG ariaHidden={true} svg={ArrowIcon} />
                                 </>
                             }
                             content={

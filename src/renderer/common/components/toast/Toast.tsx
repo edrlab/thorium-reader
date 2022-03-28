@@ -183,8 +183,9 @@ export class Toast extends React.Component<IProps, IState> {
                     }}
                     onClick={() => this.handleClose()}
                     className={stylesToasts.closeButton}
+                    title={this.props.__("accessibility.closeDialog")}
                 >
-                    <SVG svg={QuitIcon}/>
+                    <SVG ariaHidden={true} svg={QuitIcon}/>
                 </button>
             </div>
         );

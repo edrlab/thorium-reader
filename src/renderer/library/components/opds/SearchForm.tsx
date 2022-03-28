@@ -88,8 +88,9 @@ class SearchForm extends React.Component<IProps, undefined> {
                 />
                 <button
                     disabled={!this.props.search?.url}
+                    title={__("header.searchTitle")}
                 >
-                    <SVG svg={SearchIcon} title={__("header.searchTitle")} />
+                    <SVG ariaHidden={true} svg={SearchIcon} />
                 </button>
             </form>
         );

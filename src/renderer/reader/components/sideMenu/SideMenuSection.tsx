@@ -67,7 +67,7 @@ export class SideMenuSection extends React.Component<IProps, IState> {
                     <button onClick={() => onClick(id)} disabled={disabled}
                         aria-pressed={open}>
                         <span>{title}</span>
-                        <SVG className={stylesReader.menu_section_svg} svg={ArrowIcon} />
+                        <SVG ariaHidden={true} className={stylesReader.menu_section_svg} svg={ArrowIcon} />
                     </button>
 
                     <div aria-hidden={open ? undefined : true}

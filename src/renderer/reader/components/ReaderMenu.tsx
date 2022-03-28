@@ -520,7 +520,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             }
                         }
                     >
-                        <SVG svg={BookmarkIcon} title={""} aria-hidden />
+                        <SVG ariaHidden={true} svg={BookmarkIcon} />
 
                         <div className={stylesReader.chapter_marker}>
                             <p className={stylesReader.bookmark_name} title={bname}>{bname}</p>
@@ -529,11 +529,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             </div>
                         </div>
                     </button>
-                    <button onClick={() => this.setState({bookmarkToUpdate: i})}>
-                        <SVG title={ __("reader.marks.edit")} svg={ EditIcon }/>
+                    <button title={ __("reader.marks.edit")}
+                    onClick={() => this.setState({bookmarkToUpdate: i})}>
+                        <SVG ariaHidden={true} svg={ EditIcon }/>
                     </button>
-                    <button onClick={() => this.props.deleteBookmark(bookmark)}>
-                        <SVG title={ __("reader.marks.delete")} svg={ DeleteIcon }/>
+                    <button title={ __("reader.marks.delete")}
+                    onClick={() => this.props.deleteBookmark(bookmark)}>
+                        <SVG ariaHidden={true} svg={ DeleteIcon }/>
                     </button>
                 </div>);
                 },

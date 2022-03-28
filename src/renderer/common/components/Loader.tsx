@@ -20,7 +20,7 @@ export default class Loader extends React.Component<{}, undefined> {
     public render(): React.ReactElement<{}>  {
         return (
             <div className={stylesLoader.loader}>
-                <SVG svg={LoaderIcon}/>
+                <SVG ariaHidden={true} svg={LoaderIcon}/>
             </div>
         );
     }

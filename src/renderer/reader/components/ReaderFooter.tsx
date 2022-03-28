@@ -134,8 +134,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             } else {
                                 this.props.navLeftOrRight(true);
                             }
-                        }}>
-                            <SVG svg={ArrowLeftIcon} title={__("reader.svg.left")} />
+                        }}
+                        title={__("reader.svg.left")}
+                        >
+                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <button onClick={(ev) => {
                             if (ev.shiftKey) {
@@ -148,13 +150,15 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             } else {
                                 this.props.navLeftOrRight(false);
                             }
-                        }}>
-                            <SVG svg={ArrowRightIcon} title={__("reader.svg.right")} />
+                        }}
+                        title={__("reader.svg.right")}
+                        >
+                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
                     </div>
                 }
                 {!this.props.fullscreen &&
-                    <div className={classNames(stylesReader.track_reading_wrapper,
+                    <div aria-hidden="true" className={classNames(stylesReader.track_reading_wrapper,
                         isAudioBook ? stylesReader.track_reading_wrapper_noArrows : undefined)}>
 
                         { // <div id={stylesReader.current}></div>

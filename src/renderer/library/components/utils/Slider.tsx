@@ -37,7 +37,7 @@ class Slider extends React.Component<IProps, IState> {
     private contentRef: React.RefObject<HTMLDivElement>;
     private contentElRefs: HTMLDivElement[] = [];
     private wrapperRef: React.RefObject<HTMLDivElement>;
-    private contentElVisible: boolean[] = [];
+    // private contentElVisible: boolean[] = [];
 
     constructor(props: IProps) {
         super(props);
@@ -110,7 +110,7 @@ class Slider extends React.Component<IProps, IState> {
                         className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
                         onClick={this.handleMove.bind(this, false)}
                     >
-                        <SVG svg={ArrowRightIcon}/>
+                        <SVG ariaHidden={true} svg={ArrowRightIcon}/>
                     </button>
                 : <></>
                 }
@@ -125,7 +125,7 @@ class Slider extends React.Component<IProps, IState> {
                         aria-label={__("accessibility.rightSlideButton")}
                         className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
                     >
-                        <SVG svg={ArrowRightIcon}/>
+                        <SVG ariaHidden={true} svg={ArrowRightIcon}/>
                     </button>
                 : <></>
                 }
@@ -170,13 +170,13 @@ class Slider extends React.Component<IProps, IState> {
     private createContent(): JSX.Element[] {
         const content = this.props.content;
 
-        const visible = this.contentElVisible;
+        // const visible = this.contentElVisible;
 
         return content.map((element, index) => {
             const props: {[key: string]: string | number} = {};
-            if (!visible[index]) {
-                props.tabIndex = -1;
-            }
+            // if (!visible[index]) {
+            //     props.tabIndex = -1;
+            // }
             return (
                 <div
                     ref={(ref) => this.contentElRefs[index] = ref}

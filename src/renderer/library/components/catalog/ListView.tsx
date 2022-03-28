@@ -63,6 +63,7 @@ class CatalogListView extends React.Component<IProps, undefined> {
                                         pathname: "/library/search/all",
                                     }}
                                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                                    title={`${this.props.__("header.allBooks")} (${entry.title})`}
                                 >
                                     {this.props.__("header.allBooks")}
                                 </Link>

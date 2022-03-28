@@ -84,7 +84,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                 className={stylesButtons.button_primary}
                             >
-                                <SVG svg={ArrowFirstIcon} />
+                                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                                 {__("opds.firstPage")}
                             </Link>
                         :
@@ -92,7 +92,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
                                 tabIndex={-1}
                             >
-                                <SVG svg={ArrowFirstIcon} />
+                                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                                 {__("opds.firstPage")}
                             </a>
                     }
@@ -106,7 +106,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                 className={stylesButtons.button_primary}
                             >
-                                <SVG svg={ArrowLeftIcon} />
+                                <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                 {__("opds.previous")}
                             </Link>
                         :
@@ -114,7 +114,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
                                 tabIndex={-1}
                             >
-                                <SVG svg={ArrowLeftIcon} />
+                                <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                 {__("opds.previous")}
                             </a>
                     }
@@ -143,7 +143,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 className={classNames(stylesButtons.button_primary, stylesButtons.icon_end)}
                             >
                                 {__("opds.next")}
-                                <SVG svg={ArrowRightIcon} />
+                                <SVG ariaHidden={true} svg={ArrowRightIcon} />
                             </Link>
                         :
                             <a
@@ -151,7 +151,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 tabIndex={-1}
                             >
                                 {__("opds.next")}
-                                <SVG svg={ArrowRightIcon} />
+                                <SVG ariaHidden={true} svg={ArrowRightIcon} />
                             </a>
                     }
                     {
@@ -165,7 +165,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 className={classNames(stylesButtons.button_primary, stylesButtons.icon_end)}
                             >
                                 {__("opds.lastPage")}
-                                <SVG svg={ArrowLastIcon} />
+                                <SVG ariaHidden={true} svg={ArrowLastIcon} />
                             </Link>
                         :
                             <a
@@ -173,7 +173,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 tabIndex={-1}
                             >
                                 {__("opds.lastPage")}
-                                <SVG svg={ArrowLastIcon} />
+                                <SVG ariaHidden={true} svg={ArrowLastIcon} />
                             </a>
                     }
                 </div>

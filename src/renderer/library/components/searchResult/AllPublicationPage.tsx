@@ -302,7 +302,7 @@ interface ITableCellProps_GlobalFilter {
 const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
     React.useEffect(() => {
-        if (props.focusInputRef.current &&
+        if (props.focusInputRef?.current &&
             props.focusInputRef.current.value !== props.globalFilter) {
             props.focusInputRef.current.value = props.globalFilter || "";
         }
@@ -366,7 +366,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                     if (props.accessibilitySupportEnabled && e.key === "Enter") {
                         props.setShowColumnFilters(false);
                         props.setGlobalFilter( // value
-                            (props.focusInputRef.current?.value || "").trim() || undefined);
+                            (props.focusInputRef?.current?.value || "").trim() || undefined);
                     }
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
@@ -390,7 +390,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 onClick={() => {
                     props.setShowColumnFilters(false);
                     props.setGlobalFilter( // value
-                        (props.focusInputRef.current?.value || "").trim() || undefined);
+                        (props.focusInputRef?.current?.value || "").trim() || undefined);
                 }}
             >{`${props.__("header.searchPlaceholder")}`}</button> : <></>}
         </div>
@@ -441,7 +441,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useEffect(() => {
-        if (inputRef.current &&
+        if (inputRef?.current &&
             inputRef.current.value !== props.column.filterValue) {
                 inputRef.current.value = props.column.filterValue || "";
         }
@@ -484,7 +484,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                 // (e.target as EventTarget & HTMLInputElement).value
                 // value
                 props.column.setFilter( // props.column.filterValue
-                    (inputRef.current?.value || "").trim() || undefined);
+                    (inputRef?.current?.value || "").trim() || undefined);
             }
         }}
         aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
@@ -513,7 +513,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
         onClick={() => {
             // value
             props.column.setFilter( // props.column.filterValue
-                (inputRef.current?.value || "").trim() || undefined);
+                (inputRef?.current?.value || "").trim() || undefined);
         }}
     ><SVG ariaHidden svg={magnifyingGlass} /></button> : <></>
     }
@@ -1324,7 +1324,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 tableInstance.setFilter(columnId, filterValue);
             }, 200);
 
-            if (scrollToViewRef.current) {
+            if (scrollToViewRef?.current) {
                 scrollToViewRef.current.scrollIntoView();
             }
         },
@@ -1860,7 +1860,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             aria-label={`${props.__("opds.firstPage")}`}
             onClick={() => tableInstance.gotoPage(0)}
             disabled={!tableInstance.canPreviousPage}>
-                <SVG svg={ArrowFirstIcon} />
+                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
             </button>
             <button
             style={{
@@ -1873,7 +1873,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             aria-label={`${props.__("opds.previous")}`}
             onClick={() => tableInstance.previousPage()}
             disabled={!tableInstance.canPreviousPage}>
-                <SVG svg={ArrowRightIcon} />
+                <SVG ariaHidden={true} svg={ArrowRightIcon} />
             </button>
             <select
                 aria-label={`${props.__("reader.navigation.currentPageTotal", {current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length})}`}
@@ -1904,7 +1904,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             aria-label={`${props.__("opds.next")}`}
             onClick={() => tableInstance.nextPage()}
             disabled={!tableInstance.canNextPage}>
-                <SVG svg={ArrowRightIcon} />
+                <SVG ariaHidden={true} svg={ArrowRightIcon} />
             </button>
             <button
             style={{
@@ -1916,7 +1916,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             aria-label={`${props.__("opds.lastPage")}`}
             onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
             disabled={!tableInstance.canNextPage}>
-                <SVG svg={ArrowLastIcon} />
+                <SVG ariaHidden={true} svg={ArrowLastIcon} />
             </button>
             </div>
         </div>

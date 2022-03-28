@@ -102,8 +102,9 @@ class HeaderSearch extends React.Component<IProps, undefined> {
                 className={stylesReader.menu_button}
                 onClick={this.enableSearch}
             // ref={this.settingsMenuButtonRef}
+                title={__("reader.navigation.magnifyingGlassButton")}
             >
-                <SVG svg={magnifyingGlass} title={__("reader.navigation.magnifyingGlassButton")} />
+                <SVG ariaHidden={true} svg={magnifyingGlass} />
             </button>
         );
     }

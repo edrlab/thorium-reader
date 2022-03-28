@@ -33,7 +33,7 @@ class LoaderSearch extends React.Component<IProps, undefined> {
         }
         return (
             <div className={stylesLoader.loader_search_picker}>
-                <SVG svg={LoaderIcon} />
+                <SVG ariaHidden={true} svg={LoaderIcon} />
             </div>
         );
     }

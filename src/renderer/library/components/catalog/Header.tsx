@@ -90,11 +90,12 @@ class Header extends React.Component<IProps, undefined> {
                             pathname: "/library/search/all",
                         }}
                         state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                        title={`${this.props.__("header.searchPlaceholder")} (${this.props.__("header.allBooks")})`}
                     >
                         {
                         <>
                         <span>{this.props.__("header.searchPlaceholder")}</span>
-                        <SVG svg={magnifyingGlass} title={this.props.__("header.allBooks")} />
+                        <SVG ariaHidden={true} svg={magnifyingGlass} />
                         </>
                         }
                     </Link>

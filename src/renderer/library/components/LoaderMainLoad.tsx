@@ -34,7 +34,7 @@ class LoaderMainLoad extends React.Component<IProps, undefined> {
         }
         return (
             <div className={stylesLoader.loader_small}>
-                <SVG svg={LoaderIcon} />
+                <SVG ariaHidden={true} svg={LoaderIcon} />
             </div>
         );
     }

@@ -621,7 +621,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                         ? this.getButtonClassNamePdf(this.state.pdfView === "scrolled")
                                         : this.getButtonClassName("paged", false)}
                                 >
-                                    <SVG svg={DefileIcon} />
+                                    <SVG ariaHidden={true} svg={DefileIcon} />
                                     {__("reader.settings.scrolled")}
                                 </label>
                             </div>
@@ -643,7 +643,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                         ? this.getButtonClassNamePdf(this.state.pdfView === "paginated")
                                         : this.getButtonClassName("paged", true)}
                                 >
-                                    <SVG svg={PagineIcon} />
+                                    <SVG ariaHidden={true} svg={PagineIcon} />
                                     {__("reader.settings.paginated")}
                                 </label>
                             </div>
@@ -665,7 +665,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             htmlFor={"radio-" + stylesReader.option_auto}
                             className={this.getButtonClassName("align", "auto")}
                         >
-                            <SVG svg={LeftIcon} />
+                            <SVG ariaHidden={true} svg={LeftIcon} />
                             {__("reader.settings.column.auto")}
                         </label>
                     </div>
@@ -681,7 +681,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             htmlFor={"radio-" + stylesReader.option_justif}
                             className={this.getButtonClassName("align", "justify")}
                         >
-                            <SVG svg={JustifyIcon} />
+                            <SVG ariaHidden={true} svg={JustifyIcon} />
                             {__("reader.settings.justify")}
                         </label>
                     </div>
@@ -714,7 +714,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                             !readerConfig.paged ? null : colCountEnum.auto,
                                             !readerConfig.paged && stylesReader.disable)}
                                 >
-                                    <SVG svg={AutoIcon} />
+                                    <SVG ariaHidden={true} svg={AutoIcon} />
                                     {__("reader.settings.column.auto")}
                                 </label>
                             </div>

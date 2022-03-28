@@ -42,7 +42,7 @@ export class OpdsAddForm extends React.Component<IProps, undefined> {
                     onClick={this.props.openOpdsFeedAddForm}
                     className={stylesButtons.button_primary}
                 >
-                    <SVG svg={AddIcon}/>
+                    <SVG ariaHidden={true} svg={AddIcon}/>
                     <span>{ __("opds.addForm.title")}</span>
                 </button>
             </section>

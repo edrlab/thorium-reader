@@ -118,7 +118,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 style={{
                     width: "30px",
                 }}>
-                    <SVG svg={ArrowFirstIcon} />
+                    <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                 </button>
 
                 <button title={__("opds.previous")}
@@ -126,7 +126,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 style={{
                     width: "30px",
                 }}>
-                    <SVG svg={ArrowLeftIcon} />
+                    <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                 </button>
                 <span style={{
                     marginLeft: "0.5em",
@@ -144,7 +144,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 style={{
                     width: "30px",
                 }}>
-                    <SVG svg={ArrowRightIcon} />
+                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
 
                 <button title={__("opds.lastPage")}
@@ -152,7 +152,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 style={{
                     width: "30px",
                 }}>
-                    <SVG svg={ArrowLastIcon} />
+                    <SVG ariaHidden={true} svg={ArrowLastIcon} />
                 </button>
                 </>
                 }

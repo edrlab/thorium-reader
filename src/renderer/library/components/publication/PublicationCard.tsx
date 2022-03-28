@@ -66,13 +66,11 @@ class PublicationCard extends React.Component<IProps, IState> {
 
         const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
 
+        // aria-haspopup="dialog"
+        // aria-controls="dialog"
         return (
-            <div className={stylesPublications.publication_wrapper}
-                aria-haspopup="dialog"
-                aria-controls="dialog"
-            >
+            <div className={stylesPublications.publication_wrapper}>
                 <a
-                    tabIndex={0}
                     onClick={(e) => this.handleBookClick(e)}
                     onKeyPress={
                         (e) =>
@@ -80,11 +78,14 @@ class PublicationCard extends React.Component<IProps, IState> {
                     }
                     title={`${publicationViewMaybeOpds.title} - ${authors}`}
                     className={stylesPublications.publication_image_wrapper}
+                    tabIndex={0}
                 >
                     <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
                 </a>
                 <div className={stylesPublications.publication_infos_wrapper}>
-                    <a aria-hidden onClick={(e) => this.handleBookClick(e)} className={stylesPublications.publication_infos}>
+                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}
+                        className={stylesPublications.publication_infos}
+                        >
                         <p aria-hidden className={stylesPublications.publication_title}>
                             {publicationViewMaybeOpds.title}
                         </p>
@@ -94,7 +95,7 @@ class PublicationCard extends React.Component<IProps, IState> {
                     </a>
                     <Menu
                         button={(
-                            <SVG title={__("accessibility.bookMenu")} svg={MenuIcon} />
+                            <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.title})`} svg={MenuIcon} />
                         )}
                         content={(
                             <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_publication)}>

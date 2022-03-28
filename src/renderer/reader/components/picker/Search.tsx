@@ -135,7 +135,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                         fill: notFound ? "grey" : "black",
                     }}
                 >
-                    <SVG svg={ArrowLeftIcon} />
+                    <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                 </button>
                 <button
                     disabled={notFound}
@@ -150,7 +150,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                         fill: notFound ? "grey" : "black",
                     }}
                 >
-                    <SVG svg={ArrowRightIcon} />
+                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
                 {
                     load &&

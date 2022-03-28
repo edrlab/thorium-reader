@@ -105,6 +105,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             onClick={() => this.onClickKeyboardShortcutsShowHide()}
                         >
                             <SVG
+                                ariaHidden={true}
                                 svg={ChevronDownIcon}
                                 className={this.state.displayKeyboardShortcuts ? stylesGlobal.rotate180 : null  }
                             />

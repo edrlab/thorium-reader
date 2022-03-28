@@ -96,8 +96,9 @@ class FeedList extends React.Component<IProps, IState> {
                                 <button
                                     onClick={(e) => this.deleteFeed(e, item)}
                                     className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_close)}
+                                    title={__("catalog.delete")}
                                 >
-                                    <SVG svg={DeleteIcon} title={__("catalog.delete")} />
+                                    <SVG ariaHidden={true} svg={DeleteIcon} />
                                 </button>
                             </li>
                         );

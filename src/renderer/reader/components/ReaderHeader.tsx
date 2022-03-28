@@ -273,8 +273,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             <button
                                 className={stylesReader.menu_button}
                                 onClick={this.props.handleReaderClose}
+                                title={__("reader.navigation.backHomeTitle")}
                             >
-                                <SVG svg={BackIcon} title={__("reader.navigation.backHomeTitle")} />
+                                <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
                         </li>
                     ) : (<></>)
@@ -284,8 +285,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             className={stylesReader.menu_button}
                             onClick={() => this.props.displayPublicationInfo()}
                             ref={this.infoMenuButtonRef}
+                            title={__("reader.navigation.infoTitle")}
                         >
-                            <SVG svg={InfosIcon} title={__("reader.navigation.infoTitle")} />
+                            <SVG ariaHidden={true} svg={InfosIcon} />
                         </button>
                     </li>
                     {(this.props.mode === ReaderMode.Attached) ? (
@@ -293,8 +295,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             <button
                                 className={stylesReader.menu_button}
                                 onClick={this.props.handleReaderDetach}
+                                title={__("reader.navigation.detachWindowTitle")}
                             >
-                                <SVG svg={DetachIcon} title={__("reader.navigation.detachWindowTitle")} />
+                                <SVG ariaHidden={true} svg={DetachIcon} />
                             </button>
                         </li>
                     ) : (<></>)
@@ -309,20 +312,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 <button
                                                     className={stylesReader.menu_button}
                                                     onClick={() => this.setState({divinaSoundEnabled: false})}
+                                                    title={__("reader.divina.mute")}
                                                 >
-                                                    <SVG svg={MuteIcon} title={
-                                                            __("reader.divina.mute")
-                                                    } />
+                                                    <SVG ariaHidden={true} svg={MuteIcon} />
                                                 </button>
                                             </li>
                                 : <li className={stylesReader.button_audio}>
                                                 <button
                                                     className={stylesReader.menu_button}
                                                     onClick={() => this.setState({divinaSoundEnabled: true})}
+                                                    title={__("reader.divina.unmute")}
                                                 >
-                                                    <SVG svg={AudioIcon} title={
-                                                            __("reader.divina.unmute")
-                                                    } />
+                                                    <SVG ariaHidden={true} svg={AudioIcon} />
                                                 </button>
                                             </li>
                                 : (this.props.publicationHasMediaOverlays &&
@@ -337,12 +338,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     this.props.handleMediaOverlaysPlay :
                                                     this.props.handleTTSPlay
                                             }
-                                        >
-                                            <SVG svg={AudioIcon} title={
+                                            title={
                                                 this.props.publicationHasMediaOverlays ?
                                                     __("reader.media-overlays.activate") :
                                                     __("reader.tts.activate")
-                                            } />
+                                            }
+                                        >
+                                            <SVG ariaHidden={true} svg={AudioIcon} />
                                         </button>
                                     </li>
                                     : <>
@@ -354,12 +356,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                         this.props.handleMediaOverlaysStop :
                                                         this.props.handleTTSStop
                                                 }
-                                            >
-                                                <SVG svg={StopIcon} title={
+                                                title={
                                                     this.props.publicationHasMediaOverlays ?
                                                         __("reader.media-overlays.stop") :
                                                         __("reader.tts.stop")
-                                                } />
+                                                }
+                                            >
+                                                <SVG ariaHidden={true} svg={StopIcon} />
                                             </button>
                                         </li>
                                         <li >
@@ -372,12 +375,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                         this.props.handleTTSPrevious(e.shiftKey && e.altKey);
                                                     }
                                                 }}
-                                            >
-                                                <SVG svg={SkipPrevious} title={
+                                                title={
                                                     this.props.publicationHasMediaOverlays ?
                                                         __("reader.media-overlays.previous") :
                                                         __("reader.tts.previous")
-                                                } />
+                                                }
+                                            >
+                                                <SVG ariaHidden={true} svg={SkipPrevious} />
                                             </button>
                                         </li>
                                         {(this.props.publicationHasMediaOverlays &&
@@ -392,12 +396,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             this.props.handleMediaOverlaysPause :
                                                             this.props.handleTTSPause
                                                     }
-                                                >
-                                                    <SVG svg={PauseIcon} title={
+                                                    title={
                                                         this.props.publicationHasMediaOverlays ?
                                                             __("reader.media-overlays.pause") :
                                                             __("reader.tts.pause")
-                                                    } />
+                                                    }
+                                                >
+                                                    <SVG ariaHidden={true} svg={PauseIcon} />
                                                 </button>
                                             </li>
                                             :
@@ -409,12 +414,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             this.props.handleMediaOverlaysResume :
                                                             this.props.handleTTSResume
                                                     }
-                                                >
-                                                    <SVG svg={PlayIcon} title={
+                                                    title={
                                                         this.props.publicationHasMediaOverlays ?
                                                             __("reader.media-overlays.play") :
                                                             __("reader.tts.play")
-                                                    } />
+                                                    }
+                                                >
+                                                    <SVG ariaHidden={true} svg={PlayIcon} />
                                                 </button>
                                             </li>
                                         }
@@ -429,12 +435,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                         this.props.handleTTSNext(e.shiftKey && e.altKey);
                                                     }
                                                 }}
-                                            >
-                                                <SVG svg={SkipNext} title={
+                                                title={
                                                     this.props.publicationHasMediaOverlays ?
                                                         __("reader.media-overlays.next") :
                                                         __("reader.tts.next")
-                                                } />
+                                                }
+                                            >
+                                                <SVG ariaHidden={true} svg={SkipNext} />
                                             </button>
                                         </li>
                                         <li className={stylesReader.ttsSelectRate}>
@@ -560,8 +567,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 }
                                             }}
                                             aria-label={__("reader.navigation.pdfscalemode")}
+                                            title={__("reader.navigation.pdfscalemode")}
                                         >
-                                            <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} />
+                                            <SVG ariaHidden={true} svg={viewMode} />
                                         </button>
                                     </li>
                                     : <></>)
@@ -582,12 +590,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 checked={this.props.isOnBookmark}
                                 onChange={this.props.toggleBookmark}
                                 aria-label={__("reader.navigation.bookmarkTitle")}
+                                title={__("reader.navigation.bookmarkTitle")}
                             />
                             <label
-                                htmlFor="bookmarkButton"
+                                aria-hidden="true"
                                 className={stylesReader.menu_button}
                             >
-                                <SVG svg={MarkIcon} title={__("reader.navigation.bookmarkTitle")} />
+                                <SVG ariaHidden={true} svg={MarkIcon} />
                             </label>
                         </li>
                         <li
@@ -600,8 +609,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 className={stylesReader.menu_button}
                                 onClick={this.props.handleSettingsClick.bind(this)}
                                 ref={this.settingsMenuButtonRef}
+                                title={__("reader.navigation.settingsTitle")}
                             >
-                                <SVG svg={SettingsIcon} title={__("reader.navigation.settingsTitle")} />
+                                <SVG ariaHidden={true} svg={SettingsIcon} />
                             </button>
                             <ReaderOptions {...this.props.readerOptionsProps}
                                 isDivina={this.props.isDivina}
@@ -618,9 +628,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 className={stylesReader.menu_button}
                                 onClick={this.props.handleMenuClick.bind(this)}
                                 ref={this.navigationMenuButtonRef}
+                                title={__("reader.navigation.openTableOfContentsTitle")}
                             >
-                                <SVG svg={TOCIcon}
-                                    title={__("reader.navigation.openTableOfContentsTitle")} />
+                                <SVG ariaHidden={true} svg={TOCIcon} />
                             </button>
                             <ReaderMenu {...this.props.readerMenuProps}
                                 isDivina={this.props.isDivina}
@@ -637,9 +647,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     ref={this.disableFullscreenRef}
                                     aria-pressed={this.props.fullscreen}
                                     aria-label={__("reader.navigation.quitFullscreenTitle")}
+                                    title={__("reader.navigation.quitFullscreenTitle")}
                                 >
-                                    <SVG svg={QuitFullscreenIcon}
-                                        title={__("reader.navigation.quitFullscreenTitle")} />
+                                    <SVG ariaHidden={true} svg={QuitFullscreenIcon} />
                                 </button>
                             </li>
                             :
@@ -650,9 +660,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     ref={this.enableFullscreenRef}
                                     aria-pressed={this.props.fullscreen}
                                     aria-label={__("reader.navigation.fullscreenTitle")}
+                                    title={__("reader.navigation.fullscreenTitle")}
                                 >
-                                    <SVG svg={FullscreenIcon}
-                                        title={__("reader.navigation.fullscreenTitle")} />
+                                    <SVG ariaHidden={true} svg={FullscreenIcon} />
                                 </button>
                             </li>
                         }
@@ -660,8 +670,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     {/*<li className={stylesReader.right}>
                             <button
                                 className={stylesReader.menu_button}
+                                title={ __("reader.navigation.readBookTitle")}
                             >
-                                <SVG svg={AudioIcon} title={ __("reader.navigation.readBookTitle")}/>
+                                <SVG ariaHidden={true} svg={AudioIcon} />
                             </button>
                         </li>
 

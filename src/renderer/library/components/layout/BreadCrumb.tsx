@@ -55,7 +55,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                         title={__("opds.back")}
                         className={stylesButtons.button_transparency_icon}
                     >
-                        <SVG svg={ArrowIcon} />
+                        <SVG ariaHidden={true} svg={ArrowIcon} />
                     </Link>
                 }
                 {

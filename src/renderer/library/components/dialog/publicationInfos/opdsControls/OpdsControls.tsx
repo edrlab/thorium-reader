@@ -115,7 +115,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 className={stylesButtons.button_primary}
                                 disabled={sampleButtonIsDisabled()}
                             >
-                                <SVG svg={ImportIcon}/>
+                                <SVG ariaHidden={true} svg={ImportIcon}/>
                                 {__("opds.menu.addExtract")}
                             </button>
                             <OpdsLinkProperties
@@ -143,7 +143,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     }
 
                                 >
-                                    <SVG svg={CartFillIcon}/>
+                                    <SVG ariaHidden={true} svg={CartFillIcon}/>
                                     {__("opds.menu.goBuyBook")}
                                 </button>
                                 <br />

@@ -42,8 +42,9 @@ export const TagButton: React.FC<IProps> = (props) => {
                         // () => this.deleteTag(index)
                         onClickDeleteCb(index)
                     }
+                    title={__("catalog.deleteTag")}
                 >
-                    <SVG svg={CrossIcon} title={__("catalog.deleteTag")} />
+                    <SVG ariaHidden={true} svg={CrossIcon} />
                 </button>
             </>
         );

@@ -94,7 +94,7 @@ class Dialog extends React.Component<IProps, undefined> {
                                     onClick={this.props.close}
                                     className={stylesButtons.button_transparency_icon}
                                 >
-                                    <SVG svg={QuitIcon} />
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
                                 </button>
                             </div>
                             {content && <>

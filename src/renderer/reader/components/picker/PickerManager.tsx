@@ -152,7 +152,7 @@ class PickerManager extends React.Component<IProps, IState> {
                     title={__("accessibility.closeDialog")}
                     onClick={() => this.props.closePicker(type)}
                 >
-                    <SVG svg={QuitIcon} />
+                    <SVG ariaHidden={true} svg={QuitIcon} />
                 </button>
             </div>
         );
