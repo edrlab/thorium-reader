@@ -297,15 +297,25 @@ interface ITableCellProps_GlobalFilter {
     setGlobalFilter: (filterValue: string) => void;
     focusInputRef: React.RefObject<HTMLInputElement>;
     accessibilitySupportEnabled: boolean;
+    setShowColumnFilters: (show: boolean) => void;
 }
 const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
-    const [value, setValue] = React.useState(props.globalFilter);
+    React.useEffect(() => {
+        if (props.focusInputRef.current &&
+            props.focusInputRef.current.value !== props.globalFilter) {
+            props.focusInputRef.current.value = props.globalFilter || "";
+        }
+    }, [props.focusInputRef, props.globalFilter]);
+    // const [value, setValue] = React.useState(props.globalFilter);
+    // const [, forceReRender] = React.useState(NaN);
 
     const onInputChange = useAsyncDebounce((v) => {
-        if (!props.accessibilitySupportEnabled) {
-            props.setGlobalFilter(v || undefined);
-        }
+
+        // if (v) {}
+        props.setShowColumnFilters(false);
+
+        props.setGlobalFilter(v);
     }, 500);
 
     return (
@@ -337,19 +347,26 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                     }}>
                 {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
             </div>
+            {/*
+            value={value || ""}
+            */}
             <input
                 id="globalSearchInput"
                 aria-labelledby="globalSearchLabel"
                 ref={props.focusInputRef}
                 type="search"
-                value={value || ""}
+
                 onChange={(e) => {
-                    setValue(e.target.value);
-                    onInputChange(e.target.value);
+                    // setValue(e.target.value);
+                    if (!props.accessibilitySupportEnabled) {
+                        onInputChange((e.target.value || "").trim() || undefined);
+                    }
                 }}
                 onKeyUp={(e) => {
                     if (props.accessibilitySupportEnabled && e.key === "Enter") {
-                        props.setGlobalFilter(value || undefined);
+                        props.setShowColumnFilters(false);
+                        props.setGlobalFilter( // value
+                            (props.focusInputRef.current?.value || "").trim() || undefined);
                     }
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
@@ -371,7 +388,9 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                     padding: "0.6em",
                 }}
                 onClick={() => {
-                    props.setGlobalFilter(value || undefined);
+                    props.setShowColumnFilters(false);
+                    props.setGlobalFilter( // value
+                        (props.focusInputRef.current?.value || "").trim() || undefined);
                 }}
             >{`${props.__("header.searchPlaceholder")}`}</button> : <></>}
         </div>
@@ -388,6 +407,7 @@ interface ITableCellProps_Filter {
 }
 interface ITableCellProps_Column {
     column: ColumnWithLooseAccessor<IColumns> & UseFiltersColumnProps<IColumns>,
+    // columnFilter: string,
     // {
     //     filterValue: string | undefined;
     //     preFilteredRows: string[];
@@ -419,12 +439,23 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
 // {props.column.filteredRows.length !== props.column.preFilteredRows.length ? ` (${props.column.filteredRows.length} / ${props.column.preFilteredRows.length})` : ` (${props.column.preFilteredRows.length})`}
 // </div>
 
-    const [value, setValue] = React.useState(props.column.filterValue);
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    React.useEffect(() => {
+        if (inputRef.current &&
+            inputRef.current.value !== props.column.filterValue) {
+                inputRef.current.value = props.column.filterValue || "";
+        }
+    }, [props.column.filterValue]);
+    // const [value, setValue] = React.useState(props.column.filterValue); // props.columnFilter
+    // console.log(props.column.id, props.column.filterValue, props.columnFilter, value);
+    // const [, forceReRender] = React.useState(NaN);
+    // if (props.column.filterValue !== value) {
+    //     setValue(props.column.filterValue);
+    //     return <></>;
+    // }
 
     const onInputChange = useAsyncDebounce((v) => {
-        if (!props.accessibilitySupportEnabled) {
-            props.column.setFilter(v || undefined);
-        }
+        props.column.setFilter(v);
     }, 500);
 
     return props.showColumnFilters ?
@@ -432,17 +463,28 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
         display: "flex",
         alignItems: "center",
     }}>
+        {
+            /*
+        value={ // props.column.filterValue
+            value || ""}
+            */
+        }
     <input
+        ref={inputRef}
         type="search"
-        value={value || ""}
         onChange={(e) => {
-            setValue(e.target.value);
-            onInputChange(e.target.value || undefined);
+            // setValue(e.target.value);
+            // forceReRender(NaN);
+            if (!props.accessibilitySupportEnabled) {
+                onInputChange((e.target.value || "").trim() || undefined);
+            }
         }}
         onKeyUp={(e) => {
             if (props.accessibilitySupportEnabled && e.key === "Enter") {
                 // (e.target as EventTarget & HTMLInputElement).value
-                props.column.setFilter(value || undefined);
+                // value
+                props.column.setFilter( // props.column.filterValue
+                    (inputRef.current?.value || "").trim() || undefined);
             }
         }}
         aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
@@ -469,7 +511,9 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
             padding: "0.2em",
         }}
         onClick={() => {
-            props.column.setFilter(value || undefined);
+            // value
+            props.column.setFilter( // props.column.filterValue
+                (inputRef.current?.value || "").trim() || undefined);
         }}
     ><SVG ariaHidden svg={magnifyingGlass} /></button> : <></>
     }
@@ -478,7 +522,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
 };
 
 interface ITableCellProps_GenericCell extends ITableCellProps_Common {
-    setShowColumnFilters: (show: boolean) => void;
+    setShowColumnFilters: (show: boolean, columnId: string, filterValue: string) => void;
 }
 
 interface IColumnValue_Cover extends IColumnValue_BaseString {
@@ -559,14 +603,14 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
             tabIndex={0}
             onKeyPress={(e) => { if (e.key === "Enter") {
                 e.preventDefault();
-                props.column.setFilter(t);
-                props.setShowColumnFilters(true);
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}}
 
             onClick={(e) => {
                 e.preventDefault();
-                props.column.setFilter(t);
-                props.setShowColumnFilters(true);
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}
             style={{
                 display: "flex",
@@ -646,14 +690,14 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
             tabIndex={0}
             onKeyPress={(e) => { if (e.key === "Enter") {
                 e.preventDefault();
-                props.column.setFilter(t);
-                props.setShowColumnFilters(true);
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}}
 
             onClick={(e) => {
                 e.preventDefault();
-                props.column.setFilter(t);
-                props.setShowColumnFilters(true);
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}
             style={{
                 display: "flex",
@@ -733,14 +777,14 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
             tabIndex={0}
             onKeyPress={(e) => { if (e.key === "Enter") {
                 e.preventDefault();
-                props.column.setFilter(t);
-                props.setShowColumnFilters(true);
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}}
 
             onClick={(e) => {
                 e.preventDefault();
-                props.column.setFilter(t);
-                props.setShowColumnFilters(true);
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}
             style={{
                 display: "flex",
@@ -823,14 +867,14 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
             tabIndex={0}
             onKeyPress={(e) => { if (e.key === "Enter") {
                 e.preventDefault();
-                props.column.setFilter(t);
-                props.setShowColumnFilters(true);
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}}
 
             onClick={(e) => {
                 e.preventDefault();
-                props.column.setFilter(t);
-                props.setShowColumnFilters(true);
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}
             style={{
             display: "flex",
@@ -1106,14 +1150,16 @@ const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
             tabIndex={0}
             onKeyPress={(e) => { if (e.key === "Enter") {
                 e.preventDefault();
-                props.column.setFilter(props.value.label.substring(0, 4));
-                props.setShowColumnFilters(true);
+                const t = props.value.label.substring(0, 4); // YYYY
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}}
 
             onClick={(e) => {
                 e.preventDefault();
-                props.column.setFilter(props.value.label.substring(0, 4));
-                props.setShowColumnFilters(true);
+                const t = props.value.label.substring(0, 4); // YYYY
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
             }}
             style={{
                 display: "flex",
@@ -1271,8 +1317,12 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         displayPublicationInfo: props.displayPublicationInfo,
         openReader: props.openReader,
 
-        setShowColumnFilters: (show: boolean) => {
+        setShowColumnFilters: (show: boolean, columnId: string, filterValue: string) => {
             setShowColumnFilters(show);
+
+            setTimeout(() => {
+                tableInstance.setFilter(columnId, filterValue);
+            }, 200);
 
             if (scrollToViewRef.current) {
                 scrollToViewRef.current.scrollIntoView();
@@ -1759,6 +1809,18 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     translator={props.translator}
                     displayType={props.displayType}
                     focusInputRef={props.focusInputRef}
+
+                    setShowColumnFilters={(show: boolean) => {
+                        const currentShow = showColumnFilters;
+                        setShowColumnFilters(show);
+                        setTimeout(() => {
+                            if (currentShow && !show) {
+                                for (const col of tableInstance.allColumns) {
+                                    tableInstance.setFilter(col.id, "");
+                                }
+                            }
+                        }, 200);
+                    }}
                 />
         </div></div>
 
@@ -1964,7 +2026,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         </button>
                         {
                         column.canFilter ?
-                        (<div style={{display: "block"}}>{ column.render("Filter", renderProps_Filter) }</div>)
+                        (<div style={{display: "block"}}>{ column.render("Filter", {
+                            ...renderProps_Filter,
+                            // columnFilter: column.filterValue,
+                        }) }</div>)
                         : <></>
                         }
                         </>
@@ -1983,13 +2048,13 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             type="checkbox"
                             checked={showColumnFilters ? true : false}
                             onChange={() => {
+                                const show = showColumnFilters;
                                 setShowColumnFilters(!showColumnFilters);
-                                const s = showColumnFilters;
                                 setTimeout(() => {
-                                    if (!s) {
+                                    if (!show) {
                                         tableInstance.setGlobalFilter("");
                                     }
-                                    if (s) {
+                                    if (show) {
                                         for (const col of tableInstance.allColumns) {
                                             tableInstance.setFilter(col.id, "");
                                         }
