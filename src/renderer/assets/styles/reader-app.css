@@ -377,6 +377,10 @@ button {
         display: flex;
         align-items: center;
         width: auto;
+
+        & > select {
+          color: var(--reader-fontColor);
+        }
       }
 
       & > li.ttsSelectVoice {
@@ -386,6 +390,7 @@ button {
 
         & > select {
           width: 180px;
+          color: var(--reader-fontColor);
         }
       }
 
