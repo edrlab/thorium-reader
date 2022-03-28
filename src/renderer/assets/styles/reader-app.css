@@ -1120,6 +1120,7 @@ input[type=radio] + label {
     padding: 1rem 8rem 1rem 5rem;
     bottom: 0;
     margin-top: 1rem;
+    color: var(--reader-fontColor);
   }
 
   & .track_reading_wrapper_noArrows {
