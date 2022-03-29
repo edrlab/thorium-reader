@@ -39,6 +39,9 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+
+        // not necessary as input is located suitably for mouse hit testing
+        // htmlFor="epubInput"
         return (
             <label
                 className={classNames(stylesButtons.button_primary_small, stylesButtons.button_icon)}

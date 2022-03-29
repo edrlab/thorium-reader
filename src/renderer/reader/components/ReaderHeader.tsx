@@ -592,7 +592,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 aria-label={__("reader.navigation.bookmarkTitle")}
                                 title={__("reader.navigation.bookmarkTitle")}
                             />
+                            {
+                            // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
+                            }
                             <label
+                                htmlFor="bookmarkButton"
                                 aria-hidden="true"
                                 className={stylesReader.menu_button}
                             >
