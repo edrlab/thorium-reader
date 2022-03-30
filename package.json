@@ -308,7 +308,7 @@
     "@types/lunr": "^2.3.4",
     "@types/mime-types": "^2.1.1",
     "@types/node": "^16.11.26",
-    "@types/ramda": "^0.28.4",
+    "@types/ramda": "^0.28.5",
     "@types/react": "^17.0.43",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.14",
