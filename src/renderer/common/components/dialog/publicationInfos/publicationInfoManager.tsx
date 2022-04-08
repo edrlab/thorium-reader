@@ -5,6 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
+
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
@@ -13,14 +17,14 @@ import Cover from "../../Cover";
 import Loader from "../../Loader";
 import Dialog from "../Dialog";
 
-export interface IProps {
+export interface IProps extends TranslatorProps {
     publication: TPublication;
     coverZoom: boolean;
     toggleCoverZoomCb: (coverZoom: boolean) => void;
     closeDialogCb: () => void;
 }
 
-export const PublicationInfoManager: React.FC<IProps> = (props) => {
+const PublicationInfoManager: React.FC<IProps> = (props) => {
 
     const { publication, coverZoom, toggleCoverZoomCb, closeDialogCb } = props;
 
@@ -33,7 +37,7 @@ export const PublicationInfoManager: React.FC<IProps> = (props) => {
                     ? toggleCoverZoomCb(coverZoom)
                     : closeDialogCb()
             }
-            title={publication?.title}
+            title={props.__("catalog.bookInfo")}
         >
             <div className={stylesModals.modal_dialog_body}>
                 {
@@ -65,3 +69,4 @@ export const PublicationInfoManager: React.FC<IProps> = (props) => {
         </Dialog>
     );
 };
+export default (withTranslator(PublicationInfoManager));

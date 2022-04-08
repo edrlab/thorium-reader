@@ -14,9 +14,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import {
     PublicationInfoContent,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
-import {
-    PublicationInfoManager,
-} from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoManager";
+import PublicationInfoManager from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoManager";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
