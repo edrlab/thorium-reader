@@ -69,7 +69,7 @@
         "lang": "Idioma",
         "moreInfo": "Más información",
         "myBooks": "Mis libros",
-        "noPublicationHelpL1": "Suelta una publicación aquí",
+        "noPublicationHelpL1": "Desliza una publicación aquí",
         "noPublicationHelpL2": "o usa el botón \"+\" de arriba.",
         "noPublicationHelpL3": "Se admiten ficheros protegidos LCP.",
         "noPublicationHelpL4": "Extensiones admitidas:",
@@ -187,9 +187,9 @@
         "network": {
             "error": "No se puede acceder al catálogo OPDS",
             "noInternet": "No hay internet",
-            "noInternetMessage": "Intenta: comprobar el cable de red, módem, rúter o wifi",
-            "reject": "Lo sentimos, ha habido un error inesperado al intentar procesar el catálogo OPDS",
-            "timeout": "Terminó el tiempo de espera de la red; por favor, vuelve a intentarlo más tarde"
+            "noInternetMessage": "Intenta: comprobar el cable de red, módem, router o wifi",
+            "reject": "Lo sentimos, se ha producido un error inesperado al intentar procesar el catálogo OPDS",
+            "timeout": "Finalizó el tiempo de espera de la red; por favor, vuelve a intentarlo más tarde"
         },
         "next": "Siguiente",
         "previous": "Anterior",
@@ -199,7 +199,7 @@
         "audio": {
             "tracks": "Pistas"
         },
-        "author": "Author",
+        "author": "Autor",
         "cancelledLcp": "Este libro no se puede leer porque la licencia LCP se ha cancelado.",
         "certificateRevoked": "El certificado está cancelado",
         "certificateSignatureInvalid": "La firma del certificado no es válida",
@@ -223,7 +223,7 @@
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro no se puede leer porque la licencia LCP se ha devuelto.",
-        "revokedLcp": "Este libro no se puede leer porque la licencia LCP Se ha cancelado.",
+        "revokedLcp": "Este libro no se puede leer porque la licencia LCP se ha cancelado.",
         "seeLess": "Ver menos",
         "seeMore": "Ver más",
         "title": "Título",
@@ -251,7 +251,7 @@
             "activate": "Activar lectura en voz alta",
             "captions": "Texto sincronizado/presentación diáfana",
             "next": "Siguiente (Lectura en voz alta)",
-            "pause": "Pausar Lectura en voz alta",
+            "pause": "Pausar (Lectura en voz alta)",
             "play": "Reproducir (Lectura en voz alta)",
             "previous": "Anterior (Lectura en voz alta)",
             "skip": "Omitir información auxiliar",
@@ -324,7 +324,7 @@
                     "fit": "ajuste de página",
                     "width": "ancho de página"
                 },
-                "title": "Zum"
+                "title": "Zoom"
             },
             "reduceMotion": "Disminuir movimiento",
             "save": {
