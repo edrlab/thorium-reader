@@ -23,6 +23,7 @@ import ruCatalog from "readium-desktop/resources/locales/ru.json";
 import zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
 import koCatalog from "readium-desktop/resources/locales/ko.json";
 import svCatalog from "readium-desktop/resources/locales/sv.json";
+import gaCatalog from "readium-desktop/resources/locales/ga.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
@@ -98,6 +99,9 @@ i18nextInstance.init({
         },
         "sv": {
             translation: svCatalog,
+        },
+        "ga": {
+            translation: gaCatalog,
         },
     },
     // lng: undefined,
