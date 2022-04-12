@@ -49,9 +49,9 @@
         "allBooks": "全部图书",
         "bookInfo": "关于此书",
         "column": {
-            "ascending": "",
-            "descending": "",
-            "unsorted": ""
+            "ascending": "升序",
+            "descending": "降序",
+            "unsorted": "乱序"
         },
         "delete": "删除",
         "deleteBook": "删除",
@@ -181,7 +181,7 @@
             "addExtract": "导入摘录",
             "goBuyBook": "购买此书",
             "goLoanBook": "借阅此书",
-            "goRevokeLoanBook": "",
+            "goRevokeLoanBook": "归还此书",
             "goSubBook": "订阅"
         },
         "network": {
@@ -199,7 +199,7 @@
         "audio": {
             "tracks": "音轨"
         },
-        "author": "",
+        "author": "作者",
         "cancelledLcp": "此书无法阅读，因为LCP许可证已被取消。",
         "certificateRevoked": "认证撤销",
         "certificateSignatureInvalid": "认证签名无效",
@@ -226,13 +226,13 @@
         "revokedLcp": "此书无法阅读，因为LCP许可证已被撤销。",
         "seeLess": "察看更少",
         "seeMore": "查看更多",
-        "title": "",
+        "title": "标题",
         "userKeyCheckInvalid": "密码不正确"
     },
     "reader": {
         "divina": {
-            "mute": "",
-            "unmute": ""
+            "mute": "静音",
+            "unmute": "取消静音"
         },
         "footerInfo": {
             "lessInfo": "不显示阅读位置",
@@ -310,7 +310,7 @@
             "letterSpacing": "字符间距",
             "lineSpacing": "行间距",
             "margin": "页边距",
-            "noFootnotes": "",
+            "noFootnotes": "没有脚注",
             "paginated": "分页",
             "paraSpacing": "段落间距",
             "pdfZoom": {
@@ -359,7 +359,7 @@
             "pause": "暂停",
             "play": "播放",
             "previous": "上一段",
-            "sentenceDetect": "",
+            "sentenceDetect": "句子检测",
             "speed": "语速",
             "stop": "停止",
             "voice": "声音"
