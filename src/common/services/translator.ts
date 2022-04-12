@@ -24,7 +24,7 @@ import zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
 import koCatalog from "readium-desktop/resources/locales/ko.json";
 import svCatalog from "readium-desktop/resources/locales/sv.json";
 import caCatalog from "readium-desktop/resources/locales/ca.json";
-import gaCatalog from "readium-desktop/resources/locales/ga.json";
+import glCatalog from "readium-desktop/resources/locales/gl.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
@@ -104,8 +104,8 @@ i18nextInstance.init({
         "ca": {
             translation: caCatalog,
         },
-        "ga": {
-            translation: gaCatalog,
+        "gl": {
+            translation: glCatalog,
         },
     },
     // lng: undefined,
