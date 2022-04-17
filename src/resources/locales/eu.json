@@ -61,7 +61,7 @@
         "entry": {
             "continueReading": "Berrabiarazi irakurketa",
             "continueReadingAudioBooks": "Berrabiarazi erreprodukzioa",
-            "continueReadingDivina": "Berrekin jainkoari",
+            "continueReadingDivina": "Berriabiazi Divina",
             "continueReadingPdf": "PDF berrabiarazi",
             "lastAdditions": "Berriki gehitutakoak"
         },
@@ -128,7 +128,7 @@
         "books": "Nire liburuak",
         "catalogs": "Katalogoak",
         "downloads": "Deskargak",
-        "gridTitle": "LLauki-formako aurkezpena",
+        "gridTitle": "Lauki-formako aurkezpena",
         "home": "Liburutegiko menu nagusia",
         "homeTitle": "Hasiera",
         "importTitle": "Inportatu argitalpena",
@@ -154,7 +154,7 @@
         },
         "import": {
             "alreadyImport": "{- title}} inportatuta zegoen",
-            "fail": "{- path}}-ren inportazioak huts egin zuen. {{- Err}}",
+            "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
             "success": "{- title}}-ren inportazioa amaitu da."
         },
         "open": {
@@ -315,12 +315,12 @@
             "paraSpacing": "Paragrafoen arteko tartea",
             "pdfZoom": {
                 "name": {
-                    "100pct": "100%",
-                    "150pct": "150%",
-                    "200pct": "200%",
-                    "300pct": "300%",
-                    "500pct": "500%",
-                    "50pct": "50%",
+                    "100pct": "%100",
+                    "150pct": "%150",
+                    "200pct": "%200",
+                    "300pct": "%300",
+                    "500pct": "%500",
+                    "50pct": "%50",
                     "fit": "orrialdearen doikuntza",
                     "width": "orrialdearen zabalera"
                 },
