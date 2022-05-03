@@ -294,6 +294,7 @@ declare namespace typed_i18n {
   (_: "error.errorBox.message", __?: {}): string;
   (_: "error.errorBox.title", __?: {}): string;
   (_: "header", __?: {}): {
+  readonly "apiapp": string,
   readonly "allBooks": string,
   readonly "books": string,
   readonly "catalogs": string,
@@ -308,6 +309,7 @@ declare namespace typed_i18n {
   readonly "searchTitle": string,
   readonly "settings": string
 };
+  (_: "header.apiapp", __?: {}): string;
   (_: "header.allBooks", __?: {}): string;
   (_: "header.books", __?: {}): string;
   (_: "header.catalogs", __?: {}): string;

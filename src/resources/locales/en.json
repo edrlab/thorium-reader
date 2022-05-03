@@ -124,6 +124,7 @@
         }
     },
     "header": {
+        "apiapp": "Apiapp",
         "allBooks": "All books",
         "books": "My Books",
         "catalogs": "Catalogs",

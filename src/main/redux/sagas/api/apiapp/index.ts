@@ -5,8 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export * from "./publication";
-export * from "./api";
-export * from "./opds";
-export * from "./browser";
-export * from "./apiapp";
+import { IApiappApi } from "readium-desktop/common/api/interface/apiappApi.interface";
+import { search } from "./search";
+
+export const apiappApi: IApiappApi = {
+    search,
+};

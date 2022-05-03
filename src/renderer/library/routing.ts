@@ -16,6 +16,7 @@ import AllPublicationPage from "./components/searchResult/AllPublicationPage";
 import TagSearchResult from "./components/searchResult/TagSearchResult";
 import TextSearchResult from "./components/searchResult/TextSearchResult";
 import Settings from "./components/settings/Settings";
+import Apiapp from "./components/apiapp/Apiapp";
 
 interface Route {
     path: string;
@@ -43,6 +44,10 @@ export interface IRouterLocationState {
 }
 
 const _routes = {
+    "/apiapp": {
+        path: "/apiapp",
+        component: Apiapp,
+    } as Route,
     "/opds": {
         path: "/opds",
         // exact: true,
