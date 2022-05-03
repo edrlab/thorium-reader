@@ -18,6 +18,24 @@ const filename_ = "readium-desktop:main:saga:apiapp";
 const debug = debug_(filename_);
 debug("_");
 
+interface IAuthentication {
+    infos: {
+    mail: string;
+    company: string;
+    },
+    authentication: {
+    get_token: string;
+    refresh_token: string;
+    },
+    resources: [
+    {
+        code: string;
+        endpoint: string;
+        version: string;
+    }
+    ]
+  }
+
 const userAgent = "ThoriumReader/windows-mac-linux/1.1";
 const appVersion = "1.1";
 const applicationName = "Thorium";
@@ -87,4 +105,30 @@ export const librarySearch = async (query: string): Promise<IApiappSearchResultV
     }
 
     return [];
+};
+
+export const authenticationRequestFromLibraryWebServiceURL = async (url: string): Promise<IAuthentication | undefined> => {
+
+    if(!isURL(url)) {
+        throw new Error("not a valid url " + url);
+    }
+
+    const result = await httpGet(url);
+
+    if (result.isSuccess && parseContentType(result.contentType) === ContentType.Json) {
+        const json: any = await result.response.json();
+
+        const authenticationJson: IAuthentication = json;
+
+        if (typeof authenticationJson.authentication.get_token === "string" &&
+            typeof authenticationJson.authentication.refresh_token === "string" &&
+            Array.isArray(authenticationJson.resources) &&
+            typeof authenticationJson.resources[0] === "object" &&
+            typeof authenticationJson.resources[0].endpoint === "string") {
+            return authenticationJson;
+        }
+
+    }
+
+    return undefined;
 };

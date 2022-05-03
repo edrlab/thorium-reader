@@ -41,6 +41,7 @@ class Apiapp extends React.Component<IProps, IState> {
 
         this.inputRef = React.createRef<HTMLInputElement>();
         this.search = this.search.bind(this);
+        this.login = this.login.bind(this);
 
         this.state = {
             searchResultView: [],
@@ -51,7 +52,7 @@ class Apiapp extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
 
-        const listItems = this.state.searchResultView.map(({address, name}, idx) => <li key={idx.toString()}><b>{name}</b><p>{address}</p></li>);
+        const listItems = this.state.searchResultView.map((v, idx) => <li key={idx.toString()}><b><a onClick={() => this.login(v)}>{v.name}</a></b><p>{v.address}</p></li>);
         return (
             <LibraryLayout
                 title={__("header.apiapp")}
@@ -89,6 +90,12 @@ class Apiapp extends React.Component<IProps, IState> {
 
             this.setState({ query: value });
         }
+
+    }
+
+    private login(libView: IApiappSearchResultView) {
+        apiAction("apiapp/login", libView)
+            .catch((error) => console.error("Error to fetch api apiapp/login", error));
 
     }
 }
