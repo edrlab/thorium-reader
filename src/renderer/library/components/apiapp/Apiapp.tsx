@@ -29,6 +29,7 @@ interface IProps extends IBaseProps {
 
 interface IState {
     searchResultView: IApiappSearchResultView[];
+    query: string;
 }
 
 class Apiapp extends React.Component<IProps, IState> {
@@ -43,13 +44,14 @@ class Apiapp extends React.Component<IProps, IState> {
 
         this.state = {
             searchResultView: [],
-        }
+            query: "",
+        };
     }
 
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
 
-        const listItems = this.state.searchResultView.map(({address, name}) => <li><b>{name}</b><br><p>{address}</p></br></li>)
+        const listItems = this.state.searchResultView.map(({address, name}, idx) => <li key={idx.toString()}><b>{name}</b><p>{address}</p></li>);
         return (
             <LibraryLayout
                 title={__("header.apiapp")}
@@ -67,7 +69,7 @@ class Apiapp extends React.Component<IProps, IState> {
                     </button>
                     <ul>
                         {
-                            listItems
+                            listItems.length ? listItems : this.state.query ? __("apiapp.noLibraryFound", {name: this.state.query}) : <></>
                         }
                     </ul>
                 </form>
@@ -85,6 +87,7 @@ class Apiapp extends React.Component<IProps, IState> {
                 .then((searchResultView) => this.setState({ searchResultView }))
                 .catch((error) => console.error("Error to fetch api apiapp/search", error));
 
+            this.setState({ query: value });
         }
 
     }

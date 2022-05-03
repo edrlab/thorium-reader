@@ -11,6 +11,7 @@ export interface IApiappSearchResultView {
     id: string; // gln
     name: string;
     address: string;
+    url: string;
 }
 
 export interface IApiappApi {

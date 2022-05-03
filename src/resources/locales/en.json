@@ -390,5 +390,8 @@
             "title": "Save session",
             "yes": "Enable"
         }
+    },
+    "apiapp": {
+        "noLibraryFound": "no library Found ({{- name}})"
     }
 }

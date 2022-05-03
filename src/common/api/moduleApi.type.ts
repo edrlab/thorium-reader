@@ -19,7 +19,7 @@ export type TModuleApi =
     TCatalogApi |
     TPublicationApi |
     TOpdsApi |
-    TApiappApi | 
+    TApiappApi |
     THttpBrowserApi |
     TKeyboardApi |
     TLcpApi |

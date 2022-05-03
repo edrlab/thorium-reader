@@ -955,7 +955,9 @@ declare namespace typed_i18n {
   (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
   (_: "settings.session.no", __?: {}): string;
   (_: "settings.session.title", __?: {}): string;
-  (_: "settings.session.yes", __?: {}): string
+  (_: "settings.session.yes", __?: {}): string;
+  (_: "apiapp", __?: {}): { readonly "noLibraryFound": string };
+  (_: "apiapp.noLibraryFound", __?: {}): string
 }
 }
 export = typed_i18n;
