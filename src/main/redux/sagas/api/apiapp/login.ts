@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
 import { call } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga/dist";
-import { authenticationRequestFromLibraryWebServiceURL } from "../../apiapp";
+import { authenticationRequestFromLibraryWebServiceURL, convertAuthenticationFromLibToR2OpdsAuth, dispatchAuthenticationProcess } from "../../apiapp";
 
 const debug = debug_("readium-desktop:main/redux/sagas/api/apiapp/login");
 
@@ -17,5 +17,9 @@ export function* login(libView: IApiappSearchResultView): SagaGenerator<void> {
 
     const res = yield* call(authenticationRequestFromLibraryWebServiceURL, libView.url);
 
-    debug(res);
+    const doc = yield* call(convertAuthenticationFromLibToR2OpdsAuth, res);
+
+    debug(JSON.stringify(doc, null, 4));
+
+    yield* call(dispatchAuthenticationProcess, doc, libView.url);
 }

@@ -13,6 +13,8 @@ import { Headers } from "node-fetch";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import isURL from "validator/lib/isURL";
+import { OPDSAuthenticationDoc } from "r2-opds-js/dist/es8-es2017/src/opds/opds2/opds2-authentication-doc";
+import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 
 const filename_ = "readium-desktop:main:saga:apiapp";
 const debug = debug_(filename_);
@@ -20,21 +22,21 @@ debug("_");
 
 interface IAuthentication {
     infos: {
-    mail: string;
-    company: string;
+        mail: string;
+        company: string;
     },
     authentication: {
-    get_token: string;
-    refresh_token: string;
+        get_token: string;
+        refresh_token: string;
     },
     resources: [
-    {
-        code: string;
-        endpoint: string;
-        version: string;
-    }
+        {
+            code: string;
+            endpoint: string;
+            version: string;
+        }
     ]
-  }
+}
 
 const userAgent = "ThoriumReader/windows-mac-linux/1.1";
 const appVersion = "1.1";
@@ -132,3 +134,36 @@ export const authenticationRequestFromLibraryWebServiceURL = async (url: string)
 
     return undefined;
 };
+
+export const convertAuthenticationFromLibToR2OpdsAuth = (v: IAuthentication) => {
+
+
+    // @ts-ignore
+    const ret: OPDSAuthenticationDoc = {
+        Authentication: [
+            {
+                Type: "http://opds-spec.org/auth/oauth/password",
+                Links: [
+                    // @ts-ignore
+                    {
+                        Rel: ["authenticate"],
+                        Href: v.authentication.get_token,
+                    },
+                ],
+            },
+        ],
+    };
+
+    return ret;
+
+};
+
+
+export function* dispatchAuthenticationProcess(r2OpdsAuth: OPDSAuthenticationDoc, responseUrl: string) {
+
+    const opdsAuthChannel = getOpdsAuthenticationChannel();
+
+    debug("put the authentication model in the saga authChannel", r2OpdsAuth);
+    opdsAuthChannel.put([r2OpdsAuth, responseUrl]);
+
+}
