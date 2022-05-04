@@ -34,6 +34,7 @@ import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authenticati
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
+import { initClientSecretToken } from "./apiapp";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -44,6 +45,7 @@ type TLinkType = "refresh" | "authenticate";
 type TLabelName = "login" | "password";
 type TAuthName = "id" | "access_token" | "refresh_token" | "token_type";
 type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
+    | "http://opds-spec.org/auth/oauth/password/apiapp"
     | "http://opds-spec.org/auth/oauth/implicit"
     | "http://opds-spec.org/auth/basic"
     | "http://opds-spec.org/auth/local"
@@ -51,6 +53,7 @@ type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
 
 const AUTHENTICATION_TYPE: TAuthenticationType[] = [
     "http://opds-spec.org/auth/oauth/password",
+    "http://opds-spec.org/auth/oauth/password/apiapp",
     "http://opds-spec.org/auth/oauth/implicit",
     "http://opds-spec.org/auth/basic",
     "http://opds-spec.org/auth/local",
@@ -260,6 +263,9 @@ async function opdsSetAuthCredentials(
                             payload.grant_type = "password";
                         } else if (authenticationType === "http://opds-spec.org/auth/local") {
                             // do nothing
+                        } else if (authenticationType === "http://opds-spec.org/auth/oauth/password/apiapp") {
+                            payload.client_secret = await initClientSecretToken(authCredentials.id) || "";
+                            payload.client_id = authCredentials.id;
                         }
 
                         const { authenticateUrl } = authCredentials || {};
@@ -380,7 +386,8 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
 
         case "http://opds-spec.org/auth/local":
         case "http://opds-spec.org/auth/basic":
-        case "http://opds-spec.org/auth/oauth/password": {
+        case "http://opds-spec.org/auth/oauth/password":
+        case "http://opds-spec.org/auth/oauth/password/apiapp": {
 
             const html = encodeURIComponent_RFC3986(
                 htmlLoginTemplate(

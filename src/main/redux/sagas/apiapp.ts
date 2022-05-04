@@ -43,6 +43,7 @@ const appVersion = "1.1";
 const applicationName = "Thorium";
 const key = "puEdVKFkog";
 const librarySearchUrl = "https://pnb-app.centprod.com/v1/pnb-app/json/librarySearch?pagination.sortBy=NAME&pagination.sortOrder=DESCENDING&quickSearch=";
+const initClientSecretUrl = "https://pnb-app.centprod.com/v1/pnb-app/json/getInitialisationToken?library=";
 
 const httpDilicomGet = async <T>(url: string, callback?: THttpGetCallback<T>) => {
 
@@ -135,19 +136,24 @@ export const authenticationRequestFromLibraryWebServiceURL = async (url: string)
     return undefined;
 };
 
-export const convertAuthenticationFromLibToR2OpdsAuth = (v: IAuthentication) => {
-
+export const convertAuthenticationFromLibToR2OpdsAuth = (v: IAuthentication, libView: IApiappSearchResultView) => {
 
     // @ts-ignore
     const ret: OPDSAuthenticationDoc = {
+        Id: libView.id, // GNL
         Authentication: [
             {
-                Type: "http://opds-spec.org/auth/oauth/password",
+                Type: "http://opds-spec.org/auth/oauth/password/apiapp",
                 Links: [
                     // @ts-ignore
                     {
                         Rel: ["authenticate"],
                         Href: v.authentication.get_token,
+                    },
+                    // @ts-ignore
+                    {
+                        Rel: ["refresh"],
+                        Href: v.authentication.refresh_token,
                     },
                 ],
             },
@@ -167,3 +173,24 @@ export function* dispatchAuthenticationProcess(r2OpdsAuth: OPDSAuthenticationDoc
     opdsAuthChannel.put([r2OpdsAuth, responseUrl]);
 
 }
+
+
+export const initClientSecretToken = async (idGnl: string) => {
+    if (!idGnl) {
+        throw new Error("no id gnl");
+    }
+
+    const result = await httpDilicomGet(initClientSecretUrl + idGnl);
+    if (result.isSuccess && parseContentType(result.contentType) === ContentType.Json) {
+
+        const json: any = await result.response.json();
+
+        const token = json.tokenValue;
+
+        if (token && typeof token === "string") {
+            return token;
+        }
+    }
+
+    return undefined;
+};

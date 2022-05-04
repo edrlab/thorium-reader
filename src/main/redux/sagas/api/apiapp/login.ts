@@ -17,7 +17,7 @@ export function* login(libView: IApiappSearchResultView): SagaGenerator<void> {
 
     const res = yield* call(authenticationRequestFromLibraryWebServiceURL, libView.url);
 
-    const doc = yield* call(convertAuthenticationFromLibToR2OpdsAuth, res);
+    const doc = yield* call(convertAuthenticationFromLibToR2OpdsAuth, res, libView);
 
     debug(JSON.stringify(doc, null, 4));
 
