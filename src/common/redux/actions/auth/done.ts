@@ -5,10 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as wipeData from "./wipeData";
-import * as done from "./done";
+import { Action } from "readium-desktop/common/models/redux";
 
-export {
-    done,
-    wipeData,
-};
+export const ID = "AUTH_DONE";
+
+export function build():
+    Action<typeof ID> {
+
+    return {
+        type: ID,
+    };
+}
+build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

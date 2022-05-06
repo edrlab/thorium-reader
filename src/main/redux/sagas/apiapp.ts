@@ -194,3 +194,28 @@ export const initClientSecretToken = async (idGnl: string) => {
 
     return undefined;
 };
+
+export const getLoansUrlsFromLibrary = async (url: string) => {
+    if (!url || !isURL(url)) {
+        throw new Error("not a loans URL");
+    }
+
+    const result = await httpGet(url);
+
+    if (result.isSuccess && parseContentType(result.contentType) === ContentType.Json) {
+
+        const json: any = await result.response.json();
+
+        debug("LOANS", JSON.stringify(json, null, 4));
+        if (json.loans && Array.isArray(json.loans)) {
+
+            const loans: any[] = json.loans;
+            const loansArray: Array<{loanhLink: string}> = loans.filter((v) => typeof v === "object" && typeof v.loanhLink === "string" && isURL(v.loanhLink));
+            const loansUrl = loansArray.map(({loanhLink}) => loanhLink);
+
+            return loansUrl;
+        }
+    }
+
+    return [];
+};
