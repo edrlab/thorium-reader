@@ -43,6 +43,8 @@ export function* login(libView: IApiappSearchResultView): SagaGenerator<void> {
 
     const opdsLinkView: IOpdsLinkView[] = loansUrlArray.map((url) => ({url}));
 
+    // no refresh available on Catalog.tsx because no api call from front occured
+    // we need to manually refresh on front side (click on all books for example)
     for (const linkView of opdsLinkView) {
         yield* call(importFromLink, linkView);
     }
