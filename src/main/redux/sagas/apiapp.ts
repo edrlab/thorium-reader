@@ -39,6 +39,7 @@ interface IAuthentication {
 }
 
 const userAgent = "ThoriumReader/windows-mac-linux/1.1";
+const userAgentId = "296";
 const appVersion = "1.1";
 const applicationName = "Thorium";
 const key = "puEdVKFkog";
@@ -211,7 +212,13 @@ export const getLoansUrlsFromLibrary = async (url: string) => {
 
             const loans: any[] = json.loans;
             const loansArray: Array<{loanhLink: string}> = loans.filter((v) => typeof v === "object" && typeof v.loanhLink === "string" && isURL(v.loanhLink));
-            const loansUrl = loansArray.map(({loanhLink}) => loanhLink);
+            const loansUrl = loansArray.map(({loanhLink}) => {
+
+                const url = new URL(loanhLink);
+                url.searchParams.set("userAgentId", userAgentId);
+
+                return url.toString();
+            });
 
             return loansUrl;
         }
