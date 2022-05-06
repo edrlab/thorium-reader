@@ -82,13 +82,16 @@ class Apiapp extends React.Component<IProps, IState> {
         e.preventDefault();
 
         const value = this.inputRef?.current?.value;
+        this.setState({ query: "" });
 
         if (value && typeof value === "string") {
             apiAction("apiapp/search", value)
-                .then((searchResultView) => this.setState({ searchResultView }))
+                .then((searchResultView) => {
+                    this.setState({ searchResultView });
+                    this.setState({ query: value });
+                })
                 .catch((error) => console.error("Error to fetch api apiapp/search", error));
 
-            this.setState({ query: value });
         }
 
     }
