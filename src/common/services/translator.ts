@@ -28,7 +28,7 @@ import glCatalog from "readium-desktop/resources/locales/gl.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
-import i18next from "i18next";
+import i18next, { TOptions } from "i18next";
 
 const i18nextInstance = i18next.createInstance();
 
@@ -163,7 +163,7 @@ export type I18nTyped = TFunction;
 
 @injectable()
 export class Translator {
-    public translate: I18nTyped = this._translate;
+    public translate = this._translate as I18nTyped;
     private locale = "en";
 
     public getLocale(): string {
@@ -237,7 +237,7 @@ export class Translator {
         return "";
     }
 
-    private _translate(message: string, options: any = {}): any { // TODO any?!
+    private _translate(message: string, options: TOptions = {}): string {
         const label = i18nextInstance.t(message, options);
         if (!label || !label.length) {
             return i18nextInstanceEN.t(message, options);
