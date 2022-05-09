@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import * as path from "path";
 import * as fs from "fs";
 
+import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
@@ -224,7 +225,28 @@ export class PublicationViewConverter {
         const duration = typeof r2Publication.Metadata.Duration === "number" ? r2Publication.Metadata.Duration : undefined;
         const nbOfTracks = typeof r2Publication.Metadata.AdditionalJSON?.tracks === "number" ? r2Publication.Metadata.AdditionalJSON?.tracks : undefined;
 
+
+        const isAudio = r2Publication.Metadata.RDFType?.toLowerCase().includes("audio") || isAudiobookFn(r2Publication.Metadata) || (
+            readerStateLocator?.audioPlaybackInfo
+                && readerStateLocator?.audioPlaybackInfo.globalDuration
+                && typeof readerStateLocator?.locator.locations.position === "number");
+
+        const isDivina = isDivinaFn(r2Publication);
+        const isPDF = isPdfFn(r2Publication);
+
+        // locatorExt.docInfo.isFixedLayout
+        const isFXL = r2Publication.Metadata?.Rendition?.Layout === "fixed";
+
+        // "DAISY_audioNCX" "DAISY_textNCX" "DAISY_audioFullText"
+        const isDaisy = !!r2Publication.Metadata?.AdditionalJSON?.ReadiumWebPublicationConvertedFrom;
+
         return {
+            isAudio,
+            isDivina,
+            isPDF,
+            isDaisy,
+            isFXL,
+
             a11y_accessMode: r2Publication.Metadata.AccessMode, // string[]
             a11y_accessibilityFeature: r2Publication.Metadata.AccessibilityFeature, // string[]
             a11y_accessibilityHazard: r2Publication.Metadata.AccessibilityHazard, // string[]

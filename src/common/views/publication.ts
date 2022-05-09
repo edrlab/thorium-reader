@@ -25,6 +25,11 @@ export interface CustomCoverView {
 }
 
 export interface PublicationView extends Identifiable {
+    isAudio?: boolean;
+    isDivina?: boolean;
+    isPDF?: boolean;
+    isDaisy?: boolean;
+    isFXL?: boolean;
 
     a11y_accessMode?: string[];
     a11y_accessibilityFeature?: string[];

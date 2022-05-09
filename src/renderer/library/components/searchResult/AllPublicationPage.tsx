@@ -589,6 +589,59 @@ const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
     </div>);
 };
 
+const CellFormat: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
+
+    const link = (t: string) => {
+        return <a
+            title={`${t} (${props.__("header.searchPlaceholder")})`}
+            tabIndex={0}
+            onKeyPress={(e) => { if (e.key === "Enter") {
+                e.preventDefault();
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
+            }}}
+
+            onClick={(e) => {
+                e.preventDefault();
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
+            }}
+            style={{
+                display: "flex",
+                alignItems: "center",
+                textAlign: "center",
+                padding: "2px 6px",
+                fontSize: "1rem",
+                // backgroundColor: "#e7f1fb",
+                // borderRadius: "5px",
+                // border: "1px solid var(--color-tertiary)",
+                // color: "var(--color-tertiary)",
+                cursor: "pointer",
+                // textDecoration: "none",
+                textDecoration: "underline",
+                textDecorationColor: "var(--color-tertiary)",
+                textDecorationSkip: "ink",
+                marginRight: "6px",
+                marginBottom: "6px",
+        }}>{t}</a>;
+    };
+
+    const flexStyle: React.CSSProperties = {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        paddingTop: "0.2em",
+    };
+
+    return (<div style={{...flexStyle}}>
+        {
+        link(props.value)
+        }
+        </div>);
+};
+
 interface IColumnValue_Langs extends IColumnValue_BaseString {
     langs: string[],
 };
@@ -1260,6 +1313,7 @@ interface IColumns {
     colPublishedDate: IColumnValue_Date;
     colDescription: string;
     colLCP: string;
+    colFormat: string;
     colTags: IColumnValue_Tags;
     colDuration: string;
 
@@ -1391,6 +1445,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
             const lcp = publicationView.lcp ? "LCP" : "";
 
+            const format = publicationView.isAudio ? "Audio" : publicationView.isDivina ? "Divina" : publicationView.isPDF ? "PDF" : publicationView.isDaisy ? "DAISY" : publicationView.isFXL ? "EPUB (FXL)" : "EPUB";
+
             const duration = (publicationView.duration ? formatTime(publicationView.duration) : "") + (publicationView.nbOfTracks ? ` (${props.__("publication.audio.tracks")}: ${publicationView.nbOfTracks})` : "");
 
             // const identifier = publicationView.workIdentifier ? publicationView.workIdentifier : "";
@@ -1426,6 +1482,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     date: publishedDateVisual,
                 },
                 colLCP: lcp,
+                colFormat: format,
                 colTags: { // IColumnValue_Tags
                     label: publicationView.tags ? publicationView.tags.join(", ") : "",
                     tags: publicationView.tags,
@@ -1551,6 +1608,12 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 accessor: "colTags",
                 Cell: CellTags,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
+                sortType: sortFunction,
+            },
+            {
+                Header: props.__("catalog.format"),
+                accessor: "colFormat",
+                Cell: CellFormat,
                 sortType: sortFunction,
             },
             {
@@ -1722,7 +1785,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
         pageSize: 20, // props.displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
-        hiddenColumns: props.displayType === DisplayType.Grid ? ["colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
+        hiddenColumns: props.displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
     const opts:
         TableOptions<IColumns> &
