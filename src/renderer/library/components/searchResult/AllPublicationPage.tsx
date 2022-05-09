@@ -819,6 +819,13 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
 
     return props.value.authors?.length ?
     (
+        <div style={{
+            ...commonCellStyles(props),
+            // minWidth: props.displayType === DisplayType.Grid ? "200px" : undefined,
+            // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
+            // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
+        }}>
+        {
     props.value.authors.length === 1 ? (
         <div style={{...flexStyle}}>
         {
@@ -846,7 +853,10 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
         })
         }
         </ul>
-    ))
+    )
+        }
+        </div>
+    )
     : <></>;
 };
 
@@ -1196,6 +1206,9 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
     return (<div style={{
         ...commonCellStyles(props),
         fontWeight: "bold",
+        // minWidth: props.displayType === DisplayType.Grid ? "200px" : undefined,
+        // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
+        // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
     }}><a
         style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
         tabIndex={0}
@@ -1527,13 +1540,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 sortType: sortFunction,
             },
             {
-                Header: props.__("catalog.publisher"),
-                accessor: "colPublishers",
-                Cell: CellPublishers,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
                 Header: props.__("catalog.lang"),
                 accessor: "colLanguages",
                 Cell: CellLangs,
@@ -1541,16 +1547,23 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 sortType: sortFunction,
             },
             {
-                Header: props.__("catalog.released"),
-                accessor: "colPublishedDate",
-                Cell: CellDate,
+                Header: props.__("catalog.tags"),
+                accessor: "colTags",
+                Cell: CellTags,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
             },
             {
-                Header: props.__("catalog.tags"),
-                accessor: "colTags",
-                Cell: CellTags,
+                Header: props.__("catalog.publisher"),
+                accessor: "colPublishers",
+                Cell: CellPublishers,
+                filter: "text", // because IColumnValue_BaseString instead of plain string
+                sortType: sortFunction,
+            },
+            {
+                Header: props.__("catalog.released"),
+                accessor: "colPublishedDate",
+                Cell: CellDate,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
             },
@@ -1700,11 +1713,16 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         }),
     []);
 
+    // for (const col of tableInstance.allColumns) {
+    //     tableInstance.setFilter(col.id, "");
+    // }toggleHidden
+
     // infinite render loop
     // tableInstance.setPageSize(pageSize);
-    const initialState: UsePaginationState<IColumns> = {
+    const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
         pageSize: 20, // props.displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
+        hiddenColumns: props.displayType === DisplayType.Grid ? ["colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
     const opts:
         TableOptions<IColumns> &
@@ -1948,6 +1966,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 // marginRight: "1em",
                 borderSpacing: "0",
                 // minWidth: "calc(100% - 30px)",
+                width: "100%",
             }}>
             <thead>{tableInstance.headerGroups.map((headerGroup, index) =>
                 (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
