@@ -18,6 +18,7 @@ import {
 import CatalogMenu from "readium-desktop/renderer/library/components/publication/menu/CatalogMenu";
 import PublicationListElement from "readium-desktop/renderer/library/components/publication/PublicationListElement";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import AboutThoriumButton from "./AboutThoriumButton";
 
 import NoPublicationInfo from "./NoPublicationInfo";
 import { DisplayType, IRouterLocationState } from "../../routing";
@@ -91,6 +92,7 @@ class CatalogListView extends React.Component<IProps, undefined> {
             { catalogEntriesIsEmpty &&
                 <NoPublicationInfo />
             }
+            <AboutThoriumButton />
             </>
         );
     }

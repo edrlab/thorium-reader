@@ -33,19 +33,22 @@ class NoPublicationInfo extends React.Component<IProps, undefined> {
         return (
             <>
                 <div className={stylesBlocks.block_dashed}>
-                    <p>{__("catalog.noPublicationHelpL1")}</p>
-                    <p>{__("catalog.noPublicationHelpL2")}</p>
+                    <p><strong>{__("catalog.noPublicationHelpL1")}</strong></p>
+                    <p><strong>{__("catalog.noPublicationHelpL2")}</strong></p>
                     <p>{__("catalog.noPublicationHelpL3")}</p>
                     <p>{__("catalog.noPublicationHelpL4")}</p>
+                    <p>
                     {
                         acceptedExtensionArray.map(
                             (ext, i) => <span key={`ext_${i}`}>
-                                {
+                                <strong>{
                                     ext
-                                }
+                                }</strong>
+                                {i < acceptedExtensionArray.length - 1 ? " | " : ""}
                             </span>,
                         )
                     }
+                    </p>
                 </div>
             </>
         );
