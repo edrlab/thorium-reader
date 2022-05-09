@@ -29,6 +29,9 @@ import { diMainGet } from "../di";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 
+// import { type Store } from "redux";
+// import { RootState } from "../redux/states";
+
 const debug = debug_("readium-desktop:main#converter/publication");
 
 // memory cache, to minimize filesystem access
@@ -43,6 +46,9 @@ export class PublicationViewConverter {
 
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
+
+    // @inject(diSymbolTable.store)
+    // private readonly store!: Store<RootState>;
 
     public removeFromMemoryCache(identifier: string) {
         if (_pubCache[identifier]) {
@@ -240,12 +246,25 @@ export class PublicationViewConverter {
         // "DAISY_audioNCX" "DAISY_textNCX" "DAISY_audioFullText"
         const isDaisy = !!r2Publication.Metadata?.AdditionalJSON?.ReadiumWebPublicationConvertedFrom;
 
+        let lastReadTimeStamp = undefined;
+        // Timestampable document.createdAt (new Date()).getTime()
+        const lastReadingQueue = state.publication?.lastReadingQueue; // this.store?.getState()?
+        if (lastReadingQueue) {
+            for (const qItem of lastReadingQueue) {
+                const timeStamp = qItem[0]; // (new Date()).getTime()
+                const pubIdentifier = qItem[1];
+                if (pubIdentifier === document.identifier) {
+                    lastReadTimeStamp = timeStamp;
+                }
+            }
+        }
         return {
             isAudio,
             isDivina,
             isPDF,
             isDaisy,
             isFXL,
+            lastReadTimeStamp,
 
             a11y_accessMode: r2Publication.Metadata.AccessMode, // string[]
             a11y_accessibilityFeature: r2Publication.Metadata.AccessibilityFeature, // string[]

@@ -31,6 +31,9 @@ export const CATALOG_CONFIG_ID = "catalog";
 
 const NB_PUB = 5;
 
+// TODO: this memo-ization is very expensive (memory-wise) ...
+// and TaJsonDeserialize() is called in several other places in the library lifecycle
+// so it would make sense to hoist the cache higher in the application architecture
 const viewToR2Pub = (view: PublicationView) => {
     // Legacy Base64 data blobs
     // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");

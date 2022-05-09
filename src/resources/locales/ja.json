@@ -66,7 +66,9 @@
             "lastAdditions": "最近追加したもの"
         },
         "export": "書き出し",
+        "format": "",
         "lang": "言語",
+        "lastRead": "",
         "moreInfo": "他の情報",
         "myBooks": "わたしの本",
         "noPublicationHelpL1": "この画面に書籍ファイルをドロップしてください。",

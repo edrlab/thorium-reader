@@ -31,6 +31,8 @@ export interface PublicationView extends Identifiable {
     isDaisy?: boolean;
     isFXL?: boolean;
 
+    lastReadTimeStamp?: number;
+
     a11y_accessMode?: string[];
     a11y_accessibilityFeature?: string[];
     a11y_accessibilityHazard?: string[];

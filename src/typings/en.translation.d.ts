@@ -115,6 +115,7 @@ declare namespace typed_i18n {
   readonly "export": string,
   readonly "format": string,
   readonly "lang": string,
+  readonly "lastRead": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
   readonly "noPublicationHelpL1": string,
@@ -186,6 +187,7 @@ declare namespace typed_i18n {
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
+  (_: "catalog.lastRead", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
   (_: "catalog.noPublicationHelpL1", __?: {}): string;

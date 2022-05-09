@@ -251,6 +251,49 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     };
 }
 
+// TODO: refresh strategy, see Catalog.tsx
+// in render():
+// if (this.props.refresh) {
+//     this.props.api(CATALOG_GET_API_ID_CHANNEL)("catalog/get")();
+//     this.props.api(PUBLICATION_TAGS_API_ID_CHANNEL)("publication/getAllTags")();
+// }
+// const mapStateToProps = (state: ILibraryRootState) => ({
+//     catalog: apiState(state)(CATALOG_GET_API_ID_CHANNEL)("catalog/get"),
+//     tags: apiState(state)(PUBLICATION_TAGS_API_ID_CHANNEL)("publication/getAllTags"),
+//     refresh: apiRefreshToState(state)([
+//         "publication/importFromFs",
+//         "publication/importFromLink",
+//         "publication/delete",
+//         "publication/findAll",
+//         // "catalog/addEntry",
+//         "publication/updateTags",
+//         // "reader/setLastReadingLocation",
+//     ]),
+//     location: state.router.location,
+// });
+// const mapDispatchToProps = (dispatch: Dispatch) => ({
+//     api: apiDispatch(dispatch),
+//     apiClean: apiClean(dispatch),
+// });
+//
+// ... BUT here in this component we have (this misses "last read time stamp"?):
+// this.unsubscribe = apiSubscribe([
+//     "publication/importFromFs",
+//     "publication/delete",
+//     "publication/importFromLink",
+//     // "catalog/addEntry",
+//     "publication/updateTags",
+// ], () => {
+//     apiAction("publication/findAll")
+//         .then((publicationViews) => {
+//             this.setState({publicationViews});
+//             setTimeout(() => {
+//                 this.onKeyboardFocusSearch();
+//             }, 400);
+//         })
+//         .catch((error) => console.error("Error to fetch api publication/findAll", error));
+// });
+
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     keyboardShortcuts: state.keyboard.shortcuts,
@@ -1213,14 +1256,14 @@ const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
             tabIndex={0}
             onKeyPress={(e) => { if (e.key === "Enter") {
                 e.preventDefault();
-                const t = props.value.label.substring(0, 4); // YYYY
+                const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}}
 
             onClick={(e) => {
                 e.preventDefault();
-                const t = props.value.label.substring(0, 4); // YYYY
+                const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
@@ -1314,6 +1357,7 @@ interface IColumns {
     colDescription: string;
     colLCP: string;
     colFormat: string;
+    colLastReadTimestamp: IColumnValue_Date;
     colTags: IColumnValue_Tags;
     colDuration: string;
 
@@ -1405,12 +1449,25 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             // const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishers, props.translator) : "";
 
             // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).toISOString();
-            const mom = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
-            const publishedDateCanonical = mom && mom.isValid() ? `${mom.year().toString().padStart(4, "0")}-${(mom.month() || 1).toString().padStart(2, "0")}-${(mom.day() || 1).toString().padStart(2, "0")}` : ""; // .toISOString()
+            const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
+            const momPublishedDate = momPublishedDate_ && momPublishedDate_.isValid() ? momPublishedDate_.utc() : undefined;
+            const publishedDateCanonical = momPublishedDate && momPublishedDate.isValid() ? `${momPublishedDate.year().toString().padStart(4, "0")}-${(momPublishedDate.month() || 1).toString().padStart(2, "0")}-${(momPublishedDate.day() || 1).toString().padStart(2, "0")}` : ""; // .toISOString()
             let publishedDateVisual = publishedDateCanonical;
             if (publishedDateCanonical) {
                 try {
                     publishedDateVisual = new Intl.DateTimeFormat(props.translator.getLocale(), { dateStyle: "medium", timeStyle: undefined }).format(new Date(publishedDateCanonical));
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+            const momLastRead_ = publicationView.lastReadTimeStamp ? moment(publicationView.lastReadTimeStamp) : undefined;
+            const momLastRead = momLastRead_ && momLastRead_.isValid() ? momLastRead_.utc() : undefined;
+            const lastReadDateCanonical = momLastRead ? `${momLastRead.year().toString().padStart(4, "0")}-${(momLastRead.month() || 1).toString().padStart(2, "0")}-${(momLastRead.day() || 1).toString().padStart(2, "0")}T${(momLastRead.hour() || 0).toString().padStart(2, "0")}:${(momLastRead.minute() || 0).toString().padStart(2, "0")}:${(momLastRead.second() || 0).toString().padStart(2, "0")}Z` : ""; // .toISOString()
+            let lastReadDateVisual = lastReadDateCanonical;
+            if (lastReadDateCanonical) {
+                try {
+                    lastReadDateVisual = new Intl.DateTimeFormat(props.translator.getLocale(), { dateStyle: "medium", timeStyle: "short" }).format(new Date(lastReadDateCanonical));
                 } catch (err) {
                     console.log(err);
                 }
@@ -1483,6 +1540,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 },
                 colLCP: lcp,
                 colFormat: format,
+                colLastReadTimestamp: { // IColumnValue_Date
+                    label: lastReadDateCanonical,
+                    date: lastReadDateVisual,
+                },
                 colTags: { // IColumnValue_Tags
                     label: publicationView.tags ? publicationView.tags.join(", ") : "",
                     tags: publicationView.tags,
@@ -1614,6 +1675,13 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 Header: props.__("catalog.format"),
                 accessor: "colFormat",
                 Cell: CellFormat,
+                sortType: sortFunction,
+            },
+            {
+                Header: props.__("catalog.lastRead"),
+                accessor: "colLastReadTimestamp",
+                Cell: CellDate,
+                filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
             },
             {
