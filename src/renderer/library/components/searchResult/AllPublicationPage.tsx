@@ -1441,6 +1441,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         },
     };
 
+    // const locale = props.translator.getLocale();
+    // // https://momentjs.com/docs/#/displaying/
+    // moment.locale(locale);
+
     const tableRows = React.useMemo(() => {
         return props.publicationViews.map((publicationView) => {
 
@@ -1451,7 +1455,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).toISOString();
             const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
             const momPublishedDate = momPublishedDate_ && momPublishedDate_.isValid() ? momPublishedDate_.utc() : undefined;
-            const publishedDateCanonical = momPublishedDate && momPublishedDate.isValid() ? `${momPublishedDate.year().toString().padStart(4, "0")}-${(momPublishedDate.month() || 1).toString().padStart(2, "0")}-${(momPublishedDate.day() || 1).toString().padStart(2, "0")}` : ""; // .toISOString()
+            const MM = momPublishedDate ? (momPublishedDate.month() || 0) + 1 : undefined; // ZERO-based!
+            const DD = momPublishedDate ? momPublishedDate.date() || 1 : undefined; // ONE-based!
+            const publishedDateCanonical = momPublishedDate ? `${momPublishedDate.year().toString().padStart(4, "0")}-${(MM).toString().padStart(2, "0")}-${(DD).toString().padStart(2, "0")}T${(momPublishedDate.hour() || 0).toString().padStart(2, "0")}:${(momPublishedDate.minute() || 0).toString().padStart(2, "0")}:${(momPublishedDate.second() || 0).toString().padStart(2, "0")}Z` : ""; // .toISOString()
             let publishedDateVisual = publishedDateCanonical;
             if (publishedDateCanonical) {
                 try {
@@ -1463,7 +1469,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
             const momLastRead_ = publicationView.lastReadTimeStamp ? moment(publicationView.lastReadTimeStamp) : undefined;
             const momLastRead = momLastRead_ && momLastRead_.isValid() ? momLastRead_.utc() : undefined;
-            const lastReadDateCanonical = momLastRead ? `${momLastRead.year().toString().padStart(4, "0")}-${(momLastRead.month() || 1).toString().padStart(2, "0")}-${(momLastRead.day() || 1).toString().padStart(2, "0")}T${(momLastRead.hour() || 0).toString().padStart(2, "0")}:${(momLastRead.minute() || 0).toString().padStart(2, "0")}:${(momLastRead.second() || 0).toString().padStart(2, "0")}Z` : ""; // .toISOString()
+            const M = momLastRead ? (momLastRead.month() || 0) + 1 : undefined; // ZERO-based!
+            const D = momLastRead ? momLastRead.date() || 1 : undefined; // ONE-based!
+            const lastReadDateCanonical = momLastRead ? `${momLastRead.year().toString().padStart(4, "0")}-${(M).toString().padStart(2, "0")}-${(D).toString().padStart(2, "0")}T${(momLastRead.hour() || 0).toString().padStart(2, "0")}:${(momLastRead.minute() || 0).toString().padStart(2, "0")}:${(momLastRead.second() || 0).toString().padStart(2, "0")}Z` : ""; // .toISOString()
             let lastReadDateVisual = lastReadDateCanonical;
             if (lastReadDateCanonical) {
                 try {

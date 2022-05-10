@@ -255,6 +255,7 @@ export class PublicationViewConverter {
                 const pubIdentifier = qItem[1];
                 if (pubIdentifier === document.identifier) {
                     lastReadTimeStamp = timeStamp;
+                    break;
                 }
             }
         }
