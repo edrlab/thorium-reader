@@ -38,7 +38,7 @@
   "dependencies": {
     "bindings": "^1.5.0",
     "mathjax": "^3.2.0",
-    "yargs": "^17.4.1"
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
   },
