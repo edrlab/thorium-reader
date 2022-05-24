@@ -66,7 +66,9 @@
             "lastAdditions": "최근에 추가한 도서"
         },
         "export": "내보내기",
+        "format": "",
         "lang": "언어선택",
+        "lastRead": "",
         "moreInfo": "상세정보",
         "myBooks": "내 도서",
         "noPublicationHelpL1": "출판물을 여기로 가져오십시오.",

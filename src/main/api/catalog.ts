@@ -31,6 +31,10 @@ export const CATALOG_CONFIG_ID = "catalog";
 
 const NB_PUB = 5;
 
+// TODO: this memo-ization is very expensive (memory and CPU-wise) ...
+// and TaJsonDeserialize() is called in several other places in the library lifecycle
+// (including below via convertDocumentToView())
+// so it would make sense to hoist the cache higher in the application architecture
 const viewToR2Pub = (view: PublicationView) => {
     // Legacy Base64 data blobs
     // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
@@ -241,7 +245,6 @@ export class CatalogApi implements ICatalogApi {
 
         const lastReading = this.store.getState().publication.lastReadingQueue;
         const pubIdArray = lastReading.map(([, pubId]) => pubId);
-
         return pubIdArray;
     }
 }
