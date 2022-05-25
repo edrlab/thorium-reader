@@ -173,6 +173,14 @@
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
+        "addFormApiapp": {
+            "addButton": "Add",
+            "name": "Name:",
+            "namePlaceholder": "Name",
+            "title": "Add a library account",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
+        },
         "addMenu": "Add OPDS feed",
         "back": "Back",
         "breadcrumbRoot": "Catalogs",

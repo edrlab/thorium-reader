@@ -381,6 +381,14 @@ declare namespace typed_i18n {
     readonly "url": string,
     readonly "urlPlaceholder": string
   },
+  readonly "addFormApiapp": {
+    readonly "addButton": string,
+    readonly "name": string,
+    readonly "namePlaceholder": string,
+    readonly "title": string,
+    readonly "url": string,
+    readonly "urlPlaceholder": string
+  },
   readonly "addMenu": string,
   readonly "back": string,
   readonly "breadcrumbRoot": string,
@@ -420,6 +428,20 @@ declare namespace typed_i18n {
   (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
+  (_: "opds.addFormApiapp", __?: {}): {
+  readonly "addButton": string,
+  readonly "name": string,
+  readonly "namePlaceholder": string,
+  readonly "title": string,
+  readonly "url": string,
+  readonly "urlPlaceholder": string
+};
+  (_: "opds.addFormApiapp.addButton", __?: {}): string;
+  (_: "opds.addFormApiapp.name", __?: {}): string;
+  (_: "opds.addFormApiapp.namePlaceholder", __?: {}): string;
+  (_: "opds.addFormApiapp.title", __?: {}): string;
+  (_: "opds.addFormApiapp.url", __?: {}): string;
+  (_: "opds.addFormApiapp.urlPlaceholder", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
   (_: "opds.empty", __?: {}): string; (_: "opds.firstPage", __?: {}): string;
