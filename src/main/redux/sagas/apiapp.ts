@@ -13,8 +13,6 @@ import { Headers } from "node-fetch";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import isURL from "validator/lib/isURL";
-import { OPDSAuthenticationDoc } from "r2-opds-js/dist/es8-es2017/src/opds/opds2/opds2-authentication-doc";
-import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 
 const filename_ = "readium-desktop:main:saga:apiapp";
 const debug = debug_(filename_);
@@ -137,44 +135,16 @@ export const authenticationRequestFromLibraryWebServiceURL = async (url: string)
     return undefined;
 };
 
-export const convertAuthenticationFromLibToR2OpdsAuth = (v: IAuthentication, libView: IApiappSearchResultView) => {
+export const getEndpointFromAuthenticationRequest = (auth: IAuthentication | undefined): string | undefined => {
 
-    // @ts-ignore
-    const ret: OPDSAuthenticationDoc = {
-        Id: libView.id, // GNL
-        Authentication: [
-            {
-                Type: "http://opds-spec.org/auth/oauth/password/apiapp",
-                Links: [
-                    // @ts-ignore
-                    {
-                        Rel: ["authenticate"],
-                        Href: v.authentication.get_token,
-                    },
-                    // @ts-ignore
-                    {
-                        Rel: ["refresh"],
-                        Href: v.authentication.refresh_token,
-                    },
-                ],
-            },
-        ],
-    };
+    if (!auth) return undefined;
 
-    return ret;
-
+    const endpoint = Array.isArray(auth.resources) ? auth.resources[0].endpoint : undefined;
+    if (endpoint && isURL(endpoint)) {
+        return endpoint;
+    }
+    return undefined;
 };
-
-
-export function* dispatchAuthenticationProcess(r2OpdsAuth: OPDSAuthenticationDoc, responseUrl: string) {
-
-    const opdsAuthChannel = getOpdsAuthenticationChannel();
-
-    debug("put the authentication model in the saga authChannel", r2OpdsAuth);
-    opdsAuthChannel.put([r2OpdsAuth, responseUrl]);
-
-}
-
 
 export const initClientSecretToken = async (idGnl: string) => {
     if (!idGnl) {
@@ -196,7 +166,9 @@ export const initClientSecretToken = async (idGnl: string) => {
     return undefined;
 };
 
-export const getLoansUrlsFromLibrary = async (url: string) => {
+interface IApiAppLoansPublication { loanhLink: string, beginDate: string; endDate: string; standardTitle: string; description: string; frontCoverMedium: string; publicationDate: string; language: string; imprintName: string; collection: string; categoryClil: string; }
+
+export const getLoansPublicationFromLibrary = async (url: string): Promise<Array<IApiAppLoansPublication>> => {
     if (!url || !isURL(url)) {
         throw new Error("not a loans URL");
     }
@@ -211,18 +183,58 @@ export const getLoansUrlsFromLibrary = async (url: string) => {
         if (json.loans && Array.isArray(json.loans)) {
 
             const loans: any[] = json.loans;
-            const loansArray: Array<{loanhLink: string}> = loans.filter((v) => typeof v === "object" && typeof v.loanhLink === "string" && isURL(v.loanhLink));
-            const loansUrl = loansArray.map(({loanhLink}) => {
+            const loansArray: Array<IApiAppLoansPublication> = loans.filter(
+                (v) =>
+                typeof v === "object" &&
+                typeof v.loanhLink === "string" && isURL(v.loanhLink) &&
+                // typeof v.beginDate === "string" &&
+                // typeof v.endDate === "string" &&
+                typeof v.standardTitle === "string",
+                // typeof v.description === "string" &&
+                // typeof v.frontCoverMedium === "string" &&
+                // typeof v.publicationDate === "string" &&
+                // typeof v.language === "string" &&
+                // typeof v.imprintName === "string" &&
+                // typeof v.collection === "string" &&
+                // typeof v.categoryClil === "string"
+                );
+            const loansPub = loansArray.map((v) => {
 
-                const url = new URL(loanhLink);
+                const url = new URL(v.loanhLink);
                 url.searchParams.set("userAgentId", userAgentId);
 
-                return url.toString();
+                v.loanhLink = url.toString();
+
+                return v;
             });
 
-            return loansUrl;
+            return loansPub;
         }
+    } else if (result.isFailure) {
+        return undefined;
     }
 
     return [];
+};
+
+export const convertLoansPublicationToOpdsPublicationsRawJson = (loansPub: IApiAppLoansPublication[]): any => {
+    const ret = loansPub.map((v) => {
+
+        return {
+            "metadata": {
+                "title": v.standardTitle,
+                "description": v.description,
+                "publisher": v.imprintName,
+                "collection": v.collection,
+                "language": v.language.slice(0, 2),
+            },
+            "links": [
+                {"rel": "http://opds-spec.org/acquisition/open-access", "href": v.loanhLink, "type": ContentType.Lcp},
+            ],
+            "images": [
+                {"href": v.frontCoverMedium, "type": "image/jpeg"},
+            ],
+        };
+    });
+    return ret;
 };

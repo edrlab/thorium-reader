@@ -7,9 +7,7 @@
 
 import { IApiappApi } from "readium-desktop/common/api/interface/apiappApi.interface";
 import { search } from "./search";
-import { login } from "./login";
 
 export const apiappApi: IApiappApi = {
     search,
-    login,
 };

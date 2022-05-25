@@ -83,7 +83,7 @@ class ApiappAddForm extends React.Component<IProps, IState> {
 
         const { __, closeDialog } = this.props;
         const listItems = this.state.searchResultView.map((v, idx) => <li key={idx.toString()}><b><a onClick={() => this.setState({selectSearchResult: v})}>{v.name}</a></b><p>{v.address}</p></li>);
-        
+
         return (
             <Dialog
                 open={true}
@@ -146,7 +146,7 @@ class ApiappAddForm extends React.Component<IProps, IState> {
     public add(e: TMouseEventOnInput) {
         e.preventDefault();
         const title = this.state.selectSearchResult.name;
-        const url = `apiapp://${this.state.selectSearchResult.id}:apiapp:${this.state.selectSearchResult.url}`
+        const url = `apiapp://${this.state.selectSearchResult.id}:apiapp:${this.state.selectSearchResult.url}`;
         apiAction("opds/addFeed", { title, url }).catch((err) => {
             console.error("Error to fetch api opds/addFeed", err);
         });

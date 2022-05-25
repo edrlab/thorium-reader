@@ -77,7 +77,7 @@ const opdsAuthFlow =
             debug("opds authenticate flow");
             const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
             if (!baseUrlParsed) {
-                debug("no valid base url");
+                debug("no valid base url", baseUrl);
                 return;
             }
 

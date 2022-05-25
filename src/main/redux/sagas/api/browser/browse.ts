@@ -13,8 +13,10 @@ import { IOpdsResultView } from "readium-desktop/common/views/opds";
 import { IProblemDetailsResultView } from "readium-desktop/common/views/problemDetails";
 import { diMainGet } from "readium-desktop/main/di";
 import { httpGet } from "readium-desktop/main/network/http";
-import { contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
+import { OpdsService } from "readium-desktop/main/services/opds";
+import { ContentType, contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
 import { call, SagaGenerator } from "typed-redux-saga";
+import { authenticationRequestFromLibraryWebServiceURL, convertLoansPublicationToOpdsPublicationsRawJson, getEndpointFromAuthenticationRequest, getLoansPublicationFromLibrary } from "../../apiapp";
 
 const debug = debug_("readium-desktop:main#redux/saga/api/browser");
 
@@ -31,9 +33,97 @@ const checkUrl = (url: string) => {
 
 export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView>  {
 
-    const url = checkUrl(urlRaw);
+    debug("BROWSE=", urlRaw);
+    const opdsService = diMainGet("opds-service") as OpdsService;
 
-    const opdsService = diMainGet("opds-service");
+    if (urlRaw.startsWith("apiapp://")) {
+        const urlApiapp = urlRaw.slice("apiapp://".length);
+        const [idGln, urlLib] = urlApiapp.split(":apiapp:");
+
+        debug("APIAPP");
+        debug("ID_GNL=", idGln);
+        debug("URL_LIB=", urlLib);
+
+        const res = yield* call(authenticationRequestFromLibraryWebServiceURL, urlLib);
+        const endpoint = getEndpointFromAuthenticationRequest(res);
+        if (!endpoint) {
+            return {
+                url: "",
+                isFailure: true,
+                isSuccess: false,
+            };
+        }
+        const loansPubArray = yield* call(getLoansPublicationFromLibrary, endpoint);
+
+        if (Array.isArray(loansPubArray)) {
+            // return opdsauthentication
+            return {
+                url: "",
+                responseUrl: "",
+                contentType: ContentType.Opds2,
+                isFailure: false,
+                isSuccess: true,
+                data: {
+                    opds: yield* call(() => opdsService.opdsRequestTransformer({
+                        url: "",
+                        responseUrl: "",
+                        contentType: ContentType.Opds2,
+                        isFailure: false,
+                        isSuccess: true,
+                        // @ts-ignore
+                        response: {
+                            json: async () => {
+                                return {
+                                    "metadata": {
+                                        "title": "loans",
+                                    },
+                                    "publications": convertLoansPublicationToOpdsPublicationsRawJson(loansPubArray),
+                                };
+                            },
+                        },
+                    })),
+                },
+            };
+        } else {
+            // return opds feed
+            return {
+                url: "",
+                responseUrl: "",
+                contentType: ContentType.Opds2,
+                isFailure: false,
+                isSuccess: true,
+                data: {
+                    opds: yield* call(() => opdsService.opdsRequestTransformer({
+                        url: "",
+                        responseUrl: endpoint, // check base url in auth
+                        contentType: ContentType.Opds2Auth,
+                        isFailure: false,
+                        isSuccess: true,
+                        // @ts-ignore
+                        response: {
+                            json: async () => {
+                                return {
+                                    "id": idGln,
+                                    "title": "auth",
+                                    "authentication": [
+                                        {
+                                            "type": "http://opds-spec.org/auth/oauth/password/apiapp",
+                                            "links": [
+                                                { "rel": "authenticate", "href": res.authentication.get_token},
+                                                { "rel": "refresh", "href": res.authentication.refresh_token},
+                                            ],
+                                        },
+                                    ],
+                                };
+                            },
+                        },
+                    })),
+                },
+            };
+        }
+    }
+
+    const url = checkUrl(urlRaw);
 
     const result = yield* call(() => httpGet<IBrowserResultView>(
         url,

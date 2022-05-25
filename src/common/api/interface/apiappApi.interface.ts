@@ -18,12 +18,8 @@ export interface IApiappApi {
     search: (
         query: string,
     ) => SagaGenerator<IApiappSearchResultView[]>;
-    login: (
-        libView: IApiappSearchResultView,
-    ) => SagaGenerator<void>;
 }
 
 export interface IApiappModuleApi {
     "apiapp/search": IApiappApi["search"];
-    "apiapp/login": IApiappApi["login"];
 }
