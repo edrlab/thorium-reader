@@ -108,7 +108,6 @@ export default class AccessibleMenu extends React.Component<IProps, IState> {
         return (
             <OutsideClickAlerter disabled={!this.props.visible} onClickOutside={this.onClickOutside}>
                 <div
-                    {...(this.props.visible)}
                     ref={this.containerRef}
                     className={this.props.className}
                 >
