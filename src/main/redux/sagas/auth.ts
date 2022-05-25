@@ -430,12 +430,11 @@ interface IOPDSAuthDocParsed {
 }
 function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPDSAuthDocParsed | undefined {
 
-    // INJECT DOC NOT INSTANCE OF OPDSAuthenticationDoc in apiapp
-    // if (!doc || !(doc instanceof OPDSAuthenticationDoc)) {
+    if (!doc || !(doc instanceof OPDSAuthenticationDoc)) {
 
-    //     debug("opds authentication doc is not an instance of the model");
-    //     return undefined;
-    // }
+        debug("opds authentication doc is not an instance of the model");
+        return undefined;
+    }
 
     if (!doc.Authentication) {
 
