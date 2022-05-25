@@ -38,12 +38,6 @@ const headerNav: NavigationHeader[] = [
         styles: [],
     },
     {
-        route: "/apiapp",
-        label: "apiapp",
-        matchRoutes: ["/apiapp"],
-        styles: [],
-    },
-    {
         route: "/settings",
         label: "settings",
         matchRoutes: ["/settings"],
