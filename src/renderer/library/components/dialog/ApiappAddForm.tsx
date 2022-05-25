@@ -41,6 +41,7 @@ interface IState {
     name: string | undefined;
     url: string | undefined;
     searchResultView: IApiappSearchResultView[];
+    selectSearchResult: IApiappSearchResultView | undefined;
     query: string;
 }
 
@@ -62,6 +63,7 @@ class ApiappAddForm extends React.Component<IProps, IState> {
             name: undefined,
             url: undefined,
             searchResultView: [],
+            selectSearchResult: undefined,
             query: "",
         };
 
@@ -80,8 +82,7 @@ class ApiappAddForm extends React.Component<IProps, IState> {
         }
 
         const { __, closeDialog } = this.props;
-        const { name, url } = this.state;
-        const listItems = this.state.searchResultView.map((v, idx) => <li key={idx.toString()}><b><a onClick={() => ({})}>{v.name}</a></b><p>{v.address}</p></li>);
+        const listItems = this.state.searchResultView.map((v, idx) => <li key={idx.toString()}><b><a onClick={() => this.setState({selectSearchResult: v})}>{v.name}</a></b><p>{v.address}</p></li>);
         
         return (
             <Dialog
@@ -128,7 +129,7 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                             {__("opds.back")}
                         </button>
                         <button
-                            disabled={!name || !url}
+                            disabled={this.state.selectSearchResult === undefined}
                             type="submit"
                             onClick={this.add}
                             className={stylesButtons.button_primary}
@@ -144,8 +145,8 @@ class ApiappAddForm extends React.Component<IProps, IState> {
 
     public add(e: TMouseEventOnInput) {
         e.preventDefault();
-        const title = this.state.name;
-        const url = this.state.url;
+        const title = this.state.selectSearchResult.name;
+        const url = `apiapp://${this.state.selectSearchResult.id}:apiapp:${this.state.selectSearchResult.url}`
         apiAction("opds/addFeed", { title, url }).catch((err) => {
             console.error("Error to fetch api opds/addFeed", err);
         });
