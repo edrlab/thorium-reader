@@ -33,7 +33,7 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-class Dialog extends React.Component<IProps, undefined> {
+class Dialog extends React.Component<React.PropsWithChildren<IProps>, undefined> {
     private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
@@ -60,7 +60,7 @@ class Dialog extends React.Component<IProps, undefined> {
         document.removeEventListener("keydown", this.handleKeyPress);
     }
 
-    public render(): React.ReactElement<{}> {
+    public render(): React.ReactNode {
         const content = this.props.children;
         // const dialogTitle = this.props.children;
         const className = this.props.className;

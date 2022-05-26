@@ -29,7 +29,7 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class MenuContent extends React.Component<IProps, undefined> {
+export default class MenuContent extends React.Component<React.PropsWithChildren<IProps>, undefined> {
     private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;

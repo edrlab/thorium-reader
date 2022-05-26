@@ -24,7 +24,7 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-export class SecondaryHeader extends React.Component<IProps, undefined> {
+export class SecondaryHeader extends React.Component<React.PropsWithChildren<IProps>, undefined> {
 
     constructor(props: IProps) {
         super(props);

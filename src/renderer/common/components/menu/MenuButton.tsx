@@ -23,7 +23,7 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class MenuButton extends React.Component<IProps, undefined> {
+export default class MenuButton extends React.Component<React.PropsWithChildren<IProps>, undefined> {
     private menuButtonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
@@ -42,8 +42,10 @@ export default class MenuButton extends React.Component<IProps, undefined> {
                 onClick={toggle}
                 ref={this.menuButtonRef}
             >
+                <>
                 {this.getFocusBack()}
                 {children}
+                </>
             </button>
         );
     }
