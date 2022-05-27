@@ -22,7 +22,8 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
+// import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
+import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
 
@@ -46,14 +47,14 @@ interface IState {
 }
 
 class ApiappAddForm extends React.Component<IProps, IState> {
-    private focusRef: React.RefObject<HTMLInputElement>;
+    // private focusRef: React.RefObject<HTMLInputElement>;
     private buttonRef: React.RefObject<HTMLButtonElement>;
     private inputRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: IProps) {
         super(props);
 
-        this.focusRef = React.createRef<HTMLInputElement>();
+        // this.focusRef = React.createRef<HTMLInputElement>();
         this.buttonRef = React.createRef<HTMLButtonElement>();
         this.inputRef = React.createRef<HTMLInputElement>();
 
@@ -71,8 +72,8 @@ class ApiappAddForm extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        if (this.focusRef?.current) {
-            this.focusRef.current.focus();
+        if (this.inputRef?.current) {
+            this.inputRef.current.focus();
         }
     }
 
@@ -82,46 +83,66 @@ class ApiappAddForm extends React.Component<IProps, IState> {
         }
 
         const { __, closeDialog } = this.props;
-        const listItems = this.state.searchResultView.map((v, idx) => <li key={idx.toString()}><b><a onClick={() => this.setState({selectSearchResult: v})}>{v.name}</a></b><p>{v.address}</p></li>);
+        const listItems = this.state.searchResultView.map((v, idx) =>
+        <li key={idx.toString()}>
+            <p style={{
+                padding: "8px",
+                border: this.state.selectSearchResult === v ? "2px solid black" : "2px solid transparent",
+                borderRadius: "8px",
+                }}>
+                <a style={{
+                    display: "block",
+                    cursor:"pointer",
+                }}
+                onClick={() => this.setState({selectSearchResult: v})}>
+                <b>
+                    {v.name}
+                    </b>
+                    <br/>
+                    <span>{v.address}</span>
+                    <br/>
+                    </a>
+            </p>
+        </li>);
 
         return (
             <Dialog
                 open={true}
                 close={closeDialog}
                 id={stylesModals.opds_form_dialog}
-                title={__("opds.addMenu")}
+                title={__("opds.addFormApiapp.title")}
             >
-                <form className={stylesModals.modal_dialog_form_wrapper}>
-                    <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
-                        <div className={stylesGlobal.w_50}>
+                <div style={{overflowY:"hidden"}} className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
+
+                <form style={{display:"flex", flexDirection: "column"}} className={classNames(stylesGlobal.w_50 /* stylesModals.modal_dialog_form_wrapper */)}>
                             <div className={stylesInputs.form_group}>
-                                {/* <form onSubmit={this.search} role="search"> */}
                                     <input
                                         ref={this.inputRef}
                                         type="search"
                                         id="apiapp_search"
-                                        aria-label={__("accessibility.searchBook")}
                                         placeholder={__("header.searchPlaceholder")}
                                     />
                                 <button
                                     onClick={this.search}
-                                    className={stylesButtons.button_primary}
+                                    className={stylesButtons.button_primary_small}
+                                    style={{fontWeight: "bold"}}
+                                    title={__("header.searchTitle")}
                                 >
-                                        <SVG svg={SearchIcon} title={__("header.searchTitle")} />
-                                    </button>
-                                    <div>
-
-                                    </div>
-                                    <ul>
-                                        {
-                                            listItems.length ? listItems : this.state.query ? __("apiapp.noLibraryFound", { name: this.state.query }) : <></>
-                                        }
-                                    </ul>
-                                {/* </form> */}
+                                    {__("header.searchPlaceholder")}<SVG ariaHidden={true} svg={magnifyingGlass} />
+                                </button>
                             </div>
-                        </div>
-                    </div>
-                    <div className={stylesModals.modal_dialog_footer}>
+                            <div style={{flex:1, overflowY:"auto"}} >
+                                {
+                                    listItems.length ? <ul style={{
+                                        listStyle: "none",
+                                    }}>{listItems}</ul> :
+                                    this.state.query ? __("apiapp.noLibraryFound", { name: this.state.query }) : <></>
+                                }
+                            </div>
+                </form>
+                </div>
+
+                <div className={stylesModals.modal_dialog_footer}>
                         <button
                             onClick={closeDialog}
                             className={stylesButtons.button_primary}
@@ -138,7 +159,6 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                             {__("opds.addForm.addButton")}
                         </button>
                     </div>
-                </form>
             </Dialog>
         );
     }

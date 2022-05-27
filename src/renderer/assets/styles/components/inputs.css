@@ -204,6 +204,11 @@ select {
     flex: none;
   }
 
+  & button {
+    margin-left: 10px;
+    flex: none;
+  }
+
   & input {
     flex: 1;
   }
