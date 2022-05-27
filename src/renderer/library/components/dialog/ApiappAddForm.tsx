@@ -112,10 +112,14 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                 id={stylesModals.opds_form_dialog}
                 title={__("opds.addFormApiapp.title")}
             >
-                <div style={{overflowY:"hidden"}} className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
+                <div style={{alignItems:listItems.length?"start":"center"}}
+                className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
 
-                <form style={{display:"flex", flexDirection: "column"}} className={classNames(stylesGlobal.w_50 /* stylesModals.modal_dialog_form_wrapper */)}>
-                            <div className={stylesInputs.form_group}>
+                <form style={{display:"flex", flexDirection: "column"}}
+                className={classNames(stylesGlobal.w_50 /* stylesModals.modal_dialog_form_wrapper */)}>
+                            <div
+                             style={{marginBottom: "0"}}
+                             className={stylesInputs.form_group}>
                                     <input
                                         ref={this.inputRef}
                                         type="search"
@@ -131,10 +135,12 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                                     {__("header.searchPlaceholder")}<SVG ariaHidden={true} svg={magnifyingGlass} />
                                 </button>
                             </div>
-                            <div style={{flex:1, overflowY:"auto"}} >
+                            <div >
                                 {
                                     listItems.length ? <ul style={{
                                         listStyle: "none",
+                                        padding: 0,
+                                        margin: 0,
                                     }}>{listItems}</ul> :
                                     this.state.query ? __("apiapp.noLibraryFound", { name: this.state.query }) : <></>
                                 }
