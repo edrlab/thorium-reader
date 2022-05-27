@@ -45,6 +45,8 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
         debug("URL_LIB=", urlLib);
 
         const res = yield* call(authenticationRequestFromLibraryWebServiceURL, urlLib);
+
+        debug("authentication Result from dilicom :" + idGln + ":", res);
         const endpoint = getEndpointFromAuthenticationRequest(res);
         if (!endpoint) {
             return {
@@ -53,7 +55,11 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
                 isSuccess: false,
             };
         }
-        const loansPubArray = yield* call(getLoansPublicationFromLibrary, endpoint);
+
+        const endpointURL = new URL(endpoint);
+        endpointURL.host = `apiapploans.org.edrlab.thoriumreader.break.${idGln}.break.${endpointURL.host}`;
+        const endpointFormated = endpointURL.toString();
+        const loansPubArray = yield* call(getLoansPublicationFromLibrary, endpointFormated);
 
         if (Array.isArray(loansPubArray)) {
             // return opdsauthentication
@@ -88,6 +94,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
             };
         } else {
             // return opds feed
+
             return {
                 url: "",
                 responseUrl: "",
@@ -97,7 +104,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
                 data: {
                     opds: yield* call(() => opdsService.opdsRequestTransformer({
                         url: "",
-                        responseUrl: endpoint, // check base url in auth
+                        responseUrl: endpointFormated, // check base url in auth
                         contentType: ContentType.Opds2Auth,
                         isFailure: false,
                         isSuccess: true,

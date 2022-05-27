@@ -170,7 +170,7 @@ interface IApiAppLoansPublication { loanhLink: string, beginDate: string; endDat
 
 export const getLoansPublicationFromLibrary = async (url: string): Promise<Array<IApiAppLoansPublication>> => {
     if (!url || !isURL(url)) {
-        throw new Error("not a loans URL");
+        throw new Error("not a loans URL " + url);
     }
 
     const result = await httpGet(url);
