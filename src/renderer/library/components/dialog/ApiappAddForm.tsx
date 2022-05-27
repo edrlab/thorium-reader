@@ -118,8 +118,8 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                 <form style={{display:"flex", flexDirection: "column"}}
                 className={classNames(stylesGlobal.w_50 /* stylesModals.modal_dialog_form_wrapper */)}>
                             <div
-                             style={{marginBottom: "0"}}
-                             className={stylesInputs.form_group}>
+                                style={{marginBottom: "0"}}
+                                className={stylesInputs.form_group}>
                                     <input
                                         ref={this.inputRef}
                                         type="search"
