@@ -88,7 +88,6 @@ export class OpdsService {
         if (contentTypeisOpds(contentType)) {
 
             const json = await httpGetData.response.json();
-
             const result = await this.opdsRequestJsonTransformer(json, contentType, responseUrl, baseUrl);
 
             if (result) {
