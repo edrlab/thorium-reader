@@ -85,24 +85,34 @@ class ApiappAddForm extends React.Component<IProps, IState> {
         const { __, closeDialog } = this.props;
         const listItems = this.state.searchResultView.map((v, idx) =>
         <li key={idx.toString()}>
-            <p style={{
+            <a style={{
+                display: "block",
+                cursor:"pointer",
                 padding: "8px",
+                marginTop: "1rem",
+                backgroundColor: this.state.selectSearchResult === v ? "#DDDDDD" : "transparent",
                 border: this.state.selectSearchResult === v ? "2px solid black" : "2px solid transparent",
                 borderRadius: "8px",
-                }}>
-                <a style={{
-                    display: "block",
-                    cursor:"pointer",
-                }}
-                onClick={() => this.setState({selectSearchResult: v})}>
-                <b>
-                    {v.name}
-                    </b>
-                    <br/>
-                    <span>{v.address}</span>
-                    <br/>
-                    </a>
-            </p>
+            }}
+            role="option"
+            aria-selected={this.state.selectSearchResult === v}
+            tabIndex={0}
+            onClick={() => this.setState({selectSearchResult: v})}
+            onDoubleClick={(e) => {
+                this.setState({selectSearchResult: v});
+                this.add(e);
+            }}
+            onKeyPress={
+                (e) =>
+                    (e.key === "Enter") && this.setState({selectSearchResult: v})
+            }
+            >
+            <strong>
+                {v.name}
+            </strong>
+            <br/>
+            <span>{v.address}</span>
+            </a>
         </li>);
 
         return (
@@ -158,7 +168,7 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                         <button
                             disabled={this.state.selectSearchResult === undefined}
                             type="submit"
-                            onClick={this.add}
+                            onClick={(e) => this.add(e)}
                             className={stylesButtons.button_primary}
                             ref={this.buttonRef}
                         >
@@ -169,7 +179,7 @@ class ApiappAddForm extends React.Component<IProps, IState> {
         );
     }
 
-    public add(e: TMouseEventOnInput) {
+    public add(e: TMouseEventOnInput | React.MouseEvent<HTMLButtonElement, MouseEvent> | React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
         e.preventDefault();
         const title = this.state.selectSearchResult.name;
         const url = `apiapp://${this.state.selectSearchResult.id}:apiapp:${this.state.selectSearchResult.url}`;
