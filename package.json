@@ -263,7 +263,7 @@
     "node-fetch": "^3.2.4",
     "opds-feed-parser": "0.0.18",
     "r2-lcp-js": "^1.0.35",
-    "r2-navigator-js": "^1.11.0",
+    "r2-navigator-js": "^1.11.1",
     "r2-opds-js": "^1.0.39",
     "r2-shared-js": "^1.0.59",
     "r2-streamer-js": "^1.0.42",
