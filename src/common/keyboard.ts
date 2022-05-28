@@ -44,6 +44,12 @@ const _defaults_ = Object.freeze({
         shift: true,
         key: "KeyI",
     }),
+    SpeakReaderInfoWhereAmI: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyK",
+    }),
 
     FocusMain: Object.freeze<TKeyboardShortcut>({
         alt: false,
