@@ -102,7 +102,8 @@ jobs:
     - run: npm ci
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
-      run: npm run build:prod && npm run test
+      run: npm run build:prod
+      # && npm run test SEE https://github.com/edrlab/thorium-reader/issues/1697
     - name: non-PR action (build and package)
       if: ${{ github.event_name != 'pull_request' }}
       run: npm run package:${{ matrix.packname }}
