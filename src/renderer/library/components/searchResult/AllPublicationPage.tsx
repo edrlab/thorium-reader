@@ -510,7 +510,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
             /*
         value={ // props.column.filterValue
             value || ""}
-            */
+             */
         }
     <input
         ref={inputRef}

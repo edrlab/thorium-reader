@@ -235,7 +235,7 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
         r2Publication = yield* callTyped(
             w3cPublicationManifestToReadiumPublicationManifest,
             r2PublicationJson,
-            async (resources) => findHtmlTocInRessources(resources, fetch),
+            async (resources: Link[]) => findHtmlTocInRessources(resources, fetch),
         );
 
     } else if (isR2) {

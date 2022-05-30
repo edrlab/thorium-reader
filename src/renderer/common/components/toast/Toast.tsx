@@ -143,14 +143,14 @@ export class Toast extends React.Component<IProps, IState> {
                     toRemove && stylesToasts.toRemove,
                     typeClassName,
                 )}
-                aria-live="assertive"
-                aria-relevant="all"
-                role="alert"
             >
                 {
                 // icon && <SVG className={styles.icon} svg={icon} />
                 }
                 <p
+                    aria-live="assertive"
+                    aria-relevant="all"
+                    role="alert"
                     tabIndex={0}
                     onFocus={() => {
                         this.cancelTimer(true);
