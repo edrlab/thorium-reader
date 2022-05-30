@@ -184,6 +184,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
         this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
         this.onKeyboardInfoWhereAmI = this.onKeyboardInfoWhereAmI.bind(this);
+        this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
         this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
 
@@ -765,6 +766,11 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.SpeakReaderInfoWhereAmI,
+            this.onKeyboardInfoWhereAmISpeak);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusReaderSettings,
             this.onKeyboardFocusSettings);
 
@@ -825,6 +831,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardBookmark);
         unregisterKeyboardListener(this.onKeyboardInfo);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmI);
+        unregisterKeyboardListener(this.onKeyboardInfoWhereAmISpeak);
         unregisterKeyboardListener(this.onKeyboardFocusSettings);
         unregisterKeyboardListener(this.onKeyboardFocusNav);
         unregisterKeyboardListener(this.onKeyboardShowGotoPage);
@@ -971,6 +978,171 @@ class Reader extends React.Component<IProps, IState> {
         }
         this.displayPublicationInfo(true);
     };
+
+    private onKeyboardInfoWhereAmISpeak = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardInfoWhereAmISpeak)");
+            }
+            return;
+        }
+        if (!this.props.publicationView) {
+            return;
+        }
+
+        // See "Progression" comp inside publicationInfoContent.tsx
+        const readerReadingLocation = this.state.currentLocation ? this.state.currentLocation : undefined;
+        const locatorExt = readerReadingLocation || this.props.publicationView.lastReadingLocation;
+        if (typeof locatorExt?.locator?.locations?.progression !== "number") {
+            return;
+        }
+        try {
+
+        const isAudio = locatorExt.audioPlaybackInfo
+            && locatorExt.audioPlaybackInfo.globalDuration
+            && typeof locatorExt.locator.locations.position === "number";
+
+        const isDivina = this.props.r2Publication && isDivinaFn(this.props.r2Publication);
+        const isPdf = this.props.r2Publication && isPdfFn(this.props.r2Publication);
+
+        const isFixedLayout = this.props.r2Publication &&
+            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+
+        let txtProgression: string | undefined;
+        let txtPagination: string | undefined;
+        let txtHeadings: string | undefined;
+
+        if (isAudio) {
+            const percent = Math.round(locatorExt.locator.locations.position * 100);
+            txtProgression = `${percent}% [${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalTime))} / ${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalDuration))}]`;
+        } else if (isDivina) {
+            let totalPages = (this.state.divinaNumberOfPages && !this.state.divinaContinousEqualTrue) ? this.state.divinaNumberOfPages : (this.props.r2Publication?.Spine?.length ? this.props.r2Publication.Spine.length : undefined);
+            if (typeof totalPages === "string") {
+                try {
+                    totalPages = parseInt(totalPages, 10);
+                } catch (_e) {
+                    totalPages = 0;
+                }
+            }
+
+            let pageNum = !this.state.divinaContinousEqualTrue ?
+                (locatorExt.locator.locations.position || 0) :
+                (Math.floor(locatorExt.locator.locations.progression * this.props.r2Publication.Spine.length) - 1);
+            if (typeof pageNum === "string") {
+                try {
+                    pageNum = parseInt(pageNum, 10) + 1;
+                } catch (_e) {
+                    pageNum = 0;
+                }
+            } else if (typeof pageNum === "number") {
+                pageNum = pageNum + 1;
+            }
+
+            if (totalPages && typeof pageNum === "number") {
+                txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
+
+                txtProgression = `${Math.round(100 * (locatorExt.locator.locations.progression || 0))}%`;
+
+            } else {
+                if (typeof pageNum === "number") {
+                    txtPagination = this.props.__("reader.navigation.currentPage", { current: `${pageNum}` });
+                }
+
+                if (typeof locatorExt.locator.locations.progression === "number") {
+                    const percent = Math.round(locatorExt.locator.locations.progression * 100);
+                    txtProgression = `${percent}%`;
+                }
+            }
+
+        } else if (isPdf) {
+            let totalPages = this.state.pdfPlayerNumberOfPages ?
+            this.state.pdfPlayerNumberOfPages :
+                (this.props.r2Publication?.Metadata?.NumberOfPages ? this.props.r2Publication.Metadata.NumberOfPages : undefined);
+
+            if (typeof totalPages === "string") {
+                try {
+                    totalPages = parseInt(totalPages, 10);
+                } catch (_e) {
+                    totalPages = 0;
+                }
+            }
+
+            let pageNum = (locatorExt.locator?.href as unknown) as number;
+            if (typeof pageNum === "string") {
+                try {
+                    pageNum = parseInt(pageNum, 10);
+                } catch (_e) {
+                    pageNum = 0;
+                }
+            }
+
+            if (totalPages) {
+                txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
+                txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
+            } else {
+                txtPagination = this.props.__("reader.navigation.currentPage", { current: `${pageNum}` });
+            }
+
+        } else if (this.props.r2Publication?.Spine && locatorExt.locator?.href) {
+
+            const spineIndex = this.props.r2Publication.Spine.findIndex((l) => {
+                return l.Href === locatorExt.locator.href;
+            });
+            if (spineIndex >= 0) {
+                if (isFixedLayout) {
+                    const pageNum = spineIndex + 1;
+                    const totalPages = this.props.r2Publication.Spine.length;
+
+                    txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
+                    txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
+
+                } else {
+
+                    if (locatorExt.epubPage) {
+                        txtPagination = this.props.__("reader.navigation.currentPage", { current: `${locatorExt.epubPage}` });
+                    }
+
+                    const percent = Math.round(locatorExt.locator.locations.progression * 100);
+                    txtProgression = `${spineIndex + 1}/${this.props.r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
+
+                    if (locatorExt.headings) {
+
+                        let rank = 999;
+                        const hs = locatorExt.headings.filter((h, _i) => {
+                            if (h.level < rank) {
+
+                                rank = h.level;
+                                return true;
+                            }
+                            return false;
+                        }).reverse();
+                        const summary = hs.reduce((arr, h, i) => {
+                            return arr.concat(
+                                i === 0 ? " " : " / ",
+                                `H${h.level} `,
+                                h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`,
+                                );
+                        }, []);
+
+                        // const details = locatorExt.headings.slice().reverse().reduce((arr, h, i) => {
+                        //     return arr.concat(i === 0 ? " " : " / ", `H${h.level} ${h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}`);
+                        // }, []);
+
+                        // txtHeadings = `${summary.join("")} ${details.join("")}`;
+
+                        txtHeadings = summary.join("");
+                    }
+                }
+            }
+        }
+
+        this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
+
+        } catch (_err) {
+            this.props.toasty("ERROR");
+        }
+    };
+
     private onKeyboardInfo = () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
