@@ -53,7 +53,13 @@ export async function extractCrc32OnZip(filePath: string) {
 
             data.on("error", (e) => reject(e));
             data.on("entry", (entry: yauzl.Entry) => {
-                fileArray.push([entry.fileName, entry.crc32 || 0]);
+                // extractCrc32OnZip() is still called with LCP publications
+                // (see "redoHash" or more generally "__LCP_LSD_UPDATE_COUNT")
+                // which is okay because legacy / pubs imported before this change
+                // benefit from the removal of "META-INF/license.lcpl" from the calculation.
+                if (entry.fileName !== "META-INF/license.lcpl") {
+                    fileArray.push([entry.fileName, entry.crc32 || 0]);
+                }
                 data.readEntry();
             });
             data.on("end", () => {
