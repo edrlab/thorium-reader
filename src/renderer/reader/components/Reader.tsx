@@ -2086,6 +2086,10 @@ class Reader extends React.Component<IProps, IState> {
     private handleFullscreenClick() {
         this.props.toggleFullscreen(!this.state.fullscreen);
         this.setState({ fullscreen: !this.state.fullscreen });
+
+        if (this.state.menuOpen) { // fixes https://github.com/edrlab/thorium-reader/issues/1699
+            this.handleMenuButtonClick();
+        }
     }
 
     private handleSettingsClick(openedSectionSettings?: number | undefined) {
