@@ -8,6 +8,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { VanillaExtractPlugin } = require("@vanilla-extract/webpack-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
@@ -119,6 +120,7 @@ const cssLoaderConfig = [
     {
         loader: "css-loader",
         options: {
+            url: false,
             import: {
                 filter: (url, media, resourcePath) => {
                     console.log("css-loader IMPORT (LIBRARY): ", url, media, resourcePath);
@@ -366,6 +368,11 @@ if (nodeEnv !== "production") {
     // preprocessorDirectives.rendererLibraryBaseUrl (full HTTP locahost + port)
     config.output.publicPath = "/";
 
+    config.plugins.push(new VanillaExtractPlugin({
+        identifiers: "debug",
+    }));
+    // config.plugins.push("@vanilla-extract/babel-plugin");
+
     // if (_enableHot) {
     //     config.plugins.push(new webpack.HotModuleReplacementPlugin());
     // }
@@ -399,6 +406,11 @@ if (nodeEnv !== "production") {
     // {
     //     minimize: false,
     // };
+
+    config.plugins.push(new VanillaExtractPlugin({
+        identifiers: "debug", // "short"
+    }));
+    // config.plugins.push("@vanilla-extract/babel-plugin");
 
     config.plugins.push(new MiniCssExtractPlugin({
         filename: "styles_library.css",
