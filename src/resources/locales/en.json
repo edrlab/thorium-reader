@@ -10,6 +10,9 @@
         "skipLink": "Skip to content",
         "toolbar": "toolbar"
     },
+    "apiapp": {
+        "noLibraryFound": "No library found ({{- name}})"
+    },
     "app": {
         "edit": {
             "copy": "Copy",
@@ -172,6 +175,9 @@
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
+        "addFormApiapp": {
+            "title": "Add a library account"
+        },
         "addMenu": "Add OPDS feed",
         "back": "Back",
         "breadcrumbRoot": "Catalogs",
@@ -187,10 +193,10 @@
             "goSubBook": "Subscribe"
         },
         "network": {
-            "error": "Unable to access to opds feed",
+            "error": "Error accessing feed",
             "noInternet": "No internet",
             "noInternetMessage": "Try: checking the network cable, modem, router or wifi",
-            "reject": "Sorry, there was an unexpected error when trying to process the OPDS feed",
+            "reject": "Sorry, there was an unexpected error when trying to process the feed",
             "timeout": "There was a network timeout, please try again later"
         },
         "next": "Next",

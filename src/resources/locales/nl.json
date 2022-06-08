@@ -10,6 +10,9 @@
         "skipLink": "Ga naar inhoud",
         "toolbar": "werkbalk"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Kopieer",
@@ -171,6 +174,9 @@
             "title": "Voeg een OPDS feed toe",
             "url": "Link :",
             "urlPlaceholder": "Link"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "Voeg OPDS feed toe",
         "back": "Terug",

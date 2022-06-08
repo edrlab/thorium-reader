@@ -10,6 +10,9 @@
         "skipLink": "Pasar ao contido",
         "toolbar": "Barra de ferramentas"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Copiar",
@@ -171,6 +174,9 @@
             "title": "Engadir catálogo OPDS",
             "url": "Link:",
             "urlPlaceholder": "Link"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "Engadir catálogo OPDS",
         "back": "Atrás",

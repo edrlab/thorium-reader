@@ -10,6 +10,9 @@
         "skipLink": "Peršokti į turinį",
         "toolbar": "įrankių juosta"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Kopijuoti",
@@ -171,6 +174,9 @@
             "title": "Pridėti OPDS sklaidos kanalą",
             "url": "Nuoroda :",
             "urlPlaceholder": "Nuoroda"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "Pridėti OPDS sklaidos kanalą",
         "back": "Atgal",

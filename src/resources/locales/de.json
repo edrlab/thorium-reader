@@ -10,6 +10,9 @@
         "skipLink": "Gehe zum Inhalt",
         "toolbar": "symbolleiste"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Kopieren",
@@ -171,6 +174,9 @@
             "title": "Feed hinzufügen",
             "url": "Feed-Link:",
             "urlPlaceholder": ""
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "OPDS-Feed hinzufügen",
         "back": "Zurück",

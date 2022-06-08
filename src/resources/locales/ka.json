@@ -10,6 +10,9 @@
         "skipLink": "შიგთავსზე გადახტომა",
         "toolbar": "ინსტრუმენტთა პანელი"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "ასლი",
@@ -171,6 +174,9 @@
             "title": "დაამატე OPDS წყარო",
             "url": "მისამართი:",
             "urlPlaceholder": "ბმული"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "OPDS წყაროს დამატება",
         "back": "უკან",

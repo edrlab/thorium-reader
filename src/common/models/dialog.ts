@@ -35,6 +35,7 @@ export enum DialogTypeName {
     PublicationInfoLib = "publication-info-lib",
     PublicationInfoReader = "publication-info-reader",
     OpdsFeedAddForm = "opds-feed-add-form",
+    ApiappAddForm = "apiapp-add-form",
     DeletePublicationConfirm = "delete-publication-confirm",
     DeleteOpdsFeedConfirm = "delete-opds-feed-confirm",
     LcpAuthentication = "lcp-authentication",
@@ -51,6 +52,7 @@ export interface DialogType {
     [DialogTypeName.PublicationInfoLib]: IPubInfoState;
     [DialogTypeName.PublicationInfoReader]: IPubInfoStateReader;
     [DialogTypeName.OpdsFeedAddForm]: {};
+    [DialogTypeName.ApiappAddForm]: {};
     [DialogTypeName.DeletePublicationConfirm]: {
         publicationView: PublicationView;
     };

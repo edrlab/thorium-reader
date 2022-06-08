@@ -168,6 +168,14 @@ export async function httpFetchRawResponse(
     locale = tryCatchSync(() => diMainGet("store")?.getState()?.i18n?.locale, filename_) || "en-US",
 ): Promise<THttpResponse> {
 
+    url = new URL(url);
+    if (url.host.startsWith("apiapploans.org.edrlab.thoriumreader")) {
+        const [, idGln, host] = url.host.split(".break.");
+
+        debug("http fetch dilicom api app server ", idGln, url.toString());
+        url.host = host;
+    }
+
     options.headers = options.headers instanceof Headers
         ? options.headers
         : new Headers(options.headers || {});

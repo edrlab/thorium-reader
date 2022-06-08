@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as wipeData from "./wipeData";
+import * as done from "./done";
 
 export {
+    done,
     wipeData,
 };

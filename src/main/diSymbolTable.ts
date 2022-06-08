@@ -20,6 +20,7 @@ export const diSymbolTable = {
     "catalog-api": Symbol("catalog-api"),
     "publication-api": Symbol("publication-api"),
     "opds-api": Symbol("opds-api"),
+    "apiapp-api": Symbol("apiapp-api"),
     "httpbrowser-api": Symbol("httpbrowser-api"),
     "keyboard-api": Symbol("keyboard-api"),
     "lcp-api": Symbol("lcp-api"),
