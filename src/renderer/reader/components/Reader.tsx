@@ -1852,6 +1852,11 @@ class Reader extends React.Component<IProps, IState> {
             this.handleMenuButtonClick();
         }
 
+        // no need here, as no hyperlink from settings menu
+        // if (this.state.settingsOpen) {
+        //     this.handleSettingsClick();
+        // }
+
         if (this.fastLinkRef?.current) {
             // shortcutEnable must be true (see handleMenuButtonClick() above, and this.state.menuOpen))
             this.onKeyboardFocusMain();
@@ -2087,8 +2092,11 @@ class Reader extends React.Component<IProps, IState> {
         this.props.toggleFullscreen(!this.state.fullscreen);
         this.setState({ fullscreen: !this.state.fullscreen });
 
-        if (this.state.menuOpen) { // fixes https://github.com/edrlab/thorium-reader/issues/1699
+        if (this.state.menuOpen) {
             this.handleMenuButtonClick();
+        }
+        if (this.state.settingsOpen) {
+            this.handleSettingsClick();
         }
     }
 
