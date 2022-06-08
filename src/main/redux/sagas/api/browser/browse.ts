@@ -61,6 +61,18 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
         const endpointFormated = endpointURL.toString();
         const loansPubArray = yield* call(getLoansPublicationFromLibrary, endpointFormated);
 
+        // this does not work, because auth flow leaves blank JSX comp until refreshed with correct credentials
+        // if (!loansPubArray) { // note: empty array is not falsy
+        //     const translator = diMainGet("translator");
+        //     return {
+        //         url: "",
+        //         isFailure: true,
+        //         isSuccess: false,
+        //         statusCode: 403,
+        //         statusMessage: translator.trans__late("apiapp.incorrectCredentials"),
+        //     };
+        // }
+
         if (Array.isArray(loansPubArray)) {
             // return opdsauthentication
             return {

@@ -20,6 +20,8 @@ declare namespace typed_i18n {
   (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;
+  (_: "apiapp", __?: {}): { readonly "noLibraryFound": string };
+  (_: "apiapp.noLibraryFound", __?: {}): string;
   (_: "app", __?: {}): {
   readonly "edit": {
     readonly "copy": string,
@@ -298,7 +300,6 @@ declare namespace typed_i18n {
   (_: "error.errorBox.message", __?: {}): string;
   (_: "error.errorBox.title", __?: {}): string;
   (_: "header", __?: {}): {
-  readonly "apiapp": string,
   readonly "allBooks": string,
   readonly "books": string,
   readonly "catalogs": string,
@@ -313,7 +314,6 @@ declare namespace typed_i18n {
   readonly "searchTitle": string,
   readonly "settings": string
 };
-  (_: "header.apiapp", __?: {}): string;
   (_: "header.allBooks", __?: {}): string;
   (_: "header.books", __?: {}): string;
   (_: "header.catalogs", __?: {}): string;
@@ -381,14 +381,7 @@ declare namespace typed_i18n {
     readonly "url": string,
     readonly "urlPlaceholder": string
   },
-  readonly "addFormApiapp": {
-    readonly "addButton": string,
-    readonly "name": string,
-    readonly "namePlaceholder": string,
-    readonly "title": string,
-    readonly "url": string,
-    readonly "urlPlaceholder": string
-  },
+  readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "back": string,
   readonly "breadcrumbRoot": string,
@@ -428,20 +421,8 @@ declare namespace typed_i18n {
   (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
-  (_: "opds.addFormApiapp", __?: {}): {
-  readonly "addButton": string,
-  readonly "name": string,
-  readonly "namePlaceholder": string,
-  readonly "title": string,
-  readonly "url": string,
-  readonly "urlPlaceholder": string
-};
-  (_: "opds.addFormApiapp.addButton", __?: {}): string;
-  (_: "opds.addFormApiapp.name", __?: {}): string;
-  (_: "opds.addFormApiapp.namePlaceholder", __?: {}): string;
+  (_: "opds.addFormApiapp", __?: {}): { readonly "title": string };
   (_: "opds.addFormApiapp.title", __?: {}): string;
-  (_: "opds.addFormApiapp.url", __?: {}): string;
-  (_: "opds.addFormApiapp.urlPlaceholder", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
   (_: "opds.empty", __?: {}): string; (_: "opds.firstPage", __?: {}): string;
@@ -981,9 +962,7 @@ declare namespace typed_i18n {
   (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
   (_: "settings.session.no", __?: {}): string;
   (_: "settings.session.title", __?: {}): string;
-  (_: "settings.session.yes", __?: {}): string;
-  (_: "apiapp", __?: {}): { readonly "noLibraryFound": string };
-  (_: "apiapp.noLibraryFound", __?: {}): string
+  (_: "settings.session.yes", __?: {}): string
 }
 }
 export = typed_i18n;

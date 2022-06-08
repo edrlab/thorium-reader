@@ -168,7 +168,7 @@ export const initClientSecretToken = async (idGnl: string) => {
 
 interface IApiAppLoansPublication { loanhLink: string, beginDate: string; endDate: string; standardTitle: string; description: string; frontCoverMedium: string; publicationDate: string; language: string; imprintName: string; collection: string; categoryClil: string; }
 
-export const getLoansPublicationFromLibrary = async (url: string): Promise<Array<IApiAppLoansPublication>> => {
+export const getLoansPublicationFromLibrary = async (url: string): Promise<Array<IApiAppLoansPublication> | undefined> => {
     if (!url || !isURL(url)) {
         throw new Error("not a loans URL " + url);
     }
