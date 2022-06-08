@@ -10,6 +10,9 @@
         "skipLink": "Hoppa till innehåll",
         "toolbar": "vektygsfält"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Kopiera",
@@ -171,6 +174,9 @@
             "title": "Lägg till ett OPDS-flöde",
             "url": "Länk:",
             "urlPlaceholder": "Länk"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "Lägg till ett OPDS-flöde",
         "back": "Tillbaka",

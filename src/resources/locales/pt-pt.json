@@ -10,6 +10,9 @@
         "skipLink": "Ir para o conteúdo",
         "toolbar": "barra de ferramentas"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Copiar",
@@ -171,6 +174,9 @@
             "title": "Adicionar fonte OPDS",
             "url": "Endereço:",
             "urlPlaceholder": "Hiperligação"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "Adicionar fonte OPDS",
         "back": "Voltar",

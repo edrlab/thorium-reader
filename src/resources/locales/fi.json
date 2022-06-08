@@ -10,6 +10,9 @@
         "skipLink": "Hyppää sisältöön",
         "toolbar": "Työkalurivi"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Kopioi",
@@ -171,6 +174,9 @@
             "title": "Lisää OPDS-syöte",
             "url": "Linkki:",
             "urlPlaceholder": "Linkki"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "Lisää OPDS-syöte",
         "back": "Takaisin",

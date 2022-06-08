@@ -10,6 +10,9 @@
         "skipLink": "콘텐츠로 건너뛰기",
         "toolbar": "툴바"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "복사",
@@ -171,6 +174,9 @@
             "title": "OPDS feed 추가",
             "url": "링크:",
             "urlPlaceholder": "링크"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "OPDS feed 추가",
         "back": "뒤로",

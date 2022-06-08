@@ -10,6 +10,9 @@
         "skipLink": "Перейти к содержимому",
         "toolbar": "Панель инструментов"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Копировать",
@@ -171,6 +174,9 @@
             "title": "Добавить OPDS каталог",
             "url": "Ссылка :",
             "urlPlaceholder": "Ссылка"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "Добавить OPDS каталог",
         "back": "Назад",

@@ -10,6 +10,9 @@
         "skipLink": "跳转至内容",
         "toolbar": "工具栏"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "复制",
@@ -171,6 +174,9 @@
             "title": "添加OPDS订阅源",
             "url": "链接:",
             "urlPlaceholder": "链接"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "添加OPDS订阅源",
         "back": "返回",

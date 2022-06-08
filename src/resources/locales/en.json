@@ -10,6 +10,9 @@
         "skipLink": "Skip to content",
         "toolbar": "toolbar"
     },
+    "apiapp": {
+        "noLibraryFound": "no library Found ({{- name}})"
+    },
     "app": {
         "edit": {
             "copy": "Copy",
@@ -126,7 +129,6 @@
         }
     },
     "header": {
-        "apiapp": "Apiapp",
         "allBooks": "All books",
         "books": "My Books",
         "catalogs": "Catalogs",
@@ -174,12 +176,7 @@
             "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
-            "addButton": "Add",
-            "name": "Name:",
-            "namePlaceholder": "Name",
-            "title": "Add a library account",
-            "url": "Link:",
-            "urlPlaceholder": "Link"
+            "title": "Add a library account"
         },
         "addMenu": "Add OPDS feed",
         "back": "Back",
@@ -400,8 +397,5 @@
             "title": "Save session",
             "yes": "Enable"
         }
-    },
-    "apiapp": {
-        "noLibraryFound": "no library Found ({{- name}})"
     }
 }
