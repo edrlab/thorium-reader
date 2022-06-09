@@ -11,7 +11,7 @@
         "toolbar": "barra de ferramentas"
     },
     "apiapp": {
-        "noLibraryFound": ""
+        "noLibraryFound": "Nenhuma biblioteca encontrada ({{- name}})"
     },
     "app": {
         "edit": {
@@ -69,9 +69,9 @@
             "lastAdditions": "Adicionados recentemente"
         },
         "export": "Exportar",
-        "format": "",
+        "format": "Formato",
         "lang": "Idioma",
-        "lastRead": "",
+        "lastRead": "Último lido",
         "moreInfo": "Mais informações",
         "myBooks": "Meus livros",
         "noPublicationHelpL1": "Solte uma publicação aqui",
@@ -176,7 +176,7 @@
             "urlPlaceholder": "Hiperligação"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "Adicionar uma conta de biblioteca"
         },
         "addMenu": "Adicionar fonte OPDS",
         "back": "Voltar",
