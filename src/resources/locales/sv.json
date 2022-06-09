@@ -11,7 +11,7 @@
         "toolbar": "vektygsfält"
     },
     "apiapp": {
-        "noLibraryFound": ""
+        "noLibraryFound": "Inget bibliotek hittades ({{- name}})"
     },
     "app": {
         "edit": {
@@ -176,7 +176,7 @@
             "urlPlaceholder": "Länk"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "Lägg till bibliotekskonto"
         },
         "addMenu": "Lägg till ett OPDS-flöde",
         "back": "Tillbaka",
