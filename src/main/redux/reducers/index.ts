@@ -13,7 +13,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers } from "redux";
 
-import { publicationActions, winActions } from "../actions";
+import { appActions, publicationActions, winActions } from "../actions";
 import { lcpReducer } from "./lcp";
 import { readerDefaultConfigReducer } from "./reader/defaultConfig";
 import { sessionReducer } from "./session";
@@ -23,6 +23,7 @@ import { winSessionReaderReducer } from "./win/session/reader";
 import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
 import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
 export const rootReducer = combineReducers<RootState>({
     session: sessionReducer,
@@ -70,4 +71,5 @@ export const rootReducer = combineReducers<RootState>({
     opds: combineReducers({
         catalog: opdsDbReducers,
     }),
+    version: (state, action) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state === undefined ? null : state),
 });
