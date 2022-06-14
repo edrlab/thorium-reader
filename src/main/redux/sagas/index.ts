@@ -64,7 +64,6 @@ export function* rootSaga() {
     yield api.saga();
     // yield spawnLeading(api.watchers, (e) => error("main:rootSaga:api", e));
 
-    yield telemetry.saga();
 
     yield streamer.saga();
     // yield spawnLeading(streamer.watchers, (e) => error("main:rootSaga:streamer", e));
@@ -102,6 +101,10 @@ export function* rootSaga() {
 
     // enjoy the app !
     yield put(winActions.library.openRequest.build());
+
+    // call telemetry before app init state
+    // need to track the previous state version before update in initSuccess.build
+    yield call(telemetry.collectSaveAndSend);
 
     // app initialized
     yield put(appActions.initSuccess.build());
