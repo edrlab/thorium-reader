@@ -81,7 +81,11 @@ function* collectAndSave() {
         prev_version: `${version}`,
     };
 
-    const queue: Array<ITelemetryInfo> = JSON.parse(dataFromFileQueue);
+    let queue: Array<ITelemetryInfo> = JSON.parse(dataFromFileQueue);
+    if (!Array.isArray(queue)) {
+        clearQueue();
+        queue = [];
+    }
     queue.push(info);
 
     fs.writeFileSync(queueFilePath, JSON.stringify(queue), { encoding: "utf-8" });
