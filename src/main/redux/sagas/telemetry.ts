@@ -13,6 +13,9 @@ import { version as osVersion } from "os";
 import * as fs from "fs";
 import * as path from "path";
 import { app } from "electron";
+import { httpPost } from "readium-desktop/main/network/http";
+import { Headers } from "node-fetch";
+import { createHmac } from "crypto";
 
 interface ITelemetryInfo {
     os_version: string;
@@ -86,6 +89,21 @@ function* collectAndSave() {
         clearQueue();
         queue = [];
     }
+
+    // queue analysis
+    queue = queue.filter((v) => {
+        return typeof v.os_version === "string" && v.os_version.length < 1000 &&
+        typeof v.locale === "string" && v.locale.length < 10 &&
+        typeof v.timestamp === "string" && v.timestamp.length < 100 &&
+        typeof v.fresh === "boolean" &&
+        (v.type === "poll" || v.type === "error") &&
+        typeof v.actual_version === "string" && v.actual_version.length < 100 &&
+        typeof v.prev_version === "string" && v.prev_version.length < 100;
+    });
+    queue = queue.filter((v) => {
+        return Object.keys(v).reduce((pv, cv) => pv && Object.keys(info).includes(cv), true);
+    });
+    queue = queue.slice(-10, queue.length); // keep last 10th elements
     queue.push(info);
 
     fs.writeFileSync(queueFilePath, JSON.stringify(queue), { encoding: "utf-8" });
@@ -98,11 +116,43 @@ const clearQueue = () => {
     fs.writeFileSync(queueFilePath, JSON.stringify(EMPTY_ARRAY), { encoding: "utf-8" });
 };
 
-const sendTelemetry = (queue: ITelemetryInfo[]) => {
+const sendTelemetry = async (queue: ITelemetryInfo[]) => {
+
+    if (!checkPrivateKey()) {
+        return false;
+        // no telemetry available
+    }
+
+    const body = JSON.stringify(queue);
+
+    const headers = new Headers();
+    headers.append("Authorization", `EDRLAB ${telemetryHmac(body)}`);
+    headers.append("Content-Type", "application/json");
 
     // http post request with HMAC
+    const res = await httpPost("https://telemetry.edrlab.org/" + _APP_VERSION, {
+        headers,
+        body: JSON.stringify(queue),
+    });
 
-    return !!queue;
+    return res.isSuccess;
+};
+
+const checkPrivateKey = () => {
+
+    // test if hmac private key is available
+
+    return true;
+};
+
+const telemetryHmac = (body: string) => {
+
+    const key = "hello world";
+    // find the key from fs or env-var // cf Daniel to hide it
+
+    const hmac = createHmac("sha1", key);
+    hmac.update(body, "utf8");
+    return hmac.digest("hex"); // length always 40
 };
 
 export function* collectSaveAndSend() {
@@ -113,7 +163,7 @@ export function* collectSaveAndSend() {
         // try to send the queue to the server
         // if sucessfull 200 OK : clear the file queue
         // else : do nothing
-        if (sendTelemetry(queue)) {
+        if (yield* call(sendTelemetry, queue)) {
             clearQueue();
         }
     } catch {
