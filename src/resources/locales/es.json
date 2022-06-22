@@ -11,7 +11,7 @@
         "toolbar": "Barra de herramientas"
     },
     "apiapp": {
-        "noLibraryFound": ""
+        "noLibraryFound": "Biblioteca no encontrada ({{- name}})"
     },
     "app": {
         "edit": {
@@ -69,9 +69,9 @@
             "lastAdditions": "Añadidos recientemente"
         },
         "export": "Exportar",
-        "format": "",
+        "format": "Formato",
         "lang": "Idioma",
-        "lastRead": "",
+        "lastRead": "Último leído",
         "moreInfo": "Más información",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
@@ -176,7 +176,7 @@
             "urlPlaceholder": "Enlace"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "Añadir la cuenta de una biblioteca"
         },
         "addMenu": "Añadir catálogo OPDS",
         "back": "Atrás",
@@ -219,8 +219,8 @@
         },
         "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
         "lcpEnd": "Fin",
-        "lcpRightsCopy": "Copia de personajes",
-        "lcpRightsPrint": "Copia de impresora",
+        "lcpRightsCopy": "Caracteres copiados",
+        "lcpRightsPrint": "Páginas impresas",
         "lcpStart": "Inicio",
         "licenseOutOfDate": "La licencia está desactualizada",
         "licenseSignatureDateInvalid": "La fecha de la firma de la licencia no es válida",
