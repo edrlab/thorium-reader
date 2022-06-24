@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { IS_DEV, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { call, select } from "typed-redux-saga";
 import { RootState } from "../states";
 import { version as osVersion } from "os";
@@ -17,13 +17,15 @@ import { httpPost } from "readium-desktop/main/network/http";
 import { Headers } from "node-fetch";
 import { createHmac } from "crypto";
 
+const telemetryUrl = IS_DEV ? "http://localhost:8080/" : "https://telemetry.edrlab.org/"; // '/' at the end
+
 interface ITelemetryInfo {
     os_version: string;
     locale: string;
     timestamp: string;
     fresh: boolean;
     type: string;
-    actual_version: string;
+    current_version: string;
     prev_version: string;
 };
 
@@ -79,8 +81,8 @@ function* collectAndSave() {
         locale,
         timestamp: new Date().toISOString(),
         fresh,
-        type: "poll", // poll or error emun
-        actual_version: _APP_VERSION,
+        type: "poll", // 'poll' or 'error' enumeration values
+        current_version: _APP_VERSION,
         prev_version: `${version}`,
     };
 
@@ -97,7 +99,7 @@ function* collectAndSave() {
         typeof v.timestamp === "string" && v.timestamp.length < 100 &&
         typeof v.fresh === "boolean" &&
         (v.type === "poll" || v.type === "error") &&
-        typeof v.actual_version === "string" && v.actual_version.length < 100 &&
+        typeof v.current_version === "string" && v.current_version.length < 100 &&
         typeof v.prev_version === "string" && v.prev_version.length < 100;
     });
     queue = queue.filter((v) => {
@@ -123,16 +125,20 @@ const sendTelemetry = async (queue: ITelemetryInfo[]) => {
         // no telemetry available
     }
 
-    const body = JSON.stringify(queue);
+    // FIXME: DEV only
+    // [0] should be removed !!
+    const data = queue[0];
+
+    const body = JSON.stringify(data);
 
     const headers = new Headers();
     headers.append("Authorization", `EDRLAB ${telemetryHmac(body)}`);
     headers.append("Content-Type", "application/json");
 
     // http post request with HMAC
-    const res = await httpPost("https://telemetry.edrlab.org/" + _APP_VERSION, {
+    const res = await httpPost(telemetryUrl + _APP_VERSION, {
         headers,
-        body: JSON.stringify(queue),
+        body,
     });
 
     return res.isSuccess;
