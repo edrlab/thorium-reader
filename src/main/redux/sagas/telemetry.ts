@@ -18,6 +18,7 @@ import { Headers } from "node-fetch";
 import { createHmac } from "crypto";
 
 const telemetryUrl = IS_DEV ? "http://localhost:8080/" : "https://telemetry.edrlab.org/"; // '/' at the end
+const secretKey = IS_DEV ? "hello world" : "secret key";
 
 interface ITelemetryInfo {
     os_version: string;
@@ -120,16 +121,15 @@ const clearQueue = () => {
 
 const sendTelemetry = async (queue: ITelemetryInfo[]) => {
 
-    if (!checkPrivateKey()) {
-        return false;
-        // no telemetry available
-    }
+    // if (!checkPrivateKey()) {
+    //     return false;
+    //     // no telemetry available
+    // }
 
-    // FIXME: DEV only
-    // [0] should be removed !!
-    const data = queue[0];
+    const data = queue;
+    const timestamp = new Date().toISOString();
 
-    const body = JSON.stringify(data);
+    const body = JSON.stringify({timestamp, data});
 
     const headers = new Headers();
     headers.append("Authorization", `EDRLAB ${telemetryHmac(body)}`);
@@ -144,19 +144,18 @@ const sendTelemetry = async (queue: ITelemetryInfo[]) => {
     return res.isSuccess;
 };
 
-const checkPrivateKey = () => {
+// const checkPrivateKey = () => {
 
-    // test if hmac private key is available
+//     // test if hmac private key is available
 
-    return true;
-};
+//     return true;
+// };
 
 const telemetryHmac = (body: string) => {
 
-    const key = "hello world";
     // find the key from fs or env-var // cf Daniel to hide it
 
-    const hmac = createHmac("sha1", key);
+    const hmac = createHmac("sha1", secretKey);
     hmac.update(body, "utf8");
     return hmac.digest("hex"); // length always 40
 };
