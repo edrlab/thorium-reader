@@ -17,7 +17,8 @@ import { httpPost } from "readium-desktop/main/network/http";
 import { Headers } from "node-fetch";
 import { createHmac } from "crypto";
 
-const telemetryUrl = IS_DEV ? "http://localhost:8080/" : "https://telemetry.edrlab.org/"; // '/' at the end
+const stagingServerUrl = "https://telemetry-staging.edrlab.org/" || "http://localhost:8080/";
+const telemetryUrl = IS_DEV ? stagingServerUrl : "https://telemetry.edrlab.org/"; // '/' at the end
 const secretKey = IS_DEV ? "hello world" : "secret key";
 
 interface ITelemetryInfo {
@@ -71,6 +72,10 @@ function* collectAndSave() {
     // fresh install is equal to en language ?
     const locale = yield* select((state: RootState) => state.i18n.locale);
 
+    // see src/main/redux/sagas/index.ts:107
+    // see src/main/redux/reducers/index.ts:74
+    // version variable is updated after execution of this function in saga root event
+    // so _APP_VERSION is N and version is N-1
     let fresh = false;
     if (_APP_VERSION !== version) {
         debug("VERSION MISMATCH", _APP_VERSION, "vs", version);
