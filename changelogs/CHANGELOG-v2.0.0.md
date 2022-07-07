@@ -25,7 +25,7 @@ This release includes the following (notable) new features, improvements and bug
 * Improved toast notifications placement to avoid obscuring critical GUI parts, added keyboard focus and mouse click handling, easier clipboard copy of message, and fixed the overflow text clipping.
 * LCP META-INF/license.lcpl now excluded from hash computation to eliminate duplicates during EPUB import.
 * Fixed a Windows bug where drive letters other than C: were not supported when opening publications directly from the file explorer.
-* New image zoom feature with CTRL-click in publication HTML documents.
+* New image zoom feature with SHIFT-click in publication HTML documents.
 * Fixed HTML5 audio controls mis-renderering due to CSS overrides.
 * Better, clearer presentation of "borrow" links and other publication acquisition details in the publication info modal popup dialog.
 * Fixed a PDF metadata bug related to date format parsing + timezone calculations.
