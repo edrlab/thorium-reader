@@ -1,8 +1,8 @@
 {
     "accessibility": {
-        "bookMenu": "Menu",
+        "bookMenu": "Menu du livre",
         "closeDialog": "Fermer",
-        "importFile": "Importer un fichier epub",
+        "importFile": "Importer un fichier",
         "leftSlideButton": "Faire défiler la liste vers la gauche",
         "mainContent": "contenu principal",
         "rightSlideButton": "Faire défiler la liste vers la droite",
