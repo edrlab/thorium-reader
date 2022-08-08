@@ -6,6 +6,10 @@
 // ==LICENSE-END==
 
 import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
+
+// import { classThemeExample, classStyleExample } from "./AllPublicationPage.css";
+// import classNames from "classnames";
+
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 // import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
@@ -360,6 +364,9 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
         props.setGlobalFilter(v);
     }, 500);
+
+    // className={classNames(classThemeExample)}
+    // className={classNames(classStyleExample)}
 
     return (
         <div

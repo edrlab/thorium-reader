@@ -1,8 +1,8 @@
 {
     "accessibility": {
-        "bookMenu": "Menu",
+        "bookMenu": "Menu du livre",
         "closeDialog": "Fermer",
-        "importFile": "Importer un fichier epub",
+        "importFile": "Importer un fichier",
         "leftSlideButton": "Faire défiler la liste vers la gauche",
         "mainContent": "contenu principal",
         "rightSlideButton": "Faire défiler la liste vers la droite",
@@ -44,7 +44,7 @@
     "catalog": {
         "about": {
             "button": "Plus d'informations",
-            "title": "A propos de {{appName}}"
+            "title": "À propos de {{appName}}"
         },
         "addBookToLib": "Importer",
         "addTags": "Ajouter un tag",
@@ -52,9 +52,9 @@
         "allBooks": "Tous les livres",
         "bookInfo": "Fiche livre",
         "column": {
-            "ascending": "",
-            "descending": "",
-            "unsorted": ""
+            "ascending": "Ordre croissant",
+            "descending": "Ordre décroissant",
+            "unsorted": "Non trié"
         },
         "delete": "Supprimer",
         "deleteBook": "Supprimer",
@@ -71,7 +71,7 @@
         "export": "Exporter",
         "format": "",
         "lang": "Langue",
-        "lastRead": "",
+        "lastRead": "Dernière lecture",
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
         "noPublicationHelpL1": "Déposer la publication",
@@ -189,7 +189,7 @@
             "addExtract": "Importer l'extrait",
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
-            "goRevokeLoanBook": "",
+            "goRevokeLoanBook": "Mettre fin au prêt",
             "goSubBook": "Aller sur la page d'abonnement"
         },
         "network": {
@@ -207,7 +207,7 @@
         "audio": {
             "tracks": "Pistes"
         },
-        "author": "",
+        "author": "Auteur",
         "cancelledLcp": "Ce livre ne peut être lu car la licence lcp a été annulée.",
         "certificateRevoked": "Certificat révoqué",
         "certificateSignatureInvalid": "Signature de certificat invalide",
@@ -234,7 +234,7 @@
         "revokedLcp": "Ce livre ne peut être lu car la licence lcp a été révoquée.",
         "seeLess": "Voir moins",
         "seeMore": "Voir plus",
-        "title": "",
+        "title": "Titre",
         "userKeyCheckInvalid": "Mot de passe incorrect"
     },
     "reader": {
@@ -252,20 +252,20 @@
             "delete": "Supprimer",
             "edit": "Éditer",
             "landmarks": "Repères",
-            "search": "",
+            "search": "Rechercher",
             "toc": "Table des matières"
         },
         "media-overlays": {
-            "activate": "",
-            "captions": "",
-            "next": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "skip": "",
-            "speed": "",
-            "stop": "",
-            "title": ""
+            "activate": "Activer la lecture en voix de synthèse",
+            "captions": "Vue simplifiée, style sous-titres",
+            "next": "Suivant",
+            "pause": "Mettre en pause",
+            "play": "Lire",
+            "previous": "Précédent",
+            "skip": "Omettre les informations auxiliaires",
+            "speed": "Vitesse",
+            "stop": "Arrêt",
+            "title": "Lire en voix de synthèse"
         },
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
@@ -281,7 +281,7 @@
             "infoTitle": "informations",
             "magnifyingGlassButton": "recherche dans la publication",
             "openTableOfContentsTitle": "navigation",
-            "pdfscalemode": "",
+            "pdfscalemode": "Page entière ou pleine largeur",
             "quitFullscreenTitle": "quitter le mode plein écran",
             "readBookTitle": "lancer la lecture du livre",
             "settingsTitle": "préférences"
@@ -289,14 +289,14 @@
         "picker": {
             "annotationTitle": "",
             "search": {
-                "founds": "",
-                "input": "",
-                "next": "",
-                "notFound": "",
-                "previous": "",
-                "submit": ""
+                "founds": "{{- nResults}} correspondance(s)",
+                "input": "Texte à trouver",
+                "next": "Suivant",
+                "notFound": "Auncune correspondance",
+                "previous": "Précédent",
+                "submit": "Trouver"
             },
-            "searchTitle": ""
+            "searchTitle": "Recherche"
         },
         "settings": {
             "column": {
@@ -318,9 +318,9 @@
             "letterSpacing": "Espacement des lettres",
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
-            "noFootnotes": "",
+            "noFootnotes": "Désactiver la lecture des notes",
             "paginated": "Paginé",
-            "paraSpacing": "",
+            "paraSpacing": "Espacement de paragraphes",
             "pdfZoom": {
                 "name": {
                     "100pct": "",
@@ -329,12 +329,12 @@
                     "300pct": "",
                     "500pct": "",
                     "50pct": "",
-                    "fit": "",
-                    "width": ""
+                    "fit": "Toute la page",
+                    "width": "Largeur de la page"
                 },
-                "title": ""
+                "title": "Loupe"
             },
-            "reduceMotion": "",
+            "reduceMotion": "Réduire la vitesse",
             "save": {
                 "apply": "Sauvegarder",
                 "reset": "Réinitialiser",
@@ -358,19 +358,19 @@
             "right": "Droite"
         },
         "toc": {
-            "publicationNoToc": ""
+            "publicationNoToc": "Cette publication ne contient pas de table des matières compatible"
         },
         "tts": {
-            "activate": "",
-            "default": "",
-            "next": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "sentenceDetect": "",
-            "speed": "",
-            "stop": "",
-            "voice": ""
+            "activate": "Activer l'audio",
+            "default": "Voix du système",
+            "next": "Suivant",
+            "pause": "Pauser",
+            "play": "Lire",
+            "previous": "Précédent",
+            "sentenceDetect": "Découper à la phrase",
+            "speed": "Vitesse",
+            "stop": "Arrêter",
+            "voice": "Voix"
         }
     },
     "settings": {

@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+
 import { IS_DEV, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { call, select } from "typed-redux-saga";
 import { RootState } from "../states";

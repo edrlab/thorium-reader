@@ -64,7 +64,6 @@ export function* rootSaga() {
     yield api.saga();
     // yield spawnLeading(api.watchers, (e) => error("main:rootSaga:api", e));
 
-
     yield streamer.saga();
     // yield spawnLeading(streamer.watchers, (e) => error("main:rootSaga:streamer", e));
 
