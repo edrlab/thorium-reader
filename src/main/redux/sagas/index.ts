@@ -24,6 +24,7 @@ import * as persist from "./persist";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
+import * as telemetry from "./telemetry";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -62,6 +63,8 @@ export function* rootSaga() {
 
     yield api.saga();
     // yield spawnLeading(api.watchers, (e) => error("main:rootSaga:api", e));
+
+    yield telemetry.saga();
 
     yield streamer.saga();
     // yield spawnLeading(streamer.watchers, (e) => error("main:rootSaga:streamer", e));
