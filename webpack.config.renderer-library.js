@@ -8,6 +8,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { VanillaExtractPlugin } = require("@vanilla-extract/webpack-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
@@ -52,7 +53,7 @@ const _externalsCache = new Set();
 if (nodeEnv !== "production") {
     const nodeExternals = require("webpack-node-externals");
     const neFunc = nodeExternals({
-        allowlist: ["normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
+        allowlist: ["nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
         importType: function (moduleName) {
             if (!_externalsCache.has(moduleName)) {
                 console.log(`WEBPACK EXTERNAL (LIBRARY): [${moduleName}]`);
@@ -119,6 +120,7 @@ const cssLoaderConfig = [
     {
         loader: "css-loader",
         options: {
+            url: false,
             import: {
                 filter: (url, media, resourcePath) => {
                     console.log("css-loader IMPORT (LIBRARY): ", url, media, resourcePath);
@@ -366,6 +368,11 @@ if (nodeEnv !== "production") {
     // preprocessorDirectives.rendererLibraryBaseUrl (full HTTP locahost + port)
     config.output.publicPath = "/";
 
+    config.plugins.push(new VanillaExtractPlugin({
+        identifiers: "debug",
+    }));
+    // config.plugins.push("@vanilla-extract/babel-plugin");
+
     // if (_enableHot) {
     //     config.plugins.push(new webpack.HotModuleReplacementPlugin());
     // }
@@ -399,6 +406,11 @@ if (nodeEnv !== "production") {
     // {
     //     minimize: false,
     // };
+
+    config.plugins.push(new VanillaExtractPlugin({
+        identifiers: "debug", // "short"
+    }));
+    // config.plugins.push("@vanilla-extract/babel-plugin");
 
     config.plugins.push(new MiniCssExtractPlugin({
         filename: "styles_library.css",
