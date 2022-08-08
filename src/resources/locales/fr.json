@@ -257,12 +257,12 @@
         },
         "media-overlays": {
             "activate": "Activer la lecture en voix de synthèse",
-            "captions": "Afficher ou masquer les légendes des images",
+            "captions": "Vue simplifiée, style sous-titres",
             "next": "Suivant",
             "pause": "Mettre en pause",
             "play": "Lire",
             "previous": "Précédent",
-            "skip": "Passer",
+            "skip": "Omettre les informations auxiliaires",
             "speed": "Vitesse",
             "stop": "Arrêt",
             "title": "Lire en voix de synthèse"
