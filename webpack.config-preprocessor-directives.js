@@ -33,7 +33,7 @@ const distRelativeUrl = isPackaging === "1" ? "dist" : "../dist";
 const telemetryUrl =
     isPackaging === "1"
         ? process.env.THORIUM_TELEMETRY_URL ||
-          (isContinuousIntegrationDeploy ? "https://telemetry-staging.edrlab.org/" : "https://telemetry.edrlab.org/")
+        (isContinuousIntegrationDeploy ? "https://telemetry-staging.edrlab.org/" : "https://telemetry.edrlab.org/")
         : "";
 const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 
