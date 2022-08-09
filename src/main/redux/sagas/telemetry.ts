@@ -50,8 +50,8 @@ const queueFilePath = path.join(
     QUEUE_FILENAME,
 );
 
-const EMPTY_ARRAY = "[]";
-let dataFromFileQueue = EMPTY_ARRAY;
+const EMPTY_ARRAY: unknown[] = [];
+let dataFromFileQueue = JSON.stringify(EMPTY_ARRAY);
 try {
     if (!fs.existsSync(queueFilePath)) {
         fs.writeFileSync(queueFilePath, dataFromFileQueue, { encoding: "utf8" });
