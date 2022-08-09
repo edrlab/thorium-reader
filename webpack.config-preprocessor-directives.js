@@ -16,31 +16,25 @@ const isVisualStudioCodeLaunch = process.env.VSCODE_LAUNCH || "false";
 
 const isContinuousIntegrationDeploy = process.env.TRAVIS_OS_NAME_ ? true : false;
 
-const rendererLibraryBaseUrl = isDev ?
-    ("http://localhost:"+portApp+"/") : "file://";
+const rendererLibraryBaseUrl = isDev ? "http://localhost:" + portApp + "/" : "file://";
 
-const rendererReaderBaseUrl = isDev ?
-    ("http://localhost:"+portReader+"/") : "file://";
+const rendererReaderBaseUrl = isDev ? "http://localhost:" + portReader + "/" : "file://";
 
-const rendererPdfWebviewBaseUrl = isDev ?
-    ("http://localhost:"+portPdfWebview+"/") : "file://";
+const rendererPdfWebviewBaseUrl = isDev ? "http://localhost:" + portPdfWebview + "/" : "file://";
 
 const isPackaging = process.env.PACKAGING || "0";
 
-const nodeModuleRelativeUrl = (isPackaging === "1") ?
-    "node_modules" : "../node_modules";
+const nodeModuleRelativeUrl = isPackaging === "1" ? "node_modules" : "../node_modules";
 
-const distRelativeUrl = (isPackaging === "1") ?
-    "dist" : "../dist";
+const distRelativeUrl = isPackaging === "1" ? "dist" : "../dist";
 
 // "http://localhost:8080/";
 // MUST END WITH FORWARD SLASH!
-const telemetryUrl = isPackaging === "1"
-    ? (
-    process.env.THORIUM_TELEMETRY_URL ||
-        (isContinuousIntegrationDeploy ? "https://telemetry-staging.edrlab.org/" : "https://telemetry.edrlab.org/")
-    )
-    : "";
+const telemetryUrl =
+    isPackaging === "1"
+        ? process.env.THORIUM_TELEMETRY_URL ||
+          (isContinuousIntegrationDeploy ? "https://telemetry-staging.edrlab.org/" : "https://telemetry.edrlab.org/")
+        : "";
 const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 
 // const USE_HTTP_STREAMER = false;

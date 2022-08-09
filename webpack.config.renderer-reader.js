@@ -1,6 +1,6 @@
 // const crypto = require("crypto");
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
 // var fs = require("fs");
@@ -30,23 +30,19 @@ const nodeEnv = process.env.NODE_ENV || "development";
 console.log(`READER nodeEnv: ${nodeEnv}`);
 
 // https://github.com/edrlab/thorium-reader/issues/1097#issuecomment-643406149
-const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER
-    ? true
-    : false;
+const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER ? true : false;
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => { return "ForkTsCheckerWebpackPlugin" };
+ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => {
+    return "ForkTsCheckerWebpackPlugin";
+};
 const checkTypeScriptSkip =
-    nodeEnv !== "production" ?
-    (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false)
-    : false
-    ;
-
+    nodeEnv !== "production" ? (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false) : false;
 let externals = {
     bindings: "bindings",
     fsevents: "fsevents",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
-    "electron": "electron",
+    electron: "electron",
     yargs: "yargs",
 };
 const _externalsCache = new Set();
@@ -65,11 +61,11 @@ if (nodeEnv !== "production") {
             return "commonjs " + moduleName;
         },
     });
-    externals = [externals,
-        function({ context, request, contextInfo, getResolve }, callback) {
+    externals = [
+        externals,
+        function ({ context, request, contextInfo, getResolve }, callback) {
             const isRDesk = request.indexOf("readium-desktop/") === 0;
             if (isRDesk) {
-
                 if (!_externalsCache.has(request)) {
                     console.log(`WEBPACK EXTERNAL (READER): READIUM-DESKTOP [${request}]`);
                 }
@@ -84,7 +80,7 @@ if (nodeEnv !== "production") {
                 // const isR2Alias = /^@r2-.+-js/.test(request);
 
                 const iSlash = request.indexOf("/");
-                const key = request.substr(0, (iSlash >= 0) ? iSlash : request.length);
+                const key = request.substr(0, iSlash >= 0 ? iSlash : request.length);
                 if (aliases[key]) {
                     request_ = request.replace(key, aliases[key]);
 
@@ -195,9 +191,7 @@ let config = Object.assign(
                     test: /\.(jsx?|tsx?)$/,
                     use: [
                         {
-                            loader: path.resolve(
-                                "./scripts/webpack-loader-scope-checker.js"
-                            ),
+                            loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
                             options: {
                                 forbid: "library",
                             },
@@ -206,9 +200,7 @@ let config = Object.assign(
                 },
                 {
                     test: /\.tsx$/,
-                    loader: useLegacyTypeScriptLoader
-                        ? "awesome-typescript-loader"
-                        : "ts-loader",
+                    loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
                     },
@@ -224,9 +216,7 @@ let config = Object.assign(
                             },
                         },
                         {
-                            loader: useLegacyTypeScriptLoader
-                                ? "awesome-typescript-loader"
-                                : "ts-loader",
+                            loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                             options: {
                                 transpileOnly: true, // checkTypeScriptSkip
                             },
@@ -240,9 +230,9 @@ let config = Object.assign(
                     //     esModule: false,
                     // },
                     test: /\.(png|jpe?g|gif|ico)$/,
-                    type: 'asset/resource',
+                    type: "asset/resource",
                     generator: {
-                        filename: 'assets/[name].[md5:hash].[ext]',
+                        filename: "assets/[name].[md5:hash].[ext]",
                     },
                 },
                 {
@@ -259,9 +249,9 @@ let config = Object.assign(
                     //     outputPath: "fonts",
                     // },
                     test: /\.(woff|woff2|ttf|eot|svg)$/,
-                    type: 'asset/resource',
+                    type: "asset/resource",
                     generator: {
-                        filename: 'assets/[name].[md5:hash].[ext]',
+                        filename: "assets/[name].[md5:hash].[ext]",
                     },
                 },
             ],
@@ -272,14 +262,7 @@ let config = Object.assign(
                 directory: __dirname,
                 publicPath: "/",
                 watch: {
-                    ignored: [
-                        /dist/,
-                        /docs/,
-                        /scripts/,
-                        /test/,
-                        /node_modules/,
-                        /external-assets/,
-                    ],
+                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/],
                 },
             },
             devMiddleware: {
@@ -304,17 +287,18 @@ let config = Object.assign(
             }),
             preprocessorDirectives.definePlugin,
         ],
-    }
+    },
 );
 
 if (!checkTypeScriptSkip) {
-    config.plugins.push(new ForkTsCheckerWebpackPlugin({
-        // measureCompilationTime: true,
-    }));
+    config.plugins.push(
+        new ForkTsCheckerWebpackPlugin({
+            // measureCompilationTime: true,
+        }),
+    );
 }
 
 if (nodeEnv !== "production") {
-
     const port = parseInt(preprocessorDirectives.portReader, 10);
     console.log("READER PORT: " + port);
     // Renderer config for DEV environment
@@ -327,14 +311,7 @@ if (nodeEnv !== "production") {
                 directory: __dirname,
                 publicPath: "/",
                 watch: {
-                    ignored: [
-                        /dist/,
-                        /docs/,
-                        /scripts/,
-                        /test/,
-                        /node_modules/,
-                        /external-assets/,
-                    ],
+                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/],
                 },
             },
             devMiddleware: {
@@ -365,9 +342,7 @@ if (nodeEnv !== "production") {
         use: cssLoaderConfig,
     });
 } else {
-
-    config.optimization =
-    {
+    config.optimization = {
         ...(config.optimization || {}),
         minimize: true,
         minimizer: [
@@ -388,16 +363,14 @@ if (nodeEnv !== "production") {
     //     minimize: false,
     // };
 
-    config.plugins.push(new MiniCssExtractPlugin({
-        filename: "styles_reader.css",
-    }));
+    config.plugins.push(
+        new MiniCssExtractPlugin({
+            filename: "styles_reader.css",
+        }),
+    );
 
-    config.plugins.push(
-        new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ })
-    );
-    config.plugins.push(
-        new webpack.IgnorePlugin({ resourceRegExp: /^react-axe$/ })
-    );
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^react-axe$/ }));
 
     // Minify and uglify in production environment
     //config.plugins.push(new UglifyJsPlugin());
