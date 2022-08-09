@@ -47,6 +47,12 @@ export const _APP_NAME = __APP_NAME__;
 // declare const __USE_HTTP_STREAMER__: boolean;
 // export const _USE_HTTP_STREAMER = __USE_HTTP_STREAMER__;
 
+declare const __TELEMETRY_URL__: string;
+export const _TELEMETRY_URL = __TELEMETRY_URL__;
+
+declare const __TELEMETRY_SECRET__: string;
+export const _TELEMETRY_SECRET = __TELEMETRY_SECRET__;
+
 declare const __NODE_ENV__: string;
 export const _NODE_ENV = __NODE_ENV__;
 
