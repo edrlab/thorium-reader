@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 
-import { IS_DEV, _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { _TELEMETRY_SECRET, _TELEMETRY_URL, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { call, select } from "typed-redux-saga";
 import { RootState } from "../states";
 import { version as osVersion } from "os";
@@ -17,10 +17,6 @@ import { app } from "electron";
 import { httpPost } from "readium-desktop/main/network/http";
 import { Headers } from "node-fetch";
 import { createHmac } from "crypto";
-
-const stagingServerUrl = "https://telemetry-staging.edrlab.org/" || "http://localhost:8080/";
-const telemetryUrl = IS_DEV ? stagingServerUrl : "https://telemetry.edrlab.org/"; // '/' at the end
-const secretKey = IS_DEV ? "hello world" : "secret key";
 
 interface ITelemetryInfo {
     os_version: string;
@@ -79,7 +75,7 @@ function* collectAndSave() {
     // so _APP_VERSION is N and version is N-1
     let fresh = false;
     if (_APP_VERSION !== version) {
-        debug("VERSION MISMATCH", _APP_VERSION, "vs", version);
+        debug("VERSION MISMATCH: ", _APP_VERSION, " !== ", version);
         fresh = true;
     }
 
@@ -127,11 +123,6 @@ const clearQueue = () => {
 
 const sendTelemetry = async (queue: ITelemetryInfo[]) => {
 
-    // if (!checkPrivateKey()) {
-    //     return false;
-    //     // no telemetry available
-    // }
-
     const data = queue;
     const timestamp = new Date().toISOString();
 
@@ -141,8 +132,10 @@ const sendTelemetry = async (queue: ITelemetryInfo[]) => {
     headers.append("Authorization", `EDRLAB ${telemetryHmac(body)}`);
     headers.append("Content-Type", "application/json");
 
+    debug("TELEMETRY: ", _TELEMETRY_URL + _APP_VERSION, JSON.stringify({timestamp, data}, null, 4));
+
     // http post request with HMAC
-    const res = await httpPost(telemetryUrl + _APP_VERSION, {
+    const res = await httpPost(_TELEMETRY_URL + _APP_VERSION, {
         headers,
         body,
     });
@@ -150,23 +143,20 @@ const sendTelemetry = async (queue: ITelemetryInfo[]) => {
     return res.isSuccess;
 };
 
-// const checkPrivateKey = () => {
-
-//     // test if hmac private key is available
-
-//     return true;
-// };
-
 const telemetryHmac = (body: string) => {
 
-    // find the key from fs or env-var // cf Daniel to hide it
-
-    const hmac = createHmac("sha1", secretKey);
+    const hmac = createHmac("sha1", _TELEMETRY_SECRET);
     hmac.update(body, "utf8");
     return hmac.digest("hex"); // length always 40
 };
 
 export function* collectSaveAndSend() {
+
+    // bail out on empty string
+    if (!_TELEMETRY_URL || !_TELEMETRY_SECRET) {
+        debug("TELEMETRY: N/A");
+        return;
+    }
 
     try {
         const queue = yield* call(collectAndSave);

@@ -33,6 +33,16 @@ const nodeModuleRelativeUrl = (isPackaging === "1") ?
 const distRelativeUrl = (isPackaging === "1") ?
     "dist" : "../dist";
 
+// "http://localhost:8080/";
+// MUST END WITH FORWARD SLASH!
+const telemetryUrl = isPackaging === "1"
+    ? (
+    process.env.THORIUM_TELEMETRY_URL ||
+        (isContinuousIntegrationDeploy ? "https://telemetry-staging.edrlab.org/" : "https://telemetry.edrlab.org/")
+    )
+    : "";
+const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
+
 // const USE_HTTP_STREAMER = false;
 
 const data = {
@@ -50,6 +60,8 @@ const data = {
     __RENDERER_READER_BASE_URL__: JSON.stringify(rendererReaderBaseUrl),
     __RENDERER_PDF_WEBVIEW_BASE_URL__: JSON.stringify(rendererPdfWebviewBaseUrl),
     __CONTINUOUS_INTEGRATION_DEPLOY__: JSON.stringify(isContinuousIntegrationDeploy),
+    __TELEMETRY_URL__: JSON.stringify(telemetryUrl),
+    __TELEMETRY_SECRET__: JSON.stringify(telemetrySecret),
     // __USE_HTTP_STREAMER__: JSON.stringify(USE_HTTP_STREAMER),
 };
 
