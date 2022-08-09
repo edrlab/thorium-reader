@@ -1,6 +1,6 @@
 {
   "name": "EDRLab.ThoriumReader",
-  "version": "2.1.0",
+  "version": "2.1.1-alpha.0",
   "description": "Desktop application to read ebooks",
   "keywords": [
     "readium",
