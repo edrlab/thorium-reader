@@ -223,7 +223,7 @@
         "lcpRightsPrint": "Kopiera utskrift",
         "lcpStart": "Start",
         "licenseOutOfDate": "Licensen har löpt ut",
-        "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltig",
+        "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltigt",
         "licenseSignatureInvalid": "Licensens signatur är ogiltig",
         "progression": {
             "title": "Status"
