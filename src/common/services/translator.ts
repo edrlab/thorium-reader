@@ -156,6 +156,7 @@ export const AvailableLanguages = {
     "it": "Italiano",
     "ru": "Русский",
     "ko": "한국어",
+    "sv": "Svenska",
     "ca": "Catalan",
     "gl": "Galician",
     "eu": "Basque (Euskadi)",
