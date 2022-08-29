@@ -17,7 +17,8 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { start } from "readium-desktop/main/start";
 import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlWithOpdsSchemeEventChannel } from "readium-desktop/main/event";
 import * as path from "path";
-import validator from "validator";
+import { isOpenUrl, setOpenUrl } from "./url";
+import { streamerOpenPublicationAndReturnManifestUrl } from "../redux/sagas/publication/openPublication";
 
 // Logger
 const debug = debug_("readium-desktop:cli:command");
@@ -184,17 +185,12 @@ export const mainCommand = async (argv: yargs.Arguments<{
             // pathArgv can be an url with deepLinkInvocation in windows
             // https://github.com/oikonomopo/electron-deep-linking-mac-win
             //
-            // handle opds://
+            // handle opds:// thorium:// https:// http://
             // to add the feed and open it
             const url = pathArgv[0];
+            if (isOpenUrl(url)) {
 
-            const urlIsValid = validator.isURL(url, {
-                protocols: ["http", "https", "opds", "thorium"],
-            });
-            if (urlIsValid) {
-
-                const openUrlChan = getOpenUrlWithOpdsSchemeEventChannel();
-                openUrlChan.put(url);
+                setOpenUrl(url);
                 return;
             }
 
