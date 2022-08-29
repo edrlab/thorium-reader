@@ -147,8 +147,7 @@ export async function importPublicationFromFS(
         default:
 
             debug("extension not recognized", ext);
-            r2Publication = undefined;
-            break;
+            throw new Error("Content-type from server not recognized : " + ext);
     }
 
     if (!r2Publication) {
