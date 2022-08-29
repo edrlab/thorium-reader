@@ -62,16 +62,16 @@ export class OpdsControls extends React.Component<IProps, undefined> {
         const m = findMimeTypeWithExtension(ADOBE_ADEPT_XML);
         const orderLinks = (links: IOpdsLinkView[]) => {
             return Array.from(links).sort((a, b) => {
-                if (a.properties.indirectAcquisitionType === m
-                    && b.properties.indirectAcquisitionType === m) {
+                if (a.properties?.indirectAcquisitionType === m
+                    && b.properties?.indirectAcquisitionType === m) {
                         return 0;
                 }
-                if (a.properties.indirectAcquisitionType === m
-                    && b.properties.indirectAcquisitionType !== m) {
+                if (a.properties?.indirectAcquisitionType === m
+                    && b.properties?.indirectAcquisitionType !== m) {
                         return 1;
                 }
-                if (a.properties.indirectAcquisitionType !== m
-                    && b.properties.indirectAcquisitionType === m) {
+                if (a.properties?.indirectAcquisitionType !== m
+                    && b.properties?.indirectAcquisitionType === m) {
                         return -1;
                 }
                 return 0;
