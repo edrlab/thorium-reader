@@ -22,7 +22,7 @@ import { cancel, cancelled, delay, take } from "redux-saga/effects";
 import { FixedTask, SagaGenerator } from "typed-redux-saga";
 import {
     call as callTyped, flush as flushTyped, fork as forkTyped, join as joinTyped, put as putTyped,
-    race as raceTyped,
+    race as raceTyped, take as takeTyped,
 } from "typed-redux-saga/macro";
 
 import { Channel, channel, eventChannel } from "@redux-saga/core";
@@ -99,8 +99,10 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
     yield* raceTyped([
         callTyped(function*() {
 
-            yield take(downloadActions.abort.ID);
-            yield cancel(downloadProcessTasks);
+            const action = yield* takeTyped(downloadActions.abort.build);
+            if (action.payload.id === id) {
+                yield cancel(downloadProcessTasks);
+            }
         }),
         callTyped(downloaderServiceProcessStatusProgressLoop, statusTaskChannel, id, href),
         joinTyped(downloadProcessTasks),
