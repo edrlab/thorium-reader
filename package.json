@@ -223,7 +223,8 @@
         "MimeType": "application/epub+zip"
       },
       "executableName": "thorium",
-      "category": "Office"
+      "category": "Office",
+      "icon": "resources/icons"
     },
     "mac": {
       "category": "public.app-category.developer-tools",
