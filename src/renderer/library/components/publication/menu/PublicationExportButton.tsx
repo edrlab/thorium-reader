@@ -12,7 +12,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationView: PublicationView;
 }
@@ -21,7 +21,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -34,23 +34,21 @@ class PublicationExportButton extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
-                <span>
-                    <button
-                        role="menuitem"
-                        onClick={this.onExport}
-                    >
-                        { __("catalog.export")}
-                    </button>
-                </span>
+            <button
+                role="menuitem"
+                onClick={this.onExport}
+            >
+                { __("catalog.export")}
+            </button>
         );
     }
 
     private onExport = () => {
         const publicationView = this.props.publicationView;
         apiAction("publication/exportPublication", publicationView).catch((error) => {
-            console.error(`Error to fetch publication/exportPublication`, error);
+            console.error("Error to fetch publication/exportPublication", error);
         });
-    }
+    };
 }
 
 export default withTranslator(PublicationExportButton);

@@ -10,7 +10,7 @@ import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "READER_SET_LOCATOR_IN_RENDERER";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPayload extends LocatorExtended {
 }
 

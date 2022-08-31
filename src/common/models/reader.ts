@@ -56,9 +56,11 @@ export interface ReaderConfigBooleans {
     readiumcss: boolean;
     sepia: boolean;
     enableMathJax: boolean;
+    reduceMotion: boolean;
     noFootnotes: boolean;
     darken: boolean;
     mediaOverlaysEnableSkippability: boolean;
+    ttsEnableSentenceDetection: boolean;
     mediaOverlaysEnableCaptionsMode: boolean;
     ttsEnableOverlayMode: boolean;
 }

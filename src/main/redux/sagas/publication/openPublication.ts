@@ -6,23 +6,36 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { lcpActions } from "readium-desktop/common/redux/actions/";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
+import {
+    streamerAddPublications, streamerLoadOrGetCachedPublication,
+    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "readium-desktop/main/streamer/streamerNoHttp";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, take } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+
+// import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:publication:open";
 const debug = debug_(filename_);
 
 export const ERROR_MESSAGE_ON_USERKEYCHECKREQUEST = "ERROR_MESSAGE_ON_USERKEYCHECKREQUEST";
+
+const convertDoc = async (doc: PublicationDocument, publicationViewConverter: PublicationViewConverter) => {
+    return await publicationViewConverter.convertDocumentToView(doc);
+};
 
 export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
@@ -94,17 +107,19 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                 yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, undefined));
 
             if (typeof unlockPublicationRes !== "undefined") {
-                const message = unlockPublicationRes === 11
-                    ? translator.translate("publication.expiredLcp")
-                    : lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
+                const message =
+                    // unlockPublicationRes === 11
+                    // ? translator.translate("publication.expiredLcp") :
+                    lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
 
                 try {
-                    const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+                    const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
                     // will call API.unlockPublicationWithPassphrase()
                     yield put(lcpActions.userKeyCheckRequest.build(
                         publicationView,
                         publicationView.lcp.textHint,
+                        publicationView.lcp.urlHint,
                         message,
                     ));
 
@@ -130,14 +145,15 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     // Start streamer if it's not already started
     const status = yield* selectTyped((s: RootState) => s.streamer.status);
-    const streamer = yield* callTyped(() => diMainGet("streamer"));
+
+    // const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     if (status === StreamerStatus.Stopped) {
         // Streamer is stopped, start it
         yield put(streamerActions.startRequest.build());
 
         // Wait for streamer
-        const streamerStartAction = yield take([
+        const streamerStartAction: Action<any> = yield take([
             streamerActions.startSuccess.ID,
             streamerActions.startError.ID,
         ]);
@@ -152,13 +168,19 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         }
     }
 
-    const manifestPaths = streamer.addPublications([epubPath]);
+    // const manifestPaths = _USE_HTTP_STREAMER ?
+    //     streamer.addPublications([epubPath]) :
+    //     streamerAddPublications([epubPath]);
+    const manifestPaths = streamerAddPublications([epubPath]);
 
     let r2Publication: R2Publication;
     try {
-        r2Publication = yield* callTyped(
-            () => streamer.loadOrGetCachedPublication(epubPath),
-        );
+        // if (_USE_HTTP_STREAMER) {
+        //     r2Publication = yield* callTyped(() => streamer.loadOrGetCachedPublication(epubPath));
+        // } else {
+        //     r2Publication = yield* callTyped(() => streamerLoadOrGetCachedPublication(epubPath));
+        // }
+        r2Publication = yield* callTyped(() => streamerLoadOrGetCachedPublication(epubPath));
     } catch (error) {
 
         throw error;
@@ -174,18 +196,22 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                 yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, undefined));
 
             if (typeof unlockPublicationRes !== "undefined") {
-                const message = unlockPublicationRes === 11 ?
-                    translator.translate("publication.expiredLcp") :
+                const message =
+                    // unlockPublicationRes === 11 ?
+                    // translator.translate("publication.expiredLcp") :
                     lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
                 debug(message);
 
                 try {
-                    const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+                    const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
                     // will call API.unlockPublicationWithPassphrase()
                     yield put(lcpActions.userKeyCheckRequest.build(
                         publicationView,
                         r2Publication.LCP.Encryption.UserKey.TextHint,
+                        {
+                            href: r2Publication.LCP?.Links?.find((l) => l.Rel === "hint")?.Href,
+                        },
                         message,
                     ));
 
@@ -201,7 +227,11 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         }
     }
 
-    const manifestUrl = streamer.serverUrl() + manifestPaths[0];
+    // const manifestUrl = _USE_HTTP_STREAMER ?
+    //     streamer.serverUrl() + manifestPaths[0] :
+    //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${manifestPaths[0]}`;
+    const manifestUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${manifestPaths[0]}`;
+
     debug(pubId, " streamed on ", manifestUrl);
 
     // add in reducer

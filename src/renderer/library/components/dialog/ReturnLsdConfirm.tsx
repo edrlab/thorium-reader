@@ -5,11 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -19,14 +22,14 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -45,16 +48,24 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
 
         const { __, closeDialog } = this.props;
         return (
-            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
-                <div>
-                    <p>
-                        {__("dialog.return")}
-                        <span>{this.props.publicationView.title}</span>
-                    </p>
-                    <div>
-                        <button onClick={this.remove}>{__("dialog.yes")}</button>
-                        <button className={styles.primary} onClick={closeDialog}>{__("dialog.no")}</button>
+            <Dialog
+                open={true}
+                close={closeDialog}
+                title={__("publication.returnButton")}
+            >
+                <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
+                    <div className={stylesGlobal.w_50}>
+                        <p><strong>{__("dialog.return")}</strong></p>
+                        <p>{this.props.publicationView.title}</p>
                     </div>
+                </div>
+                <div className={stylesModals.modal_dialog_footer}>
+                    <button className={stylesButtons.button_primary} onClick={closeDialog}>
+                        {this.props.__("dialog.no")}
+                    </button>
+                    <button className={stylesButtons.button_primary} onClick={this.remove}>
+                        {this.props.__("dialog.yes")}
+                    </button>
                 </div>
             </Dialog>
         );
@@ -64,7 +75,7 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
         e.preventDefault();
         apiAction("lcp/returnPublication", this.props.publicationView.identifier)
         .catch((error) => {
-            console.error(`Error API lcp/returnPublication`, error);
+            console.error("Error API lcp/returnPublication", error);
         });
         this.props.closeDialog();
     }

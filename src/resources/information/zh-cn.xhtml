@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn" xml:lang="zh-cn">
+    <head>
+        <title>关于Thorium阅读器</title>
+        <style>
+            body {
+                font-family: "Arial", sans-serif;
+            }
+            p,
+            ul {
+                margin: 15px 0;
+            }
+            ul.nobullet {
+                list-style-type: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>关于Thorium阅读器</h1>
+
+        <h2>软件介绍</h2>
+
+        <p>Thorium阅读器是适用于Windows 10，MacOS和Linux平台的专用阅读软件。</p>
+        <p>
+            这款<a href="https://edrlab.org">EDRLab</a>软件目前正处于持续开发过程中，
+            旨在为访问EPUB出版物，PDF文档，有声书，可视化叙述读物，包括可选性地受到
+            <a href="https://edrlab.org/readium-lcp">LCP DRM</a>（DRM指数字版权管理） 保护的出版物提供参考。
+        </p>
+        <p>本软件已翻译为多种语言；得益于社区的帮助，软件的每个版本都可提供新的语言。</p>
+        <p>我们也付出了巨大的努力使Thorium阅读器具备针对视力障碍和阅读障碍人群的强大无障碍功能。</p>
+        <p>本软件完全免费，无广告，也无隐私数据泄露。</p>
+        <p>它是重度阅读者、图书馆读者以及在校学生的完美阅读工具。</p>
+
+        <h2>帮助</h2>
+
+        <p>
+            在线的:
+            <a href="https://www.edrlab.org/software/thorium-reader/doc/"
+                >https://www.edrlab.org/software/thorium-reader/doc/</a
+            >
+        </p>
+
+        <h2>支持的出版物格式</h2>
+
+        <p>
+            <b>EPUB2</b>: 这是一种旧格式，只适合于基础性电子书。文本内容采用XHTML1格式排版，
+            并且不支持任何多媒体功能。如果格式正确，EPUB2电子书仍可供访问。
+        </p>
+        <p>
+            <b>EPUB3</b>: 这是21世纪推荐使用的电子书格式。文本内容采用(X)HTML5格式排版，
+            可以创建固定布局电子书和富文本电子书，并具有良好的无障碍功能设计。
+        </p>
+        <p>
+            <b>PDF</b>: 尽管以缺乏灵活性（无法重排）和无障碍功能著称，许多电子书仍然只提供PDF版本，
+            特别是在公共图书馆中。
+        </p>
+        <p>
+            <b>有声书</b>: 一种
+            <a href="https://www.w3.org/TR/audiobooks/">有声书的标准格式</a>
+            已于2020年由W3C出版工作组设计完成，EDRLab参与了此工作组。Thorium当前支持的
+            <a href="https://www.w3.org/TR/lpf/">打包(LPF)</a>有声书格式, 有望在不久的将来得到电子书商的广泛应用。
+        </p>
+        <p>
+            <b>可视化叙述读物</b>:
+            EDRLab已为连环漫画、日漫、网络漫画和其他风格的数字作品设计出一种基于图像序列的标准格式。 这种格式名为<a
+                href="https://www.edrlab.org/open-standards/"
+                >Divina</a
+            >, 目前仍处于实验阶段, 我们希望出版商能在2021年以后扩大其使用范围。
+        </p>
+
+        <h2>无障碍功能</h2>
+
+        <p>
+            Thorium阅读器是为所有人设计的，包括盲人和具有其他阅读障碍的人士。 本软件与JAWS, NVDA, Narrator and
+            VoiceOver等屏幕阅读器兼容，
+            并且包含一个带有可视高亮显示的大声朗读功能。Thorium阅读器能够通过鼠标或键盘使用，
+            可以配置键盘快捷键。书籍的显示方式，包括颜色、文字大小、
+            文字间距、字体和页面布局等都可根据使用者的需要进行个性化设置。
+        </p>
+
+        <p>
+            EDRLab与<a href="https://daisy.org/">DAISY联盟</a>保持着紧密联系。
+            与参与本软件的设计与测试工作的阅读障碍人士一道, 我们正使Thorium阅读器成为具有最强大无障碍功能的阅读软件。
+        </p>
+
+        <h2>OPDS目录</h2>
+
+        <p>
+            众多公共图书馆与出版商都采用
+            <a href="https://opds.io/">OPDS</a>作为在网络上发布其书籍目录的标准方式。
+        </p>
+        <p>
+            使用OPDS，图书馆或书商也可发布读者或顾客的个人书架，例如用户已获取的电子书，
+            以及可以立即下载和阅读的电子书。
+        </p>
+        <p>
+            Thorium阅读器可以浏览OPDS1和OPDS2目录。它还支持若干种符合OPDS标准的身份验证机制，
+            因此可以允许用户访问他们的个人书架。
+        </p>
+
+        <h2>Readium LCP数字版权管理</h2>
+
+        <img src="./images/lcp-user.png" alt="LCP user reading" />
+
+        <p>
+            Thorium阅读器支持最初由Readium基金会设计的
+            <a href="https://www.edrlab.org/readium-lcp/">Readium LCP数字版权管理</a>, 这一
+            <a href="https://readium.org/lcp-specs/">数字版权管理的具体规范可以公开查阅</a>, 以下是一份ISO技术规范，参考
+            <a href="https://www.iso.org/standard/79485.html">ISO 23078-2</a>。
+        </p>
+
+        <p>
+            LCP已被全世界众多公共图书馆、大学 以及书商所采用 (<a
+                href="https://www.edrlab.org/readium-lcp/certified-apps-servers/"
+                >列表见此</a
+            >)。
+        </p>
+        <p>
+            我们鼓励世界范围内的出版部门采用LCP保护电子书免于过度分享，同时为用户提供流畅的阅读体验，
+            并保持对于书籍内容的适当访问。 如果您的组织有兴趣采用LDP， 请<a href="https://www.edrlab.org/contact/"
+                >联系EDRLab</a
+            >。
+        </p>
+
+        <h2>许可</h2>
+
+        <p>
+            欧洲数字阅读实验室（EDRLab）2019版权所有。保留一切权利。
+            根据一个或多个贡献者许可协议向Readium基金会颁发许可证。
+        </p>
+
+        <p>此应用程序是开源的，在BSD3许可证下发布。它基于开源Readium桌面工具包。</p>
+
+        <h2>谁开发了此应用</h2>
+
+        <p>Thorium目前由下列人员开发:</p>
+
+        <ul class="nobullet">
+            <li>Daniel Weck，开发主管。</li>
+            <li>Pierre Leroux，node.js开发人员。</li>
+        </ul>
+
+        <p>其他几位帮助Thorium走到今天的开发人员:</p>
+
+        <ul class="nobullet">
+            <li>Simon Le Roux，UI设计师。</li>
+            <li>Cyrille Lebeaupin，noop.fr首席执行官，高级开发人员。</li>
+            <li>Jiminy Panoz，Readium CSS发明人。</li>
+            <li>Léo Stéfani，node.js及React开发人员。</li>
+            <li>Manuel Lagrand，intern及node.js开发人员。</li>
+        </ul>
+
+        <p>本项目由EDRLab首席技术官Laurent Le Meur担任主管。</p>
+
+        <h2>谁在赞助此应用</h2>
+
+        <p>
+            EDRLab是一个非营利性组织。我们的预算基本来自于本组织成员。EDRLab创始于法国，
+            目前已拥有来自欧洲、北美洲、南美洲与亚洲的总计60位成员。
+        </p>
+
+        <p>没有这些支持，本项目将无从开展:</p>
+        <p>
+            1- 本组织创始成员的财务承担: 埃迪蒂出版集团（Editis）, 阿歇特出版集团（Hachette Livre）, Magrigall出版集团,
+            达高集团（Media-Participations）, Cercle de la Librarie, 法国全国出版协会（Syndicat national de
+            l'Edition）。他们明白，为开放标准和开源软件提供融资， 是为出版行业创造一个开放和创新的市场的最佳方式。
+        </p>
+
+        <p>2- 来自以下法国公共组织的财政资助:</p>
+        <ul>
+            <li>法国国家图书中心（CNL，Centre National du livre, France）</li>
+            <li>法国文化部（Ministère de la Culture, France）</li>
+        </ul>
+
+        <p>3- 因添加特定功能而引发兴趣的EDRLab成员的额外资助:</p>
+        <ul>
+            <li>Fênix Editorial, Brazil</li>
+            <li>Canadian Electronic library, Canada</li>
+            <li>MLOL / Horizons Unlimited, Italy</li>
+            <li>Lyrasis, USA</li>
+        </ul>
+
+        <p><img src="./images/piggy-bank.jpeg" alt="Piggy Bank" /></p>
+        <p>
+            您也可以通过
+            <a href="https://www.edrlab.org/become-a-member/">成为EDRLab成员</a>帮助Thorium阅读器持续改进。
+        </p>
+        <p>
+            或者, 您可以通过
+            <a href="https://github.com/sponsors/edrlab">Github赞助商</a>
+            "piggy-bank"向EDRLab捐款, 接受小额按月捐赠。
+        </p>
+    </body>
+</html>

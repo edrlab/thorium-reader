@@ -17,7 +17,7 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     opdsPublicationView: IOpdsPublicationView;
 }
@@ -25,7 +25,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -56,7 +56,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
     private displayPublicationInfo = (e: TMouseEventOnButton) => {
         e.preventDefault();
         this.props.displayPublicationInfo();
-    }
+    };
 }
 
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {

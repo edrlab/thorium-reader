@@ -1,0 +1,328 @@
+/*
+=-=-= global.css => './partials/variables.css'
+*/
+@import './partials/variables.css';
+
+/*
+=-=-= global.css => './partials/mixins.css'
+*/
+@import './partials/mixins.css';
+
+/*
+=-=-= global.css => './partials/focus.css'
+*/
+@import './partials/focus.css';
+
+/*
+=-=-= global.css => './components/blocks.css'
+*/
+
+/*
+@import__ './components/blocks.css';
+*/
+
+/*
+=-=-= global.css => './components/buttons.css'
+*/
+
+/*
+@import__ './components/buttons.css';
+*/
+
+/*
+=-=-= global.css => './components/breadcrumb.css'
+*/
+
+/*
+@import__ './components/breadcrumb.css';
+*/
+
+/*
+=-=-= global.css => './components/columns.css'
+*/
+
+/*
+@import__ './components/columns.css';
+*/
+
+/*
+=-=-= global.css => './components/dropdown.css'
+*/
+
+/*
+@import__ './components/dropdown.css';
+*/
+
+/*
+=-=-= global.css => './components/grids.css'
+*/
+
+/*
+@import__ './components/grids.css';
+*/
+
+/*
+=-=-= global.css => './components/images.css'
+*/
+
+/*
+@import__ './components/images.css';
+*/
+
+/*
+=-=-= global.css => './components/inputs.css'
+*/
+
+/*
+@import__ './components/inputs.css';
+*/
+
+/*
+=-=-= global.css => './components/modals.css'
+*/
+
+/*
+@import__ './components/modals.css';
+*/
+
+/*
+=-=-= global.css => './components/publications.css'
+*/
+
+/*
+@import__ './components/publications.css';
+*/
+
+/*
+=-=-= global.css => './components/slider.css'
+*/
+
+/*
+@import__ './components/slider.css';
+*/
+
+/*
+=-=-= global.css => './components/tags.css'
+*/
+
+/*
+@import__ './components/tags.css';
+*/
+
+/*
+=-=-= global.css => './components/toasts.css'
+*/
+
+/*
+@import__ './components/toasts.css';
+*/
+
+/*
+=-=-= global.css
+*/
+
+/* ============ GLOBAL ELEMENTS =============== */
+
+:root {
+  user-select: none;
+}
+
+*,
+*::after,
+*::before {
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font: 1.1rem "Open Sans", sans-serif;
+  background: #fbfbfb;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+.main {
+  width: calc(100% - 120px);
+  padding: 30px 60px;
+  overflow-y: auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 57px;
+}
+
+nav + nav + .main {
+  top: 123px;
+}
+
+nav + nav + .breadcrumb + .main {
+  top: 181px;
+}
+
+/* ============== FAST CLASS ================= */
+
+.anchor_link {
+  position: absolute;
+  display: block;
+  width: 1px;
+  height: 1px;
+  top: 0;
+  left: 0;
+  opacity: 0.6;
+  background: transparent;
+  overflow: hidden;
+  color: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.rotate180 {
+  transform: rotate(180deg);
+}
+
+.fw_bold {
+  font-weight: 700;
+}
+
+.text_right {
+  text-align: right;
+}
+
+.p_0 {
+  padding: 0;
+}
+
+.m_0 {
+  margin: 0;
+}
+
+.mr_10 {
+  margin-right: 10px;
+}
+
+.mt_10 {
+  margin-top: 10px;
+}
+
+.mt_30 {
+  margin-top: 30px;
+}
+
+.mb_20 {
+  margin-bottom: 20px;
+}
+
+.mb_30 {
+  margin-bottom: 30px;
+}
+
+.my_10 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.w_50 {
+  width: 50%;
+}
+
+.color_red {
+  color: red;
+}
+
+.d_none {
+  display: none;
+}
+
+.d_flex,
+.justify_content_between,
+.align_items_center,
+.flex_wrap {
+  display: flex;
+}
+
+.justify_content_between {
+  justify-content: space-between;
+}
+
+.align_items_center {
+  align-items: center;
+}
+
+.flex_wrap {
+  flex-wrap: wrap;
+}
+
+.flex_none {
+  flex: none;
+}
+
+.flex_1 {
+  flex: 1;
+}
+
+.text_center {
+  text-align: center;
+}
+
+.visibility_visible {
+  visibility: visible;
+}
+
+.visibility_hidden {
+  visibility: hidden;
+}
+
+/* ============== NAVIGATION ================= */
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  border-bottom: 3px solid var(--color-light-grey);
+
+  & h2 {
+    position: relative;
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  & h3 {
+    position: relative;
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.27rem;
+  }
+}
+
+.heading_link a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid var(--color-light-grey);
+  position: relative;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  font-size: 1.5rem;
+  border-radius: 5px 5px 0 0;
+  padding: 10px 0 5px 0;
+  text-decoration: none;
+}
+
+/* List: ul / ol / li */
+
+li.no_list_style {
+  list-style: none;
+}
+
+.___DEBUG___GLOBAL_CSS {
+  display: none;
+}

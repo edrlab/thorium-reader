@@ -5,13 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { resolve } from "url";
-
-export const urlPathResolve = (from: string, to: string) =>
+export const urlPathResolve = (base: string, href: string): string =>
     (
-        to
-        && !/^https?:\/\//.exec(to)
-        && !/^data:\/\//.exec(to)
+        href
+        && !/^https?:\/\//.test(href)
+        && !/^data:\/\//.test(href)
     )
-        ? resolve(from, to)
-        : to;
+        ? (new URL(href, base)).toString()
+        : href;

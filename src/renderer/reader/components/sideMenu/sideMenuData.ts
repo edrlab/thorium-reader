@@ -10,4 +10,5 @@ export interface SectionData {
     content: React.ReactElement | React.ReactElement[]; // JSX.Element;
     disabled?: boolean;
     notExtendable?: boolean;
+    skipMaxHeight?: boolean;
 }

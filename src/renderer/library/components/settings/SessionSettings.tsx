@@ -8,7 +8,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -18,14 +19,14 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import SVG from "../../../common/components/SVG";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
@@ -50,45 +51,49 @@ class SessionSettings extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <>
-                <h3>{__("settings.session.title")}</h3>
-                <form className={styles.languages_list}>
-                    <div>
-                        <input
-                            id={"session-true"}
-                            type="radio"
-                            lang={__("settings.session.yes")}
-                            name="language"
-                            onChange={() => this.setSession(true)}
-                            checked={this.state.sessionEnabled === true}
-                        />
-                        <label htmlFor={"session-true"}>
-                            {
-                                this.state.sessionEnabled === true && <SVG svg={DoneIcon} ariaHidden />
-                            }
-                            {
-                                __("settings.session.yes")
-                            }
-                        </label>
+                <section>
+                    <div className={stylesGlobal.heading}>
+                        <h2>{__("settings.session.title")}</h2>
                     </div>
-                    <div>
-                        <input
-                            id={"session-false"}
-                            type="radio"
-                            lang={__("settings.session.no")}
-                            name="language"
-                            onChange={() => this.setSession(false)}
-                            checked={this.state.sessionEnabled === false}
-                        />
-                        <label htmlFor={"session-false"}>
-                            {
-                                this.state.sessionEnabled === false && <SVG svg={DoneIcon} ariaHidden />
-                            }
-                            {
-                                __("settings.session.no")
-                            }
-                        </label>
-                    </div>
-                </form>
+                    <form className={stylesInputs.radio_list}>
+                        <div>
+                            <input
+                                id={"session-true"}
+                                type="radio"
+                                lang={__("settings.session.yes")}
+                                name="language"
+                                onChange={() => this.setSession(true)}
+                                checked={this.state.sessionEnabled === true}
+                            />
+                            <label htmlFor={"session-true"}>
+                                {
+                                    this.state.sessionEnabled === true && <SVG svg={DoneIcon} ariaHidden />
+                                }
+                                {
+                                    __("settings.session.yes")
+                                }
+                            </label>
+                        </div>
+                        <div>
+                            <input
+                                id={"session-false"}
+                                type="radio"
+                                lang={__("settings.session.no")}
+                                name="language"
+                                onChange={() => this.setSession(false)}
+                                checked={this.state.sessionEnabled === false}
+                            />
+                            <label htmlFor={"session-false"}>
+                                {
+                                    this.state.sessionEnabled === false && <SVG svg={DoneIcon} ariaHidden />
+                                }
+                                {
+                                    __("settings.session.no")
+                                }
+                            </label>
+                        </div>
+                    </form>
+                </section>
             </>
         );
     }
@@ -97,7 +102,7 @@ class SessionSettings extends React.Component<IProps, IState> {
         apiAction("session/isEnabled")
             .then((sessionEnabled) => this.setState({ sessionEnabled }))
             .catch((error) => console.error("Error to fetch api publication/findAll", error));
-    }
+    };
 
     private setSession = async (bool: boolean) => {
         this.setState({ sessionEnabled: bool });
@@ -108,7 +113,7 @@ class SessionSettings extends React.Component<IProps, IState> {
 
             this.getSession();
         }
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {

@@ -38,6 +38,18 @@ const _defaults_ = Object.freeze({
         shift: false,
         key: "KeyI",
     }),
+    OpenReaderInfoWhereAmI: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyI",
+    }),
+    SpeakReaderInfoWhereAmI: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyK",
+    }),
 
     FocusMain: Object.freeze<TKeyboardShortcut>({
         alt: false,
@@ -63,6 +75,18 @@ const _defaults_ = Object.freeze({
         control: true,
         shift: false,
         key: "KeyN",
+    }),
+    FocusReaderNavigationTOC: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyN",
+    }),
+    FocusReaderGotoPage: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyP",
     }),
     FocusReaderSettings: Object.freeze<TKeyboardShortcut>({
         alt: false,
@@ -91,18 +115,30 @@ const _defaults_ = Object.freeze({
         shift: false,
         key: "KeyF",
     }),
-    // SearchNext: Object.freeze<TKeyboardShortcut>({
-    //     alt: false,
-    //     control: false,
-    //     shift: false,
-    //     key: "F3",
-    // }),
-    // SearchPrevious: Object.freeze<TKeyboardShortcut>({
-    //     alt: false,
-    //     control: false,
-    //     shift: true,
-    //     key: "F3",
-    // }),
+    SearchNext: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: false,
+        shift: false,
+        key: "F3",
+    }),
+    SearchPrevious: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: false,
+        shift: true,
+        key: "F3",
+    }),
+    SearchNextAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "KeyG",
+    }),
+    SearchPreviousAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyG",
+    }),
 
     NavigatePreviousOPDSPage: Object.freeze<TKeyboardShortcut>({
         alt: false,
@@ -189,6 +225,19 @@ const _defaults_ = Object.freeze({
         key: "PageDown",
     }),
 
+    NavigateToBegin: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Home",
+    }),
+    NavigateToEnd: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "End",
+    }),
+
     AudioPlayPause: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
@@ -205,6 +254,18 @@ const _defaults_ = Object.freeze({
         alt: false,
         control: true,
         shift: false,
+        key: "Digit3",
+    }),
+    AudioPreviousAlt: Object.freeze<TKeyboardShortcut>({
+        alt: true,
+        control: true,
+        shift: true,
+        key: "Digit1",
+    }),
+    AudioNextAlt: Object.freeze<TKeyboardShortcut>({
+        alt: true,
+        control: true,
+        shift: true,
         key: "Digit3",
     }),
     AudioStop: Object.freeze<TKeyboardShortcut>({

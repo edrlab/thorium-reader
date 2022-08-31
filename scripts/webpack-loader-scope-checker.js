@@ -1,7 +1,7 @@
 // const path = require('path');
 
 const { getOptions } = require("loader-utils");
-const validateOptions = require("schema-utils");
+const validate = require("schema-utils");
 
 const schema = {
     type: "object",
@@ -24,7 +24,7 @@ function handler(source) {
         }
     }
 
-    validateOptions(schema, options, "webpack-loader-scope-checker");
+    validate(schema, options, "webpack-loader-scope-checker");
 
     return source;
 }

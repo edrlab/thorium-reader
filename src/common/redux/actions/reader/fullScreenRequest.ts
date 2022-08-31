@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { ActionWithSender, WithSender } from "readium-desktop/common/models/sync";
-// import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "READER_FULLSCREEN_REQUEST";
 

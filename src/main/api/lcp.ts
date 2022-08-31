@@ -10,11 +10,10 @@ import { inject, injectable } from "inversify";
 import { ILcpApi } from "readium-desktop/common/api/interface/lcpApi.interface";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { readerActions } from "readium-desktop/common/redux/actions/";
-import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { LcpManager } from "readium-desktop/main/services/lcp";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import { PublicationViewConverter } from "../converter/publication";
 import { RootState } from "../redux/states";
@@ -32,19 +31,8 @@ export class LcpApi implements ILcpApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    @inject(diSymbolTable.translator)
-    private readonly translator!: Translator;
-
     @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
-
-    // import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-    // @inject(diSymbolTable["publication-storage"])
-    // private readonly publicationStorage!: PublicationStorage;
-
-    // import { Server } from "@r2-streamer-js/http/server";
-    // @inject(diSymbolTable.streamer)
-    // private readonly streamer!: Server;
 
     public async renewPublicationLicense(publicationIdentifier: string): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(
@@ -71,8 +59,9 @@ export class LcpApi implements ILcpApi {
                 await this.lcpManager.unlockPublication(publicationDocument, passphrase);
 
             if (typeof unlockPublicationRes !== "undefined") {
-                const message = unlockPublicationRes === 11 ?
-                    this.translator.translate("publication.expiredLcp") :
+                const message =
+                    // unlockPublicationRes === 11 ?
+                    // this.translator.translate("publication.expiredLcp") :
                     this.lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
                 debug(message);
 
@@ -81,12 +70,12 @@ export class LcpApi implements ILcpApi {
                 // tslint:disable-next-line: max-line-length
                 // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
                 // const r2PublicationJson = JSON.parse(r2PublicationStr);
-                // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+                // const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 // const epubPath = this.publicationStorage.getPublicationEpubPath(publicationView.identifier);
                 // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
 
-                const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
+                const publicationView = await this.publicationViewConverter.convertDocumentToView(publicationDocument);
                 if (!publicationView.lcp) {
                     debug("LCP !!?");
                     return;
@@ -103,6 +92,7 @@ export class LcpApi implements ILcpApi {
                     const action = lcpActions.userKeyCheckRequest.build(
                         publicationView,
                         publicationView.lcp.textHint, // r2Publication.LCP.Encryption.UserKey.TextHint,
+                        publicationView.lcp.urlHint,
                         message,
                     );
                     this.store.dispatch(action);

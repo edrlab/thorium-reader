@@ -11,15 +11,16 @@ import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import {
     closeProcessLock, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi,
 } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
-import { all, call, delay, put, spawn } from "redux-saga/effects";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
+import { all, call, delay, put, spawn, take } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { IWinSessionReaderState } from "../../states/win/session/reader";
 import { getAppActivateEventChannel } from "../getEventChannel";
@@ -33,7 +34,7 @@ debug("_");
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
 // windows open.
-function* appActivate() {
+export function* appActivate() {
 
     if (closeProcessLock.isLock) {
 
@@ -43,30 +44,42 @@ function* appActivate() {
         const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
 
         // if there is no libWin, so must be recreated
-        if (libWinState.browserWindowId && libWinState.identifier) {
-            const libWin = getLibraryWindowFromDi();
+        if (
+            libWinState.browserWindowId &&
+            libWinState.identifier
+        ) {
 
-            if (libWin.isMinimized()) {
-                libWin.restore();
-                libWin.show();
-            } else if (libWin.isVisible()) {
-                libWin.show();
-            } else {
+            const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
-                const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-                const readersArray = ObjectKeys(readers);
-                const readerWin = getReaderWindowFromDi(readersArray[0]);
+            if (!libWin?.isDestroyed()) {
 
-                if (readerWin.isMinimized()) {
-                    readerWin.restore();
+                if (libWin.isMinimized()) {
+                    libWin.restore();
+                    libWin.show();
+                } else if (libWin.isVisible()) {
+                    libWin.show();
+                } else {
+
+                    // @todo useless ?
+
+                    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+                    const readersArray = ObjectKeys(readers);
+                    const readerWin = getReaderWindowFromDi(readersArray[0]);
+
+                    if (readerWin.isMinimized()) {
+                        readerWin.restore();
+                    }
+                    readerWin.show();
                 }
-                readerWin.show();
+
+                return ;
             }
-
-        } else {
-
-            yield put(winActions.library.openRequest.build());
         }
+
+        yield put(winActions.library.openRequest.build());
+
+        // wait
+        yield take(winActions.library.openSucess.build);
     }
 
 }
@@ -147,7 +160,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
 
 function* winClose(_action: winActions.library.closed.TAction) {
 
-    debug(`library -> winClose`);
+    debug("library -> winClose");
 
     const library = getLibraryWindowFromDi();
     let value = 0; // window.close() // not saved session by default

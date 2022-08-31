@@ -9,23 +9,22 @@ import * as debug_ from "debug";
 import { screen } from "electron";
 import * as ramda from "ramda";
 import { ReaderMode } from "readium-desktop/common/models/reader";
+import { Action } from "readium-desktop/common/models/redux";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
-} from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { types } from "util";
 
 import {
@@ -36,78 +35,6 @@ import {
 const filename_ = "readium-desktop:main:saga:reader";
 const debug = debug_(filename_);
 debug("_");
-
-// const READER_CONFIG_ID = "reader";
-
-// export function* readerConfigSetRequestWatcher(): SagaIterator {
-//     while (true) {
-//         // Wait for save request
-//         const action = yield* takeTyped(readerActions.configSetRequest.build);
-
-//         const configValue = action.payload.config;
-//         const config: Omit<ConfigDocument<ReaderConfig>, keyof Timestampable> = {
-//             identifier: READER_CONFIG_ID,
-//             value: configValue,
-//         };
-
-//         // Get reader settings
-//         const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
-
-//         try {
-//             yield call(() => configRepository.save(config));
-//             yield put(readerActions.configSetSuccess.build(configValue));
-//         } catch (error) {
-//             yield put(readerActions.configSetError.build(error));
-//         }
-//     }
-// }
-
-// export function* readerConfigInitWatcher(): SagaIterator {
-//     // Wait for app initialization
-//     yield take(appActions.initSuccess.ID);
-
-//     const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
-
-//     try {
-//         const readerConfigDoc = yield* callTyped(() => configRepository.get(READER_CONFIG_ID));
-
-//         // Returns the first reader configuration available in database
-//         yield put(readerActions.configSetSuccess.build(readerConfigDoc.value));
-//     } catch (error) {
-//         yield put(readerActions.configSetError.build(error));
-//     }
-// }
-
-// export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
-//     while (true) {
-//         // Wait for app initialization
-//         // tslint:disable-next-line: max-line-length
-//         const action = yield* takeTyped(readerActions.saveBookmarkRequest.build);
-
-//         const bookmark = action.payload.bookmark;
-
-//         // Get bookmark manager
-//         const locatorRepository = diMainGet("locator-repository");
-
-//         try {
-//             const locator: ExcludeTimestampableWithPartialIdentifiable<LocatorDocument> = {
-//                 // name: "",
-//                 locator: {
-//                     href: bookmark.docHref,
-//                     locations: {
-//                         cssSelector: bookmark.docSelector,
-//                     },
-//                 },
-//                 publicationIdentifier: bookmark.publicationIdentifier,
-//                 locatorType: LocatorType.LastReadingLocation,
-//             };
-//             yield call(() => locatorRepository.save(locator));
-//             yield put(readerActions.saveBookmarkSuccess.build(bookmark));
-//         } catch (error) {
-//             yield put(readerActions.saveBookmarkError.build(error));
-//         }
-//     }
-// }
 
 function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TAction) {
 
@@ -125,7 +52,7 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
 function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libWin) {
+    if (libWin && !libWin.isDestroyed()) {
 
         // try-catch to do not trigger an error message when the winbound is not handle by the os
         let libBound: Electron.Rectangle;
@@ -182,20 +109,11 @@ function* getWinBound(publicationIdentifier: string | undefined) {
         (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
     )) as Electron.Rectangle | undefined;
 
-    debug("reader[publicationIdentifier]?.winBound", winBound);
-    if (winBound) {
-        normalizeRectangle(winBound);
-    }
+    winBound = normalizeRectangle(winBound);
+    debug(`reader[${publicationIdentifier}]?.winBound}`, winBound);
 
-    const winBoundArray = [];
+    const winBoundArray = readerArray.map((reader) => reader.windowBound);
     winBoundArray.push(library.windowBound);
-    readerArray.forEach((reader) => {
-        if (reader) {
-            debug("reader.windowBound", reader.windowBound);
-            normalizeRectangle(reader.windowBound);
-            winBoundArray.push(reader.windowBound);
-        }
-    });
     const winBoundAlreadyTaken = !winBound || !!winBoundArray.find((bound) => ramda.equals(winBound, bound));
 
     if (
@@ -233,12 +151,12 @@ function* getWinBound(publicationIdentifier: string | undefined) {
             );
             debug("winBoundWithOffset", winBoundWithOffset);
 
-            winBound = ramda.uniq(winBoundWithOffset)[0];
+            [winBound] = ramda.uniq(winBoundWithOffset);
             debug("winBound", winBound);
-            normalizeRectangle(winBound);
+            winBound = normalizeRectangle(winBound);
 
         } else {
-            winBound = library.windowBound;
+            winBound = normalizeRectangle(library.windowBound);
         }
     }
 
@@ -336,7 +254,7 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
     yield call(readerCloseRequest, action.sender.identifier);
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libWin) {
+    if (libWin && !libWin.isDestroyed()) {
 
         const winBound = yield* selectTyped(
             (state: RootState) => state.win.session.library.windowBound,
@@ -372,7 +290,7 @@ function* readerCloseRequest(identifier?: string) {
         }
     }
 
-    const streamerAction = yield take([
+    const streamerAction: Action<any> = yield take([
         streamerActions.publicationCloseSuccess.ID,
         streamerActions.publicationCloseError.ID,
     ]);

@@ -16,6 +16,7 @@ export const LocatorExtendedWithLocatorOnly = (locator: R2Locator): LocatorExten
     selectionIsNew: undefined,
     docInfo: undefined,
     epubPage: undefined,
+    headings: undefined,
     locator,
 });
 

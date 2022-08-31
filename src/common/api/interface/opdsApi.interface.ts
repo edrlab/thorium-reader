@@ -7,8 +7,9 @@
 
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
-    IOpdsFeedView, IOpdsLinkView, THttpGetOpdsResultView,
+    IOpdsFeedView, IOpdsLinkView,
 } from "readium-desktop/common/views/opds";
+import { SagaGenerator } from "typed-redux-saga";
 
 // quite useless
 export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;
@@ -16,33 +17,21 @@ export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;
 export interface IOpdsApi {
     getFeed: (
         identifier: string,
-    ) => Promise<IOpdsFeedView>;
+    ) => SagaGenerator<IOpdsFeedView>;
     deleteFeed: (
         identifier: string,
-    ) => Promise<void>;
+    ) => SagaGenerator<void>;
     findAllFeeds: (
-    ) => Promise<IOpdsFeedView[]>;
+    ) => SagaGenerator<IOpdsFeedView[]>;
     addFeed: (
         data: OpdsFeed,
-    ) => Promise<IOpdsFeedView>;
-    updateFeed: (
-        data: OpdsFeed,
-    ) => Promise<IOpdsFeedView>;
-    browse: (
-        url: string,
-    ) => Promise<THttpGetOpdsResultView>;
+    ) => SagaGenerator<IOpdsFeedView>;
+    // updateFeed: (
+    //     data: OpdsFeed,
+    // ) => Promise<IOpdsFeedView>;
     getUrlWithSearchLinks: (
         searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch,
-    ) => Promise<string | undefined>;
-    oauth: (
-        opdsUrl: string,
-        login: string | undefined,
-        password: string | undefined,
-        oAuthUrl: string,
-        oAuthRefreshUrl: string | undefined,
-        OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
-        OPDS_AUTH_ENCRYPTION_IV_HEX: string,
-        refreshToken?: string) => Promise<boolean>;
+    ) => SagaGenerator<string | undefined>;
 }
 
 export interface IOpdsModuleApi {
@@ -50,8 +39,6 @@ export interface IOpdsModuleApi {
     "opds/deleteFeed": IOpdsApi["deleteFeed"];
     "opds/findAllFeeds": IOpdsApi["findAllFeeds"];
     "opds/addFeed": IOpdsApi["addFeed"];
-    "opds/updateFeed": IOpdsApi["updateFeed"];
-    "opds/browse": IOpdsApi["browse"];
+    // "opds/updateFeed": IOpdsApi["updateFeed"];
     "opds/getUrlWithSearchLinks": IOpdsApi["getUrlWithSearchLinks"];
-    "opds/oauth": IOpdsApi["oauth"];
 }

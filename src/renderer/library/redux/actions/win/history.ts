@@ -6,12 +6,12 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { TLocationRouter } from "readium-desktop/renderer/library/routing";
+import { Location } from "history";
 
 export const ID = "HISTORY";
 
-export function build(location: TLocationRouter):
-    Action<typeof ID, TLocationRouter> {
+export function build(location: Location):
+    Action<typeof ID, Location> {
 
     return {
         type: ID,

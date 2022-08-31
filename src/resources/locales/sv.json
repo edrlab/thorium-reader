@@ -1,0 +1,401 @@
+{
+    "accessibility": {
+        "bookMenu": "Meny",
+        "closeDialog": "Stäng",
+        "importFile": "Importera publikation",
+        "leftSlideButton": "Dra listan åt vänster",
+        "mainContent": "huvudinnehåll",
+        "rightSlideButton": "Dra listan åt höger",
+        "searchBook": "Sök på titel",
+        "skipLink": "Hoppa till innehåll",
+        "toolbar": "vektygsfält"
+    },
+    "apiapp": {
+        "noLibraryFound": "Inget bibliotek hittades ({{- name}})"
+    },
+    "app": {
+        "edit": {
+            "copy": "Kopiera",
+            "cut": "Klipp ut",
+            "paste": "Klistra in",
+            "redo": "Gör om",
+            "selectAll": "Markera allt",
+            "title": "Redigera",
+            "undo": "Ångra"
+        },
+        "hide": "Dölj {{- appName}}",
+        "quit": "Avsluta {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nej",
+                        "yes": "Ja"
+                    },
+                    "message": "Vill du spara sessionen ?",
+                    "title": "Spara session"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": "Visa bibliotek / bokhylla"
+        }
+    },
+    "catalog": {
+        "about": {
+            "button": "Mer information",
+            "title": "Om {{- appName}}"
+        },
+        "addBookToLib": "Importera",
+        "addTags": "Lägg till tagg",
+        "addTagsButton": "Lägg till",
+        "allBooks": "Alla böcker",
+        "bookInfo": "Om den här boken",
+        "column": {
+            "ascending": "stigande",
+            "descending": "fallande",
+            "unsorted": "osorterat"
+        },
+        "delete": "Ta bort",
+        "deleteBook": "Ta bort",
+        "deleteTag": "Ta bort taggen",
+        "description": "Beskrivning",
+        "emptyTagList": "Du har inga böcker med taggar.",
+        "entry": {
+            "continueReading": "Fortsätt läsa",
+            "continueReadingAudioBooks": "Fortsätt lyssna",
+            "continueReadingDivina": "Fortsätt läsa divina",
+            "continueReadingPdf": "Fortsätt läsa PDF",
+            "lastAdditions": "Nyligen tillagt"
+        },
+        "export": "Exportera",
+        "format": "Format",
+        "lang": "Språk",
+        "lastRead": "Senast läst",
+        "moreInfo": "Mer information",
+        "myBooks": "Mina böcker",
+        "noPublicationHelpL1": "Släpp en publikation här",
+        "noPublicationHelpL2": "eller använd \"+\"-knappen ovanför.",
+        "noPublicationHelpL3": "LCP-skyddade filer stöds.",
+        "noPublicationHelpL4": "Filtyper som stöds:",
+        "numberOfPages": "Antal sidor",
+        "opds": {
+            "auth": {
+                "cancel": "Avbryt",
+                "login": "Logga in"
+            },
+            "info": {
+                "availableSince": "Sedan",
+                "availableState": {
+                    "available": "Tillgänglig",
+                    "ready": "Redo",
+                    "reserved": "Reserverad",
+                    "unavailable": "Otillgänglig",
+                    "unknown": "Okänt"
+                },
+                "availableUntil": "till",
+                "copyAvalaible": "Antal tillgängliga",
+                "copyTotal": "Antal exemplar",
+                "holdPosition": "Din plats i reservationskön",
+                "holdTotal": "Reserverade",
+                "numberOfItems": "Antal exemplar",
+                "priveValue": "Pris",
+                "state": "Status"
+            }
+        },
+        "publisher": "Utgivare",
+        "readBook": "Läs",
+        "released": "Publicerad den",
+        "sort": "Sortera efter",
+        "tagCount": "Antal taggar",
+        "tags": "Taggar"
+    },
+    "dialog": {
+        "closeModalWindow": "Stäng den här dialogrutan",
+        "deleteFeed": "Vill du verkligen ta bort den här katalogen ?",
+        "deletePublication": "Vill du verkligen ta bort den här publikationen ?",
+        "import": "Vill du verkligen importera följande filer:",
+        "importError": "Det uppstod ett fel, dubbelkolla filtypen ({{acceptedExtension}})",
+        "no": "Nej",
+        "renew": "Vill du verkligen förnya licensen för den här publikationen?",
+        "return": "Vill du verkligen lämna tillbaka licensen för den här publikationen?",
+        "yes": "Ja"
+    },
+    "error": {
+        "errorBox": {
+            "error": "Felmeddelande:",
+            "message": "Ett fel uppstod i {{- filename}}",
+            "title": "Internt {{- appName}}-fel"
+        }
+    },
+    "header": {
+        "allBooks": "Alla böcker",
+        "books": "Mina böcker",
+        "catalogs": "Kataloger",
+        "downloads": "Nedladdningar",
+        "gridTitle": "Gallerivy",
+        "home": "Huvudmeny",
+        "homeTitle": "hem",
+        "importTitle": "Importera en publikation",
+        "listTitle": "Listvy",
+        "refreshTitle": "uppdatera",
+        "searchPlaceholder": "Sök",
+        "searchTitle": "Påbörja en sökning",
+        "settings": "Inställningar"
+    },
+    "library": {
+        "lcp": {
+            "cancel": "Avbryt",
+            "hint": "(Tips: {{- hint}})",
+            "password": "Lösenord",
+            "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas: ",
+            "submit": "Skicka",
+            "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp"
+        }
+    },
+    "message": {
+        "download": {
+            "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "{{- title}} var redan importerad",
+            "fail": "Importen av {{- path}} misslyckades. {{- err}}",
+            "success": "Importen av {{- title}} är slutförd."
+        },
+        "open": {
+            "error": "Publikationen kan inte öppnas: {{- err}}"
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Lägg till",
+            "name": "Namn:",
+            "namePlaceholder": "Namn",
+            "title": "Lägg till ett OPDS-flöde",
+            "url": "Länk:",
+            "urlPlaceholder": "Länk"
+        },
+        "addFormApiapp": {
+            "title": "Lägg till bibliotekskonto"
+        },
+        "addMenu": "Lägg till ett OPDS-flöde",
+        "back": "Tillbaka",
+        "breadcrumbRoot": "Kataloger",
+        "empty": "Inga publikationer hittades",
+        "firstPage": "Första",
+        "lastPage": "Sista",
+        "menu": {
+            "aboutBook": "Om den här boken",
+            "addExtract": "Importera utdraget",
+            "goBuyBook": "Köp den här boken",
+            "goLoanBook": "Låna den här boken",
+            "goRevokeLoanBook": "Återkalla lånet",
+            "goSubBook": "Prenumerera"
+        },
+        "network": {
+            "error": "Kunde inte nå OPDS-flödet",
+            "noInternet": "Inget internet",
+            "noInternetMessage": "Prova detta: kolla nätverkssladden, modemet, routern eller det trådlösa nätverket",
+            "reject": "Tyvärr uppstod ett oväntat fel vid inläsning av OPDS-flödet",
+            "timeout": "Nätverksanslutningen gav inget svar, försök igen senare"
+        },
+        "next": "Nästa",
+        "previous": "Föregående",
+        "shelf": "Hylla"
+    },
+    "publication": {
+        "audio": {
+            "tracks": "Spår"
+        },
+        "author": "Författare",
+        "cancelledLcp": "Den här boken kan inte läsas eftersom LCP-licensen inte är giltig längre.",
+        "certificateRevoked": "Certifikatet är återkallat",
+        "certificateSignatureInvalid": "Certifikatets signatur är ogiltig",
+        "cover": {
+            "img": "omslagsbild"
+        },
+        "duration": {
+            "title": "Längd"
+        },
+        "expiredLcp": "Den här boken går inte att läsa eftersom LCP-licensen har löpt ut.",
+        "lcpEnd": "Slut",
+        "lcpRightsCopy": "Kopiera tecken",
+        "lcpRightsPrint": "Kopiera utskrift",
+        "lcpStart": "Start",
+        "licenseOutOfDate": "Licensen har löpt ut",
+        "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltigt",
+        "licenseSignatureInvalid": "Licensens signatur är ogiltig",
+        "progression": {
+            "title": "Status"
+        },
+        "renewButton": "Låna om",
+        "returnButton": "Lämna tillbaka",
+        "returnedLcp": "This book can't be read because the LCP license has been returned.",
+        "revokedLcp": "This book can't be read because the LCP license has been revoked.",
+        "seeLess": "Visa mindre",
+        "seeMore": "Visa mer",
+        "title": "Titel",
+        "userKeyCheckInvalid": "Lösenordet är felaktigt"
+    },
+    "reader": {
+        "divina": {
+            "mute": "stäng av ljud",
+            "unmute": "slå på ljud"
+        },
+        "footerInfo": {
+            "lessInfo": "mindre information",
+            "moreInfo": "mer information"
+        },
+        "marks": {
+            "annotations": "Anteckningar",
+            "bookmarks": "Bokmärken",
+            "delete": "Ta bort",
+            "edit": "Redigera",
+            "landmarks": "Landmärken",
+            "search": "Sök",
+            "toc": "Innehållsförteckning"
+        },
+        "media-overlays": {
+            "activate": "Aktivera uppläsning",
+            "captions": "Textremsa / Enkel vy",
+            "next": "Nästa uppläsning",
+            "pause": "Pausa uppläsning",
+            "play": "Spela uppläsning",
+            "previous": "Föregående uppläsning",
+            "skip": "Överhoppning",
+            "speed": "Spelhastighet uppläsning",
+            "stop": "Stoppa uppläsning",
+            "title": "Uppläsning"
+        },
+        "navigation": {
+            "backHomeTitle": "tillbaka till bokhyllan",
+            "bookmarkTitle": "bokmärke",
+            "currentPage": "Aktuell sida: {{- current}}",
+            "currentPageTotal": "Aktuell sida: {{- current}}/{{- total}}",
+            "detachWindowTitle": "visa biblioteks-/bokhyllefönstret",
+            "fullscreenTitle": "aktivera helskärmsläge",
+            "goTo": "Gå till",
+            "goToError": "Sidnumret finns inte",
+            "goToPlaceHolder": "Ange ett sidnummer",
+            "goToTitle": "Gå till sida",
+            "infoTitle": "information",
+            "magnifyingGlassButton": "sök i publikationen",
+            "openTableOfContentsTitle": "navigation",
+            "pdfscalemode": "Anpassa till hel sida eller sidbredd",
+            "quitFullscreenTitle": "avsluta helskärmsläge",
+            "readBookTitle": "Börja läsa boken",
+            "settingsTitle": "inställningar"
+        },
+        "picker": {
+            "annotationTitle": "Anteckningar:",
+            "search": {
+                "founds": "{{- nResults}} träff(ar)",
+                "input": "text att söka på",
+                "next": "Nästa",
+                "notFound": "inga träffar",
+                "previous": "Föregående",
+                "submit": "Sök"
+            },
+            "searchTitle": "Sök:"
+        },
+        "settings": {
+            "column": {
+                "auto": "Automatiskt",
+                "one": "1 kol",
+                "oneTitle": "en kolumn",
+                "title": "Kolumner",
+                "two": "2 kol",
+                "twoTitle": "två kolumner"
+            },
+            "display": "Visning",
+            "disposition": {
+                "title": "Layout"
+            },
+            "font": "Typsnitt",
+            "fontSize": "Textstorlek",
+            "justification": "Justering",
+            "justify": "Justerad",
+            "letterSpacing": "Teckenavstånd",
+            "lineSpacing": "Radavstånd",
+            "margin": "Marginaler",
+            "noFootnotes": "Avaktivera fotnoter",
+            "paginated": "Paginerad",
+            "paraSpacing": "Styckesavstånd",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "sidstorlek",
+                    "width": "sidbredd"
+                },
+                "title": "Zooma"
+            },
+            "reduceMotion": "Minska rörelser",
+            "save": {
+                "apply": "spara",
+                "reset": "återställ",
+                "title": "Konfiguration"
+            },
+            "scrolled": "Scrollbar",
+            "spacing": "Avstånd",
+            "text": "Text",
+            "theme": {
+                "name": {
+                    "Neutral": "Neutral",
+                    "Night": "Natt",
+                    "Sepia": "Sepia"
+                },
+                "title": "Tema"
+            },
+            "wordSpacing": "Ordavstånd"
+        },
+        "svg": {
+            "left": "Vänster",
+            "right": "Höger"
+        },
+        "toc": {
+            "publicationNoToc": "Den här publikationen saknar innehållsförteckning"
+        },
+        "tts": {
+            "activate": "Aktivera text-till-tal",
+            "default": "Röst: systemstandard",
+            "next": "Nästa text-till-tal",
+            "pause": "Pausa text-till-tal",
+            "play": "Spela text-till-tal",
+            "previous": "Föregående text-till-tal",
+            "sentenceDetect": "Dela upp textavsnitt för text-till-tal",
+            "speed": "Spelhastighet text-till-tal",
+            "stop": "Stoppa text-till-tal",
+            "voice": "Textröst"
+        }
+    },
+    "settings": {
+        "auth": {
+            "wipeData": "Rensa autentiseringsuppgifter"
+        },
+        "keyboard": {
+            "advancedMenu": "Meny",
+            "cancel": "Avbryt",
+            "edit": "Redigera",
+            "editUserJson": "Redigera användarfil...",
+            "hide": "Dölj",
+            "keyboardShortcuts": "Kortkommandon",
+            "loadUserJson": "Läs in från användarfil",
+            "resetDefaults": "Återställ (läs in standard)",
+            "save": "Spara",
+            "show": "Visa"
+        },
+        "language": {
+            "languageChoice": "Språkval"
+        },
+        "session": {
+            "no": "Avaktivera",
+            "title": "Spara session",
+            "yes": "Aktivera"
+        }
+    }
+}

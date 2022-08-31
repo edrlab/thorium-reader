@@ -8,54 +8,57 @@
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
-import { isAudiobookFn, isDivinaFn } from "readium-desktop/common/isManifestType";
+import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-// import {
-//     CatalogConfig, CatalogEntry, ConfigDocument,
-// } from "readium-desktop/main/db/document/config";
-// import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
-import { Store } from "redux";
+import { type Store } from "redux";
+
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { PublicationDocument } from "../db/document/publication";
 import { PublicationRepository } from "../db/repository/publication";
 import { diMainGet } from "../di";
-// import { publicationActions } from "../redux/actions";
+import { aboutFiltered } from "../tools/filter";
 import { RootState } from "../redux/states";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
-const NB_PUB = 10;
+const NB_PUB = 5;
+
+// TODO: this memo-ization is very expensive (memory and CPU-wise) ...
+// and TaJsonDeserialize() is called in several other places in the library lifecycle
+// (including below via convertDocumentToView())
+// so it would make sense to hoist the cache higher in the application architecture
+const viewToR2Pub = (view: PublicationView) => {
+    // Legacy Base64 data blobs
+    // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+    // const r2PublicationJson = JSON.parse(r2PublicationStr);
+    const r2Publication = TaJsonDeserialize(view.r2PublicationJson, R2Publication);
+
+    return r2Publication;
+};
+const _pdfMemo: {[str: string]: boolean} = {};
+const isPdfMemo = (view: PublicationView): boolean => {
+    if (typeof _pdfMemo[view.identifier] === "undefined") {
+        const r2Publication = viewToR2Pub(view);
+        _pdfMemo[view.identifier] = isPdfFn(r2Publication);
+    }
+    return _pdfMemo[view.identifier];
+};
 
 // Logger
 const debug = debug_("readium-desktop:main:api:catalog");
-
-interface ICatalogReadedOrAdded {
-    readed: PublicationView[];
-    added: PublicationView[];
-}
-
-interface ICatalogCategories {
-    audio: ICatalogReadedOrAdded;
-    divina: ICatalogReadedOrAdded;
-    epub: ICatalogReadedOrAdded;
-}
 
 @injectable()
 export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
-
-    // @inject(diSymbolTable["config-repository"])
-    // private readonly configRepository!: ConfigRepository<CatalogConfig>;
-
-    // @inject(diSymbolTable["locator-repository"])
-    // private readonly locatorRepository!: LocatorRepository;
 
     @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
@@ -72,49 +75,56 @@ export class CatalogApi implements ICatalogApi {
         const {
             audio: {
                 readed: audiobookReaded,
-                added: audiobookAdded,
             },
             divina: {
                 readed: divinaReaded,
-                added: divinaAdded,
             },
             epub: {
                 readed: epubReaded,
-                added: epubAdded,
+            },
+            pdf: {
+                readed: pdfReaded,
+            },
+            all: {
+                added: allAdded,
             },
         } = await this.getPublicationView();
+
+        const _allAdded = aboutFiltered(allAdded);
+        const _epubReaded = aboutFiltered(epubReaded);
+
+        const allAdded_ = _allAdded.slice(0, NB_PUB);
+        const epubReaded_ = _epubReaded.slice(0, NB_PUB);
+        const audiobookReaded_ = audiobookReaded.slice(0, NB_PUB);
+        const divinaReaded_ = divinaReaded.slice(0, NB_PUB);
+        const pdfReaded_ = pdfReaded.slice(0, NB_PUB);
 
         // Dynamic entries
         const entries: CatalogEntryView[] = [
             {
-                title: __("catalog.entry.continueReading"),
-                totalCount: epubReaded.length,
-                publicationViews: epubReaded,
+                title: __("catalog.entry.lastAdditions"),
+                totalCount: allAdded_.length,
+                publicationViews: allAdded_,
             },
             {
-                title: __("catalog.entry.lastAdditions"),
-                totalCount: epubAdded.length,
-                publicationViews: epubAdded,
+                title: __("catalog.entry.continueReading"),
+                totalCount: epubReaded_.length,
+                publicationViews: epubReaded_,
             },
             {
                 title: __("catalog.entry.continueReadingAudioBooks"),
-                totalCount: audiobookReaded.length,
-                publicationViews: audiobookReaded,
-            },
-            {
-                title: __("catalog.entry.lastAdditionsAudioBooks"),
-                totalCount: audiobookAdded.length,
-                publicationViews: audiobookAdded,
+                totalCount: audiobookReaded_.length,
+                publicationViews: audiobookReaded_,
             },
             {
                 title: __("catalog.entry.continueReadingDivina"),
-                totalCount: divinaReaded.length,
-                publicationViews: divinaReaded,
+                totalCount: divinaReaded_.length,
+                publicationViews: divinaReaded_,
             },
             {
-                title: __("catalog.entry.lastAdditionsDivina"),
-                totalCount: divinaAdded.length,
-                publicationViews: divinaAdded,
+                title: __("catalog.entry.continueReadingPdf"),
+                totalCount: pdfReaded_.length,
+                publicationViews: pdfReaded_,
             },
         ];
 
@@ -125,96 +135,108 @@ export class CatalogApi implements ICatalogApi {
 
     private async getPublicationView() {
 
-        const fillArrayPubView = (
-            array: PublicationView[],
-            doc: PublicationDocument | undefined,
-            filter: (view: PublicationView) => boolean,
-        ) => {
+        // eslint-disable-next-line unused-imports/no-unused-vars
+        const errorDeletePub = (doc: PublicationDocument | undefined, e: any) => {
+            debug("Error in convertDocumentToView doc=", doc);
 
-            if (doc) {
-                if (array.length <= NB_PUB) {
-                    try {
-                        const view = this.publicationViewConverter.convertDocumentToView(doc);
-                        if (filter(view)) {
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc?.title || ""));
 
-                            array.push(view);
-                        }
-                    } catch (e) {
-                        debug("Error in convertDocumentToView doc=", doc);
-                        this.store.dispatch(toastActions.openRequest.build(ToastType.Error, doc.title || ""));
+            debug(`${doc?.identifier} => ${doc?.title} should be removed`);
+            try {
+                const str = typeof e.toString === "function" ? e.toString() : (typeof e.message === "string" ? e.message : (typeof e === "string" ? e : JSON.stringify(e)));
 
-                        debug(`${doc.identifier} => ${doc.title} should be removed`);
-                        try {
-                            // tslint:disable-next-line: no-floating-promises
-                            // this.publicationService.deletePublication(doc.identifier);
-                            const sagaMiddleware = diMainGet("saga-middleware");
-                            const pubApi = diMainGet("publication-api");
-                            // tslint:disable-next-line: no-floating-promises
-                            sagaMiddleware.run(pubApi.delete, doc.identifier).toPromise();
-                        } catch {
-                            // ignore
-                        }
-                    }
-                }
+                // tslint:disable-next-line: no-floating-promises
+                // this.publicationService.deletePublication(doc.identifier, str);
+                const sagaMiddleware = diMainGet("saga-middleware");
+                const pubApi = diMainGet("publication-api");
+                // tslint:disable-next-line: no-floating-promises
+                sagaMiddleware.run(pubApi.delete, doc.identifier, str).toPromise();
+            } catch {
+                // ignore
             }
         };
 
-        const fillPubView = (
-            doc: PublicationDocument | undefined,
-            key: keyof ICatalogReadedOrAdded,
-            obj: ICatalogCategories,
-        ) => {
+        const lastAddedPublicationsDocumentRaw = await this.getLastAddedPublicationDocument();
+        const lastReadingPubArray = this.getLastReadingPublicationId();
 
-            fillArrayPubView(obj.audio[key], doc, isAudiobookFn);
-            fillArrayPubView(obj.divina[key], doc, isDivinaFn);
-            fillArrayPubView(obj.epub[key], doc,
-                (view: PublicationView) => (!isAudiobookFn(view) && !isDivinaFn(view)),
-            );
+        const lastAddedPublicationsDocument =
+            lastAddedPublicationsDocumentRaw.filter(({ identifier }) => !lastReadingPubArray.includes(identifier));
+        const lastReadedPublicationDocument =
+            lastReadingPubArray
+                .map(
+                    (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier),
+                )
+                .filter((v) => !!v);
 
+        const lastAddedPublicationsView = [];
+        for (const doc of lastAddedPublicationsDocument) {
+            try {
+                lastAddedPublicationsView.push(await this.publicationViewConverter.convertDocumentToView(doc));
+            } catch (e) {
+                debug("lastadded publication view converter", e);
+                errorDeletePub(doc, e);
+            }
+        }
+
+        const lastReadedPublicationsView = [];
+        for (const doc of lastReadedPublicationDocument) {
+            try {
+                lastReadedPublicationsView.push(await this.publicationViewConverter.convertDocumentToView(doc));
+            } catch (e) {
+                debug("lastreaded publication view converter", e);
+                errorDeletePub(doc, e);
+            }
+        }
+
+        const audio = {
+            readed: lastReadedPublicationsView.filter(isAudiobookFn),
+            added: lastAddedPublicationsView.filter(isAudiobookFn),
         };
 
-        const lastAddedPublicationsDocument = await this.getLastAddedPublicationDocument();
+        const divina = {
+            readed: lastReadedPublicationsView.filter(isDivinaFn),
+            added: lastAddedPublicationsView.filter(isDivinaFn),
+        };
 
-        const lastAddedPublicationsDocumentArray = lastAddedPublicationsDocument.map(
-            (doc) => this.getLastReadingPublicationId().includes(doc.identifier)
-                ? [doc, undefined]
-                : [undefined, doc],
-        );
+        const pdf = {
+            readed: lastReadedPublicationsView.filter(
+                (view: PublicationView) => {
+                    return isPdfMemo(view);
+                }),
+            added: lastAddedPublicationsView.filter(
+                (view: PublicationView) => {
+                    return isPdfMemo(view);
+                }),
+        };
 
-        return lastAddedPublicationsDocumentArray.reduce<ICatalogCategories>(
-            (pv, cv) => {
+        const epub = {
+            readed: lastReadedPublicationsView.filter(
+                (view: PublicationView) => {
+                    return !isAudiobookFn(view) && !isDivinaFn(view) && !isPdfMemo(view);
+                }),
+            added: lastAddedPublicationsView.filter(
+                (view: PublicationView) => {
+                    return !isAudiobookFn(view) && !isDivinaFn(view) && !isPdfMemo(view);
+                }),
+        };
 
-                const [docInReadingQueue, docFreshlyAdded] = cv;
+        const all = {
+            readed: lastReadedPublicationsView,
+            added: lastAddedPublicationsView,
+        };
 
-                fillPubView(docInReadingQueue, "readed", pv);
-                fillPubView(docFreshlyAdded, "added", pv);
-
-                return pv;
-            },
-            {
-                audio: {
-                    readed: [],
-                    added: [],
-                },
-                divina: {
-                    readed: [],
-                    added: [],
-                },
-                epub: {
-                    readed: [],
-                    added: [],
-                },
-            },
-        );
-
+        return {
+            audio,
+            epub,
+            divina,
+            pdf,
+            all,
+        };
     }
 
     private async getLastAddedPublicationDocument() {
 
-        const lastAddedPublications = await this.publicationRepository.find({
-            sort: [{ createdAt: "desc" }],
-            selector: {},
-        });
+        const lastAddedPublications = await this.publicationRepository.findAllSortDesc();
 
         return lastAddedPublications;
     }
@@ -223,7 +245,6 @@ export class CatalogApi implements ICatalogApi {
 
         const lastReading = this.store.getState().publication.lastReadingQueue;
         const pubIdArray = lastReading.map(([, pubId]) => pubId);
-
         return pubIdArray;
     }
 }

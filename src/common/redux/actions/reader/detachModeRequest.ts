@@ -9,7 +9,7 @@ import { ActionWithSender, WithSender } from "readium-desktop/common/models/sync
 
 export const ID = "READER_MODE_DETACH_REQUEST";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
 }
 

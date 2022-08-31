@@ -6,16 +6,13 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import fetch from "node-fetch";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { toastActions } from "readium-desktop/common/redux/actions";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import nodeFetch from "node-fetch";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { ContentType } from "readium-desktop/utils/content-type";
-import { put } from "redux-saga/effects";
-import { SagaGenerator } from "typed-redux-saga";
+import { ContentType } from "readium-desktop/utils/contentType";
+import { delay, SagaGenerator } from "typed-redux-saga";
+import { call as callTyped, race as raceTyped } from "typed-redux-saga/macro";
 
 import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
@@ -28,119 +25,127 @@ function* importLinkFromPath(
     downloadPath: string,
     link: IOpdsLinkView,
     pub?: IOpdsPublicationView,
-) {
+): SagaGenerator<[publicationDocument: PublicationDocument, alreadyImported: boolean]> {
 
-    let returnPublicationDocument: PublicationDocument;
     // Import downloaded publication in catalog
     const lcpHashedPassphrase = link?.properties?.lcpHashedPassphrase;
-    let publicationDocument = yield* importFromFsService(downloadPath, lcpHashedPassphrase);
 
-    if (publicationDocument) {
-        const tags = pub?.tags?.map((v) => v.name);
+    const { b: [publicationDocument, alreadyImported] } = yield* raceTyped({
+        a: delay(30000),
+        b: callTyped(importFromFsService, downloadPath, lcpHashedPassphrase),
+    });
+
+    let returnPublicationDocument = publicationDocument;
+    if (!alreadyImported && publicationDocument) {
+
+        const tags = pub?.tags?.map((v) => v.name) || [];
 
         // Merge with the original publication
-        publicationDocument = Object.assign(
+        const publicationDocumentAssigned = Object.assign(
             {},
             publicationDocument,
             {
-                resources: {
-                    r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
-                    r2LCPBase64: publicationDocument.resources.r2LCPBase64,
-                    r2LSDBase64: publicationDocument.resources.r2LSDBase64,
-                    r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
-                },
+                // resources: {
+                //     r2PublicationJson: publicationDocument.resources.r2PublicationJson,
+                //     // r2LCPJson: publicationDocument.resources.r2LCPJson,
+                //     // r2LSDJson: publicationDocument.resources.r2LSDJson,
+                //     // r2OpdsPublicationJson: pub?.r2OpdsPublicationJson || undefined,
+
+                //     // Legacy Base64 data blobs
+                //     //
+                //     // r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
+                //     // r2LCPBase64: publicationDocument.resources.r2LCPBase64,
+                //     // r2LSDBase64: publicationDocument.resources.r2LSDBase64,
+                //     // r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
+                // } as Resources,
                 tags,
             },
         );
 
         const publicationRepository = diMainGet("publication-repository");
-        returnPublicationDocument = yield* callTyped(() => publicationRepository.save(publicationDocument));
+        returnPublicationDocument = yield* callTyped(() => publicationRepository.save(publicationDocumentAssigned));
+
     }
 
-    return returnPublicationDocument;
+    return [returnPublicationDocument, alreadyImported];
+
 }
 
 export function* importFromLinkService(
     link: IOpdsLinkView,
     pub?: IOpdsPublicationView,
-): SagaGenerator<PublicationDocument | undefined> {
+): SagaGenerator<[publicationDocument: PublicationDocument | undefined, alreadyImported: boolean]> {
 
+    let url: URL;
     try {
-        let url: URL;
+        url = new URL(link?.url);
+    } catch (e) {
+        debug("bad url", link, e);
+        throw new Error("Unable to get acquisition url from opds publication");
+    }
+
+    if (!link.type) {
         try {
-            url = new URL(link?.url);
-        } catch (e) {
-            debug("bad url", link, e);
-            throw new Error("Unable to get acquisition url from opds publication");
-        }
-
-        if (!link.type) {
-            try {
-                const response = yield* callTyped(() => fetch(url));
-                const contentType = response?.headers?.get("Content-Type");
-                if (contentType) {
-                    link.type = contentType;
-                } else {
-                    link.type = "";
-                }
-            } catch (e) {
-                debug("can't fetch url to determine the type", url.toString());
-
+            const response = yield* callTyped(() => nodeFetch(url.toString()));
+            const contentType = response?.headers?.get("Content-Type");
+            if (contentType) {
+                link.type = contentType;
+            } else {
                 link.type = "";
             }
+        } catch (_e) {
+            debug("can't fetch url to determine the type", url.toString());
+            link.type = "";
         }
-        const contentTypeArray = link.type.replace(/\s/g, "").split(";");
+    }
+    const contentTypeArray = link.type.replace(/\s/g, "").split(";");
 
-        const title = link.title || link.url;
-        const isLcpFile = contentTypeArray.includes(ContentType.Lcp);
-        const isEpubFile = contentTypeArray.includes(ContentType.Epub);
-        const isAudioBookPacked = contentTypeArray.includes(ContentType.AudioBookPacked);
-        const isAudioBookPackedLcp = contentTypeArray.includes(ContentType.AudioBookPackedLcp);
-        const isHtml = contentTypeArray.includes(ContentType.Html);
-        const isDivinaPacked = contentTypeArray.includes(ContentType.DivinaPacked);
-        const isJson = contentTypeArray.includes(ContentType.Json)
-            || contentTypeArray.includes(ContentType.AudioBook)
-            || contentTypeArray.includes(ContentType.JsonLd)
-            || contentTypeArray.includes(ContentType.Divina)
-            || contentTypeArray.includes(ContentType.webpub);
+    const title = link.title || link.url;
+    const isLcpFile = contentTypeArray.includes(ContentType.Lcp);
+    const isEpubFile = contentTypeArray.includes(ContentType.Epub);
+    const isAudioBookPacked = contentTypeArray.includes(ContentType.AudioBookPacked);
+    const isAudioBookPackedLcp = contentTypeArray.includes(ContentType.AudioBookPackedLcp);
+    const isHtml = contentTypeArray.includes(ContentType.Html);
+    const isDivinaPacked = contentTypeArray.includes(ContentType.DivinaPacked);
+    const isPdf = contentTypeArray.includes(ContentType.pdf);
+    const isLcpPdf = contentTypeArray.includes(ContentType.lcppdf);
+    const isJson = contentTypeArray.includes(ContentType.Json)
+        || contentTypeArray.includes(ContentType.AudioBook)
+        || contentTypeArray.includes(ContentType.JsonLd)
+        || contentTypeArray.includes(ContentType.Divina)
+        || contentTypeArray.includes(ContentType.webpub);
 
-        debug(contentTypeArray, isHtml, isJson);
+    debug(contentTypeArray, isHtml, isJson);
 
-        if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp && !isDivinaPacked) {
-            debug(`OPDS download link is not EPUB or AudioBook or Divina ! ${link.url} ${link.type}`);
-        }
+    if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp && !isDivinaPacked && !isPdf && !isLcpPdf) {
+        debug(`OPDS download link is not EPUB or AudioBook or Divina or Pdf ! ${link.url} ${link.type}`);
+    }
+
+    if (isHtml || isJson) {
+        link = { url: url.toString() };
+    }
+
+    const downloadMayBePackageLink = function*() {
 
         if (isHtml || isJson) {
             debug("the link need to be packaged");
 
-            const packagePath = yield* callTyped(packageFromLink, url.toString(), isHtml);
-            if (packagePath) {
-                return yield* callTyped(importLinkFromPath, packagePath, { url: url.toString() }, pub);
-            }
+            return yield* callTyped(packageFromLink, url.toString(), isHtml);
 
         } else {
             debug("Start the download", link);
 
             const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
-            if (downloadPath) {
-                return yield* callTyped(importLinkFromPath, downloadPath, link, pub);
-            }
-
+            return downloadPath;
         }
-    } catch (e) {
+    };
 
-        const translate = diMainGet("translator").translate;
-        debug("importFromLink failed", e.toString(), e.trace);
-        yield put(
-            toastActions.openRequest.build(
-                ToastType.Error,
-                translate(
-                    "message.import.fail", { path: link?.url, err: e.toString() },
-                ),
-            ),
-        );
+    const fileOrPackagePath = yield* callTyped(downloadMayBePackageLink);
+    if (fileOrPackagePath) {
+        return yield* callTyped(importLinkFromPath, fileOrPackagePath, link, pub);
+    } else {
+        debug("downloaded file path or package path is empty");
     }
 
-    debug("error to import", link?.url);
-    return undefined;
+    return [undefined, false];
 }

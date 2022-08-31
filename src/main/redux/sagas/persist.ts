@@ -6,14 +6,17 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { selectTyped } from "readium-desktop/common/redux/sagas/typed-saga";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
-import { winActions } from "readium-desktop/main/redux/actions";
-import { RootState } from "readium-desktop/main/redux/states";
-import { call, debounce  } from "redux-saga/effects";
+import { promises as fsp } from "fs";
+import { patchFilePath, stateFilePath } from "readium-desktop/main/di";
+import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
+import { call, debounce } from "redux-saga/effects";
+import { flush as flushTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { winActions } from "../actions";
 
-const DEBOUNCE_TIME = 1000;
+import { patchChannel } from "./patch";
+
+const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 
 // Logger
 const filename_ = "readium-desktop:main:saga:persist";
@@ -22,39 +25,64 @@ debug("_");
 
 const persistStateToFs = async (nextState: RootState) => {
 
-    // currently saved with pouchDb in one json file.
+    // currently saved in one json file.
     // may be consuming a lot of I/O
     // rather need to save by chunck of data in many json file
 
     debug("start of persist reduxState in disk");
-    const configRepository: ConfigRepository<Partial<RootState>> = diMainGet("config-repository");
-    await configRepository.save({
-        identifier: CONFIGREPOSITORY_REDUX_PERSISTENCE,
-        value: {
-            win: nextState.win,
-            publication: nextState.publication,
-            reader: nextState.reader,
-            session: nextState.session,
-        },
-    });
+
+    const value: PersistRootState = {
+        win: nextState.win,
+        publication: nextState.publication,
+        reader: nextState.reader,
+        session: nextState.session,
+        i18n: nextState.i18n,
+        opds: nextState.opds,
+        version: nextState.version,
+    };
+
+    await fsp.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
     debug("end of persist reduxState in disk");
 };
 
-export function* needToPersistState() {
+export function* needToPersistFinalState() {
+
+    const nextState = yield* selectTyped((store: RootState) => store);
+    yield call(() => persistStateToFs(nextState));
+    yield call(() => needToPersistPatch());
+}
+
+export function* needToPersistPatch() {
 
     try {
 
-        const nextState = yield* selectTyped((store: RootState) => store);
-        yield call(() => persistStateToFs(nextState));
+        const ops = yield* flushTyped(patchChannel);
+
+        let data = "";
+        let i = 0;
+        while (i < ops.length) {
+            data += JSON.stringify(ops[i]) + ",\n";
+            ++i;
+        }
+
+        debug(data);
+        if (data) {
+            debug("start of patch persistence");
+            yield call(() => fsp.appendFile(patchFilePath, data, { encoding: "utf8" }));
+            debug("end of patch persistence");
+        }
+
+
     } catch (e) {
-        debug("error persist state in user filesystem", e);
+        debug("ERROR to persist patch state in the filesystem", e);
     }
+
 }
 
 export function saga() {
     return debounce(
         DEBOUNCE_TIME,
         winActions.persistRequest.ID,
-        needToPersistState,
+        needToPersistPatch,
     );
 }

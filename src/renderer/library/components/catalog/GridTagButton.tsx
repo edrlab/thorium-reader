@@ -8,9 +8,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     name: string;
 }
@@ -18,7 +20,7 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
@@ -35,7 +37,10 @@ class GridTagButton extends React.Component<IProps, undefined> {
                 to={{
                     ...this.props.location,
                     pathname: `/library/search/tag/${this.props.name}`,
-                }}>
+                }}
+                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                className={stylesTags.tag}
+            >
                 {this.props.name}
                 {/*<div id={style.count}>
                     {this.props.tag.length}

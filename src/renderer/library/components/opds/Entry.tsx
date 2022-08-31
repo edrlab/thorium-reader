@@ -9,14 +9,12 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     level?: number;
     entry: IOpdsNavigationLinkView;
@@ -25,7 +23,7 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
@@ -39,9 +37,12 @@ class Entry extends React.Component<IProps, undefined> {
         const { entry } = this.props;
 
         const { level } = this.props;
-        const rootFeedIdentifier = matchPath<IOpdsBrowse>(
-            this.props.location.pathname, routes["/opds/browse"],
+
+        const rootFeedIdentifier = matchPath<keyof IOpdsBrowse, string>(
+            routes["/opds/browse"].path,
+            this.props.location.pathname,
         ).params.opdsId;
+
         const route = buildOpdsBrowserRoute(
             rootFeedIdentifier,
             entry.title,
@@ -53,32 +54,32 @@ class Entry extends React.Component<IProps, undefined> {
             <>
                 <div>
                     <Link
-                        className={styles.flux_infos}
+                        className={stylesButtons.button_transparency}
                         to={{
                             ...this.props.location,
                             pathname: route,
                         }}
+                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     >
-                        <span className={styles.flux_title}>{entry.title}</span>
-                        {
-                            entry.subtitle && entry.subtitle !== entry.title ?
-                                <span className={styles.flux_subtitle}>
-                                    {entry.subtitle}
-                                </span> :
-                                <></>
-                        }
+                        <span>
+                            <span title={entry.subtitle ? entry.subtitle : undefined}>{entry.title}</span>
+                            {
+                                (entry.subtitle && entry.subtitle !== entry.title) ?
+                                (<span title={entry.subtitle} aria-label={entry.subtitle}>
+                                    <br/>{entry.subtitle.substr(0, 40) + (entry.subtitle.length > 40 ? "..." : "")}
+                                </span>) :
+                                (<></>)
+                            }
+                        </span>
                         {
                             (entry.numberOfItems) ?
                                 (
-                                    <span className={styles.flux_subtitle}>
+                                    <span>
                                         {entry.numberOfItems}
                                     </span>
                                 ) :
                                 (<></>)
                         }
-                        <div className={styles.flux_image}>
-                            <SVG svg={ArrowIcon} />
-                        </div>
                     </Link>
                 </div>
                 {/* <Slider

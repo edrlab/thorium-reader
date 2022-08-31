@@ -13,18 +13,20 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as ExportIcon from "readium-desktop/renderer/assets/icons/download.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { apiAction } from "readium-desktop/renderer/library/apiAction";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationView: PublicationView;
 }
@@ -32,7 +34,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
@@ -43,6 +45,7 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
 
         this.handleRead = this.handleRead.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
+        this.exportPublication = this.exportPublication.bind(this);
 
         this.returnPublicationDialog = this.returnPublicationDialog.bind(this);
         this.renewPublicationDialog = this.renewPublicationDialog.bind(this);
@@ -76,36 +79,47 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
             <>
                 {(!lsdStatus ||
                 (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready)) ?
-                <button  onClick={this.handleRead} className={styles.lire}>{__("catalog.readBook")}</button>
+                <button
+                    onClick={this.handleRead}
+                    className={stylesButtons.button_primary}
+                >
+                    {__("catalog.readBook")}
+                </button>
                 : <></>
                 }
-                <ul className={styles.liens}>
-                    {
-                        // lsdStatus === StatusEnum.Expired &&
-                        lsdRenewLink &&
-                        <li>
-                            <button onClick={ this.renewPublicationDialog }>
-                                <SVG svg={LoopIcon} ariaHidden/>
-                                {__("publication.renewButton")}
-                            </button>
-                        </li>
-                    }
-                    {
-                        lsdReturnLink &&
-                        <li>
-                            <button onClick={ this.returnPublicationDialog }>
-                                <SVG svg={ArrowIcon} ariaHidden/>
-                                {__("publication.returnButton")}
-                            </button>
-                        </li>
-                    }
-                    <li>
-                        <button onClick={ this.deletePublication }>
-                            <SVG svg={DeleteIcon} ariaHidden/>
-                            {__("catalog.deleteBook")}
-                        </button>
-                    </li>
-                </ul>
+                {
+                    // lsdStatus === StatusEnum.Expired &&
+                    lsdRenewLink &&
+                    <button
+                        onClick={ this.renewPublicationDialog }
+                        className={stylesButtons.button_transparency}
+                    >
+                        <SVG svg={LoopIcon} ariaHidden/>
+                        {__("publication.renewButton")}
+                    </button>
+                }
+                {
+                    lsdReturnLink &&
+                    <button
+                        onClick={ this.returnPublicationDialog }
+                        className={stylesButtons.button_transparency}
+                    >
+                        <SVG svg={ArrowIcon} ariaHidden/>
+                        {__("publication.returnButton")}
+                    </button>
+                }
+                <button
+                    onClick={ this.deletePublication }
+                    className={stylesButtons.button_transparency}
+                >
+                    <SVG svg={DeleteIcon} ariaHidden/>
+                    {__("catalog.deleteBook")}
+                </button>
+
+                <button onClick={this.exportPublication} className={stylesButtons.button_transparency}>
+                    <SVG svg={ExportIcon} ariaHidden />
+                    {__("catalog.export")}
+                </button>
             </>
         );
     }
@@ -122,6 +136,14 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
     private deletePublication(e: TMouseEventOnButton) {
         e.preventDefault();
         this.props.openDeleteDialog();
+    }
+    private exportPublication(e: TMouseEventOnButton) {
+        e.preventDefault();
+
+        // this.props.exportPub();
+        apiAction("publication/exportPublication", this.props.publicationView).catch((error) => {
+            console.error("Error to fetch publication/exportPublication", error);
+        });
     }
 
     private handleRead(e: TMouseEventOnButton) {

@@ -8,11 +8,10 @@
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import * as styles2 from "readium-desktop/renderer/assets/styles/myBooks.css";
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -25,9 +24,10 @@ import LibraryHeader from "./LibraryHeader";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     secondaryHeader?: React.ReactElement;
+    breadCrumb?: React.ReactElement;
     title?: string;
     mainClassName?: string;
 
@@ -46,8 +46,8 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapStateToProps> {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class LibraryLayout extends React.Component<IProps, undefined> {
@@ -82,6 +82,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 
     public render() {
         const { title } = this.props;
+        const { __ } = this.props;
 
         let helmetTitle = capitalizedAppName;
         if (title) {
@@ -90,31 +91,37 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         window.document.title = helmetTitle;
 
         return (
-            <div role="region" aria-label={this.props.__("accessibility.toolbar")}>
+            <div role="region" aria-label={__("accessibility.toolbar")}>
                 <a
-                    role="region"
-                    className={styles2.anchor_link}
+                    role="heading"
+                    className={stylesGlobal.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
-                    title={this.props.__("accessibility.toolbar")}
-                    aria-label={this.props.__("accessibility.toolbar")}
-                    tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
+                    title={__("accessibility.toolbar")}
+                    aria-label={__("accessibility.toolbar")}
+                    tabIndex={-1}
+                >
+                    {__("accessibility.toolbar")}
+                </a>
                 <LibraryHeader />
                 { this.props.secondaryHeader }
+                { this.props.breadCrumb }
                 <main
                     id="main"
-                    role="main"
-                    aria-label={this.props.__("accessibility.mainContent")}
-                    className={classNames(styles.main, styles2.main, this.props.mainClassName)}
+                    aria-label={__("accessibility.mainContent")}
+                    className={classNames(stylesGlobal.main, this.props.mainClassName)}
                 >
                     <a
-                        role="region"
-                        className={styles2.anchor_link}
+                        role="heading"
+                        className={stylesGlobal.anchor_link}
                         ref={this.fastLinkRef}
                         id="main-content"
-                        title={this.props.__("accessibility.mainContent")}
-                        aria-label={this.props.__("accessibility.mainContent")}
-                        tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
+                        title={__("accessibility.mainContent")}
+                        aria-label={__("accessibility.mainContent")}
+                        tabIndex={-1}
+                    >
+                        {__("accessibility.mainContent")}
+                    </a>
                     { this.props.children }
                 </main>
             </div>
@@ -142,12 +149,12 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         if (this.fastLinkRef?.current) {
             this.fastLinkRef.current.focus();
         }
-    }
+    };
     private onKeyboardFocusToolbar = () => {
         if (this.refToolbar?.current) {
             this.refToolbar.current.focus();
         }
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
@@ -155,4 +162,4 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     keyboardShortcuts: state.keyboard.shortcuts,
 });
 
-export default connect(mapStateToProps)(withRouter(withTranslator(LibraryLayout)));
+export default connect(mapStateToProps)(withTranslator(LibraryLayout));

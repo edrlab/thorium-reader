@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+export const ADOBE_ADEPT_XML = "adobe-adept-xml";
+
 // https://github.com/panaC/node-playground/blob/master/mimeTypes.ipynb
 export const mimeTypes = {
     "123": "application/vnd.lotus-1-2-3",
@@ -1171,6 +1173,8 @@ export const mimeTypes = {
     "lcpaudiobook": "application/audiobook+lcp",
     "divina": "application/divina+zip",
     "lcpdivina": "application/divina+lcp",
+    "lcpdf": "application/pdf+lcp",
+    [ADOBE_ADEPT_XML]: "application/vnd.adobe.adept+xml",
 };
 
 export const findMimeTypeWithExtension = (ext: string): string | undefined => {
@@ -1178,8 +1182,7 @@ export const findMimeTypeWithExtension = (ext: string): string | undefined => {
         ext = ext.slice(1);
     }
 
-    // @ts-ignore
-    return mimeTypes[ext] ?? undefined;
+    return (mimeTypes as any)[ext] ?? undefined;
 };
 
 export const findExtWithMimeType = (type: string): string | undefined => {

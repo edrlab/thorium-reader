@@ -7,16 +7,20 @@
 
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
-import { publicationActions } from "readium-desktop/main/redux/actions";
+import { publicationActions, winActions } from "readium-desktop/main/redux/actions";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, delay, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 
-export function* deletePublication(identifier: string): SagaGenerator<void> {
+export function* deletePublication(identifier: string, preservePublicationOnFileSystem?: string): SagaGenerator<void> {
 
         yield put(readerActions.closeRequestFromPublication.build(identifier));
 
         // dispatch action to update publication/lastReadingQueue reducer
         yield put(publicationActions.deletePublication.build(identifier));
+
+        // delete publication from reader registry
+        yield put(winActions.registry.unregisterReaderPublication.build(identifier));
 
         // allow extra completion time to ensure the filesystem ZIP streams are closed
         yield delay(300);
@@ -27,5 +31,9 @@ export function* deletePublication(identifier: string): SagaGenerator<void> {
 
         const publicationStorage = diMainGet("publication-storage");
         // Remove from storage
-        yield call(() => publicationStorage.removePublication(identifier));
+        yield call(() => publicationStorage.removePublication(identifier, preservePublicationOnFileSystem));
+
+        const publicationViewConverter = diMainGet("publication-view-converter");
+        // Remove from memory cache
+        yield call(() => publicationViewConverter.removeFromMemoryCache(identifier));
 }

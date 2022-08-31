@@ -6,19 +6,22 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { Operation, Patch } from "rfc6902";
 
 export const ID = "WIN_PERSIST_REQUEST";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
+    ops: Patch;
 }
 
-export function build():
+export function build(ops: Operation[]):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
+            ops,
         },
     };
 }

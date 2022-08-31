@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as registerReaderPublication from "./registerReaderPublication";
+import * as unregisterReaderPublication from "./unregisterReaderPublication";
 
 export {
     registerReaderPublication,
+    unregisterReaderPublication,
 };

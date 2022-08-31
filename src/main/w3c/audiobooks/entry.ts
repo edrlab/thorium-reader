@@ -7,8 +7,7 @@
 
 import * as debug_ from "debug";
 import { DOMWindow, JSDOM } from "jsdom";
-
-import { deepEqual, deepStrictEqual, ok } from "assert";
+import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 
 // Logger
 const debug = debug_("readium-desktop:main#w3c/audiobook/entry");
@@ -28,7 +27,7 @@ export function findPublicationUrlInHtmlEntry(window: DOMWindow): string {
 
     const el: HTMLLinkElement = window.document.querySelector("link[rel=\"publication\"]");
     if (el) {
-        const url = el.hasAttribute("href") ? decodeURIComponent(el.href) : undefined;
+        const url = el.hasAttribute("href") ? tryDecodeURIComponent(el.href) : undefined;
         return url;
 
     }
@@ -79,134 +78,136 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
     return [undefined, undefined];
 }
 
-// TEST
-if (require.main === module) {
+// import { deepEqual, deepStrictEqual, ok } from "assert";
+// import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
+// // TEST
+// if (require.main === module) {
 
-    // tslint:disable-next-line: no-floating-promises
-    (async () => {
+//     // tslint:disable-next-line: no-floating-promises
+//     (async () => {
 
-        const buff = Buffer.from(`<!DOCTYPE html>
-        <html>
-        <head>
-            <title>Entry point with embedded manifest</title>
-            <link rel="publication" href="#manifest" />
-            <script id='manifest' type='application/ld+json'>
-                {
-                    "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
-                    "type": "CreativeWork",
-                    "name" : "My Wonderful Book",
-                    "id" : "urn:isbn:1234567890",
-                    "url": "https://example.org/book",
-                    "conformsTo": "https://www.w3.org/TR/pub-manifest/",
-                    "readingOrder": [
-                        "chapter1.html"
-                    ],
-                    "resources": [
-                        "./m4.2.5.01.html"
-                    ]
-                }
-            </script>
-        </head>
-        <body>
-            <p>This is just a fake entry point.</p>
-        </body>
-        </html>
-        `);
+//         const buff = Buffer.from(`<!DOCTYPE html>
+//         <html>
+//         <head>
+//             <title>Entry point with embedded manifest</title>
+//             <link rel="publication" href="#manifest" />
+//             <script id='manifest' type='application/ld+json'>
+//                 {
+//                     "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
+//                     "type": "CreativeWork",
+//                     "name" : "My Wonderful Book",
+//                     "id" : "urn:isbn:1234567890",
+//                     "url": "https://example.org/book",
+//                     "conformsTo": "https://www.w3.org/TR/pub-manifest/",
+//                     "readingOrder": [
+//                         "chapter1.html"
+//                     ],
+//                     "resources": [
+//                         "./m4.2.5.01.html"
+//                     ]
+//                 }
+//             </script>
+//         </head>
+//         <body>
+//             <p>This is just a fake entry point.</p>
+//         </body>
+//         </html>
+//         `);
 
-        const manifestBuffer = Buffer.from(`
-                {
-                    "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
-                    "type": "CreativeWork",
-                    "name" : "My Wonderful Book",
-                    "id" : "urn:isbn:1234567890",
-                    "url": "https://example.org/book",
-                    "conformsTo": "https://www.w3.org/TR/pub-manifest/",
-                    "readingOrder": [
-                        "chapter1.html"
-                    ],
-                    "resources": [
-                        "./m4.2.5.01.html"
-                    ]
-                }
-        `);
+//         const manifestBuffer = Buffer.from(`
+//                 {
+//                     "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
+//                     "type": "CreativeWork",
+//                     "name" : "My Wonderful Book",
+//                     "id" : "urn:isbn:1234567890",
+//                     "url": "https://example.org/book",
+//                     "conformsTo": "https://www.w3.org/TR/pub-manifest/",
+//                     "readingOrder": [
+//                         "chapter1.html"
+//                     ],
+//                     "resources": [
+//                         "./m4.2.5.01.html"
+//                     ]
+//                 }
+//         `);
 
-        const manifestParsed = JSON.parse(manifestBuffer.toString());
+//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
 
-        const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, () => manifestBuffer);
+//         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, () => manifestBuffer);
 
-        const manifestFoundParsed = JSON.parse(b.toString());
+//         const manifestFoundParsed = JSON.parse(b.toString());
 
-        console.log("Buffer");
-        console.log(b.toString());
+//         console.log("Buffer");
+//         console.log(b.toString());
 
-        deepEqual(manifestParsed, manifestFoundParsed);
-    })();
+//         deepEqual(manifestParsed, manifestFoundParsed);
+//     })();
 
-    // tslint:disable-next-line: no-floating-promises
-    (async () => {
+//     // tslint:disable-next-line: no-floating-promises
+//     (async () => {
 
-        const buff = Buffer.from(`<!DOCTYPE html>
-        <html>
-        <head>
-            <title>Entry point with embedded manifest</title>
-            <link rel="publication" href="http://helloworld" />
-            <script id='manifest' type='application/ld+json'>
-                {
-                    "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
-                    "type": "CreativeWork",
-                    "name" : "My Wonderful Book",
-                    "id" : "urn:isbn:1234567890",
-                    "url": "https://example.org/book",
-                    "conformsTo": "https://www.w3.org/TR/pub-manifest/",
-                    "readingOrder": [
-                        "chapter1.html"
-                    ],
-                    "resources": [
-                        "./m4.2.5.01.html"
-                    ]
-                }
-            </script>
-        </head>
-        <body>
-            <p>This is just a fake entry point.</p>
-        </body>
-        </html>
-        `);
+//         const buff = Buffer.from(`<!DOCTYPE html>
+//         <html>
+//         <head>
+//             <title>Entry point with embedded manifest</title>
+//             <link rel="publication" href="http://helloworld" />
+//             <script id='manifest' type='application/ld+json'>
+//                 {
+//                     "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
+//                     "type": "CreativeWork",
+//                     "name" : "My Wonderful Book",
+//                     "id" : "urn:isbn:1234567890",
+//                     "url": "https://example.org/book",
+//                     "conformsTo": "https://www.w3.org/TR/pub-manifest/",
+//                     "readingOrder": [
+//                         "chapter1.html"
+//                     ],
+//                     "resources": [
+//                         "./m4.2.5.01.html"
+//                     ]
+//                 }
+//             </script>
+//         </head>
+//         <body>
+//             <p>This is just a fake entry point.</p>
+//         </body>
+//         </html>
+//         `);
 
-        const manifestBuffer = Buffer.from(`
-                {
-                    "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
-                    "type": "CreativeWork",
-                    "name" : "My Wonderful Book",
-                    "id" : "urn:isbn:1234567890",
-                    "url": "https://example.org/book",
-                    "conformsTo": "https://www.w3.org/TR/pub-manifest/",
-                    "readingOrder": [
-                        "chapter1.html"
-                    ],
-                    "resources": [
-                        "./m4.2.5.01.html"
-                    ]
-                }
-        `);
+//         const manifestBuffer = Buffer.from(`
+//                 {
+//                     "@context" : ["https://schema.org", "https://www.w3.org/ns/pub-context"],
+//                     "type": "CreativeWork",
+//                     "name" : "My Wonderful Book",
+//                     "id" : "urn:isbn:1234567890",
+//                     "url": "https://example.org/book",
+//                     "conformsTo": "https://www.w3.org/TR/pub-manifest/",
+//                     "readingOrder": [
+//                         "chapter1.html"
+//                     ],
+//                     "resources": [
+//                         "./m4.2.5.01.html"
+//                     ]
+//                 }
+//         `);
 
-        const manifestParsed = JSON.parse(manifestBuffer.toString());
+//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
 
-        const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, (url) => {
-            deepStrictEqual(url, "http://helloworld/");
+//         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, (url) => {
+//             deepStrictEqual(url, "http://helloworld/");
 
-            console.log("url", url, "return manifest");
-            return manifestBuffer;
-        });
+//             console.log("url", url, "return manifest");
+//             return manifestBuffer;
+//         });
 
-        ok(b);
+//         ok(b);
 
-        const manifestFoundParsed = JSON.parse(b.toString());
+//         const manifestFoundParsed = JSON.parse(b.toString());
 
-        console.log("Buffer");
-        console.log(b.toString());
+//         console.log("Buffer");
+//         console.log(b.toString());
 
-        deepEqual(manifestParsed, manifestFoundParsed);
-    })();
+//         deepEqual(manifestParsed, manifestFoundParsed);
+//     })();
 
-}
+// }

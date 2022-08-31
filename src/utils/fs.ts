@@ -13,7 +13,7 @@ export function rmDirSync(dirPath: string): void {
 
     try {
         filenames = fs.readdirSync(dirPath);
-    } catch (err) {
+    } catch (_err) {
         return;
     }
 

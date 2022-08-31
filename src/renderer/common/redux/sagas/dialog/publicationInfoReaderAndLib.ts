@@ -7,14 +7,16 @@
 
 import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
-// import { error } from "readium-desktop/common/error";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { raceTyped } from "readium-desktop/common/redux/sagas/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, delay, put, take } from "redux-saga/effects";
+import { race as raceTyped } from "typed-redux-saga/macro";
+
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import { apiSaga } from "../api";
 
@@ -34,6 +36,14 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
         const dataPayload = (action.payload as
             dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoReader>).data;
         const id = dataPayload?.publicationIdentifier;
+        const focusWhereAmI = dataPayload?.focusWhereAmI;
+
+        // SUPER HACKY :(
+        const pdfPlayerNumberOfPages = dataPayload?.pdfPlayerNumberOfPages;
+        const divinaNumberOfPages = dataPayload?.divinaNumberOfPages;
+        const divinaContinousEqualTrue = dataPayload?.divinaContinousEqualTrue;
+        const readerReadingLocation = dataPayload?.readerReadingLocation;
+        const handleLinkUrl = dataPayload?.handleLinkUrl;
 
         // dispatch to API a publication get request
         if (id) {
@@ -44,11 +54,11 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
             });
 
             if (!getAction) {
-                debug("timeout 5s");
+                debug("checkReaderAndLibPublication timeout?", id);
                 return;
             }
 
-            yield call(updateReaderAndLibPublication, getAction);
+            yield call(updateReaderAndLibPublication, getAction, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation, handleLinkUrl);
         }
     }
 }
@@ -69,7 +79,7 @@ function* getApi(id: string) {
 }
 
 // Triggered when the publication data are available from the API
-function* updateReaderAndLibPublication(action: apiActions.result.TAction<PublicationView>) {
+function* updateReaderAndLibPublication(action: apiActions.result.TAction<PublicationView>, focusWhereAmI: boolean, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined) {
     debug("reader publication from publicationInfo received");
 
     const publicationView = action.payload;
@@ -81,6 +91,12 @@ function* updateReaderAndLibPublication(action: apiActions.result.TAction<Public
 
         yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoReader>({
             publication,
+            focusWhereAmI,
+            pdfPlayerNumberOfPages,
+            divinaNumberOfPages,
+            divinaContinousEqualTrue,
+            readerReadingLocation,
+            handleLinkUrl,
         }));
     }
 }

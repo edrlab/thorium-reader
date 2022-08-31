@@ -11,7 +11,6 @@ import { connect } from "react-redux";
 import { matchPath } from "react-router-dom";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -22,18 +21,20 @@ import {
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { SEARCH_TERM } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
+import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-// tslint:disable-next-line: no-empty-interface
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 // tslint:disable-next-line: max-line-length
 interface IProps extends IBaseProps,
     ReturnType<typeof mapStateToProps>,
@@ -82,14 +83,14 @@ class SearchForm extends React.Component<IProps, undefined> {
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
-                    aria-label={__("accessibility.searchBook")}
+                    aria-label={__("header.searchPlaceholder")}
                     placeholder={__("header.searchPlaceholder")}
                 />
                 <button
-                    id={styles.search_img}
                     disabled={!this.props.search?.url}
+                    title={__("header.searchTitle")}
                 >
-                    <SVG svg={SearchIcon} title={__("header.searchTitle")} />
+                    <SVG ariaHidden={true} svg={SearchIcon} />
                 </button>
             </form>
         );
@@ -113,40 +114,44 @@ class SearchForm extends React.Component<IProps, undefined> {
         this.inputRef.current.focus();
         // this.inputRef.current.select();
         this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
-    }
+    };
     private submitSearch = (e: TFormEvent) => {
         e.preventDefault();
-        if (!this.inputRef?.current) {
+        if (!this.inputRef?.current || !this.props.search?.url) {
             return;
         }
         const searchWords = this.inputRef.current.value;
-        const url = this.props.search?.url.replace(SEARCH_TERM, encodeURI(searchWords));
-        const level = this.props.search?.level
-            || parseInt(
-                matchPath<IOpdsBrowse>(
-                    this.props.location.pathname, routes["/opds/browse"],
-                ).params.level,
-                10);
+        const url = this.props.search.url.replace(SEARCH_TERM, encodeURIComponent_RFC3986(searchWords));
+        debug("SubmitSearch 1", searchWords, url, this.props.search.url);
 
         if (searchWords && url) {
-            debug("SubmitSearch", searchWords, url);
+            debug("SubmitSearch 2", searchWords, url);
+
+            const level = this.props.search.level
+            || parseInt(
+                matchPath<keyof IOpdsBrowse, string>(
+                    routes["/opds/browse"].path,
+                    this.props.location.pathname,
+                ).params.level,
+                10);
 
             this.props.historyPush({
                 ...this.props.location,
                 pathname: this.route(searchWords, url, level),
-            });
+            }, this.props.location.state as IRouterLocationState);
         }
-    }
+    };
 
     private route = (title: string, url: string, level: number) =>
         buildOpdsBrowserRoute(
-            matchPath<IOpdsBrowse>(
-                this.props.location.pathname, routes["/opds/browse"],
+            matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
             ).params.opdsId,
             title,
             url,
             level,
-        )
+        );
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({

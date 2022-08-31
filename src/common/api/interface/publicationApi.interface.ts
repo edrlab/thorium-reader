@@ -17,6 +17,7 @@ export interface IPublicationApi {
     ) => SagaGenerator<PublicationView>;
     delete: (
         identifier: string,
+        preservePublicationOnFileSystem?: string,
     ) => SagaGenerator<void>;
     findAll: (
     ) => SagaGenerator<PublicationView[]>;
@@ -33,10 +34,17 @@ export interface IPublicationApi {
         link: IOpdsLinkView,
         pub?: IOpdsPublicationView,
     ) => SagaGenerator<PublicationView>;
+    importFromString: (
+        manifest: string,
+        baseFileUrl: string, // should starts with 'file://'
+    ) => SagaGenerator<PublicationView>;
     importFromFs: (
         filePathArray: string | string[],
     ) => SagaGenerator<PublicationView[]>;
     search: (
+        title: string,
+    ) => SagaGenerator<PublicationView[]>;
+    searchEqTitle: (
         title: string,
     ) => SagaGenerator<PublicationView[]>;
     exportPublication: (
@@ -53,6 +61,8 @@ export interface IPublicationModuleApi {
     "publication/getAllTags": IPublicationApi["getAllTags"];
     "publication/importFromLink": IPublicationApi["importFromLink"];
     "publication/importFromFs": IPublicationApi["importFromFs"];
+    "publication/importFromString": IPublicationApi["importFromString"];
     "publication/search": IPublicationApi["search"];
+    "publication/searchEqTitle": IPublicationApi["searchEqTitle"];
     "publication/exportPublication": IPublicationApi["exportPublication"];
 }

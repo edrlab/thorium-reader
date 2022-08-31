@@ -9,6 +9,8 @@
 type TCatalogApi = "catalog";
 type TPublicationApi = "publication";
 type TOpdsApi = "opds";
+type TApiappApi = "apiapp";
+type THttpBrowserApi = "httpbrowser";
 type TKeyboardApi = "keyboardShortcuts";
 type TLcpApi = "lcp";
 type TReaderApi = "reader";
@@ -17,6 +19,8 @@ export type TModuleApi =
     TCatalogApi |
     TPublicationApi |
     TOpdsApi |
+    TApiappApi |
+    THttpBrowserApi |
     TKeyboardApi |
     TLcpApi |
     TReaderApi |

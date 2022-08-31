@@ -9,7 +9,8 @@ import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability"
 import { OPDSCurrencyEnum } from "@r2-opds-js/opds/opds2/opds2-price";
 
 import { Identifiable } from "../models/identifiable";
-import { THttpGetResultAfterCallback } from "../utils/http";
+
+// import { JsonMap } from "readium-desktop/typings/json";
 
 export interface IOpdsFeedView extends Identifiable {
     title: string;
@@ -23,7 +24,9 @@ export interface IOpdsCoverView {
 
 export interface IOpdsPublicationView {
     baseUrl: string;
-    r2OpdsPublicationBase64?: string;
+    // r2OpdsPublicationJson?: JsonMap;
+    // Legacy Base64 data blobs
+    // r2OpdsPublicationBase64?: string;
     title: string;
     authors: IOpdsContributorView[];
     publishers?: IOpdsContributorView[];
@@ -34,12 +37,17 @@ export interface IOpdsPublicationView {
     languages?: string[];
     publishedAt?: string; // ISO8601
     entryLinks?: IOpdsLinkView[];
+    catalogLinkView: IOpdsLinkView[];
     buyLinks?: IOpdsLinkView[];
     borrowLinks?: IOpdsLinkView[];
     subscribeLinks?: IOpdsLinkView[];
     sampleOrPreviewLinks?: IOpdsLinkView[];
     openAccessLinks?: IOpdsLinkView[];
+    revokeLoanLinks?: IOpdsLinkView[];
     cover?: IOpdsCoverView;
+
+    duration?: number;
+    nbOfTracks?: number;
 }
 
 export interface IOpdsNavigationLinkView {
@@ -64,12 +72,13 @@ export interface IOpdsResultView {
     facets?: IOpdsFacetView[];
     groups?: IOpdsGroupView[];
     auth?: IOpdsAuthView;
+    catalogs?: IOpdsPublicationView[];
 }
 
 export interface IOpdsGroupView {
-    title: string;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
+    selfLink: IOpdsNavigationLinkView;
 }
 
 export interface IOpdsFacetView {
@@ -107,11 +116,11 @@ export interface IOpdsBaseLinkView {
     link: IOpdsLinkView[];
 }
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IOpdsTagView extends IOpdsBaseLinkView {
 }
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IOpdsContributorView extends IOpdsBaseLinkView {
 }
 
@@ -120,6 +129,7 @@ export interface IOpdsLinkView {
     title?: string | undefined;
     type?: string | undefined;
     properties?: IOPDSPropertiesView;
+    rel?: string;
 }
 
 export interface IOpdsNavigationLink {
@@ -134,5 +144,3 @@ export interface IOpdsNavigationLink {
     text: IOpdsLinkView[];
     self: IOpdsLinkView[];
 }
-
-export type THttpGetOpdsResultView = THttpGetResultAfterCallback<IOpdsResultView>;

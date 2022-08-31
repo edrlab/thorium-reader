@@ -15,7 +15,8 @@
 
 import * as debug_ from "debug";
 import { JSDOM } from "jsdom";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import { w3cPublicationManifestToReadiumPublicationManifest } from "./converter";
 
@@ -237,7 +238,7 @@ function extract_TOC(toc_element: HTMLElement, uniqueResources: Link[]): ToC {
                         }
 
                     } catch (e) {
-                        debug("error to parse URL:", url);
+                        debug("error to parse URL:", url, e);
                         current_toc_node.url = null;
                     }
                 }

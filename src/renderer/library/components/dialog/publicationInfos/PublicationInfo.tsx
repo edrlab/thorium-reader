@@ -15,9 +15,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     PublicationInfoContent,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
-import {
-    PublicationInfoManager,
-} from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoManager";
+import PublicationInfoManager from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoManager";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -30,14 +28,14 @@ import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls/OpdsControls";
 import TagManager from "./TagManager";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
@@ -62,6 +60,9 @@ class PublicationInfo extends React.Component<IProps> {
             >
                 <PublicationInfoContent
                     publication={publication}
+                    r2Publication={null}
+                    manifestUrlR2Protocol={null}
+                    handleLinkUrl={null}
                     toggleCoverZoomCb={toggleCoverZoom}
                     ControlComponent={this.controlsComponent}
                     TagManagerComponent={TagManager}
@@ -72,8 +73,13 @@ class PublicationInfo extends React.Component<IProps> {
                             this.props.link(
                             _link.link[0], this.props.location, _link.name)
                     }
+                    focusWhereAmI={false}
+                    pdfPlayerNumberOfPages={undefined}
+                    divinaNumberOfPages={undefined}
+                    divinaContinousEqualTrue={undefined}
+                    readerReadingLocation={undefined}
+                    closeDialogCb={closeDialog}
                 >
-
                 </PublicationInfoContent>
             </PublicationInfoManager>
         );
@@ -96,7 +102,7 @@ class PublicationInfo extends React.Component<IProps> {
         }
 
         return controlsComponent;
-    }
+    };
 
 }
 

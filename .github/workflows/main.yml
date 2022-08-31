@@ -15,46 +15,95 @@ jobs:
     if: "github.event_name == 'pull_request' || !contains(github.event.head_commit.message, 'skip ci')"
     # runs-on: ubuntu-latest # / ubuntu-18.04 ... or ubuntu-16.04, ubuntu-20.04
     # runs-on: macos-latest # / macos-10.15
-    # runs-on: windows-2016 # ... or window-latest / windows-2019
+    # runs-on: windows-2016 # not window-latest / windows-2019, see https://github.com/edrlab/thorium-reader/issues/1591
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2016, macos-latest, ubuntu-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
         include:
-          - os: windows-2016
+          - os: windows-latest
             osname: windows
             packname: win
+            travistag: latest-windows
           - os: macos-latest
             osname: osx
             packname: 'mac:skip-notarize'
+            travistag: latest-osx
           - os: ubuntu-latest
             osname: linux
             packname: linux
+            travistag: latest-linux
     env:
       TRAVIS_OS_NAME_: ${{ matrix.osname }}
+      TRAVIS_TAG: ${{ matrix.travistag }}
     steps:
     - run: echo 'TRAVIS_OS_NAME_:' ${{ env.TRAVIS_OS_NAME_ }}
-    - run: echo '::set-env name=TRAVIS_TAG::latest-${{ env.TRAVIS_OS_NAME_ }}'
+    #- run: echo 'TRAVIS_TAG=latest-${{ env.TRAVIS_OS_NAME_ }}' | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+    #- run: echo 'TRAVIS_TAG=latest-${{ env.TRAVIS_OS_NAME_ }}' >> $GITHUB_ENV
+    #- run: echo '::set-env name=TRAVIS_TAG::latest-${{ env.TRAVIS_OS_NAME_ }}'
     - run: echo 'TRAVIS_TAG:' ${{ env.TRAVIS_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2-beta #actions/setup-node@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+    #   with:
+    #     persist-credentials: false
+    # - name: Git config global dump (pre)
+    #   run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
+    #   shell: bash
+    # - name: Git config local dump (pre)
+    #   run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 1
+    #   run: >
+    #     git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 2
+    #   run: >
+    #     git config --global url."https://github.com".insteadOf ssh://git@github.com
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 3
+    #   run: >
+    #     git config --global url."http://github.com/".insteadOf git@github.com:
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 4
+    #   run: >
+    #     git config --global url."http://".insteadOf git://
+    #   shell: bash
+    - name: Git config global dump (post)
+      run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
+      shell: bash
+    - name: Git config local dump (post)
+      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
+      shell: bash
+    - uses: actions/setup-node@v2
       with:
-        node-version: '12'
+        node-version: '16'
         #check-latest: true
     - run: node --version && npm --version
-    - run: npm --global install npm@latest
+    - run: npm --global install npm@^8
     - run: npm --version
     # - run: npm --global install asar
-    - run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
-    - run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
+    - name: package patch 1
+      run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
+      shell: bash
+    - name: package patch 2
+      run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
+      shell: bash
+    - name: package lock patch
+      run: node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js
+      shell: bash
+    - run: git --no-pager diff
+    - run: npm cache clean --force
+    - run: npm cache verify
+    - run: cat package-lock.json | grep -i divina-player-js
     - run: npm ci
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
       run: npm run build:prod
+      # && npm run test SEE https://github.com/edrlab/thorium-reader/issues/1697
     - name: non-PR action (build and package)
       if: ${{ github.event_name != 'pull_request' }}
       run: npm run package:${{ matrix.packname }}

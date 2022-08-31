@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
-    apiActions, dialogActions, downloadActions, i18nActions, keyboardActions, lcpActions,
+    apiActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     readerActions, toastActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
@@ -24,22 +24,15 @@ const debug = debug_("readium-desktop:sync");
 const SYNCHRONIZABLE_ACTIONS: string[] = [
     apiActions.result.ID,
 
-    // netActions.offline.ID,
-    // netActions.online.ID,
+    historyActions.refresh.ID,
+    historyActions.pushFeed.ID,
 
     dialogActions.openRequest.ID,
-
-    // readerActions.openError.ID,
-    // readerActions.closeError.ID,
-    // readerActions.closeSuccess.ID,
 
     readerActions.detachModeSuccess.ID,
 
     readerActions.configSetDefault.ID,
     readerActions.setReduxState.ID, // used only to update the catalog when dispatched from reader
-
-    // readerActions.saveBookmarkError.ID,
-    // readerActions.saveBookmarkSuccess.ID,
 
     readerActions.fullScreenRequest.ID,
 
@@ -50,8 +43,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     keyboardActions.setShortcuts.ID,
     keyboardActions.showShortcuts.ID,
     keyboardActions.reloadShortcuts.ID,
-
-    // updateActions.latestVersion.ID,
 
     toastActions.openRequest.ID,
     toastActions.closeRequest.ID,
@@ -99,7 +90,7 @@ export const reduxSyncMiddleware: Middleware
                         try {
                             const readerWin = getReaderWindowFromDi(readers[key].identifier);
                             browserWin.set(readers[key].identifier, readerWin);
-                        } catch (err) {
+                        } catch (_err) {
                             // ignore
                             debug("ERROR: Can't found ther reader win from di: ", readers[key].identifier);
                         }
@@ -117,11 +108,13 @@ export const reduxSyncMiddleware: Middleware
                         ) {
 
                             debug("send to", id);
+                            const a = ActionSerializer.serialize(action);
+                            // debug(a);
                             try {
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
-                                        action: ActionSerializer.serialize(action),
+                                        action: a,
                                     },
                                     sender: {
                                         type: SenderType.Main,

@@ -13,8 +13,9 @@ import { IOpdsBrowse, routes } from "../routing";
 
 export const extractParamFromOpdsRoutePathname =
     (pathname: string) =>
-        matchPath<IOpdsBrowse>(
-            pathname, routes["/opds/browse"],
+        matchPath<keyof IOpdsBrowse, string>(
+            routes["/opds/browse"].path,
+            pathname,
         ).params;
 
 export const buildOpdsBrowserRouteWithLink =

@@ -13,6 +13,7 @@ import {
 
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
 
 export const fontSize: string[] = [
     "75%",
@@ -76,6 +77,7 @@ export const paraSpacing: string[] = [
 ];
 
 export const lineHeight: string[] = [
+    "0", // noop
     "1",
     "1.125",
     "1.25",
@@ -109,13 +111,22 @@ export interface IReaderMenuProps {
     open: boolean;
     r2Publication: R2Publication;
     // tslint:disable-next-line: max-line-length
-    handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
-    handleBookmarkClick: (locator: R2Locator) => void;
+    handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
+    handleBookmarkClick: (locator: R2Locator, closeNavPanel?: boolean) => void;
     toggleMenu: () => void;
     historyCounter: () => number;
+    focusMainAreaLandmarkAndCloseMenu: () => void;
+    pdfToc: TToc;
+    isPdf: boolean;
+    pdfNumberOfPages: number;
+
+    openedSection: number | undefined;
 }
 
 export type TdivinaReadingMode = "single" | "double" | "scroll" | "guided";
+export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
+    return ["single", "double", "scroll", "guided"].includes(v);
+};
 
 export interface IReaderOptionsProps {
     indexes: AdjustableSettingsNumber;
@@ -132,4 +143,13 @@ export interface IReaderOptionsProps {
     toggleMenu: () => void;
     r2Publication: R2Publication | undefined;
     handleDivinaReadingMode: (v: TdivinaReadingMode) => void;
+
+    divinaReadingMode: TdivinaReadingMode;
+    divinaReadingModeSupported: TdivinaReadingMode[];
+
+    pdfEventBus: IEventBusPdfPlayer;
+    isDivina: boolean;
+    isPdf: boolean;
+
+    openedSection: number | undefined;
 }

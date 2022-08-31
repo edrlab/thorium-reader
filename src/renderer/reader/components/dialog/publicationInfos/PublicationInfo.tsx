@@ -14,9 +14,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import {
     PublicationInfoContent,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
-import {
-    PublicationInfoManager,
-} from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoManager";
+import PublicationInfoManager from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoManager";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -24,14 +22,14 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import TagManager from "./TagManager";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
@@ -43,7 +41,7 @@ class PublicationInfo extends React.Component<IProps> {
 
     public render() {
 
-        const { publication, toggleCoverZoom, closeDialog, coverZoom, open } = this.props;
+        const { publication, toggleCoverZoom, closeDialog, coverZoom, open, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation } = this.props;
 
         if (!open) {
             return <></>;
@@ -58,10 +56,19 @@ class PublicationInfo extends React.Component<IProps> {
             >
                 <PublicationInfoContent
                     publication={publication}
+                    r2Publication={this.props.r2Publication}
+                    manifestUrlR2Protocol={this.props.manifestUrlR2Protocol}
+                    handleLinkUrl={this.props.handleLinkUrl}
                     toggleCoverZoomCb={toggleCoverZoom}
                     TagManagerComponent={TagManager}
                     coverZoom={coverZoom}
                     translator={this.props.translator}
+                    focusWhereAmI={focusWhereAmI}
+                    pdfPlayerNumberOfPages={pdfPlayerNumberOfPages}
+                    divinaNumberOfPages={divinaNumberOfPages}
+                    divinaContinousEqualTrue={divinaContinousEqualTrue}
+                    readerReadingLocation={readerReadingLocation}
+                    closeDialogCb={closeDialog}
                 >
 
                 </PublicationInfoContent>
@@ -93,6 +100,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => ({
     ...{
+        r2Publication: state.reader.info.r2Publication,
+        manifestUrlR2Protocol: state.reader.info.manifestUrlR2Protocol,
         open: state.dialog.type === DialogTypeName.PublicationInfoReader,
         publicationInfoReader: state.dialog.type === DialogTypeName.PublicationInfoReader,
     },

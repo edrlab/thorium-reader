@@ -8,9 +8,10 @@
 import * as debug_ from "debug";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel, Task } from "redux-saga";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { cancel, debounce, fork, put, take } from "redux-saga/effects";
 
 // Logger

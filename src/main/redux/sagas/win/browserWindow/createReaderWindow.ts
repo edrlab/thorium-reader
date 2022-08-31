@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { BrowserWindow, Menu } from "electron";
+import { BrowserWindow } from "electron";
 import * as path from "path";
-import { callTyped, putTyped } from "readium-desktop/common/redux/sagas/typed-saga";
+import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
 import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -16,7 +16,10 @@ import {
     _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
-import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
+import {
+    contextMenuSetup, trackBrowserWindow,
+} from "@r2-navigator-js/electron/main/browser-window-tracker";
+
 import { getPublication } from "../../api/publication/getPublication";
 
 // Logger
@@ -32,11 +35,12 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
+            // enableRemoteModule: false,
             allowRunningInsecureContent: false,
             backgroundThrottling: false,
-            contextIsolation: false,
             devTools: IS_DEV,
             nodeIntegration: true,
+            contextIsolation: false,
             nodeIntegrationInWorker: false,
             sandbox: false,
             webSecurity: true,
@@ -47,47 +51,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     if (IS_DEV) {
         const wc = readerWindow.webContents;
-        wc.on("context-menu", (_ev, params) => {
-            const { x, y } = params;
-            const openDevToolsAndInspect = () => {
-                const devToolsOpened = () => {
-                    wc.off("devtools-opened", devToolsOpened);
-                    wc.inspectElement(x, y);
-
-                    setTimeout(() => {
-                        if (wc.isDevToolsOpened() && wc.devToolsWebContents) {
-                            wc.devToolsWebContents.focus();
-                        }
-                    }, 500);
-                };
-                wc.on("devtools-opened", devToolsOpened);
-                wc.openDevTools({ activate: true, mode: "detach" });
-            };
-            Menu.buildFromTemplate([{
-                click: () => {
-                    const wasOpened = wc.isDevToolsOpened();
-                    if (!wasOpened) {
-                        openDevToolsAndInspect();
-                    } else {
-                        if (!wc.isDevToolsFocused()) {
-                            // wc.toggleDevTools();
-                            wc.closeDevTools();
-
-                            setImmediate(() => {
-                                openDevToolsAndInspect();
-                            });
-                        } else {
-                            // this should never happen,
-                            // as the right-click context menu occurs with focus
-                            // in BrowserWindow / WebView's WebContents
-                            wc.inspectElement(x, y);
-                        }
-                    }
-                },
-                label: "Inspect element",
-            }]).popup({window: readerWindow});
-        });
-
+        contextMenuSetup(wc, wc.id);
     }
 
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
@@ -132,7 +96,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
         readerWindow.webContents.on("did-finish-load", () => {
 
-            // the dispatching of 'openSuccess' action must be in the 'did-finish-load' event
+            // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
             // because webpack-dev-server automaticaly refresh the window.
             const store = diMainGet("store");
 

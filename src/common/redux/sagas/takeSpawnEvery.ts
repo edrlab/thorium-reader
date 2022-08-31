@@ -5,20 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Action } from "readium-desktop/common/models/redux";
 import { TakeableChannel } from "redux-saga";
-import { ActionPattern, call, fork, ForkEffect, spawn, take } from "redux-saga/effects";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
+import { ActionPattern, call, fork, spawn, take } from "redux-saga/effects";
 
-// tslint:disable-next-line: no-empty
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => { };
 
 export function takeSpawnEvery(
     pattern: ActionPattern,
     worker: (...args: any[]) => any,
     cbErr: (e: any) => void = noop,
-): ForkEffect<never> {
+) {
     return spawn(function*() {
         while (true) {
-            const action = yield take(pattern);
+            const action: Action<any> = yield take(pattern);
             yield fork(function*() {
                 try {
                     yield call(worker, action);
@@ -34,10 +36,10 @@ export function takeSpawnEveryChannel(
     pattern: TakeableChannel<any>,
     worker: (...args: any[]) => any,
     cbErr: (e: any) => void = noop,
-): ForkEffect<never> {
+) {
     return spawn(function*() {
         while (true) {
-            const action = yield take(pattern);
+            const action: Action<any> = yield take(pattern);
             yield fork(function*() {
                 try {
                     yield call(worker, action);

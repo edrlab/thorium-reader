@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Sluiten",
-        "homeMenu": "Leesweergave menu",
         "importFile": "Importeer een publicatie",
         "leftSlideButton": "Schuif lijst naar links",
         "mainContent": "hoofd inhoud",
@@ -10,6 +9,9 @@
         "searchBook": "Zoek op titel",
         "skipLink": "Ga naar inhoud",
         "toolbar": "werkbalk"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -27,51 +29,61 @@
             "exit": {
                 "askBox": {
                     "button": {
-                        "no": "",
-                        "yes": ""
+                        "no": "Nee",
+                        "yes": "Ja"
                     },
-                    "message": "",
-                    "title": ""
+                    "message": "Wil je deze sessie bewaren?",
+                    "title": "Bewaar sessie"
                 }
             }
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "Toon bibliotheek / boekenplank"
         }
     },
     "catalog": {
         "about": {
             "button": "Meer informatie",
-            "title": "Over Thorium"
+            "title": "Over {{- appName}}"
         },
         "addBookToLib": "Voeg toe",
         "addTags": "Voeg een label toe",
         "addTagsButton": "Voeg toe",
         "allBooks": "Alle boeken",
         "bookInfo": "Over dit boek",
+        "column": {
+            "ascending": "oplopend",
+            "descending": "aflopend",
+            "unsorted": "niet gesorteerd"
+        },
         "delete": "Verwijder",
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",
         "description": "Beschrijving",
         "emptyTagList": "Je hebt geen boeken met een label",
         "entry": {
-            "continueReading": "Ga door met lezen",
-            "continueReadingAudioBooks": "Ga door met luisteren",
-            "continueReadingDivina": "",
-            "lastAdditions": "Recent toegevoegd",
-            "lastAdditionsAudioBooks": "Recent toegevoegde luisterboeken",
-            "lastAdditionsDivina": ""
+            "continueReading": "Ga verder met lezen",
+            "continueReadingAudioBooks": "Ga verder met luisteren",
+            "continueReadingDivina": "Ga verder met divina",
+            "continueReadingPdf": "Ga verder met PDF",
+            "lastAdditions": "Recent toegevoegd"
         },
         "export": "Exporteer",
+        "format": "Formaat",
         "lang": "Taal",
+        "lastRead": "Laatst gelezen",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
-        "noPublicationHelpL1": "De publicatie afgeven",
+        "noPublicationHelpL1": "Sleep een publicatie hier naar toe",
         "noPublicationHelpL2": "of gebruik \"+\" knop hier boven.",
         "noPublicationHelpL3": "LCP beveiligde bestanden zijn ondersteund.",
-        "noPublicationHelpL4": "Ondersteunde uitbreidingen:",
+        "noPublicationHelpL4": "Ondersteunde extensies:",
         "numberOfPages": "Aantal pagina's",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Sinds",
                 "availableState": {
@@ -103,7 +115,7 @@
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
         "import": "Wil je deze bestanden echt importeren :",
-        "importError": "er is een fout opgetreden, controleerje bestandsextensie ({{acceptedExtension}})",
+        "importError": "er is een fout opgetreden, controleer je bestandsextensie ({{acceptedExtension}})",
         "no": "Nee",
         "renew": "Wil je de licentie voor deze publicatie echt vernieuwen?",
         "return": "Wil je de licentie voor deze publicatie echt inleveren?",
@@ -111,9 +123,9 @@
     },
     "error": {
         "errorBox": {
-            "error": "",
-            "message": "",
-            "title": ""
+            "error": "Foutmelding",
+            "message": "Een fout is opgetreden in {{- filename}}",
+            "title": "Interne {{- appName}} fout"
         }
     },
     "header": {
@@ -134,10 +146,11 @@
     "library": {
         "lcp": {
             "cancel": "Annuleer",
-            "hint": "(Hint : {{hint}})",
+            "hint": "(Hint : {{- hint}})",
             "password": "Wachtwoordzin",
             "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
-            "submit": "Verzend"
+            "submit": "Verzend",
+            "urlHint": "Wachtwoordzin vergeten? Vind hulp hier"
         }
     },
     "message": {
@@ -146,11 +159,11 @@
         },
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd",
-            "fail": "Het toevoegen van {{- path}} is mislukt. Controleer de juistheid van het bestand",
+            "fail": "Het toevoegen van {{- path}} is mislukt. {{- err}}",
             "success": "Het toevoegen van {{- title}} is gelukt."
         },
         "open": {
-            "error": ""
+            "error": "De publicatie kan niet worden geopend: {{- err}}"
         }
     },
     "opds": {
@@ -161,6 +174,9 @@
             "title": "Voeg een OPDS feed toe",
             "url": "Link :",
             "urlPlaceholder": "Link"
+        },
+        "addFormApiapp": {
+            "title": ""
         },
         "addMenu": "Voeg OPDS feed toe",
         "back": "Terug",
@@ -173,6 +189,7 @@
             "addExtract": "Voeg de samenvatting toe",
             "goBuyBook": "Koop dit boek",
             "goLoanBook": "Leen dit boek",
+            "goRevokeLoanBook": "Herroep lening",
             "goSubBook": "Abonneer"
         },
         "network": {
@@ -190,6 +207,7 @@
         "audio": {
             "tracks": "Tracks"
         },
+        "author": "",
         "cancelledLcp": "Dit boek kan niet worden gelezen omdat de LCP licentie is geannuleerd.",
         "certificateRevoked": "Certificaat is ingetrokken",
         "certificateSignatureInvalid": "Certificaat handtekening is ongeldig",
@@ -208,7 +226,7 @@
         "licenseSignatureDateInvalid": "Datum in de Licentie handtekening is iongeldig",
         "licenseSignatureInvalid": "Licentie handtekening is ongeldig",
         "progression": {
-            "title": ""
+            "title": "Voortgang"
         },
         "renewButton": "Vernieuw",
         "returnButton": "Lever in",
@@ -216,9 +234,14 @@
         "revokedLcp": "Dit boek kan niet gelezen worden omdat LCP licenstie is ingetrokken.",
         "seeLess": "Toon minder",
         "seeMore": "Toon meer",
+        "title": "Titel",
         "userKeyCheckInvalid": "Wachtwoordzin is niet correct"
     },
     "reader": {
+        "divina": {
+            "mute": "demp geluid",
+            "unmute": "geluid aan"
+        },
         "footerInfo": {
             "lessInfo": "minder informatie",
             "moreInfo": "meer informatie"
@@ -229,23 +252,26 @@
             "delete": "Verwijder",
             "edit": "Wijzig",
             "landmarks": "structuur elementen",
+            "search": "Zoek",
             "toc": "Inhoudsopgave"
         },
         "media-overlays": {
-            "activate": "",
-            "captions": "",
-            "next": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "skip": "",
-            "speed": "",
-            "stop": "",
-            "title": ""
+            "activate": "Activeer Voorlezen",
+            "captions": "Ondertitels / schone weergave",
+            "next": "Volgende Voorlezen",
+            "pause": "Pauzeer Voorlezen",
+            "play": "Speel Voorlezen",
+            "previous": "Vorige Voorlezen",
+            "skip": "Overslaan",
+            "speed": "Voorlezen snelheid",
+            "stop": "Stop Voorlezen",
+            "title": "Voorlezen"
         },
         "navigation": {
             "backHomeTitle": "terug naar de boekenplank",
             "bookmarkTitle": "bladwijzer",
+            "currentPage": "Huidige pagina: {{- current}}",
+            "currentPageTotal": "Huidige pagina: {{- current}}/{{- total}",
             "detachWindowTitle": "maak het venster los",
             "fullscreenTitle": "gebruik volledig scherm",
             "goTo": "Ga naar",
@@ -254,10 +280,24 @@
             "goToTitle": "Ga naar pagina",
             "historyPrevious": "",
             "infoTitle": "informatie",
+            "magnifyingGlassButton": "Zoek in publicatie",
             "openTableOfContentsTitle": "navigatie",
+            "pdfscalemode": "Pagina aanpassen aan breedte",
             "quitFullscreenTitle": "verlaat volledig scherm modus",
             "readBookTitle": "begin met het lezen van het boek",
             "settingsTitle": "instellingen"
+        },
+        "picker": {
+            "annotationTitle": "Annotaties:",
+            "search": {
+                "founds": "{{- nResults}} overeenkomst(en)",
+                "input": "zoektekst",
+                "next": "Volgende",
+                "notFound": "geen overeenkomst",
+                "previous": "Vorige",
+                "submit": "Vind"
+            },
+            "searchTitle": "Zoek:"
         },
         "settings": {
             "column": {
@@ -276,14 +316,30 @@
             "fontSize": "Letter grootte",
             "justification": "Uitlijning",
             "justify": "Uitvullen",
-            "letterSpacing": "Letter afstand",
+            "letterSpacing": "Letterafstand",
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
+            "noFootnotes": "Verberg voetnoten",
             "paginated": "Als pagina's",
+            "paraSpacing": "Paragraaf afstand",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "pagina pas",
+                    "width": "pagina breedte"
+                },
+                "title": "Uitvergroting"
+            },
+            "reduceMotion": "Beperk beweging",
             "save": {
-                "apply": "",
-                "reset": "",
-                "title": ""
+                "apply": "sla op",
+                "reset": "zet terug",
+                "title": "Configuratie"
             },
             "scrolled": "Doorlopend",
             "spacing": "Afstand",
@@ -302,17 +358,26 @@
             "left": "Links",
             "right": "Rechts"
         },
+        "toc": {
+            "publicationNoToc": "deze publicatie bevat geen inhoudsopgave"
+        },
         "tts": {
-            "activate": "",
-            "next": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "speed": "",
-            "stop": ""
+            "activate": "Activeer Tekst Naar Spraak",
+            "default": "Stem: systeem standaard",
+            "next": "Volgende Tekst Naar Spraak",
+            "pause": "Pauzeer Tekst Naar Spraak",
+            "play": "Speel Tekst Naar Spraak",
+            "previous": "Vorige Tekst Naar Spraak",
+            "sentenceDetect": "Splits Tekst Naar Spraak",
+            "speed": "Tekst Naar Spraak snelheid",
+            "stop": "Stop Tekst Naar Spraak",
+            "voice": "Tekst Naar Spraak stem"
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": "Wis authenticatie gegevens"
+        },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",
@@ -329,9 +394,9 @@
             "languageChoice": "Taal keuze"
         },
         "session": {
-            "no": "",
-            "title": "",
-            "yes": ""
+            "no": "Schakel uit",
+            "title": "Bewaar sessie",
+            "yes": "Schakel in"
         }
     }
 }

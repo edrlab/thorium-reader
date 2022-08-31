@@ -18,7 +18,6 @@
   "typescript.surveys.enabled": false,
   "editor.tabSize": 4,
   "editor.insertSpaces": true,
-  "tslint.jsEnable": false,
   "typescript.extension.sortImports.quoteStyle": "double",
   "importSorter.importStringConfiguration.quoteMark": "double",
   "importSorter.importStringConfiguration.trailingComma": "multiLine",

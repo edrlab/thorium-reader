@@ -6,27 +6,30 @@
 // ==LICENSE-END==
 
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
 
 export const readerConfigInitialState: ReaderConfig = {
     align: "auto",
     colCount: "auto",
     dark: false,
-    font: "DEFAULT",
+    font: FONT_ID_DEFAULT,
     fontSize: "100%",
     invert: false,
-    lineHeight: "1.5",
+    lineHeight: "0",
     night: false,
-    paged: false,
+    paged: true, // https://github.com/edrlab/thorium-reader/issues/1222
     readiumcss: true,
     sepia: false,
     enableMathJax: false,
+    reduceMotion: false,
+    noFootnotes: false,
     pageMargins: "0.5",
     wordSpacing: "0",
     letterSpacing: "0",
     paraSpacing: "0",
-    noFootnotes: undefined,
     darken: undefined,
     mediaOverlaysEnableSkippability: true,
+    ttsEnableSentenceDetection: true,
     mediaOverlaysEnableCaptionsMode: false,
     ttsEnableOverlayMode: false,
 };

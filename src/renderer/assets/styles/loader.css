@@ -1,8 +1,13 @@
+/*
+=-=-= loader.css
+*/
+
 .loader {
-    text-align: center;
-    & svg {
-        width: 5rem;
-    }
+  text-align: center;
+
+  & svg {
+    width: 5rem;
+  }
 }
 
 .loader_small {
@@ -11,7 +16,16 @@
   right: 10px;
   z-index: 999;
 
-    & svg {
-        width: 2rem;
-    }
+  & svg {
+    width: 2rem;
+  }
+}
+
+.loader_search_picker {
+  width: 24px;
+  align-self: center;
+}
+
+.___DEBUG___LOADER_CSS {
+  display: none;
 }

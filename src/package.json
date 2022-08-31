@@ -1,6 +1,6 @@
 {
   "name": "EDRLab.ThoriumReader",
-  "version": "1.4.1-alpha.1",
+  "version": "2.1.1-alpha.0",
   "description": "Desktop application to read ebooks",
   "keywords": [
     "readium",
@@ -8,14 +8,11 @@
   ],
   "main": "./main.js",
   "scripts": {
-    "postinstall": "npm run rmLevelDownDeep && npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=9.3.1 --disturl=https://atom.io/download/atom-shell --build-from-source",
-    "rmLevelDownDeep": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
-    "rmLevelSQLite3Deep": "rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
-    "_rmLevelSQLite3Deep": "node ../scripts/sqlite-package-patch.js node_modules/websql/package.json && node ../scripts/sqlite-package-patch.js node_modules/redux-devtools-cli/package.json && rimraf \"./node_modules/websql/node_modules/sqlite3/\" && rimraf \"./node_modules/redux-devtools-cli/node_modules/sqlite3/\"",
-    "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\"",
-    "rmSQLite3Prebuilds": "rimraf \"./node_modules/sqlite3/lib/binding/\"",
-    "rmLevelDownBuild": "rimraf \"./node_modules/leveldown/build/\"",
-    "rmSQLite3Build": "rimraf \"./node_modules/sqlite3/build/\" && rimraf \"./node_modules/sqlite3/build*\""
+    "postinstall": "npm run pinCompromisedColorPackage && npm run electron-build",
+    "pinCompromisedColorPackage": "(npm ls colors || echo \"NPM LS?\") && rimraf node_modules/electron-rebuild/node_modules/colors && rimraf node_modules/dir-compare/node_modules/colors",
+    "pinCompromisedColorPackage_": "find node_modules -maxdepth 100 -type d -name \"colors\" && npm ls colors",
+    "electron-build_": "npm rebuild --runtime=electron --target=19.0.11 --disturl=https://electronjs.org/headers --build-from-source",
+    "electron-build": "electron-rebuild --version=19.0.11 --disturl=https://electronjs.org/headers"
   },
   "repository": {
     "type": "git",
@@ -40,12 +37,8 @@
   "homepage": "https://github.com/edrlab/readium-desktop",
   "dependencies": {
     "bindings": "^1.5.0",
-    "leveldown": "^5.6.0",
-    "mathjax": "^3.1.2",
-    "pouchdb-adapter-leveldb": "^7.2.2",
-    "pouchdb-adapter-node-websql": "^7.0.0",
-    "sqlite3": "^4.2.0",
-    "yargs": "^16.0.3"
+    "mathjax": "^3.2.2",
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
   },

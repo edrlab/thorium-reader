@@ -5,16 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as classNames from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import * as styles from "readium-desktop/renderer/assets/styles/header.css";
+import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
 interface NavigationHeader {
     route: string;
@@ -40,18 +41,18 @@ const headerNav: NavigationHeader[] = [
         route: "/settings",
         label: "settings",
         matchRoutes: ["/settings"],
-        styles: [styles.preferences],
+        styles: [],
     },
 ];
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
@@ -66,11 +67,11 @@ class Header extends React.Component<IProps, undefined> {
 
         return (<>
             <SkipLink
-                className={styles.skip_link}
+                className={stylesHeader.skip_link}
                 anchorId="main-content"
                 label={__("accessibility.skipLink")}
             />
-            <nav className={styles.main_navigation} role="navigation" aria-label={__("header.home")}>
+            <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
                 <ul>
                     {
                         headerNav.map(
@@ -105,7 +106,7 @@ class Header extends React.Component<IProps, undefined> {
                 )
             ) {
                 active = true;
-                styleClasses.push(styles.active);
+                styleClasses.push(stylesHeader.active);
                 break;
             }
         }
@@ -129,6 +130,8 @@ class Header extends React.Component<IProps, undefined> {
             <li className={classNames(...styleClasses)} key={index}>
                 <Link
                     to={nextLocation}
+                    state = {{displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid}}
+
                     replace={true}
 
                     aria-pressed={active}

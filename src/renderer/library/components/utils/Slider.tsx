@@ -5,14 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/slider.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     content: JSX.Element[];
     className?: string;
@@ -22,7 +24,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -35,7 +37,7 @@ class Slider extends React.Component<IProps, IState> {
     private contentRef: React.RefObject<HTMLDivElement>;
     private contentElRefs: HTMLDivElement[] = [];
     private wrapperRef: React.RefObject<HTMLDivElement>;
-    private contentElVisible: boolean[] = [];
+    // private contentElVisible: boolean[] = [];
 
     constructor(props: IProps) {
         super(props);
@@ -101,19 +103,19 @@ class Slider extends React.Component<IProps, IState> {
         };
 
         return (
-            <div className={(className ? className + " " : "") + styles.wrapper}>
+            <div className={(className ? className + " " : "") + stylesSlider.slider}>
                 {this.state.position < 0 ?
                     <button
                         aria-label={__("accessibility.leftSlideButton")}
-                        className={styles.back}
+                        className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
                         onClick={this.handleMove.bind(this, false)}
                     >
-                        <SVG svg={ArrowRightIcon}/>
+                        <SVG ariaHidden={true} svg={ArrowRightIcon}/>
                     </button>
-                : <div className={styles.button_substitute}/>
+                : <></>
                 }
-                <div ref={this.wrapperRef} className={styles.content_wrapper}>
-                    <div ref={this.contentRef} className={styles.content} style={varStyle}>
+                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}>
+                    <div ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
                         {list}
                     </div>
                 </div>
@@ -121,10 +123,11 @@ class Slider extends React.Component<IProps, IState> {
                     <button
                         onClick={this.handleMove.bind(this, true)}
                         aria-label={__("accessibility.rightSlideButton")}
+                        className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
                     >
-                        <SVG svg={ArrowRightIcon}/>
+                        <SVG ariaHidden={true} svg={ArrowRightIcon}/>
                     </button>
-                : <div className={styles.button_substitute}/>
+                : <></>
                 }
             </div>
         );
@@ -167,13 +170,13 @@ class Slider extends React.Component<IProps, IState> {
     private createContent(): JSX.Element[] {
         const content = this.props.content;
 
-        const visible = this.contentElVisible;
+        // const visible = this.contentElVisible;
 
         return content.map((element, index) => {
             const props: {[key: string]: string | number} = {};
-            if (!visible[index]) {
-                props.tabIndex = -1;
-            }
+            // if (!visible[index]) {
+            //     props.tabIndex = -1;
+            // }
             return (
                 <div
                     ref={(ref) => this.contentElRefs[index] = ref}

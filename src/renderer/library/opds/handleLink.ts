@@ -11,21 +11,30 @@ import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { decodeB64 } from "readium-desktop/renderer/common/logics/base64";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { ContentType } from "readium-desktop/utils/content-type";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 
-import { dispatchHistoryPush, TLocation } from "../routing";
+import { Location } from "history";
+
+import { dispatchHistoryPush, IRouterLocationState } from "../routing";
 import { extractParamFromOpdsRoutePathname } from "./route";
+
+const REL_NAVIGATION_TYPES: string[] = [
+    "http://librarysimplified.org/terms/rel/revoke",
+];
 
 export const dispatchOpdsLink =
     (dispatch: TDispatch) =>
-        async (ln: IOpdsLinkView, location: TLocation, title?: string | undefined) => {
+        async (ln: IOpdsLinkView, location: Location, title?: string | undefined) => {
 
             dispatch(dialogActions.closeRequest.build());
 
-            if (ln.type === ContentType.Opds2 ||
-                ln.type === ContentType.Opds2Auth ||
-                ln.type === ContentType.Opds2Pub ||
-                ln.type === ContentType.AtomXml) {
+            const contentType = parseContentType(ln.type);
+            if (contentType === ContentType.Opds2 ||
+                contentType === ContentType.Opds2Auth ||
+                contentType === ContentType.Opds2Pub ||
+                contentType === ContentType.AtomXml ||
+                REL_NAVIGATION_TYPES.includes(ln.rel)
+                ) {
 
                 const param = extractParamFromOpdsRoutePathname(location.pathname);
 
@@ -43,7 +52,7 @@ export const dispatchOpdsLink =
                     ...location,
                     pathname: route,
                     // state: {} // we preserve the existing route state
-                });
+                }, location.state as IRouterLocationState);
             } else {
                 await shell.openExternal(ln.url);
             }

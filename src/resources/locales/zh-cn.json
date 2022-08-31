@@ -1,0 +1,401 @@
+{
+    "accessibility": {
+        "bookMenu": "菜单",
+        "closeDialog": "关闭",
+        "importFile": "导入出版物",
+        "leftSlideButton": "将列表划至左侧",
+        "mainContent": "主要内容",
+        "rightSlideButton": "将列表划至右侧",
+        "searchBook": "按书名搜索",
+        "skipLink": "跳转至内容",
+        "toolbar": "工具栏"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
+    "app": {
+        "edit": {
+            "copy": "复制",
+            "cut": "剪切",
+            "paste": "粘贴",
+            "redo": "重做",
+            "selectAll": "全选",
+            "title": "编辑",
+            "undo": "撤销"
+        },
+        "hide": "隐藏 {{- appName}}",
+        "quit": "退出 {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "否",
+                        "yes": "是"
+                    },
+                    "message": "是否保存当前会话?",
+                    "title": "保存会话"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": "显示 书库/书架"
+        }
+    },
+    "catalog": {
+        "about": {
+            "button": "更多信息",
+            "title": "关于{{appName}}"
+        },
+        "addBookToLib": "导入",
+        "addTags": "添加标签",
+        "addTagsButton": "添加",
+        "allBooks": "全部图书",
+        "bookInfo": "关于此书",
+        "column": {
+            "ascending": "升序",
+            "descending": "降序",
+            "unsorted": "乱序"
+        },
+        "delete": "删除",
+        "deleteBook": "删除",
+        "deleteTag": "删除标签",
+        "description": "概要",
+        "emptyTagList": "尚无带标签电子书",
+        "entry": {
+            "continueReading": "继续阅读",
+            "continueReadingAudioBooks": "继续听读",
+            "continueReadingDivina": "继续阅读divina",
+            "continueReadingPdf": "继续阅读PDF",
+            "lastAdditions": "最近添加"
+        },
+        "export": "导出",
+        "format": "",
+        "lang": "语言",
+        "lastRead": "",
+        "moreInfo": "更多信息",
+        "myBooks": "我的图书",
+        "noPublicationHelpL1": "拖放EPUB至此处。",
+        "noPublicationHelpL2": "或者使用上面的\"+\"按钮。",
+        "noPublicationHelpL3": "支持受LCP保护的文件。",
+        "noPublicationHelpL4": "支持的扩展名:",
+        "numberOfPages": "页码",
+        "opds": {
+            "auth": {
+                "cancel": "取消",
+                "login": "登录"
+            },
+            "info": {
+                "availableSince": "开始时间",
+                "availableState": {
+                    "available": "在售",
+                    "ready": "准备中",
+                    "reserved": "已预订",
+                    "unavailable": "售空",
+                    "unknown": "不明"
+                },
+                "availableUntil": "结束时间",
+                "copyAvalaible": "在售数",
+                "copyTotal": "拷贝数",
+                "holdPosition": "你的持仓位置",
+                "holdTotal": "已持有",
+                "numberOfItems": "项目数",
+                "priveValue": "价格",
+                "state": "状态"
+            }
+        },
+        "publisher": "出版社",
+        "readBook": "阅读",
+        "released": "出版日期",
+        "sort": "排序方式",
+        "tagCount": "标签数",
+        "tags": "标签"
+    },
+    "dialog": {
+        "closeModalWindow": "关闭此模式窗口",
+        "deleteFeed": "你真的要删除此出版目录吗？",
+        "deletePublication": "你真的要删除此出版物吗?",
+        "import": "你真的要导入这些文件吗:",
+        "importError": "出现错误, 请确认文件的扩展名({{acceptedExtension}})",
+        "no": "否",
+        "renew": "你真的要更新此出版物的许可证吗?",
+        "return": "你真的要归还此出版物的许可证吗?",
+        "yes": "是"
+    },
+    "error": {
+        "errorBox": {
+            "error": "错误信息:",
+            "message": "{{- filename}}出现错误",
+            "title": "内部{{- appName}}错误"
+        }
+    },
+    "header": {
+        "allBooks": "全部图书",
+        "books": "我的图书",
+        "catalogs": "出版目录",
+        "downloads": "下载",
+        "gridTitle": "网格视图",
+        "home": "书架菜单",
+        "homeTitle": "主页",
+        "importTitle": "导入出版物",
+        "listTitle": "列表视图",
+        "refreshTitle": "重载",
+        "searchPlaceholder": "搜索",
+        "searchTitle": "开始搜索",
+        "settings": "设置"
+    },
+    "library": {
+        "lcp": {
+            "cancel": "取消",
+            "hint": "(提示: {{- hint}})",
+            "password": "密码",
+            "sentence": "打开此出版物需要LCP密码: ",
+            "submit": "提交",
+            "urlHint": "忘记密码？在此获取帮助"
+        }
+    },
+    "message": {
+        "download": {
+            "error": "下载{{- title}}失败: [{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "{{- title}}已被导入",
+            "fail": "导入{{- path}}失败。{{- err}}",
+            "success": "导入{{- title}}完成。"
+        },
+        "open": {
+            "error": "无法打开出版物: {{- err}}"
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "添加",
+            "name": "名称:",
+            "namePlaceholder": "名称",
+            "title": "添加OPDS订阅源",
+            "url": "链接:",
+            "urlPlaceholder": "链接"
+        },
+        "addFormApiapp": {
+            "title": ""
+        },
+        "addMenu": "添加OPDS订阅源",
+        "back": "返回",
+        "breadcrumbRoot": "出版目录",
+        "empty": "未找到出版物",
+        "firstPage": "首页",
+        "lastPage": "尾页",
+        "menu": {
+            "aboutBook": "关于此书",
+            "addExtract": "导入摘录",
+            "goBuyBook": "购买此书",
+            "goLoanBook": "借阅此书",
+            "goRevokeLoanBook": "归还此书",
+            "goSubBook": "订阅"
+        },
+        "network": {
+            "error": "无法访问OPDS订阅源",
+            "noInternet": "未接入因特网",
+            "noInternetMessage": "请尝试: 检查网线, 调制解调器, 路由或wifi",
+            "reject": "抱歉, 处理OPDS订阅源时出现意外错误",
+            "timeout": "网络连接超时, 请稍后重试"
+        },
+        "next": "下一个",
+        "previous": "上一个",
+        "shelf": "书架"
+    },
+    "publication": {
+        "audio": {
+            "tracks": "音轨"
+        },
+        "author": "作者",
+        "cancelledLcp": "此书无法阅读，因为LCP许可证已被取消。",
+        "certificateRevoked": "认证撤销",
+        "certificateSignatureInvalid": "认证签名无效",
+        "cover": {
+            "img": "封面图像"
+        },
+        "duration": {
+            "title": "播放时长"
+        },
+        "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
+        "lcpEnd": "结束",
+        "lcpRightsCopy": "许可证拷贝",
+        "lcpRightsPrint": "许可证打印",
+        "lcpStart": "开始",
+        "licenseOutOfDate": "许可证过期",
+        "licenseSignatureDateInvalid": "许可证签名日期无效",
+        "licenseSignatureInvalid": "许可证签名无效",
+        "progression": {
+            "title": "进程"
+        },
+        "renewButton": "更新",
+        "returnButton": "归还",
+        "returnedLcp": "此书无法阅读，因为LCP许可证已被归还。",
+        "revokedLcp": "此书无法阅读，因为LCP许可证已被撤销。",
+        "seeLess": "察看更少",
+        "seeMore": "查看更多",
+        "title": "标题",
+        "userKeyCheckInvalid": "密码不正确"
+    },
+    "reader": {
+        "divina": {
+            "mute": "静音",
+            "unmute": "取消静音"
+        },
+        "footerInfo": {
+            "lessInfo": "不显示阅读位置",
+            "moreInfo": "显示阅读位置"
+        },
+        "marks": {
+            "annotations": "笔记",
+            "bookmarks": "书签",
+            "delete": "删除",
+            "edit": "编辑",
+            "landmarks": "结构",
+            "search": "检索",
+            "toc": "目录"
+        },
+        "media-overlays": {
+            "activate": "激活语音朗读",
+            "captions": "字幕 / 简明视图",
+            "next": "朗读下一段",
+            "pause": "暂停朗读",
+            "play": "开始朗读",
+            "previous": "朗读上一段",
+            "skip": "自动跳过功能",
+            "speed": "语音朗读速度",
+            "stop": "停止朗读",
+            "title": "语音朗读"
+        },
+        "navigation": {
+            "backHomeTitle": "返回书架",
+            "bookmarkTitle": "书签",
+            "currentPage": "当前页面: {{- current}}",
+            "currentPageTotal": "当前页面: {{- current}}/{{- total}}",
+            "detachWindowTitle": "显示 书库/书架 窗口",
+            "fullscreenTitle": "开启全屏模式",
+            "goTo": "转到",
+            "goToError": "此页不存在",
+            "goToPlaceHolder": "输入页码",
+            "goToTitle": "转到页",
+            "infoTitle": "信息",
+            "magnifyingGlassButton": "在出版物中搜索",
+            "openTableOfContentsTitle": "导航",
+            "pdfscalemode": "适合页面宽度",
+            "quitFullscreenTitle": "退出全屏模式",
+            "readBookTitle": "开始阅读图书",
+            "settingsTitle": "设置"
+        },
+        "picker": {
+            "annotationTitle": "笔记:",
+            "search": {
+                "founds": "{{- nResults}}个匹配",
+                "input": "输入搜索文本",
+                "next": "后一个",
+                "notFound": "无匹配",
+                "previous": "前一个",
+                "submit": "查找"
+            },
+            "searchTitle": "搜索:"
+        },
+        "settings": {
+            "column": {
+                "auto": "自动",
+                "one": "1栏",
+                "oneTitle": "一栏",
+                "title": "栏",
+                "two": "2栏",
+                "twoTitle": "两栏"
+            },
+            "display": "显示",
+            "disposition": {
+                "title": "布局"
+            },
+            "font": "字体",
+            "fontSize": "字体大小",
+            "justification": "排版",
+            "justify": "两端对齐",
+            "letterSpacing": "字符间距",
+            "lineSpacing": "行间距",
+            "margin": "页边距",
+            "noFootnotes": "没有脚注",
+            "paginated": "分页",
+            "paraSpacing": "段落间距",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "适合页面",
+                    "width": "页面宽度"
+                },
+                "title": "放大"
+            },
+            "reduceMotion": "减少动态效果",
+            "save": {
+                "apply": "保存",
+                "reset": "重置",
+                "title": "配置"
+            },
+            "scrolled": "滚屏",
+            "spacing": "间距",
+            "text": "文字",
+            "theme": {
+                "name": {
+                    "Neutral": "无色",
+                    "Night": "夜间",
+                    "Sepia": "茶色"
+                },
+                "title": "主题"
+            },
+            "wordSpacing": "文字间距"
+        },
+        "svg": {
+            "left": "左",
+            "right": "右"
+        },
+        "toc": {
+            "publicationNoToc": "此出版物没有目录"
+        },
+        "tts": {
+            "activate": "激活文本语音转换",
+            "default": "声音: 系统默认",
+            "next": "下一段",
+            "pause": "暂停",
+            "play": "播放",
+            "previous": "上一段",
+            "sentenceDetect": "句子检测",
+            "speed": "语速",
+            "stop": "停止",
+            "voice": "声音"
+        }
+    },
+    "settings": {
+        "auth": {
+            "wipeData": "清除登录数据"
+        },
+        "keyboard": {
+            "advancedMenu": "菜单",
+            "cancel": "取消",
+            "edit": "编辑",
+            "editUserJson": "编辑用户文件...",
+            "hide": "隐藏",
+            "keyboardShortcuts": "键盘快捷键",
+            "loadUserJson": "从用户文件加载",
+            "resetDefaults": "重置 (加载初始设置)",
+            "save": "保存",
+            "show": "显示"
+        },
+        "language": {
+            "languageChoice": "选择语言"
+        },
+        "session": {
+            "no": "禁用",
+            "title": "保存会话",
+            "yes": "启用"
+        }
+    }
+}

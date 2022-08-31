@@ -8,10 +8,11 @@
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { dialogActions } from "readium-desktop/common/redux/actions/";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, takeEvery } from "redux-saga/effects";
 
 function* lcpUserKeyCheckRequest(action: lcpActions.userKeyCheckRequest.TAction) {
-    const { hint, publicationView, message } = action.payload;
+    const { hint, urlHint, publicationView, message } = action.payload;
 
     // will call API.unlockPublicationWithPassphrase()
     yield put(dialogActions.openRequest.build(
@@ -19,6 +20,7 @@ function* lcpUserKeyCheckRequest(action: lcpActions.userKeyCheckRequest.TAction)
         {
             publicationView,
             hint,
+            urlHint,
             message,
         },
     ));

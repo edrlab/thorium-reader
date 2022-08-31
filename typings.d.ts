@@ -20,19 +20,13 @@ declare module "*.png" {
     export default content;
 }
 
-declare module "ping";
-
-declare module "pouchdb-adapter-leveldb";
-declare module "pouchdb-adapter-node-websql";
-// declare module "readium-desktop/pouchdb/jsondown-adapter";
-
-declare module "*.css" {
-    interface IClassNames {
-        [className: string]: string
-    }
-    const classNames: IClassNames;
-    export = classNames;
-}
+// declare module "*.css" {
+//     interface IClassNames {
+//         [className: string]: string
+//     }
+//     const classNames: IClassNames;
+//     export = classNames;
+// }
 
 declare module "*.svg" {
     interface IProps {

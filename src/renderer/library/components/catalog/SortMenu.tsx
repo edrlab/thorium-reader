@@ -6,11 +6,10 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     onClickAlphaSort: () => void;
     onClickCountSort: () => void;
@@ -19,7 +18,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -32,12 +31,20 @@ class SortMenu extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <div id={styles.sortType}>
-                <button role="menuitem"
-                    onClick={this.props.onClickAlphaSort}> A-Z </button>
-                <button role="menuitem"
-                    onClick={this.props.onClickCountSort}> {__("catalog.tagCount")} </button>
-            </div>
+            <>
+                <button
+                    role="menuitem"
+                    onClick={this.props.onClickAlphaSort}
+                >
+                    A-Z
+                </button>
+                <button
+                    role="menuitem"
+                    onClick={this.props.onClickCountSort}
+                >
+                    {__("catalog.tagCount")}
+                </button>
+            </>
         );
     }
 }

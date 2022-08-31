@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import { acceptedExtensionArray } from "readium-desktop/common/extension";
+import { acceptedExtensionArray, acceptedExtensionObject } from "readium-desktop/common/extension";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TChangeEventOnInput } from "readium-desktop/typings/react";
@@ -17,14 +18,14 @@ import { Dispatch } from "redux";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -38,20 +39,28 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+
+        // not necessary as input is located suitably for mouse hit testing
+        // htmlFor="epubInput"
         return (
-            <div className={styles.addEpubButton}>
+            <label
+                className={classNames(stylesButtons.button_primary_small, stylesButtons.button_icon)}
+            >
+                <SVG ariaHidden={true} svg={PlusIcon} title={__("header.importTitle")} />
                 <input
                     id="epubInput"
                     type="file"
                     aria-label={__("accessibility.importFile")}
                     onChange={this.importFile}
                     multiple
-                    accept={acceptedExtensionArray.join(", ")}
+                    accept={acceptedExtensionArray.map((ext) => {
+                        if (ext === acceptedExtensionObject.nccHtml) { // !ext.startsWith(".")
+                            return ".html";
+                        }
+                        return ext;
+                    }).join(", ")}
                 />
-                <label htmlFor="epubInput">
-                    <SVG svg={PlusIcon} title={__("header.importTitle")} />
-                </label>
-            </div>
+            </label>
         );
     }
 

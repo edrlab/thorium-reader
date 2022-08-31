@@ -5,22 +5,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
-import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import * as CartFillIcon from "readium-desktop/renderer/assets/icons/cart-fill.svg";
+import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
+import { findExtWithMimeType, findMimeTypeWithExtension, ADOBE_ADEPT_XML } from "readium-desktop/utils/mimeTypes";
 
 import OpdsLinkProperties from "./OpdsLinkProperties";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     opdsPublicationView: IOpdsPublicationView;
 }
@@ -28,7 +33,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -52,22 +57,43 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             __,
         } = this.props;
 
+        const boxStyle = {border: "1px solid silver", borderRadius: "8px", padding: "0.4em", paddingTop: "0.2em", marginBottom: "0.5em", marginTop: "0.4em"};
+
+        const m = findMimeTypeWithExtension(ADOBE_ADEPT_XML);
+        const orderLinks = (links: IOpdsLinkView[]) => {
+            return Array.from(links).sort((a, b) => {
+                if (a.properties?.indirectAcquisitionType === m
+                    && b.properties?.indirectAcquisitionType === m) {
+                        return 0;
+                }
+                if (a.properties?.indirectAcquisitionType === m
+                    && b.properties?.indirectAcquisitionType !== m) {
+                        return 1;
+                }
+                if (a.properties?.indirectAcquisitionType !== m
+                    && b.properties?.indirectAcquisitionType === m) {
+                        return -1;
+                }
+                return 0;
+            });
+        };
+
         const openAccessLinksButton = () =>
             Array.isArray(opdsPublicationView.openAccessLinks)
-                ? opdsPublicationView.openAccessLinks.map(
+                ? orderLinks(opdsPublicationView.openAccessLinks).map(
                     (ln, idx) =>
-                        <div key={`openAccessControl-${idx}`}>
+                        <div key={`openAccessControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                             <button
                                 onClick={() => verifyImport(
                                     ln,
                                     opdsPublicationView,
                                 )}
-                                className={styles.lire}
+                                className={stylesButtons.button_primary}
                                 disabled={openAccessButtonIsDisabled()}
                             >
                                 {`${__("catalog.addBookToLib")}${ln.properties?.indirectAcquisitionType ?
                                 ` (${findExtWithMimeType(ln.properties.indirectAcquisitionType)})` :
-                                (ln.type ? ` (${findExtWithMimeType(ln.type)})` : "")}`}
+                                (ln.type ? ` (${findExtWithMimeType(ln.type) || findExtWithMimeType(ln.type.replace("+json", "+zip"))})` : "")}`}
                             </button>
                             <OpdsLinkProperties
                                 properties={ln.properties}
@@ -78,17 +104,18 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 
         const sampleOrPreviewLinksButton = () =>
             Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
-                ? opdsPublicationView.sampleOrPreviewLinks.map(
+                ? orderLinks(opdsPublicationView.sampleOrPreviewLinks).map(
                     (ln, idx) =>
-                        <div key={`sampleControl-${idx}`}>
+                        <div key={`sampleControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                             <button
                                 onClick={() => verifyImport(
                                     ln,
                                     opdsPublicationView,
                                 )}
-                                className={styles.lire}
+                                className={stylesButtons.button_primary}
                                 disabled={sampleButtonIsDisabled()}
                             >
+                                <SVG ariaHidden={true} svg={ImportIcon}/>
                                 {__("opds.menu.addExtract")}
                             </button>
                             <OpdsLinkProperties
@@ -102,13 +129,11 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 
             const buyList = () =>
                 Array.isArray(opdsPublicationView.buyLinks)
-                    ? opdsPublicationView.buyLinks.map(
+                    ? orderLinks(opdsPublicationView.buyLinks).map(
                         (ln, idx) =>
-                            <li
-                                key={`buyControl-${idx}`}
-                            >
+                            <div key={`buyControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                                 <button
-                                    className={styles.lire}
+                                    className={classNames(stylesButtons.button_primary, stylesGlobal.mb_20)}
                                     onClick={
                                         () => this.props.link(
                                             ln,
@@ -118,43 +143,42 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     }
 
                                 >
+                                    <SVG ariaHidden={true} svg={CartFillIcon}/>
                                     {__("opds.menu.goBuyBook")}
                                 </button>
+                                <br />
                                 <OpdsLinkProperties properties={ln.properties} />
-                            </li>,
+                            </div>,
                     )
                     : <></>;
 
             const borrowList = () =>
                 Array.isArray(opdsPublicationView.borrowLinks)
-                    ? opdsPublicationView.borrowLinks.map(
+                    ? orderLinks(opdsPublicationView.borrowLinks).map(
                         (ln, idx) =>
-                            <li
-                                key={`borrowControl-${idx}`}
-                            >
+                            <div key={`borrowControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                                 <button
-                                    className={styles.lire}
+                                    className={stylesButtons.button_primary}
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
                                         `${__("opds.menu.goLoanBook")} (${opdsPublicationView.title})`)}
+                                    disabled={ln.properties.indirectAcquisitionType === findMimeTypeWithExtension(ADOBE_ADEPT_XML)}
                                 >
                                     {__("opds.menu.goLoanBook")}
                                 </button>
                                 <OpdsLinkProperties properties={ln.properties} />
-                            </li>,
+                            </div>,
                     )
                     : <></>;
 
             const subscribeList = () =>
                 Array.isArray(opdsPublicationView.subscribeLinks)
-                    ? opdsPublicationView.subscribeLinks.map(
+                    ? orderLinks(opdsPublicationView.subscribeLinks).map(
                         (ln, idx) =>
-                            <li
-                                key={`subscribeControl-${idx}`}
-                            >
+                            <div key={`subscribeControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                                 <button
-                                    className={styles.lire}
+                                    className={stylesButtons.button_primary}
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
@@ -163,9 +187,35 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     {__("opds.menu.goSubBook")}
                                 </button>
                                 <OpdsLinkProperties properties={ln.properties} />
-                            </li>,
+                            </div>,
                     )
                     : <></>;
+
+            const revokeLoanList = () =>
+                Array.isArray(opdsPublicationView.revokeLoanLinks) ? (
+                    orderLinks(opdsPublicationView.revokeLoanLinks).map((ln, idx) => (
+                        <div key={`revokeControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
+                            <button
+                                className={stylesButtons.button_primary}
+                                onClick={() =>
+                                    this.props.link(
+                                        ln,
+                                        this.props.location,
+                                        `${__("opds.menu.goRevokeLoanBook")} (${
+                                            opdsPublicationView.title
+                                        })`,
+                                    )
+                                }
+                            >
+                                {__("opds.menu.goRevokeLoanBook")}
+                            </button>
+                            <br />
+                            <OpdsLinkProperties properties={ln.properties} />
+                        </div>
+                    ))
+                ) : (
+                    <></>
+                );
 
             if (
                 (Array.isArray(opdsPublicationView.buyLinks)
@@ -174,9 +224,11 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     && opdsPublicationView.borrowLinks.length)
                 || (Array.isArray(opdsPublicationView.subscribeLinks)
                     && opdsPublicationView.subscribeLinks.length)
+                || (Array.isArray(opdsPublicationView.revokeLoanLinks)
+                    && opdsPublicationView.revokeLoanLinks.length)
             ) {
                 return (
-                    <ul className={styles.liens}>
+                    <div>
                         {
                             buyList()
                         }
@@ -186,7 +238,10 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         {
                             subscribeList()
                         }
-                    </ul>
+                        {
+                            revokeLoanList()
+                        }
+                    </div>
                 );
             }
             return (<></>);

@@ -10,14 +10,15 @@ import * as debug_ from "debug";
 import * as moment from "moment";
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationLcp: Partial<Pick<PublicationView, "lcp" | "lcpRightsCopies">>;
 }
@@ -25,7 +26,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -83,7 +84,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         // if (lcp && lcp.r2LCPBase64) {
         //     const r2LCPStr = Buffer.from(lcp.r2LCPBase64, "base64").toString("utf-8");
         //     const r2LCPJson = JSON.parse(r2LCPStr);
-        //     const r2LCP = TaJsonDeserialize<LCP>(r2LCPJson, LCP);
+        //     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
         //     r2LCP.JsonSource = r2LCPStr;
 
         //     console.log(r2LCP.User.Name);
@@ -101,44 +102,58 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
         return (
             <>
-                <h3>LCP</h3>
-                <p className={classNames(styles.allowUserSelect)}
-                >
+                <div className={stylesGlobal.heading}>
+                    <h3>LCP</h3>
+                </div>
+                <div className={classNames(stylesBookDetailsDialog.allowUserSelect)}>
                     {(lsdStatus &&
                         (lsdStatus !== StatusEnum.Active && lsdStatus !== StatusEnum.Ready)) && <>
-                            <span style={{ color: "red" }}>{(lsdStatus === StatusEnum.Expired ?
-                                __("publication.expiredLcp")
-                                : ((lsdStatus === StatusEnum.Cancelled) ?
-                                    __("publication.cancelledLcp")
-                                    : ((lsdStatus === StatusEnum.Revoked) ?
-                                        __("publication.revokedLcp")
-                                        : (lsdStatus === StatusEnum.Returned ?
-                                            __("publication.returnedLcp") :
-                                            `LCP LSD: ${lsdStatus}`))))}</span>
+                            <span className={stylesGlobal.color_red}>
+                                {
+                                    (lsdStatus === StatusEnum.Expired ?
+                                        __("publication.expiredLcp")
+                                    :
+                                        ((lsdStatus === StatusEnum.Cancelled) ?
+                                            __("publication.cancelledLcp")
+                                        :
+                                            ((lsdStatus === StatusEnum.Revoked) ?
+                                                __("publication.revokedLcp")
+                                            :
+                                                (lsdStatus === StatusEnum.Returned ?
+                                                    __("publication.returnedLcp")
+                                                :
+                                                    `LCP LSD: ${lsdStatus}`
+                                                )
+                                            )
+                                        )
+                                    )
+                                }
+                            </span>
                             <br /><br />
-                        </>}
+                        </>
+                    }
 
                     {lcpRightsStartDateStr && <>
-                        <span>{__("publication.lcpStart")}: </span><i>{lcpRightsStartDateStr}</i>
+                        <strong>{__("publication.lcpStart")}: </strong><i>{lcpRightsStartDateStr}</i>
                         <br />
                     </>}
 
                     {lcpRightsEndDateStr && <>
-                        <span>{__("publication.lcpEnd")}: </span><i>{lcpRightsEndDateStr}</i>
+                        <strong>{__("publication.lcpEnd")}: </strong><i>{lcpRightsEndDateStr}</i>
                         <br />
                         <br />
                     </>}
 
                     {lcpRightsCopy ? <>
-                        <span>{__("publication.lcpRightsCopy")}: </span>
+                        <strong>{__("publication.lcpRightsCopy")}: </strong>
                         <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
                     </> : undefined}
 
                     {lcpRightsPrint ? <>
-                        <span>{__("publication.lcpRightsPrint")}: </span>
+                        <strong>{__("publication.lcpRightsPrint")}: </strong>
                         <i>0 / {lcpRightsPrint}</i><br />
                     </> : undefined}
-                </p>
+                </div>
             </>
         );
     }

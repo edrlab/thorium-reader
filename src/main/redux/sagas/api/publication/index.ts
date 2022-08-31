@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
-
 import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
 
 import { deletePublication } from "./delete";
@@ -15,8 +13,8 @@ import { findAll } from "./findAll";
 import { findByTag } from "./findByTag";
 import { getAllTags } from "./getAllTags";
 import { getPublication } from "./getPublication";
-import { importFromFs, importFromLink } from "./import";
-import { search } from "./search";
+import { importFromFs, importFromLink, importFromString } from "./import";
+import { search, searchEqTitle } from "./search";
 import { updateTags } from "./updateTags";
 
 export const publicationApi: IPublicationApi = {
@@ -30,4 +28,6 @@ export const publicationApi: IPublicationApi = {
     exportPublication,
     importFromFs,
     importFromLink,
+    importFromString,
+    searchEqTitle,
 };

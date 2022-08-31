@@ -10,9 +10,10 @@ import { promises as fsp } from "fs";
 import { nanoid } from "nanoid";
 import * as os from "os";
 import * as path from "path";
-import { injectBufferInZip } from "r2-utils-js/dist/es6-es2015/src/_utils/zip/zipInjector";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+
+import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 // Logger
 const debug = debug_("readium-desktop:main#w3c/lpf/tools");
@@ -22,7 +23,7 @@ export async function copyAndMoveLpfToTmpWithNewExt(
     ext: string = acceptedExtensionObject.audiobook,
 ): Promise<string> {
 
-    const tmpPathName = `lpfconverter`;
+    const tmpPathName = "lpfconverter";
     const tmpPath = os.tmpdir();
 
     // creation of a unique temporary directory
@@ -31,7 +32,7 @@ export async function copyAndMoveLpfToTmpWithNewExt(
         pathDir = path.resolve(tmpPath, _APP_NAME.toLowerCase(), tmpPathName, nanoid(8));
         await fsp.mkdir(pathDir, { recursive: true });
 
-    } catch (e) {
+    } catch (_e) {
 
         pathDir = await fsp.mkdtemp(`${_APP_NAME.toLowerCase()}-${tmpPathName}`);
     }
@@ -49,10 +50,10 @@ export async function injectManifestToZip(
     sourcePath: string,
     destinationPath: string,
     bufferFile: Buffer,
-    filename: string = "manifest.json",
+    filename = "manifest.json",
 ) {
 
-    return new Promise(
+    return new Promise<void>(
         (resolve, reject) => {
             injectBufferInZip(
                 sourcePath,

@@ -5,20 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { clipboard } from "electron";
+import classNames from "classnames";
 import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
-import classNames = require("classnames");
-
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     close: (id: string) => void;
     className?: string;
@@ -33,7 +33,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -44,6 +44,8 @@ interface IState {
 
 export class Toast extends React.Component<IProps, IState> {
     private ref: React.RefObject<HTMLDivElement>;
+    private timer: number | undefined;
+    private ignoreTimer: boolean | undefined;
 
     constructor(props: IProps) {
         super(props);
@@ -59,12 +61,35 @@ export class Toast extends React.Component<IProps, IState> {
         this.handleClose = this.handleClose.bind(this);
     }
 
+    public cancelTimer(ignoreTimer: boolean) {
+        if (this.timer) {
+            window.clearTimeout(this.timer);
+            this.timer = undefined;
+        }
+        if (ignoreTimer) {
+            this.ignoreTimer = true;
+        }
+    }
+    public triggerTimer(fast: boolean) {
+        this.cancelTimer(false);
+        if (this.ignoreTimer) {
+            return;
+        }
+
+        this.timer = window.setTimeout(() => {
+            this.timer = undefined;
+            this.handleClose();
+        }, fast ? 500 : 5000);
+    }
+
     public componentDidMount() {
-        setTimeout(this.handleClose, 5000);
+        this.triggerTimer(false);
+
         if (this.ref?.current) {
             this.ref?.current.addEventListener("transitionend", this.handleTransitionEnd, false);
         }
 
+        // https://www.electronjs.org/docs/latest/tutorial/notifications
         if (this.props.displaySystemNotification) {
             // tslint:disable-next-line: no-unused-expression
             new Notification(capitalizedAppName, {
@@ -80,47 +105,87 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
+
+        if (this.props.displaySystemNotification) {
+            return (<></>);
+        }
+
         const { type } = this.props;
         const { willLeave, toRemove } = this.state;
 
         let typeClassName: string;
         switch (type) {
             case ToastType.Error:
-                typeClassName = styles.error;
+                typeClassName = stylesToasts.error;
                 break;
             case ToastType.Success:
-                typeClassName = styles.success;
+                typeClassName = stylesToasts.success;
                 break;
             default:
                 break;
         }
 
-        if (this.props.displaySystemNotification) {
-            return (<></>);
-        }
-
         return (
             <div
                 ref={this.ref}
+                onMouseMove={() => {
+                    this.cancelTimer(false);
+                }}
+                onClick={() => {
+                    this.cancelTimer(true);
+                }}
+                onMouseOut={() => {
+                    this.triggerTimer(true);
+                }}
                 className={classNames(
-                    styles.toast,
-                    willLeave && styles.leave,
-                    toRemove && styles.toRemove,
+                    stylesToasts.toast,
+                    willLeave && stylesToasts.leave,
+                    toRemove && stylesToasts.toRemove,
                     typeClassName,
                 )}
-                aria-live="assertive"
-                aria-relevant="all"
-                role="alert"
             >
                 {
                 // icon && <SVG className={styles.icon} svg={icon} />
                 }
-                <p>{ this.props.message }</p>
+                <p
+                    aria-live="assertive"
+                    aria-relevant="all"
+                    role="alert"
+                    tabIndex={0}
+                    onFocus={() => {
+                        this.cancelTimer(true);
+                    }}
+                    onClick={() => {
+                        const clipBoardType = "clipboard";
+                        try {
+                            clipboard.writeText(this.props.message, clipBoardType);
+
+                            // https://www.electronjs.org/docs/latest/tutorial/notifications
+                            // tslint:disable-next-line: no-unused-expression
+                            new Notification(capitalizedAppName, {
+                                body: `${this.props.translator.translate("app.edit.copy")} [${this.props.message}]`,
+                            });
+                            // this.triggerTimer(true);
+                            // this.handleClose();
+                        } catch (_e) {
+                            // ignore
+                        }
+                    }
+                }>{ this.props.message }</p>
+                {/*
+                    onBlur={() => {
+                        this.triggerTimer(true);
+                    }}
+                */}
                 <button
+                    onFocus={() => {
+                        this.cancelTimer(true);
+                    }}
                     onClick={() => this.handleClose()}
-                    className={styles.closeButton}
+                    className={stylesToasts.closeButton}
+                    title={this.props.__("accessibility.closeDialog")}
                 >
-                    <SVG svg={QuitIcon}/>
+                    <SVG ariaHidden={true} svg={QuitIcon}/>
                 </button>
             </div>
         );

@@ -5,14 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ok } from "assert";
 import * as crypto from "crypto";
 import * as debug_ from "debug";
-import { createWriteStream } from "fs";
-import { nanoid } from "nanoid";
 import * as path from "path";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
-import { httpGet } from "readium-desktop/main/http";
+import { ok } from "readium-desktop/common/utils/assert";
+import { httpGet } from "readium-desktop/main/network/http";
 import {
     getUniqueResourcesFromR2Publication, w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
@@ -20,24 +17,28 @@ import {
     findManifestFromHtmlEntryAndReturnBuffer,
 } from "readium-desktop/main/w3c/audiobooks/entry";
 import { findHtmlTocInRessources } from "readium-desktop/main/w3c/audiobooks/toc";
+import { createWebpubZip, TResourcesFSCreateZip } from "readium-desktop/main/zip/create";
+import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { SagaGenerator } from "typed-redux-saga";
-import * as url from "url";
-import { ZipFile } from "yazl";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
-import { downloadCreatePathDir, downloader } from "../../../downloader";
+import { downloader } from "../../../downloader";
 import { manifestContext } from "./context";
 
 // Logger
-const debug = debug_("readium-desktop:main#saga/api/publication/packager/packageLink");
+const filename_ = "readium-desktop:main#saga/api/publication/packager/packageLink";
+const debug = debug_(filename_);
 
 const fetcher = (baseUrl: string) => async (href: string) => {
 
     debug("fetcher", href);
-    href = url.resolve(baseUrl, decodeURIComponent(href));
+    // DEPRECATED API (watch for the inverse function parameter order!):
+    // url.resolve(baseUrl, href)
+    href = new URL(href, baseUrl).toString();
 
     const res = await httpGet(href);
 
@@ -86,70 +87,95 @@ const linksToArray = (lns: Link[]): string[] =>
                 : pv,
         new Array<string>());
 
-function* createZip(
-    manifestBuffer: Buffer,
-    resourcesMap: string[][],
-) {
-
-    debug("creation of the zip package .webpub");
-    const pathFile = yield* callTyped(downloadCreatePathDir, nanoid(8));
-    const packagePath = path.resolve(pathFile, "package.webpub");
-
-    const p = async () => new Promise((resolve, reject) => {
-
-        debug("package path", pathFile);
-
-        const zipfile = new ZipFile();
-
-        const writeStream = createWriteStream(packagePath);
-        zipfile.outputStream.pipe(writeStream)
-            .on("close", () => {
-
-                debug("package done");
-                resolve();
-            })
-            .on("error", (e: any) => reject(e));
-
-        zipfile.addBuffer(manifestBuffer, "manifest.json");
-
-        resourcesMap.forEach(([fsPath, , zipPath]) => {
-            zipfile.addFile(fsPath, zipPath);
-        });
-
-        zipfile.end();
-    });
-
-    yield* callTyped(p);
-
-    return packagePath;
-
-}
-
-type TResources = Array<[fsPath: string, href: string, zipPath: string]>;
+type TResource = [fsPath: string, href: string, zipPath: string];
+type TResources = TResource[];
 function* downloadResources(
     r2Publication: R2Publication,
     title: string,
     baseUrl: string,
 ): SagaGenerator<TResources> {
+
     const uResources = getUniqueResourcesFromR2Publication(r2Publication);
+    debug(uResources);
 
     const resourcesHref = [...new Set(linksToArray(uResources))];
-    const resourcesHrefResolved = resourcesHref.map((l) => url.resolve(baseUrl, decodeURIComponent(l)));
+    debug(resourcesHref);
 
-    const pathArray = yield* callTyped(downloader, resourcesHrefResolved, title);
+    const resourcesType = resourcesHref.map((v) => {
+        // tslint:disable-next-line
+        try { new URL(v); return false; } catch {}
+        return true;
+    });
+    debug(resourcesType);
 
-    const resourcesHrefMap: TResources = pathArray.map(
-        (fsPath, idx) => {
+    const resourcesHrefResolved = tryCatchSync(() => {
+        const baseUrlURL = new URL(baseUrl);
 
-            const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
+        if (baseUrlURL.protocol === "file:") {
+            // new URL('file://C:/test/here')).pathname
+            // /C:/test/here
+            // WARNING: see code comment about isWindowsFilesystemPathRooted below!
+            const baseUrlLocal = baseUrl.slice("file://".length);
+
+            return resourcesHref.map((l) => path.join(baseUrlLocal, l));
+        }
+
+        // DEPRECATED API (watch for the inverse function parameter order!):
+        // url.resolve(baseUrl, l)
+        return resourcesHref
+            .map((l) => tryCatchSync(() => new URL(l, baseUrl).toString(), filename_))
+            .filter((v) => !!v);
+
+    }, filename_);
+    debug(resourcesHrefResolved);
+
+    const pathArrayFromDownloader = baseUrl.startsWith("file://")
+        ? resourcesHrefResolved
+        : yield* callTyped(downloader, resourcesHrefResolved, title);
+    debug(pathArrayFromDownloader);
+
+    const pathArray = pathArrayFromDownloader.map<[string, boolean]>((v, i) => [v, resourcesType[i]]);
+    debug(pathArray);
+
+    const resourcesHrefMap = pathArray.map<TResource>(
+        ([fsPath, isResourcesType], idx) => {
+
+            // fsPath can be undefined
+            if (!fsPath) {
+                return undefined;
+            }
+
+            // The following code block is not needed,
+            // as resourcesHrefResolved guarantees absolute filenames,
+            // removing file://
+            // and bypassing the URL(baseHref, href).toString() normalization.
+            // Reminder about URL(baseHref, href).toString():
+            // if the base URL is file://C:/etc. on Windows,
+            // the URL API adds a slash prefix: file:///C:/etc. to match Linux / MacOS absolute file path root syntax
+            //
+            // const isWindowsFilesystemPathRooted = path.sep === "\\" && /^\/[a-zA-Z]:\//.test(fsPath);
+            // const fsPath_ = isWindowsFilesystemPathRooted ?
+            //     fsPath.substr(1).replace(/\//g, "\\") :
+            //     fsPath;
+            // debug(isWindowsFilesystemPathRooted, fsPath);
+
+            let zipPath: string;
+            if (isResourcesType) {
+                zipPath = resourcesHref[idx];
+
+            } else {
+                const hash = crypto.createHash("sha1").update(resourcesHref[idx]).digest("hex");
+                zipPath = hash + "/" + path.basename(resourcesHrefResolved[idx]);
+            }
             return [
-            fsPath,
-            resourcesHref[idx],
-            hash + "/" + path.basename(resourcesHrefResolved[idx]), // crc32 check failed // how to fix this ?
-        ];
+                fsPath,
+                resourcesHref[idx],
+                zipPath,
+            ];
 
         },
-    );
+    ).filter((v) => !!v);
+    debug(resourcesHrefMap);
 
     return resourcesHrefMap;
 }
@@ -183,39 +209,39 @@ function updateManifest(
 
 }
 
-function* BufferManifestToR2Publication(manifest: Buffer, href: string): SagaGenerator<R2Publication | undefined> {
+function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: string): SagaGenerator<R2Publication | undefined> {
 
     let r2Publication: R2Publication;
 
     const fetch = fetcher(href);
 
-    let manifestJson: any;
+    let r2PublicationJson: any;
     try {
 
-        const manifestStr = manifest.toString();
-        manifestJson = JSON.parse(manifestStr);
+        const r2PublicationStr = r2PublicationBuffer.toString("utf-8");
+        r2PublicationJson = JSON.parse(r2PublicationStr);
 
     } catch (e) {
 
-        debug("error to parse manifest");
+        debug("error to parse manifest", e, r2PublicationBuffer);
         return undefined;
     }
 
-    const [isR2, isW3] = manifestContext(manifestJson);
+    const [isR2, isW3] = manifestContext(r2PublicationJson);
 
     if (isW3) {
         debug("w3cManifest found");
 
         r2Publication = yield* callTyped(
             w3cPublicationManifestToReadiumPublicationManifest,
-            manifestJson,
-            async (resources) => findHtmlTocInRessources(resources, fetch),
+            r2PublicationJson,
+            async (resources: Link[]) => findHtmlTocInRessources(resources, fetch),
         );
 
     } else if (isR2) {
         debug("readium manifest found");
 
-        r2Publication = TaJsonDeserialize(manifestJson, R2Publication);
+        r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
     }
 
     return r2Publication;
@@ -228,10 +254,18 @@ export function* packageFromLink(
 
     const [manifest, manifestUrl] = yield* callTyped(packageGetManifestBuffer, href, isHtml);
     if (!manifest) {
-        throw new Error("manifest not found from content link");
+        throw new Error("manifest not found from content link " + href);
     }
 
-    const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, href);
+    return yield* callTyped(packageFromManifestBuffer, href, manifest, manifestUrl);
+}
+
+export function* packageFromManifestBuffer(
+    baseUrl: string, // 'file://' for local resources
+    manifest: Buffer,
+    manifestPath?: string,
+) {
+    const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, baseUrl);
     if (!r2Publication) {
         throw new Error("r2Publication parsing failed");
     }
@@ -239,26 +273,34 @@ export function* packageFromLink(
     debug("ready to package the r2Publication");
     debug(r2Publication);
 
-    const manifestUrlAbsolutized = manifestUrl ? url.resolve(href, manifestUrl) : undefined;
-    debug("manifestUrl", manifestUrlAbsolutized);
+    // DEPRECATED API (watch for the inverse function parameter order!):
+    // url.resolve(baseUrl, manifestPath)
+    const manifestUrlAbsolutized = manifestPath ?
+        tryCatchSync(() => new URL(manifestPath, baseUrl).toString(), filename_) :
+        baseUrl;
+    debug("manifestUrl", manifestUrlAbsolutized, manifestPath, baseUrl);
 
     const resourcesHrefMap = yield* callTyped(
         downloadResources,
         r2Publication,
-        href,
-        manifestUrlAbsolutized || href,
+        baseUrl,
+        manifestUrlAbsolutized,
     );
 
     const r2PublicationUpdated = updateManifest(r2Publication, resourcesHrefMap);
+    debug(r2PublicationUpdated);
 
     const manifestSerialize = TaJsonSerialize(r2PublicationUpdated);
     const manifestString = JSON.stringify(manifestSerialize);
     const manifestBuffer = Buffer.from(manifestString);
 
     // create the .webpub zip package
-    const zipPath = yield* callTyped(createZip, manifestBuffer, resourcesHrefMap);
+    const resourcesCreateZip: TResourcesFSCreateZip = resourcesHrefMap.map(([fsPath, , zipPath]) => [fsPath, zipPath]);
+    debug(resourcesCreateZip);
 
-    return zipPath;
+    const webpubPath = yield* callTyped(createWebpubZip, manifestBuffer, resourcesCreateZip, [], "packager");
+
+    return webpubPath;
 }
 
 export function* packageGetManifestBuffer(

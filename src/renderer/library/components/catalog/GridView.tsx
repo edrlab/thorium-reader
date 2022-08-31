@@ -6,27 +6,37 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import PublicationCard from "readium-desktop/renderer/library/components/publication/PublicationCard";
 import Slider from "readium-desktop/renderer/library/components/utils/Slider";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
 import SortMenu from "./SortMenu";
 import TagLayout from "./TagLayout";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
-// tslint:disable-next-line: no-empty-interface
-interface IBaseProps {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IBaseProps extends TranslatorProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
 }
+
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -39,7 +49,7 @@ enum SortStatus {
     Alpha,
 }
 
-export class CatalogGridView extends React.Component<IProps, IState> {
+class CatalogGridView extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -80,13 +90,24 @@ export class CatalogGridView extends React.Component<IProps, IState> {
                                     <section key={entryIndex}>
                                         {
 
-                                            <div className={styles.title}>
+                                            <div className={stylesGlobal.heading}>
                                                 <h2>{entry.title}</h2>
+                                                <Link
+                                                    className={stylesButtons.button_primary_small}
+                                                    to={{
+                                                        ...this.props.location,
+                                                        pathname: "/library/search/all",
+                                                    }}
+                                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                                                    title={`${this.props.__("header.allBooks")} (${entry.title})`}
+                                                >
+                                                    {this.props.__("header.allBooks")}
+                                                </Link>
                                             </div>
                                         }
                                         {
                                             <Slider
-                                                className={styles.slider}
+                                                className={stylesSlider.slider}
                                                 content={entry.publicationViews.map((pub) =>
                                                     <PublicationCard
                                                         key={pub.identifier}
@@ -101,7 +122,7 @@ export class CatalogGridView extends React.Component<IProps, IState> {
                                 : <div
                                     key={entryIndex}
                                     aria-hidden="true"
-                                    style={{ display: "none" }}
+                                    className={stylesGlobal.d_none}
                                 >
                                 </div>,
                     )
@@ -130,6 +151,7 @@ export class CatalogGridView extends React.Component<IProps, IState> {
 
     private sortbyCount() {
         const { tags } = this.props;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
         const tabTags = tags.sort((a, b) => {
             if (a < b) {
                 return (1);
@@ -146,6 +168,7 @@ export class CatalogGridView extends React.Component<IProps, IState> {
 
     private sortByAlpha() {
         const { tags } = this.props;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
         const tabTags = tags.sort((a, b) => {
             if (a > b) {
                 return (1);
@@ -161,3 +184,9 @@ export class CatalogGridView extends React.Component<IProps, IState> {
     }
 
 }
+
+const mapStateToProps = (state: ILibraryRootState) => ({
+    location: state.router.location,
+});
+
+export default connect(mapStateToProps)(withTranslator(CatalogGridView));

@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menü",
         "closeDialog": "Schließen",
-        "homeMenu": "Startmenü",
         "importFile": "Importieren einer EPUB-Datei",
         "leftSlideButton": "Scrolle nach links unten",
         "mainContent": "hauptinhalt",
@@ -10,6 +9,9 @@
         "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
         "skipLink": "Gehe zum Inhalt",
         "toolbar": "symbolleiste"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "Hinzufügen",
         "allBooks": "Alle Bücher",
         "bookInfo": "Über dieses Buch",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Löschen",
         "deleteBook": "Löschen",
         "deleteTag": "Löschen des Tags",
@@ -58,12 +65,13 @@
             "continueReading": "Lesen Sie weiter",
             "continueReadingAudioBooks": "Hören Sie weiter zu",
             "continueReadingDivina": "",
-            "lastAdditions": "Kürzlich hinzugefügt",
-            "lastAdditionsAudioBooks": "Kürzlich hinzugefügte Hörbücher",
-            "lastAdditionsDivina": ""
+            "continueReadingPdf": "",
+            "lastAdditions": "Kürzlich hinzugefügt"
         },
         "export": "Export",
+        "format": "",
         "lang": "Sprache",
+        "lastRead": "",
         "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
         "noPublicationHelpL1": "Geben Sie die Publikation ab",
@@ -72,6 +80,10 @@
         "noPublicationHelpL4": "Unterstützte Erweiterungen:",
         "numberOfPages": "Seitenzahl",
         "opds": {
+            "auth": {
+                "cancel": "",
+                "login": ""
+            },
             "info": {
                 "availableSince": "Verfügbar seit",
                 "availableState": {
@@ -137,7 +149,8 @@
             "hint": "Dein Kennwort",
             "password": "",
             "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
-            "submit": "Absenden"
+            "submit": "Absenden",
+            "urlHint": ""
         }
     },
     "message": {
@@ -162,6 +175,9 @@
             "url": "Feed-Link:",
             "urlPlaceholder": ""
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "OPDS-Feed hinzufügen",
         "back": "Zurück",
         "breadcrumbRoot": "",
@@ -173,6 +189,7 @@
             "addExtract": "Zur Bibliothek hinzufügen",
             "goBuyBook": "Dieses Buch kaufen",
             "goLoanBook": "Dieses Buch ausleihen",
+            "goRevokeLoanBook": "",
             "goSubBook": "Abonnieren"
         },
         "network": {
@@ -190,6 +207,7 @@
         "audio": {
             "tracks": "Spuren"
         },
+        "author": "",
         "cancelledLcp": "",
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
@@ -201,8 +219,8 @@
         },
         "expiredLcp": "",
         "lcpEnd": "",
-        "lcpRightsCopy": "",
-        "lcpRightsPrint": "",
+        "lcpRightsCopy": "Kopierte Zeichen",
+        "lcpRightsPrint": "Gedruckte Seiten",
         "lcpStart": "",
         "licenseOutOfDate": "",
         "licenseSignatureDateInvalid": "",
@@ -216,9 +234,14 @@
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
         "seeMore": "Mehr Infos",
+        "title": "",
         "userKeyCheckInvalid": ""
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "Weniger Informationen",
             "moreInfo": "Mehr Informationen"
@@ -229,6 +252,7 @@
             "delete": "Löschen",
             "edit": "Bearbeiten",
             "landmarks": "Navigationspunkte",
+            "search": "",
             "toc": "Inhaltsverzeichnis"
         },
         "media-overlays": {
@@ -246,6 +270,8 @@
         "navigation": {
             "backHomeTitle": "Zurück zum Bücherregal",
             "bookmarkTitle": "Lesezeichen setzen",
+            "currentPage": "",
+            "currentPageTotal": "",
             "detachWindowTitle": "Fenster loslösen",
             "fullscreenTitle": "Vollbildmodus",
             "goTo": "Gehe zu",
@@ -254,10 +280,24 @@
             "goToTitle": "Gehe zur Seite",
             "historyPrevious": "",
             "infoTitle": "Informationen",
+            "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navigation",
+            "pdfscalemode": "",
             "quitFullscreenTitle": "Vollbildmodus beenden",
             "readBookTitle": "Mit dem Lesen des Buches beginnen",
             "settingsTitle": "Einstellungen"
+        },
+        "picker": {
+            "annotationTitle": "",
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "submit": ""
+            },
+            "searchTitle": ""
         },
         "settings": {
             "column": {
@@ -279,7 +319,23 @@
             "letterSpacing": "Buchstabenabstand",
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
+            "noFootnotes": "",
             "paginated": "Seitendarstellung",
+            "paraSpacing": "",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
+            "reduceMotion": "",
             "save": {
                 "apply": "Speichern",
                 "reset": "Zurücksetzen",
@@ -302,17 +358,26 @@
             "left": "",
             "right": ""
         },
+        "toc": {
+            "publicationNoToc": ""
+        },
         "tts": {
             "activate": "",
+            "default": "",
             "next": "",
             "pause": "",
             "play": "",
             "previous": "",
+            "sentenceDetect": "",
             "speed": "",
-            "stop": ""
+            "stop": "",
+            "voice": ""
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": ""
+        },
         "keyboard": {
             "advancedMenu": "Menü",
             "cancel": "Stornieren",

@@ -6,8 +6,9 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     title: string;
     message?: string;
@@ -16,16 +17,9 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
-
-/**
- * FIXME : css in code
- */
-const style: React.CSSProperties = {
-    textAlign: "center",
-};
 
 export default class MessageOpdBrowserResult extends React.Component<IProps, undefined> {
 
@@ -36,7 +30,7 @@ export default class MessageOpdBrowserResult extends React.Component<IProps, und
     public render(): React.ReactElement<{}> {
         const { message, title } = this.props;
         return (
-            <div style={style}>
+            <div className={stylesGlobal.text_center}>
                 <h3>{title}</h3>
                 {message && <p>{message}</p>}
             </div>

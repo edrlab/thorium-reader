@@ -10,14 +10,15 @@ import "reflect-metadata";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import * as stylesImages from "readium-desktop/renderer/assets/styles/components/images.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";
 
 import { TranslatorProps, withTranslator } from "./hoc/translator";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: TPublication;
     coverType?: "cover" | "thumbnail" | undefined;
@@ -29,7 +30,7 @@ interface IBaseProps extends TranslatorProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -56,12 +57,12 @@ class Cover extends React.Component<IProps, undefined> {
             };
 
             return (
-                <div style={backgroundStyle} className={styles.cover}>
-                    <div className={styles.box}>
-                        <p aria-hidden className={styles.title}>
+                <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
+                    <div className={stylesPublications.no_img}>
+                        <p aria-hidden>
                             {this.props.translator.translateContentField(publicationViewMaybeOpds.title)}
                         </p>
-                        <p aria-hidden className={styles.author}>{authors}</p>
+                        <p aria-hidden>{authors}</p>
                     </div>
                 </div>
             );
@@ -79,7 +80,7 @@ class Cover extends React.Component<IProps, undefined> {
             return (
                 <img
                     tabIndex={this.props.onKeyPress ? 0 : -1}
-                    className={styles.cover_img}
+                    className={stylesImages.cover_img}
                     onClick={this.props.onClick}
                     onKeyPress={this.props.onKeyPress}
                     role="presentation"

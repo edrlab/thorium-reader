@@ -16,9 +16,15 @@ export const acceptedExtensionObject = {
     webpub: ".webpub",
     audiobookLcp: ".lcpa",
     audiobookLcpAlt: ".lcpaudiobook",
-    // pdfLcp: ".lcpdf", // for illustration only, not actually implemented yet
+    pdfLcp: ".lcpdf",
+    pdf: ".pdf",
     w3cAudiobook: ".lpf",
     divina: ".divina",
+    daisy: ".daisy",
+    zip: ".zip",
+    opf: ".opf",
+    nccHtml: "ncc.html",
+
     // cbz: ".cbz",
 };
 
@@ -32,4 +38,6 @@ export const acceptedExtension = (ext: string) =>
     );
 
 export const isAcceptedExtension = (key: keyof typeof acceptedExtensionObject, ext: string) =>
-    (new RegExp(`\\${acceptedExtensionObject[key]}$`)).test(ext);
+    (new RegExp(`${acceptedExtensionObject[key]
+        ? acceptedExtensionObject[key].replace(/\./g, "\\.")
+        : acceptedExtensionObject[key]}$`)).test(ext);

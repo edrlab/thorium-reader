@@ -1,7 +1,8 @@
 import {
-    w3cPublicationManifestToReadiumPublicationManifest,
+    Iw3cPublicationManifest, w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
 
+import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { initGlobalConverters_GENERIC } from "@r2-shared-js/init-globals";
 
 const manifest = {
@@ -39,7 +40,6 @@ const manifest = {
             "Music",
             "Sounds",
         ],
-        "type": "Audiobook",
         "abridged": "false",
         "copyrightYear": "2020",
         "copyrightHolder": "Stanford U",
@@ -63,6 +63,7 @@ const manifest = {
             duration: 12,
             alternate: [
                 {
+                    type: "audio/mpeg",
                     href: "audio/gtr-jazz.mp3",
                 },
             ],
@@ -121,7 +122,13 @@ const manifest = {
     ],
 };
 
-const publication = {
+interface Tw3cPublicationManifest extends Iw3cPublicationManifest {
+    abridged: string;
+    copyrightYear: string;
+    copyrightHolder: string;
+}
+
+const publication: Tw3cPublicationManifest = {
     "@context": [
         "https://schema.org",
         "https://www.w3.org/ns/pub-context",
@@ -180,7 +187,9 @@ const publication = {
             url: "audio/Latin.mp3",
             name: "Track 2",
             duration: "PT12S",
-            alternate: "audio/gtr-jazz.mp3",
+            alternate: {
+                url: "audio/gtr-jazz.mp3",
+            },
         },
         {
             type: "LinkedResource",
@@ -219,14 +228,13 @@ const publication = {
 // https://github.com/readium/r2-shared-js/blob/83c63065b93f52611664bef334b16e2fcd7251e4/src/init-globals.ts#L26
 initGlobalConverters_GENERIC();
 
-test("publication to manifest", () => {
+test("publication to manifest", async () => {
 
-    Date.prototype.toJSON = function() { return this.toJSON(); };
-
-    const resultat = w3cPublicationManifestToReadiumPublicationManifest(publication as any);
-
-    console.log(JSON.stringify(resultat));
+    const res = await w3cPublicationManifestToReadiumPublicationManifest(publication, (_uniqueResources) => {
+        // console.log(uniqueResources);
+        return undefined;
+    });
 
     // tslint:disable-next-line: max-line-length
-    expect(JSON.stringify(resultat)).toStrictEqual(JSON.stringify(manifest));
+    expect(JSON.stringify(TaJsonSerialize(res))).toStrictEqual(JSON.stringify(manifest));
 });

@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { apiActions, loadActions } from "readium-desktop/common/redux/actions";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, race, spawn, take } from "redux-saga/effects";
 
 export const saga = () => {

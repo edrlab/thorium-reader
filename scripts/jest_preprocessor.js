@@ -1,5 +1,6 @@
 // const crypto = require("crypto");
 const tsJest = require("ts-jest");
+const tsJestTransformer = tsJest.default.createTransformer();
 
 const webpackConfig = require("../webpack.config-preprocessor-directives");
 // console.log(webpackConfig.definePlugin.definitions);
@@ -17,7 +18,7 @@ module.exports = {
     //         .digest('hex');
     // },
     process: function (src, filename, ...rest) {
-        src = tsJest.process(src, filename, ...rest);
+        src = tsJestTransformer.process(src, filename, ...rest);
 
         let needsPatching = false;
         for (const key of preProcessorKeys) {

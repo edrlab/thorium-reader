@@ -1,0 +1,401 @@
+{
+    "accessibility": {
+        "bookMenu": "Valikko",
+        "closeDialog": "Sulje",
+        "importFile": "Tuo julkaisu",
+        "leftSlideButton": "Siirry listalla vasemmalle",
+        "mainContent": "Pääsisältö",
+        "rightSlideButton": "Siirry listalla oikealle",
+        "searchBook": "Hae kirjan nimellä",
+        "skipLink": "Hyppää sisältöön",
+        "toolbar": "Työkalurivi"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
+    "app": {
+        "edit": {
+            "copy": "Kopioi",
+            "cut": "Leikkaa",
+            "paste": "Liitä",
+            "redo": "Tee uudelleen",
+            "selectAll": "Valitse kaikki",
+            "title": "Muokkaa",
+            "undo": "Peru"
+        },
+        "hide": "Piilota {{- appName}}",
+        "quit": "Lopeta {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Ei",
+                        "yes": "Kyllä"
+                    },
+                    "message": "Haluatko tallentaa istunnon?",
+                    "title": "Tallenna istunto"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": "Näytä kirjasto / kirjahylly"
+        }
+    },
+    "catalog": {
+        "about": {
+            "button": "Lisätietoja",
+            "title": "Julkaisusta {{- appName}}"
+        },
+        "addBookToLib": "Tuo",
+        "addTags": "Lisää tunniste",
+        "addTagsButton": "Lisää",
+        "allBooks": "Kaikki kirjat",
+        "bookInfo": "Tietoja tästä kirjasta",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
+        "delete": "Poista",
+        "deleteBook": "Poista",
+        "deleteTag": "Poista tunniste",
+        "description": "Kuvaus",
+        "emptyTagList": "Tunnisteita ei ole käytössä.",
+        "entry": {
+            "continueReading": "Jatka lukemista",
+            "continueReadingAudioBooks": "Jatka kuuntelua",
+            "continueReadingDivina": "Jatka divinan lukemista",
+            "continueReadingPdf": "Jatka pdf:n lukemista",
+            "lastAdditions": "Viimeksi lisätty"
+        },
+        "export": "Vie",
+        "format": "",
+        "lang": "Kieli",
+        "lastRead": "",
+        "moreInfo": "Lisää tietoja",
+        "myBooks": "Minun kirjani",
+        "noPublicationHelpL1": "Pudota julkaisu tähän",
+        "noPublicationHelpL2": "tai käytä \"+\"-painiketta yllä.",
+        "noPublicationHelpL3": "LCP-suojattuja tiedostoja tuetaan.",
+        "noPublicationHelpL4": "Tuetut laajennukset:",
+        "numberOfPages": "Sivumäärä",
+        "opds": {
+            "auth": {
+                "cancel": "Peru",
+                "login": "Kirjaudu"
+            },
+            "info": {
+                "availableSince": "Lähtien",
+                "availableState": {
+                    "available": "Saatavilla",
+                    "ready": "Valmis",
+                    "reserved": "Varattu",
+                    "unavailable": "Ei saatavilla",
+                    "unknown": "Tuntematon"
+                },
+                "availableUntil": "Asti",
+                "copyAvalaible": "Saatavilla oleva määrä",
+                "copyTotal": "Kopioiden määrä",
+                "holdPosition": "Varauksesi tila",
+                "holdTotal": "Varattuna",
+                "numberOfItems": "Kappalemäärä",
+                "priveValue": "Hinta",
+                "state": "Tila"
+            }
+        },
+        "publisher": "Julkaisija",
+        "readBook": "Lue",
+        "released": "Julkaistu",
+        "sort": "Järjestä",
+        "tagCount": "Tunnistemäärä",
+        "tags": "Tunnisteet"
+    },
+    "dialog": {
+        "closeModalWindow": "Sulje tämä ikkuna",
+        "deleteFeed": "Haluatko todella poistaa tämän luettelon?",
+        "deletePublication": "Haluatko todella poistaa tämän julkaisun?",
+        "import": "Haluatko todella tuoda nämä tiedostot :",
+        "importError": "Virhe on havaittu, varmista tiedostopääte ({{acceptedExtension}})",
+        "no": "Ei",
+        "renew": "Haluatko todella uusia tämän julkaisun käyttöoikeuden?",
+        "return": "Haluatko todella palauttaa tämän julkaisun käyttöoikeuden?",
+        "yes": "Kyllä"
+    },
+    "error": {
+        "errorBox": {
+            "error": "Virheilmoitus:",
+            "message": "Virhe on havaittu tiedostossa {{- filename}}",
+            "title": "Sisäinen {{- appName}} virhe"
+        }
+    },
+    "header": {
+        "allBooks": "Kaikki kirjat",
+        "books": "Minun kirjani",
+        "catalogs": "Luettelot",
+        "downloads": "Lataukset",
+        "gridTitle": "Ruudukkonäkymä",
+        "home": "Kirjahyllyn näkymä",
+        "homeTitle": "Koti",
+        "importTitle": "Tuo julkaisu",
+        "listTitle": "Listanäkymä",
+        "refreshTitle": "Lataa uudestaan",
+        "searchPlaceholder": "Hae",
+        "searchTitle": "Aloita haku",
+        "settings": "Asetukset"
+    },
+    "library": {
+        "lcp": {
+            "cancel": "Peru",
+            "hint": "(Vihje : {{- hint}})",
+            "password": "Salasana",
+            "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
+            "submit": "Lähetä",
+            "urlHint": "Unohtuiko salasana? Lisätietoja"
+        }
+    },
+    "message": {
+        "download": {
+            "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "Julkaisu {{- title}} on jo tuotu",
+            "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
+            "success": "Julkaisun {{- title}} tuonti on valmis."
+        },
+        "open": {
+            "error": "Julkaisua ei voi avata: {{- err}}"
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Lisää",
+            "name": "Nimi:",
+            "namePlaceholder": "Nimi",
+            "title": "Lisää OPDS-syöte",
+            "url": "Linkki:",
+            "urlPlaceholder": "Linkki"
+        },
+        "addFormApiapp": {
+            "title": ""
+        },
+        "addMenu": "Lisää OPDS-syöte",
+        "back": "Takaisin",
+        "breadcrumbRoot": "Luettelot",
+        "empty": "Julkaisuja ei löytynyt",
+        "firstPage": "Ensimmäinen",
+        "lastPage": "Viimeinen",
+        "menu": {
+            "aboutBook": "Tietoja tästä kirjasta",
+            "addExtract": "Tuo näyte",
+            "goBuyBook": "Osta kirja",
+            "goLoanBook": "Lainaa kirja",
+            "goRevokeLoanBook": "",
+            "goSubBook": "Tilaa"
+        },
+        "network": {
+            "error": "OPDS-syöte ei ole saatavilla",
+            "noInternet": "Ei internetyhteyttä",
+            "noInternetMessage": "Tarkista verkkokaapeli, modeemi, reititin tai langaton verkko",
+            "reject": "Odottamaton virhe OPDS-syötteen käsittelyssä.",
+            "timeout": "Verkkoyhteyden aikakatkaisu. Yritä myöhemmin uudelleen"
+        },
+        "next": "Seuraava",
+        "previous": "Edellinen",
+        "shelf": "Hylly"
+    },
+    "publication": {
+        "audio": {
+            "tracks": "Osat"
+        },
+        "author": "",
+        "cancelledLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on peruttu.",
+        "certificateRevoked": "Varmenne on kumottu",
+        "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa",
+        "cover": {
+            "img": "kansikuva"
+        },
+        "duration": {
+            "title": "Kesto"
+        },
+        "expiredLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on erääntynyt.",
+        "lcpEnd": "Loppu",
+        "lcpRightsCopy": "Käyttäjäkopio",
+        "lcpRightsPrint": "Tulostinkopio",
+        "lcpStart": "Aloita",
+        "licenseOutOfDate": "Käyttöoikeus on vanhentunut",
+        "licenseSignatureDateInvalid": "Käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
+        "licenseSignatureInvalid": "Käyttöoikeuden allekirjoitus ei kelpaa",
+        "progression": {
+            "title": "Eteneminen"
+        },
+        "renewButton": "Uudista",
+        "returnButton": "Palauta",
+        "returnedLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on palautettu",
+        "revokedLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on kumottu",
+        "seeLess": "Näytä vähemmän",
+        "seeMore": "Näytä enemmän",
+        "title": "",
+        "userKeyCheckInvalid": "Salasana on väärin"
+    },
+    "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
+        "footerInfo": {
+            "lessInfo": "vähemmän tietoja",
+            "moreInfo": "enemmän tietoja"
+        },
+        "marks": {
+            "annotations": "Huomautukset",
+            "bookmarks": "Kirjanmerkit",
+            "delete": "Poista",
+            "edit": "Muokkaa",
+            "landmarks": "Kiintopisteet",
+            "search": "Hae",
+            "toc": "Sisällysluettelo"
+        },
+        "media-overlays": {
+            "activate": "Käynnistä ääneenluku",
+            "captions": "Synkronoitu teksti / Pelkistetty",
+            "next": "Seuraava",
+            "pause": "Pysäytä",
+            "play": "Jatka",
+            "previous": "Edellinen",
+            "skip": "Ohita lisäosat",
+            "speed": "Ääneenluennan nopeus",
+            "stop": "Lopeta ääneenluku",
+            "title": "Ääneenluku"
+        },
+        "navigation": {
+            "backHomeTitle": "Takaisin kirjahyllyyn",
+            "bookmarkTitle": "Kirjanmerkki",
+            "currentPage": "Nykyinen sivu : {{- current}}",
+            "currentPageTotal": "Nykyinen sivu : {{- current}}/{{- total}}",
+            "detachWindowTitle": "Näytä kirjaston / kirjahyllyn ikkuna",
+            "fullscreenTitle": "Avaa kokoruudun tilassa",
+            "goTo": "Siirry",
+            "goToError": "Sivua ei löydy",
+            "goToPlaceHolder": "Syötä sivunumero",
+            "goToTitle": "Siirry sivulle",
+            "infoTitle": "tiedot",
+            "magnifyingGlassButton": "Hae julkaisusta",
+            "openTableOfContentsTitle": "navigaatio",
+            "pdfscalemode": "Sovita sivu tai leveyteen",
+            "quitFullscreenTitle": "Poistu kokonäytön tilasta",
+            "readBookTitle": "Aloita kirjan lukeminen",
+            "settingsTitle": "Asetukset"
+        },
+        "picker": {
+            "annotationTitle": "Ilmoitukset:",
+            "search": {
+                "founds": "{{- nResults}} osuma(a)",
+                "input": "etsittävä teksti",
+                "next": "Seuraava",
+                "notFound": "ei osumia",
+                "previous": "Edellinen",
+                "submit": "Etsi"
+            },
+            "searchTitle": "Hae:"
+        },
+        "settings": {
+            "column": {
+                "auto": "Automaattinen",
+                "one": "1 palsta",
+                "oneTitle": "yksi palsta",
+                "title": "Palstat",
+                "two": "2 palstaa",
+                "twoTitle": "kaksi palstaa"
+            },
+            "display": "Näyttö",
+            "disposition": {
+                "title": "Asettelu"
+            },
+            "font": "Fontti",
+            "fontSize": "Fonttikoko",
+            "justification": "Tasaus",
+            "justify": "Tasareunainen",
+            "letterSpacing": "Kirjainvälistys",
+            "lineSpacing": "Riviväli",
+            "margin": "Marginaali",
+            "noFootnotes": "Alaviitteet pois käytöstä",
+            "paginated": "Sivuiksi jaettu",
+            "paraSpacing": "Kappaleiden väli",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "yksi sivu",
+                    "width": "sivun leveys"
+                },
+                "title": "Zoomaus"
+            },
+            "reduceMotion": "Vähennä liikettä",
+            "save": {
+                "apply": "Tallenna",
+                "reset": "Palauta alkutila",
+                "title": "Toiminta-asetusten määritys"
+            },
+            "scrolled": "Vieritettävä",
+            "spacing": "Väli",
+            "text": "Teksti",
+            "theme": {
+                "name": {
+                    "Neutral": "Neutraali",
+                    "Night": "Yö",
+                    "Sepia": "Seepia"
+                },
+                "title": "Teema"
+            },
+            "wordSpacing": "Sanaväli"
+        },
+        "svg": {
+            "left": "Vasen",
+            "right": "Oikea"
+        },
+        "toc": {
+            "publicationNoToc": "Julkaisussa ei ole sisällysluetteloa"
+        },
+        "tts": {
+            "activate": "Käynnistä tekstistä puheeksi",
+            "default": "",
+            "next": "Seuraava",
+            "pause": "Pysäytä",
+            "play": "Jatka",
+            "previous": "Edellinen",
+            "sentenceDetect": "",
+            "speed": "Tekstistä puheeksi nopeuden säätö",
+            "stop": "Lopeta tekstistä puheeksi",
+            "voice": ""
+        }
+    },
+    "settings": {
+        "auth": {
+            "wipeData": "Poista tunnistustiedot"
+        },
+        "keyboard": {
+            "advancedMenu": "Valikko",
+            "cancel": "Peruuta",
+            "edit": "Muokkaa",
+            "editUserJson": "Muokkaa käyttäjän tiedostoa...",
+            "hide": "Piilota",
+            "keyboardShortcuts": "Pikanäppäimet",
+            "loadUserJson": "Lataa käyttäjän tiedostosta",
+            "resetDefaults": "Palauta (lataa oletusasetukset)",
+            "save": "Tallenna",
+            "show": "Näytä"
+        },
+        "language": {
+            "languageChoice": "Kielen valinta"
+        },
+        "session": {
+            "no": "Keskeytä",
+            "title": "Tallenna istunto",
+            "yes": "Jatka"
+        }
+    }
+}

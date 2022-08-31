@@ -10,20 +10,20 @@ import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 import { v4 as uuidv4 } from "uuid";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 import Toast from "./Toast";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
@@ -57,7 +57,7 @@ export class ToastManager extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { toastList } = this.state;
-        return <div className={styles.toastList}>
+        return <div className={stylesToasts.toasts_wrapper}>
             { Object.keys(toastList).map((id: string) => {
                 const toast = toastList[id];
                 if (toast) {

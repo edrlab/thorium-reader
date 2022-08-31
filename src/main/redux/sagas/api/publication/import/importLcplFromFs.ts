@@ -9,16 +9,19 @@ import * as debug_ from "debug";
 import { promises as fsp } from "fs";
 import * as moment from "moment";
 import * as path from "path";
-import { LCP } from "r2-lcp-js/dist/es6-es2015/src/parser/epub/lcp";
-import { TaJsonDeserialize } from "r2-lcp-js/dist/es6-es2015/src/serializable";
+import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
-import { callTyped } from "readium-desktop/common/redux/sagas/typed-saga";
-import { extractCrc32OnZip } from "readium-desktop/main/crc";
+import { extractCrc32OnZip } from "readium-desktop/main/tools/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
+// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
+
+import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 
 import { downloader } from "../../../downloader";
 import { importPublicationFromFS } from "./importPublicationFromFs";
@@ -29,16 +32,20 @@ const debug = debug_("readium-desktop:main#saga/api/publication/import/publicati
 export function* importLcplFromFS(
     filePath: string,
     lcpHashedPassphrase?: string,
-): SagaGenerator<PublicationDocument> {
+): SagaGenerator<[publicationDocument: PublicationDocument, alreadyImported: boolean]> {
 
     const lcpManager = diMainGet("lcp-manager");
     const publicationRepository = diMainGet("publication-repository");
-    const translate = diMainGet("translator").translate;
 
-    const jsonStr = yield* callTyped(() => fsp.readFile(filePath, { encoding: "utf8" }));
-    const lcpJson = JSON.parse(jsonStr);
-    const r2LCP = TaJsonDeserialize<LCP>(lcpJson, LCP);
-    r2LCP.JsonSource = jsonStr;
+    const r2LCPStr = yield* callTyped(() => fsp.readFile(filePath, { encoding: "utf8" }));
+    const r2LCPJson = JSON.parse(r2LCPStr);
+
+    if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
+        throw new Error(`LCP license malformed: ${JSON.stringify(r2LCPJson)}`);
+    }
+
+    const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
+    r2LCP.JsonSource = r2LCPStr;
     r2LCP.init();
 
     // LCP license checks to avoid unnecessary download:
@@ -117,29 +124,23 @@ export function* importLcplFromFS(
 
             yield call(() => lcpManager.injectLcplIntoZip(downloadFilePath, r2LCP));
             const hash = yield* callTyped(() => extractCrc32OnZip(downloadFilePath));
-            const [pubDocument] = yield* callTyped(() => publicationRepository.findByHashId(hash));
+            const pubDocument = yield* callTyped(() => publicationRepository.findByHashId(hash));
 
             debug("importLcplFromFS", hash);
             if (pubDocument) {
 
-                yield put(
-                    toastActions.openRequest.build(
-                        ToastType.Success,
-                        translate(
-                            "message.import.alreadyImport", { title: pubDocument.title },
-                        ),
-                    ),
-                );
-                return pubDocument;
+                return [pubDocument, true];
             }
 
             const publicationDocument = yield* callTyped(
                 () => importPublicationFromFS(downloadFilePath, hash, lcpHashedPassphrase));
 
-            return publicationDocument;
+            return [publicationDocument, false];
+
         } else {
             throw new Error("download path undefined");
         }
+
     } else {
         throw new Error("no download publication link");
     }

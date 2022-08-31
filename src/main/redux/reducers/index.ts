@@ -7,22 +7,23 @@
 
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
-// import { netReducer } from "readium-desktop/common/redux/reducers/net";
-// import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { RootState } from "readium-desktop/main/redux/states";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers } from "redux";
 
-import { publicationActions, winActions } from "../actions";
+import { appActions, publicationActions, winActions } from "../actions";
 import { lcpReducer } from "./lcp";
 import { readerDefaultConfigReducer } from "./reader/defaultConfig";
 import { sessionReducer } from "./session";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
-import { winModeReducer } from "./win/winModeReducer";
+import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
+import { publicationDbReducers } from "./publication/db";
+import { opdsDbReducers } from "./opds/db";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
 export const rootReducer = combineReducers<RootState>({
     session: sessionReducer,
@@ -64,6 +65,11 @@ export const rootReducer = combineReducers<RootState>({
                     sortFct: (a, b) => b[0] - a[0],
                 },
             ),
+        db: publicationDbReducers,
     }),
     keyboard: keyboardReducer,
+    opds: combineReducers({
+        catalog: opdsDbReducers,
+    }),
+    version: (state, action) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state === undefined ? null : state),
 });

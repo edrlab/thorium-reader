@@ -5,9 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { push } from "connected-react-router";
-import { Location, LocationDescriptorObject } from "history";
-import { RouteComponentProps } from "react-router";
+import { push } from "redux-first-history";
+import { Location } from "history";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import Catalog from "./components/catalog/Catalog";
@@ -20,8 +19,8 @@ import Settings from "./components/settings/Settings";
 
 interface Route {
     path: string;
-    exact: boolean;
-    component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
+    // exact: boolean;
+    component: React.ComponentType<any>;
 }
 
 export interface IOpdsBrowse {
@@ -38,6 +37,7 @@ export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
+
 export interface IRouterLocationState {
     displayType: DisplayType;
 }
@@ -45,13 +45,13 @@ export interface IRouterLocationState {
 const _routes = {
     "/opds": {
         path: "/opds",
-        exact: true,
+        // exact: true,
         component: Opds,
     } as Route,
     "/opds/browse": {
         // IOpdsBrowse
         path: "/opds/:opdsId/browse/:level/:name/:url",
-        exact: true,
+        // exact: true,
         component: Browser,
     } as Route,
     // "/settings/languages": {
@@ -61,49 +61,45 @@ const _routes = {
     // } as Route,
     "/settings": {
         path: "/settings",
-        exact: false,
+        // exact: false,
         component: Settings,
     } as Route,
     "/library/search/text": {
         // ILibrarySearchText
         path: "/library/search/text/:value",
-        exact: true,
+        // exact: true,
         component: TextSearchResult,
     } as Route,
     "/library/search/tag": {
         // ILibrarySearchTag
         path: "/library/search/tag/:value",
-        exact: true,
+        // exact: true,
         component: TagSearchResult,
     } as Route,
     "/library/search/all": {
         path: "/library/search/all",
-        exact: true,
+        // exact: true,
         component: AllPublicationPage,
     } as Route,
     "/library": {
         path: "/library",
-        exact: true,
+        // exact: true,
         component: Catalog,
     } as Route,
     "/": {
         path: "/",
-        exact: false,
+        // exact: false,
         component: Catalog,
     } as Route,
 };
 
-type TRoutesKey = keyof typeof _routes;
+export type TRoutesKey = keyof typeof _routes;
 export type TRouteList = {
     [key in TRoutesKey]: Readonly<Route>;
 };
 
 export const routes: Readonly<TRouteList> = _routes;
 
-export type TLocationRouter = LocationDescriptorObject<IRouterLocationState>;
-
-export type TLocation = Location<IRouterLocationState>;
-
 export const dispatchHistoryPush = (dispatch: TDispatch) =>
-    (location: TLocationRouter) =>
-        dispatch(push(location));
+    (location: Location, state: IRouterLocationState) =>
+        dispatch(push(location, state));

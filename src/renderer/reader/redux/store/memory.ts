@@ -9,10 +9,11 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { reduxSyncMiddleware } from "readium-desktop/renderer/reader/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/renderer/reader/redux/reducers";
 import { rootSaga } from "readium-desktop/renderer/reader/redux/sagas";
-import { applyMiddleware, createStore, Store } from "redux";
+import { applyMiddleware, createStore, type Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 
+import { locatorHrefWatcherMiddleware } from "../middleware/locatorHrefWatcher";
 import { reduxPersistMiddleware } from "../middleware/persistence";
 
 export function initStore(preloadedState: Partial<IReaderRootState>): Store<IReaderRootState> {
@@ -22,6 +23,7 @@ export function initStore(preloadedState: Partial<IReaderRootState>): Store<IRea
         preloadedState,
         composeWithDevTools(
             applyMiddleware(
+                locatorHrefWatcherMiddleware,
                 reduxSyncMiddleware,
                 reduxPersistMiddleware,
                 sagaMiddleware,

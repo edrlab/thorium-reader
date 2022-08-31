@@ -65,7 +65,7 @@ const keyDownUpEventHandler = (
     ev: IKeyboardEvent,
     elementName: string,
     elementAttributes: {[name: string]: string},
-    internal: boolean = false,
+    internal = false,
     keyDown: boolean,
 ) => {
     const doc = document as TKeyboardDocument;
@@ -79,7 +79,9 @@ const keyDownUpEventHandler = (
         inputType === "range" && isArrows ||
         inputType === "radio" && isArrows ||
         inputType === "checkbox" && isEnterReturnSpace ||
-        inputType === "file" && isEnterReturnSpace;
+        inputType === "file" && isEnterReturnSpace ||
+        elementAttributes["contenteditable"] === "true" || // domElement.isContentEditable
+        elementName === "TEXTAREA";
 
     document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
 
@@ -145,7 +147,7 @@ export const keyDownEventHandler = (
     ev: IKeyboardEvent,
     elementName: string,
     elementAttributes: {[name: string]: string},
-    internal: boolean = false,
+    internal = false,
 ) => {
     keyDownUpEventHandler(ev, elementName, elementAttributes, internal, true);
 };
@@ -154,7 +156,7 @@ export const keyUpEventHandler = (
     ev: IKeyboardEvent,
     elementName: string,
     elementAttributes: {[name: string]: string},
-    internal: boolean = false,
+    internal = false,
 ) => {
     keyDownUpEventHandler(ev, elementName, elementAttributes, internal, false);
 };

@@ -10,7 +10,7 @@ import * as ReactDOM from "react-dom";
 
 import AccessibleMenu from "./AccessibleMenu";
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     id: string;
     open: boolean;
@@ -25,7 +25,7 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
 
@@ -63,7 +63,15 @@ export default class MenuContent extends React.Component<IProps, undefined> {
                         aria-hidden={!this.props.open}
                         role="menu"
                         aria-expanded={this.props.open}
-                        ref={(ref) => setContentRef && setContentRef(ref)}
+                        ref={(ref) => {
+                            if (setContentRef) {
+                                setContentRef(ref);
+                            }
+                            if (ref) {
+                                const firstButt = ref.querySelector("button");
+                                firstButt.focus();
+                            }
+                        }}
                     >
                         {this.props.children}
                     </div>

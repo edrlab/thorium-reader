@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "メニュー",
         "closeDialog": "閉じる",
-        "homeMenu": "読書画面のメニュー",
         "importFile": "出版物を追加",
         "leftSlideButton": "リストを左にスライド",
         "mainContent": "メインコンテンツ",
@@ -10,6 +9,9 @@
         "searchBook": "書名から検索",
         "skipLink": "コンテンツに移動",
         "toolbar": "ツールバー"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -41,7 +43,7 @@
     },
     "catalog": {
         "about": {
-            "button": "詳細",
+            "button": "より詳しい情報",
             "title": "{{appName}}について"
         },
         "addBookToLib": "追加",
@@ -49,6 +51,11 @@
         "addTagsButton": "追加",
         "allBooks": "すべての本",
         "bookInfo": "この本の情報",
+        "column": {
+            "ascending": "昇順",
+            "descending": "降順",
+            "unsorted": "並べ替えない"
+        },
         "delete": "削除",
         "deleteBook": "削除",
         "deleteTag": "タグを削除",
@@ -57,21 +64,26 @@
         "entry": {
             "continueReading": "読書を再開",
             "continueReadingAudioBooks": "オーディオブックを再開",
-            "continueReadingDivina": "",
-            "lastAdditions": "最近追加された出版物",
-            "lastAdditionsAudioBooks": "最近追加されたオーディオブック",
-            "lastAdditionsDivina": ""
+            "continueReadingDivina": "DiViNaを再開",
+            "continueReadingPdf": "PDFを再開",
+            "lastAdditions": "最近追加したもの"
         },
         "export": "書き出し",
+        "format": "",
         "lang": "言語",
+        "lastRead": "",
         "moreInfo": "他の情報",
         "myBooks": "わたしの本",
-        "noPublicationHelpL1": "この画面にEPUBファイルをドロップしてください。",
-        "noPublicationHelpL2": "または，上にある\"+\"ボタンを押してください。",
-        "noPublicationHelpL3": "LCPで保護されたファイルをサポートします。",
-        "noPublicationHelpL4": "サポートされる拡張機能：",
+        "noPublicationHelpL1": "この画面に書籍ファイルをドロップしてください。",
+        "noPublicationHelpL2": "または、画面上部にある［+］ボタンを押して登録してください。",
+        "noPublicationHelpL3": "LCPで保護されたファイルにも対応します。",
+        "noPublicationHelpL4": "サポートされている拡張子：",
         "numberOfPages": "ページ数",
         "opds": {
+            "auth": {
+                "cancel": "取り消し",
+                "login": "ログイン"
+            },
             "info": {
                 "availableSince": "始まり",
                 "availableState": {
@@ -100,7 +112,7 @@
     },
     "dialog": {
         "closeModalWindow": "このモーダル画面を閉じる",
-        "deleteFeed": "この出版目録を本当に削除しますか？",
+        "deleteFeed": "この図書目録を本当に削除しますか？",
         "deletePublication": "この本を本当に削除しますか？",
         "import": "これらのファイルを本当に追加しますか？:",
         "importError": "エラーが発生しました。拡張子を確認してください（{{acceptedExtension}}）",
@@ -112,14 +124,14 @@
     "error": {
         "errorBox": {
             "error": "エラーメッセージ：",
-            "message": "{{- filename}}で，エラーが発生しました",
+            "message": "{{- filename}}で、エラーが発生しました",
             "title": "内部 {{- appName}} エラー"
         }
     },
     "header": {
         "allBooks": "すべての本",
         "books": "わたしの本",
-        "catalogs": "出版目録",
+        "catalogs": "図書目録",
         "downloads": "ダウンロード",
         "gridTitle": "格子状に本を表示",
         "home": "本棚の機能選択",
@@ -134,10 +146,11 @@
     "library": {
         "lcp": {
             "cancel": "キャンセル",
-            "hint": "（ヒント：{{hint}}）",
+            "hint": "（ヒント：{{- hint}}）",
             "password": "パスワード",
             "sentence": "この本を読むためにはLCP解除のパスワードが必要です: ",
-            "submit": "送信"
+            "submit": "送信",
+            "urlHint": "パスワードを忘れた場合に役に立つかもしれません"
         }
     },
     "message": {
@@ -146,7 +159,7 @@
         },
         "import": {
             "alreadyImport": "{{- title}}はすでに追加されていました。",
-            "fail": "{{- path}}の追加に失敗しました。ファイルが正しいかを確認してください。",
+            "fail": "{{- path}}の追加に失敗しました。",
             "success": "{{- title}}の追加が完了しました。"
         },
         "open": {
@@ -162,9 +175,12 @@
             "url": "URL：",
             "urlPlaceholder": "URL"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "OPDSフィードを追加",
         "back": "戻る",
-        "breadcrumbRoot": "出版目録",
+        "breadcrumbRoot": "図書目録",
         "empty": "出版物が見つかりません",
         "firstPage": "最初",
         "lastPage": "最後",
@@ -173,13 +189,14 @@
             "addExtract": "抜粋を追加",
             "goBuyBook": "この本を購入",
             "goLoanBook": "この本を借りる",
+            "goRevokeLoanBook": "返却",
             "goSubBook": "購読"
         },
         "network": {
             "error": "OPDSフィードにアクセスできません",
             "noInternet": "インターネットにつながりません",
-            "noInternetMessage": "確認してください：ネットワークケーブル，モデム，ルーター，Wi-Fi",
-            "reject": "残念ながら，OPDSフィードを処理しようとしたときに，予期しないエラーが発生しました",
+            "noInternetMessage": "確認してください：ネットワークケーブル、モデム、ルーター、Wi-Fi",
+            "reject": "残念ながら、OPDSフィードを処理しようとしたときに、予期しないエラーが発生しました",
             "timeout": "ネットワーク接続がタイムアウトしました。後で再度試してください"
         },
         "next": "次へ",
@@ -190,7 +207,8 @@
         "audio": {
             "tracks": "トラック"
         },
-        "cancelledLcp": "LCPライセンスが取り消されたため，この本を読めません。",
+        "author": "著者",
+        "cancelledLcp": "LCPライセンスが取り消されたため、この本を読めません。",
         "certificateRevoked": "証明書が取り消されています",
         "certificateSignatureInvalid": "証明書の署名が無効です",
         "cover": {
@@ -199,7 +217,7 @@
         "duration": {
             "title": "再生時間"
         },
-        "expiredLcp": "LCPライセンスの有効期限が切れているため，この本は読めません。",
+        "expiredLcp": "LCPライセンスの有効期限が切れているため、この本は読めません。",
         "lcpEnd": "終了",
         "lcpRightsCopy": "文字列のコピー",
         "lcpRightsPrint": "プリンターで印刷",
@@ -208,17 +226,22 @@
         "licenseSignatureDateInvalid": "ライセンス署名の日付が無効です",
         "licenseSignatureInvalid": "ライセンス署名が無効です",
         "progression": {
-            "title": "進捗"
+            "title": "読み進めた位置"
         },
         "renewButton": "更新",
         "returnButton": "返却",
-        "returnedLcp": "LCPライセンスが返却されたため，この本は読めません。",
-        "revokedLcp": "LCPライセンスが取り消されているため，この本は読めません。",
+        "returnedLcp": "LCPライセンスが返却されたため、この本は読めません。",
+        "revokedLcp": "LCPライセンスが取り消されているため、この本は読めません。",
         "seeLess": "続きを見ない",
         "seeMore": "続きを見る",
+        "title": "書名",
         "userKeyCheckInvalid": "パスワードが間違っています"
     },
     "reader": {
+        "divina": {
+            "mute": "音を鳴らさない",
+            "unmute": "音を鳴らす"
+        },
         "footerInfo": {
             "lessInfo": "読書位置を非表示",
             "moreInfo": "読書位置を表示"
@@ -229,16 +252,17 @@
             "delete": "削除",
             "edit": "編集",
             "landmarks": "構成",
+            "search": "検索",
             "toc": "目次"
         },
         "media-overlays": {
             "activate": "本文の読み上げ機能を起動",
             "captions": "字幕 / 明確な表示",
-            "next": "次の文に進み，読み上げる",
+            "next": "次の文に進み、読み上げる",
             "pause": "本文の読み上げを一時停止",
             "play": "本文の読み上げを再生",
-            "previous": "前の文に戻り，読み上げる",
-            "skip": "読み飛ばし機能",
+            "previous": "前の文に戻り、読み上げる",
+            "skip": "二次情報の読み飛ばし",
             "speed": "本文の読み上げの再生速度",
             "stop": "本文の読み上げを停止",
             "title": "本文の読み上げ"
@@ -246,18 +270,34 @@
         "navigation": {
             "backHomeTitle": "本棚に戻る",
             "bookmarkTitle": "しおりを挟む",
+            "currentPage": "現在のページ：{{- current}}",
+            "currentPageTotal": "現在のページ：（{{- current}}/{{- total}}）",
             "detachWindowTitle": "蔵書/本棚を表示",
             "fullscreenTitle": "全画面表示",
             "goTo": "移動",
             "goToError": "そのページは存在しません",
             "goToPlaceHolder": "移動先のページ番号",
-            "goToTitle": "ページに移動",
             "historyPrevious": "",
+            "goToTitle": "ページを移動",
             "infoTitle": "本の情報",
+            "magnifyingGlassButton": "この本の中で検索",
             "openTableOfContentsTitle": "ナビゲーション",
+            "pdfscalemode": "ページに収める/ページ幅に合わせる",
             "quitFullscreenTitle": "全画面表示の終了",
             "readBookTitle": "本を読み始める",
             "settingsTitle": "設定"
+        },
+        "picker": {
+            "annotationTitle": "注釈：",
+            "search": {
+                "founds": "（一致した数：{{- nResults}}）",
+                "input": "検索したい語句",
+                "next": "次へ",
+                "notFound": "一致しませんでした",
+                "previous": "前へ",
+                "submit": "検索"
+            },
+            "searchTitle": "検索："
         },
         "settings": {
             "column": {
@@ -279,14 +319,30 @@
             "letterSpacing": "文字の間隔",
             "lineSpacing": "行の間隔",
             "margin": "縦列の余白",
+            "noFootnotes": "脚注を表示しない",
             "paginated": "ページ型",
+            "paraSpacing": "段落の間隔",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "ページに収める",
+                    "width": "ページ幅に合わせる"
+                },
+                "title": "拡大"
+            },
+            "reduceMotion": "視差効果を減らす",
             "save": {
                 "apply": "保存",
                 "reset": "リセット",
                 "title": "設定の構成"
             },
             "scrolled": "スクロール型",
-            "spacing": "余白",
+            "spacing": "余白・間隔",
             "text": "文字",
             "theme": {
                 "name": {
@@ -296,23 +352,32 @@
                 },
                 "title": "テーマ"
             },
-            "wordSpacing": "単語間のスペース"
+            "wordSpacing": "単語間の間隔"
         },
         "svg": {
             "left": "左",
             "right": "右"
         },
+        "toc": {
+            "publicationNoToc": "この出版物には目次が付いていません"
+        },
         "tts": {
             "activate": "音声合成による読み上げ機能を起動",
-            "next": "次の文に進み，音声合成による読み上げを実行",
+            "default": "音声: システム標準",
+            "next": "次の文に進み、音声合成による読み上げを実行",
             "pause": "音声合成による読み上げを一時停止",
-            "play": "音声合成に読み上げを実行",
-            "previous": "前の文に戻り，音声合成による読み上げを実行",
+            "play": "音声合成による読み上げを実行",
+            "previous": "前の文に戻り、音声合成による読み上げを実行",
+            "sentenceDetect": "音声合成読み上げ語句の分割",
             "speed": "音声合成による読み上げの速度",
-            "stop": "音声合成による読み上げを停止"
+            "stop": "音声合成による読み上げを停止",
+            "voice": "音声合成による読み上げ用の音声"
         }
     },
     "settings": {
+        "auth": {
+            "wipeData": "認証データを消去する"
+        },
         "keyboard": {
             "advancedMenu": "メニュー",
             "cancel": "キャンセル",
@@ -329,9 +394,9 @@
             "languageChoice": "言語の選択"
         },
         "session": {
-            "no": "無効にする",
-            "title": "セッションを保存",
-            "yes": "有効にする"
+            "no": "無効",
+            "title": "セッションの保存",
+            "yes": "有効"
         }
     }
 }

@@ -6,23 +6,29 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, dialog } from "electron";
 import * as path from "path";
-import { cli } from "readium-desktop/main/cli/process";
-import { createStoreFromDi } from "readium-desktop/main/di";
-import { winActions } from "readium-desktop/main/redux/actions";
+import { commandLineMainEntry } from "readium-desktop/main/cli";
 import { _PACKAGING, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
-import { Store } from "redux";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
-import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
-import { appActions } from "./main/redux/actions";
-import { RootState } from "./main/redux/states";
+import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHttp";
+import { start } from "./main/start";
+
+// import { initSessions as initSessionsHTTP } from "@r2-navigator-js/electron/main/sessions";
+
+// TO TEST ESM (not COMMONJS):
+// // import * as normalizeUrl from "normalize-url";
+// import normalizeUrl from "normalize-url";
+// console.log(normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"), "#".repeat(200));
+// // import("normalize-url").then(({default: normalizeUrl}) => {
+// //     //=> 'http://sindresorhus.com/baz?a=foo&b=bar'
+// //     console.log("#".repeat(2000), normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"));
+// // });
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -37,7 +43,7 @@ if (_PACKAGING !== "0") {
     console.warn = (_message?: any, ..._optionalParams: any[]) => { return; };
     console.error = (_message?: IArrayWinRegistryReaderState,any, ..._optionalParams: any[]) => { return; };
     console.info = (_message?: any, ..._optionalParams: any[]) => { return; };
-    */
+     */
 }
 
 // Logger
@@ -60,58 +66,19 @@ setLcpNativePluginPath(lcpNativePluginPath);
 //     process.exit();
 // });
 
-const main = async (storeMayBePromise: Promise<Store<RootState>> | Store<RootState>, flushSession: boolean = false) => {
-
-    debug("main fct");
-
-    // protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions
-    initSessions();
-
-    app.allowRendererProcessReuse = true;
-
-    const store = await Promise.resolve(storeMayBePromise);
-
-    debug("store loaded");
-
-    try {
-
-        if (flushSession) {
-
-            const readers = store.getState().win.session.reader;
-            for (const key in readers) {
-                if (readers[key]) {
-
-                    const reader = readers[key];
-                    store.dispatch(winActions.session.unregisterReader.build(reader.identifier));
-                    store.dispatch(winActions.registry.registerReaderPublication.build(
-                        reader.publicationIdentifier,
-                        reader.windowBound,
-                        reader.reduxState,
-                    ));
-                }
-            }
-        }
-
-        store.dispatch(appActions.initRequest.build());
-        debug("STORE MOUNTED -> MOUNTING THE APP NOW");
-
-    } catch (err) {
-        const message = `REDUX STATE MANAGER CAN'T BE INITIALIZED, ERROR: ${JSON.stringify(err)} \n\nYou should remove your 'AppData' folder\nThorium Exit code 1`;
-        process.stderr.write(message);
-
-        dialog.showErrorBox("THORIUM ERROR", message);
-
-        app.exit(1);
-    }
-};
-
-const storePromise = createStoreFromDi();
+// protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions
+// if (_USE_HTTP_STREAMER) {
+//     initSessionsHTTP();
+// } else {
+//     initSessionsNoHTTP();
+// }
+initSessionsNoHTTP();
 
 if (_VSCODE_LAUNCH === "true") {
     // tslint:disable-next-line: no-floating-promises
-    main(storePromise);
+    start();
 } else {
-    cli(storePromise, main);
+    commandLineMainEntry(); // call main fct
 }
 
 debug("Process version:", process.versions);
