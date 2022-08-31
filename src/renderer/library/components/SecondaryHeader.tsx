@@ -37,7 +37,7 @@ export class SecondaryHeader extends React.Component<IProps, undefined> {
                 style={this.props.style}
                 className={stylesHeader.nav_secondary}
                 role="navigation"
-                aria-label={ __("header.home")}
+                aria-label={ __("accessibility.bookMenu")}
                 {...(id ? {id} : {})}
             >
                 {this.props.children}
