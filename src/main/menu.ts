@@ -177,21 +177,6 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                     label: translator.translate("app.hide", { appName: capitalizedAppName }),
                 },
                 {
-                    role: "window",
-                    submenu: [
-                        {
-                            type: "separator",
-                        },
-                        {
-                            label: translator.translate("app.window.showLibrary"),
-                            click: () => showLibrary(),
-                        },
-                        {
-                            type: "separator",
-                        },
-                    ],
-                },
-                {
                     role: "hideothers",
                 },
                 {
@@ -259,6 +244,21 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                     label: translator.translate("app.edit.selectAll"),
                 },
             ] as Electron.MenuItemConstructorOptions[],
+        },
+        {
+            role: "window",
+            submenu: [
+                {
+                    type: "separator",
+                },
+                {
+                    label: translator.translate("app.window.showLibrary"),
+                    click: () => showLibrary(),
+                },
+                {
+                    type: "separator",
+                },
+            ],
         },
     ];
     // isReaderView never invoked because single app-wide menu, does not depend on BrowserWindows
