@@ -1768,7 +1768,7 @@ class Reader extends React.Component<IProps, IState> {
                 this.props.manifestUrlR2Protocol,
                 "publication_viewport",
                 preloadPath,
-                locator, 
+                locator,
                 true,
                 clipboardInterceptor,
                 this.props.winId,
