@@ -12,7 +12,7 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import { IOpdsContributorView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
@@ -70,22 +70,38 @@ export class PublicationListElement extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
+
         const pub = this.props.publicationViewMaybeOpds;
-        const publishers = pub.publishers as Array<string | IOpdsContributorView>;
-        const formatedPublishers = publishers
-            .reduce(
-                (pv, cv) => {
-                    if ((cv as IOpdsContributorView)?.name) {
-                        return [...pv, `${pv}${(cv as IOpdsContributorView).name}`];
-                    }
-                    return cv && typeof cv === "string" ? [...pv, cv] : pv;
-                }, [])
-            .join(", ");
-        let formatedPublishedYear = "";
+        const publishers = pub.publishers;
+        const publishedAt = pub.publishedAt;
+        const isPublishers = !!publishers || !!publishedAt;
+
         const { translator } = this.props;
 
-        if (pub.publishedAt) {
-            formatedPublishedYear = "" + moment(pub.publishedAt).year();
+        let publisherComponent = <></>;
+        if (isPublishers) {
+
+            let formatedPublishers = "";
+            for (const publisher of publishers) {
+
+                let name = "";
+                if (typeof publisher === "string") {
+                    name = publisher;
+                } else if (typeof publisher === "object" && publisher.name) {
+                    name = publisher.name;
+                }
+                formatedPublishers += formatedPublishers ? ", " + name : name;
+            }
+
+            let formatedPublishedYear = "";
+            if (pub.publishedAt) {
+                formatedPublishedYear = "" + moment(pub.publishedAt).year();
+            }
+
+            publisherComponent = <div>
+                <p>{formatedPublishedYear}</p>
+                <p>{formatedPublishers}</p>
+            </div>;
         }
 
         const authors = formatContributorToString(pub.authors, translator);
@@ -136,10 +152,9 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                         <div><strong>{pub.title}</strong></div>
                         <p>{authors}</p>
                     </div>
-                    <div>
-                        <p>{formatedPublishedYear}</p>
-                        <p>{formatedPublishers}</p>
-                    </div>
+                    {
+                        publisherComponent
+                    }
                 </a>
                 {/* {this.state.menuOpen &&
                     <AccessibleMenu
