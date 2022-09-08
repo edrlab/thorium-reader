@@ -8,10 +8,9 @@
 import * as debug_ from "debug";
 import { app } from "electron";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
-import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { commandLineMainEntry } from ".";
-import { getOpenFileFromCliChannel, getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeEventChannel } from "../event";
+import { getOpenFileFromCliChannel } from "../event";
 import { isOpenUrl, setOpenUrl } from "./url";
 
 // Logger
