@@ -15,10 +15,9 @@ import { createStoreFromDi } from "../di";
 import { SagaMiddleware } from "@redux-saga/core";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { start } from "readium-desktop/main/start";
-import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlWithOpdsSchemeEventChannel } from "readium-desktop/main/event";
+import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "readium-desktop/main/event";
 import * as path from "path";
 import { isOpenUrl, setOpenUrl } from "./url";
-import { streamerOpenPublicationAndReturnManifestUrl } from "../redux/sagas/publication/openPublication";
 
 // Logger
 const debug = debug_("readium-desktop:cli:command");
