@@ -7,8 +7,10 @@
 
 import * as wipeData from "./wipeData";
 import * as done from "./done";
+import * as cancel from "./cancel";
 
 export {
     done,
     wipeData,
+    cancel,
 };

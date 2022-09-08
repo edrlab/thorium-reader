@@ -141,6 +141,8 @@ const opdsAuthFlow =
                     debug("no authentication credentials received");
                     debug("perhaps timeout or closing authentication window occured");
 
+                    yield put(authActions.cancel.build());
+
                     return;
 
                 } else {
@@ -151,6 +153,8 @@ const opdsAuthFlow =
                             !Object.keys(opdsCustomProtocolRequestParsed.data).length) {
 
                             debug("authentication window was cancelled");
+
+                            yield put(authActions.cancel.build());
 
                             return;
                         }
