@@ -36,6 +36,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
 import { initClientSecretToken } from "./apiapp";
 
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
+
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
 const debug = debug_(filename_);
@@ -523,6 +525,18 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
             parent: libWin,
             modal: true,
             show: false,
+            webPreferences: {
+                // enableRemoteModule: false,
+                allowRunningInsecureContent: false,
+                backgroundThrottling: true,
+                devTools: IS_DEV,
+                nodeIntegration: false,
+                contextIsolation: false,
+                nodeIntegrationInWorker: false,
+                sandbox: false,
+                webSecurity: true,
+                webviewTag: false,
+            },
         });
 
     const handler = () => win.close();
