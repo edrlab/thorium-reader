@@ -35,6 +35,7 @@ export enum ContentType {
     pdf = "application/pdf",
     problemDetails = "application/problem+json", // https://datatracker.ietf.org/doc/html/rfc7807#section-6.1
     ApiProblem = "application/api-problem+json",
+    Zip = "application/zip", // Daisy Zipped file
 
     Opf = "application/oebps-package+xml",
 }

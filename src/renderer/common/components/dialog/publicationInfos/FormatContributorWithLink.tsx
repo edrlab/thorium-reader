@@ -58,16 +58,5 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
         }
     }
 
-    return retElement.reduce(
-        (_previousValue, currentValue, currentIndex, array) =>
-            <>
-                {
-                    currentValue
-                }
-                {
-                    currentIndex < (array.length - 1) ? ", " : ""
-                }
-            </>,
-        <></>,
-    );
+    return retElement.reduce((pv, cv) => pv ? <>{pv}, {cv}</> : <>{cv}</>, undefined) || <></>;
 };

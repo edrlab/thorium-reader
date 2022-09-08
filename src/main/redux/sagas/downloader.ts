@@ -22,7 +22,7 @@ import { cancel, cancelled, delay, take } from "redux-saga/effects";
 import { FixedTask, SagaGenerator } from "typed-redux-saga";
 import {
     call as callTyped, flush as flushTyped, fork as forkTyped, join as joinTyped, put as putTyped,
-    race as raceTyped,
+    race as raceTyped, take as takeTyped,
 } from "typed-redux-saga/macro";
 
 import { Channel, channel, eventChannel } from "@redux-saga/core";
@@ -99,8 +99,15 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
     yield* raceTyped([
         callTyped(function*() {
 
-            yield take(downloadActions.abort.ID);
-            yield cancel(downloadProcessTasks);
+            while (true) {
+                const action = yield* takeTyped(downloadActions.abort.build);
+                if (action.payload.id === id) {
+                    debug("cancel id (", id, ") with ", downloadProcessTasks.length, "tasks");
+                    yield cancel(downloadProcessTasks);
+                } else {
+                    debug("cancel id (", id, ") mismatch with ", action.payload.id);
+                }
+            }
         }),
         callTyped(downloaderServiceProcessStatusProgressLoop, statusTaskChannel, id, href),
         joinTyped(downloadProcessTasks),
@@ -201,8 +208,8 @@ function* downloaderServiceProcessStatusProgressLoop(
         channelList.push(...chan);
 
         const statusList = yield* callTyped(() => channelList.map((v) => v ? v() : undefined));
-        const nbTasks = statusList.filter((v) => v).length;
-        debug("number of downloadTask:", nbTasks);
+        // const nbTasks = statusList.filter((v) => v).length;
+        // debug("number of downloadTask for id (", id, "):", nbTasks);
 
         for (const status of statusList) {
             if (status) {
