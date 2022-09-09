@@ -272,7 +272,6 @@
     "mime-types": "^2.1.35",
     "nanoid": "^4.0.0",
     "node-fetch": "^3.2.10",
-    "opds-feed-parser": "0.0.18",
     "r2-lcp-js": "^1.0.35",
     "r2-navigator-js": "^1.11.1",
     "r2-opds-js": "^1.0.39",
