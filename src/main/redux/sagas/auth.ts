@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import * as debug_ from "debug";
 import { BrowserWindow, globalShortcut } from "electron";
 import { Headers } from "node-fetch";
@@ -527,6 +528,18 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
             parent: libWin,
             modal: true,
             show: false,
+            webPreferences: {
+                // enableRemoteModule: false,
+                allowRunningInsecureContent: false,
+                backgroundThrottling: true,
+                devTools: IS_DEV, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+                nodeIntegration: false,
+                contextIsolation: false,
+                nodeIntegrationInWorker: false,
+                sandbox: false,
+                webSecurity: true,
+                webviewTag: false,
+            },
         });
 
     const handler = () => win.close();
