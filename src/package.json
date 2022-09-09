@@ -37,7 +37,6 @@
   "homepage": "https://github.com/edrlab/readium-desktop",
   "dependencies": {
     "bindings": "^1.5.0",
-    "mathjax": "^3.2.2",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
