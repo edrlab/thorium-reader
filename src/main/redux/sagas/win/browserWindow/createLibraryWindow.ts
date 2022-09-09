@@ -49,7 +49,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             // enableRemoteModule: false,
             allowRunningInsecureContent: false,
             backgroundThrottling: true,
-            devTools: IS_DEV,
+            devTools: IS_DEV, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
             nodeIntegration: true,
             contextIsolation: false,
             nodeIntegrationInWorker: false,

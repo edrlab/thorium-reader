@@ -38,7 +38,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
             // enableRemoteModule: false,
             allowRunningInsecureContent: false,
             backgroundThrottling: false,
-            devTools: IS_DEV,
+            devTools: IS_DEV, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
             nodeIntegration: true,
             contextIsolation: false,
             nodeIntegrationInWorker: false,
