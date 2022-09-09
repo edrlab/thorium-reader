@@ -72,19 +72,15 @@ export class PublicationListElement extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
 
         const pub = this.props.publicationViewMaybeOpds;
-        const publishers = pub.publishers;
-        const publishedAt = pub.publishedAt;
-        const isPublishers = !!publishers || !!publishedAt;
 
         const { translator } = this.props;
 
         let publisherComponent = <></>;
-        if (isPublishers) {
-
+        // note that empty array is truthy (unlike empty string which is falsy)
+        if (pub.publishers || pub.publishedAt) {
             let formatedPublishers = "";
-            if (publishers) {
-                for (const publisher of publishers) {
-    
+            if (pub.publishers) {
+                for (const publisher of pub.publishers) {
                     let name = "";
                     if (typeof publisher === "string") {
                         name = publisher;
@@ -96,8 +92,8 @@ export class PublicationListElement extends React.Component<IProps, IState> {
             }
 
             let formatedPublishedYear = "";
-            if (publishedAt) {
-                formatedPublishedYear = "" + moment(publishedAt).year();
+            if (pub.publishedAt) {
+                formatedPublishedYear = "" + moment(pub.publishedAt).year();
             }
 
             publisherComponent = <div>
