@@ -8,10 +8,10 @@
 import * as debug_ from "debug";
 import { app } from "electron";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
-import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { commandLineMainEntry } from ".";
-import { getOpenFileFromCliChannel, getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeFromMacEventChannel } from "../event";
+import { getOpenFileFromCliChannel } from "../event";
+import { isOpenUrl, setOpenUrl } from "./url";
 
 // Logger
 const filename = "readium-desktop:main:lock";
@@ -49,39 +49,10 @@ export function lockInstance() {
                 debug("OPEN URL", url);
                 debug("#####");
 
-                const checkUrl = (u: string): string | undefined => {
-
-                    const testUrl = (a: string) => tryCatchSync(() => new URL(a), filename);
-                    const urlWithHttps = "https://" + u;
-                    const checkedUrl = testUrl(u) ? u : testUrl(urlWithHttps) ? urlWithHttps : undefined;
-
-                    return checkedUrl;
-                };
-
-                if (url.startsWith("thorium:")) {
-                    const importUrl = url.split("thorium:")[1];
-                    const importUrlChecked = checkUrl(importUrl);
-
-                    if (importUrlChecked) {
-
-                        debug("open url with thorium:// protocol scheme", importUrlChecked);
-                        debug("This url will be imported in thorium with importFromLink entry point");
-                        const openUrlChannel = getOpenUrlWithThoriumSchemeFromMacEventChannel();
-                        openUrlChannel.put(importUrlChecked);
-                    }
-                }
-
-                if (url.startsWith("opds:")) {
-                    const importUrl = url.split("opds:")[1];
-                    const importUrlChecked = checkUrl(importUrl);
-
-                    if (importUrlChecked) {
-
-                        debug("open url with opds:// protocol scheme", importUrlChecked);
-                        debug("This url will be imported in thorium with opds/addFeed entry point");
-                        const openUrlChannel = getOpenUrlWithOpdsSchemeEventChannel();
-                        openUrlChannel.put(importUrlChecked);
-                    }
+                if (isOpenUrl(url)) {
+                    setOpenUrl(url);
+                } else {
+                    debug("Not an open url the scheme doesn't match and/or is not a valid url");
                 }
             });
 

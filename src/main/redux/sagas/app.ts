@@ -39,10 +39,15 @@ export function* init() {
 
     app.setAppUserModelId("io.github.edrlab.thorium");
 
-    // 'thorium' is registered for MacOS too
+    // https://www.electronjs.org/fr/docs/latest/api/app#appsetasdefaultprotocolclientprotocol-path-args
+    // https://www.electron.build/generated/platformspecificbuildoptions
+    // Define custom protocol handler. Deep linking works on packaged versions of the application!
     if (!app.isDefaultProtocolClient("opds")) {
-        // Define custom protocol handler. Deep linking works on packaged versions of the application!
         app.setAsDefaultProtocolClient("opds");
+    }
+
+    if (!app.isDefaultProtocolClient("thorium")) {
+        app.setAsDefaultProtocolClient("thorium");
     }
 
     // moved to saga/persist.ts
