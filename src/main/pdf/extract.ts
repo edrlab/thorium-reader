@@ -12,8 +12,6 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IInfo } from "./extract.type";
 
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
-
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
 debug("_");
 
@@ -50,7 +48,7 @@ export const extractPDFData =
                     // enableRemoteModule: false,
                     allowRunningInsecureContent: false,
                     backgroundThrottling: true,
-                    devTools: IS_DEV && process.env.ENABLE_DEV_TOOLS_IN_PDF_COVER_WIN,
+                    devTools: IS_DEV,
                     nodeIntegration: true,
                     contextIsolation: false,
                     nodeIntegrationInWorker: false,
@@ -64,7 +62,6 @@ export const extractPDFData =
             await win.loadURL(`pdfjs://local/web/viewer.html?file=${pdfPath}`);
 
             const content = win.webContents;
-            // content.openDevTools({ activate: true, mode: "detach" });
 
             const pdata = new Promise<TExtractPdfData>((resolve) =>
                 content.on("ipc-message", (e, c, ...arg) => {

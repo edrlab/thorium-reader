@@ -14,7 +14,7 @@ import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
-    _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
+    _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV, OPEN_DEV_TOOLS,
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -87,7 +87,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
         });
 
-        if (_VSCODE_LAUNCH !== "true") {
+        if (_VSCODE_LAUNCH !== "true" && OPEN_DEV_TOOLS) {
             setTimeout(() => {
                 if (!libWindow.isDestroyed()) {
                     libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
