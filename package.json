@@ -111,14 +111,14 @@
     "appId": "io.github.edrlab.thorium",
     "protocols": [
       {
-        "name": "Add a publication link in Thorium-reader",
+        "name": "Thorium Reader - publication link",
         "schemes": [
           "thorium"
         ],
         "role": "Viewer"
       },
       {
-        "name": "Add an opds catalog link in Thorium-reader",
+        "name": "Thorium Reader - catalog link",
         "schemes": [
           "opds"
         ],
