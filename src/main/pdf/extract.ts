@@ -50,7 +50,7 @@ export const extractPDFData =
                     // enableRemoteModule: false,
                     allowRunningInsecureContent: false,
                     backgroundThrottling: true,
-                    devTools: IS_DEV && process.env.ENABLE_DEV_TOOLS_IN_PDF_COVER_WIN,
+                    devTools: IS_DEV & !!process.env.ENABLE_DEV_TOOLS_IN_PDF_COVER_WIN,
                     nodeIntegration: true,
                     contextIsolation: false,
                     nodeIntegrationInWorker: false,
