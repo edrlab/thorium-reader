@@ -533,7 +533,7 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
                 // enableRemoteModule: false,
                 allowRunningInsecureContent: false,
                 backgroundThrottling: true,
-                devTools: IS_DEV,
+                devTools: IS_DEV && process.env.ENABLE_DEV_TOOLS_IN_AUTH_WIN,
                 nodeIntegration: false,
                 contextIsolation: false,
                 nodeIntegrationInWorker: false,
