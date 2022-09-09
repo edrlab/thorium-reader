@@ -10,7 +10,7 @@ import { historyActions, readerActions } from "readium-desktop/common/redux/acti
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
-    getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeFromMacEventChannel,
+    getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeEventChannel,
     getOpdsNewCatalogsStringUrlChannel,
     getOpenFileFromCliChannel, getOpenTitleFromCliChannel,
 } from "readium-desktop/main/event";
@@ -84,7 +84,7 @@ export function saga() {
 
         }),
         spawn(function*() {
-            const chan = getOpenUrlWithThoriumSchemeFromMacEventChannel();
+            const chan = getOpenUrlWithThoriumSchemeEventChannel();
 
             while (true) {
 

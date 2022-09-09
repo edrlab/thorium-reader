@@ -109,13 +109,22 @@
   "build": {
     "productName": "Thorium",
     "appId": "io.github.edrlab.thorium",
-    "protocols": {
-      "name": "thorium",
-      "schemes": [
-        "thorium",
-        "opds"
-      ]
-    },
+    "protocols": [
+      {
+        "name": "Thorium Reader - publication link",
+        "schemes": [
+          "thorium"
+        ],
+        "role": "Viewer"
+      },
+      {
+        "name": "Thorium Reader - catalog link",
+        "schemes": [
+          "opds"
+        ],
+        "role": "Viewer"
+      }
+    ],
     "afterSign": "scripts/notarize.js",
     "dmg": {
       "sign": false,
