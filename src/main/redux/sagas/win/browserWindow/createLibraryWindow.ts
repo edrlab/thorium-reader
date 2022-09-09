@@ -47,15 +47,12 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         minHeight: 600,
         webPreferences: {
             // enableRemoteModule: false,
-            allowRunningInsecureContent: false,
             backgroundThrottling: true,
             devTools: IS_DEV,
-            nodeIntegration: true,
+            nodeIntegration: true, // Required to use IPC
             contextIsolation: false,
-            nodeIntegrationInWorker: false,
-            sandbox: false,
             webSecurity: true,
-            webviewTag: false,
+            allowRunningInsecureContent: false,
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });

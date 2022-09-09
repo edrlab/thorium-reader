@@ -12,8 +12,6 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IInfo } from "./extract.type";
 
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
-
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
 debug("_");
 
@@ -48,15 +46,8 @@ export const extractPDFData =
                 // show: false,
                 webPreferences: {
                     // enableRemoteModule: false,
-                    allowRunningInsecureContent: false,
-                    backgroundThrottling: true,
-                    devTools: IS_DEV,
                     nodeIntegration: true,
                     contextIsolation: false,
-                    nodeIntegrationInWorker: false,
-                    sandbox: false,
-                    webSecurity: true,
-                    webviewTag: false,
                 },
             });
 
