@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { push } from "redux-first-history";
-import { historyActions } from "readium-desktop/common/redux/actions";
+import { goBack, push } from "redux-first-history";
+import { authActions, historyActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { routerActions, winActions } from "readium-desktop/renderer/library/redux/actions";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -49,6 +49,10 @@ function* historyPush(action: historyActions.pushFeed.TAction) {
 
 }
 
+function* historyGoBack() {
+    yield put(goBack());
+}
+
 export function saga() {
     return all(
         [
@@ -63,6 +67,10 @@ export function saga() {
             takeSpawnEvery(
                 historyActions.pushFeed.ID,
                 historyPush,
+            ),
+            takeSpawnEvery(
+                authActions.cancel.ID,
+                historyGoBack,
             ),
         ],
     );
