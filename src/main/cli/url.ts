@@ -18,15 +18,17 @@ export const isOpenUrl = (url: string): boolean => {
 
 export const setOpenUrl = (url: string): void => {
 
-
-    if (url.startsWith("opds")) {
-        const openUrl = url.replace("opds", "https");
+    // OR: if (new URL(url).protocol === "opds:")
+    if (url.startsWith("opds://")) {
+        const openUrl = url.replace("opds://", "http://"); // HTTP to HTTPS redirect should be handled by the server
 
         const buf = getOpenUrlWithOpdsSchemeEventChannel();
         buf.put(openUrl);
     }
-    if (url.startsWith("thorium")) {
-        const openUrl = url.replace("thorium", "https");
+
+    // OR: if (new URL(url).protocol === "thorium:")
+    if (url.startsWith("thorium://")) {
+        const openUrl = url.replace("thorium://", "http://"); // HTTP to HTTPS redirect should be handled by the server
 
         const buf = getOpenUrlWithThoriumSchemeEventChannel();
         buf.put(openUrl);

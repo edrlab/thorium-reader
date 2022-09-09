@@ -23,7 +23,7 @@ const debug = debug_("readium-desktop:main#redux/saga/api/browser");
 const checkUrl = (url: string) => {
     try {
         if (new URL(url).protocol === "opds:") {
-            url = url.replace("opds://", "http://");
+            url = url.replace("opds://", "http://"); // HTTP to HTTPS redirect should be handled by the server
         }
     } catch (e) {
         throw new Error(`Not a valid URL ${e.message || e}`);
