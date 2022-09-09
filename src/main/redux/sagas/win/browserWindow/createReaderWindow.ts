@@ -106,7 +106,6 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
         if (_VSCODE_LAUNCH !== "true" && OPEN_DEV_TOOLS) {
             setTimeout(() => {
-    
                 // tslint:disable-next-line: max-line-length
                 // https://github.com/readium/readium-desktop/commit/c38cbd4860c84334f182d5059fb93107cd8ed709#diff-b35e0b23967fd130d41571c2e35859ff
                 if (!readerWindow.isDestroyed()) {
