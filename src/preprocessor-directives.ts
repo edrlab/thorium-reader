@@ -69,5 +69,7 @@ export const IS_DEV =
     __PACKAGING__ === "0" &&
     (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
+export const OPEN_DEV_TOOLS = IS_DEV && process.env.THORIUM_OPEN_DEVTOOLS === "1";
+
 declare const __CONTINUOUS_INTEGRATION_DEPLOY__: boolean;
 export const _CONTINUOUS_INTEGRATION_DEPLOY = __CONTINUOUS_INTEGRATION_DEPLOY__;
