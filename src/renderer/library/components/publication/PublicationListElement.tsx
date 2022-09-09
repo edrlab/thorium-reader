@@ -82,20 +82,22 @@ export class PublicationListElement extends React.Component<IProps, IState> {
         if (isPublishers) {
 
             let formatedPublishers = "";
-            for (const publisher of publishers) {
-
-                let name = "";
-                if (typeof publisher === "string") {
-                    name = publisher;
-                } else if (typeof publisher === "object" && publisher.name) {
-                    name = publisher.name;
+            if (publishers) {
+                for (const publisher of publishers) {
+    
+                    let name = "";
+                    if (typeof publisher === "string") {
+                        name = publisher;
+                    } else if (typeof publisher === "object" && publisher.name) {
+                        name = publisher.name;
+                    }
+                    formatedPublishers += formatedPublishers ? ", " + name : name;
                 }
-                formatedPublishers += formatedPublishers ? ", " + name : name;
             }
 
             let formatedPublishedYear = "";
-            if (pub.publishedAt) {
-                formatedPublishedYear = "" + moment(pub.publishedAt).year();
+            if (publishedAt) {
+                formatedPublishedYear = "" + moment(publishedAt).year();
             }
 
             publisherComponent = <div>
