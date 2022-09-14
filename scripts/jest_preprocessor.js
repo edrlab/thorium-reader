@@ -18,7 +18,7 @@ module.exports = {
     //         .digest('hex');
     // },
     process: function (src, filename, ...rest) {
-        src = tsJestTransformer.process(src, filename, ...rest);
+        src = tsJestTransformer.process(src, filename, ...rest).code;
 
         let needsPatching = false;
         for (const key of preProcessorKeys) {
@@ -90,6 +90,6 @@ module.exports = {
         //     console.log("--- /AFTER ---");
         // }
 
-        return src;
+        return {code: src};
     }
 };
