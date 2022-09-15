@@ -554,7 +554,8 @@ declare namespace typed_i18n {
     readonly "quitFullscreenTitle": string,
     readonly "readBookTitle": string,
     readonly "settingsTitle": string,
-    readonly "historyPrevious": string
+    readonly "historyPrevious": string,
+    readonly "historyNext": string
   },
   readonly "picker": {
     readonly "annotationTitle": string,
@@ -698,7 +699,8 @@ declare namespace typed_i18n {
   readonly "quitFullscreenTitle": string,
   readonly "readBookTitle": string,
   readonly "settingsTitle": string,
-  readonly "historyPrevious": string
+  readonly "historyPrevious": string,
+  readonly "historyNext": string
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
@@ -718,6 +720,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
   (_: "reader.navigation.historyPrevious", __?: {}): string;
+  (_: "reader.navigation.historyNext", __?: {}): string;
   (_: "reader.picker", __?: {}): {
   readonly "annotationTitle": string,
   readonly "search": {

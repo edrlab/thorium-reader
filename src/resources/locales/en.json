@@ -278,14 +278,15 @@
             "goToError": "This page break does not exist",
             "goToPlaceHolder": "Enter a page number",
             "goToTitle": "Go to page",
+            "historyNext": "Jump forward",
+            "historyPrevious": "Jump back",
             "infoTitle": "information",
             "magnifyingGlassButton": "search in publication",
             "openTableOfContentsTitle": "navigation",
             "pdfscalemode": "Page fit or width",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
-            "settingsTitle": "settings",
-            "historyPrevious": "history previous"
+            "settingsTitle": "settings"
         },
         "picker": {
             "annotationTitle": "Annotations:",

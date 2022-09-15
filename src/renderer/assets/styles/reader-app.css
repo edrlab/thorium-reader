@@ -1102,6 +1102,25 @@ input[type=radio] + label {
   left: 0;
   background-color: var(--reader-mainColor);
 
+  & .history {
+    float: left;
+    margin-top: 1rem;
+    margin-left: 2rem;
+
+    & button {
+      border: 0;
+      cursor: pointer;
+      padding: 0;
+      background-color: transparent;
+      width: 40px;
+      height: 40px;
+    }
+
+    & svg {
+      fill: #c1c1c1;
+    }
+  }
+
   & .arrows {
     float: right;
     margin-top: 1rem;
@@ -1122,7 +1141,7 @@ input[type=radio] + label {
   }
 
   & .track_reading_wrapper {
-    padding: 1rem 8rem 1rem 5rem;
+    padding: 1rem 8rem 1rem 8rem;
     bottom: 0;
     margin-top: 1rem;
     color: var(--reader-fontColor);

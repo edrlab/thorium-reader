@@ -278,6 +278,8 @@
             "goToError": "Este salto de páxina non existe",
             "goToPlaceHolder": "Introduce un número de páxina",
             "goToTitle": "Ir a páxina",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar na publicación",
             "openTableOfContentsTitle": "Navegación",

@@ -63,7 +63,7 @@ import {
     audioForward, audioPause, audioRewind, audioTogglePlayPause,
 } from "@r2-navigator-js/electron/renderer/audiobook";
 import {
-    getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
+    getCurrentReadingLocation, handleLinkLocator as r2HandleLinkLocator, handleLinkUrl as r2HandleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable, mediaOverlaysEnableCaptionsMode,
     mediaOverlaysEnableSkippability, mediaOverlaysListen, mediaOverlaysNext, mediaOverlaysPause,
     mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
@@ -88,6 +88,31 @@ import optionsValues, {
     TdivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
+
+const handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
+
+    if (!isFromOnPopState) {
+        console.log("#+$%".repeat(5)  + " goToLocator history pushState()", JSON.stringify(locator), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+        if (window.history.state && r.equals(locator, window.history.state)) {
+            window.history.replaceState(locator, "");
+        } else {
+            window.history.pushState(locator, "");
+        }
+    }
+    r2HandleLinkLocator(locator);
+};
+
+const handleLinkUrl = (url: string, isFromOnPopState = false) => {
+    if (!isFromOnPopState) {
+        console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+        if (window.history.state === url) {
+            window.history.replaceState(url, "");
+        } else {
+            window.history.pushState(url, "");
+        }
+    }
+    r2HandleLinkUrl(url);
+};
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -158,8 +183,6 @@ class Reader extends React.Component<IProps, IState> {
     private refToolbar: React.RefObject<HTMLAnchorElement>;
     private mainElRef: React.RefObject<HTMLDivElement>;
 
-    private historyCounter: number;
-
     private currentDivinaPlayer: any;
 
     // can be get back wwith withTranslator HOC
@@ -176,8 +199,6 @@ class Reader extends React.Component<IProps, IState> {
 
         this.ttsOverlayEnableNeedsSync = true;
 
-        this.historyCounter = 0;
-
         this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
         this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
         this.onKeyboardSpineNavigationPrevious = this.onKeyboardSpineNavigationPrevious.bind(this);
@@ -191,6 +212,8 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
         this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
+
+        this.onPopState = this.onPopState.bind(this);
 
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
         this.refToolbar = React.createRef<HTMLAnchorElement>();
@@ -343,6 +366,8 @@ class Reader extends React.Component<IProps, IState> {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
+        window.addEventListener("popstate", this.onPopState);
+
         if (this.props.isPdf) {
 
             await this.loadPublicationIntoViewport();
@@ -446,26 +471,6 @@ class Reader extends React.Component<IProps, IState> {
 
         // sets state visibleBookmarkList
         await this.updateVisibleBookmarks();
-
-        window.onpopstate = (popState: PopStateEvent) => {
-            popState.preventDefault();
-            popState.stopPropagation();
-            popState.stopImmediatePropagation();
-
-            console.log("popstate", history.state, popState?.state);
-
-            if (typeof popState?.state === "object") {
-                this.goToLocator(popState.state);
-            }
-
-            --this.historyCounter;
-
-            if (this.historyCounter < 1) {
-                history.pushState(history.state, "");
-                ++this.historyCounter;
-            }
-
-        };
     }
 
     public async componentDidUpdate(oldProps: IProps, oldState: IState) {
@@ -488,6 +493,8 @@ class Reader extends React.Component<IProps, IState> {
     public componentWillUnmount() {
         this.unregisterAllKeyboardListeners();
 
+        window.removeEventListener("popstate", this.onPopState);
+
         if (this.unsubscribe) {
             this.unsubscribe();
         }
@@ -499,14 +506,13 @@ class Reader extends React.Component<IProps, IState> {
             open: this.state.menuOpen,
             r2Publication: this.props.r2Publication,
             handleLinkClick: this.handleLinkClick,
-            handleBookmarkClick: this.goToLocator,
+            goToLocator: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
             focusMainAreaLandmarkAndCloseMenu: this.focusMainAreaLandmarkAndCloseMenu.bind(this),
             pdfToc: this.state.pdfPlayerToc,
             isPdf: this.props.isPdf,
             openedSection: this.state.openedSectionMenu,
             pdfNumberOfPages: this.state.pdfPlayerNumberOfPages,
-            historyCounter: () => this.historyCounter,
         };
 
         const readerOptionsProps: IReaderOptionsProps = {
@@ -1326,6 +1332,32 @@ class Reader extends React.Component<IProps, IState> {
         }
     };
 
+
+    // always triggered by window.history.back/forward/go()
+    // not triggered by history.pushState() and history.replaceState()
+    // depending on web browser engine (here, Chromium), not always triggered on initial page load
+    // triggered when history.back() into the initial URL load which contains no state!
+    // https://developer.mozilla.org/en-US/docs/Web/API/Window/popstate_event
+    private onPopState = (popState: PopStateEvent) => {
+        // setTimeout(() => {
+        //     // defer in the browser event loop => window.location and document objects are up to date with navigation popstate
+        // }, 0);
+
+        popState.preventDefault();
+        // popState.stopPropagation();
+        // popState.stopImmediatePropagation();
+
+        console.log("#+$%".repeat(5)  + " window EVENT 'popstate'", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), JSON.stringify(popState.state), window.history.length);
+
+        if (popState.state) {
+            if (typeof popState.state === "object") {
+                this.goToLocator(popState.state, true, true);
+            } else if (typeof popState.state === "string") {
+                this.handleLinkClick(undefined, popState.state, true, true);
+            }
+        }
+    };
+
     private displayPublicationInfo(focusWhereAmI?: boolean) {
         if (this.props.publicationView) {
             // TODO: subscribe to Redux action type == CloseRequest
@@ -1775,8 +1807,9 @@ class Reader extends React.Component<IProps, IState> {
                 computeReadiumCssJsonMessage(this.props.readerConfig),
             );
 
-            history.pushState(locator, "");
-            ++this.historyCounter;
+            console.log("#+$%".repeat(5)  + " installNavigatorDOM => window history replaceState() ...", JSON.stringify(locator), JSON.stringify(window.history.state), window.history.length, JSON.stringify(document.location), JSON.stringify(window.location));
+            // does not trigger onPopState!
+            window.history.replaceState(locator ? locator : null, "");
         }
     }
 
@@ -1838,15 +1871,17 @@ class Reader extends React.Component<IProps, IState> {
         const l = (this.props.isDivina || isDivinaLocation(loc)) ? loc : (this.props.isPdf ? loc : (getCurrentReadingLocation() || loc));
         this.setState({ currentLocation: l });
 
+        if (loc?.locator?.href && window.history.length === 1 && !window.history.state) {
+
+            console.log("#+$%".repeat(5)  + " handleReadingLocationChange (INIT history state) => window history replaceState() ...", JSON.stringify(loc.locator), JSON.stringify(window.history.state), window.history.length, JSON.stringify(document.location), JSON.stringify(window.location));
+            // does not trigger onPopState!
+            window.history.replaceState(loc.locator, "");
+        }
+
         // No need to explicitly refresh the bookmarks status here,
         // as componentDidUpdate() will call the function after setState()!
         // sets state visibleBookmarkList:
         // await this.checkBookmupdateVisibleBookmarksarks();
-
-        if (!r.equals(loc?.locator, history.state)) {
-            history.pushState(loc.locator, "");
-            ++this.historyCounter;
-        }
     }
 
     // check if a bookmark is on the screen
@@ -1933,7 +1968,7 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private goToLocator(locator: R2Locator, closeNavPanel = true) {
+    private goToLocator(locator: R2Locator, closeNavPanel = true, isFromOnPopState = false) {
 
         if (this.props.isPdf) {
 
@@ -1953,13 +1988,13 @@ class Reader extends React.Component<IProps, IState> {
                 this.focusMainAreaLandmarkAndCloseMenu();
             }
 
-            handleLinkLocator(locator);
+            handleLinkLocator(locator, isFromOnPopState);
         }
 
     }
 
     // tslint:disable-next-line: max-line-length
-    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel = true) {
+    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel = true, isFromOnPopState = false) {
         if (event) {
             event.preventDefault();
         }
@@ -1984,8 +2019,8 @@ class Reader extends React.Component<IProps, IState> {
             if (closeNavPanel) {
                 this.focusMainAreaLandmarkAndCloseMenu();
             }
-            const newUrl = this.props.manifestUrlR2Protocol + "/../" + url;
-            handleLinkUrl(newUrl);
+            const newUrl = isFromOnPopState ? url : this.props.manifestUrlR2Protocol + "/../" + url;
+            handleLinkUrl(newUrl, isFromOnPopState);
 
         }
     }

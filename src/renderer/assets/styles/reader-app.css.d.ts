@@ -78,6 +78,7 @@ declare const styles: {
   readonly "out_of_screen": string;
   readonly "reader_footer": string;
   readonly "HIDE_CURSOR_CLASS_foot": string;
+  readonly "history": string;
   readonly "arrows": string;
   readonly "track_reading_wrapper": string;
   readonly "track_reading_wrapper_noArrows": string;
