@@ -31,6 +31,8 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
 
+import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
@@ -66,6 +68,12 @@ class PublicationCard extends React.Component<IProps, IState> {
 
         const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
 
+        // publicationViewMaybeOpds.documentTitle
+        const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
+        const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+        const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+        const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+
         // aria-haspopup="dialog"
         // aria-controls="dialog"
         return (
@@ -76,7 +84,7 @@ class PublicationCard extends React.Component<IProps, IState> {
                         (e) =>
                             (e.key === "Enter") && this.handleBookClick(e)
                     }
-                    title={`${publicationViewMaybeOpds.title} - ${authors}`}
+                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
                     className={stylesPublications.publication_image_wrapper}
                     tabIndex={0}
                 >
@@ -86,8 +94,9 @@ class PublicationCard extends React.Component<IProps, IState> {
                     <a aria-hidden onClick={(e) => this.handleBookClick(e)}
                         className={stylesPublications.publication_infos}
                         >
-                        <p aria-hidden className={stylesPublications.publication_title}>
-                            {publicationViewMaybeOpds.title}
+                        <p aria-hidden className={stylesPublications.publication_title}
+                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                            {pubTitleStr}
                         </p>
                         <p aria-hidden className={stylesPublications.publication_description}>
                             {this.truncateAuthors(authors)}
@@ -95,7 +104,7 @@ class PublicationCard extends React.Component<IProps, IState> {
                     </a>
                     <Menu
                         button={(
-                            <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.title})`} svg={MenuIcon} />
+                            <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
                         )}
                         content={(
                             <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_publication)}>

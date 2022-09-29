@@ -27,6 +27,7 @@ import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
+import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 
 export interface IProps {
     publication: TPublication;
@@ -334,6 +335,12 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
     }, [publication, r2Publication_]);
 
+    // publication.documentTitle
+    const pubTitleLangStr = convertMultiLangStringToString(translator, publication.publicationTitle);
+    const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+    const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+    const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+
     return (
         <>
             <div className={stylesColumns.row}>
@@ -352,8 +359,9 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                 </div>
                 <div className={stylesColumns.col}>
                     <section>
-                        <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10)}>
-                            {publication.title}
+                        <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10)}
+                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                            {pubTitleStr}
                         </h2>
                         <FormatContributorWithLink
                             contributors={publication.authors}

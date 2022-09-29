@@ -54,7 +54,7 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
             >
                 <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
                     <p>
-                        <span>{this.props.publicationView.title}</span>
+                        <span>{this.props.publicationView.documentTitle}</span>
                     </p>
                 </div>
                 <div className={stylesModals.modal_dialog_footer}>

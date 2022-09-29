@@ -41,7 +41,7 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
         >
             <div className={stylesModals.modal_dialog_body}>
                 {
-                    publication?.title
+                    publication?.documentTitle
                         ? (
                             coverZoom
                                 ? <Cover

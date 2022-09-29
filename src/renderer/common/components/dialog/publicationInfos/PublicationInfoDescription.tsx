@@ -15,24 +15,11 @@ import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
-import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+import { convertMultiLangStringToString } from "readium-desktop/renderer/common/language-string";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationInfoDescription");
 debug("_");
-
-// MAIN process only, not RENDERER, because of diMainGet("translator")
-// import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
-function convertMultiLangStringToString(translator: Translator, items: string | IStringMap | undefined): string {
-    if (typeof items === "object") {
-        const langs = Object.keys(items);
-        const lang = langs.filter((l) =>
-            l.toLowerCase().includes(translator.getLocale().toLowerCase()));
-        const localeLang = lang[0];
-        return items[localeLang] || items._ || items[langs[0]];
-    }
-    return items;
-}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
@@ -98,9 +85,15 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
                 DOMPurify.sanitize(publication.description).replace(/font-size:/g, "font-sizexx:") :
                 "";
 
-            const textSanitize_a11y = publication.a11y_accessibilitySummary ?
-                DOMPurify.sanitize(convertMultiLangStringToString(translator, publication.a11y_accessibilitySummary)).replace(/font-size:/g, "font-sizexx:") :
-                "";
+            let textSanitize_a11y = "";
+            if (publication.a11y_accessibilitySummary) {
+
+                const langStr = convertMultiLangStringToString(translator, publication.a11y_accessibilitySummary);
+
+                if (langStr && langStr[1]) {
+                    textSanitize_a11y = DOMPurify.sanitize(langStr[1]).replace(/font-size:/g, "font-sizexx:");
+                }
+            }
 
             return (
                 <>

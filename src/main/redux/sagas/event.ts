@@ -172,11 +172,11 @@ export function saga() {
                             const u = new URL(feedUrl);
                             if (!u) continue;
 
-                            debug("import the feed", feed.title, feedUrl);
+                            debug("import the feed", feed.documentTitle, feedUrl);
 
                             // addFeed has a security to not duplicate a feed
                             yield* callTyped(addFeed, {
-                                title: feed.title,
+                                title: feed.documentTitle,
                                 url: feedUrl,
                             });
 

@@ -191,7 +191,7 @@ export class PublicationStorage {
     public copyPublicationToPath(publicationView: PublicationView, destinationPath: string) {
         const publicationPath = this.getPublicationEpubPath(publicationView.identifier);
         const extension = path.extname(publicationPath);
-        const newFilePath = `${destinationPath}/${slugify(publicationView.title)}${extension}`;
+        const newFilePath = `${destinationPath}/${slugify(publicationView.documentTitle)}${extension}`;
         fs.copyFile(publicationPath, newFilePath, async (err) => {
             if (err) {
                 await dialog.showMessageBox({
