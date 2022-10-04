@@ -49,6 +49,7 @@ type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/password/apiapp"
     | "http://opds-spec.org/auth/oauth/implicit"
     | "http://opds-spec.org/auth/basic"
+    | "http://opds-spec.org/auth/digest"
     | "http://opds-spec.org/auth/local"
     | "http://librarysimplified.org/authtype/SAML-2.0";
 
@@ -57,6 +58,7 @@ const AUTHENTICATION_TYPE: TAuthenticationType[] = [
     "http://opds-spec.org/auth/oauth/password/apiapp",
     "http://opds-spec.org/auth/oauth/implicit",
     "http://opds-spec.org/auth/basic",
+    "http://opds-spec.org/auth/digest",
     "http://opds-spec.org/auth/local",
     "http://librarysimplified.org/authtype/SAML-2.0",
 ];
@@ -392,6 +394,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
 
         case "http://opds-spec.org/auth/local":
         case "http://opds-spec.org/auth/basic":
+        case "http://opds-spec.org/auth/digest":
         case "http://opds-spec.org/auth/oauth/password":
         case "http://opds-spec.org/auth/oauth/password/apiapp": {
 

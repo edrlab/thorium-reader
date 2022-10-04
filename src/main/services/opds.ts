@@ -34,6 +34,7 @@ import * as xmldom from "@xmldom/xmldom";
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
+import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/opds");
@@ -98,9 +99,9 @@ export class OpdsService {
         {
             const wwwAuthenticate = httpGetData.response.headers.get("WWW-Authenticate");
             if (wwwAuthenticate) {
-                const realm = this.getRealmInWwwAuthenticateInHeader(wwwAuthenticate);
-                if (realm) {
-                    this.sendWwwAuthenticationToAuthenticationProcess(realm, responseUrl);
+                const [realm, type] = this.getRealmAndTypeInWwwAuthenticateInHeader(wwwAuthenticate);
+                if (realm && type) {
+                    this.sendWwwAuthenticationToAuthenticationProcess(type, realm, responseUrl);
 
                     const result: IOpdsResultView = {
                         title: "Unauthorized",
@@ -162,31 +163,47 @@ export class OpdsService {
     }
 
     private sendWwwAuthenticationToAuthenticationProcess(
-        _realm: string,
+        type: "digest" | "basic",
+        realm: string,
         responseUrl: string,
     ) {
 
         const opdsAuthDoc = new OPDSAuthenticationDoc();
 
         opdsAuthDoc.Id = "";
-        opdsAuthDoc.Title = ""; // realm || "basic authenticate"; NOT HUMAN-READABLE!
+        opdsAuthDoc.Title = realm; // realm || "basic authenticate"; NOT HUMAN-READABLE!
 
         const opdsAuth = new OPDSAuthentication();
 
-        opdsAuth.Type = "http://opds-spec.org/auth/basic";
+        opdsAuth.Type = "http://opds-spec.org/auth/" + type;
         opdsAuth.Labels = new OPDSAuthenticationLabels();
         opdsAuth.Labels.Login = "LOGIN";
         opdsAuth.Labels.Password = "PASSWORD";
+
+        const opdsLink = new OPDSLink();
+        opdsLink.Rel = ["authenticate"];
+        opdsLink.Href = responseUrl;
+
+        opdsAuth.Links = [opdsLink];
 
         opdsAuthDoc.Authentication = [opdsAuth];
 
         this.dispatchAuthenticationProcess(opdsAuthDoc, responseUrl);
     }
 
-    private getRealmInWwwAuthenticateInHeader(
+    private getRealmAndTypeInWwwAuthenticateInHeader(
         wwwAuthenticate: string | undefined,
-    ) {
+    ): [string, "basic" | "digest"] {
         if (typeof wwwAuthenticate === "string") {
+
+            const parseHeaderAuthenticate = (v: string): {[s: string]: any} => {
+                const a = v.trim().split(",");
+                const b = a.map((q) => q.trim().split("="));
+                const c = b.map((w) => w.length != 2 ? undefined : w.map((e) => e.trim()));
+                const d = c.filter((r) => !!r);
+                const e = d.reduce((pv, cv) => ({...pv, [cv[0]]: cv[1]}), {});
+                return e;
+            };
 
             debug("wwwAuthenticate", wwwAuthenticate);
             const [type] = wwwAuthenticate.trim().split(" ");
@@ -195,22 +212,17 @@ export class OpdsService {
 
             if (type === "Basic") {
                 const data = wwwAuthenticate.slice("Basic ".length);
-                const dataSplit = data.split(",");
-                const dataRealm = dataSplit.find((v) => v.trim().startsWith("realm")).trim();
-                if (dataRealm) {
-                    const [, ...value] = dataRealm.split("\"");
-                    const realm = (value || []).join();
-                    debug("realm", realm);
-                    return realm || "Login";
-                }
-
+                return [parseHeaderAuthenticate(data)["realm"] || "Login", "basic"];
+            } else if (type == "Digest") {
+                const data = wwwAuthenticate.slice("Digest ".length).trim();
+                return [parseHeaderAuthenticate(data)["realm"] || "Login", "digest"];
             } else {
 
                 debug("not a Basic authentication in WWW-authenticate");
             }
         }
 
-        return undefined;
+        return [undefined, undefined];
     }
 
     private dispatchAuthenticationProcess(r2OpdsAuth: OPDSAuthenticationDoc, responseUrl: string) {
