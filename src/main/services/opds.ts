@@ -44,6 +44,14 @@ const SEARCH_TERM = "{searchTerms}";
 const findLink = (ln: IOpdsLinkView[], type: string) => ln && ln.find((link) =>
     link.type?.includes(type));
 
+export interface IWWWAuthenticateDataParsed {
+    type?: "basic" | "digest",
+    realm?: string,
+    nonce?: string,
+    algorithm?: "MD5" | "MD5-sess",
+    qop?: "auth" | "auth-int",
+}
+
 @injectable()
 export class OpdsService {
 
@@ -99,14 +107,20 @@ export class OpdsService {
         {
             const wwwAuthenticate = httpGetData.response.headers.get("WWW-Authenticate");
             if (wwwAuthenticate) {
-                const [realm, type] = this.getRealmAndTypeInWwwAuthenticateInHeader(wwwAuthenticate);
-                if (realm && type) {
-                    this.sendWwwAuthenticationToAuthenticationProcess(type, realm, responseUrl);
-
+                const isValid = this.wwwAuthenticateIsValid(wwwAuthenticate);
+                if (isValid) {
                     const result: IOpdsResultView = {
                         title: "Unauthorized",
                         publications: [],
                     }; // need to refresh the page
+
+                    const data = this.parseWwwAuthenticate(wwwAuthenticate);
+                    if (!data.type) {
+                        result.title = `Unauthorized (bad WWWAuthenticate type)`;
+                        return result;
+                    }
+
+                    this.sendWwwAuthenticationToAuthenticationProcess(data, responseUrl);
                     return result;
                 }
             }
@@ -163,19 +177,19 @@ export class OpdsService {
     }
 
     private sendWwwAuthenticationToAuthenticationProcess(
-        type: "digest" | "basic",
-        realm: string,
+        data: IWWWAuthenticateDataParsed,
         responseUrl: string,
     ) {
 
         const opdsAuthDoc = new OPDSAuthenticationDoc();
 
         opdsAuthDoc.Id = "";
-        opdsAuthDoc.Title = realm; // realm || "basic authenticate"; NOT HUMAN-READABLE!
+        opdsAuthDoc.Title = data.realm || "Login"; // realm || "basic authenticate"; NOT HUMAN-READABLE!
 
         const opdsAuth = new OPDSAuthentication();
 
-        opdsAuth.Type = "http://opds-spec.org/auth/" + type;
+        opdsAuth.Type = "http://opds-spec.org/auth/" + data.type;
+        opdsAuth.AdditionalJSON = {...data};
         opdsAuth.Labels = new OPDSAuthenticationLabels();
         opdsAuth.Labels.Login = "LOGIN";
         opdsAuth.Labels.Password = "PASSWORD";
@@ -190,39 +204,29 @@ export class OpdsService {
 
         this.dispatchAuthenticationProcess(opdsAuthDoc, responseUrl);
     }
+    
+    private wwwAuthenticateIsValid(wwwAuthenticate: string) {
+        return (wwwAuthenticate.trim().startsWith("Basic") || wwwAuthenticate.trim().startsWith("Digest"));
+    }
 
-    private getRealmAndTypeInWwwAuthenticateInHeader(
-        wwwAuthenticate: string | undefined,
-    ): [string, "basic" | "digest"] {
-        if (typeof wwwAuthenticate === "string") {
+    private parseWwwAuthenticate(wwwAuthenticate: string): IWWWAuthenticateDataParsed {
+        const parseHeaderAuthenticate = (v: string): { [s: string]: any } => {
+            const a = v.trim().split(",");
+            const b = a.map((q) => q.trim().split("="));
+            const c = b.map((w) => w.length != 2 ? undefined : w.map((e) => e.trim().replace(/(^"|"$)/g, '')));
+            const d = c.filter((r) => !!r);
+            const e = d.reduce((pv, cv) => ({ ...pv, [cv[0]]: cv[1] }), {});
+            return e;
+        };
 
-            const parseHeaderAuthenticate = (v: string): {[s: string]: any} => {
-                const a = v.trim().split(",");
-                const b = a.map((q) => q.trim().split("="));
-                const c = b.map((w) => w.length != 2 ? undefined : w.map((e) => e.trim()));
-                const d = c.filter((r) => !!r);
-                const e = d.reduce((pv, cv) => ({...pv, [cv[0]]: cv[1]}), {});
-                return e;
-            };
-
-            debug("wwwAuthenticate", wwwAuthenticate);
-            const [type] = wwwAuthenticate.trim().split(" ");
-
-            debug("type", type);
-
-            if (type === "Basic") {
-                const data = wwwAuthenticate.slice("Basic ".length);
-                return [parseHeaderAuthenticate(data)["realm"] || "Login", "basic"];
-            } else if (type == "Digest") {
-                const data = wwwAuthenticate.slice("Digest ".length).trim();
-                return [parseHeaderAuthenticate(data)["realm"] || "Login", "digest"];
-            } else {
-
-                debug("not a Basic authentication in WWW-authenticate");
-            }
-        }
-
-        return [undefined, undefined];
+        const data = parseHeaderAuthenticate(wwwAuthenticate);
+        return {
+            type: wwwAuthenticate.trim().startsWith("Basic") ? "basic" : wwwAuthenticate.trim().startsWith("Digest") ? "digest" : undefined,
+            realm: data["realm"] ? data["realm"] : undefined,
+            nonce: data["nonce"] ? data["nonce"] : undefined,
+            algorithm: data["algorithm"] === "MD5" ? "MD5" : data["algorithm"] === "MD5-sess" ? "MD5-sess" : undefined,
+            qop: data["qop"] === "auth" ? "auth" : data["qop"] === "auth-int" ? "auth-int" : undefined,
+        };
     }
 
     private dispatchAuthenticationProcess(r2OpdsAuth: OPDSAuthenticationDoc, responseUrl: string) {
