@@ -35,6 +35,7 @@ import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
+import { IDigestDataParsed, parseDigestString } from "readium-desktop/utils/digest";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/opds");
@@ -44,13 +45,6 @@ const SEARCH_TERM = "{searchTerms}";
 const findLink = (ln: IOpdsLinkView[], type: string) => ln && ln.find((link) =>
     link.type?.includes(type));
 
-export interface IWWWAuthenticateDataParsed {
-    type?: "basic" | "digest",
-    realm?: string,
-    nonce?: string,
-    algorithm?: "MD5" | "MD5-sess",
-    qop?: "auth" | "auth-int",
-}
 
 @injectable()
 export class OpdsService {
@@ -74,6 +68,13 @@ export class OpdsService {
 
     @inject(diSymbolTable["opds-feed-view-converter"])
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
+
+    private parseWwwAuthenticate(wwwAuthenticate: string): IDigestDataParsed & {type: "digest" | "basic" | undefined} {
+        return {
+            type: wwwAuthenticate.trim().split(" ")[0] === "Digest" ? "digest" : wwwAuthenticate.trim().split(" ")[0] === "Basic" ? "basic" : undefined,
+            ...parseDigestString(wwwAuthenticate),
+        };
+    }
 
     public async opdsRequestTransformer(httpGetData: IHttpGetResult<IOpdsResultView>): Promise<IOpdsResultView | undefined> {
 
@@ -116,7 +117,7 @@ export class OpdsService {
 
                     const data = this.parseWwwAuthenticate(wwwAuthenticate);
                     if (!data.type) {
-                        result.title = `Unauthorized (bad WWWAuthenticate type)`;
+                        result.title = "Unauthorized (bad WWWAuthenticate type)";
                         return result;
                     }
 
@@ -177,7 +178,7 @@ export class OpdsService {
     }
 
     private sendWwwAuthenticationToAuthenticationProcess(
-        data: IWWWAuthenticateDataParsed,
+        data: IDigestDataParsed & {type: "digest" | "basic"},
         responseUrl: string,
     ) {
 
@@ -204,29 +205,9 @@ export class OpdsService {
 
         this.dispatchAuthenticationProcess(opdsAuthDoc, responseUrl);
     }
-    
+
     private wwwAuthenticateIsValid(wwwAuthenticate: string) {
         return (wwwAuthenticate.trim().startsWith("Basic") || wwwAuthenticate.trim().startsWith("Digest"));
-    }
-
-    private parseWwwAuthenticate(wwwAuthenticate: string): IWWWAuthenticateDataParsed {
-        const parseHeaderAuthenticate = (v: string): { [s: string]: any } => {
-            const a = v.trim().split(",");
-            const b = a.map((q) => q.trim().split("="));
-            const c = b.map((w) => w.length != 2 ? undefined : w.map((e) => e.trim().replace(/(^"|"$)/g, '')));
-            const d = c.filter((r) => !!r);
-            const e = d.reduce((pv, cv) => ({ ...pv, [cv[0]]: cv[1] }), {});
-            return e;
-        };
-
-        const data = parseHeaderAuthenticate(wwwAuthenticate);
-        return {
-            type: wwwAuthenticate.trim().startsWith("Basic") ? "basic" : wwwAuthenticate.trim().startsWith("Digest") ? "digest" : undefined,
-            realm: data["realm"] ? data["realm"] : undefined,
-            nonce: data["nonce"] ? data["nonce"] : undefined,
-            algorithm: data["algorithm"] === "MD5" ? "MD5" : data["algorithm"] === "MD5-sess" ? "MD5-sess" : undefined,
-            qop: data["qop"] === "auth" ? "auth" : data["qop"] === "auth-int" ? "auth-int" : undefined,
-        };
     }
 
     private dispatchAuthenticationProcess(r2OpdsAuth: OPDSAuthenticationDoc, responseUrl: string) {

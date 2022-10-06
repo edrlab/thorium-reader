@@ -21,6 +21,7 @@ import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
+import { digestAuthentication, parseDigestString} from "readium-desktop/utils/digest";
 
 // Logger
 const filename_ = "readium-desktop:main/http";
@@ -64,6 +65,7 @@ export interface IOpdsAuthenticationToken {
     accessToken?: string;
     refreshToken?: string;
     tokenType?: string;
+    password?: string; // digest only
 }
 
 let authenticationTokenInitialized = false;
@@ -135,16 +137,23 @@ export const absorbDBToJson = async () => {
 };
 
 export const getAuthenticationToken =
-    async (url: URL) => {
+    async (url: URL, method = "GET") => {
 
         await authenticationTokenInit();
 
         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(url.host);
-        const token = authenticationToken[id];
-        if (token?.accessToken?.includes("uri=")) {
-            token.accessToken = token.accessToken.replace(/uri=".*"\,/, `uri="${url.pathname}",`);
+        const auth = authenticationToken[id];
+        if (auth?.accessToken?.includes("nonce=") && auth?.accessToken?.includes("uri=")) {
+
+            const data = parseDigestString(auth.accessToken);
+            auth.accessToken = digestAuthentication({
+                ...data,
+                uri: new URL(url).pathname,
+                password: auth.password,
+                method: method.toUpperCase(),
+            });
         }
-        return token;
+        return auth;
     };
 
 export const deleteAuthenticationToken = async (host: string) => {
@@ -478,7 +487,7 @@ export const httpGetWithAuth =
 
                 const url = _url instanceof URL ? _url : new URL(_url);
 
-                const auth = await getAuthenticationToken(url);
+                const auth = await getAuthenticationToken(url, options.method.toUpperCase());
 
                 if (
                     typeof auth === "object"

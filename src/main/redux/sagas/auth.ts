@@ -36,7 +36,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
 import { initClientSecretToken } from "./apiapp";
-import { createHash } from "crypto";
+import { digestAuthentication } from "readium-desktop/utils/digest";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -262,39 +262,35 @@ async function opdsSetAuthCredentials(
 
             } else if (authenticationType === "http://opds-spec.org/auth/digest") {
 
-                debug("url", opdsCustomProtocolRequestParsed.url, "pathname", opdsCustomProtocolRequestParsed.url.pathname);
-
                 const username = data.login;
                 const password = data.password;
                 const nonce = data.nonce;
                 const qop = data.qop;
                 const algorithm = data.algorithm;
                 const realm = "calibre";// data.realm;
-                const cnonce = '0123456789';
-                const uri = new URL(authCredentials.authenticateUrl).pathname; // pathname; 
+                const cnonce = "0123456789";
+                const uri = new URL(authCredentials.authenticateUrl).pathname; // pathname;
                 const method = "GET";
-                const nonceCount = "00000001"; // TODO What is nc ? 
+                const nonceCount = "00000001"; // TODO What is nc ?
                 debug("DIGEST", nonce, qop, algorithm, realm);
 
-                const ha1MD5 = createHash('md5').update(`${username}:${realm}:${password}`).digest("hex");
-                const ha1 = algorithm === "MD5-sess" ? createHash('md5').update(`${ha1MD5}:${nonce}:${cnonce}`).digest("hex") : ha1MD5;
-                const ha2 = createHash('md5').update(qop === "auth-int" ? '' : `${method}:${uri}`).digest("hex"); // qop === "auth-int" not supported what is entityBody?
-                const token = createHash('md5').update((qop === "auth" || qop === "auth-int") ? `${ha1}:${nonce}:${nonceCount}:${cnonce}:${qop}:${ha2}` : `${ha1}:${nonce}:${ha2}`).digest('hex');
-
-                // token generator
-                // const crypto = require('crypto');
-                // console.log(crypto.createHash('md5').update(`${crypto.createHash('md5').update('pierre:calibre:pierre').digest('hex')}:${process.argv[2]}:${crypto.createHash('md5').update('GET:/opds').digest('hex')}`).digest('hex'));
-
-                // curl
-                // AUTH="Authorization: Digest realm=\"calibre\", nonce=\"40c4354adcb84339000e:eaf5ef3de2191c18da3523d89a49ffc3e90593001139defe44900ecee152c09b\", algorithm=MD5, qop=auth, response=\"`node /tmp/test.js 40c4354adcb84339000e:eaf5ef3de2191c18da3523d89a49ffc3e90593001139defe44900ecee152c09b`\", username=\"pierre\" uri=\"/opds\""
-                //  curl -H $AUTH -v  http://localhost:8080/opds
-                
-                const accessToken = `username="${username}", realm="${realm}", nonce="${nonce}", qop=${qop}, algorithm=${algorithm}, response="${token}", uri="${uri}", nc=${nonceCount}, cnonce="${cnonce}"`;
-                debug("ACCESSTOKEN " + accessToken);
+                const accessToken = digestAuthentication({
+                    username,
+                    password,
+                    nonce,
+                    qop,
+                    algorithm,
+                    realm,
+                    cnonce,
+                    uri,
+                    method,
+                    nonceCount,
+                });
                 postDataCredential = {
-                    accessToken: accessToken,
+                    accessToken,
                     refreshToken: undefined,
                     tokenType: "Digest",
+                    password: password,
                 };
 
             } else {
