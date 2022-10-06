@@ -70,9 +70,10 @@ export class OpdsService {
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
 
     private parseWwwAuthenticate(wwwAuthenticate: string): IDigestDataParsed & {type: "digest" | "basic" | undefined} {
+        const [type, ...data] = wwwAuthenticate.trim().split(" ");
         return {
-            type: wwwAuthenticate.trim().split(" ")[0] === "Digest" ? "digest" : wwwAuthenticate.trim().split(" ")[0] === "Basic" ? "basic" : undefined,
-            ...parseDigestString(wwwAuthenticate),
+            type: type === "Digest" ? "digest" : type === "Basic" ? "basic" : undefined,
+            ...parseDigestString(data.join(" ")),
         };
     }
 
@@ -185,7 +186,7 @@ export class OpdsService {
         const opdsAuthDoc = new OPDSAuthenticationDoc();
 
         opdsAuthDoc.Id = "";
-        opdsAuthDoc.Title = data.realm || "Login"; // realm || "basic authenticate"; NOT HUMAN-READABLE!
+        opdsAuthDoc.Title = "Login";
 
         const opdsAuth = new OPDSAuthentication();
 

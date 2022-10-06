@@ -267,11 +267,11 @@ async function opdsSetAuthCredentials(
                 const nonce = data.nonce;
                 const qop = data.qop;
                 const algorithm = data.algorithm;
-                const realm = "calibre";// data.realm;
+                const realm = data.realm;
                 const cnonce = "0123456789";
                 const uri = new URL(authCredentials.authenticateUrl).pathname; // pathname;
                 const method = "GET";
-                const nonceCount = "00000001"; // TODO What is nc ?
+                const nonceCount = "00000001";
                 debug("DIGEST", nonce, qop, algorithm, realm);
 
                 const accessToken = digestAuthentication({
@@ -562,7 +562,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         nonce: typeof authentication.AdditionalJSON.nonce === "string" ? authentication.AdditionalJSON.nonce : undefined,
         algorithm: typeof authentication.AdditionalJSON.algorithm === "string" ? authentication.AdditionalJSON.algorithm : undefined,
         qop: typeof authentication.AdditionalJSON.qop === "string" ? authentication.AdditionalJSON.qop : undefined,
-        realm: doc.Title || "", // mapping to title in opdsAuthentication json
+        realm: typeof authentication.AdditionalJSON.realm === "string" ? authentication.AdditionalJSON.realm : "", // mapping to title in opdsAuthentication json
     };
 }
 
