@@ -135,12 +135,16 @@ export const absorbDBToJson = async () => {
 };
 
 export const getAuthenticationToken =
-    async (host: string) => {
+    async (url: URL) => {
 
         await authenticationTokenInit();
 
-        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-        return authenticationToken[id];
+        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(url.host);
+        const token = authenticationToken[id];
+        if (token?.accessToken?.includes("uri=")) {
+            token.accessToken = token.accessToken.replace(/uri=".*"\,/, `uri="${url.pathname}",`);
+        }
+        return token;
     };
 
 export const deleteAuthenticationToken = async (host: string) => {
@@ -473,9 +477,8 @@ export const httpGetWithAuth =
                 // specific to 'librarySimplified' server implementation
 
                 const url = _url instanceof URL ? _url : new URL(_url);
-                const { host } = url;
 
-                const auth = await getAuthenticationToken(host);
+                const auth = await getAuthenticationToken(url);
 
                 if (
                     typeof auth === "object"

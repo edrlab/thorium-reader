@@ -45,7 +45,7 @@ debug("_");
 
 type TLinkType = "refresh" | "authenticate";
 type TLabelName = "login" | "password";
-type TDigestInfo = "realme" | "nonce" | "qop" | "algorithm";
+type TDigestInfo = "realm" | "nonce" | "qop" | "algorithm";
 type TAuthName = "id" | "access_token" | "refresh_token" | "token_type";
 type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/password/apiapp"
@@ -262,17 +262,24 @@ async function opdsSetAuthCredentials(
 
             } else if (authenticationType === "http://opds-spec.org/auth/digest") {
 
+                debug("url", opdsCustomProtocolRequestParsed.url, "pathname", opdsCustomProtocolRequestParsed.url.pathname);
+
+                const username = data.login;
+                const password = data.password;
                 const nonce = data.nonce;
                 const qop = data.qop;
                 const algorithm = data.algorithm;
-                const realm = data.realme;
+                const realm = "calibre";// data.realm;
+                const cnonce = '0123456789';
+                const uri = new URL(authCredentials.authenticateUrl).pathname; // pathname; 
+                const method = "GET";
+                const nonceCount = "00000001"; // TODO What is nc ? 
                 debug("DIGEST", nonce, qop, algorithm, realm);
-                // if algorithm === MD5-sess need nonce and cnonce // not supported yet
-                const ha1 = createHash('md5').update(`${data.login}:${realm}:${data.password}`).digest("hex");
-                // if algorithm === auth-int need entityBody // not supported yet
-                const ha2 = createHash('md5').update(`get:${opdsCustomProtocolRequestParsed.url.toString()}`).digest("hex");
-                const token = createHash('md5').update(`${ha1}:${nonce}:${ha2}`).digest('hex');
 
+                const ha1MD5 = createHash('md5').update(`${username}:${realm}:${password}`).digest("hex");
+                const ha1 = algorithm === "MD5-sess" ? createHash('md5').update(`${ha1MD5}:${nonce}:${cnonce}`).digest("hex") : ha1MD5;
+                const ha2 = createHash('md5').update(qop === "auth-int" ? '' : `${method}:${uri}`).digest("hex"); // qop === "auth-int" not supported what is entityBody?
+                const token = createHash('md5').update((qop === "auth" || qop === "auth-int") ? `${ha1}:${nonce}:${nonceCount}:${cnonce}:${qop}:${ha2}` : `${ha1}:${nonce}:${ha2}`).digest('hex');
 
                 // token generator
                 // const crypto = require('crypto');
@@ -282,8 +289,10 @@ async function opdsSetAuthCredentials(
                 // AUTH="Authorization: Digest realm=\"calibre\", nonce=\"40c4354adcb84339000e:eaf5ef3de2191c18da3523d89a49ffc3e90593001139defe44900ecee152c09b\", algorithm=MD5, qop=auth, response=\"`node /tmp/test.js 40c4354adcb84339000e:eaf5ef3de2191c18da3523d89a49ffc3e90593001139defe44900ecee152c09b`\", username=\"pierre\" uri=\"/opds\""
                 //  curl -H $AUTH -v  http://localhost:8080/opds
                 
+                const accessToken = `username="${username}", realm="${realm}", nonce="${nonce}", qop=${qop}, algorithm=${algorithm}, response="${token}", uri="${uri}", nc=${nonceCount}, cnonce="${cnonce}"`;
+                debug("ACCESSTOKEN " + accessToken);
                 postDataCredential = {
-                    accessToken: `username=${data.login}, nonce=${nonce}, qop=${qop}, algorithm=${algorithm}, response=${token}`,
+                    accessToken: accessToken,
                     refreshToken: undefined,
                     tokenType: "Digest",
                 };
@@ -921,10 +930,10 @@ const htmlLoginTemplate = (
         ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ""}
         <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
         <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
-        <p><input type="text" name="nonce" value="${nonce}"></p>
-        <p><input type="text" name="qop" value="${qop}"></p>
-        <p><input type="text" name="algorithm" value="${algorithm}"></p>
-        <p><input type="text" name="realm" value="${realm}"></p>
+        <p><input hidden type="text" name="nonce" value="${nonce}"></p>
+        <p><input hidden type="text" name="qop" value="${qop}"></p>
+        <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
+        <p><input hidden type="text" name="realm" value="${realm}"></p>
         <p class="submit">
         <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
         <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
