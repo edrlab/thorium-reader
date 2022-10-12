@@ -1114,10 +1114,18 @@ input[type=radio] + label {
       background-color: transparent;
       width: 40px;
       height: 40px;
+
+      &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
     }
 
     & svg {
-      fill: #c1c1c1;
+      /* fill: #c1c1c1; */
+      /* fill: #555555; */
+      fill: var(--reader-fontColor);
+      opacity: 0.5;
     }
   }
 
@@ -1136,7 +1144,10 @@ input[type=radio] + label {
     }
 
     & svg {
-      fill: #c1c1c1;
+      /* fill: #c1c1c1; */
+      /* fill: #555555; */
+      fill: var(--reader-fontColor);
+      opacity: 0.5;
     }
   }
 

@@ -48,6 +48,8 @@ interface IBaseProps extends TranslatorProps {
     gotoBegin: () => void;
     gotoEnd: () => void;
     fullscreen: boolean;
+    historyCanGoBack: boolean;
+    historyCanGoForward: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
     goToLocator: (locator: R2Locator) => void;
@@ -126,6 +128,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }}>
                 {!this.props.fullscreen && <div className={stylesReader.history}>
                             <button
+                                className={this.props.historyCanGoBack ? undefined : stylesReader.disabled}
                                 onClick={() => {
 
                                     console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
@@ -138,6 +141,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
                             <button
+                                className={this.props.historyCanGoForward ? undefined : stylesReader.disabled}
                                 onClick={() => {
 
                                     console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);

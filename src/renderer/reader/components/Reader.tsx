@@ -91,20 +91,20 @@ import optionsValues, {
 import PickerManager from "./picker/PickerManager";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
-const handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
-
-    if (!isFromOnPopState) {
-        console.log("#+$%".repeat(5)  + " goToLocator history pushState()", JSON.stringify(locator), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
-        if (window.history.state && r.equals(locator, window.history.state)) {
-            window.history.replaceState(locator, "");
-        } else {
-            window.history.pushState(locator, "");
-        }
-    }
-    r2HandleLinkLocator(locator);
-};
+// see r2-navigator-js src/electron/renderer/location.ts
+ipcRenderer.on(R2_EVENT_LINK, (event: Electron.IpcRendererEvent, payload: IEventPayload_R2_EVENT_LINK) => {
+    console.log("R2_EVENT_LINK (ipcRenderer.on READER.TSX)");
+    // see ipcRenderer.emit(R2_EVENT_LINK...) special case!
+    const pay = (!payload && (event as unknown as IEventPayload_R2_EVENT_LINK).url) ? event as unknown as IEventPayload_R2_EVENT_LINK : payload;
+    console.log(pay.url);
+    handleLinkUrl_UpdateHistoryState(pay.url);
+});
 
 const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false) => {
+    if (!(window.history as any)._length) {
+        (window.history as any)._length = 0;
+    }
+
     if (!isFromOnPopState) {
         let url_ = url;
         try {
@@ -125,28 +125,19 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
         } catch (ex) {
             console.log(ex);
         }
-        console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(url_), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+        console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(url_), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, (window.history as any)._length);
 
-        if (window.history.state === url_) {
-            window.history.replaceState(url_, "");
+        if (window.history.state?.data === url_) {
+            window.history.replaceState({data: url_, index: (window.history as any)._length - 1}, "");
         } else {
-            window.history.pushState(url_, "");
+            (window.history as any)._length++;
+            window.history.pushState({data: url_, index: (window.history as any)._length - 1}, "");
+        }
+        if ((window.history as any)._readerInstance) {
+            ((window.history as any)._readerInstance as Reader).setState({historyCanGoForward: false, historyCanGoBack: (window.history as any)._length > 1});
         }
     }
 };
-const handleLinkUrl = (url: string, isFromOnPopState = false) => {
-    handleLinkUrl_UpdateHistoryState(url, isFromOnPopState);
-    r2HandleLinkUrl(url);
-};
-
-// see r2-navigator-js src/electron/renderer/location.ts
-ipcRenderer.on(R2_EVENT_LINK, (event: Electron.IpcRendererEvent, payload: IEventPayload_R2_EVENT_LINK) => {
-    console.log("R2_EVENT_LINK (ipcRenderer.on READER.TSX)");
-    // see ipcRenderer.emit(R2_EVENT_LINK...) special case!
-    const pay = (!payload && (event as unknown as IEventPayload_R2_EVENT_LINK).url) ? event as unknown as IEventPayload_R2_EVENT_LINK : payload;
-    console.log(pay.url);
-    handleLinkUrl_UpdateHistoryState(pay.url);
-});
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -207,6 +198,9 @@ interface IState {
 
     openedSectionSettings: number | undefined;
     openedSectionMenu: number | undefined;
+
+    historyCanGoBack: boolean;
+    historyCanGoForward: boolean;
 
     // bookmarkMessage: string | undefined;
 }
@@ -289,6 +283,9 @@ class Reader extends React.Component<IProps, IState> {
 
             divinaArrowEnabled: true,
             divinaContinousEqualTrue: false,
+
+            historyCanGoBack: false,
+            historyCanGoForward: false,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -332,10 +329,10 @@ class Reader extends React.Component<IProps, IState> {
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
 
         this.handleDivinaSound = this.handleDivinaSound.bind(this);
-
     }
 
     public async componentDidMount() {
+        (window.history as any)._readerInstance = this;
 
         const handleMouseKeyboard = (isKey: boolean) => {
 
@@ -722,6 +719,8 @@ class Reader extends React.Component<IProps, IState> {
                     </div>
                 </div>
                 <ReaderFooter
+                    historyCanGoBack={this.state.historyCanGoBack}
+                    historyCanGoForward={this.state.historyCanGoForward}
                     navLeftOrRight={this.navLeftOrRight_.bind(this)}
                     gotoBegin={this.onKeyboardNavigationToBegin.bind(this)}
                     gotoEnd={this.onKeyboardNavigationToEnd.bind(this)}
@@ -910,6 +909,32 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAudioStop);
     }
 
+    private handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
+
+        if (!(window.history as any)._length) {
+            (window.history as any)._length = 0;
+        }
+    
+        if (!isFromOnPopState) {
+            console.log("#+$%".repeat(5)  + " goToLocator history pushState()", JSON.stringify(locator), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, (window.history as any)._length);
+            if (window.history.state && r.equals(locator, window.history.state.data)) {
+                window.history.replaceState({data: locator, index: (window.history as any)._length - 1}, "");
+            } else {
+                (window.history as any)._length++;
+                window.history.pushState({data: locator, index: (window.history as any)._length - 1}, "");
+            }
+
+            // (window.history as any)._readerInstance === this
+            this.setState({historyCanGoForward: false, historyCanGoBack: (window.history as any)._length > 1});
+        }
+        r2HandleLinkLocator(locator);
+    };
+
+    private handleLinkUrl = (url: string, isFromOnPopState = false) => {
+        handleLinkUrl_UpdateHistoryState(url, isFromOnPopState);
+        r2HandleLinkUrl(url);
+    };
+    
     private onKeyboardAudioStop = () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -1305,7 +1330,7 @@ class Reader extends React.Component<IProps, IState> {
             if (this.props.r2Publication?.Spine) {
                 const firstSpine = this.props.r2Publication.Spine[0];
                 if (firstSpine?.Href) {
-                    handleLinkLocator({
+                    this.handleLinkLocator({
                         href: firstSpine.Href,
                         locations: {
                             progression: 0,
@@ -1329,7 +1354,7 @@ class Reader extends React.Component<IProps, IState> {
             if (this.props.r2Publication?.Spine) {
                 const lastSpine = this.props.r2Publication.Spine[this.props.r2Publication.Spine.length - 1];
                 if (lastSpine?.Href) {
-                    handleLinkLocator({
+                    this.handleLinkLocator({
                         href: lastSpine.Href,
                         locations: {
                             progression: 0.95, // because 1 (100%) tends to trip blankspace css columns :(
@@ -1381,14 +1406,19 @@ class Reader extends React.Component<IProps, IState> {
         // popState.stopPropagation();
         // popState.stopImmediatePropagation();
 
-        console.log("#+$%".repeat(5)  + " window EVENT 'popstate'", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), JSON.stringify(popState.state), window.history.length);
+        console.log("#+$%".repeat(5)  + " window EVENT 'popstate'", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), JSON.stringify(popState.state), window.history.length, (window.history as any)._length);
 
-        if (popState.state) {
-            if (typeof popState.state === "object") {
-                this.goToLocator(popState.state, true, true);
-            } else if (typeof popState.state === "string") {
-                this.handleLinkClick(undefined, popState.state, true, true);
+        // (window.history as any)._readerInstance === this
+
+        if (popState.state?.data) {
+            if (typeof popState.state.data === "object") {
+                this.goToLocator(popState.state.data, true, true);
+            } else if (typeof popState.state.data === "string") {
+                this.handleLinkClick(undefined, popState.state.data, true, true);
             }
+            this.setState({historyCanGoForward: (window.history as any)._length > 1 && popState.state.index < (window.history as any)._length - 1, historyCanGoBack: (window.history as any)._length > 1 && popState.state.index > 0});
+        } else {
+            this.setState({historyCanGoForward: false, historyCanGoBack: false});
         }
     };
 
@@ -1402,7 +1432,7 @@ class Reader extends React.Component<IProps, IState> {
             });
 
             const readerReadingLocation = this.state.currentLocation ? this.state.currentLocation : undefined;
-            this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, this.state.divinaContinousEqualTrue, readerReadingLocation, handleLinkUrl, focusWhereAmI);
+            this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, this.state.divinaContinousEqualTrue, readerReadingLocation, this.handleLinkUrl.bind(this), focusWhereAmI);
         }
     }
 
@@ -1841,9 +1871,10 @@ class Reader extends React.Component<IProps, IState> {
                 computeReadiumCssJsonMessage(this.props.readerConfig),
             );
 
-            console.log("#+$%".repeat(5)  + " installNavigatorDOM => window history replaceState() ...", JSON.stringify(locator), JSON.stringify(window.history.state), window.history.length, JSON.stringify(document.location), JSON.stringify(window.location));
+            (window.history as any)._length = 1;
+            console.log("#+$%".repeat(5)  + " installNavigatorDOM => window history replaceState() ...", JSON.stringify(locator), JSON.stringify(window.history.state), window.history.length, (window.history as any)._length, JSON.stringify(document.location), JSON.stringify(window.location));
             // does not trigger onPopState!
-            window.history.replaceState(locator ? locator : null, "");
+            window.history.replaceState(locator ? {data: locator, index: (window.history as any)._length - 1} : null, "");
         }
     }
 
@@ -1907,9 +1938,10 @@ class Reader extends React.Component<IProps, IState> {
 
         if (loc?.locator?.href && window.history.length === 1 && !window.history.state) {
 
-            console.log("#+$%".repeat(5)  + " handleReadingLocationChange (INIT history state) => window history replaceState() ...", JSON.stringify(loc.locator), JSON.stringify(window.history.state), window.history.length, JSON.stringify(document.location), JSON.stringify(window.location));
+            console.log("#+$%".repeat(5)  + " handleReadingLocationChange (INIT history state) => window history replaceState() ...", JSON.stringify(loc.locator), JSON.stringify(window.history.state), window.history.length, (window.history as any)._length, JSON.stringify(document.location), JSON.stringify(window.location));
+            (window.history as any)._length = 1;
             // does not trigger onPopState!
-            window.history.replaceState(loc.locator, "");
+            window.history.replaceState({data: loc.locator, index: (window.history as any)._length - 1}, "");
         }
 
         // No need to explicitly refresh the bookmarks status here,
@@ -2022,7 +2054,7 @@ class Reader extends React.Component<IProps, IState> {
                 this.focusMainAreaLandmarkAndCloseMenu();
             }
 
-            handleLinkLocator(locator, isFromOnPopState);
+            this.handleLinkLocator(locator, isFromOnPopState);
         }
 
     }
@@ -2054,7 +2086,7 @@ class Reader extends React.Component<IProps, IState> {
                 this.focusMainAreaLandmarkAndCloseMenu();
             }
             const newUrl = isFromOnPopState ? url : this.props.manifestUrlR2Protocol + "/../" + url;
-            handleLinkUrl(newUrl, isFromOnPopState);
+            this.handleLinkUrl(newUrl, isFromOnPopState);
 
         }
     }
