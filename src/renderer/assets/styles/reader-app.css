@@ -1148,7 +1148,11 @@ input[type=radio] + label {
   }
 
   & .track_reading_wrapper_noArrows {
-    padding: 1rem 5rem 1rem 5rem;
+    /* padding: 1rem 5rem 1rem 5rem; */
+    padding-top: 1rem;
+    padding-right: 5rem;
+    padding-bottom: 1rem;
+    /* padding-left: 5rem; */
   }
 }
 
