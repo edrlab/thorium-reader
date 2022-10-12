@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ipcRenderer } from "electron";
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
 import * as path from "path";
@@ -55,7 +56,7 @@ import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { Unsubscribe } from "redux";
 
-import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
+import { IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_LINK, R2_EVENT_LINK } from "@r2-navigator-js/electron/common/events";
 import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
@@ -88,6 +89,7 @@ import optionsValues, {
     TdivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
+import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
 const handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
 
@@ -102,17 +104,49 @@ const handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
     r2HandleLinkLocator(locator);
 };
 
-const handleLinkUrl = (url: string, isFromOnPopState = false) => {
+const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false) => {
     if (!isFromOnPopState) {
-        console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
-        if (window.history.state === url) {
-            window.history.replaceState(url, "");
+        let url_ = url;
+        try {
+            const u = new URL(url);
+            u.searchParams.delete(URL_PARAM_SESSION_INFO);
+            u.searchParams.delete(URL_PARAM_IS_IFRAME);
+            u.searchParams.delete(URL_PARAM_PREVIOUS);
+            u.searchParams.delete(URL_PARAM_GOTO);
+            u.searchParams.delete(URL_PARAM_GOTO_DOM_RANGE);
+            u.searchParams.delete(URL_PARAM_CSS);
+            u.searchParams.delete(URL_PARAM_EPUBREADINGSYSTEM);
+            u.searchParams.delete(URL_PARAM_DEBUG_VISUALS);
+            u.searchParams.delete(URL_PARAM_CLIPBOARD_INTERCEPT);
+            u.searchParams.delete(URL_PARAM_REFRESH);
+            u.searchParams.delete(URL_PARAM_WEBVIEW_SLOT);
+            u.searchParams.delete(URL_PARAM_SECOND_WEBVIEW);
+            url_ = u.toString();
+        } catch (ex) {
+            console.log(ex);
+        }
+        console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(url_), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+
+        if (window.history.state === url_) {
+            window.history.replaceState(url_, "");
         } else {
-            window.history.pushState(url, "");
+            window.history.pushState(url_, "");
         }
     }
+};
+const handleLinkUrl = (url: string, isFromOnPopState = false) => {
+    handleLinkUrl_UpdateHistoryState(url, isFromOnPopState);
     r2HandleLinkUrl(url);
 };
+
+// see r2-navigator-js src/electron/renderer/location.ts
+ipcRenderer.on(R2_EVENT_LINK, (event: Electron.IpcRendererEvent, payload: IEventPayload_R2_EVENT_LINK) => {
+    console.log("R2_EVENT_LINK (ipcRenderer.on READER.TSX)");
+    // see ipcRenderer.emit(R2_EVENT_LINK...) special case!
+    const pay = (!payload && (event as unknown as IEventPayload_R2_EVENT_LINK).url) ? event as unknown as IEventPayload_R2_EVENT_LINK : payload;
+    console.log(pay.url);
+    handleLinkUrl_UpdateHistoryState(pay.url);
+});
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
