@@ -276,7 +276,7 @@ export class OpdsService {
             );
             const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, baseUrl);
             return {
-                title: pubView.title,
+                title: pubView.documentTitle,
                 publications: [pubView],
             };
 
@@ -311,7 +311,7 @@ export class OpdsService {
             // const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2Publication, baseUrl);
 
             // return {
-            //     title: pubView.title,
+            //     title: pubView.documentTitle,
             //     publications: [pubView],
             // } as IOpdsResultView;
 
@@ -358,7 +358,7 @@ export class OpdsService {
                 baseUrl,
             );
             return {
-                title: pubView.title,
+                title: pubView.documentTitle,
                 publications: [pubView],
             } as IOpdsResultView;
 

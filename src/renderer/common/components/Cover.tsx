@@ -17,6 +17,8 @@ import {
 } from "readium-desktop/renderer/common/logics/formatContributor";
 
 import { TranslatorProps, withTranslator } from "./hoc/translator";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -56,11 +58,18 @@ class Cover extends React.Component<IProps, undefined> {
                 backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
             };
 
+            // publicationViewMaybeOpds.documentTitle
+            const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
+            const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+            const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+            const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+
             return (
                 <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
                     <div className={stylesPublications.no_img}>
-                        <p aria-hidden>
-                            {this.props.translator.translateContentField(publicationViewMaybeOpds.title)}
+                        <p aria-hidden
+                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                            {pubTitleStr}
                         </p>
                         <p aria-hidden>{authors}</p>
                     </div>

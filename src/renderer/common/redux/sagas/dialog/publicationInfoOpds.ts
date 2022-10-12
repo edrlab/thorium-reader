@@ -68,7 +68,7 @@ function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
 
         if (
             !action.error
-            && publication?.title
+            && publication?.documentTitle
             && Array.isArray(publication?.authors)
         ) {
 

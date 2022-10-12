@@ -370,7 +370,7 @@ export class OpdsFeedViewConverter {
         return {
             baseUrl,
             // r2OpdsPublicationJson,
-            title,
+            documentTitle: title,
             authors,
             publishers,
             workIdentifier,

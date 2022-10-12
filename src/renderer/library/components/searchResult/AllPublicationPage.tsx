@@ -10,6 +10,8 @@ import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) se
 // import { classThemeExample, classStyleExample } from "./AllPublicationPage.css";
 // import classNames from "classnames";
 
+import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 // import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
@@ -75,22 +77,7 @@ import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-
-import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { ipcRenderer } from "electron";
-
-// MAIN process only, not RENDERER, because of diMainGet("translator")
-// import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
-function convertMultiLangStringToString(translator: Translator, items: string | IStringMap | undefined): string {
-    if (typeof items === "object") {
-        const langs = Object.keys(items);
-        const lang = langs.filter((l) =>
-            l.toLowerCase().includes(translator.getLocale().toLowerCase()));
-        const localeLang = lang[0];
-        return items[localeLang] || items._ || items[langs[0]];
-    }
-    return items;
-}
 
 // import {
 //     formatContributorToString,
@@ -1299,20 +1286,30 @@ const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
 
 interface IColumnValue_Title extends IColumnValue_BaseString {
 
-    title: string,
+    pubTitle: string | IStringMap,
     publicationViewIdentifier: string,
 };
 interface ITableCellProps_Value_Title {
     value: IColumnValue_Title;
 }
 const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Title> = (props) => {
+
+    // props.value.pubTitle
+    // props.value.label
+    const pubTitleLangStr = convertMultiLangStringToString(props.translator, props.value.pubTitle);
+    const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+    const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+    const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+
     return (<div style={{
         ...commonCellStyles(props),
         fontWeight: "bold",
         // minWidth: props.displayType === DisplayType.Grid ? "200px" : undefined,
         // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
         // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
-    }}><a
+    }}
+    dir={pubTitleIsRTL ? "rtl" : undefined}
+    ><a
         style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
         tabIndex={0}
         onClick={(e) => {
@@ -1331,9 +1328,9 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
                 }
             }
         }
-        title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+        title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
     >
-        {props.value.label}
+        {pubTitleStr}
         </a>
     </div>);
 };
@@ -1524,18 +1521,28 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             // const identifier = publicationView.workIdentifier ? publicationView.workIdentifier : "";
             // const publicationType = publicationView.RDFType ? publicationView.RDFType : "";
 
+            let strA11Summary = "";
+            if (publicationView.a11y_accessibilitySummary) {
+
+                const langStr = convertMultiLangStringToString(props.translator, publicationView.a11y_accessibilitySummary);
+
+                if (langStr && langStr[1]) {
+                    strA11Summary = DOMPurify.sanitize(langStr[1]).replace(/font-size:/g, "font-sizexx:");
+                }
+            }
+
             // r2PublicationJson: JsonMap;
             // lastReadingLocation?: LocatorExtended;
             const cols: IColumns = {
                 colCover: { // IColumnValue_Cover
                     label: publicationView.cover?.thumbnailUrl ?? publicationView.cover?.coverUrl ?? "",
                     publicationViewIdentifier: publicationView.identifier,
-                    title: publicationView.title,
+                    title: publicationView.documentTitle,
                 },
                 colTitle: { // IColumnValue_Title
-                    label: publicationView.title,
+                    label: publicationView.documentTitle,
                     publicationViewIdentifier: publicationView.identifier,
-                    title: publicationView.title,
+                    pubTitle: publicationView.publicationTitle,
                 },
                 colAuthors: { // IColumnValue_Authors
                     label: publicationView.authors ? publicationView.authors.join(", ") : "",
@@ -1566,9 +1573,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 colDuration: duration,
                 colDescription: description,
 
-                col_a11y_accessibilitySummary: publicationView.a11y_accessibilitySummary ?
-                    convertMultiLangStringToString(props.translator, publicationView.a11y_accessibilitySummary) :
-                    "",
+                col_a11y_accessibilitySummary: strA11Summary,
                 // col_a11y_accessMode: { // IColumnValue_A11y_StringArray
                 //     label: publicationView.a11y_accessMode?.length ? [].concat(publicationView.a11y_accessMode).sort().join(", ") : "",
                 //     strings: publicationView.a11y_accessMode,

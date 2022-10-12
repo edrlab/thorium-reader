@@ -56,7 +56,7 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
                 <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
                     <div className={stylesGlobal.w_50}>
                         <p><strong>{__("dialog.renew")}</strong></p>
-                        <p>{this.props.publicationView.title}</p>
+                        <p>{this.props.publicationView.documentTitle}</p>
                     </div>
                 </div>
                 <div className={stylesModals.modal_dialog_footer}>

@@ -29,6 +29,7 @@ import {
 } from "readium-desktop/renderer/common/logics/formatContributor";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { v4 as uuidv4 } from "uuid";
+import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -104,12 +105,18 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
         const authors = formatContributorToString(pub.authors, translator);
 
+        // publicationViewMaybeOpds.documentTitle
+        const pubTitleLangStr = convertMultiLangStringToString(translator, (pub as PublicationView).publicationTitle || pub.documentTitle);
+        const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+        const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+        const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+
         return (
             <>
                 <Menu
                     button={
                         (<SVG
-                            title={`${this.props.__("accessibility.bookMenu")} (${pub.title})`}
+                            title={`${this.props.__("accessibility.bookMenu")} (${pub.documentTitle})`}
                             className={stylesButtons.button_transparency_icon}
                             svg={MenuIcon}
                         />)
@@ -147,7 +154,9 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                     }
                 >
                     <div className={stylesPublications.publication_list_title_authors}>
-                        <div><strong>{pub.title}</strong></div>
+                        <div
+                        dir={pubTitleIsRTL ? "rtl" : undefined}>
+                        <strong>{pubTitleStr}</strong></div>
                         <p>{authors}</p>
                     </div>
                     {

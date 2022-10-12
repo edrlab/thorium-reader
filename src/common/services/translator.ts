@@ -21,6 +21,7 @@ import ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
 import ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
 import ruCatalog from "readium-desktop/resources/locales/ru.json";
 import zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
+import zhTwCatalog from "readium-desktop/resources/locales/zh-tw.json";
 import koCatalog from "readium-desktop/resources/locales/ko.json";
 import svCatalog from "readium-desktop/resources/locales/sv.json";
 import caCatalog from "readium-desktop/resources/locales/ca.json";
@@ -90,6 +91,9 @@ i18nextInstance.init({
         "zh-CN": {
             translation: zhCnCatalog,
         },
+        "zh-TW": {
+            translation: zhTwCatalog,
+        },
         "it" : {
             translation: itCatalog,
         },
@@ -152,7 +156,8 @@ export const AvailableLanguages = {
     "lt": "Lietuvių",
     "pt-BR": "Português Brasileiro",
     "pt-PT": "Português",
-    "zh-CN": "中文",
+    "zh-CN": "中文 - 中国", // "中文 - 中國"
+    "zh-TW": "中文 - 台灣", // "中文 - 台湾"
     "it": "Italiano",
     "ru": "Русский",
     "ko": "한국어",
