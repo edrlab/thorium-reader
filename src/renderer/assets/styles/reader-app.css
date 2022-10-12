@@ -1122,7 +1122,9 @@ input[type=radio] + label {
     }
 
     & svg {
+
       /* fill: #c1c1c1; */
+
       /* fill: #555555; */
       fill: var(--reader-fontColor);
       opacity: 0.5;
@@ -1144,7 +1146,9 @@ input[type=radio] + label {
     }
 
     & svg {
+
       /* fill: #c1c1c1; */
+
       /* fill: #555555; */
       fill: var(--reader-fontColor);
       opacity: 0.5;
@@ -1159,10 +1163,12 @@ input[type=radio] + label {
   }
 
   & .track_reading_wrapper_noArrows {
+
     /* padding: 1rem 5rem 1rem 5rem; */
     padding-top: 1rem;
     padding-right: 5rem;
     padding-bottom: 1rem;
+
     /* padding-left: 5rem; */
   }
 }
