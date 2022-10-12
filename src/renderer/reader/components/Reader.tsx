@@ -914,7 +914,7 @@ class Reader extends React.Component<IProps, IState> {
         if (!(window.history as any)._length) {
             (window.history as any)._length = 0;
         }
-    
+
         if (!isFromOnPopState) {
             console.log("#+$%".repeat(5)  + " goToLocator history pushState()", JSON.stringify(locator), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, (window.history as any)._length);
             if (window.history.state && r.equals(locator, window.history.state.data)) {
@@ -934,7 +934,7 @@ class Reader extends React.Component<IProps, IState> {
         handleLinkUrl_UpdateHistoryState(url, isFromOnPopState);
         r2HandleLinkUrl(url);
     };
-    
+
     private onKeyboardAudioStop = () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
