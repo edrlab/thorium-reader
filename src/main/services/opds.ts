@@ -186,7 +186,7 @@ export class OpdsService {
         const opdsAuthDoc = new OPDSAuthenticationDoc();
 
         opdsAuthDoc.Id = "";
-        opdsAuthDoc.Title = "Login";
+        opdsAuthDoc.Title = ""; // realm || "basic authenticate"; NOT HUMAN-READABLE!
 
         const opdsAuth = new OPDSAuthentication();
 
