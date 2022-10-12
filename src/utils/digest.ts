@@ -18,7 +18,7 @@ function decimalToHex(d: number, padding: number) {
     return hex;
 }
 
-export const parseHeaderWWWAuthenticateForDigest = (v: string): { [s: string]: any } => {
+const parseHeaderWWWAuthenticateForDigest = (v: string): { [s: string]: string } => {
     const a = v.trim().split(",");
     const b = a.map((q) => q.trim().split("="));
     const c = b.map((w) => w.length != 2 ? undefined : w.map((e) => e.trim().replace(/(^"|"$)/g, "")));
