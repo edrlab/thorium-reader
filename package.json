@@ -251,7 +251,7 @@
     }
   },
   "dependencies": {
-    "@xmldom/xmldom": "^0.8.2",
+    "@xmldom/xmldom": "^0.8.3",
     "classnames": "^2.3.2",
     "commonmark": "^0.30.0",
     "debounce": "^1.2.1",
