@@ -11,7 +11,7 @@ import { BrowserWindow, globalShortcut } from "electron";
 import { Headers } from "node-fetch";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
-import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
@@ -20,6 +20,7 @@ import {
 } from "readium-desktop/main/event";
 import { cleanCookieJar } from "readium-desktop/main/network/fetch";
 import {
+    httpGet,
     httpPost,
     httpSetAuthenticationToken,
     IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
@@ -34,9 +35,10 @@ import { URL } from "url";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
+import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, OPDS_AUTH_SCHEME, OPDS_MEDIA_SCHEME, TregisterHttpProtocolHandler} from "./getEventChannel";
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
+import isURL from "validator/lib/isURL";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -210,10 +212,45 @@ function* opdsAuthWipeData() {
     debug("End of wipping auth data");
 }
 
+function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler) {
+
+    const scheme = OPDS_MEDIA_SCHEME + "://";
+    if (request && request.url.startsWith(scheme)) {
+        const b64 = request.url.slice(scheme.length);
+        const url = Buffer.from(b64, "base64").toString();
+        if (!isURL(url)) {
+            debug("opdsRequestMedia failed not a valid url", url);
+            return ;
+        }
+
+        httpGet(url, {
+            ...request,
+        }, (response) => {
+
+            debug("opdsRequestMedia success", response.url, response.statusCode);
+            callback({
+                method: "GET",
+                url: request.url,
+                statusCode: response?.statusCode || 500,
+                headers: {
+                    "Content-Type": response.contentType,
+                },
+                data: response.body || undefined,
+            });
+            return response;
+        });
+
+    } else {
+        debug("opdsRequestMedia error ?!!", request);
+    }
+
+}
+
 export function saga() {
 
     const opdsAuthChannel = getOpdsAuthenticationChannel();
     const opdsRequestChannel = getOpdsRequestCustomProtocolEventChannel();
+    const opdsRequestMediaChannel = getOpdsRequestMediaCustomProtocolEventChannel();
 
     return all([
         takeSpawnLeadingChannel(
@@ -225,6 +262,11 @@ export function saga() {
             authActions.wipeData.ID,
             opdsAuthWipeData,
             (e) => debug("opds authentication data wipping error", e),
+        ),
+        takeSpawnEveryChannel(
+            opdsRequestMediaChannel,
+            opdsRequestMediaFlow,
+            (e) => debug("redux OPDS Request Media channel error", e),
         ),
     ]);
 }
@@ -636,7 +678,7 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
         }
         const { protocol: urlProtocol, host } = urlParsed;
 
-        if (urlProtocol !== `${ODPS_AUTH_SCHEME}:`) {
+        if (urlProtocol !== `${OPDS_AUTH_SCHEME}:`) {
             debug("bad opds protocol !!", urlProtocol);
             return undefined;
         }
