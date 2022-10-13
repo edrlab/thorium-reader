@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import "reflect-metadata";
-
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
@@ -38,7 +38,7 @@ interface IProps extends IBaseProps {
 
 interface IState {
     url: string,
-    flag: boolean,
+    imgErroredOnce: boolean,
 }
 
 class Cover extends React.Component<IProps, IState> {
@@ -48,7 +48,7 @@ class Cover extends React.Component<IProps, IState> {
 
         this.state = {
             url: "",
-            flag: false,
+            imgErroredOnce: false,
         };
 
         this.imageOnError = this.imageOnError.bind(this);
@@ -124,11 +124,11 @@ class Cover extends React.Component<IProps, IState> {
 
     private imageOnError() {
 
-        if (this.state.flag) return ;
+        if (this.state.imgErroredOnce) return;
 
         const b64 = Buffer.from(this.state.url).toString("base64");
-        const url = "opds-media://" + b64;
-        this.setState({url, flag: true});
+        const url = "opds-media://0.0.0.0/" + encodeURIComponent_RFC3986(b64);
+        this.setState({url, imgErroredOnce: true});
     }
 }
 

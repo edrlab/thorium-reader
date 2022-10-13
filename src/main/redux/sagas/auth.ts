@@ -214,10 +214,10 @@ function* opdsAuthWipeData() {
 
 function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler) {
 
-    const scheme = OPDS_MEDIA_SCHEME + "://";
-    if (request && request.url.startsWith(scheme)) {
-        const b64 = request.url.slice(scheme.length);
-        const url = Buffer.from(b64, "base64").toString();
+    const schemePrefix = OPDS_MEDIA_SCHEME + "://0.0.0.0/";
+    if (request && request.url.startsWith(schemePrefix)) {
+        const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
+        const url = Buffer.from(b64, "base64").toString("utf-8");
         if (!isURL(url)) {
             debug("opdsRequestMedia failed not a valid url", url);
             return ;
