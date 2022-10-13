@@ -538,16 +538,17 @@ const httpGetUnauthorized =
                 ..._arg,
             );
 
-            // HTTP status code Bad Request
-            if (response.statusCode === 400) {
-                // Most likely because of a incorrect Authorization header => server rejects (e.g. Basic vs. Digest switch in Calibre OPDS server)
-                await deleteAuthenticationToken(url.host);
-                (options.headers as Headers).delete("Authorization");
-                const responseWithoutAuth = await httpGetWithAuth(
-                    false,
-                )(url, options, _callback, ..._arg);
-                return responseWithoutAuth || response;
-            }
+            // HTTP status code Bad Request?
+            // this works, but may be a flase flag with some auth servers, so better do nothing
+            // if (response.statusCode === 400) {
+            //     // Most likely because of a incorrect Authorization header => server rejects (e.g. Basic vs. Digest switch in Calibre OPDS server)
+            //     await deleteAuthenticationToken(url.host);
+            //     (options.headers as Headers).delete("Authorization");
+            //     const responseWithoutAuth = await httpGetWithAuth(
+            //         false,
+            //     )(url, options, _callback, ..._arg);
+            //     return responseWithoutAuth || response;
+            // }
 
             if (enableRefresh) {
                 if (response.statusCode === 401) {
