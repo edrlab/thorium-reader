@@ -120,9 +120,11 @@ export function getOpdsRequestCustomProtocolEventChannel() {
 
 export const OPDS_MEDIA_SCHEME = "opds-media";
 
-protocol.registerSchemesAsPrivileged([
-    { scheme: OPDS_MEDIA_SCHEME, privileges: { bypassCSP: true, corsEnabled: false, stream: true } },
-]);
+// HACK!! TODO: FIXME (Electron lifecycle requires this before app.ready, and called only once!)
+// see src/main/streamer/streamerNoHttp.ts
+// protocol.registerSchemesAsPrivileged([
+//     { scheme: OPDS_MEDIA_SCHEME, privileges: { bypassCSP: true, corsEnabled: false, stream: true } },
+// ]);
 
 export function getOpdsRequestMediaCustomProtocolEventChannel() {
 
