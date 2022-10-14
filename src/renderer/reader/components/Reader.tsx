@@ -91,6 +91,12 @@ import optionsValues, {
 import PickerManager from "./picker/PickerManager";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
+interface IWindowHistory extends History {
+    _readerInstance: Reader | undefined;
+    _length: number | undefined;
+}
+const windowHistory = window.history as IWindowHistory;
+
 // see r2-navigator-js src/electron/renderer/location.ts
 ipcRenderer.on(R2_EVENT_LINK, (event: Electron.IpcRendererEvent, payload: IEventPayload_R2_EVENT_LINK) => {
     console.log("R2_EVENT_LINK (ipcRenderer.on READER.TSX)");
@@ -101,8 +107,8 @@ ipcRenderer.on(R2_EVENT_LINK, (event: Electron.IpcRendererEvent, payload: IEvent
 });
 
 const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false) => {
-    if (!(window.history as any)._length) {
-        (window.history as any)._length = 0;
+    if (!windowHistory._length) {
+        windowHistory._length = 0;
     }
 
     if (!isFromOnPopState) {
@@ -125,16 +131,16 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
         } catch (ex) {
             console.log(ex);
         }
-        console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(url_), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, (window.history as any)._length);
+        // console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(url_), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, windowHistory._length);
 
         if (window.history.state?.data === url_) {
-            window.history.replaceState({data: url_, index: (window.history as any)._length - 1}, "");
+            window.history.replaceState({data: url_, index: windowHistory._length - 1}, "");
         } else {
-            (window.history as any)._length++;
-            window.history.pushState({data: url_, index: (window.history as any)._length - 1}, "");
+            windowHistory._length++;
+            window.history.pushState({data: url_, index: windowHistory._length - 1}, "");
         }
-        if ((window.history as any)._readerInstance) {
-            ((window.history as any)._readerInstance as Reader).setState({historyCanGoForward: false, historyCanGoBack: (window.history as any)._length > 1});
+        if (windowHistory._readerInstance) {
+            windowHistory._readerInstance.setState({historyCanGoForward: false, historyCanGoBack: windowHistory._length > 1});
         }
     }
 };
@@ -332,7 +338,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
-        (window.history as any)._readerInstance = this;
+        windowHistory._readerInstance = this;
 
         const handleMouseKeyboard = (isKey: boolean) => {
 
@@ -911,21 +917,21 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
 
-        if (!(window.history as any)._length) {
-            (window.history as any)._length = 0;
+        if (!windowHistory._length) {
+            windowHistory._length = 0;
         }
 
         if (!isFromOnPopState) {
-            console.log("#+$%".repeat(5)  + " goToLocator history pushState()", JSON.stringify(locator), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, (window.history as any)._length);
+            // console.log("#+$%".repeat(5)  + " goToLocator history pushState()", JSON.stringify(locator), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, windowHistory._length);
             if (window.history.state && r.equals(locator, window.history.state.data)) {
-                window.history.replaceState({data: locator, index: (window.history as any)._length - 1}, "");
+                window.history.replaceState({data: locator, index: windowHistory._length - 1}, "");
             } else {
-                (window.history as any)._length++;
-                window.history.pushState({data: locator, index: (window.history as any)._length - 1}, "");
+                windowHistory._length++;
+                window.history.pushState({data: locator, index: windowHistory._length - 1}, "");
             }
 
-            // (window.history as any)._readerInstance === this
-            this.setState({historyCanGoForward: false, historyCanGoBack: (window.history as any)._length > 1});
+            // windowHistory._readerInstance === this
+            this.setState({historyCanGoForward: false, historyCanGoBack: windowHistory._length > 1});
         }
         r2HandleLinkLocator(locator);
     };
@@ -1406,9 +1412,9 @@ class Reader extends React.Component<IProps, IState> {
         // popState.stopPropagation();
         // popState.stopImmediatePropagation();
 
-        console.log("#+$%".repeat(5)  + " window EVENT 'popstate'", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), JSON.stringify(popState.state), window.history.length, (window.history as any)._length);
+        // console.log("#+$%".repeat(5)  + " window EVENT 'popstate'", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), JSON.stringify(popState.state), window.history.length, windowHistory._length);
 
-        // (window.history as any)._readerInstance === this
+        // windowHistory._readerInstance === this
 
         if (popState.state?.data) {
             if (typeof popState.state.data === "object") {
@@ -1416,7 +1422,7 @@ class Reader extends React.Component<IProps, IState> {
             } else if (typeof popState.state.data === "string") {
                 this.handleLinkClick(undefined, popState.state.data, true, true);
             }
-            this.setState({historyCanGoForward: (window.history as any)._length > 1 && popState.state.index < (window.history as any)._length - 1, historyCanGoBack: (window.history as any)._length > 1 && popState.state.index > 0});
+            this.setState({historyCanGoForward: windowHistory._length > 1 && popState.state.index < windowHistory._length - 1, historyCanGoBack: windowHistory._length > 1 && popState.state.index > 0});
         } else {
             this.setState({historyCanGoForward: false, historyCanGoBack: false});
         }
@@ -1871,10 +1877,10 @@ class Reader extends React.Component<IProps, IState> {
                 computeReadiumCssJsonMessage(this.props.readerConfig),
             );
 
-            (window.history as any)._length = 1;
-            console.log("#+$%".repeat(5)  + " installNavigatorDOM => window history replaceState() ...", JSON.stringify(locator), JSON.stringify(window.history.state), window.history.length, (window.history as any)._length, JSON.stringify(document.location), JSON.stringify(window.location));
+            windowHistory._length = 1;
+            // console.log("#+$%".repeat(5)  + " installNavigatorDOM => window history replaceState() ...", JSON.stringify(locator), JSON.stringify(window.history.state), window.history.length, windowHistory._length, JSON.stringify(document.location), JSON.stringify(window.location));
             // does not trigger onPopState!
-            window.history.replaceState(locator ? {data: locator, index: (window.history as any)._length - 1} : null, "");
+            window.history.replaceState(locator ? {data: locator, index: windowHistory._length - 1} : null, "");
         }
     }
 
@@ -1938,10 +1944,10 @@ class Reader extends React.Component<IProps, IState> {
 
         if (loc?.locator?.href && window.history.length === 1 && !window.history.state) {
 
-            console.log("#+$%".repeat(5)  + " handleReadingLocationChange (INIT history state) => window history replaceState() ...", JSON.stringify(loc.locator), JSON.stringify(window.history.state), window.history.length, (window.history as any)._length, JSON.stringify(document.location), JSON.stringify(window.location));
-            (window.history as any)._length = 1;
+            // console.log("#+$%".repeat(5)  + " handleReadingLocationChange (INIT history state) => window history replaceState() ...", JSON.stringify(loc.locator), JSON.stringify(window.history.state), window.history.length, windowHistory._length, JSON.stringify(document.location), JSON.stringify(window.location));
+            windowHistory._length = 1;
             // does not trigger onPopState!
-            window.history.replaceState({data: loc.locator, index: (window.history as any)._length - 1}, "");
+            window.history.replaceState({data: loc.locator, index: windowHistory._length - 1}, "");
         }
 
         // No need to explicitly refresh the bookmarks status here,

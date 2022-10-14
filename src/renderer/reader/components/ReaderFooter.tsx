@@ -131,7 +131,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 className={this.props.historyCanGoBack ? undefined : stylesReader.disabled}
                                 onClick={() => {
 
-                                    console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+                                    // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
                                     window.history.back();
                                     // window.history.go(-1);
 
@@ -144,7 +144,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 className={this.props.historyCanGoForward ? undefined : stylesReader.disabled}
                                 onClick={() => {
 
-                                    console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+                                    // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
                                     window.history.forward();
                                     // window.history.go(1);
 
