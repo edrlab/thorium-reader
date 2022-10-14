@@ -118,7 +118,7 @@ export class OpdsService {
 
                     const data = this.parseWwwAuthenticate(wwwAuthenticate);
                     if (!data.type) {
-                        result.title = "Unauthorized (bad WWWAuthenticate type)";
+                        result.title = `Unauthorized (unsupported WWWAuthenticate type '${wwwAuthenticate?.trim().split(" ")[0]}')`;
                         return result;
                     }
 
