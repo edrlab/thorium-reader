@@ -82,6 +82,9 @@ export const digestAuthentication = ({
     const ha1 = algorithm === "MD5-sess" ? createHash("md5").update(`${ha1MD5}:${nonce}:${cnonce}`).digest("hex") : ha1MD5;
     const ha2 = createHash("md5").update(qop === "auth-int" ? "" : `${method}:${uri}`).digest("hex"); // qop === "auth-int" not supported what is entityBody?
     const response = createHash("md5").update((qop === "auth" || qop === "auth-int") ? `${ha1}:${nonce}:${nonceCount}:${cnonce}:${qop}:${ha2}` : `${ha1}:${nonce}:${ha2}`).digest("hex");
+    // Note: qop, algorithm and nc are "unquoted strings", see https://httpwg.org/specs/rfc7616.html#rfc.section.3.4
+    //  For historical reasons, a sender MUST only generate the quoted string syntax values for the following parameters: realm, domain, nonce, opaque, and qop.
+    //  For historical reasons, a sender MUST NOT generate the quoted string syntax values for the following parameters: stale and algorithm.
     const accessToken = `username="${username}", realm="${realm}", nonce="${nonce}", qop=${qop}, algorithm=${algorithm}, response="${response}", uri="${uri}", nc=${nonceCount}, cnonce="${cnonce}"`;
     // TODO: username="" is a quoted string with lexical constraints (forbidden characters that would need to be escaped).
     // username*="" could be used instead (userhash=true?).
