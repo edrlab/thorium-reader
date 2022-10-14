@@ -278,6 +278,8 @@
             "goToError": "This page break does not exist",
             "goToPlaceHolder": "Enter a page number",
             "goToTitle": "Go to page",
+            "historyNext": "Jump forward",
+            "historyPrevious": "Jump back",
             "infoTitle": "information",
             "magnifyingGlassButton": "search in publication",
             "openTableOfContentsTitle": "navigation",

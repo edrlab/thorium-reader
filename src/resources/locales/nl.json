@@ -278,6 +278,8 @@
             "goToError": "Deze paginaovergang bestaat niet",
             "goToPlaceHolder": "Voer een paginanummer in",
             "goToTitle": "Ga naar pagina",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "informatie",
             "magnifyingGlassButton": "Zoek in publicatie",
             "openTableOfContentsTitle": "navigatie",

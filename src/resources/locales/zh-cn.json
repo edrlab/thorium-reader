@@ -278,6 +278,8 @@
             "goToError": "此页不存在",
             "goToPlaceHolder": "输入页码",
             "goToTitle": "转到页",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "信息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "导航",

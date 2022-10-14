@@ -278,6 +278,8 @@
             "goToError": "Diese Seite existiert nicht",
             "goToPlaceHolder": "Gehe zur Seite",
             "goToTitle": "Gehe zur Seite",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "Informationen",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navigation",

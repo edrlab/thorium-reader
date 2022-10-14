@@ -173,6 +173,19 @@ const _defaults_ = Object.freeze({
         key: "KeyW",
     }),
 
+    NavigatePreviousHistory: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Backspace",
+    }),
+    NavigateNextHistory: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "Backspace",
+    }),
+
     NavigatePreviousPage: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: false,

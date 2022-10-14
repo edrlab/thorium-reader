@@ -507,15 +507,15 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         tabIndex={0}
                         onClick={(e) => {
                             const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            this.handleBookmarkClick(e, bookmark.locator, closeNavPanel);
+                            this.goToLocator(e, bookmark.locator, closeNavPanel);
                         }}
-                        onDoubleClick={(e) => this.handleBookmarkClick(e, bookmark.locator, false)}
+                        onDoubleClick={(e) => this.goToLocator(e, bookmark.locator, false)}
                         onKeyPress=
                         {
                             (e) => {
                                 if (e.key === "Enter" || e.key === "Space") {
                                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                    this.handleBookmarkClick(e, bookmark.locator, closeNavPanel);
+                                    this.goToLocator(e, bookmark.locator, closeNavPanel);
                                 }
                             }
                         }
@@ -771,7 +771,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     href: (page || pageNbr).toString(),
                     // progression generate in divina pagechange event
                 };
-                this.props.handleBookmarkClick(loc as any, closeNavPanel);
+                this.props.goToLocator(loc as any, closeNavPanel);
 
                 return;
             }
@@ -792,9 +792,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
     }
 
-    private handleBookmarkClick(e: TKeyboardEventButton | TMouseEventOnButton, locator: Locator, closeNavPanel = true) {
+    private goToLocator(e: TKeyboardEventButton | TMouseEventOnButton, locator: Locator, closeNavPanel = true) {
         e.preventDefault();
-        this.props.handleBookmarkClick(locator, closeNavPanel);
+        this.props.goToLocator(locator, closeNavPanel);
     }
 }
 

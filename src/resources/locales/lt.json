@@ -278,6 +278,8 @@
             "goToError": "Toks puslapių skirtukas neegzistuoja",
             "goToPlaceHolder": "Įveskite puslapio numerį",
             "goToTitle": "Eiti į puslapį",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "informacija",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "naršymas",

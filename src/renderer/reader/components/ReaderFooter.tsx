@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
+import * as ForwardIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
+
 import classNames from "classnames";
 import * as React from "react";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
@@ -45,6 +48,8 @@ interface IBaseProps extends TranslatorProps {
     gotoBegin: () => void;
     gotoEnd: () => void;
     fullscreen: boolean;
+    historyCanGoBack: boolean;
+    historyCanGoForward: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
     goToLocator: (locator: R2Locator) => void;
@@ -121,6 +126,35 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         this.navLeftOrRightThrottled(false);
                     }
                 }}>
+                {!this.props.fullscreen && <div className={stylesReader.history}>
+                            <button
+                                className={this.props.historyCanGoBack ? undefined : stylesReader.disabled}
+                                onClick={() => {
+
+                                    // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+                                    window.history.back();
+                                    // window.history.go(-1);
+
+                                }}
+                                title={__("reader.navigation.historyPrevious")}
+                            >
+                                <SVG ariaHidden={true} svg={BackIcon} />
+                            </button>
+                            <button
+                                className={this.props.historyCanGoForward ? undefined : stylesReader.disabled}
+                                onClick={() => {
+
+                                    // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+                                    window.history.forward();
+                                    // window.history.go(1);
+
+                                }}
+                                title={__("reader.navigation.historyNext")}
+                            >
+                                <SVG ariaHidden={true} svg={ForwardIcon} />
+                            </button>
+                        </div>
+                }
                 {!isAudioBook &&
                     <div className={stylesReader.arrows}>
                         <button onClick={(ev) => {

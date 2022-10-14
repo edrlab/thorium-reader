@@ -278,6 +278,8 @@
             "goToError": "페이지 구분이 존재하지 않습니다.",
             "goToPlaceHolder": "페이지 번호를 입력하세요.",
             "goToTitle": "페이지로 이동",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "정보",
             "magnifyingGlassButton": "도서내용으로 검색",
             "openTableOfContentsTitle": "네비게이션",

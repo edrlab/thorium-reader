@@ -10,8 +10,9 @@ import * as debug_ from "debug";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
+// import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/outline-exit_to_app-24px.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/baseline-pause-24px.svg";
 import * as PlayIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg";
@@ -272,6 +273,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <li className={classNames(stylesReader.showInFullScreen)}>
                             <button
                                 className={stylesReader.menu_button}
+                                style={{transform:"rotate(-90deg)"}}
                                 onClick={this.props.handleReaderClose}
                                 title={__("reader.navigation.backHomeTitle")}
                             >
@@ -574,11 +576,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </li>
                                     : <></>)
                         }
+                    </ul>
+
+                    <ul className={stylesReader.menu_option}>
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "rgb(193, 193, 193)" } })}
                         >
                             <HeaderSearch shortcutEnable={this.props.shortcutEnable}></HeaderSearch>
                         </li>
+
                         <li
                             {...(this.props.isOnBookmark &&
                                 { style: { backgroundColor: "rgb(193, 193, 193)" } })}
