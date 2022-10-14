@@ -92,9 +92,9 @@ export function getShutdownEventChannel() {
 
 }
 
-export const ODPS_AUTH_SCHEME = "opds";
+export const OPDS_AUTH_SCHEME = "opds";
 
-interface TregisterHttpProtocolHandler {
+export interface TregisterHttpProtocolHandler {
     request: Electron.ProtocolRequest;
     callback: (response: Electron.ProtocolResponse) => void;
 }
@@ -107,10 +107,39 @@ export function getOpdsRequestCustomProtocolEventChannel() {
                 request: Electron.ProtocolRequest,
                 callback: (response: Electron.ProtocolResponse) => void,
             ) => emit({ request, callback });
-            protocol.registerHttpProtocol(ODPS_AUTH_SCHEME, handler);
+            protocol.registerHttpProtocol(OPDS_AUTH_SCHEME, handler);
 
             return () => {
-                protocol.unregisterProtocol(ODPS_AUTH_SCHEME);
+                protocol.unregisterProtocol(OPDS_AUTH_SCHEME);
+            };
+        },
+    );
+
+    return channel;
+}
+
+export const OPDS_MEDIA_SCHEME = "opds-media";
+
+// HACK!! TODO: FIXME (Electron lifecycle requires this before app.ready, and called only once!)
+// see src/main/streamer/streamerNoHttp.ts
+// protocol.registerSchemesAsPrivileged([
+//     { scheme: OPDS_MEDIA_SCHEME, privileges: { bypassCSP: true, corsEnabled: false, stream: true } },
+// ]);
+
+export function getOpdsRequestMediaCustomProtocolEventChannel() {
+
+    const channel = eventChannel<TregisterHttpProtocolHandler>(
+        (emit) => {
+            const handler = (
+                request: Electron.ProtocolRequest,
+                callback: (response: Electron.ProtocolResponse) => void,
+            ) => {
+                emit({ request, callback });
+            };
+            protocol.registerStreamProtocol(OPDS_MEDIA_SCHEME, handler);
+
+            return () => {
+                protocol.unregisterProtocol(OPDS_MEDIA_SCHEME);
             };
         },
     );

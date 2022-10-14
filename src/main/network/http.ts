@@ -21,6 +21,7 @@ import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
+import { digestAuthentication, parseDigestString} from "readium-desktop/utils/digest";
 
 // Logger
 const filename_ = "readium-desktop:main/http";
@@ -64,6 +65,7 @@ export interface IOpdsAuthenticationToken {
     accessToken?: string;
     refreshToken?: string;
     tokenType?: string;
+    password?: string; // digest only
 }
 
 let authenticationTokenInitialized = false;
@@ -135,12 +137,23 @@ export const absorbDBToJson = async () => {
 };
 
 export const getAuthenticationToken =
-    async (host: string) => {
+    async (url: URL, method = "GET") => {
 
         await authenticationTokenInit();
 
-        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-        return authenticationToken[id];
+        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(url.host);
+        const auth = authenticationToken[id];
+        if (auth?.accessToken?.includes("nonce=") && auth?.accessToken?.includes("uri=")) {
+
+            const data = parseDigestString(auth.accessToken);
+            auth.accessToken = digestAuthentication({
+                ...data,
+                uri: new URL(url).pathname,
+                password: auth.password,
+                method: method.toUpperCase(),
+            });
+        }
+        return auth;
     };
 
 export const deleteAuthenticationToken = async (host: string) => {
@@ -473,9 +486,8 @@ export const httpGetWithAuth =
                 // specific to 'librarySimplified' server implementation
 
                 const url = _url instanceof URL ? _url : new URL(_url);
-                const { host } = url;
 
-                const auth = await getAuthenticationToken(host);
+                const auth = await getAuthenticationToken(url, options.method.toUpperCase());
 
                 if (
                     typeof auth === "object"
@@ -525,6 +537,18 @@ const httpGetUnauthorized =
                 enableRefresh ? undefined : _callback,
                 ..._arg,
             );
+
+            // HTTP status code Bad Request?
+            // this works, but may be a flase flag with some auth servers, so better do nothing
+            // if (response.statusCode === 400) {
+            //     // Most likely because of a incorrect Authorization header => server rejects (e.g. Basic vs. Digest switch in Calibre OPDS server)
+            //     await deleteAuthenticationToken(url.host);
+            //     (options.headers as Headers).delete("Authorization");
+            //     const responseWithoutAuth = await httpGetWithAuth(
+            //         false,
+            //     )(url, options, _callback, ..._arg);
+            //     return responseWithoutAuth || response;
+            // }
 
             if (enableRefresh) {
                 if (response.statusCode === 401) {
