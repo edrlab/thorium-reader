@@ -233,6 +233,8 @@ class Reader extends React.Component<IProps, IState> {
 
         this.ttsOverlayEnableNeedsSync = true;
 
+        this.onKeyboardHistoryNavigationPrevious = this.onKeyboardHistoryNavigationPrevious.bind(this);
+        this.onKeyboardHistoryNavigationNext = this.onKeyboardHistoryNavigationNext.bind(this);
         this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
         this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
         this.onKeyboardSpineNavigationPrevious = this.onKeyboardSpineNavigationPrevious.bind(this);
@@ -761,6 +763,15 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigatePreviousHistory,
+            this.onKeyboardHistoryNavigationPrevious);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.NavigateNextHistory,
+            this.onKeyboardHistoryNavigationNext);
+
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
             this.props.keyboardShortcuts.NavigatePreviousPage,
             this.onKeyboardPageNavigationPrevious);
         registerKeyboardListener(
@@ -891,6 +902,8 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardHistoryNavigationPrevious);
+        unregisterKeyboardListener(this.onKeyboardHistoryNavigationNext);
         unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
         unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
         unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
@@ -1303,6 +1316,17 @@ class Reader extends React.Component<IProps, IState> {
         if (this.refToolbar?.current) {
             this.refToolbar.current.focus();
         }
+    };
+
+    private onKeyboardHistoryNavigationNext = () => {
+        // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+        window.history.forward();
+        // window.history.go(1);
+    };
+    private onKeyboardHistoryNavigationPrevious = () => {
+        // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+        window.history.back();
+        // window.history.go(-1);
     };
 
     private onKeyboardPageNavigationNext = () => {
