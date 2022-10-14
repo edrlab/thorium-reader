@@ -34,6 +34,8 @@ import * as xmldom from "@xmldom/xmldom";
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
+import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
+import { IDigestDataParsed, parseDigestString } from "readium-desktop/utils/digest";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/opds");
@@ -42,6 +44,7 @@ const SEARCH_TERM = "{searchTerms}";
 
 const findLink = (ln: IOpdsLinkView[], type: string) => ln && ln.find((link) =>
     link.type?.includes(type));
+
 
 @injectable()
 export class OpdsService {
@@ -65,6 +68,14 @@ export class OpdsService {
 
     @inject(diSymbolTable["opds-feed-view-converter"])
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
+
+    private parseWwwAuthenticate(wwwAuthenticate: string): IDigestDataParsed & {type: "digest" | "basic" | undefined} {
+        const [type, ...data] = wwwAuthenticate.trim().split(" ");
+        return {
+            type: type === "Digest" ? "digest" : type === "Basic" ? "basic" : undefined,
+            ...parseDigestString(data.join(" ")),
+        };
+    }
 
     public async opdsRequestTransformer(httpGetData: IHttpGetResult<IOpdsResultView>): Promise<IOpdsResultView | undefined> {
 
@@ -98,14 +109,20 @@ export class OpdsService {
         {
             const wwwAuthenticate = httpGetData.response.headers.get("WWW-Authenticate");
             if (wwwAuthenticate) {
-                const realm = this.getRealmInWwwAuthenticateInHeader(wwwAuthenticate);
-                if (realm) {
-                    this.sendWwwAuthenticationToAuthenticationProcess(realm, responseUrl);
-
+                const isValid = this.wwwAuthenticateIsValid(wwwAuthenticate);
+                if (isValid) {
                     const result: IOpdsResultView = {
                         title: "Unauthorized",
                         publications: [],
                     }; // need to refresh the page
+
+                    const data = this.parseWwwAuthenticate(wwwAuthenticate);
+                    if (!data.type) {
+                        result.title = `Unauthorized (unsupported WWWAuthenticate type '${wwwAuthenticate?.trim().split(" ")[0]}')`;
+                        return result;
+                    }
+
+                    this.sendWwwAuthenticationToAuthenticationProcess(data, responseUrl);
                     return result;
                 }
             }
@@ -162,7 +179,7 @@ export class OpdsService {
     }
 
     private sendWwwAuthenticationToAuthenticationProcess(
-        _realm: string,
+        data: IDigestDataParsed & {type: "digest" | "basic"},
         responseUrl: string,
     ) {
 
@@ -173,44 +190,25 @@ export class OpdsService {
 
         const opdsAuth = new OPDSAuthentication();
 
-        opdsAuth.Type = "http://opds-spec.org/auth/basic";
+        opdsAuth.Type = "http://opds-spec.org/auth/" + data.type;
+        opdsAuth.AdditionalJSON = {...data};
         opdsAuth.Labels = new OPDSAuthenticationLabels();
         opdsAuth.Labels.Login = "LOGIN";
         opdsAuth.Labels.Password = "PASSWORD";
+
+        const opdsLink = new OPDSLink();
+        opdsLink.Rel = ["authenticate"];
+        opdsLink.Href = responseUrl;
+
+        opdsAuth.Links = [opdsLink];
 
         opdsAuthDoc.Authentication = [opdsAuth];
 
         this.dispatchAuthenticationProcess(opdsAuthDoc, responseUrl);
     }
 
-    private getRealmInWwwAuthenticateInHeader(
-        wwwAuthenticate: string | undefined,
-    ) {
-        if (typeof wwwAuthenticate === "string") {
-
-            debug("wwwAuthenticate", wwwAuthenticate);
-            const [type] = wwwAuthenticate.trim().split(" ");
-
-            debug("type", type);
-
-            if (type === "Basic") {
-                const data = wwwAuthenticate.slice("Basic ".length);
-                const dataSplit = data.split(",");
-                const dataRealm = dataSplit.find((v) => v.trim().startsWith("realm")).trim();
-                if (dataRealm) {
-                    const [, ...value] = dataRealm.split("\"");
-                    const realm = (value || []).join();
-                    debug("realm", realm);
-                    return realm || "Login";
-                }
-
-            } else {
-
-                debug("not a Basic authentication in WWW-authenticate");
-            }
-        }
-
-        return undefined;
+    private wwwAuthenticateIsValid(wwwAuthenticate: string) {
+        return (wwwAuthenticate.trim().startsWith("Basic") || wwwAuthenticate.trim().startsWith("Digest"));
     }
 
     private dispatchAuthenticationProcess(r2OpdsAuth: OPDSAuthenticationDoc, responseUrl: string) {

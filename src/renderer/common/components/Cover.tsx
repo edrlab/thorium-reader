@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import "reflect-metadata";
-
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
@@ -36,10 +36,40 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-class Cover extends React.Component<IProps, undefined> {
+interface IState {
+    url: string,
+    imgErroredOnce: boolean,
+}
+
+class Cover extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.state = {
+            url: "",
+            imgErroredOnce: false,
+        };
+
+        this.imageOnError = this.imageOnError.bind(this);
+    }
+
+    public componentDidMount(): void {
+
+        const { cover } = this.props.publicationViewMaybeOpds;
+        if (cover) {
+            const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
+            const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
+
+            let defaultUrl: string;
+            if (this.props.coverType === "cover") {
+                defaultUrl = coverUrl || thumbnailUrl;
+            } else {
+                defaultUrl = thumbnailUrl || coverUrl;
+            }
+
+            this.setState({url: defaultUrl});
+        }
     }
 
     public render()  {
@@ -76,16 +106,6 @@ class Cover extends React.Component<IProps, undefined> {
                 </div>
             );
         } else {
-            const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
-            const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
-
-            let defaultUrl: string;
-            if (this.props.coverType === "cover") {
-                defaultUrl = coverUrl || thumbnailUrl;
-            } else {
-                defaultUrl = thumbnailUrl || coverUrl;
-            }
-
             return (
                 <img
                     tabIndex={this.props.onKeyPress ? 0 : -1}
@@ -95,10 +115,20 @@ class Cover extends React.Component<IProps, undefined> {
                     role="presentation"
                     alt={this.props.onKeyPress ? this.props.__("publication.cover.img") : ""}
                     aria-hidden={this.props.onKeyPress ? undefined : true}
-                    src={defaultUrl}
+                    src={this.state.url}
+                    onError={this.imageOnError}
                 />
             );
         }
+    }
+
+    private imageOnError() {
+
+        if (this.state.imgErroredOnce) return;
+
+        const b64 = Buffer.from(this.state.url).toString("base64");
+        const url = "opds-media://0.0.0.0/" + encodeURIComponent_RFC3986(b64);
+        this.setState({url, imgErroredOnce: true});
     }
 }
 

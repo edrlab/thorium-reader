@@ -44,6 +44,7 @@ import {
     computeReadiumCssJsonMessageInStreamer, MATHJAX_FILE_PATH, MATHJAX_URL_PATH,
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
+import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -1097,7 +1098,22 @@ export function initSessions() {
 
     Transformers.instance().add(new TransformerHTML(transformerIFrames));
 
-    protocol.registerSchemesAsPrivileged([{
+    protocol.registerSchemesAsPrivileged([
+        // HACK!! TODO: FIXME (Electron lifecycle requires this before app.ready, and called only once!)
+        // see src/main/redux/sagas/getEventChannel.ts
+    {
+        privileges: {
+            allowServiceWorkers: false, // Default false
+            bypassCSP: true, // Default false
+            corsEnabled: false, // Default false
+            secure: true, // Default false
+            standard: false, // Default false
+            stream: true, // Default false
+            supportFetchAPI: false, // Default false
+        },
+        scheme: OPDS_MEDIA_SCHEME,
+    },
+    {
         privileges: {
             allowServiceWorkers: false,
             bypassCSP: false,
