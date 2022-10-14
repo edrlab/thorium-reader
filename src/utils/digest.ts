@@ -83,6 +83,14 @@ export const digestAuthentication = ({
     const ha2 = createHash("md5").update(qop === "auth-int" ? "" : `${method}:${uri}`).digest("hex"); // qop === "auth-int" not supported what is entityBody?
     const response = createHash("md5").update((qop === "auth" || qop === "auth-int") ? `${ha1}:${nonce}:${nonceCount}:${cnonce}:${qop}:${ha2}` : `${ha1}:${nonce}:${ha2}`).digest("hex");
     const accessToken = `username="${username}", realm="${realm}", nonce="${nonce}", qop=${qop}, algorithm=${algorithm}, response="${response}", uri="${uri}", nc=${nonceCount}, cnonce="${cnonce}"`;
-
+    // TODO: username="" is a quoted string with lexical constraints (forbidden characters that would need to be escaped).
+    // username*="" could be used instead (userhash=true?).
+    // Let's mark this as a known caveat in this implementation, which currently meets the real-world need of Calibre OPDS server (basic and digest auth both supported)
+    // General references:
+    //  https://httpwg.org/specs/rfc7616.html#rfc.section.3.4
+    //  https://httpwg.org/specs/rfc7616.html#rfc.section.3.4.4
+    // Calibre specifics:
+    //  https://www.rfc-editor.org/rfc/rfc2617
+    //  https://github.com/kovidgoyal/calibre/blob/eb78a761a99ac20a6364f85e12059fec6517d890/src/calibre/srv/auth.py
     return accessToken;
 };
