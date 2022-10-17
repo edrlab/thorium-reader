@@ -1,7 +1,7 @@
 /*
 =-=-= partials/focus.css => './mixins.css'
 */
-@import './mixins.css';
+@import url('./mixins.css');
 
 /*
 =-=-= partials/focus.css

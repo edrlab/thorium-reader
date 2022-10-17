@@ -1,14 +1,14 @@
 /*
 =-=-= components/inputs.css => '../partials/mixins.css'
 */
-@import '../partials/mixins.css';
+@import url('../partials/mixins.css');
 
 /*
 =-=-= components/inputs.css => '../partials/variables.css'
 */
 
 /*
-@import '../partials/variables.css';
+@import url('../partials/variables.css');
 */
 
 /*
