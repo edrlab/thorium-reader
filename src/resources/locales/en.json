@@ -233,19 +233,26 @@
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
+        "moreInfo": "Book details",
         "title": "Title",
         "userKeyCheckInvalid": "Passphrase is incorrect",
         "accessibility": {
             "name": "Accessibility",
             "moreInformation": "More information",
             "accessModeSufficient": {
-                "textual": "TTS & Screen reader friendly",
+                "textual": "TTS & Screen reader friendly"
+            },
+            "accessibilityFeature": {
                 "displayTransformability": "Adaptable text and layout",
                 "synchronizedAudioText": "Text & audio synchronised",
                 "printPageNumbers": "Printed book pagination reference",
-                "longDescription": "Fully described graphical ressources"
+                "longDescription": "Fully described graphical ressources",
+                "tableOfContents": "Contains a Table Of Contents",
+                "readingOrder": "Contains a reading order",
+                "alternativeText": "Contains alternative text"
             },
             "accessibilityHazard": {
+                "name": "Hazard:",
                 "flashing": "Flashing",
                 "motion": "Motion",
                 "simulation": "Simulation",

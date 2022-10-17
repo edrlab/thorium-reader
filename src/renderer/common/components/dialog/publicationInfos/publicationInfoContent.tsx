@@ -28,6 +28,7 @@ import { FormatPublisherDate } from "./formatPublisherDate";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import PublicationInfoA11y from "./publicationInfoA11y";
 
 export interface IProps {
     publication: TPublication;
@@ -375,7 +376,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                     </section>
                     <section>
                         <div className={stylesGlobal.heading}>
-                            <h3>{__("catalog.moreInfo")}</h3>
+                            <h3>{__("publication.moreInfo")}</h3>
                         </div>
                         <div>
                             <FormatPublisherDate publication={publication} __={__} />
@@ -427,6 +428,14 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
                                     </> : undefined
                             }
+                        </div>
+                    </section>
+                    <section>
+                        <div className={stylesGlobal.heading}>
+                            <h3>{__("publication.accessibility.name")}</h3>
+                        </div>
+                        <div>
+                            <PublicationInfoA11y publication={publication}></PublicationInfoA11y>
                         </div>
                     </section>
                     {(publication.lcp ? <section>
