@@ -1,17 +1,17 @@
 /*
 =-=-= reader-app.css => './focus-mixin.css'
 */
-@import './focus-mixin.css';
+@import url('./focus-mixin.css');
 
 /*
 =-=-= reader-app.css => './focus.css'
 */
-@import './focus.css';
+@import url('./focus.css');
 
 /*
 =-=-= reader-app.css => './variable.css'
 */
-@import './variable.css';
+@import url('./variable.css');
 
 /*
 =-=-= reader-app.css
