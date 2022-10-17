@@ -38,12 +38,18 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
         super(props);
 
         this.remove = this.remove.bind(this);
+
+        this.yesButtonRef = React.createRef();
     }
+
+    private yesButtonRef: React.RefObject<HTMLButtonElement>;
 
     public render(): React.ReactElement<{}> {
         if (!this.props.open || !this.props.publicationView) {
             return <></>;
         }
+
+        setTimeout(() => this.yesButtonRef.current.focus(), 0);
 
         const { __, closeDialog } = this.props;
         return (
@@ -61,7 +67,7 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
                     <button className={stylesButtons.button_primary} onClick={closeDialog}>
                         {this.props.__("dialog.no")}
                     </button>
-                    <button className={stylesButtons.button_primary} onClick={this.remove}>
+                    <button className={stylesButtons.button_primary} onClick={this.remove} ref={this.yesButtonRef}>
                         {this.props.__("dialog.yes")}
                     </button>
                 </div>
