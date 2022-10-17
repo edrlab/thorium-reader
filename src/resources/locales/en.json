@@ -72,7 +72,6 @@
         "format": "Format",
         "lang": "Language",
         "lastRead": "Last Read",
-        "moreInfo": "More Info",
         "myBooks": "My books",
         "noPublicationHelpL1": "Drop a publication here",
         "noPublicationHelpL2": "or use the \"+\" button above.",
@@ -235,7 +234,31 @@
         "seeLess": "See less",
         "seeMore": "See more",
         "title": "Title",
-        "userKeyCheckInvalid": "Passphrase is incorrect"
+        "userKeyCheckInvalid": "Passphrase is incorrect",
+        "accessibility": {
+            "name": "Accessibility",
+            "moreInformation": "More information",
+            "accessModeSufficient": {
+                "textual": "TTS & Screen reader friendly",
+                "displayTransformability": "Adaptable text and layout",
+                "synchronizedAudioText": "Text & audio synchronised",
+                "printPageNumbers": "Printed book pagination reference",
+                "longDescription": "Fully described graphical ressources"
+            },
+            "accessibilityHazard": {
+                "flashing": "Flashing",
+                "motion": "Motion",
+                "simulation": "Simulation",
+                "sound": "Sound",
+                "noFlashing": "No flashing",
+                "noMotion": "No motion",
+                "noSimulation": "No simulation",
+                "noSound": "No sound",
+                "none": "None",
+                "unknown": "Unknown"
+            },
+            "noA11y": "No accessibility information available"
+        }
     },
     "reader": {
         "divina": {

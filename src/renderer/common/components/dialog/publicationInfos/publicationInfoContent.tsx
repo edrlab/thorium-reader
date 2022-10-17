@@ -369,12 +369,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             onClickLinkCb={onClikLinkCb}
                         />
                     </section>
-                    <section>
-                        <div className={stylesGlobal.heading}>
-                            <h3>{__("catalog.tags")}</h3>
-                        </div>
-                        <TagManagerComponent />
-                    </section>
+
                     <section>
                         <PublicationInfoDescription publication={publication} __={__} translator={props.translator} />
                     </section>
@@ -437,6 +432,12 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                     {(publication.lcp ? <section>
                         <LcpInfo publicationLcp={publication} />
                     </section> : <></>)}
+                    <section>
+                        <div className={stylesGlobal.heading}>
+                            <h3>{__("catalog.tags")}</h3>
+                        </div>
+                        <TagManagerComponent />
+                    </section>
                     <Progression
                         __={__}
                         closeDialogCb={closeDialogCb}
