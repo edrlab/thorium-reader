@@ -8,7 +8,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
@@ -54,7 +54,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
             url: undefined,
         };
 
-        this.add = this.add.bind(this);
+        this.update = this.update.bind(this);
     }
 
     public componentDidMount() {
@@ -81,15 +81,15 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                     <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
                         <div className={stylesGlobal.w_50}>
                             <div className={stylesInputs.form_group}>
-                                <label>{__("opds.addForm.name")}</label>
+                                <label>{__("opds.updateForm.name")}</label>
                                 <input
                                     onChange={(e) => this.setState({
                                         name: e.target.value,
+                                        url: this.state.url || this.props.feed.url,
                                     })}
                                     type="text"
-                                    aria-label={__("opds.addForm.name")}
-                                    placeholder={__("opds.addForm.namePlaceholder")}
-                                    defaultValue={name}
+                                    aria-label={__("opds.updateForm.name")}
+                                    defaultValue={this.props.feed.title}
                                     ref={this.focusRef}
                                     onKeyPress={
                                         (e) =>
@@ -98,15 +98,15 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                                 />
                             </div>
                             <div className={stylesInputs.form_group}>
-                                <label>{__("opds.addForm.url")}</label>
+                                <label>{__("opds.updateForm.url")}</label>
                                 <input
                                     onChange={(e) => this.setState({
+                                        name: this.state.name || this.props.feed.title,
                                         url: e.target.value,
                                     })}
                                     type="text"
-                                    aria-label={__("opds.addForm.url")}
-                                    placeholder={__("opds.addForm.urlPlaceholder")}
-                                    defaultValue={url}
+                                    aria-label={__("opds.updateForm.url")}
+                                    defaultValue={this.props.feed.url}
                                     onKeyPress={
                                         (e) =>
                                             e.key === "Enter" && this.buttonRef?.current && this.buttonRef.current.click()
@@ -125,11 +125,11 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                         <button
                             disabled={!name || !url}
                             type="submit"
-                            onClick={this.add}
+                            onClick={this.update}
                             className={stylesButtons.button_primary}
                             ref={this.buttonRef}
                         >
-                            {__("opds.addForm.addButton")}
+                            {__("opds.updateForm.updateButton")}
                         </button>
                     </div>
                 </form>
@@ -137,10 +137,11 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
         );
     }
 
-    public add(e: TMouseEventOnInput) {
+    public update(e: TMouseEventOnInput) {
         e.preventDefault();
         const title = this.state.name;
         const url = this.state.url;
+        apiAction("opds/deleteFeed", this.props.feed.identifier);
         apiAction("opds/addFeed", { title, url }).catch((err) => {
             console.error("Error to fetch api opds/addFeed", err);
         });
@@ -161,6 +162,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     open: state.dialog.type === DialogTypeName.OpdsFeedUpdateForm,
+    feed: (state.dialog.data as DialogType[DialogTypeName.DeleteOpdsFeedConfirm]).feed,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsFeedUpdateForm));

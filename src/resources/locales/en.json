@@ -57,6 +57,7 @@
             "unsorted": "unsorted"
         },
         "delete": "Delete",
+        "update": "Update",
         "deleteBook": "Delete",
         "deleteTag": "Delete the tag",
         "description": "Description",
@@ -172,6 +173,14 @@
             "name": "Name:",
             "namePlaceholder": "Name",
             "title": "Add an OPDS feed",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
+        },
+        "updateForm": {
+            "updateButton": "Update",
+            "name": "Name:",
+            "namePlaceholder": "Name",
+            "title": "Update an OPDS feed",
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
