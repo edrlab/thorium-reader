@@ -100,6 +100,13 @@ class FeedList extends React.Component<IProps, IState> {
                                 >
                                     <SVG ariaHidden={true} svg={DeleteIcon} />
                                 </button>
+                                <button
+                                    onClick={(e) => this.updateFeed(e, item)}
+                                    className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_update)}
+                                    title={__("catalog.delete")}
+                                >
+                                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                                </button>
                             </li>
                         );
                     })}
@@ -114,6 +121,11 @@ class FeedList extends React.Component<IProps, IState> {
     private deleteFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
         event.preventDefault();
         this.props.openDeleteDialog(feed);
+    }
+    
+    private updateFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
+        event.preventDefault();
+        this.props.openUpdateDialog(feed);
     }
 
     private async loadFeeds() {
@@ -130,6 +142,13 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         openDeleteDialog: (feed: IOpdsFeedView) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.DeleteOpdsFeedConfirm,
+                {
+                    feed,
+                },
+            ));
+        },
+        openUpdateDialog: (feed: IOpdsFeedView) => {
+            dispatch(dialogActions.openRequest.build(DialogTypeName.OpdsFeedUpdateForm,
                 {
                     feed,
                 },

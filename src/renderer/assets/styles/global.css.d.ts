@@ -29,14 +29,6 @@ declare const styles: {
   readonly "heading_link": string;
   readonly "no_list_style": string;
   readonly "___DEBUG___GLOBAL_CSS": string;
-  readonly "___DEBUG___PARTIALS_VARIABLES_CSS": string;
-  readonly "___DEBUG___PARTIALS_MIXINS_CSS": string;
-  readonly "readium2ElectronAnimation_TARGET": string;
-  readonly "R2_CSS_CLASS__KEYBOARD_INTERACT": string;
-  readonly "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE": string;
-  readonly "body_element": string;
-  readonly "R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE": string;
-  readonly "___DEBUG___PARTIALS_FOCUS_CSS": string;
 };
 export = styles;
 

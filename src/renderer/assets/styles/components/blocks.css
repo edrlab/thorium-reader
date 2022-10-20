@@ -120,6 +120,25 @@
   }
 }
 
+.block_full_update {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  color: #fff;
+  fill: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0);
+  transition: all 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
 .block_dashed {
   border-radius: 1em;
   display: flex;

@@ -5,7 +5,6 @@ declare const styles: {
   readonly "readium2ElectronAnimation_TARGET": string;
   readonly "R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE": string;
   readonly "___DEBUG___FOCUS_CSS": string;
-  readonly "___DEBUG___FOCUS_MIXIN_CSS": string;
 };
 export = styles;
 
