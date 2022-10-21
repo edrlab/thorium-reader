@@ -103,6 +103,7 @@ declare namespace typed_i18n {
     readonly "unsorted": string
   },
   readonly "delete": string,
+  readonly "update": string,
   readonly "deleteBook": string,
   readonly "deleteTag": string,
   readonly "description": string,
@@ -170,6 +171,7 @@ declare namespace typed_i18n {
   (_: "catalog.column.descending", __?: {}): string;
   (_: "catalog.column.unsorted", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
+  (_: "catalog.update", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
@@ -381,6 +383,14 @@ declare namespace typed_i18n {
     readonly "url": string,
     readonly "urlPlaceholder": string
   },
+  readonly "updateForm": {
+    readonly "updateButton": string,
+    readonly "name": string,
+    readonly "namePlaceholder": string,
+    readonly "title": string,
+    readonly "url": string,
+    readonly "urlPlaceholder": string
+  },
   readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "back": string,
@@ -421,6 +431,20 @@ declare namespace typed_i18n {
   (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
+  (_: "opds.updateForm", __?: {}): {
+  readonly "updateButton": string,
+  readonly "name": string,
+  readonly "namePlaceholder": string,
+  readonly "title": string,
+  readonly "url": string,
+  readonly "urlPlaceholder": string
+};
+  (_: "opds.updateForm.updateButton", __?: {}): string;
+  (_: "opds.updateForm.name", __?: {}): string;
+  (_: "opds.updateForm.namePlaceholder", __?: {}): string;
+  (_: "opds.updateForm.title", __?: {}): string;
+  (_: "opds.updateForm.url", __?: {}): string;
+  (_: "opds.updateForm.urlPlaceholder", __?: {}): string;
   (_: "opds.addFormApiapp", __?: {}): { readonly "title": string };
   (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
@@ -547,15 +571,15 @@ declare namespace typed_i18n {
     readonly "goToError": string,
     readonly "goToPlaceHolder": string,
     readonly "goToTitle": string,
+    readonly "historyNext": string,
+    readonly "historyPrevious": string,
     readonly "infoTitle": string,
     readonly "magnifyingGlassButton": string,
     readonly "openTableOfContentsTitle": string,
     readonly "pdfscalemode": string,
     readonly "quitFullscreenTitle": string,
     readonly "readBookTitle": string,
-    readonly "settingsTitle": string,
-    readonly "historyPrevious": string,
-    readonly "historyNext": string
+    readonly "settingsTitle": string
   },
   readonly "picker": {
     readonly "annotationTitle": string,
@@ -692,15 +716,15 @@ declare namespace typed_i18n {
   readonly "goToError": string,
   readonly "goToPlaceHolder": string,
   readonly "goToTitle": string,
+  readonly "historyNext": string,
+  readonly "historyPrevious": string,
   readonly "infoTitle": string,
   readonly "magnifyingGlassButton": string,
   readonly "openTableOfContentsTitle": string,
   readonly "pdfscalemode": string,
   readonly "quitFullscreenTitle": string,
   readonly "readBookTitle": string,
-  readonly "settingsTitle": string,
-  readonly "historyPrevious": string,
-  readonly "historyNext": string
+  readonly "settingsTitle": string
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
@@ -712,6 +736,8 @@ declare namespace typed_i18n {
   (_: "reader.navigation.goToError", __?: {}): string;
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
   (_: "reader.navigation.goToTitle", __?: {}): string;
+  (_: "reader.navigation.historyNext", __?: {}): string;
+  (_: "reader.navigation.historyPrevious", __?: {}): string;
   (_: "reader.navigation.infoTitle", __?: {}): string;
   (_: "reader.navigation.magnifyingGlassButton", __?: {}): string;
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
@@ -719,8 +745,6 @@ declare namespace typed_i18n {
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;
   (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
-  (_: "reader.navigation.historyPrevious", __?: {}): string;
-  (_: "reader.navigation.historyNext", __?: {}): string;
   (_: "reader.picker", __?: {}): {
   readonly "annotationTitle": string,
   readonly "search": {
