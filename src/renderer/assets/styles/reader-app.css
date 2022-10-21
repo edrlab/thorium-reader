@@ -1127,6 +1127,7 @@ input[type=radio] + label {
       /* fill: #555555; */
       fill: var(--reader-fontColor);
       opacity: 0.5;
+      transform: scale(0.8);
     }
   }
 
@@ -1179,6 +1180,13 @@ input[type=radio] + label {
     pointer-events: all;
     margin-bottom: 15px;
     margin-right: 20px;
+  }
+
+  & .history {
+    background-color: var(--reader-mainColor);
+    pointer-events: all;
+    margin-bottom: 15px;
+    margin-left: 20px;
   }
 }
 

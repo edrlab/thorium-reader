@@ -7,8 +7,10 @@
 
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
-import * as ForwardIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
+// import * as BackIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
+// import * as ForwardIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
+import * as ForwardIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -128,7 +130,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         this.navLeftOrRightThrottled(false);
                     }
                 }}>
-                {!this.props.fullscreen && <div className={stylesReader.history}>
+                {
+                // !this.props.fullscreen &&
+                <div className={stylesReader.history}>
                             <button
                                 className={this.props.historyCanGoBack ? undefined : stylesReader.disabled}
                                 onClick={() => {
