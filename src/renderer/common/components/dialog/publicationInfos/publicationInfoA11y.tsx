@@ -5,7 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as debug_ from "debug";
+import DOMPurify from "dompurify";
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { convertMultiLangStringToString } from "readium-desktop/renderer/common/language-string";
@@ -19,11 +25,37 @@ interface IProps extends TranslatorProps {
     publication: TPublication;
 }
 
-export class PublicationInfoA11y extends React.Component<IProps, {}> {
+interface IState {
+    seeMore_a11y: boolean;
+    needSeeMore_a11y: boolean;
+}
+
+export class PublicationInfoA11y extends React.Component<IProps, IState> {
+
+    private descriptionWrapperRef_a11y: React.RefObject<HTMLDivElement>;
+    private descriptionRef_a11y: React.RefObject<HTMLParagraphElement>;
 
     constructor(props: IProps) {
         super(props);
 
+        this.descriptionWrapperRef_a11y = React.createRef<HTMLDivElement>();
+        this.descriptionRef_a11y = React.createRef<HTMLParagraphElement>();
+
+        this.state = {
+            seeMore_a11y: false,
+            needSeeMore_a11y: false,
+        };
+    }
+
+    public componentDidMount() {
+        setTimeout(this.needSeeMoreButton_a11y, 500);
+    }
+
+    public componentDidUpdate(prevProps: IProps) {
+
+        if (this.props.publication !== prevProps.publication) {
+            setTimeout(this.needSeeMoreButton_a11y, 500);
+        }
     }
 
     public render() {
@@ -38,12 +70,12 @@ export class PublicationInfoA11y extends React.Component<IProps, {}> {
             a11y_certifierReport,
         } = publication;
 
-        const findStrInArrayArray = (array: string[][], str: string): boolean => array.findIndex((a) => a.findIndex((b) => b === str) > -1) > -1;
-        const findStrInArray = (array: string[], str: string): boolean => array.findIndex((a) => a === str) > -1;
+        const findStrInArrayArray = (array: string[][], str: string): boolean => array?.findIndex((a) => a.findIndex((b) => b === str) > -1) > -1;
+        const findStrInArray = (array: string[], str: string): boolean => array?.findIndex((a) => a === str) > -1;
 
         const AccessModeSufficient = (() => {
 
-            const isTextual = findStrInArrayArray(a11y_accessModeSufficient, "textual");
+            const isTextual = findStrInArrayArray(a11y_accessModeSufficient || [], "textual");
             return isTextual ? <p>{__("publication.accessibility.accessModeSufficient.textual")}</p> : undefined;
         })();
 
@@ -56,13 +88,13 @@ export class PublicationInfoA11y extends React.Component<IProps, {}> {
             const isReadingOrders = findStrInArray(a11y_accessibilityFeature, "readingOrder");
             const isAlternativeText = findStrInArray(a11y_accessibilityFeature, "alternativeText");
 
-            return isDisplayTransformability
+            return (isDisplayTransformability
                 || isSynchronizedAudioText
                 || isPrintPageNumbers
                 || isLongDescription
                 || isTableOfContents
                 || isReadingOrders
-                || isAlternativeText ? <>
+                || isAlternativeText) ? <>
                 {isDisplayTransformability ? <p>{__("publication.accessibility.accessibilityFeature.displayTransformability")}</p> : <></>}
                 {isSynchronizedAudioText ? <p>{__("publication.accessibility.accessibilityFeature.synchronizedAudioText")}</p> : <></>}
                 {isPrintPageNumbers ? <p>{__("publication.accessibility.accessibilityFeature.printPageNumbers")}</p> : <></>}
@@ -85,7 +117,7 @@ export class PublicationInfoA11y extends React.Component<IProps, {}> {
             const isNone = findStrInArray(a11y_accessibilityHazard, "none");
             const isUnknown = findStrInArray(a11y_accessibilityHazard, "unknown");
 
-            return isFlashing
+            return (isFlashing
             || isMotion
             || isSimulation
             || isSound
@@ -94,7 +126,7 @@ export class PublicationInfoA11y extends React.Component<IProps, {}> {
             || isNoSimulation
             || isNoSound
             || isNone
-            || isUnknown ? <>
+            || isUnknown) ? <>
             {isFlashing ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.flashing")}</p> : <></>}
             {isMotion ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.motion")}</p> : <></>}
             {isSimulation ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.simulation")}</p> : <></>}
@@ -105,15 +137,49 @@ export class PublicationInfoA11y extends React.Component<IProps, {}> {
             {isNoSound ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noSound")}</p> : <></>}
             {isNone ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.none")}</p> : <></>}
             {isUnknown ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.unknown")}</p> : <></>}
-            </> : <></>;
+            </> : undefined;
         })();
 
         const AccessibiltySummary = (() => {
 
             if (!a11y_accessibilitySummary) return undefined;
-            const [, text] = convertMultiLangStringToString(this.props.translator, a11y_accessibilitySummary);
 
-            return <p>{text}</p>;
+            let textSanitize_a11y = "";
+            const [, text] = convertMultiLangStringToString(this.props.translator, a11y_accessibilitySummary);
+            if (text) {
+                textSanitize_a11y = DOMPurify.sanitize(text).replace(/font-size:/g, "font-sizexx:");
+            }
+
+            return textSanitize_a11y ?
+                <div className={classNames(stylesBlocks.block_line, stylesBlocks.description_see_more)}>
+                    <div
+                        ref={this.descriptionWrapperRef_a11y}
+                        className={classNames(
+                            stylesBookDetailsDialog.descriptionWrapper,
+                            this.state.needSeeMore_a11y && stylesGlobal.mb_30,
+                            this.state.needSeeMore_a11y && stylesBookDetailsDialog.hideEnd,
+                            this.state.seeMore_a11y && stylesBookDetailsDialog.seeMore,
+                        )}
+                    >
+                        <div
+                            ref={this.descriptionRef_a11y}
+                            className={stylesBookDetailsDialog.allowUserSelect}
+                            dangerouslySetInnerHTML={{ __html: textSanitize_a11y }}
+                        >
+                        </div>
+                    </div>
+                    {
+                        this.state.needSeeMore_a11y &&
+                        <button aria-hidden className={stylesButtons.button_see_more} onClick={this.toggleSeeMore_a11y}>
+                            {
+                                this.state.seeMore_a11y
+                                    ? __("publication.seeLess")
+                                    : __("publication.seeMore")
+                            }
+                        </button>
+                    }
+                </div>
+                : undefined;
         })();
 
         const AccessibilityConformsTo = (() => {
@@ -128,7 +194,7 @@ export class PublicationInfoA11y extends React.Component<IProps, {}> {
             return <p>a11y_certifierReport[0]</p>; // url !?
         })();
 
-        return AccessModeSufficient || AccessibilityFeature || AccessibilityHazard ? <>
+        return (AccessModeSufficient || AccessibilityFeature || AccessibilityHazard) ? <>
             <div>
                 {AccessibilityFeature ? AccessibilityFeature : <></>}
                 {AccessModeSufficient ? AccessModeSufficient : <></>}
@@ -147,6 +213,19 @@ export class PublicationInfoA11y extends React.Component<IProps, {}> {
             </div>
         </> : <p>{__("publication.accessibility.noA11y")}</p>;
     }
+
+    private needSeeMoreButton_a11y = () => {
+        if (!this.descriptionWrapperRef_a11y?.current || !this.descriptionRef_a11y?.current) {
+            return;
+        }
+        const need = this.descriptionWrapperRef_a11y.current.offsetHeight < this.descriptionRef_a11y.current.offsetHeight;
+        this.setState({ needSeeMore_a11y: need });
+    };
+
+    private toggleSeeMore_a11y = () =>
+        this.setState({
+            seeMore_a11y: !this.state.seeMore_a11y,
+        });
 
 }
 
