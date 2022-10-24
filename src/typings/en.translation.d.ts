@@ -547,15 +547,15 @@ declare namespace typed_i18n {
     readonly "goToError": string,
     readonly "goToPlaceHolder": string,
     readonly "goToTitle": string,
+    readonly "historyNext": string,
+    readonly "historyPrevious": string,
     readonly "infoTitle": string,
     readonly "magnifyingGlassButton": string,
     readonly "openTableOfContentsTitle": string,
     readonly "pdfscalemode": string,
     readonly "quitFullscreenTitle": string,
     readonly "readBookTitle": string,
-    readonly "settingsTitle": string,
-    readonly "historyPrevious": string,
-    readonly "historyNext": string
+    readonly "settingsTitle": string
   },
   readonly "picker": {
     readonly "annotationTitle": string,
@@ -692,15 +692,15 @@ declare namespace typed_i18n {
   readonly "goToError": string,
   readonly "goToPlaceHolder": string,
   readonly "goToTitle": string,
+  readonly "historyNext": string,
+  readonly "historyPrevious": string,
   readonly "infoTitle": string,
   readonly "magnifyingGlassButton": string,
   readonly "openTableOfContentsTitle": string,
   readonly "pdfscalemode": string,
   readonly "quitFullscreenTitle": string,
   readonly "readBookTitle": string,
-  readonly "settingsTitle": string,
-  readonly "historyPrevious": string,
-  readonly "historyNext": string
+  readonly "settingsTitle": string
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
@@ -712,6 +712,8 @@ declare namespace typed_i18n {
   (_: "reader.navigation.goToError", __?: {}): string;
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
   (_: "reader.navigation.goToTitle", __?: {}): string;
+  (_: "reader.navigation.historyNext", __?: {}): string;
+  (_: "reader.navigation.historyPrevious", __?: {}): string;
   (_: "reader.navigation.infoTitle", __?: {}): string;
   (_: "reader.navigation.magnifyingGlassButton", __?: {}): string;
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
@@ -719,8 +721,6 @@ declare namespace typed_i18n {
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;
   (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
-  (_: "reader.navigation.historyPrevious", __?: {}): string;
-  (_: "reader.navigation.historyNext", __?: {}): string;
   (_: "reader.picker", __?: {}): {
   readonly "annotationTitle": string,
   readonly "search": {

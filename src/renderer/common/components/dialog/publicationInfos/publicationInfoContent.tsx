@@ -387,7 +387,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             {
                                 publication.publishers?.length ?
                                     <>
-                                        <strong>{`${__("catalog.publisher")}: `}</strong>
+                                        <strong>{__("catalog.publisher")}</strong>
                                         <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             <FormatContributorWithLink
                                                 contributors={publication.publishers}
@@ -401,7 +401,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             {
                                 publication.languages?.length ?
                                     <>
-                                        <strong>{`${__("catalog.lang")}: `}</strong>
+                                        <strong>{__("catalog.lang")}</strong>
                                         <FormatPublicationLanguage publication={publication} __={__} />
                                         <br />
                                     </> : undefined
@@ -409,7 +409,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             {
                                 publication.numberOfPages ?
                                     <>
-                                        <strong>{`${__("catalog.numberOfPages")}: `}</strong>
+                                        <strong>{__("catalog.numberOfPages")}</strong>
                                         <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publication.numberOfPages}
                                         </i>
@@ -424,7 +424,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             {
                                 publication.nbOfTracks ?
                                     <>
-                                        <strong>{`${__("publication.audio.tracks")}: `}</strong>
+                                        <strong>{__("publication.audio.tracks")}</strong>
                                         <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publication.nbOfTracks}
                                         </i>
