@@ -72,6 +72,7 @@
         "format": "",
         "lang": "言語",
         "lastRead": "",
+        "moreInfo": "他の情報",
         "myBooks": "わたしの本",
         "noPublicationHelpL1": "この画面に書籍ファイルをドロップしてください。",
         "noPublicationHelpL2": "または、画面上部にある［+］ボタンを押して登録してください。",
@@ -203,36 +204,6 @@
         "shelf": "本棚"
     },
     "publication": {
-        "accessibility": {
-            "accessModeSufficient": {
-                "textual": ""
-            },
-            "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
-            },
-            "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
-            },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
-        },
         "audio": {
             "tracks": "トラック"
         },
@@ -254,7 +225,6 @@
         "licenseOutOfDate": "ライセンスは期限切れです",
         "licenseSignatureDateInvalid": "ライセンス署名の日付が無効です",
         "licenseSignatureInvalid": "ライセンス署名が無効です",
-        "moreInfo": "",
         "progression": {
             "title": "読み進めた位置"
         },

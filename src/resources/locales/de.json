@@ -72,6 +72,7 @@
         "format": "",
         "lang": "Sprache",
         "lastRead": "",
+        "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
         "noPublicationHelpL1": "Geben Sie die Publikation ab",
         "noPublicationHelpL2": "oder über den Button \"+\" hinzufügen.",
@@ -203,36 +204,6 @@
         "shelf": ""
     },
     "publication": {
-        "accessibility": {
-            "accessModeSufficient": {
-                "textual": ""
-            },
-            "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
-            },
-            "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
-            },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
-        },
         "audio": {
             "tracks": "Spuren"
         },
@@ -254,7 +225,6 @@
         "licenseOutOfDate": "",
         "licenseSignatureDateInvalid": "",
         "licenseSignatureInvalid": "",
-        "moreInfo": "",
         "progression": {
             "title": "Fortschreiten"
         },

@@ -72,6 +72,7 @@
         "format": "",
         "lang": "語言",
         "lastRead": "",
+        "moreInfo": "更多訊息",
         "myBooks": "我的圖書",
         "noPublicationHelpL1": "拖放EPUB至此處。",
         "noPublicationHelpL2": "或者使用上面的\"+\"按鈕。",
@@ -203,36 +204,6 @@
         "shelf": "書架"
     },
     "publication": {
-        "accessibility": {
-            "accessModeSufficient": {
-                "textual": ""
-            },
-            "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
-            },
-            "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
-            },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
-        },
         "audio": {
             "tracks": "音軌"
         },
@@ -254,7 +225,6 @@
         "licenseOutOfDate": "許可證過期",
         "licenseSignatureDateInvalid": "許可證簽名日期無效",
         "licenseSignatureInvalid": "許可證簽名無效",
-        "moreInfo": "",
         "progression": {
             "title": "進程"
         },
@@ -308,8 +278,6 @@
             "goToError": "此頁不存在",
             "goToPlaceHolder": "輸入頁碼",
             "goToTitle": "轉到頁",
-            "historyNext": "",
-            "historyPrevious": "",
             "infoTitle": "訊息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "導航",
