@@ -70,7 +70,7 @@
         },
         "export": "導出",
         "format": "",
-        "lang": "語言",
+        "lang": "語言 :",
         "lastRead": "",
         "moreInfo": "更多訊息",
         "myBooks": "我的圖書",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "或者使用上面的\"+\"按鈕。",
         "noPublicationHelpL3": "支持受LCP保護的文件。",
         "noPublicationHelpL4": "支持的副檔名:",
-        "numberOfPages": "頁碼",
+        "numberOfPages": "頁碼 :",
         "opds": {
             "auth": {
                 "cancel": "取消",
@@ -103,7 +103,7 @@
                 "state": "狀態"
             }
         },
-        "publisher": "出版社",
+        "publisher": "出版社 :",
         "readBook": "閱讀",
         "released": "出版日期",
         "sort": "排序方式",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "音軌"
+            "tracks": "音軌 :"
         },
         "author": "作者",
         "cancelledLcp": "此書無法閱讀，因為 LCP 許可證已被取消。",

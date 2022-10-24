@@ -70,7 +70,7 @@
         },
         "export": "Export",
         "format": "",
-        "lang": "Sprache",
+        "lang": "Sprache :",
         "lastRead": "",
         "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "oder über den Button \"+\" hinzufügen.",
         "noPublicationHelpL3": "LCP-geschützte Dateien werden unterstützt.",
         "noPublicationHelpL4": "Unterstützte Erweiterungen:",
-        "numberOfPages": "Seitenzahl",
+        "numberOfPages": "Seitenzahl :",
         "opds": {
             "auth": {
                 "cancel": "",
@@ -103,7 +103,7 @@
                 "state": "Zustand"
             }
         },
-        "publisher": "Herausgeber",
+        "publisher": "Herausgeber :",
         "readBook": "Lesen",
         "released": "Veröffentlicht am",
         "sort": "Sortieren nach",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Spuren"
+            "tracks": "Spuren :"
         },
         "author": "",
         "cancelledLcp": "",

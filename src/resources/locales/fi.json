@@ -70,7 +70,7 @@
         },
         "export": "Vie",
         "format": "",
-        "lang": "Kieli",
+        "lang": "Kieli :",
         "lastRead": "",
         "moreInfo": "Lisää tietoja",
         "myBooks": "Minun kirjani",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "tai käytä \"+\"-painiketta yllä.",
         "noPublicationHelpL3": "LCP-suojattuja tiedostoja tuetaan.",
         "noPublicationHelpL4": "Tuetut laajennukset:",
-        "numberOfPages": "Sivumäärä",
+        "numberOfPages": "Sivumäärä :",
         "opds": {
             "auth": {
                 "cancel": "Peru",
@@ -103,7 +103,7 @@
                 "state": "Tila"
             }
         },
-        "publisher": "Julkaisija",
+        "publisher": "Julkaisija :",
         "readBook": "Lue",
         "released": "Julkaistu",
         "sort": "Järjestä",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Osat"
+            "tracks": "Osat :"
         },
         "author": "",
         "cancelledLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on peruttu.",

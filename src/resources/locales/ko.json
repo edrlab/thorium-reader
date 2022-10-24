@@ -70,7 +70,7 @@
         },
         "export": "내보내기",
         "format": "",
-        "lang": "언어선택",
+        "lang": "언어선택 :",
         "lastRead": "",
         "moreInfo": "상세정보",
         "myBooks": "내 도서",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "또는 위의 \"+\" 버튼을 눌러서 추가하십시오.",
         "noPublicationHelpL3": "LCP 보호 파일이 지원됩니다.",
         "noPublicationHelpL4": "지원되는 확장자:",
-        "numberOfPages": "페이지 수",
+        "numberOfPages": "페이지 수 :",
         "opds": {
             "auth": {
                 "cancel": "취소",
@@ -103,7 +103,7 @@
                 "state": "상태"
             }
         },
-        "publisher": "발행인",
+        "publisher": "발행인 :",
         "readBook": "읽기",
         "released": "발행일",
         "sort": "정렬 기준",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "오디오 트랙"
+            "tracks": "오디오 트랙 :"
         },
         "author": "",
         "cancelledLcp": "이 책은 LCP 라이선스가 취소되어서 읽을 수 없습니다",

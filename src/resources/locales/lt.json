@@ -70,7 +70,7 @@
         },
         "export": "Eksportuoti",
         "format": "",
-        "lang": "Kalba",
+        "lang": "Kalba :",
         "lastRead": "",
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano knygos",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "arba naudokite \"+\" mygtuką viršuje.",
         "noPublicationHelpL3": "Failai, apsaugoti LCP, yra palaikomi.",
         "noPublicationHelpL4": "Palaikomi plėtiniai:",
-        "numberOfPages": "Puslapių skaičius",
+        "numberOfPages": "Puslapių skaičius :",
         "opds": {
             "auth": {
                 "cancel": "",
@@ -103,7 +103,7 @@
                 "state": "Būsena"
             }
         },
-        "publisher": "Leidėjas",
+        "publisher": "Leidėjas :",
         "readBook": "Skaityti",
         "released": "Išleidimo data",
         "sort": "Rikiuoti pagal",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Takeliai"
+            "tracks": "Takeliai :"
         },
         "author": "",
         "cancelledLcp": "Šios knygos negalima skaityti, nes LCP licencija buvo nutraukta.",

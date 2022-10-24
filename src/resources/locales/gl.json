@@ -70,7 +70,7 @@
         },
         "export": "Exportar",
         "format": "",
-        "lang": "Idioma",
+        "lang": "Idioma :",
         "lastRead": "",
         "moreInfo": "Máis información",
         "myBooks": "Os meus libros",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "ou usa o botón \"+\" de arriba.",
         "noPublicationHelpL3": "Admítense ficheiros protexidos LCP.",
         "noPublicationHelpL4": "Extensións admitidas:",
-        "numberOfPages": "Número de páxinas",
+        "numberOfPages": "Número de páxinas :",
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
@@ -103,7 +103,7 @@
                 "state": "Estado"
             }
         },
-        "publisher": "Editor",
+        "publisher": "Editor :",
         "readBook": "Ler",
         "released": "Publicado en",
         "sort": "Ordenar por",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Pistas"
+            "tracks": "Pistas :"
         },
         "author": "Autor",
         "cancelledLcp": "Este libro non se pode ler porque a licenza  LCP cancelouse.",

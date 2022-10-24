@@ -70,7 +70,7 @@
         },
         "export": "Exportar",
         "format": "",
-        "lang": "Idioma",
+        "lang": "Idioma :",
         "lastRead": "",
         "moreInfo": "Més información",
         "myBooks": "Els meus llibres",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "o utiltza el botó \"+\" de dalt.",
         "noPublicationHelpL3": "S'admiteixen fitxers protegits LCP.",
         "noPublicationHelpL4": "Extensions admitides:",
-        "numberOfPages": " de pàgines",
+        "numberOfPages": " de pàgines :",
         "opds": {
             "auth": {
                 "cancel": "Cancel·lar",
@@ -103,7 +103,7 @@
                 "state": "Estat"
             }
         },
-        "publisher": "Editor",
+        "publisher": "Editor :",
         "readBook": "Llegir",
         "released": "Publicat en",
         "sort": "Ordenar per",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Pistes"
+            "tracks": "Pistes :"
         },
         "author": "Autor",
         "cancelledLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha cancel·lat.",

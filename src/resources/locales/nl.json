@@ -70,7 +70,7 @@
         },
         "export": "Exporteer",
         "format": "Formaat",
-        "lang": "Taal",
+        "lang": "Taal :",
         "lastRead": "Laatst gelezen",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "of gebruik \"+\" knop hier boven.",
         "noPublicationHelpL3": "LCP beveiligde bestanden zijn ondersteund.",
         "noPublicationHelpL4": "Ondersteunde extensies:",
-        "numberOfPages": "Aantal pagina's",
+        "numberOfPages": "Aantal pagina's :",
         "opds": {
             "auth": {
                 "cancel": "",
@@ -103,7 +103,7 @@
                 "state": "Status"
             }
         },
-        "publisher": "Uitgever",
+        "publisher": "Uitgever :",
         "readBook": "Gelezen",
         "released": "Uitgegeven op",
         "sort": "Sorteer op",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Tracks"
+            "tracks": "Tracks :"
         },
         "author": "",
         "cancelledLcp": "Dit boek kan niet worden gelezen omdat de LCP licentie is geannuleerd.",

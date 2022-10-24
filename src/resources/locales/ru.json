@@ -70,7 +70,7 @@
         },
         "export": "Экспорт",
         "format": "",
-        "lang": "Язык",
+        "lang": "Язык :",
         "lastRead": "",
         "moreInfo": "Дополнительные сведения",
         "myBooks": "Мои книги",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "или используйте \"+\" кнопку выше.",
         "noPublicationHelpL3": "Поддерживаются файлы с защитой LCP.",
         "noPublicationHelpL4": "Поддерживаемые расширения:",
-        "numberOfPages": "Количество страниц",
+        "numberOfPages": "Количество страниц :",
         "opds": {
             "auth": {
                 "cancel": "",
@@ -103,7 +103,7 @@
                 "state": "Cостояние"
             }
         },
-        "publisher": "Издатель",
+        "publisher": "Издатель :",
         "readBook": "Читать",
         "released": "Дата издания",
         "sort": "Сортировать по",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Треки"
+            "tracks": "Треки :"
         },
         "author": "",
         "cancelledLcp": "Эту книгу нельзя прочитать, потому что лицензия LCP аннулирована.",

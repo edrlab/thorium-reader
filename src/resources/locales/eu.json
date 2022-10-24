@@ -70,7 +70,7 @@
         },
         "export": "Esportatu",
         "format": "",
-        "lang": "Hizkuntza",
+        "lang": "Hizkuntza :",
         "lastRead": "",
         "moreInfo": "Informazio gehiago",
         "myBooks": "Nire liburuak",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "edo erabili goiko \"+\" botoia.",
         "noPublicationHelpL3": "LCP fitxategi babestuak onartzen badituzte.",
         "noPublicationHelpL4": "Luzapen onartuak:",
-        "numberOfPages": "Orrialde-kopurua",
+        "numberOfPages": "Orrialde-kopurua :",
         "opds": {
             "auth": {
                 "cancel": "Utzi",
@@ -103,7 +103,7 @@
                 "state": "Egoera"
             }
         },
-        "publisher": "Editorea",
+        "publisher": "Editorea :",
         "readBook": "Irakurri",
         "released": "Hemen argitaratua",
         "sort": "Ordenatu honen arabera",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Tracks"
+            "tracks": "Tracks :"
         },
         "author": "Egilea",
         "cancelledLcp": "Liburu hau ezin da irakurri LCP lizentzia bertan behera utzi delako.",

@@ -70,7 +70,7 @@
         },
         "export": "导出",
         "format": "",
-        "lang": "语言",
+        "lang": "语言 :",
         "lastRead": "",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "或者使用上面的\"+\"按钮。",
         "noPublicationHelpL3": "支持受LCP保护的文件。",
         "noPublicationHelpL4": "支持的扩展名:",
-        "numberOfPages": "页码",
+        "numberOfPages": "页码 :",
         "opds": {
             "auth": {
                 "cancel": "取消",
@@ -103,7 +103,7 @@
                 "state": "状态"
             }
         },
-        "publisher": "出版社",
+        "publisher": "出版社 :",
         "readBook": "阅读",
         "released": "出版日期",
         "sort": "排序方式",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "音轨"
+            "tracks": "音轨 :"
         },
         "author": "作者",
         "cancelledLcp": "此书无法阅读，因为LCP许可证已被取消。",

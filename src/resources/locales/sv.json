@@ -70,7 +70,7 @@
         },
         "export": "Exportera",
         "format": "Format",
-        "lang": "Språk",
+        "lang": "Språk :",
         "lastRead": "Senast läst",
         "moreInfo": "Mer information",
         "myBooks": "Mina böcker",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "eller använd \"+\"-knappen ovanför.",
         "noPublicationHelpL3": "LCP-skyddade filer stöds.",
         "noPublicationHelpL4": "Filtyper som stöds:",
-        "numberOfPages": "Antal sidor",
+        "numberOfPages": "Antal sidor :",
         "opds": {
             "auth": {
                 "cancel": "Avbryt",
@@ -103,7 +103,7 @@
                 "state": "Status"
             }
         },
-        "publisher": "Utgivare",
+        "publisher": "Utgivare :",
         "readBook": "Läs",
         "released": "Publicerad den",
         "sort": "Sortera efter",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "Spår"
+            "tracks": "Spår :"
         },
         "author": "Författare",
         "cancelledLcp": "Den här boken kan inte läsas eftersom LCP-licensen inte är giltig längre.",

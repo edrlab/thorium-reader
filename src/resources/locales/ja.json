@@ -70,7 +70,7 @@
         },
         "export": "書き出し",
         "format": "",
-        "lang": "言語",
+        "lang": "言語 :",
         "lastRead": "",
         "moreInfo": "他の情報",
         "myBooks": "わたしの本",
@@ -78,7 +78,7 @@
         "noPublicationHelpL2": "または、画面上部にある［+］ボタンを押して登録してください。",
         "noPublicationHelpL3": "LCPで保護されたファイルにも対応します。",
         "noPublicationHelpL4": "サポートされている拡張子：",
-        "numberOfPages": "ページ数",
+        "numberOfPages": "ページ数 :",
         "opds": {
             "auth": {
                 "cancel": "取り消し",
@@ -103,7 +103,7 @@
                 "state": "状態"
             }
         },
-        "publisher": "出版社",
+        "publisher": "出版社 :",
         "readBook": "本を読む",
         "released": "出版日",
         "sort": "並び替え",
@@ -205,7 +205,7 @@
     },
     "publication": {
         "audio": {
-            "tracks": "トラック"
+            "tracks": "トラック :"
         },
         "author": "著者",
         "cancelledLcp": "LCPライセンスが取り消されたため、この本を読めません。",
