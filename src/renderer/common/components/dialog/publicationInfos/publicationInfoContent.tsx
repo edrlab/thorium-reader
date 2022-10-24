@@ -376,7 +376,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                     </section>
                     <section>
                         <div className={stylesGlobal.heading}>
-                            <h3>{__("publication.moreInfo")}</h3>
+                            <h3>{__("catalog.moreInfo")}</h3>
                         </div>
                         <div>
                             <FormatPublisherDate publication={publication} __={__} />
