@@ -72,7 +72,6 @@
         "format": "",
         "lang": "Langue",
         "lastRead": "Dernière lecture",
-        "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
         "noPublicationHelpL1": "Déposer la publication",
         "noPublicationHelpL2": "ou bien utilisez le bouton \"+\" ci-dessus.",
@@ -204,6 +203,36 @@
         "shelf": "Étagère"
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "Texte/images disponibles en vocal & lecteur d'écran supporté"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Contient un texte alternatif",
+                "displayTransformability": "Texte et mise en page adaptables",
+                "longDescription": "Ressources graphiques entièrement décrites",
+                "printPageNumbers": "Référence de pagination du livre imprimé",
+                "readingOrder": "Contient un ordre de lecture",
+                "synchronizedAudioText": "Texte et audio synchronisés",
+                "tableOfContents": "Contient une table des matières"
+            },
+            "accessibilityHazard": {
+                "flashing": "Clignotement",
+                "motion": "Mouvement",
+                "name": "Risque:",
+                "noFlashing": "Pas de clignotement",
+                "noMotion": "Pas de mouvement",
+                "noSimulation": "Pas de simulation",
+                "noSound": "Pas de son",
+                "none": "Aucun",
+                "simulation": "Simulation",
+                "sound": "Son",
+                "unknown": "Inconnu"
+            },
+            "moreInformation": "Plus d'information",
+            "name": "Accessibilité",
+            "noA11y": "Aucune information d'accessibilité disponible"
+        },
         "audio": {
             "tracks": "Pistes"
         },
@@ -225,6 +254,7 @@
         "licenseOutOfDate": "License inutilisable à cette date",
         "licenseSignatureDateInvalid": "Date de signature de license invalide",
         "licenseSignatureInvalid": "Signature de license invalide",
+        "moreInfo": "",
         "progression": {
             "title": "Progression"
         },

@@ -72,7 +72,6 @@
         "format": "",
         "lang": "Kieli",
         "lastRead": "",
-        "moreInfo": "Lisää tietoja",
         "myBooks": "Minun kirjani",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
         "noPublicationHelpL2": "tai käytä \"+\"-painiketta yllä.",
@@ -204,6 +203,36 @@
         "shelf": "Hylly"
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Osat"
         },
@@ -225,6 +254,7 @@
         "licenseOutOfDate": "Käyttöoikeus on vanhentunut",
         "licenseSignatureDateInvalid": "Käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
         "licenseSignatureInvalid": "Käyttöoikeuden allekirjoitus ei kelpaa",
+        "moreInfo": "",
         "progression": {
             "title": "Eteneminen"
         },

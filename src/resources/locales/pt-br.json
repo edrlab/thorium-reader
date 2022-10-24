@@ -72,7 +72,6 @@
         "format": "",
         "lang": "Idioma",
         "lastRead": "",
-        "moreInfo": "Mais Informação",
         "myBooks": "Meus livros",
         "noPublicationHelpL1": "Solte uma publicação aqui",
         "noPublicationHelpL2": "ou use o botão \"+\" acima.",
@@ -204,6 +203,36 @@
         "shelf": "Estante"
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Faixas"
         },
@@ -225,6 +254,7 @@
         "licenseOutOfDate": "Licença vencida",
         "licenseSignatureDateInvalid": "A data da assinatura da licença é inválida",
         "licenseSignatureInvalid": "A assinatura da licença é inválida",
+        "moreInfo": "",
         "progression": {
             "title": "Progressão"
         },

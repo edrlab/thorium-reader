@@ -72,7 +72,6 @@
         "format": "",
         "lang": "ენა",
         "lastRead": "",
-        "moreInfo": "მეტი ინფორმაცია",
         "myBooks": "ჩემი წიგნები",
         "noPublicationHelpL1": "ჩააგდე პუბლიკაცია აქ",
         "noPublicationHelpL2": "ან გამოიყენე \"+\" ღილაკი ზემოთ.",
@@ -204,6 +203,36 @@
         "shelf": "თარო"
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "აუდიო ნაკვალევები"
         },
@@ -225,6 +254,7 @@
         "licenseOutOfDate": "ლიცენზია მოძველდა",
         "licenseSignatureDateInvalid": "ლიცენზიის ხელმოწერის თარიღი არასწორია",
         "licenseSignatureInvalid": "ლიცენზიის ხელმოწერა არასწორია",
+        "moreInfo": "",
         "progression": {
             "title": "პროგრესია"
         },

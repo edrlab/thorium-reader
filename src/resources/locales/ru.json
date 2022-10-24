@@ -72,7 +72,6 @@
         "format": "",
         "lang": "Язык",
         "lastRead": "",
-        "moreInfo": "Дополнительные сведения",
         "myBooks": "Мои книги",
         "noPublicationHelpL1": "Перетащите сюда книгу",
         "noPublicationHelpL2": "или используйте \"+\" кнопку выше.",
@@ -204,6 +203,36 @@
         "shelf": "Полка"
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Треки"
         },
@@ -225,6 +254,7 @@
         "licenseOutOfDate": "Лицензия устарела",
         "licenseSignatureDateInvalid": "Дата подписания лицензии недействительна",
         "licenseSignatureInvalid": "Лицензионная подпись недействительна",
+        "moreInfo": "",
         "progression": {
             "title": "Прогресс"
         },

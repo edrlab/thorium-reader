@@ -72,7 +72,6 @@
         "format": "Format",
         "lang": "Språk",
         "lastRead": "Senast läst",
-        "moreInfo": "Mer information",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Släpp en publikation här",
         "noPublicationHelpL2": "eller använd \"+\"-knappen ovanför.",
@@ -204,6 +203,36 @@
         "shelf": "Hylla"
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Spår"
         },
@@ -225,6 +254,7 @@
         "licenseOutOfDate": "Licensen har löpt ut",
         "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltigt",
         "licenseSignatureInvalid": "Licensens signatur är ogiltig",
+        "moreInfo": "",
         "progression": {
             "title": "Status"
         },

@@ -203,6 +203,36 @@
         "shelf": "Shelf"
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "TTS & Screen reader friendly"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Contains alternative text",
+                "displayTransformability": "Adaptable text and layout",
+                "longDescription": "Fully described graphical ressources",
+                "printPageNumbers": "Printed book pagination reference",
+                "readingOrder": "Contains a reading order",
+                "synchronizedAudioText": "Text & audio synchronised",
+                "tableOfContents": "Contains a Table Of Contents"
+            },
+            "accessibilityHazard": {
+                "flashing": "Flashing",
+                "motion": "Motion",
+                "name": "Hazard:",
+                "noFlashing": "No flashing",
+                "noMotion": "No motion",
+                "noSimulation": "No simulation",
+                "noSound": "No sound",
+                "none": "None",
+                "simulation": "Simulation",
+                "sound": "Sound",
+                "unknown": "Unknown"
+            },
+            "moreInformation": "More information",
+            "name": "Accessibility",
+            "noA11y": "No accessibility information available"
+        },
         "audio": {
             "tracks": "Tracks"
         },
@@ -224,6 +254,7 @@
         "licenseOutOfDate": "License is out of date",
         "licenseSignatureDateInvalid": "License signature date is invalid",
         "licenseSignatureInvalid": "License signature is invalid",
+        "moreInfo": "Book details",
         "progression": {
             "title": "Progression"
         },
@@ -233,39 +264,8 @@
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
-        "moreInfo": "Book details",
         "title": "Title",
-        "userKeyCheckInvalid": "Passphrase is incorrect",
-        "accessibility": {
-            "name": "Accessibility",
-            "moreInformation": "More information",
-            "accessModeSufficient": {
-                "textual": "TTS & Screen reader friendly"
-            },
-            "accessibilityFeature": {
-                "displayTransformability": "Adaptable text and layout",
-                "synchronizedAudioText": "Text & audio synchronised",
-                "printPageNumbers": "Printed book pagination reference",
-                "longDescription": "Fully described graphical ressources",
-                "tableOfContents": "Contains a Table Of Contents",
-                "readingOrder": "Contains a reading order",
-                "alternativeText": "Contains alternative text"
-            },
-            "accessibilityHazard": {
-                "name": "Hazard:",
-                "flashing": "Flashing",
-                "motion": "Motion",
-                "simulation": "Simulation",
-                "sound": "Sound",
-                "noFlashing": "No flashing",
-                "noMotion": "No motion",
-                "noSimulation": "No simulation",
-                "noSound": "No sound",
-                "none": "None",
-                "unknown": "Unknown"
-            },
-            "noA11y": "No accessibility information available"
-        }
+        "userKeyCheckInvalid": "Passphrase is incorrect"
     },
     "reader": {
         "divina": {
