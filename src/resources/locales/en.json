@@ -72,7 +72,7 @@
         "format": "Format",
         "lang": "Language",
         "lastRead": "Last Read",
-        "moreInfo": "More Info",
+        "moreInfo": "Book Details",
         "myBooks": "My books",
         "noPublicationHelpL1": "Drop a publication here",
         "noPublicationHelpL2": "or use the \"+\" button above.",
@@ -255,7 +255,6 @@
         "licenseOutOfDate": "License is out of date",
         "licenseSignatureDateInvalid": "License signature date is invalid",
         "licenseSignatureInvalid": "License signature is invalid",
-        "moreInfo": "Book details",
         "progression": {
             "title": "Progression"
         },

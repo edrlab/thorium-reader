@@ -255,7 +255,6 @@
         "licenseOutOfDate": "License inutilisable à cette date",
         "licenseSignatureDateInvalid": "Date de signature de license invalide",
         "licenseSignatureInvalid": "Signature de license invalide",
-        "moreInfo": "",
         "progression": {
             "title": "Progression"
         },
