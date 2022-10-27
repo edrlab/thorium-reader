@@ -76,33 +76,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
         const AccessModeSufficient = (() => {
 
             const isTextual = findStrInArrayArray(a11y_accessModeSufficient || [], "textual");
-            return isTextual ? <p>{__("publication.accessibility.accessModeSufficient.textual")}</p> : undefined;
-        })();
-
-        const AccessibilityFeature = (() => {
-            const isDisplayTransformability = findStrInArray(a11y_accessibilityFeature, "displayTransformability");
-            const isSynchronizedAudioText = findStrInArray(a11y_accessibilityFeature, "synchronizedAudioText") ;
-            const isPrintPageNumbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
-            const isLongDescription = findStrInArray(a11y_accessibilityFeature, "longDescription");
-            const isTableOfContents = findStrInArray(a11y_accessibilityFeature, "tableOfContents");
-            const isReadingOrders = findStrInArray(a11y_accessibilityFeature, "readingOrder");
-            const isAlternativeText = findStrInArray(a11y_accessibilityFeature, "alternativeText");
-
-            return (isDisplayTransformability
-                || isSynchronizedAudioText
-                || isPrintPageNumbers
-                || isLongDescription
-                || isTableOfContents
-                || isReadingOrders
-                || isAlternativeText) ? <>
-                {isDisplayTransformability ? <p>{__("publication.accessibility.accessibilityFeature.displayTransformability")}</p> : <></>}
-                {isSynchronizedAudioText ? <p>{__("publication.accessibility.accessibilityFeature.synchronizedAudioText")}</p> : <></>}
-                {isPrintPageNumbers ? <p>{__("publication.accessibility.accessibilityFeature.printPageNumbers")}</p> : <></>}
-                {isLongDescription ? <p>{__("publication.accessibility.accessibilityFeature.longDescription")}</p> : <></>}
-                {/* {isTableOfContents ? <p>{__("publication.accessibility.accessibilityFeature.tableOfContents")}</p> : <></>} */}
-                {/* {isReadingOrders ? <p>{__("publication.accessibility.accessibilityFeature.readingOrder")}</p> : <></>} */}
-                {/* {isAlternativeText ? <p>{__("publication.accessibility.accessibilityFeature.alternativeText")}</p> : <></>} */}
-            </> : undefined;
+            return isTextual ? <li>{__("publication.accessibility.accessModeSufficient.textual")}</li> : undefined;
         })();
 
         const AccessibilityHazard = (() => {
@@ -127,16 +101,16 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
             || isNoSound
             || isNone
             || isUnknown) ? <>
-            {isFlashing ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.flashing")}</p> : <></>}
-            {isMotion ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.motion")}</p> : <></>}
-            {isSimulation ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.simulation")}</p> : <></>}
-            {isSound ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.sound")}</p> : <></>}
-            {isNoFlashing ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noFlashing")}</p> : <></>}
-            {isNoMotion ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noMotion")}</p> : <></>}
-            {isNoSimulation ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noSimulation")}</p> : <></>}
-            {isNoSound ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noSound")}</p> : <></>}
-            {isNone ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.none")}</p> : <></>}
-            {isUnknown ? <p>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.unknown")}</p> : <></>}
+            {isFlashing ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.flashing")}</li> : <></>}
+            {isMotion ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.motion")}</li> : <></>}
+            {isSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.simulation")}</li> : <></>}
+            {isSound ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.sound")}</li> : <></>}
+            {isNoFlashing ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noFlashing")}</li> : <></>}
+            {isNoMotion ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noMotion")}</li> : <></>}
+            {isNoSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noSimulation")}</li> : <></>}
+            {isNoSound ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noSound")}</li> : <></>}
+            {isNone ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.none")}</li> : <></>}
+            {isUnknown ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.unknown")}</li> : <></>}
             </> : undefined;
         })();
 
@@ -182,31 +156,64 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                 : undefined;
         })();
 
+        const AccessibilityFeatureIsprintPageNumber = (() => {
+
+            const isPrintPageNumbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
+            return isPrintPageNumbers ? <li>{__("publication.accessibility.accessibilityFeature.printPageNumbers")}</li> : undefined;
+
+        })();
+
+        const AccessibilityFeature = (() => {
+            const isDisplayTransformability = findStrInArray(a11y_accessibilityFeature, "displayTransformability");
+            const isSynchronizedAudioText = findStrInArray(a11y_accessibilityFeature, "synchronizedAudioText") ;
+            const isPrintPageNumbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
+            const isLongDescription = findStrInArray(a11y_accessibilityFeature, "longDescription");
+            const isTableOfContents = findStrInArray(a11y_accessibilityFeature, "tableOfContents");
+            const isReadingOrders = findStrInArray(a11y_accessibilityFeature, "readingOrder");
+            const isAlternativeText = findStrInArray(a11y_accessibilityFeature, "alternativeText");
+
+            return (isDisplayTransformability
+                || isSynchronizedAudioText
+                || isPrintPageNumbers
+                || isLongDescription
+                || isTableOfContents
+                || isReadingOrders
+                || isAlternativeText) ? <>
+                {isDisplayTransformability ? <li>{__("publication.accessibility.accessibilityFeature.displayTransformability")}</li> : <></>}
+                {isSynchronizedAudioText ? <li>{__("publication.accessibility.accessibilityFeature.synchronizedAudioText")}</li> : <></>}
+                {isLongDescription ? <li>{__("publication.accessibility.accessibilityFeature.longDescription")}</li> : <></>}
+                {/* {isTableOfContents ? <p>{__("publication.accessibility.accessibilityFeature.tableOfContents")}</p> : <></>} */}
+                {/* {isReadingOrders ? <p>{__("publication.accessibility.accessibilityFeature.readingOrder")}</p> : <></>} */}
+                {/* {isAlternativeText ? <p>{__("publication.accessibility.accessibilityFeature.alternativeText")}</p> : <></>} */}
+            </> : undefined;
+        })();
+
         const AccessibilityConformsTo = (() => {
 
-            if (!Array.isArray(a11y_conformsTo) || a11y_conformsTo[0]) return undefined;
-            return <p>a11y_conformsTo[0]</p>;
+            if (!(Array.isArray(a11y_conformsTo) && a11y_conformsTo[0])) return undefined;
+            return <li>{a11y_conformsTo[0]}</li>;
         })();
 
         const AccessibilityConformanceReport = (() => {
 
-            if (!Array.isArray(a11y_certifierReport) || a11y_certifierReport[0]) return undefined;
-            return <p>a11y_certifierReport[0]</p>; // url !?
+            if (!(Array.isArray(a11y_certifierReport) && a11y_certifierReport[0])) return undefined;
+            return <li>{a11y_certifierReport[0]}</li>; // url !?
         })();
 
-        return (AccessModeSufficient || AccessibilityFeature || AccessibilityHazard) ? <>
-            <div>
-                {AccessibilityFeature ? AccessibilityFeature : <></>}
+        return (AccessModeSufficient || AccessibilityHazard) ? <>
+            <ul style={{ listStyleType: "none" }}>
                 {AccessModeSufficient ? AccessModeSufficient : <></>}
                 {AccessibilityHazard ? AccessibilityHazard : <></>}
-            </div>
+                {AccessibilityFeatureIsprintPageNumber ? AccessibilityFeatureIsprintPageNumber : <></>}
+            </ul>
             <div>
 
                 <details>
                     <summary>{__("publication.accessibility.moreInformation")}</summary>
                     <ul style={{ listStyleType: "none" }}>
-                        <li>{AccessibilityConformsTo}</li>
-                        <li>{AccessibilityConformanceReport}</li>
+                        {AccessibilityFeature ? AccessibilityFeature : <></>}
+                        {AccessibilityConformsTo ? <li>{AccessibilityConformsTo}</li> : <></>}
+                        {AccessibilityConformanceReport ? <li>{AccessibilityConformanceReport}</li> : <></>}
                         {AccessibiltySummary}
                     </ul>
                 </details>
