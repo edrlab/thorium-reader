@@ -480,6 +480,9 @@ declare namespace typed_i18n {
       readonly "sound": string,
       readonly "unknown": string
     },
+    readonly "conformsTo": string,
+    readonly "certifierReport": string,
+    readonly "link": string,
     readonly "moreInformation": string,
     readonly "name": string,
     readonly "noA11y": string
@@ -533,6 +536,9 @@ declare namespace typed_i18n {
     readonly "sound": string,
     readonly "unknown": string
   },
+  readonly "conformsTo": string,
+  readonly "certifierReport": string,
+  readonly "link": string,
   readonly "moreInformation": string,
   readonly "name": string,
   readonly "noA11y": string
@@ -579,6 +585,9 @@ declare namespace typed_i18n {
   (_: "publication.accessibility.accessibilityHazard.simulation", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.sound", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.unknown", __?: {}): string;
+  (_: "publication.accessibility.conformsTo", __?: {}): string;
+  (_: "publication.accessibility.certifierReport", __?: {}): string;
+  (_: "publication.accessibility.link", __?: {}): string;
   (_: "publication.accessibility.moreInformation", __?: {}): string;
   (_: "publication.accessibility.name", __?: {}): string;
   (_: "publication.accessibility.noA11y", __?: {}): string;

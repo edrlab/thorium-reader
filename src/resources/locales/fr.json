@@ -230,6 +230,9 @@
                 "sound": "Son",
                 "unknown": "Inconnu"
             },
+            "conformsTo": "Conforme à :",
+            "certifierReport": "Certificat :",
+            "link": "Lien vers le certificat",
             "moreInformation": "Plus d'information",
             "name": "Accessibilité",
             "noA11y": "Aucune information d'accessibilité disponible"

@@ -16,6 +16,7 @@ import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { convertMultiLangStringToString } from "readium-desktop/renderer/common/language-string";
 import { TranslatorProps, withTranslator } from "../../hoc/translator";
+import isURL from "validator/lib/isURL";
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationA11y");
 debug("_");
@@ -197,17 +198,32 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
         const AccessibilityConformsTo = (() => {
 
             if (!(Array.isArray(a11y_conformsTo) && a11y_conformsTo[0])) return undefined;
-            return <a href={a11y_conformsTo[0]}>{a11y_conformsTo[0]}</a>;
+            const value = a11y_conformsTo[0];
+            if (isURL(value)) {
+                const label = value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"
+                ? "EPUB Accessibility 1.0 - WCAG 2.0 Level A"
+                : value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"
+                ? "EPUB Accessibility 1.0 - WCAG 2.0 Level AA"
+                : value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"
+                ? "EPUB Accessibility 1.0 - WCAG 2.0 Level AAA"
+                : value;
+                return <li>{__("publication.accessibility.conformsTo")} {label}</li>;
+            }
+            return <li>{__("publication.accessibility.conformsTo")} {value}</li>;
         })();
 
         const AccessibilityConformanceReport = (() => {
 
             if (!(Array.isArray(a11y_certifierReport) && a11y_certifierReport[0])) return undefined;
-            return <a href={a11y_certifierReport[0]}>{a11y_certifierReport[0]}</a>;
+            const value = a11y_certifierReport[0];
+            if (isURL(value)) {
+                return <li>{__("publication.accessibility.certifierReport")} <a href={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.link")}</a></li>;
+            }
+            return <li>{__("publication.accessibility.certifierReport")} {value}</li>;
         })();
 
         return (AccessModeSufficient || AccessibilityHazard) ? <>
-            <ul style={{ listStyleType: "none" }}>
+            <ul>
                 {AccessModeSufficient ? AccessModeSufficient : <></>}
                 {AccessibilityFeatureIsprintPageNumber ? AccessibilityFeatureIsprintPageNumber : <></>}
                 {AccessibilityFeatureIsDisplayTransformability ? AccessibilityFeatureIsDisplayTransformability : <></>}
@@ -218,10 +234,10 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
                 <details>
                     <summary>{__("publication.accessibility.moreInformation")}</summary>
-                    <ul style={{ listStyleType: "none" }}>
+                    <ul>
                         {AccessibilityFeature ? AccessibilityFeature : <></>}
-                        {AccessibilityConformsTo ? <li>{AccessibilityConformsTo}</li> : <></>}
-                        {AccessibilityConformanceReport ? <li>{AccessibilityConformanceReport}</li> : <></>}
+                        {AccessibilityConformsTo ? AccessibilityConformsTo : <></>}
+                        {AccessibilityConformanceReport ? AccessibilityConformanceReport : <></>}
                         {AccessibiltySummary}
                     </ul>
                 </details>
