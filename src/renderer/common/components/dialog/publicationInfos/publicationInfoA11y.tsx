@@ -197,13 +197,13 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
         const AccessibilityConformsTo = (() => {
 
             if (!(Array.isArray(a11y_conformsTo) && a11y_conformsTo[0])) return undefined;
-            return <li>{a11y_conformsTo[0]}</li>;
+            return <a href={a11y_conformsTo[0]}>{a11y_conformsTo[0]}</a>;
         })();
 
         const AccessibilityConformanceReport = (() => {
 
             if (!(Array.isArray(a11y_certifierReport) && a11y_certifierReport[0])) return undefined;
-            return <li>{a11y_certifierReport[0]}</li>; // url !?
+            return <a href={a11y_certifierReport[0]}>{a11y_certifierReport[0]}</a>;
         })();
 
         return (AccessModeSufficient || AccessibilityHazard) ? <>
