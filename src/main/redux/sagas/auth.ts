@@ -601,10 +601,10 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         links,
         labels,
         logo,
-        nonce: typeof authentication.AdditionalJSON.nonce === "string" ? authentication.AdditionalJSON.nonce : undefined,
-        algorithm: typeof authentication.AdditionalJSON.algorithm === "string" ? authentication.AdditionalJSON.algorithm : undefined,
-        qop: typeof authentication.AdditionalJSON.qop === "string" ? authentication.AdditionalJSON.qop : undefined,
-        realm: typeof authentication.AdditionalJSON.realm === "string" ? authentication.AdditionalJSON.realm : "", // mapping to title in opdsAuthentication json
+        nonce: typeof authentication.AdditionalJSON?.nonce === "string" ? authentication.AdditionalJSON.nonce : undefined,
+        algorithm: typeof authentication.AdditionalJSON?.algorithm === "string" ? authentication.AdditionalJSON.algorithm : undefined,
+        qop: typeof authentication.AdditionalJSON?.qop === "string" ? authentication.AdditionalJSON.qop : undefined,
+        realm: typeof authentication.AdditionalJSON?.realm === "string" ? authentication.AdditionalJSON.realm : "", // mapping to title in opdsAuthentication json
     };
 }
 
