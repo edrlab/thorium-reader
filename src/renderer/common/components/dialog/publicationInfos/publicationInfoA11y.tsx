@@ -162,25 +162,31 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
             return isPrintPageNumbers ? <li>{__("publication.accessibility.accessibilityFeature.printPageNumbers")}</li> : undefined;
 
         })();
+        const AccessibilityFeatureIsDisplayTransformability = (() => {
+
+            const isDisplayTransformability = findStrInArray(a11y_accessibilityFeature, "displayTransformability");
+            return isDisplayTransformability ? <li>{__("publication.accessibility.accessibilityFeature.displayTransformability")}</li> : undefined;
+
+        })();
+        const AccessibilityFeatureIsSynchronizedAudioText = (() => {
+
+            const isSynchronizedAudioText = findStrInArray(a11y_accessibilityFeature, "synchronizedAudioText") ;
+            return isSynchronizedAudioText ? <li>{__("publication.accessibility.accessibilityFeature.synchronizedAudioText")}</li> : undefined;
+
+        })();
 
         const AccessibilityFeature = (() => {
-            const isDisplayTransformability = findStrInArray(a11y_accessibilityFeature, "displayTransformability");
-            const isSynchronizedAudioText = findStrInArray(a11y_accessibilityFeature, "synchronizedAudioText") ;
-            const isPrintPageNumbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
             const isLongDescription = findStrInArray(a11y_accessibilityFeature, "longDescription");
-            const isTableOfContents = findStrInArray(a11y_accessibilityFeature, "tableOfContents");
-            const isReadingOrders = findStrInArray(a11y_accessibilityFeature, "readingOrder");
-            const isAlternativeText = findStrInArray(a11y_accessibilityFeature, "alternativeText");
+            // const isTableOfContents = findStrInArray(a11y_accessibilityFeature, "tableOfContents");
+            // const isReadingOrders = findStrInArray(a11y_accessibilityFeature, "readingOrder");
+            // const isAlternativeText = findStrInArray(a11y_accessibilityFeature, "alternativeText");
 
-            return (isDisplayTransformability
-                || isSynchronizedAudioText
-                || isPrintPageNumbers
-                || isLongDescription
-                || isTableOfContents
-                || isReadingOrders
-                || isAlternativeText) ? <>
-                {isDisplayTransformability ? <li>{__("publication.accessibility.accessibilityFeature.displayTransformability")}</li> : <></>}
-                {isSynchronizedAudioText ? <li>{__("publication.accessibility.accessibilityFeature.synchronizedAudioText")}</li> : <></>}
+            return (
+                isLongDescription
+                // || isTableOfContents
+                // || isReadingOrders
+                // || isAlternativeText
+            ) ? <>
                 {isLongDescription ? <li>{__("publication.accessibility.accessibilityFeature.longDescription")}</li> : <></>}
                 {/* {isTableOfContents ? <p>{__("publication.accessibility.accessibilityFeature.tableOfContents")}</p> : <></>} */}
                 {/* {isReadingOrders ? <p>{__("publication.accessibility.accessibilityFeature.readingOrder")}</p> : <></>} */}
@@ -203,8 +209,10 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
         return (AccessModeSufficient || AccessibilityHazard) ? <>
             <ul style={{ listStyleType: "none" }}>
                 {AccessModeSufficient ? AccessModeSufficient : <></>}
-                {AccessibilityHazard ? AccessibilityHazard : <></>}
                 {AccessibilityFeatureIsprintPageNumber ? AccessibilityFeatureIsprintPageNumber : <></>}
+                {AccessibilityFeatureIsDisplayTransformability ? AccessibilityFeatureIsDisplayTransformability : <></>}
+                {AccessibilityFeatureIsSynchronizedAudioText ? AccessibilityFeatureIsSynchronizedAudioText : <></>}
+                {AccessibilityHazard ? AccessibilityHazard : <></>}
             </ul>
             <div>
 
