@@ -118,6 +118,7 @@ declare namespace typed_i18n {
   readonly "format": string,
   readonly "lang": string,
   readonly "lastRead": string,
+  readonly "moreInfo": string,
   readonly "myBooks": string,
   readonly "noPublicationHelpL1": string,
   readonly "noPublicationHelpL2": string,
@@ -189,6 +190,7 @@ declare namespace typed_i18n {
   (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
+  (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
   (_: "catalog.noPublicationHelpL1", __?: {}): string;
   (_: "catalog.noPublicationHelpL2", __?: {}): string;
@@ -454,6 +456,34 @@ declare namespace typed_i18n {
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "publication", __?: {}): {
+  readonly "accessibility": {
+    readonly "accessModeSufficient": { readonly "textual": string },
+    readonly "accessibilityFeature": {
+      readonly "alternativeText": string,
+      readonly "displayTransformability": string,
+      readonly "longDescription": string,
+      readonly "printPageNumbers": string,
+      readonly "readingOrder": string,
+      readonly "synchronizedAudioText": string,
+      readonly "tableOfContents": string
+    },
+    readonly "accessibilityHazard": {
+      readonly "flashing": string,
+      readonly "motion": string,
+      readonly "name": string,
+      readonly "noFlashing": string,
+      readonly "noMotion": string,
+      readonly "noSimulation": string,
+      readonly "noSound": string,
+      readonly "none": string,
+      readonly "simulation": string,
+      readonly "sound": string,
+      readonly "unknown": string
+    },
+    readonly "moreInformation": string,
+    readonly "name": string,
+    readonly "noA11y": string
+  },
   readonly "audio": { readonly "tracks": string },
   readonly "author": string,
   readonly "cancelledLcp": string,
@@ -476,38 +506,82 @@ declare namespace typed_i18n {
   readonly "revokedLcp": string,
   readonly "seeLess": string,
   readonly "seeMore": string,
-  readonly "moreInfo": string,
   readonly "title": string,
-  readonly "userKeyCheckInvalid": string,
-  readonly "accessibility": {
-    readonly "name": string,
-    readonly "moreInformation": string,
-    readonly "accessModeSufficient": { readonly "textual": string },
-    readonly "accessibilityFeature": {
-      readonly "displayTransformability": string,
-      readonly "synchronizedAudioText": string,
-      readonly "printPageNumbers": string,
-      readonly "longDescription": string,
-      readonly "tableOfContents": string,
-      readonly "readingOrder": string,
-      readonly "alternativeText": string
-    },
-    readonly "accessibilityHazard": {
-      readonly "name": string,
-      readonly "flashing": string,
-      readonly "motion": string,
-      readonly "simulation": string,
-      readonly "sound": string,
-      readonly "noFlashing": string,
-      readonly "noMotion": string,
-      readonly "noSimulation": string,
-      readonly "noSound": string,
-      readonly "none": string,
-      readonly "unknown": string
-    },
-    readonly "noA11y": string
-  }
+  readonly "userKeyCheckInvalid": string
 };
+  (_: "publication.accessibility", __?: {}): {
+  readonly "accessModeSufficient": { readonly "textual": string },
+  readonly "accessibilityFeature": {
+    readonly "alternativeText": string,
+    readonly "displayTransformability": string,
+    readonly "longDescription": string,
+    readonly "printPageNumbers": string,
+    readonly "readingOrder": string,
+    readonly "synchronizedAudioText": string,
+    readonly "tableOfContents": string
+  },
+  readonly "accessibilityHazard": {
+    readonly "flashing": string,
+    readonly "motion": string,
+    readonly "name": string,
+    readonly "noFlashing": string,
+    readonly "noMotion": string,
+    readonly "noSimulation": string,
+    readonly "noSound": string,
+    readonly "none": string,
+    readonly "simulation": string,
+    readonly "sound": string,
+    readonly "unknown": string
+  },
+  readonly "moreInformation": string,
+  readonly "name": string,
+  readonly "noA11y": string
+};
+  (_: "publication.accessibility.accessModeSufficient", __?: {}): { readonly "textual": string };
+  (_: "publication.accessibility.accessModeSufficient.textual", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature", __?: {}): {
+  readonly "alternativeText": string,
+  readonly "displayTransformability": string,
+  readonly "longDescription": string,
+  readonly "printPageNumbers": string,
+  readonly "readingOrder": string,
+  readonly "synchronizedAudioText": string,
+  readonly "tableOfContents": string
+};
+  (_: "publication.accessibility.accessibilityFeature.alternativeText", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.displayTransformability", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.longDescription", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.printPageNumbers", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.readingOrder", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.synchronizedAudioText", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.tableOfContents", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard", __?: {}): {
+  readonly "flashing": string,
+  readonly "motion": string,
+  readonly "name": string,
+  readonly "noFlashing": string,
+  readonly "noMotion": string,
+  readonly "noSimulation": string,
+  readonly "noSound": string,
+  readonly "none": string,
+  readonly "simulation": string,
+  readonly "sound": string,
+  readonly "unknown": string
+};
+  (_: "publication.accessibility.accessibilityHazard.flashing", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.motion", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.name", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.noFlashing", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.noMotion", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.noSimulation", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.noSound", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.none", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.simulation", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.sound", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.unknown", __?: {}): string;
+  (_: "publication.accessibility.moreInformation", __?: {}): string;
+  (_: "publication.accessibility.name", __?: {}): string;
+  (_: "publication.accessibility.noA11y", __?: {}): string;
   (_: "publication.audio", __?: {}): { readonly "tracks": string };
   (_: "publication.audio.tracks", __?: {}): string;
   (_: "publication.author", __?: {}): string;
@@ -534,82 +608,8 @@ declare namespace typed_i18n {
   (_: "publication.revokedLcp", __?: {}): string;
   (_: "publication.seeLess", __?: {}): string;
   (_: "publication.seeMore", __?: {}): string;
-  (_: "publication.moreInfo", __?: {}): string;
   (_: "publication.title", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
-  (_: "publication.accessibility", __?: {}): {
-  readonly "name": string,
-  readonly "moreInformation": string,
-  readonly "accessModeSufficient": { readonly "textual": string },
-  readonly "accessibilityFeature": {
-    readonly "displayTransformability": string,
-    readonly "synchronizedAudioText": string,
-    readonly "printPageNumbers": string,
-    readonly "longDescription": string,
-    readonly "tableOfContents": string,
-    readonly "readingOrder": string,
-    readonly "alternativeText": string
-  },
-  readonly "accessibilityHazard": {
-    readonly "name": string,
-    readonly "flashing": string,
-    readonly "motion": string,
-    readonly "simulation": string,
-    readonly "sound": string,
-    readonly "noFlashing": string,
-    readonly "noMotion": string,
-    readonly "noSimulation": string,
-    readonly "noSound": string,
-    readonly "none": string,
-    readonly "unknown": string
-  },
-  readonly "noA11y": string
-};
-  (_: "publication.accessibility.name", __?: {}): string;
-  (_: "publication.accessibility.moreInformation", __?: {}): string;
-  (_: "publication.accessibility.accessModeSufficient", __?: {}): { readonly "textual": string };
-  (_: "publication.accessibility.accessModeSufficient.textual", __?: {}): string;
-  (_: "publication.accessibility.accessibilityFeature", __?: {}): {
-  readonly "displayTransformability": string,
-  readonly "synchronizedAudioText": string,
-  readonly "printPageNumbers": string,
-  readonly "longDescription": string,
-  readonly "tableOfContents": string,
-  readonly "readingOrder": string,
-  readonly "alternativeText": string
-};
-  (_: "publication.accessibility.accessibilityFeature.displayTransformability", __?: {}): string;
-  (_: "publication.accessibility.accessibilityFeature.synchronizedAudioText", __?: {}): string;
-  (_: "publication.accessibility.accessibilityFeature.printPageNumbers", __?: {}): string;
-  (_: "publication.accessibility.accessibilityFeature.longDescription", __?: {}): string;
-  (_: "publication.accessibility.accessibilityFeature.tableOfContents", __?: {}): string;
-  (_: "publication.accessibility.accessibilityFeature.readingOrder", __?: {}): string;
-  (_: "publication.accessibility.accessibilityFeature.alternativeText", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard", __?: {}): {
-  readonly "name": string,
-  readonly "flashing": string,
-  readonly "motion": string,
-  readonly "simulation": string,
-  readonly "sound": string,
-  readonly "noFlashing": string,
-  readonly "noMotion": string,
-  readonly "noSimulation": string,
-  readonly "noSound": string,
-  readonly "none": string,
-  readonly "unknown": string
-};
-  (_: "publication.accessibility.accessibilityHazard.name", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.flashing", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.motion", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.simulation", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.sound", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.noFlashing", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.noMotion", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.noSimulation", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.noSound", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.none", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.unknown", __?: {}): string;
-  (_: "publication.accessibility.noA11y", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "footerInfo": {

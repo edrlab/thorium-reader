@@ -206,7 +206,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Texte/images disponibles en vocal & lecteur d'écran supporté"
+                "textual": "Texte et images disponibles en voix de synthèse et braille."
             },
             "accessibilityFeature": {
                 "alternativeText": "Contient un texte alternatif",
@@ -220,7 +220,7 @@
             "accessibilityHazard": {
                 "flashing": "Clignotement",
                 "motion": "Mouvement",
-                "name": "Risque:",
+                "name": "Risque :",
                 "noFlashing": "Pas de clignotement",
                 "noMotion": "Pas de mouvement",
                 "noSimulation": "Pas de simulation",
