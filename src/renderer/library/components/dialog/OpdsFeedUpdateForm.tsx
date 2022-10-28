@@ -75,7 +75,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                 open={true}
                 close={closeDialog}
                 id={stylesModals.opds_form_dialog}
-                title={__("opds.addMenu")}
+                title={__("opds.updateForm.title")}
             >
                 <form className={stylesModals.modal_dialog_form_wrapper}>
                     <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>

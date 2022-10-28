@@ -177,10 +177,10 @@
             "urlPlaceholder": "Link"
         },
         "updateForm": {
-            "updateButton": "Update",
+            "updateButton": "Edit",
             "name": "Name:",
             "namePlaceholder": "Name",
-            "title": "Update an OPDS feed",
+            "title": "Edit an OPDS feed",
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
