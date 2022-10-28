@@ -219,10 +219,10 @@
             },
             "accessibilityHazard": {
                 "flashing": "Flashing",
-                "motionSimulation": "Motion and simulation",
+                "motionSimulation": "Motion simulation",
                 "name": "Hazard:",
                 "noFlashing": "No flashing",
-                "noMotionSimulation": "No motion and simulation",
+                "noMotionSimulation": "No motion simulation",
                 "noSound": "No sound",
                 "none": "None",
                 "simulation": "Simulation",
