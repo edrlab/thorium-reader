@@ -469,11 +469,10 @@ declare namespace typed_i18n {
     },
     readonly "accessibilityHazard": {
       readonly "flashing": string,
-      readonly "motion": string,
+      readonly "motionSimulation": string,
       readonly "name": string,
       readonly "noFlashing": string,
-      readonly "noMotion": string,
-      readonly "noSimulation": string,
+      readonly "noMotionSimulation": string,
       readonly "noSound": string,
       readonly "none": string,
       readonly "simulation": string,
@@ -525,11 +524,10 @@ declare namespace typed_i18n {
   },
   readonly "accessibilityHazard": {
     readonly "flashing": string,
-    readonly "motion": string,
+    readonly "motionSimulation": string,
     readonly "name": string,
     readonly "noFlashing": string,
-    readonly "noMotion": string,
-    readonly "noSimulation": string,
+    readonly "noMotionSimulation": string,
     readonly "noSound": string,
     readonly "none": string,
     readonly "simulation": string,
@@ -563,11 +561,10 @@ declare namespace typed_i18n {
   (_: "publication.accessibility.accessibilityFeature.tableOfContents", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard", __?: {}): {
   readonly "flashing": string,
-  readonly "motion": string,
+  readonly "motionSimulation": string,
   readonly "name": string,
   readonly "noFlashing": string,
-  readonly "noMotion": string,
-  readonly "noSimulation": string,
+  readonly "noMotionSimulation": string,
   readonly "noSound": string,
   readonly "none": string,
   readonly "simulation": string,
@@ -575,11 +572,10 @@ declare namespace typed_i18n {
   readonly "unknown": string
 };
   (_: "publication.accessibility.accessibilityHazard.flashing", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.motion", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.motionSimulation", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.name", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.noFlashing", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.noMotion", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.noSimulation", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.noMotionSimulation", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.noSound", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.none", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.simulation", __?: {}): string;

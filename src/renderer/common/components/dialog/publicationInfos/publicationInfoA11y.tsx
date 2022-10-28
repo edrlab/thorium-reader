@@ -82,33 +82,27 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
         const AccessibilityHazard = (() => {
             const isFlashing = findStrInArray(a11y_accessibilityHazard, "flashing");
-            const isMotion = findStrInArray(a11y_accessibilityHazard, "motion");
-            const isSimulation = findStrInArray(a11y_accessibilityHazard, "simulation");
+            const isMotionSimulation = findStrInArray(a11y_accessibilityHazard, "motionSimulation");
             const isSound = findStrInArray(a11y_accessibilityHazard, "sound");
-            const isNoFlashing = findStrInArray(a11y_accessibilityHazard, "no flashing");
-            const isNoMotion = findStrInArray(a11y_accessibilityHazard, "no motion");
-            const isNoSimulation = findStrInArray(a11y_accessibilityHazard, "no simulation");
-            const isNoSound = findStrInArray(a11y_accessibilityHazard, "no sound");
+            const isNoFlashing = findStrInArray(a11y_accessibilityHazard, "noFlashingHazard");
+            const isNoMotionSimulation = findStrInArray(a11y_accessibilityHazard, "noMotionSimulationHazard");
+            const isNoSound = findStrInArray(a11y_accessibilityHazard, "noSoundHazard");
             const isNone = findStrInArray(a11y_accessibilityHazard, "none");
             const isUnknown = findStrInArray(a11y_accessibilityHazard, "unknown");
 
             return (isFlashing
-            || isMotion
-            || isSimulation
+            || isMotionSimulation
             || isSound
             || isNoFlashing
-            || isNoMotion
-            || isNoSimulation
+            || isNoMotionSimulation
             || isNoSound
             || isNone
             || isUnknown) ? <>
             {isFlashing ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.flashing")}</li> : <></>}
-            {isMotion ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.motion")}</li> : <></>}
-            {isSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.simulation")}</li> : <></>}
+            {isMotionSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.motionSimulation")}</li> : <></>}
             {isSound ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.sound")}</li> : <></>}
             {isNoFlashing ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noFlashing")}</li> : <></>}
-            {isNoMotion ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noMotion")}</li> : <></>}
-            {isNoSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noSimulation")}</li> : <></>}
+            {isNoMotionSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noMotionSimulation")}</li> : <></>}
             {isNoSound ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noSound")}</li> : <></>}
             {isNone ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.none")}</li> : <></>}
             {isUnknown ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.unknown")}</li> : <></>}
