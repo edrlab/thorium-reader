@@ -57,6 +57,10 @@
             "unsorted": "unsorted"
         },
         "delete": "Delete",
+<<<<<<< HEAD
+=======
+        "update": "Edit",
+>>>>>>> b8def3a8a8e2fa1836abe29af0c065a76eb96439
         "deleteBook": "Delete",
         "deleteTag": "Delete the tag",
         "description": "Description",
