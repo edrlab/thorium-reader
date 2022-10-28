@@ -191,29 +191,41 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
         const AccessibilityConformsTo = (() => {
 
-            if (!(Array.isArray(a11y_conformsTo) && a11y_conformsTo[0])) return undefined;
-            const value = a11y_conformsTo[0];
-            if (isURL(value)) {
-                const label = value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"
-                ? "EPUB Accessibility 1.0 - WCAG 2.0 Level A"
-                : value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"
-                ? "EPUB Accessibility 1.0 - WCAG 2.0 Level AA"
-                : value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"
-                ? "EPUB Accessibility 1.0 - WCAG 2.0 Level AAA"
-                : value;
-                return <li>{__("publication.accessibility.conformsTo")} {label}</li>;
-            }
-            return <li>{__("publication.accessibility.conformsTo")} {value}</li>;
+            if (!(Array.isArray(a11y_conformsTo))) return undefined;
+            return <>
+                {
+                    a11y_conformsTo.map((value, i) => {
+                        if (!value) return <></>;
+                        if (isURL(value)) {
+                            const label = value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"
+                                ? "EPUB Accessibility 1.0 - WCAG 2.0 Level A"
+                                : value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"
+                                    ? "EPUB Accessibility 1.0 - WCAG 2.0 Level AA"
+                                    : value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"
+                                        ? "EPUB Accessibility 1.0 - WCAG 2.0 Level AAA"
+                                        : value;
+                            return <li key={i}>{__("publication.accessibility.conformsTo")} {label}</li>;
+                        }
+                        return <li key={i}>{__("publication.accessibility.conformsTo")} {value}</li>;
+                    })
+                }
+            </>;
         })();
 
         const AccessibilityConformanceReport = (() => {
 
-            if (!(Array.isArray(a11y_certifierReport) && a11y_certifierReport[0])) return undefined;
-            const value = a11y_certifierReport[0];
-            if (isURL(value)) {
-                return <li>{__("publication.accessibility.certifierReport")} <a href={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.link")}</a></li>;
-            }
-            return <li>{__("publication.accessibility.certifierReport")} {value}</li>;
+            if (!(Array.isArray(a11y_certifierReport))) return undefined;
+            return <>
+                {
+                    a11y_certifierReport.map((value, i) => {
+                        if (!value) return <></>;
+                        if (isURL(value)) {
+                            return <li key={i}>{__("publication.accessibility.certifierReport")} <a href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.link")}</a></li>;
+                        }
+                        return <li key={i}>{__("publication.accessibility.certifierReport")} {value}</li>;
+                    })
+                }
+            </>;
         })();
 
         return (AccessModeSufficient || AccessibilityHazard) ? <>
