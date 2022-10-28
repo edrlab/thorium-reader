@@ -72,7 +72,7 @@
         "format": "Format",
         "lang": "Language",
         "lastRead": "Last Read",
-        "moreInfo": "More Info",
+        "moreInfo": "Book Details",
         "myBooks": "My books",
         "noPublicationHelpL1": "Drop a publication here",
         "noPublicationHelpL2": "or use the \"+\" button above.",
@@ -213,6 +213,37 @@
         }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "TTS & Screen reader friendly"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Contains alternative text",
+                "displayTransformability": "Adaptable text and layout",
+                "longDescription": "Fully described graphical ressources",
+                "printPageNumbers": "Printed book pagination reference",
+                "readingOrder": "Contains a reading order",
+                "synchronizedAudioText": "Text & audio synchronised",
+                "tableOfContents": "Contains a Table Of Contents"
+            },
+            "accessibilityHazard": {
+                "flashing": "Flashing",
+                "motionSimulation": "Motion simulation",
+                "name": "Hazard:",
+                "noFlashing": "No flashing",
+                "noMotionSimulation": "No motion simulation",
+                "noSound": "No sound",
+                "none": "None",
+                "simulation": "Simulation",
+                "sound": "Sound",
+                "unknown": "Unknown"
+            },
+            "conformsTo": "Conforms to:",
+            "certifierReport": "Certifier report",
+            "moreInformation": "More information",
+            "name": "Accessibility",
+            "noA11y": "No accessibility information available"
+        },
         "audio": {
             "tracks": "Tracks"
         },

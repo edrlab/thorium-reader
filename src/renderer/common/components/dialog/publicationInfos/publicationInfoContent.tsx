@@ -28,6 +28,7 @@ import { FormatPublisherDate } from "./formatPublisherDate";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import PublicationInfoA11y from "./publicationInfoA11y";
 
 export interface IProps {
     publication: TPublication;
@@ -369,12 +370,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             onClickLinkCb={onClikLinkCb}
                         />
                     </section>
-                    <section>
-                        <div className={stylesGlobal.heading}>
-                            <h3>{__("catalog.tags")}</h3>
-                        </div>
-                        <TagManagerComponent />
-                    </section>
+
                     <section>
                         <PublicationInfoDescription publication={publication} __={__} translator={props.translator} />
                     </section>
@@ -434,9 +430,23 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             }
                         </div>
                     </section>
+                    <section>
+                        <div className={stylesGlobal.heading}>
+                            <h3>{__("publication.accessibility.name")}</h3>
+                        </div>
+                        <div>
+                            <PublicationInfoA11y publication={publication}></PublicationInfoA11y>
+                        </div>
+                    </section>
                     {(publication.lcp ? <section>
                         <LcpInfo publicationLcp={publication} />
                     </section> : <></>)}
+                    <section>
+                        <div className={stylesGlobal.heading}>
+                            <h3>{__("catalog.tags")}</h3>
+                        </div>
+                        <TagManagerComponent />
+                    </section>
                     <Progression
                         __={__}
                         closeDialogCb={closeDialogCb}

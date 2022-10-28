@@ -213,6 +213,38 @@
         }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "Texte et images disponibles en voix de synthèse et braille."
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Contient un texte alternatif",
+                "displayTransformability": "Texte et mise en page adaptables",
+                "longDescription": "Ressources graphiques entièrement décrites",
+                "printPageNumbers": "Référence de pagination du livre imprimé",
+                "readingOrder": "Contient un ordre de lecture",
+                "synchronizedAudioText": "Texte et audio synchronisés",
+                "tableOfContents": "Contient une table des matières"
+            },
+            "accessibilityHazard": {
+                "flashing": "Clignotement",
+                "motionSimulation": "simulation de mouvement",
+                "name": "Risque :",
+                "noFlashing": "Pas de clignotement",
+                "noMotion": "Pas de mouvement",
+                "noMotionSimulation": "Pas de simulation de mouvement",
+                "noSound": "Pas de son",
+                "none": "Aucun",
+                "simulation": "Simulation",
+                "sound": "Son",
+                "unknown": "Inconnu"
+            },
+            "conformsTo": "Conforme à :",
+            "certifierReport": "Rapport de conformité",
+            "moreInformation": "Plus d'information",
+            "name": "Accessibilité",
+            "noA11y": "Aucune information d'accessibilité disponible"
+        },
         "audio": {
             "tracks": "Pistes"
         },
