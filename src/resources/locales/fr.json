@@ -231,8 +231,7 @@
                 "unknown": "Inconnu"
             },
             "conformsTo": "Conforme à :",
-            "certifierReport": "Certificat :",
-            "link": "Lien vers le certificat",
+            "certifierReport": "Rapport de conformité",
             "moreInformation": "Plus d'information",
             "name": "Accessibilité",
             "noA11y": "Aucune information d'accessibilité disponible"

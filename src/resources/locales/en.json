@@ -230,8 +230,7 @@
                 "unknown": "Unknown"
             },
             "conformsTo": "Conforms to:",
-            "certifierReport": "Certifier report:",
-            "link": "Link to the certifier report",
+            "certifierReport": "Certifier report",
             "moreInformation": "More information",
             "name": "Accessibility",
             "noA11y": "No accessibility information available"

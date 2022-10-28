@@ -193,7 +193,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                     a11y_certifierReport.map((value, i) => {
                         if (!value) return <></>;
                         if (isURL(value)) {
-                            return <li key={i}>{__("publication.accessibility.certifierReport")} <a href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.link")}</a></li>;
+                            return <li key={i}><a href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.certifierReport")}</a></li>;
                         }
                         return <li key={i}>{__("publication.accessibility.certifierReport")} {value}</li>;
                     })
