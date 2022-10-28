@@ -108,7 +108,8 @@
         "released": "Publié le",
         "sort": "trier par",
         "tagCount": "Nombre de tags",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": "Editer"
     },
     "dialog": {
         "closeModalWindow": "Fermer cette fenêtre modale",
@@ -201,7 +202,15 @@
         },
         "next": "Suivant",
         "previous": "Précédent",
-        "shelf": "Étagère"
+        "shelf": "Étagère",
+        "updateForm": {
+            "name": "Nom :",
+            "namePlaceholder": "Nom",
+            "title": "Editer un flux OPDS",
+            "updateButton": "Editer",
+            "url": "Adresse :",
+            "urlPlaceholder": "Adresse"
+        }
     },
     "publication": {
         "audio": {

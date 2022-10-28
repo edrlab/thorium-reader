@@ -57,7 +57,6 @@
             "unsorted": "unsorted"
         },
         "delete": "Delete",
-        "update": "Update",
         "deleteBook": "Delete",
         "deleteTag": "Delete the tag",
         "description": "Description",
@@ -109,7 +108,8 @@
         "released": "Published on",
         "sort": "Sort by",
         "tagCount": "Tag count",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": "Update"
     },
     "dialog": {
         "closeModalWindow": "Close this modal window",
@@ -176,14 +176,6 @@
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
-        "updateForm": {
-            "updateButton": "Edit",
-            "name": "Name:",
-            "namePlaceholder": "Name",
-            "title": "Edit an OPDS feed",
-            "url": "Link:",
-            "urlPlaceholder": "Link"
-        },
         "addFormApiapp": {
             "title": "Add a library account"
         },
@@ -210,7 +202,15 @@
         },
         "next": "Next",
         "previous": "Previous",
-        "shelf": "Shelf"
+        "shelf": "Shelf",
+        "updateForm": {
+            "name": "Name:",
+            "namePlaceholder": "Name",
+            "title": "Edit an OPDS feed",
+            "updateButton": "Edit",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
+        }
     },
     "publication": {
         "audio": {

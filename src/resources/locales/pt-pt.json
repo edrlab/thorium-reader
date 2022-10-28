@@ -108,7 +108,8 @@
         "released": "Publicado em",
         "sort": "Ordenar por",
         "tagCount": "Contagem de etiquetas",
-        "tags": "Etiquetas"
+        "tags": "Etiquetas",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Fechar esta janela modal",
@@ -201,7 +202,15 @@
         },
         "next": "Seguinte",
         "previous": "Anterior",
-        "shelf": "Estante"
+        "shelf": "Estante",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

@@ -108,7 +108,8 @@
         "released": "Uitgegeven op",
         "sort": "Sorteer op",
         "tagCount": "Label aantal",
-        "tags": "Labels"
+        "tags": "Labels",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Sluit dit modale venster",
@@ -201,7 +202,15 @@
         },
         "next": "Volgende",
         "previous": "Vorige",
-        "shelf": "Plank"
+        "shelf": "Plank",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

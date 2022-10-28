@@ -108,7 +108,8 @@
         "released": "Hemen argitaratua",
         "sort": "Ordenatu honen arabera",
         "tagCount": "Etiketa kopurua",
-        "tags": "Etiketak"
+        "tags": "Etiketak",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Itxi modu-leiho hau",
@@ -201,7 +202,15 @@
         },
         "next": "Hurrengoa",
         "previous": "Aurrekoa",
-        "shelf": "Apala"
+        "shelf": "Apala",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {
