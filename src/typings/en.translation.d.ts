@@ -383,14 +383,6 @@ declare namespace typed_i18n {
     readonly "url": string,
     readonly "urlPlaceholder": string
   },
-  readonly "updateForm": {
-    readonly "updateButton": string,
-    readonly "name": string,
-    readonly "namePlaceholder": string,
-    readonly "title": string,
-    readonly "url": string,
-    readonly "urlPlaceholder": string
-  },
   readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "back": string,
@@ -415,7 +407,15 @@ declare namespace typed_i18n {
   },
   readonly "next": string,
   readonly "previous": string,
-  readonly "shelf": string
+  readonly "shelf": string,
+  readonly "updateForm": {
+    readonly "name": string,
+    readonly "namePlaceholder": string,
+    readonly "title": string,
+    readonly "updateButton": string,
+    readonly "url": string,
+    readonly "urlPlaceholder": string
+  }
 };
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
@@ -431,20 +431,6 @@ declare namespace typed_i18n {
   (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
-  (_: "opds.updateForm", __?: {}): {
-  readonly "updateButton": string,
-  readonly "name": string,
-  readonly "namePlaceholder": string,
-  readonly "title": string,
-  readonly "url": string,
-  readonly "urlPlaceholder": string
-};
-  (_: "opds.updateForm.updateButton", __?: {}): string;
-  (_: "opds.updateForm.name", __?: {}): string;
-  (_: "opds.updateForm.namePlaceholder", __?: {}): string;
-  (_: "opds.updateForm.title", __?: {}): string;
-  (_: "opds.updateForm.url", __?: {}): string;
-  (_: "opds.updateForm.urlPlaceholder", __?: {}): string;
   (_: "opds.addFormApiapp", __?: {}): { readonly "title": string };
   (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
@@ -479,6 +465,20 @@ declare namespace typed_i18n {
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
+  (_: "opds.updateForm", __?: {}): {
+  readonly "name": string,
+  readonly "namePlaceholder": string,
+  readonly "title": string,
+  readonly "updateButton": string,
+  readonly "url": string,
+  readonly "urlPlaceholder": string
+};
+  (_: "opds.updateForm.name", __?: {}): string;
+  (_: "opds.updateForm.namePlaceholder", __?: {}): string;
+  (_: "opds.updateForm.title", __?: {}): string;
+  (_: "opds.updateForm.updateButton", __?: {}): string;
+  (_: "opds.updateForm.url", __?: {}): string;
+  (_: "opds.updateForm.urlPlaceholder", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "audio": { readonly "tracks": string },
   readonly "author": string,
