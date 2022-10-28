@@ -204,12 +204,12 @@
         "previous": "Anterior",
         "shelf": "Estante",
         "updateForm": {
-            "name": "",
-            "namePlaceholder": "",
-            "title": "",
-            "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "name": "Nombre",
+            "namePlaceholder": "Nombre",
+            "title": "Editar catálogo OPDS",
+            "updateButton": "Editar",
+            "url": "Enlace",
+            "urlPlaceholder": "Enlace"
         }
     },
     "publication": {
