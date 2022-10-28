@@ -57,7 +57,7 @@
             "unsorted": "unsorted"
         },
         "delete": "Delete",
-        "update": "Update",
+        "update": "Edit",
         "deleteBook": "Delete",
         "deleteTag": "Delete the tag",
         "description": "Description",
@@ -180,7 +180,7 @@
             "updateButton": "Edit",
             "name": "Name:",
             "namePlaceholder": "Name",
-            "title": "Edit an OPDS feed",
+            "title": "Edit OPDS feed",
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
