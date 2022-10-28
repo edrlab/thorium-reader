@@ -103,13 +103,13 @@
                 "state": "Etat"
             }
         },
-        "publisher": "Editeur",
+        "publisher": "Éditeur",
         "readBook": "Lire",
         "released": "Publié le",
         "sort": "trier par",
         "tagCount": "Nombre de tags",
         "tags": "Tags",
-        "update": "Editer"
+        "update": "Éditer"
     },
     "dialog": {
         "closeModalWindow": "Fermer cette fenêtre modale",
@@ -206,8 +206,8 @@
         "updateForm": {
             "name": "Nom :",
             "namePlaceholder": "Nom",
-            "title": "Editer un flux OPDS",
-            "updateButton": "Editer",
+            "title": "Éditer un flux OPDS",
+            "updateButton": "Éditer",
             "url": "Adresse :",
             "urlPlaceholder": "Adresse"
         }
