@@ -224,19 +224,6 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
         </> : <p>{__("publication.accessibility.noA11y")}</p>;
     }
 
-    private needSeeMoreButton_a11y = () => {
-        if (!this.descriptionWrapperRef_a11y?.current || !this.descriptionRef_a11y?.current) {
-            return;
-        }
-        const need = this.descriptionWrapperRef_a11y.current.offsetHeight < this.descriptionRef_a11y.current.offsetHeight;
-        this.setState({ needSeeMore_a11y: need });
-    };
-
-    private toggleSeeMore_a11y = () =>
-        this.setState({
-            seeMore_a11y: !this.state.seeMore_a11y,
-        });
-
 }
 
 export default withTranslator(PublicationInfoA11y);
