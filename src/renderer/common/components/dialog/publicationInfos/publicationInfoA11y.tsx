@@ -8,8 +8,6 @@
 import classNames from "classnames";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as debug_ from "debug";
 import DOMPurify from "dompurify";
 import * as React from "react";
@@ -28,7 +26,6 @@ interface IProps extends TranslatorProps {
 
 interface IState {
     seeMore_a11y: boolean;
-    needSeeMore_a11y: boolean;
 }
 
 export class PublicationInfoA11y extends React.Component<IProps, IState> {
@@ -44,19 +41,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
         this.state = {
             seeMore_a11y: false,
-            needSeeMore_a11y: false,
         };
-    }
-
-    public componentDidMount() {
-        setTimeout(this.needSeeMoreButton_a11y, 500);
-    }
-
-    public componentDidUpdate(prevProps: IProps) {
-
-        if (this.props.publication !== prevProps.publication) {
-            setTimeout(this.needSeeMoreButton_a11y, 500);
-        }
     }
 
     public render() {
@@ -109,7 +94,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
             </> : undefined;
         })();
 
-        const AccessibiltySummary = (() => {
+        const AccessibilitySummary = (() => {
 
             if (!a11y_accessibilitySummary) return undefined;
 
@@ -125,8 +110,6 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                         ref={this.descriptionWrapperRef_a11y}
                         className={classNames(
                             stylesBookDetailsDialog.descriptionWrapper,
-                            this.state.needSeeMore_a11y && stylesGlobal.mb_30,
-                            this.state.needSeeMore_a11y && stylesBookDetailsDialog.hideEnd,
                             this.state.seeMore_a11y && stylesBookDetailsDialog.seeMore,
                         )}
                     >
@@ -137,16 +120,6 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                         >
                         </div>
                     </div>
-                    {
-                        this.state.needSeeMore_a11y &&
-                        <button aria-hidden className={stylesButtons.button_see_more} onClick={this.toggleSeeMore_a11y}>
-                            {
-                                this.state.seeMore_a11y
-                                    ? __("publication.seeLess")
-                                    : __("publication.seeMore")
-                            }
-                        </button>
-                    }
                 </div>
                 : undefined;
         })();
@@ -244,7 +217,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                         {AccessibilityFeature ? AccessibilityFeature : <></>}
                         {AccessibilityConformsTo ? AccessibilityConformsTo : <></>}
                         {AccessibilityConformanceReport ? AccessibilityConformanceReport : <></>}
-                        {AccessibiltySummary}
+                        {AccessibilitySummary}
                     </ul>
                 </details>
             </div>
