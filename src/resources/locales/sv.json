@@ -108,7 +108,8 @@
         "released": "Publicerad den",
         "sort": "Sortera efter",
         "tagCount": "Antal taggar",
-        "tags": "Taggar"
+        "tags": "Taggar",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Stäng den här dialogrutan",
@@ -201,7 +202,15 @@
         },
         "next": "Nästa",
         "previous": "Föregående",
-        "shelf": "Hylla"
+        "shelf": "Hylla",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

@@ -108,7 +108,8 @@
         "released": "出版日",
         "sort": "並び替え",
         "tagCount": "タグの数",
-        "tags": "タグ"
+        "tags": "タグ",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "このモーダル画面を閉じる",
@@ -201,7 +202,15 @@
         },
         "next": "次へ",
         "previous": "前へ",
-        "shelf": "本棚"
+        "shelf": "本棚",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

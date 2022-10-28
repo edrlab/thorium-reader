@@ -108,7 +108,8 @@
         "released": "Published on",
         "sort": "Sort by",
         "tagCount": "Tag count",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": "Edit"
     },
     "dialog": {
         "closeModalWindow": "Close this modal window",
@@ -201,7 +202,15 @@
         },
         "next": "Next",
         "previous": "Previous",
-        "shelf": "Shelf"
+        "shelf": "Shelf",
+        "updateForm": {
+            "name": "Name:",
+            "namePlaceholder": "Name",
+            "title": "Edit an OPDS feed",
+            "updateButton": "Edit",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
+        }
     },
     "publication": {
         "audio": {

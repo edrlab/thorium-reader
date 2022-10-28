@@ -108,7 +108,8 @@
         "released": "Veröffentlicht am",
         "sort": "Sortieren nach",
         "tagCount": "Anzahl der Tags",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Dieses Fenster schließen",
@@ -201,7 +202,15 @@
         },
         "next": "Nächster",
         "previous": "Bisherige",
-        "shelf": ""
+        "shelf": "",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

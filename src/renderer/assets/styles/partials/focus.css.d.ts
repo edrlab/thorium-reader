@@ -5,8 +5,6 @@ declare const styles: {
   readonly "body_element": string;
   readonly "R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE": string;
   readonly "___DEBUG___PARTIALS_FOCUS_CSS": string;
-  readonly "___DEBUG___PARTIALS_MIXINS_CSS": string;
-  readonly "___DEBUG___PARTIALS_VARIABLES_CSS": string;
 };
 export = styles;
 

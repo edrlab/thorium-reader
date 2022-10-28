@@ -103,12 +103,13 @@
                 "state": "Etat"
             }
         },
-        "publisher": "Editeur",
+        "publisher": "Éditeur",
         "readBook": "Lire",
         "released": "Publié le",
         "sort": "trier par",
         "tagCount": "Nombre de tags",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": "Éditer"
     },
     "dialog": {
         "closeModalWindow": "Fermer cette fenêtre modale",
@@ -201,7 +202,15 @@
         },
         "next": "Suivant",
         "previous": "Précédent",
-        "shelf": "Étagère"
+        "shelf": "Étagère",
+        "updateForm": {
+            "name": "Nom :",
+            "namePlaceholder": "Nom",
+            "title": "Éditer un flux OPDS",
+            "updateButton": "Éditer",
+            "url": "Adresse :",
+            "urlPlaceholder": "Adresse"
+        }
     },
     "publication": {
         "audio": {

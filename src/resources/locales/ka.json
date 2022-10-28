@@ -108,7 +108,8 @@
         "released": "გამოცემის თარიღი",
         "sort": "დალაგება",
         "tagCount": "იარლიყების რაოდენობა",
-        "tags": "იარლიყები"
+        "tags": "იარლიყები",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "მოდალური ფანჯრის დახურვა",
@@ -201,7 +202,15 @@
         },
         "next": "მომდევნო",
         "previous": "წინა",
-        "shelf": "თარო"
+        "shelf": "თარო",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

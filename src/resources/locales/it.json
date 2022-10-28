@@ -108,7 +108,8 @@
         "released": "Pubblicato il",
         "sort": "Ordina per",
         "tagCount": "Contatore Tag",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Chiudi questa finestra modale",
@@ -201,7 +202,15 @@
         },
         "next": "Prossimo",
         "previous": "Precedente",
-        "shelf": "Mensola"
+        "shelf": "Mensola",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

@@ -108,7 +108,8 @@
         "released": "발행일",
         "sort": "정렬 기준",
         "tagCount": "태그 개수",
-        "tags": "태그"
+        "tags": "태그",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "모달 창 닫기",
@@ -201,7 +202,15 @@
         },
         "next": "다음",
         "previous": "이전",
-        "shelf": "책꽂이"
+        "shelf": "책꽂이",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

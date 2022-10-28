@@ -108,7 +108,8 @@
         "released": "出版日期",
         "sort": "排序方式",
         "tagCount": "标签数",
-        "tags": "标签"
+        "tags": "标签",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "关闭此模式窗口",
@@ -201,7 +202,15 @@
         },
         "next": "下一个",
         "previous": "上一个",
-        "shelf": "书架"
+        "shelf": "书架",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

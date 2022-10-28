@@ -13,7 +13,6 @@ declare const styles: {
   readonly "field": string;
   readonly "add_dialog": string;
   readonly "___DEBUG___COMPONENTS_MODALS_CSS": string;
-  readonly "___DEBUG___PARTIALS_VARIABLES_CSS": string;
 };
 export = styles;
 

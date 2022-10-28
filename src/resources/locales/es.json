@@ -108,7 +108,8 @@
         "released": "Publicado en",
         "sort": "Ordenar por",
         "tagCount": "Número de etiquetas",
-        "tags": "Etiquetas"
+        "tags": "Etiquetas",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Cerrar esta ventana modal",
@@ -201,7 +202,15 @@
         },
         "next": "Siguiente",
         "previous": "Anterior",
-        "shelf": "Estante"
+        "shelf": "Estante",
+        "updateForm": {
+            "name": "Nombre",
+            "namePlaceholder": "Nombre",
+            "title": "Editar catálogo OPDS",
+            "updateButton": "Editar",
+            "url": "Enlace",
+            "urlPlaceholder": "Enlace"
+        }
     },
     "publication": {
         "audio": {

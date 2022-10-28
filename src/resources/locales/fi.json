@@ -108,7 +108,8 @@
         "released": "Julkaistu",
         "sort": "Järjestä",
         "tagCount": "Tunnistemäärä",
-        "tags": "Tunnisteet"
+        "tags": "Tunnisteet",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Sulje tämä ikkuna",
@@ -201,7 +202,15 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
-        "shelf": "Hylly"
+        "shelf": "Hylly",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

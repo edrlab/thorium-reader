@@ -108,7 +108,8 @@
         "released": "Išleidimo data",
         "sort": "Rikiuoti pagal",
         "tagCount": "Žymių skaičius",
-        "tags": "Žymės"
+        "tags": "Žymės",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Užverti šį modalinį langą",
@@ -201,7 +202,15 @@
         },
         "next": "Tolesnis",
         "previous": "Ankstesnis",
-        "shelf": "Lentyna"
+        "shelf": "Lentyna",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

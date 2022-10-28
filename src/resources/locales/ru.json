@@ -108,7 +108,8 @@
         "released": "Дата издания",
         "sort": "Сортировать по",
         "tagCount": "Количество тегов",
-        "tags": "Теги"
+        "tags": "Теги",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Закрыть это модальное окно",
@@ -201,7 +202,15 @@
         },
         "next": "Следующая",
         "previous": "Прошлая",
-        "shelf": "Полка"
+        "shelf": "Полка",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {

@@ -114,6 +114,28 @@
   background: rgba(255, 255, 255, 0);
   transition: all 0.2s;
   cursor: pointer;
+  margin-right: 0 !important;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.block_full_update {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  color: #fff;
+  fill: #fff;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0);
+  transition: all 0.2s;
+  cursor: pointer;
+
+  & svg {
+    transform: scale(0.8);
+  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.2);

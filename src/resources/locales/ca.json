@@ -108,7 +108,8 @@
         "released": "Publicat en",
         "sort": "Ordenar per",
         "tagCount": "Número d'etiquetes",
-        "tags": "Etiquetes"
+        "tags": "Etiquetes",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Tancar aquesta finestra modal",
@@ -201,7 +202,15 @@
         },
         "next": "Següent",
         "previous": "Anterior",
-        "shelf": "Prestatge"
+        "shelf": "Prestatge",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
         "audio": {
