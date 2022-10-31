@@ -109,7 +109,7 @@
         "sort": "Rikiuoti pagal",
         "tagCount": "Žymių skaičius",
         "tags": "Žymės",
-        "update": ""
+        "update": "Keisti"
     },
     "dialog": {
         "closeModalWindow": "Užverti šį modalinį langą",
@@ -204,44 +204,42 @@
         "previous": "Ankstesnis",
         "shelf": "Lentyna",
         "updateForm": {
-            "name": "",
-            "namePlaceholder": "",
-            "title": "",
-            "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "name": "Pavadinimas:",
+            "title": "Keisti OPDS sklaidos kanalą",
+            "updateButton": "Keisti",
+            "url": "Nuoroda:"
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "Tinka įgarsinimui ir ekrano skaitytuvėms"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "Yra alternatyvusis tekstas",
+                "displayTransformability": "Galima keisti teksto dydį ir išdėstymą",
+                "longDescription": "Pilnai aprašyti grafikos ištekliai",
+                "printPageNumbers": "Spausdintinės knygos puslapių nuorodos",
+                "readingOrder": "Yra sudaryta skaitymo tvarka",
+                "synchronizedAudioText": "Sinchronizuotas tekstas ir garsas",
+                "tableOfContents": "Yra turinys"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "Blykčiojimas",
+                "motionSimulation": "Judesių imitavimas",
+                "name": "Rizika:",
+                "noFlashing": "Be blykčiojimo",
+                "noMotionSimulation": "Be judesių imitavimo",
+                "noSound": "Be garso",
+                "none": "Nėra",
+                "sound": "Garsas",
+                "unknown": "Nežinoma"
             },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "certifierReport": "Patikrinimo ataskaita",
+            "conformsTo": "Atitinka:",
+            "moreInformation": "Daugiau informacijos",
+            "name": "Prieinamumas",
+            "noA11y": "Nėra informacijos apie prieinamumą"
         },
         "audio": {
             "tracks": "Takeliai"
