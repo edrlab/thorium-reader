@@ -72,7 +72,7 @@
         "format": "Formato",
         "lang": "Idioma",
         "lastRead": "Último leído",
-        "moreInfo": "Más información",
+        "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
         "noPublicationHelpL2": "o usa el botón \"+\" de arriba.",
@@ -109,7 +109,7 @@
         "sort": "Ordenar por",
         "tagCount": "Número de etiquetas",
         "tags": "Etiquetas",
-        "update": ""
+        "update": "Editar"
     },
     "dialog": {
         "closeModalWindow": "Cerrar esta ventana modal",
@@ -215,33 +215,34 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "Amigable con síntesis de voz y lectores de pantalla"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "Contiene alternativas de texto",
+                "displayTransformability": "Texto y diseño adaptables",
+                "longDescription": "Descripciones completas para recursos gráficos",
+                "printPageNumbers": "Referencia a la paginación del libro impreso",
+                "readingOrder": "Contiene orden de lectura",
+                "synchronizedAudioText": "Texto y audio sincronizados",
+                "tableOfContents": "Incluye tabla de contenido"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "Destellos",
+                "motionSimulation": "Animaciones",
+                "name": "Riesgos:",
+                "noFlashing": "Sin destellos",
+                "noMotionSimulation": "Sin animaciones",
+                "noSound": "Sin sonidos",
+                "none": "Ninguno",
+                "simulation": "Efectos de simulación",
+                "sound": "Sonidos",
+                "unknown": "Desconocidos"
             },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "conformsTo": "Conforme con",
+            "certifierReport": "Informe de la entidad certificadora",
+            "moreInformation": "Más información",
+            "name": "Accesibilidad",
+            "noA11y": "No hay disponible información sobre accesibilidad"
         },
         "audio": {
             "tracks": "Pistas"
@@ -317,8 +318,8 @@
             "goToError": "Este salto de página no existe",
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
-            "historyNext": "",
-            "historyPrevious": "",
+            "historyNext": "Avanzar",
+            "historyPrevious": "Retroceder",
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",
