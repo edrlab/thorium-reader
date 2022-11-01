@@ -11,7 +11,7 @@
         "toolbar": "工具欄"
     },
     "apiapp": {
-        "noLibraryFound": ""
+        "noLibraryFound": "未找到套件庫 ({{- name}})"
     },
     "app": {
         "edit": {
@@ -32,7 +32,7 @@
                         "no": "否",
                         "yes": "是"
                     },
-                    "message": "是否保存當前連線?",
+                    "message": "是否保存當前連線？",
                     "title": "保存連線"
                 }
             }
@@ -49,7 +49,7 @@
         "addBookToLib": "匯入",
         "addTags": "添加標籤",
         "addTagsButton": "添加",
-        "allBooks": "全部圖書",
+        "allBooks": "全部書籍",
         "bookInfo": "關於此書",
         "column": {
             "ascending": "升冪",
@@ -57,27 +57,27 @@
             "unsorted": "亂序"
         },
         "delete": "刪除",
-        "deleteBook": "刪除",
+        "deleteBook": "刪除書籍",
         "deleteTag": "刪除標籤",
         "description": "概要",
         "emptyTagList": "尚無帶標籤電子書",
         "entry": {
             "continueReading": "繼續閱讀",
             "continueReadingAudioBooks": "繼續聽讀",
-            "continueReadingDivina": "繼續閱讀divina",
-            "continueReadingPdf": "繼續閱讀PDF",
+            "continueReadingDivina": "繼續閱讀 divina",
+            "continueReadingPdf": "繼續閱讀 PDF",
             "lastAdditions": "最近添加"
         },
-        "export": "導出",
-        "format": "",
+        "export": "匯出",
+        "format": "格式",
         "lang": "語言",
-        "lastRead": "",
+        "lastRead": "最後閱讀",
         "moreInfo": "更多訊息",
-        "myBooks": "我的圖書",
-        "noPublicationHelpL1": "拖放EPUB至此處。",
+        "myBooks": "我的書籍",
+        "noPublicationHelpL1": "拖放 EPUB 至此處。",
         "noPublicationHelpL2": "或者使用上面的\"+\"按鈕。",
-        "noPublicationHelpL3": "支持受LCP保護的文件。",
-        "noPublicationHelpL4": "支持的副檔名:",
+        "noPublicationHelpL3": "支援受 LCP 保護的文件。",
+        "noPublicationHelpL4": "支援的副檔名：",
         "numberOfPages": "頁碼",
         "opds": {
             "auth": {
@@ -109,29 +109,29 @@
         "sort": "排序方式",
         "tagCount": "標籤數",
         "tags": "標籤",
-        "update": ""
+        "update": "編輯"
     },
     "dialog": {
-        "closeModalWindow": "關閉此模式窗口",
+        "closeModalWindow": "關閉此模式視窗",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
-        "deletePublication": "你真的要刪除此出版物嗎?",
-        "import": "你真的要匯入這些文件嗎:",
-        "importError": "出現錯誤, 請確認文件的副檔名({{acceptedExtension}})",
+        "deletePublication": "你真的要刪除此出版物嗎？",
+        "import": "你真的要匯入這些文件嗎：",
+        "importError": "出現錯誤，請確認文件的副檔名({{acceptedExtension}})",
         "no": "否",
-        "renew": "你真的要更新此出版物的許可證嗎?",
-        "return": "你真的要歸還此出版物的許可證嗎?",
+        "renew": "你真的要更新此出版物的許可證嗎？",
+        "return": "你真的要歸還此出版物的許可證嗎？",
         "yes": "是"
     },
     "error": {
         "errorBox": {
-            "error": "錯誤訊息:",
-            "message": "{{- filename}}出現錯誤",
-            "title": "內部{{- appName}}錯誤"
+            "error": "錯誤訊息：",
+            "message": "{{- filename}} 出現錯誤",
+            "title": "內部 {{- appName}} 錯誤"
         }
     },
     "header": {
-        "allBooks": "全部圖書",
-        "books": "我的圖書",
+        "allBooks": "全部書籍",
+        "books": "我的書籍",
         "catalogs": "出版目錄",
         "downloads": "下載",
         "gridTitle": "網格視圖",
@@ -149,7 +149,7 @@
             "cancel": "取消",
             "hint": "(提示: {{- hint}})",
             "password": "密碼",
-            "sentence": "打開此出版物需要LCP密碼: ",
+            "sentence": "打開此出版物需要 LCP 密碼: ",
             "submit": "提交",
             "urlHint": "忘記密碼？在此取得幫助"
         }
@@ -170,14 +170,14 @@
     "opds": {
         "addForm": {
             "addButton": "添加",
-            "name": "名稱:",
+            "name": "名稱：",
             "namePlaceholder": "名稱",
             "title": "添加 OPDS 訂閱來源",
-            "url": "連結:",
+            "url": "連結：",
             "urlPlaceholder": "連結"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "新增書城帳號"
         },
         "addMenu": "添加 OPDS 訂閱來源",
         "back": "返回",
@@ -197,51 +197,52 @@
             "error": "無法訪問 OPDS 訂閱來源",
             "noInternet": "未連線至網際網路",
             "noInternetMessage": "請重新嘗試: 檢查網路連線",
-            "reject": "抱歉, 處理 OPDS 訂閱來源時出現意外錯誤",
-            "timeout": "網路連線超時, 請稍後重試"
+            "reject": "抱歉，處理 OPDS 訂閱來源時出現意外錯誤",
+            "timeout": "網路連線超時，請稍後重試"
         },
         "next": "下一個",
         "previous": "上一個",
         "shelf": "書架",
         "updateForm": {
-            "name": "",
-            "namePlaceholder": "",
-            "title": "",
-            "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "name": "名稱：",
+            "namePlaceholder": "名稱：",
+            "title": "編輯 OPDS 的 feed",
+            "updateButton": "編輯",
+            "url": "連結：",
+            "urlPlaceholder": "連結"
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "TTS 和閱讀器友好"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "包含替代文字",
+                "displayTransformability": "可調整的文字和布局",
+                "longDescription": "完整描述的圖片資源",
+                "printPageNumbers": "印刷書籍分頁參考",
+                "readingOrder": "包含閱讀順序",
+                "synchronizedAudioText": "文字和聲音同步",
+                "tableOfContents": "包含目錄"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "閃爍",
+                "motionSimulation": "動作模擬",
+                "name": "危險：",
+                "noFlashing": "不閃爍",
+                "noMotionSimulation": "沒有動作模擬",
+                "noSound": "沒有聲音",
+                "none": "無",
+                "simulation": "模擬",
+                "sound": "聲音",
+                "unknown": "未知"
             },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "conformsTo": "符合：",
+            "certifierReport": "證明者報告",
+            "moreInformation": "更多資訊",
+            "name": "無障礙",
+            "noA11y": "沒有可用的無障礙資訊"
         },
         "audio": {
             "tracks": "音軌"
@@ -258,14 +259,14 @@
         },
         "expiredLcp": "此書無法閱讀，因為 LCP 許可證已到期。",
         "lcpEnd": "結束",
-        "lcpRightsCopy": "許可證拷貝",
-        "lcpRightsPrint": "許可證打印",
+        "lcpRightsCopy": "許可證複製",
+        "lcpRightsPrint": "許可證列印",
         "lcpStart": "開始",
         "licenseOutOfDate": "許可證過期",
         "licenseSignatureDateInvalid": "許可證簽名日期無效",
         "licenseSignatureInvalid": "許可證簽名無效",
         "progression": {
-            "title": "進程"
+            "title": "進展"
         },
         "renewButton": "更新",
         "returnButton": "歸還",
@@ -282,8 +283,8 @@
             "unmute": "取消靜音"
         },
         "footerInfo": {
-            "lessInfo": "不顯示閱讀位置",
-            "moreInfo": "顯示閱讀位置"
+            "lessInfo": "顯示更少資訊",
+            "moreInfo": "查看更多資訊"
         },
         "marks": {
             "annotations": "筆記",
@@ -311,24 +312,24 @@
             "bookmarkTitle": "書籤",
             "currentPage": "當前頁面: {{- current}}",
             "currentPageTotal": "當前頁面: {{- current}}/{{- total}}",
-            "detachWindowTitle": "顯示 書庫/書架 窗口",
+            "detachWindowTitle": "顯示 書庫/書架 視窗",
             "fullscreenTitle": "開啟全螢幕模式",
             "goTo": "轉到",
             "goToError": "此頁不存在",
             "goToPlaceHolder": "輸入頁碼",
             "goToTitle": "轉到頁",
-            "historyNext": "",
-            "historyPrevious": "",
+            "historyNext": "向前跳",
+            "historyPrevious": "跳回來",
             "infoTitle": "訊息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "導航",
             "pdfscalemode": "適合頁面寬度",
             "quitFullscreenTitle": "退出全屏模式",
-            "readBookTitle": "開始閱讀圖書",
+            "readBookTitle": "開始閱讀書籍",
             "settingsTitle": "設定"
         },
         "picker": {
-            "annotationTitle": "筆記:",
+            "annotationTitle": "筆記：",
             "search": {
                 "founds": "{{- nResults}}個匹配",
                 "input": "輸入搜索文字",
@@ -337,7 +338,7 @@
                 "previous": "前一個",
                 "submit": "尋找"
             },
-            "searchTitle": "搜索:"
+            "searchTitle": "搜索："
         },
         "settings": {
             "column": {
@@ -355,11 +356,11 @@
             "font": "字體",
             "fontSize": "字體大小",
             "justification": "排版",
-            "justify": "兩端對齊",
+            "justify": "左右對齊",
             "letterSpacing": "字符間距",
             "lineSpacing": "行間距",
             "margin": "頁邊距",
-            "noFootnotes": "沒有腳註",
+            "noFootnotes": "沒有附註",
             "paginated": "分頁",
             "paraSpacing": "段落間距",
             "pdfZoom": {
@@ -435,7 +436,7 @@
         },
         "session": {
             "no": "禁用",
-            "title": "保存會話",
+            "title": "保存登入狀態",
             "yes": "啟用"
         }
     }
