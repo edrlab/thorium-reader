@@ -44,20 +44,14 @@ class Dialog extends React.Component<IProps, undefined> {
         this.appElement = document.getElementById("app");
         this.appOverlayElement = document.getElementById("app-overlay");
         this.rootElement = document.createElement("div");
-
-        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
     public componentDidMount() {
         this.appElement.setAttribute("aria-hidden", "true");
         this.appOverlayElement.appendChild(this.rootElement);
-
-        document.addEventListener("keydown", this.handleKeyPress);
     }
     public componentWillUnmount() {
         this.appElement.setAttribute("aria-hidden", "false");
         this.appOverlayElement.removeChild(this.rootElement);
-
-        document.removeEventListener("keydown", this.handleKeyPress);
     }
 
     public render(): React.ReactElement<{}> {
@@ -77,6 +71,7 @@ class Dialog extends React.Component<IProps, undefined> {
                         aria-hidden={this.props.open ? "false" : "true"}
                         tabIndex={-1}
                         className={this.props.open ? stylesModals.modal_dialog_overlay : stylesGlobal.visibility_hidden}
+                        onKeyDown={this.handleKeyPress}
                     >
                         <div onClick={this.props.close} className={stylesModals.modal_dialog_overlay_hidden} />
                         <div
@@ -108,7 +103,7 @@ class Dialog extends React.Component<IProps, undefined> {
         );
     }
 
-    private handleKeyPress(e: KeyboardEvent) {
+    private handleKeyPress: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
         if (e.key === "Escape") {
             this.props.close();
         }
