@@ -12,7 +12,7 @@ import * as path from "path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
-import { extractCrc32OnZip } from "readium-desktop/main/crc";
+import { extractCrc32OnZip } from "readium-desktop/main/tools/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects

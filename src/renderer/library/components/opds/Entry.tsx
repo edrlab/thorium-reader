@@ -9,10 +9,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -37,9 +37,12 @@ class Entry extends React.Component<IProps, undefined> {
         const { entry } = this.props;
 
         const { level } = this.props;
-        const rootFeedIdentifier = matchPath<IOpdsBrowse>(
-            this.props.location.pathname, routes["/opds/browse"],
+
+        const rootFeedIdentifier = matchPath<keyof IOpdsBrowse, string>(
+            routes["/opds/browse"].path,
+            this.props.location.pathname,
         ).params.opdsId;
+
         const route = buildOpdsBrowserRoute(
             rootFeedIdentifier,
             entry.title,
@@ -51,24 +54,27 @@ class Entry extends React.Component<IProps, undefined> {
             <>
                 <div>
                     <Link
-                        className={styles.flux_infos}
+                        className={stylesButtons.button_transparency}
                         to={{
                             ...this.props.location,
                             pathname: route,
                         }}
+                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     >
-                        <span className={styles.flux_title}>{entry.title}</span>
-                        {
-                            entry.subtitle && entry.subtitle !== entry.title ?
-                                <span className={styles.flux_subtitle}>
-                                    {entry.subtitle}
-                                </span> :
-                                <></>
-                        }
+                        <span>
+                            <span title={entry.subtitle ? entry.subtitle : undefined}>{entry.title}</span>
+                            {
+                                (entry.subtitle && entry.subtitle !== entry.title) ?
+                                (<span title={entry.subtitle} aria-label={entry.subtitle}>
+                                    <br/>{entry.subtitle.substr(0, 40) + (entry.subtitle.length > 40 ? "..." : "")}
+                                </span>) :
+                                (<></>)
+                            }
+                        </span>
                         {
                             (entry.numberOfItems) ?
                                 (
-                                    <span className={styles.flux_subtitle}>
+                                    <span>
                                         {entry.numberOfItems}
                                     </span>
                                 ) :

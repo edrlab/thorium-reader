@@ -9,7 +9,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -21,6 +23,7 @@ import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
 import SortMenu from "./SortMenu";
 import TagLayout from "./TagLayout";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -87,15 +90,16 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                     <section key={entryIndex}>
                                         {
 
-                                            <div className={styles.title}>
+                                            <div className={stylesGlobal.heading}>
                                                 <h2>{entry.title}</h2>
-
                                                 <Link
-                                                    className={styles.titlelink}
+                                                    className={stylesButtons.button_primary_small}
                                                     to={{
                                                         ...this.props.location,
                                                         pathname: "/library/search/all",
                                                     }}
+                                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                                                    title={`${this.props.__("header.allBooks")} (${entry.title})`}
                                                 >
                                                     {this.props.__("header.allBooks")}
                                                 </Link>
@@ -103,7 +107,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                         }
                                         {
                                             <Slider
-                                                className={styles.slider}
+                                                className={stylesSlider.slider}
                                                 content={entry.publicationViews.map((pub) =>
                                                     <PublicationCard
                                                         key={pub.identifier}
@@ -118,7 +122,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 : <div
                                     key={entryIndex}
                                     aria-hidden="true"
-                                    style={{ display: "none" }}
+                                    className={stylesGlobal.d_none}
                                 >
                                 </div>,
                     )
@@ -147,6 +151,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
 
     private sortbyCount() {
         const { tags } = this.props;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
         const tabTags = tags.sort((a, b) => {
             if (a < b) {
                 return (1);
@@ -163,6 +168,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
 
     private sortByAlpha() {
         const { tags } = this.props;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
         const tabTags = tags.sort((a, b) => {
             if (a > b) {
                 return (1);

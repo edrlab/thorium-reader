@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Меню",
         "closeDialog": "Закрыть",
-        "homeMenu": "Главное меню",
         "importFile": "Импортировать книгу",
         "leftSlideButton": "Сдвиньте список влево",
         "mainContent": "Основное содержание",
@@ -10,6 +9,9 @@
         "searchBook": "Поиск по названию",
         "skipLink": "Перейти к содержимому",
         "toolbar": "Панель инструментов"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "Добавить",
         "allBooks": "Все книги",
         "bookInfo": "Об этой книге",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Удалить",
         "deleteBook": "Удалить",
         "deleteTag": "Удалить тег",
@@ -62,7 +69,9 @@
             "lastAdditions": "Недавно добавленные"
         },
         "export": "Экспорт",
+        "format": "",
         "lang": "Язык",
+        "lastRead": "",
         "moreInfo": "Дополнительные сведения",
         "myBooks": "Мои книги",
         "noPublicationHelpL1": "Перетащите сюда книгу",
@@ -99,7 +108,8 @@
         "released": "Дата издания",
         "sort": "Сортировать по",
         "tagCount": "Количество тегов",
-        "tags": "Теги"
+        "tags": "Теги",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Закрыть это модальное окно",
@@ -166,6 +176,9 @@
             "url": "Ссылка :",
             "urlPlaceholder": "Ссылка"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Добавить OPDS каталог",
         "back": "Назад",
         "breadcrumbRoot": "Каталоги",
@@ -189,12 +202,51 @@
         },
         "next": "Следующая",
         "previous": "Прошлая",
-        "shelf": "Полка"
+        "shelf": "Полка",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Треки"
         },
+        "author": "",
         "cancelledLcp": "Эту книгу нельзя прочитать, потому что лицензия LCP аннулирована.",
         "certificateRevoked": "Сертификат отозван",
         "certificateSignatureInvalid": "Подпись сертификата недействительна",
@@ -221,9 +273,14 @@
         "revokedLcp": "Эту книгу нельзя прочитать, потому что лицензия LCP была отозвана.",
         "seeLess": "Скрыть",
         "seeMore": "Подробнее",
+        "title": "",
         "userKeyCheckInvalid": "Пароль неверен"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "подробнее",
             "moreInfo": "скрыть"
@@ -260,6 +317,8 @@
             "goToError": "Этот разрыв страницы не существует",
             "goToPlaceHolder": "Введите номер страницы",
             "goToTitle": "Перейти на страницу",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "информация",
             "magnifyingGlassButton": "искать в книге",
             "openTableOfContentsTitle": "навигация",

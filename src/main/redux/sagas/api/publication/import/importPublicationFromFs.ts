@@ -12,7 +12,7 @@ import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
-import { extractCrc32OnZip } from "readium-desktop/main/crc";
+import { extractCrc32OnZip } from "readium-desktop/main/tools/crc";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
@@ -42,7 +42,10 @@ export async function importPublicationFromFS(
     // const r2Publication = await PublicationParsePromise(filePath);
     let r2Publication: R2Publication;
 
-    const { ext } = path.parse(filePath);
+    let { ext } = path.parse(filePath);
+    if (filePath.endsWith(acceptedExtensionObject.nccHtml)) {
+        ext = acceptedExtensionObject.nccHtml;
+    }
     switch (ext) {
 
         case acceptedExtensionObject.epub:
@@ -62,13 +65,17 @@ export async function importPublicationFromFS(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore-next-line
         case acceptedExtensionObject.opf:
+        // eslint-disable-next-line no-fallthrough
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore-next-line
+        case acceptedExtensionObject.nccHtml:
             // DaisyParsePromise allows fake zip to filesystem folder
             filePath = path.dirname(filePath);
             /* falls through */
         case acceptedExtensionObject.daisy:
         case acceptedExtensionObject.zip:
 
-            debug("daisy extension: ", ext);
+            debug("daisy extension: ", ext, filePath);
 
             r2Publication = await DaisyParsePromise(filePath);
 
@@ -140,8 +147,7 @@ export async function importPublicationFromFS(
         default:
 
             debug("extension not recognized", ext);
-            r2Publication = undefined;
-            break;
+            throw new Error("Content-type from server not recognized : " + ext);
     }
 
     if (!r2Publication) {
@@ -174,7 +180,11 @@ export async function importPublicationFromFS(
         //     // remains null as publication not originate from OPDS
         //     // r2OpdsPublicationJson: null,
         // },
+
+        // see documentTitle vs. publicationTitle (and publicationSubTitle) in PublicationView
+        // (and IOpdsPublicationView too, due to polymorphic NormalOrOpdsPublicationView / publicationViewMaybeOpds)
         title: convertMultiLangStringToString(r2Publication.Metadata.Title),
+
         tags: [],
         files: [],
         coverFile: null,

@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import * as path from "path";
 import * as fs from "fs";
 
+import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
@@ -28,6 +29,9 @@ import { diMainGet } from "../di";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 
+// import { type Store } from "redux";
+// import { RootState } from "../redux/states";
+
 const debug = debug_("readium-desktop:main#converter/publication");
 
 // memory cache, to minimize filesystem access
@@ -42,6 +46,9 @@ export class PublicationViewConverter {
 
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
+
+    // @inject(diSymbolTable.store)
+    // private readonly store!: Store<RootState>;
 
     public removeFromMemoryCache(identifier: string) {
         if (_pubCache[identifier]) {
@@ -190,6 +197,8 @@ export class PublicationViewConverter {
         const r2Publication = await this.unmarshallR2Publication(document);
         const r2PublicationJson = TaJsonSerialize(r2Publication); // note: does not include r2Publication.LCP
 
+        // TODO: preserve (string | IStringMap) for publishers and authors (contributors),
+        // and apply convertMultiLangStringToString() only downstream / at rendering time.
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,
         );
@@ -202,6 +211,11 @@ export class PublicationViewConverter {
             publishedAt = moment(r2Publication.Metadata.PublicationDate).toISOString();
         }
 
+        let modifiedAt: string | undefined;
+        if (r2Publication.Metadata.Modified) {
+            modifiedAt = moment(r2Publication.Metadata.Modified).toISOString();
+        }
+
         let cover: CoverView | undefined;
         if (document.coverFile) {
             cover = {
@@ -210,24 +224,79 @@ export class PublicationViewConverter {
             };
         }
 
-        // become a side effect function : AIE !!
+        // TODO become a side effect function : AIE !!
         // could be refactored when the publications documents will be in the state
         const store = diMainGet("store");
         const state = store.getState();
-        const locator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
+        const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
 
         const duration = typeof r2Publication.Metadata.Duration === "number" ? r2Publication.Metadata.Duration : undefined;
         const nbOfTracks = typeof r2Publication.Metadata.AdditionalJSON?.tracks === "number" ? r2Publication.Metadata.AdditionalJSON?.tracks : undefined;
 
+
+        const isAudio = r2Publication.Metadata.RDFType?.toLowerCase().includes("audio") || isAudiobookFn(r2Publication.Metadata) || (
+            readerStateLocator?.audioPlaybackInfo
+                && readerStateLocator?.audioPlaybackInfo.globalDuration
+                && typeof readerStateLocator?.locator.locations.position === "number");
+
+        const isDivina = isDivinaFn(r2Publication);
+        const isPDF = isPdfFn(r2Publication);
+
+        // locatorExt.docInfo.isFixedLayout
+        const isFXL = r2Publication.Metadata?.Rendition?.Layout === "fixed";
+
+        // "DAISY_audioNCX" "DAISY_textNCX" "DAISY_audioFullText"
+        const isDaisy = !!r2Publication.Metadata?.AdditionalJSON?.ReadiumWebPublicationConvertedFrom;
+
+        let lastReadTimeStamp = undefined;
+        // Timestampable document.createdAt (new Date()).getTime()
+        const lastReadingQueue = state.publication?.lastReadingQueue; // this.store?.getState()?
+        if (lastReadingQueue) {
+            for (const qItem of lastReadingQueue) {
+                const timeStamp = qItem[0]; // (new Date()).getTime()
+                const pubIdentifier = qItem[1];
+                if (pubIdentifier === document.identifier) {
+                    lastReadTimeStamp = timeStamp;
+                    break;
+                }
+            }
+        }
         return {
+            isAudio,
+            isDivina,
+            isPDF,
+            isDaisy,
+            isFXL,
+            lastReadTimeStamp,
+
+            a11y_accessMode: r2Publication.Metadata.AccessMode, // string[]
+            a11y_accessibilityFeature: r2Publication.Metadata.AccessibilityFeature, // string[]
+            a11y_accessibilityHazard: r2Publication.Metadata.AccessibilityHazard, // string[]
+
+            a11y_certifiedBy: r2Publication.Metadata.CertifiedBy, // string[]
+            a11y_certifierCredential: r2Publication.Metadata.CertifierCredential, // string[]
+            a11y_certifierReport: r2Publication.Metadata.CertifierReport, // string[]
+            a11y_conformsTo: r2Publication.Metadata.ConformsTo, // string[]
+
+            a11y_accessModeSufficient: r2Publication.Metadata.AccessModeSufficient, // (string[])[]
+
+            // convertMultiLangStringToString
+            a11y_accessibilitySummary: r2Publication.Metadata.AccessibilitySummary, // string | IStringMap
+
             identifier: document.identifier, // preserve Identifiable identifier
-            title: document.title || "-", // default title
+
+            documentTitle: document.title || "-", // default title
+            // convertMultiLangStringToString
+            publicationTitle: r2Publication.Metadata.Title, // string | IStringMap
+            publicationSubTitle: r2Publication.Metadata.SubTitle, // string | IStringMap
+
             authors,
             description: r2Publication.Metadata.Description,
             languages: r2Publication.Metadata.Language,
             publishers,
             workIdentifier: r2Publication.Metadata.Identifier,
             publishedAt,
+            modifiedAt,
             tags: document.tags,
             cover,
             customCover: document.customCover,
@@ -246,7 +315,7 @@ export class PublicationViewConverter {
             // Legacy Base64 data blobs
             // r2PublicationBase64,
 
-            lastReadingLocation: locator,
+            lastReadingLocation: readerStateLocator,
         };
     }
 }

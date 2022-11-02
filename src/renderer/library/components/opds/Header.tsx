@@ -5,14 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
-import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar.svg";
+import * as RefreshIcon from "readium-desktop/renderer/assets/icons/arrow-clockwise.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
-import * as HomeIcon from "readium-desktop/renderer/assets/icons/home.svg";
+import * as HomeIcon from "readium-desktop/renderer/assets/icons/house-fill.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -20,7 +22,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType, IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 
 import SearchForm from "./SearchForm";
 
@@ -44,49 +46,45 @@ class Header extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __, location } = this.props;
-        const displayType = location?.state?.displayType || DisplayType.Grid;
+
+        const displayType = (location?.state && (location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         // FIXME : css in code
         return (
             <SecondaryHeader>
                 <Link
-                    to={{
-                        ...this.props.location,
-                        state: {
-                            displayType: DisplayType.Grid,
-                        },
-                    }}
+                    to={this.props.location}
+                    state = {{displayType: DisplayType.Grid}}
                     replace={true}
-                    style={(displayType !== DisplayType.Grid) ? { fill: "#767676" } : {}}
-
+                    className={(displayType === DisplayType.Grid) ?
+                        stylesButtons.button_transparency_icon :
+                        stylesButtons.button_transparency_icon_inactive
+                    }
                     aria-pressed={displayType === DisplayType.Grid}
                     role={"button"}
                 >
                     <SVG svg={GridIcon} title={__("header.gridTitle")} />
                 </Link>
                 <Link
-                    to={{
-                        ...this.props.location,
-                        state: {
-                            displayType: DisplayType.List,
-                        },
-                    }}
+                    to={this.props.location}
+                    state = {{displayType: DisplayType.List}}
                     replace={true}
-                    style={displayType !== DisplayType.List ?
-                        { fill: "#757575", marginLeft: "16px" } : { marginLeft: "16px" }}
-
+                    className={(displayType === DisplayType.List) ?
+                        stylesButtons.button_transparency_icon :
+                        stylesButtons.button_transparency_icon_inactive
+                    }
                     aria-pressed={displayType === DisplayType.List}
                     role={"button"}
                 >
                     <SVG svg={ListIcon} title={__("header.listTitle")} />
                 </Link>
+                <SearchForm />
                 {
                     this.home()
                 }
                 {
                     this.refresh()
                 }
-                <SearchForm />
                 {
                     this.bookshelf()
                 }
@@ -102,8 +100,9 @@ class Header extends React.Component<IProps, undefined> {
 
             const { __ } = this.props;
 
-            const param = matchPath<IOpdsBrowse>(
-                this.props.location.pathname, routes["/opds/browse"],
+            const param = matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
             ).params;
 
             const lvl = parseInt(param.level, 10);
@@ -121,6 +120,8 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_small)}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
@@ -128,7 +129,7 @@ class Header extends React.Component<IProps, undefined> {
         }
 
         return bookshelfComponent;
-    }
+    };
 
     private home = () => {
         const { start } = this.props.headerLinks;
@@ -138,8 +139,9 @@ class Header extends React.Component<IProps, undefined> {
 
             const { __ } = this.props;
 
-            const param = matchPath<IOpdsBrowse>(
-                this.props.location.pathname, routes["/opds/browse"],
+            const param = matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
             ).params;
 
             const home = this.props.breadcrumb[1];
@@ -157,7 +159,8 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    style={{ marginLeft: "16px" }}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_small)}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
                 </Link>
@@ -165,7 +168,7 @@ class Header extends React.Component<IProps, undefined> {
         }
 
         return homeComponent;
-    }
+    };
 
     private refresh = () => {
         const { self } = this.props.headerLinks;
@@ -174,8 +177,9 @@ class Header extends React.Component<IProps, undefined> {
         let refreshComponet = <></>;
         if (self) {
 
-            const param = matchPath<IOpdsBrowse>(
-                this.props.location.pathname, routes["/opds/browse"],
+            const param = matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
             ).params;
 
             const lvl = parseInt(param.level, 10);
@@ -196,7 +200,8 @@ class Header extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    style={{ marginLeft: "16px" }}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_refresh, stylesButtons.button_small)}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>
@@ -207,7 +212,8 @@ class Header extends React.Component<IProps, undefined> {
                     to={{
                         ...this.props.location,
                     }}
-                    style={{ marginLeft: "16px" }}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_refresh, stylesButtons.button_small)}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>
@@ -215,7 +221,7 @@ class Header extends React.Component<IProps, undefined> {
         }
 
         return refreshComponet;
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({

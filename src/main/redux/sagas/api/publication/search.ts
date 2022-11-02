@@ -8,7 +8,7 @@
 import { call as callTyped } from "typed-redux-saga/macro";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { aboutFiltered } from "readium-desktop/main/filter";
+import { aboutFiltered } from "readium-desktop/main/tools/filter";
 import { SagaGenerator } from "typed-redux-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -21,11 +21,11 @@ const convertDocs = async (docs: PublicationDocument[], publicationViewConverter
     return pubs;
 };
 
-export function* search(title: string): SagaGenerator<PublicationView[]> {
-    const titleFormated = title?.trim() || "";
+export function* search(titleOrAuthor: string): SagaGenerator<PublicationView[]> {
+    const titleOrAuthorFormated = titleOrAuthor?.trim() || "";
 
     const publicationRepository = diMainGet("publication-repository");
-    const publicationDocuments = yield* callTyped(() => publicationRepository.searchByTitle(titleFormated));
+    const publicationDocuments = yield* callTyped(() => publicationRepository.searchByTitleAndAuthor(titleOrAuthorFormated));
 
     const publicationViewConverter = diMainGet("publication-view-converter");
 

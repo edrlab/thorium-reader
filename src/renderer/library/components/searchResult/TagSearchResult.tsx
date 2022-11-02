@@ -19,7 +19,7 @@ import LibraryLayout from "readium-desktop/renderer/library/components/layout/Li
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType, ILibrarySearchText, routes } from "readium-desktop/renderer/library/routing";
+import { DisplayType, ILibrarySearchText, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { Unsubscribe } from "redux";
 
 import Header from "../catalog/Header";
@@ -56,8 +56,9 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             "publication/updateTags",
             // "catalog/addEntry",
         ], () => {
-            const value = matchPath<ILibrarySearchText>(
-                this.props.location.pathname, routes["/library/search/tag"],
+            const value = matchPath<keyof ILibrarySearchText, string>(
+                routes["/library/search/tag"].path,
+                this.props.location.pathname,
             ).params.value;
 
             apiAction("publication/findByTag", value)
@@ -73,23 +74,25 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
+        const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
+
         const { __ } = this.props;
-        const title = matchPath<ILibrarySearchText>(
-            this.props.location.pathname, routes["/library/search/tag"],
+
+        const title = matchPath<keyof ILibrarySearchText, string>(
+            routes["/library/search/tag"].path,
+            this.props.location.pathname,
         ).params.value;
 
         const secondaryHeader = <Header />;
+        const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
 
         return (
             <LibraryLayout
                 title={`${__("catalog.myBooks")} / ${title}`}
                 secondaryHeader={secondaryHeader}
+                breadCrumb={breadCrumb}
             >
                 <div>
-                    <BreadCrumb
-                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}
-                    />
                     {this.state.publicationViews ?
                         (displayType === DisplayType.Grid ?
                             <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :

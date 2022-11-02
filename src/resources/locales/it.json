@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Chiudi",
-        "homeMenu": "Menu principale",
         "importFile": "Importa una pubblicazione",
         "leftSlideButton": "Scorri la lista a sinistra",
         "mainContent": "contenuto principale",
@@ -10,6 +9,9 @@
         "searchBook": "Cerca per titolo",
         "skipLink": "Salta al contenuto",
         "toolbar": "barra degli strumenti"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "Aggiungi",
         "allBooks": "Tutti i libri",
         "bookInfo": "Informazioni su questo libro",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Elimina",
         "deleteBook": "Elimina",
         "deleteTag": "Elimina la tag",
@@ -62,7 +69,9 @@
             "lastAdditions": "Aggiunti di recente"
         },
         "export": "Esporta",
+        "format": "",
         "lang": "Lingua",
+        "lastRead": "",
         "moreInfo": "Più info",
         "myBooks": "I miei libri",
         "noPublicationHelpL1": "Rilascia una pubblicazione qui",
@@ -99,7 +108,8 @@
         "released": "Pubblicato il",
         "sort": "Ordina per",
         "tagCount": "Contatore Tag",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Chiudi questa finestra modale",
@@ -166,6 +176,9 @@
             "url": "Link :",
             "urlPlaceholder": "Link"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Aggiungi feed OPDS",
         "back": "Indietro",
         "breadcrumbRoot": "Cataloghi",
@@ -189,12 +202,51 @@
         },
         "next": "Prossimo",
         "previous": "Precedente",
-        "shelf": "Mensola"
+        "shelf": "Mensola",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Tracce"
         },
+        "author": "",
         "cancelledLcp": "Questo libro non può essere letto perchè la licenza LCP è stata annullata.",
         "certificateRevoked": "Il certificato è revocato.",
         "certificateSignatureInvalid": "La firma del certificato è invalida.",
@@ -221,9 +273,14 @@
         "revokedLcp": "Questo libro non può essere letto perchè la licenza LCP è stata revocata",
         "seeLess": "Vedi di più",
         "seeMore": "Vedi di meno",
+        "title": "",
         "userKeyCheckInvalid": "La passphrase non è corretta"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "meno informazioni",
             "moreInfo": "più informazioni"
@@ -260,6 +317,8 @@
             "goToError": "Questo punto di pagina non esiste",
             "goToPlaceHolder": "Inserisci il numero della pagina",
             "goToTitle": "Vai alla pagina",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "informazione",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navigazione",

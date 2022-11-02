@@ -11,7 +11,7 @@ import { keyboardActions, toastActions } from "readium-desktop/common/redux/acti
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { diMainGet } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";

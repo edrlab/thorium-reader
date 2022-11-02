@@ -10,13 +10,15 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/breadcrumb.css";
+import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { DisplayType, IRouterLocationState } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -41,7 +43,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
         const { breadcrumb, __ } = this.props;
 
         return (
-            <div className={classNames(styles.breadcrumb, this.props.className)}>
+            <div className={classNames(stylesBreadcrumb.breadcrumb, this.props.className)}>
                 {
                     breadcrumb.length >= 2
                     && <Link
@@ -49,29 +51,34 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                             ...this.props.location,
                             pathname: breadcrumb[breadcrumb.length - 2].path,
                         }}
+                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                         title={__("opds.back")}
+                        className={stylesButtons.button_transparency_icon}
                     >
-                        <SVG svg={ArrowIcon} />
+                        <SVG ariaHidden={true} svg={ArrowIcon} />
                     </Link>
                 }
                 {
                     breadcrumb
                     && breadcrumb.map(
                         (item, index) =>
-                            item.path && index !== breadcrumb.length - 1
-                                ? <Link
+                            item.path && index !== breadcrumb.length - 1 ?
+                                <Link
                                     key={index}
                                     to={{
                                         ...this.props.location,
                                         pathname: item.path,
                                     }}
+                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                                     title={item.name}
+                                    className={stylesButtons.button_transparency}
                                 >
-                                    {`${item.name} /`}
-                                </Link>
-                                : <span key={index}>
                                     {item.name}
-                                </span>,
+                                </Link>
+                            :
+                                <strong key={index}>
+                                    {item.name}
+                                </strong>,
                     )
                 }
             </div>

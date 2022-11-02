@@ -77,6 +77,7 @@ export const paraSpacing: string[] = [
 ];
 
 export const lineHeight: string[] = [
+    "0", // noop
     "1",
     "1.125",
     "1.25",
@@ -111,7 +112,7 @@ export interface IReaderMenuProps {
     r2Publication: R2Publication;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
-    handleBookmarkClick: (locator: R2Locator, closeNavPanel?: boolean) => void;
+    goToLocator: (locator: R2Locator, closeNavPanel?: boolean) => void;
     toggleMenu: () => void;
     focusMainAreaLandmarkAndCloseMenu: () => void;
     pdfToc: TToc;
@@ -122,6 +123,9 @@ export interface IReaderMenuProps {
 }
 
 export type TdivinaReadingMode = "single" | "double" | "scroll" | "guided";
+export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
+    return ["single", "double", "scroll", "guided"].includes(v);
+};
 
 export interface IReaderOptionsProps {
     indexes: AdjustableSettingsNumber;

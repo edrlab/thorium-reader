@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import { debounce } from "debounce";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -13,7 +14,7 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -24,8 +25,6 @@ import { ISearchResult } from "readium-desktop/utils/search/search.interface";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { readerLocalActionSearch } from "../redux/actions";
-
-import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -119,7 +118,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 style={{
                     width: "30px",
                 }}>
-                    <SVG svg={ArrowFirstIcon} />
+                    <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                 </button>
 
                 <button title={__("opds.previous")}
@@ -127,12 +126,12 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 style={{
                     width: "30px",
                 }}>
-                    <SVG svg={ArrowLeftIcon} />
+                    <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                 </button>
                 <span style={{
-                    marginLeft: "1em",
+                    marginLeft: "0.5em",
                     marginRight: "1em",
-                    verticalAlign: "text-top",
+                    verticalAlign: "super",
                 }}>
                 {
                     begin === end ?
@@ -145,7 +144,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 style={{
                     width: "30px",
                 }}>
-                    <SVG svg={ArrowRightIcon} />
+                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
 
                 <button title={__("opds.lastPage")}
@@ -153,7 +152,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 style={{
                     width: "30px",
                 }}>
-                    <SVG svg={ArrowLastIcon} />
+                    <SVG ariaHidden={true} svg={ArrowLastIcon} />
                 </button>
                 </>
                 }
@@ -214,7 +213,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         let iMatch = -1;
         return <ul
             aria-label={label}
-            className={styles.chapters_content}
+            className={stylesReader.chapters_content}
             role={"list"}
         >{
             (this.props.readingOrder || []).reduce((pv, spineLink, j) => {
@@ -236,9 +235,9 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                 >
                                     <a
                                         className={
-                                            classNames(styles.line,
-                                                styles.active,
-                                                isRTL ? styles.rtlDir : " ")
+                                            classNames(stylesReader.line,
+                                                stylesReader.active,
+                                                isRTL ? stylesReader.rtlDir : " ")
                                         }
                                         style={{
                                             fontWeight: "normal",
@@ -315,7 +314,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //     return <ul
     //         role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
     //         aria-label={label}
-    //         className={styles.chapters_content}
+    //         className={stylesReader.chapters_content}
     //         style={{marginTop: "15px"}}
     //     >
     //         {
@@ -331,8 +330,8 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //                                     <span
     //                                         className={
     //                                             link.Href
-    //                                                 ? styles.subheading
-    //                                             : classNames(styles.subheading, styles.inert)
+    //                                                 ? stylesReader.subheading
+    //                                             : classNames(stylesReader.subheading, stylesReader.inert)
     //                                         }
     //                                         tabIndex={0}
     //                                     >
@@ -347,8 +346,8 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //                                     <a
     //                                         className={
     //                                             link.Href ?
-    //                                                 classNames(styles.line, styles.active) :
-    //                                                 classNames(styles.line, styles.active, styles.inert)
+    //                                                 classNames(stylesReader.line, stylesReader.active) :
+    //                                                 classNames(stylesReader.line, stylesReader.active, stylesReader.inert)
     //                                         }
     //                                         onClick=
     //                                         {(e) => this.handleSearchClick(e, link.Href, false)}
@@ -400,11 +399,13 @@ const handleSearchClickFunc = (
     closeNavPanel: boolean) => {
 
     e.preventDefault();
-    console.log(href);
-    thiz.props.focus(href); // search uuid
+
     if (closeNavPanel) {
         thiz.props.focusMainAreaLandmarkAndCloseMenu();
     }
+
+    console.log(href);
+    thiz.props.focus(href); // search uuid
 };
 
 const handleSearchClickFuncDebounced = debounce(handleSearchClickFunc, 300);

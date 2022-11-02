@@ -15,7 +15,7 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
 
@@ -30,36 +30,6 @@ export class ReaderApi implements IReaderApi {
 
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
-
-    // public async setLastReadingLocation(publicationIdentifier: string, locator: R2Locator): Promise<LocatorView> {
-    //     const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-    //         publicationIdentifier,
-    //         LocatorType.LastReadingLocation,
-    //     );
-
-    //     let newDoc = null;
-
-    //     if (docs.length === 0) {
-    //         // Create new locator
-    //         newDoc = {
-    //             publicationIdentifier,
-    //             locatorType: LocatorType.LastReadingLocation,
-    //             locator: Object.assign({}, locator),
-    //         };
-    //     } else {
-    //         // Update locator
-    //         newDoc = Object.assign(
-    //             {},
-    //             docs[0],
-    //             {
-    //                 locator: Object.assign({}, locator),
-    //             },
-    //         );
-    //     }
-
-    //     const savedDoc = await this.locatorRepository.save(newDoc);
-    //     return this.locatorViewConverter.convertDocumentToView(savedDoc);
-    // }
 
     // TODO
     // clipboard can be an action catched in saga, nothing to return

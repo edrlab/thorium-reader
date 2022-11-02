@@ -1,0 +1,150 @@
+/*
+=-=-= components/dropdown.css => '../partials/mixins.css'
+*/
+@import url('../partials/mixins.css');
+
+/*
+=-=-= components/dropdown.css => '../partials/variables.css'
+*/
+
+/*
+@import url('../partials/variables.css');
+*/
+
+/*
+=-=-= components/dropdown.css
+*/
+
+.dropdown_menu {
+  height: fit-content;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  font-size: 0.9rem;
+  box-shadow: 0 0 10px 0 var(--color-medium-grey);
+  border-width: 1px;
+  border-color: var(--color-primary);
+  border-style: solid;
+  border-radius: 5px;
+  margin-top: 20px;
+  position: relative;
+
+  &::after {
+    content: " ";
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 7.5px 10px 7.5px;
+    border-color: transparent transparent var(--color-primary) transparent;
+  }
+
+  &.dropdown_right::after {
+    left: auto;
+    right: 34px;
+  }
+
+  &.dropdown_publication::after {
+    left: auto;
+    right: 25px;
+  }
+
+  & > * {
+    text-decoration: none;
+    color: black;
+    padding: 0.7rem;
+    text-align: center;
+    cursor: pointer;
+    height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+    opacity: 1;
+    margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+
+    &:first-child {
+      border-radius: 6px 6px 0 0;
+    }
+
+    &:last-child {
+      border-radius: 0 0 6px 6px;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--color-medium-grey);
+    }
+
+    &:hover {
+      background-color: var(--color-medium-grey);
+    }
+  }
+}
+
+.menu {
+  height: fit-content;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  font-size: 0.9rem;
+  box-shadow: 0 0 10px 0 #cfcfcf;
+  overflow: hidden;
+
+  & button,
+  & a,
+  & span label {
+    text-decoration: none;
+    color: black;
+    padding: 0.7rem;
+    text-align: center;
+    cursor: pointer;
+    height: 2.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 0.9rem;
+    opacity: 1;
+    margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+
+    &:hover {
+      background-color: #cecece;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #e5e3e3;
+    }
+  }
+
+  & button[disabled] {
+    cursor: not-allowed;
+  }
+
+  & span {
+    cursor: pointer;
+
+    & input {
+      height: 0;
+      width: 0;
+      position: absolute;
+      left: -2000px;
+    }
+
+    & input:focus + label {
+      @mixin R2_MIXIN_FOCUS_OUTLINE;
+    }
+  }
+}
+
+.___DEBUG___COMPONENTS_DROPDOWN_CSS {
+  display: none;
+}

@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -13,19 +14,24 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 import Cover from "readium-desktop/renderer/common/components/Cover";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { formatContributorToString } from "readium-desktop/renderer/common/logics/formatContributor";
+import {
+    formatContributorToString,
+} from "readium-desktop/renderer/common/logics/formatContributor";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
+
+import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -54,6 +60,7 @@ class PublicationCard extends React.Component<IProps, IState> {
         };
         this.openCloseMenu = this.openCloseMenu.bind(this);
         // this.truncateTitle = this.truncateTitle.bind(this);
+        this.truncateAuthors = this.truncateAuthors.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -61,40 +68,46 @@ class PublicationCard extends React.Component<IProps, IState> {
 
         const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
 
+        // publicationViewMaybeOpds.documentTitle
+        const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
+        const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+        const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+        const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+
+        // aria-haspopup="dialog"
+        // aria-controls="dialog"
         return (
-            <div className={styles.block_book}
-                aria-haspopup="dialog"
-                aria-controls="dialog"
-            >
-                <div className={styles.image_wrapper}>
-                    <a
-                        tabIndex={0}
-                        onClick={(e) => this.handleBookClick(e)}
-                        onKeyPress={
-                            (e) =>
-                                (e.key === "Enter") && this.handleBookClick(e)
-                        }
-                        title={`${publicationViewMaybeOpds.title} - ${authors}`}
-                    >
-                        <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
-                    </a>
-                </div>
-                <div className={styles.legend}>
-                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
-                        <p aria-hidden className={styles.book_title}>
-                            {
-                                // this.truncateTitle()
-                                publicationViewMaybeOpds.title
-                            }
+            <div className={stylesPublications.publication_wrapper}>
+                <a
+                    onClick={(e) => this.handleBookClick(e)}
+                    onKeyPress={
+                        (e) =>
+                            (e.key === "Enter") && this.handleBookClick(e)
+                    }
+                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                    className={stylesPublications.publication_image_wrapper}
+                    tabIndex={0}
+                >
+                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                </a>
+                <div className={stylesPublications.publication_infos_wrapper}>
+                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}
+                        className={stylesPublications.publication_infos}
+                        >
+                        <p aria-hidden className={stylesPublications.publication_title}
+                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                            {pubTitleStr}
                         </p>
-                        <p aria-hidden className={styles.book_author}>
-                            {authors}
+                        <p aria-hidden className={stylesPublications.publication_description}>
+                            {this.truncateAuthors(authors)}
                         </p>
                     </a>
                     <Menu
-                        button={(<SVG title={__("accessibility.bookMenu")} svg={MenuIcon} />)}
+                        button={(
+                            <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
+                        )}
                         content={(
-                            <div className={styles.menu}>
+                            <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_publication)}>
                                 {isOpds ?
                                     <OpdsMenu
                                         opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
@@ -140,6 +153,18 @@ class PublicationCard extends React.Component<IProps, IState> {
     //     }
     //     return (newTitle);
     // }
+
+    /* function Truncate very long authors at 60 characters */
+    private truncateAuthors(authors: string): string {
+        let newAuthors = authors;
+        const truncate = 28;
+
+        if (newAuthors && newAuthors.length > truncate) {
+            newAuthors = authors.substr(0, truncate);
+            newAuthors += "...";
+        }
+        return (newAuthors);
+    }
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {

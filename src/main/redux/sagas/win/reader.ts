@@ -12,7 +12,7 @@ import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";

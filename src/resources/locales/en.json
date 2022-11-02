@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Close",
-        "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
         "leftSlideButton": "Slide the list to the left",
         "mainContent": "main content",
@@ -10,6 +9,9 @@
         "searchBook": "Search by title",
         "skipLink": "Skip to content",
         "toolbar": "toolbar"
+    },
+    "apiapp": {
+        "noLibraryFound": "No library found ({{- name}})"
     },
     "app": {
         "edit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "Add",
         "allBooks": "All books",
         "bookInfo": "About this book",
+        "column": {
+            "ascending": "ascending",
+            "descending": "descending",
+            "unsorted": "unsorted"
+        },
         "delete": "Delete",
         "deleteBook": "Delete",
         "deleteTag": "Delete the tag",
@@ -62,8 +69,10 @@
             "lastAdditions": "Recently added"
         },
         "export": "Export",
+        "format": "Format",
         "lang": "Language",
-        "moreInfo": "More Info",
+        "lastRead": "Last Read",
+        "moreInfo": "Book Details",
         "myBooks": "My books",
         "noPublicationHelpL1": "Drop a publication here",
         "noPublicationHelpL2": "or use the \"+\" button above.",
@@ -85,10 +94,10 @@
                     "unknown": "Unknown"
                 },
                 "availableUntil": "Until",
-                "copyAvalaible": "Number of availables",
-                "copyTotal": "Number of copies",
+                "copyAvalaible": "Available",
+                "copyTotal": "Copies",
                 "holdPosition": "Your hold position",
-                "holdTotal": "Holded",
+                "holdTotal": "Held",
                 "numberOfItems": "Number of items",
                 "priveValue": "Price",
                 "state": "State"
@@ -99,7 +108,8 @@
         "released": "Published on",
         "sort": "Sort by",
         "tagCount": "Tag count",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": "Edit"
     },
     "dialog": {
         "closeModalWindow": "Close this modal window",
@@ -166,6 +176,9 @@
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
+        "addFormApiapp": {
+            "title": "Add a library account"
+        },
         "addMenu": "Add OPDS feed",
         "back": "Back",
         "breadcrumbRoot": "Catalogs",
@@ -181,20 +194,60 @@
             "goSubBook": "Subscribe"
         },
         "network": {
-            "error": "Unable to access to opds feed",
+            "error": "Error accessing feed",
             "noInternet": "No internet",
             "noInternetMessage": "Try: checking the network cable, modem, router or wifi",
-            "reject": "Sorry, there was an unexpected error when trying to process the OPDS feed",
+            "reject": "Sorry, there was an unexpected error when trying to process the feed",
             "timeout": "There was a network timeout, please try again later"
         },
         "next": "Next",
         "previous": "Previous",
-        "shelf": "Shelf"
+        "shelf": "Shelf",
+        "updateForm": {
+            "name": "Name:",
+            "namePlaceholder": "Name",
+            "title": "Edit an OPDS feed",
+            "updateButton": "Edit",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "TTS & Screen reader friendly"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Contains alternative text",
+                "displayTransformability": "Adaptable text and layout",
+                "longDescription": "Fully described graphical ressources",
+                "printPageNumbers": "Printed book pagination reference",
+                "readingOrder": "Contains a reading order",
+                "synchronizedAudioText": "Text & audio synchronised",
+                "tableOfContents": "Contains a Table Of Contents"
+            },
+            "accessibilityHazard": {
+                "flashing": "Flashing",
+                "motionSimulation": "Motion simulation",
+                "name": "Hazard:",
+                "noFlashing": "No flashing",
+                "noMotionSimulation": "No motion simulation",
+                "noSound": "No sound",
+                "none": "None",
+                "simulation": "Simulation",
+                "sound": "Sound",
+                "unknown": "Unknown"
+            },
+            "conformsTo": "Conforms to:",
+            "certifierReport": "Certifier report",
+            "moreInformation": "More information",
+            "name": "Accessibility",
+            "noA11y": "No accessibility information available"
+        },
         "audio": {
             "tracks": "Tracks"
         },
+        "author": "Author",
         "cancelledLcp": "This book can't be read because the LCP license has been cancelled.",
         "certificateRevoked": "Certificate is revoked",
         "certificateSignatureInvalid": "Certificate signature is invalid",
@@ -206,8 +259,8 @@
         },
         "expiredLcp": "This book can't be read because the LCP license has expired.",
         "lcpEnd": "End",
-        "lcpRightsCopy": "Character copy",
-        "lcpRightsPrint": "Printer copy",
+        "lcpRightsCopy": "Copied characters",
+        "lcpRightsPrint": "Printed pages",
         "lcpStart": "Start",
         "licenseOutOfDate": "License is out of date",
         "licenseSignatureDateInvalid": "License signature date is invalid",
@@ -221,9 +274,14 @@
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
+        "title": "Title",
         "userKeyCheckInvalid": "Passphrase is incorrect"
     },
     "reader": {
+        "divina": {
+            "mute": "mute audio",
+            "unmute": "unmute audio"
+        },
         "footerInfo": {
             "lessInfo": "less information",
             "moreInfo": "more information"
@@ -253,13 +311,15 @@
             "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
             "currentPage": "Current page: {{- current}}",
-            "currentPageTotal": "Current page: ({{- current}}/{{- total}})",
+            "currentPageTotal": "Current page: {{- current}}/{{- total}}",
             "detachWindowTitle": "show library / bookshelf window",
             "fullscreenTitle": "open fullscreen mode",
             "goTo": "Go to",
             "goToError": "This page break does not exist",
             "goToPlaceHolder": "Enter a page number",
             "goToTitle": "Go to page",
+            "historyNext": "Jump forward",
+            "historyPrevious": "Jump back",
             "infoTitle": "information",
             "magnifyingGlassButton": "search in publication",
             "openTableOfContentsTitle": "navigation",

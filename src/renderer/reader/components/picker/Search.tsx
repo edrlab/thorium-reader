@@ -135,7 +135,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                         fill: notFound ? "grey" : "black",
                     }}
                 >
-                    <SVG svg={ArrowLeftIcon} />
+                    <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                 </button>
                 <button
                     disabled={notFound}
@@ -150,7 +150,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                         fill: notFound ? "grey" : "black",
                     }}
                 >
-                    <SVG svg={ArrowRightIcon} />
+                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
                 {
                     load &&
@@ -191,7 +191,7 @@ class SearchPicker extends React.Component<IProps, IState> {
     private setFoundNumber = (foundNumber: number) => {
 
         this.setState({foundNumber, notFound: !foundNumber});
-    }
+    };
 
     private registerAllKeyboardListeners() {
         registerKeyboardListener(
@@ -223,10 +223,10 @@ class SearchPicker extends React.Component<IProps, IState> {
 
     private onKeyboardSearchPrevious = () => {
         this.props.previous();
-    }
+    };
     private onKeyboardSearchNext = () => {
         this.props.next();
-    }
+    };
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {

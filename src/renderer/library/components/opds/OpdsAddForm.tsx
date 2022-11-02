@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -37,10 +37,20 @@ export class OpdsAddForm extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
-            <section className={ styles.opds_form }>
-                <button onClick={this.props.openOpdsFeedAddForm}>
-                    <SVG svg={AddIcon}/>
+            <section>
+                <button
+                    onClick={this.props.openOpdsFeedAddForm}
+                    className={stylesButtons.button_primary}
+                >
+                    <SVG ariaHidden={true} svg={AddIcon}/>
                     <span>{ __("opds.addForm.title")}</span>
+                </button>
+                <button
+                    onClick={this.props.openApiappAddForm}
+                    className={stylesButtons.button_primary}
+                >
+                    <SVG ariaHidden={true} svg={AddIcon} />
+                    <span>{__("opds.addFormApiapp.title")}</span>
                 </button>
             </section>
         );
@@ -51,6 +61,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         openOpdsFeedAddForm: () => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.OpdsFeedAddForm, {}));
+        },
+        openApiappAddForm: () => {
+            dispatch(dialogActions.openRequest.build(DialogTypeName.ApiappAddForm, {}));
         },
     };
 };

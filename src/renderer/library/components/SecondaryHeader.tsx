@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as styles from "readium-desktop/renderer/assets/styles/header.css";
+import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.css";
 
 import { TranslatorProps, withTranslator } from "../../common/components/hoc/translator";
 
@@ -35,9 +35,9 @@ export class SecondaryHeader extends React.Component<IProps, undefined> {
         return (
             <nav
                 style={this.props.style}
-                className={styles.nav_secondary}
+                className={stylesHeader.nav_secondary}
                 role="navigation"
-                aria-label={ __("header.home")}
+                aria-label={ __("accessibility.bookMenu")}
                 {...(id ? {id} : {})}
             >
                 {this.props.children}

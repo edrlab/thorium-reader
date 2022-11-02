@@ -7,7 +7,10 @@
 
 import { RequestInit, Response } from "node-fetch";
 
-export type THttpOptions = RequestInit;
+
+// maxRedirect:
+// https://github.com/valeriangalliat/fetch-cookie#max-redirects
+export type THttpOptions = RequestInit & { maxRedirect?: number, timeout?: number, abortController?: AbortController };
 export type THttpResponse = Response;
 
 export interface IHttpGetResult<TData> {

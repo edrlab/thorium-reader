@@ -8,12 +8,13 @@
 import * as moment from "moment";
 import * as React from "react";
 import { IOPDSPropertiesView } from "readium-desktop/common/views/opds";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 
 import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
+import { findMimeTypeWithExtension, ADOBE_ADEPT_XML } from "readium-desktop/utils/mimeTypes";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -44,17 +45,19 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
         const metadataLineComponent = (text: string, property: string | number) =>
             property &&
             <>
-                <span>{`${text}: `}</span>
-                <i className={styles.allowUserSelect}>
-                    {
-                        property
-                    }
+                <strong>{`${text}: `}</strong>
+                <i className={stylesBookDetailsDialog.allowUserSelect}>
+                    {property}
                 </i>
                 <br />
             </>;
 
         return (
             <>
+                {
+                    properties.indirectAcquisitionType === findMimeTypeWithExtension(ADOBE_ADEPT_XML) ?
+                    <><span title={properties.indirectAcquisitionType.replace(/application\//, "")} style={{textDecoration: "line-through"}}>(Adobe Adept)</span><br /><br /></> : <></>
+                }
                 {
                     metadataLineComponent(__("catalog.opds.info.numberOfItems"), properties.numberOfItems)
                 }

@@ -25,7 +25,7 @@ function pdfDateConverter(dateString: string): Date | undefined {
 
     if (dateString) {
 
-        const regexp = /(D:|)(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/.exec(dateString);
+        const regexp = /(D:|)(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(.*)/.exec(dateString);
 
         const date = new Date();
 
@@ -34,7 +34,7 @@ function pdfDateConverter(dateString: string): Date | undefined {
             if (str) {
                 const nb = parseInt(str, 10);
                 if (nb) {
-                    date.setFullYear(nb);
+                    date.setUTCFullYear(nb);
                 }
             }
         }
@@ -43,7 +43,7 @@ function pdfDateConverter(dateString: string): Date | undefined {
             if (str) {
                 const nb = parseInt(str, 10);
                 if (nb) {
-                    date.setDate(nb);
+                    date.setUTCMonth(nb - 1); // ZERO-based!!
                 }
             }
         }
@@ -52,7 +52,42 @@ function pdfDateConverter(dateString: string): Date | undefined {
             if (str) {
                 const nb = parseInt(str, 10);
                 if (nb) {
-                    date.setMonth(nb);
+                    date.setUTCDate(nb);
+                }
+            }
+        }
+
+        // timezone!
+        // D:2022 03 13 13 18 09 +00 '00'
+        // D:2021 06 30 04 43 26 +01 '00'
+        // D:2022 01 27 18 40 11 Z00 '00'
+        // D:2021 02 19 08 47 44 Z
+        // D:2004 05 28 09 45 24 -07 '00'
+        // D:2003 08 30 15 57 46 Z
+        let hoursOffset = 0;
+        {
+            const str = regexp[8];
+            if (str) {
+                if (str.startsWith("Z")) {
+                    // assumes UTC
+                } else if (str.startsWith("+")) {
+                    try {
+                        const off = parseInt(str.substring(1, 3), 10);
+                        if (off) {
+                            hoursOffset = -off;
+                        }
+                    } catch (_e) {
+                        // ignore
+                    }
+                } else if (str.startsWith("-")) {
+                    try {
+                        const off = parseInt(str.substring(1, 3), 10);
+                        if (off) {
+                            hoursOffset = off;
+                        }
+                    } catch (_e) {
+                        // ignore
+                    }
                 }
             }
         }
@@ -61,7 +96,7 @@ function pdfDateConverter(dateString: string): Date | undefined {
             if (str) {
                 const nb = parseInt(str, 10);
                 if (nb) {
-                    date.setHours(nb);
+                    date.setUTCHours(nb + hoursOffset);
                 }
             }
         }
@@ -70,7 +105,7 @@ function pdfDateConverter(dateString: string): Date | undefined {
             if (str) {
                 const nb = parseInt(str, 10);
                 if (nb) {
-                    date.setMinutes(nb);
+                    date.setUTCMinutes(nb);
                 }
             }
         }
@@ -79,10 +114,13 @@ function pdfDateConverter(dateString: string): Date | undefined {
             if (str) {
                 const nb = parseInt(str, 10);
                 if (nb) {
-                    date.setSeconds(nb);
+                    date.setUTCSeconds(nb);
                 }
             }
         }
+
+        // console.log("dateString", dateString, date.toISOString(), date.toUTCString());
+
         return date;
     }
 
@@ -149,7 +187,6 @@ export async function pdfManifest(pdfPath: string, info: IInfo): Promise<R2Publi
 
             if (creationDate) {
 
-                // date converter "D:20200513091016+02'00'" => utc date
                 const date = pdfDateConverter(creationDate);
                 if (date) {
                     r2Publication.Metadata.PublicationDate = date;
@@ -163,7 +200,6 @@ export async function pdfManifest(pdfPath: string, info: IInfo): Promise<R2Publi
 
             if (modDate) {
 
-                // date converter "D:20200513091016+02'00'" => utc date
                 const date = pdfDateConverter(modDate);
                 if (date) {
                     r2Publication.Metadata.Modified = date;

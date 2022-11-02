@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Meny",
         "closeDialog": "Stäng",
-        "homeMenu": "Huvudmeny",
         "importFile": "Importera publikation",
         "leftSlideButton": "Dra listan åt vänster",
         "mainContent": "huvudinnehåll",
@@ -10,6 +9,9 @@
         "searchBook": "Sök på titel",
         "skipLink": "Hoppa till innehåll",
         "toolbar": "vektygsfält"
+    },
+    "apiapp": {
+        "noLibraryFound": "Inget bibliotek hittades ({{- name}})"
     },
     "app": {
         "edit": {
@@ -21,7 +23,7 @@
             "title": "Redigera",
             "undo": "Ångra"
         },
-        "hide": "Göm {{- appName}}",
+        "hide": "Dölj {{- appName}}",
         "quit": "Avsluta {{- appName}}",
         "session": {
             "exit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "Lägg till",
         "allBooks": "Alla böcker",
         "bookInfo": "Om den här boken",
+        "column": {
+            "ascending": "stigande",
+            "descending": "fallande",
+            "unsorted": "osorterat"
+        },
         "delete": "Ta bort",
         "deleteBook": "Ta bort",
         "deleteTag": "Ta bort taggen",
@@ -62,7 +69,9 @@
             "lastAdditions": "Nyligen tillagt"
         },
         "export": "Exportera",
+        "format": "Format",
         "lang": "Språk",
+        "lastRead": "Senast läst",
         "moreInfo": "Mer information",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Släpp en publikation här",
@@ -99,7 +108,8 @@
         "released": "Publicerad den",
         "sort": "Sortera efter",
         "tagCount": "Antal taggar",
-        "tags": "Taggar"
+        "tags": "Taggar",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Stäng den här dialogrutan",
@@ -166,7 +176,10 @@
             "url": "Länk:",
             "urlPlaceholder": "Länk"
         },
-        "addMenu": "Lägg till ett OPDS-flödeAdd OPDS feed",
+        "addFormApiapp": {
+            "title": "Lägg till bibliotekskonto"
+        },
+        "addMenu": "Lägg till ett OPDS-flöde",
         "back": "Tillbaka",
         "breadcrumbRoot": "Kataloger",
         "empty": "Inga publikationer hittades",
@@ -189,12 +202,51 @@
         },
         "next": "Nästa",
         "previous": "Föregående",
-        "shelf": "Hylla"
+        "shelf": "Hylla",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Spår"
         },
+        "author": "Författare",
         "cancelledLcp": "Den här boken kan inte läsas eftersom LCP-licensen inte är giltig längre.",
         "certificateRevoked": "Certifikatet är återkallat",
         "certificateSignatureInvalid": "Certifikatets signatur är ogiltig",
@@ -210,7 +262,7 @@
         "lcpRightsPrint": "Kopiera utskrift",
         "lcpStart": "Start",
         "licenseOutOfDate": "Licensen har löpt ut",
-        "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltig",
+        "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltigt",
         "licenseSignatureInvalid": "Licensens signatur är ogiltig",
         "progression": {
             "title": "Status"
@@ -221,9 +273,14 @@
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "Visa mindre",
         "seeMore": "Visa mer",
+        "title": "Titel",
         "userKeyCheckInvalid": "Lösenordet är felaktigt"
     },
     "reader": {
+        "divina": {
+            "mute": "stäng av ljud",
+            "unmute": "slå på ljud"
+        },
         "footerInfo": {
             "lessInfo": "mindre information",
             "moreInfo": "mer information"
@@ -253,13 +310,15 @@
             "backHomeTitle": "tillbaka till bokhyllan",
             "bookmarkTitle": "bokmärke",
             "currentPage": "Aktuell sida: {{- current}}",
-            "currentPageTotal": "Aktuell sida: ({{- current}}/{{- total}})",
+            "currentPageTotal": "Aktuell sida: {{- current}}/{{- total}}",
             "detachWindowTitle": "visa biblioteks-/bokhyllefönstret",
             "fullscreenTitle": "aktivera helskärmsläge",
             "goTo": "Gå till",
             "goToError": "Sidnumret finns inte",
             "goToPlaceHolder": "Ange ett sidnummer",
             "goToTitle": "Gå till sida",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "information",
             "magnifyingGlassButton": "sök i publikationen",
             "openTableOfContentsTitle": "navigation",
@@ -349,7 +408,7 @@
             "pause": "Pausa text-till-tal",
             "play": "Spela text-till-tal",
             "previous": "Föregående text-till-tal",
-            "sentenceDetect": "",
+            "sentenceDetect": "Dela upp textavsnitt för text-till-tal",
             "speed": "Spelhastighet text-till-tal",
             "stop": "Stoppa text-till-tal",
             "voice": "Textröst"
@@ -364,7 +423,7 @@
             "cancel": "Avbryt",
             "edit": "Redigera",
             "editUserJson": "Redigera användarfil...",
-            "hide": "Göm",
+            "hide": "Dölj",
             "keyboardShortcuts": "Kortkommandon",
             "loadUserJson": "Läs in från användarfil",
             "resetDefaults": "Återställ (läs in standard)",

@@ -21,17 +21,17 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
-import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { _USE_HTTP_STREAMER, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { streamerCachedPublication } from "readium-desktop/main/streamer/streamerNoHttp";
+import { IS_DEV, LCP_SKIP_LSD } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import { lsdRenew_ } from "@r2-lcp-js/lsd/renew";
 import { lsdReturn_ } from "@r2-lcp-js/lsd/return";
@@ -40,14 +40,14 @@ import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { Server } from "@r2-streamer-js/http/server";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
-import { extractCrc32OnZip } from "../crc";
-import { lcpActions } from "../redux/actions";
-import { streamerCachedPublication } from "../streamerNoHttp";
-import { DeviceIdManager } from "./device";
 import { lcpHashesFilePath } from "../di";
+import { lcpActions } from "../redux/actions";
+import { extractCrc32OnZip } from "../tools/crc";
+import { DeviceIdManager } from "./device";
+
+// import { Server } from "@r2-streamer-js/http/server";
 
 // import { JsonMap } from "readium-desktop/typings/json";
 
@@ -71,11 +71,8 @@ export class LcpManager {
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
 
-    @inject(diSymbolTable["lcp-secret-repository"])
-    private readonly lcpSecretRepository!: LcpSecretRepository;
-
-    @inject(diSymbolTable.streamer)
-    private readonly streamer!: Server;
+    // @inject(diSymbolTable.streamer)
+    // private readonly streamer!: Server;
 
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
@@ -109,41 +106,7 @@ export class LcpManager {
             return json;
         }
 
-        debug("LCP getAllSecrets from DB (migration) ...");
-
-        const lcpSecretDocs = await this.lcpSecretRepository.findAll();
         const json: TLCPSecrets = {};
-        for (const lcpSecretDoc of lcpSecretDocs) {
-            const id = lcpSecretDoc.publicationIdentifier;
-            if (!json[id]) {
-                json[id] = {};
-            }
-            if (lcpSecretDoc.secret) {
-                // note: due to the old DB schema,
-                // in theory a single publication ID could have multiple secrets
-                // so this potentially overrides the previous one.
-                // however in practice a given LCP-protected publication only has a single working passphrase
-                json[id].passphrase = lcpSecretDoc.secret;
-
-                if (!json[id].provider) {
-                    const pubs = await this.publicationRepository.findByPublicationIdentifier(id);
-                    if (pubs) {
-                        for (const pub of pubs) { // should be just one
-                            if (pub.lcp?.provider) {
-                                json[id].provider = pub.lcp.provider;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        debug("LCP getAllSecrets DB TO JSON", json);
-        const str = JSON.stringify(json);
-        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
-        fs.promises.writeFile(lcpHashesFilePath, encrypted);
-
         return json;
     }
 
@@ -798,9 +761,12 @@ export class LcpManager {
         const publicationIdentifier = publicationDocument.identifier;
         const epubPath = this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
         // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
-        let r2Publication = _USE_HTTP_STREAMER ?
-            this.streamer.cachedPublication(epubPath) :
-            streamerCachedPublication(epubPath);
+
+        // let r2Publication = _USE_HTTP_STREAMER ?
+        //     this.streamer.cachedPublication(epubPath) :
+        //     streamerCachedPublication(epubPath);
+        let r2Publication = streamerCachedPublication(epubPath);
+
         if (!r2Publication) {
             r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
             // if (r2Publication.LCP) {
@@ -1128,8 +1094,9 @@ export class LcpManager {
                     resolve();
                 }
             };
-            // Uncomment this to bypass LSD checks (just in case of huge network timeouts during tests)
-            if (IS_DEV && process.env.LCP_SKIP_LSD) {
+
+            // use this to temporarily bypass LSD checks during dev
+            if (IS_DEV && LCP_SKIP_LSD) {
                 await callback(undefined);
                 return;
             }
@@ -1142,7 +1109,11 @@ export class LcpManager {
                 );
             } catch (err) {
                 debug(err);
-                reject(err);
+
+                // ignore uncaught promise rejections
+                // (other possible errors in LSD protocol, network issues, etc.)
+                // reject(err);
+                await callback(undefined);
             }
         });
     }

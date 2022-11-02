@@ -12,7 +12,7 @@ import Loader from "readium-desktop/renderer/common/components/Loader";
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 import PageNavigation from "./PageNavigation";
 
@@ -37,7 +37,7 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     }
 
     public render() {
-        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
+        const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         return (
             <>

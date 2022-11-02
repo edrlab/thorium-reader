@@ -9,9 +9,19 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
 interface IPubInfoState {
     publication?: TPublication;
     coverZoom?: boolean;
+}
+interface IPubInfoStateReader extends IPubInfoState {
+    focusWhereAmI: boolean;
+    pdfPlayerNumberOfPages: number | undefined; // super hacky :(
+    divinaNumberOfPages: number | undefined; // super hacky :(
+    divinaContinousEqualTrue: boolean;
+    readerReadingLocation: LocatorExtended;
+    handleLinkUrl: ((url: string) => void) | undefined;
 }
 
 export interface IFileImport {
@@ -25,6 +35,8 @@ export enum DialogTypeName {
     PublicationInfoLib = "publication-info-lib",
     PublicationInfoReader = "publication-info-reader",
     OpdsFeedAddForm = "opds-feed-add-form",
+    OpdsFeedUpdateForm = "opds-feed-update-form",
+    ApiappAddForm = "apiapp-add-form",
     DeletePublicationConfirm = "delete-publication-confirm",
     DeleteOpdsFeedConfirm = "delete-opds-feed-confirm",
     LcpAuthentication = "lcp-authentication",
@@ -39,8 +51,12 @@ export interface DialogType {
     };
     [DialogTypeName.PublicationInfoOpds]: IPubInfoState;
     [DialogTypeName.PublicationInfoLib]: IPubInfoState;
-    [DialogTypeName.PublicationInfoReader]: IPubInfoState;
+    [DialogTypeName.PublicationInfoReader]: IPubInfoStateReader;
     [DialogTypeName.OpdsFeedAddForm]: {};
+    [DialogTypeName.OpdsFeedUpdateForm]: {
+        feed: IOpdsFeedView;
+    };
+    [DialogTypeName.ApiappAddForm]: {};
     [DialogTypeName.DeletePublicationConfirm]: {
         publicationView: PublicationView;
     };

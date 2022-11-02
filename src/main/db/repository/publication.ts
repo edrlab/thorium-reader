@@ -5,28 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ok } from "assert";
 import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as lunr from "lunr";
-import * as PouchDB from "pouchdb-core";
-import { Identifiable } from "readium-desktop/common/models/identifiable";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
-import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
+import { ok } from "readium-desktop/common/utils/assert";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { publicationActions } from "readium-desktop/main/redux/actions";
+import { aboutFilteredDocs } from "readium-desktop/main/tools/filter";
 import { Unsubscribe } from "redux";
 
 import * as lunrde from "@lunr-languages/lunr.de.js";
 import * as lunrfr from "@lunr-languages/lunr.fr.js";
 import * as lunrmulti from "@lunr-languages/lunr.multi.js";
 import * as lunrstemmer from "@lunr-languages/lunr.stemmer.support.js";
-
-import { ExcludeTimestampableAndIdentifiable } from "./base";
-import { aboutFilteredDocs } from "readium-desktop/main/filter";
 
 const debug = debug_("readium-desktop:main:db:repository:publication");
 
@@ -35,21 +30,8 @@ lunrfr(lunr);
 lunrde(lunr);
 lunrmulti(lunr);
 
-// const CREATED_AT_INDEX = "created_at_index";
-
-// const TAG_INDEX = "tag_index";
-
-// const TITLE_INDEX = "title_index";
-
-// const HASH_INDEX = "hash_index";
-
 @injectable()
-export class PublicationRepository  /* extends BaseRepository<PublicationDocument> */ {
-    db: PouchDB.Database<PublicationDocument>;
-    public constructor(db: PouchDB.Database<PublicationDocument>) {// INJECTED!
-
-        this.db = db;
-    }
+export class PublicationRepository {
 
     public async save(document: PublicationDocumentWithoutTimestampable): Promise<PublicationDocument> {
         debug("Publication SAVE: ", document);
@@ -149,18 +131,6 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         return pub;
     }
 
-    public async findAllFromPouchdb(): Promise<PublicationDocument[]> {
-
-        const result = await this.db.allDocs({
-            include_docs: true,
-            startkey: "publication" + "_",
-            endkey: "publication" + "_\ufff0",
-        });
-        return result.rows.map((row) => {
-            return this.convertToDocument(row.doc);
-        });
-    }
-
     public async findAll(): Promise<PublicationDocument[]> {
 
         const store = diMainGet("store");
@@ -174,6 +144,8 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
 
         const pubs = await this.findAll();
         ok(Array.isArray(pubs));
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
+        // ... which is fine because findAll() creates a local array instance
         const docsSorted = pubs.sort((a,b) => b.createdAt - a.createdAt);
 
         return docsSorted;
@@ -212,7 +184,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
     }
 
 
-    public async searchByTitle(title: string): Promise<PublicationDocument[]> {
+    public async searchByTitleAndAuthor(titleOrAuthor: string): Promise<PublicationDocument[]> {
 
         try {
 
@@ -221,6 +193,12 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
 
             const pubs = Object.values(state.publication.db)
                 .filter((v) => !v.removedButPreservedToAvoidReMigration);
+
+            const publicationViewConverter = diMainGet("publication-view-converter");
+            const pubViews: PublicationView[] = [];
+            for (const pub of pubs) {
+                pubViews.push(await publicationViewConverter.convertDocumentToView(pub));
+            }
 
             const indexer = lunr(function (this: any) {
 
@@ -231,11 +209,13 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
                 }
 
                 this.field("title", { boost: 10 });
+                this.field("author", { boost: 5 });
                 // this.setRef("id");
 
-                const docs = pubs.map((v) => ({
+                const docs = pubViews.map((v) => ({
                     id: v.identifier,
-                    title: v.title,
+                    title: v.documentTitle,
+                    author: v.authors.join(" "),
                 }));
 
                 docs.forEach((v) => {
@@ -243,7 +223,7 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
                 });
             });
 
-            const res = indexer.search(title);
+            const res = indexer.search(titleOrAuthor);
             if (!res) {
                 return [];
             }
@@ -283,110 +263,9 @@ export class PublicationRepository  /* extends BaseRepository<PublicationDocumen
         }
 
         // Sort asc
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
+        // ... which is fine because this is a local array instance (stack)
         tags.sort();
         return tags;
-    }
-
-    protected convertToMinimalDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): Timestampable & Identifiable {
-        return {
-            identifier: dbDoc.identifier,
-            createdAt: dbDoc.createdAt,
-            updatedAt: dbDoc.updatedAt,
-        } as Timestampable & Identifiable;
-    }
-
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): PublicationDocument {
-
-        // let r2PublicationJson = dbDoc.resources.r2PublicationJson;
-        // if (!r2PublicationJson) {
-        //     const r2PublicationBase64 =
-        //         (dbDoc.resources as any).r2PublicationBase64 ||
-        //         (dbDoc.resources as any).filePublication; // legacy obsolete field;
-        //     if (r2PublicationBase64) {
-        //         try {
-        //             const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
-        //             r2PublicationJson = JSON.parse(r2PublicationStr);
-        //         } catch (_err) {
-        //             r2PublicationJson = undefined;
-        //         }
-        //     }
-        // }
-
-        // let r2OpdsPublicationJson = dbDoc.resources.r2OpdsPublicationJson;
-        // if (!r2OpdsPublicationJson) {
-        //     const r2OpdsPublicationBase64 =
-        //         (dbDoc.resources as any).r2OpdsPublicationBase64 ||
-        //         (dbDoc.resources as any).opdsPublication; // legacy obsolete field;
-        //     if (r2OpdsPublicationBase64) {
-        //         try {
-        //             const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
-        //             r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
-        //         } catch (_err) {
-        //             r2OpdsPublicationJson = undefined;
-        //         }
-        //     }
-        // }
-
-        // let r2LCPJson = dbDoc.resources.r2LCPJson;
-        // if (!r2LCPJson) {
-        //     const r2LCPBase64 =
-        //         (dbDoc.resources as any).r2LCPBase64;
-        //     if (r2LCPBase64) {
-        //         try {
-        //             const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
-        //             r2LCPJson = JSON.parse(r2LCPStr);
-        //         } catch (_err) {
-        //             r2LCPJson = undefined;
-        //         }
-        //     }
-        // }
-
-        // let r2LSDJson = dbDoc.resources.r2LSDJson;
-        // if (!r2LSDJson) {
-        //     const r2LSDBase64 =
-        //         (dbDoc.resources as any).r2LSDBase64;
-        //     if (r2LSDBase64) {
-        //         try {
-        //             const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
-        //             r2LSDJson = JSON.parse(r2LSDStr);
-        //         } catch (_err) {
-        //             r2LSDJson = undefined;
-        //         }
-        //     }
-        // }
-
-        // const resources: Resources | undefined = dbDoc.resources ? {
-
-        //     r2PublicationJson,
-        //     // r2OpdsPublicationJson,
-        //     // r2LCPJson,
-        //     // r2LSDJson,
-
-        //     // Legacy Base64 data blobs
-        //     // r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||
-        //     //     (dbDoc.resources as any).filePublication, // legacy obsolete field
-        //     // r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 ||
-        //     //     (dbDoc.resources as any).opdsPublication, // legacy obsolete field
-        //     // r2LCPBase64: dbDoc.resources.r2LCPBase64,
-        //     // r2LSDBase64: dbDoc.resources.r2LSDBase64,
-        // } : undefined;
-
-        return Object.assign(
-            {},
-            this.convertToMinimalDocument(dbDoc),
-            {
-                // resources,
-                title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
-                tags: dbDoc.tags,
-                files: dbDoc.files,
-                coverFile: dbDoc.coverFile,
-                customCover: dbDoc.customCover,
-
-                lcp: dbDoc.lcp,
-                lcpRightsCopies: dbDoc.lcpRightsCopies,
-
-                hash: dbDoc.hash,
-            } as ExcludeTimestampableAndIdentifiable<PublicationDocument>,
-        );
     }
 }

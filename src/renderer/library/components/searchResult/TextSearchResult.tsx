@@ -19,7 +19,7 @@ import LibraryLayout from "readium-desktop/renderer/library/components/layout/Li
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType, ILibrarySearchText, routes } from "readium-desktop/renderer/library/routing";
+import { DisplayType, ILibrarySearchText, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { Unsubscribe } from "redux";
 
 import Header from "../catalog/Header";
@@ -60,11 +60,15 @@ export class TextSearchResult extends React.Component<IProps, IState> {
     }
 
     public componentDidUpdate(prevProps: IProps) {
-        const text = matchPath<ILibrarySearchText>(
-            this.props.location.pathname, routes["/library/search/text"],
+
+        const text = matchPath<keyof ILibrarySearchText, string>(
+            routes["/library/search/text"].path,
+            this.props.location.pathname,
         ).params.value;
-        const prevText = matchPath<ILibrarySearchText>(
-            prevProps.location.pathname, routes["/library/search/text"],
+
+        const prevText = matchPath<keyof ILibrarySearchText, string>(
+            routes["/library/search/text"].path,
+            prevProps.location.pathname,
         ).params.value;
 
         if (text !== prevText) {
@@ -80,23 +84,25 @@ export class TextSearchResult extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
+        const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
+
         const { __ } = this.props;
-        const title = matchPath<ILibrarySearchText>(
-            this.props.location.pathname, routes["/library/search/text"],
+
+        const title = matchPath<keyof ILibrarySearchText, string>(
+            routes["/library/search/text"].path,
+            this.props.location.pathname,
         ).params.value;
 
         const secondaryHeader = <Header/>;
+        const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
 
         return (
             <LibraryLayout
                 title={`${__("catalog.myBooks")} / ${title}`}
                 secondaryHeader={secondaryHeader}
+                breadCrumb={breadCrumb}
             >
                 <div>
-                    <BreadCrumb
-                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}
-                    />
                     {this.state.publicationViews ?
                         (displayType === DisplayType.Grid ?
                             <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
@@ -109,14 +115,16 @@ export class TextSearchResult extends React.Component<IProps, IState> {
 
     private searchPublications = (text?: string) => {
         if (!text) {
-            text = matchPath<ILibrarySearchText>(
-                this.props.location.pathname, routes["/library/search/text"],
+
+            text = matchPath<keyof ILibrarySearchText, string>(
+                routes["/library/search/text"].path,
+                this.props.location.pathname,
             ).params.value;
         }
         apiAction("publication/search", text)
             .then((publicationViews) => this.setState({ publicationViews }))
             .catch((error) => console.error("Error to fetch api publication/search", error));
-    }
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({

@@ -5,20 +5,24 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import {
-    LOCATION_CHANGE, LocationChangePayload, onLocationChanged,
-    RouterActionType,
-} from "connected-react-router";
-import { Location } from "history";
+import { LOCATION_CHANGE } from "redux-first-history";
+import { Location, Action as HistoryAction } from "history";
 import { Action } from "readium-desktop/common/models/redux";
-import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 export const ID = LOCATION_CHANGE;
 
-export function build(location: Location<IRouterLocationState>, action: RouterActionType, isFirstRendering?: boolean):
-    Action<typeof ID, LocationChangePayload<IRouterLocationState>> {
+export interface Payload {
+    location: Location;
+    action: HistoryAction;
+}
 
-    return onLocationChanged(location, action, isFirstRendering);
+export function build(location: Location, action: HistoryAction):
+    Action<typeof ID, Payload> {
+
+    return {
+        type: LOCATION_CHANGE,
+        payload: { location, action },
+    };
 }
 build.toString = () => ID; // Redux StringableActionCreator
 export type TAction = ReturnType<typeof build>;

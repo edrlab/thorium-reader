@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import { debounce } from "debounce";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -22,7 +23,7 @@ import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as LeftIcon from "readium-desktop/renderer/assets/icons/gauche.svg";
 import * as JustifyIcon from "readium-desktop/renderer/assets/icons/justifie.svg";
 import * as PagineIcon from "readium-desktop/renderer/assets/icons/pagine.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -37,8 +38,6 @@ import { readerLocalActionSetConfig } from "../redux/actions";
 import optionsValues, { IReaderOptionsProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
-
-import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
@@ -118,7 +117,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         if (isDivina) {
 
             sections.push({
-                    title: "readingMode",
+                    title: __("reader.settings.disposition.title"),
                     content: this.divinaSetReadingMode(),
                 });
         }
@@ -177,8 +176,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         return (
             <SideMenu
                 openedSection={this.props.openedSection}
-                className={styles.read_settings}
-                listClassName={styles.read_settings_list}
+                className={stylesReader.read_settings}
+                listClassName={stylesReader.read_settings_list}
                 open={this.props.open}
                 sections={sections}
                 toggleMenu={toggleMenu}
@@ -194,7 +193,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.setState({
             pdfScale: scale,
         });
-    }
+    };
 
     private setView = (view: IPdfPlayerView) => {
 
@@ -203,7 +202,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.setState({
             pdfView: view,
         });
-    }
+    };
 
     private setCol = (col: IPdfPlayerColumn) => {
 
@@ -212,7 +211,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.setState({
             pdfCol: col,
         });
-    }
+    };
 
     private saveConfig() {
 
@@ -220,7 +219,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         return (
 
-            <div className={classNames(styles.line_tab_content, styles.config_save)}>
+            <div className={classNames(stylesReader.line_tab_content, stylesReader.config_save)}>
 
                 <button
                     onClick={() => this.props.setDefaultConfig(readerConfig)}
@@ -248,7 +247,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         const { readerConfig } = this.props;
         return (<>
-            <div className={styles.mathml_section}>
+            <div className={stylesReader.mathml_section}>
                 <input
                     id="mediaOverlaysEnableCaptionsModeCheckBox"
                     type="checkbox"
@@ -259,7 +258,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     this.props.__("reader.media-overlays.captions")
                 }</label>
             </div>
-            <div className={styles.mathml_section}>
+            <div className={stylesReader.mathml_section}>
                 <input
                     id="mediaOverlaysEnableSkippabilityCheckBox"
                     type="checkbox"
@@ -270,7 +269,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     this.props.__("reader.media-overlays.skip")
                 }</label>
             </div>
-            <div className={styles.mathml_section}>
+            <div className={stylesReader.mathml_section}>
                 <input
                     id="ttsEnableSentenceDetectionCheckBox"
                     type="checkbox"
@@ -287,13 +286,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     private divinaSetReadingMode() {
 
         return (
-            <div id={styles.themes_list}>
+            <div id={stylesReader.themes_list} aria-label={this.props.__("reader.settings.disposition.title")} role="radiogroup">
                 <div>
                     <input
                         disabled={!this.props.divinaReadingModeSupported.includes("double")}
                         id={"radio-" + "double"}
                         type="radio"
-                        name="theme"
+                        name="divinaReadingMode"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("double");
                         }}
@@ -312,7 +311,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         disabled={!this.props.divinaReadingModeSupported.includes("guided")}
                         id={"radio-" + "guided"}
                         type="radio"
-                        name="theme"
+                        name="divinaReadingMode"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("guided");
                         }}
@@ -331,7 +330,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         disabled={!this.props.divinaReadingModeSupported.includes("scroll")}
                         id={"radio-" + "scroll"}
                         type="radio"
-                        name="theme"
+                        name="divinaReadingMode"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("scroll");
                         }}
@@ -350,7 +349,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         disabled={!this.props.divinaReadingModeSupported.includes("single")}
                         id={"radio-" + "single"}
                         type="radio"
-                        name="theme"
+                        name="divinaReadingMode"
                         onChange={() => {
                             this.props.handleDivinaReadingMode("single");
                         }}
@@ -377,7 +376,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     <input
                         id={"radio-" + `${scale}`}
                         type="radio"
-                        name={`${scale}`}
+                        name="pdfZoomRadios"
                         onChange={() => this.props.pdfEventBus.dispatch("scale", scale)}
                         checked={this.state.pdfScale === scale}
                         disabled={disabled}
@@ -404,7 +403,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         };
 
         return (
-            <div id={styles.themes_list}>
+            <div id={stylesReader.themes_list} role="radiogroup" aria-label={__("reader.settings.pdfZoom.title")}>
                 {inputComponent("page-fit")}
                 {inputComponent("page-width", this.state.pdfView === "paginated")}
                 {inputComponent(50, this.state.pdfView === "paginated")}
@@ -421,7 +420,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const { __, readerConfig } = this.props;
         const withoutTheme = !readerConfig.sepia && !readerConfig.night;
         return (
-            <div id={styles.themes_list}>
+            <div id={stylesReader.themes_list} role="radiogroup" aria-label={__("reader.settings.theme.title")}>
                 <div>
                     <input
                         id={"radio-" + themeType.Without}
@@ -481,14 +480,16 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             " " : readiumCSSFontName;
         const fontFamily = fontListItem?.fontFamily ? fontListItem.fontFamily : `'${readiumCSSFontName}', serif`;
 
+        // <output id={stylesReader.valeur_taille} className={stylesReader.out_of_screen}>14</output>
         return <>
-            <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>{__("reader.settings.fontSize")}</div>
-                <div className={styles.center_in_tab}>
-                    <span className={styles.slider_marker}>a</span>
-                    <input type="range"
+            <div className={stylesReader.line_tab_content}>
+                <div id="label_fontSize" className={stylesReader.subheading}>{__("reader.settings.fontSize")}</div>
+                <div className={stylesReader.center_in_tab}>
+                    <span className={stylesReader.slider_marker} style={{fontSize: "150%"}}>a</span>
+                    <input
+                        type="range"
+                        aria-labelledby="label_fontSize"
                         onChange={(e) => this.props.handleIndexChange(e, "fontSize")}
-                        id="text_length"
                         min={0}
                         max={optionsValues.fontSize.length - 1}
                         value={this.props.indexes.fontSize}
@@ -497,13 +498,16 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         aria-valuemax={optionsValues.fontSize.length - 1}
                         aria-valuenow={this.props.indexes.fontSize}
                     />
-                    <output id={styles.valeur_taille} className={styles.out_of_screen}>14</output>
-                    <span className={styles.slider_marker} style={{fontSize: "250%"}}>a</span>
+                    <span className={stylesReader.slider_marker} style={{fontSize: "250%"}}>a</span>
+
+                    <span className={stylesReader.reader_settings_value}>
+                        {readerConfig.fontSize}
+                    </span>
                 </div>
             </div>
-            <div className={styles.line_tab_content}>
-                <div id="fontLabel" className={styles.subheading}>{__("reader.settings.font")}</div>
-                <div className={styles.center_in_tab} style={{flexDirection: "column"}}>
+            <div className={stylesReader.line_tab_content}>
+                <div id="fontLabel" className={stylesReader.subheading}>{__("reader.settings.font")}</div>
+                <div className={stylesReader.center_in_tab} style={{flexDirection: "column"}}>
                     <div style={{
                         display: "flex",
                         flexDirection: "row",
@@ -513,10 +517,10 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         alignItems: "center",
                     }}>
                     <select
+                        title={__("reader.settings.font")}
                         style={{
                             width: fontListItem ? "fit-content" : "4em",
                         }}
-                        id={styles.police_texte}
                         onChange={(e) => {
                             this.props.handleSettingChange(e, "font");
                         }}
@@ -596,12 +600,12 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 isPdf
                     ? <></>
                     :
-                    <section className={styles.line_tab_content}>
-                        <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
-                        <div className={styles.center_in_tab}>
-                            <div className={styles.focus_element}>
+                    <section className={stylesReader.line_tab_content}>
+                        <div id="label_disposition" className={stylesReader.subheading}>{__("reader.settings.disposition.title")}</div>
+                        <div className={stylesReader.center_in_tab} role="radiogroup" aria-labelledby="label_disposition">
+                            <div className={stylesReader.focus_element}>
                                 <input
-                                    id={styles.scroll_option}
+                                    id={stylesReader.scroll_option}
                                     type="radio"
                                     name="disposition"
                                     onChange={(e) => isPdf
@@ -612,18 +616,18 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                         : !readerConfig.paged}
                                 />
                                 <label
-                                    htmlFor={styles.scroll_option}
+                                    htmlFor={stylesReader.scroll_option}
                                     className={isPdf
                                         ? this.getButtonClassNamePdf(this.state.pdfView === "scrolled")
                                         : this.getButtonClassName("paged", false)}
                                 >
-                                    <SVG svg={DefileIcon} />
+                                    <SVG ariaHidden={true} svg={DefileIcon} />
                                     {__("reader.settings.scrolled")}
                                 </label>
                             </div>
-                            <div className={styles.focus_element}>
+                            <div className={stylesReader.focus_element}>
                                 <input
-                                    id={styles.page_option}
+                                    id={stylesReader.page_option}
                                     type="radio"
                                     name="disposition"
                                     onChange={(e) => isPdf
@@ -634,64 +638,64 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                         : readerConfig.paged}
                                 />
                                 <label
-                                    htmlFor={styles.page_option}
+                                    htmlFor={stylesReader.page_option}
                                     className={isPdf
                                         ? this.getButtonClassNamePdf(this.state.pdfView === "paginated")
                                         : this.getButtonClassName("paged", true)}
                                 >
-                                    <SVG svg={PagineIcon} />
+                                    <SVG ariaHidden={true} svg={PagineIcon} />
                                     {__("reader.settings.paginated")}
                                 </label>
                             </div>
                         </div>
                     </section>
             }
-            <section className={styles.line_tab_content} hidden={this.props.isPdf}>
-                <div className={styles.subheading}>{__("reader.settings.justification")}</div>
-                <div className={styles.center_in_tab}>
-                    <div className={styles.focus_element}>
+            <section className={stylesReader.line_tab_content} hidden={this.props.isPdf}>
+                <div id="label_justification" className={stylesReader.subheading}>{__("reader.settings.justification")}</div>
+                <div className={stylesReader.center_in_tab} role="radiogroup" aria-labelledby="label_justification">
+                    <div className={stylesReader.focus_element}>
                         <input
-                            id={"radio-" + styles.option_auto}
+                            id={"radio-" + stylesReader.option_auto}
                             name="alignment"
                             type="radio"
                             onChange={(e) => this.props.handleSettingChange(e, "align", "auto")}
                             checked={readerConfig.align === "auto"}
                         />
                         <label
-                            htmlFor={"radio-" + styles.option_auto}
+                            htmlFor={"radio-" + stylesReader.option_auto}
                             className={this.getButtonClassName("align", "auto")}
                         >
-                            <SVG svg={LeftIcon} />
+                            <SVG ariaHidden={true} svg={LeftIcon} />
                             {__("reader.settings.column.auto")}
                         </label>
                     </div>
-                    <div className={styles.focus_element}>
+                    <div className={stylesReader.focus_element}>
                         <input
-                            id={"radio-" + styles.option_justif}
+                            id={"radio-" + stylesReader.option_justif}
                             name="alignment"
                             type="radio"
                             onChange={(e) => this.props.handleSettingChange(e, "align", textAlignEnum.justify)}
                             checked={readerConfig.align === textAlignEnum.justify}
                         />
                         <label
-                            htmlFor={"radio-" + styles.option_justif}
+                            htmlFor={"radio-" + stylesReader.option_justif}
                             className={this.getButtonClassName("align", "justify")}
                         >
-                            <SVG svg={JustifyIcon} />
+                            <SVG ariaHidden={true} svg={JustifyIcon} />
                             {__("reader.settings.justify")}
                         </label>
                     </div>
                 </div>
             </section>
-            <section className={styles.line_tab_content}>
-                <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
-                <div className={styles.center_in_tab}>
+            <section className={stylesReader.line_tab_content}>
+                <div id="label_column" className={stylesReader.subheading}>{__("reader.settings.column.title")}</div>
+                <div className={stylesReader.center_in_tab} role="radiogroup" aria-labelledby="label_column">
                     {
                         isPdf
                             ? <></>
-                            : <div className={styles.focus_element}>
+                            : <div className={stylesReader.focus_element}>
                                 <input
-                                    id={"radio-" + styles.option_colonne}
+                                    id={"radio-" + stylesReader.option_colonne}
                                     type="radio"
                                     name="column"
                                     {...(!readerConfig.paged && { disabled: true })}
@@ -703,22 +707,22 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                         : readerConfig.colCount === colCountEnum.auto}
                                 />
                                 <label
-                                    htmlFor={"radio-" + styles.option_colonne}
+                                    htmlFor={"radio-" + stylesReader.option_colonne}
                                     className={isPdf
                                         ? this.getButtonClassNamePdf(this.state.pdfCol === "auto")
                                         : this.getButtonClassName("colCount",
                                             !readerConfig.paged ? null : colCountEnum.auto,
-                                            !readerConfig.paged && styles.disable)}
+                                            !readerConfig.paged && stylesReader.disable)}
                                 >
-                                    <SVG svg={AutoIcon} />
+                                    <SVG ariaHidden={true} svg={AutoIcon} />
                                     {__("reader.settings.column.auto")}
                                 </label>
                             </div>
                     }
-                    <div className={styles.focus_element}>
+                    <div className={stylesReader.focus_element}>
                         <input
                             disabled={!isPdf && !readerConfig.paged ? true : false}
-                            id={"radio-" + styles.option_colonne1}
+                            id={"radio-" + stylesReader.option_colonne1}
                             type="radio"
                             name="column"
                             onChange={(e) => isPdf
@@ -729,20 +733,20 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                 : readerConfig.colCount === colCountEnum.one}
                         />
                         <label
-                            htmlFor={"radio-" + styles.option_colonne1}
+                            htmlFor={"radio-" + stylesReader.option_colonne1}
                             className={isPdf
                                 ? this.getButtonClassNamePdf(this.state.pdfCol === "1")
                                 : this.getButtonClassName("colCount",
                                     !readerConfig.paged ? null : colCountEnum.one,
-                                    !readerConfig.paged && styles.disable)}
+                                    !readerConfig.paged && stylesReader.disable)}
                         >
                             <SVG svg={ColumnIcon} title={__("reader.settings.column.oneTitle")} />
                             {__("reader.settings.column.one")}
                         </label>
                     </div>
-                    <div className={styles.focus_element}>
+                    <div className={stylesReader.focus_element}>
                         <input
-                            id={"radio-" + styles.option_colonne2}
+                            id={"radio-" + stylesReader.option_colonne2}
                             type="radio"
                             name="column"
                             disabled={!isPdf && !readerConfig.paged ? true : false}
@@ -754,12 +758,12 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                 : readerConfig.colCount === colCountEnum.two}
                         />
                         <label
-                            htmlFor={"radio-" + styles.option_colonne2}
+                            htmlFor={"radio-" + stylesReader.option_colonne2}
                             className={isPdf
                                 ? this.getButtonClassNamePdf(this.state.pdfCol === "2")
                                 : this.getButtonClassName("colCount",
                                     !readerConfig.paged ? null : colCountEnum.two,
-                                    !readerConfig.paged && styles.disable)
+                                    !readerConfig.paged && stylesReader.disable)
                             }
                         >
                             <SVG svg={Column2Icon} title={__("reader.settings.column.twoTitle")} />
@@ -768,8 +772,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     </div>
                 </div>
             </section>
-            <section className={styles.line_tab_content} hidden={this.props.isPdf}>
-                <div className={styles.mathml_section}>
+            <section className={stylesReader.line_tab_content} hidden={this.props.isPdf}>
+                <div className={stylesReader.mathml_section}>
                     <input
                         id="mathJaxCheckBox"
                         type="checkbox"
@@ -778,7 +782,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     />
                     <label htmlFor="mathJaxCheckBox">MathJax</label>
                 </div>
-                <div className={styles.mathml_section}>
+                <div className={stylesReader.mathml_section}>
                     <input
                         id="reduceMotionCheckBox"
                         type="checkbox"
@@ -788,7 +792,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     <label htmlFor="reduceMotionCheckBox">{__("reader.settings.reduceMotion")}</label>
                 </div>
 
-                <div className={styles.mathml_section}>
+                <div className={stylesReader.mathml_section}>
                     <input
                         id="noFootnotesCheckBox"
                         type="checkbox"
@@ -804,14 +808,14 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     private spacingContent() {
         const { __, readerConfig } = this.props;
         return <>
-            <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+            <div className={stylesReader.line_tab_content}>
+                <div id="label_pageMargins" className={stylesReader.subheading}>
                     {__("reader.settings.margin")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_pageMargins"
                     onChange={(e) => this.props.handleIndexChange(e, "pageMargins")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.pageMargins.length - 1}
                     value={this.props.indexes.pageMargins}
@@ -820,18 +824,18 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     aria-valuemax={optionsValues.pageMargins.length - 1}
                     aria-valuenow={this.props.indexes.pageMargins}
                 />
-                <span className={styles.reader_settings_value}>
+                <span className={stylesReader.reader_settings_value}>
                     {this.roundRemValue(readerConfig.pageMargins)}
                 </span>
             </div>
-            <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+            <div className={stylesReader.line_tab_content}>
+                <div id="label_wordSpacing" className={stylesReader.subheading}>
                     {__("reader.settings.wordSpacing")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_wordSpacing"
                     onChange={(e) => this.props.handleIndexChange(e, "wordSpacing")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.wordSpacing.length - 1}
                     value={this.props.indexes.wordSpacing}
@@ -840,18 +844,18 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     aria-valuemax={optionsValues.wordSpacing.length - 1}
                     aria-valuenow={this.props.indexes.wordSpacing}
                 />
-                <span className={styles.reader_settings_value}>
+                <span className={stylesReader.reader_settings_value}>
                     {this.roundRemValue(readerConfig.wordSpacing)}
                 </span>
             </div>
-            <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+            <div className={stylesReader.line_tab_content}>
+                <div id="label_letterSpacing" className={stylesReader.subheading}>
                     {__("reader.settings.letterSpacing")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_letterSpacing"
                     onChange={(e) => this.props.handleIndexChange(e, "letterSpacing")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.letterSpacing.length - 1}
                     value={this.props.indexes.letterSpacing}
@@ -860,18 +864,18 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     aria-valuemax={optionsValues.letterSpacing.length - 1}
                     aria-valuenow={this.props.indexes.letterSpacing}
                 />
-                <span className={styles.reader_settings_value}>
+                <span className={stylesReader.reader_settings_value}>
                     {this.roundRemValue(readerConfig.letterSpacing)}
                 </span>
             </div>
-            <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+            <div className={stylesReader.line_tab_content}>
+                <div id="label_paraSpacing" className={stylesReader.subheading}>
                     {__("reader.settings.paraSpacing")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_paraSpacing"
                     onChange={(e) => this.props.handleIndexChange(e, "paraSpacing")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.paraSpacing.length - 1}
                     value={this.props.indexes.paraSpacing}
@@ -880,18 +884,18 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     aria-valuemax={optionsValues.paraSpacing.length - 1}
                     aria-valuenow={this.props.indexes.paraSpacing}
                 />
-                <span className={styles.reader_settings_value}>
+                <span className={stylesReader.reader_settings_value}>
                     {this.roundRemValue(readerConfig.paraSpacing)}
                 </span>
             </div>
-            <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>
+            <div className={stylesReader.line_tab_content}>
+                <div id="label_lineHeight" className={stylesReader.subheading}>
                     {__("reader.settings.lineSpacing")}
                 </div>
                 <input
                     type="range"
+                    aria-labelledby="label_lineHeight"
                     onChange={(e) => this.props.handleIndexChange(e, "lineHeight")}
-                    id="text_length"
                     min={0}
                     max={optionsValues.lineHeight.length - 1}
                     value={this.props.indexes.lineHeight}
@@ -900,7 +904,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     aria-valuemax={optionsValues.lineHeight.length - 1}
                     aria-valuenow={this.props.indexes.lineHeight}
                 />
-                <span className={styles.reader_settings_value}>
+                <span className={stylesReader.reader_settings_value}>
                     {this.roundRemValue(readerConfig.lineHeight)}
                 </span>
             </div>
@@ -991,13 +995,13 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     // round the value to the hundredth
     private roundRemValue(value: string | undefined) {
         if (!value) {
-            return "0";
+            return "-";
         }
 
         // TODO: other potential CSS units?
-        const nbr = parseFloat(value.replace("rem", "").replace("em", "").replace("px", ""));
+        const nbr = parseFloat(value.replace("%", "").replace("rem", "").replace("em", "").replace("px", ""));
         const roundNumber = (Math.round(nbr * 100) / 100);
-        return roundNumber;
+        return roundNumber ? roundNumber : " ";
     }
 
     private getButtonClassName(
@@ -1008,9 +1012,9 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const property = this.props.readerConfig[propertyName];
         let classname = "";
         if (property === value) {
-            classname = styles.active;
+            classname = stylesReader.active;
         } else {
-            classname = styles.notUsed;
+            classname = stylesReader.notUsed;
         }
         return classNames(classname, additionalClassName);
     }
@@ -1021,9 +1025,9 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         let classname = "";
         if (test) {
-            classname = styles.active;
+            classname = stylesReader.active;
         } else {
-            classname = styles.notUsed;
+            classname = stylesReader.notUsed;
         }
         return classNames(classname, additionalClassName);
     }

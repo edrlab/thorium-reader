@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menü",
         "closeDialog": "Schließen",
-        "homeMenu": "Startmenü",
         "importFile": "Importieren einer EPUB-Datei",
         "leftSlideButton": "Scrolle nach links unten",
         "mainContent": "hauptinhalt",
@@ -10,6 +9,9 @@
         "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
         "skipLink": "Gehe zum Inhalt",
         "toolbar": "symbolleiste"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "Hinzufügen",
         "allBooks": "Alle Bücher",
         "bookInfo": "Über dieses Buch",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Löschen",
         "deleteBook": "Löschen",
         "deleteTag": "Löschen des Tags",
@@ -62,7 +69,9 @@
             "lastAdditions": "Kürzlich hinzugefügt"
         },
         "export": "Export",
+        "format": "",
         "lang": "Sprache",
+        "lastRead": "",
         "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
         "noPublicationHelpL1": "Geben Sie die Publikation ab",
@@ -99,7 +108,8 @@
         "released": "Veröffentlicht am",
         "sort": "Sortieren nach",
         "tagCount": "Anzahl der Tags",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Dieses Fenster schließen",
@@ -166,6 +176,9 @@
             "url": "Feed-Link:",
             "urlPlaceholder": ""
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "OPDS-Feed hinzufügen",
         "back": "Zurück",
         "breadcrumbRoot": "",
@@ -189,12 +202,51 @@
         },
         "next": "Nächster",
         "previous": "Bisherige",
-        "shelf": ""
+        "shelf": "",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Spuren"
         },
+        "author": "",
         "cancelledLcp": "",
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
@@ -206,8 +258,8 @@
         },
         "expiredLcp": "",
         "lcpEnd": "",
-        "lcpRightsCopy": "",
-        "lcpRightsPrint": "",
+        "lcpRightsCopy": "Kopierte Zeichen",
+        "lcpRightsPrint": "Gedruckte Seiten",
         "lcpStart": "",
         "licenseOutOfDate": "",
         "licenseSignatureDateInvalid": "",
@@ -221,9 +273,14 @@
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
         "seeMore": "Mehr Infos",
+        "title": "",
         "userKeyCheckInvalid": ""
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "Weniger Informationen",
             "moreInfo": "Mehr Informationen"
@@ -260,6 +317,8 @@
             "goToError": "Diese Seite existiert nicht",
             "goToPlaceHolder": "Gehe zur Seite",
             "goToTitle": "Gehe zur Seite",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "Informationen",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navigation",

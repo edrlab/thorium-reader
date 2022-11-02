@@ -18,7 +18,7 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
@@ -52,7 +52,7 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
 function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libWin) {
+    if (libWin && !libWin.isDestroyed()) {
 
         // try-catch to do not trigger an error message when the winbound is not handle by the os
         let libBound: Electron.Rectangle;
@@ -254,7 +254,7 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
     yield call(readerCloseRequest, action.sender.identifier);
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libWin) {
+    if (libWin && !libWin.isDestroyed()) {
 
         const winBound = yield* selectTyped(
             (state: RootState) => state.win.session.library.windowBound,

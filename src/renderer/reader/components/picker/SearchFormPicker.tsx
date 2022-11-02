@@ -102,9 +102,11 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                         padding: "4px",
                         marginLeft: "0.4em",
                         color: this.state.inputValue ? "black" : "grey",
-                        fill: this.state.inputValue ? "black" : "grey" }}>
+                        fill: this.state.inputValue ? "black" : "grey" }}
+                    title={__("reader.picker.search.submit")}
+                >
 
-                    <SVG svg={magnifyingGlass} title={__("reader.picker.search.submit")} />
+                    <SVG ariaHidden={true} svg={magnifyingGlass} />
                 </button>
             </form>
         );
@@ -129,7 +131,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
         this.inputRef.current.focus();
         // this.inputRef.current.select();
         this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);
-    }
+    };
 
     private search(e: TFormEvent) {
         e.preventDefault();

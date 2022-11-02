@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -120,7 +120,7 @@ export class SideMenu extends React.Component<IProps, IState> {
                 </ul>
             </AccessibleMenu>
             { open &&
-                <div aria-hidden={true} className={styles.menu_background} onClick={() => toggleMenu()}/>
+                <div aria-hidden={true} className={stylesReader.menu_background} onClick={() => toggleMenu()}/>
             }
         </>);
     }

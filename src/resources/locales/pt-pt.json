@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Fechar",
-        "homeMenu": "Menu de visualização de leitura",
         "importFile": "Importar publicação",
         "leftSlideButton": "Deslizar lista para a esquerda",
         "mainContent": "conteúdo principal",
@@ -10,6 +9,9 @@
         "searchBook": "Procurar por título",
         "skipLink": "Ir para o conteúdo",
         "toolbar": "barra de ferramentas"
+    },
+    "apiapp": {
+        "noLibraryFound": "Nenhuma biblioteca encontrada ({{- name}})"
     },
     "app": {
         "edit": {
@@ -49,11 +51,16 @@
         "addTagsButton": "Adicionar",
         "allBooks": "Todos os livros",
         "bookInfo": "Sobre este livro",
+        "column": {
+            "ascending": "crescente",
+            "descending": "decrescente",
+            "unsorted": "não ordenado"
+        },
         "delete": "Apagar",
         "deleteBook": "Remover",
         "deleteTag": "Apagar etiqueta",
         "description": "Descrição",
-        "emptyTagList": "Você não tem livros marcados.",
+        "emptyTagList": "Não tem livros etiquetados.",
         "entry": {
             "continueReading": "Retomar leitura",
             "continueReadingAudioBooks": "Retomar audição",
@@ -62,7 +69,9 @@
             "lastAdditions": "Adicionados recentemente"
         },
         "export": "Exportar",
+        "format": "Formato",
         "lang": "Idioma",
+        "lastRead": "Último lido",
         "moreInfo": "Mais informações",
         "myBooks": "Meus livros",
         "noPublicationHelpL1": "Solte uma publicação aqui",
@@ -99,7 +108,8 @@
         "released": "Publicado em",
         "sort": "Ordenar por",
         "tagCount": "Contagem de etiquetas",
-        "tags": "Etiquetas"
+        "tags": "Etiquetas",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Fechar esta janela modal",
@@ -166,6 +176,9 @@
             "url": "Endereço:",
             "urlPlaceholder": "Hiperligação"
         },
+        "addFormApiapp": {
+            "title": "Adicionar uma conta de biblioteca"
+        },
         "addMenu": "Adicionar fonte OPDS",
         "back": "Voltar",
         "breadcrumbRoot": "Catálogos",
@@ -189,12 +202,51 @@
         },
         "next": "Seguinte",
         "previous": "Anterior",
-        "shelf": "Estante"
+        "shelf": "Estante",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Faixas"
         },
+        "author": "Autor",
         "cancelledLcp": "Este livro não pode ser lido porque a licença LCP foi cancelada.",
         "certificateRevoked": "O certificado foi revogado",
         "certificateSignatureInvalid": "A assinatura do certificado é inválida",
@@ -206,11 +258,11 @@
         },
         "expiredLcp": "Este livro não pode ser lido porque a licença LCP expirou.",
         "lcpEnd": "Fim",
-        "lcpRightsCopy": "Copiar caracteres",
-        "lcpRightsPrint": "Impressão",
+        "lcpRightsCopy": "Caracteres copiados",
+        "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Início",
         "licenseOutOfDate": "Licença caducada",
-        "licenseSignatureDateInvalid": "A data da assinatura da licença é inválida",
+        "licenseSignatureDateInvalid": "A data de assinatura da licença é inválida",
         "licenseSignatureInvalid": "A assinatura da licença é inválida",
         "progression": {
             "title": "Progressão"
@@ -221,9 +273,14 @@
         "revokedLcp": "Este livro não pode ser lido porque a licença LCP foi revogada.",
         "seeLess": "Ver menos",
         "seeMore": "Ver mais",
+        "title": "Título",
         "userKeyCheckInvalid": "A frase-senha está incorreta"
     },
     "reader": {
+        "divina": {
+            "mute": "silenciar áudio",
+            "unmute": "silenciar áudio"
+        },
         "footerInfo": {
             "lessInfo": "menos informações",
             "moreInfo": "mais informações"
@@ -253,13 +310,15 @@
             "backHomeTitle": "voltar à estante",
             "bookmarkTitle": "marcador",
             "currentPage": "Página atual: {{- current}}",
-            "currentPageTotal": "Página atual: ({{- current}}/{{- total}})",
+            "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
             "detachWindowTitle": "mostrar biblioteca / janela da estante",
             "fullscreenTitle": "abrir modo de ecrã completo",
             "goTo": "Ir para",
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um n.º de página",
             "goToTitle": "Ir para a página",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "informações",
             "magnifyingGlassButton": "pesquisar no documento",
             "openTableOfContentsTitle": "navegação",
@@ -283,10 +342,10 @@
         "settings": {
             "column": {
                 "auto": "Automático",
-                "one": "1 col",
+                "one": "1 col.",
                 "oneTitle": "uma coluna",
                 "title": "Colunas",
-                "two": "2 cols",
+                "two": "2 cols.",
                 "twoTitle": "duas colunas"
             },
             "display": "Visualização",
@@ -349,7 +408,7 @@
             "pause": "Pausar Texto para voz",
             "play": "Executar Texto para voz",
             "previous": "Texto para voz - anterior",
-            "sentenceDetect": "",
+            "sentenceDetect": "Dividir texto de texto para voz",
             "speed": "Velocidade de Texto para voz",
             "stop": "Parar Texto para voz",
             "voice": "Voz de Texto para voz"

@@ -16,7 +16,7 @@ import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/cata
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
-import { Store } from "redux";
+import { type Store } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -24,13 +24,17 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationDocument } from "../db/document/publication";
 import { PublicationRepository } from "../db/repository/publication";
 import { diMainGet } from "../di";
-import { aboutFiltered } from "../filter";
+import { aboutFiltered } from "../tools/filter";
 import { RootState } from "../redux/states";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
 const NB_PUB = 5;
 
+// TODO: this memo-ization is very expensive (memory and CPU-wise) ...
+// and TaJsonDeserialize() is called in several other places in the library lifecycle
+// (including below via convertDocumentToView())
+// so it would make sense to hoist the cache higher in the application architecture
 const viewToR2Pub = (view: PublicationView) => {
     // Legacy Base64 data blobs
     // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
@@ -241,7 +245,6 @@ export class CatalogApi implements ICatalogApi {
 
         const lastReading = this.store.getState().publication.lastReadingQueue;
         const pubIdArray = lastReading.map(([, pubId]) => pubId);
-
         return pubIdArray;
     }
 }

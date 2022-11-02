@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "메뉴",
         "closeDialog": "닫기",
-        "homeMenu": "보기형태",
         "importFile": "출판물 가져오기",
         "leftSlideButton": "목록 왼쪽으로 밀기 ",
         "mainContent": "메인 콘텐츠",
@@ -10,6 +9,9 @@
         "searchBook": "제목으로 검색",
         "skipLink": "콘텐츠로 건너뛰기",
         "toolbar": "툴바"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "추가",
         "allBooks": "모든 도서",
         "bookInfo": "상세 정보",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "삭제",
         "deleteBook": "삭제",
         "deleteTag": "태그 삭제",
@@ -62,7 +69,9 @@
             "lastAdditions": "최근에 추가한 도서"
         },
         "export": "내보내기",
+        "format": "",
         "lang": "언어선택",
+        "lastRead": "",
         "moreInfo": "상세정보",
         "myBooks": "내 도서",
         "noPublicationHelpL1": "출판물을 여기로 가져오십시오.",
@@ -99,7 +108,8 @@
         "released": "발행일",
         "sort": "정렬 기준",
         "tagCount": "태그 개수",
-        "tags": "태그"
+        "tags": "태그",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "모달 창 닫기",
@@ -166,6 +176,9 @@
             "url": "링크:",
             "urlPlaceholder": "링크"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "OPDS feed 추가",
         "back": "뒤로",
         "breadcrumbRoot": "카탈로그",
@@ -189,12 +202,51 @@
         },
         "next": "다음",
         "previous": "이전",
-        "shelf": "책꽂이"
+        "shelf": "책꽂이",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "오디오 트랙"
         },
+        "author": "",
         "cancelledLcp": "이 책은 LCP 라이선스가 취소되어서 읽을 수 없습니다",
         "certificateRevoked": "인증서가 해지되었습니다",
         "certificateSignatureInvalid": "인증서 서명이 잘못되었습니다",
@@ -221,9 +273,14 @@
         "revokedLcp": "이 책은 LCP 라이선스가 취소되어서 읽을 수 없습니다.",
         "seeLess": "접기",
         "seeMore": "더 보기",
+        "title": "",
         "userKeyCheckInvalid": "잘못된 암호입니다."
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "간략한 정보",
             "moreInfo": "자세한 정보"
@@ -253,13 +310,15 @@
             "backHomeTitle": "책꽂이로 돌아가기",
             "bookmarkTitle": "북마크",
             "currentPage": "현재 페이지: {{- current}}",
-            "currentPageTotal": "현재 페이지: ({{- current}}/{{- total}})",
+            "currentPageTotal": "현재 페이지: {{- current}}/{{- total}}",
             "detachWindowTitle": "라이브러리 / 책꽂이 창 보기",
             "fullscreenTitle": "전체화면 모드",
             "goTo": "이동",
             "goToError": "페이지 구분이 존재하지 않습니다.",
             "goToPlaceHolder": "페이지 번호를 입력하세요.",
             "goToTitle": "페이지로 이동",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "정보",
             "magnifyingGlassButton": "도서내용으로 검색",
             "openTableOfContentsTitle": "네비게이션",

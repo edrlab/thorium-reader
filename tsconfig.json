@@ -33,7 +33,7 @@
     "downlevelIteration": false,
     "emitBOM": false,
     "esModuleInterop": false,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "pretty": true,
@@ -47,12 +47,11 @@
     "module": "ES2020",
     "moduleResolution": "Node",
     "lib": [
-      "es2017",
-      "es6",
+      "es2020",
       "dom",
       "dom.iterable"
     ],
-    "target": "es6",
+    "target": "es2020",
     "jsx": "react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -68,22 +67,22 @@
         "./test/*"
       ],
       "@r2-utils-js/*": [
-        "node_modules/r2-utils-js/dist/es6-es2015/src/*"
+        "node_modules/r2-utils-js/dist/es8-es2017/src/*"
       ],
       "@r2-opds-js/*": [
-        "node_modules/r2-opds-js/dist/es6-es2015/src/*"
+        "node_modules/r2-opds-js/dist/es8-es2017/src/*"
       ],
       "@r2-shared-js/*": [
-        "node_modules/r2-shared-js/dist/es6-es2015/src/*"
+        "node_modules/r2-shared-js/dist/es8-es2017/src/*"
       ],
       "@r2-streamer-js/*": [
-        "node_modules/r2-streamer-js/dist/es6-es2015/src/*"
+        "node_modules/r2-streamer-js/dist/es8-es2017/src/*"
       ],
       "@r2-navigator-js/*": [
-        "node_modules/r2-navigator-js/dist/es6-es2015/src/*"
+        "node_modules/r2-navigator-js/dist/es8-es2017/src/*"
       ],
       "@r2-lcp-js/*": [
-        "node_modules/r2-lcp-js/dist/es6-es2015/src/*"
+        "node_modules/r2-lcp-js/dist/es8-es2017/src/*"
       ],
       "@lunr-languages/*": [
         "node_modules/lunr-languages/*"

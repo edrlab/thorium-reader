@@ -36,16 +36,15 @@ export const TagButton: React.FC<IProps> = (props) => {
     if (pubId && onClickDeleteCb && __) {
         button = (
             <>
-                {
-                    tagString
-                }
+                {tagString}
                 <button
                     onClick={
                         // () => this.deleteTag(index)
                         onClickDeleteCb(index)
                     }
+                    title={__("catalog.deleteTag")}
                 >
-                    <SVG svg={CrossIcon} title={__("catalog.deleteTag")} />
+                    <SVG ariaHidden={true} svg={CrossIcon} />
                 </button>
             </>
         );
@@ -58,20 +57,14 @@ export const TagButton: React.FC<IProps> = (props) => {
                         onClickLinkCb(tag)
                     }
                 >
-                    {
-                        tagString
-                    }
+                    {tagString}
                 </a>
-                <button>
-                </button>
             </>
         );
     } else {
         button = (
             <>
-                {
-                    tagString
-                }
+                {tagString}
             </>
         );
     }

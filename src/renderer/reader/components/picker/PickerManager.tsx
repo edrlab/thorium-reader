@@ -95,9 +95,8 @@ class PickerManager extends React.Component<IProps, IState> {
                 padding: 0,
                 margin: 0,
 
-                backgroundColor: "white",
-                color: "black",
-                border: "1px solid #333333",
+                backgroundColor: "var(--reader-mainColor)",
+                border: "1px solid var(--reader-separatorColor)",
                 borderRadius: "6px",
 
                 display: "flex",
@@ -115,7 +114,6 @@ class PickerManager extends React.Component<IProps, IState> {
                 <span style={{
                     fontSize: "1em",
                     backgroundColor: "transparent",
-                    color: "black",
                     margin: 0,
                     padding: 0,
                     paddingLeft: "1em",
@@ -154,7 +152,7 @@ class PickerManager extends React.Component<IProps, IState> {
                     title={__("accessibility.closeDialog")}
                     onClick={() => this.props.closePicker(type)}
                 >
-                    <SVG svg={QuitIcon} />
+                    <SVG ariaHidden={true} svg={QuitIcon} />
                 </button>
             </div>
         );

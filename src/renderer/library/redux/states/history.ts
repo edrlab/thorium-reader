@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { TLocationRouter } from "readium-desktop/renderer/library/routing";
+import { Location } from "history";
 
 // tslint:disable-next-line:no-empty-interface
-export type THistoryState = TLocationRouter[];
+export type THistoryState = Location[];

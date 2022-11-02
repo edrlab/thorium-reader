@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "菜单",
         "closeDialog": "关闭",
-        "homeMenu": "阅读视图菜单",
         "importFile": "导入出版物",
         "leftSlideButton": "将列表划至左侧",
         "mainContent": "主要内容",
@@ -10,6 +9,9 @@
         "searchBook": "按书名搜索",
         "skipLink": "跳转至内容",
         "toolbar": "工具栏"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "添加",
         "allBooks": "全部图书",
         "bookInfo": "关于此书",
+        "column": {
+            "ascending": "升序",
+            "descending": "降序",
+            "unsorted": "乱序"
+        },
         "delete": "删除",
         "deleteBook": "删除",
         "deleteTag": "删除标签",
@@ -62,7 +69,9 @@
             "lastAdditions": "最近添加"
         },
         "export": "导出",
+        "format": "",
         "lang": "语言",
+        "lastRead": "",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "拖放EPUB至此处。",
@@ -99,7 +108,8 @@
         "released": "出版日期",
         "sort": "排序方式",
         "tagCount": "标签数",
-        "tags": "标签"
+        "tags": "标签",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "关闭此模式窗口",
@@ -166,6 +176,9 @@
             "url": "链接:",
             "urlPlaceholder": "链接"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "添加OPDS订阅源",
         "back": "返回",
         "breadcrumbRoot": "出版目录",
@@ -177,7 +190,7 @@
             "addExtract": "导入摘录",
             "goBuyBook": "购买此书",
             "goLoanBook": "借阅此书",
-            "goRevokeLoanBook": "",
+            "goRevokeLoanBook": "归还此书",
             "goSubBook": "订阅"
         },
         "network": {
@@ -189,12 +202,51 @@
         },
         "next": "下一个",
         "previous": "上一个",
-        "shelf": "书架"
+        "shelf": "书架",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "音轨"
         },
+        "author": "作者",
         "cancelledLcp": "此书无法阅读，因为LCP许可证已被取消。",
         "certificateRevoked": "认证撤销",
         "certificateSignatureInvalid": "认证签名无效",
@@ -221,9 +273,14 @@
         "revokedLcp": "此书无法阅读，因为LCP许可证已被撤销。",
         "seeLess": "察看更少",
         "seeMore": "查看更多",
+        "title": "标题",
         "userKeyCheckInvalid": "密码不正确"
     },
     "reader": {
+        "divina": {
+            "mute": "静音",
+            "unmute": "取消静音"
+        },
         "footerInfo": {
             "lessInfo": "不显示阅读位置",
             "moreInfo": "显示阅读位置"
@@ -253,13 +310,15 @@
             "backHomeTitle": "返回书架",
             "bookmarkTitle": "书签",
             "currentPage": "当前页面: {{- current}}",
-            "currentPageTotal": "当前页面: ({{- current}}/{{- total}})",
+            "currentPageTotal": "当前页面: {{- current}}/{{- total}}",
             "detachWindowTitle": "显示 书库/书架 窗口",
             "fullscreenTitle": "开启全屏模式",
             "goTo": "转到",
             "goToError": "此页不存在",
             "goToPlaceHolder": "输入页码",
             "goToTitle": "转到页",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "信息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "导航",
@@ -300,7 +359,7 @@
             "letterSpacing": "字符间距",
             "lineSpacing": "行间距",
             "margin": "页边距",
-            "noFootnotes": "",
+            "noFootnotes": "没有脚注",
             "paginated": "分页",
             "paraSpacing": "段落间距",
             "pdfZoom": {
@@ -349,7 +408,7 @@
             "pause": "暂停",
             "play": "播放",
             "previous": "上一段",
-            "sentenceDetect": "",
+            "sentenceDetect": "句子检测",
             "speed": "语速",
             "stop": "停止",
             "voice": "声音"

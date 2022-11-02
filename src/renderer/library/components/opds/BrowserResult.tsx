@@ -7,7 +7,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -15,7 +16,7 @@ import Loader from "readium-desktop/renderer/common/components/Loader";
 import { apiState } from "readium-desktop/renderer/common/redux/api/api";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DisplayType } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 import PublicationCard from "../publication/PublicationCard";
 import { ListView } from "../utils/ListView";
@@ -59,90 +60,107 @@ export class BrowserResult extends React.Component<IProps, undefined> {
         } else if (browserData?.result) {
             const browserResult = browserData.result;
 
-            if (browserResult.isSuccess ||
-                (browserResult.isFailure && browserResult.statusCode === 401 && browserResult.data?.auth)) {
+            if (browserResult?.data?.problemDetails) {
+                const { data: { problemDetails: {
+                    type,
+                    title,
+                    status,
+                    // detail,
+                    // instance,
+                } } } = browserResult;
 
-                if (browserResult.data.navigation &&
-                    !browserResult.data.publications &&
-                    !browserResult.data.groups) {
+                content = (
+                    <MessageOpdBrowserResult
+                        title={__("opds.network.reject")}
+                        message={`(http ${status}) ${title || type}`}
+                    />
+                );
+
+            } else if (
+                browserResult.isSuccess
+                || (browserResult.isFailure && browserResult.statusCode === 401 && browserResult?.data?.opds?.auth)
+            ) {
+
+                const { data: { opds } } = browserResult;
+
+                if (opds.navigation &&
+                    !opds.publications &&
+                    !opds.groups) {
 
                     content = (
-                        <EntryList entries={browserResult.data.navigation} />
+                        <EntryList entries={opds.navigation} />
                     );
-                } else if (browserResult.data.publications &&
-                    !browserResult.data.navigation &&
-                    !browserResult.data.groups) {
+                } else if (opds.publications &&
+                    !opds.navigation &&
+                    !opds.groups) {
 
-                    const facetsRender = browserResult.data.facets?.map((facet, facetId) =>
+                    const facetsRender = opds.facets?.map((facet, facetId) =>
                         <section key={`facet-${facetId}`}>
-                            <br></br>
-                            <h3>{facet.title}</h3>
+                            <div className={stylesGlobal.heading}>
+                                <h3>{facet.title}</h3>
+                            </div>
                             <EntryList entries={facet.links}></EntryList>
                         </section>,
                     );
 
                     content = (
                         <>
-                            <div className={Array.isArray(facetsRender) ? styles.publicationgrid : ""}>
+                            <div className={Array.isArray(facetsRender) ? stylesColumns.row : ""}>
                                 {
-                                    Array.isArray(facetsRender)
-                                        ? <div className={styles.publicationgriditem}>
-                                            {
-                                                facetsRender
-                                            }
+                                    Array.isArray(facetsRender) ?
+                                        <div className={stylesColumns.col_filter}>
+                                            {facetsRender}
                                         </div>
-                                        : <></>
+                                    :
+                                        <></>
                                 }
-                                <div className={Array.isArray(facetsRender) ? styles.publicationgriditem : ""}>
+                                <div className={Array.isArray(facetsRender) ? stylesColumns.col : ""}>
                                     <EntryPublicationList
-                                        opdsPublicationView={browserResult.data.publications}
-                                        links={browserResult.data.links}
-                                        pageInfo={browserResult.data.metadata}
+                                        opdsPublicationView={opds.publications}
+                                        links={opds.links}
+                                        pageInfo={opds.metadata}
                                     />
                                 </div>
                             </div>
                         </>
                     );
-                } else if (browserResult.data.groups ||
-                    browserResult.data.publications ||
-                    browserResult.data.navigation) {
+                } else if (opds.groups ||
+                    opds.publications ||
+                    opds.navigation) {
 
                     content = (
                         <>
                             {
-                                browserResult.data.navigation &&
-                                <EntryList entries={browserResult.data.navigation} />
+                                opds.navigation &&
+                                <EntryList entries={opds.navigation} />
                             }
 
                             {
-                                browserResult.data.publications &&
+                                opds.publications &&
                                 <EntryPublicationList
-                                    opdsPublicationView={browserResult.data.publications}
-                                    links={browserResult.data.links}
-                                    pageInfo={browserResult.data.metadata}
+                                    opdsPublicationView={opds.publications}
+                                    links={opds.links}
+                                    pageInfo={opds.metadata}
                                 />
                             }
 
                             {
-                                browserResult.data.groups?.map((group, i) =>
+                                opds.groups?.map((group, i) =>
                                     <section key={i}>
-                                        <br></br>
-                                        <h3 className={styles.entrygroups}>
+
+                                        <div className={stylesGlobal.heading_link}>
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
-                                        </h3>
+                                        </div>
                                         {
                                             group.navigation &&
                                             <EntryList entries={group.navigation} />
                                         }
-                                        <hr></hr>
                                         {
                                             group.publications &&
                                                 (
-                                                    this.props.location?.state?.displayType
-                                                    || DisplayType.Grid
+                                                    (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid
                                                 ) === DisplayType.Grid ?
                                                 <Slider
-                                                    className={styles.slider}
                                                     content={group.publications.map((pub, pubId) =>
                                                         <PublicationCard
                                                             key={`opds-group-${i}-${pubId}`}
@@ -180,7 +198,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             }
         }
 
-        return <div className={styles.opdsBrowseContent}>
+        return <div>
             {content}
         </div>;
     }
@@ -188,7 +206,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 
-    const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("opds/browse");
+    const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("httpbrowser/browse");
     return {
         browserData: apiBrowseData?.data,
         location: state.router.location,

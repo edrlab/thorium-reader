@@ -5,22 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { AbortSignal } from "abort-controller";
+import timeoutSignal from "timeout-signal";
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
+import * as http from "http";
 import * as https from "https";
-import { Headers, RequestInit } from "node-fetch";
-import { AbortSignal as IAbortSignal } from "node-fetch/externals";
+import { AbortError, Headers, RequestInit, Response } from "node-fetch";
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
-import { resolve } from "url";
 
-import { ConfigRepository } from "../db/repository/config";
 import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
+import { digestAuthentication, parseDigestString} from "readium-desktop/utils/digest";
 
 // Logger
 const filename_ = "readium-desktop:main/http";
@@ -28,22 +29,25 @@ const debug = debug_(filename_);
 
 const DEFAULT_HTTP_TIMEOUT = 30000;
 
-// https://github.com/node-fetch/node-fetch/blob/master/src/utils/is-redirect.js
-const redirectStatus = new Set([301, 302, 303, 307, 308]);
-
 let authenticationToken: Record<string, IOpdsAuthenticationToken> = {};
 
-/**
- * Redirect code matching
- *
- * @param {number} code - Status code
- * @return {boolean}
- */
-const isRedirect = (code: number) => {
-    return redirectStatus.has(code);
-};
+// Redirect now handled internally, see https://github.com/valeriangalliat/fetch-cookie/blob/master/CHANGELOG.md#200---2022-02-17
+//
+// // https://github.com/node-fetch/node-fetch/blob/master/src/utils/is-redirect.js
+// const redirectStatus = new Set([301, 302, 303, 307, 308]);
+// /**
+//  * Redirect code matching
+//  *
+//  * @param {number} code - Status code
+//  * @return {boolean}
+//  */
+// const isRedirect = (code: number) => {
+//     return redirectStatus.has(code);
+// };
 
-const FOLLOW_REDIRECT_COUNTER = 20;
+// 20 is fetch-cookie's default
+// https://github.com/valeriangalliat/fetch-cookie#max-redirects
+const MAX_FOLLOW_REDIRECT = 20;
 
 export const httpSetHeaderAuthorization =
     (type: string, credentials: string) => `${type} ${credentials}`;
@@ -61,6 +65,7 @@ export interface IOpdsAuthenticationToken {
     accessToken?: string;
     refreshToken?: string;
     tokenType?: string;
+    password?: string; // digest only
 }
 
 let authenticationTokenInitialized = false;
@@ -90,20 +95,7 @@ const authenticationTokenInit = async () => {
                 k.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)
                 && typeof v === "object", true));
 
-    if (!isValid) {
-
-        const configDoc = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
-
-        docs = await tryCatch(async () => (await configDoc.findAll())
-            .filter((v) => v.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN))
-            .map<[string, IOpdsAuthenticationToken]>((v) => [v.identifier, v.value])
-            .reduce<Record<string, IOpdsAuthenticationToken>>((pv, [k, v]) => ({
-                ...pv,
-                [k]: v,
-            }), {}), "");
-    }
-
-    if (!docs) {
+    if (!docs || !isValid) {
         docs = {};
     }
 
@@ -114,24 +106,6 @@ const authenticationTokenInit = async () => {
 
 export const httpSetAuthenticationToken =
     async (data: IOpdsAuthenticationToken) => {
-        // return tryCatch(
-        // async () => {
-
-        //     if (!data.opdsAuthenticationUrl) {
-        //         throw new Error("no opdsAutenticationUrl !!");
-        //     }
-
-        //     // const url = new URL(data.opdsAuthenticationUrl);
-        //     const { host } = url;
-        //     // do not risk showing plaintext access/refresh tokens in console / command line shell
-        //     debug("SET opds authentication credentials for", host); // data
-        //     const configRepo = diMainGet("config-repository");
-        //     await configRepo.save({
-        //         identifier: CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host),
-        //         value: data,
-        //     });
-        // },
-        // filename_);
         if (!data.opdsAuthenticationUrl) {
             throw new Error("no opdsAutenticationUrl !!");
         }
@@ -163,39 +137,26 @@ export const absorbDBToJson = async () => {
 };
 
 export const getAuthenticationToken =
-    async (host: string) => {
-        // return await tryCatch(
-        //     async () => {
-
-        //         const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-        //         const configRepo = diMainGet("config-repository") as ConfigRepository<IOpdsAuthenticationToken>;
-        //         const doc = await configRepo.get(id);
-        //         debug("GET opds authentication credentials for", host);
-        //         // do not risk showing plaintext access/refresh tokens in console / command line shell
-        //         // debug("Credentials: ", doc?.value);
-        //         return doc?.value;
-        //     },
-        //     filename_);
+    async (url: URL, method = "GET") => {
 
         await authenticationTokenInit();
 
-        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-        return authenticationToken[id];
+        const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(url.host);
+        const auth = authenticationToken[id];
+        if (auth?.accessToken?.includes("nonce=") && auth?.accessToken?.includes("uri=")) {
+
+            const data = parseDigestString(auth.accessToken);
+            auth.accessToken = digestAuthentication({
+                ...data,
+                uri: new URL(url).pathname,
+                password: auth.password,
+                method: method.toUpperCase(),
+            });
+        }
+        return auth;
     };
 
 export const deleteAuthenticationToken = async (host: string) => {
-    // return await tryCatch(async () => {
-    //     const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
-    //     const configRepo = diMainGet(
-    //         "config-repository",
-    //     ) as ConfigRepository<IOpdsAuthenticationToken>;
-    //     const doc = await configRepo.get(id);
-    //     debug("DELETE opds authentication credentials for", host);
-    //     // do not risk showing plaintext access/refresh tokens in console / command line shell
-    //     // debug("Credentials: ", doc?.value);
-    //     await configRepo.delete(doc.identifier);
-    // }, filename_);
-
     await authenticationTokenInit();
 
     const id = CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn(host);
@@ -216,41 +177,119 @@ export const wipeAuthenticationTokenStorage = async () => {
 export async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
-    redirectCounter = 0,
+    // redirectCounter = 0,
     locale = tryCatchSync(() => diMainGet("store")?.getState()?.i18n?.locale, filename_) || "en-US",
 ): Promise<THttpResponse> {
+
+    url = new URL(url);
+    if (url.host.startsWith("apiapploans.org.edrlab.thoriumreader")) {
+        const [, idGln, host] = url.host.split(".break.");
+
+        debug("http fetch dilicom api app server ", idGln, url.toString());
+        url.host = host;
+    }
 
     options.headers = options.headers instanceof Headers
         ? options.headers
         : new Headers(options.headers || {});
-    options.headers.set("user-agent", "readium-desktop");
-    options.headers.set("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
-    options.redirect = "manual"; // handle cookies
+    (options.headers as Headers).set("user-agent", "readium-desktop");
+    (options.headers as Headers).set("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
+
+    // Redirect now handled internally, see https://github.com/valeriangalliat/fetch-cookie/blob/master/CHANGELOG.md#200---2022-02-17
+    //
+    // options.redirect = "manual"; // handle cookies
 
     // https://github.com/node-fetch/node-fetch#custom-agent
     // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
-    // this a nodeJs issues !
-    //
-    // const httpAgent = new http.Agent({
-    //     timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-    // });
-    // options.agent = (parsedURL: URL) => {
-    //     if (parsedURL.protocol === "http:") {
-    //           return httpAgent;
-    //     } else {
-    //           return httpsAgent;
-    //     }
-    // };
-    if (!options.agent && url.toString().startsWith("https:")) {
-        const httpsAgent = new https.Agent({
-            timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-            rejectUnauthorized: IS_DEV ? false : true,
-        });
-        options.agent = httpsAgent;
-    }
+    // https://github.com/edrlab/thorium-reader/issues/1323#issuecomment-911772951
+    const httpsAgent = new https.Agent({
+        timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
+        rejectUnauthorized: IS_DEV ? false : true,
+    });
+    const httpAgent = new http.Agent({
+        timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
+    });
+    options.agent = (parsedURL: URL) => {
+        if (parsedURL.protocol === "http:") {
+            return httpAgent;
+        } else {
+            return httpsAgent;
+        }
+    };
+
+    // if (!options.agent && url.toString().startsWith("https:")) {
+    //     const httpsAgent = new https.Agent({
+    //         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
+    //         rejectUnauthorized: IS_DEV ? false : true,
+    //     });
+    //     options.agent = httpsAgent;
+    // }
     options.timeout = options.timeout || DEFAULT_HTTP_TIMEOUT;
 
-    const response = await fetchWithCookie(url, options);
+    options.maxRedirect = MAX_FOLLOW_REDIRECT;
+
+    let timeSignal: AbortSignal | undefined;
+    let timeout: NodeJS.Timeout | undefined;
+    if (!options.signal) {
+        timeSignal = timeoutSignal(options.timeout);
+        options.signal = timeSignal;
+        (options.signal as any).__abortReasonTimeout = true;
+    } else if (options.abortController) {
+        timeout = setTimeout(() => {
+            timeout = undefined;
+            if (options.abortController?.signal) {
+                (options.abortController.signal as any).__abortReasonTimeout = true;
+            }
+            // normally implied: options.signal === options.abortController.signal (see downloader.ts)
+            // ... but just in case another signal is configured:
+            if (options.signal) {
+                (options.signal as any).__abortReasonTimeout = true;
+            }
+            if (options.abortController && !options.abortController.signal?.aborted) {
+                try {
+                    options.abortController.abort();
+                } catch {}
+            }
+        }, options.timeout);
+    } else {
+        // TODO: handle signal without our own downloader.ts AbortController?
+        // (probably not needed as we control the full fetch lifecycle, there are no such occurences in our codebase)
+        // const controller = new AbortController();
+        // timeout = setTimeout(() => {
+        //     timeout = undefined;
+        //     if (controller?.signal) {
+        //         (controller.signal as any).__abortReasonTimeout = true;
+        //     }
+        //     // propagate the timeout state to any other existing signal,
+        //     // so we can test in the fetch catch() / promise rejection
+        //     if (options.signal) {
+        //         (options.signal as any).__abortReasonTimeout = true;
+        //     }
+        //     if (controller) {
+        //         try {
+        //             controller.abort(); // not bound to fetch, so does nothing!
+        //         } catch {}
+        //     }
+        // }, options.timeout);
+    }
+
+    let response: Response;
+    try {
+        response = await fetchWithCookie(url.toString(), options);
+    } finally {
+        // module-level weakmap of timeouts,
+        // see https://github.com/node-fetch/timeout-signal/blob/main/index.js
+        if (timeSignal) {
+            try {
+                timeoutSignal.clear(timeSignal);
+            } catch {}
+        }
+        // our local, closure-level timeout
+        if (timeout) {
+            clearTimeout(timeout);
+            timeout = undefined;
+        }
+    }
 
     debug("fetch URL:", `${url}`);
     debug("Method", options.method);
@@ -261,40 +300,66 @@ export async function httpFetchRawResponse(
     debug("status code :", response.status);
     debug("status text :", response.statusText);
 
-    // manual Redirect to handle cookies
-    // https://github.com/node-fetch/node-fetch/blob/0d35ddbf7377a483332892d2b625ec8231fa6181/src/index.js#L129
-    if (isRedirect(response.status)) {
+    // Redirect now handled internally, see https://github.com/valeriangalliat/fetch-cookie/blob/master/CHANGELOG.md#200---2022-02-17
+    //
+    // // manual Redirect to handle cookies
+    // // https://github.com/node-fetch/node-fetch/blob/0d35ddbf7377a483332892d2b625ec8231fa6181/src/index.js#L129
+    // if (isRedirect(response.status)) {
 
-        const location = response.headers.get("Location");
-        debug("Redirect", response.status, "to: ", location);
+    //     const location = response.headers.get("Location");
+    //     debug("Redirect", response.status, "to: ", location);
 
-        if (location) {
-            const locationUrl = resolve(response.url, location);
+    //     if (location) {
+    //         const locationUrl = resolve(response.url, location);
 
-            if (redirectCounter > FOLLOW_REDIRECT_COUNTER) {
-                throw new Error(`maximum redirect reached at: ${url}`);
-            }
+    //         if (redirectCounter > FOLLOW_REDIRECT_COUNTER) {
+    //             throw new Error(`maximum redirect reached at: ${url}`);
+    //         }
 
-            if (
-                response.status === 303 ||
-                ((response.status === 301 || response.status === 302) && options.method === "POST")
-            ) {
-                options.method = "GET";
-                options.body = undefined;
-                if (options.headers) {
-                    if (!(options.headers instanceof Headers)) {
-                        options.headers = new Headers(options.headers);
-                    }
-                    options.headers.delete("content-length");
-                }
-            }
+    //         if (
+    //             response.status === 303 ||
+    //             ((response.status === 301 || response.status === 302) && options.method === "POST")
+    //         ) {
+    //             options.method = "GET";
+    //             options.body = undefined;
+    //             if (options.headers) {
+    //                 if (!(options.headers instanceof Headers)) {
+    //                     options.headers = new Headers(options.headers);
+    //                 }
+    //                 (options.headers as Headers).delete("content-length");
+    //             }
+    //         }
 
-            return await httpFetchRawResponse(locationUrl, options, redirectCounter + 1, locale);
-        } else {
-            debug("No location URL to redirect");
-        }
-    }
+    //         return await httpFetchRawResponse(locationUrl, options, redirectCounter + 1, locale);
+    //     } else {
+    //         debug("No location URL to redirect");
+    //     }
+    // }
 
+    // ALTERNATIVELY, Promise.race()
+    //
+    // See: https://github.com/simonplend/how-to-cancel-an-http-request-in-node-js/blob/main/example-node-fetch.mjs
+    //
+    // import { setTimeout } from "node:timers/promises";
+    // const cancelRequest = new AbortController();
+    // const cancelTimeout = new AbortController();
+    // const fetchWithCookieResponsePromise = async () => {
+    //     try {
+    //         // response
+    //     } finally {
+    //         cancelTimeout.abort();
+    //     }
+    // }
+    // const timeoutPromise = async () => {
+    //     try {
+    //         await setTimeout(options.timeout, undefined, { signal: cancelTimeout.signal });
+    //         cancelRequest.abort();
+    //     } catch (_err) {
+    //         return;
+    //     }
+    //     throw new Error(`HTTP fetch request timeout ${options.timeout}ms`);
+    // };
+    // return Promise.race([fetchWithCookieResponsePromise, timeoutPromise()]);
     return response;
 }
 
@@ -324,7 +389,7 @@ export async function httpFetchFormattedResponse<TData = undefined>(
     };
 
     try {
-        const response = await httpFetchRawResponse(url, options, 0, locale);
+        const response = await httpFetchRawResponse(url, options, locale);
 
         debug("Response headers :");
         debug({ ...response.headers.raw() });
@@ -355,16 +420,7 @@ export async function httpFetchFormattedResponse<TData = undefined>(
         debug("url: ", url);
         debug("options: ", options);
 
-        if (err.name === "AbortError") {
-            result = {
-                isAbort: true,
-                isNetworkError: false,
-                isTimeout: false,
-                isFailure: true,
-                isSuccess: false,
-                url,
-            };
-        } else if (errStr.includes("timeout")) { // err.name === "FetchError"
+        if (errStr.includes("timeout") || (options?.signal as any)?.__abortReasonTimeout) { // err.name === "FetchError"
             result = {
                 isAbort: false,
                 isNetworkError: true,
@@ -373,6 +429,15 @@ export async function httpFetchFormattedResponse<TData = undefined>(
                 isSuccess: false,
                 url,
                 statusMessage: errStr,
+            };
+        } else if (err.name === "AbortError" || err instanceof AbortError) {
+            result = {
+                isAbort: true,
+                isNetworkError: false,
+                isTimeout: false,
+                isFailure: true,
+                isSuccess: false,
+                url,
             };
         } else { // err.name === "FetchError"
             result = {
@@ -421,9 +486,8 @@ export const httpGetWithAuth =
                 // specific to 'librarySimplified' server implementation
 
                 const url = _url instanceof URL ? _url : new URL(_url);
-                const { host } = url;
 
-                const auth = await getAuthenticationToken(host);
+                const auth = await getAuthenticationToken(url, options.method.toUpperCase());
 
                 if (
                     typeof auth === "object"
@@ -465,7 +529,7 @@ const httpGetUnauthorized =
                 ? options.headers
                 : new Headers(options.headers || {});
 
-            options.headers.set("Authorization", httpSetHeaderAuthorization(tokenType || "Bearer", accessToken));
+            (options.headers as Headers).set("Authorization", httpSetHeaderAuthorization(tokenType || "Bearer", accessToken));
 
             const response = await httpGetWithAuth(false)(
                 url,
@@ -473,6 +537,18 @@ const httpGetUnauthorized =
                 enableRefresh ? undefined : _callback,
                 ..._arg,
             );
+
+            // HTTP status code Bad Request?
+            // this works, but may be a flase flag with some auth servers, so better do nothing
+            // if (response.statusCode === 400) {
+            //     // Most likely because of a incorrect Authorization header => server rejects (e.g. Basic vs. Digest switch in Calibre OPDS server)
+            //     await deleteAuthenticationToken(url.host);
+            //     (options.headers as Headers).delete("Authorization");
+            //     const responseWithoutAuth = await httpGetWithAuth(
+            //         false,
+            //     )(url, options, _callback, ..._arg);
+            //     return responseWithoutAuth || response;
+            // }
 
             if (enableRefresh) {
                 if (response.statusCode === 401) {
@@ -486,7 +562,7 @@ const httpGetUnauthorized =
                         // In some cases the returned content won't launch a new authentication process
                         // It's safer to just delete the access token and start afresh now.
                         await deleteAuthenticationToken(url.host);
-                        options.headers.delete("Authorization");
+                        (options.headers as Headers).delete("Authorization");
                         const responseWithoutAuth = await httpGetWithAuth(
                             false,
                         )(url, options, _callback, ..._arg);
@@ -500,7 +576,7 @@ const httpGetUnauthorized =
         };
 
 const httpGetUnauthorizedRefresh =
-    (auth: IOpdsAuthenticationToken): typeof httpFetchFormattedResponse =>
+    (auth: IOpdsAuthenticationToken): typeof httpFetchFormattedResponse | undefined =>
         async (...arg) => {
 
             const { refreshToken, refreshUrl } = auth;
@@ -508,7 +584,7 @@ const httpGetUnauthorizedRefresh =
             options.headers = options.headers instanceof Headers
                 ? options.headers
                 : new Headers(options.headers || {});
-            options.headers.set("Content-Type", "application/json");
+            (options.headers as Headers).set("Content-Type", "application/json");
 
             options.body = JSON.stringify({
                 refresh_token: refreshToken,
@@ -517,7 +593,7 @@ const httpGetUnauthorizedRefresh =
 
             const httpPostResponse = await httpPost(refreshUrl, options);
             if (httpPostResponse.isSuccess) {
-                const jsonDataResponse = await httpPostResponse.response.json();
+                const jsonDataResponse: any = await httpPostResponse.response.json();
 
                 const newRefreshToken = typeof jsonDataResponse?.refresh_token === "string"
                     ? jsonDataResponse.refresh_token
@@ -558,44 +634,3 @@ export const httpPost: typeof httpFetchFormattedResponse =
 
         return httpFetchFormattedResponse(...arg);
     };
-
-// fetch checks the class name
-// https://github.com/node-fetch/node-fetch/blob/b7076bb24f75be688d8fc8b175f41b341e853f2b/src/utils/is.js#L78
-export class AbortSignal implements IAbortSignal {
-
-    public aborted: boolean;
-    private listenerArray: any[];
-
-    constructor() {
-        this.listenerArray = [];
-        this.aborted = false;
-    }
-
-    public onabort: IAbortSignal["onabort"] = null;
-
-    // public get aborted() {
-    //     return this._aborted;
-    // }
-
-    public addEventListener(_type: "abort", listener: (a: any[]) => any) {
-        this.listenerArray.push(listener);
-    }
-
-    public removeEventListener(_type: "abort", listener: (a: any[]) => any) {
-        const index = this.listenerArray.findIndex((v) => v === listener);
-        if (index > -1) {
-            this.listenerArray = [...this.listenerArray.slice(0, index), ...this.listenerArray.slice(index + 1)];
-        }
-    }
-
-    public dispatchEvent() {
-        this.listenerArray.forEach((l) => {
-            try {
-                l();
-            } catch (_e) {
-                // ignore
-            }
-        });
-        return this.aborted = true;
-    }
-}

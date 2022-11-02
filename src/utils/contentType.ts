@@ -19,7 +19,7 @@ export enum ContentType {
     Opds2Pub = "application/opds-publication+json",
     Opds2AuthVendorV1_0 = "application/vnd.opds.authentication.v1.0+json",
     OpenSearch = "application/opensearchdescription+xml",
-    FormUrlEncoded = "application/x-www-form-url-encoded",
+    FormUrlEncoded = "application/x-www-form-urlencoded",
     Xhtml = "application/xhtml+xml",
     Html = "text/html",
     Epub = "application/epub+zip",
@@ -33,7 +33,10 @@ export enum ContentType {
     Lsd = "application/vnd.readium.license.status.v1.0+json",
     lcppdf = "application/pdf+lcp",
     pdf = "application/pdf",
+    problemDetails = "application/problem+json", // https://datatracker.ietf.org/doc/html/rfc7807#section-6.1
     ApiProblem = "application/api-problem+json",
+    Zip = "application/zip", // Daisy Zipped file
+
     Opf = "application/oebps-package+xml",
 }
 
@@ -71,4 +74,5 @@ export const contentTypeisOpdsAuth = (contentType: ContentType | undefined) =>
     contentType === ContentType.Opds2AuthVendorV1_0;
 
 export const contentTypeisApiProblem = (contentType: ContentType | undefined) =>
+    contentType === ContentType.problemDetails ||
     contentType === ContentType.ApiProblem;

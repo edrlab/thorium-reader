@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import "font-awesome/css/font-awesome.css";
-
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -28,6 +26,15 @@ if (IS_DEV) {
     // const releaseConsoleRedirect =
     cr.consoleRedirect("readium-desktop:renderer:bookshelf", process.stdout, process.stderr, true);
 }
+
+// TO TEST ESM (not COMMONJS):
+// // import * as normalizeUrl from "normalize-url";
+// import normalizeUrl from "normalize-url";
+// console.log(normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"), "#".repeat(200));
+// // import("normalize-url").then(({default: normalizeUrl}) => {
+// //     //=> 'http://sindresorhus.com/baz?a=foo&b=bar'
+// //     console.log("#".repeat(2000), normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"));
+// // });
 
 // let devTron: any;
 let axe: any;

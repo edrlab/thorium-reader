@@ -8,6 +8,8 @@
 import * as React from "react";
 import { Translator } from "readium-desktop/common/services/translator";
 import { IOpdsContributorView } from "readium-desktop/common/views/opds";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 
 interface IProps {
     contributors: string[] | IOpdsContributorView[] | undefined;
@@ -34,44 +36,27 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
 
                 // FIXME : add pointer hover on 'a' links
                 retElement.push(
-                    <a onClick={
-                            onClickLinkCb(newContributor)
-                    }>
-                        {
-                            translator.translateContentField(newContributor.name)
-                        }
+                    <a onClick={onClickLinkCb(newContributor)}
+                        className={stylesButtons.button_link} tabIndex={0}
+                    >
+                        {translator.translateContentField(newContributor.name)}
                     </a>,
                 );
             } else if (typeof newContributor === "object") {
                 retElement.push(
-                    <>
-                        {
-                            translator.translateContentField(newContributor.name)
-                        }
-                    </>,
+                    <span className={stylesBookDetailsDialog.allowUserSelect}>
+                        {translator.translateContentField(newContributor.name)}
+                    </span>,
                 );
             } else {
                 retElement.push(
-                    <>
-                        {
-                            translator.translateContentField(newContributor)
-                        }
-                    </>,
+                    <span className={stylesBookDetailsDialog.allowUserSelect}>
+                        {translator.translateContentField(newContributor)}
+                    </span>,
                 );
             }
         }
     }
 
-    return retElement.reduce(
-        (_previousValue, currentValue, currentIndex, array) =>
-            <>
-                {
-                    currentValue
-                }
-                {
-                    currentIndex < (array.length - 1) ? ", " : ""
-                }
-            </>,
-        <></>,
-    );
+    return retElement.reduce((pv, cv) => pv ? <>{pv}, {cv}</> : <>{cv}</>, undefined) || <></>;
 };

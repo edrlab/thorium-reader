@@ -15,12 +15,12 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark-24px-grey.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { TKeyboardEventButton, TMouseEventOnButton  } from "readium-desktop/typings/react";
+import { TKeyboardEventButton, TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
@@ -81,7 +81,21 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     public componentDidMount() {
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(oldProps: IProps) {
+
+        if (this.props.openedSection === 0 && // TOC
+            (oldProps.openedSection !== this.props.openedSection ||
+            oldProps.open !== this.props.open)) {
+
+            setTimeout(() => {
+                const headingFocus = document.getElementById("headingFocus");
+                if (headingFocus) {
+                    headingFocus.focus();
+                    headingFocus.scrollIntoView();
+                }
+            }, 500); // after openedSection 300ms (SideMenu.tsx componentDidUpdate())
+        }
+
         if (this.state.refreshError) {
             if (this.state.pageError) {
                 this.setState({pageError: false});
@@ -114,10 +128,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             {
                 title: __("reader.marks.toc"),
                 content:
-                    (isPdf && pdfToc?.length && this.renderLinkTree(__("reader.marks.toc"), pdfToc, 1)) ||
+                    (isPdf && pdfToc?.length && this.renderLinkTree(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                     (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
                     // tslint:disable-next-line: max-line-length
-                    (!isPdf && r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1)) ||
+                    (!isPdf && r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
                     (!isPdf && r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
                 disabled:
                     (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
@@ -162,8 +176,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         return (
             <SideMenu
                 openedSection={this.props.openedSection}
-                className={styles.chapters_settings}
-                listClassName={styles.chapter_settings_list}
+                className={stylesReader.chapters_settings}
+                listClassName={stylesReader.chapter_settings_list}
                 open={this.props.open}
                 sections={sections}
                 toggleMenu={toggleMenu}
@@ -202,11 +216,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private renderLinkList(label: string, links: Link[]): JSX.Element {
-        // console.log(label, JSON.stringify(links, null, 4));
 
         return <ul
             aria-label={label}
-            className={styles.chapters_content}
+            className={stylesReader.chapters_content}
             role={"list"}
         >
             { links.map((link, i: number) => {
@@ -221,10 +234,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     >
                         <a
                             className={
-                                classNames(styles.line,
-                                    styles.active,
-                                    link.Href ? " " : styles.inert,
-                                    isRTL ? styles.rtlDir : " ")
+                                classNames(stylesReader.line,
+                                    stylesReader.active,
+                                    link.Href ? " " : stylesReader.inert,
+                                    isRTL ? stylesReader.rtlDir : " ")
                             }
                             onClick=
                                 {link.Href ? (e) => {
@@ -253,21 +266,96 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         </ul>;
     }
 
-    private renderLinkTree(label: string | undefined, links: TToc, level: number): JSX.Element {
-        // console.log(label, JSON.stringify(links, null, 4));
-
+    private renderLinkTree(label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element {
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
 
+        const treeReset = (t: TToc) => {
+            for (const link of t) {
+                if ((link as any).__inHeadingsTrail) {
+                    delete (link as any).__inHeadingsTrail;
+                }
+                if (link.Children) {
+                    treeReset(link.Children);
+                }
+            }
+        };
+        const headingsTrail: TToc = [];
+        const treePass = (t: TToc) => {
+            for (const link of t) {
+                if (this.props.currentLocation?.locator?.href && link.Href) {
+                    let href1 = this.props.currentLocation.locator.href;
+                    const i_href1 = href1.lastIndexOf("#");
+                    if (i_href1 >= 0) {
+                        href1 = href1.substring(0, i_href1);
+                    }
+                    let href2 = link.Href;
+                    const i_href2 = href2.lastIndexOf("#");
+                    if (i_href2 >= 0) {
+                        href2 = href2.substring(0, i_href2);
+                    }
+                    if (href1 && href2) {
+                        if (href1 === href2) {
+                            (link as any).__inHeadingsTrail = true;
+                            headingsTrail.push(link);
+                        }
+                    }
+                }
+                if (link.Children) {
+                    treePass(link.Children);
+                }
+            }
+        };
+
+        if (level === 1 && headingTrailLink === undefined) {
+            treeReset(links);
+
+            // headingsTrail = [];
+            treePass(links);
+            headingsTrail.reverse();
+
+            if (this.props.currentLocation?.headings) {
+                let iH = -1;
+                for (const h of this.props.currentLocation.headings) {
+                    iH++;
+                    let iHH = -1;
+                    for (const hh of headingsTrail) {
+                        iHH++;
+                        if (hh.Href) {
+                            const i_hash = hh.Href.lastIndexOf("#");
+                            const hash = i_hash >= 0 && i_hash < (hh.Href.length - 1) ?
+                                hh.Href.substring(i_hash + 1) :
+                                undefined;
+                            if (hash && h.id === hash ||
+                                iH === (this.props.currentLocation.headings.length - 1) &&
+                                iHH === (headingsTrail.length - 1)) {
+                                headingTrailLink = hh;
+                                break;
+                            }
+                        }
+                    }
+                    if (headingTrailLink) {
+                        break;
+                    }
+                }
+            }
+        }
         return <ul
                     role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
                     aria-label={label}
-                    className={styles.chapters_content}
+                    className={stylesReader.chapters_content}
                 >
             { links.map((link, i: number) => {
 
                 const isRTL = this.isRTL(link);
 
+                let emphasis = undefined;
+                if (link === headingTrailLink) {
+                    emphasis = { border: "transparent", outlineColor: "silver", outlineOffset: "0px", outlineWidth: "4px", outlineStyle: "double" };
+                } else if ((link as any).__inHeadingsTrail) {
+                    emphasis = { border: "1px dashed silver" };
+                }
+                const label = link.Title ? link.Title : `#${level}-${i} ${link.Href}`;
                 return (
                     <li key={`${level}-${i}`}
                         role={useTree ? "treeitem" : undefined}
@@ -277,10 +365,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             <>
                             <div role={"heading"} aria-level={level}>
                                 <a
+                                    id={link === headingTrailLink ? "headingFocus" : undefined}
+                                    aria-label={link === headingTrailLink ? label + " (***)" : undefined}
+                                    style={emphasis}
                                     className={
-                                        classNames(styles.subheading,
-                                            link.Href ? " " : styles.inert,
-                                            isRTL ? styles.rtlDir : " ")
+                                        classNames(stylesReader.subheading,
+                                            link.Href ? " " : stylesReader.inert,
+                                            isRTL ? stylesReader.rtlDir : " ")
                                     }
                                     onClick=
                                         {link.Href ? (e) => {
@@ -301,20 +392,23 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                         }
                                     data-href={link.Href}
                                 >
-                                    <span dir={isRTL ? "rtl" : "ltr"}>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
+                                    <span dir={isRTL ? "rtl" : "ltr"}>{label}</span>
                                 </a>
                             </div>
 
-                            {this.renderLinkTree(undefined, link.Children, level + 1)}
+                            {this.renderLinkTree(undefined, link.Children, level + 1, headingTrailLink)}
                             </>
                         ) : (
                             <div role={"heading"} aria-level={level}>
                                 <a
+                                    id={link === headingTrailLink ? "headingFocus" : undefined}
+                                    aria-label={link === headingTrailLink ? label + " (***)" : undefined}
+                                    style={emphasis}
                                     className={
-                                        classNames(styles.line,
-                                            styles.active,
-                                            link.Href ? " " : styles.inert,
-                                            isRTL ? styles.rtlDir : " ")
+                                        classNames(stylesReader.line,
+                                            stylesReader.active,
+                                            link.Href ? " " : stylesReader.inert,
+                                            isRTL ? stylesReader.rtlDir : " ")
                                     }
                                     onClick=
                                         {link.Href ? (e) => {
@@ -335,7 +429,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                         }
                                     data-href={link.Href}
                                 >
-                                    <span dir={isRTL ? "rtl" : "ltr"}>{link.Title ? link.Title : `#${level}-${i} ${link.Href}`}</span>
+                                    <span dir={isRTL ? "rtl" : "ltr"}>{label}</span>
                                 </a>
                             </div>
                         )}
@@ -352,6 +446,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             const isAudioBook = isAudiobookFn(this.props.r2Publication);
 
             const { bookmarkToUpdate } = this.state;
+            // WARNING: .sort() is in-place same-array mutation! (not a new array)
             const sortedBookmarks = this.props.bookmarks.sort((a, b) => {
                 // -1 : a < b
                 // 0 : a === b
@@ -398,7 +493,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 const bname = (p >= 0 && !isAudioBook ? `${p}% ` : "") + (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${n++}`);
 
                 return (<div
-                    className={styles.bookmarks_line}
+                    className={stylesReader.bookmarks_line}
                     key={i}
                 >
                     { bookmarkToUpdate === i &&
@@ -408,37 +503,39 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         />
                     }
                     <button
-                        className={styles.bookmark_infos}
+                        className={stylesReader.bookmark_infos}
                         tabIndex={0}
                         onClick={(e) => {
                             const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            this.handleBookmarkClick(e, bookmark.locator, closeNavPanel);
+                            this.goToLocator(e, bookmark.locator, closeNavPanel);
                         }}
-                        onDoubleClick={(e) => this.handleBookmarkClick(e, bookmark.locator, false)}
+                        onDoubleClick={(e) => this.goToLocator(e, bookmark.locator, false)}
                         onKeyPress=
                         {
                             (e) => {
                                 if (e.key === "Enter" || e.key === "Space") {
                                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                    this.handleBookmarkClick(e, bookmark.locator, closeNavPanel);
+                                    this.goToLocator(e, bookmark.locator, closeNavPanel);
                                 }
                             }
                         }
                     >
-                        <SVG svg={BookmarkIcon} title={""} aria-hidden />
+                        <SVG ariaHidden={true} svg={BookmarkIcon} />
 
-                        <div className={styles.chapter_marker}>
-                            <p className={styles.bookmark_name} title={bname}>{bname}</p>
-                            <div className={styles.gauge}>
-                                <div className={styles.fill} style={style}></div>
+                        <div className={stylesReader.chapter_marker}>
+                            <p className={stylesReader.bookmark_name} title={bname}>{bname}</p>
+                            <div className={stylesReader.gauge}>
+                                <div className={stylesReader.fill} style={style}></div>
                             </div>
                         </div>
                     </button>
-                    <button onClick={() => this.setState({bookmarkToUpdate: i})}>
-                        <SVG title={ __("reader.marks.edit")} svg={ EditIcon }/>
+                    <button title={ __("reader.marks.edit")}
+                    onClick={() => this.setState({bookmarkToUpdate: i})}>
+                        <SVG ariaHidden={true} svg={ EditIcon }/>
                     </button>
-                    <button onClick={() => this.props.deleteBookmark(bookmark)}>
-                        <SVG title={ __("reader.marks.delete")} svg={ DeleteIcon }/>
+                    <button title={ __("reader.marks.delete")}
+                    onClick={() => this.props.deleteBookmark(bookmark)}>
+                        <SVG ariaHidden={true} svg={ DeleteIcon }/>
                     </button>
                 </div>);
                 },
@@ -448,7 +545,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private buildGoToPageSection(totalPages?: string) {
-        if (!this.props.r2Publication) {
+        if (!this.props.r2Publication || this.props.isDivina) {
             return <></>;
         }
 
@@ -457,8 +554,12 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
         let currentPage = (this.props.isDivina || this.props.isPdf) ?
-            this.props.currentLocation?.locator?.href :
-            this.props.currentLocation?.epubPage;
+            (
+                this.props.isDivina
+                    ? `${this.props.currentLocation.locator.locations.position}`
+                    : this.props.currentLocation?.locator?.href
+            )
+            : this.props.currentLocation?.epubPage;
         if (isFixedLayout &&
             this.props.currentLocation?.locator?.href &&
             this.props.r2Publication.Spine) {
@@ -484,75 +585,93 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
         const { __ } = this.props;
 
-        return <div className={styles.goToPage}>
-            <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
+        return < div className={stylesReader.goToPage} >
+            <p>{__("reader.navigation.goToTitle")}</p>
 
-            <label className={styles.currentPage}
+            <label className={stylesReader.currentPage}
                 id="gotoPageLabel"
                 htmlFor="gotoPageInput">
                 {
-                currentPage ?
-                (totalPages
-                        // tslint:disable-next-line: max-line-length
-                        ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
-                        : __("reader.navigation.currentPage", { current: `${currentPage}`})) :
-                ""
+                    currentPage ?
+                        (totalPages
+                            // tslint:disable-next-line: max-line-length
+                            ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
+                            : __("reader.navigation.currentPage", { current: `${currentPage}` })) :
+                        ""
                 }
             </label>
-
-            <form id="gotoPageForm">
-                {(isFixedLayout || this.props.r2Publication?.PageList) &&
-                <select
-                    onChange={(ev) => {
-                        const val = ev.target?.value?.toString();
-                        if (!val || !this.goToRef?.current) {
-                            return;
-                        }
-                        this.goToRef.current.value = val;
-                        this.setState({pageError: false});
-
-                        // Warning: Use the `defaultValue` or `value` props on <select>
-                        // instead of setting `selected` on <option>.
-                        // ... BUT: this does not result in the behaviour we want,
-                        // which is to display the current page, OR the user-selected page (not actually current yet)
-                        // value={
-                        //     this.props.r2Publication.PageList.find((pl) => {
-                        //         return pl.Title === currentPage;
-                        //     }) ?
-                        //     currentPage : undefined
-                        // }
-                    }}
-                >
+            <form
+                id="gotoPageForm"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                }
+                }
+                onKeyPress=
                     {
-                    isFixedLayout
-                    ?
-                    this.props.r2Publication.Spine.map((_spineLink, idx) => {
-                        const indexStr = (idx + 1).toString();
-                        return (
-                            <option
-                                key={`pageGoto_${idx}`}
-                                value={indexStr}
-                                selected={currentPage === indexStr}
-                            >
-                                {indexStr}
-                            </option>
-                        );
-                    })
-                    :
-                    this.props.r2Publication.PageList.map((pageLink, idx) => {
-                        return (
-                            pageLink.Title ?
-                            <option
-                                key={`pageGoto_${idx}`}
-                                value={pageLink.Title}
-                                selected={currentPage === pageLink.Title}
-                            >
-                                {pageLink.Title}
-                            </option> : <></>
-                        );
-                    })
+                        (e) => {
+                            if (e.key === "Enter" || e.key === "Space") {
+                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+
+                                console.log("CLose panel from button");
+
+                                this.handleSubmitPage(e, closeNavPanel);
+                            }
+                        }
                     }
-                </select>
+                >
+                {(isFixedLayout || this.props.r2Publication?.PageList) &&
+                    <select
+                        title={__("reader.navigation.goToTitle")}
+                        onChange={(ev) => {
+                            const val = ev.target?.value?.toString();
+                            if (!val || !this.goToRef?.current) {
+                                return;
+                            }
+                            this.goToRef.current.value = val;
+                            this.setState({ pageError: false });
+
+                            // Warning: Use the `defaultValue` or `value` props on <select>
+                            // instead of setting `selected` on <option>.
+                            // ... BUT: this does not result in the behaviour we want,
+                            // which is to display the current page, OR the user-selected page (not actually current yet)
+                            // value={
+                            //     this.props.r2Publication.PageList.find((pl) => {
+                            //         return pl.Title === currentPage;
+                            //     }) ?
+                            //     currentPage : undefined
+                            // }
+                        }}
+                    >
+                        {
+                            isFixedLayout
+                                ?
+                                this.props.r2Publication.Spine.map((_spineLink, idx) => {
+                                    const indexStr = (idx + 1).toString();
+                                    return (
+                                        <option
+                                            key={`pageGoto_${idx}`}
+                                            value={indexStr}
+                                            selected={currentPage === indexStr}
+                                        >
+                                            {indexStr}
+                                        </option>
+                                    );
+                                })
+                                :
+                                this.props.r2Publication.PageList.map((pageLink, idx) => {
+                                    return (
+                                        pageLink.Title ?
+                                            <option
+                                                key={`pageGoto_${idx}`}
+                                                value={pageLink.Title}
+                                                selected={currentPage === pageLink.Title}
+                                            >
+                                                {pageLink.Title}
+                                            </option> : <></>
+                                    );
+                                })
+                        }
+                    </select>
                 }
                 <input
                     id="gotoPageInput"
@@ -560,7 +679,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     ref={this.goToRef}
                     type="text"
                     aria-invalid={this.state.pageError}
-                    onChange={() => this.setState({pageError: false})}
+                    onChange={() => this.setState({ pageError: false })}
                     disabled={
                         !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
                     }
@@ -571,36 +690,28 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     type="button"
 
                     onClick=
-                        {(e) => {
-                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            this.handleSubmitPage(e, closeNavPanel);
-                        }}
+                    {(e) => {
+                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                        this.handleSubmitPage(e, closeNavPanel);
+                    }}
                     onDoubleClick=
-                        {(e) => this.handleSubmitPage(e, false)}
-                    onKeyPress=
-                        {
-                            (e) => {
-                                if (e.key === "Enter" || e.key === "Space") {
-                                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                    this.handleSubmitPage(e, closeNavPanel);
-                                }
-                            }
-                        }
+                    {(e) => this.handleSubmitPage(e, false)}
                     disabled={
                         !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
                     }
                 >
-                    { __("reader.navigation.goTo") }
+                    {__("reader.navigation.goTo")}
                 </button>
             </form>
+
             {this.state.pageError &&
                 <p
-                    className={styles.goToErrorMessage}
+                    className={stylesReader.goToErrorMessage}
                     aria-live="assertive"
                     aria-relevant="all"
                     role="alert"
                 >
-                    { __("reader.navigation.goToError") }
+                    {__("reader.navigation.goToError")}
                 </p>
             }
 
@@ -611,7 +722,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         this.setState({ bookmarkToUpdate: undefined });
     }
 
-    private handleSubmitPage(e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>, closeNavPanel = true) {
+    private handleSubmitPage(e: React.MouseEvent<any> | React.KeyboardEvent<HTMLFormElement> | React.KeyboardEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLButtonElement>, closeNavPanel = true) {
         e.preventDefault();
         if (!this.goToRef?.current?.value) {
             return;
@@ -627,7 +738,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 const spineIndex = parseInt(pageNbr, 10) - 1;
                 const spineLink = this.props.r2Publication.Spine[spineIndex];
                 if (spineLink) {
-                    this.setState({pageError: false});
+                    this.setState({ pageError: false });
                     this.props.handleLinkClick(undefined, spineLink.Href, closeNavPanel);
                     return;
                 }
@@ -635,16 +746,16 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 // ignore error
             }
 
-            this.setState({refreshError: true});
+            this.setState({ refreshError: true });
         } else if (this.props.isDivina || this.props.isPdf) {
             let page: number | undefined;
 
             if (this.props.isDivina) {
-                try {
-                    page = parseInt(pageNbr, 10) - 1;
-                } catch (_e) {
-                    // ignore error
-                }
+                // try {
+                //     page = parseInt(pageNbr, 10) - 1;
+                // } catch (_e) {
+                //     // ignore error
+                // }
             } else if (this.props.isPdf) {
                 //
             }
@@ -660,7 +771,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     href: (page || pageNbr).toString(),
                     // progression generate in divina pagechange event
                 };
-                this.props.handleBookmarkClick(loc as any, closeNavPanel);
+                this.props.goToLocator(loc as any, closeNavPanel);
 
                 return;
             }
@@ -681,9 +792,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
     }
 
-    private handleBookmarkClick(e: TKeyboardEventButton | TMouseEventOnButton, locator: Locator, closeNavPanel = true) {
+    private goToLocator(e: TKeyboardEventButton | TMouseEventOnButton, locator: Locator, closeNavPanel = true) {
         e.preventDefault();
-        this.props.handleBookmarkClick(locator, closeNavPanel);
+        this.props.goToLocator(locator, closeNavPanel);
     }
 }
 

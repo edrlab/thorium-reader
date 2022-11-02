@@ -140,8 +140,7 @@ export async function pdfMountAndReturnBus(
         "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
     // webview.setAttribute("partition", "persist:pdfjsreader");
     webview.setAttribute("src", "pdfjs://local/web/viewer.html?file=" + encodeURIComponent_RFC3986(pdfPath));
-    webview.setAttribute("worldSafeExecuteJavaScript", "");
-    webview.setAttribute("webpreferences", "allowRunningInsecureContent");
+    webview.setAttribute("webpreferences", "allowRunningInsecureContent=0");
     webview.setAttribute("disablewebsecurity", "");
 
     publicationViewport.append(webview);

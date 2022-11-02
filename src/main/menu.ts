@@ -6,12 +6,12 @@
 // ==LICENSE-END==
 
 import { BrowserWindow, Menu, MenuItem, webContents } from "electron";
-import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import {
     _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
-import { getAppActivateEventChannel } from "./redux/sagas/getEventChannel";
+import { showLibrary } from "./tools/showLibrary";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -177,30 +177,6 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                     label: translator.translate("app.hide", { appName: capitalizedAppName }),
                 },
                 {
-                    role: "window",
-                    submenu: [
-                        {
-                            type: "separator",
-                        },
-                        {
-                            label: translator.translate("app.window.showLibrary"),
-                            click: () => {
-                                const library = getLibraryWindowFromDi();
-                                if (library.isDestroyed()) {
-
-                                    const appActivateChannel = getAppActivateEventChannel();
-                                    appActivateChannel.put(true);
-                                } else {
-                                    library.show();
-                                }
-                            },
-                        },
-                        {
-                            type: "separator",
-                        },
-                    ],
-                },
-                {
                     role: "hideothers",
                 },
                 {
@@ -268,6 +244,21 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
                     label: translator.translate("app.edit.selectAll"),
                 },
             ] as Electron.MenuItemConstructorOptions[],
+        },
+        {
+            role: "window",
+            submenu: [
+                {
+                    type: "separator",
+                },
+                {
+                    label: translator.translate("app.window.showLibrary"),
+                    click: () => showLibrary(),
+                },
+                {
+                    type: "separator",
+                },
+            ],
         },
     ];
     // isReaderView never invoked because single app-wide menu, does not depend on BrowserWindows

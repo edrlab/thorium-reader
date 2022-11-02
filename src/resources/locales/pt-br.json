@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Fechar",
-        "homeMenu": "Menu de visualização de leitura",
         "importFile": "Importar publicação",
         "leftSlideButton": "Deslizar a lista para a esquerda",
         "mainContent": "conteúdo principal",
@@ -10,6 +9,9 @@
         "searchBook": "Busca por título",
         "skipLink": "Ir para o conteúdo",
         "toolbar": "barra de ferramentas"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "Adicionar",
         "allBooks": "Todos os livros",
         "bookInfo": "Sobre este livro",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Apagar",
         "deleteBook": "Remover",
         "deleteTag": "Apagar a tag",
@@ -62,7 +69,9 @@
             "lastAdditions": "Adicionado recentemente"
         },
         "export": "Exportar",
+        "format": "",
         "lang": "Idioma",
+        "lastRead": "",
         "moreInfo": "Mais Informação",
         "myBooks": "Meus livros",
         "noPublicationHelpL1": "Solte uma publicação aqui",
@@ -99,7 +108,8 @@
         "released": "Publicado em",
         "sort": "Ordenar por",
         "tagCount": "Contagem de tags",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Fechar esta janela modal",
@@ -166,6 +176,9 @@
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Adicionar origem OPDS",
         "back": "Voltar",
         "breadcrumbRoot": "Catálogos",
@@ -189,12 +202,51 @@
         },
         "next": "Próximo",
         "previous": "Prévio",
-        "shelf": "Estante"
+        "shelf": "Estante",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Faixas"
         },
+        "author": "",
         "cancelledLcp": "Este livro não pode ser lido porque a licença LCP foi cancelada.",
         "certificateRevoked": "O certificado foi revogado",
         "certificateSignatureInvalid": "A assinatura do certificado é inválida",
@@ -221,9 +273,14 @@
         "revokedLcp": "Este livro não pode ser lido porque a licença LCP foi revogada.",
         "seeLess": "Veja menos",
         "seeMore": "Veja mais",
+        "title": "",
         "userKeyCheckInvalid": "A senha está incorreta"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "menos informação",
             "moreInfo": "mais informação"
@@ -260,6 +317,8 @@
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um número de página",
             "goToTitle": "Ir para a página",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "informação",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navegação",

@@ -17,9 +17,13 @@ const openTitleFromCliChannel = channel<string>();
 
 export const getOpenTitleFromCliChannel = () => openTitleFromCliChannel;
 
-const openUrlFromMacEventChannel = channel<string>();
+const openUrlWithThoriumSchemeEventChannel = channel<string>();
 
-export const getOpenUrlFromMacEventChannel = () => openUrlFromMacEventChannel;
+export const getOpenUrlWithThoriumSchemeEventChannel = () => openUrlWithThoriumSchemeEventChannel;
+
+const openUrlWithOpdsSchemeEventChannel = channel<string>();
+
+export const getOpenUrlWithOpdsSchemeEventChannel = () => openUrlWithOpdsSchemeEventChannel;
 
 //
 // OPDS2 authentication
@@ -30,3 +34,7 @@ export type TOpdsAuthenticationChannel = [doc: OPDSAuthenticationDoc, baseUrl: s
 const opdsAuthenticationChannel = channel<TOpdsAuthenticationChannel>();
 
 export const getOpdsAuthenticationChannel = () => opdsAuthenticationChannel;
+
+const opdsNewCatalogsStringUrlChannel = channel<string>();
+
+export const getOpdsNewCatalogsStringUrlChannel = () => opdsNewCatalogsStringUrlChannel;

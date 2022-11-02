@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import fetch from "node-fetch";
+import nodeFetch from "node-fetch";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
@@ -86,7 +86,7 @@ export function* importFromLinkService(
 
     if (!link.type) {
         try {
-            const response = yield* callTyped(() => fetch(url));
+            const response = yield* callTyped(() => nodeFetch(url.toString()));
             const contentType = response?.headers?.get("Content-Type");
             if (contentType) {
                 link.type = contentType;
@@ -108,16 +108,16 @@ export function* importFromLinkService(
     const isHtml = contentTypeArray.includes(ContentType.Html);
     const isDivinaPacked = contentTypeArray.includes(ContentType.DivinaPacked);
     const isPdf = contentTypeArray.includes(ContentType.pdf);
+    const isLcpPdf = contentTypeArray.includes(ContentType.lcppdf);
     const isJson = contentTypeArray.includes(ContentType.Json)
         || contentTypeArray.includes(ContentType.AudioBook)
         || contentTypeArray.includes(ContentType.JsonLd)
         || contentTypeArray.includes(ContentType.Divina)
-        || contentTypeArray.includes(ContentType.webpub)
-        || contentTypeArray.includes(ContentType.lcppdf);
+        || contentTypeArray.includes(ContentType.webpub);
 
     debug(contentTypeArray, isHtml, isJson);
 
-    if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp && !isDivinaPacked && !isPdf) {
+    if (!isLcpFile && !isEpubFile && !isAudioBookPacked && !isAudioBookPackedLcp && !isDivinaPacked && !isPdf && !isLcpPdf) {
         debug(`OPDS download link is not EPUB or AudioBook or Divina or Pdf ! ${link.url} ${link.type}`);
     }
 

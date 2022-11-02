@@ -3,7 +3,6 @@ declare namespace typed_i18n {
   (_: "accessibility", __?: {}): {
   readonly "bookMenu": string,
   readonly "closeDialog": string,
-  readonly "homeMenu": string,
   readonly "importFile": string,
   readonly "leftSlideButton": string,
   readonly "mainContent": string,
@@ -14,7 +13,6 @@ declare namespace typed_i18n {
 };
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
-  (_: "accessibility.homeMenu", __?: {}): string;
   (_: "accessibility.importFile", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
@@ -22,6 +20,8 @@ declare namespace typed_i18n {
   (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;
+  (_: "apiapp", __?: {}): { readonly "noLibraryFound": string };
+  (_: "apiapp.noLibraryFound", __?: {}): string;
   (_: "app", __?: {}): {
   readonly "edit": {
     readonly "copy": string,
@@ -97,7 +97,13 @@ declare namespace typed_i18n {
   readonly "addTagsButton": string,
   readonly "allBooks": string,
   readonly "bookInfo": string,
+  readonly "column": {
+    readonly "ascending": string,
+    readonly "descending": string,
+    readonly "unsorted": string
+  },
   readonly "delete": string,
+  readonly "update": string,
   readonly "deleteBook": string,
   readonly "deleteTag": string,
   readonly "description": string,
@@ -110,7 +116,9 @@ declare namespace typed_i18n {
     readonly "lastAdditions": string
   },
   readonly "export": string,
+  readonly "format": string,
   readonly "lang": string,
+  readonly "lastRead": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
   readonly "noPublicationHelpL1": string,
@@ -154,7 +162,16 @@ declare namespace typed_i18n {
   (_: "catalog.addTagsButton", __?: {}): string;
   (_: "catalog.allBooks", __?: {}): string;
   (_: "catalog.bookInfo", __?: {}): string;
+  (_: "catalog.column", __?: {}): {
+  readonly "ascending": string,
+  readonly "descending": string,
+  readonly "unsorted": string
+};
+  (_: "catalog.column.ascending", __?: {}): string;
+  (_: "catalog.column.descending", __?: {}): string;
+  (_: "catalog.column.unsorted", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
+  (_: "catalog.update", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
@@ -172,7 +189,9 @@ declare namespace typed_i18n {
   (_: "catalog.entry.continueReadingPdf", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
+  (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
+  (_: "catalog.lastRead", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
   (_: "catalog.noPublicationHelpL1", __?: {}): string;
@@ -364,6 +383,7 @@ declare namespace typed_i18n {
     readonly "url": string,
     readonly "urlPlaceholder": string
   },
+  readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "back": string,
   readonly "breadcrumbRoot": string,
@@ -387,7 +407,15 @@ declare namespace typed_i18n {
   },
   readonly "next": string,
   readonly "previous": string,
-  readonly "shelf": string
+  readonly "shelf": string,
+  readonly "updateForm": {
+    readonly "name": string,
+    readonly "namePlaceholder": string,
+    readonly "title": string,
+    readonly "updateButton": string,
+    readonly "url": string,
+    readonly "urlPlaceholder": string
+  }
 };
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
@@ -403,6 +431,8 @@ declare namespace typed_i18n {
   (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
+  (_: "opds.addFormApiapp", __?: {}): { readonly "title": string };
+  (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
   (_: "opds.empty", __?: {}): string; (_: "opds.firstPage", __?: {}): string;
@@ -435,8 +465,52 @@ declare namespace typed_i18n {
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
+  (_: "opds.updateForm", __?: {}): {
+  readonly "name": string,
+  readonly "namePlaceholder": string,
+  readonly "title": string,
+  readonly "updateButton": string,
+  readonly "url": string,
+  readonly "urlPlaceholder": string
+};
+  (_: "opds.updateForm.name", __?: {}): string;
+  (_: "opds.updateForm.namePlaceholder", __?: {}): string;
+  (_: "opds.updateForm.title", __?: {}): string;
+  (_: "opds.updateForm.updateButton", __?: {}): string;
+  (_: "opds.updateForm.url", __?: {}): string;
+  (_: "opds.updateForm.urlPlaceholder", __?: {}): string;
   (_: "publication", __?: {}): {
+  readonly "accessibility": {
+    readonly "accessModeSufficient": { readonly "textual": string },
+    readonly "accessibilityFeature": {
+      readonly "alternativeText": string,
+      readonly "displayTransformability": string,
+      readonly "longDescription": string,
+      readonly "printPageNumbers": string,
+      readonly "readingOrder": string,
+      readonly "synchronizedAudioText": string,
+      readonly "tableOfContents": string
+    },
+    readonly "accessibilityHazard": {
+      readonly "flashing": string,
+      readonly "motionSimulation": string,
+      readonly "name": string,
+      readonly "noFlashing": string,
+      readonly "noMotionSimulation": string,
+      readonly "noSound": string,
+      readonly "none": string,
+      readonly "simulation": string,
+      readonly "sound": string,
+      readonly "unknown": string
+    },
+    readonly "conformsTo": string,
+    readonly "certifierReport": string,
+    readonly "moreInformation": string,
+    readonly "name": string,
+    readonly "noA11y": string
+  },
   readonly "audio": { readonly "tracks": string },
+  readonly "author": string,
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
@@ -457,10 +531,86 @@ declare namespace typed_i18n {
   readonly "revokedLcp": string,
   readonly "seeLess": string,
   readonly "seeMore": string,
+  readonly "title": string,
   readonly "userKeyCheckInvalid": string
 };
+  (_: "publication.accessibility", __?: {}): {
+  readonly "accessModeSufficient": { readonly "textual": string },
+  readonly "accessibilityFeature": {
+    readonly "alternativeText": string,
+    readonly "displayTransformability": string,
+    readonly "longDescription": string,
+    readonly "printPageNumbers": string,
+    readonly "readingOrder": string,
+    readonly "synchronizedAudioText": string,
+    readonly "tableOfContents": string
+  },
+  readonly "accessibilityHazard": {
+    readonly "flashing": string,
+    readonly "motionSimulation": string,
+    readonly "name": string,
+    readonly "noFlashing": string,
+    readonly "noMotionSimulation": string,
+    readonly "noSound": string,
+    readonly "none": string,
+    readonly "simulation": string,
+    readonly "sound": string,
+    readonly "unknown": string
+  },
+  readonly "conformsTo": string,
+  readonly "certifierReport": string,
+  readonly "moreInformation": string,
+  readonly "name": string,
+  readonly "noA11y": string
+};
+  (_: "publication.accessibility.accessModeSufficient", __?: {}): { readonly "textual": string };
+  (_: "publication.accessibility.accessModeSufficient.textual", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature", __?: {}): {
+  readonly "alternativeText": string,
+  readonly "displayTransformability": string,
+  readonly "longDescription": string,
+  readonly "printPageNumbers": string,
+  readonly "readingOrder": string,
+  readonly "synchronizedAudioText": string,
+  readonly "tableOfContents": string
+};
+  (_: "publication.accessibility.accessibilityFeature.alternativeText", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.displayTransformability", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.longDescription", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.printPageNumbers", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.readingOrder", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.synchronizedAudioText", __?: {}): string;
+  (_: "publication.accessibility.accessibilityFeature.tableOfContents", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard", __?: {}): {
+  readonly "flashing": string,
+  readonly "motionSimulation": string,
+  readonly "name": string,
+  readonly "noFlashing": string,
+  readonly "noMotionSimulation": string,
+  readonly "noSound": string,
+  readonly "none": string,
+  readonly "simulation": string,
+  readonly "sound": string,
+  readonly "unknown": string
+};
+  (_: "publication.accessibility.accessibilityHazard.flashing", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.motionSimulation", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.name", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.noFlashing", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.noMotionSimulation", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.noSound", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.none", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.simulation", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.sound", __?: {}): string;
+  (_: "publication.accessibility.accessibilityHazard.unknown", __?: {}): string;
+  (_: "publication.accessibility.conformsTo", __?: {}): string;
+  (_: "publication.accessibility.certifierReport", __?: {}): string;
+  (_: "publication.accessibility.moreInformation", __?: {}): string;
+  (_: "publication.accessibility.name", __?: {}): string;
+  (_: "publication.accessibility.noA11y", __?: {}): string;
   (_: "publication.audio", __?: {}): { readonly "tracks": string };
   (_: "publication.audio.tracks", __?: {}): string;
+  (_: "publication.author", __?: {}): string;
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
@@ -484,8 +634,10 @@ declare namespace typed_i18n {
   (_: "publication.revokedLcp", __?: {}): string;
   (_: "publication.seeLess", __?: {}): string;
   (_: "publication.seeMore", __?: {}): string;
+  (_: "publication.title", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
+  readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "footerInfo": {
     readonly "lessInfo": string,
     readonly "moreInfo": string
@@ -522,6 +674,8 @@ declare namespace typed_i18n {
     readonly "goToError": string,
     readonly "goToPlaceHolder": string,
     readonly "goToTitle": string,
+    readonly "historyNext": string,
+    readonly "historyPrevious": string,
     readonly "infoTitle": string,
     readonly "magnifyingGlassButton": string,
     readonly "openTableOfContentsTitle": string,
@@ -610,6 +764,9 @@ declare namespace typed_i18n {
     readonly "voice": string
   }
 };
+  (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
+  (_: "reader.divina.mute", __?: {}): string;
+  (_: "reader.divina.unmute", __?: {}): string;
   (_: "reader.footerInfo", __?: {}): { readonly "lessInfo": string, readonly "moreInfo": string };
   (_: "reader.footerInfo.lessInfo", __?: {}): string;
   (_: "reader.footerInfo.moreInfo", __?: {}): string;
@@ -662,6 +819,8 @@ declare namespace typed_i18n {
   readonly "goToError": string,
   readonly "goToPlaceHolder": string,
   readonly "goToTitle": string,
+  readonly "historyNext": string,
+  readonly "historyPrevious": string,
   readonly "infoTitle": string,
   readonly "magnifyingGlassButton": string,
   readonly "openTableOfContentsTitle": string,
@@ -680,6 +839,8 @@ declare namespace typed_i18n {
   (_: "reader.navigation.goToError", __?: {}): string;
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
   (_: "reader.navigation.goToTitle", __?: {}): string;
+  (_: "reader.navigation.historyNext", __?: {}): string;
+  (_: "reader.navigation.historyPrevious", __?: {}): string;
   (_: "reader.navigation.infoTitle", __?: {}): string;
   (_: "reader.navigation.magnifyingGlassButton", __?: {}): string;
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;

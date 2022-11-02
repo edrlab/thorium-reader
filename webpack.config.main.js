@@ -1,4 +1,4 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
 const path = require("path");
@@ -12,80 +12,89 @@ const nodeEnv = process.env.NODE_ENV || "development";
 console.log(`MAIN nodeEnv: ${nodeEnv}`);
 
 // https://github.com/edrlab/thorium-reader/issues/1097#issuecomment-643406149
-const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER
-    ? true
-    : false;
+const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER ? true : false;
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => { return "ForkTsCheckerWebpackPlugin" };
+ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => {
+    return "ForkTsCheckerWebpackPlugin";
+};
 const checkTypeScriptSkip =
-    nodeEnv !== "production" ?
-    (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false)
-    : false
-    ;
-
-// let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
+    nodeEnv !== "production" ? (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false) : false;
+// let ignorePlugin = new webpack.IgnorePlugin({ resourceRegExp: new RegExp("/(bindings)/") })
 
 const aliases = {
     "readium-desktop": path.resolve(__dirname, "src"),
 
-    "@r2-utils-js": "r2-utils-js/dist/es6-es2015/src",
-    "@r2-lcp-js": "r2-lcp-js/dist/es6-es2015/src",
-    "@r2-opds-js": "r2-opds-js/dist/es6-es2015/src",
-    "@r2-shared-js": "r2-shared-js/dist/es6-es2015/src",
-    "@r2-streamer-js": "r2-streamer-js/dist/es6-es2015/src",
-    "@r2-navigator-js": "r2-navigator-js/dist/es6-es2015/src",
+    "@r2-utils-js": "r2-utils-js/dist/es8-es2017/src",
+    "@r2-lcp-js": "r2-lcp-js/dist/es8-es2017/src",
+    "@r2-opds-js": "r2-opds-js/dist/es8-es2017/src",
+    "@r2-shared-js": "r2-shared-js/dist/es8-es2017/src",
+    "@r2-streamer-js": "r2-streamer-js/dist/es8-es2017/src",
+    "@r2-navigator-js": "r2-navigator-js/dist/es8-es2017/src",
     "@lunr-languages": "lunr-languages",
 };
 
-////// ================================
-////// EXTERNALS
-// Some modules cannot be bundled by Webpack
-// for example those that make internal use of NodeJS require() in special ways
-// in order to resolve asset paths, etc.
-// In DEBUG / DEV mode, we just external-ize as much as possible (any non-TypeScript / non-local code),
-// to minimize bundle size / bundler computations / compile times.
-
 let externals = {
     bindings: "bindings",
-    leveldown: "leveldown",
-    yargs: "yargs",
     fsevents: "fsevents",
-    conf: "conf",
-    "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
-    "pouchdb-adapter-node-websql": "pouchdb-adapter-node-websql",
-    sqlite3: "sqlite3",
+    electron: "electron",
+    yargs: "yargs",
 };
+const _externalsCache = new Set();
 if (nodeEnv !== "production") {
-    // // externals = Object.assign(externals, {
-    // //         "electron-config": "electron-config",
-    // //     }
-    // // );
-    // const { dependencies } = require("./package.json");
-    // const depsKeysArray = Object.keys(dependencies || {});
-    // const depsKeysObj = {};
-    // depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
-    // externals = Object.assign(externals, depsKeysObj);
-    // delete externals["pouchdb-core"];
-
-    // if (process.env.WEBPACK === "bundle-external") {
-    const nodeExternals = require("./nodeExternals");
+    const nodeExternals = require("webpack-node-externals");
+    const neFunc = nodeExternals({
+        allowlist: ["nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
+        importType: function (moduleName) {
+            if (!_externalsCache.has(moduleName)) {
+                console.log(`WEBPACK EXTERNAL (MAIN): [${moduleName}]`);
+            }
+            _externalsCache.add(moduleName);
+            // if (moduleName === "normalize-url") {
+            //     return "module normalize-url";
+            // }
+            return "commonjs " + moduleName;
+        },
+    });
     externals = [
-        nodeExternals({
-            processName: "MAIN",
-            alias: aliases,
-            // whitelist: ["pouchdb-core"],
-        }),
+        externals,
+        function ({ context, request, contextInfo, getResolve }, callback) {
+            const isRDesk = request.indexOf("readium-desktop/") === 0;
+            if (isRDesk) {
+                if (!_externalsCache.has(request)) {
+                    console.log(`WEBPACK EXTERNAL (MAIN): READIUM-DESKTOP [${request}]`);
+                }
+                _externalsCache.add(request);
+
+                return callback();
+            }
+
+            let request_ = request;
+            if (aliases) {
+                // const isR2 = /^r2-.+-js/.test(request);
+                // const isR2Alias = /^@r2-.+-js/.test(request);
+
+                const iSlash = request.indexOf("/");
+                const key = request.substr(0, iSlash >= 0 ? iSlash : request.length);
+                if (aliases[key]) {
+                    request_ = request.replace(key, aliases[key]);
+
+                    if (!_externalsCache.has(request)) {
+                        console.log(`WEBPACK EXTERNAL (MAIN): ALIAS [${request}] => [${request_}]`);
+                    }
+                    _externalsCache.add(request);
+
+                    return callback(null, "commonjs " + request_);
+                }
+            }
+
+            neFunc(context, request, callback);
+        },
     ];
-    // } else {
-    //     const nodeExternals = require("webpack-node-externals");
-    //     // electron-devtools-installer
-    //     externals = [nodeExternals()];
-    // }
 }
 
-console.log("WEBPACK externals (MAIN):");
+console.log("WEBPACK externals (MAIN):", "-".repeat(200));
 console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
@@ -103,7 +112,7 @@ let config = Object.assign(
             path: path.join(__dirname, "dist"),
 
             // https://github.com/webpack/webpack/issues/1114
-            libraryTarget: "commonjs2",
+            libraryTarget: "commonjs2", // commonjs-module
         },
         target: "electron-main",
 
@@ -112,7 +121,12 @@ let config = Object.assign(
             __filename: false,
         },
 
+        externalsPresets: { node: true },
         externals: externals,
+        externalsType: "commonjs", // module, node-commonjs
+        experiments: {
+            outputModule: false, // module, node-commonjs
+        },
 
         resolve: {
             // Add '.ts' as resolvable extensions.
@@ -128,9 +142,7 @@ let config = Object.assign(
             rules: [
                 {
                     test: /\.tsx$/,
-                    loader: useLegacyTypeScriptLoader
-                        ? "awesome-typescript-loader"
-                        : "ts-loader",
+                    loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
                     },
@@ -146,16 +158,14 @@ let config = Object.assign(
                             },
                         },
                         {
-                            loader: useLegacyTypeScriptLoader
-                                ? "awesome-typescript-loader"
-                                : "ts-loader",
+                            loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                             options: {
                                 transpileOnly: true, // checkTypeScriptSkip
                             },
                         },
                     ],
                 },
-                { test: /\.node$/, loaders: ["node-loader"] },
+                // { test: /\.node$/, loader: "node-loader" },
             ],
         },
         plugins: [
@@ -169,80 +179,72 @@ let config = Object.assign(
 
                 excludeAssets: null,
             }),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(
-                        __dirname,
-                        "src",
-                        "resources",
-                        "information"
-                    ),
-                    to: "assets/md/information",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(
-                        __dirname,
-                        "src",
-                        "resources",
-                        "lib",
-                        "pdfjs",
-                    ),
-                    to: "assets/lib/pdfjs",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(__dirname, "external-assets"),
-                    to: "external-assets",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(
-                        __dirname,
-                        "node_modules",
-                        "r2-navigator-js",
-                        "dist",
-                        "ReadiumCSS"
-                    ),
-                    to: "ReadiumCSS",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(__dirname, "node_modules", "mathjax"),
-                    to: "MathJax",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(__dirname, "resources"),
-                    to: "assets/icons",
-                },
-            ]}),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "src", "resources", "information"),
+                        to: "assets/md/information",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "src", "resources", "lib", "pdfjs"),
+                        to: "assets/lib/pdfjs",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "external-assets"),
+                        to: "external-assets",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "node_modules", "r2-navigator-js", "dist", "ReadiumCSS"),
+                        to: "ReadiumCSS",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "node_modules", "mathjax"),
+                        to: "MathJax",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "resources"),
+                        to: "assets/icons",
+                    },
+                ],
+            }),
             preprocessorDirectives.definePlugin,
         ],
-    }
+    },
 );
 
-config.plugins.push(
-    new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })
-); // jsondown (runtimejs, fatfs)
+config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })); // jsondown (runtimejs, fatfs)
 
-config.plugins.push(
-    new webpack.IgnorePlugin({ resourceRegExp: /^canvas$/ })
-); // pdfjs
+config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^canvas$/ })); // pdfjs
 
 if (!checkTypeScriptSkip) {
-    config.plugins.push(new ForkTsCheckerWebpackPlugin({
-        // measureCompilationTime: true,
-    }));
+    config.plugins.push(
+        new ForkTsCheckerWebpackPlugin({
+            // measureCompilationTime: true,
+        }),
+    );
 }
 
 if (nodeEnv !== "production") {
-
     // Bundle absolute resource paths in the source-map,
     // so VSCode can match the source file.
     config.output.devtoolModuleFilenameTemplate = "[absolute-resource-path]";
@@ -251,9 +253,7 @@ if (nodeEnv !== "production") {
 
     config.devtool = "source-map";
 } else {
-
-    config.optimization =
-    {
+    config.optimization = {
         ...(config.optimization || {}),
         minimize: true,
         minimizer: [
@@ -279,14 +279,10 @@ if (nodeEnv !== "production") {
     config.plugins.push(
         new webpack.IgnorePlugin({
             resourceRegExp: /^electron-devtools-installer$/,
-        })
+        }),
     );
-    config.plugins.push(
-        new webpack.IgnorePlugin({ resourceRegExp: /^remote-redux-devtools$/ })
-    );
-    config.plugins.push(
-        new webpack.IgnorePlugin({ resourceRegExp: /^json-diff$/ })
-    );
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^remote-redux-devtools$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^json-diff$/ }));
 }
 
 module.exports = config;

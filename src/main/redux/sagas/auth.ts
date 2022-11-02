@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import * as debug_ from "debug";
 import { BrowserWindow, globalShortcut } from "electron";
 import { Headers } from "node-fetch";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
-import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
@@ -19,6 +20,7 @@ import {
 } from "readium-desktop/main/event";
 import { cleanCookieJar } from "readium-desktop/main/network/fetch";
 import {
+    httpGet,
     httpPost,
     httpSetAuthenticationToken,
     IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
@@ -33,7 +35,10 @@ import { URL } from "url";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-import { getOpdsRequestCustomProtocolEventChannel, ODPS_AUTH_SCHEME } from "./getEventChannel";
+import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, OPDS_AUTH_SCHEME, OPDS_MEDIA_SCHEME, TregisterHttpProtocolHandler} from "./getEventChannel";
+import { initClientSecretToken } from "./apiapp";
+import { digestAuthentication } from "readium-desktop/utils/digest";
+import isURL from "validator/lib/isURL";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -42,16 +47,22 @@ debug("_");
 
 type TLinkType = "refresh" | "authenticate";
 type TLabelName = "login" | "password";
+type TDigestInfo = "realm" | "nonce" | "qop" | "algorithm";
+type TAuthName = "id" | "access_token" | "refresh_token" | "token_type";
 type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
+    | "http://opds-spec.org/auth/oauth/password/apiapp"
     | "http://opds-spec.org/auth/oauth/implicit"
     | "http://opds-spec.org/auth/basic"
+    | "http://opds-spec.org/auth/digest"
     | "http://opds-spec.org/auth/local"
     | "http://librarysimplified.org/authtype/SAML-2.0";
 
 const AUTHENTICATION_TYPE: TAuthenticationType[] = [
     "http://opds-spec.org/auth/oauth/password",
+    "http://opds-spec.org/auth/oauth/password/apiapp",
     "http://opds-spec.org/auth/oauth/implicit",
     "http://opds-spec.org/auth/basic",
+    "http://opds-spec.org/auth/digest",
     "http://opds-spec.org/auth/local",
     "http://librarysimplified.org/authtype/SAML-2.0",
 ];
@@ -73,7 +84,7 @@ const opdsAuthFlow =
             debug("opds authenticate flow");
             const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
             if (!baseUrlParsed) {
-                debug("no valid base url");
+                debug("no valid base url", baseUrl);
                 return;
             }
 
@@ -137,6 +148,8 @@ const opdsAuthFlow =
                     debug("no authentication credentials received");
                     debug("perhaps timeout or closing authentication window occured");
 
+                    yield put(authActions.cancel.build());
+
                     return;
 
                 } else {
@@ -147,6 +160,8 @@ const opdsAuthFlow =
                             !Object.keys(opdsCustomProtocolRequestParsed.data).length) {
 
                             debug("authentication window was cancelled");
+
+                            yield put(authActions.cancel.build());
 
                             return;
                         }
@@ -168,6 +183,7 @@ const opdsAuthFlow =
 
                         } else {
                             yield put(historyActions.refresh.build());
+                            yield put(authActions.done.build());
                         }
                     }
                 }
@@ -192,29 +208,49 @@ function* opdsAuthWipeData() {
 
     yield* callTyped(wipeAuthenticationTokenStorage);
 
-    // const configDoc = yield* callTyped(() => diMainGet("config-repository"));
-
-    // const docs = yield* callTyped(() => configDoc.findAll());
-
-    // if (Array.isArray(docs)) {
-    //     for (const doc of docs) {
-
-    //         if (doc.identifier.startsWith(CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN)) {
-
-    //             debug("delete", doc.identifier);
-    //             yield call(() => configDoc.delete(doc.identifier));
-    //         }
-    //     }
-    // }
-
     yield put(toastActions.openRequest.build(ToastType.Success, "👍"));
     debug("End of wipping auth data");
+}
+
+function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler) {
+
+    const schemePrefix = OPDS_MEDIA_SCHEME + "://0.0.0.0/";
+    if (request && request.url.startsWith(schemePrefix)) {
+        const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
+        const url = Buffer.from(b64, "base64").toString("utf-8");
+        if (!isURL(url)) {
+            debug("opdsRequestMedia failed not a valid url", url);
+            return ;
+        }
+
+        httpGet(url, {
+            ...request,
+        }, (response) => {
+
+            debug("opdsRequestMedia success", response.url, response.statusCode);
+            callback({
+                method: "GET",
+                url: request.url,
+                statusCode: response?.statusCode || 500,
+                headers: {
+                    "Content-Type": response.contentType,
+                },
+                data: response.body || undefined,
+            });
+            return response;
+        });
+
+    } else {
+        debug("opdsRequestMedia error ?!!", request);
+    }
+
 }
 
 export function saga() {
 
     const opdsAuthChannel = getOpdsAuthenticationChannel();
     const opdsRequestChannel = getOpdsRequestCustomProtocolEventChannel();
+    const opdsRequestMediaChannel = getOpdsRequestMediaCustomProtocolEventChannel();
 
     return all([
         takeSpawnLeadingChannel(
@@ -227,13 +263,18 @@ export function saga() {
             opdsAuthWipeData,
             (e) => debug("opds authentication data wipping error", e),
         ),
+        takeSpawnEveryChannel(
+            opdsRequestMediaChannel,
+            opdsRequestMediaFlow,
+            (e) => debug("redux OPDS Request Media channel error", e),
+        ),
     ]);
 }
 
 // -----
 
 async function opdsSetAuthCredentials(
-    opdsCustomProtocolRequestParsed: IParseRequestFromCustomProtocol<TLabelName>,
+    opdsCustomProtocolRequestParsed: IParseRequestFromCustomProtocol<TLabelName | TAuthName | TDigestInfo>,
     authCredentials: IOpdsAuthenticationToken,
     authenticationType: TAuthenticationType,
 ): Promise<[undefined, Error]> {
@@ -258,7 +299,40 @@ async function opdsSetAuthCredentials(
                             `${data.login}:${data.password}`,
                             ).toString("base64"),
                     refreshToken: undefined,
-                    tokenType: "basic",
+                    tokenType: "Basic",
+                };
+
+            } else if (authenticationType === "http://opds-spec.org/auth/digest") {
+
+                const username = data.login;
+                const password = data.password;
+                const nonce = data.nonce;
+                const qop = data.qop;
+                const algorithm = data.algorithm;
+                const realm = data.realm;
+                const cnonce = "0123456789";
+                const uri = new URL(authCredentials.authenticateUrl).pathname; // pathname;
+                const method = "GET";
+                const nonceCount = "00000001";
+                debug("DIGEST", nonce, qop, algorithm, realm);
+
+                const accessToken = digestAuthentication({
+                    username,
+                    password,
+                    nonce,
+                    qop,
+                    algorithm,
+                    realm,
+                    cnonce,
+                    uri,
+                    method,
+                    nonceCount,
+                });
+                postDataCredential = {
+                    accessToken,
+                    refreshToken: undefined,
+                    tokenType: "Digest",
+                    password: password,
                 };
 
             } else {
@@ -274,6 +348,9 @@ async function opdsSetAuthCredentials(
                             payload.grant_type = "password";
                         } else if (authenticationType === "http://opds-spec.org/auth/local") {
                             // do nothing
+                        } else if (authenticationType === "http://opds-spec.org/auth/oauth/password/apiapp") {
+                            payload.client_secret = await initClientSecretToken(authCredentials.id) || "";
+                            payload.client_id = authCredentials.id;
                         }
 
                         const { authenticateUrl } = authCredentials || {};
@@ -282,18 +359,20 @@ async function opdsSetAuthCredentials(
                         }
 
                         const headers = new Headers();
-                        headers.set("Content-Type", ContentType.Json);
+                        headers.set("Content-Type", ContentType.FormUrlEncoded);
+
+                        const body = Object.entries(payload).reduce((pv, [k,v]) => `${pv}${pv ? "&" : pv}${k}=${v}`, "");
 
                         const { data: postData } = await httpPost<IOpdsAuthenticationToken>(
                             authenticateUrl,
                             {
-                                body: JSON.stringify(payload),
+                                body,
                                 headers,
                             },
                             async (res) => {
                                 if (res.isSuccess) {
 
-                                    const _data = await res.response.json();
+                                    const _data: any = await res.response.json();
                                     if (typeof _data === "object") {
 
                                         res.data = {
@@ -345,10 +424,10 @@ async function opdsSetAuthCredentials(
 
             const newCredentials = {
                 ...authCredentials,
-                id: searchParams?.get("id") || authCredentials.id || undefined,
-                tokenType: searchParams?.get("token_type") || authCredentials.tokenType || "Bearer",
-                refreshToken: searchParams?.get("refresh_token") || undefined,
-                accessToken: searchParams?.get("access_token") || undefined,
+                id: data.id || searchParams?.get("id") || authCredentials.id || undefined,
+                tokenType: data.token_type || searchParams?.get("token_type") || authCredentials.tokenType || "Bearer",
+                refreshToken: data.refresh_token || searchParams?.get("refresh_token") || undefined,
+                accessToken: data.access_token || searchParams?.get("access_token") || undefined,
             };
 
             newCredentials.tokenType =
@@ -392,7 +471,9 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
 
         case "http://opds-spec.org/auth/local":
         case "http://opds-spec.org/auth/basic":
-        case "http://opds-spec.org/auth/oauth/password": {
+        case "http://opds-spec.org/auth/digest":
+        case "http://opds-spec.org/auth/oauth/password":
+        case "http://opds-spec.org/auth/oauth/password/apiapp": {
 
             const html = encodeURIComponent_RFC3986(
                 htmlLoginTemplate(
@@ -401,6 +482,10 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
                     auth.labels?.password,
                     auth.title,
                     auth.logo?.url,
+                    auth.nonce,
+                    auth.qop,
+                    auth.algorithm,
+                    auth.realm,
                 ),
             );
             browserUrl = `data:text/html;charset=utf-8,${html}`;
@@ -431,6 +516,14 @@ interface IOPDSAuthDocParsed {
     } | undefined;
 
     logo?: IOpdsLinkView | undefined;
+
+    // digest authentication
+    // see IWWWAuthenticateDataParsed
+    nonce?: string,
+    algorithm?: string,
+    qop?: string,
+    realm?: string,
+
 }
 function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPDSAuthDocParsed | undefined {
 
@@ -508,6 +601,10 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         links,
         labels,
         logo,
+        nonce: typeof authentication.AdditionalJSON?.nonce === "string" ? authentication.AdditionalJSON.nonce : undefined,
+        algorithm: typeof authentication.AdditionalJSON?.algorithm === "string" ? authentication.AdditionalJSON.algorithm : undefined,
+        qop: typeof authentication.AdditionalJSON?.qop === "string" ? authentication.AdditionalJSON.qop : undefined,
+        realm: typeof authentication.AdditionalJSON?.realm === "string" ? authentication.AdditionalJSON.realm : "", // mapping to title in opdsAuthentication json
     };
 }
 
@@ -519,13 +616,26 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
         return undefined;
     }
 
+    const libWinBound = libWin.getBounds();
     const win = new BrowserWindow(
         {
-            width: 800,
-            height: 600,
+            width: libWinBound?.width || 800,
+            height: libWinBound?.height || 600,
             parent: libWin,
             modal: true,
             show: false,
+            webPreferences: {
+                // enableRemoteModule: false,
+                allowRunningInsecureContent: false,
+                backgroundThrottling: true,
+                devTools: IS_DEV, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+                nodeIntegration: false,
+                contextIsolation: false,
+                nodeIntegrationInWorker: false,
+                sandbox: false,
+                webSecurity: true,
+                webviewTag: false,
+            },
         });
 
     const handler = () => win.close();
@@ -552,7 +662,7 @@ interface IParseRequestFromCustomProtocol<T = string> {
     };
 }
 function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
-    : IParseRequestFromCustomProtocol<TLabelName> | undefined {
+    : IParseRequestFromCustomProtocol<TLabelName | TDigestInfo> | undefined {
 
     debug("########");
     debug("opds:// request:", req);
@@ -568,7 +678,7 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
         }
         const { protocol: urlProtocol, host } = urlParsed;
 
-        if (urlProtocol !== `${ODPS_AUTH_SCHEME}:`) {
+        if (urlProtocol !== `${OPDS_AUTH_SCHEME}:`) {
             debug("bad opds protocol !!", urlProtocol);
             return undefined;
         }
@@ -623,11 +733,13 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
 
         if (method === "GET") {
             if (host === "authorize") {
-                const urlObject = new URL(url);
+                const urlSearchParam = url.replace("#", "?");
+                const urlObject = new URL(urlSearchParam);
                 const data: Record<string, string> = {};
                 for (const [key, value] of urlObject.searchParams) {
                     data[key] = value;
                 }
+
                 return {
                     url: urlParsed,
                     method: "GET",
@@ -647,6 +759,10 @@ const htmlLoginTemplate = (
     passLabel = "password",
     title: string | undefined,
     logoUrl?: string,
+    nonce?: string,
+    qop?: string,
+    algorithm?: string,
+    realm?: string,
 ) => {
     if (!title) { // includes empty string
         title = diMainGet("translator").translate("catalog.opds.auth.login");
@@ -852,6 +968,10 @@ const htmlLoginTemplate = (
         ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ""}
         <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
         <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
+        <p><input hidden type="text" name="nonce" value="${nonce}"></p>
+        <p><input hidden type="text" name="qop" value="${qop}"></p>
+        <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
+        <p><input hidden type="text" name="realm" value="${realm}"></p>
         <p class="submit">
         <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
         <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">

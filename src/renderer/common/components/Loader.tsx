@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as LoaderIcon from "readium-desktop/renderer/assets/icons/loader.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/loader.css";
+import * as stylesLoader from "readium-desktop/renderer/assets/styles/loader.css";
 
 import SVG from "./SVG";
 
@@ -19,8 +19,8 @@ export default class Loader extends React.Component<{}, undefined> {
 
     public render(): React.ReactElement<{}>  {
         return (
-            <div className={styles.loader}>
-                <SVG svg={LoaderIcon}/>
+            <div className={stylesLoader.loader}>
+                <SVG ariaHidden={true} svg={LoaderIcon}/>
             </div>
         );
     }

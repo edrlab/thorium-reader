@@ -5,13 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as readerLocalActionBookmarks from "./bookmarks";
+import * as readerLocalActionDivina from "./divina";
 import * as readerLocalActionHighlights from "./highlights";
 import * as readerLocalActionLocatorHrefChanged from "./locatorHrefChanged";
 import * as readerLocalActionPicker from "./picker";
 import * as readerLocalActionSearch from "./search";
 import * as readerLocalActionSetConfig from "./setConfig";
 import * as readerLocalActionSetLocator from "./setLocator";
-import * as readerLocalActionBookmarks from "./bookmarks";
 
 export {
     readerLocalActionSetConfig,
@@ -21,4 +22,5 @@ export {
     readerLocalActionPicker,
     readerLocalActionSearch,
     readerLocalActionBookmarks,
+    readerLocalActionDivina,
 };

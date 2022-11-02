@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Valikko",
         "closeDialog": "Sulje",
-        "homeMenu": "Lukutilan valikko",
         "importFile": "Tuo julkaisu",
         "leftSlideButton": "Siirry listalla vasemmalle",
         "mainContent": "Pääsisältö",
@@ -10,6 +9,9 @@
         "searchBook": "Hae kirjan nimellä",
         "skipLink": "Hyppää sisältöön",
         "toolbar": "Työkalurivi"
+    },
+    "apiapp": {
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -49,6 +51,11 @@
         "addTagsButton": "Lisää",
         "allBooks": "Kaikki kirjat",
         "bookInfo": "Tietoja tästä kirjasta",
+        "column": {
+            "ascending": "",
+            "descending": "",
+            "unsorted": ""
+        },
         "delete": "Poista",
         "deleteBook": "Poista",
         "deleteTag": "Poista tunniste",
@@ -62,7 +69,9 @@
             "lastAdditions": "Viimeksi lisätty"
         },
         "export": "Vie",
+        "format": "",
         "lang": "Kieli",
+        "lastRead": "",
         "moreInfo": "Lisää tietoja",
         "myBooks": "Minun kirjani",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -99,7 +108,8 @@
         "released": "Julkaistu",
         "sort": "Järjestä",
         "tagCount": "Tunnistemäärä",
-        "tags": "Tunnisteet"
+        "tags": "Tunnisteet",
+        "update": ""
     },
     "dialog": {
         "closeModalWindow": "Sulje tämä ikkuna",
@@ -166,6 +176,9 @@
             "url": "Linkki:",
             "urlPlaceholder": "Linkki"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Lisää OPDS-syöte",
         "back": "Takaisin",
         "breadcrumbRoot": "Luettelot",
@@ -189,12 +202,51 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
-        "shelf": "Hylly"
+        "shelf": "Hylly",
+        "updateForm": {
+            "name": "",
+            "namePlaceholder": "",
+            "title": "",
+            "updateButton": "",
+            "url": "",
+            "urlPlaceholder": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motion": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotion": "",
+                "noSimulation": "",
+                "noSound": "",
+                "none": "",
+                "simulation": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Osat"
         },
+        "author": "",
         "cancelledLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on peruttu.",
         "certificateRevoked": "Varmenne on kumottu",
         "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa",
@@ -221,9 +273,14 @@
         "revokedLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on kumottu",
         "seeLess": "Näytä vähemmän",
         "seeMore": "Näytä enemmän",
+        "title": "",
         "userKeyCheckInvalid": "Salasana on väärin"
     },
     "reader": {
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
         "footerInfo": {
             "lessInfo": "vähemmän tietoja",
             "moreInfo": "enemmän tietoja"
@@ -253,13 +310,15 @@
             "backHomeTitle": "Takaisin kirjahyllyyn",
             "bookmarkTitle": "Kirjanmerkki",
             "currentPage": "Nykyinen sivu : {{- current}}",
-            "currentPageTotal": "Nykyinen sivu : ({{- current}}/{{- total}})",
+            "currentPageTotal": "Nykyinen sivu : {{- current}}/{{- total}}",
             "detachWindowTitle": "Näytä kirjaston / kirjahyllyn ikkuna",
             "fullscreenTitle": "Avaa kokoruudun tilassa",
             "goTo": "Siirry",
             "goToError": "Sivua ei löydy",
             "goToPlaceHolder": "Syötä sivunumero",
             "goToTitle": "Siirry sivulle",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "tiedot",
             "magnifyingGlassButton": "Hae julkaisusta",
             "openTableOfContentsTitle": "navigaatio",

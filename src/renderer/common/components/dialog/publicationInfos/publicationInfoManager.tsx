@@ -5,21 +5,26 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
+
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 
 import Cover from "../../Cover";
 import Loader from "../../Loader";
 import Dialog from "../Dialog";
 
-export interface IProps {
+export interface IProps extends TranslatorProps {
     publication: TPublication;
     coverZoom: boolean;
     toggleCoverZoomCb: (coverZoom: boolean) => void;
     closeDialogCb: () => void;
 }
 
-export const PublicationInfoManager: React.FC<IProps> = (props) => {
+const PublicationInfoManager: React.FC<IProps> = (props) => {
 
     const { publication, coverZoom, toggleCoverZoomCb, closeDialogCb } = props;
 
@@ -32,32 +37,36 @@ export const PublicationInfoManager: React.FC<IProps> = (props) => {
                     ? toggleCoverZoomCb(coverZoom)
                     : closeDialogCb()
             }
+            title={props.__("catalog.bookInfo")}
         >
-            {
-                publication?.title
-                    ? (
-                        coverZoom
-                            ? <Cover
-                                publicationViewMaybeOpds={publication}
-                                coverType="cover"
-                                onClick={
-                                    () => toggleCoverZoomCb(coverZoom)
-                                }
-                                onKeyPress={
-                                    (e: React.KeyboardEvent<HTMLImageElement>) =>
-                                        e.key === "Enter" && toggleCoverZoomCb(coverZoom)
-                                }
-                            >
-                            </Cover>
-                            :
-                            <>
-                                {
-                                    props.children
-                                }
-                            </>
-                    )
-                    : <Loader></Loader>
-            }
+            <div className={stylesModals.modal_dialog_body}>
+                {
+                    publication?.documentTitle
+                        ? (
+                            coverZoom
+                                ? <Cover
+                                    publicationViewMaybeOpds={publication}
+                                    coverType="cover"
+                                    onClick={
+                                        () => toggleCoverZoomCb(coverZoom)
+                                    }
+                                    onKeyPress={
+                                        (e: React.KeyboardEvent<HTMLImageElement>) =>
+                                            e.key === "Enter" && toggleCoverZoomCb(coverZoom)
+                                    }
+                                >
+                                </Cover>
+                                :
+                                <>
+                                    {
+                                        props.children
+                                    }
+                                </>
+                        )
+                        : <Loader></Loader>
+                }
+            </div>
         </Dialog>
     );
 };
+export default (withTranslator(PublicationInfoManager));

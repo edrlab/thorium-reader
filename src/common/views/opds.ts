@@ -9,7 +9,6 @@ import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability"
 import { OPDSCurrencyEnum } from "@r2-opds-js/opds/opds2/opds2-price";
 
 import { Identifiable } from "../models/identifiable";
-import { THttpGetResultAfterCallback } from "../utils/http";
 
 // import { JsonMap } from "readium-desktop/typings/json";
 
@@ -28,7 +27,11 @@ export interface IOpdsPublicationView {
     // r2OpdsPublicationJson?: JsonMap;
     // Legacy Base64 data blobs
     // r2OpdsPublicationBase64?: string;
-    title: string;
+
+    // see PublicationView (polymorphic NormalOrOpdsPublicationView / publicationViewMaybeOpds)
+    // documentTitle vs. publicationTitle
+    documentTitle: string;
+
     authors: IOpdsContributorView[];
     publishers?: IOpdsContributorView[];
     workIdentifier?: string;
@@ -38,6 +41,7 @@ export interface IOpdsPublicationView {
     languages?: string[];
     publishedAt?: string; // ISO8601
     entryLinks?: IOpdsLinkView[];
+    catalogLinkView: IOpdsLinkView[];
     buyLinks?: IOpdsLinkView[];
     borrowLinks?: IOpdsLinkView[];
     subscribeLinks?: IOpdsLinkView[];
@@ -72,6 +76,7 @@ export interface IOpdsResultView {
     facets?: IOpdsFacetView[];
     groups?: IOpdsGroupView[];
     auth?: IOpdsAuthView;
+    catalogs?: IOpdsPublicationView[];
 }
 
 export interface IOpdsGroupView {
@@ -143,5 +148,3 @@ export interface IOpdsNavigationLink {
     text: IOpdsLinkView[];
     self: IOpdsLinkView[];
 }
-
-export type THttpGetOpdsResultView = THttpGetResultAfterCallback<IOpdsResultView>;

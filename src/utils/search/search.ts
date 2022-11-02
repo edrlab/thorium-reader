@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 // import { JSDOM } from "jsdom";
-// import * as xmldom from "xmldom";
+// import * as xmldom from "@xmldom/xmldom";
 
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 

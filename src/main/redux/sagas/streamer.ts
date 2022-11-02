@@ -6,47 +6,48 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import * as portfinder from "portfinder";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { diMainGet } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/error";
+import { error } from "readium-desktop/main/tools/error";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
     streamerRemovePublications, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "readium-desktop/main/streamerNoHttp";
-import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
+} from "readium-desktop/main/streamer/streamerNoHttp";
 import { SagaIterator } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, put } from "redux-saga/effects";
+import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
-import { Server } from "@r2-streamer-js/http/server";
+// import * as portfinder from "portfinder";
+// import { Server } from "@r2-streamer-js/http/server";
+// import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:streamer";
 const debug = debug_(filename_);
 
-async function startStreamer(streamer: Server): Promise<string> {
-    // Find a free port on your local machine
-    const port = await portfinder.getPortPromise();
-    // HTTPS, see secureSessions()
-    await streamer.start(port, true);
+// async function startStreamer(streamer: Server): Promise<string> {
+//     // Find a free port on your local machine
+//     const port = await portfinder.getPortPromise();
+//     // HTTPS, see secureSessions()
+//     await streamer.start(port, true);
 
-    const streamerUrl = streamer.serverUrl();
-    debug("Streamer started on %s", streamerUrl);
+//     const streamerUrl = streamer.serverUrl();
+//     debug("Streamer started on %s", streamerUrl);
 
-    return streamerUrl;
-}
+//     return streamerUrl;
+// }
 
 function* startRequest(): SagaIterator {
-    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
+    // const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     try {
-        const streamerUrl = _USE_HTTP_STREAMER ?
-            yield* callTyped(() => startStreamer(streamer)) :
-            `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://host`;
+        // const streamerUrl = _USE_HTTP_STREAMER ?
+        //     yield* callTyped(() => startStreamer(streamer)) :
+        //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0`;
+        const streamerUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0`;
 
         yield put(streamerActions.startSuccess.build(streamerUrl));
     } catch (error) {
@@ -58,12 +59,12 @@ function* startRequest(): SagaIterator {
 
 function* stopRequest(): SagaIterator {
 
-    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
+    // const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     try {
-        if (_USE_HTTP_STREAMER) {
-            yield call(() => streamer.stop);
-        }
+        // if (_USE_HTTP_STREAMER) {
+        //     yield call(() => streamer.stop);
+        // }
         yield put(streamerActions.stopSuccess.build());
     } catch (error) {
 
@@ -78,7 +79,7 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
     // will decrement on streamerActions.publicationCloseSuccess.build (see below)
     const counter = yield* selectTyped((s: RootState) => s.streamer.openPublicationCounter);
 
-    const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
+    // const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
 
     const pubStorage = yield* callTyped(() => diMainGet("publication-storage"));
 
@@ -92,11 +93,12 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
         //     publicationDocument.files[0].url.substr(6),
         // );
         debug(`EPUB ZIP CLEANUP: ${epubPath}`);
-        if (_USE_HTTP_STREAMER) {
-            streamer.removePublications([epubPath]);
-        } else {
-            streamerRemovePublications([epubPath]);
-        }
+        // if (_USE_HTTP_STREAMER) {
+        //     streamer.removePublications([epubPath]);
+        // } else {
+        //     streamerRemovePublications([epubPath]);
+        // }
+        streamerRemovePublications([epubPath]);
     }
 
     const pubIds = Object.keys(counter);

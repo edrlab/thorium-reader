@@ -24,6 +24,7 @@ import * as persist from "./persist";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
+import * as telemetry from "./telemetry";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -100,8 +101,15 @@ export function* rootSaga() {
     // enjoy the app !
     yield put(winActions.library.openRequest.build());
 
+    // call telemetry before app init state
+    // need to track the previous state version before update in initSuccess.build
+    yield call(telemetry.collectSaveAndSend);
+
     // app initialized
     yield put(appActions.initSuccess.build());
+
+    // wait library window fully opened before to throw events
+    yield take(winActions.library.openSucess.build);
 
     // open reader from CLI or open-file event on MACOS
     yield events.saga();
