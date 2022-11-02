@@ -11,26 +11,30 @@ import * as ReactDOM from "react-dom";
 import FocusLock from "react-focus-lock";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { dialogActions } from "readium-desktop/common/redux/actions";
+import { connect } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    open: boolean;
-    close: () => void;
     className?: string;
     id?: string;
     title: string;
+    children: React.ReactNode;
+    onSubmitButton: () => void;
+    submitButtonTitle: string;
+    submitButtonDisabled: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 class Dialog extends React.Component<IProps, undefined> {
@@ -68,12 +72,12 @@ class Dialog extends React.Component<IProps, undefined> {
                         aria-labelledby="dialog-title"
                         aria-describedby="dialog-desc"
                         aria-modal="true"
-                        aria-hidden={this.props.open ? "false" : "true"}
+                        aria-hidden={"false"}
                         tabIndex={-1}
-                        className={this.props.open ? stylesModals.modal_dialog_overlay : stylesGlobal.visibility_hidden}
+                        className={stylesModals.modal_dialog_overlay}
                         onKeyDown={this.handleKeyPress}
                     >
-                        <div onClick={this.props.close} className={stylesModals.modal_dialog_overlay_hidden} />
+                        <div onClick={this.props.closeDialog} className={stylesModals.modal_dialog_overlay_hidden} />
                         <div
                             role="document"
                             id={this.props.id}
@@ -86,15 +90,30 @@ class Dialog extends React.Component<IProps, undefined> {
                                     aria-label={__("accessibility.closeDialog")}
                                     title={__("dialog.closeModalWindow")}
                                     data-dismiss="dialog"
-                                    onClick={this.props.close}
+                                    onClick={this.props.closeDialog}
                                     className={stylesButtons.button_transparency_icon}
                                 >
                                     <SVG ariaHidden={true} svg={QuitIcon} />
                                 </button>
                             </div>
-                            {content && <>
+                            <form className={stylesModals.modal_dialog_form_wrapper} onSubmit={this.submitForm}>
                                 {content}
-                            </>}
+                                <div className={stylesModals.modal_dialog_footer}>
+                                    <button
+                                        onClick={this.props.closeDialog}
+                                        className={stylesButtons.button_secondary}
+                                    >
+                                        {__("dialog.cancel")}
+                                    </button>
+                                    {<button
+                                        disabled={this.props.submitButtonDisabled}
+                                        type="submit"
+                                        className={stylesButtons.button_primary}
+                                    >
+                                        {this.props.submitButtonTitle}
+                                    </button>}
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </FocusLock>
@@ -103,11 +122,35 @@ class Dialog extends React.Component<IProps, undefined> {
         );
     }
 
+    private submitForm: React.FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
+        this.submit();
+    };
+
+    private submit = () => {
+        this.props.onSubmitButton();
+        this.props.closeDialog();
+    };
+
     private handleKeyPress: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
         if (e.key === "Escape") {
-            this.props.close();
+            this.props.closeDialog();
+        } else if (e.key === "Enter") {
+            this.submit();
         }
-    }
+    };
 }
 
-export default withTranslator(Dialog);
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        closeDialog: () => {
+            dispatch(
+                dialogActions.closeRequest.build(),
+            );
+        },
+    };
+};
+
+
+
+export default connect(undefined, mapDispatchToProps)(withTranslator(Dialog));

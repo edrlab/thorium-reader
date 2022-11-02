@@ -9,8 +9,6 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
@@ -20,8 +18,6 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { TMouseEventOnInput } from "readium-desktop/typings/react";
-import { TDispatch } from "readium-desktop/typings/redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -31,7 +27,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -41,20 +37,17 @@ interface IState {
 
 class OpdsFeedAddForm extends React.Component<IProps, IState> {
     private focusRef: React.RefObject<HTMLInputElement>;
-    private buttonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
 
         this.focusRef = React.createRef<HTMLInputElement>();
-        this.buttonRef = React.createRef<HTMLButtonElement>();
 
         this.state = {
             name: undefined,
             url: undefined,
         };
 
-        this.add = this.add.bind(this);
     }
 
     public componentDidMount() {
@@ -68,16 +61,19 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
             return (<></>);
         }
 
-        const { __, closeDialog } = this.props;
+        const { __ } = this.props;
         const { name, url } = this.state;
         return (
             <Dialog
-                open={true}
-                close={closeDialog}
+                // close={closeDialog}
                 id={stylesModals.opds_form_dialog}
                 title={__("opds.addMenu")}
+                onSubmitButton={this.add}
+                submitButtonTitle={
+                    __("opds.addForm.addButton")
+                }
+                submitButtonDisabled={!(this.state.name && this.state.url)}
             >
-                <form className={stylesModals.modal_dialog_form_wrapper}>
                     <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
                         <div className={stylesGlobal.w_50}>
                             <div className={stylesInputs.form_group}>
@@ -91,10 +87,6 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                                     placeholder={__("opds.addForm.namePlaceholder")}
                                     defaultValue={name}
                                     ref={this.focusRef}
-                                    onKeyPress={
-                                        (e) =>
-                                            e.key === "Enter" && this.buttonRef?.current && this.buttonRef.current.click()
-                                    }
                                 />
                             </div>
                             <div className={stylesInputs.form_group}>
@@ -107,60 +99,27 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                                     aria-label={__("opds.addForm.url")}
                                     placeholder={__("opds.addForm.urlPlaceholder")}
                                     defaultValue={url}
-                                    onKeyPress={
-                                        (e) =>
-                                            e.key === "Enter" && this.buttonRef?.current && this.buttonRef.current.click()
-                                    }
                                 />
                             </div>
                         </div>
                     </div>
-                    <div className={stylesModals.modal_dialog_footer}>
-                        <button
-                            onClick={closeDialog}
-                            className={stylesButtons.button_primary}
-                        >
-                            {__("opds.back")}
-                        </button>
-                        <button
-                            disabled={!name || !url}
-                            type="submit"
-                            onClick={this.add}
-                            className={stylesButtons.button_primary}
-                            ref={this.buttonRef}
-                        >
-                            {__("opds.addForm.addButton")}
-                        </button>
-                    </div>
-                </form>
+
             </Dialog>
         );
     }
 
-    public add(e: TMouseEventOnInput) {
-        e.preventDefault();
+    public add = () => {
         const title = this.state.name;
         const url = this.state.url;
         apiAction("opds/addFeed", { title, url }).catch((err) => {
             console.error("Error to fetch api opds/addFeed", err);
         });
-        this.props.closeDialog();
-    }
+        // this.props.closeDialog(); // TODO
+    };
 
 }
-
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
-    return {
-        closeDialog: () => {
-            dispatch(
-                dialogActions.closeRequest.build(),
-            );
-        },
-    };
-};
-
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     open: state.dialog.type === DialogTypeName.OpdsFeedAddForm,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsFeedAddForm));
+export default connect(mapStateToProps)(withTranslator(OpdsFeedAddForm));

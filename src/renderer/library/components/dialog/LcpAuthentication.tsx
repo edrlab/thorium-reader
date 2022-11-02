@@ -74,7 +74,6 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                 close={closeDialog}
                 title={__("library.lcp.password")}
             >
-                <form className={stylesModals.modal_dialog_form_wrapper} onSubmit={this.submit}>
                     <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
                         <div className={stylesGlobal.w_50}>
                             <p><strong>{__("library.lcp.sentence")}</strong></p>
@@ -128,7 +127,6 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             {__("library.lcp.submit")}
                         </button>
                     </div>
-                </form>
             </Dialog>
         );
     }

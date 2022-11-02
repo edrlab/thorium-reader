@@ -120,7 +120,8 @@
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
-        "yes": "Yes"
+        "yes": "Yes",
+        "cancel": "Cancel"
     },
     "error": {
         "errorBox": {
