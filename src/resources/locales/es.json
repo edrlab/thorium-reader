@@ -229,7 +229,7 @@
             "accessibilityHazard": {
                 "flashing": "Destellos",
                 "motionSimulation": "Animaciones",
-                "name": "Riesgos:",
+                "name": "Riesgo:",
                 "noFlashing": "Sin destellos",
                 "noMotionSimulation": "Sin animaciones",
                 "noSound": "Sin sonidos",
