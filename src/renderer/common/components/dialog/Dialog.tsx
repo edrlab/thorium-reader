@@ -28,6 +28,7 @@ interface IBaseProps extends TranslatorProps {
     onSubmitButton: () => void;
     submitButtonTitle: string;
     submitButtonDisabled: boolean;
+    shouldOkRefEnabled?: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -41,6 +42,7 @@ class Dialog extends React.Component<IProps, undefined> {
     private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
+    private okRef: React.RefObject<HTMLButtonElement>
 
     constructor(props: IProps) {
         super(props);
@@ -48,10 +50,15 @@ class Dialog extends React.Component<IProps, undefined> {
         this.appElement = document.getElementById("app");
         this.appOverlayElement = document.getElementById("app-overlay");
         this.rootElement = document.createElement("div");
+
+        this.okRef = React.createRef<HTMLButtonElement>();
     }
     public componentDidMount() {
         this.appElement.setAttribute("aria-hidden", "true");
         this.appOverlayElement.appendChild(this.rootElement);
+
+        if (this.props.shouldOkRefEnabled && this.okRef?.current)
+            this.okRef.current.focus();
     }
     public componentWillUnmount() {
         this.appElement.setAttribute("aria-hidden", "false");
@@ -105,13 +112,14 @@ class Dialog extends React.Component<IProps, undefined> {
                                     >
                                         {__("dialog.cancel")}
                                     </button>
-                                    {<button
+                                    <button
                                         disabled={this.props.submitButtonDisabled}
                                         type="submit"
                                         className={stylesButtons.button_primary}
+                                        ref={this.okRef}
                                     >
                                         {this.props.submitButtonTitle}
-                                    </button>}
+                                    </button>
                                 </div>
                             </form>
                         </div>
