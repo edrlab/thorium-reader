@@ -157,6 +157,7 @@ class Dialog extends React.Component<IProps, undefined> {
         } else if (e.key === "Enter") {
             if (!this.props.noFooter)
                 this.submit();
+                // FIXME : when I hit enter on cancel 'button' the keypress event take priority on onClick event
         }
     };
 }
