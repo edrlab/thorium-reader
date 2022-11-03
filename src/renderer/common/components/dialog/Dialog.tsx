@@ -42,7 +42,7 @@ class Dialog extends React.Component<IProps, undefined> {
     private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
-    private okRef: React.RefObject<HTMLButtonElement>
+    private okRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
