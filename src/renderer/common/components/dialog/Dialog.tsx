@@ -25,10 +25,12 @@ interface IBaseProps extends TranslatorProps {
     id?: string;
     title: string;
     children: React.ReactNode;
-    onSubmitButton: () => void;
-    submitButtonTitle: string;
-    submitButtonDisabled: boolean;
+    onSubmitButton?: () => void;
+    submitButtonTitle?: string;
+    submitButtonDisabled?: boolean;
     shouldOkRefEnabled?: boolean;
+    noFooter?: boolean;
+    close?: () => void;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -103,25 +105,29 @@ class Dialog extends React.Component<IProps, undefined> {
                                     <SVG ariaHidden={true} svg={QuitIcon} />
                                 </button>
                             </div>
-                            <form className={stylesModals.modal_dialog_form_wrapper} onSubmit={this.submitForm}>
-                                {content}
-                                <div className={stylesModals.modal_dialog_footer}>
-                                    <button
-                                        onClick={this.props.closeDialog}
-                                        className={stylesButtons.button_secondary}
-                                    >
-                                        {__("dialog.cancel")}
-                                    </button>
-                                    <button
-                                        disabled={this.props.submitButtonDisabled}
-                                        type="submit"
-                                        className={stylesButtons.button_primary}
-                                        ref={this.okRef}
-                                    >
-                                        {this.props.submitButtonTitle}
-                                    </button>
-                                </div>
-                            </form>
+                            {
+                                this.props.noFooter
+                                    ? <>{content}</>
+                                    : <form className={stylesModals.modal_dialog_form_wrapper} onSubmit={this.submitForm}>
+                                        {content}
+                                        <div className={stylesModals.modal_dialog_footer}>
+                                            <button
+                                                onClick={this.props.closeDialog}
+                                                className={stylesButtons.button_secondary}
+                                            >
+                                                {__("dialog.cancel")}
+                                            </button>
+                                            <button
+                                                disabled={this.props.submitButtonDisabled || false}
+                                                type="submit"
+                                                className={stylesButtons.button_primary}
+                                                ref={this.okRef}
+                                            >
+                                                {this.props.submitButtonTitle}
+                                            </button>
+                                        </div>
+                                    </form>
+                            }
                         </div>
                     </div>
                 </FocusLock>
@@ -136,15 +142,21 @@ class Dialog extends React.Component<IProps, undefined> {
     };
 
     private submit = () => {
-        this.props.onSubmitButton();
+        if (this.props.onSubmitButton)
+            this.props.onSubmitButton();
         this.props.closeDialog();
     };
 
     private handleKeyPress: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
         if (e.key === "Escape") {
-            this.props.closeDialog();
+            if (this.props.close) {
+                this.props.close();
+            } else {
+                this.props.closeDialog();
+            }
         } else if (e.key === "Enter") {
-            this.submit();
+            if (!this.props.noFooter)
+                this.submit();
         }
     };
 }

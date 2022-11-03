@@ -30,7 +30,6 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
 
     return (
         <Dialog
-            open={true}
             close={
                 () =>
                     coverZoom
@@ -38,6 +37,7 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
                     : closeDialogCb()
             }
             title={props.__("catalog.bookInfo")}
+            noFooter={true}
         >
             <div className={stylesModals.modal_dialog_body}>
                 {
