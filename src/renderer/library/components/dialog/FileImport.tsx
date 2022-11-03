@@ -9,8 +9,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
@@ -18,7 +16,6 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { TDispatch } from "readium-desktop/typings/redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -28,7 +25,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class FileImport extends React.Component<IProps, undefined> {
@@ -44,13 +41,14 @@ class FileImport extends React.Component<IProps, undefined> {
             return (<></>);
         }
 
-        const { files, closeDialog } = this.props;
+        const { files } = this.props;
         return (
             <Dialog
-                open={true}
-                close={closeDialog}
                 id={stylesModals.add_dialog}
                 title={this.props.__("catalog.addBookToLib")}
+                submitButtonDisabled={false}
+                onSubmitButton={this.importFiles}
+                submitButtonTitle={this.props.__("dialog.yes")}
             >
                 {
                     (!files || files.length === 0) ?
@@ -63,7 +61,6 @@ class FileImport extends React.Component<IProps, undefined> {
                             }
                         </div>
                     ) : (
-                        <>
                         <div className={stylesModals.modal_dialog_body}>
                             <div>
                                 <p>{this.props.__("dialog.import")}</p>
@@ -74,22 +71,13 @@ class FileImport extends React.Component<IProps, undefined> {
                             <div>
                             </div>
                         </div>
-                        <div className={stylesModals.modal_dialog_footer}>
-                            <button className={stylesButtons.button_primary} onClick={closeDialog}>
-                                {this.props.__("dialog.no")}
-                            </button>
-                            <button className={stylesButtons.button_primary} onClick={this.importFiles}>
-                                {this.props.__("dialog.yes")}
-                            </button>
-                        </div>
-                        </>
                     )
                 }
             </Dialog>
         );
     }
 
-    private importFiles() {
+    private importFiles = () => {
         if (this.props.files) {
             const paths = this.props.files.map((file) => {
                 return file.path;
@@ -97,24 +85,13 @@ class FileImport extends React.Component<IProps, undefined> {
             apiAction("publication/importFromFs", paths).catch((error) => {
                 console.error("Error to fetch publication/importFromFs", error);
             });
-            this.props.closeDialog();
         }
-    }
-}
-
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
-    return {
-        closeDialog: () => {
-            dispatch(
-                dialogActions.closeRequest.build(),
-            );
-        },
     };
-};
+}
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     open: state.dialog.type === DialogTypeName.FileImport,
     files: (state.dialog.data as DialogType[DialogTypeName.FileImport]).files,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(FileImport));
+export default connect(mapStateToProps)(withTranslator(FileImport));
