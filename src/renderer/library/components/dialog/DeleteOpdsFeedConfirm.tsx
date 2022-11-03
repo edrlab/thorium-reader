@@ -35,8 +35,6 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
-
-        this.remove = this.remove.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
