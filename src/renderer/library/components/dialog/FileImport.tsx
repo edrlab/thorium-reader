@@ -32,8 +32,6 @@ class FileImport extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
-
-        this.importFiles = this.importFiles.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -49,6 +47,7 @@ class FileImport extends React.Component<IProps, undefined> {
                 submitButtonDisabled={false}
                 onSubmitButton={this.importFiles}
                 submitButtonTitle={this.props.__("dialog.yes")}
+                shouldOkRefEnabled={true}
             >
                 {
                     (!files || files.length === 0) ?

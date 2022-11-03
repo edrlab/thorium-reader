@@ -47,6 +47,7 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
                 onSubmitButton={this.remove}
                 submitButtonDisabled={false}
                 submitButtonTitle={this.props.__("dialog.yes")}
+                shouldOkRefEnabled={true}
             >
                 <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
                     <p>
