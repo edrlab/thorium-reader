@@ -11,7 +11,6 @@ import {
 
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 
 import Cover from "../../Cover";
 import Loader from "../../Loader";
@@ -39,7 +38,6 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
             title={props.__("catalog.bookInfo")}
             noFooter={true}
         >
-            <div className={stylesModals.modal_dialog_body}>
                 {
                     publication?.documentTitle
                         ? (
@@ -65,7 +63,6 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
                         )
                         : <Loader></Loader>
                 }
-            </div>
         </Dialog>
     );
 };

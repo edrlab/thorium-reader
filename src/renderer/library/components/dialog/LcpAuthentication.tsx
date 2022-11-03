@@ -5,13 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -68,39 +66,37 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                 submitButtonDisabled={!this.state.password}
                 shouldOkRefEnabled={false}
             >
-                    <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
-                        <div className={stylesGlobal.w_50}>
-                            <p><strong>{__("library.lcp.sentence")}</strong></p>
-                            {
-                                typeof this.props.message === "string" ?
-                                    <p>
-                                        <span>{this.props.message}</span>
-                                    </p>
-                                    : <></>
-                            }
+                <div className={stylesGlobal.w_50}>
+                    <p><strong>{__("library.lcp.sentence")}</strong></p>
+                    {
+                        typeof this.props.message === "string" ?
                             <p>
-                                <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
+                                <span>{this.props.message}</span>
                             </p>
-                            <div className={stylesInputs.form_group}>
-                                <label>{__("library.lcp.password")}</label>
-                                <input
-                                    aria-label={__("library.lcp.password")}
-                                    type="password"
-                                    onChange={this.onPasswordChange}
-                                    placeholder={__("library.lcp.password")}
-                                    ref={this.focusRef}
-                                />
-                            </div>
-                            {
-                                this.props.urlHint?.href
-                                    ?
-                                    <a href={this.props.urlHint.href}>
-                                        {this.props.urlHint.title || __("library.lcp.urlHint")}
-                                    </a>
-                                    : <></>
-                            }
-                        </div>
+                            : <></>
+                    }
+                    <p>
+                        <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
+                    </p>
+                    <div className={stylesInputs.form_group}>
+                        <label>{__("library.lcp.password")}</label>
+                        <input
+                            aria-label={__("library.lcp.password")}
+                            type="password"
+                            onChange={this.onPasswordChange}
+                            placeholder={__("library.lcp.password")}
+                            ref={this.focusRef}
+                        />
                     </div>
+                    {
+                        this.props.urlHint?.href
+                            ?
+                            <a href={this.props.urlHint.href}>
+                                {this.props.urlHint.title || __("library.lcp.urlHint")}
+                            </a>
+                            : <></>
+                    }
+                </div>
             </Dialog>
         );
     }

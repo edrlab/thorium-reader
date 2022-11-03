@@ -106,10 +106,21 @@ class Dialog extends React.Component<IProps, undefined> {
                                 </button>
                             </div>
                             {
-                                this.props.noFooter
-                                    ? <>{content}</>
-                                    : <form className={stylesModals.modal_dialog_form_wrapper} onSubmit={this.submitForm}>
-                                        {content}
+                                this.props.noFooter // cf PublicationInfoManager
+                                    ? <div
+                                            className={classNames(stylesModals.modal_dialog_body)}
+                                        >
+                                            {content}
+                                        </div>
+                                    : <form className={stylesModals.modal_dialog_form_wrapper}
+                                        onSubmit={this.submitForm}
+                                    >
+                                        <div
+                                            className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}
+                                            onKeyDown={(e) => e.key === "Enter" ? this.submitForm(e) : undefined}
+                                        >
+                                            {content}
+                                        </div>
                                         <div className={stylesModals.modal_dialog_footer}>
                                             <button
                                                 onClick={this.props.closeDialog}
@@ -136,7 +147,7 @@ class Dialog extends React.Component<IProps, undefined> {
         );
     }
 
-    private submitForm: React.FormEventHandler<HTMLFormElement> = (e) => {
+    private submitForm = (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLDivElement>) => {
         e.preventDefault();
         this.submit();
     };
@@ -154,10 +165,6 @@ class Dialog extends React.Component<IProps, undefined> {
             } else {
                 this.props.closeDialog();
             }
-        } else if (e.key === "Enter") {
-            if (!this.props.noFooter)
-                this.submit();
-                // FIXME : when I hit enter on cancel 'button' the keypress event take priority on onClick event
         }
     };
 }

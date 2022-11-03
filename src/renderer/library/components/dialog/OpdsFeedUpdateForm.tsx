@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -71,37 +70,33 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                 submitButtonTitle={__("opds.updateForm.updateButton")}
                 shouldOkRefEnabled={false}
             >
-                <form className={stylesModals.modal_dialog_form_wrapper}>
-                    <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
-                        <div className={stylesGlobal.w_50}>
-                            <div className={stylesInputs.form_group}>
-                                <label>{__("opds.updateForm.name")}</label>
-                                <input
-                                    onChange={(e) => this.setState({
-                                        name: e.target.value,
-                                        url: this.state.url || this.props.feed.url,
-                                    })}
-                                    type="text"
-                                    aria-label={__("opds.updateForm.name")}
-                                    defaultValue={this.props.feed.title}
-                                    ref={this.focusRef}
-                                />
-                            </div>
-                            <div className={stylesInputs.form_group}>
-                                <label>{__("opds.updateForm.url")}</label>
-                                <input
-                                    onChange={(e) => this.setState({
-                                        name: this.state.name || this.props.feed.title,
-                                        url: e.target.value,
-                                    })}
-                                    type="text"
-                                    aria-label={__("opds.updateForm.url")}
-                                    defaultValue={this.props.feed.url}
-                                />
-                            </div>
-                        </div>
+                <div className={stylesGlobal.w_50}>
+                    <div className={stylesInputs.form_group}>
+                        <label>{__("opds.updateForm.name")}</label>
+                        <input
+                            onChange={(e) => this.setState({
+                                name: e.target.value,
+                                url: this.state.url || this.props.feed.url,
+                            })}
+                            type="text"
+                            aria-label={__("opds.updateForm.name")}
+                            defaultValue={this.props.feed.title}
+                            ref={this.focusRef}
+                        />
                     </div>
-                </form>
+                    <div className={stylesInputs.form_group}>
+                        <label>{__("opds.updateForm.url")}</label>
+                        <input
+                            onChange={(e) => this.setState({
+                                name: this.state.name || this.props.feed.title,
+                                url: e.target.value,
+                            })}
+                            type="text"
+                            aria-label={__("opds.updateForm.url")}
+                            defaultValue={this.props.feed.url}
+                        />
+                    </div>
+                </div>
             </Dialog>
         );
     }

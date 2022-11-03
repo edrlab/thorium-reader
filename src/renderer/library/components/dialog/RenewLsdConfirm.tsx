@@ -5,12 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
@@ -49,11 +47,9 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
                 shouldOkRefEnabled={true}
                 submitButtonTitle={this.props.__("dialog.yes")}
             >
-                <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
-                    <div className={stylesGlobal.w_50}>
-                        <p><strong>{__("dialog.renew")}</strong></p>
-                        <p>{this.props.publicationView.documentTitle}</p>
-                    </div>
+                <div className={stylesGlobal.w_50}>
+                    <p><strong>{__("dialog.renew")}</strong></p>
+                    <p>{this.props.publicationView.documentTitle}</p>
                 </div>
             </Dialog>
         );

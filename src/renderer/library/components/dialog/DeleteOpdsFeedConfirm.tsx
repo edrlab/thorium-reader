@@ -5,20 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-
-// FIXME : Error :
-// translator_1.withTranslator is not a function when ordered
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -51,11 +46,9 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
                 submitButtonTitle={this.props.__("dialog.yes")}
                 shouldOkRefEnabled={true}
             >
-                <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
-                    <p>
-                        <span>{this.props.feed.title}</span>
-                    </p>
-                </div>
+                <p>
+                    <span>{this.props.feed.title}</span>
+                </p>
             </Dialog>
         );
     }

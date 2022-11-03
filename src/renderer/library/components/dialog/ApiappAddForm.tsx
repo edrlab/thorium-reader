@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -115,7 +114,7 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                 submitButtonDisabled={false}
                 submitButtonTitle={__("opds.addForm.addButton")}
             >
-                <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)} style={{display:"flex", flexDirection: "column"}}>
+                <div style={{display:"flex", flexDirection: "column", width: "100%"}}>
                     <div
                         style={{ marginBottom: "0" }}
                         className={stylesInputs.form_group}>
