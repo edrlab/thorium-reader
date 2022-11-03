@@ -65,7 +65,6 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
         const { name, url } = this.state;
         return (
             <Dialog
-                // close={closeDialog}
                 id={stylesModals.opds_form_dialog}
                 title={__("opds.addMenu")}
                 onSubmitButton={this.add}
@@ -74,36 +73,35 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                 }
                 submitButtonDisabled={!(this.state.name && this.state.url)}
             >
-                    <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
-                        <div className={stylesGlobal.w_50}>
-                            <div className={stylesInputs.form_group}>
-                                <label>{__("opds.addForm.name")}</label>
-                                <input
-                                    onChange={(e) => this.setState({
-                                        name: e.target.value,
-                                    })}
-                                    type="text"
-                                    aria-label={__("opds.addForm.name")}
-                                    placeholder={__("opds.addForm.namePlaceholder")}
-                                    defaultValue={name}
-                                    ref={this.focusRef}
-                                />
-                            </div>
-                            <div className={stylesInputs.form_group}>
-                                <label>{__("opds.addForm.url")}</label>
-                                <input
-                                    onChange={(e) => this.setState({
-                                        url: e.target.value,
-                                    })}
-                                    type="text"
-                                    aria-label={__("opds.addForm.url")}
-                                    placeholder={__("opds.addForm.urlPlaceholder")}
-                                    defaultValue={url}
-                                />
-                            </div>
+                <div className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}>
+                    <div className={stylesGlobal.w_50}>
+                        <div className={stylesInputs.form_group}>
+                            <label>{__("opds.addForm.name")}</label>
+                            <input
+                                onChange={(e) => this.setState({
+                                    name: e.target.value,
+                                })}
+                                type="text"
+                                aria-label={__("opds.addForm.name")}
+                                placeholder={__("opds.addForm.namePlaceholder")}
+                                defaultValue={name}
+                                ref={this.focusRef}
+                            />
+                        </div>
+                        <div className={stylesInputs.form_group}>
+                            <label>{__("opds.addForm.url")}</label>
+                            <input
+                                onChange={(e) => this.setState({
+                                    url: e.target.value,
+                                })}
+                                type="text"
+                                aria-label={__("opds.addForm.url")}
+                                placeholder={__("opds.addForm.urlPlaceholder")}
+                                defaultValue={url}
+                            />
                         </div>
                     </div>
-
+                </div>
             </Dialog>
         );
     }
