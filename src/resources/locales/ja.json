@@ -11,7 +11,7 @@
         "toolbar": "ツールバー"
     },
     "apiapp": {
-        "noLibraryFound": ""
+        "noLibraryFound": "蔵書は見つかりませんでした（{{- name}}）"
     },
     "app": {
         "edit": {
@@ -52,9 +52,9 @@
         "allBooks": "すべての本",
         "bookInfo": "この本の情報",
         "column": {
-            "ascending": "昇順",
-            "descending": "降順",
-            "unsorted": "並べ替えない"
+            "ascending": "昇順（A-Z）",
+            "descending": "降順（Z-A）",
+            "unsorted": "並べ替えていない"
         },
         "delete": "削除",
         "deleteBook": "削除",
@@ -68,16 +68,16 @@
             "continueReadingPdf": "PDFを再開",
             "lastAdditions": "最近追加したもの"
         },
-        "export": "書き出し",
-        "format": "",
+        "export": "別の場所に保存",
+        "format": "形式",
         "lang": "言語",
-        "lastRead": "",
-        "moreInfo": "他の情報",
+        "lastRead": "最後に読んだ箇所",
+        "moreInfo": "本の詳細",
         "myBooks": "わたしの本",
         "noPublicationHelpL1": "この画面に書籍ファイルをドロップしてください。",
         "noPublicationHelpL2": "または、画面上部にある［+］ボタンを押して登録してください。",
         "noPublicationHelpL3": "LCPで保護されたファイルにも対応します。",
-        "noPublicationHelpL4": "サポートされている拡張子：",
+        "noPublicationHelpL4": "対応している拡張子：",
         "numberOfPages": "ページ数",
         "opds": {
             "auth": {
@@ -87,10 +87,10 @@
             "info": {
                 "availableSince": "始まり",
                 "availableState": {
-                    "available": "販売中",
-                    "ready": "販売準備状態",
+                    "available": "取得できる",
+                    "ready": "準備中",
                     "reserved": "予約済み",
-                    "unavailable": "販売終了",
+                    "unavailable": "取得できない",
                     "unknown": "不明"
                 },
                 "availableUntil": "終わり",
@@ -109,7 +109,7 @@
         "sort": "並び替え",
         "tagCount": "タグの数",
         "tags": "タグ",
-        "update": ""
+        "update": "編集"
     },
     "dialog": {
         "closeModalWindow": "このモーダル画面を閉じる",
@@ -140,7 +140,7 @@
         "importTitle": "本を追加",
         "listTitle": "一覧表で本を表示",
         "refreshTitle": "再読み込み",
-        "searchPlaceholder": "検索する語句",
+        "searchPlaceholder": "検索",
         "searchTitle": "検索を開始",
         "settings": "設定"
     },
@@ -159,7 +159,7 @@
             "error": "{{- title}}のダウンロードに失敗しました：［{{- err}}］"
         },
         "import": {
-            "alreadyImport": "{{- title}}はすでに追加されていました。",
+            "alreadyImport": "{{- title}}はすでに追加されています。",
             "fail": "{{- path}}の追加に失敗しました。",
             "success": "{{- title}}の追加が完了しました。"
         },
@@ -197,51 +197,52 @@
             "error": "OPDSフィードにアクセスできません",
             "noInternet": "インターネットにつながりません",
             "noInternetMessage": "確認してください：ネットワークケーブル、モデム、ルーター、Wi-Fi",
-            "reject": "残念ながら、OPDSフィードを処理しようとしたときに、予期しないエラーが発生しました",
+            "reject": "OPDSフィードを処理しようとしたときに予期しないエラーが発生しました",
             "timeout": "ネットワーク接続がタイムアウトしました。後で再度試してください"
         },
         "next": "次へ",
         "previous": "前へ",
         "shelf": "本棚",
         "updateForm": {
-            "name": "",
-            "namePlaceholder": "",
-            "title": "",
-            "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "name": "名前：",
+            "namePlaceholder": "名前",
+            "title": "OPDSフィードの編集",
+            "updateButton": "編集",
+            "url": "URL：",
+            "urlPlaceholder": "URL"
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "「音声合成による読み上げ」「スクリーンリーダー」が使いやすい"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "代替テキストが組み込まれている",
+                "displayTransformability": "テキストやレイアウトを変更できる",
+                "longDescription": "画像に関して正確に説明している",
+                "printPageNumbers": "紙の書籍のページ番号を参照できる",
+                "readingOrder": "読み上げ順序が組み込まれている",
+                "synchronizedAudioText": "テキストと音声が同期する",
+                "tableOfContents": "目次が含まれてる"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
+              "flashing": "閃光を放つ（点滅する）",
+              "motionSimulation": "運動シミュレーションがある",
+              "name": "危険要素:",
+              "noFlashing": "閃光を放たない（点滅しない）",
+              "noMotionSimulation": "運動シミュレーションはない",
+              "noSound": "音が出ない",
+              "none": "ない",
+              "simulation": "シミュレーションがある",
+              "sound": "音が出る",
+              "unknown": "不明"
             },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "conformsTo": "準拠：",
+            "certifierReport": "認証報告書",
+            "moreInformation": "より詳しい情報",
+            "name": "アクセシビリティ",
+            "noA11y": "アクセシビリティ情報はありません"
         },
         "audio": {
             "tracks": "トラック"
@@ -317,12 +318,12 @@
             "goToError": "そのページは存在しません",
             "goToPlaceHolder": "移動先のページ番号",
             "goToTitle": "ページを移動",
-            "historyNext": "",
-            "historyPrevious": "",
+            "historyNext": "先に飛ぶ",
+            "historyPrevious": "前まで戻る",
             "infoTitle": "本の情報",
             "magnifyingGlassButton": "この本の中で検索",
             "openTableOfContentsTitle": "ナビゲーション",
-            "pdfscalemode": "ページに収める/ページ幅に合わせる",
+            "pdfscalemode": "画面にページを収める/画面横幅にページを合わせる",
             "quitFullscreenTitle": "全画面表示の終了",
             "readBookTitle": "本を読み始める",
             "settingsTitle": "設定"
@@ -358,7 +359,7 @@
             "justify": "両端揃え",
             "letterSpacing": "文字の間隔",
             "lineSpacing": "行の間隔",
-            "margin": "縦列の余白",
+            "margin": "ページの余白",
             "noFootnotes": "脚注を表示しない",
             "paginated": "ページ型",
             "paraSpacing": "段落の間隔",
@@ -370,8 +371,8 @@
                     "300pct": "300 %",
                     "500pct": "500 %",
                     "50pct": "50 %",
-                    "fit": "ページに収める",
-                    "width": "ページ幅に合わせる"
+                    "fit": "画面にページを収める",
+                    "width": "画面横幅にページを合わせる"
                 },
                 "title": "拡大"
             },
