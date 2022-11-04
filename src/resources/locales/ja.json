@@ -229,11 +229,11 @@
             "accessibilityHazard": {
               "flashing": "閃光を放つ（点滅する）",
               "motionSimulation": "運動シミュレーションがある",
-              "name": "危険要素:",
+              "name": "危険要因:",
               "noFlashing": "閃光を放たない（点滅しない）",
-              "noMotionSimulation": "運動シミュレーションはない",
+              "noMotionSimulation": "運動シミュレーションがない",
               "noSound": "音が出ない",
-              "none": "ない",
+              "none": "ありません",
               "simulation": "シミュレーションがある",
               "sound": "音が出る",
               "unknown": "不明"
