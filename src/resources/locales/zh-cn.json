@@ -205,9 +205,11 @@
         "shelf": "书架",
         "updateForm": {
             "name": "名称：",
+            "namePlaceholder": "名称",
             "title": "编辑 OPDS 订阅源",
             "updateButton": "编辑",
-            "url": "链接："
+            "url": "链接：",
+            "urlPlaceholder": "链接"
         }
     },
     "publication": {
@@ -226,17 +228,18 @@
             },
             "accessibilityHazard": {
                 "flashing": "闪烁",
-                "motionSimulation": "",
+                "motion": "动作模拟",
                 "name": "危险：",
                 "noFlashing": "无闪烁",
                 "noMotionSimulation": "无动作模拟",
                 "noSound": "无声音",
                 "none": "全部没有",
+                "simulation": "模拟",
                 "sound": "声音",
                 "unknown": "未知"
             },
-            "certifierReport": "认证报告",
             "conformsTo": "符合：",
+            "certifierReport": "认证报告",
             "moreInformation": "更多信息",
             "name": "无障碍",
             "noA11y": "没有可用的无障碍信息"
