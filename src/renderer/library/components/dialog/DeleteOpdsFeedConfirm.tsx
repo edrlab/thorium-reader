@@ -45,6 +45,7 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
                 submitButtonDisabled={false}
                 submitButtonTitle={this.props.__("dialog.yes")}
                 shouldOkRefEnabled={true}
+                size={"small"}
             >
                 <p>
                     <span>{this.props.feed.title}</span>

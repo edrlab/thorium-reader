@@ -31,6 +31,7 @@ interface IBaseProps extends TranslatorProps {
     shouldOkRefEnabled?: boolean;
     noFooter?: boolean;
     close?: () => void;
+    size?: "small" | "full";
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -90,7 +91,7 @@ class Dialog extends React.Component<IProps, undefined> {
                         <div
                             role="document"
                             id={this.props.id}
-                            className={classNames(className, stylesModals.modal_dialog)}
+                            className={classNames(className, stylesModals.modal_dialog, this.props.size === "small" ? undefined : stylesModals.modal_dialog_full )}
                         >
                             <div className={stylesModals.modal_dialog_header}>
                                 <h2>{this.props.title}</h2>

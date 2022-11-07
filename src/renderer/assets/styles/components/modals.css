@@ -39,10 +39,8 @@
 
 .modal_dialog {
   margin: 30px;
-  min-height: 512px;
-  min-width: 739px;
-  width: calc(100vw - 60px);
-  height: calc(100vh - 60px);
+  min-height: 400px;
+  min-width: 700px;
   max-width: calc(100vw - 60px);
   max-height: calc(100vh - 60px);
   border-radius: 10px;
@@ -56,6 +54,11 @@
   color: #3b3b3b;
   position: relative;
   box-sizing: border-box;
+
+  &.modal_dialog_full {
+    width: calc(100vw - 60px);
+    height: calc(100vh - 60px);
+  }
 }
 
 .modal_dialog_form_wrapper {

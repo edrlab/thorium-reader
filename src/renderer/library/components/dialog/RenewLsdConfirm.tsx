@@ -46,6 +46,7 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
                 submitButtonDisabled={false}
                 shouldOkRefEnabled={true}
                 submitButtonTitle={this.props.__("dialog.yes")}
+                size={"small"}
             >
                 <div className={stylesGlobal.w_50}>
                     <p><strong>{__("dialog.renew")}</strong></p>

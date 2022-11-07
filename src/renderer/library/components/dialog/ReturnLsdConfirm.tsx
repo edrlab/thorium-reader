@@ -46,6 +46,7 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
                 submitButtonDisabled={false}
                 submitButtonTitle={this.props.__("dialog.yes")}
                 shouldOkRefEnabled={true}
+                size={"small"}
             >
                 <div className={stylesGlobal.w_50}>
                     <p><strong>{__("dialog.return")}</strong></p>

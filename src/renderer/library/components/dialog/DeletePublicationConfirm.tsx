@@ -46,6 +46,7 @@ class DeletePublicationConfirm extends React.Component<IProps, undefined> {
                 submitButtonDisabled={false}
                 submitButtonTitle={this.props.__("dialog.yes")}
                 shouldOkRefEnabled={true}
+                size={"small"}
             >
                 <p>
                     <span>{this.props.publicationView.documentTitle}</span>
