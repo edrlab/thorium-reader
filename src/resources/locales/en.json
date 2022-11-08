@@ -220,7 +220,7 @@
             "accessibilityFeature": {
                 "alternativeText": "Contains alternative text",
                 "displayTransformability": "Adaptable text and layout",
-                "longDescription": "Fully described graphical ressources",
+                "longDescription": "Fully described graphical resources",
                 "printPageNumbers": "Printed book pagination reference",
                 "readingOrder": "Contains a reading order",
                 "synchronizedAudioText": "Text & audio synchronised",
