@@ -11,7 +11,7 @@
         "toolbar": "工具栏"
     },
     "apiapp": {
-        "noLibraryFound": ""
+        "noLibraryFound": "未发现图书馆 ({{- name}})"
     },
     "app": {
         "edit": {
@@ -69,9 +69,9 @@
             "lastAdditions": "最近添加"
         },
         "export": "导出",
-        "format": "",
+        "format": "格式",
         "lang": "语言",
-        "lastRead": "",
+        "lastRead": "上次阅读",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "拖放EPUB至此处。",
@@ -109,7 +109,7 @@
         "sort": "排序方式",
         "tagCount": "标签数",
         "tags": "标签",
-        "update": ""
+        "update": "编辑"
     },
     "dialog": {
         "closeModalWindow": "关闭此模式窗口",
@@ -177,7 +177,7 @@
             "urlPlaceholder": "链接"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "添加图书馆账户"
         },
         "addMenu": "添加OPDS订阅源",
         "back": "返回",
@@ -204,44 +204,44 @@
         "previous": "上一个",
         "shelf": "书架",
         "updateForm": {
-            "name": "",
-            "namePlaceholder": "",
-            "title": "",
-            "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "name": "名称",
+            "namePlaceholder": "名称",
+            "title": "编辑 OPDS 订阅源",
+            "updateButton": "编辑",
+            "url": "链接",
+            "urlPlaceholder": "链接"
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "兼容 TTS 和屏幕阅读器"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "包含替代文本",
+                "displayTransformability": "文本和布局可调",
+                "longDescription": "完整描述的图形资源",
+                "printPageNumbers": "印刷书籍页码参考",
+                "readingOrder": "包含阅读顺序",
+                "synchronizedAudioText": "文本与音频同步",
+                "tableOfContents": "包含目录"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "闪烁",
+                "motion": "运动模拟",
+                "name": "危险：",
+                "noFlashing": "无闪烁",
+                "noMotion": "无运动",
+                "noSimulation": "无运动模拟",
+                "noSound": "无声音",
+                "none": "无",
+                "simulation": "模拟",
+                "sound": "声音",
+                "unknown": "未知"
             },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "moreInformation": "更多信息",
+            "name": "可访问性",
+            "noA11y": "无可用的可访问性信息"
         },
         "audio": {
             "tracks": "音轨"
@@ -317,8 +317,8 @@
             "goToError": "此页不存在",
             "goToPlaceHolder": "输入页码",
             "goToTitle": "转到页",
-            "historyNext": "",
-            "historyPrevious": "",
+            "historyNext": "前进",
+            "historyPrevious": "后退",
             "infoTitle": "信息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "导航",
