@@ -134,8 +134,18 @@ export class OpdsFeedViewConverter {
                 undefined;
 
             return {
-                indirectAcquisitionType: indirectAcquisitions?.reduce<string>((pv, cv) => {
-                    return typeof cv?.TypeAcquisition === "string" ? cv.TypeAcquisition : pv;
+                indirectAcquisitionTypes: indirectAcquisitions?.reduce<{ top: string, child: string | undefined} | undefined>((pv, cv) => {
+                    if (typeof cv?.TypeAcquisition === "string") {
+                        const child = cv.Children?.reduce<string | undefined>((pv_, cv_) => {
+                            return typeof cv_?.TypeAcquisition === "string" ? cv_.TypeAcquisition : pv_;
+                        }, undefined);
+                        return {
+                            top: cv.TypeAcquisition,
+                            child,
+                        };
+                    } else {
+                        return pv;
+                    }
                 }, undefined),
                 lcpHashedPassphrase,
                 numberOfItems: properties.NumberOfItems || undefined,

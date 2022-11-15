@@ -62,20 +62,28 @@ export class OpdsControls extends React.Component<IProps, undefined> {
         const m = findMimeTypeWithExtension(ADOBE_ADEPT_XML);
         const orderLinks = (links: IOpdsLinkView[]) => {
             return Array.from(links).sort((a, b) => {
-                if (a.properties?.indirectAcquisitionType === m
-                    && b.properties?.indirectAcquisitionType === m) {
+                if (a.properties?.indirectAcquisitionTypes?.top === m
+                    && b.properties?.indirectAcquisitionTypes?.top === m) {
                         return 0;
                 }
-                if (a.properties?.indirectAcquisitionType === m
-                    && b.properties?.indirectAcquisitionType !== m) {
+                if (a.properties?.indirectAcquisitionTypes?.top === m
+                    && b.properties?.indirectAcquisitionTypes?.top !== m) {
                         return 1;
                 }
-                if (a.properties?.indirectAcquisitionType !== m
-                    && b.properties?.indirectAcquisitionType === m) {
+                if (a.properties?.indirectAcquisitionTypes?.top !== m
+                    && b.properties?.indirectAcquisitionTypes?.top === m) {
                         return -1;
                 }
                 return 0;
             });
+        };
+
+        const adjustDisplayType = (str: string | undefined) => str?.replace("lcpl", "LCP").replace("lcpdf", "PDF").replace("pdf", "PDF").replace("epub", "EPUB");
+        const typeStr = (ln: IOpdsLinkView) => {
+            return ln.properties?.indirectAcquisitionTypes?.top ?
+                                ` (${adjustDisplayType(findExtWithMimeType(ln.properties.indirectAcquisitionTypes.top)) || ln.properties.indirectAcquisitionTypes.top}${
+                                    ln.properties?.indirectAcquisitionTypes?.child ? ` ${adjustDisplayType(findExtWithMimeType(ln.properties.indirectAcquisitionTypes.child)) || ln.properties.indirectAcquisitionTypes.child}` : ""})` :
+                                (ln.type ? ` (${adjustDisplayType(findExtWithMimeType(ln.type)) || adjustDisplayType(findExtWithMimeType(ln.type.replace("+json", "+zip")))})` : "");
         };
 
         const openAccessLinksButton = () =>
@@ -91,9 +99,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 className={stylesButtons.button_primary}
                                 disabled={openAccessButtonIsDisabled()}
                             >
-                                {`${__("catalog.addBookToLib")}${ln.properties?.indirectAcquisitionType ?
-                                ` (${findExtWithMimeType(ln.properties.indirectAcquisitionType)})` :
-                                (ln.type ? ` (${findExtWithMimeType(ln.type) || findExtWithMimeType(ln.type.replace("+json", "+zip"))})` : "")}`}
+                                {`${__("catalog.addBookToLib")}${typeStr(ln)}`}
                             </button>
                             <OpdsLinkProperties
                                 properties={ln.properties}
@@ -116,7 +122,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 disabled={sampleButtonIsDisabled()}
                             >
                                 <SVG ariaHidden={true} svg={ImportIcon}/>
-                                {__("opds.menu.addExtract")}
+                                {`${__("opds.menu.addExtract")}${typeStr(ln)}`}
                             </button>
                             <OpdsLinkProperties
                                 properties={ln.properties}
@@ -163,7 +169,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         ln,
                                         this.props.location,
                                         `${__("opds.menu.goLoanBook")} (${opdsPublicationView.documentTitle})`)}
-                                    disabled={ln.properties.indirectAcquisitionType === findMimeTypeWithExtension(ADOBE_ADEPT_XML)}
+                                    disabled={ln.properties.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML)}
                                 >
                                     {__("opds.menu.goLoanBook")}
                                 </button>
