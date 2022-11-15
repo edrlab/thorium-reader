@@ -47,10 +47,6 @@ import { lcpActions } from "../redux/actions";
 import { extractCrc32OnZip } from "../tools/crc";
 import { DeviceIdManager } from "./device";
 
-// import { Server } from "@r2-streamer-js/http/server";
-
-// import { JsonMap } from "readium-desktop/typings/json";
-
 // Logger
 const debug = debug_("readium-desktop:main#services/lcp");
 
@@ -1154,3 +1150,4 @@ export class LcpManager {
         return err;
     }
 }
+
