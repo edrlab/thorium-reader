@@ -253,7 +253,8 @@ export class OpdsService {
                 jsonObj.catalogs);
 
         debug("isAuth, isOpdsPub, isR2Pub, isFeed", isAuth, isOpdsPub, isR2Pub, isFeed);
-
+        // debug(jsonObj);
+        // console.log(JSON.stringify(jsonObj, null, 4));
         if (isAuth) {
             const r2OpdsAuth = TaJsonDeserialize(
                 jsonObj,

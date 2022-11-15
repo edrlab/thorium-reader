@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { AbortSignal } from "abort-controller";
 import timeoutSignal from "timeout-signal";
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
@@ -277,13 +276,15 @@ export async function httpFetchRawResponse(
     try {
         response = await fetchWithCookie(url.toString(), options);
     } finally {
-        // module-level weakmap of timeouts,
-        // see https://github.com/node-fetch/timeout-signal/blob/main/index.js
-        if (timeSignal) {
-            try {
-                timeoutSignal.clear(timeSignal);
-            } catch {}
-        }
+        // FIXED in https://github.com/node-fetch/timeout-signal/releases/tag/v2.0.0
+        // // module-level weakmap of timeouts,
+        // // see https://github.com/node-fetch/timeout-signal/blob/main/index.js
+        // if (timeSignal) {
+        //     try {
+        //         timeoutSignal.clear(timeSignal);
+        //     } catch {}
+        // }
+
         // our local, closure-level timeout
         if (timeout) {
             clearTimeout(timeout);
