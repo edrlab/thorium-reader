@@ -111,8 +111,8 @@ let config = Object.assign(
         mode: "production", // nodeEnv,
 
         externalsPresets: { node: true },
-        externals: externals,
-        externalsType: "commonjs", // module, node-commonjs
+        // externals: externals,
+        // externalsType: "commonjs", // module, node-commonjs
         experiments: {
             outputModule: false, // module, node-commonjs
         },
