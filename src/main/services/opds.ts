@@ -215,7 +215,7 @@ export class OpdsService {
 
         const opdsAuthChannel = getOpdsAuthenticationChannel();
 
-        debug("put the authentication model in the saga authChannel", r2OpdsAuth);
+        debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
         opdsAuthChannel.put([r2OpdsAuth, responseUrl]);
 
     }
