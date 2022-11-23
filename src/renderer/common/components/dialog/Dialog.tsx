@@ -118,21 +118,21 @@ class Dialog extends React.Component<IProps, undefined> {
                                     >
                                         <div
                                             className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}
-                                            onKeyDown={(e) => e.key === "Enter" ? this.submitForm(e) : undefined}
+                                            onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT" ? this.submitForm(e) : undefined}
                                         >
                                             {content}
                                         </div>
                                         <div className={stylesModals.modal_dialog_footer}>
                                             <button
                                                 onClick={this.props.closeDialog}
-                                                className={stylesButtons.button_secondary}
+                                                className={stylesButtons.button_primary}
                                             >
                                                 {__("dialog.cancel")}
                                             </button>
                                             <button
                                                 disabled={this.props.submitButtonDisabled || false}
                                                 type="submit"
-                                                className={stylesButtons.button_primary}
+                                                className={classNames(stylesButtons.button_primary, stylesButtons.button_primary_form_default)}
                                                 ref={this.okRef}
                                             >
                                                 {this.props.submitButtonTitle}

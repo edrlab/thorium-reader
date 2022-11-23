@@ -2,6 +2,7 @@ declare const styles: {
   readonly "button_primary": string;
   readonly "button_primary_small": string;
   readonly "button_outline_accessibility": string;
+  readonly "button_primary_form_default": string;
   readonly "icon_end": string;
   readonly "disabled": string;
   readonly "heading": string;
