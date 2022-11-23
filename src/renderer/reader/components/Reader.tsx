@@ -91,6 +91,10 @@ import optionsValues, {
 import PickerManager from "./picker/PickerManager";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
+// main process code!
+// thoriumhttps
+// import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/main/streamer/streamerNoHttp";
+
 interface IWindowHistory extends History {
     _readerInstance: Reader | undefined;
     _length: number | undefined;
@@ -132,6 +136,14 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
             console.log(ex);
         }
         // console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(url_), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, windowHistory._length);
+
+        // if (/https?:\/\//.test(url_)) {
+        if (!url_.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") &&
+            !url_.startsWith("thoriumhttps://")) {
+            console.log(">> HISTORY POP STATE SKIP URL (1)", url_);
+            return;
+        }
+        // console.log(">> HISTORY POP STATE DO URL (1)", url_);
 
         if (window.history.state?.data === url_) {
             window.history.replaceState({data: url_, index: windowHistory._length - 1}, "");
@@ -1444,7 +1456,13 @@ class Reader extends React.Component<IProps, IState> {
             if (typeof popState.state.data === "object") {
                 this.goToLocator(popState.state.data, true, true);
             } else if (typeof popState.state.data === "string") {
-                this.handleLinkClick(undefined, popState.state.data, true, true);
+                // if (!/https?:\/\//.test(popState.state.data)) {
+                if (popState.state.data.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ||
+                    popState.state.data.startsWith("thoriumhttps://")) {
+                    this.handleLinkClick(undefined, popState.state.data, true, true);
+                } else {
+                    console.log(">> HISTORY POP STATE SKIP URL (2)", popState.state.data);
+                }
             }
             this.setState({historyCanGoForward: windowHistory._length > 1 && popState.state.index < windowHistory._length - 1, historyCanGoBack: windowHistory._length > 1 && popState.state.index > 0});
         } else {
