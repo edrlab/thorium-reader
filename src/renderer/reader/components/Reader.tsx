@@ -1933,7 +1933,9 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.handleMenuButtonClick(5); // "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
+
+        // WARNING: "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
+        this.handleMenuButtonClick(4);
     }
 
     private onKeyboardShowTOC() {
@@ -1943,11 +1945,14 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.handleMenuButtonClick(0); // "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
+
+        // WARNING: "table of contents" zero-based index in SectionData[] of ReaderMenu.tsx
+        this.handleMenuButtonClick(0);
     }
 
     private showSearchResults() {
-        this.handleMenuButtonClick(4); // "search" zero-based index in SectionData[] of ReaderMenu.tsx
+        // WARNING: "search" zero-based index in SectionData[] of ReaderMenu.tsx
+        this.handleMenuButtonClick(3);
     }
 
     private handleMenuButtonClick(openedSectionMenu?: number | undefined) {
