@@ -215,7 +215,7 @@ export class OpdsService {
 
         const opdsAuthChannel = getOpdsAuthenticationChannel();
 
-        debug("put the authentication model in the saga authChannel", r2OpdsAuth);
+        debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
         opdsAuthChannel.put([r2OpdsAuth, responseUrl]);
 
     }
@@ -253,7 +253,8 @@ export class OpdsService {
                 jsonObj.catalogs);
 
         debug("isAuth, isOpdsPub, isR2Pub, isFeed", isAuth, isOpdsPub, isR2Pub, isFeed);
-
+        // debug(jsonObj);
+        // console.log(JSON.stringify(jsonObj, null, 4));
         if (isAuth) {
             const r2OpdsAuth = TaJsonDeserialize(
                 jsonObj,

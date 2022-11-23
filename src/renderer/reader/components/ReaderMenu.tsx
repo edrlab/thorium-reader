@@ -122,8 +122,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
 
         // WARNING: do not modify zero-based index without adjusting Reader.tsx
-        // showSearchResults (4)
-        // showGotoPage (5)
+        // handleMenuButtonClick(0); // "table of contents"
+        // handleMenuButtonClick(3); // "search"
+        // handleMenuButtonClick(4); // "goto page"
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
@@ -148,11 +149,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 content: this.createBookmarkList(),
                 disabled: !bookmarks || bookmarks.length === 0,
             },
-            {
+            /*{
                 title: __("reader.marks.annotations"),
                 content: <></>,
                 disabled: true,
-            },
+            },*/
             {
                 title: __("reader.marks.search"),
                 content: this.props.searchEnable
