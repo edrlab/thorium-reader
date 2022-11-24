@@ -128,7 +128,7 @@ class Dialog extends React.Component<IProps, undefined> {
                                     : <div className={stylesModals.modal_dialog_form_wrapper}>
                                         <div
                                             className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}
-                                            
+
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT" && !this.props.submitButtonDisabled) {
                                                     this.submitForm(e);
@@ -171,7 +171,7 @@ class Dialog extends React.Component<IProps, undefined> {
                                                 onClick={(e) => {
                                                     this.submitForm(e);
                                                 }}
-                                                
+
                                                 className={classNames(stylesButtons.button_primary, stylesButtons.button_primary_form_default)}
                                                 ref={this.okRef}
                                             >
