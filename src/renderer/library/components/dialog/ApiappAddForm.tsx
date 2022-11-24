@@ -91,12 +91,21 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                     onClick={() => this.setState({ selectSearchResult: v })}
                     onDoubleClick={(e) => {
                         this.setState({ selectSearchResult: v });
-                        this.addDoubleClick(e);
+                        setTimeout(() => {
+                            this.addDoubleClick(e);
+                        }, 0);
                     }}
-                    onKeyPress={
-                        (e) =>
-                            (e.key === "Enter") && this.setState({ selectSearchResult: v })
-                    }
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            this.setState({ selectSearchResult: v });
+                            setTimeout(() => {
+                                this.addDoubleClick(e);
+                            }, 0);
+
+                            // e.preventDefault();
+                            e.stopPropagation();
+                        }
+                    }}
                 >
                     <strong>
                         {v.name}
@@ -123,7 +132,13 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                             type="search"
                             id="apiapp_search"
                             placeholder={__("header.searchPlaceholder")}
-                            onKeyDown={(e) => e.key === "Enter" ? this.search(undefined) : undefined}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    this.search(undefined);
+                                    // e.preventDefault();
+                                    e.stopPropagation();
+                                }
+                            }}
                         />
                         <button
                             onClick={this.search}
@@ -153,13 +168,16 @@ class ApiappAddForm extends React.Component<IProps, IState> {
         );
     }
 
-    private addDoubleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    private addDoubleClick = (e: React.UIEvent) => {
         e.preventDefault();
         this.add();
         this.props.closeDialog();
     };
 
     private add = () => {
+        if (!this.state.selectSearchResult?.name || !this.state.selectSearchResult?.id || !this.state.selectSearchResult?.url) {
+            return;
+        }
         const title = this.state.selectSearchResult.name;
         const url = `apiapp://${this.state.selectSearchResult.id}:apiapp:${this.state.selectSearchResult.url}`;
         apiAction("opds/addFeed", { title, url }).catch((err) => {

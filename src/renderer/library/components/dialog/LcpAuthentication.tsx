@@ -106,6 +106,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
     };
 
     private submit = () => {
+        if (!this.state.password) {
+            return;
+        }
         apiAction("lcp/unlockPublicationWithPassphrase",
             this.state.password,
             this.props.publicationView.identifier,

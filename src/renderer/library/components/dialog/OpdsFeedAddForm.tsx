@@ -70,7 +70,7 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                 submitButtonTitle={
                     __("opds.addForm.addButton")
                 }
-                submitButtonDisabled={!(this.state.name && this.state.url)}
+                submitButtonDisabled={!(name && url)}
             >
                 <div className={stylesGlobal.w_50}>
                     <div className={stylesInputs.form_group}>
@@ -106,6 +106,9 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
     public add = () => {
         const title = this.state.name;
         const url = this.state.url;
+        if (!title || !url) {
+            return;
+        }
         apiAction("opds/addFeed", { title, url }).catch((err) => {
             console.error("Error to fetch api opds/addFeed", err);
         });

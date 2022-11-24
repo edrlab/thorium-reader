@@ -43,8 +43,8 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
         this.focusRef = React.createRef<HTMLInputElement>();
 
         this.state = {
-            name: undefined,
-            url: undefined,
+            name: props.feed?.title,
+            url: props.feed?.url,
         };
     }
 
@@ -76,7 +76,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                         <input
                             onChange={(e) => this.setState({
                                 name: e.target.value,
-                                url: this.state.url || this.props.feed.url,
+                                // url: this.state.url || this.props.feed.url,
                             })}
                             type="text"
                             aria-label={__("opds.updateForm.name")}
@@ -88,7 +88,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                         <label>{__("opds.updateForm.url")}</label>
                         <input
                             onChange={(e) => this.setState({
-                                name: this.state.name || this.props.feed.title,
+                                // name: this.state.name || this.props.feed.title,
                                 url: e.target.value,
                             })}
                             type="text"
@@ -104,6 +104,9 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
     private update = () => {
         const title = this.state.name;
         const url = this.state.url;
+        if (!title || !url) {
+            return;
+        }
         apiAction("opds/deleteFeed", this.props.feed.identifier).then(() => {
             apiAction("opds/addFeed", { title, url }).catch((err) => {
                 console.error("Error to fetch api opds/addFeed", err);

@@ -84,10 +84,16 @@ class Dialog extends React.Component<IProps, undefined> {
                         aria-modal="true"
                         aria-hidden={"false"}
                         tabIndex={-1}
+
                         className={stylesModals.modal_dialog_overlay}
                         onKeyDown={this.handleKeyPress}
                     >
-                        <div onClick={this.props.closeDialog} className={stylesModals.modal_dialog_overlay_hidden} />
+                        <div
+                            onClick={(_e) => {
+                                this.props.closeDialog();
+                            }}
+                            className={stylesModals.modal_dialog_overlay_hidden}
+                        />
                         <div
                             role="document"
                             id={this.props.id}
@@ -100,45 +106,79 @@ class Dialog extends React.Component<IProps, undefined> {
                                     aria-label={__("accessibility.closeDialog")}
                                     title={__("dialog.closeModalWindow")}
                                     data-dismiss="dialog"
-                                    onClick={this.props.closeDialog}
+                                    onClick={(_e) => {
+                                        this.props.closeDialog();
+                                    }}
                                     className={stylesButtons.button_transparency_icon}
                                 >
                                     <SVG ariaHidden={true} svg={QuitIcon} />
                                 </button>
                             </div>
                             {
+                                // causes problems with keyboard focus handling, see onKeyUp/onKeyDown explanation below
+                                // <form className={stylesModals.modal_dialog_form_wrapper}
+                                //         onSubmit={this.submitForm}
+                                //     ></form>
                                 this.props.noFooter // cf PublicationInfoManager
                                     ? <div
                                             className={classNames(stylesModals.modal_dialog_body)}
                                         >
                                             {content}
                                         </div>
-                                    : <form className={stylesModals.modal_dialog_form_wrapper}
-                                        onSubmit={this.submitForm}
-                                    >
+                                    : <div className={stylesModals.modal_dialog_form_wrapper}>
                                         <div
                                             className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}
-                                            onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT" ? this.submitForm(e) : undefined}
+                                            
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT" && !this.props.submitButtonDisabled) {
+                                                    this.submitForm(e);
+                                                }
+                                            }
+
+//                                             onKeyDown={(e) => {
+//                                                 // See onKeyUp below for explanation
+// console.log("DIALOG DIV KEY DOWN ", e.key, (e.target as HTMLElement)?.tagName);
+//                                                 if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT") {
+//                                                     // e.stopPropagation();
+//                                                     e.preventDefault();
+//                                                 }
+//                                             }}
+//                                             onKeyUp={(e) => {
+//                                                 // WARNING: onKeyUp alone here instead of onKeyDown (or onKeyDown alone too) causes the footer cancel button below to trigger when the keyboard focus is located inside a text input!! (crazy Chromium bug? or normal form/submit edge case due to submit button being disabled??) The onKeyDown above fixes this, but a problem remains: keyUp is captured immediately after pressing ENTER (full click event) on the calling site button that opens the popup dialog, resulting in the modal closing immediately! (thus the additional required check for matching keyDown)
+// console.log("DIALOG DIV KEY UP ", e.key, (e.target as HTMLElement)?.tagName);
+//                                                 if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT" && !this.props.submitButtonDisabled) {
+//                                                     this.submitForm(e);
+//                                                 }
+//                                             }}
+                                            }
                                         >
                                             {content}
                                         </div>
                                         <div className={stylesModals.modal_dialog_footer}>
                                             <button
-                                                onClick={this.props.closeDialog}
+                                                onClick={(_e) => {
+                                                    this.props.closeDialog();
+                                                }}
                                                 className={stylesButtons.button_primary}
                                             >
                                                 {__("dialog.cancel")}
                                             </button>
                                             <button
-                                                disabled={this.props.submitButtonDisabled || false}
-                                                type="submit"
+                                                disabled={
+                                                    /* type="submit" with actual form HTML element causes keyboard focus bug, see onKeyDown/onKeyUp explanation above */
+                                                    this.props.submitButtonDisabled || false
+                                                }
+                                                onClick={(e) => {
+                                                    this.submitForm(e);
+                                                }}
+                                                
                                                 className={classNames(stylesButtons.button_primary, stylesButtons.button_primary_form_default)}
                                                 ref={this.okRef}
                                             >
                                                 {this.props.submitButtonTitle}
                                             </button>
                                         </div>
-                                    </form>
+                                    </div>
                             }
                         </div>
                     </div>
@@ -148,14 +188,15 @@ class Dialog extends React.Component<IProps, undefined> {
         );
     }
 
-    private submitForm = (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLDivElement>) => {
+    private submitForm = (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         this.submit();
     };
 
     private submit = () => {
-        if (this.props.onSubmitButton)
+        if (this.props.onSubmitButton) {
             this.props.onSubmitButton();
+        }
         this.props.closeDialog();
     };
 
