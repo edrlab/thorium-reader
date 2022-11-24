@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Cancelar",
         "closeModalWindow": "Pechar esta xanela modal",
         "deleteFeed": "Seguro que queres eliminar este catálogo?",
         "deletePublication": "Seguro que queres eliminar esta publicación?",

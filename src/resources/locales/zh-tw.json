@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "取消",
         "closeModalWindow": "關閉此模式窗口",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
         "deletePublication": "你真的要刪除此出版物嗎?",

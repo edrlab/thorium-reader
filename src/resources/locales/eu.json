@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Ezeztatu",
         "closeModalWindow": "Itxi modu-leiho hau",
         "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
         "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",

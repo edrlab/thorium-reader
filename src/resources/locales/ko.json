@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "취소",
         "closeModalWindow": "모달 창 닫기",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",

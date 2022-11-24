@@ -81,7 +81,7 @@
         "numberOfPages": "Número de páginas",
         "opds": {
             "auth": {
-                "cancel": "",
+                "cancel": "Cancelar",
                 "login": ""
             },
             "info": {
@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Cancelar",
         "closeModalWindow": "Fechar esta janela modal",
         "deleteFeed": "Deseja realmente excluir este catálogo?",
         "deletePublication": "Deseja realmente excluir esta publicação?",

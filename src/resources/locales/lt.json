@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Nutraukti",
         "closeModalWindow": "Užverti šį modalinį langą",
         "deleteFeed": "Ar tikrai norite pašalinti šį sklaidos kanalą?",
         "deletePublication": "Ar tikrai norite pašalinti šį leidinį?",

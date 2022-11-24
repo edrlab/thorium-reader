@@ -112,6 +112,7 @@
         "update": "Edit"
     },
     "dialog": {
+        "cancel": "Cancel",
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
@@ -238,8 +239,8 @@
                 "sound": "Sound",
                 "unknown": "Unknown"
             },
-            "conformsTo": "Conforms to:",
             "certifierReport": "Certifier report",
+            "conformsTo": "Conforms to:",
             "moreInformation": "More information",
             "name": "Accessibility",
             "noA11y": "No accessibility information available"

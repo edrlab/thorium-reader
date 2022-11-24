@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Avbryt",
         "closeModalWindow": "Stäng den här dialogrutan",
         "deleteFeed": "Vill du verkligen ta bort den här katalogen ?",
         "deletePublication": "Vill du verkligen ta bort den här publikationen ?",
