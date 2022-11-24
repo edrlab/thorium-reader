@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "キャンセル",
         "closeModalWindow": "このモーダル画面を閉じる",
         "deleteFeed": "この図書目録を本当に削除しますか？",
         "deletePublication": "この本を本当に削除しますか？",

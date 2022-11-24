@@ -269,6 +269,7 @@ declare namespace typed_i18n {
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
+  readonly "cancel": string,
   readonly "closeModalWindow": string,
   readonly "deleteFeed": string,
   readonly "deletePublication": string,
@@ -277,9 +278,9 @@ declare namespace typed_i18n {
   readonly "no": string,
   readonly "renew": string,
   readonly "return": string,
-  readonly "yes": string,
-  readonly "cancel": string
+  readonly "yes": string
 };
+  (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.closeModalWindow", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
@@ -287,7 +288,6 @@ declare namespace typed_i18n {
   (_: "dialog.importError", __?: {}): string;
   (_: "dialog.no", __?: {}): string; (_: "dialog.renew", __?: {}): string;
   (_: "dialog.return", __?: {}): string; (_: "dialog.yes", __?: {}): string;
-  (_: "dialog.cancel", __?: {}): string;
   (_: "error", __?: {}): {
   readonly "errorBox": {
     readonly "error": string,
@@ -505,8 +505,8 @@ declare namespace typed_i18n {
       readonly "sound": string,
       readonly "unknown": string
     },
-    readonly "conformsTo": string,
     readonly "certifierReport": string,
+    readonly "conformsTo": string,
     readonly "moreInformation": string,
     readonly "name": string,
     readonly "noA11y": string
@@ -559,8 +559,8 @@ declare namespace typed_i18n {
     readonly "sound": string,
     readonly "unknown": string
   },
-  readonly "conformsTo": string,
   readonly "certifierReport": string,
+  readonly "conformsTo": string,
   readonly "moreInformation": string,
   readonly "name": string,
   readonly "noA11y": string
@@ -605,8 +605,8 @@ declare namespace typed_i18n {
   (_: "publication.accessibility.accessibilityHazard.simulation", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.sound", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.unknown", __?: {}): string;
-  (_: "publication.accessibility.conformsTo", __?: {}): string;
   (_: "publication.accessibility.certifierReport", __?: {}): string;
+  (_: "publication.accessibility.conformsTo", __?: {}): string;
   (_: "publication.accessibility.moreInformation", __?: {}): string;
   (_: "publication.accessibility.name", __?: {}): string;
   (_: "publication.accessibility.noA11y", __?: {}): string;
