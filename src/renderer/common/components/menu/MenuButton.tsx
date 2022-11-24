@@ -12,7 +12,7 @@ interface IBaseProps {
     menuId: string;
     open: boolean;
     toggle: () => void;
-    focusMenuButton?: (ref: React.RefObject<HTMLButtonElement>, menuID: string) => void;
+    setBackFocusMenuButton?: (ref: React.RefObject<HTMLButtonElement>, menuID: string) => void;
 }
 
 // IProps may typically extend:
@@ -24,13 +24,20 @@ interface IProps extends IBaseProps {
 }
 
 export default class MenuButton extends React.Component<IProps, undefined> {
-    private menuButtonRef: React.RefObject<HTMLButtonElement>;
+    private backFocusMenuButtonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
-        this.menuButtonRef = React.createRef<HTMLButtonElement>();
+        this.backFocusMenuButtonRef = React.createRef<HTMLButtonElement>();
 
-        this.getFocusBack = this.getFocusBack.bind(this);
+        this.setBackFocusMenuButton = this.setBackFocusMenuButton.bind(this);
+    }
+
+    public componentDidMount() {
+        this.setBackFocusMenuButton();
+    }
+    public componentDidUpdate(_oldProps: IProps) {
+        this.setBackFocusMenuButton();
     }
 
     public render(): React.ReactElement<{}> {
@@ -40,17 +47,16 @@ export default class MenuButton extends React.Component<IProps, undefined> {
                 aria-expanded={open}
                 aria-controls={menuId}
                 onClick={toggle}
-                ref={this.menuButtonRef}
+                ref={this.backFocusMenuButtonRef}
             >
-                {this.getFocusBack()}
                 {children}
             </button>
         );
     }
 
-    public getFocusBack() {
-        if (this.menuButtonRef?.current && this.props.open) {
-            this.props.focusMenuButton(this.menuButtonRef, this.props.menuId);
+    public setBackFocusMenuButton() {
+        if (this.backFocusMenuButtonRef?.current && this.props.open) {
+            this.props.setBackFocusMenuButton(this.backFocusMenuButtonRef, this.props.menuId);
         }
     }
 }

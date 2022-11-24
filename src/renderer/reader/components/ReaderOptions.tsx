@@ -181,7 +181,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 open={this.props.open}
                 sections={sections}
                 toggleMenu={toggleMenu}
-                focusMenuButton={this.props.focusSettingMenuButton}
+                doBackFocusMenuButton={this.props.focusSettingMenuButton}
             />
         );
     }
