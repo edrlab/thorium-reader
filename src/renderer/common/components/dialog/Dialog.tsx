@@ -30,6 +30,7 @@ interface IBaseProps extends TranslatorProps {
     submitButtonDisabled?: boolean;
     shouldOkRefEnabled?: boolean;
     noFooter?: boolean;
+    noCentering?: boolean;
     close?: () => void;
     size?: "small" | "full";
 }
@@ -125,9 +126,9 @@ class Dialog extends React.Component<IProps, undefined> {
                                         >
                                             {content}
                                         </div>
-                                    : <div className={stylesModals.modal_dialog_form_wrapper}>
+                                    : <>
                                         <div
-                                            className={classNames(stylesModals.modal_dialog_body, stylesModals.modal_dialog_body_centered)}
+                                            className={classNames(stylesModals.modal_dialog_body, this.props.noCentering ? undefined : stylesModals.modal_dialog_body_centered)}
 
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT" && !this.props.submitButtonDisabled) {
@@ -178,7 +179,7 @@ class Dialog extends React.Component<IProps, undefined> {
                                                 {this.props.submitButtonTitle}
                                             </button>
                                         </div>
-                                    </div>
+                                    </>
                             }
                         </div>
                     </div>

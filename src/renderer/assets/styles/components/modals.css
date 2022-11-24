@@ -61,12 +61,14 @@
   }
 }
 
+/*
 .modal_dialog_form_wrapper {
   display: flex;
   flex: 1;
   flex-direction: column;
-  /* height: 100%; */
+  height: 100%;
 }
+*/
 
 .modal_dialog_body {
   flex: 1;

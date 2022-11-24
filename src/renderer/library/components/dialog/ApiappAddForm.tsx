@@ -122,6 +122,7 @@ class ApiappAddForm extends React.Component<IProps, IState> {
                 onSubmitButton={this.add}
                 submitButtonDisabled={false}
                 submitButtonTitle={__("opds.addForm.addButton")}
+                noCentering={true}
             >
                 <div style={{display:"flex", flexDirection: "column", width: "100%"}}>
                     <div
