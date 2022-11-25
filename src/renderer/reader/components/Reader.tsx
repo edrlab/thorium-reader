@@ -1220,7 +1220,16 @@ class Reader extends React.Component<IProps, IState> {
                 } else {
 
                     if (locatorExt.epubPage) {
-                        txtPagination = this.props.__("reader.navigation.currentPage", { current: `${locatorExt.epubPage}` });
+                        let epubPage = locatorExt.epubPage;
+                        if (epubPage.trim().length === 0 && locatorExt.epubPageID && this.props.r2Publication.PageList) {
+                            const p = this.props.r2Publication.PageList.find((page) => {
+                                return page.Title && page.Href && page.Href.endsWith(`#${locatorExt.epubPageID}`);
+                            });
+                            if (p) {
+                                epubPage = p.Title;
+                            }
+                        }
+                        txtPagination = this.props.__("reader.navigation.currentPage", { current: epubPage });
                     }
 
                     const percent = Math.round(locatorExt.locator.locations.progression * 100);
@@ -1509,6 +1518,7 @@ class Reader extends React.Component<IProps, IState> {
                 selectionIsNew: undefined,
                 docInfo: undefined,
                 epubPage: undefined,
+                epubPageID: undefined,
                 headings: undefined,
                 secondWebViewHref: undefined,
             };
