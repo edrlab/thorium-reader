@@ -262,10 +262,22 @@ window.addEventListener("load", () => {
 </script>
 `;
             // <script type="text/javascript" async="async" src="${getUrl()}"> </script>
-            return str.replace(/<\/head>/, `${script}</head>`);
+            return fixBrokenSelfClosingBody(str.replace(/<\/head>/, `${script}</head>`));
         } else {
-            return str;
+            return fixBrokenSelfClosingBody(str);
         }
     };
     Transformers.instance().add(new TransformerHTML(transformerMathJax));
 }
+
+// Seen in some InDesign-generated fixed layout FXL pre-paginated EPUBs that have blank pages, literally empty body!
+// <body>
+// </html>
+// (note the missing self-closing "/>" for "<body", that's actually the outcome of r2-navigator DOM parser/serialiser (xmldom lib), after injecting ReadiumCSS)
+const fixBrokenSelfClosingBody = (str: string): string => {
+    const iBodyClose = str.indexOf("</body>");
+    if (iBodyClose < 0) {
+        return str.replace("</html>", "</body></html>");
+    }
+    return str;
+};
