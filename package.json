@@ -273,7 +273,7 @@
     "nanoid": "^4.0.0",
     "node-fetch": "^3.3.0",
     "r2-lcp-js": "^1.0.36",
-    "r2-navigator-js": "^1.11.5",
+    "r2-navigator-js": "^1.11.6",
     "r2-opds-js": "^1.0.40",
     "r2-shared-js": "^1.0.64",
     "r2-streamer-js": "^1.0.44",
