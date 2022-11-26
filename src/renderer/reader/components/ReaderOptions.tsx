@@ -1033,14 +1033,14 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         setDefaultConfig: (...config: Parameters<typeof readerActions.configSetDefault.build>) => {
 
             if (config.length === 0) {
-
                 dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                 dispatch(readerLocalActionSetConfig.build(readerConfigInitialState));
+                props.setSettings(readerConfigInitialState);
             } else {
                 dispatch(readerActions.configSetDefault.build(...config));
             }
