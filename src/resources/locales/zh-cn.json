@@ -118,7 +118,6 @@
         "deletePublication": "你真的要删除此出版物吗?",
         "import": "你真的要导入这些文件吗:",
         "importError": "出现错误, 请确认文件的扩展名({{acceptedExtension}})",
-        "no": "否",
         "renew": "你真的要更新此出版物的许可证吗?",
         "return": "你真的要归还此出版物的许可证吗?",
         "yes": "是"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "取消",
             "hint": "(提示: {{- hint}})",
             "password": "密码",
             "sentence": "打开此出版物需要LCP密码: ",
@@ -206,11 +204,9 @@
         "shelf": "书架",
         "updateForm": {
             "name": "名称",
-            "namePlaceholder": "名称",
             "title": "编辑 OPDS 订阅源",
             "updateButton": "编辑",
-            "url": "链接",
-            "urlPlaceholder": "链接"
+            "url": "链接"
         }
     },
     "publication": {
@@ -229,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "闪烁",
-                "motion": "运动模拟",
+                "motionSimulation": "运动模拟",
                 "name": "危险：",
                 "noFlashing": "无闪烁",
-                "noMotion": "无运动",
-                "noSimulation": "无运动模拟",
+                "noMotionSimulation": "无运动",
                 "noSound": "无声音",
                 "none": "无",
-                "simulation": "模拟",
                 "sound": "声音",
                 "unknown": "未知"
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "更多信息",
             "name": "可访问性",
             "noA11y": "无可用的可访问性信息"
