@@ -561,8 +561,13 @@ button {
         color: var(--reader-fontColor);
 
         &:disabled {
+          /*
           color: grey;
+          opacity: 0.5;
           cursor: auto;
+          */
+          color: var(--disabled-color) !important;
+          cursor: not-allowed;
 
           & svg.menu_section_svg {
             display: none;
@@ -1365,7 +1370,9 @@ input[type=radio] + label {
 }
 
 .mathml_section {
+  display: flex;
   padding: 10px;
+  font-size: 0.9rem;
 
   & input {
     display: inline-block;
@@ -1374,7 +1381,12 @@ input[type=radio] + label {
 
   & label {
     display: inline-block !important;
+    text-align: left !important;
   }
+}
+
+.tab_content > .line_tab_content > .mathml_section {
+  padding-left: 30px;
 }
 
 .divina_grid_container {

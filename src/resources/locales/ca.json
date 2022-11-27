@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Cancel·lar",
         "closeModalWindow": "Tancar aquesta finestra modal",
         "deleteFeed": "Segur que vols eliminar aquest catàleg?",
         "deletePublication": "Segur que vols eliminar aquesta publicació?",

@@ -36,23 +36,22 @@ interface IState {
 }
 
 export default class Menu extends React.Component<IProps, IState> {
-    private buttonRef: React.RefObject<MenuButton>;
-    private menuButtonRef: React.RefObject<HTMLElement>;
+
+    private backFocusMenuButtonRef: React.RefObject<HTMLElement>;
     private contentRef: HTMLDivElement;
     private menuId: string;
 
     constructor(props: IProps) {
         super(props);
 
-        this.buttonRef = React.createRef<MenuButton>();
-        this.menuButtonRef = React.createRef<HTMLElement>();
+        this.backFocusMenuButtonRef = React.createRef<HTMLElement>();
 
         this.state = {
             contentStyle: {},
         };
         this.menuId = "menu-" + uuidv4();
-        this.focusMenuButton = this.focusMenuButton.bind(this);
-        this.getBackFocusMenuButton = this.getBackFocusMenuButton.bind(this);
+        this.doBackFocusMenuButton = this.doBackFocusMenuButton.bind(this);
+        this.setBackFocusMenuButton = this.setBackFocusMenuButton.bind(this);
     }
 
     public componentDidUpdate(oldProps: IProps) {
@@ -60,10 +59,8 @@ export default class Menu extends React.Component<IProps, IState> {
             this.refreshStyle();
         }
         if (oldProps.infoDialogIsOpen === true &&
-            oldProps.infoDialogIsOpen !== this.props.infoDialogIsOpen &&
-            this.menuButtonRef?.current) {
-
-            this.menuButtonRef.current.focus();
+            oldProps.infoDialogIsOpen !== this.props.infoDialogIsOpen) {
+            this.doBackFocusMenuButton();
         }
     }
 
@@ -73,11 +70,10 @@ export default class Menu extends React.Component<IProps, IState> {
         return (
             <>
                 <MenuButton
-                    ref={this.buttonRef}
                     menuId={this.menuId}
                     open={open}
                     toggle={toggle}
-                    focusMenuButton={this.getBackFocusMenuButton}
+                    setBackFocusMenuButton={this.setBackFocusMenuButton}
                 >
                     {button}
                 </MenuButton>
@@ -89,7 +85,7 @@ export default class Menu extends React.Component<IProps, IState> {
                         menuStyle={contentStyle}
                         toggle={toggle}
                         setContentRef={(ref) => { this.contentRef = ref; }}
-                        focusMenuButton={this.focusMenuButton}
+                        doBackFocusMenuButton={this.doBackFocusMenuButton}
                     >
                         <span onClick={() => setTimeout(toggle, 1)}>
                             {content}
@@ -113,7 +109,7 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     private refreshStyle() {
-        if (!this.buttonRef?.current || !this.contentRef) {
+        if (!this.backFocusMenuButtonRef?.current || !this.contentRef) {
             return;
         }
         const contentStyle: React.CSSProperties = {
@@ -121,7 +117,7 @@ export default class Menu extends React.Component<IProps, IState> {
         };
 
         // calculate vertical position of the menu
-        const button = ReactDOM.findDOMNode(this.buttonRef.current) as HTMLElement;
+        const button = this.backFocusMenuButtonRef.current;
         const buttonRect = button.getBoundingClientRect();
         const bottomPos = window.innerHeight - buttonRect.bottom;
         const contentElement = ReactDOM.findDOMNode(this.contentRef) as HTMLElement;
@@ -142,18 +138,15 @@ export default class Menu extends React.Component<IProps, IState> {
         this.setState({ contentStyle });
     }
 
-    private getBackFocusMenuButton(currentRef: React.RefObject<HTMLElement>, currentMenuId: string) {
+    private setBackFocusMenuButton(currentRef: React.RefObject<HTMLElement>, currentMenuId: string) {
         if (currentRef?.current && this.menuId === currentMenuId) {
-            this.menuButtonRef = currentRef;
+            this.backFocusMenuButtonRef = currentRef;
         }
     }
 
-    private focusMenuButton() {
-        if (!this.buttonRef?.current) {
-            return;
+    private doBackFocusMenuButton() {
+        if (this.backFocusMenuButtonRef?.current) {
+            this.backFocusMenuButtonRef.current.focus();
         }
-        const button = ReactDOM.findDOMNode(this.buttonRef.current) as HTMLElement;
-
-        button.focus();
     }
 }

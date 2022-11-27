@@ -112,11 +112,12 @@
         "update": "Edit"
     },
     "dialog": {
+        "cancel": "Cancel",
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import these files:",
-        "importError": "an error occured, verify your file extension ({{acceptedExtension}})",
+        "importError": "an error occurred, verify your file extension ({{acceptedExtension}})",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
@@ -238,8 +239,8 @@
                 "sound": "Sound",
                 "unknown": "Unknown"
             },
-            "conformsTo": "Conforms to:",
             "certifierReport": "Certifier report",
+            "conformsTo": "Conforms to:",
             "moreInformation": "More information",
             "name": "Accessibility",
             "noA11y": "No accessibility information available"

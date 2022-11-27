@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { AbortSignal } from "abort-controller";
 import timeoutSignal from "timeout-signal";
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
@@ -277,13 +276,15 @@ export async function httpFetchRawResponse(
     try {
         response = await fetchWithCookie(url.toString(), options);
     } finally {
-        // module-level weakmap of timeouts,
-        // see https://github.com/node-fetch/timeout-signal/blob/main/index.js
-        if (timeSignal) {
-            try {
-                timeoutSignal.clear(timeSignal);
-            } catch {}
-        }
+        // FIXED in https://github.com/node-fetch/timeout-signal/releases/tag/v2.0.0
+        // // module-level weakmap of timeouts,
+        // // see https://github.com/node-fetch/timeout-signal/blob/main/index.js
+        // if (timeSignal) {
+        //     try {
+        //         timeoutSignal.clear(timeSignal);
+        //     } catch {}
+        // }
+
         // our local, closure-level timeout
         if (timeout) {
             clearTimeout(timeout);
@@ -292,6 +293,7 @@ export async function httpFetchRawResponse(
     }
 
     debug("fetch URL:", `${url}`);
+    debug("Response URL:", response.url);
     debug("Method", options.method);
     debug("Request headers :");
     debug(options.headers);
@@ -391,6 +393,19 @@ export async function httpFetchFormattedResponse<TData = undefined>(
     try {
         const response = await httpFetchRawResponse(url, options, locale);
 
+        const responseURL = new URL(response.url);
+        const urlURL = new URL(url);
+
+        // handle authentication if url and response url missmatch and if an authentication token is present
+        if (
+            options.method === "get" &&
+            responseURL.href !== urlURL.href &&
+            response.status === 401 &&
+            (await getAuthenticationToken(responseURL))?.accessToken
+        ) {
+            return httpGetWithAuth(true)(response.url, options, callback, locale);
+        }
+
         debug("Response headers :");
         debug({ ...response.headers.raw() });
         debug("###");
@@ -455,10 +470,9 @@ export async function httpFetchFormattedResponse<TData = undefined>(
         debug(result);
         debug("#################");
 
-    } finally {
-        result = await handleCallback(result, callback);
     }
 
+    result = await handleCallback(result, callback);
     return result;
 }
 

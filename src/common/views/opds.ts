@@ -101,7 +101,7 @@ export interface IOpdsAuthView {
 }
 
 export interface IOPDSPropertiesView {
-    indirectAcquisitionType?: string | undefined;
+    indirectAcquisitionTypes?: { top: string, child: string | undefined} | undefined;
     numberOfItems?: number | undefined;
     priceValue?: number | undefined;
     priceCurrency?: OPDSCurrencyEnum | undefined;

@@ -112,6 +112,7 @@
         "update": "Modifica"
     },
     "dialog": {
+        "cancel": "Annulla",
         "closeModalWindow": "Chiudi questa finestra modale",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
