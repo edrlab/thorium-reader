@@ -118,7 +118,6 @@
         "deletePublication": "Vill du verkligen ta bort den här publikationen ?",
         "import": "Vill du verkligen importera följande filer:",
         "importError": "Det uppstod ett fel, dubbelkolla filtypen ({{acceptedExtension}})",
-        "no": "Nej",
         "renew": "Vill du verkligen förnya licensen för den här publikationen?",
         "return": "Vill du verkligen lämna tillbaka licensen för den här publikationen?",
         "yes": "Ja"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Avbryt",
             "hint": "(Tips: {{- hint}})",
             "password": "Lösenord",
             "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas: ",
@@ -206,11 +204,9 @@
         "shelf": "Hylla",
         "updateForm": {
             "name": "Namn:",
-            "namePlaceholder": "Namn",
             "title": "Redigera ett OPDS-flöde",
             "updateButton": "Redigera",
-            "url": "Länk:",
-            "urlPlaceholder": "Länk"
+            "url": "Länk:"
         }
     },
     "publication": {
@@ -235,12 +231,11 @@
                 "noMotionSimulation": "Ingen rörelsesimulering",
                 "noSound": "Inget ljud",
                 "none": "Inga",
-                "simulation": "Simulering",
                 "sound": "Ljud",
                 "unknown": "Okänt"
             },
-            "conformsTo": "Följer:",
             "certifierReport": "Rapport från certifierande instans",
+            "conformsTo": "Följer:",
             "moreInformation": "Mer information",
             "name": "Tillgänglighet",
             "noA11y": "Det finns ingen uppgift om tillgänglighet"
