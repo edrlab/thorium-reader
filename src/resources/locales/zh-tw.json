@@ -118,7 +118,6 @@
         "deletePublication": "你真的要刪除此出版物嗎？",
         "import": "你真的要匯入這些文件嗎：",
         "importError": "出現錯誤，請確認文件的副檔名({{acceptedExtension}})",
-        "no": "否",
         "renew": "你真的要更新此出版物的許可證嗎？",
         "return": "你真的要歸還此出版物的許可證嗎？",
         "yes": "是"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "取消",
             "hint": "(提示: {{- hint}})",
             "password": "密碼",
             "sentence": "打開此出版物需要 LCP 密碼: ",
@@ -206,11 +204,9 @@
         "shelf": "書架",
         "updateForm": {
             "name": "名稱：",
-            "namePlaceholder": "名稱：",
             "title": "編輯 OPDS 的 feed",
             "updateButton": "編輯",
-            "url": "連結：",
-            "urlPlaceholder": "連結"
+            "url": "連結："
         }
     },
     "publication": {
@@ -235,12 +231,11 @@
                 "noMotionSimulation": "沒有動作模擬",
                 "noSound": "沒有聲音",
                 "none": "無",
-                "simulation": "模擬",
                 "sound": "聲音",
                 "unknown": "未知"
             },
-            "conformsTo": "符合：",
             "certifierReport": "證明者報告",
+            "conformsTo": "符合：",
             "moreInformation": "更多資訊",
             "name": "無障礙",
             "noA11y": "沒有可用的無障礙資訊"
