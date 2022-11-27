@@ -118,7 +118,6 @@
         "deletePublication": "この本を本当に削除しますか？",
         "import": "これらのファイルを本当に追加しますか？:",
         "importError": "エラーが発生しました。拡張子を確認してください（{{acceptedExtension}}）",
-        "no": "いいえ",
         "renew": "この本のライセンスを本当に新しくしますか？",
         "return": "この本のライセンスを本当に返しますか？",
         "yes": "はい"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "キャンセル",
             "hint": "（ヒント：{{- hint}}）",
             "password": "パスワード",
             "sentence": "この本を読むためにはLCP解除のパスワードが必要です: ",
@@ -206,11 +204,9 @@
         "shelf": "本棚",
         "updateForm": {
             "name": "名前：",
-            "namePlaceholder": "名前",
             "title": "OPDSフィードの編集",
             "updateButton": "編集",
-            "url": "URL：",
-            "urlPlaceholder": "URL"
+            "url": "URL："
         }
     },
     "publication": {
@@ -228,19 +224,18 @@
                 "tableOfContents": "目次が含まれてる"
             },
             "accessibilityHazard": {
-              "flashing": "閃光を放つ（点滅する）",
-              "motionSimulation": "運動シミュレーションがある",
-              "name": "危険要因:",
-              "noFlashing": "閃光を放たない（点滅しない）",
-              "noMotionSimulation": "運動シミュレーションがない",
-              "noSound": "音が出ない",
-              "none": "ありません",
-              "simulation": "シミュレーションがある",
-              "sound": "音が出る",
-              "unknown": "不明"
+                "flashing": "閃光を放つ（点滅する）",
+                "motionSimulation": "運動シミュレーションがある",
+                "name": "危険要因:",
+                "noFlashing": "閃光を放たない（点滅しない）",
+                "noMotionSimulation": "運動シミュレーションがない",
+                "noSound": "音が出ない",
+                "none": "ありません",
+                "sound": "音が出る",
+                "unknown": "不明"
             },
-            "conformsTo": "準拠：",
             "certifierReport": "認証報告書",
+            "conformsTo": "準拠：",
             "moreInformation": "より詳しい情報",
             "name": "アクセシビリティ",
             "noA11y": "アクセシビリティ情報はありません"
