@@ -112,12 +112,12 @@
         "update": "Éditer"
     },
     "dialog": {
+        "cancel": "Annuler",
         "closeModalWindow": "Fermer cette fenêtre modale",
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
         "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
         "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier ({{acceptedExtension}})",
-        "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
         "yes": "Oui"
@@ -146,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Annuler",
             "hint": "(Indice : {{- hint}})",
             "password": "Mot de passe",
             "sentence": "Cette publication a besoin d'un mot de passe : ",
@@ -205,11 +204,9 @@
         "shelf": "Étagère",
         "updateForm": {
             "name": "Nom :",
-            "namePlaceholder": "Nom",
             "title": "Éditer un flux OPDS",
             "updateButton": "Éditer",
-            "url": "Adresse :",
-            "urlPlaceholder": "Adresse"
+            "url": "Adresse :"
         }
     },
     "publication": {
@@ -231,16 +228,14 @@
                 "motionSimulation": "simulation de mouvement",
                 "name": "Risque :",
                 "noFlashing": "Pas de clignotement",
-                "noMotion": "Pas de mouvement",
                 "noMotionSimulation": "Pas de simulation de mouvement",
                 "noSound": "Pas de son",
                 "none": "Aucun",
-                "simulation": "Simulation",
                 "sound": "Son",
                 "unknown": "Inconnu"
             },
-            "conformsTo": "Conforme à :",
             "certifierReport": "Rapport de conformité",
+            "conformsTo": "Conforme à :",
             "moreInformation": "Plus d'information",
             "name": "Accessibilité",
             "noA11y": "Aucune information d'accessibilité disponible"

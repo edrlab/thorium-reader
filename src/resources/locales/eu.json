@@ -112,12 +112,12 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Ezeztatu",
         "closeModalWindow": "Itxi modu-leiho hau",
         "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
         "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
         "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",
         "importError": "Errore bat gertatu da. Egiaztatu zure fitxategiaren luzapena ({{acceptedExtension}})",
-        "no": "Ez",
         "renew": "Ziur zaude argitalpen honetarako lizentzia berritu nahi duzula?",
         "return": "Ziur zaude lizentzia itzuli nahi duzula argitalpen honetarako?",
         "yes": "Bai"
@@ -146,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Ezeztatu",
             "hint": "(Adierazi : {{- hint}})",
             "password": "Pasahitza",
             "sentence": "Argitalpen honek LCP pasahitza behar du irekitzeko: ",
@@ -205,11 +204,9 @@
         "shelf": "Apala",
         "updateForm": {
             "name": "",
-            "namePlaceholder": "",
             "title": "",
             "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "url": ""
         }
     },
     "publication": {
@@ -228,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "",
-                "motion": "",
+                "motionSimulation": "",
                 "name": "",
                 "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
+                "noMotionSimulation": "",
                 "noSound": "",
                 "none": "",
-                "simulation": "",
                 "sound": "",
                 "unknown": ""
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "",
             "name": "",
             "noA11y": ""

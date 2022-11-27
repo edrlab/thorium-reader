@@ -112,12 +112,12 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Peru",
         "closeModalWindow": "Sulje tämä ikkuna",
         "deleteFeed": "Haluatko todella poistaa tämän luettelon?",
         "deletePublication": "Haluatko todella poistaa tämän julkaisun?",
         "import": "Haluatko todella tuoda nämä tiedostot :",
         "importError": "Virhe on havaittu, varmista tiedostopääte ({{acceptedExtension}})",
-        "no": "Ei",
         "renew": "Haluatko todella uusia tämän julkaisun käyttöoikeuden?",
         "return": "Haluatko todella palauttaa tämän julkaisun käyttöoikeuden?",
         "yes": "Kyllä"
@@ -146,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Peru",
             "hint": "(Vihje : {{- hint}})",
             "password": "Salasana",
             "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
@@ -205,11 +204,9 @@
         "shelf": "Hylly",
         "updateForm": {
             "name": "",
-            "namePlaceholder": "",
             "title": "",
             "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "url": ""
         }
     },
     "publication": {
@@ -228,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "",
-                "motion": "",
+                "motionSimulation": "",
                 "name": "",
                 "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
+                "noMotionSimulation": "",
                 "noSound": "",
                 "none": "",
-                "simulation": "",
                 "sound": "",
                 "unknown": ""
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "",
             "name": "",
             "noA11y": ""

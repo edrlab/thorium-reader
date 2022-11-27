@@ -112,12 +112,12 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "გადაფიქრება",
         "closeModalWindow": "მოდალური ფანჯრის დახურვა",
         "deleteFeed": "ნამდვილად გსურთ ამ კატალოგის წაშლა ?",
         "deletePublication": "ნამდვილად გსურთ ამ პუბლიკაციის წაშლა ?",
         "import": "ნამდვილად გსურთ ამ ფაილების შემოტანა :",
         "importError": "მოხდა შეცდომა, გადაამოწმეთ ფაილის გაფართოება ({{acceptedExtension}})",
-        "no": "არა",
         "renew": "ნამდვილად გსურთ ამ პუბლიკაციის ლიცენზიის განახლება?",
         "return": "ნამდვილად გსურთ ამ პუბლიკაციის ლიცენზიის დაბრუნება?",
         "yes": "დიახ"
@@ -146,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "გადაფიქრება",
             "hint": "(მინიშნება: {{- hint}})",
             "password": "კოდური ფრაზა",
             "sentence": "ეს პუბლიკაცია საჭიროებს LCP კოდურ ფრაზას გასახსნელად: ",
@@ -205,11 +204,9 @@
         "shelf": "თარო",
         "updateForm": {
             "name": "",
-            "namePlaceholder": "",
             "title": "",
             "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "url": ""
         }
     },
     "publication": {
@@ -228,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "",
-                "motion": "",
+                "motionSimulation": "",
                 "name": "",
                 "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
+                "noMotionSimulation": "",
                 "noSound": "",
                 "none": "",
-                "simulation": "",
                 "sound": "",
                 "unknown": ""
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "",
             "name": "",
             "noA11y": ""

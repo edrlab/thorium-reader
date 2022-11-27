@@ -112,12 +112,12 @@
         "update": "Edit"
     },
     "dialog": {
+        "cancel": "Cancel",
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import these files:",
-        "importError": "an error occured, verify your file extension ({{acceptedExtension}})",
-        "no": "No",
+        "importError": "an error occurred, verify your file extension ({{acceptedExtension}})",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
         "yes": "Yes"
@@ -146,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancel",
             "hint": "(Hint: {{- hint}})",
             "password": "Passphrase",
             "sentence": "This publication needs an LCP passphrase to be opened: ",
@@ -205,11 +204,9 @@
         "shelf": "Shelf",
         "updateForm": {
             "name": "Name:",
-            "namePlaceholder": "Name",
             "title": "Edit an OPDS feed",
             "updateButton": "Edit",
-            "url": "Link:",
-            "urlPlaceholder": "Link"
+            "url": "Link:"
         }
     },
     "publication": {
@@ -220,7 +217,7 @@
             "accessibilityFeature": {
                 "alternativeText": "Contains alternative text",
                 "displayTransformability": "Adaptable text and layout",
-                "longDescription": "Fully described graphical ressources",
+                "longDescription": "Fully described graphical resources",
                 "printPageNumbers": "Printed book pagination reference",
                 "readingOrder": "Contains a reading order",
                 "synchronizedAudioText": "Text & audio synchronised",
@@ -234,12 +231,11 @@
                 "noMotionSimulation": "No motion simulation",
                 "noSound": "No sound",
                 "none": "None",
-                "simulation": "Simulation",
                 "sound": "Sound",
                 "unknown": "Unknown"
             },
-            "conformsTo": "Conforms to:",
             "certifierReport": "Certifier report",
+            "conformsTo": "Conforms to:",
             "moreInformation": "More information",
             "name": "Accessibility",
             "noA11y": "No accessibility information available"

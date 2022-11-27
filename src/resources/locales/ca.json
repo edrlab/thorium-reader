@@ -112,12 +112,12 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Cancel·lar",
         "closeModalWindow": "Tancar aquesta finestra modal",
         "deleteFeed": "Segur que vols eliminar aquest catàleg?",
         "deletePublication": "Segur que vols eliminar aquesta publicació?",
         "import": "Segur que vols importar aquests fitxers?",
         "importError": "S'ha produït un error, comprova l'extensió del teu fitxer ({{acceptedExtension}})",
-        "no": "No",
         "renew": "Segur que vols renovar la llicència per a aquesta publicació?",
         "return": "Segur que vols retornar la llicència per a aquesta publicació?",
         "yes": "Sí"
@@ -146,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancel·lar",
             "hint": "(Pista : {{- hint}})",
             "password": "Contrassenya",
             "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
@@ -205,11 +204,9 @@
         "shelf": "Prestatge",
         "updateForm": {
             "name": "",
-            "namePlaceholder": "",
             "title": "",
             "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "url": ""
         }
     },
     "publication": {
@@ -228,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "",
-                "motion": "",
+                "motionSimulation": "",
                 "name": "",
                 "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
+                "noMotionSimulation": "",
                 "noSound": "",
                 "none": "",
-                "simulation": "",
                 "sound": "",
                 "unknown": ""
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "",
             "name": "",
             "noA11y": ""

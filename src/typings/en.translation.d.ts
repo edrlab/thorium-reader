@@ -103,7 +103,6 @@ declare namespace typed_i18n {
     readonly "unsorted": string
   },
   readonly "delete": string,
-  readonly "update": string,
   readonly "deleteBook": string,
   readonly "deleteTag": string,
   readonly "description": string,
@@ -152,7 +151,8 @@ declare namespace typed_i18n {
   readonly "released": string,
   readonly "sort": string,
   readonly "tagCount": string,
-  readonly "tags": string
+  readonly "tags": string,
+  readonly "update": string
 };
   (_: "catalog.about", __?: {}): { readonly "button": string, readonly "title": string };
   (_: "catalog.about.button", __?: {}): string;
@@ -171,7 +171,6 @@ declare namespace typed_i18n {
   (_: "catalog.column.descending", __?: {}): string;
   (_: "catalog.column.unsorted", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
-  (_: "catalog.update", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
@@ -268,7 +267,9 @@ declare namespace typed_i18n {
   (_: "catalog.sort", __?: {}): string;
   (_: "catalog.tagCount", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
+  (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
+  readonly "cancel": string,
   readonly "closeModalWindow": string,
   readonly "deleteFeed": string,
   readonly "deletePublication": string,
@@ -279,6 +280,7 @@ declare namespace typed_i18n {
   readonly "return": string,
   readonly "yes": string
 };
+  (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.closeModalWindow", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
@@ -503,8 +505,8 @@ declare namespace typed_i18n {
       readonly "sound": string,
       readonly "unknown": string
     },
-    readonly "conformsTo": string,
     readonly "certifierReport": string,
+    readonly "conformsTo": string,
     readonly "moreInformation": string,
     readonly "name": string,
     readonly "noA11y": string
@@ -557,8 +559,8 @@ declare namespace typed_i18n {
     readonly "sound": string,
     readonly "unknown": string
   },
-  readonly "conformsTo": string,
   readonly "certifierReport": string,
+  readonly "conformsTo": string,
   readonly "moreInformation": string,
   readonly "name": string,
   readonly "noA11y": string
@@ -603,8 +605,8 @@ declare namespace typed_i18n {
   (_: "publication.accessibility.accessibilityHazard.simulation", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.sound", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.unknown", __?: {}): string;
-  (_: "publication.accessibility.conformsTo", __?: {}): string;
   (_: "publication.accessibility.certifierReport", __?: {}): string;
+  (_: "publication.accessibility.conformsTo", __?: {}): string;
   (_: "publication.accessibility.moreInformation", __?: {}): string;
   (_: "publication.accessibility.name", __?: {}): string;
   (_: "publication.accessibility.noA11y", __?: {}): string;

@@ -112,12 +112,12 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Cancelar",
         "closeModalWindow": "Pechar esta xanela modal",
         "deleteFeed": "Seguro que queres eliminar este catálogo?",
         "deletePublication": "Seguro que queres eliminar esta publicación?",
         "import": "Seguro que queres importar estes ficheiros?",
         "importError": "Produciuse un erro, comproba a extensión do teu ficheiro ({{acceptedExtension}})",
-        "no": "No",
         "renew": "Seguro que queres renovar a licenza para esta publicación?",
         "return": "Seguro que queres devolver a licenza para esta publicación?",
         "yes": "Sí"
@@ -146,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancelar",
             "hint": "(Pista : {{- hint}})",
             "password": "Contrasinal",
             "sentence": "Esta publicación require un contrasinal LCP para abrirse: ",
@@ -205,11 +204,9 @@
         "shelf": "Estante",
         "updateForm": {
             "name": "",
-            "namePlaceholder": "",
             "title": "",
             "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "url": ""
         }
     },
     "publication": {
@@ -228,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "",
-                "motion": "",
+                "motionSimulation": "",
                 "name": "",
                 "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
+                "noMotionSimulation": "",
                 "noSound": "",
                 "none": "",
-                "simulation": "",
                 "sound": "",
                 "unknown": ""
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "",
             "name": "",
             "noA11y": ""

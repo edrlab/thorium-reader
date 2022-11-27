@@ -11,7 +11,7 @@
         "toolbar": "工具栏"
     },
     "apiapp": {
-        "noLibraryFound": "未找到组件库  ({{- name}})"
+        "noLibraryFound": "未发现图书馆 ({{- name}})"
     },
     "app": {
         "edit": {
@@ -112,14 +112,14 @@
         "update": "编辑"
     },
     "dialog": {
+        "cancel": "取消",
         "closeModalWindow": "关闭此模式窗口",
         "deleteFeed": "你真的要删除此出版目录吗？",
-        "deletePublication": "你真的要删除此出版物吗？",
-        "import": "你真的要导入这些文件吗：",
-        "importError": "出现错误，请确认文件的扩展名 ({{acceptedExtension}})",
-        "no": "否",
-        "renew": "你真的要更新此出版物的许可证吗？",
-        "return": "你真的要归还此出版物的许可证吗？",
+        "deletePublication": "你真的要删除此出版物吗?",
+        "import": "你真的要导入这些文件吗:",
+        "importError": "出现错误, 请确认文件的扩展名({{acceptedExtension}})",
+        "renew": "你真的要更新此出版物的许可证吗?",
+        "return": "你真的要归还此出版物的许可证吗?",
         "yes": "是"
     },
     "error": {
@@ -146,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "取消",
             "hint": "(提示: {{- hint}})",
             "password": "密码",
             "sentence": "打开此出版物需要 LCP 密码: ",
@@ -177,7 +176,7 @@
             "urlPlaceholder": "链接"
         },
         "addFormApiapp": {
-            "title": "添加书城账号"
+            "title": "添加图书馆账户"
         },
         "addMenu": "添加 OPDS 订阅源",
         "back": "返回",
@@ -204,45 +203,42 @@
         "previous": "上一个",
         "shelf": "书架",
         "updateForm": {
-            "name": "名称：",
-            "namePlaceholder": "名称",
+            "name": "名称",
             "title": "编辑 OPDS 订阅源",
             "updateButton": "编辑",
-            "url": "链接：",
-            "urlPlaceholder": "链接"
+            "url": "链接"
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "TTS 与屏幕阅读器友好"
+                "textual": "兼容 TTS 和屏幕阅读器"
             },
             "accessibilityFeature": {
-                "alternativeText": "包含可替代文字",
-                "displayTransformability": "可调整的文字和布局",
-                "longDescription": "带有完整描述的图片资源",
-                "printPageNumbers": "印刷书籍分页索引",
+                "alternativeText": "包含替代文本",
+                "displayTransformability": "文本和布局可调",
+                "longDescription": "完整描述的图形资源",
+                "printPageNumbers": "印刷书籍页码参考",
                 "readingOrder": "包含阅读顺序",
-                "synchronizedAudioText": "文字与声音同步",
+                "synchronizedAudioText": "文本与音频同步",
                 "tableOfContents": "包含目录"
             },
             "accessibilityHazard": {
                 "flashing": "闪烁",
-                "motion": "动作模拟",
+                "motionSimulation": "运动模拟",
                 "name": "危险：",
                 "noFlashing": "无闪烁",
-                "noMotionSimulation": "无动作模拟",
+                "noMotionSimulation": "无运动",
                 "noSound": "无声音",
-                "none": "全部没有",
-                "simulation": "模拟",
+                "none": "无",
                 "sound": "声音",
                 "unknown": "未知"
             },
-            "conformsTo": "符合：",
-            "certifierReport": "认证报告",
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "更多信息",
-            "name": "无障碍",
-            "noA11y": "没有可用的无障碍信息"
+            "name": "可访问性",
+            "noA11y": "无可用的可访问性信息"
         },
         "audio": {
             "tracks": "音轨"
@@ -318,8 +314,8 @@
             "goToError": "此页不存在",
             "goToPlaceHolder": "输入页码",
             "goToTitle": "转到页",
-            "historyNext": "向前跳转",
-            "historyPrevious": "往回跳转",
+            "historyNext": "前进",
+            "historyPrevious": "后退",
             "infoTitle": "信息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "导航",

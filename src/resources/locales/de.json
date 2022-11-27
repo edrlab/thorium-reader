@@ -81,7 +81,7 @@
         "numberOfPages": "Seitenzahl",
         "opds": {
             "auth": {
-                "cancel": "",
+                "cancel": "Abbrechen",
                 "login": ""
             },
             "info": {
@@ -112,12 +112,12 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Abbrechen",
         "closeModalWindow": "Dieses Fenster schließen",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
         "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
-        "no": "Nein",
         "renew": "",
         "return": "",
         "yes": "Ja"
@@ -146,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Abbrechen",
             "hint": "Dein Kennwort",
             "password": "",
             "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
@@ -205,11 +204,9 @@
         "shelf": "",
         "updateForm": {
             "name": "",
-            "namePlaceholder": "",
             "title": "",
             "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "url": ""
         }
     },
     "publication": {
@@ -228,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "",
-                "motion": "",
+                "motionSimulation": "",
                 "name": "",
                 "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
+                "noMotionSimulation": "",
                 "noSound": "",
                 "none": "",
-                "simulation": "",
                 "sound": "",
                 "unknown": ""
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "",
             "name": "",
             "noA11y": ""

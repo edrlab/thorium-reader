@@ -71,6 +71,11 @@ button {
 
 */
 
+.button_primary_form_default {
+  border-width: 2px !important;
+  font-weight: bold !important;
+}
+
 .button_primary {
   @mixin button_primary;
 
