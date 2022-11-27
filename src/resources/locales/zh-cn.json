@@ -32,7 +32,7 @@
                         "no": "否",
                         "yes": "是"
                     },
-                    "message": "是否保存当前会话?",
+                    "message": "是否保存当前会话？",
                     "title": "保存会话"
                 }
             }
@@ -57,15 +57,15 @@
             "unsorted": "乱序"
         },
         "delete": "删除",
-        "deleteBook": "删除",
+        "deleteBook": "删除图书",
         "deleteTag": "删除标签",
         "description": "概要",
         "emptyTagList": "尚无带标签电子书",
         "entry": {
             "continueReading": "继续阅读",
             "continueReadingAudioBooks": "继续听读",
-            "continueReadingDivina": "继续阅读divina",
-            "continueReadingPdf": "继续阅读PDF",
+            "continueReadingDivina": "继续阅读 divina",
+            "continueReadingPdf": "继续阅读 PDF",
             "lastAdditions": "最近添加"
         },
         "export": "导出",
@@ -74,10 +74,10 @@
         "lastRead": "上次阅读",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
-        "noPublicationHelpL1": "拖放EPUB至此处。",
+        "noPublicationHelpL1": "拖放 EPUB 至此处。",
         "noPublicationHelpL2": "或者使用上面的\"+\"按钮。",
-        "noPublicationHelpL3": "支持受LCP保护的文件。",
-        "noPublicationHelpL4": "支持的扩展名:",
+        "noPublicationHelpL3": "支持受 LCP 保护的文件。",
+        "noPublicationHelpL4": "支持的扩展名：",
         "numberOfPages": "页码",
         "opds": {
             "auth": {
@@ -124,9 +124,9 @@
     },
     "error": {
         "errorBox": {
-            "error": "错误信息:",
-            "message": "{{- filename}}出现错误",
-            "title": "内部{{- appName}}错误"
+            "error": "错误信息：",
+            "message": "{{- filename}} 出现错误",
+            "title": "内部 {{- appName}} 错误"
         }
     },
     "header": {
@@ -148,7 +148,7 @@
         "lcp": {
             "hint": "(提示: {{- hint}})",
             "password": "密码",
-            "sentence": "打开此出版物需要LCP密码: ",
+            "sentence": "打开此出版物需要 LCP 密码: ",
             "submit": "提交",
             "urlHint": "忘记密码？在此获取帮助"
         }
@@ -169,16 +169,16 @@
     "opds": {
         "addForm": {
             "addButton": "添加",
-            "name": "名称:",
+            "name": "名称：",
             "namePlaceholder": "名称",
-            "title": "添加OPDS订阅源",
-            "url": "链接:",
+            "title": "添加 OPDS 订阅源",
+            "url": "链接：",
             "urlPlaceholder": "链接"
         },
         "addFormApiapp": {
             "title": "添加图书馆账户"
         },
-        "addMenu": "添加OPDS订阅源",
+        "addMenu": "添加 OPDS 订阅源",
         "back": "返回",
         "breadcrumbRoot": "出版目录",
         "empty": "未找到出版物",
@@ -193,10 +193,10 @@
             "goSubBook": "订阅"
         },
         "network": {
-            "error": "无法访问OPDS订阅源",
+            "error": "无法访问 OPDS 订阅源",
             "noInternet": "未接入因特网",
             "noInternetMessage": "请尝试: 检查网线, 调制解调器, 路由或wifi",
-            "reject": "抱歉, 处理OPDS订阅源时出现意外错误",
+            "reject": "抱歉，处理 OPDS 订阅源时出现意外错误",
             "timeout": "网络连接超时, 请稍后重试"
         },
         "next": "下一个",
@@ -262,7 +262,7 @@
         "licenseSignatureDateInvalid": "许可证签名日期无效",
         "licenseSignatureInvalid": "许可证签名无效",
         "progression": {
-            "title": "进程"
+            "title": "进展"
         },
         "renewButton": "更新",
         "returnButton": "归还",
@@ -325,7 +325,7 @@
             "settingsTitle": "设置"
         },
         "picker": {
-            "annotationTitle": "笔记:",
+            "annotationTitle": "笔记：",
             "search": {
                 "founds": "{{- nResults}}个匹配",
                 "input": "输入搜索文本",
@@ -334,7 +334,7 @@
                 "previous": "前一个",
                 "submit": "查找"
             },
-            "searchTitle": "搜索:"
+            "searchTitle": "搜索："
         },
         "settings": {
             "column": {
@@ -356,8 +356,8 @@
             "letterSpacing": "字符间距",
             "lineSpacing": "行间距",
             "margin": "页边距",
-            "noFootnotes": "没有脚注",
-            "paginated": "分页",
+            "noFootnotes": "禁用脚注",
+            "paginated": "已分页",
             "paraSpacing": "段落间距",
             "pdfZoom": {
                 "name": {
@@ -432,7 +432,7 @@
         },
         "session": {
             "no": "禁用",
-            "title": "保存会话",
+            "title": "保存登录状态",
             "yes": "启用"
         }
     }
