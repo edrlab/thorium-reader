@@ -117,7 +117,7 @@
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import these files:",
-        "importError": "an error occured, verify your file extension ({{acceptedExtension}})",
+        "importError": "an error occurred, verify your file extension ({{acceptedExtension}})",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
@@ -221,7 +221,7 @@
             "accessibilityFeature": {
                 "alternativeText": "Contains alternative text",
                 "displayTransformability": "Adaptable text and layout",
-                "longDescription": "Fully described graphical ressources",
+                "longDescription": "Fully described graphical resources",
                 "printPageNumbers": "Printed book pagination reference",
                 "readingOrder": "Contains a reading order",
                 "synchronizedAudioText": "Text & audio synchronised",
