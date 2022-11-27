@@ -118,7 +118,6 @@
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
         "import": "Vuoi davvero importare questi files:",
         "importError": "si è verificato un errore, verifica l'estensione del file ({{acceptedExtension}})",
-        "no": "No",
         "renew": "Vuoi davvero rinnovare la licenza per questa pubblicazione?",
         "return": "Vuoi davvero restituire la licenza per questa pubblicazione?",
         "yes": "Sì"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Annulla",
             "hint": "(Suggerimento : {{- hint}})",
             "password": "Passphrase",
             "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta: ",
