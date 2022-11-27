@@ -109,7 +109,7 @@
         "sort": "Sortera efter",
         "tagCount": "Antal taggar",
         "tags": "Taggar",
-        "update": ""
+        "update": "Redigera"
     },
     "dialog": {
         "cancel": "Avbryt",
@@ -118,7 +118,6 @@
         "deletePublication": "Vill du verkligen ta bort den här publikationen ?",
         "import": "Vill du verkligen importera följande filer:",
         "importError": "Det uppstod ett fel, dubbelkolla filtypen ({{acceptedExtension}})",
-        "no": "Nej",
         "renew": "Vill du verkligen förnya licensen för den här publikationen?",
         "return": "Vill du verkligen lämna tillbaka licensen för den här publikationen?",
         "yes": "Ja"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Avbryt",
             "hint": "(Tips: {{- hint}})",
             "password": "Lösenord",
             "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas: ",
@@ -205,44 +203,42 @@
         "previous": "Föregående",
         "shelf": "Hylla",
         "updateForm": {
-            "name": "",
-            "namePlaceholder": "",
-            "title": "",
-            "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "name": "Namn:",
+            "title": "Redigera ett OPDS-flöde",
+            "updateButton": "Redigera",
+            "url": "Länk:"
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "Talsyntes- och skärmläsarvänlig"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "Innehåller alternativtext",
+                "displayTransformability": "Möjlighet att justera text och layout",
+                "longDescription": "Fullständiga bildbeskrivningar",
+                "printPageNumbers": "Sidnumrering från tryckt upplaga",
+                "readingOrder": "Läsordning definierad",
+                "synchronizedAudioText": "Synkroniserat text och ljud",
+                "tableOfContents": "Innehåller innehållsförteckning"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "Blinkande",
+                "motionSimulation": "Rörelsesimulering",
+                "name": "Risk:",
+                "noFlashing": "Inget blinkande",
+                "noMotionSimulation": "Ingen rörelsesimulering",
+                "noSound": "Inget ljud",
+                "none": "Inga",
+                "sound": "Ljud",
+                "unknown": "Okänt"
             },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "certifierReport": "Rapport från certifierande instans",
+            "conformsTo": "Följer:",
+            "moreInformation": "Mer information",
+            "name": "Tillgänglighet",
+            "noA11y": "Det finns ingen uppgift om tillgänglighet"
         },
         "audio": {
             "tracks": "Spår"
@@ -318,8 +314,8 @@
             "goToError": "Sidnumret finns inte",
             "goToPlaceHolder": "Ange ett sidnummer",
             "goToTitle": "Gå till sida",
-            "historyNext": "",
-            "historyPrevious": "",
+            "historyNext": "Hoppa framåt",
+            "historyPrevious": "Hoppa tillbaka",
             "infoTitle": "information",
             "magnifyingGlassButton": "sök i publikationen",
             "openTableOfContentsTitle": "navigation",
@@ -361,7 +357,7 @@
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
             "noFootnotes": "Avaktivera fotnoter",
-            "paginated": "Paginerad",
+            "paginated": "Sidindelad",
             "paraSpacing": "Styckesavstånd",
             "pdfZoom": {
                 "name": {
