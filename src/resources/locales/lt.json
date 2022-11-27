@@ -118,7 +118,6 @@
         "deletePublication": "Ar tikrai norite pašalinti šį leidinį?",
         "import": "Ar tikrai norite importuoti šiuos failus:",
         "importError": "įvyko klaidą, patikrinkite failo plėtinį ({{acceptedExtension}})",
-        "no": "Ne",
         "renew": "Ar tikrai norite atnaujinti šio leidinio licenciją?",
         "return": "Ar tikrai norite grąžinti šio leidinio licenciją?",
         "yes": "Taip"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Nutraukti",
             "hint": "(Užuomina : {{- hint}})",
             "password": "Slaptažodis",
             "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
