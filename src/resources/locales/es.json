@@ -118,7 +118,6 @@
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
         "import": "¿Seguro que quieres importar estos ficheros?",
         "importError": "Se ha producido un error, comprueba la extensión de tu fichero ({{acceptedExtension}})",
-        "no": "No",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
         "yes": "Sí"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancelar",
             "hint": "(Pista : {{- hint}})",
             "password": "Contraseña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
@@ -206,11 +204,9 @@
         "shelf": "Estante",
         "updateForm": {
             "name": "Nombre",
-            "namePlaceholder": "Nombre",
             "title": "Editar catálogo OPDS",
             "updateButton": "Editar",
-            "url": "Enlace",
-            "urlPlaceholder": "Enlace"
+            "url": "Enlace"
         }
     },
     "publication": {
@@ -235,12 +231,11 @@
                 "noMotionSimulation": "Sin animaciones",
                 "noSound": "Sin sonidos",
                 "none": "Ninguno",
-                "simulation": "Efectos de simulación",
                 "sound": "Sonidos",
                 "unknown": "Desconocidos"
             },
-            "conformsTo": "Conforme con",
             "certifierReport": "Informe de la entidad certificadora",
+            "conformsTo": "Conforme con",
             "moreInformation": "Más información",
             "name": "Accesibilidad",
             "noA11y": "No hay disponible información sobre accesibilidad"
