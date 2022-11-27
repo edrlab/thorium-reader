@@ -12,7 +12,7 @@ This release includes the following (notable) new features, improvements and bug
 * Fixed reader window menus which were not closed automatically when switching to fullscreen.
 * Fixed README documentation, updated supported languages.
 
-(previous [v2.0.0 changelog](./CHANGELOG-v2.1.0.md))
+(previous [v2.0.0 changelog](./CHANGELOG-v2.0.0.md))
 
 ## Full Change Log
 
