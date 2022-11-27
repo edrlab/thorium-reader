@@ -32,8 +32,8 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     const readerWindow = new BrowserWindow({
         ...winBound,
-        minWidth: 800,
-        minHeight: 600,
+        minWidth: 600,
+        minHeight: 400,
         webPreferences: {
             // enableRemoteModule: false,
             allowRunningInsecureContent: false,

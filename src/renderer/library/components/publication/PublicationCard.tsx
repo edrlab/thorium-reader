@@ -171,7 +171,8 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         InfoDialogIsOpen: state.dialog.open
             && (state.dialog.type === DialogTypeName.PublicationInfoOpds
-                || state.dialog.type === DialogTypeName.PublicationInfoLib),
+                || state.dialog.type === DialogTypeName.PublicationInfoLib
+                || state.dialog.type === DialogTypeName.DeletePublicationConfirm),
     };
 };
 

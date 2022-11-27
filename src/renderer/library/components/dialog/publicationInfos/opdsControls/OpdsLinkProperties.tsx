@@ -55,8 +55,8 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
         return (
             <>
                 {
-                    properties.indirectAcquisitionType === findMimeTypeWithExtension(ADOBE_ADEPT_XML) ?
-                    <><span title={properties.indirectAcquisitionType.replace(/application\//, "")} style={{textDecoration: "line-through"}}>(Adobe Adept)</span><br /><br /></> : <></>
+                    properties.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML) ?
+                    <><span title={properties.indirectAcquisitionTypes.top.replace(/application\//, "")} style={{textDecoration: "line-through"}}>(Adobe Adept)</span><br /><br /></> : <></>
                 }
                 {
                     metadataLineComponent(__("catalog.opds.info.numberOfItems"), properties.numberOfItems)

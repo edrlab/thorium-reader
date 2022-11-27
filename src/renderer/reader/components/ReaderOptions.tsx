@@ -181,7 +181,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 open={this.props.open}
                 sections={sections}
                 toggleMenu={toggleMenu}
-                focusMenuButton={this.props.focusSettingMenuButton}
+                doBackFocusMenuButton={this.props.focusSettingMenuButton}
             />
         );
     }
@@ -600,7 +600,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 isPdf
                     ? <></>
                     :
-                    <section className={stylesReader.line_tab_content}>
+                    <div className={stylesReader.line_tab_content}>
                         <div id="label_disposition" className={stylesReader.subheading}>{__("reader.settings.disposition.title")}</div>
                         <div className={stylesReader.center_in_tab} role="radiogroup" aria-labelledby="label_disposition">
                             <div className={stylesReader.focus_element}>
@@ -648,9 +648,9 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                 </label>
                             </div>
                         </div>
-                    </section>
+                    </div>
             }
-            <section className={stylesReader.line_tab_content} hidden={this.props.isPdf}>
+            <div className={stylesReader.line_tab_content} hidden={this.props.isPdf}>
                 <div id="label_justification" className={stylesReader.subheading}>{__("reader.settings.justification")}</div>
                 <div className={stylesReader.center_in_tab} role="radiogroup" aria-labelledby="label_justification">
                     <div className={stylesReader.focus_element}>
@@ -686,8 +686,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         </label>
                     </div>
                 </div>
-            </section>
-            <section className={stylesReader.line_tab_content}>
+            </div>
+            <div className={stylesReader.line_tab_content}>
                 <div id="label_column" className={stylesReader.subheading}>{__("reader.settings.column.title")}</div>
                 <div className={stylesReader.center_in_tab} role="radiogroup" aria-labelledby="label_column">
                     {
@@ -771,8 +771,8 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         </label>
                     </div>
                 </div>
-            </section>
-            <section className={stylesReader.line_tab_content} hidden={this.props.isPdf}>
+            </div>
+            <div className={stylesReader.line_tab_content} hidden={this.props.isPdf}>
                 <div className={stylesReader.mathml_section}>
                     <input
                         id="mathJaxCheckBox"
@@ -801,7 +801,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     />
                     <label htmlFor="noFootnotesCheckBox">{__("reader.settings.noFootnotes")}</label>
                 </div>
-            </section>
+            </div>
         </>;
     }
 
@@ -1033,14 +1033,14 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         setDefaultConfig: (...config: Parameters<typeof readerActions.configSetDefault.build>) => {
 
             if (config.length === 0) {
-
                 dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                 dispatch(readerLocalActionSetConfig.build(readerConfigInitialState));
+                props.setSettings(readerConfigInitialState);
             } else {
                 dispatch(readerActions.configSetDefault.build(...config));
             }

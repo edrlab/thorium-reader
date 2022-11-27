@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Peru",
         "closeModalWindow": "Sulje tämä ikkuna",
         "deleteFeed": "Haluatko todella poistaa tämän luettelon?",
         "deletePublication": "Haluatko todella poistaa tämän julkaisun?",

@@ -210,7 +210,16 @@ const Progression = (props: {
                     // reflow: no totalPages, potentially just currentPage which is locatorExt.epubPage
 
                     if (locatorExt.epubPage) {
-                        txtPagination = __("reader.navigation.currentPage", { current: `${locatorExt.epubPage}` });
+                        let epubPage = locatorExt.epubPage;
+                        if (epubPage.trim().length === 0 && locatorExt.epubPageID && r2Publication.PageList) {
+                            const p = r2Publication.PageList.find((page) => {
+                                return page.Title && page.Href && page.Href.endsWith(`#${locatorExt.epubPageID}`);
+                            });
+                            if (p) {
+                                epubPage = p.Title;
+                            }
+                        }
+                        txtPagination = __("reader.navigation.currentPage", { current: epubPage });
                     }
 
                     // no virtual global .position in the current implementation,

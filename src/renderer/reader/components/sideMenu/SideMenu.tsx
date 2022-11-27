@@ -23,7 +23,7 @@ interface IBaseProps extends TranslatorProps {
     className: string;
     listClassName: string;
     toggleMenu: () => void;
-    focusMenuButton: () => void;
+    doBackFocusMenuButton: () => void;
 
     openedSection: number | undefined;
 }
@@ -88,7 +88,7 @@ export class SideMenu extends React.Component<IProps, IState> {
         return (<>
             <AccessibleMenu
                 dontCloseWhenClickOutside
-                focusMenuButton = {this.props.focusMenuButton}
+                doBackFocusMenuButton = {this.props.doBackFocusMenuButton}
                 className={className}
                 visible={open}
                 toggleMenu={toggleMenu}

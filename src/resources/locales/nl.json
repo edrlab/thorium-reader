@@ -81,7 +81,7 @@
         "numberOfPages": "Aantal pagina's",
         "opds": {
             "auth": {
-                "cancel": "",
+                "cancel": "Annuleer",
                 "login": ""
             },
             "info": {
@@ -112,6 +112,7 @@
         "update": ""
     },
     "dialog": {
+        "cancel": "Annuleer",
         "closeModalWindow": "Sluit dit modale venster",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",

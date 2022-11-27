@@ -112,6 +112,7 @@
         "update": "Éditer"
     },
     "dialog": {
+        "cancel": "Annuler",
         "closeModalWindow": "Fermer cette fenêtre modale",
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
@@ -239,8 +240,8 @@
                 "sound": "Son",
                 "unknown": "Inconnu"
             },
-            "conformsTo": "Conforme à :",
             "certifierReport": "Rapport de conformité",
+            "conformsTo": "Conforme à :",
             "moreInformation": "Plus d'information",
             "name": "Accessibilité",
             "noA11y": "Aucune information d'accessibilité disponible"
