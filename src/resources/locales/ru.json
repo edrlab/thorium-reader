@@ -118,7 +118,6 @@
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "import": "Вы действительно хотите импортировать эти файлы :",
         "importError": "произошла ошибка, проверьте расширение вашего файла ({{acceptedExtension}})",
-        "no": "Нет",
         "renew": "Вы действительно хотите продлить лицензию на эту книгу?",
         "return": "Вы действительно хотите вернуть лицензию на эту книгу?",
         "yes": "Да"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Отменить",
             "hint": "(Подсказка : {{- hint}})",
             "password": "Пароль",
             "sentence": "Для открытия этой книги требуется пароль LCP: ",
@@ -206,11 +204,9 @@
         "shelf": "Полка",
         "updateForm": {
             "name": "",
-            "namePlaceholder": "",
             "title": "",
             "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "url": ""
         }
     },
     "publication": {
@@ -229,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "",
-                "motion": "",
+                "motionSimulation": "",
                 "name": "",
                 "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
+                "noMotionSimulation": "",
                 "noSound": "",
                 "none": "",
-                "simulation": "",
                 "sound": "",
                 "unknown": ""
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "",
             "name": "",
             "noA11y": ""

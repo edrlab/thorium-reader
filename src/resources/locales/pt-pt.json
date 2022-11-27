@@ -118,7 +118,6 @@
         "deletePublication": "Deseja realmente eliminar este documento?",
         "import": "Deseja realmente importar estes ficheiros:",
         "importError": "ocorreu um erro, verifique a extensão do ficheiro ({{acceptedExtension}})",
-        "no": "Não",
         "renew": "Deseja realmente renovar a licença deste documento?",
         "return": "Deseja realmente devolver a licença deste documento?",
         "yes": "Yes"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancelar",
             "hint": "(Dica : {{- hint}})",
             "password": "Senha",
             "sentence": "Esta publicação precisa de uma senha LCP para poder ser aberta: ",
@@ -206,11 +204,9 @@
         "shelf": "Estante",
         "updateForm": {
             "name": "",
-            "namePlaceholder": "",
             "title": "",
             "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "url": ""
         }
     },
     "publication": {
@@ -229,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "",
-                "motion": "",
+                "motionSimulation": "",
                 "name": "",
                 "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
+                "noMotionSimulation": "",
                 "noSound": "",
                 "none": "",
-                "simulation": "",
                 "sound": "",
                 "unknown": ""
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "",
             "name": "",
             "noA11y": ""

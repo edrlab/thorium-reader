@@ -118,7 +118,6 @@
         "deletePublication": "출판물을 제거하겠습니까?",
         "import": "파일들을 열겠습니까:",
         "importError": "오류가 발생했습니다. 파일 확장자를 확인하십시오. ({{acceptedExtension}})",
-        "no": "취소",
         "renew": "출판물의 라이선스를 갱신하겠습니까?",
         "return": "출판물의 라이선스를 반납하겠습니까?",
         "yes": "확인"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "취소",
             "hint": "(힌트: {{- hint}})",
             "password": "암호",
             "sentence": "이 출판물을 열기 위해서는 LCP 암호가 필요합니다: ",
@@ -206,11 +204,9 @@
         "shelf": "책꽂이",
         "updateForm": {
             "name": "",
-            "namePlaceholder": "",
             "title": "",
             "updateButton": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "url": ""
         }
     },
     "publication": {
@@ -229,17 +225,17 @@
             },
             "accessibilityHazard": {
                 "flashing": "",
-                "motion": "",
+                "motionSimulation": "",
                 "name": "",
                 "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
+                "noMotionSimulation": "",
                 "noSound": "",
                 "none": "",
-                "simulation": "",
                 "sound": "",
                 "unknown": ""
             },
+            "certifierReport": "",
+            "conformsTo": "",
             "moreInformation": "",
             "name": "",
             "noA11y": ""
