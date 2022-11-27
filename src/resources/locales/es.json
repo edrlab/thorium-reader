@@ -72,7 +72,7 @@
         "format": "Formato",
         "lang": "Idioma",
         "lastRead": "Último leído",
-        "moreInfo": "Más información",
+        "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
         "noPublicationHelpL2": "o usa el botón \"+\" de arriba.",
@@ -109,7 +109,7 @@
         "sort": "Ordenar por",
         "tagCount": "Número de etiquetas",
         "tags": "Etiquetas",
-        "update": ""
+        "update": "Editar"
     },
     "dialog": {
         "cancel": "Cancelar",
@@ -118,7 +118,6 @@
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
         "import": "¿Seguro que quieres importar estos ficheros?",
         "importError": "Se ha producido un error, comprueba la extensión de tu fichero ({{acceptedExtension}})",
-        "no": "No",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
         "yes": "Sí"
@@ -147,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancelar",
             "hint": "(Pista : {{- hint}})",
             "password": "Contraseña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
@@ -206,43 +204,41 @@
         "shelf": "Estante",
         "updateForm": {
             "name": "Nombre",
-            "namePlaceholder": "Nombre",
             "title": "Editar catálogo OPDS",
             "updateButton": "Editar",
-            "url": "Enlace",
-            "urlPlaceholder": "Enlace"
+            "url": "Enlace"
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "Amigable con síntesis de voz y lectores de pantalla"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "Contiene alternativas de texto",
+                "displayTransformability": "Texto y diseño adaptables",
+                "longDescription": "Descripciones completas para recursos gráficos",
+                "printPageNumbers": "Referencia a la paginación del libro impreso",
+                "readingOrder": "Contiene orden de lectura",
+                "synchronizedAudioText": "Texto y audio sincronizados",
+                "tableOfContents": "Incluye tabla de contenido"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motion": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotion": "",
-                "noSimulation": "",
-                "noSound": "",
-                "none": "",
-                "simulation": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "Destellos",
+                "motionSimulation": "Animaciones",
+                "name": "Riesgo:",
+                "noFlashing": "Sin destellos",
+                "noMotionSimulation": "Sin animaciones",
+                "noSound": "Sin sonidos",
+                "none": "Ninguno",
+                "sound": "Sonidos",
+                "unknown": "Desconocidos"
             },
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "certifierReport": "Informe de la entidad certificadora",
+            "conformsTo": "Conforme con",
+            "moreInformation": "Más información",
+            "name": "Accesibilidad",
+            "noA11y": "No hay disponible información sobre accesibilidad"
         },
         "audio": {
             "tracks": "Pistas"
@@ -318,8 +314,8 @@
             "goToError": "Este salto de página no existe",
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
-            "historyNext": "",
-            "historyPrevious": "",
+            "historyNext": "Avanzar",
+            "historyPrevious": "Retroceder",
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",
