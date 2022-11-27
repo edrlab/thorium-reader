@@ -2,7 +2,7 @@
 
 ## Summary
 
-Version `2.2.0` was released on **28 November 2022**.
+Version `2.2.0` was released on **27 November 2022**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
