@@ -1,1 +1,1 @@
-export const isNodeJS: boolean;
+export const isNodeJS: any;

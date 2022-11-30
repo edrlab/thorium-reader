@@ -1,5 +1,5 @@
 /** @implements {IPDFStream} */
-export class PDFNetworkStream {
+export class PDFNetworkStream implements IPDFStream {
     constructor(source: any);
     _source: any;
     _manager: NetworkManager;
@@ -12,7 +12,7 @@ export class PDFNetworkStream {
     cancelAllRequests(reason: any): void;
 }
 declare class NetworkManager {
-    constructor(url: any, args: any);
+    constructor(url: any, args?: {});
     url: any;
     isHttp: boolean;
     httpHeaders: any;
@@ -30,7 +30,7 @@ declare class NetworkManager {
     abortRequest(xhrId: any): void;
 }
 /** @implements {IPDFStreamReader} */
-declare class PDFNetworkStreamFullRequestReader {
+declare class PDFNetworkStreamFullRequestReader implements IPDFStreamReader {
     constructor(manager: any, source: any);
     _manager: any;
     _url: any;
@@ -48,9 +48,9 @@ declare class PDFNetworkStreamFullRequestReader {
     _filename: string | null;
     onProgress: any;
     _onHeadersReceived(): void;
-    _onDone(args: any): void;
+    _onDone(data: any): void;
     _onError(status: any): void;
-    _onProgress(data: any): void;
+    _onProgress(evt: any): void;
     get filename(): string | null;
     get isRangeSupported(): boolean;
     get isStreamingSupported(): boolean;
@@ -61,17 +61,20 @@ declare class PDFNetworkStreamFullRequestReader {
     _fullRequestReader: any;
 }
 /** @implements {IPDFStreamRangeReader} */
-declare class PDFNetworkStreamRangeRequestReader {
+declare class PDFNetworkStreamRangeRequestReader implements IPDFStreamRangeReader {
     constructor(manager: any, begin: any, end: any);
     _manager: any;
+    _url: any;
     _requestId: any;
     _requests: any[];
     _queuedChunk: any;
     _done: boolean;
+    _storedError: import("../shared/util.js").MissingPDFException | import("../shared/util.js").UnexpectedResponseException | undefined;
     onProgress: any;
     onClosed: any;
     _close(): void;
     _onDone(data: any): void;
+    _onError(status: any): void;
     _onProgress(evt: any): void;
     get isStreamingSupported(): boolean;
     read(): Promise<any>;

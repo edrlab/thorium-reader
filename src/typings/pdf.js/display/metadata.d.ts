@@ -1,13 +1,11 @@
 export class Metadata {
-    constructor(data: any);
-    _metadataMap: Map<any, any>;
-    _data: any;
-    _repair(data: any): any;
-    _getSequence(entry: any): any;
-    _getCreators(entry: any): boolean;
-    _parse(xmlDocument: any): void;
+    constructor({ parsedData, rawData }: {
+        parsedData: any;
+        rawData: any;
+    });
     getRaw(): any;
     get(name: any): any;
     getAll(): any;
-    has(name: any): boolean;
+    has(name: any): any;
+    #private;
 }

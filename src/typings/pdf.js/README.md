@@ -1,4 +1,6 @@
 See:
 https://github.com/edrlab/pdf.js/blob/master/TYPESCRIPT_TYPE_DEFINITIONS.md
 
-https://github.com/edrlab/pdf.js/tree/87bc24f276747221164a701de8fa3c4417dfa65d/types
+Warning: ./build/types vs ./types
+
+https://github.com/edrlab/pdf.js/tree/467686c963f92ac6e135064dbca55ce6cba853e2/types
