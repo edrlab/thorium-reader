@@ -275,7 +275,7 @@
     "r2-lcp-js": "^1.0.36",
     "r2-navigator-js": "^1.11.6",
     "r2-opds-js": "^1.0.40",
-    "r2-shared-js": "^1.0.64",
+    "r2-shared-js": "^1.0.65",
     "r2-streamer-js": "^1.0.44",
     "r2-utils-js": "^1.0.32",
     "ramda": "^0.28.0",
