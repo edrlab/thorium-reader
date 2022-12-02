@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import * as path from "path";
-import { app } from "electron";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { diMainGet } from "readium-desktop/main/di";
@@ -165,99 +164,153 @@ export function setupMathJaxTransformer(getUrl: () => string) {
 
         if (settings.enableMathJax) {
             const thorium_mathJax_script = "thorium_mathJax_script";
-            const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
-            const options = !accessibilitySupportEnabled ?
+
+            // import { app } from "electron";
+            // const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
+            const options =
+            // !accessibilitySupportEnabled ?
 `
-options: {
-    // enableExplorer: true,
-    // enableAssistiveMml: true,
-    menuOptions: {
-        settings: {
-            explorer: true,
-            // assistiveMml: true
-        }
-    },
-    a11y: {
-        speech: true,
-        subtitles: false,
-        braille: false
-    }
+loader: {
+load: [
+'a11y/semantic-enrich',
+'a11y/assistive-mml',
+// 'a11y/explorer',
+// 'a11y/complexity',
+],
+},
+options:
+{
+menuOptions: {
+settings: {
+explorer: false,
+assistiveMml: true,
+collapsible: false,
+}
+},
+enableComplexity: false,
+// makeCollapsible: false,
+enableAssistiveMml: true,
+enableEnrichment: true,
+sre: {
+speech: 'shallow', // none, shallow, deep
+domain: 'mathspeak', // mathspeak, clearspeak
+style: 'default', // default, brief
+locale: 'en', // en, fr, es, de, it
+subiso: 'us', // fr => fr, be, ch
+markup: 'none', // none, ssml, sable, voicexml, acss, ssml_step
+modality: 'speech', // speech, braille, prefix, summary
+},
+// enrichError: (doc, math, err) => doc.enrichError(doc, math, err),
+enableExplorer: false,
+a11y: {
+speech: true,
+subtitles: false,
+braille: false,
+viewBraille: false,
+}
 },
 `
-:
-`
-`
+// :
+// `
+// `
 ;
             const script = `
 <script id='${thorium_mathJax_script}' type="text/javascript">
 // document.addEventListener("DOMContentLoaded", () => {
 // });
 window.addEventListener("load", () => {
-    setTimeout(() => {
-        var thisEl = document.getElementById('${thorium_mathJax_script}');
+setTimeout(() => {
+var thisEl = document.getElementById('${thorium_mathJax_script}');
 
-        if (window.MathJax) {
-            var msg = 'window.MathJax already exist, SKIP.';
-            if (thisEl) {
-                thisEl.setAttribute('data-msg', msg);
-            }
-            console.log(msg);
-            return;
-        }
+if (window.MathJax) {
+var msg = 'window.MathJax already exist, SKIP.';
+if (thisEl) {
+thisEl.setAttribute('data-msg', msg);
+}
+console.log(msg);
+return;
+}
 
-        if (document.getElementById('__${thorium_mathJax_script}')) {
-            var msg = '${thorium_mathJax_script} already exist, SKIP.';
-            if (thisEl) {
-                thisEl.setAttribute('data-msg', msg);
-            }
-            console.log(msg);
-            return;
-        }
+if (document.getElementById('__${thorium_mathJax_script}')) {
+var msg = '${thorium_mathJax_script} already exist, SKIP.';
+if (thisEl) {
+thisEl.setAttribute('data-msg', msg);
+}
+console.log(msg);
+return;
+}
 
-        // http://docs.mathjax.org/en/v3.2-latest/options/accessibility.html#explorer-extension-options
-        window.MathJax = {
-            ${options}
-            startup: {
-                ready: () => {
+// https://docs.mathjax.org/en/v3.2-latest/options/
+window.MathJax = {
+${options}
+startup: {
+ready: () => {
+var msg = 'Thorium MathJax ready';
+if (thisEl) {
+thisEl.setAttribute('data-msg', msg);
+}
+console.log(msg);
 
-                    var msg = 'MathJax is loaded, but not yet initialized';
-                    if (thisEl) {
-                        thisEl.setAttribute('data-msg', msg);
-                    }
-                    console.log(msg);
+window.MathJax.startup.promise.then(() => {
+var msg = 'Thorium MathJax startup.promise.then';
+if (thisEl) {
+thisEl.setAttribute('data-msg', msg);
+}
+console.log(msg);
 
-                    window.MathJax.startup.defaultReady();
+document.body.querySelectorAll('mjx-container').forEach((mcont) => {
+for (var mass of mcont.children) {
+// console.log('==== ', mass.tagName, mass.localName);
+if (mass.localName === 'mjx-assistive-mml' || mass.tagName.toLowerCase() === 'mjx-assistive-mml') {
+mass.removeAttribute('aria-hidden');
+// console.log('---- ', mass.firstElementChild.tagName, mass.firstElementChild.localName);
+if (mass.firstElementChild &amp;&amp;
+(mass.firstElementChild.localName === 'math' || mass.firstElementChild.tagName.toUpperCase() === 'MATH')
+) {
+var alttext = mass.firstElementChild.getAttribute('alttext');
+if (alttext) {
+mcont.setAttribute('aria-label', alttext);
+}
+}
+}
+}
+});
+});
 
-                    msg = 'MathJax is initialized, and the initial typeset is queued';
-                    if (thisEl) {
-                        thisEl.setAttribute('data-msg', msg);
-                    }
-                    console.log(msg);
+window.MathJax.startup.defaultReady();
 
-                    window.MathJax.startup.promise.then(() => {
-                        var msg = 'MathJax initial typesetting complete';
-                        if (thisEl) {
-                            thisEl.setAttribute('data-msg', msg);
-                        }
-                        console.log(msg);
-                    });
-                }
-            }
-        };
+msg = 'Thorium MathJax after startup.defaultReady';
+if (thisEl) {
+thisEl.setAttribute('data-msg', msg);
+}
+console.log(msg);
+},
+pageReady: () => {
+var msg = 'Thorium MathJax page ready';
+if (thisEl) {
+thisEl.setAttribute('data-msg', msg);
+}
+console.log(msg);
 
-        var msg = 'Thorium MathJax ...';
-        if (thisEl) {
-            thisEl.setAttribute('data-msg', msg);
-        }
-        console.log(msg);
+return window.MathJax.startup.defaultPageReady();
+}
+}
+};
 
-        var scriptEl = document.createElement('script');
-        scriptEl.setAttribute('id', '__${thorium_mathJax_script}');
-        // scriptEl.setAttribute('async', 'async');
-        scriptEl.setAttribute('onload', 'javascript:console.log("Thorium MathJax LOADED.")');
-        scriptEl.setAttribute('src', '${getUrl()}');
-        document.head.appendChild(scriptEl);
-    }, 500);
+var msg = 'Thorium MathJax ...';
+if (thisEl) {
+thisEl.setAttribute('data-msg', msg);
+}
+console.log(msg);
+
+var scriptEl = document.createElement('script');
+scriptEl.setAttribute('id', '__${thorium_mathJax_script}');
+// scriptEl.setAttribute('async', 'async');
+scriptEl.setAttribute('onload', 'javascript:console.log("Thorium MathJax LOADED.")');
+// https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
+scriptEl.setAttribute('src', '${getUrl()}');
+document.head.appendChild(scriptEl);
+}, 500);
 });
 </script>
 `;
