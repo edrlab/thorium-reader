@@ -102,6 +102,14 @@ export function setupMathJaxTransformer(getUrl: () => string) {
     `;
         str = str.replace(/<\/head>/, `${cssElectronMouseDrag}</head>`);
 
+        str = str.replace(/<head([^>]*)>/, `<head$1>
+<!-- https://github.com/edrlab/thorium-reader/issues/1897 -->
+<script type="text/javascript">
+window._thorium_websql_void_openDatabase = window.openDatabase;
+window.openDatabase = undefined;
+</script>
+`);
+
         const scriptTextDrag =
             `
     <script type="text/javascript">
