@@ -1,0 +1,439 @@
+{
+    "accessibility": {
+        "bookMenu": "Μενού",
+        "closeDialog": "Κλείσιμο",
+        "importFile": "Εισαγωγή μιας δημοσίευσης",
+        "leftSlideButton": "Μετακίνηση λίστας προς τα αριστερά",
+        "mainContent": "Κυρίως περιεχόμενο",
+        "rightSlideButton": "Μετακίνηση λίστας προς τα δεξιά",
+        "searchBook": "Αναζήτηση με τίτλο",
+        "skipLink": "Μετάβαση στο περιεχόμενο",
+        "toolbar": "Γραμμή εργαλείων"
+    },
+    "apiapp": {
+        "noLibraryFound": "Δεν βρέθηκε βιβλιοθήκη ({{- name}})"
+    },
+    "app": {
+        "edit": {
+            "copy": "Αντιγραφή",
+            "cut": "Αποκοπή",
+            "paste": "Επικόλληση",
+            "redo": "Επανάληψη",
+            "selectAll": "Επιλογή όλων",
+            "title": "Επεξεργασία",
+            "undo": "Αναίρεση"
+        },
+        "hide": "Απόκρυψη {{- appName}}",
+        "quit": "Εγκατάληψη {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Όχι",
+                        "yes": "Ναι"
+                    },
+                    "message": "Θέλεις να αποθηκεύσεις τη συνεδρία;",
+                    "title": Αποθήκευση συνεδρίας"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": "Εμφάνιση βιβλιοθήκης"
+        }
+    },
+    "catalog": {
+        "about": {
+            "button": "Περισσότερες πληροφορίες",
+            "title": "Σχετικά {{- appName}}"
+        },
+        "addBookToLib": "Εισαγωγή",
+        "addTags": "΄Πρόσθεσε μια ετικέτα",
+        "addTagsButton": "Προσθήκη",
+        "allBooks": "Όλα τα βιβλία",
+        "bookInfo": "Σχετικά με αυτό το βιβλίο",
+        "column": {
+            "ascending": "Αύξουσα",
+            "descending": "Φθίνουσα",
+            "unsorted": "Χωρίς ταξινόμηση"
+        },
+        "delete": "Διαγραφή",
+        "deleteBook": "Διαγραφή",
+        "deleteTag": "Διαγραφή ετικέτας",
+        "description": "Περιγραφή",
+        "emptyTagList": "Καμία ετικέτα για το ebook.",
+        "entry": {
+            "continueReading": "Συνέχιση ανάγνωσης",
+            "continueReadingAudioBooks": "Συνέχιση ακρόασης",
+            "continueReadingDivina": "Συνέχιση divina",
+            "continueReadingPdf": "Συνέχιση PDF",
+            "lastAdditions": "Πρόσφατη προσθήκη"
+        },
+        "export": "Εξαγωγή",
+        "format": "Διαμόρφωση (format)",
+        "lang": "Γλώσσα",
+        "lastRead": "Τελευταία ανάγνωση",
+        "moreInfo": "Λεπτομέρειες βιβλίου",
+        "myBooks": "Τα βιβλία μου",
+        "noPublicationHelpL1": "Εναπόθεση δημοσίευσης εδώ",
+        "noPublicationHelpL2": "ή χρήση του \"+\" παραπάνω κουμπιού (button).",
+        "noPublicationHelpL3": "Υποστηρίζεται LCP προστασία αρχείων.",
+        "noPublicationHelpL4": "Συνεργαζόμενες επεκτάσεις αρχείων:",
+        "numberOfPages": "Σύνολο σελίδων",
+        "opds": {
+            "auth": {
+                "cancel": "Ακύρωση",
+                "login": "Είσοδος"
+            },
+            "info": {
+                "availableSince": "Από",
+                "availableState": {
+                    "available": "Διαθέσιμο",
+                    "ready": "Έτοιμο",
+                    "reserved": "Δεσμευμένο",
+                    "unavailable": "Μη διαθέσιμο",
+                    "unknown": "Άγνωστο"
+                },
+                "availableUntil": "Μέχρι",
+                "copyAvalaible": "Διαθέσιμο",
+                "copyTotal": "Αντίγραφα",
+                "holdPosition": "Η θέση κράτησής σας",
+                "holdTotal": "Κρατήθηκε",
+                "numberOfItems": "Σύνολο αντικειμένων",
+                "priveValue": "Τιμή",
+                "state": "Κατάσταση"
+            }
+        },
+        "publisher": "Εκδότης",
+        "readBook": "Ανάγνωση",
+        "released": "Δημοσίευση το",
+        "sort": "Ταξινόμηση με",
+        "tagCount": "Αριθμός ετικετών",
+        "tags": "Ετικέτες",
+        "update": "Επεξεργασία"
+    },
+    "dialog": {
+        "cancel": "Ακύρωση",
+        "closeModalWindow": "Κλείσιμο αυτού του αναδυόμενου παραθύρου",
+        "deleteFeed": "Επιβεβαίωση διαγραφής αυτού του καταλόγου",
+        "deletePublication": "Επιβεβαίωση διαγραφής αυτής της δημοσίευσης",
+        "import": "Επιβεβαίωση αποδοχής της εισαγωγής αυτών των αρχείων:",
+        "importError": "Ένα σφάλμα προέκυψε, απαιτείται επαλήθευση της επέκτασης του αρχείου ({{acceptedExtension}})",
+        "renew": "Επιβεβαίωση ανανέωσης άδειας αυτής της δημοσίευσης",
+        "return": "Επιβεβαίωση επιστροφής της άδειας αυτής της δημοσίευσης",
+        "yes": "Ναι"
+    },
+    "error": {
+        "errorBox": {
+            "error": "Μήνυμα σφάλματος:",
+            "message": "Ένα σφάλμα προέκυψε στο {{- filename}}",
+            "title": "Εσωτερικό {{- appName}} Σφάλμα"
+        }
+    },
+    "header": {
+        "allBooks": "Όλα τα βιβλία",
+        "books": "Τα βιβλία μου",
+        "catalogs": "Κατάλογοι",
+        "downloads": "Λήψεις",
+        "gridTitle": "Προβολή πλέγματος",
+        "home": "Μενού βιβλιοθήκης",
+        "homeTitle": "Αρχική",
+        "importTitle": "Εισαγωγή μιας δημοσίευσης",
+        "listTitle": "Προβολή λίστας",
+        "refreshTitle": "Επαναφόρτωση",
+        "searchPlaceholder": "Αναζήτηση",
+        "searchTitle": "Έναρξη αναζήτησης",
+        "settings": "Ρυθμίσεις"
+    },
+    "library": {
+        "lcp": {
+            "hint": "(Υπόδειξη: {{- hint}})",
+            "password": "Συνθηματική φράση",
+            "sentence": "Αυτή η δημοσίευση χρειάζεται μια συνθηματική φράση LCP για να ανοίξει: ",
+            "submit": "Υποβολή",
+            "urlHint": "Στην περίπτωση αδυναμίας ανάκτησης της συνθηματικής φράσης, εδώ διατίθεται βοήθεια"
+        }
+    },
+    "message": {
+        "download": {
+            "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "{{- title}} έχει ήδη εισαχθεί",
+            "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
+            "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
+        },
+        "open": {
+            "error": "Η δημοσίευση δεν μπορεί να ανοίξει: {{- err}}"
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Προσθήκη",
+            "name": "Όνομα:",
+            "namePlaceholder": "Όνομα",
+            "title": "Προσθήκη τροφοδοσίας OPDS",
+            "url": "Σύνδεσμός:",
+            "urlPlaceholder": "Σύνδεσμός"
+        },
+        "addFormApiapp": {
+            "title": "Προσθήκη λογαριασμού βιβλιοθήκης"
+        },
+        "addMenu": "Προσθήκη τροφοδοσίας OPDS",
+        "back": "Πίσω",
+        "breadcrumbRoot": "Κατάλογοι",
+        "empty": "Δεν βρέθηκε καμία δημοσίευση",
+        "firstPage": "Πρώτη σελίδα",
+        "lastPage": "Τελευταία σελίδα",
+        "menu": {
+            "aboutBook": "Σχετικά με αυτό το βιβλίο",
+            "addExtract": "Εισαγωγή αποσπάσματος",
+            "goBuyBook": "Αγόρασε αυτό το βιβλίο",
+            "goLoanBook": "Δανείσου αυτό το βιβλίο",
+            "goRevokeLoanBook": "Ανάκληση δανεισμού",
+            "goSubBook": "Εγγραφή"
+        },
+        "network": {
+            "error": "Σφάλμα πρόσβασης στην τροφοδοσία",
+            "noInternet": "Δεν υπάρχει internet",
+            "noInternetMessage": "Δοκιμή: έλεγχος του καλωδίου δικτύου, του μόντεμ, του δρομολογητή (router) ή του wifi",
+            "reject": "Συγγνώμη, προέκυψε ένα απροσδόκητο σφάλμα κατά την προσπάθεια επεξεργασίας της τροφοδοσίας",
+            "timeout": "Υπήρξε ένα χρονικό όριο (timeout) δικτύου, δοκιμάστε ξανά αργότερα"
+        },
+        "next": "Επόμενο",
+        "previous": "Προηγούμενο",
+        "shelf": "Ράφι",
+        "updateForm": {
+            "name": "Όνομα:",
+            "title": "Επεξεργασία μιας τροφοδοσίας OPDS",
+            "updateButton": "Επεξεργασία",
+            "url": "Σύνδεσμος:"
+        }
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "Λειτουργία TTS & φιλικό σε αναγνώστη οθόνης"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Περιέχει εναλλακτικό κείμενο",
+                "displayTransformability": "Προσαρμόσιμο κείμενο και διάταξή του",
+                "longDescription": "Πλήρης περιγραφή γραφικών",
+                "printPageNumbers": "Αναφορά σελιδοποίησης τυπωμένου βιβλίου",
+                "readingOrder": "Περιέχει σειρά ανάγνωσής",
+                "synchronizedAudioText": "Συγχρονισμός κειμένου και ήχου",
+                "tableOfContents": "Περιέχει έναν πίνακα περιεχομένων"
+            },
+            "accessibilityHazard": {
+                "flashing": "Με φωτεινή προειδοποίηση (flashing)",
+                "motionSimulation": "Προσομοίωση κίνησης",
+                "name": "Κίνδυνος:",
+                "noFlashing": "Χωρίς φωτεινή προειδοποίηση (no flashing)",
+                "noMotionSimulation": "Χωρίς προσομοίωση κίνησης",
+                "noSound": "Χωρίς ήχος",
+                "none": "Κανένα",
+                "sound": "Ήχος",
+                "unknown": "Άγνωστο"
+            },
+            "certifierReport": "Έκθεση πιστοποίησης",
+            "conformsTo": "Συμμορφώνεται με:",
+            "moreInformation": "Περισσότερες πληροφορίες",
+            "name": "Προσβασιμότητα",
+            "noA11y": "Δεν διατίθενται πληροφορίες προσβασιμότητας"
+        },
+        "audio": {
+            "tracks": "Κομμάτια"
+        },
+        "author": "Συγγραφέας",
+        "cancelledLcp": "Αυτό το βιβλίο δεν μπορεί να διαβαστεί επειδή η άδεια LCP έχει ακυρωθεί.",
+        "certificateRevoked": "Το πιστοποιητικό ανακλήθηκε",
+        "certificateSignatureInvalid": "Η υπογραφή του πιστοποιητικού είναι άκυρη",
+        "cover": {
+            "img": "Εικόνα εξωφύλλου"
+        },
+        "duration": {
+            "title": "Διάρκεια"
+        },
+        "expiredLcp": "Αυτό το βιβλίο δεν μπορεί να διαβαστεί επειδή η άδεια χρήσης LCP έχει λήξει.",
+        "lcpEnd": "Τέλος",
+        "lcpRightsCopy": "Αντιγραμμένοι χαρακτήρες",
+        "lcpRightsPrint": ""Εκτυπωμένες σελίδες",
+        "lcpStart": "Αρχή",
+        "licenseOutOfDate": "Η άδεια έχει λήξει",
+        "licenseSignatureDateInvalid": "Η ημερομηνία υπογραφής της άδειας είναι άκυρη",
+        "licenseSignatureInvalid": "Η υπογραφή της άδειας είναι άκυρη",
+        "progression": {
+            "title": "Πρόοδος"
+        },
+        "renewButton": "Ανανέωση",
+        "returnButton": "Επιστροφή",
+        "returnedLcp": "Αυτό το βιβλίο δεν μπορεί να διαβαστεί επειδή η άδεια LCP έχει επιστραφεί.",
+        "revokedLcp": "Αυτό το βιβλίο δεν μπορεί να διαβαστεί επειδή η άδεια του LCP έχει ανακληθεί.",
+        "seeLess": "Εμφάνιση λιγότερων",
+        "seeMore": "Εμφάνιση περισσότερων",
+        "title": "Τίτλος",
+        "userKeyCheckInvalid": "Η φράση πρόσβασης είναι λανθασμένη"
+    },
+    "reader": {
+        "divina": {
+            "mute": "Σίγαση ήχου",
+            "unmute": "Ενεργοποίηση ήχου"
+        },
+        "footerInfo": {
+            "lessInfo": "Λιγότερες πληροφορίες",
+            "moreInfo": "Περισσότερες πληροφορίες"
+        },
+        "marks": {
+            "annotations": "Σχόλια",
+            "bookmarks": "Σελιδοδείκτες",
+            "delete": "Διαγραφή",
+            "edit": "Επεξεργασία",
+            "landmarks": "Ορόσημα",
+            "search": "Αναζήτηση",
+            "toc": "Πίνακας περιεχομένων"
+        },
+        "media-overlays": {
+            "activate": "Ενεργοποίηση λειτουργίας προφορικού αναγνώστη (Readaloud)",
+            "captions": "Λεζάντες / Καθάρισμα οθόνης",
+            "next": "Επόμενο για τη λειτουργία Readaloud",
+            "pause": "Παύση λειτουργίας Readaloud",
+            "play": "Έναρξη λειτουργίας Readaloud",
+            "previous": "Προηγούμενο για τη λειτουργία Readaloud",
+            "skip": "Δυνατότητα παράλειψης",
+            "speed": "Ρυθμός αναπαραγωγής λειτουργίας Readaloud",
+            "stop": "Σταμάτημα λειτουργίας Readaloud",
+            "title": "Λειτουργία προφορικού αναγνώστη / Readaloud"
+        },
+        "navigation": {
+            "backHomeTitle": "Πίσω στη βιβλιοθήκη",
+            "bookmarkTitle": "Σελιδοδείκτης",
+            "currentPage": "Τρέχουσα σελίδα: {{- current}}",
+            "currentPageTotal": "Τρέχουσα σελίδα: {{- current}}/{{- total}}",
+            "detachWindowTitle": "Εμφάνιση παραθύρου βιβλιοθήκης",
+            "fullscreenTitle": "Άνοιγμα λειτουργίας πλήρους οθόνης",
+            "goTo": "Μετάβαση σε",
+            "goToError": "Αυτή η σελίδα δεν υπάρχει",
+            "goToPlaceHolder": "Συμπλήρωσε μια σελιδαρίθμηση",
+            "goToTitle": "Μετάβαση στη σελίδα",
+            "historyNext": "Μετάβαση προς τα εμπρός",
+            "historyPrevious": "Μετάβαση προς τα πίσω",
+            "infoTitle": "Πληροφορίες",
+            "magnifyingGlassButton": "Αναζήτηση στην δημοσίευση",
+            "openTableOfContentsTitle": "Πλοήγηση",
+            "pdfscalemode": "Εφαρμογή στη σελίδα ή σε ρύθμισης πλάτους",
+            "quitFullscreenTitle": "Τερματισμός λειτουργίας πλήρους οθόνης",
+            "readBookTitle": "Έναρξη διαβάσματος βιβλίου",
+            "settingsTitle": "Ρυθμίσεις"
+        },
+        "picker": {
+            "annotationTitle": "Σημειώσεις:",
+            "search": {
+                "founds": "{{- nResults}} αποτελέσματα",
+                "input": "Κείμενο προς ανάκτηση",
+                "next": "Επόμενο",
+                "notFound": "Καμία αντιστοιχία",
+                "previous": "Προηγούμενο",
+                "submit": "Ψάξε"
+            },
+            "searchTitle": "Αναζήτηση:"
+        },
+        "settings": {
+            "column": {
+                "auto": "Αυτόματα",
+                "one": "1 στήλη",
+                "oneTitle": "Μία στήλη",
+                "title": "Στήλες",
+                "two": "2 στήλες",
+                "twoTitle": "Δύο στήλες"
+            },
+            "display": "Εμφάνιση",
+            "disposition": {
+                "title": "Διάταξη"
+            },
+            "font": "Γραμματοσειρά",
+            "fontSize": "Μέγεθος γραμματοσειράς",
+            "justification": "Στοίχιση",
+            "justify": "Πλήρης",
+            "letterSpacing": "Διάστημα μεταξύ γραμμάτων",
+            "lineSpacing": "Διάστημα μεταξύ γραμμών",
+            "margin": "Περιθώριο",
+            "noFootnotes": "Απενεργοποίηση υποσημειώσεων",
+            "paginated": "Σελιδοποιημένο",
+            "paraSpacing": "Διάστημα μεταξύ παραγράφων",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "Προσαρμογή στη σελίδα",
+                    "width": "Πλάτος σελίδας"
+                },
+                "title": "Ρύθμιση μεγέθυνσης"
+            },
+            "reduceMotion": "Μείωση κίνησης",
+            "save": {
+                "apply": "Αποθήκευση",
+                "reset": "Επαναφορά",
+                "title": "Διαμόρφωση"
+            },
+            "scrolled": "Μετακυλίσιμο",
+            "spacing": "Διαστήματα",
+            "text": "Κείμενο",
+            "theme": {
+                "name": {
+                    "Neutral": "Ουδέτερο",
+                    "Night": "Νυχτερινό",
+                    "Sepia": "Sepia"
+                },
+                "title": "Θέμα (theme)"
+            },
+            "wordSpacing": "Απόσταση μεταξύ λέξεων"
+        },
+        "svg": {
+            "left": "Αριστερά",
+            "right": "Δεξιά"
+        },
+        "toc": {
+            "publicationNoToc": "Η παρούσα δημοσίευση δεν διαθέτει πίνακα περιεχομένων"
+        },
+        "tts": {
+            "activate": "Ενεργοποίηση λειτουργίας μετατροπής κειμένου σε ομιλία (TTS)",
+            "default": "Φωνή: προεπιλογή συστήματος",
+            "next": "Επόμενο κείμενο λειτουργίας μετατροπής κειμένου σε ομιλία (TTS)",
+            "pause": "Παύση λειτουργίας μετατροπής κειμένου σε ομιλία (TTS)",
+            "play": "Έναρξη λειτουργίας μετατροπής κειμένου σε ομιλία (TTS)",
+            "previous": "Προηγούμενο λειτουργίας Text To Speech",
+            "sentenceDetect": "Διαχωρισμός κειμένου λειτουργίας μετατροπής κειμένου σε ομιλία (TTS)",
+            "speed": "Ταχύτητα αναπαραγωγής λειτουργίας μετατροπής κειμένου σε ομιλία (TTS)",
+            "stop": "Κλείσιμο λειτουργίας μετατροπής κειμένου σε ομιλία (TTS)",
+            "voice": "Φωνή λειτουργίας μετατροπής κειμένου σε ομιλία (TTS)"
+        }
+    },
+    "settings": {
+        "auth": {
+            "wipeData": "Διαγραφή δεδομένων ελέγχου ταυτότητας"
+        },
+        "keyboard": {
+            "advancedMenu": "Μενού",
+            "cancel": "Ακύρωση",
+            "edit": "Επεξεργασία",
+            "editUserJson": "Επεξεργασία αρχείο χρήστη...",
+            "hide": "Απόκρυψη",
+            "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
+            "loadUserJson": "Φόρτωση από αρχείο χρήστη",
+            "resetDefaults": "Επαναφορά (φόρτωση προεπιλογών)",
+            "save": "Αποθήκευση",
+            "show": "Εμφάνιση"
+        },
+        "language": {
+            "languageChoice": "Επιλογή γλώσσας"
+        },
+        "session": {
+            "no": "Ανενεργή",
+            "title": "Αποθήκευση συνεδρίας",
+            "yes": "Ενεργή"
+        }
+    }
+}
