@@ -17,6 +17,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { Transformers } from "@r2-shared-js/transform/transformer";
 import { TransformerHTML } from "@r2-shared-js/transform/transformer-html";
+import { TransformerSVG } from "./transformer-svg";
 
 const debug = debug_("readium-desktop:main#streamerCommon");
 
@@ -371,6 +372,57 @@ document.head.appendChild(scriptEl);
         }
     };
     Transformers.instance().add(new TransformerHTML(transformerMathJax));
+
+    const transformerSVG = (
+        _publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
+
+        // see setEpubReadingSystemInfo() in Reader.tsx
+        // see setWindowNavigatorEpubReadingSystem() in r2-navigator-js/preload.ts
+        // this will automatically be injected in iframes (recursively, see related transformerIFrames())
+        str = str.replace(/<svg([^>]*)>/, `<svg$1>
+<script type="text/javascript">
+
+const ers = {};
+ers.name = "${_APP_NAME}";
+ers.version = "${_APP_VERSION}";
+
+ers.hasFeature = (feature, version) => {
+    switch (feature) {
+        case "dom-manipulation": {
+            return true;
+        }
+        case "layout-changes": {
+            return true;
+        }
+        case "touch-events": {
+            return true;
+        }
+        case "mouse-events": {
+            return true;
+        }
+        case "keyboard-events": {
+            return true;
+        }
+        case "spine-scripting": {
+            return true;
+        }
+        default: return false;
+    }
+};
+
+if (!window.navigator.epubReadingSystem
+    || window.navigator.epubReadingSystem.name != "${_APP_NAME}"
+    || window.navigator.epubReadingSystem.version != "${_APP_VERSION}"
+    ) {
+    window.navigator.epubReadingSystem = ers;
+}
+
+</script>
+`);
+
+        return str;
+    };
+    Transformers.instance().add(new TransformerSVG(transformerSVG));
 }
 
 // Seen in some InDesign-generated fixed layout FXL pre-paginated EPUBs that have blank pages, literally empty body!
