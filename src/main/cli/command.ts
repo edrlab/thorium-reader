@@ -66,13 +66,8 @@ export const opdsCommand = async (argv: yargs.Arguments<{
 };
 
 export const importCommand = async (argv: yargs.Arguments<{
-    title: string;
-} & {
-    url: string;
-} & {
     path: string;
 }>) => {
-
 
     const pathArray = glob.sync(argv.path, {
         absolute: true,
