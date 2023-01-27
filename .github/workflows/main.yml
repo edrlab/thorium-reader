@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest, macos-latest, ubuntu-20.04]
         include:
           - os: windows-latest
             osname: windows
@@ -47,7 +47,7 @@ jobs:
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     #   with:
     #     persist-credentials: false
     # - name: Git config global dump (pre)
@@ -78,12 +78,12 @@ jobs:
     - name: Git config local dump (post)
       run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
       shell: bash
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '18'
         #check-latest: true
     - run: node --version && npm --version
-    - run: npm --global install npm@^8
+    - run: npm --global install npm@^9
     - run: npm --version
     # - run: npm --global install asar
     - name: package patch 1
