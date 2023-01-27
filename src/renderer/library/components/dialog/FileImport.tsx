@@ -55,7 +55,7 @@ class FileImport extends React.Component<IProps, undefined> {
                         <div className={stylesModals.modal_dialog_body}>
                             {
                                 this.props.__("dialog.importError", {
-                                    acceptedExtension: acceptedExtensionArray.join(" | "),
+                                    acceptedExtension: acceptedExtensionArray.join(" "),
                                 })
                             }
                         </div>

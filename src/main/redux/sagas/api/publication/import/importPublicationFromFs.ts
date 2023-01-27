@@ -27,6 +27,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { DaisyParsePromise } from "@r2-shared-js/parser/daisy";
 import { convertDaisyToReadiumWebPub } from "@r2-shared-js/parser/daisy-convert-to-epub";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+import { acceptedExtensionArray } from "readium-desktop/common/extension";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationFromFs");
@@ -145,9 +146,10 @@ export async function importPublicationFromFS(
             break;
 
         default:
-
             debug("extension not recognized", ext);
-            throw new Error("Content-type from server not recognized : " + ext);
+            throw new Error(diMainGet("translator").translate("dialog.importError", {
+                acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
+            }));
     }
 
     if (!r2Publication) {
