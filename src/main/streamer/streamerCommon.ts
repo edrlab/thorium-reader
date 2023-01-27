@@ -10,7 +10,7 @@ import * as path from "path";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { diMainGet } from "readium-desktop/main/di";
-import { _NODE_MODULE_RELATIVE_URL, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING } from "readium-desktop/preprocessor-directives";
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -102,11 +102,53 @@ export function setupMathJaxTransformer(getUrl: () => string) {
     `;
         str = str.replace(/<\/head>/, `${cssElectronMouseDrag}</head>`);
 
+        // see setEpubReadingSystemInfo() in Reader.tsx
+        // see setWindowNavigatorEpubReadingSystem() in r2-navigator-js/preload.ts
+        // this will automatically be injected in iframes (recursively, see related transformerIFrames())
         str = str.replace(/<head([^>]*)>/, `<head$1>
 <!-- https://github.com/edrlab/thorium-reader/issues/1897 -->
 <script type="text/javascript">
 window._thorium_websql_void_openDatabase = window.openDatabase;
 window.openDatabase = undefined;
+</script>
+
+<script type="text/javascript">
+
+const ers = {};
+ers.name = "${_APP_NAME}";
+ers.version = "${_APP_VERSION}";
+
+ers.hasFeature = (feature, version) => {
+    switch (feature) {
+        case "dom-manipulation": {
+            return true;
+        }
+        case "layout-changes": {
+            return true;
+        }
+        case "touch-events": {
+            return true;
+        }
+        case "mouse-events": {
+            return true;
+        }
+        case "keyboard-events": {
+            return true;
+        }
+        case "spine-scripting": {
+            return true;
+        }
+        default: return false;
+    }
+};
+
+if (!window.navigator.epubReadingSystem
+    || window.navigator.epubReadingSystem.name != "${_APP_NAME}"
+    || window.navigator.epubReadingSystem.version != "${_APP_VERSION}"
+    ) {
+    window.navigator.epubReadingSystem = ers;
+}
+
 </script>
 `);
 
