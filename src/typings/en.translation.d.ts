@@ -275,7 +275,6 @@ declare namespace typed_i18n {
   readonly "deletePublication": string,
   readonly "import": string,
   readonly "importError": string,
-  readonly "no": string,
   readonly "renew": string,
   readonly "return": string,
   readonly "yes": string
@@ -286,7 +285,7 @@ declare namespace typed_i18n {
   (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
   (_: "dialog.importError", __?: {}): string;
-  (_: "dialog.no", __?: {}): string; (_: "dialog.renew", __?: {}): string;
+  (_: "dialog.renew", __?: {}): string;
   (_: "dialog.return", __?: {}): string; (_: "dialog.yes", __?: {}): string;
   (_: "error", __?: {}): {
   readonly "errorBox": {
@@ -333,7 +332,6 @@ declare namespace typed_i18n {
   (_: "header.settings", __?: {}): string;
   (_: "library", __?: {}): {
   readonly "lcp": {
-    readonly "cancel": string,
     readonly "hint": string,
     readonly "password": string,
     readonly "sentence": string,
@@ -342,14 +340,12 @@ declare namespace typed_i18n {
   }
 };
   (_: "library.lcp", __?: {}): {
-  readonly "cancel": string,
   readonly "hint": string,
   readonly "password": string,
   readonly "sentence": string,
   readonly "submit": string,
   readonly "urlHint": string
 };
-  (_: "library.lcp.cancel", __?: {}): string;
   (_: "library.lcp.hint", __?: {}): string;
   (_: "library.lcp.password", __?: {}): string;
   (_: "library.lcp.sentence", __?: {}): string;
@@ -412,11 +408,9 @@ declare namespace typed_i18n {
   readonly "shelf": string,
   readonly "updateForm": {
     readonly "name": string,
-    readonly "namePlaceholder": string,
     readonly "title": string,
     readonly "updateButton": string,
-    readonly "url": string,
-    readonly "urlPlaceholder": string
+    readonly "url": string
   }
 };
   (_: "opds.addForm", __?: {}): {
@@ -469,18 +463,14 @@ declare namespace typed_i18n {
   (_: "opds.shelf", __?: {}): string;
   (_: "opds.updateForm", __?: {}): {
   readonly "name": string,
-  readonly "namePlaceholder": string,
   readonly "title": string,
   readonly "updateButton": string,
-  readonly "url": string,
-  readonly "urlPlaceholder": string
+  readonly "url": string
 };
   (_: "opds.updateForm.name", __?: {}): string;
-  (_: "opds.updateForm.namePlaceholder", __?: {}): string;
   (_: "opds.updateForm.title", __?: {}): string;
   (_: "opds.updateForm.updateButton", __?: {}): string;
   (_: "opds.updateForm.url", __?: {}): string;
-  (_: "opds.updateForm.urlPlaceholder", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "accessibility": {
     readonly "accessModeSufficient": { readonly "textual": string },
@@ -501,7 +491,6 @@ declare namespace typed_i18n {
       readonly "noMotionSimulation": string,
       readonly "noSound": string,
       readonly "none": string,
-      readonly "simulation": string,
       readonly "sound": string,
       readonly "unknown": string
     },
@@ -555,7 +544,6 @@ declare namespace typed_i18n {
     readonly "noMotionSimulation": string,
     readonly "noSound": string,
     readonly "none": string,
-    readonly "simulation": string,
     readonly "sound": string,
     readonly "unknown": string
   },
@@ -591,7 +579,6 @@ declare namespace typed_i18n {
   readonly "noMotionSimulation": string,
   readonly "noSound": string,
   readonly "none": string,
-  readonly "simulation": string,
   readonly "sound": string,
   readonly "unknown": string
 };
@@ -602,7 +589,6 @@ declare namespace typed_i18n {
   (_: "publication.accessibility.accessibilityHazard.noMotionSimulation", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.noSound", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.none", __?: {}): string;
-  (_: "publication.accessibility.accessibilityHazard.simulation", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.sound", __?: {}): string;
   (_: "publication.accessibility.accessibilityHazard.unknown", __?: {}): string;
   (_: "publication.accessibility.certifierReport", __?: {}): string;
