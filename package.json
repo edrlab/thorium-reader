@@ -257,7 +257,7 @@
     "debounce": "^1.2.1",
     "debug": "^4.3.4",
     "divina-player-js": "git+https://github.com/readium/divina-player-js.git#4e1f859afb14b916923ec136af0284a72e22a990",
-    "dompurify": "^3.0.0",
+    "dompurify": "^3.0.1",
     "fetch-cookie": "^2.1.0",
     "glob": "^9.1.0",
     "history": "^5.3.0",
