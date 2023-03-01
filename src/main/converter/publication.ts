@@ -269,19 +269,20 @@ export class PublicationViewConverter {
             isFXL,
             lastReadTimeStamp,
 
-            a11y_accessMode: r2Publication.Metadata.AccessMode, // string[]
-            a11y_accessibilityFeature: r2Publication.Metadata.AccessibilityFeature, // string[]
-            a11y_accessibilityHazard: r2Publication.Metadata.AccessibilityHazard, // string[]
+            // legacy vs. modern a11y metadata structure
+            a11y_accessMode: r2Publication.Metadata.Accessibility?.AccessMode || r2Publication.Metadata.AccessMode, // string[]
+            a11y_accessibilityFeature: r2Publication.Metadata.Accessibility?.Feature || r2Publication.Metadata.AccessibilityFeature, // string[]
+            a11y_accessibilityHazard: r2Publication.Metadata.Accessibility?.Hazard || r2Publication.Metadata.AccessibilityHazard, // string[]
 
-            a11y_certifiedBy: r2Publication.Metadata.CertifiedBy, // string[]
-            a11y_certifierCredential: r2Publication.Metadata.CertifierCredential, // string[]
-            a11y_certifierReport: r2Publication.Metadata.CertifierReport, // string[]
-            a11y_conformsTo: r2Publication.Metadata.ConformsTo, // string[]
+            a11y_certifiedBy: r2Publication.Metadata.Accessibility?.Certification?.CertifiedBy || r2Publication.Metadata.CertifiedBy, // string[]
+            a11y_certifierCredential: r2Publication.Metadata.Accessibility?.Certification?.Credential || r2Publication.Metadata.CertifierCredential, // string[]
+            a11y_certifierReport: r2Publication.Metadata.Accessibility?.Certification?.Report || r2Publication.Metadata.CertifierReport, // string[]
+            a11y_conformsTo: r2Publication.Metadata.Accessibility?.ConformsTo || r2Publication.Metadata.ConformsTo, // string[]
 
-            a11y_accessModeSufficient: r2Publication.Metadata.AccessModeSufficient, // (string[])[]
+            a11y_accessModeSufficient: r2Publication.Metadata.Accessibility?.AccessModeSufficient || r2Publication.Metadata.AccessModeSufficient, // (string[])[]
 
             // convertMultiLangStringToString
-            a11y_accessibilitySummary: r2Publication.Metadata.AccessibilitySummary, // string | IStringMap
+            a11y_accessibilitySummary: r2Publication.Metadata.Accessibility?.Summary || r2Publication.Metadata.AccessibilitySummary, // string | IStringMap
 
             identifier: document.identifier, // preserve Identifiable identifier
 

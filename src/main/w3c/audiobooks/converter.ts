@@ -23,6 +23,9 @@ import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
 
 import { htmlTocToLinkArray } from "./toc";
 
+import { AccessibilityMetadata } from "@r2-shared-js/models/metadata-accessibility";
+// import { AccessibilityCertification } from "@r2-shared-js/models/metadata-accessibility-certification";
+
 // Logger
 const debug = debug_("readium-desktop:main#w3c/audiobooks/converter");
 
@@ -413,7 +416,20 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
         const rawArray = (Array.isArray(raw) ? raw : [raw]);
         const rawArrayFiltered = rawArray.filter((l) => typeof l === "string");
         if (rawArrayFiltered.length) {
+            // legacy
             publication.Metadata.AccessMode = rawArrayFiltered;
+            // modern
+            if (!publication.Metadata.Accessibility) {
+                publication.Metadata.Accessibility = {} as AccessibilityMetadata;
+            }
+            publication.Metadata.Accessibility.AccessMode = rawArrayFiltered;
+            // if (!publication.Metadata.Accessibility.Certification) {
+            //     publication.Metadata.Accessibility.Certification = {} as AccessibilityCertification;
+            // }
+            // if (!publication.Metadata.Accessibility.Certification.Credential) {
+            //     publication.Metadata.Accessibility.Certification.Credential = [];
+            // }
+            // publication.Metadata.Accessibility.Certification.Credential.push(val);
         }
     }
     {
@@ -430,7 +446,13 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
             .filter((f) => f?.length);
 
         if (rawArrayFormated.length) {
+            // legacy
             publication.Metadata.AccessModeSufficient = rawArrayFormated;
+            // modern
+            if (!publication.Metadata.Accessibility) {
+                publication.Metadata.Accessibility = {} as AccessibilityMetadata;
+            }
+            publication.Metadata.Accessibility.AccessModeSufficient = rawArrayFormated;
         }
     }
     {
@@ -438,7 +460,13 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
         const rawArray = (Array.isArray(raw) ? raw : [raw]);
         const rawArrayFiltered = rawArray.filter((l) => typeof l === "string");
         if (rawArrayFiltered.length) {
+            // legacy
             publication.Metadata.AccessibilityFeature = rawArrayFiltered;
+            // modern
+            if (!publication.Metadata.Accessibility) {
+                publication.Metadata.Accessibility = {} as AccessibilityMetadata;
+            }
+            publication.Metadata.Accessibility.Feature = rawArrayFiltered;
         }
     }
     {
@@ -446,14 +474,26 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
         const rawArray = (Array.isArray(raw) ? raw : [raw]);
         const rawArrayFiltered = rawArray.filter((l) => typeof l === "string");
         if (rawArrayFiltered.length) {
+            // legacy
             publication.Metadata.AccessibilityHazard = rawArrayFiltered;
+            // modern
+            if (!publication.Metadata.Accessibility) {
+                publication.Metadata.Accessibility = {} as AccessibilityMetadata;
+            }
+            publication.Metadata.Accessibility.Hazard = rawArrayFiltered;
         }
     }
     {
         const raw = pop("accessibilitySummary");
         const loc = convertW3cLocalisableStringToReadiumManifestTitle(raw, defaultBcp47Language);
         if (loc) {
+            // legacy
             publication.Metadata.AccessibilitySummary = loc;
+            // modern
+            if (!publication.Metadata.Accessibility) {
+                publication.Metadata.Accessibility = {} as AccessibilityMetadata;
+            }
+            publication.Metadata.Accessibility.Summary = loc;
         }
     }
 
