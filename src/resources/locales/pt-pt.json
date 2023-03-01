@@ -94,8 +94,8 @@
                     "unknown": "Desconhecido"
                 },
                 "availableUntil": "Até",
-                "copyAvalaible": "Número de disponíveis",
-                "copyTotal": "Número de cópias",
+                "copyAvalaible": "Disponíveis",
+                "copyTotal": "Exemplares",
                 "holdPosition": "Sua posição na fila",
                 "holdTotal": "Reservado",
                 "numberOfItems": "Número de itens",
@@ -109,7 +109,7 @@
         "sort": "Ordenar por",
         "tagCount": "Contagem de etiquetas",
         "tags": "Etiquetas",
-        "update": ""
+        "update": "Atualizar"
     },
     "dialog": {
         "cancel": "Cancelar",
@@ -120,12 +120,12 @@
         "importError": "ocorreu um erro, verifique a extensão do ficheiro ({{acceptedExtension}})",
         "renew": "Deseja realmente renovar a licença deste documento?",
         "return": "Deseja realmente devolver a licença deste documento?",
-        "yes": "Yes"
+        "yes": "Sim"
     },
     "error": {
         "errorBox": {
             "error": "Mensagem de erro:",
-            "message": "Um erro ocorreu em {{- filename}}",
+            "message": "Ocorreu um erro em {{- filename}}",
             "title": "Erro interno {{- appName}}"
         }
     },
@@ -133,7 +133,7 @@
         "allBooks": "Todos os livros",
         "books": "Meus livros",
         "catalogs": "Catálogos",
-        "downloads": "Transferências",
+        "downloads": "Descarregamentos",
         "gridTitle": "Vista de grelha",
         "home": "Menu de estante",
         "homeTitle": "entrada",
@@ -148,7 +148,7 @@
         "lcp": {
             "hint": "(Dica : {{- hint}})",
             "password": "Senha",
-            "sentence": "Esta publicação precisa de uma senha LCP para poder ser aberta: ",
+            "sentence": "Esta publicação necessita de uma senha LCP para poder ser aberta: ",
             "submit": "Enviar",
             "urlHint": "Esqueceu-se da sua frase-senha? Encontre alguma ajuda aqui"
         }
@@ -159,7 +159,7 @@
         },
         "import": {
             "alreadyImport": "{{- title}} já foi importado",
-            "fail": "Falha ao importar {{- path}}. Verifique se o ficheiro é válido.",
+            "fail": "Falha ao importar {{- path}}. Erro: {{- err}}.",
             "success": "Foi concluída a importação de {{- title}}."
         },
         "open": {
@@ -195,7 +195,7 @@
         "network": {
             "error": "Não foi possível aceder à fonte OPDS",
             "noInternet": "Sem Internet",
-            "noInternetMessage": "Tente: verificar o cabo de rede, modem, router ou wi-fi",
+            "noInternetMessage": "Verifique o cabo de rede, modem, router ou o wi-fi",
             "reject": "Desculpe, ocorreu um erro inesperado ao tentar processar a fonte OPDS",
             "timeout": "Foi atingido o máximo de tempo de espera na rede. Por favor, tente novamente mais tarde"
         },
@@ -203,42 +203,42 @@
         "previous": "Anterior",
         "shelf": "Estante",
         "updateForm": {
-            "name": "",
-            "title": "",
-            "updateButton": "",
-            "url": ""
+            "name": "Nome",
+            "title": "Editar um sinal OPDS",
+            "updateButton": "Editar",
+            "url": "Endereço"
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "TTS e leitor de ecrã amigável"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "Contêm texto alternativo",
+                "displayTransformability": "Texto e visual adaptável",
+                "longDescription": "Recursos gráficos totalmente descritos",
+                "printPageNumbers": "Referência de paginação de livro impresso",
+                "readingOrder": "Contém uma ordenação de leitura",
+                "synchronizedAudioText": "Texto e áudio sincronizados",
+                "tableOfContents": "Contém um índice"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motionSimulation": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotionSimulation": "",
-                "noSound": "",
-                "none": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "Piscar",
+                "motionSimulation": "Simulação de movimento",
+                "name": "Perigo",
+                "noFlashing": "Sem piscar",
+                "noMotionSimulation": "Sem simulação de movimento",
+                "noSound": "Sem som",
+                "none": "Nenhum",
+                "sound": "Som",
+                "unknown": "Desconhecido"
             },
-            "certifierReport": "",
-            "conformsTo": "",
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "certifierReport": "Relatório do certificador",
+            "conformsTo": "Em conformidade com:",
+            "moreInformation": "Mais informações",
+            "name": "Acessibilidade",
+            "noA11y": "Nenhuma informação de acessibilidade disponível"
         },
         "audio": {
             "tracks": "Faixas"
@@ -262,7 +262,7 @@
         "licenseSignatureDateInvalid": "A data de assinatura da licença é inválida",
         "licenseSignatureInvalid": "A assinatura da licença é inválida",
         "progression": {
-            "title": "Progressão"
+            "title": "Progresso"
         },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
@@ -276,7 +276,7 @@
     "reader": {
         "divina": {
             "mute": "silenciar áudio",
-            "unmute": "silenciar áudio"
+            "unmute": "ativar áudio"
         },
         "footerInfo": {
             "lessInfo": "menos informações",
@@ -293,7 +293,7 @@
         },
         "media-overlays": {
             "activate": "Ativar narração",
-            "captions": "Legendas",
+            "captions": "Legendas / vista limpa",
             "next": "Narração seguinte",
             "pause": "Pausar narração",
             "play": "Tocar narração",
@@ -314,8 +314,8 @@
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um n.º de página",
             "goToTitle": "Ir para a página",
-            "historyNext": "",
-            "historyPrevious": "",
+            "historyNext": "saltar para a frente",
+            "historyPrevious": "saltar para trás",
             "infoTitle": "informações",
             "magnifyingGlassButton": "pesquisar no documento",
             "openTableOfContentsTitle": "navegação",
