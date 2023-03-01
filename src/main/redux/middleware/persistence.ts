@@ -35,6 +35,7 @@ export const reduxPersistMiddleware: Middleware
                         lastReadingQueue: prevState.publication.lastReadingQueue,
                     },
                     opds: prevState.opds,
+                    version: prevState.version,
                 };
 
                 const persistNextState: PersistRootState = {
@@ -47,6 +48,7 @@ export const reduxPersistMiddleware: Middleware
                         lastReadingQueue: nextState.publication.lastReadingQueue,
                     },
                     opds: nextState.opds,
+                    version: nextState.version,
                 };
 
                 const ops = createPatch(persistPrevState, persistNextState);

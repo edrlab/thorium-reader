@@ -15,7 +15,7 @@ interface IBaseProps {
     visible: boolean;
     toggleMenu: () => void;
     dontCloseWhenClickOutside?: boolean;
-    focusMenuButton?: () => void;
+    doBackFocusMenuButton?: () => void;
 }
 
 // IProps may typically extend:
@@ -122,8 +122,8 @@ export default class AccessibleMenu extends React.Component<React.PropsWithChild
     private handleKey(event: KeyboardEvent) {
         if (event.key === "Escape" || (!this.state.inFocus && (event.shiftKey && event.key === "Tab"))) {
             this.props.toggleMenu();
-            if (this.props.focusMenuButton) {
-                this.props.focusMenuButton();
+            if (this.props.doBackFocusMenuButton) {
+                this.props.doBackFocusMenuButton();
             }
             if (this.ismounted) {
                 this.setState({

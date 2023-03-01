@@ -10,6 +10,9 @@
         "skipLink": "Перейти к содержимому",
         "toolbar": "Панель инструментов"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Копировать",
@@ -78,7 +81,7 @@
         "numberOfPages": "Количество страниц",
         "opds": {
             "auth": {
-                "cancel": "",
+                "cancel": "Отменить",
                 "login": ""
             },
             "info": {
@@ -105,15 +108,16 @@
         "released": "Дата издания",
         "sort": "Сортировать по",
         "tagCount": "Количество тегов",
-        "tags": "Теги"
+        "tags": "Теги",
+        "update": ""
     },
     "dialog": {
+        "cancel": "Отменить",
         "closeModalWindow": "Закрыть это модальное окно",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "import": "Вы действительно хотите импортировать эти файлы :",
         "importError": "произошла ошибка, проверьте расширение вашего файла ({{acceptedExtension}})",
-        "no": "Нет",
         "renew": "Вы действительно хотите продлить лицензию на эту книгу?",
         "return": "Вы действительно хотите вернуть лицензию на эту книгу?",
         "yes": "Да"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Отменить",
             "hint": "(Подсказка : {{- hint}})",
             "password": "Пароль",
             "sentence": "Для открытия этой книги требуется пароль LCP: ",
@@ -172,6 +175,9 @@
             "url": "Ссылка :",
             "urlPlaceholder": "Ссылка"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Добавить OPDS каталог",
         "back": "Назад",
         "breadcrumbRoot": "Каталоги",
@@ -195,9 +201,45 @@
         },
         "next": "Следующая",
         "previous": "Прошлая",
-        "shelf": "Полка"
+        "shelf": "Полка",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Треки"
         },
@@ -272,6 +314,8 @@
             "goToError": "Этот разрыв страницы не существует",
             "goToPlaceHolder": "Введите номер страницы",
             "goToTitle": "Перейти на страницу",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "информация",
             "magnifyingGlassButton": "искать в книге",
             "openTableOfContentsTitle": "навигация",

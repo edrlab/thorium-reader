@@ -10,6 +10,9 @@
         "skipLink": "Ir para o conteúdo",
         "toolbar": "barra de ferramentas"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Copiar",
@@ -78,7 +81,7 @@
         "numberOfPages": "Número de páginas",
         "opds": {
             "auth": {
-                "cancel": "",
+                "cancel": "Cancelar",
                 "login": ""
             },
             "info": {
@@ -105,15 +108,16 @@
         "released": "Publicado em",
         "sort": "Ordenar por",
         "tagCount": "Contagem de tags",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": ""
     },
     "dialog": {
+        "cancel": "Cancelar",
         "closeModalWindow": "Fechar esta janela modal",
         "deleteFeed": "Deseja realmente excluir este catálogo?",
         "deletePublication": "Deseja realmente excluir esta publicação?",
         "import": "Deseja realmente importar estes arquivos:",
         "importError": "ocorreu um erro, verifique sua extensão de arquivo ({{acceptedExtension}})",
-        "no": "Não",
         "renew": "Deseja realmente renovar a licença para esta publicação?",
         "return": "Deseja realmente devolver a licença para esta publicação?",
         "yes": "Yes"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancelar",
             "hint": "(Dica : {{- hint}})",
             "password": "Senha",
             "sentence": "Esta publicação precisa de uma senha LCP para ser aberta: ",
@@ -172,6 +175,9 @@
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Adicionar origem OPDS",
         "back": "Voltar",
         "breadcrumbRoot": "Catálogos",
@@ -195,9 +201,45 @@
         },
         "next": "Próximo",
         "previous": "Prévio",
-        "shelf": "Estante"
+        "shelf": "Estante",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Faixas"
         },
@@ -272,6 +314,8 @@
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um número de página",
             "goToTitle": "Ir para a página",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "informação",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "navegação",

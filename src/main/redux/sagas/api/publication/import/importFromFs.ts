@@ -21,6 +21,8 @@ import { call as callTyped } from "typed-redux-saga/macro";
 import { importLcplFromFS } from "./importLcplFromFs";
 import { importPublicationFromFS } from "./importPublicationFromFs";
 
+import { acceptedExtensionArray } from "readium-desktop/common/extension";
+
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromFSService");
 
@@ -30,8 +32,6 @@ export function* importFromFsService(
 ): SagaGenerator<[publicationDoc: PublicationDocument, alreadyImported: boolean]> {
 
     debug("importFromFsService", filePath);
-
-    const publicationRepository = diMainGet("publication-repository");
 
     const ext = path.extname(filePath);
     const isLCPLicense = isAcceptedExtension("lcpLicence", ext); // || (ext === ".part" && isLcpFile);
@@ -44,6 +44,18 @@ export function* importFromFsService(
     debug("lcp/lpf/pdf", isLCPLicense, isLPF, isPDF);
     // debug(typeof ReadableStream === "undefined" || typeof Promise.allSettled === "undefined");
 
+    if (!acceptedExtensionArray.includes(ext)) {
+        // const store = diMainGet("store");
+        // store.dispatch(toastActions.openRequest.build(ToastType.Error, diMainGet("translator").translate("dialog.importError", {
+        //     acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
+        // })));
+        // return [undefined, false];
+
+        throw new Error(diMainGet("translator").translate("dialog.importError", {
+            acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
+        }));
+    }
+
     const hash =
         isLCPLicense ?
             undefined :
@@ -51,6 +63,9 @@ export function* importFromFsService(
                 yield* callTyped(() => computeFileHash(filePath)) :
                 ((isOPF || isNccHTML) ? undefined : yield* callTyped(() => extractCrc32OnZip(filePath)))
             );
+
+    const publicationRepository = diMainGet("publication-repository");
+
     const publicationDocumentInRepository = hash
         ? yield* callTyped(() => publicationRepository.findByHashId(hash))
         : undefined;

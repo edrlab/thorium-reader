@@ -10,6 +10,9 @@
         "skipLink": "콘텐츠로 건너뛰기",
         "toolbar": "툴바"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "복사",
@@ -105,15 +108,16 @@
         "released": "발행일",
         "sort": "정렬 기준",
         "tagCount": "태그 개수",
-        "tags": "태그"
+        "tags": "태그",
+        "update": ""
     },
     "dialog": {
+        "cancel": "취소",
         "closeModalWindow": "모달 창 닫기",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "import": "파일들을 열겠습니까:",
         "importError": "오류가 발생했습니다. 파일 확장자를 확인하십시오. ({{acceptedExtension}})",
-        "no": "취소",
         "renew": "출판물의 라이선스를 갱신하겠습니까?",
         "return": "출판물의 라이선스를 반납하겠습니까?",
         "yes": "확인"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "취소",
             "hint": "(힌트: {{- hint}})",
             "password": "암호",
             "sentence": "이 출판물을 열기 위해서는 LCP 암호가 필요합니다: ",
@@ -172,6 +175,9 @@
             "url": "링크:",
             "urlPlaceholder": "링크"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "OPDS feed 추가",
         "back": "뒤로",
         "breadcrumbRoot": "카탈로그",
@@ -195,9 +201,45 @@
         },
         "next": "다음",
         "previous": "이전",
-        "shelf": "책꽂이"
+        "shelf": "책꽂이",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "오디오 트랙"
         },
@@ -272,6 +314,8 @@
             "goToError": "페이지 구분이 존재하지 않습니다.",
             "goToPlaceHolder": "페이지 번호를 입력하세요.",
             "goToTitle": "페이지로 이동",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "정보",
             "magnifyingGlassButton": "도서내용으로 검색",
             "openTableOfContentsTitle": "네비게이션",

@@ -1,14 +1,14 @@
 /*
 =-=-= components/buttons.css => '../partials/mixins.css'
 */
-@import '../partials/mixins.css';
+@import url('../partials/mixins.css');
 
 /*
 =-=-= components/buttons.css => '../partials/variables.css'
 */
 
 /*
-@import '../partials/variables.css';
+@import url('../partials/variables.css');
 */
 
 /*
@@ -70,6 +70,11 @@ button {
      .button_primary_icon
 
 */
+
+.button_primary_form_default {
+  border-width: 2px !important;
+  font-weight: bold !important;
+}
 
 .button_primary {
   @mixin button_primary;

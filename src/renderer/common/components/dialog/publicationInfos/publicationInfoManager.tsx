@@ -11,7 +11,6 @@ import {
 
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 
 import Cover from "../../Cover";
 import Loader from "../../Loader";
@@ -30,7 +29,6 @@ const PublicationInfoManager: React.FC<React.PropsWithChildren<IProps>> = (props
 
     return (
         <Dialog
-            open={true}
             close={
                 () =>
                     coverZoom
@@ -38,10 +36,10 @@ const PublicationInfoManager: React.FC<React.PropsWithChildren<IProps>> = (props
                     : closeDialogCb()
             }
             title={props.__("catalog.bookInfo")}
+            noFooter={true}
         >
-            <div className={stylesModals.modal_dialog_body}>
                 {
-                    publication?.title
+                    publication?.documentTitle
                         ? (
                             coverZoom
                                 ? <Cover
@@ -65,7 +63,6 @@ const PublicationInfoManager: React.FC<React.PropsWithChildren<IProps>> = (props
                         )
                         : <Loader></Loader>
                 }
-            </div>
         </Dialog>
     );
 };

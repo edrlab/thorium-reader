@@ -10,6 +10,9 @@
         "skipLink": "Pasar al contenido",
         "toolbar": "Barra de herramientas"
     },
+    "apiapp": {
+        "noLibraryFound": "Biblioteca no encontrada ({{- name}})"
+    },
     "app": {
         "edit": {
             "copy": "Copiar",
@@ -66,10 +69,10 @@
             "lastAdditions": "Añadidos recientemente"
         },
         "export": "Exportar",
-        "format": "",
+        "format": "Formato",
         "lang": "Idioma",
-        "lastRead": "",
-        "moreInfo": "Más información",
+        "lastRead": "Último leído",
+        "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
         "noPublicationHelpL2": "o usa el botón \"+\" de arriba.",
@@ -105,15 +108,16 @@
         "released": "Publicado en",
         "sort": "Ordenar por",
         "tagCount": "Número de etiquetas",
-        "tags": "Etiquetas"
+        "tags": "Etiquetas",
+        "update": "Editar"
     },
     "dialog": {
+        "cancel": "Cancelar",
         "closeModalWindow": "Cerrar esta ventana modal",
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
         "import": "¿Seguro que quieres importar estos ficheros?",
         "importError": "Se ha producido un error, comprueba la extensión de tu fichero ({{acceptedExtension}})",
-        "no": "No",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
         "yes": "Sí"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancelar",
             "hint": "(Pista : {{- hint}})",
             "password": "Contraseña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
@@ -172,6 +175,9 @@
             "url": "Enlace:",
             "urlPlaceholder": "Enlace"
         },
+        "addFormApiapp": {
+            "title": "Añadir la cuenta de una biblioteca"
+        },
         "addMenu": "Añadir catálogo OPDS",
         "back": "Atrás",
         "breadcrumbRoot": "Catálogos",
@@ -195,9 +201,45 @@
         },
         "next": "Siguiente",
         "previous": "Anterior",
-        "shelf": "Estante"
+        "shelf": "Estante",
+        "updateForm": {
+            "name": "Nombre",
+            "title": "Editar catálogo OPDS",
+            "updateButton": "Editar",
+            "url": "Enlace"
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "Amigable con síntesis de voz y lectores de pantalla"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Contiene alternativas de texto",
+                "displayTransformability": "Texto y diseño adaptables",
+                "longDescription": "Descripciones completas para recursos gráficos",
+                "printPageNumbers": "Referencia a la paginación del libro impreso",
+                "readingOrder": "Contiene orden de lectura",
+                "synchronizedAudioText": "Texto y audio sincronizados",
+                "tableOfContents": "Incluye tabla de contenido"
+            },
+            "accessibilityHazard": {
+                "flashing": "Destellos",
+                "motionSimulation": "Animaciones",
+                "name": "Riesgo:",
+                "noFlashing": "Sin destellos",
+                "noMotionSimulation": "Sin animaciones",
+                "noSound": "Sin sonidos",
+                "none": "Ninguno",
+                "sound": "Sonidos",
+                "unknown": "Desconocidos"
+            },
+            "certifierReport": "Informe de la entidad certificadora",
+            "conformsTo": "Conforme con",
+            "moreInformation": "Más información",
+            "name": "Accesibilidad",
+            "noA11y": "No hay disponible información sobre accesibilidad"
+        },
         "audio": {
             "tracks": "Pistas"
         },
@@ -213,8 +255,8 @@
         },
         "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
         "lcpEnd": "Fin",
-        "lcpRightsCopy": "Copia de personajes",
-        "lcpRightsPrint": "Copia de impresora",
+        "lcpRightsCopy": "Caracteres copiados",
+        "lcpRightsPrint": "Páginas impresas",
         "lcpStart": "Inicio",
         "licenseOutOfDate": "La licencia está desactualizada",
         "licenseSignatureDateInvalid": "La fecha de la firma de la licencia no es válida",
@@ -272,6 +314,8 @@
             "goToError": "Este salto de página no existe",
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
+            "historyNext": "Avanzar",
+            "historyPrevious": "Retroceder",
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",

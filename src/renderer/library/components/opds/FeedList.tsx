@@ -13,6 +13,7 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/edit.svg";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
@@ -100,6 +101,13 @@ class FeedList extends React.Component<IProps, IState> {
                                 >
                                     <SVG ariaHidden={true} svg={DeleteIcon} />
                                 </button>
+                                <button
+                                    onClick={(e) => this.updateFeed(e, item)}
+                                    className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_update)}
+                                    title={__("catalog.update")}
+                                >
+                                    <SVG ariaHidden={true} svg={EditIcon} />
+                                </button>
                             </li>
                         );
                     })}
@@ -116,6 +124,11 @@ class FeedList extends React.Component<IProps, IState> {
         this.props.openDeleteDialog(feed);
     }
 
+    private updateFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
+        event.preventDefault();
+        this.props.openUpdateDialog(feed);
+    }
+
     private async loadFeeds() {
         try {
             const feedsResult = await apiAction("opds/findAllFeeds");
@@ -130,6 +143,13 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         openDeleteDialog: (feed: IOpdsFeedView) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.DeleteOpdsFeedConfirm,
+                {
+                    feed,
+                },
+            ));
+        },
+        openUpdateDialog: (feed: IOpdsFeedView) => {
+            dispatch(dialogActions.openRequest.build(DialogTypeName.OpdsFeedUpdateForm,
                 {
                     feed,
                 },

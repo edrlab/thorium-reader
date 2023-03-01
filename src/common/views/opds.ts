@@ -27,7 +27,11 @@ export interface IOpdsPublicationView {
     // r2OpdsPublicationJson?: JsonMap;
     // Legacy Base64 data blobs
     // r2OpdsPublicationBase64?: string;
-    title: string;
+
+    // see PublicationView (polymorphic NormalOrOpdsPublicationView / publicationViewMaybeOpds)
+    // documentTitle vs. publicationTitle
+    documentTitle: string;
+
     authors: IOpdsContributorView[];
     publishers?: IOpdsContributorView[];
     workIdentifier?: string;
@@ -97,7 +101,7 @@ export interface IOpdsAuthView {
 }
 
 export interface IOPDSPropertiesView {
-    indirectAcquisitionType?: string | undefined;
+    indirectAcquisitionTypes?: { top: string, child: string | undefined} | undefined;
     numberOfItems?: number | undefined;
     priceValue?: number | undefined;
     priceCurrency?: OPDSCurrencyEnum | undefined;

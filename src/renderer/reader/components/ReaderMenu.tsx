@@ -122,8 +122,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
 
         // WARNING: do not modify zero-based index without adjusting Reader.tsx
-        // showSearchResults (4)
-        // showGotoPage (5)
+        // handleMenuButtonClick(0); // "table of contents"
+        // handleMenuButtonClick(3); // "search"
+        // handleMenuButtonClick(4); // "goto page"
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
@@ -148,11 +149,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 content: this.createBookmarkList(),
                 disabled: !bookmarks || bookmarks.length === 0,
             },
-            {
+            /*{
                 title: __("reader.marks.annotations"),
                 content: <></>,
                 disabled: true,
-            },
+            },*/
             {
                 title: __("reader.marks.search"),
                 content: this.props.searchEnable
@@ -181,7 +182,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 open={this.props.open}
                 sections={sections}
                 toggleMenu={toggleMenu}
-                focusMenuButton={this.props.focusNaviguationMenu}
+                doBackFocusMenuButton={this.props.focusNaviguationMenu}
             />
         );
     }
@@ -507,15 +508,15 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         tabIndex={0}
                         onClick={(e) => {
                             const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            this.handleBookmarkClick(e, bookmark.locator, closeNavPanel);
+                            this.goToLocator(e, bookmark.locator, closeNavPanel);
                         }}
-                        onDoubleClick={(e) => this.handleBookmarkClick(e, bookmark.locator, false)}
+                        onDoubleClick={(e) => this.goToLocator(e, bookmark.locator, false)}
                         onKeyPress=
                         {
                             (e) => {
                                 if (e.key === "Enter" || e.key === "Space") {
                                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                    this.handleBookmarkClick(e, bookmark.locator, closeNavPanel);
+                                    this.goToLocator(e, bookmark.locator, closeNavPanel);
                                 }
                             }
                         }
@@ -550,17 +551,44 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
 
         // this.props.currentLocation.docInfo.isFixedLayout
-        const isFixedLayout = !this.props.r2Publication.PageList &&
-            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+        const isFixedLayout = this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+        const isFixedLayoutWithPageList = isFixedLayout && this.props.r2Publication.PageList;
+        const isFixedLayoutNoPageList = isFixedLayout && !isFixedLayoutWithPageList;
 
-        let currentPage = (this.props.isDivina || this.props.isPdf) ?
-            (
-                this.props.isDivina
-                    ? `${this.props.currentLocation.locator.locations.position}`
-                    : this.props.currentLocation?.locator?.href
-            )
-            : this.props.currentLocation?.epubPage;
-        if (isFixedLayout &&
+        let currentPageInPageList: string | undefined;
+        if (this.props.currentLocation?.epubPageID && this.props.r2Publication.PageList) {
+            const p = this.props.r2Publication.PageList.find((page) => {
+                return page.Title && page.Href && page.Href.endsWith(`#${this.props.currentLocation.epubPageID}`);
+            });
+            if (p) {
+                currentPageInPageList = p.Title;
+            }
+        }
+        let currentPage: string | undefined;
+        if (this.props.isDivina || this.props.isPdf) {
+            currentPage = this.props.isDivina
+                ? `${this.props.currentLocation?.locator.locations.position}`
+                : this.props.currentLocation?.locator?.href;
+        } else if (this.props.currentLocation?.epubPage) {
+            const epubPageIsEmpty = this.props.currentLocation.epubPage.trim().length === 0;
+            if (epubPageIsEmpty && currentPageInPageList) {
+                currentPage = currentPageInPageList;
+            } else if (!epubPageIsEmpty) {
+                currentPage = this.props.currentLocation.epubPage;
+            }
+        }
+
+        if (isFixedLayoutWithPageList && !currentPage && this.props.currentLocation?.locator?.href) {
+            const page = this.props.r2Publication.PageList.find((l) => {
+                return l.Href === this.props.currentLocation.locator.href;
+            });
+            if (page) {
+                currentPage = page.Title;
+                if (currentPage) {
+                    totalPages = this.props.r2Publication.PageList.length.toString();
+                }
+            }
+        } else if (isFixedLayoutNoPageList &&
             this.props.currentLocation?.locator?.href &&
             this.props.r2Publication.Spine) {
             const spineIndex = this.props.r2Publication.Spine.findIndex((l) => {
@@ -611,15 +639,12 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         (e) => {
                             if (e.key === "Enter" || e.key === "Space") {
                                 const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-
-                                console.log("CLose panel from button");
-
                                 this.handleSubmitPage(e, closeNavPanel);
                             }
                         }
                     }
                 >
-                {(isFixedLayout || this.props.r2Publication?.PageList) &&
+                {(isFixedLayoutNoPageList || this.props.r2Publication?.PageList) &&
                     <select
                         title={__("reader.navigation.goToTitle")}
                         onChange={(ev) => {
@@ -643,7 +668,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         }}
                     >
                         {
-                            isFixedLayout
+                            isFixedLayoutNoPageList
                                 ?
                                 this.props.r2Publication.Spine.map((_spineLink, idx) => {
                                     const indexStr = (idx + 1).toString();
@@ -664,7 +689,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                             <option
                                                 key={`pageGoto_${idx}`}
                                                 value={pageLink.Title}
-                                                selected={currentPage === pageLink.Title}
+                                                selected={(currentPageInPageList || currentPage) === pageLink.Title}
                                             >
                                                 {pageLink.Title}
                                             </option> : <></>
@@ -681,7 +706,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     aria-invalid={this.state.pageError}
                     onChange={() => this.setState({ pageError: false })}
                     disabled={
-                        !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
+                        !(isFixedLayoutNoPageList || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
                     }
                     placeholder={__("reader.navigation.goToPlaceHolder")}
                     alt={__("reader.navigation.goToPlaceHolder")}
@@ -697,7 +722,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     onDoubleClick=
                     {(e) => this.handleSubmitPage(e, false)}
                     disabled={
-                        !(isFixedLayout || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
+                        !(isFixedLayoutNoPageList || this.props.r2Publication.PageList || this.props.isDivina || this.props.isPdf)
                     }
                 >
                     {__("reader.navigation.goTo")}
@@ -771,7 +796,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     href: (page || pageNbr).toString(),
                     // progression generate in divina pagechange event
                 };
-                this.props.handleBookmarkClick(loc as any, closeNavPanel);
+                this.props.goToLocator(loc as any, closeNavPanel);
 
                 return;
             }
@@ -792,9 +817,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
     }
 
-    private handleBookmarkClick(e: TKeyboardEventButton | TMouseEventOnButton, locator: Locator, closeNavPanel = true) {
+    private goToLocator(e: TKeyboardEventButton | TMouseEventOnButton, locator: Locator, closeNavPanel = true) {
         e.preventDefault();
-        this.props.handleBookmarkClick(locator, closeNavPanel);
+        this.props.goToLocator(locator, closeNavPanel);
     }
 }
 

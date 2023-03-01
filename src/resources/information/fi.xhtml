@@ -1,229 +1,200 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fi" xml:lang="fi">
-  <head>
-    <title>Thorium Reader -ohjelmasta</title>
-  </head>
+    <head>
+        <title>Thorium Reader -ohjelmasta</title>
+    </head>
 
-  <body style="font-family: 'Gill Sans', sans-serif">
-    <h1>Thorium Reader -ohjelmasta</h1>
+    <body style="font-family: 'Gill Sans', sans-serif">
+        <h1>Thorium Reader -ohjelmasta</h1>
 
-    <h2>Esittely</h2>
+        <h2>Esittely</h2>
 
-    <p>
-      Thorium Reader -lukusovellus on oiva valinta Windows 10:lle, MacOS:lle ja
-      Linuxille.
-    </p>
+        <p>Thorium Reader -lukusovellus on oiva valinta Windows 10:lle, MacOS:lle ja Linuxille.</p>
 
-    <p>
-      Tätä <a href="https://edrlab.org">EDRLab</a>in sovellusta kehitetään
-      jatkuvasti. Thorium Reader pyrkii johtavaksi esimerkiksi sovelluksesta,
-      jolla käytetään EPUB-julkaisuja, PDF-dokumentteja, äänikirjoja ja
-      visuaalisia kertomuksia, riippumatta siitä, onko niitä suojattu
-      LCP-lisenssillä vai ei.
-    </p>
+        <p>
+            Tätä <a href="https://edrlab.org">EDRLab</a>in sovellusta kehitetään jatkuvasti. Thorium Reader pyrkii
+            johtavaksi esimerkiksi sovelluksesta, jolla käytetään EPUB-julkaisuja, PDF-dokumentteja, äänikirjoja ja
+            visuaalisia kertomuksia, riippumatta siitä, onko niitä suojattu LCP-lisenssillä vai ei.
+        </p>
 
-    <p>
-      Se on lokalisoitu monille kielille, ja joka versiossa on tarjolla uusia
-      kieliä.
-    </p>
+        <p>Se on lokalisoitu monille kielille, ja joka versiossa on tarjolla uusia kieliä.</p>
 
-    <p>
-      Thorium Readerin kehityksessä on panostettu erityisesti siihen, että se on
-      hyvin saavutettava henkilöille, joilla on näkövamma tai lukivaikeus.
-    </p>
+        <p>
+            Thorium Readerin kehityksessä on panostettu erityisesti siihen, että se on hyvin saavutettava henkilöille,
+            joilla on näkövamma tai lukivaikeus.
+        </p>
 
-    <p>
-      Tämä sovellus on ilmainen, ei sisällä mainoksia eikä luovuta eteenpäin
-      henkilökohtaisia tietoja.
-    </p>
+        <p>Tämä sovellus on ilmainen, ei sisällä mainoksia eikä luovuta eteenpäin henkilökohtaisia tietoja.</p>
 
-    <p>
-      Sovellus on täydellinen työkalu paljon lukeville, kirjastojen asiakkaille
-      ja opiskelijoille.
-    </p>
+        <p>Sovellus on täydellinen työkalu paljon lukeville, kirjastojen asiakkaille ja opiskelijoille.</p>
 
-    <h2>Tuetut julkaisuformaatit</h2>
+        <h2>Auta</h2>
 
-    <p>
-      EPUB 2 on vanhentunut formaatti, joka sopii yksinkertaisiin e-kirjoihin.
-      Tekstisisältö on XHTML-muodossa, multimediaominaisuuksia ei tueta. EPUB 2
-      -kirjat ovat silti saavutettavia, jos ne on tehty hyvin.
-    </p>
+        <p>
+            Verkossa:
+            <a href="https://www.edrlab.org/software/thorium-reader/doc/"
+                >https://www.edrlab.org/software/thorium-reader/doc/</a
+            >
+        </p>
 
-    <p>
-      EPUB 3 on suositeltu formaatti nykyään. Tekstisisältö on (X)HTML 5
-      -muodossa, sillä on mahdollista tuottaa e-kirjoja, joissa on lukittu
-      taitto (fixed layout), sekä rikastettuja e-kirjoja.
-      Saavutettavuusominaisuudet ovat hyvät.
-    </p>
+        <h2>Tuetut julkaisuformaatit</h2>
 
-    <p>
-      PDF: huolimatta tunnetuista puutteista joustavuudessa (ei
-      uudelleenjuoksutusta) ja saavutettavuudessa, monet kirjat ovat edelleen
-      saatavilla vain PDF-versioina, etenkin yleisissä kirjastoissa.
-    </p>
+        <p>
+            EPUB 2 on vanhentunut formaatti, joka sopii yksinkertaisiin e-kirjoihin. Tekstisisältö on XHTML-muodossa,
+            multimediaominaisuuksia ei tueta. EPUB 2 -kirjat ovat silti saavutettavia, jos ne on tehty hyvin.
+        </p>
 
-    <p>
-      äänikirjat: W3C:n Publishing Working Group -työryhmä on julkaissut vuonna
-      2020
-      <a href="https://www.w3.org/TR/audiobooks/">äänikirjojen standardin</a>,
-      ja EDRLab on ollut mukana työryhmässä. Thorium tukee
+        <p>
+            EPUB 3 on suositeltu formaatti nykyään. Tekstisisältö on (X)HTML 5 -muodossa, sillä on mahdollista tuottaa
+            e-kirjoja, joissa on lukittu taitto (fixed layout), sekä rikastettuja e-kirjoja. Saavutettavuusominaisuudet
+            ovat hyvät.
+        </p>
 
-      <a href="https://www.w3.org/TR/lpf/">pakattua (LPF)</a>
-      -äänikirjaformaattia, joka tullee pian laajasti käyttöön kirjamyynnissä,
-      tai niin ainakin toivomme.
-    </p>
+        <p>
+            PDF: huolimatta tunnetuista puutteista joustavuudessa (ei uudelleenjuoksutusta) ja saavutettavuudessa, monet
+            kirjat ovat edelleen saatavilla vain PDF-versioina, etenkin yleisissä kirjastoissa.
+        </p>
 
-    <p>
-      visuaaliset kertomukset: EDRLab on suunnitellut perusformaatin
-      sarjakuville, mangalle, webtooneille ja muille digitaalisille teoksille,
-      joka perustuvat kuvasarjoihin. Tämän formaatin nimi on
-      <a href="https://www.edrlab.org/open-standards/">DiViNa</a>. Se on vielä
-      kokeiluvaiheessa ja toivomme, että kustantajat ottavat sen käyttöön vuoden
-      2021 jälkeen.
-    </p>
+        <p>
+            äänikirjat: W3C:n Publishing Working Group -työryhmä on julkaissut vuonna 2020
+            <a href="https://www.w3.org/TR/audiobooks/">äänikirjojen standardin</a>, ja EDRLab on ollut mukana
+            työryhmässä. Thorium tukee
 
-    <h2>Saavutettavuus</h2>
+            <a href="https://www.w3.org/TR/lpf/">pakattua (LPF)</a>
+            -äänikirjaformaattia, joka tullee pian laajasti käyttöön kirjamyynnissä, tai niin ainakin toivomme.
+        </p>
 
-    <p>
-      EDRLabilla on vahva suhde
-      <a href="https://daisy.org/">DAISY-konsortion</a> kanssa, ja haluamme
-      tehdä Thorium Readeristä yhden markkinoiden saavutettavimmista
-      lukusovelluksista, paremman kuin useimmat kaupalliset tuotteet.
-    </p>
+        <p>
+            visuaaliset kertomukset: EDRLab on suunnitellut perusformaatin sarjakuville, mangalle, webtooneille ja
+            muille digitaalisille teoksille, joka perustuvat kuvasarjoihin. Tämän formaatin nimi on
+            <a href="https://www.edrlab.org/open-standards/">DiViNa</a>. Se on vielä kokeiluvaiheessa ja toivomme, että
+            kustantajat ottavat sen käyttöön vuoden 2021 jälkeen.
+        </p>
 
-    <p>
-      Sovellus toimii täysin ruudunlukuohjelmien, kuten JAWS, NVDA tai
-      VoiceOver, kanssa ja on käytettävissä pelkästään näppäimistön avulla.
-      Käyttäjä voi määrittää näppäinkomentoja omien toiveidensa mukaan.
-    </p>
+        <h2>Saavutettavuus</h2>
 
-    <h2>OPDS-luettelot</h2>
+        <p>
+            EDRLabilla on vahva suhde
+            <a href="https://daisy.org/">DAISY-konsortion</a> kanssa, ja haluamme tehdä Thorium Readeristä yhden
+            markkinoiden saavutettavimmista lukusovelluksista, paremman kuin useimmat kaupalliset tuotteet.
+        </p>
 
-    <p>
-      Useat yleiset kirjastot ja kirjamyyjät käyttävät
+        <p>
+            Sovellus toimii täysin ruudunlukuohjelmien, kuten JAWS, NVDA tai VoiceOver, kanssa ja on käytettävissä
+            pelkästään näppäimistön avulla. Käyttäjä voi määrittää näppäinkomentoja omien toiveidensa mukaan.
+        </p>
 
-      <a href="https://opds.io/">OPDS</a>-formaattia luetteloiden tarjoamiseen
-      verkossa.
-    </p>
+        <h2>OPDS-luettelot</h2>
 
-    <p>
-      Käyttämällä OPDS:a kirjastot ja kirjamyyjät voivat tarjota asiakkaiden
-      henkilökohtaisia kirjahyllyjä, esimerkiksi kirjoja, jotka käyttäjä on
-      hankkinut ja voi välittömästi ladata ja lukea.
-    </p>
+        <p>
+            Useat yleiset kirjastot ja kirjamyyjät käyttävät
 
-    <p>
-      Thorium pystyy selaamaan OPDS 1 ja 2 -luetteloita. Se tukee myös useita
-      OPDS:ia noudattavia tunnistusmekanismeja, ja voi siten sallia käyttäjien
-      pääsyn heidän henkilökohtaisiin kirjahyllyihinsä.
-    </p>
+            <a href="https://opds.io/">OPDS</a>-formaattia luetteloiden tarjoamiseen verkossa.
+        </p>
 
-    <h2>Readium LCP DRM</h2>
+        <p>
+            Käyttämällä OPDS:a kirjastot ja kirjamyyjät voivat tarjota asiakkaiden henkilökohtaisia kirjahyllyjä,
+            esimerkiksi kirjoja, jotka käyttäjä on hankkinut ja voi välittömästi ladata ja lukea.
+        </p>
 
-    <img src="./images/lcp-user.png" alt="LCP user reading" />
+        <p>
+            Thorium pystyy selaamaan OPDS 1 ja 2 -luetteloita. Se tukee myös useita OPDS:ia noudattavia
+            tunnistusmekanismeja, ja voi siten sallia käyttäjien pääsyn heidän henkilökohtaisiin kirjahyllyihinsä.
+        </p>
 
-    <p>
-      Thorium Reader tukee
+        <h2>Readium LCP DRM</h2>
 
-      <a href="https://www.edrlab.org/readium-lcp/">Readium LCP DRM</a>
-      -suojausta, jonka alunperin suunnitteli Readium Foundation.
+        <img src="./images/lcp-user.png" alt="LCP user reading" />
 
-      <a href="https://readium.org/lcp-specs/"
-        >Tämä DRM-määrittely on julkinen</a
-      >, ja ISO:n teknisen spesifikaation viite on
+        <p>
+            Thorium Reader tukee
 
-      <a href="https://www.iso.org/standard/79485.html">ISO 23078-2</a>.
-    </p>
+            <a href="https://www.edrlab.org/readium-lcp/">Readium LCP DRM</a>
+            -suojausta, jonka alunperin suunnitteli Readium Foundation.
 
-    <p>
-      LCP on jo käytössä monissa yleisissä kirjastoissa, yliopistoissa ja
-      kirjamyyjillä ympäri maailman (<a
-        href="https://www.edrlab.org/readium-lcp/certified-apps-servers/"
-        >luetteloa käyttäjistä ylläpidetään täällä</a
-      >).
-    </p>
+            <a href="https://readium.org/lcp-specs/">Tämä DRM-määrittely on julkinen</a>, ja ISO:n teknisen
+            spesifikaation viite on
 
-    <p>
-      Kustannusalan organisaatioita ympäri maailman rohkaistaan ottamaan LCP
-      käyttöön. LCP suojaa e-kirjoja luvattomalta jakelulta, ja samaan aikaan
-      tarjoaa saumattoman kokemuksen ja pitää sisällön kunnolla saavutettavana.
+            <a href="https://www.iso.org/standard/79485.html">ISO 23078-2</a>.
+        </p>
 
-      <a href="https://www.edrlab.org/contact/">Ota yhteyttä EDRLabiin</a>, jos
-      organisaatiosi on kiinnostunut LCP:n käyttöönotosta.
-    </p>
+        <p>
+            LCP on jo käytössä monissa yleisissä kirjastoissa, yliopistoissa ja kirjamyyjillä ympäri maailman (<a
+                href="https://www.edrlab.org/readium-lcp/certified-apps-servers/"
+                >luetteloa käyttäjistä ylläpidetään täällä</a
+            >).
+        </p>
 
-    <h2>Käyttöoikeus</h2>
+        <p>
+            Kustannusalan organisaatioita ympäri maailman rohkaistaan ottamaan LCP käyttöön. LCP suojaa e-kirjoja
+            luvattomalta jakelulta, ja samaan aikaan tarjoaa saumattoman kokemuksen ja pitää sisällön kunnolla
+            saavutettavana.
 
-    <p>
-      Copyright 2019 European Digital Reading Lab. All rights reserved. Licensed
-      to the Readium Foundation under one or more contributor license
-      agreements.
-    </p>
+            <a href="https://www.edrlab.org/contact/">Ota yhteyttä EDRLabiin</a>, jos organisaatiosi on kiinnostunut
+            LCP:n käyttöönotosta.
+        </p>
 
-    <p>
-      Sovellus perustuu avoimeen lähdekoodiin ja on julkaistu BSD 3
-      -lisenssillä. Se perustuu avoimen lähdekoodin Readium Desktop toolkit
-      -pakettiin.
-    </p>
+        <h2>Käyttöoikeus</h2>
 
-    <h2>Kuka rahoittaa tätä sovellusta</h2>
+        <p>
+            Copyright 2019 European Digital Reading Lab. All rights reserved. Licensed to the Readium Foundation under
+            one or more contributor license agreements.
+        </p>
 
-    <p>
-      EDRLab on voittoa tavoittelematon organisaatio. Rahoituksemme tulee
-      pääosin jäseniltä. EDRLab perustettiin Ranskassa, mutta sillä on jäseniä
-      Euroopassa, Pohjois-Amerikassa, Etelä-Amerikassa ja Aasiassa.
-    </p>
+        <p>
+            Sovellus perustuu avoimeen lähdekoodiin ja on julkaistu BSD 3 -lisenssillä. Se perustuu avoimen lähdekoodin
+            Readium Desktop toolkit -pakettiin.
+        </p>
 
-    <p>Tämä projekti ei olisi toteutunut ilman:</p>
+        <h2>Kuka rahoittaa tätä sovellusta</h2>
 
-    <p>
-      1- Rahallista tukea ranskalaisilta jäseniltä: Editis, Hachette Livre,
-      Magrigall, Media-Participations, Cercle de la Librarie, Syndicat national
-      de l'Edition. Nämä ymmärtävät, että avointen standardien ja avoimen
-      lähdekoodin rahoittaminen on paras keino ylläpitää avointa ja
-      innovatiivista markkinaa kustannusalalle.
-    </p>
+        <p>
+            EDRLab on voittoa tavoittelematon organisaatio. Rahoituksemme tulee pääosin jäseniltä. EDRLab perustettiin
+            Ranskassa, mutta sillä on jäseniä Euroopassa, Pohjois-Amerikassa, Etelä-Amerikassa ja Aasiassa.
+        </p>
 
-    <p>
-      2- Rahallista avustusta seuraavilta ranskalaisilta julkisilta
-      organisaatioilta:
-    </p>
+        <p>Tämä projekti ei olisi toteutunut ilman:</p>
 
-    <ul>
-      <li>CNL (Centre National du livre)</li>
+        <p>
+            1- Rahallista tukea ranskalaisilta jäseniltä: Editis, Hachette Livre, Magrigall, Media-Participations,
+            Cercle de la Librarie, Syndicat national de l'Edition. Nämä ymmärtävät, että avointen standardien ja avoimen
+            lähdekoodin rahoittaminen on paras keino ylläpitää avointa ja innovatiivista markkinaa kustannusalalle.
+        </p>
 
-      <li>Ministère de la Culture</li>
-    </ul>
+        <p>2- Rahallista avustusta seuraavilta ranskalaisilta julkisilta organisaatioilta:</p>
 
-    <p>3- Lisäavustukset jäseniltämme:</p>
+        <ul>
+            <li>CNL (Centre National du livre)</li>
 
-    <ul>
-      <li>Fênix Editorial, Brazil</li>
+            <li>Ministère de la Culture</li>
+        </ul>
 
-      <li>Canadian Electronic library, Canada</li>
+        <p>3- Lisäavustukset jäseniltämme:</p>
 
-      <li>MLOL / Horizons Unlimited, Italy</li>
+        <ul>
+            <li>Fênix Editorial, Brazil</li>
 
-      <li>Lyrasis, USA</li>
-    </ul>
+            <li>Canadian Electronic library, Canada</li>
 
-    <p><img src="./images/piggy-bank.jpeg" alt="Piggy Bank" /></p>
+            <li>MLOL / Horizons Unlimited, Italy</li>
 
-    <p>
-      Voit auttaa tekemään Thorium Readeristä paremman sovelluksen
+            <li>Lyrasis, USA</li>
+        </ul>
 
-      <a href="https://www.edrlab.org/become-a-member/"
-        >liittymällä EDRLab:n jäseneksi</a
-      >.
-    </p>
+        <p><img src="./images/piggy-bank.jpeg" alt="Piggy Bank" /></p>
 
-    <p>
-      Vaihtoehtoisesti voit lahjoittaa EDRLabille käyttämällä
+        <p>
+            Voit auttaa tekemään Thorium Readeristä paremman sovelluksen
 
-      <a href="https://github.com/sponsors/edrlab">Github Sponsorin</a>
+            <a href="https://www.edrlab.org/become-a-member/">liittymällä EDRLab:n jäseneksi</a>.
+        </p>
 
-      "säästöpossua", joka ottaa vastaan pieniä kuukausittaisia lahjoituksia.
-    </p>
-  </body>
+        <p>
+            Vaihtoehtoisesti voit lahjoittaa EDRLabille käyttämällä
+
+            <a href="https://github.com/sponsors/edrlab">Github Sponsorin</a>
+
+            "säästöpossua", joka ottaa vastaan pieniä kuukausittaisia lahjoituksia.
+        </p>
+    </body>
 </html>

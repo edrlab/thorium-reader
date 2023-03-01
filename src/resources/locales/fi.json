@@ -10,6 +10,9 @@
         "skipLink": "Hyppää sisältöön",
         "toolbar": "Työkalurivi"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Kopioi",
@@ -105,15 +108,16 @@
         "released": "Julkaistu",
         "sort": "Järjestä",
         "tagCount": "Tunnistemäärä",
-        "tags": "Tunnisteet"
+        "tags": "Tunnisteet",
+        "update": ""
     },
     "dialog": {
+        "cancel": "Peru",
         "closeModalWindow": "Sulje tämä ikkuna",
         "deleteFeed": "Haluatko todella poistaa tämän luettelon?",
         "deletePublication": "Haluatko todella poistaa tämän julkaisun?",
         "import": "Haluatko todella tuoda nämä tiedostot :",
         "importError": "Virhe on havaittu, varmista tiedostopääte ({{acceptedExtension}})",
-        "no": "Ei",
         "renew": "Haluatko todella uusia tämän julkaisun käyttöoikeuden?",
         "return": "Haluatko todella palauttaa tämän julkaisun käyttöoikeuden?",
         "yes": "Kyllä"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Peru",
             "hint": "(Vihje : {{- hint}})",
             "password": "Salasana",
             "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
@@ -172,6 +175,9 @@
             "url": "Linkki:",
             "urlPlaceholder": "Linkki"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Lisää OPDS-syöte",
         "back": "Takaisin",
         "breadcrumbRoot": "Luettelot",
@@ -195,9 +201,45 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
-        "shelf": "Hylly"
+        "shelf": "Hylly",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Osat"
         },
@@ -272,6 +314,8 @@
             "goToError": "Sivua ei löydy",
             "goToPlaceHolder": "Syötä sivunumero",
             "goToTitle": "Siirry sivulle",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "tiedot",
             "magnifyingGlassButton": "Hae julkaisusta",
             "openTableOfContentsTitle": "navigaatio",

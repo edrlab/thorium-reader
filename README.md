@@ -22,6 +22,9 @@ It is currently localized in following languages:
 - Chinese
 - Korean
 - Georgian
+- Basque
+- Galician
+- Catalan
 
 See: https://github.com/edrlab/thorium-reader/wiki/Localization-(l10n)-language-translations
 
@@ -29,17 +32,10 @@ See: https://github.com/edrlab/thorium-reader/wiki/Localization-(l10n)-language-
 ![publication info](img/info.png)
 ![reader](img/reader.png)
 
-## Build status
-
-TravisCI, `develop` branch:
-
-[![Build Status](https://travis-ci.org/edrlab/thorium-reader.svg?branch=master)](https://travis-ci.org/edrlab/thorium-reader)
-
 ## Prerequisites
 
-1) NodeJS 14 (check with `node --version`)
-2) NPM 6 (check with `npm --version`)
-3) Optionally: C++ compiler for native NodeJS modules, should work out of the box in Linux and MacOS. On Windows, Visual Studio can be installed, or simply call `npm install -g windows-build-tools`.
+1) NodeJS 16 (check with `node --version`)
+2) NPM 8 (check with `npm --version`)
 
 ## Technologies
 
@@ -55,8 +51,7 @@ TravisCI, `develop` branch:
 ### Install dependencies
 
 * `npm install` (or `npm ci`): initialize local `node_modules` packages from dependencies declared in `package.json` (this will also automatically call a long-running compilation stage in `npm run postinstall`)
-* in case of failure to NPM "install" because of "Divina player" SHA integrity mismatch, please try running the following command in your shell: `node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js` (this converts SSH GitHub references to HTTPS ones)
-* in case of NPM / Node GYP failing to compile native libs in Windows under Visual Studio 2019's command line tools: `npm config set msvs_version 2019 --global` and `npm config set msbuild_path "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe"` (adjust with your own path, for example `Enterprise` or `Professional` instead of `Community`)
+* in case of failure to NPM "install" because of "Divina player" SHA integrity mismatch, please try running the following command in your shell: `node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js`
 
 ### Start application in development environment
 

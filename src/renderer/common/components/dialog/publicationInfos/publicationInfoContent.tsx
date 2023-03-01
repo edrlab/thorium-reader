@@ -27,6 +27,8 @@ import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
+import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import PublicationInfoA11y from "./publicationInfoA11y";
 
 export interface IProps {
     publication: TPublication;
@@ -208,7 +210,16 @@ const Progression = (props: {
                     // reflow: no totalPages, potentially just currentPage which is locatorExt.epubPage
 
                     if (locatorExt.epubPage) {
-                        txtPagination = __("reader.navigation.currentPage", { current: `${locatorExt.epubPage}` });
+                        let epubPage = locatorExt.epubPage;
+                        if (epubPage.trim().length === 0 && locatorExt.epubPageID && r2Publication.PageList) {
+                            const p = r2Publication.PageList.find((page) => {
+                                return page.Title && page.Href && page.Href.endsWith(`#${locatorExt.epubPageID}`);
+                            });
+                            if (p) {
+                                epubPage = p.Title;
+                            }
+                        }
+                        txtPagination = __("reader.navigation.currentPage", { current: epubPage });
                     }
 
                     // no virtual global .position in the current implementation,
@@ -334,6 +345,12 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
 
     }, [publication, r2Publication_]);
 
+    // publication.documentTitle
+    const pubTitleLangStr = convertMultiLangStringToString(translator, publication.publicationTitle);
+    const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+    const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+    const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+
     return (
         <>
             <div className={stylesColumns.row}>
@@ -352,8 +369,9 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                 </div>
                 <div className={stylesColumns.col}>
                     <section>
-                        <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10)}>
-                            {publication.title}
+                        <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10)}
+                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                            {pubTitleStr}
                         </h2>
                         <FormatContributorWithLink
                             contributors={publication.authors}
@@ -361,12 +379,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             onClickLinkCb={onClikLinkCb}
                         />
                     </section>
-                    <section>
-                        <div className={stylesGlobal.heading}>
-                            <h3>{__("catalog.tags")}</h3>
-                        </div>
-                        <TagManagerComponent />
-                    </section>
+
                     <section>
                         <PublicationInfoDescription publication={publication} __={__} translator={props.translator} />
                     </section>
@@ -426,9 +439,23 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             }
                         </div>
                     </section>
+                    <section>
+                        <div className={stylesGlobal.heading}>
+                            <h3>{__("publication.accessibility.name")}</h3>
+                        </div>
+                        <div>
+                            <PublicationInfoA11y publication={publication}></PublicationInfoA11y>
+                        </div>
+                    </section>
                     {(publication.lcp ? <section>
                         <LcpInfo publicationLcp={publication} />
                     </section> : <></>)}
+                    <section>
+                        <div className={stylesGlobal.heading}>
+                            <h3>{__("catalog.tags")}</h3>
+                        </div>
+                        <TagManagerComponent />
+                    </section>
                     <Progression
                         __={__}
                         closeDialogCb={closeDialogCb}

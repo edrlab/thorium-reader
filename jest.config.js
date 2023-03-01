@@ -25,16 +25,15 @@ module.exports = {
     verbose: true,
     testEnvironment: "node",
     preset: "ts-jest",
-    globals: {
-        "ts-jest": {
-            babelConfig: false,
-            tsconfig: "<rootDir>/tsconfig.json",
-        }
-    },
+    // globals: {
+    // },
     transform: {
         "\\.ts$": "<rootDir>/scripts/jest_preprocessor.js",
         // ...tsjPreset.transform,
-        // "^.+\\.tsx?$": ["ts-jest", {}],
+        "\\.tsx?$": ["ts-jest", {
+            babelConfig: false,
+            tsconfig: "<rootDir>/tsconfig.json",
+        }],
     },
     moduleNameMapper,
     moduleFileExtensions: [

@@ -1,4 +1,4 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
 const path = require("path");
@@ -12,17 +12,13 @@ const nodeEnv = process.env.NODE_ENV || "development";
 console.log(`MAIN nodeEnv: ${nodeEnv}`);
 
 // https://github.com/edrlab/thorium-reader/issues/1097#issuecomment-643406149
-const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER
-    ? true
-    : false;
+const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER ? true : false;
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => { return "ForkTsCheckerWebpackPlugin" };
+ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => {
+    return "ForkTsCheckerWebpackPlugin";
+};
 const checkTypeScriptSkip =
-    nodeEnv !== "production" ?
-    (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false)
-    : false
-    ;
-
+    nodeEnv !== "production" ? (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false) : false;
 // let ignorePlugin = new webpack.IgnorePlugin({ resourceRegExp: new RegExp("/(bindings)/") })
 
 const aliases = {
@@ -42,14 +38,14 @@ let externals = {
     fsevents: "fsevents",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
-    "electron": "electron",
+    electron: "electron",
     yargs: "yargs",
 };
 const _externalsCache = new Set();
 if (nodeEnv !== "production") {
     const nodeExternals = require("webpack-node-externals");
     const neFunc = nodeExternals({
-        allowlist: ["normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
+        allowlist: ["timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
         importType: function (moduleName) {
             if (!_externalsCache.has(moduleName)) {
                 console.log(`WEBPACK EXTERNAL (MAIN): [${moduleName}]`);
@@ -61,11 +57,11 @@ if (nodeEnv !== "production") {
             return "commonjs " + moduleName;
         },
     });
-    externals = [externals,
-        function({ context, request, contextInfo, getResolve }, callback) {
+    externals = [
+        externals,
+        function ({ context, request, contextInfo, getResolve }, callback) {
             const isRDesk = request.indexOf("readium-desktop/") === 0;
             if (isRDesk) {
-
                 if (!_externalsCache.has(request)) {
                     console.log(`WEBPACK EXTERNAL (MAIN): READIUM-DESKTOP [${request}]`);
                 }
@@ -80,7 +76,7 @@ if (nodeEnv !== "production") {
                 // const isR2Alias = /^@r2-.+-js/.test(request);
 
                 const iSlash = request.indexOf("/");
-                const key = request.substr(0, (iSlash >= 0) ? iSlash : request.length);
+                const key = request.substr(0, iSlash >= 0 ? iSlash : request.length);
                 if (aliases[key]) {
                     request_ = request.replace(key, aliases[key]);
 
@@ -146,9 +142,7 @@ let config = Object.assign(
             rules: [
                 {
                     test: /\.tsx$/,
-                    loader: useLegacyTypeScriptLoader
-                        ? "awesome-typescript-loader"
-                        : "ts-loader",
+                    loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
                     },
@@ -164,9 +158,7 @@ let config = Object.assign(
                             },
                         },
                         {
-                            loader: useLegacyTypeScriptLoader
-                                ? "awesome-typescript-loader"
-                                : "ts-loader",
+                            loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                             options: {
                                 transpileOnly: true, // checkTypeScriptSkip
                             },
@@ -187,80 +179,72 @@ let config = Object.assign(
 
                 excludeAssets: null,
             }),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(
-                        __dirname,
-                        "src",
-                        "resources",
-                        "information"
-                    ),
-                    to: "assets/md/information",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(
-                        __dirname,
-                        "src",
-                        "resources",
-                        "lib",
-                        "pdfjs",
-                    ),
-                    to: "assets/lib/pdfjs",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(__dirname, "external-assets"),
-                    to: "external-assets",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(
-                        __dirname,
-                        "node_modules",
-                        "r2-navigator-js",
-                        "dist",
-                        "ReadiumCSS"
-                    ),
-                    to: "ReadiumCSS",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(__dirname, "node_modules", "mathjax"),
-                    to: "MathJax",
-                },
-            ]}),
-            new CopyWebpackPlugin({ patterns: [
-                {
-                    from: path.join(__dirname, "resources"),
-                    to: "assets/icons",
-                },
-            ]}),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "src", "resources", "information"),
+                        to: "assets/md/information",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "src", "resources", "lib", "pdfjs"),
+                        to: "assets/lib/pdfjs",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "external-assets"),
+                        to: "external-assets",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "node_modules", "r2-navigator-js", "dist", "ReadiumCSS"),
+                        to: "ReadiumCSS",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "node_modules", "mathjax"),
+                        to: "MathJax",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "resources"),
+                        to: "assets/icons",
+                    },
+                ],
+            }),
             preprocessorDirectives.definePlugin,
         ],
-    }
+    },
 );
 
-config.plugins.push(
-    new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })
-); // jsondown (runtimejs, fatfs)
+config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })); // jsondown (runtimejs, fatfs)
 
-config.plugins.push(
-    new webpack.IgnorePlugin({ resourceRegExp: /^canvas$/ })
-); // pdfjs
+config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^canvas$/ })); // pdfjs
 
 if (!checkTypeScriptSkip) {
-    config.plugins.push(new ForkTsCheckerWebpackPlugin({
-        // measureCompilationTime: true,
-    }));
+    config.plugins.push(
+        new ForkTsCheckerWebpackPlugin({
+            // measureCompilationTime: true,
+        }),
+    );
 }
 
 if (nodeEnv !== "production") {
-
     // Bundle absolute resource paths in the source-map,
     // so VSCode can match the source file.
     config.output.devtoolModuleFilenameTemplate = "[absolute-resource-path]";
@@ -269,9 +253,7 @@ if (nodeEnv !== "production") {
 
     config.devtool = "source-map";
 } else {
-
-    config.optimization =
-    {
+    config.optimization = {
         ...(config.optimization || {}),
         minimize: true,
         minimizer: [
@@ -297,14 +279,10 @@ if (nodeEnv !== "production") {
     config.plugins.push(
         new webpack.IgnorePlugin({
             resourceRegExp: /^electron-devtools-installer$/,
-        })
+        }),
     );
-    config.plugins.push(
-        new webpack.IgnorePlugin({ resourceRegExp: /^remote-redux-devtools$/ })
-    );
-    config.plugins.push(
-        new webpack.IgnorePlugin({ resourceRegExp: /^json-diff$/ })
-    );
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^remote-redux-devtools$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^json-diff$/ }));
 }
 
 module.exports = config;

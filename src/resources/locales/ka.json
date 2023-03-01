@@ -10,6 +10,9 @@
         "skipLink": "შიგთავსზე გადახტომა",
         "toolbar": "ინსტრუმენტთა პანელი"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "ასლი",
@@ -105,15 +108,16 @@
         "released": "გამოცემის თარიღი",
         "sort": "დალაგება",
         "tagCount": "იარლიყების რაოდენობა",
-        "tags": "იარლიყები"
+        "tags": "იარლიყები",
+        "update": ""
     },
     "dialog": {
+        "cancel": "გადაფიქრება",
         "closeModalWindow": "მოდალური ფანჯრის დახურვა",
         "deleteFeed": "ნამდვილად გსურთ ამ კატალოგის წაშლა ?",
         "deletePublication": "ნამდვილად გსურთ ამ პუბლიკაციის წაშლა ?",
         "import": "ნამდვილად გსურთ ამ ფაილების შემოტანა :",
         "importError": "მოხდა შეცდომა, გადაამოწმეთ ფაილის გაფართოება ({{acceptedExtension}})",
-        "no": "არა",
         "renew": "ნამდვილად გსურთ ამ პუბლიკაციის ლიცენზიის განახლება?",
         "return": "ნამდვილად გსურთ ამ პუბლიკაციის ლიცენზიის დაბრუნება?",
         "yes": "დიახ"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "გადაფიქრება",
             "hint": "(მინიშნება: {{- hint}})",
             "password": "კოდური ფრაზა",
             "sentence": "ეს პუბლიკაცია საჭიროებს LCP კოდურ ფრაზას გასახსნელად: ",
@@ -172,6 +175,9 @@
             "url": "მისამართი:",
             "urlPlaceholder": "ბმული"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "OPDS წყაროს დამატება",
         "back": "უკან",
         "breadcrumbRoot": "კატალოგები",
@@ -195,9 +201,45 @@
         },
         "next": "მომდევნო",
         "previous": "წინა",
-        "shelf": "თარო"
+        "shelf": "თარო",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "აუდიო ნაკვალევები"
         },
@@ -272,6 +314,8 @@
             "goToError": "ამ გვერდის წყვეტა არ არსებობს",
             "goToPlaceHolder": "შეიტანეთ გვერდის ნომერი",
             "goToTitle": "გადადით გვერდზე",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "ინფორმაცია",
             "magnifyingGlassButton": "პუბლიკაციაში ძიება",
             "openTableOfContentsTitle": "ნავიგაცია",

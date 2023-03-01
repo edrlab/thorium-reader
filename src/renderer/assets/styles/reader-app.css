@@ -1,17 +1,17 @@
 /*
 =-=-= reader-app.css => './focus-mixin.css'
 */
-@import './focus-mixin.css';
+@import url('./focus-mixin.css');
 
 /*
 =-=-= reader-app.css => './focus.css'
 */
-@import './focus.css';
+@import url('./focus.css');
 
 /*
 =-=-= reader-app.css => './variable.css'
 */
-@import './variable.css';
+@import url('./variable.css');
 
 /*
 =-=-= reader-app.css
@@ -561,8 +561,13 @@ button {
         color: var(--reader-fontColor);
 
         &:disabled {
+          /*
           color: grey;
+          opacity: 0.5;
           cursor: auto;
+          */
+          color: var(--disabled-color) !important;
+          cursor: not-allowed;
 
           & svg.menu_section_svg {
             display: none;
@@ -1102,6 +1107,35 @@ input[type=radio] + label {
   left: 0;
   background-color: var(--reader-mainColor);
 
+  & .history {
+    float: left;
+    margin-top: 1rem;
+    margin-left: 2rem;
+
+    & button {
+      border: 0;
+      cursor: pointer;
+      padding: 0;
+      background-color: transparent;
+      width: 40px;
+      height: 40px;
+
+      &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+
+    & svg {
+      /* fill: #c1c1c1; */
+
+      /* fill: #555555; */
+      fill: var(--reader-fontColor);
+      opacity: 0.5;
+      transform: scale(0.8);
+    }
+  }
+
   & .arrows {
     float: right;
     margin-top: 1rem;
@@ -1117,19 +1151,28 @@ input[type=radio] + label {
     }
 
     & svg {
-      fill: #c1c1c1;
+      /* fill: #c1c1c1; */
+
+      /* fill: #555555; */
+      fill: var(--reader-fontColor);
+      opacity: 0.5;
     }
   }
 
   & .track_reading_wrapper {
-    padding: 1rem 8rem 1rem 5rem;
+    padding: 1rem 8rem 1rem 8rem;
     bottom: 0;
     margin-top: 1rem;
     color: var(--reader-fontColor);
   }
 
   & .track_reading_wrapper_noArrows {
-    padding: 1rem 5rem 1rem 5rem;
+    /* padding: 1rem 5rem 1rem 5rem; */
+    padding-top: 1rem;
+    padding-right: 5rem;
+    padding-bottom: 1rem;
+
+    /* padding-left: 5rem; */
   }
 }
 
@@ -1142,6 +1185,13 @@ input[type=radio] + label {
     pointer-events: all;
     margin-bottom: 15px;
     margin-right: 20px;
+  }
+
+  & .history {
+    background-color: var(--reader-mainColor);
+    pointer-events: all;
+    margin-bottom: 15px;
+    margin-left: 20px;
   }
 }
 
@@ -1320,7 +1370,9 @@ input[type=radio] + label {
 }
 
 .mathml_section {
+  display: flex;
   padding: 10px;
+  font-size: 0.9rem;
 
   & input {
     display: inline-block;
@@ -1329,7 +1381,12 @@ input[type=radio] + label {
 
   & label {
     display: inline-block !important;
+    text-align: left !important;
   }
+}
+
+.tab_content > .line_tab_content > .mathml_section {
+  padding-left: 30px;
 }
 
 .divina_grid_container {

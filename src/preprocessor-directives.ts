@@ -47,6 +47,12 @@ export const _APP_NAME = __APP_NAME__;
 // declare const __USE_HTTP_STREAMER__: boolean;
 // export const _USE_HTTP_STREAMER = __USE_HTTP_STREAMER__;
 
+declare const __TELEMETRY_URL__: string;
+export const _TELEMETRY_URL = __TELEMETRY_URL__;
+
+declare const __TELEMETRY_SECRET__: string;
+export const _TELEMETRY_SECRET = __TELEMETRY_SECRET__;
+
 declare const __NODE_ENV__: string;
 export const _NODE_ENV = __NODE_ENV__;
 
@@ -62,6 +68,8 @@ export const IS_DEV =
     // ... or when not packaging, check runtime process.env:
     __PACKAGING__ === "0" &&
     (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
+
+export const OPEN_DEV_TOOLS = IS_DEV && process.env.THORIUM_OPEN_DEVTOOLS === "1";
 
 declare const __CONTINUOUS_INTEGRATION_DEPLOY__: boolean;
 export const _CONTINUOUS_INTEGRATION_DEPLOY = __CONTINUOUS_INTEGRATION_DEPLOY__;

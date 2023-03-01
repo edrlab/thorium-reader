@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { encodeURIComponent_RFC3986 } from "r2-utils-js/dist/es8-es2017/src/_utils/http/UrlUtils";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -36,7 +37,7 @@ class GridTagButton extends React.Component<IProps, undefined> {
             <Link
                 to={{
                     ...this.props.location,
-                    pathname: `/library/search/tag/${this.props.name}`,
+                    pathname: `/library/search/tag/${encodeURIComponent_RFC3986(this.props.name)}`,
                 }}
                 state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                 className={stylesTags.tag}

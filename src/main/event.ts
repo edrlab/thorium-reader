@@ -17,9 +17,9 @@ const openTitleFromCliChannel = channel<string>();
 
 export const getOpenTitleFromCliChannel = () => openTitleFromCliChannel;
 
-const openUrlWithThoriumSchemeFromMacEventChannel = channel<string>();
+const openUrlWithThoriumSchemeEventChannel = channel<string>();
 
-export const getOpenUrlWithThoriumSchemeFromMacEventChannel = () => openUrlWithThoriumSchemeFromMacEventChannel;
+export const getOpenUrlWithThoriumSchemeEventChannel = () => openUrlWithThoriumSchemeEventChannel;
 
 const openUrlWithOpdsSchemeEventChannel = channel<string>();
 

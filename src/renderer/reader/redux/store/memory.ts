@@ -10,7 +10,7 @@ import { reduxSyncMiddleware } from "readium-desktop/renderer/reader/redux/middl
 import { rootReducer } from "readium-desktop/renderer/reader/redux/reducers";
 import { rootSaga } from "readium-desktop/renderer/reader/redux/sagas";
 import { applyMiddleware, createStore, type Store } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { composeWithDevTools } from "@redux-devtools/extension";
 import createSagaMiddleware from "redux-saga";
 
 import { locatorHrefWatcherMiddleware } from "../middleware/locatorHrefWatcher";

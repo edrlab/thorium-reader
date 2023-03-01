@@ -10,7 +10,7 @@ import { historyActions, readerActions } from "readium-desktop/common/redux/acti
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
-    getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeFromMacEventChannel,
+    getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeEventChannel,
     getOpdsNewCatalogsStringUrlChannel,
     getOpenFileFromCliChannel, getOpenTitleFromCliChannel,
 } from "readium-desktop/main/event";
@@ -84,7 +84,7 @@ export function saga() {
 
         }),
         spawn(function*() {
-            const chan = getOpenUrlWithThoriumSchemeFromMacEventChannel();
+            const chan = getOpenUrlWithThoriumSchemeEventChannel();
 
             while (true) {
 
@@ -172,11 +172,11 @@ export function saga() {
                             const u = new URL(feedUrl);
                             if (!u) continue;
 
-                            debug("import the feed", feed.title, feedUrl);
+                            debug("import the feed", feed.documentTitle, feedUrl);
 
                             // addFeed has a security to not duplicate a feed
                             yield* callTyped(addFeed, {
-                                title: feed.title,
+                                title: feed.documentTitle,
                                 url: feedUrl,
                             });
 

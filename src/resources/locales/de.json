@@ -10,6 +10,9 @@
         "skipLink": "Gehe zum Inhalt",
         "toolbar": "symbolleiste"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Kopieren",
@@ -78,7 +81,7 @@
         "numberOfPages": "Seitenzahl",
         "opds": {
             "auth": {
-                "cancel": "",
+                "cancel": "Abbrechen",
                 "login": ""
             },
             "info": {
@@ -105,15 +108,16 @@
         "released": "Veröffentlicht am",
         "sort": "Sortieren nach",
         "tagCount": "Anzahl der Tags",
-        "tags": "Tags"
+        "tags": "Tags",
+        "update": ""
     },
     "dialog": {
+        "cancel": "Abbrechen",
         "closeModalWindow": "Dieses Fenster schließen",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
         "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
-        "no": "Nein",
         "renew": "",
         "return": "",
         "yes": "Ja"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Abbrechen",
             "hint": "Dein Kennwort",
             "password": "",
             "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
@@ -172,6 +175,9 @@
             "url": "Feed-Link:",
             "urlPlaceholder": ""
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "OPDS-Feed hinzufügen",
         "back": "Zurück",
         "breadcrumbRoot": "",
@@ -195,9 +201,45 @@
         },
         "next": "Nächster",
         "previous": "Bisherige",
-        "shelf": ""
+        "shelf": "",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Spuren"
         },
@@ -272,6 +314,8 @@
             "goToError": "Diese Seite existiert nicht",
             "goToPlaceHolder": "Gehe zur Seite",
             "goToTitle": "Gehe zur Seite",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "Informationen",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navigation",

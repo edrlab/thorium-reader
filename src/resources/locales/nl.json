@@ -10,6 +10,9 @@
         "skipLink": "Ga naar inhoud",
         "toolbar": "werkbalk"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Kopieer",
@@ -78,7 +81,7 @@
         "numberOfPages": "Aantal pagina's",
         "opds": {
             "auth": {
-                "cancel": "",
+                "cancel": "Annuleer",
                 "login": ""
             },
             "info": {
@@ -105,15 +108,16 @@
         "released": "Uitgegeven op",
         "sort": "Sorteer op",
         "tagCount": "Label aantal",
-        "tags": "Labels"
+        "tags": "Labels",
+        "update": ""
     },
     "dialog": {
+        "cancel": "Annuleer",
         "closeModalWindow": "Sluit dit modale venster",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
         "import": "Wil je deze bestanden echt importeren :",
         "importError": "er is een fout opgetreden, controleer je bestandsextensie ({{acceptedExtension}})",
-        "no": "Nee",
         "renew": "Wil je de licentie voor deze publicatie echt vernieuwen?",
         "return": "Wil je de licentie voor deze publicatie echt inleveren?",
         "yes": "Ja"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Annuleer",
             "hint": "(Hint : {{- hint}})",
             "password": "Wachtwoordzin",
             "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
@@ -172,6 +175,9 @@
             "url": "Link :",
             "urlPlaceholder": "Link"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Voeg OPDS feed toe",
         "back": "Terug",
         "breadcrumbRoot": "Catalogi",
@@ -195,9 +201,45 @@
         },
         "next": "Volgende",
         "previous": "Vorige",
-        "shelf": "Plank"
+        "shelf": "Plank",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Tracks"
         },
@@ -272,6 +314,8 @@
             "goToError": "Deze paginaovergang bestaat niet",
             "goToPlaceHolder": "Voer een paginanummer in",
             "goToTitle": "Ga naar pagina",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "informatie",
             "magnifyingGlassButton": "Zoek in publicatie",
             "openTableOfContentsTitle": "navigatie",

@@ -48,8 +48,9 @@ export interface RootState {
     keyboard: KeyboardState;
     opds: {
         catalog: OpdsFeedDocument[];
-    }
+    },
+    version: string;
 }
 
 
-export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds">;
+export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version">;

@@ -10,6 +10,9 @@
         "skipLink": "Pasar ao contido",
         "toolbar": "Barra de ferramentas"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Copiar",
@@ -105,15 +108,16 @@
         "released": "Publicado en",
         "sort": "Ordenar por",
         "tagCount": "Número de etiquetas",
-        "tags": "Etiquetas"
+        "tags": "Etiquetas",
+        "update": ""
     },
     "dialog": {
+        "cancel": "Cancelar",
         "closeModalWindow": "Pechar esta xanela modal",
         "deleteFeed": "Seguro que queres eliminar este catálogo?",
         "deletePublication": "Seguro que queres eliminar esta publicación?",
         "import": "Seguro que queres importar estes ficheiros?",
         "importError": "Produciuse un erro, comproba a extensión do teu ficheiro ({{acceptedExtension}})",
-        "no": "No",
         "renew": "Seguro que queres renovar a licenza para esta publicación?",
         "return": "Seguro que queres devolver a licenza para esta publicación?",
         "yes": "Sí"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancelar",
             "hint": "(Pista : {{- hint}})",
             "password": "Contrasinal",
             "sentence": "Esta publicación require un contrasinal LCP para abrirse: ",
@@ -172,6 +175,9 @@
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Engadir catálogo OPDS",
         "back": "Atrás",
         "breadcrumbRoot": "Catálogos",
@@ -195,9 +201,45 @@
         },
         "next": "Seguinte",
         "previous": "Anterior",
-        "shelf": "Estante"
+        "shelf": "Estante",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Pistas"
         },
@@ -272,6 +314,8 @@
             "goToError": "Este salto de páxina non existe",
             "goToPlaceHolder": "Introduce un número de páxina",
             "goToTitle": "Ir a páxina",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar na publicación",
             "openTableOfContentsTitle": "Navegación",

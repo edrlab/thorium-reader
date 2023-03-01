@@ -45,6 +45,13 @@ export class OpdsAddForm extends React.Component<IProps, undefined> {
                     <SVG ariaHidden={true} svg={AddIcon}/>
                     <span>{ __("opds.addForm.title")}</span>
                 </button>
+                <button
+                    onClick={this.props.openApiappAddForm}
+                    className={stylesButtons.button_primary}
+                >
+                    <SVG ariaHidden={true} svg={AddIcon} />
+                    <span>{__("opds.addFormApiapp.title")}</span>
+                </button>
             </section>
         );
     }
@@ -54,6 +61,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         openOpdsFeedAddForm: () => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.OpdsFeedAddForm, {}));
+        },
+        openApiappAddForm: () => {
+            dispatch(dialogActions.openRequest.build(DialogTypeName.ApiappAddForm, {}));
         },
     };
 };

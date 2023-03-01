@@ -10,8 +10,9 @@ import * as debug_ from "debug";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
+// import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/outline-exit_to_app-24px.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/baseline-pause-24px.svg";
 import * as PlayIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg";
@@ -43,6 +44,13 @@ import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
+import {
+    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
+} from "readium-desktop/renderer/common/keyboard";
+import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+import { connect } from "react-redux";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -115,7 +123,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
     r2Publication: R2Publication;
 }
 
@@ -134,6 +142,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     private infoMenuButtonRef: React.RefObject<HTMLButtonElement>;
 
     private onwheel: React.WheelEventHandler<HTMLButtonElement>;
+    private timerFXLZoomDebounce: number | undefined;
 
     constructor(props: IProps) {
         super(props);
@@ -146,13 +155,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.focusSettingMenuButton = this.focusSettingMenuButton.bind(this);
         this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
 
+        this.onKeyboardFixedLayoutZoomReset = this.onKeyboardFixedLayoutZoomReset.bind(this);
+        this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
+        this.onKeyboardFixedLayoutZoomOut = this.onKeyboardFixedLayoutZoomOut.bind(this);
+
         this.state = {
             pdfScaleMode: undefined,
             divinaSoundEnabled: false,
             fxlZoomPercent: 0,
         };
 
-        let _timerWheel: number | undefined;
+        this.timerFXLZoomDebounce = undefined;
+
         this.onwheel = throttle((ev) => {
             const step = 10;
             if (ev.deltaY < 0) { // "natural" gesture on MacOS :(
@@ -164,11 +178,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     this.setState({ fxlZoomPercent: this.state.fxlZoomPercent + step });
                 }
             }
-            if (_timerWheel) {
-                clearTimeout(_timerWheel);
+            if (this.timerFXLZoomDebounce) {
+                clearTimeout(this.timerFXLZoomDebounce);
             }
-            _timerWheel = window.setTimeout(() => {
-                _timerWheel = undefined;
+            this.timerFXLZoomDebounce = window.setTimeout(() => {
+                this.timerFXLZoomDebounce = undefined;
                 fixedLayoutZoomPercent(this.state.fxlZoomPercent);
             }, 600);
         }, 200).bind(this);
@@ -176,10 +190,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     public componentDidMount() {
 
+        ensureKeyboardListenerIsInstalled();
+        this.registerAllKeyboardListeners();
+
         this.props.pdfEventBus?.subscribe("scale", this.setScaleMode);
     }
 
     public componentWillUnmount() {
+
+        this.unregisterAllKeyboardListeners();
 
         if (this.props.pdfEventBus) {
             this.props.pdfEventBus.remove(this.setScaleMode, "scale");
@@ -220,6 +239,90 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             this.props.settingsOpen === true) {
             this.focusSettingMenuButton();
         }
+
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            console.log("READER HEADER RELOAD KEYBOARD SHORTCUTS");
+            this.unregisterAllKeyboardListeners();
+            this.registerAllKeyboardListeners();
+        }
+    }
+
+    private registerAllKeyboardListeners() {
+        registerKeyboardListener(
+            true, // listen for key down (not key up)
+            this.props.keyboardShortcuts.FXLZoomReset,
+            this.onKeyboardFixedLayoutZoomReset);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.FXLZoomIn,
+            this.onKeyboardFixedLayoutZoomIn);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.FXLZoomOut,
+            this.onKeyboardFixedLayoutZoomOut);
+    }
+
+    private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomReset);
+        unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomIn);
+        unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomOut);
+    }
+
+    private onKeyboardFixedLayoutZoomReset() {
+        if (!this.props.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFixedLayoutZoomReset)");
+            }
+            return;
+        }
+        this.setState({ fxlZoomPercent: 0 });
+        fixedLayoutZoomPercent(0);
+    }
+    private onKeyboardFixedLayoutZoomIn() {
+        if (!this.props.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFixedLayoutZoomIn)");
+            }
+            return;
+        }
+        const step = 10;
+        let z = this.state.fxlZoomPercent === 0 ? 100 : (this.state.fxlZoomPercent + step);
+        if (z >= 400) {
+            z = 400;
+        }
+
+        this.setState({ fxlZoomPercent: z });
+
+        if (this.timerFXLZoomDebounce) {
+            clearTimeout(this.timerFXLZoomDebounce);
+        }
+        this.timerFXLZoomDebounce = window.setTimeout(() => {
+            this.timerFXLZoomDebounce = undefined;
+            fixedLayoutZoomPercent(z);
+        }, 600);
+    }
+    private onKeyboardFixedLayoutZoomOut() {
+        if (!this.props.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFixedLayoutZoomOut)");
+            }
+            return;
+        }
+        const step = -10;
+        let z = this.state.fxlZoomPercent === 0 ? 100 : (this.state.fxlZoomPercent + step);
+        if (z <= -step) {
+            z = -step;
+        }
+
+        this.setState({ fxlZoomPercent: z });
+
+        if (this.timerFXLZoomDebounce) {
+            clearTimeout(this.timerFXLZoomDebounce);
+        }
+        this.timerFXLZoomDebounce = window.setTimeout(() => {
+            this.timerFXLZoomDebounce = undefined;
+            fixedLayoutZoomPercent(z);
+        }, 600);
     }
 
     public render(): React.ReactElement<{}> {
@@ -272,6 +375,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <li className={classNames(stylesReader.showInFullScreen)}>
                             <button
                                 className={stylesReader.menu_button}
+                                style={{transform:"rotate(-90deg)"}}
                                 onClick={this.props.handleReaderClose}
                                 title={__("reader.navigation.backHomeTitle")}
                             >
@@ -574,11 +678,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </li>
                                     : <></>)
                         }
+                    </ul>
+
+                    <ul className={stylesReader.menu_option}>
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "rgb(193, 193, 193)" } })}
                         >
                             <HeaderSearch shortcutEnable={this.props.shortcutEnable}></HeaderSearch>
                         </li>
+
                         <li
                             {...(this.props.isOnBookmark &&
                                 { style: { backgroundColor: "rgb(193, 193, 193)" } })}
@@ -711,4 +819,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(ReaderHeader);
+const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
+    return {
+        keyboardShortcuts: state.keyboard.shortcuts,
+    };
+};
+
+const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
+    return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderHeader));

@@ -13,11 +13,13 @@ import { IOpdsApi } from "./interface/opdsApi.interface";
 import { IPublicationApi } from "./interface/publicationApi.interface";
 import { IReaderApi } from "./interface/readerApi.interface";
 import { ISessionApi } from "./interface/session.interface";
+import { IApiappApi } from "./interface/apiappApi.interface";
 
 export type TMethodApi =
     keyof ICatalogApi |
     keyof IPublicationApi |
     keyof IOpdsApi |
+    keyof IApiappApi |
     keyof IHttpBrowserApi |
     keyof IKeyboardApi |
     keyof ILcpApi |

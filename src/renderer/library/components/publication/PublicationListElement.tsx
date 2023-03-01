@@ -12,7 +12,7 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import { IOpdsContributorView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
@@ -29,6 +29,7 @@ import {
 } from "readium-desktop/renderer/common/logics/formatContributor";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { v4 as uuidv4 } from "uuid";
+import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -70,32 +71,52 @@ export class PublicationListElement extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
+
         const pub = this.props.publicationViewMaybeOpds;
-        const publishers = pub.publishers as Array<string | IOpdsContributorView>;
-        const formatedPublishers = publishers
-            .reduce(
-                (pv, cv) => {
-                    if ((cv as IOpdsContributorView)?.name) {
-                        return [...pv, `${pv}${(cv as IOpdsContributorView).name}`];
-                    }
-                    return cv && typeof cv === "string" ? [...pv, cv] : pv;
-                }, [])
-            .join(", ");
-        let formatedPublishedYear = "";
+
         const { translator } = this.props;
 
-        if (pub.publishedAt) {
-            formatedPublishedYear = "" + moment(pub.publishedAt).year();
+        let publisherComponent = <></>;
+        // note that empty array is truthy (unlike empty string which is falsy)
+        if (pub.publishers || pub.publishedAt) {
+            let formatedPublishers = "";
+            if (pub.publishers) {
+                for (const publisher of pub.publishers) {
+                    let name = "";
+                    if (typeof publisher === "string") {
+                        name = publisher;
+                    } else if (typeof publisher === "object" && publisher.name) {
+                        name = publisher.name;
+                    }
+                    formatedPublishers += formatedPublishers ? ", " + name : name;
+                }
+            }
+
+            let formatedPublishedYear = "";
+            if (pub.publishedAt) {
+                formatedPublishedYear = "" + moment(pub.publishedAt).year();
+            }
+
+            publisherComponent = <div>
+                <p>{formatedPublishedYear}</p>
+                <p>{formatedPublishers}</p>
+            </div>;
         }
 
         const authors = formatContributorToString(pub.authors, translator);
+
+        // publicationViewMaybeOpds.documentTitle
+        const pubTitleLangStr = convertMultiLangStringToString(translator, (pub as PublicationView).publicationTitle || pub.documentTitle);
+        const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+        const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+        const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         return (
             <>
                 <Menu
                     button={
                         (<SVG
-                            title={`${this.props.__("accessibility.bookMenu")} (${pub.title})`}
+                            title={`${this.props.__("accessibility.bookMenu")} (${pub.documentTitle})`}
                             className={stylesButtons.button_transparency_icon}
                             svg={MenuIcon}
                         />)
@@ -133,13 +154,14 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                     }
                 >
                     <div className={stylesPublications.publication_list_title_authors}>
-                        <div><strong>{pub.title}</strong></div>
+                        <div
+                        dir={pubTitleIsRTL ? "rtl" : undefined}>
+                        <strong>{pubTitleStr}</strong></div>
                         <p>{authors}</p>
                     </div>
-                    <div>
-                        <p>{formatedPublishedYear}</p>
-                        <p>{formatedPublishers}</p>
-                    </div>
+                    {
+                        publisherComponent
+                    }
                 </a>
                 {/* {this.state.menuOpen &&
                     <AccessibleMenu

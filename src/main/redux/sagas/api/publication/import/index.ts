@@ -52,7 +52,7 @@ export function* importFromLink(
                 toastActions.openRequest.build(
                     ToastType.Success,
                     translate("message.import.alreadyImport",
-                        { title: publicationView.title }),
+                        { title: publicationView.documentTitle }),
                 ),
             );
 
@@ -61,7 +61,7 @@ export function* importFromLink(
                 toastActions.openRequest.build(
                     ToastType.Success,
                     translate("message.import.success",
-                        { title: publicationView.title }),
+                        { title: publicationView.documentTitle }),
                 ),
             );
 
@@ -76,7 +76,7 @@ export function* importFromLink(
             toastActions.openRequest.build(
                 ToastType.Error,
                 translate("message.import.fail",
-                    { path: link.url, err: e.toString() }),
+                    { path: link.url, err: e?.toString() }),
             ),
         );
     }
@@ -147,7 +147,7 @@ export function* importFromFs(
                             toastActions.openRequest.build(
                                 ToastType.Success,
                                 translate("message.import.alreadyImport",
-                                    { title: publicationView.title }),
+                                    { title: publicationView.documentTitle }),
                             ),
                         );
 
@@ -156,7 +156,7 @@ export function* importFromFs(
                             toastActions.openRequest.build(
                                 ToastType.Success,
                                 translate("message.import.success",
-                                    { title: publicationView.title }),
+                                    { title: publicationView.documentTitle }),
                             ),
                         );
 
@@ -171,7 +171,7 @@ export function* importFromFs(
                         toastActions.openRequest.build(
                             ToastType.Error,
                             translate("message.import.fail",
-                                { path: filePath }),
+                                { path: filePath, err: error?.toString() }),
                         ),
                     );
                 }

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as glob from "glob";
+import { globSync } from "glob";
 import * as debug_ from "debug";
 import { app } from "electron";
 import { EOL } from "os";
@@ -15,9 +15,9 @@ import { createStoreFromDi } from "../di";
 import { SagaMiddleware } from "@redux-saga/core";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { start } from "readium-desktop/main/start";
-import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel, getOpenUrlWithOpdsSchemeEventChannel } from "readium-desktop/main/event";
+import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "readium-desktop/main/event";
 import * as path from "path";
-import validator from "validator";
+import { isOpenUrl, setOpenUrl } from "./url";
 
 // Logger
 const debug = debug_("readium-desktop:cli:command");
@@ -66,15 +66,10 @@ export const opdsCommand = async (argv: yargs.Arguments<{
 };
 
 export const importCommand = async (argv: yargs.Arguments<{
-    title: string;
-} & {
-    url: string;
-} & {
     path: string;
 }>) => {
 
-
-    const pathArray = glob.sync(argv.path, {
+    const pathArray = globSync(argv.path, {
         absolute: true,
         realpath: true,
     }) || [];
@@ -101,15 +96,15 @@ export const importCommand = async (argv: yargs.Arguments<{
             debug("cliImport filePath in filePathArray: ", fp);
             const pubViews = await sagaMiddleware.run(pubApi.importFromFs, fp).toPromise<PublicationView[]>();
 
-            if (!pubViews && pubViews?.length === 0) {
-                process.stdout.write("Publication(s) import done." + EOL);
-                return;
+            if (pubViews?.length) {
+                process.stdout.write("import success: " + fp + EOL);
+            } else {
+                process.stderr.write("import failed: " + fp + EOL);
             }
         }
-        process.stderr.write("No valid files, exit with code 1" + EOL);
 
+        process.stdout.write("import(s) done." + EOL);
     } catch (e) {
-
         debug("import error :", e);
         process.stderr.write("import ERROR: " + e.toString() + EOL);
 
@@ -184,17 +179,12 @@ export const mainCommand = async (argv: yargs.Arguments<{
             // pathArgv can be an url with deepLinkInvocation in windows
             // https://github.com/oikonomopo/electron-deep-linking-mac-win
             //
-            // handle opds://
+            // handle opds:// thorium:// https:// http://
             // to add the feed and open it
             const url = pathArgv[0];
+            if (isOpenUrl(url)) {
 
-            const urlIsValid = validator.isURL(url, {
-                protocols: ["http", "https", "opds", "thorium"],
-            });
-            if (urlIsValid) {
-
-                const openUrlChan = getOpenUrlWithOpdsSchemeEventChannel();
-                openUrlChan.put(url);
+                setOpenUrl(url);
                 return;
             }
 

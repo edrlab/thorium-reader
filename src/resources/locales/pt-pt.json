@@ -10,6 +10,9 @@
         "skipLink": "Ir para o conteúdo",
         "toolbar": "barra de ferramentas"
     },
+    "apiapp": {
+        "noLibraryFound": "Nenhuma biblioteca encontrada ({{- name}})"
+    },
     "app": {
         "edit": {
             "copy": "Copiar",
@@ -66,9 +69,9 @@
             "lastAdditions": "Adicionados recentemente"
         },
         "export": "Exportar",
-        "format": "",
+        "format": "Formato",
         "lang": "Idioma",
-        "lastRead": "",
+        "lastRead": "Último lido",
         "moreInfo": "Mais informações",
         "myBooks": "Meus livros",
         "noPublicationHelpL1": "Solte uma publicação aqui",
@@ -105,15 +108,16 @@
         "released": "Publicado em",
         "sort": "Ordenar por",
         "tagCount": "Contagem de etiquetas",
-        "tags": "Etiquetas"
+        "tags": "Etiquetas",
+        "update": ""
     },
     "dialog": {
+        "cancel": "Cancelar",
         "closeModalWindow": "Fechar esta janela modal",
         "deleteFeed": "Deseja realmente eliminar este catálogo?",
         "deletePublication": "Deseja realmente eliminar este documento?",
         "import": "Deseja realmente importar estes ficheiros:",
         "importError": "ocorreu um erro, verifique a extensão do ficheiro ({{acceptedExtension}})",
-        "no": "Não",
         "renew": "Deseja realmente renovar a licença deste documento?",
         "return": "Deseja realmente devolver a licença deste documento?",
         "yes": "Yes"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancelar",
             "hint": "(Dica : {{- hint}})",
             "password": "Senha",
             "sentence": "Esta publicação precisa de uma senha LCP para poder ser aberta: ",
@@ -172,6 +175,9 @@
             "url": "Endereço:",
             "urlPlaceholder": "Hiperligação"
         },
+        "addFormApiapp": {
+            "title": "Adicionar uma conta de biblioteca"
+        },
         "addMenu": "Adicionar fonte OPDS",
         "back": "Voltar",
         "breadcrumbRoot": "Catálogos",
@@ -195,9 +201,45 @@
         },
         "next": "Seguinte",
         "previous": "Anterior",
-        "shelf": "Estante"
+        "shelf": "Estante",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Faixas"
         },
@@ -272,6 +314,8 @@
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um n.º de página",
             "goToTitle": "Ir para a página",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "informações",
             "magnifyingGlassButton": "pesquisar no documento",
             "openTableOfContentsTitle": "navegação",

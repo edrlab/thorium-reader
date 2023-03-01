@@ -10,6 +10,9 @@
         "skipLink": "Pasatu edukira",
         "toolbar": "Tresna-barra"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Kopiatu",
@@ -105,15 +108,16 @@
         "released": "Hemen argitaratua",
         "sort": "Ordenatu honen arabera",
         "tagCount": "Etiketa kopurua",
-        "tags": "Etiketak"
+        "tags": "Etiketak",
+        "update": ""
     },
     "dialog": {
+        "cancel": "Ezeztatu",
         "closeModalWindow": "Itxi modu-leiho hau",
         "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
         "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
         "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",
         "importError": "Errore bat gertatu da. Egiaztatu zure fitxategiaren luzapena ({{acceptedExtension}})",
-        "no": "Ez",
         "renew": "Ziur zaude argitalpen honetarako lizentzia berritu nahi duzula?",
         "return": "Ziur zaude lizentzia itzuli nahi duzula argitalpen honetarako?",
         "yes": "Bai"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Ezeztatu",
             "hint": "(Adierazi : {{- hint}})",
             "password": "Pasahitza",
             "sentence": "Argitalpen honek LCP pasahitza behar du irekitzeko: ",
@@ -172,6 +175,9 @@
             "url": "Lotura:",
             "urlPlaceholder": "Lotura"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "OPDS katalogoa gehitzea",
         "back": "Atzera",
         "breadcrumbRoot": "Katalogoak",
@@ -195,9 +201,45 @@
         },
         "next": "Hurrengoa",
         "previous": "Aurrekoa",
-        "shelf": "Apala"
+        "shelf": "Apala",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Tracks"
         },
@@ -272,6 +314,8 @@
             "goToError": "Orrialde-jauzi hori ez dago",
             "goToPlaceHolder": "Sartu orrialde-zenbaki bat",
             "goToTitle": "Orrialdera joan",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "Informazioa",
             "magnifyingGlassButton": "bilatu argitalpenean",
             "openTableOfContentsTitle": "Nabigazioa",

@@ -1,4 +1,4 @@
-const util = require('util');
+const util = require("util");
 
 const mainConfig = require("./webpack.config.main");
 const libraryConfig = require("./webpack.config.renderer-library");
@@ -21,10 +21,4 @@ console.log(util.inspect(libraryConfig, { colors: true, depth: null, compact: fa
 // console.log("-------------------- PRELOAD config:");
 // console.log(util.inspect(preloadConfig, { colors: true, depth: null, compact: false, customInspect: true }));
 
-module.exports =  [
-    mainConfig,
-    libraryConfig,
-    readerConfig,
-    pdfConfig,
-    preloadConfig
-];
+module.exports = [mainConfig, libraryConfig, readerConfig, pdfConfig, preloadConfig];

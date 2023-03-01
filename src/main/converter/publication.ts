@@ -197,6 +197,8 @@ export class PublicationViewConverter {
         const r2Publication = await this.unmarshallR2Publication(document);
         const r2PublicationJson = TaJsonSerialize(r2Publication); // note: does not include r2Publication.LCP
 
+        // TODO: preserve (string | IStringMap) for publishers and authors (contributors),
+        // and apply convertMultiLangStringToString() only downstream / at rendering time.
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,
         );
@@ -282,7 +284,12 @@ export class PublicationViewConverter {
             a11y_accessibilitySummary: r2Publication.Metadata.AccessibilitySummary, // string | IStringMap
 
             identifier: document.identifier, // preserve Identifiable identifier
-            title: document.title || "-", // default title
+
+            documentTitle: document.title || "-", // default title
+            // convertMultiLangStringToString
+            publicationTitle: r2Publication.Metadata.Title, // string | IStringMap
+            publicationSubTitle: r2Publication.Metadata.SubTitle, // string | IStringMap
+
             authors,
             description: r2Publication.Metadata.Description,
             languages: r2Publication.Metadata.Language,

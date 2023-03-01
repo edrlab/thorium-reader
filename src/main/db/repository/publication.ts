@@ -214,7 +214,7 @@ export class PublicationRepository {
 
                 const docs = pubViews.map((v) => ({
                     id: v.identifier,
-                    title: v.title,
+                    title: v.documentTitle,
                     author: v.authors.join(" "),
                 }));
 

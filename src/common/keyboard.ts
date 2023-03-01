@@ -173,6 +173,19 @@ const _defaults_ = Object.freeze({
         key: "KeyW",
     }),
 
+    NavigatePreviousHistory: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Backspace",
+    }),
+    NavigateNextHistory: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "Backspace",
+    }),
+
     NavigatePreviousPage: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: false,
@@ -273,6 +286,24 @@ const _defaults_ = Object.freeze({
         control: true,
         shift: false,
         key: "Digit4",
+    }),
+    FXLZoomReset: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit0",
+    }),
+    FXLZoomOut: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit8",
+    }),
+    FXLZoomIn: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit9",
     }),
 });
 export const _defaults = sortObject(_defaults_);

@@ -39,7 +39,7 @@ function* sameFileImport(action: importActions.verify.TAction) {
                 ToastType.Success,
                 translator.translate("message.import.alreadyImport",
                     {
-                        title: pub.title || "",
+                        title: pub.documentTitle || "",
                     },
                 ),
             ),

@@ -10,6 +10,9 @@
         "skipLink": "Passar el contingut",
         "toolbar": "Barra d'eines"
     },
+    "apiapp": {
+        "noLibraryFound": ""
+    },
     "app": {
         "edit": {
             "copy": "Copiar",
@@ -105,15 +108,16 @@
         "released": "Publicat en",
         "sort": "Ordenar per",
         "tagCount": "Número d'etiquetes",
-        "tags": "Etiquetes"
+        "tags": "Etiquetes",
+        "update": ""
     },
     "dialog": {
+        "cancel": "Cancel·lar",
         "closeModalWindow": "Tancar aquesta finestra modal",
         "deleteFeed": "Segur que vols eliminar aquest catàleg?",
         "deletePublication": "Segur que vols eliminar aquesta publicació?",
         "import": "Segur que vols importar aquests fitxers?",
         "importError": "S'ha produït un error, comprova l'extensió del teu fitxer ({{acceptedExtension}})",
-        "no": "No",
         "renew": "Segur que vols renovar la llicència per a aquesta publicació?",
         "return": "Segur que vols retornar la llicència per a aquesta publicació?",
         "yes": "Sí"
@@ -142,7 +146,6 @@
     },
     "library": {
         "lcp": {
-            "cancel": "Cancel·lar",
             "hint": "(Pista : {{- hint}})",
             "password": "Contrassenya",
             "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
@@ -172,6 +175,9 @@
             "url": "Enllaç:",
             "urlPlaceholder": "Enllaç"
         },
+        "addFormApiapp": {
+            "title": ""
+        },
         "addMenu": "Afegir catàleg OPDS",
         "back": "Enrere",
         "breadcrumbRoot": "Catàlegs",
@@ -195,9 +201,45 @@
         },
         "next": "Següent",
         "previous": "Anterior",
-        "shelf": "Prestatge"
+        "shelf": "Prestatge",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        }
     },
     "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
         "audio": {
             "tracks": "Pistes"
         },
@@ -272,6 +314,8 @@
             "goToError": "Aquest salt de pàgina no existeix",
             "goToPlaceHolder": "Introdueix un número de pàgina",
             "goToTitle": "Anar a pàgina",
+            "historyNext": "",
+            "historyPrevious": "",
             "infoTitle": "Informació",
             "magnifyingGlassButton": "cercar a la publicació",
             "openTableOfContentsTitle": "Navegació",

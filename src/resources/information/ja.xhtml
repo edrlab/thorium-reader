@@ -1,210 +1,201 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
-  <head>
-    <title>Thorium Readerについて</title>
-    <style>
-      p {
-        margin: 0;
-        text-indent: 1em;
-        line-height: 1.75;
-        text-align: justify;
-      }
-      ul {
-        margin: 1em;
-        line-height: 1.5;
-      }
-      ul.nobullet {
-        list-style: none;
-      }
-    </style>
-  </head>
-  <body style="font-family: sans-serif">
-    <h1>Thorium Readerについて</h1>
+    <head>
+        <title>Thorium Readerについて</title>
+        <style>
+            p {
+                margin: 0;
+                text-indent: 1em;
+                line-height: 1.75;
+                text-align: justify;
+            }
+            ul {
+                margin: 1em;
+                line-height: 1.5;
+            }
+            ul.nobullet {
+                list-style: none;
+            }
+        </style>
+    </head>
+    <body style="font-family: sans-serif">
+        <h1>Thorium Readerについて</h1>
 
-    <h2>はじめに</h2>
+        <h2>はじめに</h2>
 
-    <p>
-      Thorium Readerは、Windows
-      10、macOS、およびLinuxにおける読書アプリケーションとして最適です。
-    </p>
-    <p>
-      このアプリケーションは<a href="https://edrlab.org">EDRLab</a
-      >によって開発し続けられています。EPUB出版物やPDFドキュメント、オーディオブック、ビジュアルナラティブ、オプションとして<a href="https://edrlab.org/readium-lcp">LCP DRM</a>（DRMはDigital Rights Management；デジタル著作権管理を意味します）によって保護されたものを開いて読むためのリファレンスになることを目的としています。
-    </p>
-    <p>
-      多数の言語に翻訳されています。バージョンによっては新しい言語を提供することもあります。これは、私たちのコミュニティからの援助のおかげです。  
-    </p>
-    <p>
-      視覚障害者や読字障害者に対する高度なアクセシビリティをThorium
-      Readerに実装するためにも、多大な努力を払っています。
-    </p>
-    <p>
-      このアプリケーションは無料です。また、広告は付いていませんし、個人データが漏洩することもありません。
-    </p>
-    <p>
-      よって、本をよく読む人、図書館の常連利用者、学生にとって申し分のないツールとなるでしょう。
-    </p>
+        <p>Thorium Readerは、Windows 10、macOS、およびLinuxにおける読書アプリケーションとして最適です。</p>
+        <p>
+            このアプリケーションは<a href="https://edrlab.org">EDRLab</a
+            >によって開発されています。EPUB出版物やPDFドキュメント、オーディオブック、ビジュアルナラティブ、オプションとして<a
+                href="https://edrlab.org/readium-lcp"
+                >LCP DRM</a
+            >（DRMはDigital Rights
+            Management；デジタル著作権管理）によって保護されたものを開いて読むためのリファレンスになることを目的としています。
+        </p>
+        <p>
+            多数の言語に翻訳されています。バージョンによっては新しい言語を提供することもあります。これは、私たちのコミュニティからの援助のおかげです。
+        </p>
+        <p>
+            視覚障害者や読字障害者に対する高度なアクセシビリティをThorium
+            Readerに実装するためにも、多大な努力を払っています。
+        </p>
+        <p>このアプリケーションは無料です。また、広告は付いていませんし、個人データが漏洩することもありません。</p>
+        <p>よって、本をよく読む人、図書館をよく利用する人、学生にとって申し分のないツールとなるでしょう。</p>
 
-    <h2>対応している出版物の形式</h2>
+        <h2>ユーザーガイド</h2>
 
-    <p>
-      EPUB
-      2：過去に電子書籍の形式として使われていたもので、基本的な電子書籍のためであれば不足ありません。テキストの内容はXHTML
-      1形式に従って記述し、マルチメディアの機能には対応していません。EPUB
-      2形式の電子書籍をきちんと作っていれば、今もなお開くことができます。
-    </p>
-    <p>
-      EPUB 3：21世紀において推奨される形式です。テキストの内容は(X)HTML
-      5形式に従って記述します。固定型レイアウトの電子書籍を製作できますし、電子書籍の豊富な機能やアクセシビリティを適切に設計できます。
-    </p>
-    <p>
-      PDF：（リフロー型では読めない）柔軟性のなさとアクセシビリティの欠如がよく知られているにも関わらず、多くの電子書籍は（特に公共の図書館において）いまだにPDF形式のみで提供されています。
-    </p>
-    <p>
-      オーディオブック：<a href="https://www.w3.org/TR/audiobooks/"
-        >オーディオブック（Audiobooks）に対する標準形式</a
-      >は2020年にW3C Publishing Working
-      Groupによって設計されました。EDRLabはこのWorking
-      Groupに参加していました。Throium Readerは<a
-        href="https://www.w3.org/TR/lpf/"
-        >LPFでパッケージされた</a
-      >オーディオブックの形式に対応していて、もうすぐ書店で広く使われるようになるでしょう。私たちはそうなることを期待しています。
-    </p>
-    <p>
-      ビジュアルナラティブ：EDRLabはコミックやマンガ、ウェブトゥーン、そして画像のシークエンスにもとづいたデジタルワークのほかのスタイルに対する一つの標準形式を設計しました。<a
-        href="https://www.edrlab.org/open-standards/"
-        >DiViNa</a
-      >がこの形式の名前です。これはまだ実験的な形式ですが、2021年以降に出版社がこの形式に合わせて作ることを私たちは期待しています。
-    </p>
+        <p>
+            完全なユーザーガイドは<a href="https://www.edrlab.org/software/thorium-reader/doc/">オンライン上にあります</a>。
+        </p>
 
-    <h2>アクセシビリティ</h2>
+        <h2>対応している出版物の形式</h2>
 
+        <p>
+            <b>EPUB 2</b>：過去に電子書籍の形式として使われていたもので、基本的な電子書籍のためであれば不足ありません。テキストの内容はXHTML
+            1形式に従って記述し、マルチメディアの機能には対応していません。EPUB
+            2形式の電子書籍をきちんと作っていれば、今もなお開くことができます。
+        </p>
+        <p>
+            <b>EPUB 3</b>：21世紀において推奨される形式です。テキストの内容は(X)HTML
+            5形式に従って記述します。固定型レイアウトの電子書籍を製作できますし、電子書籍の豊富な機能やアクセシビリティを適切に設計できます。
+        </p>
+        <p><b>DAISY v2.02 / v3</b> (text, audio, text+audio).</p>
+        <p>
+            <b>PDF</b>：（リフロー型では読めない）柔軟性のなさとアクセシビリティの欠如がよく知られているにも関わらず、多くの電子書籍は（特に公共の図書館において）いまだにPDF形式のみで提供されています。
+        </p>
+        <p>
+            <b>オーディオブック</b>：<a href="https://www.w3.org/TR/audiobooks/"
+                >オーディオブック（Audiobooks）に対する標準形式</a
+            >は2020年にW3C Publishing Working Groupによって設計されました。EDRLabはこのWorking
+            Groupに参加していました。Throium Readerは<a href="https://www.w3.org/TR/lpf/">LPFでパッケージされた</a
+            >オーディオブックの形式に対応していて、もうすぐ書店で広く使われるようになるでしょう。私たちはそうなることを期待しています。
+        </p>
+        <p>
+            <b>ビジュアルナラティブ</b>：EDRLabはコミックやマンガ、ウェブトゥーン、そして画像のシークエンスにもとづいたデジタルワークのほかのスタイルに対する一つの標準形式を設計しました。<a
+                href="https://www.edrlab.org/open-standards/"
+                >DiViNa</a
+            >がこの形式の名前です。これはまだ実験的な形式ですが、2021年以降に出版社がこの形式に合わせて作ることを私たちは期待しています。
+        </p>
 
-    <p>
-      Thorium Readerは、目の不自由な人やその他の読字障害のある人を含む、すべての人を対象としています。このアプリケーションはJAWSやNVDA、Narrator、VoiceOverなどのスクリーンリーダーと両立して使えますし、視覚的な強調表示を伴った読み上げ機能も持っています。また、Thorium Readerはマウスまたはキーボードを用いて操作することができ、キーボードのショートカットの構成は自由に設定できます。読書画面は、テーマ、文字の大きさ、余白や文字の間隔、書体、画面表示について、使用者一人ひとりの好みに合わせて設定できます。
-    </p>
-    <p>EDRLabは<a href="https://daisy.org/">DAISYコンソーシアム</a>と強固な関係を持っています。ThoriumReaderの設計とテストを読字障害のある人々と一緒に行うことで、読書アプリケーションとしてもっともアクセシビリティがあるものの1つとなるようにThoriumReaderを作っています。
-    </p>
+        <h2>アクセシビリティ</h2>
 
-    <h2>OPDS図書目録</h2>
+        <p>
+            Thorium
+            Readerは、目の不自由な人やその他の読字障害のある人を含む、すべての人を対象としています。このアプリケーションはJAWSやNVDA、Narrator、VoiceOverなどのスクリーンリーダーと両立して使えますし、視覚的な強調表示を伴った読み上げ機能も持っています。また、Thorium
+            Readerはマウスまたはキーボードを用いて操作することができ、キーボードのショートカットの構成は自由に設定できます。読書画面は、テーマ、文字の大きさ、余白や文字の間隔、書体、画面表示について、使用者一人ひとりの好みに合わせて設定できます。
+        </p>
+        <p>
+            EDRLabは<a href="https://daisy.org/">DAISYコンソーシアム</a
+            >と強固な関係を築いています。Thorium Readerの設計とテストを読字障害のある人々と一緒に行うことで、読書アプリケーションとしてもっともアクセシビリティに対応したものの1つとなるようにThorium Readerを開発しています。
+        </p>
 
-    <p>
-      多くの公共図書館や書店は、Web上で図書目録を公開するための標準的な方法の一つとして<a
-        href="https://opds.io/"
-        >OPDS</a
-      >を採用しています。
-    </p>
-    <p>
-      OPDSを使うことで、図書館や書店は常連客や買い物客が所有する本棚に、そのユーザーが取得した図書目録を通して電子書籍を陳列できます。そして、そこから電子書籍をダウンロードして読むことを可能にします。
-    </p>
-    <p>
-      Thorium ReaderはOPDS
-      1および2形式の図書目録を閲覧できます。また、いくつかのOPDS準拠の認証メカニズムに対応しているため、ユーザーが認証した本棚を開くことができます。
-    </p>
+        <h2>OPDS図書目録</h2>
 
-    <h2>Readium LCP DRM</h2>
+        <p>
+            多くの公共図書館や書店は、Web上で図書目録を公開するための標準的な方法の一つとして<a href="https://opds.io/"
+                >OPDS</a
+            >を採用しています。
+        </p>
+        <p>
+            OPDSを使うことで、図書館や書店は常連の利用者や買い物客が所有する本棚に、そのユーザーが取得した図書目録を通して電子書籍を陳列できます。そして、そこから電子書籍をダウンロードして読むことを可能にします。
+        </p>
+        <p>
+            Thorium ReaderはOPDS
+            1および2形式の図書目録を閲覧できます。また、いくつかのOPDS準拠の認証メカニズムに対応しているため、ユーザーが認証した本棚を開くことができます。
+        </p>
 
-    <img src="./images/lcp-user.png" alt="LCPユーザーの読書" />
+        <h2>Readium LCP DRM</h2>
 
-    <p>
-      Thorium Readerは、元々Readium Foundationによって設計された<a
-        href="https://www.edrlab.org/readium-lcp/"
-        >Readium LCP DRM</a
-      >に対応しています。<a href="https://readium.org/lcp-specs/"
-        >このDRMの仕様は公開されていて</a
-      >、これは<a href="https://www.iso.org/standard/79485.html">ISO 23078-2</a
-      >にもとづくISO技術仕様です。
-    </p>
-    <p>
-      LCPは世界中にある多くの公共図書館や大学、書店ですでに採用されています（<a
-        href="https://www.edrlab.org/readium-lcp/certified-apps-servers/"
-        >その一覧の一つはここで整備されています</a
-      >）。
-    </p>
-    <p>
-      世界中の出版部門の組織は、利用者に負荷をかけない体験を提供し、コンテンツを適切に閲覧できるようにするとともに、過度の共有に対抗して電子書籍を保護する方法としてLCPを採用することを奨励しています。もしあなたの組織がLCPの採用に関心がある場合は<a
-        href="https://www.edrlab.org/contact/"
-        >EDRLabに問い合わせください</a
-      >。
-    </p>
+        <img src="./images/lcp-user.png" alt="LCPユーザーの読書" />
 
-    <h2>ライセンス</h2>
+        <p>
+            Thorium Readerは、元々Readium Foundationによって設計された<a href="https://www.edrlab.org/readium-lcp/"
+                >Readium LCP DRM</a
+            >に対応しています。<a href="https://readium.org/lcp-specs/">このDRMの仕様は公開されていて</a>、これは<a
+                href="https://www.iso.org/standard/79485.html"
+                >ISO 23078-2</a
+            >にもとづくISO技術仕様です。
+        </p>
+        <p>
+            LCPは世界中にある多くの公共図書館や大学、書店ですでに採用されています（<a
+                href="https://www.edrlab.org/readium-lcp/certified-apps-servers/"
+                >その一覧の一つはここで整備されています</a
+            >）。
+        </p>
+        <p>
+            世界中の出版部門の組織は、利用者に負荷をかけない体験を提供し、コンテンツを適切に閲覧できるようにするとともに、過度の共有に対抗して電子書籍を保護する方法としてLCPを採用することを奨励しています。もしあなたの組織がLCPの採用に関心がある場合は<a
+                href="https://www.edrlab.org/contact/"
+                >EDRLabに問い合わせください</a
+            >。
+        </p>
 
-    <p>
-      Copyright 2019 European Digital Reading Lab. All rights reserved. Licensed
-      to the Readium Foundation under one or more contributor license
-      agreements.
-    </p>
+        <h2>ライセンス</h2>
 
-    <p>
-      このアプリケーションはオープンソースであり、BSD3ライセンスのもとにリリースされています。それはオープンソースのReadium
-      Desktop toolkitにもとづいています。
-    </p>
+        <p>
+            Copyright 2019 European Digital Reading Lab. All rights reserved. Licensed to the Readium Foundation under
+            one or more contributor license agreements.
+        </p>
 
-    <h2>このアプリの開発者</h2>
+        <p>
+            このアプリケーションはオープンソースであり、BSD3ライセンスのもとにリリースされています。それはオープンソースのReadium
+            Desktop toolkitにもとづいています。
+        </p>
 
-    <p>Thorium Readerは現在、次の人たちによって開発されています。</p>
+        <h2>このアプリの開発者</h2>
 
-    <ul class="nobullet">
-      <li>Daniel Weck：主任開発者</li>
-      <li>Pierre Leroux：node.js開発者</li>
-    </ul>
+        <p>Thorium Readerは現在、次の人たちによって開発されています。</p>
 
-    <p>
-      そのほか、次に挙げる開発者がThoriumを現在の形にするために手伝ってきました。
-    </p>
+        <ul class="nobullet">
+            <li>Daniel Weck：主任開発者</li>
+            <li>Pierre Leroux：node.js開発者</li>
+        </ul>
 
-    <ul class="nobullet">
-      <li>Simon Le Roux：UIデザイナー</li>
-      <li>Cyrille Lebeaupin：noop.frのCEO、シニア開発者</li>
-      <li>Jiminy Panoz：Readium CSSの生みの親</li>
-      <li>Léo Stéfani：node.js、React開発者</li>
-      <li>Manuel Lagrand：インターン、node.js開発者</li>
-    </ul>
+        <p>そのほか、次に挙げる開発者がThoriumを現在の形にするために手伝ってきました。</p>
 
-    <p>
-      このプロジェクトは、EDRLabのCTOであるLaurent Le Meurが監修しています。
-    </p>
+        <ul class="nobullet">
+            <li>Simon Le Roux：UIデザイナー</li>
+            <li>Cyrille Lebeaupin：noop.frのCEO、シニア開発者</li>
+            <li>Jiminy Panoz：Readium CSSの生みの親</li>
+            <li>Léo Stéfani：node.js、React開発者</li>
+            <li>Manuel Lagrand：インターン、node.js開発者</li>
+        </ul>
 
-    <h2>このアプリケーションへの出資者</h2>
+        <p>このプロジェクトは、EDRLabのCTOであるLaurent Le Meurが監修しています。</p>
 
-    <p>
-      EDRLabは非営利団体です。私たちの予算は基本的に私たちのメンバーから出ています。EDRLabはフランスで始まりましたが、そのメンバーは現在、ヨーロッパ、北アメリカ、南アメリカ、アジアの出身です。
-    </p>
-    <p>
-      このプロジェクトは、以下の事柄がなければ日の目を見ることはなかったでしょう。
-    </p>
-    <p>
-      1- フランスの創設メンバーの経済的な関わり：Editis, Hachette Livre,
-      Magrigall, Media-Participations, Cercle de la Li brarie, Syndicat national
-      de
-      l'Edition。オープンスタンダードとオープンソースへの資金提供が出版業界にとって革新的で、開かれた市場を活性化するための最良の方法だと、彼らは理解しています。
-    </p>
-    <p>2- 次のフランスの公的機関からの財政補助金：</p>
-    <ul>
-      <li>CNL (Centre National du livre)</li>
-      <li>Ministère de la Culture</li>
-    </ul>
+        <h2>このアプリケーションへの出資者</h2>
 
-    <p>3- 私たちのメンバーからの追加的な援助金：</p>
-    <ul>
-      <li>Fênix Editorial, Brazil</li>
-      <li>Canadian Electronic library, Canada</li>
-      <li>MLOL / Horizons Unlimited, Italy</li>
-      <li>Lyrasis, USA</li>
-    </ul>
-    
-    <p><img src="./images/piggy-bank.jpeg" alt="豚の形をした募金箱" /></p>
+        <p>
+            EDRLabは非営利団体です。私たちの予算は基本的に私たちのメンバーから出ています。EDRLabはフランスで始まりましたが、そのメンバーは現在、ヨーロッパ、北アメリカ、南アメリカ、アジアの出身です。
+        </p>
+        <p>このプロジェクトは、以下の事柄がなければ日の目を見ることはなかったでしょう。</p>
+        <p>
+            1- フランスの創設メンバーの経済的な関わり：Editis, Hachette Livre, Magrigall, Media-Participations, Cercle
+            de la Li brarie, Syndicat national de
+            l'Edition。オープンスタンダードとオープンソースへの資金提供が出版業界にとって革新的で、開かれた市場を活性化するための最良の方法だと、彼らは理解しています。
+        </p>
+        <p>2- 次のフランスの公的機関からの財政補助金：</p>
+        <ul>
+            <li>CNL (Centre National du livre)</li>
+            <li>Ministère de la Culture</li>
+        </ul>
 
-    <p>
-      <a href="https://www.edrlab.org/become-a-member/"
-        >EDRLabのメンバーになることで</a
-      >、Thorium
-      Readerがより良いアプリケーションになることを支援することもできます。
-    </p>
-    <p>
-      ほかにも、<a href="https://github.com/sponsors/edrlab">GitHubスポンサー</a
-      >の「募金箱」を介してEDRLabに寄付することもできます。この募金箱では、毎月少額の寄付を受け付けています。
-    </p>
-  </body>
+        <p>3- 私たちのメンバーからの追加的な援助金：</p>
+        <ul>
+            <li>Fênix Editorial, Brazil</li>
+            <li>Canadian Electronic library, Canada</li>
+            <li>MLOL / Horizons Unlimited, Italy</li>
+            <li>Lyrasis, USA</li>
+        </ul>
+
+        <p><img src="./images/piggy-bank.jpeg" alt="豚の形をした募金箱" /></p>
+
+        <p>
+            <a href="https://www.edrlab.org/become-a-member/">EDRLabのメンバーになることで</a>、Thorium
+            Readerがより良いアプリケーションになることを支援することもできます。
+        </p>
+        <p>
+            ほかにも、<a href="https://github.com/sponsors/edrlab">GitHubスポンサー</a
+            >の「募金箱」を介してEDRLabに寄付することもできます。この募金箱では、毎月少額の寄付を受け付けています。
+        </p>
+    </body>
 </html>

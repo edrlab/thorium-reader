@@ -17,7 +17,7 @@ interface IBaseProps {
     dir: string;
     menuStyle: React.CSSProperties; // {[key: string]: string};
     toggle: () => void;
-    focusMenuButton?: () => void;
+    doBackFocusMenuButton?: () => void;
     setContentRef?: (ref: HTMLDivElement) => void;
 }
 
@@ -56,7 +56,7 @@ export default class MenuContent extends React.Component<React.PropsWithChildren
         const { open, toggle, setContentRef } = this.props;
         return ReactDOM.createPortal(
             (
-                <AccessibleMenu focusMenuButton={this.props.focusMenuButton} visible={open} toggleMenu={toggle}>
+                <AccessibleMenu doBackFocusMenuButton={this.props.doBackFocusMenuButton} visible={open} toggleMenu={toggle}>
                     <div
                         style={this.props.menuStyle}
                         id={this.props.id}

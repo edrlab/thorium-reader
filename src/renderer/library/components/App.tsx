@@ -26,6 +26,10 @@ import { diLibraryGet } from "readium-desktop/renderer/library/di";
 
 import DownloadsPanel from "./DownloadsPanel";
 import LoaderMainLoad from "./LoaderMainLoad";
+import { toastActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
+
+import { acceptedExtensionArray } from "readium-desktop/common/extension";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -37,6 +41,8 @@ export default class App extends React.Component<{}, undefined> {
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
+        const store = diLibraryGet("store");
+
         const filez = acceptedFiles
             .filter(
                 (file) => file.path.endsWith(acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(file.path)),
@@ -47,6 +53,14 @@ export default class App extends React.Component<{}, undefined> {
                     path: file.path,
                 }),
             );
+
+        if (filez.length === 0) {
+            store.dispatch(toastActions.openRequest.build(ToastType.Error, diLibraryGet("translator").translate("dialog.importError", {
+                acceptedExtension: acceptedFiles.length === 1 ? `[${path.extname(acceptedFiles[0].path)}] ${acceptedExtensionArray.join(" ")}` : acceptedExtensionArray.join(" "),
+            })));
+            return;
+        }
+
         if (filez.length <= 5) {
             const paths = filez.map((file) => {
                 return file.path;
@@ -56,7 +70,7 @@ export default class App extends React.Component<{}, undefined> {
             });
             return;
         }
-        const store = diLibraryGet("store");
+
         store.dispatch(
             dialogActions.openRequest.build(
                 DialogTypeName.FileImport,

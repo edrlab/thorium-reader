@@ -9,3 +9,4 @@ export * from "./publication";
 export * from "./api";
 export * from "./opds";
 export * from "./browser";
+export * from "./apiapp";
