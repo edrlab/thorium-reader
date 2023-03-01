@@ -174,7 +174,7 @@ export const AvailableLanguages = {
     "gl": "Galician",
     "eu": "Basque (Euskadi)",
     "el": "ελληνικός",
-    "bg": "Bulgarian",
+    "bg": "български",
 };
 
 interface LocalizedContent {
