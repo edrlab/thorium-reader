@@ -5,16 +5,11 @@ var glob = require("glob");
 
 var jsonUtils = require("r2-utils-js/dist/es8-es2017/src/_utils/JsonUtils");
 
-glob("src/resources/locales/*.json", {}, function (err, files) {
-    if (err) {
-        console.log(err);
-        process.exit(1);
-        return;
-    }
+const files = glob.globSync("src/resources/locales/*.json");
+
     if (!files || !files.length) {
         console.log("files?!");
         process.exit(1);
-        return;
     }
     console.log(files.length);
 
@@ -30,4 +25,3 @@ glob("src/resources/locales/*.json", {}, function (err, files) {
         const jsonStr = JSON.stringify(fileJson, null, "    ") + "\n";
         fs.writeFileSync(p, jsonStr, { encoding: "utf8" });
     }
-});

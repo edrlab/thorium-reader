@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as glob from "glob";
+import { globSync } from "glob";
 import * as debug_ from "debug";
 import { app } from "electron";
 import { EOL } from "os";
@@ -69,7 +69,7 @@ export const importCommand = async (argv: yargs.Arguments<{
     path: string;
 }>) => {
 
-    const pathArray = glob.sync(argv.path, {
+    const pathArray = globSync(argv.path, {
         absolute: true,
         realpath: true,
     }) || [];
@@ -96,15 +96,15 @@ export const importCommand = async (argv: yargs.Arguments<{
             debug("cliImport filePath in filePathArray: ", fp);
             const pubViews = await sagaMiddleware.run(pubApi.importFromFs, fp).toPromise<PublicationView[]>();
 
-            if (!pubViews && pubViews?.length === 0) {
-                process.stdout.write("Publication(s) import done." + EOL);
-                return;
+            if (pubViews?.length) {
+                process.stdout.write("import success: " + fp + EOL);
+            } else {
+                process.stderr.write("import failed: " + fp + EOL);
             }
         }
-        process.stderr.write("No valid files, exit with code 1" + EOL);
 
+        process.stdout.write("import(s) done." + EOL);
     } catch (e) {
-
         debug("import error :", e);
         process.stderr.write("import ERROR: " + e.toString() + EOL);
 

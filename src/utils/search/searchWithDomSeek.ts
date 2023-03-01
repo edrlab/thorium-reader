@@ -138,19 +138,26 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         if (!(doc as any).getCssSelector) {
             (doc as any).getCssSelector = getCssSelector_(doc);
         }
-        const rangeInfo = convertRange(
+        const tuple = convertRange(
             range,
             (doc as any).getCssSelector,
             (_node: Node) => ""); // computeElementCFI
 
-        searchResults.push({
-            textMatch: collapseWhitespaces(matches[0]),
-            textBefore,
-            textAfter,
-            rangeInfo,
-            href,
-            uuid: getCount().toString(),
-        });
+        if (tuple) {
+            const rangeInfo = tuple[0];
+            // const textInfo = tuple[1];
+            searchResults.push({
+                cleanText: collapseWhitespaces(matches[0]),
+                cleanBefore: textBefore,
+                cleanAfter: textAfter,
+                // rawText: textInfo.rawText,
+                // rawBefore: textInfo.rawBefore,
+                // rawAfter: textInfo.rawAfter,
+                rangeInfo,
+                href,
+                uuid: getCount().toString(),
+            });
+        }
     }
 
     return searchResults;
