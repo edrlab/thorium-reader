@@ -9,9 +9,15 @@ import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
 
 export interface ISearchResult {
     rangeInfo: IRangeInfo;
-    textMatch: string;
-    textBefore: string;
-    textAfter: string;
+
+    cleanBefore: string;
+    cleanText: string;
+    cleanAfter: string;
+
+    // rawBefore: string;
+    // rawText: string;
+    // rawAfter: string;
+
     href: string;
     uuid: string;
 }

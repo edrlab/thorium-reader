@@ -8,16 +8,11 @@ var jsonUtils = require("r2-utils-js/dist/es8-es2017/src/_utils/JsonUtils");
 const args = process.argv.slice(2);
 const jsonFilePath = args[0];
 
-glob("src/**/*{.ts,.tsx}", {}, function (err, files) {
-    if (err) {
-        console.log(err);
-        process.exit(1);
-        return;
-    }
+const files = glob.globSync("src/**/*{.ts,.tsx}");
+
     if (!files || !files.length) {
         console.log("files?!");
         process.exit(1);
-        return;
     }
     console.log(files.length);
 
@@ -95,4 +90,3 @@ glob("src/**/*{.ts,.tsx}", {}, function (err, files) {
 
     const jsonStr = JSON.stringify(jsonObj, null, "    ") + "\n";
     fs.writeFileSync(path.join(process.cwd(), jsonFilePath), jsonStr, { encoding: "utf8" });
-});

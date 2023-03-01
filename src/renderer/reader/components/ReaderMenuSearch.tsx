@@ -262,11 +262,11 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                         data-href={v.href}
                                     >
                                         <span dir={isRTL ? "rtl" : "ltr"}>{
-                                        `...${v.textBefore}`
+                                        `...${v.cleanBefore}`
                                         }<span style={{backgroundColor: "coral"}}>{
-                                        `${v.textMatch}`
+                                        `${v.cleanText}`
                                         }</span>{
-                                        `${v.textAfter}...`
+                                        `${v.cleanAfter}...`
                                         }</span>
                                     </a>
                                 </li>
@@ -467,7 +467,7 @@ const handleSearchClickFuncDebounced = debounce(handleSearchClickFunc, 300);
 
 //                     insertLink.Href = v.uuid;
 //                     insertLink.Title =
-// `...${v.textBefore}<span style="background-color: coral">${v.textMatch}</span>${v.textAfter}...`;
+// `...${v.textBefore}<span style="background-color: coral">${v.cleanText}</span>${v.textAfter}...`;
 //                     insertLink.TypeLink = "search";
 
 //                     findAndSetLink(links, v.href, insertLink);

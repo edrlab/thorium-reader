@@ -74,8 +74,15 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
         def: {
             color,
             selectionInfo: {
-                cleanText: "",
-                rawText: v.textMatch,
+                cleanBefore: v.cleanBefore,
+                cleanText: v.cleanText,
+                cleanAfter: v.cleanAfter,
+                // rawBefore: v.rawBefore,
+                // rawText: v.rawText,
+                // rawAfter: v.rawAfter,
+                rawBefore: "",
+                rawText: "",
+                rawAfter: "",
                 rangeInfo: v.rangeInfo,
             },
         },
