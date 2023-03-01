@@ -53,6 +53,10 @@
   margin-top: 20px;
 }
 
+.block_line_inactive {
+  opacity: 0.5;
+}
+
 /* 1. .block_full ... */
 
 .block_full {
