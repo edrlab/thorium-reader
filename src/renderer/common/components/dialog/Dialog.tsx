@@ -61,8 +61,12 @@ class Dialog extends React.Component<IProps, undefined> {
         this.appElement.setAttribute("aria-hidden", "true");
         this.appOverlayElement.appendChild(this.rootElement);
 
-        if (this.props.shouldOkRefEnabled && this.okRef?.current)
-            this.okRef.current.focus();
+        // alert(this.props.shouldOkRefEnabled + " " + this.okRef?.current);
+        if (this.props.shouldOkRefEnabled && this.okRef?.current) {
+            setTimeout(() => {
+                this.okRef.current.focus();
+            }, 0);
+        }
     }
     public componentWillUnmount() {
         this.appElement.setAttribute("aria-hidden", "false");
