@@ -103,18 +103,18 @@ export class PublicationViewConverter {
             publicationDocument.identifier,
         );
 
-        debug("====> unmarshallR2Publication: ", pubFolder);
+        // debug("====> unmarshallR2Publication: ", pubFolder);
 
         if (_pubCache[publicationDocument.identifier]?.r2PublicationStr) {
             const r2PublicationStr = _pubCache[publicationDocument.identifier].r2PublicationStr;
-            debug("====> manifest (memory cache)");
+            // debug("====> manifest (memory cache)");
             const r2PublicationJson = JSON.parse(r2PublicationStr);
             const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
             const r2LCPStr = _pubCache[publicationDocument.identifier]?.r2LCPStr;
             if (r2LCPStr) {
                 try {
-                    debug("====> LCP (memory cache)");
+                    // debug("====> LCP (memory cache)");
                     const r2LCPJson = JSON.parse(r2LCPStr);
 
                     if (!lcpLicenseIsNotWellFormed(r2LCPJson)) {
