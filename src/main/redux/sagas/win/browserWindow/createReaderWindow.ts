@@ -95,6 +95,23 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     if (IS_DEV) {
 
         readerWindow.webContents.on("did-finish-load", () => {
+            // see app.whenReady() in src/main/redux/sagas/app.ts
+            // // app.whenReady().then(() => {
+            // // });
+            // setTimeout(() => {
+            //     const {
+            //         default: installExtension,
+            //         REACT_DEVELOPER_TOOLS,
+            //         REDUX_DEVTOOLS,
+            //     // eslint-disable-next-line @typescript-eslint/no-var-requires
+            //     } = require("electron-devtools-installer");
+
+            //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+            //         installExtension(extension)
+            //         .then((name: string) => debug("electron-devtools-installer OK (reader window): ", name))
+            //         .catch((err: Error) => debug("electron-devtools-installer ERROR (reader window): ", err));
+            //     });
+            // }, 1000);
 
             // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
             // because webpack-dev-server automaticaly refresh the window.

@@ -107,6 +107,23 @@ export function* init() {
 
     debug("Main app ready");
 
+    if (IS_DEV) {
+        // app.whenReady().then(() => {
+        // });
+        const {
+            default: installExtension,
+            REACT_DEVELOPER_TOOLS,
+            REDUX_DEVTOOLS,
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        } = require("electron-devtools-installer");
+
+        [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+            installExtension(extension)
+            .then((name: string) => debug("electron-devtools-installer OK (app init): ", name))
+            .catch((err: Error) => debug("electron-devtools-installer ERROR (app init): ", err));
+        });
+    }
+
     // register file protocol to link locale file to renderer
     protocol.registerFileProtocol("store",
         (request, callback) => {
