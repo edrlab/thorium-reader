@@ -94,6 +94,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         if (_VSCODE_LAUNCH !== "true" && OPEN_DEV_TOOLS) {
             setTimeout(() => {
                 if (!libWindow.isDestroyed()) {
+                    debug("opening dev tools (library) ...");
                     libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
                 }
             }, 2000);
