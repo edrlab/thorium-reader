@@ -29,7 +29,6 @@
     "stripInternal": false,
     "suppressExcessPropertyErrors": false,
     "suppressImplicitAnyIndexErrors": false,
-    "charset": "utf8",
     "downlevelIteration": false,
     "emitBOM": false,
     "esModuleInterop": false,
