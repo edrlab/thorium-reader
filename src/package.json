@@ -11,8 +11,8 @@
     "postinstall": "npm run pinCompromisedColorPackage && npm run electron-build",
     "pinCompromisedColorPackage": "(npm ls colors || echo \"NPM LS?\") && rimraf node_modules/electron-rebuild/node_modules/colors && rimraf node_modules/dir-compare/node_modules/colors",
     "pinCompromisedColorPackage_": "find node_modules -maxdepth 100 -type d -name \"colors\" && npm ls colors",
-    "electron-build_": "npm rebuild --runtime=electron --target=23.2.0 --disturl=https://electronjs.org/headers --build-from-source",
-    "electron-build": "electron-rebuild --version=23.2.0 --disturl=https://electronjs.org/headers"
+    "electron-build_": "npm rebuild --runtime=electron --target=24.1.2 --disturl=https://electronjs.org/headers --build-from-source",
+    "electron-build": "electron-rebuild --version=24.1.2 --disturl=https://electronjs.org/headers"
   },
   "repository": {
     "type": "git",
