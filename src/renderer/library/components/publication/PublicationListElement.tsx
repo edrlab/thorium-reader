@@ -105,7 +105,6 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
         const authors = formatContributorToString(pub.authors, translator);
 
-        // publicationViewMaybeOpds.documentTitle
         const pubTitleLangStr = convertMultiLangStringToString(translator, (pub as PublicationView).publicationTitle || pub.documentTitle);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);

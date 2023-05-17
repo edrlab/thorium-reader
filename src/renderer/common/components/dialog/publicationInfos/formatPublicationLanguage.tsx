@@ -11,19 +11,19 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
 export interface IProps {
-    publication: TPublication;
+    publicationViewMaybeOpds: TPublication;
     __: I18nTyped;
 }
 
 export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
 
-    const { publication, __ } = props;
+    const { publicationViewMaybeOpds, __ } = props;
 
-    if (publication.languages) {
+    if (publicationViewMaybeOpds.languages) {
 
         let publicationLanguageArray: React.ReactElement[] = [];
 
-        publicationLanguageArray = publication.languages.map(
+        publicationLanguageArray = publicationViewMaybeOpds.languages.map(
             (lang: string, index: number) => {
 
                 // Note: "pt-PT" in the i18next ResourceBundle is not captured because key match reduced to "pt"
@@ -43,7 +43,7 @@ export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
                 }
 
                 const note = (lang !== ll) ? ` (${lang})` : "";
-                const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
+                const suffix = ((index < (publicationViewMaybeOpds.languages.length - 1)) ? ", " : "");
 
                 return (<i
                     key={"lang-" + index}

@@ -1294,7 +1294,6 @@ interface ITableCellProps_Value_Title {
 }
 const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Title> = (props) => {
 
-    // props.value.pubTitle
     // props.value.label
     const pubTitleLangStr = convertMultiLangStringToString(props.translator, props.value.pubTitle);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";

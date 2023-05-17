@@ -21,7 +21,7 @@ debug("_");
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends TranslatorProps {
-    publication: TPublication;
+    publicationViewMaybeOpds: TPublication;
 }
 
 interface IState {
@@ -46,7 +46,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
     public render() {
 
-        const { __, publication } = this.props;
+        const { __, publicationViewMaybeOpds } = this.props;
         const {
             a11y_accessMode: _a11y_accessMode, // unused
             a11y_accessModeSufficient,
@@ -57,7 +57,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
             a11y_certifierReport,
             a11y_certifiedBy,
             a11y_certifierCredential,
-        } = publication;
+        } = publicationViewMaybeOpds;
 
         debug(a11y_certifiedBy);
 

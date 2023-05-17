@@ -261,6 +261,7 @@ export class PublicationViewConverter {
                 }
             }
         }
+        // console.log(`=-=-==-=-${document.title}---${JSON.stringify(r2Publication.Metadata.Title)}---${JSON.stringify(r2Publication.Metadata.SubTitle)}`);
         return {
             isAudio,
             isDivina,

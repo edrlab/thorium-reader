@@ -68,7 +68,6 @@ class PublicationCard extends React.Component<IProps, IState> {
 
         const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
 
-        // publicationViewMaybeOpds.documentTitle
         const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);

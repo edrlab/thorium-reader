@@ -270,7 +270,10 @@ export class OpdsFeedViewConverter {
         const workIdentifier = metadata.Identifier;
         const description = metadata.Description;
         const languages = metadata.Language;
+
         const title = convertMultiLangStringToString(metadata.Title);
+        // console.log(`=-=-==-=-${JSON.stringify(metadata.Title)}---${title}`);
+
         const publishedAt = metadata.PublicationDate &&
             moment(metadata.PublicationDate).toISOString();
 

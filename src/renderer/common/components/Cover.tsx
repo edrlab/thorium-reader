@@ -88,7 +88,6 @@ class Cover extends React.Component<IProps, IState> {
                 backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
             };
 
-            // publicationViewMaybeOpds.documentTitle
             const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
             const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
             const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
