@@ -10,7 +10,7 @@ import { inject, injectable } from "inversify";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
-import { IOpdsLinkView, IOpdsResultView } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView, IOpdsResultView, OPDS_OPEN_SEARCH_DATA_SEPARATOR } from "readium-desktop/common/views/opds";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
     ContentType, contentTypeisOpds, contentTypeisOpdsAuth, contentTypeisXml, parseContentType,
@@ -45,7 +45,6 @@ const SEARCH_TERM = "{searchTerms}";
 const findLink = (ln: IOpdsLinkView[], type: string) => ln && ln.find((link) =>
     link.type?.includes(type));
 
-
 @injectable()
 export class OpdsService {
 
@@ -63,7 +62,7 @@ export class OpdsService {
                 searchData.data = buf.toString();
                 return searchData;
             });
-        return searchResult.data;
+        return searchResult.data ? `${opensearchLink.url}${OPDS_OPEN_SEARCH_DATA_SEPARATOR}${searchResult.data}` : undefined;
     }
 
     @inject(diSymbolTable["opds-feed-view-converter"])
@@ -144,10 +143,11 @@ export class OpdsService {
             // http://examples.net/opds/search.php?q={searchTerms}
             if (atomLink?.url) {
 
-                const url = new URL(atomLink.url);
+                const url = new URL(atomLink.url.replace(/%7B/g, "{").replace(/%7D/g, "}"));
                 debug("parseOpdsSearchUrl", atomLink.url, url.search, url.pathname);
 
                 if (url.search.includes(SEARCH_TERM) ||
+                    // url.hash.includes(SEARCH_TERM) ||
                     tryDecodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
 
                     const urlDecoded = atomLink.url.replace(/%7B/g, "{").replace(/%7D/g, "}");
@@ -165,15 +165,17 @@ export class OpdsService {
                 // https://catalog.feedbooks.com/search.json{?query}
             } else if (opdsLink?.url) {
 
-                const uriTemplate = new URITemplate(opdsLink.url);
+                debug("parseOpdsSearchUrl (opdsLink) 1: ", opdsLink);
+
+                const uriTemplate = new URITemplate(opdsLink.url.replace(/%7B/g, "{").replace(/%7D/g, "}"));
                 const uriExpanded = uriTemplate.expand({ query: "\{searchTerms\}" });
                 const url = uriExpanded.toString().replace(/%7B/g, "{").replace(/%7D/g, "}");
 
-                debug("parseOpdsSearchUrl (opdsLink): ", url);
+                debug("parseOpdsSearchUrl (opdsLink) 2: ", url);
                 return url;
             }
-        } catch {
-            // ignore
+        } catch (ee) {
+            debug("parseOpdsSearchUrl (ERROR): ", ee);
         }
         return (undefined);
     }

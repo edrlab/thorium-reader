@@ -14,6 +14,8 @@ import { Identifiable } from "../models/identifiable";
 
 // import { JsonMap } from "readium-desktop/typings/json";
 
+export const OPDS_OPEN_SEARCH_DATA_SEPARATOR = "^$%*£@";
+
 export interface IOpdsFeedView extends Identifiable {
     title: string;
     url: string;
