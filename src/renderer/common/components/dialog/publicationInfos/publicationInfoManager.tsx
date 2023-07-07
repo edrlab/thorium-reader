@@ -17,7 +17,7 @@ import Loader from "../../Loader";
 import Dialog from "../Dialog";
 
 export interface IProps extends TranslatorProps {
-    publication: TPublication;
+    publicationViewMaybeOpds: TPublication;
     coverZoom: boolean;
     toggleCoverZoomCb: (coverZoom: boolean) => void;
     closeDialogCb: () => void;
@@ -25,7 +25,7 @@ export interface IProps extends TranslatorProps {
 
 const PublicationInfoManager: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 
-    const { publication, coverZoom, toggleCoverZoomCb, closeDialogCb } = props;
+    const { publicationViewMaybeOpds, coverZoom, toggleCoverZoomCb, closeDialogCb } = props;
 
     return (
         <Dialog
@@ -39,11 +39,11 @@ const PublicationInfoManager: React.FC<React.PropsWithChildren<IProps>> = (props
             noFooter={true}
         >
                 {
-                    publication?.documentTitle
+                    publicationViewMaybeOpds?.documentTitle
                         ? (
                             coverZoom
                                 ? <Cover
-                                    publicationViewMaybeOpds={publication}
+                                    publicationViewMaybeOpds={publicationViewMaybeOpds}
                                     coverType="cover"
                                     onClick={
                                         () => toggleCoverZoomCb(coverZoom)

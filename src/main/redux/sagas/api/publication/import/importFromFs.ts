@@ -38,13 +38,13 @@ export function* importFromFsService(
     const isLPF = isAcceptedExtension("w3cAudiobook", ext);
     const isPDF = isAcceptedExtension("pdf", ext);
     const isOPF = isAcceptedExtension("opf", ext);
-    const isNccHTML = filePath.endsWith(acceptedExtensionObject.nccHtml);
+    const isNccHTML = filePath.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml);
 
     debug("extension", ext);
-    debug("lcp/lpf/pdf", isLCPLicense, isLPF, isPDF);
+    debug("lcp/lpf/pdf/isOPF/isNccHTML", isLCPLicense, isLPF, isPDF, isOPF, isNccHTML);
     // debug(typeof ReadableStream === "undefined" || typeof Promise.allSettled === "undefined");
 
-    if (!acceptedExtensionArray.includes(ext)) {
+    if (!acceptedExtensionArray.includes(ext) && !isNccHTML) {
         // const store = diMainGet("store");
         // store.dispatch(toastActions.openRequest.build(ToastType.Error, diMainGet("translator").translate("dialog.importError", {
         //     acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,

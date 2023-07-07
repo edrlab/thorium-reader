@@ -45,7 +45,7 @@ export default class App extends React.Component<{}, undefined> {
 
         const filez = acceptedFiles
             .filter(
-                (file) => file.path.endsWith(acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(file.path)),
+                (file) => file.path.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(file.path)),
             )
             .map(
                 (file) => ({

@@ -44,7 +44,7 @@ export async function importPublicationFromFS(
     let r2Publication: R2Publication;
 
     let { ext } = path.parse(filePath);
-    if (filePath.endsWith(acceptedExtensionObject.nccHtml)) {
+    if (filePath.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml)) {
         ext = acceptedExtensionObject.nccHtml;
     }
     switch (ext) {

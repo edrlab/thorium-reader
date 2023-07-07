@@ -12,18 +12,18 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
 export interface IProps {
-    publication: TPublication;
+    publicationViewMaybeOpds: TPublication;
     __: I18nTyped;
 }
 
 export const FormatPublisherDate: React.FC<IProps> = (props) => {
 
-    const { publication, __ } = props;
+    const { publicationViewMaybeOpds, __ } = props;
 
     let formatedPublishedDateComponent = (<></>);
 
-    if (publication.publishedAt) {
-        const date = moment(publication.publishedAt).format("L");
+    if (publicationViewMaybeOpds.publishedAt) {
+        const date = moment(publicationViewMaybeOpds.publishedAt).format("L");
         if (date) {
             formatedPublishedDateComponent = (
                 <div>

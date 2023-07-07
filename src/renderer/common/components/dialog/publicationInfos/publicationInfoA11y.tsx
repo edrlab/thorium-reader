@@ -21,7 +21,7 @@ debug("_");
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends TranslatorProps {
-    publication: TPublication;
+    publicationViewMaybeOpds: TPublication;
 }
 
 interface IState {
@@ -46,15 +46,20 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
     public render() {
 
-        const { __, publication } = this.props;
+        const { __, publicationViewMaybeOpds } = this.props;
         const {
+            a11y_accessMode: _a11y_accessMode, // unused
             a11y_accessModeSufficient,
             a11y_accessibilityFeature,
             a11y_accessibilityHazard,
             a11y_accessibilitySummary,
             a11y_conformsTo,
             a11y_certifierReport,
-        } = publication;
+            a11y_certifiedBy,
+            a11y_certifierCredential,
+        } = publicationViewMaybeOpds;
+
+        debug(a11y_certifiedBy);
 
         const findStrInArrayArray = (array: string[][], str: string): boolean => array?.findIndex((a) => a.findIndex((b) => b === str) > -1) > -1;
         const findStrInArray = (array: string[], str: string): boolean => array?.findIndex((a) => a === str) > -1;
@@ -201,7 +206,9 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
             </>;
         })();
 
-        return (AccessModeSufficient || AccessibilityHazard) ? <>
+        return (a11y_certifiedBy || a11y_certifierCredential || AccessibilityFeature || AccessibilityConformsTo || AccessibilityConformanceReport || AccessibilitySummary || AccessModeSufficient || AccessibilityHazard || AccessibilityFeatureIsprintPageNumber || AccessibilityFeatureIsDisplayTransformability || AccessibilityFeatureIsSynchronizedAudioText) ?
+        <>
+            {(AccessModeSufficient || AccessibilityHazard || AccessibilityFeatureIsprintPageNumber || AccessibilityFeatureIsSynchronizedAudioText || AccessibilityFeatureIsDisplayTransformability) ?
             <ul>
                 {AccessModeSufficient ? AccessModeSufficient : <></>}
                 {AccessibilityFeatureIsprintPageNumber ? AccessibilityFeatureIsprintPageNumber : <></>}
@@ -209,19 +216,24 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                 {AccessibilityFeatureIsSynchronizedAudioText ? AccessibilityFeatureIsSynchronizedAudioText : <></>}
                 {AccessibilityHazard ? AccessibilityHazard : <></>}
             </ul>
+            : <></>}
+            {(a11y_certifiedBy || a11y_certifierCredential || AccessibilityFeature || AccessibilityConformsTo || AccessibilityConformanceReport || AccessibilitySummary) ?
             <div>
-
                 <details>
                     <summary>{__("publication.accessibility.moreInformation")}</summary>
                     <ul>
                         {AccessibilityFeature ? AccessibilityFeature : <></>}
                         {AccessibilityConformsTo ? AccessibilityConformsTo : <></>}
                         {AccessibilityConformanceReport ? AccessibilityConformanceReport : <></>}
+                        {a11y_certifiedBy ? a11y_certifiedBy.map((v, i) => (<li key={`kCertBy${i}`} style={{listStyleType: "none"}}>({v})</li>)) : <></>}
+                        {a11y_certifierCredential ? a11y_certifierCredential.map((v, i) => (<li key={`kCertCred${i}`} style={{listStyleType: "none"}}>({v})</li>)) : <></>}
                         {AccessibilitySummary}
                     </ul>
                 </details>
             </div>
-        </> : <p>{__("publication.accessibility.noA11y")}</p>;
+            : <></>}
+        </>
+        : <p>{__("publication.accessibility.noA11y")}</p>;
     }
 
 }

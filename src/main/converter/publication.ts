@@ -103,18 +103,18 @@ export class PublicationViewConverter {
             publicationDocument.identifier,
         );
 
-        debug("====> unmarshallR2Publication: ", pubFolder);
+        // debug("====> unmarshallR2Publication: ", pubFolder);
 
         if (_pubCache[publicationDocument.identifier]?.r2PublicationStr) {
             const r2PublicationStr = _pubCache[publicationDocument.identifier].r2PublicationStr;
-            debug("====> manifest (memory cache)");
+            // debug("====> manifest (memory cache)");
             const r2PublicationJson = JSON.parse(r2PublicationStr);
             const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
             const r2LCPStr = _pubCache[publicationDocument.identifier]?.r2LCPStr;
             if (r2LCPStr) {
                 try {
-                    debug("====> LCP (memory cache)");
+                    // debug("====> LCP (memory cache)");
                     const r2LCPJson = JSON.parse(r2LCPStr);
 
                     if (!lcpLicenseIsNotWellFormed(r2LCPJson)) {
@@ -261,6 +261,7 @@ export class PublicationViewConverter {
                 }
             }
         }
+        // console.log(`=-=-==-=-${document.title}---${JSON.stringify(r2Publication.Metadata.Title)}---${JSON.stringify(r2Publication.Metadata.SubTitle)}`);
         return {
             isAudio,
             isDivina,
@@ -269,19 +270,20 @@ export class PublicationViewConverter {
             isFXL,
             lastReadTimeStamp,
 
-            a11y_accessMode: r2Publication.Metadata.AccessMode, // string[]
-            a11y_accessibilityFeature: r2Publication.Metadata.AccessibilityFeature, // string[]
-            a11y_accessibilityHazard: r2Publication.Metadata.AccessibilityHazard, // string[]
+            // legacy vs. modern a11y metadata structure
+            a11y_accessMode: r2Publication.Metadata.Accessibility?.AccessMode || r2Publication.Metadata.AccessMode, // string[]
+            a11y_accessibilityFeature: r2Publication.Metadata.Accessibility?.Feature || r2Publication.Metadata.AccessibilityFeature, // string[]
+            a11y_accessibilityHazard: r2Publication.Metadata.Accessibility?.Hazard || r2Publication.Metadata.AccessibilityHazard, // string[]
 
-            a11y_certifiedBy: r2Publication.Metadata.CertifiedBy, // string[]
-            a11y_certifierCredential: r2Publication.Metadata.CertifierCredential, // string[]
-            a11y_certifierReport: r2Publication.Metadata.CertifierReport, // string[]
-            a11y_conformsTo: r2Publication.Metadata.ConformsTo, // string[]
+            a11y_certifiedBy: r2Publication.Metadata.Accessibility?.Certification?.CertifiedBy || r2Publication.Metadata.CertifiedBy, // string[]
+            a11y_certifierCredential: r2Publication.Metadata.Accessibility?.Certification?.Credential || r2Publication.Metadata.CertifierCredential, // string[]
+            a11y_certifierReport: r2Publication.Metadata.Accessibility?.Certification?.Report || r2Publication.Metadata.CertifierReport, // string[]
+            a11y_conformsTo: r2Publication.Metadata.Accessibility?.ConformsTo || r2Publication.Metadata.ConformsTo, // string[]
 
-            a11y_accessModeSufficient: r2Publication.Metadata.AccessModeSufficient, // (string[])[]
+            a11y_accessModeSufficient: r2Publication.Metadata.Accessibility?.AccessModeSufficient || r2Publication.Metadata.AccessModeSufficient, // (string[])[]
 
             // convertMultiLangStringToString
-            a11y_accessibilitySummary: r2Publication.Metadata.AccessibilitySummary, // string | IStringMap
+            a11y_accessibilitySummary: r2Publication.Metadata.Accessibility?.Summary || r2Publication.Metadata.AccessibilitySummary, // string | IStringMap
 
             identifier: document.identifier, // preserve Identifiable identifier
 

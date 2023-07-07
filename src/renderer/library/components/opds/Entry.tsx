@@ -87,7 +87,7 @@ class Entry extends React.Component<IProps, undefined> {
                         opdsPublicationViews.map((pub) =>
                             <PublicationCard
                                 key={pub.identifier}
-                                publication={pub}
+                                publicationViewMaybeOpds={pub}
                             />,
                         )
                     }

@@ -29,9 +29,10 @@ import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import PublicationInfoA11y from "./publicationInfoA11y";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 export interface IProps {
-    publication: TPublication;
+    publicationViewMaybeOpds: TPublication;
     r2Publication: R2Publication | null;
     manifestUrlR2Protocol: string | null;
     handleLinkUrl: ((url: string) => void) | undefined;
@@ -331,22 +332,21 @@ const Progression = (props: {
 export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 
     // tslint:disable-next-line: max-line-length
-    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publication, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;
+    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;
     const __ = translator.translate;
 
     const r2Publication = React.useMemo(() => {
-        if (!r2Publication_ && publication.r2PublicationJson) {
+        if (!r2Publication_ && publicationViewMaybeOpds.r2PublicationJson) {
             // debug("!! r2Publication ".repeat(100));
-            return TaJsonDeserialize(publication.r2PublicationJson, R2Publication);
+            return TaJsonDeserialize(publicationViewMaybeOpds.r2PublicationJson, R2Publication);
         }
 
         // debug("__r2Publication".repeat(100));
         return r2Publication_;
 
-    }, [publication, r2Publication_]);
+    }, [publicationViewMaybeOpds, r2Publication_]);
 
-    // publication.documentTitle
-    const pubTitleLangStr = convertMultiLangStringToString(translator, publication.publicationTitle);
+    const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
     const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -357,7 +357,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                 <div className={stylesColumns.col_book_img}>
                     <div className={stylesPublications.publication_image_wrapper}>
                         <Cover
-                            publicationViewMaybeOpds={publication}
+                            publicationViewMaybeOpds={publicationViewMaybeOpds}
                             onClick={() => toggleCoverZoomCb(coverZoom)}
                             onKeyPress={
                                 (e: React.KeyboardEvent<HTMLImageElement>) =>
@@ -374,28 +374,28 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             {pubTitleStr}
                         </h2>
                         <FormatContributorWithLink
-                            contributors={publication.authors}
+                            contributors={publicationViewMaybeOpds.authors}
                             translator={translator}
                             onClickLinkCb={onClikLinkCb}
                         />
                     </section>
 
                     <section>
-                        <PublicationInfoDescription publication={publication} __={__} translator={props.translator} />
+                        <PublicationInfoDescription publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} translator={props.translator} />
                     </section>
                     <section>
                         <div className={stylesGlobal.heading}>
                             <h3>{__("catalog.moreInfo")}</h3>
                         </div>
                         <div>
-                            <FormatPublisherDate publication={publication} __={__} />
+                            <FormatPublisherDate publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} />
                             {
-                                publication.publishers?.length ?
+                                publicationViewMaybeOpds.publishers?.length ?
                                     <>
                                         <strong>{`${__("catalog.publisher")}: `}</strong>
                                         <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             <FormatContributorWithLink
-                                                contributors={publication.publishers}
+                                                contributors={publicationViewMaybeOpds.publishers}
                                                 translator={translator}
                                                 onClickLinkCb={onClikLinkCb}
                                             />
@@ -404,19 +404,19 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                     </> : undefined
                             }
                             {
-                                publication.languages?.length ?
+                                publicationViewMaybeOpds.languages?.length ?
                                     <>
                                         <strong>{`${__("catalog.lang")}: `}</strong>
-                                        <FormatPublicationLanguage publication={publication} __={__} />
+                                        <FormatPublicationLanguage publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} />
                                         <br />
                                     </> : undefined
                             }
                             {
-                                publication.numberOfPages ?
+                                publicationViewMaybeOpds.numberOfPages ?
                                     <>
                                         <strong>{`${__("catalog.numberOfPages")}: `}</strong>
                                         <i className={stylesBookDetailsDialog.allowUserSelect}>
-                                            {publication.numberOfPages}
+                                            {publicationViewMaybeOpds.numberOfPages}
                                         </i>
                                         <br />
 
@@ -424,14 +424,14 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             }
                             <Duration
                                 __={__}
-                                duration={publication.duration}
+                                duration={publicationViewMaybeOpds.duration}
                             />
                             {
-                                publication.nbOfTracks ?
+                                publicationViewMaybeOpds.nbOfTracks ?
                                     <>
                                         <strong>{`${__("publication.audio.tracks")}: `}</strong>
                                         <i className={stylesBookDetailsDialog.allowUserSelect}>
-                                            {publication.nbOfTracks}
+                                            {publicationViewMaybeOpds.nbOfTracks}
                                         </i>
                                         <br />
 
@@ -444,11 +444,11 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             <h3>{__("publication.accessibility.name")}</h3>
                         </div>
                         <div>
-                            <PublicationInfoA11y publication={publication}></PublicationInfoA11y>
+                            <PublicationInfoA11y publicationViewMaybeOpds={publicationViewMaybeOpds}></PublicationInfoA11y>
                         </div>
                     </section>
-                    {(publication.lcp ? <section>
-                        <LcpInfo publicationLcp={publication} />
+                    {(publicationViewMaybeOpds.lcp ? <section>
+                        <LcpInfo publicationLcp={publicationViewMaybeOpds} />
                     </section> : <></>)}
                     <section>
                         <div className={stylesGlobal.heading}>
@@ -466,7 +466,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                         divinaNumberOfPages={divinaNumberOfPages}
                         divinaContinousEqualTrue={divinaContinousEqualTrue}
                         focusWhereAmI={focusWhereAmI}
-                        locatorExt={readerReadingLocation || publication.lastReadingLocation}
+                        locatorExt={readerReadingLocation || publicationViewMaybeOpds.lastReadingLocation}
                     />
                 </div>
             </div>

@@ -138,7 +138,7 @@ export async function pdfMountAndReturnBus(
     return bus;
 }
 
-const webviewDomReadyDebugger = (ev: Electron.Event) => {
+const webviewDomReadyDebugger = (ev: DOMEvent) => {
     // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webcontents
 
     const webview = ev.target as Electron.WebviewTag;

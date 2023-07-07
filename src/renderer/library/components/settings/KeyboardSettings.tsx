@@ -146,7 +146,18 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                         }
                     </div>
                     {this.state.displayKeyboardShortcuts && (
-                        <div>
+                        <div
+                            onKeyUp={this.state.editKeyboardShortcutId ? ((e: React.KeyboardEvent<HTMLDivElement>) => {
+                                if (e.key === "Escape") {
+                                    const id = this.state.editKeyboardShortcutId;
+                                    this.onClickKeyboardShortcutEditCancel(this.state.editKeyboardShortcutId);
+                                    setTimeout(() => {
+                                        const el = document.getElementById(`keyEditButt_${id}`);
+                                        el?.blur();
+                                        el?.focus();
+                                    }, 100);
+                                }
+                            }) : undefined}>
                             <ul className={stylesGlobal.p_0}>
                             {this.props.keyboardShortcuts &&
                             ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap).map((id) => {
@@ -154,8 +165,20 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const frag = <>
                                     <button
+                                        id={`keyEditButt_${id}`}
                                         className={stylesButtons.button_primary_small}
-                                        onClick={() => this.onClickKeyboardShortcutEditCancel(id)}>
+                                        onClick={(_ev) => {
+                                            const id_ = id;
+                                            this.onClickKeyboardShortcutEditCancel(id);
+                                            // const el = ev.currentTarget;
+                                            setTimeout(() => {
+                                                const el = document.getElementById(`keyEditButt_${id_}`);
+                                                el?.blur();
+                                                el?.focus();
+                                            }, 100);
+                                        }}
+                                        aria-label={`${hit ? __("settings.keyboard.cancel") : __("settings.keyboard.edit")} (${id}) ${this.stringifyKeyboardShortcut(def)}`}
+                                        >
                                         {hit ?
                                         __("settings.keyboard.cancel") : __("settings.keyboard.edit")}
                                     </button>
@@ -163,13 +186,23 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                     hit &&
                                     <button
                                         className={stylesButtons.button_primary_small}
-                                        onClick={() => this.onClickKeyboardShortcutSave(id)}>
+                                        onClick={(_ev) => {
+                                            const id_ = id;
+                                            this.onClickKeyboardShortcutSave(id);
+                                            setTimeout(() => {
+                                                const el = document.getElementById(`keyEditButt_${id_}`);
+                                                el?.blur();
+                                                el?.focus();
+                                            }, 100);
+                                        }}
+                                        aria-label={`${__("settings.keyboard.save")} (${id})`}
+                                        >
                                         {__("settings.keyboard.save")}
                                     </button>
                                     }
 
-                                    <strong>{id}</strong>
-                                    <div className={stylesGlobal.text_right}>{
+                                    <strong aria-hidden>{id}</strong>
+                                    <div aria-hidden className={stylesGlobal.text_right}>{
                                         hit ?
                                         this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)
                                         :
@@ -177,16 +210,20 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                     }</div>
                                 </>;
                                 return <li
+                                        aria-hidden={!this.state.editKeyboardShortcutId || hit ? undefined : true}
                                         className={
                                             hit ?
                                                 classNames(stylesBlocks.block_line_edit, stylesGlobal.no_list_style)
                                             :
-                                                classNames(stylesBlocks.block_line, stylesGlobal.no_list_style)
+                                            this.state.editKeyboardShortcutId ?
+                                            classNames(stylesBlocks.block_line_inactive, stylesBlocks.block_line, stylesGlobal.no_list_style)
+                                            :
+                                            classNames(stylesBlocks.block_line, stylesGlobal.no_list_style)
                                         }
                                     key={`key_${id}`}>{
                                     (hit ? <FocusLock
                                         disabled={false}
-                                        autoFocus={false}>{frag}</FocusLock> : frag)
+                                        autoFocus={true}>{frag}</FocusLock> : frag)
                                     }
                                 </li>;
                             })}
@@ -278,9 +315,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         obj[id] = data;
         this.props.setKeyboardShortcuts(obj);
 
-        const kstring = this.stringifyKeyboardShortcut(data);
-        this.props.toast(
-            `${this.props.translator.translate("settings.keyboard.keyboardShortcuts")} ${kstring}`);
+        // const kstring = this.stringifyKeyboardShortcut(data);
+        // this.props.toast(
+        //     `${this.props.translator.translate("settings.keyboard.keyboardShortcuts")} ${kstring}`);
     }
     private onClickKeyboardShortcutEditCancel(id: TKeyboardShortcutId) {
 

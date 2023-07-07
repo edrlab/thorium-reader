@@ -11,7 +11,7 @@ import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
-import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView, OPDS_OPEN_SEARCH_DATA_SEPARATOR } from "readium-desktop/common/views/opds";
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/httpBrowser";
@@ -99,7 +99,7 @@ function* updateHeaderLinkWatcher(action: apiActions.result.TAction<THttpGetBrow
             bookshelf: links.bookshelf[0]?.url,
             self: links.self[0]?.url,
         };
-        debug("opds browse data received with feed links", putLinks);
+        debug("opds browse data received with feed links", putLinks, links.search);
         yield put(opdsActions.headerLinksUpdate.build(putLinks));
 
         if (links.search?.length) {
@@ -139,8 +139,17 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
     let searchRaw = action.payload;
     debug("opds search raw data received", searchRaw);
 
+    let openSearchUrl: string | undefined;
+    if (searchRaw.includes(OPDS_OPEN_SEARCH_DATA_SEPARATOR)) {
+        const arr = searchRaw.split(OPDS_OPEN_SEARCH_DATA_SEPARATOR);
+        openSearchUrl = arr[0];
+        searchRaw = arr[1];
+    }
     let returnUrl: string;
     try {
+        if (openSearchUrl) {
+            throw new Error("yep, we're jumping into the catch code block ...");
+        }
         if (new URL(searchRaw)) {
             returnUrl = searchRaw;
         }
@@ -163,19 +172,17 @@ function* setSearchLinkInHeader(action: apiActions.result.TAction<string>) {
                     const searchUrl = urlElem.getAttribute("template");
                     debug(searchUrl);
 
-                    const url = new URL(searchUrl);
+                    const url = new URL(searchUrl
+                        .replace("{atom:author}", "")
+                        .replace("{atom:contributor}", "")
+                        .replace("{atom:title}", ""), openSearchUrl);
                     debug(url, url.search, url.pathname);
 
                     if (url.search.includes(SEARCH_TERM) ||
+                        url.hash.includes(SEARCH_TERM) ||
                         tryDecodeURIComponent(url.pathname).includes(SEARCH_TERM)) {
 
-                        // remove search filter not handle yet
-                        const searchLink = searchUrl
-                            .replace("{atom:author}", "")
-                            .replace("{atom:contributor}", "")
-                            .replace("{atom:title}", "");
-
-                        returnUrl = searchLink;
+                        returnUrl = url.toString();
                         debug(returnUrl);
                     }
                 }

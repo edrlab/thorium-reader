@@ -22,7 +22,7 @@ debug("_");
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
-    publication: TPublication;
+    publicationViewMaybeOpds: TPublication;
     __: I18nTyped;
     translator: Translator;
 }
@@ -55,13 +55,13 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
 
     public componentDidUpdate(prevProps: IProps) {
 
-        if (this.props.publication !== prevProps.publication) {
+        if (this.props.publicationViewMaybeOpds !== prevProps.publicationViewMaybeOpds) {
             setTimeout(this.needSeeMoreButton, 500);
         }
     }
 
     public render() {
-        const { publication: { description }, __ } = this.props;
+        const { publicationViewMaybeOpds: { description }, __ } = this.props;
 
         if (!description) return <></>;
         const textSanitize = DOMPurify.sanitize(description).replace(/font-size:/g, "font-sizexx:");

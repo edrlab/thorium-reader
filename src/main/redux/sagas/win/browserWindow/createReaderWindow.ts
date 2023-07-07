@@ -95,6 +95,23 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     if (IS_DEV) {
 
         readerWindow.webContents.on("did-finish-load", () => {
+            // see app.whenReady() in src/main/redux/sagas/app.ts
+            // // app.whenReady().then(() => {
+            // // });
+            // setTimeout(() => {
+            //     const {
+            //         default: installExtension,
+            //         REACT_DEVELOPER_TOOLS,
+            //         REDUX_DEVTOOLS,
+            //     // eslint-disable-next-line @typescript-eslint/no-var-requires
+            //     } = require("electron-devtools-installer");
+
+            //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+            //         installExtension(extension)
+            //         .then((name: string) => debug("electron-devtools-installer OK (reader window): ", name))
+            //         .catch((err: Error) => debug("electron-devtools-installer ERROR (reader window): ", err));
+            //     });
+            // }, 1000);
 
             // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
             // because webpack-dev-server automaticaly refresh the window.
@@ -106,9 +123,8 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
         if (_VSCODE_LAUNCH !== "true" && OPEN_DEV_TOOLS) {
             setTimeout(() => {
-                // tslint:disable-next-line: max-line-length
-                // https://github.com/readium/readium-desktop/commit/c38cbd4860c84334f182d5059fb93107cd8ed709#diff-b35e0b23967fd130d41571c2e35859ff
                 if (!readerWindow.isDestroyed()) {
+                    debug("opening dev tools (reader) ...");
                     readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
                 }
             }, 2000);

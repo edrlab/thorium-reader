@@ -1095,6 +1095,7 @@ const transformerIFrames: TTransformFunction = (
 
 export function initSessions() {
     app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
+    app.commandLine.appendSwitch("enable-speech-dispatcher");
 
     Transformers.instance().add(new TransformerHTML(transformerIFrames));
 

@@ -27,6 +27,8 @@ import svCatalog from "readium-desktop/resources/locales/sv.json";
 import caCatalog from "readium-desktop/resources/locales/ca.json";
 import glCatalog from "readium-desktop/resources/locales/gl.json";
 import euCatalog from "readium-desktop/resources/locales/eu.json";
+import elCatalog from "readium-desktop/resources/locales/el.json";
+import bgCatalog from "readium-desktop/resources/locales/bg.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
@@ -115,6 +117,12 @@ i18nextInstance.init({
         "eu": {
             translation: euCatalog,
         },
+        "el": {
+            translation: elCatalog,
+        },
+        "bg": {
+            translation: bgCatalog,
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
@@ -165,6 +173,8 @@ export const AvailableLanguages = {
     "ca": "Catalan",
     "gl": "Galician",
     "eu": "Basque (Euskadi)",
+    "el": "ελληνικός",
+    "bg": "български",
 };
 
 interface LocalizedContent {

@@ -49,13 +49,13 @@ class PublicationInfo extends React.Component<IProps> {
 
         return (
             <PublicationInfoManager
-                publication={publication}
+                publicationViewMaybeOpds={publication}
                 coverZoom={coverZoom}
                 toggleCoverZoomCb={toggleCoverZoom}
                 closeDialogCb={closeDialog}
             >
                 <PublicationInfoContent
-                    publication={publication}
+                    publicationViewMaybeOpds={publication}
                     r2Publication={this.props.r2Publication}
                     manifestUrlR2Protocol={this.props.manifestUrlR2Protocol}
                     handleLinkUrl={this.props.handleLinkUrl}
