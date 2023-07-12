@@ -135,7 +135,6 @@ export class CatalogApi implements ICatalogApi {
 
     private async getPublicationView() {
 
-        // eslint-disable-next-line unused-imports/no-unused-vars
         const errorDeletePub = (doc: PublicationDocument | undefined, e: any) => {
             debug("Error in convertDocumentToView doc=", doc);
 
