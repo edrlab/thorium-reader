@@ -29,6 +29,7 @@ import glCatalog from "readium-desktop/resources/locales/gl.json";
 import euCatalog from "readium-desktop/resources/locales/eu.json";
 import elCatalog from "readium-desktop/resources/locales/el.json";
 import bgCatalog from "readium-desktop/resources/locales/bg.json";
+import hrCatalog from "readium-desktop/resources/locales/hr.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
@@ -123,6 +124,9 @@ i18nextInstance.init({
         "bg": {
             translation: bgCatalog,
         },
+        "hr": {
+            translation: hrCatalog,
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
@@ -175,6 +179,7 @@ export const AvailableLanguages = {
     "eu": "Basque (Euskadi)",
     "el": "ελληνικός",
     "bg": "български",
+    "hr": "Hrvatski",
 };
 
 interface LocalizedContent {
