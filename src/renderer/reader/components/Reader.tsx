@@ -2033,7 +2033,12 @@ class Reader extends React.Component<IProps, IState> {
                         visibleBookmarkList.push(bookmark);
                     }
                 } else if (this.props.r2Publication) { // isLocatorVisible() API only once navigator ready
-                    const isVisible = await isLocatorVisible(bookmark.locator);
+                    let isVisible = false;
+                    try{
+                        isVisible = await isLocatorVisible(bookmark.locator);
+                    } catch (_e) {
+                        // rejection because webview not fully loaded yet
+                    }
                     if (isVisible) {
                         visibleBookmarkList.push(bookmark);
                     }
@@ -2159,7 +2164,7 @@ class Reader extends React.Component<IProps, IState> {
         // this.setState({bookmarkMessage: undefined});
 
         // sets state visibleBookmarkList
-        const visibleBookmarks = await this.updateVisibleBookmarks();
+        const visibleBookmarkList = await this.updateVisibleBookmarks();
 
         if (this.props.isDivina || this.props.isPdf) {
 
@@ -2170,7 +2175,7 @@ class Reader extends React.Component<IProps, IState> {
             const name = this.props.isDivina ? locator.href : (parseInt(href, 10) + 1).toString();
             if (href) {
 
-                const found = visibleBookmarks.find(({ locator: { href: _href } }) => href === _href);
+                const found = visibleBookmarkList.find(({ locator: { href: _href } }) => href === _href);
                 if (found) {
                     this.props.deleteBookmark(found);
                 } else {
@@ -2192,7 +2197,7 @@ class Reader extends React.Component<IProps, IState> {
 
                 // "toggle" only if there is a single bookmark in the content visible inside the viewport
                 // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
-                visibleBookmarks.length === 1 &&
+                visibleBookmarkList.length === 1 &&
 
                 // CTRL-B (keyboard interaction) and audiobooks:
                 // do not toggle: never delete, just add current reading location to bookmarks
@@ -2201,21 +2206,21 @@ class Reader extends React.Component<IProps, IState> {
                 (!locator.text?.highlight ||
 
                     // "toggle" only if visible bookmark == current reading location
-                    visibleBookmarks[0].locator.href === locator.href &&
-                    visibleBookmarks[0].locator.locations.cssSelector === locator.locations.cssSelector &&
-                    visibleBookmarks[0].locator.text?.highlight === locator.text.highlight
+                    visibleBookmarkList[0].locator.href === locator.href &&
+                    visibleBookmarkList[0].locator.locations.cssSelector === locator.locations.cssSelector &&
+                    visibleBookmarkList[0].locator.text?.highlight === locator.text.highlight
                 )
                 ;
 
             if (deleteAllVisibleBookmarks) {
-                const l = visibleBookmarks.length;
+                const l = visibleBookmarkList.length;
 
                 // reader.navigation.bookmarkTitle
                 const msg = `${this.props.__("catalog.delete")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length - l : 0}]`;
                 // this.setState({bookmarkMessage: msg});
                 this.props.toasty(msg);
 
-                for (const bookmark of visibleBookmarks) {
+                for (const bookmark of visibleBookmarkList) {
                     this.props.deleteBookmark(bookmark);
                 }
 
@@ -2236,7 +2241,7 @@ class Reader extends React.Component<IProps, IState> {
                     return identical;
                 }) &&
                 (this.state.currentLocation.audioPlaybackInfo ||
-                !visibleBookmarks?.length ||
+                !visibleBookmarkList?.length ||
                 fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
                 locator.text?.highlight
                 );
