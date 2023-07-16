@@ -1024,6 +1024,7 @@ p.chapters_description {
 
 #option_auto,
 #option_justif,
+#option_start,
 #scroll_option,
 #page_option {
   display: inline-block;

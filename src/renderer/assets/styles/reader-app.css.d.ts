@@ -71,6 +71,7 @@ declare const styles: {
   readonly "option_colonne2": string;
   readonly "option_auto": string;
   readonly "option_justif": string;
+  readonly "option_start": string;
   readonly "scroll_option": string;
   readonly "page_option": string;
   readonly "line_tab_content": string;
