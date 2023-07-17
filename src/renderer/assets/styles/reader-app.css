@@ -402,12 +402,6 @@ button {
         }
       }
 
-/*
-#${exports.AUDIO_CONTROLS_ID} select#${exports.AUDIO_RATE_ID} option {
-    color: var(--RS__textColor) !important;
-    background: var(--RS__backgroundColor) !important;
-}
-*/
       & > li > select option {
         color: var(--reader-fontColor);
         background-color: var(--reader-secondaryColor);
