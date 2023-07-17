@@ -726,7 +726,6 @@ declare namespace typed_i18n {
     },
     readonly "scrolled": string,
     readonly "spacing": string,
-    readonly "start": string,
     readonly "text": string,
     readonly "theme": {
       readonly "name": {
@@ -907,7 +906,6 @@ declare namespace typed_i18n {
   },
   readonly "scrolled": string,
   readonly "spacing": string,
-  readonly "start": string,
   readonly "text": string,
   readonly "theme": {
     readonly "name": {
@@ -989,7 +987,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.save.title", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
   (_: "reader.settings.spacing", __?: {}): string;
-  (_: "reader.settings.start", __?: {}): string;
   (_: "reader.settings.text", __?: {}): string;
   (_: "reader.settings.theme", __?: {}): {
   readonly "name": {

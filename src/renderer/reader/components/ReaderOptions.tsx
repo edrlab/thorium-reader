@@ -699,7 +699,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             className={this.getButtonClassName("align", "start")}
                         >
                             <SVG ariaHidden={true} svg={StartIcon} />
-                            {__("reader.settings.start")}
+                            {`< ${__("reader.svg.left")} ${__("reader.svg.right")} >`}
                         </label>
                     </div>
                 </div>
