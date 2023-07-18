@@ -19,12 +19,15 @@ It is currently localized in following languages:
 - Spanish
 - German
 - Finnish
-- Chinese
+- Chinese (Simplified + Traditional)
 - Korean
 - Georgian
-- Basque
+- Basque (Euskadi)
 - Galician
 - Catalan
+- Croatian
+- Bulgarian
+- Greek
 
 See: https://github.com/edrlab/thorium-reader/wiki/Localization-(l10n)-language-translations
 
