@@ -251,7 +251,7 @@
     }
   },
   "dependencies": {
-    "@xmldom/xmldom": "^0.8.9",
+    "@xmldom/xmldom": "^0.8.10",
     "classnames": "^2.3.2",
     "commonmark": "^0.30.0",
     "debounce": "^1.2.1",
@@ -273,7 +273,7 @@
     "nanoid": "^4.0.2",
     "node-fetch": "^3.3.1",
     "r2-lcp-js": "^1.0.38",
-    "r2-navigator-js": "^1.13.5",
+    "r2-navigator-js": "^1.13.6",
     "r2-opds-js": "^1.0.42",
     "r2-shared-js": "^1.0.68",
     "r2-streamer-js": "^1.0.46",
