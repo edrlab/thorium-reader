@@ -146,11 +146,11 @@
     },
     "library": {
         "lcp": {
-            "hint": "(Dica : {{- hint}})",
-            "password": "Senha",
-            "sentence": "Esta publicação necessita de uma senha LCP para poder ser aberta: ",
+            "hint": "(Dica: {{- hint}})",
+            "password": "Frase-passe",
+            "sentence": "Esta publicação necessita de uma frase-passe LCP para poder ser aberta: ",
             "submit": "Enviar",
-            "urlHint": "Esqueceu-se da sua frase-senha? Encontre alguma ajuda aqui"
+            "urlHint": "Esqueceu-se da sua frase-passe? Encontre alguma ajuda aqui"
         }
     },
     "message": {
@@ -163,7 +163,7 @@
             "success": "Foi concluída a importação de {{- title}}."
         },
         "open": {
-            "error": "O documento não pode ser aberto: {{- err}}"
+            "error": "Não foi possível abrir o documento: {{- err}}"
         }
     },
     "opds": {
@@ -171,14 +171,14 @@
             "addButton": "Adicionar",
             "name": "Nome:",
             "namePlaceholder": "Nome",
-            "title": "Adicionar fonte OPDS",
+            "title": "Adicionar sinal OPDS",
             "url": "Endereço:",
             "urlPlaceholder": "Hiperligação"
         },
         "addFormApiapp": {
             "title": "Adicionar uma conta de biblioteca"
         },
-        "addMenu": "Adicionar fonte OPDS",
+        "addMenu": "Adicionar sinal OPDS",
         "back": "Voltar",
         "breadcrumbRoot": "Catálogos",
         "empty": "Nenhum documento encontrado",
@@ -193,10 +193,10 @@
             "goSubBook": "Subscrever"
         },
         "network": {
-            "error": "Não foi possível aceder à fonte OPDS",
+            "error": "Não foi possível aceder ao sinal OPDS",
             "noInternet": "Sem Internet",
             "noInternetMessage": "Verifique o cabo de rede, modem, router ou o wi-fi",
-            "reject": "Desculpe, ocorreu um erro inesperado ao tentar processar a fonte OPDS",
+            "reject": "Desculpe, ocorreu um erro inesperado ao tentar processar o sinal OPDS",
             "timeout": "Foi atingido o máximo de tempo de espera na rede. Por favor, tente novamente mais tarde"
         },
         "next": "Seguinte",
@@ -212,16 +212,16 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "TTS e leitor de ecrã amigável"
+                "textual": "Amigável para TTS e leitores de ecrã"
             },
             "accessibilityFeature": {
-                "alternativeText": "Contêm texto alternativo",
+                "alternativeText": "Contém texto alternativo",
                 "displayTransformability": "Texto e visual adaptável",
                 "longDescription": "Recursos gráficos totalmente descritos",
                 "printPageNumbers": "Referência de paginação de livro impresso",
-                "readingOrder": "Contém uma ordenação de leitura",
+                "readingOrder": "Contém ordenação de leitura",
                 "synchronizedAudioText": "Texto e áudio sincronizados",
-                "tableOfContents": "Contém um índice"
+                "tableOfContents": "Contém índice"
             },
             "accessibilityHazard": {
                 "flashing": "Piscar",
@@ -262,7 +262,7 @@
         "licenseSignatureDateInvalid": "A data de assinatura da licença é inválida",
         "licenseSignatureInvalid": "A assinatura da licença é inválida",
         "progression": {
-            "title": "Progresso"
+            "title": "Progressão"
         },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
@@ -271,7 +271,7 @@
         "seeLess": "Ver menos",
         "seeMore": "Ver mais",
         "title": "Título",
-        "userKeyCheckInvalid": "A frase-senha está incorreta"
+        "userKeyCheckInvalid": "A frase-passe está incorreta"
     },
     "reader": {
         "divina": {
@@ -334,7 +334,7 @@
                 "previous": "Anterior",
                 "submit": "Procurar"
             },
-            "searchTitle": "Pesquisar"
+            "searchTitle": "Pesquisar:"
         },
         "settings": {
             "column": {
@@ -400,12 +400,12 @@
         },
         "tts": {
             "activate": "Ativar Texto para voz",
-            "default": "Voz: padrão do sistema",
+            "default": "Voz: predefinição do sistema",
             "next": "Texto para voz - seguinte",
             "pause": "Pausar Texto para voz",
             "play": "Executar Texto para voz",
             "previous": "Texto para voz - anterior",
-            "sentenceDetect": "Dividir texto de texto para voz",
+            "sentenceDetect": "Dividir texto de Texto para voz",
             "speed": "Velocidade de Texto para voz",
             "stop": "Parar Texto para voz",
             "voice": "Voz de Texto para voz"
