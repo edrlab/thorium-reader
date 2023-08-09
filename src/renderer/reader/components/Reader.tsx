@@ -71,7 +71,7 @@ import {
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight, publicationHasMediaOverlays,
     readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
-    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSentenceDetectionEnable, TTSStateEnum,
+    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
@@ -1990,6 +1990,7 @@ class Reader extends React.Component<IProps, IState> {
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
+            ttsSkippabilityEnable(this.props.readerConfig.mediaOverlaysEnableSkippability);
         }
         this.ttsOverlayEnableNeedsSync = false;
 
@@ -2381,6 +2382,7 @@ class Reader extends React.Component<IProps, IState> {
 
         mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
         ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
+        ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
         mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
         ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
 
@@ -2511,6 +2513,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // see this.ttsOverlayEnableNeedsSync
     // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
     // ttsSentenceDetectionEnable(state.reader.config.ttsEnableSentenceDetection);
+    // ttsSkippabilityEnable(state.reader.config.mediaOverlaysEnableSkippability);
 
     // extension or @type ?
     // const isDivina = isDivinaFn(state.r2Publication);
