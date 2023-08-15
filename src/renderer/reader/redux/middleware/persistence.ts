@@ -50,6 +50,11 @@ export const reduxPersistMiddleware: Middleware
                     readerState.bookmark = nextState.reader.bookmark;
                     dispatchFlag = true;
                 }
+                if (!ramda.equals(prevState.reader.annotation, nextState.reader.annotation)) {
+
+                    readerState.annotation = nextState.reader.annotation;
+                    dispatchFlag = true;
+                }
                 if (!ramda.equals(prevState.reader.divina, nextState.reader.divina)) {
 
                     readerState.divina = nextState.reader.divina;

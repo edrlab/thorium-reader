@@ -24,16 +24,18 @@ import { TKeyboardEventButton, TMouseEventOnButton } from "readium-desktop/typin
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { handleLinkLocator, LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
-import { readerLocalActionBookmarks } from "../redux/actions";
+import { readerLocalActionBookmarks, readerLocalActionAnnotations } from "../redux/actions";
 import { IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
+import { IAnnotationState } from "readium-desktop/common/redux/states/annotation";
+import { IRangeInfo } from "r2-navigator-js/dist/es8-es2017/src/electron/common/selection";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
@@ -149,11 +151,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 content: this.createBookmarkList(),
                 disabled: !bookmarks || bookmarks.length === 0,
             },
-            /*{
+            {
                 title: __("reader.marks.annotations"),
                 content: <></>,
-                disabled: true,
-            },*/
+                disabled: false,
+            },
             {
                 title: __("reader.marks.search"),
                 content: this.props.searchEnable
@@ -821,6 +823,16 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         e.preventDefault();
         this.props.goToLocator(locator, closeNavPanel);
     }
+
+    // from src/renderer/reader/redux/sagas/search.ts
+    private createLocatorLink(href: string, rangeInfo: IRangeInfo): Locator {
+        return {
+            href,
+            locations: {
+                cssSelector: rangeInfo.startContainerElementCssSelector,
+            },
+        };
+    }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
@@ -834,12 +846,12 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         pubId: state.reader.info.publicationIdentifier,
         searchEnable: state.search.enable,
         bookmarks: state.reader.bookmark.map(([, v]) => v),
+        highlights: state.reader.highlight.handler.map(([, v]) => v),
         // isDivina,
     };
 };
 
 const mapDispatchToProps = (dispatch: TDispatch) => {
-
 
     return {
         setBookmark: (bookmark: IBookmarkState) => {
@@ -847,6 +859,12 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
         },
         deleteBookmark: (bookmark: IBookmarkState) => {
             dispatch(readerLocalActionBookmarks.pop.build(bookmark));
+        },
+        setAnnotation: (annotation: IAnnotationState) => {
+            dispatch(readerLocalActionAnnotations.push.build(annotation));
+        },
+        deleteAnnotation: (annotation: IAnnotationState) => {
+            dispatch(readerLocalActionAnnotations.pop.build(annotation));
         },
     };
 };

@@ -8,10 +8,10 @@
 import { nanoid } from "nanoid";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaIterator } from "redux-saga";
-import { all, put } from "redux-saga/effects";
 
 import { readerLocalActionHighlights, readerLocalActionSetLocator } from "../actions";
 import { IHighlightHandlerState } from "../state/highlight";
+import { all, put as putTyped } from "typed-redux-saga";
 
 //
 // WIP
@@ -25,6 +25,10 @@ function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): Sag
         locator: { href },
     } = action.payload;
 
+    // 1. Check if annotation mode is enabled
+
+
+    // 2. Check if it is a user selection and a new selection
     if (
         selectionInfo
         && selectionIsNew
@@ -43,7 +47,7 @@ function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): Sag
                 selectionInfo,
             },
         };
-        yield put(readerLocalActionHighlights.handler.push.build(def));
+        yield* putTyped(readerLocalActionHighlights.handler.push.build(def));
     }
 }
 

@@ -17,6 +17,7 @@ import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import { TBookmarkState } from "../bookmark";
+import { TAnnotationState } from "../annotation";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
@@ -30,6 +31,7 @@ export interface IReaderStateReader {
     info: ReaderInfo;
     locator: LocatorExtended;
     bookmark: TBookmarkState;
+    annotation: TAnnotationState;
     highlight: {
         handler: TMapState<string, IHighlightHandlerState>;
         mounter: TMapState<string, IHighlight>;
