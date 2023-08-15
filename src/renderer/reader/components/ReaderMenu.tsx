@@ -24,7 +24,7 @@ import { TKeyboardEventButton, TMouseEventOnButton } from "readium-desktop/typin
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
-import { handleLinkLocator, LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
