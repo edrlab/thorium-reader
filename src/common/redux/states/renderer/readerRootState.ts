@@ -18,11 +18,13 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import { TBookmarkState } from "../bookmark";
 import { TAnnotationState } from "../annotation";
+import { IAnnotationUserInterfaceState } from "readium-desktop/renderer/reader/redux/state/annotation";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
     picker: IPickerState;
     search: ISearchState;
+    annotation: IAnnotationUserInterfaceState;
     mode: ReaderMode;
 }
 

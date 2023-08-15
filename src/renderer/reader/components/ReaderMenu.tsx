@@ -35,7 +35,6 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 import { IAnnotationState } from "readium-desktop/common/redux/states/annotation";
-import { IRangeInfo } from "r2-navigator-js/dist/es8-es2017/src/electron/common/selection";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
@@ -825,14 +824,14 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     // from src/renderer/reader/redux/sagas/search.ts
-    private createLocatorLink(href: string, rangeInfo: IRangeInfo): Locator {
-        return {
-            href,
-            locations: {
-                cssSelector: rangeInfo.startContainerElementCssSelector,
-            },
-        };
-    }
+    // private createLocatorLink(href: string, rangeInfo: IRangeInfo): Locator {
+    //     return {
+    //         href,
+    //         locations: {
+    //             cssSelector: rangeInfo.startContainerElementCssSelector,
+    //         },
+    //     };
+    // }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {

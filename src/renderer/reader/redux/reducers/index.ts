@@ -32,6 +32,7 @@ import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeRed
 import { readerDivinaReducer } from "./divina";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { IAnnotationState } from "readium-desktop/common/redux/states/annotation";
+import { annotationUIReducer } from "./annotationUI";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
@@ -157,6 +158,7 @@ export const rootReducer = () => {
             divina: readerDivinaReducer,
         }),
         search: searchReducer,
+        annotation: annotationUIReducer,
         picker: pickerReducer,
         win: winReducer,
         dialog: dialogReducer,
