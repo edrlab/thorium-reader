@@ -12,6 +12,8 @@ export interface IAnnotationUserInterfaceState {
     enable: boolean;
     newFocusAnnotationUUID: IAnnotationState["uuid"];
     oldFocusAnnotationUUID: IAnnotationState["uuid"];
+    name: string;
+    comment: string;
     color: IColor
 }
 
@@ -20,5 +22,7 @@ export const annotationDefaultState = (): IAnnotationUserInterfaceState =>
         enable: false,
         newFocusAnnotationUUID: "",
         oldFocusAnnotationUUID: "",
+        name: "",
+        comment: "",
         color: {red: 0, green: 0, blue: 0},
     });

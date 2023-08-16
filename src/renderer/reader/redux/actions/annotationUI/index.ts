@@ -9,10 +9,12 @@ import * as enable from "./enable";
 import * as focus from "./focus";
 import * as color from "./color";
 import * as cancel from "./cancel";
+import * as picker from "./picker";
 
 export {
     focus,
     color,
     enable,
     cancel,
+    picker,
 };

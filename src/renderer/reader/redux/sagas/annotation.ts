@@ -8,7 +8,7 @@
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaIterator } from "redux-saga";
 
-import { readerLocalActionAnnotationUI, readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetLocator } from "../actions";
+import { readerLocalActionAnnotationUI, readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionPicker, readerLocalActionSetLocator } from "../actions";
 import { IHighlightHandlerState } from "../state/highlight";
 import { all, put as putTyped, select as selectTyped, call as callTyped } from "typed-redux-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -30,8 +30,13 @@ function* createAnnotationHighlightFromAnnotationPush(action: readerLocalActionA
         uuid,
         href,
         def,
+        name,
+        comment,
+        color,
     } = action.payload;
     yield* putTyped(readerLocalActionHighlights.handler.push.build(createAnnotationHighlightObj(uuid, href, def)));
+    yield* putTyped(readerLocalActionAnnotationUI.enable.build(name, comment, color, uuid));
+    yield* putTyped(readerLocalActionPicker.manager.build(true, "annotation"));
 }
 
 function* deleteAnnotationHighlightFromAnnotationPop(action: readerLocalActionAnnotations.pop.TAction): SagaIterator {

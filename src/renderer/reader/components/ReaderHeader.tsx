@@ -858,10 +858,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         toggleAnnotation: (annotationEnabled: boolean) => {
             if (annotationEnabled) {
                 dispatch(readerLocalActionAnnotationUI.cancel.build());
-                dispatch(readerLocalActionPicker.manager.build(false, "annotation"));
+                dispatch(readerLocalActionPicker.manager.build(false));
             } else {
-                dispatch(readerLocalActionAnnotationUI.enable.build());
-                dispatch(readerLocalActionPicker.manager.build(true, "annotation"));
+                // default annotation picker state
+                dispatch(readerLocalActionAnnotationUI.enable.build("", "", {red: 255, green: 0, blue: 0}, ""));
             }
         },
     };

@@ -9,7 +9,7 @@ import { Action } from "readium-desktop/common/models/redux";
 import { IAnnotationUserInterfaceState } from "../../state/annotation";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
-export const ID = "READER_ANNOTATION_ENABLE";
+export const ID = "READER_ANNOTATION_UPDATE_PICKER";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPayload extends Partial<IAnnotationUserInterfaceState> {
@@ -21,7 +21,6 @@ export function build(name: string, comment: string, color: IColor, uuid: string
     return {
         type: ID,
         payload: {
-            enable: true,
             name,
             comment,
             color,
