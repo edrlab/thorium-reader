@@ -19,7 +19,6 @@ import {
 } from "./mounter";
 
 /**
- * 
  * be careful when using it in parallel, there is a bug with action.payload (not duplicated).
  * You must used it by passing highlights array in the first parameter
  */
@@ -34,7 +33,6 @@ function* push(action: readerLocalActionHighlights.handler.push.TAction) {
 }
 
 /**
- * 
  * be careful when using it in parallel, there is a bug with action.payload (not duplicated).
  * You must used it by passing highlights array in the first parameter
  */

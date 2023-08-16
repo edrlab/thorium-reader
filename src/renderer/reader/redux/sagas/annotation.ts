@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { nanoid } from "nanoid";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaIterator } from "redux-saga";
 
@@ -16,9 +15,9 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { IAnnotationStateWithoutUUID } from "readium-desktop/common/redux/states/annotation";
 import { IHighlightDefinition } from "r2-navigator-js/dist/es8-es2017/src/electron/common/highlight";
 
-function createAnnotationHighlightObj(href: string, def: IHighlightDefinition): IHighlightHandlerState {
+function createAnnotationHighlightObj(uuid: string, href: string, def: IHighlightDefinition): IHighlightHandlerState {
     const highlight: IHighlightHandlerState = {
-        uuid: nanoid(),
+        uuid,
         type: "annotation",
         href,
         def,
@@ -28,10 +27,19 @@ function createAnnotationHighlightObj(href: string, def: IHighlightDefinition): 
 
 function* createAnnotationHighlightFromAnnotationPush(action: readerLocalActionAnnotations.push.TAction): SagaIterator {
     const {
+        uuid,
         href,
         def,
     } = action.payload;
-    yield* putTyped(readerLocalActionHighlights.handler.push.build(createAnnotationHighlightObj(href, def)));
+    yield* putTyped(readerLocalActionHighlights.handler.push.build(createAnnotationHighlightObj(uuid, href, def)));
+}
+
+function* deleteAnnotationHighlightFromAnnotationPop(action: readerLocalActionAnnotations.pop.TAction): SagaIterator {
+    const {
+        uuid,
+    } = action.payload;
+
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build({uuid}))
 }
 
 function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): SagaIterator {
@@ -80,7 +88,7 @@ function* annotationUIEnable(_action: readerLocalActionAnnotationUI.enable.TActi
 
     // move all anotations from reader.annotations to reader.hightlight.handler
     const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation.map(([, v]) => v));
-    const annotationHightlightArray = annotations.map(({href, def}) => createAnnotationHighlightObj(href, def));
+    const annotationHightlightArray = annotations.map(({uuid, href, def}) => createAnnotationHighlightObj(uuid, href, def));
     yield* putTyped(readerLocalActionHighlights.handler.push.build(...annotationHightlightArray));
 }
 
@@ -108,6 +116,11 @@ export const saga = () =>
         takeSpawnEvery(
             readerLocalActionAnnotations.push.ID,
             createAnnotationHighlightFromAnnotationPush,
+            (e) => console.log("readerLocalActionAnnotations.push", e),
+        ),
+        takeSpawnEvery(
+            readerLocalActionAnnotations.pop.ID,
+            deleteAnnotationHighlightFromAnnotationPop,
             (e) => console.log("readerLocalActionAnnotations.push", e),
         ),
         takeSpawnEvery(

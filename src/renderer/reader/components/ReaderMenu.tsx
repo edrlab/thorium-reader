@@ -28,13 +28,14 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
-import { readerLocalActionBookmarks, readerLocalActionAnnotations } from "../redux/actions";
+import { readerLocalActionBookmarks, readerLocalActionAnnotations, readerLocalActionHighlights } from "../redux/actions";
 import { IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 import { IAnnotationState } from "readium-desktop/common/redux/states/annotation";
+import { IRangeInfo } from "r2-navigator-js/dist/es8-es2017/src/electron/common/selection";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
@@ -152,8 +153,8 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             },
             {
                 title: __("reader.marks.annotations"),
-                content: <></>,
-                disabled: false,
+                content: this.createAnnotationList(),
+                disabled: !this.props.annotations || this.props.annotations.length === 0,
             },
             {
                 title: __("reader.marks.search"),
@@ -546,6 +547,56 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         return undefined;
     }
 
+    private createAnnotationList(): JSX.Element[] {
+        const { __ } = this.props;
+        if (this.props.r2Publication && this.props.annotations) {
+
+            return this.props.annotations.map((annotation, i) => {
+
+                return (<div
+                    className={stylesReader.bookmarks_line}
+                    key={i}
+                >
+                    <button
+                        className={stylesReader.bookmark_infos}
+                        tabIndex={0}
+                        onClick={(e) => {
+                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                            this.goToLocator(e, this.createLocatorLink(annotation.href, annotation.def.selectionInfo.rangeInfo), closeNavPanel);
+                            this.props.focusAnnotationHighlight(annotation);
+                        }}
+                        onDoubleClick={(e) => {
+                            this.goToLocator(e, this.createLocatorLink(annotation.href, annotation.def.selectionInfo.rangeInfo), false);
+                            this.props.focusAnnotationHighlight(annotation);
+                        }}
+                        onKeyPress=
+                        {
+                            (e) => {
+                                if (e.key === "Enter" || e.key === "Space") {
+                                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                    this.goToLocator(e, this.createLocatorLink(annotation.href, annotation.def.selectionInfo.rangeInfo), closeNavPanel);
+                                    this.props.focusAnnotationHighlight(annotation);
+                                }
+                            }
+                        }
+                    >
+                        <SVG ariaHidden={true} svg={BookmarkIcon} />
+
+                        <div className={stylesReader.chapter_marker}>
+                            <p className={stylesReader.bookmark_name} title={annotation.name}>{annotation.name}</p>
+                        </div>
+                    </button>
+                    <button title={ __("reader.marks.delete")}
+                    onClick={() => this.props.deleteAnnotation(annotation)}>
+                        <SVG ariaHidden={true} svg={ DeleteIcon }/>
+                    </button>
+                </div>);
+                },
+            );
+        }
+        return undefined;
+    }
+
     private buildGoToPageSection(totalPages?: string) {
         if (!this.props.r2Publication || this.props.isDivina) {
             return <></>;
@@ -824,14 +875,14 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     // from src/renderer/reader/redux/sagas/search.ts
-    // private createLocatorLink(href: string, rangeInfo: IRangeInfo): Locator {
-    //     return {
-    //         href,
-    //         locations: {
-    //             cssSelector: rangeInfo.startContainerElementCssSelector,
-    //         },
-    //     };
-    // }
+    private createLocatorLink(href: string, rangeInfo: IRangeInfo): Locator {
+        return {
+            href,
+            locations: {
+                cssSelector: rangeInfo.startContainerElementCssSelector,
+            },
+        };
+    }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
@@ -846,6 +897,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         searchEnable: state.search.enable,
         bookmarks: state.reader.bookmark.map(([, v]) => v),
         highlights: state.reader.highlight.handler.map(([, v]) => v),
+        annotations: state.reader.annotation.map(([, v]) => v),
+
         // isDivina,
     };
 };
@@ -865,6 +918,16 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
         deleteAnnotation: (annotation: IAnnotationState) => {
             dispatch(readerLocalActionAnnotations.pop.build(annotation));
         },
+        focusAnnotationHighlight: (annotation: IAnnotationState) => {
+            const {uuid, href, def} = annotation;
+
+            dispatch(readerLocalActionHighlights.handler.push.build({
+                uuid,
+                type: "annotation",
+                href,
+                def,
+            }));
+        }
     };
 };
 
