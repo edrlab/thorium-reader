@@ -28,6 +28,13 @@ interface IState {
 class AnnotationPicker extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
+
+        /**
+         * name: textEdit 20chars truncated from cleanText annotation
+         * color: red, green, blue, yellow
+         * comment: textEdit in bottom
+         * button to delete annotation
+         */
         return (
             <></>
         );

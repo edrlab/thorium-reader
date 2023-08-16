@@ -52,7 +52,7 @@ import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/k
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { readerLocalActionAnnotationUI } from "../redux/actions";
+import { readerLocalActionAnnotationUI, readerLocalActionPicker } from "../redux/actions";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -858,8 +858,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         toggleAnnotation: (annotationEnabled: boolean) => {
             if (annotationEnabled) {
                 dispatch(readerLocalActionAnnotationUI.cancel.build());
+                dispatch(readerLocalActionPicker.manager.build(false, "annotation"));
             } else {
                 dispatch(readerLocalActionAnnotationUI.enable.build());
+                dispatch(readerLocalActionPicker.manager.build(true, "annotation"));
             }
         },
     };

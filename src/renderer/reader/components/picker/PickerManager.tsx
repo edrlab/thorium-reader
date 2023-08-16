@@ -16,7 +16,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
-import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
+import { readerLocalActionAnnotationUI, readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
 import { IPickerState } from "../../redux/state/picker";
 import AnnotationPicker from "./Annotation";
 import SearchPicker from "./Search";
@@ -202,6 +202,8 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => ({
             if (props.isPdf) {
                 props.pdfEventBus?.dispatch("search-wipe");
             }
+        } else if (type === "annotation") {
+            dispatch(readerLocalActionAnnotationUI.cancel.build());
         }
         dispatch(readerLocalActionPicker.manager.build(false));
     },
