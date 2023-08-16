@@ -654,6 +654,7 @@ declare namespace typed_i18n {
   readonly "navigation": {
     readonly "backHomeTitle": string,
     readonly "bookmarkTitle": string,
+    readonly "annotationTitle": string,
     readonly "currentPage": string,
     readonly "currentPageTotal": string,
     readonly "detachWindowTitle": string,
@@ -799,6 +800,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation", __?: {}): {
   readonly "backHomeTitle": string,
   readonly "bookmarkTitle": string,
+  readonly "annotationTitle": string,
   readonly "currentPage": string,
   readonly "currentPageTotal": string,
   readonly "detachWindowTitle": string,
@@ -819,6 +821,7 @@ declare namespace typed_i18n {
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
+  (_: "reader.navigation.annotationTitle", __?: {}): string;
   (_: "reader.navigation.currentPage", __?: {}): string;
   (_: "reader.navigation.currentPageTotal", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;

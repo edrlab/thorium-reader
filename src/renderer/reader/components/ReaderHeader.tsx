@@ -15,6 +15,7 @@ import * as BackIcon from "readium-desktop/renderer/assets/icons/outline-exit_to
 import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/baseline-pause-24px.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as PlayIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg";
 import * as SkipNext from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 import * as SkipPrevious from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
@@ -51,6 +52,7 @@ import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/k
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { readerLocalActionAnnotationUI } from "../redux/actions";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -688,6 +690,31 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         </li>
 
                         <li
+                            {...(this.props.isOnAnnotation &&
+                                { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                        >
+                            <input
+                                id="annotationButton"
+                                className={stylesReader.bookmarkButton}
+                                type="checkbox"
+                                checked={this.props.isOnAnnotation}
+                                onChange={() => this.props.toggleAnnotation(this.props.isOnAnnotation)}
+                                aria-label={__("reader.navigation.annotationTitle")}
+                                title={__("reader.navigation.annotationTitle")}
+                            />
+                            {
+                            // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
+                            }
+                            <label
+                                htmlFor="annotationButton"
+                                aria-hidden="true"
+                                className={stylesReader.menu_button}
+                            >
+                                <SVG ariaHidden={true} svg={EditIcon} />
+                            </label>
+                        </li>
+
+                        <li
                             {...(this.props.isOnBookmark &&
                                 { style: { backgroundColor: "rgb(193, 193, 193)" } })}
                         >
@@ -822,11 +849,20 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         keyboardShortcuts: state.keyboard.shortcuts,
+        isOnAnnotation: state.annotation.enable,
     };
 };
 
-const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
-    return {};
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        toggleAnnotation: (annotationEnabled: boolean) => {
+            if (annotationEnabled) {
+                dispatch(readerLocalActionAnnotationUI.cancel.build());
+            } else {
+                dispatch(readerLocalActionAnnotationUI.enable.build());
+            }
+        },
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderHeader));
