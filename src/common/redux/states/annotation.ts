@@ -14,7 +14,7 @@ export interface IAnnotationState {
     uuid: string;
     name: string; // like bookmark name
     comment: string; // describe annotation mark
-    hash: string; // sha256 ( base64 ( {href, def} ))
+    hash: string; // md5 ( `${href}:${JSON.stringify(def)}` ))
     href: string; // from IHighlightHandlerState
     def: IHighlightDefinition; // from IHighlightHandlerState
 }

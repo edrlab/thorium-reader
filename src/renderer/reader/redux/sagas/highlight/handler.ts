@@ -18,18 +18,31 @@ import {
     getHightlightClickChannel, mountHighlight, THighlightClick, unmountHightlight,
 } from "./mounter";
 
+/**
+ * 
+ * be careful when using it in parallel, there is a bug with action.payload (not duplicated).
+ * You must used it by passing highlights array in the first parameter
+ */
 function* push(action: readerLocalActionHighlights.handler.push.TAction) {
     if (action.payload) {
 
         const href = yield* selectTyped((store: IReaderRootState) => store.reader?.locator?.locator?.href);
+
+        // TODO: fix the bug with action.payload, need to copy object before to pass it to mountHighlight
         yield call(mountHighlight, href, action.payload);
     }
 }
 
+/**
+ * 
+ * be careful when using it in parallel, there is a bug with action.payload (not duplicated).
+ * You must used it by passing highlights array in the first parameter
+ */
 function* pop(action: readerLocalActionHighlights.handler.pop.TAction) {
     if (action.payload) {
 
         const href = yield* selectTyped((store: IReaderRootState) => store.reader?.locator?.locator?.href);
+        // TODO: same here
         yield call(unmountHightlight, href, action.payload);
     }
 }
