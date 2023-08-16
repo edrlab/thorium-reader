@@ -74,8 +74,6 @@ function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): Sag
         }
         yield* putTyped(readerLocalActionAnnotations.push.build(annotation));
     }
-
-    crypto.subtle.digest("SHA-256", Buffer.from(""));
 }
 
 function* annotationUIEnable(_action: readerLocalActionAnnotationUI.enable.TAction): SagaIterator {
