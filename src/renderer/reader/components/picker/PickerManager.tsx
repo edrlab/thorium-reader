@@ -100,11 +100,8 @@ class PickerManager extends React.Component<IProps, IState> {
                 borderRadius: "6px",
 
                 display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-
                 justifyContent: "left",
-                // alignItems: "center",
+                alignItems: "center",
 
                 boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.3)",
             }}

@@ -13,7 +13,8 @@ export function annotationUIReducer(
     action: readerLocalActionAnnotationUI.color.TAction |
     readerLocalActionAnnotationUI.enable.TAction |
     readerLocalActionAnnotationUI.focus.TAction |
-    readerLocalActionAnnotationUI.cancel.TAction,
+    readerLocalActionAnnotationUI.cancel.TAction |
+    readerLocalActionAnnotationUI.picker.TAction,
 ): IAnnotationUserInterfaceState {
 
     switch (action.type) {
@@ -21,6 +22,7 @@ export function annotationUIReducer(
         case readerLocalActionAnnotationUI.enable.ID:
         case readerLocalActionAnnotationUI.focus.ID:
         case readerLocalActionAnnotationUI.color.ID:
+        case readerLocalActionAnnotationUI.picker.ID:
 
             return {
                 ...state,

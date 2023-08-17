@@ -79,8 +79,8 @@ function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): Sag
             selectionInfo,
         };
         const annotation: IAnnotationStateWithoutUUID = {
-            name: "",
-            comment: "",
+            name: selectionInfo.cleanText.slice(0, 20),
+            comment: "no comment", // TODO change this
             hash: yield* callTyped(() => crypto.subtle.digest("SHA-256", Buffer.from(`${href}:${JSON.stringify(def)}`))
                 .then((a) => Buffer.from(a).toString("hex"))),
             href,

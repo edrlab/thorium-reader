@@ -29,28 +29,19 @@ class AnnotationPicker extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
 
-        /**
-         * name: textEdit 20chars truncated from cleanText annotation
-         * color: red, green, blue, yellow
-         * comment: textEdit in bottom
-         * button to delete annotation
-         */
         return (
             <form id="myForm" style={{ display: 'block' }}>
-              <label htmlFor="name" style={{ display: 'block' }}>Name:</label>
-              <input type="text" id="name" name="name" value="" maxLength={20} style={{ width: '200px' }} /><br /><br />
+              <input type="text" id="name" name="name" value={this.props.annotation.name} maxLength={20} style={{ width: '100px' }} readOnly={true}/>
       
-              <label>Color:</label>
-              <button className="color-button" style={{ width: '50px', height: '50px', backgroundColor: 'red', border: 'none', margin: '5px', cursor: 'pointer' }}></button>
-              <button className="color-button" style={{ width: '50px', height: '50px', backgroundColor: 'green', border: 'none', margin: '5px', cursor: 'pointer' }}></button>
-              <button className="color-button" style={{ width: '50px', height: '50px', backgroundColor: 'blue', border: 'none', margin: '5px', cursor: 'pointer' }}></button>
-              <button className="color-button" style={{ width: '50px', height: '50px', backgroundColor: 'yellow', border: 'none', margin: '5px', cursor: 'pointer' }}></button><br /><br />
+              <button className="color-button" style={{ width: '20px', height: '20px', backgroundColor: 'red', border: 'none', margin: '5px', cursor: 'pointer' }}></button>
+              <button className="color-button" style={{ width: '20px', height: '20px', backgroundColor: 'green', border: 'none', margin: '5px', cursor: 'pointer' }}></button>
+              <button className="color-button" style={{ width: '20px', height: '20px', backgroundColor: 'blue', border: 'none', margin: '5px', cursor: 'pointer' }}></button>
+              <button className="color-button" style={{ width: '20px', height: '20px', backgroundColor: 'yellow', border: 'none', margin: '5px', cursor: 'pointer' }}></button>
       
-              <label htmlFor="comment">Comment:</label><br />
-              <textarea id="comment" name="comment" style={{ width: '100%', height: '100px', resize: 'none' }}></textarea><br /><br />
+              <textarea id="comment" name="comment" value={this.props.annotation.comment} style={{ width: '200px' }} readOnly={true}></textarea>
       
-              <button type="button" id="deleteButton" style={{ backgroundColor: '#f44336', color: 'white', border: 'none', padding: '10px 20px', cursor: 'pointer' }}>Delete</button>
-              <button type="button" id="submitButton" style={{ backgroundColor: '#f44336', color: 'white', border: 'none', padding: '10px 20px', cursor: 'pointer' }}>Submit</button>
+              <button type="button" id="deleteButton" style={{ backgroundColor: '#f44336', color: 'white', border: 'none', padding: '1px 2px', cursor: 'pointer' }}>Delete</button>
+              <button type="button" id="submitButton" style={{ backgroundColor: '#f44336', color: 'white', border: 'none', padding: '1px 2px', cursor: 'pointer' }}>Submit</button>
             </form>
           );
     }
@@ -60,6 +51,7 @@ class AnnotationPicker extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         picker: state.picker,
+        annotation: state.annotation,
     };
 };
 
