@@ -920,7 +920,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
         },
         focusAnnotationHighlight: (annotation: IAnnotationState) => {
             dispatch(readerLocalActionAnnotationUI.focus.build(annotation.uuid));
-        }
+        },
     };
 };
 

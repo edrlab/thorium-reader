@@ -26,7 +26,7 @@ const hashing = (href: string, def: IHighlightDefinition) => {
         .then((a) => Buffer.from(a).toString("hex"));
 
     return hash;
-}
+};
 
 function createAnnotationHighlightObj(uuid: string, href: string, def: IHighlightDefinition): IHighlightHandlerState {
     const highlight: IHighlightHandlerState = {
@@ -62,7 +62,7 @@ function* deleteAnnotationHighlightFromAnnotationPop(action: readerLocalActionAn
         uuid,
     } = action.payload;
 
-    yield* putTyped(readerLocalActionHighlights.handler.pop.build({uuid}))
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build({uuid}));
 }
 
 function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): SagaIterator {
@@ -101,7 +101,7 @@ function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): Sag
             hash: yield* callTyped(hashing, href, def),
             href,
             def,
-        }
+        };
         yield* putTyped(readerLocalActionAnnotations.push.build(annotation));
     }
 }
@@ -120,7 +120,7 @@ function* annotationUIDisable(_action: readerLocalActionAnnotationUI.enable.TAct
     const highlightsAnnotation = highlights.filter((v) => v.type === "annotation");
 
     // FYI: "Uncaught SyntaxError: Too many arguments in function call (only 65535 allowed)"
-    yield* putTyped(readerLocalActionHighlights.handler.pop.build(...highlightsAnnotation))
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build(...highlightsAnnotation));
 }
 
 function* annotationClick(action: readerLocalActionHighlights.click.TAction): SagaIterator {
@@ -138,7 +138,7 @@ function* annotationClick(action: readerLocalActionHighlights.click.TAction): Sa
         console.log("annotationNotFound on click", def);
         return ;
     }
-    
+
     assert.deepEqual(href, annotationFound.href);
     assert.deepEqual(def, annotationFound.def);
 
@@ -154,7 +154,7 @@ function* annotationUIFocus(action: readerLocalActionAnnotationUI.focus.TAction)
         console.log("annotationNotFound on focus", uuid);
         return ;
     }
-    
+
     const {name, comment, href, def} = annotationFound;
     const {color} = def;
 

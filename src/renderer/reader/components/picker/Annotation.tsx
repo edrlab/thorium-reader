@@ -35,38 +35,38 @@ class AnnotationPicker extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
 
         return (
-            <form id="myForm" style={{ display: 'block' }}>
-              <input type="text" id="name" name="name" value={this.props.annotation.name} maxLength={20} style={{ width: '100px' }} onChange={this.nameChange}/>
-      
-              <button className="color-button" style={{ width: '20px', height: '20px', backgroundColor: 'red', border: 'none', margin: '5px', cursor: 'pointer' }} onClick={(e) => (e.preventDefault(),this.colorChange("red"))}></button>
-              <button className="color-button" style={{ width: '20px', height: '20px', backgroundColor: 'green', border: 'none', margin: '5px', cursor: 'pointer' }} onClick={(e) => (e.preventDefault(),this.colorChange("green"))}></button>
-              <button className="color-button" style={{ width: '20px', height: '20px', backgroundColor: 'blue', border: 'none', margin: '5px', cursor: 'pointer' }} onClick={(e) => (e.preventDefault(),this.colorChange("blue"))}></button>
-              <button className="color-button" style={{ width: '20px', height: '20px', backgroundColor: 'yellow', border: 'none', margin: '5px', cursor: 'pointer' }} onClick={(e) => (e.preventDefault(),this.colorChange("yellow"))}></button>
-      
-              <textarea id="comment" name="comment" value={this.props.annotation.comment} style={{ width: '200px' }} onChange={this.commentChange}></textarea>
-      
-              <button type="button" id="deleteButton" style={{ backgroundColor: '#f44336', color: 'white', border: 'none', padding: '1px 2px', cursor: 'pointer' }} onClick={(_e) => (this.props.deleteAnnotation(this.props.annotationItem))}>Delete</button>
-              <button type="button" id="submitButton" style={{ backgroundColor: '#f44336', color: 'white', border: 'none', padding: '1px 2px', cursor: 'pointer' }} onClick={(_e) => (this.props.updateAnnotation(this.props.annotation, this.props.annotationItem))}>Submit</button>
+            <form id="myForm" style={{ display: "block" }}>
+                <input type="text" id="name" name="name" value={this.props.annotation.name} maxLength={20} style={{ width: "100px" }} onChange={this.nameChange} />
+
+                <button className="color-button" style={{ width: "20px", height: "20px", backgroundColor: "red", border: "none", margin: "5px", cursor: "pointer" }} onClick={(e) => (e.preventDefault(), this.colorChange("red"))}></button>
+                <button className="color-button" style={{ width: "20px", height: "20px", backgroundColor: "green", border: "none", margin: "5px", cursor: "pointer" }} onClick={(e) => (e.preventDefault(), this.colorChange("green"))}></button>
+                <button className="color-button" style={{ width: "20px", height: "20px", backgroundColor: "blue", border: "none", margin: "5px", cursor: "pointer" }} onClick={(e) => (e.preventDefault(), this.colorChange("blue"))}></button>
+                <button className="color-button" style={{ width: "20px", height: "20px", backgroundColor: "yellow", border: "none", margin: "5px", cursor: "pointer" }} onClick={(e) => (e.preventDefault(), this.colorChange("yellow"))}></button>
+
+                <textarea id="comment" name="comment" value={this.props.annotation.comment} style={{ width: "200px" }} onChange={this.commentChange}></textarea>
+
+                <button type="button" id="deleteButton" style={{ backgroundColor: "#f44336", color: "white", border: "none", padding: "1px 2px", cursor: "pointer" }} onClick={(_e) => (this.props.deleteAnnotation(this.props.annotationItem))}>Delete</button>
+                <button type="button" id="submitButton" style={{ backgroundColor: "#f44336", color: "white", border: "none", padding: "1px 2px", cursor: "pointer" }} onClick={(_e) => (this.props.updateAnnotation(this.props.annotation, this.props.annotationItem))}>Submit</button>
             </form>
-          );
-    }
+        );
+    };
 
     private nameChange = (e: TChangeEventOnInput) => {
         const v = e.target.value;
-        const {comment, color, newFocusAnnotationUUID: uuid} = this.props.annotation;
+        const { comment, color, newFocusAnnotationUUID: uuid } = this.props.annotation;
 
         this.props.updateAnnotationPicker(v, comment, color, uuid);
-    }
-    
+    };
+
     private commentChange = (e: TChangeEventOnTextArea) => {
         const v = e.target.value;
-        const {name, color, newFocusAnnotationUUID: uuid} = this.props.annotation;
+        const { name, color, newFocusAnnotationUUID: uuid } = this.props.annotation;
 
         this.props.updateAnnotationPicker(name, v, color, uuid);
-    }
-    
-    private colorChange = (localColor: "red"|"green"|"blue"|"yellow") => {
-        const {name, comment, newFocusAnnotationUUID: uuid} = this.props.annotation;
+    };
+
+    private colorChange = (localColor: "red" | "green" | "blue" | "yellow") => {
+        const { name, comment, newFocusAnnotationUUID: uuid } = this.props.annotation;
 
         let color: IColor;
         switch (localColor) {
@@ -76,7 +76,7 @@ class AnnotationPicker extends React.Component<IProps, IState> {
                     red: 200,
                     green: 0,
                     blue: 0,
-                }
+                };
                 break;
             }
             case "green": {
@@ -84,7 +84,7 @@ class AnnotationPicker extends React.Component<IProps, IState> {
                     red: 0,
                     green: 200,
                     blue: 0,
-                }
+                };
                 break;
             }
             case "blue": {
@@ -92,7 +92,7 @@ class AnnotationPicker extends React.Component<IProps, IState> {
                     red: 0,
                     green: 0,
                     blue: 200,
-                }
+                };
                 break;
             }
             case "yellow": {
@@ -100,7 +100,7 @@ class AnnotationPicker extends React.Component<IProps, IState> {
                     red: 255,
                     green: 210,
                     blue: 1,
-                }
+                };
                 break;
             }
             default: {
@@ -109,7 +109,7 @@ class AnnotationPicker extends React.Component<IProps, IState> {
         }
 
         this.props.updateAnnotationPicker(name, comment, color, uuid);
-    }
+    };
 
 }
 
@@ -117,25 +117,25 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         picker: state.picker,
         annotation: state.annotation,
-        annotationItem: state.reader.annotation.map(([,v]) => v).find((v) => v.uuid === state.annotation.newFocusAnnotationUUID),
+        annotationItem: state.reader.annotation.map(([, v]) => v).find((v) => v.uuid === state.annotation.newFocusAnnotationUUID),
     };
 };
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
     updateAnnotationPicker: (name: string, comment: string, color: IColor, uuid: string) => {
-        dispatch(readerLocalActionAnnotationUI.picker.build(name, comment, Object.assign({}, color), uuid))
+        dispatch(readerLocalActionAnnotationUI.picker.build(name, comment, Object.assign({}, color), uuid));
     },
     deleteAnnotation: (annotation: IAnnotationState) => {
         dispatch(readerLocalActionPicker.manager.build(false));
         dispatch(readerLocalActionAnnotations.pop.build(annotation));
     },
     updateAnnotation: (updatedState: IAnnotationUserInterfaceState, annotation: IAnnotationState) => {
-        const {color, name, comment} = updatedState;
-        annotation.def.color = {red: color.red, green: color.green, blue: color.blue};
+        const { color, name, comment } = updatedState;
+        annotation.def.color = { red: color.red, green: color.green, blue: color.blue };
         annotation.comment = comment;
         annotation.name = name;
         dispatch(readerLocalActionAnnotations.update.build(annotation));
-    }
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnnotationPicker);
