@@ -33,7 +33,7 @@ function createAnnotationHighlightObj(uuid: string, href: string, def: IHighligh
         uuid,
         type: "annotation",
         href,
-        def,
+        def: JSON.parse(JSON.stringify(def)),
     };
     return highlight;
 }
@@ -92,7 +92,7 @@ function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): Sag
                     green: 0,
                     blue: 0,
                 }
-                : color,
+                : Object.assign({}, color),
             selectionInfo,
         };
         const annotation: IAnnotationStateWithoutUUID = {
@@ -162,7 +162,7 @@ function* annotationUIFocus(action: readerLocalActionAnnotationUI.focus.TAction)
         uuid,
         type: "annotation",
         href,
-        def,
+        def: JSON.parse(JSON.stringify(def)),
     }));
 
     // update picker info and doesn't force enable annotation mode, view or edit mode allowed

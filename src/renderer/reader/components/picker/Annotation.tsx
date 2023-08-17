@@ -123,7 +123,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
     updateAnnotationPicker: (name: string, comment: string, color: IColor, uuid: string) => {
-        dispatch(readerLocalActionAnnotationUI.picker.build(name, comment, color, uuid))
+        dispatch(readerLocalActionAnnotationUI.picker.build(name, comment, Object.assign({}, color), uuid))
     },
     deleteAnnotation: (annotation: IAnnotationState) => {
         dispatch(readerLocalActionPicker.manager.build(false));
@@ -131,7 +131,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => ({
     },
     updateAnnotation: (updatedState: IAnnotationUserInterfaceState, annotation: IAnnotationState) => {
         const {color, name, comment} = updatedState;
-        annotation.def.color = color || annotation.def.color;
+        annotation.def.color = {red: color.red, green: color.green, blue: color.blue};
         annotation.comment = comment;
         annotation.name = name;
         dispatch(readerLocalActionAnnotations.update.build(annotation));
