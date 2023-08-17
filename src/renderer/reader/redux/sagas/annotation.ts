@@ -143,7 +143,7 @@ function* annotationUIFocus(action: readerLocalActionAnnotationUI.focus.TAction)
     const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation.map(([, v]) => v));
     const annotationFound = annotations.find((v) => v.uuid === uuid);
     if (!annotationFound) {
-        console.log("annotationNotFound on click", uuid);
+        console.log("annotationNotFound on focus", uuid);
         return ;
     }
     
