@@ -173,6 +173,12 @@ function* annotationUIFocus(action: readerLocalActionAnnotationUI.focus.TAction)
 function* updateAnnotationAndRedrawHightlightIfColorChanged(action: readerLocalActionAnnotations.update.TAction): SagaIterator {
     const {def: {color}, uuid} = action.payload;
 
+    const winId = yield* selectTyped((state: IReaderRootState) => state.win.identifier);
+    assert.ok(winId);
+    const readerAnnotations = yield* selectTyped((state: IReaderRootState) => state.reader.annotation);
+    const state = {annotation: readerAnnotations};
+    yield* putTyped(readerActions.setReduxState.build(winId, state));
+
     const highlights = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.map(([, v]) => v));
     const highlightsAnnotation = highlights.find((v) => v.uuid === uuid);
     if (!highlightsAnnotation) {
@@ -196,13 +202,6 @@ function* updateAnnotationAndRedrawHightlightIfColorChanged(action: readerLocalA
     const newHighlightsAnnotation = JSON.parse(JSON.stringify(highlightsAnnotation)) as IHighlightHandlerState;
     newHighlightsAnnotation.def.color = {red: color.red, blue: color.blue, green: color.green};
     yield* putTyped(readerLocalActionHighlights.handler.push.build(newHighlightsAnnotation));
-
-    const winId = yield* selectTyped((state: IReaderRootState) => state.win.identifier);
-    assert.ok(winId);
-
-    const readerAnnotations = yield* selectTyped((state: IReaderRootState) => state.reader.annotation);
-    const state = {annotation: readerAnnotations};
-    yield* putTyped(readerActions.setReduxState.build(winId, state));
 }
 
 export const saga = () =>
