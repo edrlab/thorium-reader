@@ -36,7 +36,12 @@ function* createAnnotationHighlightFromAnnotationPush(action: readerLocalActionA
         color,
     } = action.payload;
     yield* putTyped(readerLocalActionHighlights.handler.push.build(createAnnotationHighlightObj(uuid, href, def)));
-    yield* putTyped(readerLocalActionAnnotationUI.enable.build(name, comment, color, uuid));
+
+    // need to do an assert annotation mode must be activated
+    assert.equal(yield* selectTyped((store: IReaderRootState) => store.annotation.enable), true);
+
+    // open picker to update name,color,...
+    yield* putTyped(readerLocalActionAnnotationUI.picker.build(name, comment, color, uuid));
     yield* putTyped(readerLocalActionPicker.manager.build(true, "annotation"));
 }
 
@@ -85,6 +90,7 @@ function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): Sag
                 .then((a) => Buffer.from(a).toString("hex"))),
             href,
             def,
+            color,
         }
         yield* putTyped(readerLocalActionAnnotations.push.build(annotation));
     }
@@ -124,10 +130,24 @@ function* annotationClick(action: readerLocalActionHighlights.click.TAction): Sa
         return ;
     }
     
-    const {uuid, name, comment, color} = annotationFound;
-
     assert.deepEqual(href, annotationFound.href);
     assert.deepEqual(def, annotationFound.def);
+
+    yield* putTyped(readerLocalActionAnnotationUI.focus.build(annotationFound.uuid));
+
+}
+
+function* annotationUIFocus(action: readerLocalActionAnnotationUI.focus.TAction): SagaIterator {
+    const {newFocusAnnotationUUID: uuid} = action.payload;
+
+    const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation.map(([, v]) => v));
+    const annotationFound = annotations.find((v) => v.uuid === uuid);
+    if (!annotationFound) {
+        console.log("annotationNotFound on click", uuid);
+        return ;
+    }
+    
+    const {name, comment, color, href, def} = annotationFound;
 
     yield* putTyped(readerLocalActionHighlights.handler.push.build({
         uuid,
@@ -139,7 +159,6 @@ function* annotationClick(action: readerLocalActionHighlights.click.TAction): Sa
     // update picker info and doesn't force enable annotation mode, view or edit mode allowed
     yield* putTyped(readerLocalActionAnnotationUI.picker.build(name, comment, color, uuid));
     yield* putTyped(readerLocalActionPicker.manager.build(true, "annotation"));
-
 }
 
 export const saga = () =>
@@ -157,6 +176,11 @@ export const saga = () =>
         takeSpawnEvery(
             readerLocalActionAnnotationUI.enable.ID,
             annotationUIEnable,
+            (e) => console.log("readerLocalActionAnnotationUI.enable", e),
+        ),
+        takeSpawnEvery(
+            readerLocalActionAnnotationUI.focus.ID,
+            annotationUIFocus,
             (e) => console.log("readerLocalActionAnnotationUI.enable", e),
         ),
         takeSpawnEvery(

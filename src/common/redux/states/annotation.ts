@@ -20,4 +20,4 @@ export interface IAnnotationState {
     color: IColor
 }
 
-export type IAnnotationStateWithoutUUID = Partial<Pick<IAnnotationState, "uuid">> & Pick<IAnnotationState, "name" | "comment" | "def" | "hash" | "href">;
+export type IAnnotationStateWithoutUUID = Partial<Pick<IAnnotationState, "uuid">> & Pick<IAnnotationState, "name" | "comment" | "def" | "hash" | "href" | "color">;

@@ -28,7 +28,7 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
-import { readerLocalActionBookmarks, readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionAnnotationUI, readerLocalActionPicker } from "../redux/actions";
+import { readerLocalActionBookmarks, readerLocalActionAnnotations, readerLocalActionAnnotationUI } from "../redux/actions";
 import { IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";
@@ -919,18 +919,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
             dispatch(readerLocalActionAnnotations.pop.build(annotation));
         },
         focusAnnotationHighlight: (annotation: IAnnotationState) => {
-            const {uuid, href, def, name, comment, color} = annotation;
-
-            dispatch(readerLocalActionHighlights.handler.push.build({
-                uuid,
-                type: "annotation",
-                href,
-                def,
-            }));
-            
-            // update picker info and doesn't force enable annotation mode, view or edit mode allowed
-            dispatch(readerLocalActionAnnotationUI.picker.build(name, comment, color, uuid));
-            dispatch(readerLocalActionPicker.manager.build(true, "annotation"));
+            dispatch(readerLocalActionAnnotationUI.focus.build(annotation.uuid));
         }
     };
 };

@@ -860,8 +860,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dispatch(readerLocalActionAnnotationUI.cancel.build());
                 dispatch(readerLocalActionPicker.manager.build(false));
             } else {
-                // default annotation picker state
-                dispatch(readerLocalActionAnnotationUI.enable.build("", "", {red: 255, green: 0, blue: 0}, ""));
+                // enable annotation mode (write)
+                dispatch(readerLocalActionAnnotationUI.enable.build());
             }
         },
     };
