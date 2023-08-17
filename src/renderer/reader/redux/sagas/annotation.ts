@@ -143,7 +143,6 @@ function* annotationClick(action: readerLocalActionHighlights.click.TAction): Sa
     assert.deepEqual(def, annotationFound.def);
 
     yield* putTyped(readerLocalActionAnnotationUI.focus.build(annotationFound.uuid));
-
 }
 
 function* annotationUIFocus(action: readerLocalActionAnnotationUI.focus.TAction): SagaIterator {
