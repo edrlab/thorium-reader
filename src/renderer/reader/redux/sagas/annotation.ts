@@ -15,6 +15,7 @@ import { all, put as putTyped, select as selectTyped, call as callTyped } from "
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { IAnnotationStateWithoutUUID } from "readium-desktop/common/redux/states/annotation";
 import { IHighlightDefinition } from "r2-navigator-js/dist/es8-es2017/src/electron/common/highlight";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 function createAnnotationHighlightObj(uuid: string, href: string, def: IHighlightDefinition): IHighlightHandlerState {
     const highlight: IHighlightHandlerState = {
@@ -33,8 +34,8 @@ function* createAnnotationHighlightFromAnnotationPush(action: readerLocalActionA
         def,
         name,
         comment,
-        color,
     } = action.payload;
+    const {color} = def;
     yield* putTyped(readerLocalActionHighlights.handler.push.build(createAnnotationHighlightObj(uuid, href, def)));
 
     // need to do an assert annotation mode must be activated
@@ -90,7 +91,6 @@ function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): Sag
                 .then((a) => Buffer.from(a).toString("hex"))),
             href,
             def,
-            color,
         }
         yield* putTyped(readerLocalActionAnnotations.push.build(annotation));
     }
@@ -147,7 +147,8 @@ function* annotationUIFocus(action: readerLocalActionAnnotationUI.focus.TAction)
         return ;
     }
     
-    const {name, comment, color, href, def} = annotationFound;
+    const {name, comment, href, def} = annotationFound;
+    const {color} = def;
 
     yield* putTyped(readerLocalActionHighlights.handler.push.build({
         uuid,
@@ -159,6 +160,41 @@ function* annotationUIFocus(action: readerLocalActionAnnotationUI.focus.TAction)
     // update picker info and doesn't force enable annotation mode, view or edit mode allowed
     yield* putTyped(readerLocalActionAnnotationUI.picker.build(name, comment, color, uuid));
     yield* putTyped(readerLocalActionPicker.manager.build(true, "annotation"));
+}
+
+function* updateAnnotationAndRedrawHightlightIfColorChanged(action: readerLocalActionAnnotations.update.TAction): SagaIterator {
+    const {def: {color}, uuid} = action.payload;
+
+    const highlights = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.map(([, v]) => v));
+    const highlightsAnnotation = highlights.find((v) => v.uuid === uuid);
+    if (!highlightsAnnotation) {
+        console.log("HightlightHandlerAnnotationNotFound on redraw color if updated", uuid);
+        return ;
+    }
+
+    if (!color) {
+        console.error("no color provided; no redraw");
+        return ;
+    }
+
+    if (highlightsAnnotation.def.color.red === color.red && highlightsAnnotation.def.color.blue === color.blue && highlightsAnnotation.def.color.green === color.green) {
+        console.log("same color no redraw needed!");
+        return ;
+    }
+
+    console.log("redraw with color", color);
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build(highlightsAnnotation));
+
+    const newHighlightsAnnotation = JSON.parse(JSON.stringify(highlightsAnnotation)) as IHighlightHandlerState;
+    newHighlightsAnnotation.def.color = {red: color.red, blue: color.blue, green: color.green};
+    yield* putTyped(readerLocalActionHighlights.handler.push.build(newHighlightsAnnotation));
+
+    const winId = yield* selectTyped((state: IReaderRootState) => state.win.identifier);
+    assert.ok(winId);
+
+    const readerAnnotations = yield* selectTyped((state: IReaderRootState) => state.reader.annotation);
+    const state = {annotation: readerAnnotations};
+    yield* putTyped(readerActions.setReduxState.build(winId, state));
 }
 
 export const saga = () =>
@@ -179,9 +215,14 @@ export const saga = () =>
             (e) => console.log("readerLocalActionAnnotationUI.enable", e),
         ),
         takeSpawnEvery(
+            readerLocalActionAnnotations.update.ID,
+            updateAnnotationAndRedrawHightlightIfColorChanged,
+            (e) => console.log("readerLocalActionAnnotations.update", e),
+        ),
+        takeSpawnEvery(
             readerLocalActionAnnotationUI.focus.ID,
             annotationUIFocus,
-            (e) => console.log("readerLocalActionAnnotationUI.enable", e),
+            (e) => console.log("readerLocalActionAnnotationUI.focus", e),
         ),
         takeSpawnEvery(
             readerLocalActionAnnotations.push.ID,

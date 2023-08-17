@@ -21,4 +21,6 @@ export type TFormEvent = React.FormEvent<HTMLFormElement>;
 
 export type TChangeEventOnInput = React.ChangeEvent<HTMLInputElement>;
 
+export type TChangeEventOnTextArea = React.ChangeEvent<HTMLTextAreaElement>;
+
 export type TChangeEventOnSelect = React.ChangeEvent<HTMLSelectElement>;
