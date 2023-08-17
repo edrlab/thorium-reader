@@ -17,6 +17,17 @@ import { IAnnotationStateWithoutUUID } from "readium-desktop/common/redux/states
 import { IHighlightDefinition } from "r2-navigator-js/dist/es8-es2017/src/electron/common/highlight";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
+const hashing = (href: string, def: IHighlightDefinition) => {
+
+    const defCopy = Object.assign({}, def);
+    defCopy.color = undefined;
+    const str = `${href}:${JSON.stringify(defCopy)}`;
+    const hash = crypto.subtle.digest("SHA-256", Buffer.from(str))
+        .then((a) => Buffer.from(a).toString("hex"));
+
+    return hash;
+}
+
 function createAnnotationHighlightObj(uuid: string, href: string, def: IHighlightDefinition): IHighlightHandlerState {
     const highlight: IHighlightHandlerState = {
         uuid,
@@ -87,8 +98,7 @@ function* selectionInfoWatcher(action: readerLocalActionSetLocator.TAction): Sag
         const annotation: IAnnotationStateWithoutUUID = {
             name: selectionInfo.cleanText.slice(0, 20),
             comment: "no comment", // TODO change this
-            hash: yield* callTyped(() => crypto.subtle.digest("SHA-256", Buffer.from(`${href}:${JSON.stringify(def)}`))
-                .then((a) => Buffer.from(a).toString("hex"))),
+            hash: yield* callTyped(hashing, href, def),
             href,
             def,
         }
@@ -119,8 +129,7 @@ function* annotationClick(action: readerLocalActionHighlights.click.TAction): Sa
         return ;
     }
 
-    const hash = yield* callTyped(() => crypto.subtle.digest("SHA-256", Buffer.from(`${href}:${JSON.stringify(def)}`))
-        .then((a) => Buffer.from(a).toString("hex")));
+    const hash = yield* callTyped(hashing, href, def);
 
     const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation.map(([, v]) => v));
     const annotationFound = annotations.find((v) => v.hash === hash);
