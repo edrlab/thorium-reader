@@ -28,7 +28,7 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
-import { readerLocalActionBookmarks, readerLocalActionAnnotations, readerLocalActionAnnotationUI } from "../redux/actions";
+import { readerLocalActionBookmarks, readerLocalActionAnnotations, readerLocalActionAnnotationUI, readerLocalActionPicker } from "../redux/actions";
 import { IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 import SideMenu from "./sideMenu/SideMenu";
@@ -587,7 +587,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         </div>
                     </button>
                     <button title={ __("reader.marks.delete")}
-                    onClick={() => this.props.deleteAnnotation(annotation)}>
+                    onClick={() => this.props.deleteAnnotation(annotation, this.props.needToClosePicker(annotation))}>
                         <SVG ariaHidden={true} svg={ DeleteIcon }/>
                     </button>
                 </div>);
@@ -898,6 +898,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         bookmarks: state.reader.bookmark.map(([, v]) => v),
         highlights: state.reader.highlight.handler.map(([, v]) => v),
         annotations: state.reader.annotation.map(([, v]) => v),
+        pickerState: state.picker,
+        annotationUI: state.annotation,
+        needToClosePicker: (annotation: IAnnotationState) =>
+            state.picker.type === "annotation" && state.picker.open && state.annotation.newFocusAnnotationUUID === annotation.uuid,
 
         // isDivina,
     };
@@ -915,7 +919,10 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
         setAnnotation: (annotation: IAnnotationState) => {
             dispatch(readerLocalActionAnnotations.push.build(annotation));
         },
-        deleteAnnotation: (annotation: IAnnotationState) => {
+        deleteAnnotation: (annotation: IAnnotationState, deleteAnnotation: boolean) => {
+            if (deleteAnnotation) {
+                dispatch(readerLocalActionPicker.manager.build(false));
+            }
             dispatch(readerLocalActionAnnotations.pop.build(annotation));
         },
         focusAnnotationHighlight: (annotation: IAnnotationState) => {
