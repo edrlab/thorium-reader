@@ -15,6 +15,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     apiActions.request.ID,
 
+    readerActions.clipboardCopy.ID,
     readerActions.openRequest.ID,
     readerActions.closeRequest.ID,
     readerActions.detachModeRequest.ID,

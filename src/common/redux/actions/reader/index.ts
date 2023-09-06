@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as attachModeRequest from "./attachModeRequest";
+import * as clipboardCopy from "./clipboardCopy";
 import * as closeError from "./closeError";
 import * as closeRequest from "./closeRequest";
 import * as closeRequestFromPublication from "./closeRequestFromPublication";
@@ -31,4 +32,5 @@ export {
     setReduxState,
     closeRequestFromPublication,
     fullScreenRequest,
+    clipboardCopy,
 };

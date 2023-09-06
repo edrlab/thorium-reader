@@ -1543,6 +1543,10 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
 
+        const clipboardInterceptor = (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
+            this.props.clipboardCopy(this.props.pubId, clipboardData);
+        };
+
         if (this.props.isPdf) {
 
             const publicationViewport = this.mainElRef.current;
@@ -1560,12 +1564,6 @@ class Reader extends React.Component<IProps, IState> {
             }
 
             console.log("pdf url", pdfUrl);
-
-            const clipboardInterceptor = // !this.props.publicationView.lcp ? undefined :
-                (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
-                    apiAction("reader/clipboardCopy", this.props.pubId, clipboardData)
-                        .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
-                };
 
             const pdfPlayerBusEvent = await pdfMountAndReturnBus(
                 pdfUrl,
@@ -1909,13 +1907,6 @@ class Reader extends React.Component<IProps, IState> {
             }
 
             preloadPath = preloadPath.replace(/\\/g, "/");
-
-            const clipboardInterceptor = !this.props.publicationView.lcp ? undefined :
-                (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
-                    apiAction("reader/clipboardCopy", this.props.pubId, clipboardData)
-                        .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
-                };
-
             const locator = this.props.locator?.locator?.href ? this.props.locator.locator : undefined;
             installNavigatorDOM(
                 this.props.r2Publication,
@@ -1924,7 +1915,7 @@ class Reader extends React.Component<IProps, IState> {
                 preloadPath,
                 locator,
                 true,
-                clipboardInterceptor,
+                (this.props.publicationView.lcp) ? clipboardInterceptor : undefined,
                 this.props.winId,
                 computeReadiumCssJsonMessage(this.props.readerConfig),
             );
@@ -2594,6 +2585,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
             console.log("Persist the reading mode", readingMode);
             dispatch(readerLocalActionDivina.setReadingMode.build({readingMode}));
+        },
+        clipboardCopy: (publicationIdentifier: string, clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
+            dispatch(readerActions.clipboardCopy.build(publicationIdentifier, clipboardData));
         },
     };
 };

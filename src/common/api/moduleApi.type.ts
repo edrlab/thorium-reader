@@ -13,7 +13,6 @@ type TApiappApi = "apiapp";
 type THttpBrowserApi = "httpbrowser";
 type TKeyboardApi = "keyboardShortcuts";
 type TLcpApi = "lcp";
-type TReaderApi = "reader";
 type TSessionApi = "session";
 export type TModuleApi =
     TCatalogApi |
@@ -23,5 +22,4 @@ export type TModuleApi =
     THttpBrowserApi |
     TKeyboardApi |
     TLcpApi |
-    TReaderApi |
     TSessionApi;
