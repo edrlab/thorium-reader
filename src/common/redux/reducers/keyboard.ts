@@ -7,19 +7,19 @@
 
 import { _defaults } from "readium-desktop/common/keyboard";
 import { keyboardActions } from "readium-desktop/common/redux/actions";
-import { KeyboardState } from "readium-desktop/common/redux/states/keyboard";
+import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 
-const initialState: KeyboardState = {
+const initialState: IKeyboardState = {
     shortcuts: _defaults,
 };
 
 export function keyboardReducer(
-    state: KeyboardState = initialState,
+    state: IKeyboardState = initialState,
     action:
         keyboardActions.setShortcuts.TAction |
         keyboardActions.reloadShortcuts.TAction |
         keyboardActions.showShortcuts.TAction,
-    ): KeyboardState {
+    ): IKeyboardState {
     switch (action.type) {
         case keyboardActions.setShortcuts.ID:
             return (

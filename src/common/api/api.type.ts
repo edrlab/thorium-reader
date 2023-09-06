@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { ICatalogModuleApi } from "./interface/catalog.interface";
-import { IKeyboardModuleApi } from "./interface/keyboardApi.interface";
 import { ILcpModuleApi } from "./interface/lcpApi.interface";
 import { IOpdsModuleApi } from "./interface/opdsApi.interface";
 import { IApiappModuleApi } from "./interface/apiappApi.interface";
@@ -19,7 +18,6 @@ export type TApiMethod =
     IOpdsModuleApi &
     IApiappModuleApi &
     IHttpBrowserModuleApi &
-    IKeyboardModuleApi &
     IPublicationModuleApi
 
 export type TApiMethodName = keyof TApiMethod;

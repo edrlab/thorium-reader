@@ -7,7 +7,6 @@
 
 import { IHttpBrowserApi } from "./interface/httpBrowser.interface";
 import { ICatalogApi } from "./interface/catalog.interface";
-import { IKeyboardApi } from "./interface/keyboardApi.interface";
 import { ILcpApi } from "./interface/lcpApi.interface";
 import { IOpdsApi } from "./interface/opdsApi.interface";
 import { IPublicationApi } from "./interface/publicationApi.interface";
@@ -19,5 +18,4 @@ export type TMethodApi =
     keyof IOpdsApi |
     keyof IApiappApi |
     keyof IHttpBrowserApi |
-    keyof IKeyboardApi |
     keyof ILcpApi

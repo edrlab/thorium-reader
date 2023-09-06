@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import { ISessionState } from "readium-desktop/common/redux/states/session";
+import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 
 export interface ICommonRootState {
     session: ISessionState
+    keyboard: IKeyboardState;
 }

@@ -32,7 +32,6 @@ import {
 import { type Store } from "redux";
 import { SagaMiddleware } from "redux-saga";
 
-import { KeyboardApi } from "./api/keyboard";
 import { httpBrowserApi, publicationApi } from "./redux/sagas/api";
 import { opdsApi } from "./redux/sagas/api/opds";
 import { apiappApi } from "./redux/sagas/api";
@@ -228,7 +227,6 @@ container.bind(diSymbolTable["opds-api"]).toConstantValue(opdsApi);
 container.bind(diSymbolTable["apiapp-api"]).toConstantValue(apiappApi);
 container.bind(diSymbolTable["httpbrowser-api"]).toConstantValue(httpBrowserApi);
 
-container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 
 let libraryWin: BrowserWindow;
@@ -281,7 +279,6 @@ interface IGet {
     (s: "opds-api"): typeof opdsApi;
     (s: "apiapp-api"): typeof apiappApi;
     (s: "httpbrowser-api"): typeof httpBrowserApi;
-    (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "saga-middleware"): SagaMiddleware;
     // minor overload type used in api.ts/LN32
