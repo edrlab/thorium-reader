@@ -30,9 +30,11 @@ import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeReducer";
 import { readerDivinaReducer } from "./divina";
+import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
+        session: sessionReducer,
         api: apiReducer,
         i18n: i18nReducer,
         reader: combineReducers<IReaderStateReader>({ // dehydrated from main process registry (preloaded state)

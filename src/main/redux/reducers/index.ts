@@ -10,13 +10,13 @@ import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard"
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { RootState } from "readium-desktop/main/redux/states";
+import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers } from "redux";
 
 import { appActions, publicationActions, winActions } from "../actions";
 import { lcpReducer } from "./lcp";
 import { readerDefaultConfigReducer } from "./reader/defaultConfig";
-import { sessionReducer } from "./session";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";

@@ -44,7 +44,6 @@ import {
     ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
     registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import {
@@ -2390,12 +2389,7 @@ class Reader extends React.Component<IProps, IState> {
             }, 300);
         }
 
-        apiAction("session/isEnabled")
-            .then((isEnabled) => this.props.setConfig(readerConfig, isEnabled))
-            .catch((e) => {
-                console.error("Error to fetch api session/isEnabled", e);
-                this.props.setConfig(readerConfig, false);
-            });
+        this.props.setConfig(readerConfig, this.props.session);
 
         if (this.props.r2Publication) {
             readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
@@ -2532,6 +2526,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
+        session: state.session.state,
     };
 };
 
@@ -2571,7 +2566,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerLocalActionSetConfig.build(config));
 
             if (!sessionEnabled) {
-
                 dispatch(readerActions.configSetDefault.build(config));
             }
         },

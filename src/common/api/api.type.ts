@@ -12,7 +12,6 @@ import { IOpdsModuleApi } from "./interface/opdsApi.interface";
 import { IApiappModuleApi } from "./interface/apiappApi.interface";
 import { IHttpBrowserModuleApi } from "./interface/httpBrowser.interface";
 import { IPublicationModuleApi } from "./interface/publicationApi.interface";
-import { ISessionModuleApi } from "./interface/session.interface";
 
 export type TApiMethod =
     ICatalogModuleApi &
@@ -21,7 +20,6 @@ export type TApiMethod =
     IApiappModuleApi &
     IHttpBrowserModuleApi &
     IKeyboardModuleApi &
-    IPublicationModuleApi &
-    ISessionModuleApi;
+    IPublicationModuleApi
 
 export type TApiMethodName = keyof TApiMethod;

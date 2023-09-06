@@ -33,7 +33,6 @@ import { type Store } from "redux";
 import { SagaMiddleware } from "redux-saga";
 
 import { KeyboardApi } from "./api/keyboard";
-import { SessionApi } from "./api/session";
 import { httpBrowserApi, publicationApi } from "./redux/sagas/api";
 import { opdsApi } from "./redux/sagas/api/opds";
 import { apiappApi } from "./redux/sagas/api";
@@ -231,7 +230,6 @@ container.bind(diSymbolTable["httpbrowser-api"]).toConstantValue(httpBrowserApi)
 
 container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
-container.bind<SessionApi>(diSymbolTable["session-api"]).to(SessionApi).inSingletonScope();
 
 let libraryWin: BrowserWindow;
 

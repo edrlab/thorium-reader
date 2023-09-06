@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { ReaderConfig, ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
-import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IDivinaState } from "readium-desktop/renderer/reader/redux/state/divina";
 import { IHighlightHandlerState } from "readium-desktop/renderer/reader/redux/state/highlight";
 import { IPickerState } from "readium-desktop/renderer/reader/redux/state/picker";
@@ -18,7 +18,7 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import { TBookmarkState } from "../bookmark";
 
-export interface IReaderRootState extends ICommonRootState {
+export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
     picker: IPickerState;
     search: ISearchState;

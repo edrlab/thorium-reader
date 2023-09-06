@@ -23,9 +23,11 @@ import { combineReducers, Reducer } from "redux";
 import { ILibraryRootState } from "../states";
 
 import { RouterState } from "redux-first-history";
+import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => {
     return combineReducers<ILibraryRootState>({
+        session: sessionReducer,
         i18n: i18nReducer,
         opds: combineReducers({
             browser: combineReducers({

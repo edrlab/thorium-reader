@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 import { v4 as uuidv4 } from "uuid";
@@ -102,7 +102,7 @@ export class ToastManager extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: ICommonRootState, _props: IBaseProps) => {
+const mapStateToProps = (state: IRendererCommonRootState, _props: IBaseProps) => {
     return {
         toast: state.toast,
     };

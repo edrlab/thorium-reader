@@ -10,7 +10,7 @@ import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
     apiActions, authActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
-    readerActions, toastActions,
+    readerActions, sessionActions, toastActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -52,6 +52,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     // authActions.done.ID, // not used
     authActions.cancel.ID,
+
+    sessionActions.enable.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

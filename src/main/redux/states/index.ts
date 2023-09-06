@@ -14,14 +14,13 @@ import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reduce
 import { AppState } from "./app";
 import { ILcpState } from "./lcp";
 import { IDictPublicationState } from "./publication";
-import { ISessionState } from "./session";
 import { StreamerState } from "./streamer";
 import { IDictWinRegistryReaderState } from "./win/registry/reader";
 import { IWinSessionLibraryState } from "./win/session/library";
 import { IDictWinSessionReaderState } from "./win/session/reader";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
-export interface RootState {
-    session: ISessionState;
+export interface RootState extends ICommonRootState {
     app: AppState;
     // net: NetState;
     i18n: I18NState;

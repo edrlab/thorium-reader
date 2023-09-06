@@ -9,7 +9,7 @@ import * as moment from "moment";
 import { apiActions } from "readium-desktop/common/redux/actions/";
 import {
     ApiDataResponse, ApiState, LAST_API_SUCCESS_ID,
-} from "readium-desktop/renderer/common/redux/states/api";
+} from "readium-desktop/common/redux/states/api";
 
 const initialState: ApiState<any> = {
     [LAST_API_SUCCESS_ID]: undefined,
