@@ -24,6 +24,7 @@ import { ILibraryRootState } from "../states";
 
 import { RouterState } from "redux-first-history";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
+import { catalogViewReducer } from "./catalog";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => {
     return combineReducers<ILibraryRootState>({
@@ -66,5 +67,8 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => {
         history: historyReducer,
         keyboard: keyboardReducer,
         load: loadReducer,
+        publication:  combineReducers({
+            catalog: catalogViewReducer,
+        }),
     });
 };

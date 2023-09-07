@@ -14,6 +14,7 @@ import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reduce
 
 import { THistoryState } from "./history";
 import { IOpdsHeaderState, IOpdsSearchState } from "./opds";
+import { CatalogView } from "readium-desktop/common/views/catalog";
 
 export interface ILibraryRootState extends IRendererCommonRootState {
     opds: {
@@ -27,4 +28,7 @@ export interface ILibraryRootState extends IRendererCommonRootState {
     download: TPQueueState<downloadActions.progress.Payload, number>;
     history: THistoryState;
     load: ILoadState;
+    publication: {
+        catalog: CatalogView,
+    }
 }

@@ -5,13 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// module typing
-type TPublicationApi = "publication";
-type TOpdsApi = "opds";
-type TApiappApi = "apiapp";
-type THttpBrowserApi = "httpbrowser";
-export type TModuleApi =
-    TPublicationApi |
-    TOpdsApi |
-    TApiappApi |
-    THttpBrowserApi
+import * as getCatalog from "./getCatalog";
+import * as setCatalog from "./setCatalog";
+
+export {
+    getCatalog,
+    setCatalog,
+};

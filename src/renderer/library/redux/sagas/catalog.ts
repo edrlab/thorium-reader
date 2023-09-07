@@ -10,12 +10,10 @@ import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce, spawn } from "redux-saga/effects";
 
-export const CATALOG_GET_API_ID_CHANNEL = "CATALOG_API_ID";
 export const PUBLICATION_TAGS_API_ID_CHANNEL = "PUBLICATION_TAGS_API_ID_CHANNEL";
 
 function* update() {
 
-    yield apiSaga("catalog/get", CATALOG_GET_API_ID_CHANNEL);
     yield apiSaga("publication/getAllTags", PUBLICATION_TAGS_API_ID_CHANNEL);
 }
 

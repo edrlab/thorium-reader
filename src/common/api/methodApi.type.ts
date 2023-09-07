@@ -6,13 +6,11 @@
 // ==LICENSE-END==
 
 import { IHttpBrowserApi } from "./interface/httpBrowser.interface";
-import { ICatalogApi } from "./interface/catalog.interface";
 import { IOpdsApi } from "./interface/opdsApi.interface";
 import { IPublicationApi } from "./interface/publicationApi.interface";
 import { IApiappApi } from "./interface/apiappApi.interface";
 
 export type TMethodApi =
-    keyof ICatalogApi |
     keyof IPublicationApi |
     keyof IOpdsApi |
     keyof IApiappApi |

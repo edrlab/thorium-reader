@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, authActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions,
+    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -37,6 +37,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.renewPublicationLicense.ID,
     lcpActions.returnPublication.ID,
     lcpActions.unlockPublicationWithPassphrase.ID,
+
+    catalogActions.getCatalog.ID, // request to get catalog view
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

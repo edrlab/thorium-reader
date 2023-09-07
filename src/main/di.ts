@@ -14,7 +14,6 @@ import { Container } from "inversify";
 import * as path from "path";
 import { Translator } from "readium-desktop/common/services/translator";
 import { ok } from "readium-desktop/common/utils/assert";
-import { CatalogApi } from "readium-desktop/main/api/catalog";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -218,9 +217,6 @@ container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingle
 container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
-container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
-// container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
-
 container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi);
 container.bind(diSymbolTable["opds-api"]).toConstantValue(opdsApi);
 container.bind(diSymbolTable["apiapp-api"]).toConstantValue(apiappApi);
@@ -271,7 +267,6 @@ interface IGet {
     // (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;
     (s: "lcp-manager"): LcpManager;
-    (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): typeof publicationApi;
     (s: "opds-api"): typeof opdsApi;
     (s: "apiapp-api"): typeof apiappApi;

@@ -5,14 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ICatalogModuleApi } from "./interface/catalog.interface";
 import { IOpdsModuleApi } from "./interface/opdsApi.interface";
 import { IApiappModuleApi } from "./interface/apiappApi.interface";
 import { IHttpBrowserModuleApi } from "./interface/httpBrowser.interface";
 import { IPublicationModuleApi } from "./interface/publicationApi.interface";
 
 export type TApiMethod =
-    ICatalogModuleApi &
     IOpdsModuleApi &
     IApiappModuleApi &
     IHttpBrowserModuleApi &

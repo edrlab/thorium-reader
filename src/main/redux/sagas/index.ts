@@ -26,6 +26,7 @@ import * as streamer from "./streamer";
 import * as win from "./win";
 import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
+import * as catalog from "./catalog";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -98,6 +99,9 @@ export function* rootSaga() {
 
     // LCP saga
     yield lcp.saga();
+
+    // get/set catalog in library win
+    yield catalog.saga();
 
     // rehydrate shorcuts in redux
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));

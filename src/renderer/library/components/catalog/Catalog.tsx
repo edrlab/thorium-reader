@@ -17,7 +17,7 @@ import LibraryLayout from "readium-desktop/renderer/library/components/layout/Li
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { Dispatch } from "redux";
-import { CATALOG_GET_API_ID_CHANNEL, PUBLICATION_TAGS_API_ID_CHANNEL } from "../../redux/sagas/catalog";
+import { PUBLICATION_TAGS_API_ID_CHANNEL } from "../../redux/sagas/catalog";
 
 import CatalogGridView from "./GridView";
 import Header from "./Header";
@@ -41,7 +41,7 @@ class Catalog extends React.Component<IProps, undefined> {
         const { __, catalog, tags } = this.props;
 
         if (this.props.refresh) {
-            this.props.api(CATALOG_GET_API_ID_CHANNEL)("catalog/get")();
+            // this.props.api(CATALOG_GET_API_ID_CHANNEL)("catalog/get")();
             this.props.api(PUBLICATION_TAGS_API_ID_CHANNEL)("publication/getAllTags")();
         }
 
@@ -54,15 +54,15 @@ class Catalog extends React.Component<IProps, undefined> {
                 secondaryHeader={secondaryHeader}
             >
                 {
-                    catalog?.data.result
+                    catalog?.entries
                     && (
                         displayType === DisplayType.Grid
                             ? <CatalogGridView
-                                catalogEntries={catalog.data.result.entries}
+                                catalogEntries={catalog.entries}
                                 tags={(tags?.data.result) || []}
                             />
                             : <CatalogListView
-                                catalogEntries={catalog.data.result.entries}
+                                catalogEntries={catalog.entries}
                                 tags={(tags?.data.result) || []}
                             />
                     )
@@ -73,7 +73,7 @@ class Catalog extends React.Component<IProps, undefined> {
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({
-    catalog: apiState(state)(CATALOG_GET_API_ID_CHANNEL)("catalog/get"),
+    // catalog: apiState(state)(CATALOG_GET_API_ID_CHANNEL)("catalog/get"),
     tags: apiState(state)(PUBLICATION_TAGS_API_ID_CHANNEL)("publication/getAllTags"),
     refresh: apiRefreshToState(state)([
         "publication/importFromFs",
@@ -85,6 +85,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
         // "reader/setLastReadingLocation",
     ]),
     location: state.router.location,
+    catalog: state.publication.catalog,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

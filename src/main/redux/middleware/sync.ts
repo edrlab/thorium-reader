@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
-    apiActions, authActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
+    apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     readerActions, sessionActions, toastActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
@@ -56,6 +56,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     sessionActions.enable.ID,
 
     lcpActions.unlockPublicationWithPassphrase.ID,
+
+    catalogActions.setCatalog.ID, // send new catalogView to library
 ];
 
 export const reduxSyncMiddleware: Middleware
