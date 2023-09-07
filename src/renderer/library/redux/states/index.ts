@@ -30,5 +30,6 @@ export interface ILibraryRootState extends IRendererCommonRootState {
     load: ILoadState;
     publication: {
         catalog: CatalogView,
+        tag: string[],
     }
 }

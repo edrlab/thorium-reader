@@ -58,6 +58,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.unlockPublicationWithPassphrase.ID,
 
     catalogActions.setCatalog.ID, // send new catalogView to library
+    catalogActions.setTagView.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

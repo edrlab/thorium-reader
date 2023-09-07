@@ -15,7 +15,6 @@ import { put as putTyped } from "typed-redux-saga/macro";
 
 import * as publicationInfoOpds from "../../../common/redux/sagas/dialog/publicationInfoOpds";
 import * as publicationInfoReaderAndLib from "../../../common/redux/sagas/dialog/publicationInfoReaderAndLib";
-import * as catalog from "./catalog";
 import * as history from "./history";
 import * as i18n from "./i18n";
 import * as lcp from "./lcp";
@@ -57,10 +56,6 @@ export function* rootSaga() {
         publicationInfoSyncTags.saga(),
 
         load.saga(),
-
-        // TODO need to update this
-        catalog.saga(),
-
     ]);
 
     yield* putTyped(catalogActions.getCatalog.build()); // ask to fill catalog view

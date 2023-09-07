@@ -6,9 +6,11 @@
 // ==LICENSE-END==
 
 import * as getCatalog from "./getCatalog";
-import * as setCatalog from "./setCatalog";
+import * as setCatalog from "./setCatalogView";
+import * as setTagView from "./setTagView";
 
 export {
     getCatalog,
     setCatalog,
+    setTagView,
 };

@@ -228,6 +228,10 @@ function* getCatalog() {
     ];
 
     yield* putTyped(catalogActions.setCatalog.build({entries}));
+
+    const publicationRepository = diMainGet("publication-repository");
+    const allTags = yield* callTyped(() => publicationRepository.getAllTags());
+    yield* putTyped(catalogActions.setTagView.build(allTags));
 }
 
 function* updateResumePosition() {
@@ -261,7 +265,6 @@ export function saga() {
     return all([
         takeSpawnLatest(
             [catalogActions.getCatalog.ID, publicationActions.addPublication.ID, publicationActions.deletePublication.ID],
-            // catalogActions.getCatalog.ID,
             getCatalog,
             (e) => error(filename_ + ":getCatalog", e),
         ),
