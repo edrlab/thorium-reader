@@ -25,6 +25,7 @@ import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
 import * as telemetry from "./telemetry";
+import * as lcp from "./lcp";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -94,6 +95,9 @@ export function* rootSaga() {
 
     // OPDS authentication flow
     yield auth.saga();
+
+    // LCP saga
+    yield lcp.saga();
 
     // rehydrate shorcuts in redux
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));

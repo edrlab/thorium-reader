@@ -11,11 +11,9 @@ type TPublicationApi = "publication";
 type TOpdsApi = "opds";
 type TApiappApi = "apiapp";
 type THttpBrowserApi = "httpbrowser";
-type TLcpApi = "lcp";
 export type TModuleApi =
     TCatalogApi |
     TPublicationApi |
     TOpdsApi |
     TApiappApi |
-    THttpBrowserApi |
-    TLcpApi
+    THttpBrowserApi

@@ -15,7 +15,6 @@ import * as path from "path";
 import { Translator } from "readium-desktop/common/services/translator";
 import { ok } from "readium-desktop/common/utils/assert";
 import { CatalogApi } from "readium-desktop/main/api/catalog";
-import { LcpApi } from "readium-desktop/main/api/lcp";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -227,8 +226,6 @@ container.bind(diSymbolTable["opds-api"]).toConstantValue(opdsApi);
 container.bind(diSymbolTable["apiapp-api"]).toConstantValue(apiappApi);
 container.bind(diSymbolTable["httpbrowser-api"]).toConstantValue(httpBrowserApi);
 
-container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
-
 let libraryWin: BrowserWindow;
 
 const saveLibraryWindowInDi =
@@ -279,7 +276,6 @@ interface IGet {
     (s: "opds-api"): typeof opdsApi;
     (s: "apiapp-api"): typeof apiappApi;
     (s: "httpbrowser-api"): typeof httpBrowserApi;
-    (s: "lcp-api"): LcpApi;
     (s: "saga-middleware"): SagaMiddleware;
     // minor overload type used in api.ts/LN32
     (s: keyof typeof diSymbolTable): any;

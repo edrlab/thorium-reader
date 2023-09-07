@@ -54,6 +54,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     authActions.cancel.ID,
 
     sessionActions.enable.ID,
+
+    lcpActions.unlockPublicationWithPassphrase.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

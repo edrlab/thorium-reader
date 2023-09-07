@@ -8,13 +8,14 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
+import { lcpActions } from "readium-desktop/common/redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -24,7 +25,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 class LsdReturnConfirm extends React.Component<IProps, undefined> {
@@ -42,7 +43,7 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
         return (
             <Dialog
                 title={__("publication.returnButton")}
-                onSubmitButton={this.remove}
+                onSubmitButton={() => this.props.returnPublication(this.props.publicationView.identifier)}
                 submitButtonDisabled={false}
                 submitButtonTitle={this.props.__("dialog.yes")}
                 shouldOkRefEnabled={true}
@@ -55,13 +56,6 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
             </Dialog>
         );
     }
-
-    private remove = () => {
-        apiAction("lcp/returnPublication", this.props.publicationView.identifier)
-        .catch((error) => {
-            console.error("Error API lcp/returnPublication", error);
-        });
-    };
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
@@ -70,4 +64,12 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     }, ...state.dialog.data as DialogType[DialogTypeName.LsdReturnConfirm],
 });
 
-export default connect(mapStateToProps)(withTranslator(LsdReturnConfirm));
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        returnPublication: (publicationId: string) => {
+            dispatch(lcpActions.returnPublication.build(publicationId));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LsdReturnConfirm));
