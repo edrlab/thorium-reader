@@ -93,3 +93,27 @@ Options:
   --version  Show version number                                       [boolean]
   --help     Show help                                                 [boolean]
 ```
+
+## [DEV] Architecture
+
+Thorium-reader is composed of 3 parts:
+- One node.js main process (electron back-end)
+- One library window (chromium renderer)
+- One to N reader window(s) (chromium renderer)
+
+each part run a model-controler and a view for renderer process
+
+- the model is a state container with [Redux](https://redux.js.org/). It's based on [flux architecture](https://github.com/facebookarchive/flux)
+- the controller is a middleware from Redux named [Redux-saga](https://redux-saga.js.org/). It's handle all side effect and application behaviour.
+- the view for the rendering is React with [class components](https://legacy.reactjs.org/docs/components-and-props.html)
+
+To linked all 3 parts we used : 
+- IPC/RPC: we used implementation from [Electron](https://www.electronjs.org/docs/latest/api/ipc-main)
+- React/Redux: We used [connect](https://react-redux.js.org/api/connect) from [react-redux](https://react-redux.js.org/).
+
+### Diagram
+
+#### [Model View Controller Architecture](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
+![MVC](img/thorium-mvc.png)
+
+![architecture diagram](img/thorium-architecture.png)
