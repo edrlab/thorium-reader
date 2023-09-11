@@ -2,8 +2,16 @@
 import * as React from "react";
 import { log } from "console";
 import { ILibraryRootState } from "../redux/states";
-import { useTranslator } from "readium-desktop/common/hooks/useTranslator";
-import { useSelector } from "readium-desktop/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+// import { v4 as uuidv4 } from "uuid";
+// import { TApiMethod, TApiMethodName } from "readium-desktop/common/api/api.type";
+// import { ReactReduxContext} from 'react-redux'
+// import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
+// import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
+// import { apiActions } from "readium-desktop/common/redux/actions";
+// import { useSyncExternalStore } from "readium-desktop/renderer/common/hooks/useSyncExternalStore";
 
 export function HooksTest(props: {name:string}) {
 
@@ -35,6 +43,7 @@ export function HooksTest(props: {name:string}) {
     //     return translator.subscribe(handleLocaleChange);
     // }, [translator.subscribe]);
     const _ = useTranslator();
+    // let _ = (_a: any) => {};
 
     // const {store} = React.useContext<ReactReduxContextValue<ILibraryRootState>>(ReactReduxContext);
     // const id = useSyncExternalStore(store.subscribe, () => store.getState().win.identifier);
@@ -42,9 +51,29 @@ export function HooksTest(props: {name:string}) {
 
     // useSelector custom with just useSyncExternalStore
     const id = useSelector((state: ILibraryRootState) => state.win.identifier);
+    // let id = "";
     log(id);
 
+    // const requestId = React.useMemo(() => uuidv4(), []);
+    const requestId: string = null;
+    log(requestId);
+    // useApi
+    // const [requestId] = React.useState('test');
+    // useDispatchApi(requestId, "publication/findAll");
 
-    log(Date.now().toString(), "rendered");
-    return <h1 style={{position: "absolute", top: 0, zIndex: 999}}>Hello : {name} : id {id} : translate {_("header.books")}</h1>;
-  }
+  // const { store } = React.useContext(ReactReduxContext);
+  // React.useEffect(() => {
+  //   const apiPath = "publication/findAll";
+  //   const requestData: any[] = [];
+  //   const splitPath = apiPath.split("/");
+  //   const moduleId = splitPath[0] as TModuleApi;
+  //   const methodId = splitPath[1] as TMethodApi;
+  //   store.dispatch(apiActions.request.build(requestId, moduleId, methodId, requestData))
+  // }, []);
+
+  // const allPubRes = useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
+  const allPubRes = useApi(requestId, "publication/findAll");
+  log(allPubRes);
+  log(Date.now().toString(), "rendered");
+  return <h1 style={{ position: "absolute", top: 0, zIndex: 999 }}>Hello : {name} : id {id} : translate {_("header.books")}</h1>;
+}
