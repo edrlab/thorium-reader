@@ -21,6 +21,7 @@ import {
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import LibraryHeader from "./LibraryHeader";
+import { HooksTest } from "../HooksTest";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -122,6 +123,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     >
                         {__("accessibility.mainContent")}
                     </a>
+                    <HooksTest name="main"></HooksTest>
                     { this.props.children }
                 </main>
             </div>
