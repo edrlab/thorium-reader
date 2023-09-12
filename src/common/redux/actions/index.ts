@@ -18,12 +18,9 @@ import * as loadActions from "./load";
 import * as netActions from "./net/";
 import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
-<<<<<<< HEAD
 import * as sessionActions from "./session/";
 import * as catalogActions from "./catalog";
-=======
 import * as annotationActions from "./annotation";
->>>>>>> e7126b80 (add: saga logic)
 
 export {
     historyActions,
@@ -39,10 +36,7 @@ export {
     downloadActions,
     keyboardActions,
     loadActions,
-<<<<<<< HEAD
     sessionActions,
     catalogActions,
-=======
     annotationActions,
->>>>>>> e7126b80 (add: saga logic)
 };
