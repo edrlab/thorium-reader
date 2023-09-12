@@ -8,7 +8,7 @@
 import { IAnnotationState } from "readium-desktop/common/redux/states/annotation";
 import { IW3CAnnotationModel, IW3CAnnotationModelSet, IW3CAnnotationSetAboutView } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
-import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 function rgbToHex(color: { red: number; green: number; blue: number }): string {
@@ -94,7 +94,7 @@ export function convertAnnotationListToW3CAnnotationModelSet(annotationArray: IA
         generator: {
             id: "https://github.com/edrlab/thorium-reader/releases/tag/v" + _APP_VERSION,
             type: "Software",
-            name: _APP_VERSION,
+            name: _APP_NAME + " " + _APP_VERSION,
             homepage: "https://thorium.edrlab.org",
         },
         generated: dateString,

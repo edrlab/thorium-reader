@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
@@ -49,6 +49,8 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
 
         this.returnPublicationDialog = this.returnPublicationDialog.bind(this);
         this.renewPublicationDialog = this.renewPublicationDialog.bind(this);
+
+        this.exportW3CAnnotation = this.exportW3CAnnotation.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -120,8 +122,23 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                     <SVG svg={ExportIcon} ariaHidden />
                     {__("catalog.export")}
                 </button>
+
+                <button onClick={this.exportW3CAnnotation} className={stylesButtons.button_transparency}>
+                    <SVG svg={ExportIcon} ariaHidden />
+                    {__("catalog.exportW3CAnnotation")}
+                </button>
             </>
         );
+    }
+
+    /**
+     *
+     * Be careful : It's possible to export annotations from LCP Publication but words copy is protected from an LCP Publication.
+     * @Daniel @Laurent Should we control textual annotation export from an LCP publication ?
+     */
+    private exportW3CAnnotation(e: TMouseEventOnButton) {
+        e.preventDefault();
+        this.props.exportW3CAnnotation(this.props.publicationView.identifier);
     }
 
     private renewPublicationDialog(e: TMouseEventOnButton) {
@@ -179,6 +196,9 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                     publicationView: props.publicationView,
                 },
             ));
+        },
+        exportW3CAnnotation: (pubId: string) => {
+            dispatch(annotationActions.exportW3CAnnotationSetFromAnnotations.build(pubId));
         },
     };
 };

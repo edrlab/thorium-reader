@@ -69,6 +69,7 @@
             "lastAdditions": "Recently added"
         },
         "export": "Export",
+        "exportW3CAnnotation": "Export Annotations",
         "format": "Format",
         "lang": "Language",
         "lastRead": "Last Read",

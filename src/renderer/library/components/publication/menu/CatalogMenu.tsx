@@ -16,6 +16,8 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationExportButton from "./PublicationExportButton";
+import { annotationActions } from "readium-desktop/common/redux/actions";
+import { TMouseEventOnButton } from "readium-desktop/typings/react";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -44,6 +46,8 @@ export class CatalogMenu extends React.Component<IProps, IState> {
 
         this.deletePublication = this.deletePublication.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+
+        this.exportW3CAnnotation = this.exportW3CAnnotation.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -63,8 +67,18 @@ export class CatalogMenu extends React.Component<IProps, IState> {
                 <PublicationExportButton
                     publicationView={this.props.publicationView}
                 />
+                <button role="menuitem"
+                    onClick={this.exportW3CAnnotation}
+                >
+                    {__("catalog.exportW3CAnnotation")}
+                </button>
             </>
         );
+    }
+
+    private exportW3CAnnotation(e: TMouseEventOnButton) {
+        e.preventDefault();
+        this.props.exportW3CAnnotation(this.props.publicationView.identifier);
     }
 
     private deletePublication() {
@@ -91,6 +105,9 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                     publicationView: props.publicationView,
                 },
             ));
+        },
+        exportW3CAnnotation: (pubId: string) => {
+            dispatch(annotationActions.exportW3CAnnotationSetFromAnnotations.build(pubId));
         },
     };
 };

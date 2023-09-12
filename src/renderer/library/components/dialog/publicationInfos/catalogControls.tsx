@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
@@ -42,6 +42,7 @@ export class CatalogControls extends React.Component<IProps, undefined> {
         this.handleRead = this.handleRead.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
         this.exportPublication = this.exportPublication.bind(this);
+        this.exportW3CAnnotation = this.exportW3CAnnotation.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -65,10 +66,19 @@ export class CatalogControls extends React.Component<IProps, undefined> {
                     <SVG svg={ExportIcon} ariaHidden />
                     {__("catalog.export")}
                 </button>
+
+                <button onClick={this.exportW3CAnnotation} className={stylesButtons.button_transparency}>
+                    <SVG svg={ExportIcon} ariaHidden />
+                    {__("catalog.exportW3CAnnotation")}
+                </button>
             </>
         );
     }
 
+    private exportW3CAnnotation(e: TMouseEventOnButton) {
+        e.preventDefault();
+        this.props.exportW3CAnnotation(this.props.publicationView.identifier);
+    }
     private deletePublication(e: TMouseEventOnButton) {
         e.preventDefault();
         this.props.openDeleteDialog();
@@ -101,6 +111,9 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                     publicationView: props.publicationView,
                 },
             ));
+        },
+        exportW3CAnnotation: (pubId: string) => {
+            dispatch(annotationActions.exportW3CAnnotationSetFromAnnotations.build(pubId));
         },
     };
 };

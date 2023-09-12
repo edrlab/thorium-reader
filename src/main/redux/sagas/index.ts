@@ -27,6 +27,7 @@ import * as win from "./win";
 import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
 import * as catalog from "./catalog";
+import * as annotation from "./annotation";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -102,6 +103,9 @@ export function* rootSaga() {
 
     // get/set catalog in library win
     yield catalog.saga();
+
+    // export annotations
+    yield annotation.saga();
 
     // rehydrate shorcuts in redux
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
