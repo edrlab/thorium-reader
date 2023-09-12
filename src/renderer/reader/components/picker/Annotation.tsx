@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { TChangeEventOnInput, TChangeEventOnTextArea } from "readium-desktop/typings/react";
+import { TChangeEventOnTextArea } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { readerLocalActionAnnotationUI, readerLocalActionAnnotations, readerLocalActionPicker } from "../../redux/actions";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
@@ -36,8 +36,6 @@ class AnnotationPicker extends React.Component<IProps, IState> {
 
         return (
             <form id="myForm" style={{ display: "block" }}>
-                <input type="text" id="name" name="name" value={this.props.annotation.name} maxLength={20} style={{ width: "100px" }} onChange={this.nameChange} />
-
                 <button className="color-button" style={{ width: "20px", height: "20px", backgroundColor: "red", border: "none", margin: "5px", cursor: "pointer" }} onClick={(e) => (e.preventDefault(), this.colorChange("red"))}></button>
                 <button className="color-button" style={{ width: "20px", height: "20px", backgroundColor: "green", border: "none", margin: "5px", cursor: "pointer" }} onClick={(e) => (e.preventDefault(), this.colorChange("green"))}></button>
                 <button className="color-button" style={{ width: "20px", height: "20px", backgroundColor: "blue", border: "none", margin: "5px", cursor: "pointer" }} onClick={(e) => (e.preventDefault(), this.colorChange("blue"))}></button>
@@ -51,22 +49,15 @@ class AnnotationPicker extends React.Component<IProps, IState> {
         );
     };
 
-    private nameChange = (e: TChangeEventOnInput) => {
-        const v = e.target.value;
-        const { comment, color, newFocusAnnotationUUID: uuid } = this.props.annotation;
-
-        this.props.updateAnnotationPicker(v, comment, color, uuid);
-    };
-
     private commentChange = (e: TChangeEventOnTextArea) => {
         const v = e.target.value;
-        const { name, color, newFocusAnnotationUUID: uuid } = this.props.annotation;
+        const { color, newFocusAnnotationUUID: uuid } = this.props.annotation;
 
-        this.props.updateAnnotationPicker(name, v, color, uuid);
+        this.props.updateAnnotationPicker(v, color, uuid);
     };
 
     private colorChange = (localColor: "red" | "green" | "blue" | "yellow") => {
-        const { name, comment, newFocusAnnotationUUID: uuid } = this.props.annotation;
+        const { comment, newFocusAnnotationUUID: uuid } = this.props.annotation;
 
         let color: IColor;
         switch (localColor) {
@@ -108,7 +99,7 @@ class AnnotationPicker extends React.Component<IProps, IState> {
             }
         }
 
-        this.props.updateAnnotationPicker(name, comment, color, uuid);
+        this.props.updateAnnotationPicker(comment, color, uuid);
     };
 
 }
@@ -122,18 +113,17 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 };
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
-    updateAnnotationPicker: (name: string, comment: string, color: IColor, uuid: string) => {
-        dispatch(readerLocalActionAnnotationUI.picker.build(name, comment, Object.assign({}, color), uuid));
+    updateAnnotationPicker: (comment: string, color: IColor, uuid: string) => {
+        dispatch(readerLocalActionAnnotationUI.picker.build(comment, Object.assign({}, color), uuid));
     },
     deleteAnnotation: (annotation: IAnnotationState) => {
         dispatch(readerLocalActionPicker.manager.build(false));
         dispatch(readerLocalActionAnnotations.pop.build(annotation));
     },
     updateAnnotation: (updatedState: IAnnotationUserInterfaceState, annotation: IAnnotationState) => {
-        const { color, name, comment } = updatedState;
-        annotation.def.color = { red: color.red, green: color.green, blue: color.blue };
+        const { color, comment } = updatedState;
+        annotation.color = { red: color.red, green: color.green, blue: color.blue };
         annotation.comment = comment;
-        annotation.name = name;
         dispatch(readerLocalActionAnnotations.update.build(annotation));
     },
 });

@@ -15,13 +15,12 @@ export const ID = "READER_ANNOTATION_UPDATE_PICKER";
 interface IPayload extends Partial<IAnnotationUserInterfaceState> {
 }
 
-export function build(name: string, comment: string, color: IColor, uuid: string):
+export function build(comment: string, color: IColor, uuid: string):
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
         payload: {
-            name,
             comment,
             color,
             newFocusAnnotationUUID: uuid,

@@ -562,11 +562,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         tabIndex={0}
                         onClick={(e) => {
                             const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            this.goToLocator(e, this.createLocatorLink(annotation.href, annotation.def.selectionInfo.rangeInfo), closeNavPanel);
+                            this.goToLocator(e, this.createLocatorLink(annotation.def.locator.href, annotation.def.selectionInfo.rangeInfo), closeNavPanel);
                             this.props.focusAnnotationHighlight(annotation);
                         }}
                         onDoubleClick={(e) => {
-                            this.goToLocator(e, this.createLocatorLink(annotation.href, annotation.def.selectionInfo.rangeInfo), false);
+                            this.goToLocator(e, this.createLocatorLink(annotation.def.locator.href, annotation.def.selectionInfo.rangeInfo), false);
                             this.props.focusAnnotationHighlight(annotation);
                         }}
                         onKeyPress=
@@ -574,7 +574,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                             (e) => {
                                 if (e.key === "Enter" || e.key === "Space") {
                                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                    this.goToLocator(e, this.createLocatorLink(annotation.href, annotation.def.selectionInfo.rangeInfo), closeNavPanel);
+                                    this.goToLocator(e, this.createLocatorLink(annotation.def.locator.href, annotation.def.selectionInfo.rangeInfo), closeNavPanel);
                                     this.props.focusAnnotationHighlight(annotation);
                                 }
                             }
@@ -583,7 +583,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         <SVG ariaHidden={true} svg={BookmarkIcon} />
 
                         <div className={stylesReader.chapter_marker}>
-                            <p className={stylesReader.bookmark_name} title={annotation.name}>{annotation.name}</p>
+                            <p className={stylesReader.bookmark_name} title={annotation.def.selectionInfo.cleanText.slice(0, 20)}>{annotation.def.selectionInfo.cleanText.slice(0, 20)}</p>
                         </div>
                     </button>
                     <button title={ __("reader.marks.delete")}
