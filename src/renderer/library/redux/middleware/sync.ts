@@ -6,7 +6,12 @@
 // ==LICENSE-END==
 
 import {
+<<<<<<< HEAD
     apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions,
+=======
+    annotationActions,
+    apiActions, authActions, downloadActions, i18nActions, keyboardActions, readerActions,
+>>>>>>> e7126b80 (add: saga logic)
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -32,6 +37,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     downloadActions.abort.ID,
 
+<<<<<<< HEAD
     sessionActions.enable.ID,
 
     lcpActions.renewPublicationLicense.ID,
@@ -39,6 +45,9 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.unlockPublicationWithPassphrase.ID,
 
     catalogActions.getCatalog.ID, // request to get catalog view
+=======
+    annotationActions.exportW3CAnnotationSetFromAnnotations.ID,
+>>>>>>> e7126b80 (add: saga logic)
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

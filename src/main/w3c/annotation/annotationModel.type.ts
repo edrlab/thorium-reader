@@ -65,12 +65,22 @@ interface Generator {
     homepage: string;
 }
 
+export interface IW3CAnnotationSetAboutView {
+    identiferArrayString: string[];
+    mimeType: string;
+    title: string;
+    publisher: string[];
+    creator: string[];
+    publishedAt: string;
+    source: string;
+}
+
 interface About {
     "dc:identifier": string[];
     "dc:format": string;
     "dc:title": string;
-    "dc:publisher": string;
-    "dc:creator": string;
+    "dc:publisher": string[];
+    "dc:creator": string[];
     "dc:date": string;
     "dc:source"?: string;
 }
