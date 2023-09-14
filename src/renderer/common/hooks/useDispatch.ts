@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactReduxContext} from 'react-redux'
+import { ReactReduxContext} from "react-redux";
 import { Action } from "../../../common/models/redux";
 
 export function useDispatch(action: Action) {

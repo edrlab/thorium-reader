@@ -10,7 +10,7 @@ export function useTranslator() {
     React.useEffect(() => {
         const handleLocaleChange = () => {
             forceUpdate();
-        }
+        };
         return translator.subscribe(handleLocaleChange);
     }, [translator.subscribe]);
 

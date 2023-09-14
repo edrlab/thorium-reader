@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { log } from "console";
 import { ILibraryRootState } from "../redux/states";
@@ -13,9 +12,9 @@ import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 // import { apiActions } from "readium-desktop/common/redux/actions";
 // import { useSyncExternalStore } from "readium-desktop/renderer/common/hooks/useSyncExternalStore";
 
-export function HooksTest(props: {name:string}) {
+export function HooksTest(props: { name: string }) {
 
-    let name = props.name;
+    const name = props.name;
     // useSelector from react-redux
     // const {locale} = useSelector((state: ILibraryRootState) => {
 
@@ -61,19 +60,19 @@ export function HooksTest(props: {name:string}) {
     // const [requestId] = React.useState('test');
     // useDispatchApi(requestId, "publication/findAll");
 
-  // const { store } = React.useContext(ReactReduxContext);
-  // React.useEffect(() => {
-  //   const apiPath = "publication/findAll";
-  //   const requestData: any[] = [];
-  //   const splitPath = apiPath.split("/");
-  //   const moduleId = splitPath[0] as TModuleApi;
-  //   const methodId = splitPath[1] as TMethodApi;
-  //   store.dispatch(apiActions.request.build(requestId, moduleId, methodId, requestData))
-  // }, []);
+    // const { store } = React.useContext(ReactReduxContext);
+    // React.useEffect(() => {
+    //   const apiPath = "publication/findAll";
+    //   const requestData: any[] = [];
+    //   const splitPath = apiPath.split("/");
+    //   const moduleId = splitPath[0] as TModuleApi;
+    //   const methodId = splitPath[1] as TMethodApi;
+    //   store.dispatch(apiActions.request.build(requestId, moduleId, methodId, requestData))
+    // }, []);
 
-  // const allPubRes = useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
-  const allPubRes = useApi(requestId, "publication/findAll");
-  log(allPubRes);
-  log(Date.now().toString(), "rendered");
-  return <h1 style={{ position: "absolute", top: 0, zIndex: 999 }}>Hello : {name} : id {id} : translate {_("header.books")}</h1>;
+    // const allPubRes = useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
+    const allPubRes = useApi(requestId, "publication/findAll");
+    log(allPubRes);
+    log(Date.now().toString(), "rendered");
+    return <h1 style={{ position: "absolute", top: 0, zIndex: 999 }}>Hello : {name} : id {id} : translate {_("header.books")}</h1>;
 }

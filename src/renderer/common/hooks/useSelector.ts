@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactReduxContext, ReactReduxContextValue } from 'react-redux'
+import { ReactReduxContext, ReactReduxContextValue } from "react-redux";
 import { useSyncExternalStore } from "./useSyncExternalStore";
 
 export function useSelector<State, Selected>(selector: (state: State) => Selected): Selected {

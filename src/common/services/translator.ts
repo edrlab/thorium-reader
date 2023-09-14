@@ -204,7 +204,7 @@ export class Translator {
             this.listeners.add(fn);
             return () => {
                 this.listeners.delete(fn);
-            }
+            };
         }
         return () => {};
     }
