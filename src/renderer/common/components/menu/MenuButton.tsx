@@ -8,7 +8,7 @@
 import * as React from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps {
+interface IBaseProps extends React.PropsWithChildren {
     menuId: string;
     open: boolean;
     toggle: () => void;

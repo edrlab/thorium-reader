@@ -1651,10 +1651,13 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const tableColumns = React.useMemo(() => {
         const arr: (Column<IColumns> &
-            UseTableColumnOptions<IColumns>  &
-            UseSortByColumnOptions<IColumns>  &
-            UseGlobalFiltersColumnOptions<IColumns>  &
-            UseFiltersColumnOptions<IColumns>)[] = [
+            UseTableColumnOptions<IColumns> &
+            UseSortByColumnOptions<IColumns> &
+            UseGlobalFiltersColumnOptions<IColumns> &
+            UseFiltersColumnOptions<IColumns> &
+        // FIXME Cell: any
+        { Cell?: any }
+            )[] = [
             {
                 Header: props.__("publication.cover.img"),
                 accessor: "colCover",
@@ -1874,20 +1877,20 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         pageIndex: 0,
         hiddenColumns: props.displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
-    const opts:
-        TableOptions<IColumns> &
-        UseFiltersOptions<IColumns> &
-        UseGlobalFiltersOptions<IColumns> &
-        UseSortByOptions<IColumns> &
-        UsePaginationOptions<IColumns> = {
 
+    // FIXME be careful with defaultColumn : type broken
+    const opts = {
         columns: tableColumns,
         data: tableRows,
         defaultColumn,
         globalFilter: "globalFilter",
         filterTypes: filterTypes as unknown as FilterTypes<IColumns>, // because typing 'columnIds' instead of 'columnId' in FilterType<D> ?!
         initialState: initialState as TableState<IColumns>, // again, typing woes :(
-    };
+    } as TableOptions<IColumns> &
+        UseFiltersOptions<IColumns> &
+        UseGlobalFiltersOptions<IColumns> &
+        UseSortByOptions<IColumns> &
+        UsePaginationOptions<IColumns>;
     const tableInstance =
         useTable<IColumns>(opts, useFilters, useGlobalFilter, useSortBy, usePagination) as MyTableInstance<IColumns>;
 

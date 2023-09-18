@@ -329,7 +329,7 @@ const Progression = (props: {
     return (<></>);
 };
 
-export const PublicationInfoContent: React.FC<IProps> = (props) => {
+export const PublicationInfoContent: React.FC<IProps & React.PropsWithChildren> = (props) => {
 
     // tslint:disable-next-line: max-line-length
     const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;

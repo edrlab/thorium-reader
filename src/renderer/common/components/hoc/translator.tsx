@@ -14,7 +14,7 @@ export interface TranslatorProps {
     translator?: Translator;
 }
 
-type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
+type TComponentConstructor<P> = React.ComponentClass<P> | React.FunctionComponent<P>; // React.StatelessComponent<P>;
 
 export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Props & TranslatorProps>) {
     const WrapperComponent = class extends React.Component<Props & TranslatorProps, undefined> {

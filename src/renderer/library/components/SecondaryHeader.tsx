@@ -11,7 +11,7 @@ import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.css
 import { TranslatorProps, withTranslator } from "../../common/components/hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IBaseProps extends TranslatorProps, React.PropsWithChildren {
     style?: React.CSSProperties;
     id?: string;
 }
