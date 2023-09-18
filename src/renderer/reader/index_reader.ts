@@ -29,7 +29,7 @@ if (IS_DEV) {
     // devTron = require("devtron");
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    axe = require('@axe-core/react');
+    axe = require("@axe-core/react");
 }
 
 initGlobalConverters_OPDS();
