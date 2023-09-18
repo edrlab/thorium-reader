@@ -11,7 +11,7 @@ import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-export interface IProps {
+export interface IProps extends React.PropsWithChildren {
     tag: string | IOpdsTagView;
     index?: number;
     __?: I18nTyped;

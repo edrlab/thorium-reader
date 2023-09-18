@@ -7,7 +7,7 @@
 
 import { ipcRenderer } from "electron";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
@@ -29,7 +29,7 @@ if (IS_DEV) {
     // devTron = require("devtron");
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    axe = require("react-axe");
+    axe = require('@axe-core/react');
 }
 
 initGlobalConverters_OPDS();

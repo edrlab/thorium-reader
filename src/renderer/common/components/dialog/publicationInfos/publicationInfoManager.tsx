@@ -16,7 +16,7 @@ import Cover from "../../Cover";
 import Loader from "../../Loader";
 import Dialog from "../Dialog";
 
-export interface IProps extends TranslatorProps {
+export interface IProps extends TranslatorProps, React.PropsWithChildren {
     publicationViewMaybeOpds: TPublication;
     coverZoom: boolean;
     toggleCoverZoomCb: (coverZoom: boolean) => void;
@@ -52,8 +52,7 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
                                         (e: React.KeyboardEvent<HTMLImageElement>) =>
                                             e.key === "Enter" && toggleCoverZoomCb(coverZoom)
                                     }
-                                >
-                                </Cover>
+                                />
                                 :
                                 <>
                                     {

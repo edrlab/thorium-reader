@@ -10,7 +10,7 @@ import FocusLock from "react-focus-lock";
 import OutsideClickAlerter from "readium-desktop/renderer/common/components/OutsideClickAlerter";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps {
+interface IBaseProps extends React.PropsWithChildren {
     className?: string;
     visible: boolean;
     toggleMenu: () => void;

@@ -6,15 +6,12 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
 export function render() {
     // starting point to mounting React to the DOM
-    ReactDOM.render(
-        React.createElement(
-            diReaderGet("react-reader-app"),
-            null),
-        document.getElementById("app"),
-    );
+    ReactDOM
+        .createRoot(document.getElementById("app"))
+        .render(React.createElement(diReaderGet("react-reader-app"), null));
 }
