@@ -22,29 +22,44 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class SkipLink extends React.Component<IProps, undefined> {
+// export default class SkipLink extends React.Component<IProps, undefined> {
 
-    constructor(props: IProps) {
-        super(props);
-    }
+//     constructor(props: IProps) {
+//         super(props);
+//     }
 
-    public render(): React.ReactElement<{}>  {
-        const { label, className } = this.props;
-        return (
-            <button
-                onClick={() => this.onClick()}
-                aria-hidden={false}
-                className={className}
-            >
-                { label }
-            </button>
-        );
-    }
+//     public render(): React.ReactElement<{}>  {
+//         const { label, className } = this.props;
+//         return (
+//             <button
+//                 onClick={() => this.onClick()}
+//                 aria-hidden={false}
+//                 className={className}
+//             >
+//                 { label }
+//             </button>
+//         );
+//     }
 
-    private onClick() {
-        const element = document.getElementById(this.props.anchorId);
-        if (element) {
-            element.focus();
-        }
-    }
+//     private onClick() {
+//         const element = document.getElementById(this.props.anchorId);
+//         if (element) {
+//             element.focus();
+//         }
+//     }
+// }
+
+const SkipLink = (props: IProps) => {
+    const { label, className, anchorId } = props; 
+    return (
+        <button
+            onClick={() => document.getElementById(anchorId)?.focus()}
+            aria-hidden={false}
+            className={className}
+        >
+            { label }
+        </button>
+    );
 }
+
+export default SkipLink;

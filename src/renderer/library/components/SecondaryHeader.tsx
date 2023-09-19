@@ -9,6 +9,8 @@ import * as React from "react";
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.css";
 
 import { TranslatorProps, withTranslator } from "../../common/components/hoc/translator";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { prop } from "ramda";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, React.PropsWithChildren {
@@ -24,26 +26,46 @@ interface IBaseProps extends TranslatorProps, React.PropsWithChildren {
 interface IProps extends IBaseProps {
 }
 
-export class SecondaryHeader extends React.Component<IProps, undefined> {
+// export class SecondaryHeader extends React.Component<IProps, undefined> {
 
-    constructor(props: IProps) {
-        super(props);
-    }
+//     constructor(props: IProps) {
+//         super(props);
+//     }
 
-    public render(): React.ReactElement<{}> {
-        const { id, __ } = this.props;
-        return (
-            <nav
-                style={this.props.style}
-                className={stylesHeader.nav_secondary}
-                role="navigation"
-                aria-label={ __("accessibility.bookMenu")}
-                {...(id ? {id} : {})}
-            >
-                {this.props.children}
-            </nav>
-        );
-    }
+//     public render(): React.ReactElement<{}> {
+//         const { id, __ } = this.props;
+//         return (
+            // <nav
+            //     style={this.props.style}
+            //     className={stylesHeader.nav_secondary}
+            //     role="navigation"
+            //     aria-label={ __("accessibility.bookMenu")}
+            //     {...(id ? {id} : {})}
+            // >
+            //     {this.props.children}
+            // </nav>
+//         );
+//     }
+// }
+
+// export default withTranslator(SecondaryHeader);
+
+
+const SecondaryHeader: React.FC<IBaseProps> = (props) => {
+    const { style, id } = props;
+    const __ = useTranslator();
+
+    return (
+        <nav
+        style={style}
+        className={stylesHeader.nav_secondary}
+        role="navigation"
+        aria-label={ __("accessibility.bookMenu")}
+        {...(id ? {id} : {})}
+    >
+        {props.children}
+    </nav>
+    )
 }
 
-export default withTranslator(SecondaryHeader);
+export default SecondaryHeader;

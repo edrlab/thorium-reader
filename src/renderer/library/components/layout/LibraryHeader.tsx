@@ -7,15 +7,13 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.css";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType, IRouterLocationState } from "../../routing";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 interface NavigationHeader {
     route: string;
@@ -45,111 +43,90 @@ const headerNav: NavigationHeader[] = [
     },
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+
+const Header = () => {
+    const __ = useTranslator();
+    return (<>
+        <SkipLink
+            className={stylesHeader.skip_link}
+            anchorId="main-content"
+            label={__("accessibility.skipLink")}
+        />
+        <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
+            <ul>
+                {
+                    headerNav.map(
+                        (item, index) =>
+                           <NavItem
+                           item={item}
+                           index={index} />,
+                    )
+                }
+            </ul>
+        </nav>
+    </>);
 }
 
-class Header extends React.Component<IProps, undefined> {
+const NavItem = (props: {item: NavigationHeader, index: number}) => {
+    const location = useSelector((state: ILibraryRootState) => state.router.location);
+    const history = useSelector((state: ILibraryRootState) => state.history);
+    const {item, index} = props;
 
-    constructor(props: IProps) {
-        super(props);
+    if (!location) {
+        return (<></>);
     }
 
-    public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+    let styleClasses = [];
+    const pathname = location.pathname;
 
-        return (<>
-            <SkipLink
-                className={stylesHeader.skip_link}
-                anchorId="main-content"
-                label={__("accessibility.skipLink")}
-            />
-            <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                <ul>
-                    {
-                        headerNav.map(
-                            (item, index) =>
-                                this.buildNavItem(item, index),
-                        )
-                    }
-                </ul>
-            </nav>
-        </>);
-    }
-
-    private buildNavItem(item: NavigationHeader, index: number) {
-
-        if (!this.props.location) {
-            return (<></>);
+    let active = false;
+    for (const matchRoute of item.matchRoutes) {
+        if (
+            pathname.startsWith(matchRoute)
+            && (
+                (pathname === "/" && matchRoute === pathname)
+                || matchRoute !== "/"
+            )
+        ) {
+            active = true;
+            styleClasses.push(stylesHeader.active);
+            break;
         }
-
-        // because dynamic label does not pass typed i18n compilation
-        const translate = this.props.__ as (str: string) => string;
-
-        let styleClasses = [];
-        const pathname = this.props.location.pathname;
-
-        let active = false;
-        for (const matchRoute of item.matchRoutes) {
-            if (
-                pathname.startsWith(matchRoute)
-                && (
-                    (pathname === "/" && matchRoute === pathname)
-                    || matchRoute !== "/"
-                )
-            ) {
-                active = true;
-                styleClasses.push(stylesHeader.active);
-                break;
-            }
-        }
-        styleClasses = styleClasses.concat(item.styles);
-
-        const nextLocation = this.props.history.reduce(
-            (pv, cv) =>
-                cv?.pathname?.startsWith(item.route)
-                    ? {
-                        ...this.props.location,
-                        pathname: cv.pathname,
-                    }
-                    : pv,
-            {
-                ...this.props.location,
-                pathname: item.route,
-            },
-        );
-
-        return (
-            <li className={classNames(...styleClasses)} key={index}>
-                <Link
-                    to={nextLocation}
-                    state = {{displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid}}
-
-                    replace={true}
-
-                    aria-pressed={active}
-                    role={"button"}
-                >
-                    {
-                        translate("header." + item.label)
-                    }
-                </Link>
-            </li>
-        );
     }
-}
+    styleClasses = styleClasses.concat(item.styles);
 
-const mapStateToProps = (state: ILibraryRootState) => ({
-    location: state.router.location,
-    history: state.history,
-    locale: state.i18n.locale, // used for automatic refresh to force the rendering of header
-});
+    const nextLocation = history.reduce(
+        (pv, cv) =>
+            cv?.pathname?.startsWith(item.route)
+                ? {
+                    ...location,
+                    pathname: cv.pathname,
+                }
+                : pv,
+        {
+            ...location,
+            pathname: item.route,
+        },
+    );
+    const __ = useTranslator();
+    const translate = __ as (str: string) => string;
+    return (
+        <li className={classNames(...styleClasses)} key={index}>
+            <Link
+                to={nextLocation}
+                state = {{displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid}}
 
-export default connect(mapStateToProps)(withTranslator(Header));
+                replace={true}
+
+                aria-pressed={active}
+                role={"button"}
+            >
+                {
+                    translate(("header." + item.label) as any)
+                }
+            </Link>
+        </li>
+    );
+};
+
+export default Header;
