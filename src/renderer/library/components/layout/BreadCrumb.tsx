@@ -96,64 +96,64 @@ interface IBaseProps extends TranslatorProps {
 const Breadcrumb: React.FC<IBaseProps> = ({ breadcrumb, className }) => {
     const __ = useTranslator();
     const location = useSelector((state: ILibraryRootState) => state.router.location);
-  
+
     const renderBreadcrumbItem = (item: { name: string; path?: string }, index: number) => {
-      const isLastItem = index === breadcrumb.length - 1;
-  
-      if (item.path && !isLastItem) {
+        const isLastItem = index === breadcrumb.length - 1;
+
+        if (item.path && !isLastItem) {
+            return (
+            <Link
+                key={index}
+                to={{
+                ...location,
+                pathname: item.path,
+                }}
+                state={{
+                displayType: (location.state && (location.state as IRouterLocationState).displayType) ? (location.state as IRouterLocationState).displayType : DisplayType.Grid,
+                }}
+                title={item.name}
+                className={stylesButtons.button_transparency}
+            >
+                {item.name}
+            </Link>
+            );
+        }
+
         return (
-          <Link
-            key={index}
-            to={{
-              ...location,
-              pathname: item.path,
-            }}
-            state={{
-              displayType: (location.state && (location.state as IRouterLocationState).displayType) ? (location.state as IRouterLocationState).displayType : DisplayType.Grid,
-            }}
-            title={item.name}
-            className={stylesButtons.button_transparency}
-          >
+            <strong key={index}>
             {item.name}
-          </Link>
+            </strong>
         );
-      }
-  
-      return (
-        <strong key={index}>
-          {item.name}
-        </strong>
-      );
     };
-  
+
     const renderBackLink = () => {
-      if (breadcrumb.length >= 2) {
-        return (
-          <Link
-            to={{
-              ...location,
-              pathname: breadcrumb[breadcrumb.length - 2].path,
-            }}
-            state={{
-              displayType: (location.state && (location.state as IRouterLocationState).displayType) ? (location.state as IRouterLocationState).displayType : DisplayType.Grid,
-            }}
-            title={__("opds.back")}
-            className={stylesButtons.button_transparency_icon}
-          >
-            <SVG ariaHidden={true} svg={ArrowIcon} />
-          </Link>
-        );
-      }
-  
-      return null;
+        if (breadcrumb.length >= 2) {
+            return (
+            <Link
+                to={{
+                ...location,
+                pathname: breadcrumb[breadcrumb.length - 2].path,
+                }}
+                state={{
+                displayType: (location.state && (location.state as IRouterLocationState).displayType) ? (location.state as IRouterLocationState).displayType : DisplayType.Grid,
+                }}
+                title={__("opds.back")}
+                className={stylesButtons.button_transparency_icon}
+            >
+                <SVG ariaHidden={true} svg={ArrowIcon} />
+            </Link>
+            );
+        }
+
+        return null;
     };
-  
+
     return (
-      <div className={classNames(stylesBreadcrumb.breadcrumb, className)}>
-        {renderBackLink()}
-        {breadcrumb.map((item, index) => renderBreadcrumbItem(item, index))}
-      </div>
+        <div className={classNames(stylesBreadcrumb.breadcrumb, className)}>
+            {renderBackLink()}
+            {breadcrumb.map((item, index) => renderBreadcrumbItem(item, index))}
+        </div>
     );
-  };
-  
-  export default Breadcrumb;
+};
+
+export default Breadcrumb;

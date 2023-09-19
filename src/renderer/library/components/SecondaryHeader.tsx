@@ -8,9 +8,8 @@
 import * as React from "react";
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.css";
 
-import { TranslatorProps, withTranslator } from "../../common/components/hoc/translator";
+import { TranslatorProps/*,  withTranslator */ } from "../../common/components/hoc/translator";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { prop } from "ramda";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, React.PropsWithChildren {
@@ -23,8 +22,8 @@ interface IBaseProps extends TranslatorProps, React.PropsWithChildren {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
-}
+// interface IProps extends IBaseProps {
+// }
 
 // export class SecondaryHeader extends React.Component<IProps, undefined> {
 
@@ -65,7 +64,7 @@ const SecondaryHeader: React.FC<IBaseProps> = (props) => {
     >
         {props.children}
     </nav>
-    )
-}
+    );
+};
 
 export default SecondaryHeader;

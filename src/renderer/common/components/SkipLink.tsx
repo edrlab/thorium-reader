@@ -50,7 +50,7 @@ interface IProps extends IBaseProps {
 // }
 
 const SkipLink = (props: IProps) => {
-    const { label, className, anchorId } = props; 
+    const { label, className, anchorId } = props;
     return (
         <button
             onClick={() => document.getElementById(anchorId)?.focus()}
@@ -60,6 +60,6 @@ const SkipLink = (props: IProps) => {
             { label }
         </button>
     );
-}
+};
 
 export default SkipLink;

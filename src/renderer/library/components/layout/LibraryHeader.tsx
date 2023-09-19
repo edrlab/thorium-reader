@@ -57,15 +57,16 @@ const Header = () => {
                 {
                     headerNav.map(
                         (item, index) =>
-                           <NavItem
-                           item={item}
-                           index={index} />,
+                            <NavItem
+                            item={item}
+                            index={index}
+                            key={index} />,
                     )
                 }
             </ul>
         </nav>
     </>);
-}
+};
 
 const NavItem = (props: {item: NavigationHeader, index: number}) => {
     const location = useSelector((state: ILibraryRootState) => state.router.location);
