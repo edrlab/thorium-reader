@@ -27,21 +27,36 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class SVG extends React.Component<IProps, undefined> {
+// export default class SVG extends React.Component<IProps, undefined> {
 
-    constructor(props: IProps) {
-        super(props);
-    }
+//     constructor(props: IProps) {
+//         super(props);
+//     }
 
-    public render(): React.ReactElement<{}>  {
-        const { svg, className, ariaHidden } = this.props;
-        return (
-            <svg aria-hidden={ariaHidden} className={className} viewBox={svg.default.viewBox}>
-                { this.props.title &&
-                    <title>{this.props.title}</title>
-                }
-                <use xlinkHref={"#" + svg.default.id} />
-            </svg>
-        );
-    }
-}
+//     public render(): React.ReactElement<{}>  {
+//         const { svg, className, ariaHidden } = this.props;
+//         return (
+//             <svg aria-hidden={ariaHidden} className={className} viewBox={svg.default.viewBox}>
+//                 { this.props.title &&
+//                     <title>{this.props.title}</title>
+//                 }
+//                 <use xlinkHref={"#" + svg.default.id} />
+//             </svg>
+//         );
+//     }
+// }
+
+const SVG = (props: IProps) => {
+    const  { svg, className, ariaHidden, title } = props;
+
+    return (
+        <svg aria-hidden={ariaHidden} className={className} viewBox={svg.default.viewBox}>
+            { title &&
+                <title>{title}</title>
+            }
+            <use xlinkHref={"#" + svg.default.id} />
+        </svg>
+    );
+};
+
+export default SVG;

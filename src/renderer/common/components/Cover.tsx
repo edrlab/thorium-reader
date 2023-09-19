@@ -15,10 +15,11 @@ import * as stylesPublications from "readium-desktop/renderer/assets/styles/comp
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";
-
-import { TranslatorProps, withTranslator } from "./hoc/translator";
+import { TranslatorProps/* , withTranslator */ } from "./hoc/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { useState, useEffect } from "react";
+import { useTranslator } from "../hooks/useTranslator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -36,99 +37,181 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-interface IState {
-    url: string,
-    imgErroredOnce: boolean,
-}
+// interface IState {
+//     url: string,
+//     imgErroredOnce: boolean,
+// }
 
-class Cover extends React.Component<IProps, IState> {
+// class Cover extends React.Component<IProps, IState> {
 
-    constructor(props: IProps) {
-        super(props);
+//     constructor(props: IProps) {
+//         super(props);
 
-        this.state = {
-            url: "",
-            imgErroredOnce: false,
-        };
+//         this.state = {
+//             url: "",
+//             imgErroredOnce: false,
+//         };
 
-        this.imageOnError = this.imageOnError.bind(this);
-    }
+//         this.imageOnError = this.imageOnError.bind(this);
+//     }
 
-    public componentDidMount(): void {
+//     public componentDidMount(): void {
 
-        const { cover } = this.props.publicationViewMaybeOpds;
+//         const { cover } = this.props.publicationViewMaybeOpds;
+//         if (cover) {
+//             const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
+//             const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
+
+//             let defaultUrl: string;
+//             if (this.props.coverType === "cover") {
+//                 defaultUrl = coverUrl || thumbnailUrl;
+//             } else {
+//                 defaultUrl = thumbnailUrl || coverUrl;
+//             }
+
+//             this.setState({url: defaultUrl});
+//         }
+//     }
+
+    // public render()  {
+    //     const { publicationViewMaybeOpds, translator } = this.props;
+    //     const { cover } = publicationViewMaybeOpds;
+
+    //     if (!cover) {
+
+    //         const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
+
+    //         let colors = publicationViewMaybeOpds.customCover;
+    //         if (!colors) {
+    //             colors = RandomCustomCovers[0];
+    //         }
+    //         const backgroundStyle: React.CSSProperties = {
+    //             backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
+    //         };
+
+    //         const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
+    //         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+    //         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+    //         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+
+    //         return (
+    //             <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
+    //                 <div className={stylesPublications.no_img}>
+    //                     <p aria-hidden
+    //                         dir={pubTitleIsRTL ? "rtl" : undefined}>
+    //                         {pubTitleStr}
+    //                     </p>
+    //                     <p aria-hidden>{authors}</p>
+    //                 </div>
+    //             </div>
+    //         );
+    //     } else {
+    //         return (
+    //             <img
+    //                 tabIndex={this.props.onKeyPress ? 0 : -1}
+    //                 className={stylesImages.cover_img}
+    //                 onClick={this.props.onClick}
+    //                 onKeyPress={this.props.onKeyPress}
+    //                 role="presentation"
+    //                 alt={this.props.onKeyPress ? this.props.__("publication.cover.img") : ""}
+    //                 aria-hidden={this.props.onKeyPress ? undefined : true}
+    //                 src={this.state.url}
+    //                 onError={this.imageOnError}
+    //             />
+    //         );
+    //     }
+    // }
+
+    // private imageOnError() {
+
+    //     if (this.state.imgErroredOnce) return;
+
+    //     const b64 = Buffer.from(this.state.url).toString("base64");
+    //     const url = "opds-media://0.0.0.0/" + encodeURIComponent_RFC3986(b64);
+    //     this.setState({url, imgErroredOnce: true});
+    // }
+// }
+
+// export default withTranslator(Cover);
+
+const Cover = (props: IProps) => {
+    const [url, setUrl] = useState("");
+    const [imgErroredOnce, setImgErroredOnce] = useState(false);
+
+    const { publicationViewMaybeOpds, translator } = props;
+    const {cover} = publicationViewMaybeOpds;
+    const __ = useTranslator();
+
+    const imageOnError = () => {
+        if (imgErroredOnce) return;
+
+        const b64 = Buffer.from(url).toString("base64");
+        const newUrl = "opds-media://0.0.0.0/" + encodeURIComponent_RFC3986(b64);
+        setUrl(newUrl);
+        setImgErroredOnce(true);
+    };
+
+    useEffect(() => {
+        const { coverType } = props;
         if (cover) {
             const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
             const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
-
             let defaultUrl: string;
-            if (this.props.coverType === "cover") {
+
+            if (coverType === "cover") {
                 defaultUrl = coverUrl || thumbnailUrl;
             } else {
                 defaultUrl = thumbnailUrl || coverUrl;
             }
 
-            this.setState({url: defaultUrl});
+            setUrl(defaultUrl);
         }
-    }
+    });
 
-    public render()  {
-        const { publicationViewMaybeOpds, translator } = this.props;
-        const { cover } = publicationViewMaybeOpds;
+    if (!cover) {
 
-        if (!cover) {
+        const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
 
-            const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
+        let colors = publicationViewMaybeOpds.customCover;
+        if (!colors) {
+            colors = RandomCustomCovers[0];
+        }
+        const backgroundStyle: React.CSSProperties = {
+            backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
+        };
 
-            let colors = publicationViewMaybeOpds.customCover;
-            if (!colors) {
-                colors = RandomCustomCovers[0];
-            }
-            const backgroundStyle: React.CSSProperties = {
-                backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
-            };
+        const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
+        const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
+        const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
+        const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
-            const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
-            const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
-            const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
-            const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
-
-            return (
-                <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
-                    <div className={stylesPublications.no_img}>
-                        <p aria-hidden
-                            dir={pubTitleIsRTL ? "rtl" : undefined}>
-                            {pubTitleStr}
-                        </p>
-                        <p aria-hidden>{authors}</p>
-                    </div>
+        return (
+            <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
+                <div className={stylesPublications.no_img}>
+                    <p aria-hidden
+                        dir={pubTitleIsRTL ? "rtl" : undefined}>
+                        {pubTitleStr}
+                    </p>
+                    <p aria-hidden>{authors}</p>
                 </div>
-            );
-        } else {
-            return (
-                <img
-                    tabIndex={this.props.onKeyPress ? 0 : -1}
-                    className={stylesImages.cover_img}
-                    onClick={this.props.onClick}
-                    onKeyPress={this.props.onKeyPress}
-                    role="presentation"
-                    alt={this.props.onKeyPress ? this.props.__("publication.cover.img") : ""}
-                    aria-hidden={this.props.onKeyPress ? undefined : true}
-                    src={this.state.url}
-                    onError={this.imageOnError}
-                />
-            );
-        }
+            </div>
+        );
+    } else {
+        return (
+            <img
+                tabIndex={props.onKeyPress ? 0 : -1}
+                className={stylesImages.cover_img}
+                onClick={props.onClick}
+                onKeyPress={props.onKeyPress}
+                role="presentation"
+                alt={props.onKeyPress ? __("publication.cover.img") : ""}
+                aria-hidden={props.onKeyPress ? undefined : true}
+                src={url}
+                onError={imageOnError}
+            />
+        );
     }
 
-    private imageOnError() {
+};
 
-        if (this.state.imgErroredOnce) return;
-
-        const b64 = Buffer.from(this.state.url).toString("base64");
-        const url = "opds-media://0.0.0.0/" + encodeURIComponent_RFC3986(b64);
-        this.setState({url, imgErroredOnce: true});
-    }
-}
-
-export default withTranslator(Cover);
+export default Cover;
