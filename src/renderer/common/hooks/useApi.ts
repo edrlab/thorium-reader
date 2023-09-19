@@ -7,7 +7,6 @@ import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { ApiResponse } from "readium-desktop/common/redux/states/api";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
-import { useSyncExternalStore } from "./useSyncExternalStore";
 
 export function useApi<T extends TApiMethodName>(_requestId: string, apiPath: T, ...requestData: Parameters<TApiMethod[T]>): ApiResponse<TReturnPromiseOrGeneratorType<TApiMethod[T]>> {
 
@@ -24,6 +23,6 @@ export function useApi<T extends TApiMethodName>(_requestId: string, apiPath: T,
         };
     }, []); // componentDidMount
 
-    const apiResult = useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
+    const apiResult = React.useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
     return apiResult;
 };
