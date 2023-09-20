@@ -26,7 +26,7 @@ interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: TPublication;
     coverType?: "cover" | "thumbnail" | undefined;
     onClick?: () => void;
-    onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
 }
 
 // IProps may typically extend:
@@ -134,11 +134,11 @@ interface IProps extends IBaseProps {
 
 // export default withTranslator(Cover);
 
-const Cover = (props: IProps) => {
+const Cover = ({ publicationViewMaybeOpds, translator, coverType, onKeyDown, onClick }: IProps) => {
+
     const [url, setUrl] = useState("");
     const [imgErroredOnce, setImgErroredOnce] = useState(false);
 
-    const { publicationViewMaybeOpds, translator } = props;
     const {cover} = publicationViewMaybeOpds;
     const __ = useTranslator();
 
@@ -152,7 +152,6 @@ const Cover = (props: IProps) => {
     };
 
     useEffect(() => {
-        const { coverType } = props;
         if (cover) {
             const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
             const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
@@ -166,7 +165,7 @@ const Cover = (props: IProps) => {
 
             setUrl(defaultUrl);
         }
-    });
+    }, [url]);
 
     if (!cover) {
 
@@ -199,13 +198,13 @@ const Cover = (props: IProps) => {
     } else {
         return (
             <img
-                tabIndex={props.onKeyPress ? 0 : -1}
+                tabIndex={onKeyDown ? 0 : -1}
                 className={stylesImages.cover_img}
-                onClick={props.onClick}
-                onKeyPress={props.onKeyPress}
+                onClick={onClick}
+                onKeyDown={onKeyDown}
                 role="presentation"
-                alt={props.onKeyPress ? __("publication.cover.img") : ""}
-                aria-hidden={props.onKeyPress ? undefined : true}
+                alt={onKeyDown ? __("publication.cover.img") : ""}
+                aria-hidden={onKeyDown ? undefined : true}
                 src={url}
                 onError={imageOnError}
             />

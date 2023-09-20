@@ -50,43 +50,36 @@ export interface IProps {
     closeDialogCb: () => void;
 }
 
-const Duration = (props: {
-    duration: number;
-    __: I18nTyped;
-}) => {
+const Duration = (props: {duration: number; __: I18nTyped;}) => {
 
     const { duration, __ } = props;
-
-    if (!duration) {
-        return <></>;
-    }
-
     const sentence = formatTime(duration);
 
+    if (!duration || !sentence) return <></>;
+
     return (
-        sentence
-            ? <>
-                <strong>{`${__("publication.duration.title")}: `}</strong>
-                <i className={stylesBookDetailsDialog.allowUserSelect}>
-                    {sentence}
-                </i>
-                <br />
-            </>
-            : <></>);
+        <>
+            <strong>{`${__("publication.duration.title")}: `}</strong>
+            <i className={stylesBookDetailsDialog.allowUserSelect}>
+                {sentence}
+            </i>
+            <br />
+        </>);
 };
 
-const Progression = (props: {
+const Progression = ( props :{
     r2Publication: R2Publication | null,
     manifestUrlR2Protocol: string | null,
     handleLinkUrl: ((url: string) => void) | undefined;
     locatorExt: LocatorExtended,
     focusWhereAmI: boolean,
-    pdfPlayerNumberOfPages: number | undefined, // super hacky :(
-    divinaNumberOfPages: number | undefined, // super hacky :(
+    pdfPlayerNumberOfPages: number | undefined,
+    divinaNumberOfPages: number | undefined,
     divinaContinousEqualTrue: boolean,
     __: I18nTyped;
     closeDialogCb: () => void;
 }) => {
+
     const { __, closeDialogCb, locatorExt, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication, manifestUrlR2Protocol, handleLinkUrl } = props;
 
     const focusRef = React.useRef<HTMLHeadingElement>(null);
@@ -329,10 +322,26 @@ const Progression = (props: {
     return (<></>);
 };
 
-export const PublicationInfoContent: React.FC<IProps & React.PropsWithChildren> = (props) => {
+export const PublicationInfoContent: React.FC<IProps & React.PropsWithChildren> = ({
+    closeDialogCb,
+    readerReadingLocation,
+    pdfPlayerNumberOfPages,
+    divinaNumberOfPages,
+    divinaContinousEqualTrue,
+    r2Publication: r2Publication_,
+    manifestUrlR2Protocol,
+    handleLinkUrl,
+    publicationViewMaybeOpds,
+    toggleCoverZoomCb,
+    ControlComponent,
+    TagManagerComponent,
+    coverZoom,
+    translator,
+    onClikLinkCb,
+    focusWhereAmI,
+}) => {
 
     // tslint:disable-next-line: max-line-length
-    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;
     const __ = translator.translate;
 
     const r2Publication = React.useMemo(() => {
@@ -359,7 +368,7 @@ export const PublicationInfoContent: React.FC<IProps & React.PropsWithChildren> 
                         <Cover
                             publicationViewMaybeOpds={publicationViewMaybeOpds}
                             onClick={() => toggleCoverZoomCb(coverZoom)}
-                            onKeyPress={
+                            onKeyDown={
                                 (e: React.KeyboardEvent<HTMLImageElement>) =>
                                     e.key === "Enter" && toggleCoverZoomCb(coverZoom)
                             }
@@ -381,7 +390,7 @@ export const PublicationInfoContent: React.FC<IProps & React.PropsWithChildren> 
                     </section>
 
                     <section>
-                        <PublicationInfoDescription publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} translator={props.translator} />
+                        <PublicationInfoDescription publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} translator={translator} />
                     </section>
                     <section>
                         <div className={stylesGlobal.heading}>
