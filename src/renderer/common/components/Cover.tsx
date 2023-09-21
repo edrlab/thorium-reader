@@ -19,6 +19,7 @@ import {
 import { TranslatorProps, withTranslator } from "./hoc/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { randomUUID } from "crypto";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -41,7 +42,10 @@ interface IState {
     imgErroredOnce: boolean,
 }
 
+
 class Cover extends React.Component<IProps, IState> {
+
+    private log;
 
     constructor(props: IProps) {
         super(props);
@@ -52,10 +56,16 @@ class Cover extends React.Component<IProps, IState> {
         };
 
         this.imageOnError = this.imageOnError.bind(this);
+
+        let r = randomUUID();
+        this.log = (...s: string[]) => console.log("COVER (" + r + ")", ...s);
+        this.log("CONSTRUCTOR");
+        
     }
 
     public componentDidMount(): void {
 
+        this.log("DIDMOUNT")
         const { cover } = this.props.publicationViewMaybeOpds;
         if (cover) {
             const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
@@ -68,15 +78,21 @@ class Cover extends React.Component<IProps, IState> {
                 defaultUrl = thumbnailUrl || coverUrl;
             }
 
+            this.log("DIDMOUNT set url ", defaultUrl);
             this.setState({url: defaultUrl});
         }
+        this.log("DIDMOUNT END");
     }
 
     public render()  {
+
+        // log("RENDER");
         const { publicationViewMaybeOpds, translator } = this.props;
         const { cover } = publicationViewMaybeOpds;
 
         if (!cover) {
+
+            this.log("RENDER NO COVER");
 
             const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
 
@@ -105,6 +121,8 @@ class Cover extends React.Component<IProps, IState> {
                 </div>
             );
         } else {
+
+            this.log("RENDER WITH COVER");
             return (
                 <img
                     tabIndex={this.props.onKeyPress ? 0 : -1}
@@ -123,10 +141,16 @@ class Cover extends React.Component<IProps, IState> {
 
     private imageOnError() {
 
+        this.log("IMGONERROR");
+
         if (this.state.imgErroredOnce) return;
+
+        this.log("IMGONERROR FIRST TIME");
 
         const b64 = Buffer.from(this.state.url).toString("base64");
         const url = "opds-media://0.0.0.0/" + encodeURIComponent_RFC3986(b64);
+
+        this.log("IMGONERROR set url", url);
         this.setState({url, imgErroredOnce: true});
     }
 }
