@@ -134,15 +134,43 @@ interface IProps extends IBaseProps {
 
 // export default withTranslator(Cover);
 
-const Cover = ({ publicationViewMaybeOpds, translator, coverType, onKeyDown, onClick }: IProps) => {
+const Cover =(props: IProps) => {
 
-    const [url, setUrl] = useState("");
+    const uuid = React.useId();
+    const log = (...s: string[]) => console.log("COVER (" + uuid + ")", ...s);
+    log("ENTER");
+
+    const {
+        publicationViewMaybeOpds:
+        { cover, authors: publicationAuthors, publicationTitle, documentTitle, customCover },
+        coverType,
+        onKeyDown,
+        onClick,
+    } = props;
+
+    const [__, translator] = useTranslator();
+
+
+    const [url, setUrl] = useState(() => {
+        log("useState URL");
+        if (!cover) return "";
+        const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
+        const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
+        let defaultUrl: string;
+
+        if (coverType === "cover") {
+            defaultUrl = coverUrl || thumbnailUrl;
+        } else {
+            defaultUrl = thumbnailUrl || coverUrl;
+        }
+
+        return defaultUrl;
+    });
+
     const [imgErroredOnce, setImgErroredOnce] = useState(false);
 
-    const {cover} = publicationViewMaybeOpds;
-    const __ = useTranslator();
-
     const imageOnError = () => {
+        log("IMG ON ERROR");
         if (imgErroredOnce) return;
 
         const b64 = Buffer.from(url).toString("base64");
@@ -151,27 +179,28 @@ const Cover = ({ publicationViewMaybeOpds, translator, coverType, onKeyDown, onC
         setImgErroredOnce(true);
     };
 
-    useEffect(() => {
+    return React.useMemo(() => {
+
+        log("RENDER");
         if (cover) {
-            const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
-            const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
-            let defaultUrl: string;
-
-            if (coverType === "cover") {
-                defaultUrl = coverUrl || thumbnailUrl;
-            } else {
-                defaultUrl = thumbnailUrl || coverUrl;
-            }
-
-            setUrl(defaultUrl);
+            return (
+                <img
+                    tabIndex={onKeyDown ? 0 : -1}
+                    className={stylesImages.cover_img}
+                    onClick={onClick}
+                    onKeyDown={onKeyDown}
+                    role="presentation"
+                    alt={onKeyDown ? __("publication.cover.img") : ""}
+                    aria-hidden={onKeyDown ? undefined : true}
+                    src={url}
+                    onError={imageOnError}
+                />
+            );
         }
-    }, [url]);
 
-    if (!cover) {
+        const authors = formatContributorToString(publicationAuthors, translator);
 
-        const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
-
-        let colors = publicationViewMaybeOpds.customCover;
+        let colors = customCover;
         if (!colors) {
             colors = RandomCustomCovers[0];
         }
@@ -179,7 +208,7 @@ const Cover = ({ publicationViewMaybeOpds, translator, coverType, onKeyDown, onC
             backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
         };
 
-        const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
+        const pubTitleLangStr = convertMultiLangStringToString(translator, publicationTitle || documentTitle);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -195,21 +224,7 @@ const Cover = ({ publicationViewMaybeOpds, translator, coverType, onKeyDown, onC
                 </div>
             </div>
         );
-    } else {
-        return (
-            <img
-                tabIndex={onKeyDown ? 0 : -1}
-                className={stylesImages.cover_img}
-                onClick={onClick}
-                onKeyDown={onKeyDown}
-                role="presentation"
-                alt={onKeyDown ? __("publication.cover.img") : ""}
-                aria-hidden={onKeyDown ? undefined : true}
-                src={url}
-                onError={imageOnError}
-            />
-        );
-    }
+    }, []);
 
 };
 
