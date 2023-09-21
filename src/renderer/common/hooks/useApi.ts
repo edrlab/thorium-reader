@@ -1,3 +1,10 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import * as React from "react";
 import { ReactReduxContext } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
@@ -7,6 +14,7 @@ import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { ApiResponse } from "readium-desktop/common/redux/states/api";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
+import { useSyncExternalStore } from "./useSyncExternalStore";
 
 export function useApi<T extends TApiMethodName>(_requestId: string, apiPath: T, ...requestData: Parameters<TApiMethod[T]>): ApiResponse<TReturnPromiseOrGeneratorType<TApiMethod[T]>> {
 
@@ -23,6 +31,6 @@ export function useApi<T extends TApiMethodName>(_requestId: string, apiPath: T,
         };
     }, []); // componentDidMount
 
-    const apiResult = React.useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
+    const apiResult = useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
     return apiResult;
 };

@@ -4,6 +4,8 @@ import { ILibraryRootState } from "../redux/states";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { readerLocalActionLocatorHrefChanged } from "readium-desktop/renderer/reader/redux/actions";
 // import { v4 as uuidv4 } from "uuid";
 // import { TApiMethod, TApiMethodName } from "readium-desktop/common/api/api.type";
 // import { ReactReduxContext} from 'react-redux'
@@ -69,6 +71,9 @@ export function HooksTest(props: { name: string }) {
     //   const methodId = splitPath[1] as TMethodApi;
     //   store.dispatch(apiActions.request.build(requestId, moduleId, methodId, requestData))
     // }, []);
+
+    const action = useDispatch(readerLocalActionLocatorHrefChanged.build("", ""));
+    log(action);
 
     // const allPubRes = useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
     const allPubRes = useApi(requestId, "publication/findAll");

@@ -5,13 +5,5 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-import { ReactReduxContext} from "react-redux";
-import { Action } from "../../../common/models/redux";
-
-export function useDispatch<A extends Action<any, any, any>>(action: A): A {
-
-    const {store} = React.useContext(ReactReduxContext);
-    const actionReturned = store.dispatch(action);
-    return actionReturned;
-}
+import { useSyncExternalStore } from "use-sync-external-store";
+export { useSyncExternalStore };
