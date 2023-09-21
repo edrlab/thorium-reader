@@ -191,7 +191,23 @@ export type I18nTyped = TFunction;
 @injectable()
 export class Translator {
     public translate = this._translate as I18nTyped;
+    public subscribe = this._subscribe.bind(this);
     private locale = "en";
+    private listeners: Set<() => void>;
+
+    constructor() {
+        this.listeners = new Set();
+    }
+
+    private _subscribe(fn: () => void) {
+        if (fn) {
+            this.listeners.add(fn);
+            return () => {
+                this.listeners.delete(fn);
+            };
+        }
+        return () => {};
+    }
 
     public getLocale(): string {
         return this.locale;
@@ -214,6 +230,10 @@ export class Translator {
                 });
             } else {
                 resolve();
+            }
+        }).finally(() => {
+            for (const listener of this.listeners) {
+                listener();
             }
         });
     }

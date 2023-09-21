@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { ReactReduxContext} from "react-redux";
-import { Action } from "../../../common/models/redux";
+import { Action } from "readium-desktop/common/models/redux";
 
 export function useDispatch<A extends Action<any, any, any>>(action: A): A {
 
