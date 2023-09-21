@@ -48,12 +48,11 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
                                     onClick={
                                         () => toggleCoverZoomCb(coverZoom)
                                     }
-                                    onKeyPress={
+                                    onKeyDown={
                                         (e: React.KeyboardEvent<HTMLImageElement>) =>
                                             e.key === "Enter" && toggleCoverZoomCb(coverZoom)
                                     }
-                                >
-                                </Cover>
+                                />
                                 :
                                 <>
                                     {

@@ -359,7 +359,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                         <Cover
                             publicationViewMaybeOpds={publicationViewMaybeOpds}
                             onClick={() => toggleCoverZoomCb(coverZoom)}
-                            onKeyPress={
+                            onKeyDown={
                                 (e: React.KeyboardEvent<HTMLImageElement>) =>
                                     e.key === "Enter" && toggleCoverZoomCb(coverZoom)
                             }
