@@ -52,7 +52,7 @@ interface IBaseProps extends TranslatorProps, React.PropsWithChildren {
 
 const SecondaryHeader: React.FC<IBaseProps> = (props) => {
     const { style, id } = props;
-    const __ = useTranslator();
+    const [__] = useTranslator();
 
     return (
         <nav

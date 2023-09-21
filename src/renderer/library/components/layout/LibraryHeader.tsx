@@ -45,7 +45,7 @@ const headerNav: NavigationHeader[] = [
 
 
 const Header = () => {
-    const __ = useTranslator();
+    const [__] = useTranslator();
     return (<>
         <SkipLink
             className={stylesHeader.skip_link}
@@ -109,7 +109,7 @@ const NavItem = (props: {item: NavigationHeader, index: number}) => {
             pathname: item.route,
         },
     );
-    const __ = useTranslator();
+    const [__] = useTranslator();
     const translate = __ as (str: string) => string;
     return (
         <li className={classNames(...styleClasses)} key={index}>

@@ -25,7 +25,7 @@ interface IBaseProps extends React.PropsWithChildren {
 const LibraryLayout = (props: IBaseProps) => {
 
     const { title, secondaryHeader, breadCrumb, mainClassName, children } = props;
-    const __ = useTranslator();
+    const [__] = useTranslator();
     const refToolbar = React.useRef<HTMLAnchorElement>();
     const fastLinkRef = React.useRef<HTMLAnchorElement>();
 

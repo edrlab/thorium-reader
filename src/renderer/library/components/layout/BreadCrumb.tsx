@@ -94,7 +94,7 @@ interface IBaseProps extends TranslatorProps {
 
 
 const Breadcrumb: React.FC<IBaseProps> = ({ breadcrumb, className }) => {
-    const __ = useTranslator();
+    const [__] = useTranslator();
     const location = useSelector((state: ILibraryRootState) => state.router.location);
 
     const renderBreadcrumbItem = (item: { name: string; path?: string }, index: number) => {

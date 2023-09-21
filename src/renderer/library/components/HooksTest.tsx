@@ -41,7 +41,7 @@ export function HooksTest(props: { name: string }) {
     //     }
     //     return translator.subscribe(handleLocaleChange);
     // }, [translator.subscribe]);
-    const _ = useTranslator();
+    const [__] = useTranslator();
     // let _ = (_a: any) => {};
 
     // const {store} = React.useContext<ReactReduxContextValue<ILibraryRootState>>(ReactReduxContext);
@@ -74,5 +74,5 @@ export function HooksTest(props: { name: string }) {
     const allPubRes = useApi(requestId, "publication/findAll");
     log(allPubRes);
     log(Date.now().toString(), "rendered");
-    return <h1 style={{ position: "absolute", top: 0, zIndex: 999 }}>Hello : {name} : id {id} : translate {_("header.books")}</h1>;
+    return <h1 style={{ position: "absolute", top: 0, zIndex: 999 }}>Hello : {name} : id {id} : translate {__("header.books")}</h1>;
 }
