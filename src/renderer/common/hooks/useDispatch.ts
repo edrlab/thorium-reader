@@ -8,10 +8,11 @@
 import * as React from "react";
 import { ReactReduxContext} from "react-redux";
 import { Action } from "readium-desktop/common/models/redux";
+import { Dispatch } from "redux";
 
-export function useDispatch<A extends Action<any, any, any>>(action: A): A {
+export function useDispatch<A extends Action<any, any, any>>(): Dispatch<A> {
 
     const {store} = React.useContext(ReactReduxContext);
-    const actionReturned = store.dispatch(action);
-    return actionReturned;
+    const storeDispatchFn = store.dispatch;
+    return storeDispatchFn;
 }
