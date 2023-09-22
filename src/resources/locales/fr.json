@@ -338,7 +338,7 @@
         },
         "settings": {
             "column": {
-                "auto": "Automatique",
+                "auto": "Défaut",
                 "one": "1 col",
                 "oneTitle": "une colonne",
                 "title": "Colonnes",

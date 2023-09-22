@@ -7,15 +7,16 @@
 
 import { RouterState } from "redux-first-history";
 import { downloadActions } from "readium-desktop/common/redux/actions";
-import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
 import { ILoadState } from "readium-desktop/renderer/common/redux/states/load";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 import { THistoryState } from "./history";
 import { IOpdsHeaderState, IOpdsSearchState } from "./opds";
+import { CatalogView } from "readium-desktop/common/views/catalog";
 
-export interface ILibraryRootState extends ICommonRootState {
+export interface ILibraryRootState extends IRendererCommonRootState {
     opds: {
         browser: {
             breadcrumb: IBreadCrumbItem[];
@@ -27,4 +28,8 @@ export interface ILibraryRootState extends ICommonRootState {
     download: TPQueueState<downloadActions.progress.Payload, number>;
     history: THistoryState;
     load: ILoadState;
+    publication: {
+        catalog: CatalogView,
+        tag: string[],
+    }
 }

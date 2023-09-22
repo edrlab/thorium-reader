@@ -7,21 +7,20 @@
 
 import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
-import { KeyboardState } from "readium-desktop/common/redux/states/keyboard";
+import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 import { AppState } from "./app";
 import { ILcpState } from "./lcp";
 import { IDictPublicationState } from "./publication";
-import { ISessionState } from "./session";
 import { StreamerState } from "./streamer";
 import { IDictWinRegistryReaderState } from "./win/registry/reader";
 import { IWinSessionLibraryState } from "./win/session/library";
 import { IDictWinSessionReaderState } from "./win/session/reader";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
-export interface RootState {
-    session: ISessionState;
+export interface RootState extends ICommonRootState {
     app: AppState;
     // net: NetState;
     i18n: I18NState;
@@ -45,7 +44,7 @@ export interface RootState {
         lastReadingQueue: TPQueueState;
         db: IDictPublicationState;
     };
-    keyboard: KeyboardState;
+    keyboard: IKeyboardState;
     opds: {
         catalog: OpdsFeedDocument[];
     },

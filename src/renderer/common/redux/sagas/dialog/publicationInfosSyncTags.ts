@@ -10,7 +10,7 @@ import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";
@@ -31,7 +31,7 @@ function* apiResult(action: apiActions.result.TAction) {
             const publicationView = action.payload as
                 TReturnPromiseOrGeneratorType<TApiMethod["publication/updateTags"]>;
             const tagsArray = publicationView.tags;
-            const publicationFromDialog = (yield* selectTyped((state: ICommonRootState) =>
+            const publicationFromDialog = (yield* selectTyped((state: IRendererCommonRootState) =>
                 // tslint:disable-next-line: max-line-length
                 (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication)) as PublicationView;
 

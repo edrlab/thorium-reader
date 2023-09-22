@@ -9,12 +9,12 @@ import { TApiMethod, TApiMethodName } from "readium-desktop/common/api/api.type"
 import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
 import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/common/redux/states/api";
+import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/common/redux/states/api";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 
-import { ICommonRootState } from "../../../../common/redux/states/renderer/commonRootState";
+import { IRendererCommonRootState } from "../../../../common/redux/states/rendererCommonRootState";
 
 export function apiDispatch(dispatch: Dispatch) {
     return (requestId: string = uuidv4()) =>
@@ -28,13 +28,13 @@ export function apiDispatch(dispatch: Dispatch) {
         };
 }
 
-export function apiState(state: ICommonRootState) {
+export function apiState(state: IRendererCommonRootState) {
     return (requestId: string) =>
         <T extends TApiMethodName>(_apiPath: T): ApiResponse<TReturnPromiseOrGeneratorType<TApiMethod[T]>> =>
             state.api[requestId];
 }
 
-export function apiRefreshToState(state: ICommonRootState) {
+export function apiRefreshToState(state: IRendererCommonRootState) {
     return (apiPathArray: TApiMethodName[]): boolean =>
         state.api[LAST_API_SUCCESS_ID]?.data.moduleId &&
         apiPathArray.includes(

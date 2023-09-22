@@ -6,7 +6,13 @@
 // ==LICENSE-END==
 
 import * as userKeyCheckRequest from "./user-key-check-request";
+import * as renewPublicationLicense from "./renewPublicationLicense";
+import * as returnPublication from "./returnPublication";
+import * as unlockPublicationWithPassphrase from "./unlockPublicationWithPassphrase";
 
 export {
     userKeyCheckRequest,
+    renewPublicationLicense,
+    returnPublication,
+    unlockPublicationWithPassphrase,
 };

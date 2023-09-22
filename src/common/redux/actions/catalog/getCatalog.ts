@@ -5,13 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { call as callTyped } from "typed-redux-saga/macro";
-import { diMainGet } from "readium-desktop/main/di";
+import { Action } from "readium-desktop/common/models/redux";
 
-export function* getAllTags() {
-    const publicationRepository = diMainGet("publication-repository");
+export const ID = "CATALOG_GET";
 
-    const tags = yield* callTyped(() => publicationRepository.getAllTags());
-
-    return tags;
+export interface Payload {
 }
+
+export function build():
+    Action<typeof ID, Payload> {
+
+    return {
+        type: ID,
+        payload: {
+        },
+    };
+}
+build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

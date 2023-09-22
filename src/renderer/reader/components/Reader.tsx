@@ -44,7 +44,6 @@ import {
     ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
     registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import {
@@ -71,7 +70,7 @@ import {
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight, publicationHasMediaOverlays,
     readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
-    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSentenceDetectionEnable, TTSStateEnum,
+    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
@@ -1543,6 +1542,10 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
 
+        const clipboardInterceptor = (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
+            this.props.clipboardCopy(this.props.pubId, clipboardData);
+        };
+
         if (this.props.isPdf) {
 
             const publicationViewport = this.mainElRef.current;
@@ -1560,12 +1563,6 @@ class Reader extends React.Component<IProps, IState> {
             }
 
             console.log("pdf url", pdfUrl);
-
-            const clipboardInterceptor = // !this.props.publicationView.lcp ? undefined :
-                (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
-                    apiAction("reader/clipboardCopy", this.props.pubId, clipboardData)
-                        .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
-                };
 
             const pdfPlayerBusEvent = await pdfMountAndReturnBus(
                 pdfUrl,
@@ -1909,13 +1906,6 @@ class Reader extends React.Component<IProps, IState> {
             }
 
             preloadPath = preloadPath.replace(/\\/g, "/");
-
-            const clipboardInterceptor = !this.props.publicationView.lcp ? undefined :
-                (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
-                    apiAction("reader/clipboardCopy", this.props.pubId, clipboardData)
-                        .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
-                };
-
             const locator = this.props.locator?.locator?.href ? this.props.locator.locator : undefined;
             installNavigatorDOM(
                 this.props.r2Publication,
@@ -1924,7 +1914,7 @@ class Reader extends React.Component<IProps, IState> {
                 preloadPath,
                 locator,
                 true,
-                clipboardInterceptor,
+                (this.props.publicationView.lcp) ? clipboardInterceptor : undefined,
                 this.props.winId,
                 computeReadiumCssJsonMessage(this.props.readerConfig),
             );
@@ -1990,6 +1980,7 @@ class Reader extends React.Component<IProps, IState> {
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
+            ttsSkippabilityEnable(this.props.readerConfig.mediaOverlaysEnableSkippability);
         }
         this.ttsOverlayEnableNeedsSync = false;
 
@@ -2033,7 +2024,12 @@ class Reader extends React.Component<IProps, IState> {
                         visibleBookmarkList.push(bookmark);
                     }
                 } else if (this.props.r2Publication) { // isLocatorVisible() API only once navigator ready
-                    const isVisible = await isLocatorVisible(bookmark.locator);
+                    let isVisible = false;
+                    try{
+                        isVisible = await isLocatorVisible(bookmark.locator);
+                    } catch (_e) {
+                        // rejection because webview not fully loaded yet
+                    }
                     if (isVisible) {
                         visibleBookmarkList.push(bookmark);
                     }
@@ -2159,7 +2155,7 @@ class Reader extends React.Component<IProps, IState> {
         // this.setState({bookmarkMessage: undefined});
 
         // sets state visibleBookmarkList
-        const visibleBookmarks = await this.updateVisibleBookmarks();
+        const visibleBookmarkList = await this.updateVisibleBookmarks();
 
         if (this.props.isDivina || this.props.isPdf) {
 
@@ -2170,7 +2166,7 @@ class Reader extends React.Component<IProps, IState> {
             const name = this.props.isDivina ? locator.href : (parseInt(href, 10) + 1).toString();
             if (href) {
 
-                const found = visibleBookmarks.find(({ locator: { href: _href } }) => href === _href);
+                const found = visibleBookmarkList.find(({ locator: { href: _href } }) => href === _href);
                 if (found) {
                     this.props.deleteBookmark(found);
                 } else {
@@ -2192,7 +2188,7 @@ class Reader extends React.Component<IProps, IState> {
 
                 // "toggle" only if there is a single bookmark in the content visible inside the viewport
                 // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
-                visibleBookmarks.length === 1 &&
+                visibleBookmarkList.length === 1 &&
 
                 // CTRL-B (keyboard interaction) and audiobooks:
                 // do not toggle: never delete, just add current reading location to bookmarks
@@ -2201,21 +2197,21 @@ class Reader extends React.Component<IProps, IState> {
                 (!locator.text?.highlight ||
 
                     // "toggle" only if visible bookmark == current reading location
-                    visibleBookmarks[0].locator.href === locator.href &&
-                    visibleBookmarks[0].locator.locations.cssSelector === locator.locations.cssSelector &&
-                    visibleBookmarks[0].locator.text?.highlight === locator.text.highlight
+                    visibleBookmarkList[0].locator.href === locator.href &&
+                    visibleBookmarkList[0].locator.locations.cssSelector === locator.locations.cssSelector &&
+                    visibleBookmarkList[0].locator.text?.highlight === locator.text.highlight
                 )
                 ;
 
             if (deleteAllVisibleBookmarks) {
-                const l = visibleBookmarks.length;
+                const l = visibleBookmarkList.length;
 
                 // reader.navigation.bookmarkTitle
                 const msg = `${this.props.__("catalog.delete")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length - l : 0}]`;
                 // this.setState({bookmarkMessage: msg});
                 this.props.toasty(msg);
 
-                for (const bookmark of visibleBookmarks) {
+                for (const bookmark of visibleBookmarkList) {
                     this.props.deleteBookmark(bookmark);
                 }
 
@@ -2236,7 +2232,7 @@ class Reader extends React.Component<IProps, IState> {
                     return identical;
                 }) &&
                 (this.state.currentLocation.audioPlaybackInfo ||
-                !visibleBookmarks?.length ||
+                !visibleBookmarkList?.length ||
                 fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
                 locator.text?.highlight
                 );
@@ -2376,6 +2372,7 @@ class Reader extends React.Component<IProps, IState> {
 
         mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
         ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
+        ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
         mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
         ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
 
@@ -2392,12 +2389,7 @@ class Reader extends React.Component<IProps, IState> {
             }, 300);
         }
 
-        apiAction("session/isEnabled")
-            .then((isEnabled) => this.props.setConfig(readerConfig, isEnabled))
-            .catch((e) => {
-                console.error("Error to fetch api session/isEnabled", e);
-                this.props.setConfig(readerConfig, false);
-            });
+        this.props.setConfig(readerConfig, this.props.session);
 
         if (this.props.r2Publication) {
             readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
@@ -2506,6 +2498,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // see this.ttsOverlayEnableNeedsSync
     // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
     // ttsSentenceDetectionEnable(state.reader.config.ttsEnableSentenceDetection);
+    // ttsSkippabilityEnable(state.reader.config.mediaOverlaysEnableSkippability);
 
     // extension or @type ?
     // const isDivina = isDivinaFn(state.r2Publication);
@@ -2533,6 +2526,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
+        session: state.session.state,
     };
 };
 
@@ -2572,7 +2566,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerLocalActionSetConfig.build(config));
 
             if (!sessionEnabled) {
-
                 dispatch(readerActions.configSetDefault.build(config));
             }
         },
@@ -2586,6 +2579,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
             console.log("Persist the reading mode", readingMode);
             dispatch(readerLocalActionDivina.setReadingMode.build({readingMode}));
+        },
+        clipboardCopy: (publicationIdentifier: string, clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
+            dispatch(readerActions.clipboardCopy.build(publicationIdentifier, clipboardData));
         },
     };
 };

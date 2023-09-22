@@ -29,6 +29,7 @@ import glCatalog from "readium-desktop/resources/locales/gl.json";
 import euCatalog from "readium-desktop/resources/locales/eu.json";
 import elCatalog from "readium-desktop/resources/locales/el.json";
 import bgCatalog from "readium-desktop/resources/locales/bg.json";
+import hrCatalog from "readium-desktop/resources/locales/hr.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
@@ -123,6 +124,9 @@ i18nextInstance.init({
         "bg": {
             translation: bgCatalog,
         },
+        "hr": {
+            translation: hrCatalog,
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
@@ -175,6 +179,7 @@ export const AvailableLanguages = {
     "eu": "Basque (Euskadi)",
     "el": "ελληνικός",
     "bg": "български",
+    "hr": "Hrvatski",
 };
 
 interface LocalizedContent {
@@ -186,7 +191,23 @@ export type I18nTyped = TFunction;
 @injectable()
 export class Translator {
     public translate = this._translate as I18nTyped;
+    public subscribe = this._subscribe.bind(this);
     private locale = "en";
+    private listeners: Set<() => void>;
+
+    constructor() {
+        this.listeners = new Set();
+    }
+
+    private _subscribe(fn: () => void) {
+        if (fn) {
+            this.listeners.add(fn);
+            return () => {
+                this.listeners.delete(fn);
+            };
+        }
+        return () => {};
+    }
 
     public getLocale(): string {
         return this.locale;
@@ -209,6 +230,10 @@ export class Translator {
                 });
             } else {
                 resolve();
+            }
+        }).finally(() => {
+            for (const listener of this.listeners) {
+                listener();
             }
         });
     }

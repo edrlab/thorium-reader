@@ -402,6 +402,11 @@ button {
         }
       }
 
+      & > li > select option {
+        color: var(--reader-fontColor);
+        background-color: var(--reader-secondaryColor);
+      }
+
       & > li > select {
         margin: 0;
         margin-left: 1em;
@@ -1024,6 +1029,7 @@ p.chapters_description {
 
 #option_auto,
 #option_justif,
+#option_start,
 #scroll_option,
 #page_option {
   display: inline-block;

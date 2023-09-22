@@ -20,8 +20,9 @@ import * as ColumnIcon from "readium-desktop/renderer/assets/icons/colonne.svg";
 import * as Column2Icon from "readium-desktop/renderer/assets/icons/colonne2.svg";
 import * as DefileIcon from "readium-desktop/renderer/assets/icons/defile.svg";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
-import * as LeftIcon from "readium-desktop/renderer/assets/icons/gauche.svg";
+import * as PageIcon from "readium-desktop/renderer/assets/icons/page.svg";
 import * as JustifyIcon from "readium-desktop/renderer/assets/icons/justifie.svg";
+import * as StartIcon from "readium-desktop/renderer/assets/icons/gauche.svg";
 import * as PagineIcon from "readium-desktop/renderer/assets/icons/pagine.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
@@ -665,7 +666,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             htmlFor={"radio-" + stylesReader.option_auto}
                             className={this.getButtonClassName("align", "auto")}
                         >
-                            <SVG ariaHidden={true} svg={LeftIcon} />
+                            <SVG ariaHidden={true} svg={PageIcon} />
                             {__("reader.settings.column.auto")}
                         </label>
                     </div>
@@ -683,6 +684,22 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         >
                             <SVG ariaHidden={true} svg={JustifyIcon} />
                             {__("reader.settings.justify")}
+                        </label>
+                    </div>
+                    <div className={stylesReader.focus_element}>
+                        <input
+                            id={"radio-" + stylesReader.option_start}
+                            name="alignment"
+                            type="radio"
+                            onChange={(e) => this.props.handleSettingChange(e, "align", textAlignEnum.start)}
+                            checked={readerConfig.align === textAlignEnum.start}
+                        />
+                        <label
+                            htmlFor={"radio-" + stylesReader.option_start}
+                            className={this.getButtonClassName("align", "start")}
+                        >
+                            <SVG ariaHidden={true} svg={StartIcon} />
+                            {`< ${__("reader.svg.left")} ${__("reader.svg.right")} >`}
                         </label>
                     </div>
                 </div>

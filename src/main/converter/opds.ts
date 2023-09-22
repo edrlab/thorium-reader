@@ -348,24 +348,24 @@ export class OpdsFeedViewConverter {
                 type: ContentType.Opds2Pub,
                 rel: "self",
             }),
-            this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
-                type: [
-                    ContentType.AtomXml,
-                    ContentType.Opds2,
-                ],
-            }),
+            // this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+            //     type: [
+            //         ContentType.AtomXml,
+            //         ContentType.Opds2,
+            //     ],
+            // }),
         );
         const catalogLinkView = fallback(
             this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
                 type: ["application/atom+xml;profile=opds-catalog;kind=acquisition", ContentType.Opds2],
                 rel: "http://opds-spec.org/catalog",
             }),
-            this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
-                type: [
-                    ContentType.AtomXml,
-                    ContentType.Opds2,
-                ],
-            }),
+            // this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+            //     type: [
+            //         ContentType.AtomXml,
+            //         ContentType.Opds2,
+            //     ],
+            // }),
         );
 
         const revokeLoanLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {

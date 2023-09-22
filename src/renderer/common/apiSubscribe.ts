@@ -8,7 +8,7 @@
 import { TApiMethodName } from "readium-desktop/common/api/api.type";
 import { Store, Unsubscribe } from "redux";
 
-import { LAST_API_SUCCESS_ID } from "./redux/states/api";
+import { LAST_API_SUCCESS_ID } from "../../common/redux/states/api";
 
 /**
  * subscribe to redux to automaticaly execute callback when any path in parameter is called on IPC

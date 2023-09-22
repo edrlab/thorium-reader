@@ -5,12 +5,5 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { TKeyboardShortcutsMapReadOnly } from "readium-desktop/common/keyboard";
-
-export interface IKeyboardApi {
-    getAll: () => Promise<TKeyboardShortcutsMapReadOnly>;
-}
-
-export interface IKeyboardModuleApi {
-    "keyboard/getAll": IKeyboardApi["getAll"];
-}
+import { useSyncExternalStore } from "use-sync-external-store/shim";
+export { useSyncExternalStore };

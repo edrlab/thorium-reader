@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { WinState } from "readium-desktop/renderer/common/redux/states/win";
+import { WinState } from "readium-desktop/common/redux/states/win";
 
 const initialState: WinState = {
     identifier: undefined,

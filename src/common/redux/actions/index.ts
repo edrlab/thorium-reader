@@ -18,6 +18,8 @@ import * as loadActions from "./load";
 import * as netActions from "./net/";
 import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
+import * as sessionActions from "./session/";
+import * as catalogActions from "./catalog";
 
 export {
     historyActions,
@@ -33,4 +35,6 @@ export {
     downloadActions,
     keyboardActions,
     loadActions,
+    sessionActions,
+    catalogActions,
 };

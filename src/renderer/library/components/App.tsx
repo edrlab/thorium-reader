@@ -95,18 +95,21 @@ export default class App extends React.Component<{}, undefined> {
                     <HistoryRouter history={history}>
                         <Dropzone
                             onDrop={this.onDrop}
+                            noClick={true}
                         >
                             {({ getRootProps, getInputProps }) => {
                                 const rootProps = getRootProps({ onClick: (e) => e.stopPropagation() } as DropzoneRootProps);
+                                const inputProps = getInputProps({ onClick: (evt) => evt.preventDefault() });
                                 rootProps.tabIndex = -1;
-                                // FIXME : css in code
                                 return <div
                                     {...rootProps}
                                     className={stylesInputs.dropzone}
+                                    onFocus={null}
+                                    onBlur={null}
                                 >
                                     <DownloadsPanel />
                                     <input aria-hidden {
-                                        ...getInputProps({ onClick: (evt) => evt.preventDefault() })
+                                        ...inputProps
                                     }
                                     />
                                     <PageManager />

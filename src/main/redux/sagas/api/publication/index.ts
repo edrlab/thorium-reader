@@ -11,7 +11,6 @@ import { deletePublication } from "./delete";
 import { exportPublication } from "./export";
 import { findAll } from "./findAll";
 import { findByTag } from "./findByTag";
-import { getAllTags } from "./getAllTags";
 import { getPublication } from "./getPublication";
 import { importFromFs, importFromLink, importFromString } from "./import";
 import { search, searchEqTitle } from "./search";
@@ -22,12 +21,11 @@ export const publicationApi: IPublicationApi = {
     get: getPublication,
     delete: deletePublication,
     findByTag,
-    updateTags,
-    getAllTags,
     search,
     exportPublication,
     importFromFs,
     importFromLink,
     importFromString,
     searchEqTitle,
+    updateTags,
 };

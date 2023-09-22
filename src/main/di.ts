@@ -14,8 +14,6 @@ import { Container } from "inversify";
 import * as path from "path";
 import { Translator } from "readium-desktop/common/services/translator";
 import { ok } from "readium-desktop/common/utils/assert";
-import { CatalogApi } from "readium-desktop/main/api/catalog";
-import { LcpApi } from "readium-desktop/main/api/lcp";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -32,9 +30,6 @@ import {
 import { type Store } from "redux";
 import { SagaMiddleware } from "redux-saga";
 
-import { KeyboardApi } from "./api/keyboard";
-import { ReaderApi } from "./api/reader";
-import { SessionApi } from "./api/session";
 import { httpBrowserApi, publicationApi } from "./redux/sagas/api";
 import { opdsApi } from "./redux/sagas/api/opds";
 import { apiappApi } from "./redux/sagas/api";
@@ -222,18 +217,10 @@ container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingle
 container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
-container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
-// container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
-
 container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi);
 container.bind(diSymbolTable["opds-api"]).toConstantValue(opdsApi);
 container.bind(diSymbolTable["apiapp-api"]).toConstantValue(apiappApi);
 container.bind(diSymbolTable["httpbrowser-api"]).toConstantValue(httpBrowserApi);
-
-container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
-container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
-container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
-container.bind<SessionApi>(diSymbolTable["session-api"]).to(SessionApi).inSingletonScope();
 
 let libraryWin: BrowserWindow;
 
@@ -280,14 +267,10 @@ interface IGet {
     // (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;
     (s: "lcp-manager"): LcpManager;
-    (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): typeof publicationApi;
     (s: "opds-api"): typeof opdsApi;
     (s: "apiapp-api"): typeof apiappApi;
     (s: "httpbrowser-api"): typeof httpBrowserApi;
-    (s: "keyboard-api"): KeyboardApi;
-    (s: "lcp-api"): LcpApi;
-    (s: "reader-api"): ReaderApi;
     (s: "saga-middleware"): SagaMiddleware;
     // minor overload type used in api.ts/LN32
     (s: keyof typeof diSymbolTable): any;

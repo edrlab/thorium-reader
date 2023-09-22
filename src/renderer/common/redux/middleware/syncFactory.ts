@@ -8,13 +8,13 @@
 import { ipcRenderer } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
-import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
 
 export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
 
-    return (store: MiddlewareAPI<Dispatch<AnyAction>, ICommonRootState>) =>
+    return (store: MiddlewareAPI<Dispatch<AnyAction>, IRendererCommonRootState>) =>
         (next: Dispatch<ActionWithSender>) =>
             ((action: ActionWithSender) => {
 

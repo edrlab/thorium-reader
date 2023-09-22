@@ -23,8 +23,7 @@ export interface TKeyboardShortcut {
 // but needed here for TypeScript typing,
 // and elsewhere for the actual data :(
 // the process.platform usage is really only relevant in the main Electron process
-// as the renderer process actually fetches data from apiAction("keyboard/getAll")
-// or from the shared keyboard state
+// as the renderer process actually shared keyboard state
 const _defaults_ = Object.freeze({
     // help: Object.freeze<TKeyboardShortcut>({
     //     alt: false,

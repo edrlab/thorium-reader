@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { screen } from "electron";
+import { clipboard, screen } from "electron";
 import * as ramda from "ramda";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
@@ -24,12 +24,13 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
 import { types } from "util";
 
 import {
     ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, streamerOpenPublicationAndReturnManifestUrl,
 } from "./publication/openPublication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
@@ -320,6 +321,58 @@ function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
     yield put(winActions.session.setReduxState.build(winId, pubId, reduxState));
 }
 
+function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
+
+    const { publicationIdentifier, clipboardData } = action.payload;
+    const clipBoardType = "clipboard";
+
+    let textToCopy = clipboardData.txt;
+
+    const publicationRepository = diMainGet("publication-repository");
+    const translator = diMainGet("translator");
+    const publicationDocument = yield* callTyped(() => publicationRepository.get(
+        publicationIdentifier,
+    ));
+
+    if (!publicationDocument.lcp ||
+        !publicationDocument.lcp.rights ||
+        publicationDocument.lcp.rights.copy === null ||
+        typeof publicationDocument.lcp.rights.copy === "undefined" ||
+        publicationDocument.lcp.rights.copy < 0) {
+
+        clipboard.writeText(textToCopy, clipBoardType);
+        return ;
+    }
+
+    const lcpRightsCopies = publicationDocument.lcpRightsCopies ?
+        publicationDocument.lcpRightsCopies : 0;
+    const lcpRightsCopiesRemain = publicationDocument.lcp.rights.copy - lcpRightsCopies;
+    if (lcpRightsCopiesRemain <= 0) {
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error,
+            `LCP [${translator.translate("app.edit.copy")}] ${publicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
+            publicationIdentifier));
+    }
+    const nCharsToCopy = textToCopy.length > lcpRightsCopiesRemain ?
+        lcpRightsCopiesRemain : textToCopy.length;
+    if (nCharsToCopy < textToCopy.length) {
+        textToCopy = textToCopy.substr(0, nCharsToCopy);
+    }
+    const newPublicationDocument: PublicationDocument = Object.assign(
+        {},
+        publicationDocument,
+        {
+            lcpRightsCopies: lcpRightsCopies + nCharsToCopy,
+        },
+    );
+    yield* callTyped(() => publicationRepository.save(newPublicationDocument));
+
+    clipboard.writeText(`${textToCopy}`, clipBoardType);
+
+    yield* putTyped(toastActions.openRequest.build(ToastType.Success,
+        `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
+        publicationIdentifier));
+}
+
 export function saga() {
     return all([
         takeSpawnEvery(
@@ -351,6 +404,11 @@ export function saga() {
             readerActions.setReduxState.ID,
             readerSetReduxState,
             (e) => error(filename_ + ":readerSetReduxState", e),
+        ),
+        takeSpawnEvery(
+            readerActions.clipboardCopy.ID,
+            readerClipboardCopy,
+            (e) => error(filename_ + ":readerClipboardCopy", e),
         ),
     ]);
 }

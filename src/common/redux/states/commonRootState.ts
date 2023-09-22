@@ -5,12 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface ISessionApi {
-    enable: (bool: boolean) => Promise<void>;
-    isEnabled: () => Promise<boolean>;
-}
+import { ISessionState } from "readium-desktop/common/redux/states/session";
+import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 
-export interface ISessionModuleApi {
-    "session/enable": ISessionApi["enable"];
-    "session/isEnabled": ISessionApi["isEnabled"];
+export interface ICommonRootState {
+    session: ISessionState
+    keyboard: IKeyboardState;
 }

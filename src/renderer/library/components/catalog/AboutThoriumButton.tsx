@@ -73,7 +73,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
         const infoFolderRelativePath = "assets/md/information/"; // final / is important
         const imagesFolder = "images";
 
-        let aboutLocale = locale;
+        let aboutLocale = locale.toLowerCase();
 
         const setTitle = (l: string) => `${ABOUT_BOOK_TITLE_PREFIX}${_APP_VERSION}${l}`;
         try {
@@ -101,6 +101,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
                 const filePath = path.join(folderPath, `${aboutLocale}.xhtml`);
 
                 if (!existsSync(filePath)) {
+                    console.log("about XHTML does not exist (english fallback) ", filePath);
                     aboutLocale = "en";
                 }
                 htmlFile = `${aboutLocale}.xhtml`;

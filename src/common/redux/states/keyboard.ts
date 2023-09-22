@@ -7,6 +7,6 @@
 
 import { TKeyboardShortcutsMapReadOnly } from "readium-desktop/common/keyboard";
 
-export interface KeyboardState {
+export interface IKeyboardState {
     shortcuts: TKeyboardShortcutsMapReadOnly;
 }

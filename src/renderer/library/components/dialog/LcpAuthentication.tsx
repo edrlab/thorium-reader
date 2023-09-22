@@ -14,9 +14,10 @@ import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TChangeEventOnInput } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { lcpActions } from "readium-desktop/common/redux/actions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -26,7 +27,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -109,14 +110,8 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         if (!this.state.password) {
             return;
         }
-        apiAction("lcp/unlockPublicationWithPassphrase",
-            this.state.password,
-            this.props.publicationView.identifier,
-        ).catch((error) => {
-            console.error("Error lcp/unlockPublicationWithPassphrase", error);
-        });
+        this.props.unlockPublication(this.props.publicationView.identifier, this.state.password);
     };
-
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
@@ -125,4 +120,12 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     }, ...state.dialog.data as DialogType[DialogTypeName.LcpAuthentication],
 });
 
-export default connect(mapStateToProps)(withTranslator(LCPAuthentication));
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        unlockPublication: (id: string, pass: string) => {
+            dispatch(lcpActions.unlockPublicationWithPassphrase.build(id, pass));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LCPAuthentication));
