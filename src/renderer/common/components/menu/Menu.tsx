@@ -11,16 +11,16 @@ import { v4 as uuidv4 } from "uuid";
 
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
+import { connect } from "react-redux";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     button: React.ReactElement;
     content: React.ReactElement;
-    open: boolean; // Is menu open
     dir: string; // Direction of menu: right or left
-    toggle: () => void;
     focusMenuButton?: (ref: React.RefObject<HTMLElement>, currentMenuId: string) => void;
-    infoDialogIsOpen?: boolean;
 }
 
 // IProps may typically extend:
@@ -28,14 +28,15 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
     contentStyle: React.CSSProperties;
+    menuOpen: boolean;
 }
 
-export default class Menu extends React.Component<IProps, IState> {
+class Menu extends React.Component<IProps, IState> {
 
     private backFocusMenuButtonRef: React.RefObject<HTMLElement>;
     private contentRef: HTMLDivElement;
@@ -48,14 +49,16 @@ export default class Menu extends React.Component<IProps, IState> {
 
         this.state = {
             contentStyle: {},
+            menuOpen: false,
         };
         this.menuId = "menu-" + uuidv4();
         this.doBackFocusMenuButton = this.doBackFocusMenuButton.bind(this);
         this.setBackFocusMenuButton = this.setBackFocusMenuButton.bind(this);
+        this.toggleOpenMenu = this.toggleOpenMenu.bind(this);
     }
 
-    public componentDidUpdate(oldProps: IProps) {
-        if (this.props.open && !oldProps.open) {
+    public componentDidUpdate(oldProps: IProps, oldState: IState) {
+        if (this.state.menuOpen && !oldState.menuOpen) {
             this.refreshStyle();
         }
         if (oldProps.infoDialogIsOpen === true &&
@@ -65,35 +68,40 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { open, toggle, button, dir, content } = this.props;
+        const { button, dir, content } = this.props;
         const contentStyle = this.state.contentStyle;
         return (
             <>
                 <MenuButton
                     menuId={this.menuId}
-                    open={open}
-                    toggle={toggle}
+                    open={this.state.menuOpen}
+                    toggle={this.toggleOpenMenu}
                     setBackFocusMenuButton={this.setBackFocusMenuButton}
                 >
                     {button}
                 </MenuButton>
-                { open &&
+                { this.state.menuOpen ?
                     <MenuContent
                         id={this.menuId}
-                        open={open}
+                        open={this.state.menuOpen}
                         dir={dir}
                         menuStyle={contentStyle}
-                        toggle={toggle}
+                        toggle={this.toggleOpenMenu}
                         setContentRef={(ref) => { this.contentRef = ref; }}
                         doBackFocusMenuButton={this.doBackFocusMenuButton}
                     >
-                        <span onClick={() => setTimeout(toggle, 1)}>
+                        <span onClick={() => setTimeout(this.toggleOpenMenu, 1)}>
                             {content}
                         </span>
                     </MenuContent>
+                    : <></>
                 }
             </>
         );
+    }
+
+    private toggleOpenMenu() {
+        this.setState({ menuOpen: !this.state.menuOpen });
     }
 
     private offset(el: HTMLElement) {
@@ -150,3 +158,14 @@ export default class Menu extends React.Component<IProps, IState> {
         }
     }
 }
+
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
+    return {
+        infoDialogIsOpen: state.dialog.open
+            && (state.dialog.type === DialogTypeName.PublicationInfoOpds
+                || state.dialog.type === DialogTypeName.PublicationInfoLib
+                || state.dialog.type === DialogTypeName.DeletePublicationConfirm),
+    };
+};
+
+export default connect(mapStateToProps)(Menu);

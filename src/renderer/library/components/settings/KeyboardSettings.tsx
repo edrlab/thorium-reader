@@ -52,7 +52,6 @@ interface IState {
     displayKeyboardShortcuts: boolean;
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
-    menuOpen: boolean;
 }
 
 class KeyboardSettings extends React.Component<IProps, IState> {
@@ -67,9 +66,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             displayKeyboardShortcuts: false,
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
-            menuOpen: false,
         };
-        this.openCloseMenu = this.openCloseMenu.bind(this);
         this.onKeyUp = this.onKeyUp.bind(this);
 
         this.selectRef = React.createRef<HTMLSelectElement>();
@@ -138,9 +135,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                             </button>
                                         </div>
                                     )}
-                                    open={this.state.menuOpen}
                                     dir="left"
-                                    toggle={this.openCloseMenu}
                                 />
                             )
                         }
@@ -296,9 +291,6 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         }
     }
 
-    private openCloseMenu() {
-        this.setState({ menuOpen: !this.state.menuOpen });
-    }
     private onClickKeyboardShortcutSave(id: TKeyboardShortcutId) {
 
         if (!this.state.editKeyboardShortcutData) {

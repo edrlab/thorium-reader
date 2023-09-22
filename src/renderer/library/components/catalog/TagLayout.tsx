@@ -31,20 +31,8 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-interface IState {
-        showMenu: boolean;
-}
+class GridTagLayout extends React.Component<IProps> {
 
-class GridTagLayout extends React.Component<IProps, IState> {
-
-    constructor(props: IProps) {
-        super(props);
-
-        this.state = {
-            showMenu: false,
-        };
-        this.togglemenu = this.togglemenu.bind(this);
-    }
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
@@ -66,9 +54,7 @@ class GridTagLayout extends React.Component<IProps, IState> {
                                     {this.props.content}
                                 </div>
                             }
-                            open={this.state.showMenu}
                             dir="right"
-                            toggle={this.togglemenu}
                         />
                     }
                 </div>
@@ -89,12 +75,6 @@ class GridTagLayout extends React.Component<IProps, IState> {
                 }
             </section>
         );
-    }
-
-    private togglemenu() {
-        this.setState({
-            showMenu: !this.state.showMenu,
-        });
     }
 }
 

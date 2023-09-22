@@ -158,7 +158,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
-    dialogOpen: state.dialog.open,
+    // dialogOpen: state.dialog.open, // unused ?
     keyboardShortcuts: state.keyboard.shortcuts,
 });
 

@@ -25,7 +25,6 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogMenu from "./menu/CatalogMenu";
@@ -43,23 +42,14 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-interface IState {
-    menuOpen: boolean;
-}
-
-class PublicationCard extends React.Component<IProps, IState> {
+class PublicationCard extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);
 
-        this.state = {
-            menuOpen: false,
-        };
-        this.openCloseMenu = this.openCloseMenu.bind(this);
-        // this.truncateTitle = this.truncateTitle.bind(this);
         this.truncateAuthors = this.truncateAuthors.bind(this);
     }
 
@@ -116,18 +106,11 @@ class PublicationCard extends React.Component<IProps, IState> {
                                     />}
                             </div>
                         )}
-                        open={this.state.menuOpen}
                         dir="right"
-                        toggle={this.openCloseMenu}
-                        infoDialogIsOpen={this.props.InfoDialogIsOpen}
                     />
                 </div>
             </div>
         );
-    }
-
-    private openCloseMenu() {
-        this.setState({ menuOpen: !this.state.menuOpen });
     }
 
     private handleBookClick(e: React.SyntheticEvent) {
@@ -166,15 +149,6 @@ class PublicationCard extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
-    return {
-        InfoDialogIsOpen: state.dialog.open
-            && (state.dialog.type === DialogTypeName.PublicationInfoOpds
-                || state.dialog.type === DialogTypeName.PublicationInfoLib
-                || state.dialog.type === DialogTypeName.DeletePublicationConfirm),
-    };
-};
-
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         // !isOpds
@@ -192,4 +166,4 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));
+export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationCard));
