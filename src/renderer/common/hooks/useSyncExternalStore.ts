@@ -6,4 +6,5 @@
 // ==LICENSE-END==
 
 import { useSyncExternalStore } from "use-sync-external-store/shim";
-export { useSyncExternalStore };
+import { useSyncExternalStoreWithSelector } from "use-sync-external-store/shim/with-selector";
+export { useSyncExternalStore, useSyncExternalStoreWithSelector };
