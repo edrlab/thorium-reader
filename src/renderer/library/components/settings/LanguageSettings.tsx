@@ -12,6 +12,7 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import "./_settings.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -38,7 +39,7 @@ class LanguageSettings extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <>
-                <section>
+                <section className="settings_language-section">
                     <div className={stylesGlobal.heading}>
                         <h2>{__("settings.language.languageChoice")}</h2>
                     </div>

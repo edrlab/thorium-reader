@@ -43,7 +43,7 @@ class SessionSettings extends React.Component<IProps> {
         const { __ } = this.props;
         return (
             <>
-                <section>
+                <section className="settings_session-section">
                     <div className={stylesGlobal.heading}>
                         <h2>{__("settings.session.title")}</h2>
                     </div>
