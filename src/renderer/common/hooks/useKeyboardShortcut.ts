@@ -8,7 +8,6 @@
 import * as React from "react";
 import { TKeyboardShortcutReadOnly, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener } from "../keyboard";
-import { useSelector } from "./useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ReactReduxContext, ReactReduxContextValue } from "react-redux";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
@@ -27,7 +26,6 @@ export function useKeyboardShortcut(ListenForKeyUP: boolean, keyboardShortcut: (
         (state) => state.keyboard.shortcuts,
         keyboardShortcutsMatch,
     );
-    useSelector((state: ICommonRootState) => state.keyboard.shortcuts);
     React.useEffect(() => {
         registerKeyboardListener(ListenForKeyUP, keyboardShortcut(keyboardShortcutState), callback);
         return () => unregisterKeyboardListener(callback);
