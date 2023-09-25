@@ -18,7 +18,6 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     button: React.ReactElement;
-    content: React.ReactElement;
     dir: string; // Direction of menu: right or left
     focusMenuButton?: (ref: React.RefObject<HTMLElement>, currentMenuId: string) => void;
 }
@@ -28,7 +27,7 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends React.PropsWithChildren<IBaseProps>, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -68,7 +67,7 @@ class Menu extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { button, dir, content } = this.props;
+        const { button, dir } = this.props;
         const contentStyle = this.state.contentStyle;
         return (
             <>
@@ -91,7 +90,7 @@ class Menu extends React.Component<IProps, IState> {
                         doBackFocusMenuButton={this.doBackFocusMenuButton}
                     >
                         <span onClick={() => setTimeout(this.toggleOpenMenu, 1)}>
-                            {content}
+                            {this.props.children}
                         </span>
                     </MenuContent>
                     : <></>

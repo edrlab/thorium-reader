@@ -110,16 +110,15 @@ export class PublicationListElement extends React.Component<IProps> {
                             svg={MenuIcon}
                         />)
                     }
-                    content={(
-                        <div
-                            id={this.menuId}
-                            className={(stylesDropDown.dropdown_menu)}
-                        >
-                            {this.props.menuContent}
-                        </div>
-                    )}
                     dir="left"
-                />
+                >
+                    <div
+                        id={this.menuId}
+                        className={(stylesDropDown.dropdown_menu)}
+                    >
+                        {this.props.menuContent}
+                    </div>
+                </Menu>
                 {/* <button
                     type="button"
                     aria-expanded={this.state.menuOpen}

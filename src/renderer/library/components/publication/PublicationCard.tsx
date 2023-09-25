@@ -95,19 +95,18 @@ class PublicationCard extends React.Component<IProps> {
                         button={(
                             <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
                         )}
-                        content={(
-                            <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_publication)}>
-                                {isOpds ?
-                                    <OpdsMenu
-                                        opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
-                                    /> :
-                                    <CatalogMenu
-                                        publicationView={publicationViewMaybeOpds as PublicationView}
-                                    />}
-                            </div>
-                        )}
                         dir="right"
-                    />
+                    >
+                        <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_publication)}>
+                            {isOpds ?
+                                <OpdsMenu
+                                    opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                                /> :
+                                <CatalogMenu
+                                    publicationView={publicationViewMaybeOpds as PublicationView}
+                                />}
+                        </div>
+                    </Menu>
                 </div>
             </div>
         );

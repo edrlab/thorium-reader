@@ -49,13 +49,12 @@ class GridTagLayout extends React.Component<IProps> {
                                     <SVG ariaHidden={true} svg={ArrowIcon} />
                                 </>
                             }
-                            content={
-                                <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_right)}>
-                                    {this.props.content}
-                                </div>
-                            }
                             dir="right"
-                        />
+                        >
+                            <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_right)}>
+                                {this.props.content}
+                            </div>
+                        </Menu>
                     }
                 </div>
                 {this.props.tags.length === 0 ?

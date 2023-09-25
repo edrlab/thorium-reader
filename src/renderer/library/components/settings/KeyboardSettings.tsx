@@ -122,21 +122,20 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                             svg={MenuIcon}
                                         />)
                                     }
-                                    content={(
-                                        <div className={stylesDropDown.dropdown_menu}>
-                                            <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
-                                                {__("settings.keyboard.resetDefaults")}
-                                            </button>
-                                            <button onClick={() => this.onClickKeyboardShortcutsShow()}>
-                                                {__("settings.keyboard.editUserJson")}
-                                            </button>
-                                            <button onClick={() => this.onClickKeyboardShortcutsReload(false)}>
-                                                    {__("settings.keyboard.loadUserJson")}
-                                            </button>
-                                        </div>
-                                    )}
                                     dir="left"
-                                />
+                                >
+                                    <div className={stylesDropDown.dropdown_menu}>
+                                        <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
+                                            {__("settings.keyboard.resetDefaults")}
+                                        </button>
+                                        <button onClick={() => this.onClickKeyboardShortcutsShow()}>
+                                            {__("settings.keyboard.editUserJson")}
+                                        </button>
+                                        <button onClick={() => this.onClickKeyboardShortcutsReload(false)}>
+                                            {__("settings.keyboard.loadUserJson")}
+                                        </button>
+                                    </div>
+                                </Menu>
                             )
                         }
                     </div>
