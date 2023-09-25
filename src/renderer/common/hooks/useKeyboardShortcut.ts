@@ -6,14 +6,28 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { TKeyboardShortcutReadOnly } from "readium-desktop/common/keyboard";
-import { registerKeyboardListener, unregisterKeyboardListener } from "../keyboard";
+import { TKeyboardShortcutReadOnly, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+import { ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener } from "../keyboard";
 import { useSelector } from "./useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { ReactReduxContext, ReactReduxContextValue } from "react-redux";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { useSyncExternalStoreWithSelector } from "./useSyncExternalStore";
 
 export function useKeyboardShortcut(ListenForKeyUP: boolean, keyboardShortcut: (s: ICommonRootState["keyboard"]["shortcuts"]) => TKeyboardShortcutReadOnly, callback: () => void) {
 
-    const keyboardShortcutState = useSelector((state: ICommonRootState) => state.keyboard.shortcuts);
+    React.useEffect(() => {
+        ensureKeyboardListenerIsInstalled();
+    }, []);
+    const { store } = React.useContext<ReactReduxContextValue<ILibraryRootState>>(ReactReduxContext);
+    const keyboardShortcutState = useSyncExternalStoreWithSelector(
+        store.subscribe,
+        () => store.getState(),
+        undefined, // server snapshot
+        (state) => state.keyboard.shortcuts,
+        keyboardShortcutsMatch,
+    );
+    useSelector((state: ICommonRootState) => state.keyboard.shortcuts);
     React.useEffect(() => {
         registerKeyboardListener(ListenForKeyUP, keyboardShortcut(keyboardShortcutState), callback);
         return () => unregisterKeyboardListener(callback);

@@ -5,5 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+<<<<<<< Updated upstream
 import { useSyncExternalStore } from "use-sync-external-store";
 export { useSyncExternalStore };
+=======
+import { useSyncExternalStore } from "use-sync-external-store/shim";
+import { useSyncExternalStoreWithSelector } from "use-sync-external-store/shim/with-selector";
+export { useSyncExternalStore, useSyncExternalStoreWithSelector };
+>>>>>>> Stashed changes
