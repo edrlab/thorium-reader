@@ -8,7 +8,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
@@ -21,14 +20,11 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 
 import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
-import SortMenu from "./SortMenu";
-import TagLayout from "./TagLayout";
+import GridTagLayout from "./TagLayout";
 import { DisplayType, IRouterLocationState } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    catalogEntries: CatalogEntryView[];
-    tags?: string[];
 }
 
 // IProps may typically extend:
@@ -39,41 +35,11 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-interface IState {
-    tabTags: string[];
-    status: SortStatus;
-}
 
-enum SortStatus {
-    Count,
-    Alpha,
-}
-
-class CatalogGridView extends React.Component<IProps, IState> {
+class CatalogGridView extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            tabTags: this.props.tags ? this.props.tags.slice() : [],
-            status: SortStatus.Count,
-        };
-        this.sortByAlpha = this.sortByAlpha.bind(this);
-        this.sortbyCount = this.sortbyCount.bind(this);
-    }
-
-    public componentDidUpdate(oldProps: IProps) {
-        if (this.props.tags !== oldProps.tags) {
-            const { status } = this.state;
-            switch (status) {
-                case SortStatus.Count:
-                    this.sortbyCount();
-                    break;
-                case SortStatus.Alpha:
-                    this.sortByAlpha();
-                    break;
-            }
-        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -128,19 +94,12 @@ class CatalogGridView extends React.Component<IProps, IState> {
                     )
                 }
                 {
-                    this.state.tabTags.length > 0
-                        ? <TagLayout
-                            tags={this.state.tabTags}
-                            content={
-                                <SortMenu
-                                    onClickAlphaSort={this.sortByAlpha}
-                                    onClickCountSort={this.sortbyCount}
-                                />}
-                        />
+                    this.props.tags.length > 0
+                        ? <GridTagLayout />
                         : <></>
                 }
                 {
-                    this.state.tabTags.length === 0 && catalogEntriesIsEmpty
+                    this.props.tags.length === 0 && catalogEntriesIsEmpty
                         ? <NoPublicationInfo />
                         : <></>
                 }
@@ -148,45 +107,12 @@ class CatalogGridView extends React.Component<IProps, IState> {
             </>
         );
     }
-
-    private sortbyCount() {
-        const { tags } = this.props;
-        // WARNING: .sort() is in-place same-array mutation! (not a new array)
-        const tabTags = tags.sort((a, b) => {
-            if (a < b) {
-                return (1);
-            } else if (a > b) {
-                return (-1);
-            }
-            return (0);
-        });
-        this.setState({
-            status: SortStatus.Count,
-            tabTags,
-        });
-    }
-
-    private sortByAlpha() {
-        const { tags } = this.props;
-        // WARNING: .sort() is in-place same-array mutation! (not a new array)
-        const tabTags = tags.sort((a, b) => {
-            if (a > b) {
-                return (1);
-            } else if (a < b) {
-                return (-1);
-            }
-            return (0);
-        });
-        this.setState({
-            status: SortStatus.Alpha,
-            tabTags,
-        });
-    }
-
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    catalogEntries: state.publication.catalog.entries,
+    tags: state.publication.tag,
 });
 
 export default connect(mapStateToProps)(withTranslator(CatalogGridView));

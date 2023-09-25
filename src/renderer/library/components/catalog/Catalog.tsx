@@ -37,7 +37,7 @@ interface IProps extends IBaseProps,
 class Catalog extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
-        const { __, catalog, tags } = this.props;
+        const { __ } = this.props;
 
         const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
@@ -48,18 +48,11 @@ class Catalog extends React.Component<IProps, undefined> {
                 secondaryHeader={secondaryHeader}
             >
                 {
-                    catalog?.entries
-                    && (
-                        displayType === DisplayType.Grid
-                            ? <CatalogGridView
-                                catalogEntries={catalog.entries}
-                                tags={tags}
-                            />
-                            : <CatalogListView
-                                catalogEntries={catalog.entries}
-                                tags={tags}
-                            />
-                    )
+
+                    displayType === DisplayType.Grid
+                        ? <CatalogGridView />
+                        : <CatalogListView />
+
                 }
             </LibraryLayout>
         );
@@ -68,8 +61,6 @@ class Catalog extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
-    catalog: state.publication.catalog,
-    tags: state.publication.tag,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
