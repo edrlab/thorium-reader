@@ -9,17 +9,13 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { v4 as uuidv4 } from "uuid";
 
-import MenuButton from "./MenuButton";
-import MenuContent from "./MenuContent";
-import { connect } from "react-redux";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import AccessibleMenu from "./AccessibleMenu";
+import { clearFocusRef, setFocusRef } from "readium-desktop/renderer/common/focusPointer";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     button: React.ReactElement;
     dir: string; // Direction of menu: right or left
-    focusMenuButton?: (ref: React.RefObject<HTMLElement>, currentMenuId: string) => void;
 }
 
 // IProps may typically extend:
@@ -27,7 +23,7 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends React.PropsWithChildren<IBaseProps>, ReturnType<typeof mapStateToProps> {
+interface IProps extends React.PropsWithChildren<IBaseProps> {
 }
 
 interface IState {
@@ -37,14 +33,18 @@ interface IState {
 
 class Menu extends React.Component<IProps, IState> {
 
-    private backFocusMenuButtonRef: React.RefObject<HTMLElement>;
-    private contentRef: HTMLDivElement;
+    private backFocusMenuButtonRef: React.RefObject<HTMLButtonElement>;
+    private accessibleMenuContentRef: React.RefObject<HTMLDivElement>;
     private menuId: string;
+    private appElement: HTMLElement;
+    private appOverlayElement: HTMLElement;
+    private rootElement: HTMLElement;
 
     constructor(props: IProps) {
         super(props);
 
-        this.backFocusMenuButtonRef = React.createRef<HTMLElement>();
+        this.backFocusMenuButtonRef = React.createRef<HTMLButtonElement>();
+        this.accessibleMenuContentRef = React.createRef<HTMLDivElement>();
 
         this.state = {
             contentStyle: {},
@@ -52,48 +52,70 @@ class Menu extends React.Component<IProps, IState> {
         };
         this.menuId = "menu-" + uuidv4();
         this.doBackFocusMenuButton = this.doBackFocusMenuButton.bind(this);
-        this.setBackFocusMenuButton = this.setBackFocusMenuButton.bind(this);
         this.toggleOpenMenu = this.toggleOpenMenu.bind(this);
+
+        this.appElement = document.getElementById("app");
+        this.appOverlayElement = document.getElementById("app-overlay");
+        this.rootElement = document.createElement("div");
     }
 
-    public componentDidUpdate(oldProps: IProps, oldState: IState) {
-        if (this.state.menuOpen && !oldState.menuOpen) {
+    public componentDidMount() {
+        this.appElement.setAttribute("aria-hidden", "true");
+        this.appOverlayElement.appendChild(this.rootElement);
+    }
+
+    public componentWillUnmount() {
+        this.appElement.setAttribute("aria-hidden", "false");
+        this.appOverlayElement.removeChild(this.rootElement);
+
+        clearFocusRef(this.backFocusMenuButtonRef);
+    }
+
+    public componentDidUpdate(_oldProps: IProps, oldState: IState) {
+
+        if (oldState.menuOpen === false && this.state.menuOpen === true) {
+            this.accessibleMenuContentRef?.current?.querySelector("button")?.focus(); // focus first button
+            setFocusRef(this.backFocusMenuButtonRef);
             this.refreshStyle();
-        }
-        if (oldProps.infoDialogIsOpen === true &&
-            oldProps.infoDialogIsOpen !== this.props.infoDialogIsOpen) {
-            this.doBackFocusMenuButton();
         }
     }
 
     public render(): React.ReactElement<{}> {
-        const { button, dir } = this.props;
-        const contentStyle = this.state.contentStyle;
+
         return (
             <>
-                <MenuButton
-                    menuId={this.menuId}
-                    open={this.state.menuOpen}
-                    toggle={this.toggleOpenMenu}
-                    setBackFocusMenuButton={this.setBackFocusMenuButton}
+                <button
+                    aria-expanded={this.state.menuOpen}
+                    aria-controls={this.menuId}
+                    onClick={this.toggleOpenMenu}
+                    ref={this.backFocusMenuButtonRef}
                 >
-                    {button}
-                </MenuButton>
-                { this.state.menuOpen ?
-                    <MenuContent
-                        id={this.menuId}
-                        open={this.state.menuOpen}
-                        dir={dir}
-                        menuStyle={contentStyle}
-                        toggle={this.toggleOpenMenu}
-                        setContentRef={(ref) => { this.contentRef = ref; }}
-                        doBackFocusMenuButton={this.doBackFocusMenuButton}
-                    >
-                        <span onClick={() => setTimeout(this.toggleOpenMenu, 1)}>
-                            {this.props.children}
-                        </span>
-                    </MenuContent>
-                    : <></>
+                    {this.props.button}
+                </button>
+                {
+                    this.state.menuOpen ?
+                        ReactDOM.createPortal(
+                            (
+                                <AccessibleMenu
+                                    doBackFocusMenuButton={this.doBackFocusMenuButton}
+                                    visible={this.state.menuOpen}
+                                    toggleMenu={this.toggleOpenMenu}
+                                >
+                                    <div
+                                        style={this.state.contentStyle}
+                                        id={this.menuId}
+                                        aria-hidden={!this.state.menuOpen}
+                                        role="menu"
+                                        aria-expanded={this.state.menuOpen}
+                                        ref={this.accessibleMenuContentRef}
+                                    >
+                                        <span onClick={() => setTimeout(this.toggleOpenMenu, 1)}>
+                                            {this.props.children}
+                                        </span>
+                                    </div>
+                                </AccessibleMenu>
+                            ), this.rootElement)
+                        : <></>
                 }
             </>
         );
@@ -116,7 +138,7 @@ class Menu extends React.Component<IProps, IState> {
     }
 
     private refreshStyle() {
-        if (!this.backFocusMenuButtonRef?.current || !this.contentRef) {
+        if (!this.backFocusMenuButtonRef?.current || !this.accessibleMenuContentRef) {
             return;
         }
         const contentStyle: React.CSSProperties = {
@@ -127,7 +149,7 @@ class Menu extends React.Component<IProps, IState> {
         const button = this.backFocusMenuButtonRef.current;
         const buttonRect = button.getBoundingClientRect();
         const bottomPos = window.innerHeight - buttonRect.bottom;
-        const contentElement = ReactDOM.findDOMNode(this.contentRef) as HTMLElement;
+        const contentElement = ReactDOM.findDOMNode(this.accessibleMenuContentRef.current) as HTMLElement;
         const contentHeight = contentElement.getBoundingClientRect().height;
 
         if (bottomPos < contentHeight) {
@@ -145,12 +167,6 @@ class Menu extends React.Component<IProps, IState> {
         this.setState({ contentStyle });
     }
 
-    private setBackFocusMenuButton(currentRef: React.RefObject<HTMLElement>, currentMenuId: string) {
-        if (currentRef?.current && this.menuId === currentMenuId) {
-            this.backFocusMenuButtonRef = currentRef;
-        }
-    }
-
     private doBackFocusMenuButton() {
         if (this.backFocusMenuButtonRef?.current) {
             this.backFocusMenuButtonRef.current.focus();
@@ -158,13 +174,4 @@ class Menu extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
-    return {
-        infoDialogIsOpen: state.dialog.open
-            && (state.dialog.type === DialogTypeName.PublicationInfoOpds
-                || state.dialog.type === DialogTypeName.PublicationInfoLib
-                || state.dialog.type === DialogTypeName.DeletePublicationConfirm),
-    };
-};
-
-export default connect(mapStateToProps)(Menu);
+export default (Menu);
