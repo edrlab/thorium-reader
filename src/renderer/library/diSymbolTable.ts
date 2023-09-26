@@ -10,4 +10,5 @@ export const diRendererSymbolTable = {
     "store": Symbol("store"),
     "translator": Symbol("translator"),
     "react-library-app": Symbol("react-library-app"),
+    "focus": Symbol("focus"),
 };

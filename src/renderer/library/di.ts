@@ -19,6 +19,7 @@ import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { type Store } from "redux";
 
 import App from "./components/App";
+import { focusConstructor } from "../common/focus";
 
 // Create container used for dependency injection
 const container = new Container();
@@ -37,12 +38,15 @@ container.bind<Translator>(diRendererSymbolTable.translator).toConstantValue(tra
 
 container.bind<typeof App>(diRendererSymbolTable["react-library-app"]).toConstantValue(App);
 
+container.bind<typeof focusConstructor>(diRendererSymbolTable.focus).toConstantValue(focusConstructor);
+
 // local interface to force type return
 interface IGet {
     (s: "history"): History;
     (s: "store"): Store<ILibraryRootState>;
     (s: "translator"): Translator;
     (s: "react-library-app"): typeof App;
+    (s: "focus"): typeof focusConstructor;
 }
 
 // export function to get back depedency from container

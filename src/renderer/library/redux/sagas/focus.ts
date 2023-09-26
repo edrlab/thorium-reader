@@ -9,8 +9,8 @@ import React from "react";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { getFocusRef } from "readium-desktop/renderer/common/focusPointer";
 import { take as takeTyped, call as callTyped } from "typed-redux-saga";
+import { diLibraryGet } from "readium-desktop/renderer/library/di";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 
 function* doBackFocusMenuButton(action: dialogActions.openRequest.TAction) {
@@ -22,6 +22,7 @@ function* doBackFocusMenuButton(action: dialogActions.openRequest.TAction) {
     ) {
 
         yield* takeTyped(dialogActions.closeRequest.ID);
+        const { getFocusRef } = diLibraryGet("focus");
         const focusRef = getFocusRef() as React.RefObject<HTMLButtonElement>;
         if (focusRef) {
             yield* callTyped(() => setTimeout(() => focusRef.current.focus(), 1));

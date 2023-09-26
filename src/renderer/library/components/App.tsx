@@ -28,6 +28,7 @@ import DownloadsPanel from "./DownloadsPanel";
 import LoaderMainLoad from "./LoaderMainLoad";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
+import { FocusContext } from "readium-desktop/renderer/common/focus";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 
@@ -88,6 +89,7 @@ export default class App extends React.Component<{}, undefined> {
         const store = diLibraryGet("store"); // diRendererSymbolTable.store
         const history = diLibraryGet("history"); // diRendererSymbolTable.history
         const translator = diLibraryGet("translator"); // diRendererSymbolTable.translator
+        const focus = diLibraryGet("focus"); // diRendererSymbolTable.focus
 
         return (
             <Provider store={store} >
@@ -112,7 +114,9 @@ export default class App extends React.Component<{}, undefined> {
                                         ...inputProps
                                     }
                                     />
-                                    <PageManager />
+                                    <FocusContext.Provider value={focus}>
+                                        <PageManager />
+                                    </FocusContext.Provider>
                                     <DialogManager />
                                     <LoaderMainLoad />
                                     <ToastManager />

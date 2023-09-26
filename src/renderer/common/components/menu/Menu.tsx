@@ -10,7 +10,7 @@ import * as ReactDOM from "react-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import AccessibleMenu from "./AccessibleMenu";
-import { clearFocusRef, setFocusRef } from "readium-desktop/renderer/common/focusPointer";
+import { FocusContext } from "../../focus";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -40,6 +40,9 @@ class Menu extends React.Component<IProps, IState> {
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
 
+    declare context: React.ContextType<typeof FocusContext>;
+    static contextType = FocusContext;
+
     constructor(props: IProps) {
         super(props);
 
@@ -68,14 +71,14 @@ class Menu extends React.Component<IProps, IState> {
         this.appElement.setAttribute("aria-hidden", "false");
         this.appOverlayElement.removeChild(this.rootElement);
 
-        clearFocusRef(this.backFocusMenuButtonRef);
+        this.context.clearFocusRef(this.backFocusMenuButtonRef);
     }
 
     public componentDidUpdate(_oldProps: IProps, oldState: IState) {
 
         if (oldState.menuOpen === false && this.state.menuOpen === true) {
             this.accessibleMenuContentRef?.current?.querySelector("button")?.focus(); // focus first button
-            setFocusRef(this.backFocusMenuButtonRef);
+            this.context.setFocusRef(this.backFocusMenuButtonRef);
             this.refreshStyle();
         }
     }
