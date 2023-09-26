@@ -10,7 +10,7 @@ import * as ReactDOM from "react-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import AccessibleMenu from "./AccessibleMenu";
-import { FocusContext } from "../../focus";
+import { FocusContext } from "readium-desktop/renderer/common/focus";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {

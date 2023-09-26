@@ -11,7 +11,6 @@ import { dialogActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { take as takeTyped, call as callTyped } from "typed-redux-saga";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
-// eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 
 function* doBackFocusMenuButton(action: dialogActions.openRequest.TAction) {
 
