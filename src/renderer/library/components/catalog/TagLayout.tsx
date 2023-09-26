@@ -5,10 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
 import {
@@ -51,9 +49,7 @@ class GridTagLayout extends React.Component<IProps> {
                             }
                             dir="right"
                         >
-                            <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_right)}>
-                                {this.props.content}
-                            </div>
+                            {this.props.content}
                         </Menu>
                     }
                 </div>

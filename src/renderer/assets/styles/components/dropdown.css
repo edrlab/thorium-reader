@@ -27,9 +27,15 @@
   border-color: var(--color-primary);
   border-style: solid;
   border-radius: 5px;
-  margin-top: 20px;
+
+  /* margin-top: 20px; */
   position: relative;
 
+  /*
+  Arrow function ? 
+  */
+
+  /*
   &::after {
     content: " ";
     position: absolute;
@@ -41,8 +47,17 @@
     border-width: 0 7.5px 10px 7.5px;
     border-color: transparent transparent var(--color-primary) transparent;
   }
+  */
+  & #arrow {
+    z-index: -1; /* FIXME doesn't work */
+    position: absolute;
+    background: var(--color-primary);
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+  }
 
-  &.dropdown_right::after {
+  /* &.dropdown_right::after {
     left: auto;
     right: 34px;
   }
@@ -50,7 +65,7 @@
   &.dropdown_publication::after {
     left: auto;
     right: 25px;
-  }
+  } */
 
   & > * {
     text-decoration: none;

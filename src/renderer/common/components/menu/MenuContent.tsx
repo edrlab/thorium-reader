@@ -8,8 +8,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
 import AccessibleMenu from "./AccessibleMenu";
-import { autoUpdate, computePosition, flip } from "@floating-ui/dom";
+import { arrow, autoUpdate, computePosition, flip, offset, shift } from "@floating-ui/dom";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -27,7 +28,7 @@ interface IProps extends IBaseProps {
 }
 
 interface IState {
-    menuStyle: React.CSSProperties;
+    menuStyle: { content: React.CSSProperties, arrow: React.CSSProperties };
 }
 
 export default class MenuContent extends React.Component<IProps, IState> {
@@ -36,20 +37,22 @@ export default class MenuContent extends React.Component<IProps, IState> {
     private rootElement: HTMLElement;
     private accessibleMenuContentRef: React.RefObject<HTMLDivElement>;
     private cleanupFloatingUITracker: () => void;
+    private arrowMenuRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: IProps) {
         super(props);
 
         this.state = {
-            menuStyle: {},
+            menuStyle: { content: {}, arrow: {} },
         };
         this.appElement = document.getElementById("app");
         this.appOverlayElement = document.getElementById("app-overlay");
         this.rootElement = document.createElement("div");
 
         this.accessibleMenuContentRef = React.createRef<HTMLDivElement>();
+        this.arrowMenuRef = React.createRef<HTMLDivElement>();
         this.loadContentStyles = this.loadContentStyles.bind(this);
-        this.cleanupFloatingUITracker = () => {};
+        this.cleanupFloatingUITracker = () => { };
     }
 
     public componentDidMount() {
@@ -69,7 +72,6 @@ export default class MenuContent extends React.Component<IProps, IState> {
 
     public render() {
 
-        console.log("RENDER");
         return ReactDOM.createPortal(
             (
                 <AccessibleMenu
@@ -78,14 +80,18 @@ export default class MenuContent extends React.Component<IProps, IState> {
                     toggleMenu={this.props.closeMenu}
                 >
                     <div
-                        style={this.state.menuStyle}
+                        style={this.state.menuStyle.content}
                         id={this.props.id}
                         aria-hidden={false}
                         role="menu"
                         aria-expanded={true}
                         ref={this.accessibleMenuContentRef}
                     >
-                        {this.props.children}
+
+                        <div className={stylesDropDown.dropdown_menu}>
+                            {this.props.children}
+                            <div id={"arrow"} aria-hidden={true} ref={this.arrowMenuRef} style={this.state.menuStyle.arrow}></div>
+                        </div>
                     </div>
                 </AccessibleMenu>
             ),
@@ -100,14 +106,31 @@ export default class MenuContent extends React.Component<IProps, IState> {
             this.accessibleMenuContentRef.current,
             () => computePosition(this.props.menuButtonRef.current, this.accessibleMenuContentRef.current, {
                 placement: "bottom",
-                middleware: [flip()],
+                middleware: [flip(), shift({ padding: 5 }), offset(10), arrow({ element: this.arrowMenuRef.current })],
             })
-                .then(({ x, y }) => {
+                .then(({ x, y, placement, middlewareData: { arrow: { x: arrowX, y: arrowY } } }) => {
+
+                    const staticSide = {
+                        top: "bottom",
+                        right: "left",
+                        bottom: "top", // not used
+                        left: "right", // not used
+                    }[placement.split("-")[0]];
+
                     this.setState({
                         menuStyle: {
-                            position: "absolute",
-                            left: `${x}px`,
-                            top: `${y}px`,
+                            content: {
+                                position: "absolute",
+                                left: `${x}px`,
+                                top: `${y}px`,
+                            },
+                            arrow: {
+                                left: arrowX != null ? `${arrowX}px` : "",
+                                top: arrowY != null ? `${arrowY}px` : "",
+                                right: "",
+                                bottom: "",
+                                [staticSide]: "-4px",
+                            },
                         },
                     });
                 })

@@ -16,7 +16,6 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 import {
     TranslatorProps, withTranslator,
@@ -28,7 +27,6 @@ import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { v4 as uuidv4 } from "uuid";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -46,7 +44,6 @@ interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, Retu
 }
 
 export class PublicationListElement extends React.Component<IProps> {
-    private menuId: string;
     private buttonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
@@ -56,8 +53,6 @@ export class PublicationListElement extends React.Component<IProps> {
 
         // this.deletePublication = this.deletePublication.bind(this);
         this.focusButton = this.focusButton.bind(this);
-
-        this.menuId = "menu-" + uuidv4();
     }
 
     public render(): React.ReactElement<{}> {
@@ -112,12 +107,7 @@ export class PublicationListElement extends React.Component<IProps> {
                     }
                     dir="left"
                 >
-                    <div
-                        id={this.menuId}
-                        className={(stylesDropDown.dropdown_menu)}
-                    >
-                        {this.props.menuContent}
-                    </div>
+                    {this.props.menuContent}
                 </Menu>
                 {/* <button
                     type="button"
