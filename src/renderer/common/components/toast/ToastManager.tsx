@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 import Toast from "./Toast";
+import { ToastType } from "readium-desktop/common/models/toast";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -62,15 +63,22 @@ export class ToastManager extends React.Component<IProps, IState> {
                 {Object.keys(toastList).map((id: string) => {
                     const toast = toastList[id];
                     if (toast) {
-                        return (
-                            <Toast
-                            message={toast.data}
-                            key={id}
-                            close={() => this.close(id)}
-                            type={toast.type}
-                            displaySystemNotification={false}
-                            />
-                        );
+                        switch (toast.type) {
+                            case ToastType.Success:
+                            case ToastType.Default:
+                            case ToastType.Error:
+                            return (
+                                <Toast
+                                message={toast.data}
+                                key={id}
+                                close={() => this.close(id)}
+                                type={toast.type}
+                                displaySystemNotification={false}
+                                />
+                            );
+                            default:
+                            return <></>;
+                        }
                     }
                     return undefined;
                 })}
