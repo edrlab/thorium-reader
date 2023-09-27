@@ -123,6 +123,7 @@ export default class MenuContent extends React.Component<IProps, IState> {
                                 position: "absolute",
                                 left: `${x}px`,
                                 top: `${y}px`,
+                                zIndex: "1",
                             },
                             arrow: {
                                 left: arrowX != null ? `${arrowX}px` : "",
