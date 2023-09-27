@@ -179,7 +179,7 @@ export class Toast extends React.Component<IProps, IState> {
                     }
                 }>{ this.props.message }</p>
                 <button
-                    onClick={() => {this.displayToastModal}}
+                    onClick={this.displayToastModal}
                     style={{width: "20px"}}
                 >
                     <SVG ariaHidden={true} svg={PlusIcon}/>
@@ -217,6 +217,7 @@ export class Toast extends React.Component<IProps, IState> {
 
     private displayToastModal() {
         this.props.displayToastModal();
+        this.props.close(this.props.id);
     }
 }
 
@@ -232,4 +233,4 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     };
 };
 
-export default connect(mapDispatchToProps)(withTranslator(Toast));
+export default connect(undefined, mapDispatchToProps)(withTranslator(Toast));
