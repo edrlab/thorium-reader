@@ -31,6 +31,7 @@ export function dialogReducer(
                 case DialogTypeName.PublicationInfoOpds:
                 case DialogTypeName.PublicationInfoReader:
                 case DialogTypeName.PublicationInfoLib:
+                case DialogTypeName.ToastModal:
                     break;
                 default:
                     data = action.payload.data;

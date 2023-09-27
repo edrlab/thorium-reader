@@ -12,6 +12,7 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import ApiappAddForm from "./ApiappAddForm";
 
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
+import ToastErrorViewer from "./ToastErrorViewer";
 import DeletePublicationConfirm from "./DeletePublicationConfirm";
 import FileImport from "./FileImport";
 import LcpAuthentication from "./LcpAuthentication";
@@ -46,6 +47,7 @@ class DialogManager extends React.Component<IProps, undefined> {
 
         return (
             <>
+                <ToastErrorViewer></ToastErrorViewer>
                 <ApiappAddForm></ApiappAddForm>
                 <OpdsFeedAddForm></OpdsFeedAddForm>
                 <OpdsFeedUpdateForm></OpdsFeedUpdateForm>
