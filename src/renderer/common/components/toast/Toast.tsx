@@ -11,8 +11,13 @@ import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/plus.svg";
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { connect } from "react-redux";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
@@ -34,7 +39,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>  {
 }
 
 interface IState {
@@ -59,6 +64,7 @@ export class Toast extends React.Component<IProps, IState> {
 
         this.handleTransitionEnd = this.handleTransitionEnd.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.displayToastModal = this.displayToastModal.bind(this);
     }
 
     public cancelTimer(ignoreTimer: boolean) {
@@ -172,6 +178,12 @@ export class Toast extends React.Component<IProps, IState> {
                         }
                     }
                 }>{ this.props.message }</p>
+                <button
+                    onClick={() => {this.displayToastModal}}
+                    style={{width: "20px"}}
+                >
+                    <SVG ariaHidden={true} svg={PlusIcon}/>
+                </button>
                 {/*
                     onBlur={() => {
                         this.triggerTimer(true);
@@ -202,6 +214,22 @@ export class Toast extends React.Component<IProps, IState> {
             this.setState({toRemove: true});
         }
     }
+
+    private displayToastModal() {
+        this.props.displayToastModal();
+    }
 }
 
-export default withTranslator(Toast);
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
+    return {
+        displayToastModal: () => {
+            dispatch(dialogActions.openRequest.build(DialogTypeName.ToastModal,
+                {
+                    message: props.message,
+                },
+            ));
+        },
+    };
+};
+
+export default connect(mapDispatchToProps)(withTranslator(Toast));

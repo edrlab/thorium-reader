@@ -155,7 +155,7 @@
     },
     "message": {
         "download": {
-            "error": "The download of {{- title}} has failed: [{{- err}}]"
+            "error": "The download of {{- title}} has failed"
         },
         "import": {
             "alreadyImport": "{{- title}} was already imported",
@@ -164,6 +164,9 @@
         },
         "open": {
             "error": "The publication can't be opened: {{- err}}"
+        },
+        "details": {
+            "error": "[{{- err}}]"
         }
     },
     "opds": {

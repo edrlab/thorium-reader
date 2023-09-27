@@ -15,6 +15,10 @@ interface IPubInfoState {
     publication?: TPublication;
     coverZoom?: boolean;
 }
+
+interface IToastState {
+    message: string;
+}
 interface IPubInfoStateReader extends IPubInfoState {
     focusWhereAmI: boolean;
     pdfPlayerNumberOfPages: number | undefined; // super hacky :(
@@ -43,6 +47,7 @@ export enum DialogTypeName {
     LsdReturnConfirm = "lsd-return-confirm",
     LsdRenewConfirm = "lsd-renew-confirm",
     AboutThorium = "about-thorium",
+    ToastModal = "toast-modal",
 }
 
 export interface DialogType {
@@ -79,4 +84,5 @@ export interface DialogType {
         publicationView: PublicationView;
     };
     [DialogTypeName.AboutThorium]: {};
+    [DialogTypeName.ToastModal]: IToastState;
 }

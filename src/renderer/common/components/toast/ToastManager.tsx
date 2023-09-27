@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { ToastType } from "readium-desktop/common/models/toast";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
@@ -14,7 +15,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 import Toast from "./Toast";
-import { ToastType } from "readium-desktop/common/models/toast";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -57,33 +57,42 @@ export class ToastManager extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { toastList } = this.state;
-
-        return (
-            <div className={stylesToasts.toasts_wrapper}>
-                {Object.keys(toastList).map((id: string) => {
-                    const toast = toastList[id];
-                    if (toast) {
-                        switch (toast.type) {
-                            case ToastType.Success:
-                            case ToastType.Default:
-                            case ToastType.Error:
-                            return (
-                                <Toast
+        return <div className={stylesToasts.toasts_wrapper}>
+            { Object.keys(toastList).map((id: string) => {
+                const toast = toastList[id];
+                if (toast) {
+                    switch (toast.type) {
+                        case ToastType.Success:
+                            return <Toast
                                 message={toast.data}
                                 key={id}
-                                close={() => this.close(id)}
+                                close={ () => this.close(id) }
                                 type={toast.type}
                                 displaySystemNotification={false}
-                                />
-                            );
-                            default:
-                            return <></>;
-                        }
+                            />;
+                        case ToastType.Default:
+                            return <Toast
+                                message={toast.data}
+                                key={id}
+                                close={ () => this.close(id) }
+                                type={toast.type}
+                                displaySystemNotification={false}
+                            />;
+                        case ToastType.Error:
+                            return <Toast
+                                message={toast.data}
+                                key={id}
+                                close={ () => this.close(id) }
+                                type={toast.type}
+                                displaySystemNotification={false}
+                            />;
+                        default:
+                            return (<></>);
                     }
-                    return undefined;
-                })}
-            </div>
-        );
+                }
+                return undefined;
+            })}
+        </div>;
     }
 
     private close(id: string) {

@@ -29,6 +29,9 @@ interface IDataPayload {
         readerReadingLocation: LocatorExtended;
         handleLinkUrl: ((url: string) => void) | undefined;
     };
+    [DialogTypeName.ToastModal]: {
+        message: string;
+    };
 }
 
 type TDialogType = Omit<DialogType, DialogTypeName.PublicationInfoOpds | DialogTypeName.PublicationInfoReader>;

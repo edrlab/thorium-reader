@@ -19,6 +19,7 @@ import OpdsFeedAddForm from "./OpdsFeedAddForm";
 import OpdsFeedUpdateForm from "./OpdsFeedUpdateForm";
 import RenewLsdConfirm from "./RenewLsdConfirm";
 import ReturnLsdConfirm from "./ReturnLsdConfirm";
+import ToastDialog from "readium-desktop/renderer/common/components/dialog/ToastDialog";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -46,6 +47,7 @@ class DialogManager extends React.Component<IProps, undefined> {
 
         return (
             <>
+                <ToastDialog></ToastDialog>
                 <ApiappAddForm></ApiappAddForm>
                 <OpdsFeedAddForm></OpdsFeedAddForm>
                 <OpdsFeedUpdateForm></OpdsFeedUpdateForm>
