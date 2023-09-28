@@ -33,6 +33,8 @@ interface IState {
 class Menu extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
+
+        const appOverlayElement = document.getElementById("app-overlay");
         return (
             <Popover.Root>
                 <Popover.Trigger asChild>
@@ -40,7 +42,7 @@ class Menu extends React.Component<IProps, IState> {
                         {this.props.button}
                     </button>
                 </Popover.Trigger>
-                <Popover.Portal>
+                <Popover.Portal container={appOverlayElement}>
                     <Popover.Content className="PopoverContent" sideOffset={5}>
                         <div className={stylesDropDown.dropdown_menu}>
                             {this.props.children}
