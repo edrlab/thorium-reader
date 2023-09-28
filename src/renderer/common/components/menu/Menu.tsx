@@ -28,7 +28,7 @@ interface IState {
 }
 
 // FIXME / TODO
-// do back focus not implemented with Radix popover menu 
+// do back focus not implemented with Radix popover menu
 
 class Menu extends React.Component<IProps, IState> {
 
