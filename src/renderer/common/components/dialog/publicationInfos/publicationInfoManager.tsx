@@ -14,7 +14,7 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 
 import Cover from "../../Cover";
 import Loader from "../../Loader";
-import Dialog from "../Dialog";
+import  RadixDialogPortal  from "../Dialog";
 
 export interface IProps extends TranslatorProps {
     publicationViewMaybeOpds: TPublication;
@@ -28,7 +28,7 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
     const { publicationViewMaybeOpds, coverZoom, toggleCoverZoomCb, closeDialogCb } = props;
 
     return (
-        <Dialog
+        <RadixDialogPortal
             close={
                 () =>
                     coverZoom
@@ -63,7 +63,7 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
                         )
                         : <Loader></Loader>
                 }
-        </Dialog>
+        </RadixDialogPortal>
     );
 };
 export default (withTranslator(PublicationInfoManager));

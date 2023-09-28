@@ -27,6 +27,7 @@ import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls/OpdsControls";
 import TagManager from "./TagManager";
+import * as Dialog from "@radix-ui/react-dialog";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -52,36 +53,38 @@ class PublicationInfo extends React.Component<IProps> {
         }
 
         return (
-            <PublicationInfoManager
-                publicationViewMaybeOpds={publication}
-                coverZoom={coverZoom}
-                toggleCoverZoomCb={toggleCoverZoom}
-                closeDialogCb={closeDialog}
-            >
-                <PublicationInfoContent
+            <Dialog.Root>
+                <PublicationInfoManager
                     publicationViewMaybeOpds={publication}
-                    r2Publication={null}
-                    manifestUrlR2Protocol={null}
-                    handleLinkUrl={null}
-                    toggleCoverZoomCb={toggleCoverZoom}
-                    ControlComponent={this.controlsComponent}
-                    TagManagerComponent={TagManager}
                     coverZoom={coverZoom}
-                    translator={this.props.translator}
-                    onClikLinkCb={
-                        (_link) => () =>
-                            this.props.link(
-                            _link.link[0], this.props.location, _link.name)
-                    }
-                    focusWhereAmI={false}
-                    pdfPlayerNumberOfPages={undefined}
-                    divinaNumberOfPages={undefined}
-                    divinaContinousEqualTrue={undefined}
-                    readerReadingLocation={undefined}
+                    toggleCoverZoomCb={toggleCoverZoom}
                     closeDialogCb={closeDialog}
                 >
-                </PublicationInfoContent>
-            </PublicationInfoManager>
+                    <PublicationInfoContent
+                        publicationViewMaybeOpds={publication}
+                        r2Publication={null}
+                        manifestUrlR2Protocol={null}
+                        handleLinkUrl={null}
+                        toggleCoverZoomCb={toggleCoverZoom}
+                        ControlComponent={this.controlsComponent}
+                        TagManagerComponent={TagManager}
+                        coverZoom={coverZoom}
+                        translator={this.props.translator}
+                        onClikLinkCb={
+                            (_link) => () =>
+                                this.props.link(
+                                _link.link[0], this.props.location, _link.name)
+                        }
+                        focusWhereAmI={false}
+                        pdfPlayerNumberOfPages={undefined}
+                        divinaNumberOfPages={undefined}
+                        divinaContinousEqualTrue={undefined}
+                        readerReadingLocation={undefined}
+                        closeDialogCb={closeDialog}
+                    >
+                    </PublicationInfoContent>
+                </PublicationInfoManager>
+            </Dialog.Root>
         );
     }
 

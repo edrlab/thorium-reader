@@ -16,8 +16,6 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationExportButton from "./PublicationExportButton";
-import * as Dialog from '@radix-ui/react-dialog';
-import { RadixDialogPortal } from "readium-desktop/renderer/common/components/dialog/Dialog";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -52,12 +50,11 @@ export class CatalogMenu extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <>
-                <Dialog.Root>
-                    <Dialog.Trigger asChild>
-                    <button role="menuitem">{__("catalog.bookInfo")}</button>
-                    </Dialog.Trigger>
-                    <RadixDialogPortal />
-                </Dialog.Root>
+                <button role="menuitem"
+                    onClick={this.displayPublicationInfo}
+                >
+                    {__("catalog.bookInfo")}
+                </button>
                 <button role="menuitem"
                     onClick={this.deletePublication}
                 >
