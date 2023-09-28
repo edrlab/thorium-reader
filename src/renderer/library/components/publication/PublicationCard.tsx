@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -14,7 +13,6 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 import Cover from "readium-desktop/renderer/common/components/Cover";
 import {
@@ -95,19 +93,15 @@ class PublicationCard extends React.Component<IProps> {
                         button={(
                             <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
                         )}
-                        content={(
-                            <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_publication)}>
-                                {isOpds ?
-                                    <OpdsMenu
-                                        opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
-                                    /> :
-                                    <CatalogMenu
-                                        publicationView={publicationViewMaybeOpds as PublicationView}
-                                    />}
-                            </div>
-                        )}
-                        dir="right"
-                    />
+                    >
+                        {isOpds ?
+                            <OpdsMenu
+                                opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                            /> :
+                            <CatalogMenu
+                                publicationView={publicationViewMaybeOpds as PublicationView}
+                            />}
+                    </Menu>
                 </div>
             </div>
         );
