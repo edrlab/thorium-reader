@@ -105,7 +105,6 @@ export class PublicationListElement extends React.Component<IProps> {
                             svg={MenuIcon}
                         />)
                     }
-                    dir="left"
                 >
                     {this.props.menuContent}
                 </Menu>

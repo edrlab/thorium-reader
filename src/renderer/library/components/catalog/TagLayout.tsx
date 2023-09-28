@@ -47,7 +47,6 @@ class GridTagLayout extends React.Component<IProps> {
                                     <SVG ariaHidden={true} svg={ArrowIcon} />
                                 </>
                             }
-                            dir="right"
                         >
                             {this.props.content}
                         </Menu>

@@ -93,7 +93,6 @@ class PublicationCard extends React.Component<IProps> {
                         button={(
                             <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
                         )}
-                        dir="right"
                     >
                         {isOpds ?
                             <OpdsMenu

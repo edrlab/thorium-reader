@@ -121,7 +121,6 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                             svg={MenuIcon}
                                         />)
                                     }
-                                    dir="left"
                                 >
                                     <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
                                         {__("settings.keyboard.resetDefaults")}

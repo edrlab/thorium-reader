@@ -251,7 +251,7 @@
     }
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.5.3",
+    "@radix-ui/react-popover": "^1.0.7",
     "@xmldom/xmldom": "^0.8.10",
     "classnames": "^2.3.2",
     "commonmark": "^0.30.0",

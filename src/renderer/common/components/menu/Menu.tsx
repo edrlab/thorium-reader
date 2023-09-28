@@ -7,14 +7,13 @@
 
 import * as React from "react";
 
-import { v4 as uuidv4 } from "uuid";
 import { FocusContext } from "readium-desktop/renderer/common/focus";
-import MenuContent from "./MenuContent";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
+import * as Popover from "@radix-ui/react-popover";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     button: React.ReactElement;
-    dir: string; // Direction of menu: right or left // FIXME unused ?
 }
 
 // IProps may typically extend:
@@ -25,14 +24,13 @@ interface IBaseProps {
 interface IProps extends React.PropsWithChildren<IBaseProps> {
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IState {
-    menuOpen: boolean;
 }
 
 class Menu extends React.Component<IProps, IState> {
 
     private backFocusMenuButtonRef: React.RefObject<HTMLButtonElement>;
-    private menuId: string;
 
     declare context: React.ContextType<typeof FocusContext>;
     static contextType = FocusContext;
@@ -41,50 +39,31 @@ class Menu extends React.Component<IProps, IState> {
         super(props);
 
         this.backFocusMenuButtonRef = React.createRef<HTMLButtonElement>();
-        this.state = {
-            menuOpen: false,
-        };
-        this.menuId = "menu-" + uuidv4();
     }
 
     public componentWillUnmount() {
         this.context.clearFocusRef(this.backFocusMenuButtonRef);
     }
 
-    public async componentDidUpdate(_oldProps: IProps, oldState: IState) {
-
-        if (oldState.menuOpen === false && this.state.menuOpen === true) {
-            this.context.setFocusRef(this.backFocusMenuButtonRef);
-        }
-    }
-
     public render(): React.ReactElement<{}> {
-
-        let MenuContentRendered = <></>;
-        if (this.state.menuOpen) {
-            MenuContentRendered = <>
-                <MenuContent
-                    id={this.menuId}
-                    closeMenu={() => this.setState({ menuOpen: false })}
-                    menuButtonRef={this.backFocusMenuButtonRef}
-                >
-                    {this.props.children}
-                </MenuContent>
-            </>;
-        }
-
         return (
-            <>
-                <button
-                    aria-expanded={this.state.menuOpen}
-                    aria-controls={this.menuId}
-                    onClick={() => this.setState({menuOpen: true})}
-                    ref={this.backFocusMenuButtonRef}
-                >
-                    {this.props.button}
-                </button>
-                {MenuContentRendered}
-            </>
+            <Popover.Root onOpenChange={(open) => open && this.context.setFocusRef(this.backFocusMenuButtonRef)}>
+                <Popover.Trigger asChild>
+                    <button
+                        ref={this.backFocusMenuButtonRef}
+                    >
+                        {this.props.button}
+                    </button>
+                </Popover.Trigger>
+                <Popover.Portal>
+                    <Popover.Content className="PopoverContent" sideOffset={5}>
+                        <div className={stylesDropDown.dropdown_menu}>
+                            {this.props.children}
+                        </div>
+                        <Popover.Arrow className="PopoverArrow" aria-hidden/>
+                    </Popover.Content>
+                </Popover.Portal>
+            </Popover.Root>
         );
     }
 }
