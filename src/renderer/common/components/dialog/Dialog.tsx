@@ -18,6 +18,7 @@ import { TranslatorProps, withTranslator } from "../hoc/translator";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { connect } from "react-redux";
+import * as Dialogs from '@radix-ui/react-dialog';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -40,6 +41,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
+    closeDialog: () => void;
 }
 
 class Dialog extends React.Component<IProps, undefined> {
@@ -229,3 +231,80 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
 
 export default connect(undefined, mapDispatchToProps)(withTranslator(Dialog));
+
+
+
+
+export const RadixDialogPortal = (props: IProps) => {
+
+    const submit = () => {
+        if (props.onSubmitButton) {
+            props.onSubmitButton();
+        }
+        props.closeDialog();
+    };
+
+    const submitForm = (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        submit();
+    };
+
+
+    const content = props.children;
+    const className = props.className;
+    const { __ } = props;
+    const okRef = React.createRef<HTMLButtonElement>();
+
+    return (
+        <Dialogs.Portal>
+            <Dialogs.Overlay id="app-overlay" />
+            <Dialogs.Content
+                role="document"
+                id={props.id}
+                className={classNames(className, stylesModals.modal_dialog, props.size === "small" ? undefined : stylesModals.modal_dialog_full )}
+            >
+                <Dialogs.Title>
+                    {props.title}
+                </Dialogs.Title>
+                <Dialogs.Description>
+                {
+                    props.noFooter // cf PublicationInfoManager
+                        ? <div className={classNames(stylesModals.modal_dialog_body)}>
+                                {content}
+                        </div>
+                        : <>
+                            <div
+                                className={classNames(stylesModals.modal_dialog_body, props.noCentering ? undefined : stylesModals.modal_dialog_body_centered)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT" && !props.submitButtonDisabled) {
+                                        submitForm(e);
+                                    }
+                                }}
+                            >
+                                {content}
+                            </div>
+                            <div className={stylesModals.modal_dialog_footer}>
+                                <button
+                                    onClick={(_e) => {props.closeDialog();}}
+                                    className={stylesButtons.button_primary}
+                                >
+                                    {__("dialog.cancel")}
+                                </button>
+                                <button
+                                    disabled={props.submitButtonDisabled || false }
+                                    onClick={(e) => {
+                                        submitForm(e);
+                                    }}
+                                    className={classNames(stylesButtons.button_primary, stylesButtons.button_primary_form_default)}
+                                    ref={okRef}
+                                >
+                                    {props.submitButtonTitle}
+                                </button>
+                            </div>
+                        </>
+                    }
+                </Dialogs.Description>
+            </Dialogs.Content>
+        </Dialogs.Portal>
+    )
+}
