@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import * as Dialog from "@radix-ui/react-dialog";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -27,6 +28,18 @@ import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls/OpdsControls";
 import TagManager from "./TagManager";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import { TPublication } from "readium-desktop/common/type/publication.type";
+import Loader from "readium-desktop/renderer/common/components/Loader";
+import Cover from "readium-desktop/renderer/common/components/Cover";
+import { useLocation } from "react-router";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -140,3 +153,124 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));
+
+export const PublicationInfo2 = (props: { publicationView: PublicationView, trigger: React.ReactNode }) => {
+    const [__] = useTranslator();
+    const defaultOpen = false;
+    const [open, setOpen] = React.useState(defaultOpen);
+
+    const dispatch = useDispatch();
+
+    const data = useSelector((state: ILibraryRootState) =>
+        state.dialog.type === DialogTypeName.PublicationInfoLib
+            ? state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib]
+            : undefined);
+
+    console.log(data);
+
+    const appOverlayElement = document.getElementById("app-overlay");
+
+    return (
+        <Dialog.Root defaultOpen={defaultOpen} open={open} onOpenChange={
+            (open) => {
+                setOpen(open);
+                if (open) {
+                    dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib, {
+                        publicationIdentifier: props.publicationView.identifier,
+                    }));
+                } else {
+                    dispatch(dialogActions.closeRequest.build());
+                }
+            }
+        }>
+            <Dialog.Trigger asChild>
+                {props.trigger}
+            </Dialog.Trigger>
+            <Dialog.Portal container={appOverlayElement}>
+                {/* <Dialog.Overlay className="DialogOverlay" /> */}
+                <div className={stylesModals.modal_dialog_overlay}></div>
+                <Dialog.Content className={stylesModals.modal_dialog}>
+                    <div className={stylesModals.modal_dialog_header}>
+                        {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
+                        <h2>{__("catalog.bookInfo")}</h2>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                    <div className={stylesModals.modal_dialog_body}>
+                        <PublicationInfo2Content publicationViewMaybeOpds={data?.publication} closeDialog={() => setOpen(false)} />
+                    </div>
+                </Dialog.Content>
+            </Dialog.Portal>
+        </Dialog.Root>
+    );
+
+};
+
+
+const PublicationInfo2Content = (props: {publicationViewMaybeOpds: TPublication | undefined, closeDialog: () => void}) => {
+    const [, translator] = useTranslator(); // FIXME
+    const dispatch = useDispatch();
+    const link = dispatchOpdsLink(dispatch);
+    const location = useLocation();
+    const [coverZoom, setCoverZoom] = React.useState(false);
+
+    if (!props.publicationViewMaybeOpds?.documentTitle) {
+        return <Loader></Loader>;
+    }
+
+    if (coverZoom) {
+        return <Cover
+            publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+            coverType="cover"
+            onClick={
+                () => setCoverZoom(true)
+            }
+            onKeyPress={
+                (e: React.KeyboardEvent<HTMLImageElement>) =>
+                    e.key === "Enter" && setCoverZoom(true)
+            }
+        />;
+    }
+
+    let controlsComponent = () => (<></>);
+
+    // if (publicationInfoOpds) {
+    //     controlsComponent = (<OpdsControls opdsPublicationView={publication as IOpdsPublicationView} />);
+    // }
+    // if (publicationInfoLib) {
+        if (props.publicationViewMaybeOpds?.lcp) {
+            controlsComponent = () => (<CatalogLcpControls publicationView={props.publicationViewMaybeOpds as PublicationView} />);
+        } else {
+            controlsComponent = () => (<CatalogControls publicationView={props.publicationViewMaybeOpds as PublicationView} />);
+        }
+    // }
+
+
+    return (
+        <PublicationInfoContent
+            publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+            r2Publication={null}
+            manifestUrlR2Protocol={null}
+            handleLinkUrl={null}
+            toggleCoverZoomCb={() => setCoverZoom(!coverZoom)}
+            ControlComponent={controlsComponent}
+            TagManagerComponent={TagManager}
+            coverZoom={coverZoom}
+            translator={translator}
+            onClikLinkCb={
+                (_link) => () => link(
+                        _link.link[0], location, _link.name)
+            }
+            focusWhereAmI={false}
+            pdfPlayerNumberOfPages={undefined}
+            divinaNumberOfPages={undefined}
+            divinaContinousEqualTrue={undefined}
+            readerReadingLocation={undefined}
+            closeDialogCb={props.closeDialog}
+        >
+        </PublicationInfoContent>
+    );
+};

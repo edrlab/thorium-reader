@@ -12,10 +12,17 @@ import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.css";
 import classNames from "classnames";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { dialogActions } from "readium-desktop/common/redux/actions";
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, button: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
-    const [, remove] = useApi(undefined, "publication/delete", props.publicationView.identifier);
+    const [result, remove] = useApi(undefined, "publication/delete", props.publicationView.identifier);
+    const dispatch = useDispatch();
+    React.useCallback(() => {
+        if (!result.data.error)
+            dispatch(dialogActions.closeRequest.build());
+    }, [result]);
 
     const appOverlayElement = document.getElementById("app-overlay");
 
@@ -45,8 +52,8 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, but
                 </AlertDialog.Content>
             </AlertDialog.Portal>
         </AlertDialog.Root>
-    )
+    );
 
-}
+};
 
 export default DeletePublicationConfirm;

@@ -6,17 +6,18 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+// import { connect } from "react-redux";
+// import { DialogTypeName } from "readium-desktop/common/models/dialog";
+// import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { TDispatch } from "readium-desktop/typings/redux";
+// import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationExportButton from "./PublicationExportButton";
 import DeletePublicationConfirm from "../../dialog/DeletePublicationConfirm";
+import { PublicationInfo2 } from "../../dialog/publicationInfos/PublicationInfo";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -27,7 +28,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends IBaseProps {//, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -44,18 +45,22 @@ export class CatalogMenu extends React.Component<IProps, IState> {
         };
 
         // this.deletePublication = this.deletePublication.bind(this);
-        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+        // this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
             <>
-                <button role="menuitem"
-                    onClick={this.displayPublicationInfo}
-                >
-                    {__("catalog.bookInfo")}
-                </button>
+                <PublicationInfo2
+                    trigger={(
+                        <button role="menuitem"
+                        >
+                            {__("catalog.bookInfo")}
+                        </button>
+                    )}
+                    publicationView={this.props.publicationView}
+                />
                 <DeletePublicationConfirm
                     button={(
                         <button role="menuitem"
@@ -72,21 +77,22 @@ export class CatalogMenu extends React.Component<IProps, IState> {
         );
     }
 
-    private displayPublicationInfo() {
-        this.props.displayPublicationInfo();
-    }
+    // private displayPublicationInfo() {
+    //     this.props.displayPublicationInfo();
+    // }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
-    return {
-        displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib,
-                {
-                    publicationIdentifier: props.publicationView.identifier,
-                },
-            ));
-        },
-    };
-};
+// const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
+//     return {
+//         displayPublicationInfo: () => {
+//             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib,
+//                 {
+//                     publicationIdentifier: props.publicationView.identifier,
+//                 },
+//             ));
+//         },
+//     };
+// };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogMenu));
+// export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogMenu));
+export default withTranslator(CatalogMenu);
