@@ -3,33 +3,12 @@
 @import url('@radix-ui/colors/red.css');
 @import url('@radix-ui/colors/violet.css');
 
-/* reset */
-button {
-  all: unset;
-}
-
 .AlertDialogOverlay {
-  background-color: var(--black-a9);
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 110;
-
-  /* position: fixed;
-  z-index: 102;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  padding: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: 0.2s;
-  min-width: 700px;
-  align-items: center;
-  justify-content: center; */
 }
 
 .AlertDialogContent {
@@ -66,7 +45,7 @@ button {
   line-height: 1.5;
 }
 
-.Button {
+.AlertDialogButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -78,43 +57,43 @@ button {
   height: 35px;
 }
 
-.Button.violet {
+.AlertDialogButton.violet {
   background-color: white;
   color: var(--violet-11);
   box-shadow: 0 2px 10px var(--black-a7);
 }
 
-.Button.violet:hover {
+.AlertDialogButton.violet:hover {
   background-color: var(--mauve-3);
 }
 
-.Button.violet:focus {
+.AlertDialogButton.violet:focus {
   box-shadow: 0 0 0 2px black;
 }
 
-.Button.red {
+.AlertDialogButton.red {
   background-color: var(--red-4);
   color: var(--red-11);
 }
 
-.Button.red:hover {
+.AlertDialogButton.red:hover {
   background-color: var(--red-5);
 }
 
-.Button.red:focus {
+.AlertDialogButton.red:focus {
   box-shadow: 0 0 0 2px var(--red-7);
 }
 
-.Button.mauve {
+.AlertDialogButton.mauve {
   background-color: var(--mauve-4);
   color: var(--mauve-11);
 }
 
-.Button.mauve:hover {
+.AlertDialogButton.mauve:hover {
   background-color: var(--mauve-5);
 }
 
-.Button.mauve:focus {
+.AlertDialogButton.mauve:focus {
   box-shadow: 0 0 0 2px var(--mauve-7);
 }
 
@@ -136,4 +115,5 @@ button {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
-} */
+}
+*/

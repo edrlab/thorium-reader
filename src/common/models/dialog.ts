@@ -37,7 +37,6 @@ export enum DialogTypeName {
     OpdsFeedAddForm = "opds-feed-add-form",
     OpdsFeedUpdateForm = "opds-feed-update-form",
     ApiappAddForm = "apiapp-add-form",
-    DeletePublicationConfirm = "delete-publication-confirm",
     DeleteOpdsFeedConfirm = "delete-opds-feed-confirm",
     LcpAuthentication = "lcp-authentication",
     LsdReturnConfirm = "lsd-return-confirm",
@@ -57,9 +56,6 @@ export interface DialogType {
         feed: IOpdsFeedView;
     };
     [DialogTypeName.ApiappAddForm]: {};
-    [DialogTypeName.DeletePublicationConfirm]: {
-        publicationView: PublicationView;
-    };
     [DialogTypeName.DeleteOpdsFeedConfirm]: {
         feed: IOpdsFeedView;
     };

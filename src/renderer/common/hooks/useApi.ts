@@ -16,11 +16,13 @@ import { ApiResponse } from "readium-desktop/common/redux/states/api";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { useSyncExternalStore } from "./useSyncExternalStore";
 
-export function useApi<T extends TApiMethodName>(_requestId: string, apiPath: T, ...requestData: Parameters<TApiMethod[T]>): ApiResponse<TReturnPromiseOrGeneratorType<TApiMethod[T]>> {
+export function useApi<T extends TApiMethodName>(_requestId: string | undefined, apiPath: T, ...requestData: Parameters<TApiMethod[T]>):
+    [ApiResponse<TReturnPromiseOrGeneratorType<TApiMethod[T]>>, () => void]
+{
 
     const requestId = _requestId || React.useMemo(() => uuidv4(), []);
     const { store } = React.useContext(ReactReduxContext);
-    React.useEffect(() => {
+    const apiAction = React.useCallback(() => {
         const splitPath = apiPath.split("/");
         const moduleId = splitPath[0] as TModuleApi;
         const methodId = splitPath[1] as TMethodApi;
@@ -32,5 +34,5 @@ export function useApi<T extends TApiMethodName>(_requestId: string, apiPath: T,
     }, []); // componentDidMount
 
     const apiResult = useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
-    return apiResult;
+    return [apiResult, apiAction];
 };

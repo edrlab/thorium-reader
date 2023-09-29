@@ -5,12 +5,10 @@ declare const styles: {
   readonly "contentShow": string;
   readonly "AlertDialogTitle": string;
   readonly "AlertDialogDescription": string;
-  readonly "Button": string;
+  readonly "AlertDialogButton": string;
   readonly "violet": string;
   readonly "red": string;
   readonly "mauve": string;
-  readonly "light": string;
-  readonly "light-theme": string;
 };
 export = styles;
 
