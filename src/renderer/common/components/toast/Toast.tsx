@@ -13,6 +13,7 @@ import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as Toasts from '@radix-ui/react-toast';
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
@@ -35,6 +36,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
+    open: any;
 }
 
 interface IState {
@@ -205,3 +207,50 @@ export class Toast extends React.Component<IProps, IState> {
 }
 
 export default withTranslator(Toast);
+
+
+export const Toast2: React.FC<IProps> = (props) => {
+    const timerRef = React.useRef(0);
+    const { type, open, id } = props;
+
+    let typeClassName: string;
+    switch (type) {
+        case ToastType.Error:
+            typeClassName = stylesToasts.error;
+            break;
+        case ToastType.Success:
+            typeClassName = stylesToasts.success;
+            break;
+        default:
+    }
+            
+  
+    React.useEffect(() => {
+      return () => clearTimeout(timerRef.current);
+    }, []);
+
+    return (
+        <Toasts.Root className={classNames(
+            stylesToasts.toast,
+            typeClassName,
+        )}
+        open={open}
+        onOpenChange={open}
+        key={id}>
+            <Toasts.Title>Something went wrong</Toasts.Title>
+            <Toasts.Description asChild>
+            <p
+                aria-live="assertive"
+                aria-relevant="all"
+                role="alert"
+                tabIndex={0}
+                >The importation of the book has failed
+            </p>
+            <button>More info</button>
+            </Toasts.Description>
+            <Toasts.Close className={stylesToasts.closeButton} aria-label="close">
+                <SVG ariaHidden={true} svg={QuitIcon}/>
+            </Toasts.Close>
+        </Toasts.Root>
+    )
+};
