@@ -38,11 +38,11 @@
 }
 
 .modal_dialog {
-  margin: 30px;
+  margin: 100px;
   min-height: 400px;
-  min-width: 700px;
-  max-width: calc(100vw - 60px);
-  max-height: calc(100vh - 60px);
+  min-width: 600px;
+  max-width: calc(100vw - 200px);
+  max-height: calc(100vh - 200px);
   border-radius: 10px;
   z-index: 102;
   display: flex;
