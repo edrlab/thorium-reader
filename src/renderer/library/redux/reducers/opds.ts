@@ -59,7 +59,7 @@ export function opdsHeaderLinkReducer(
 ): IOpdsHeaderState {
     switch (action.type) {
         case headerLinksUpdate.ID:
-            const stateNew = { ...state };
+            const stateNew: IOpdsHeaderState = {};
             for (const key of ObjectKeys(action.payload)) {
                 stateNew[key] = action.payload[key];
             }

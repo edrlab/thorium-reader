@@ -39,6 +39,17 @@ const debug = debug_("readium-desktop:renderer:redux:saga:opds");
 function* browseWatcher(action: routerActions.locationChanged.TAction) {
     const path = action.payload.location.pathname;
 
+    // reset on each opds navigation, already set up previously but only when accessing the opds flow not on the catalog list.
+    // Reset useful here when accessing an authenticated flow without concretely authenticating this flow (transitive state).
+    // Header links are no longer updated by accumulation based on the links browsed but by set and replace each time an opds page is discovered (stateless).
+    if (path.startsWith("/opds")) {
+        // reset
+        yield put(opdsActions.headerLinksUpdate.build({
+        }));
+        yield put(opdsActions.search.build({
+        }));
+    }
+
     if (path.startsWith("/opds") && path.indexOf("/browse") > 0) {
         const parsedResult = parseOpdsBrowserRoute(path);
         debug("request opds browse", path, parsedResult);
@@ -51,12 +62,6 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
         // otherwise crash if string contains percent char not used for escaping)
         const newParsedResultTitle = tryDecodeURIComponent(parsedResult.title);
         debug(newParsedResultTitle);
-
-        // reset
-        yield put(opdsActions.search.build({
-        }));
-        yield put(opdsActions.headerLinksUpdate.build({
-        }));
 
         // re-render opds navigator
         yield put(
