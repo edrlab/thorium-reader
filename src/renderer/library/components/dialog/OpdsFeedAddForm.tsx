@@ -71,6 +71,7 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
                     __("opds.addForm.addButton")
                 }
                 submitButtonDisabled={!(name && url)}
+                size={"small"}
             >
                 <div className={stylesGlobal.w_50}>
                     <div className={stylesInputs.form_group}>

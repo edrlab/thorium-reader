@@ -10,6 +10,7 @@
 =-=-= components/modals.css
 */
 
+
 .modal_dialog_overlay {
   position: fixed;
   z-index: 102;
@@ -26,6 +27,7 @@
   min-width: 700px;
   align-items: center;
   justify-content: center;
+  height: 100vh;
 }
 
 .modal_dialog_overlay_hidden {
@@ -38,10 +40,13 @@
 }
 
 .modal_dialog {
-  margin: 100px;
-  min-height: 400px;
-  min-width: 600px;
-  max-width: calc(100vw - 200px);
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  min-height: 570px;
+  min-width: 800px;
+  width: 960px;
+  max-width: 960px;
   max-height: calc(100vh - 200px);
   border-radius: 10px;
   z-index: 102;
@@ -52,8 +57,11 @@
   overflow-x: hidden;
   align-content: flex-start;
   color: #3b3b3b;
-  position: relative;
+  position: absolute;
   box-sizing: border-box;
+  @media screen and (max-width: 960px) {
+    width: 100vw;
+  }
 
   &.modal_dialog_full {
     width: calc(100vw - 60px);

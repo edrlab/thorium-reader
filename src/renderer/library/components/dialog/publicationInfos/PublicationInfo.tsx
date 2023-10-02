@@ -63,22 +63,22 @@ export const PublicationInfoLibWithRadix = (props: { publicationView: Pick<Publi
                 {props.trigger}
             </Dialog.Trigger>
             <Dialog.Portal container={appOverlayElement}>
-                {/* <Dialog.Overlay className="DialogOverlay" /> */}
-                <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={stylesModals.modal_dialog}>
-                    <div className={stylesModals.modal_dialog_header}>
-                        {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
-                        <h2>{__("catalog.bookInfo")}</h2>
-                        <Dialog.Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-                    <div className={stylesModals.modal_dialog_body}>
-                        <PublicationInfoWithRadixContent publicationViewMaybeOpds={data?.publication} closeDialog={() => dispatch(dialogActions.closeRequest.build())} />
-                    </div>
-                </Dialog.Content>
+                    {/* <Dialog.Overlay className="DialogOverlay" /> */}
+                    <div className={stylesModals.modal_dialog_overlay}></div>
+                    <Dialog.Content className={stylesModals.modal_dialog}>
+                        <div className={stylesModals.modal_dialog_header}>
+                            {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
+                            <h2>{__("catalog.bookInfo")}</h2>
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
+                                </button>
+                            </Dialog.Close>
+                        </div>
+                        <div className={stylesModals.modal_dialog_body}>
+                            <PublicationInfoWithRadixContent publicationViewMaybeOpds={data?.publication} closeDialog={() => dispatch(dialogActions.closeRequest.build())} />
+                        </div>
+                    </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>
     );
