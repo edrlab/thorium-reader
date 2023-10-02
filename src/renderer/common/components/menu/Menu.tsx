@@ -34,6 +34,6 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
             </Popover.Portal>
         </Popover.Root>
     );
-}
+};
 
 export default (Menu);
