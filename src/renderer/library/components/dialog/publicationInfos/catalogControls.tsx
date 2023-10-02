@@ -56,7 +56,7 @@ export class CatalogControls extends React.Component<IProps, undefined> {
                     {__("catalog.readBook")}
                 </button>
                 <DeletePublicationConfirm
-                    button={(
+                    trigger={(
                         <button className={stylesButtons.button_transparency}>
                             <SVG svg={DeleteIcon} ariaHidden />
                             {__("catalog.deleteBook")}

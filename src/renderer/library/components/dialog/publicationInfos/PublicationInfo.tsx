@@ -154,7 +154,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));
 
-export const PublicationInfo2 = (props: { publicationView: PublicationView, trigger: React.ReactNode }) => {
+export const PublicationInfo2 = (props: { publicationView: Pick<PublicationView, "identifier">, trigger: React.ReactNode }) => {
     const [__] = useTranslator();
     const defaultOpen = false;
     const [open, setOpen] = React.useState(defaultOpen);

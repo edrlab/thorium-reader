@@ -62,7 +62,7 @@ export class CatalogMenu extends React.Component<IProps, IState> {
                     publicationView={this.props.publicationView}
                 />
                 <DeletePublicationConfirm
-                    button={(
+                    trigger={(
                         <button role="menuitem"
                         >
                             {__("catalog.delete")}

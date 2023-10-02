@@ -78,6 +78,7 @@ import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { ipcRenderer } from "electron";
+import { PublicationInfo2 } from "../dialog/publicationInfos/PublicationInfo";
 
 // import {
 //     formatContributorToString,
@@ -576,24 +577,27 @@ const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
         margin: "0",
         textAlign: "center",
     }}>
+        <PublicationInfo2
+            trigger={(
         <a
             style={{
                 cursor: "pointer",
             }}
             tabIndex={0}
-            onClick={(e) => {
-                e.preventDefault();
+            // onClick={(e) => {
+            //     e.preventDefault();
 
-                props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                // props.openReader(props.value.publicationViewIdentifier);
-            }}
+            //     props.displayPublicationInfo(props.value.publicationViewIdentifier);
+            //     // props.openReader(props.value.publicationViewIdentifier);
+            // }}
             onKeyPress={
                 (e) => {
                     if (e.key === "Enter") {
-                        e.preventDefault();
+                        // e.preventDefault();
 
-                        props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                        // props.displayPublicationInfo(props.value.publicationViewIdentifier);
                         // props.openReader(props.value.publicationViewIdentifier);
+                        e.currentTarget?.click();
                     }
                 }
             }
@@ -623,6 +627,9 @@ const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
             // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
         }} />
         </a>
+            )}
+            publicationView={{identifier: props.value.publicationViewIdentifier}}
+        />
     </div>);
 };
 
@@ -1307,30 +1314,38 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
         // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
     }}
-    dir={pubTitleIsRTL ? "rtl" : undefined}
-    ><a
-        style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
-        tabIndex={0}
-        onClick={(e) => {
-            e.preventDefault();
-
-            props.displayPublicationInfo(props.value.publicationViewIdentifier);
-            // props.openReader(props.value.publicationViewIdentifier);
-        }}
-        onKeyPress={
-            (e) => {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-
-                    props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                    // props.openReader(props.value.publicationViewIdentifier);
-                }
-            }
-        }
-        title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+        dir={pubTitleIsRTL ? "rtl" : undefined}
     >
-        {pubTitleStr}
-        </a>
+        <PublicationInfo2
+            trigger={(
+                <a
+                    style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
+                    tabIndex={0}
+                    // onClick={(e) => {
+                    //     e.preventDefault();
+
+                    //     props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                    //     // props.openReader(props.value.publicationViewIdentifier);
+                    // }}
+                    onKeyPress={
+                        (e) => {
+                            if (e.key === "Enter") {
+                                // e.preventDefault();
+
+                                // props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                                // props.openReader(props.value.publicationViewIdentifier);
+                                e.currentTarget?.click();
+                            }
+                        }
+                    }
+                    title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+                >
+                    {pubTitleStr}
+                </a>
+
+            )}
+            publicationView={{ identifier: props.value.publicationViewIdentifier }}
+        />
     </div>);
 };
 

@@ -15,7 +15,7 @@ import classNames from "classnames";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 
-const DeletePublicationConfirm = (props: { publicationView: PublicationView, button: React.ReactNode } & AlertDialog.AlertDialogProps) => {
+const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
     const [result, remove] = useApi(undefined, "publication/delete", props.publicationView.identifier);
     const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, but
     return (
         <AlertDialog.Root {...props}>
             <AlertDialog.Trigger asChild>
-                {props.button}
+                {props.trigger}
             </AlertDialog.Trigger>
             <AlertDialog.Portal container={appOverlayElement}>
 

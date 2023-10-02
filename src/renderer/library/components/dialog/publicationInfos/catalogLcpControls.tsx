@@ -109,7 +109,7 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                     </button>
                 }
                 <DeletePublicationConfirm
-                    button={(
+                    trigger={(
                         <button
                             className={stylesButtons.button_transparency}
                         >
