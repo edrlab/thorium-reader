@@ -15,44 +15,25 @@ interface IBaseProps {
     button: React.ReactElement;
 }
 
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends React.PropsWithChildren<IBaseProps> {
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IState {
-}
-
-// FIXME / TODO
-// do back focus not implemented with Radix popover menu
-
-class Menu extends React.Component<IProps, IState> {
-
-    public render(): React.ReactElement<{}> {
-
-        const appOverlayElement = document.getElementById("app-overlay");
-        return (
-            <Popover.Root>
-                <Popover.Trigger asChild>
-                    <button>
-                        {this.props.button}
-                    </button>
-                </Popover.Trigger>
-                <Popover.Portal container={appOverlayElement}>
-                    <Popover.Content className="PopoverContent" sideOffset={5}>
-                        <div className={stylesDropDown.dropdown_menu}>
-                            {this.props.children}
-                        </div>
-                        <Popover.Arrow className="PopoverArrow" aria-hidden/>
-                    </Popover.Content>
-                </Popover.Portal>
-            </Popover.Root>
-        );
-    }
+const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
+    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
+    return (
+        <Popover.Root>
+            <Popover.Trigger asChild>
+                <button>
+                    {props.button}
+                </button>
+            </Popover.Trigger>
+            <Popover.Portal container={appOverlayElement}>
+                <Popover.Content className="PopoverContent" sideOffset={5}>
+                    <div className={stylesDropDown.dropdown_menu}>
+                        {props.children}
+                    </div>
+                    <Popover.Arrow className="PopoverArrow" aria-hidden />
+                </Popover.Content>
+            </Popover.Portal>
+        </Popover.Root>
+    );
 }
 
 export default (Menu);

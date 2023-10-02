@@ -17,15 +17,14 @@ import { dialogActions } from "readium-desktop/common/redux/actions";
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
-    const [result, remove] = useApi(undefined, "publication/delete", props.publicationView.identifier);
+    const [_, remove] = useApi(undefined, "publication/delete", props.publicationView.identifier);
     const dispatch = useDispatch();
-    React.useCallback(() => {
-        if (!result.data.error)
-            dispatch(dialogActions.closeRequest.build());
-    }, [result]);
+    const removeAction = React.useCallback(() => {
+        dispatch(dialogActions.closeRequest.build());
+        remove();
+    }, [remove]);
 
-    const appOverlayElement = document.getElementById("app-overlay");
-
+    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
     return (
         <AlertDialog.Root {...props}>
             <AlertDialog.Trigger asChild>
@@ -46,7 +45,7 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                             <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.mauve)}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.red)} onClick={remove} type="button">{__("dialog.yes")}</button>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.red)} onClick={removeAction} type="button">{__("dialog.yes")}</button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>

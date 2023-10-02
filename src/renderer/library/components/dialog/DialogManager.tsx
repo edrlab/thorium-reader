@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-// import PublicationInfo from "readium-desktop/renderer/library/components/dialog/publicationInfos/PublicationInfo";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import ApiappAddForm from "./ApiappAddForm";
 
@@ -53,7 +52,6 @@ class DialogManager extends React.Component<IProps, undefined> {
                 <LcpAuthentication></LcpAuthentication>
                 <RenewLsdConfirm></RenewLsdConfirm>
                 <ReturnLsdConfirm></ReturnLsdConfirm>
-                {/* <PublicationInfo></PublicationInfo> */}
             </>
         );
 

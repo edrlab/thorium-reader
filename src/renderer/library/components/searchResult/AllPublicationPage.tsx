@@ -78,7 +78,7 @@ import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { ipcRenderer } from "electron";
-import { PublicationInfo2 } from "../dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoLibWithRadix } from "../dialog/publicationInfos/PublicationInfo";
 
 // import {
 //     formatContributorToString,
@@ -577,7 +577,7 @@ const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
         margin: "0",
         textAlign: "center",
     }}>
-        <PublicationInfo2
+        <PublicationInfoLibWithRadix
             trigger={(
         <a
             style={{
@@ -1316,7 +1316,7 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
     }}
         dir={pubTitleIsRTL ? "rtl" : undefined}
     >
-        <PublicationInfo2
+        <PublicationInfoLibWithRadix
             trigger={(
                 <a
                     style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}

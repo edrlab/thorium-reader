@@ -17,7 +17,7 @@ import {
 
 import PublicationExportButton from "./PublicationExportButton";
 import DeletePublicationConfirm from "../../dialog/DeletePublicationConfirm";
-import { PublicationInfo2 } from "../../dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoLibWithRadix } from "../../dialog/publicationInfos/PublicationInfo";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -52,7 +52,7 @@ export class CatalogMenu extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <>
-                <PublicationInfo2
+                <PublicationInfoLibWithRadix
                     trigger={(
                         <button role="menuitem"
                         >

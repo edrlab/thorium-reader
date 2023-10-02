@@ -16,6 +16,7 @@ import {
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { PublicationInfoOpdsWithRadix } from "../../dialog/publicationInfos/PublicationInfo";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -44,11 +45,16 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
 
         return (
             <>
-                <button role="menuitem"
-                    onClick={this.displayPublicationInfo}
-                >
-                    {__("opds.menu.aboutBook")}
-                </button>
+                <PublicationInfoOpdsWithRadix
+                    trigger={(
+                        <button role="menuitem"
+                            onClick={this.displayPublicationInfo}
+                        >
+                            {__("opds.menu.aboutBook")}
+                        </button>
+                    )}
+                    opdsPublicationView={this.props.opdsPublicationView}
+                />
             </>
         );
     }
