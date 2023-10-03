@@ -14,7 +14,18 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-
 import * as Info from "readium-desktop/renderer/assets/icons/info.svg";
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as Toasts from '@radix-ui/react-toast';
+import * as Toasts from "@radix-ui/react-toast";
+import * as Dialog from "@radix-ui/react-dialog";
+import { useSelector } from "../../hooks/useSelector";
+import { useDispatch } from "../../hooks/useDispatch";
+import { useTranslator } from "../../hooks/useTranslator";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { /* DialogType, */ DialogTypeName } from "readium-desktop/common/models/dialog";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+// import clsx from "clsx";
+
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
@@ -39,6 +50,7 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
     open: any;
     onOpenChange: (open: boolean) => void;
+    variant?: "success" | "error" | "loading";
 }
 
 interface IState {
@@ -213,23 +225,31 @@ export default withTranslator(Toast);
 
 export const Toast2: React.FC<IProps> = (props) => {
     const timerRef = React.useRef(0);
-    const { type, open, onOpenChange, message } = props;
+    const { type, open, onOpenChange, message, variant } = props;
+    const duration = 5000;
+    const [paused, setPaused] = React.useState(false);
 
     let toastTitle: string;
-    // let toastDescription: string;
+    let toastDescription: string;
     let typeClassName: string;
     switch (type) {
         case ToastType.Error:
             typeClassName = stylesToasts.error;
             toastTitle = "Something went wrong";
-            // toastDescription = "The importation of the book has failed";
+            toastDescription = "The importation of the book has failed";
             break;
         case ToastType.Success:
             typeClassName = stylesToasts.success;
             toastTitle = "You have a new book!";
-            // toastDescription = "Enjoy your reading!";
+            toastDescription = "Enjoy your reading!";
             break;
         default:
+    }
+
+    const dialogOpenState = useSelector((state: ILibraryRootState) => state.dialog.open);
+
+    if (open === false) {
+        dialogOpenState === false;
     }
             
   
@@ -237,6 +257,7 @@ export const Toast2: React.FC<IProps> = (props) => {
       return () => clearTimeout(timerRef.current);
     }, []);
 
+    console.log(open, dialogOpenState)
     return (
         <>
             <Toasts.Root className={classNames(
@@ -245,7 +266,9 @@ export const Toast2: React.FC<IProps> = (props) => {
                 )}
                 open={open}
                 onOpenChange={onOpenChange}
-                duration={5000}
+                duration={duration}
+                onPause={() => setPaused(true)}
+                onResume={() => setPaused(false)}
                 >
                 <Toasts.Title className={stylesToasts.toastTitle}>{toastTitle}</Toasts.Title>
                 <Toasts.Description className={stylesToasts.toastDescription}>
@@ -254,15 +277,34 @@ export const Toast2: React.FC<IProps> = (props) => {
                     aria-relevant="all"
                     role="alert"
                     tabIndex={0}
-                    >{message}
+                    >{toastDescription}
                 </p>
-                {type == ToastType.Error &&
-                    <button className={stylesToasts.infoButton} >
-                        More Infos
-                        <SVG ariaHidden={true} svg={Info}/>
-                    </button>
+                {type === ToastType.Error &&
+                        <ToastInfoDialog
+                            button={
+                                <button className={stylesToasts.infoButton}>
+                                    More Infos
+                                    <SVG ariaHidden={true} svg={Info}/>
+                                </button>
+                            }
+                            toastTitle={toastTitle}
+                            message={message}>
+                        </ToastInfoDialog>
+
                 }
                 </Toasts.Description>
+                <div className="toastProgressBar">
+                    <div
+                    className={"animate-toast-progress-bar"}
+                    style={{
+                        height: "5px",
+                        animationDuration: duration + 200 + "ms",
+                        animationPlayState: variant === "loading" ? "paused" : paused ? "paused" : "running",
+                        background: type === ToastType.Success ? "green" : "red",
+                        
+                    }}
+                    ></div>
+                </div>
                 <Toasts.Close className={stylesToasts.closeButton} aria-label="close">
                     <SVG ariaHidden={true} svg={QuitIcon}/>
                 </Toasts.Close>
@@ -271,3 +313,55 @@ export const Toast2: React.FC<IProps> = (props) => {
         </>
     )
 };
+
+const ToastInfoDialog = (props: {children: []; toastTitle: string; message: string; button: React.ReactNode;}) => {
+    const [__] = useTranslator();
+    const defaultOpen = false;
+
+    const dispatch = useDispatch();
+
+    const open = useSelector((state: ILibraryRootState) => state.dialog.open);
+    // const data = useSelector((state: ILibraryRootState) =>
+    //     state.dialog.type === DialogTypeName.ToastInformations
+    //         ? state.dialog.data as DialogType[DialogTypeName.ToastInformations]
+    //         : undefined);
+
+    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
+
+    return (
+        <Dialog.Root defaultOpen={defaultOpen} open={open} onOpenChange={
+            (open) => {
+                if (open) {
+                    dispatch(dialogActions.openRequest.build(DialogTypeName.ToastInformations, {
+                        toastTitle: props.toastTitle,
+                        toastMessage : props.message,
+                    }));
+                } else {
+                    dispatch(dialogActions.closeRequest.build());
+                }
+            }
+        }>
+
+
+            <Dialog.Trigger asChild>
+            {props.button}
+            </Dialog.Trigger>
+            <Dialog.Portal container={appOverlayElement}>
+                <div className={stylesModals.modal_dialog_overlay}></div>
+                <Dialog.Content className={stylesModals.modal_dialog}>
+                    <div className={stylesModals.modal_dialog_header}>
+                        <h2>{props.toastTitle}</h2>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                    <div className={stylesModals.modal_dialog_body}>
+                        {props.message}
+                    </div>
+                </Dialog.Content>
+            </Dialog.Portal>
+        </Dialog.Root>
+    )
+}

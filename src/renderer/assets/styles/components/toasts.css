@@ -18,7 +18,7 @@
   border-radius: 0.5em;
   /* border-bottom-right-radius: 0.5em; */
   width: 20rem;
-  height: 6.125rem;
+  height: 4.125rem;
   background: white;
   display: flex;
   /* align-items: center; */
@@ -162,5 +162,30 @@
   }
   to {
     transform: translateX(0);
+  }
+}
+
+.toastProgressBar {
+  position: absolute;
+  left: -15px;
+  bottom : 0;
+  height: 5px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.animate-toast-progress-bar {
+  width: 100%;
+  height: 100%;
+  animation-name: loading;
+  animation-timing-function: linear;
+}
+
+@keyframes loading {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
   }
 }

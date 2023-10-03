@@ -43,6 +43,7 @@ export enum DialogTypeName {
     LsdReturnConfirm = "lsd-return-confirm",
     LsdRenewConfirm = "lsd-renew-confirm",
     AboutThorium = "about-thorium",
+    ToastInformations = "toast-informations",
 }
 
 export interface DialogType {
@@ -79,4 +80,8 @@ export interface DialogType {
         publicationView: PublicationView;
     };
     [DialogTypeName.AboutThorium]: {};
+    [DialogTypeName.ToastInformations]: {
+        toastTitle: string;
+        toastMessage: string;
+    }
 }

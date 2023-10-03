@@ -94,6 +94,7 @@ export class ToastManager extends React.Component<IProps, IState> {
         if (!this.props.toast) {
             return <></>;
         }
+
         return (
             <Toasts.Provider>
                 <Toast2 
