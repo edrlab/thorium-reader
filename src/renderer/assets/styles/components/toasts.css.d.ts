@@ -9,6 +9,10 @@ declare const styles: {
   readonly "leave": string;
   readonly "toRemove": string;
   readonly "___DEBUG___COMPONENTS_TOASTS_CSS": string;
+  readonly "toastViewport": string;
+  readonly "toastDescription": string;
+  readonly "toastTitle": string;
+  readonly "infoButton": string;
 };
 export = styles;
 

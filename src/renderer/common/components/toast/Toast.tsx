@@ -11,6 +11,7 @@ import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as Info from "readium-desktop/renderer/assets/icons/info.svg";
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as Toasts from '@radix-ui/react-toast';
@@ -21,7 +22,7 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    close: (id: string) => void;
+    // close: (id: string) => void;
     className?: string;
     id?: string;
     // icon?: ISVGProps;
@@ -37,6 +38,7 @@ interface IBaseProps extends TranslatorProps {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
     open: any;
+    onOpenChange: (open: boolean) => void;
 }
 
 interface IState {
@@ -199,7 +201,7 @@ export class Toast extends React.Component<IProps, IState> {
 
     private handleTransitionEnd() {
         if (this.state.toRemove) {
-            this.props.close(this.props.id);
+            // this.props.close(this.props.id);
         } else if (this.state.willLeave) {
             this.setState({toRemove: true});
         }
@@ -211,15 +213,21 @@ export default withTranslator(Toast);
 
 export const Toast2: React.FC<IProps> = (props) => {
     const timerRef = React.useRef(0);
-    const { type, open, id } = props;
+    const { type, open, onOpenChange, message } = props;
 
+    let toastTitle: string;
+    // let toastDescription: string;
     let typeClassName: string;
     switch (type) {
         case ToastType.Error:
             typeClassName = stylesToasts.error;
+            toastTitle = "Something went wrong";
+            // toastDescription = "The importation of the book has failed";
             break;
         case ToastType.Success:
             typeClassName = stylesToasts.success;
+            toastTitle = "You have a new book!";
+            // toastDescription = "Enjoy your reading!";
             break;
         default:
     }
@@ -230,27 +238,36 @@ export const Toast2: React.FC<IProps> = (props) => {
     }, []);
 
     return (
-        <Toasts.Root className={classNames(
-            stylesToasts.toast,
-            typeClassName,
-        )}
-        open={open}
-        onOpenChange={open}
-        key={id}>
-            <Toasts.Title>Something went wrong</Toasts.Title>
-            <Toasts.Description asChild>
-            <p
-                aria-live="assertive"
-                aria-relevant="all"
-                role="alert"
-                tabIndex={0}
-                >The importation of the book has failed
-            </p>
-            <button>More info</button>
-            </Toasts.Description>
-            <Toasts.Close className={stylesToasts.closeButton} aria-label="close">
-                <SVG ariaHidden={true} svg={QuitIcon}/>
-            </Toasts.Close>
-        </Toasts.Root>
+        <>
+            <Toasts.Root className={classNames(
+                stylesToasts.toast,
+                typeClassName
+                )}
+                open={open}
+                onOpenChange={onOpenChange}
+                duration={5000}
+                >
+                <Toasts.Title className={stylesToasts.toastTitle}>{toastTitle}</Toasts.Title>
+                <Toasts.Description className={stylesToasts.toastDescription}>
+                <p
+                    aria-live="assertive"
+                    aria-relevant="all"
+                    role="alert"
+                    tabIndex={0}
+                    >{message}
+                </p>
+                {type == ToastType.Error &&
+                    <button className={stylesToasts.infoButton} >
+                        More Infos
+                        <SVG ariaHidden={true} svg={Info}/>
+                    </button>
+                }
+                </Toasts.Description>
+                <Toasts.Close className={stylesToasts.closeButton} aria-label="close">
+                    <SVG ariaHidden={true} svg={QuitIcon}/>
+                </Toasts.Close>
+            </Toasts.Root>
+            <Toasts.Viewport className={stylesToasts.toastViewport} />
+        </>
     )
 };

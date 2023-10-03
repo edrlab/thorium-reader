@@ -9,13 +9,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
+// import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 import * as Toasts from "@radix-ui/react-toast";
-import classNames from "classnames";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+// import classNames from "classnames";
+// import SVG from "readium-desktop/renderer/common/components/SVG";
+// import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import { Toast2 } from "./Toast";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -44,7 +45,7 @@ export class ToastManager extends React.Component<IProps, IState> {
 
         this.state = {
             toastList: {},
-            open: false
+            open: false,
         };
 
         this.close = this.close.bind(this);
@@ -95,42 +96,11 @@ export class ToastManager extends React.Component<IProps, IState> {
         }
         return (
             <Toasts.Provider>
-                <Toasts.Root className={classNames(
-                    stylesToasts.toast  
-                    )}
-                    open={this.state.open}
-                    onOpenChange={(open) => this.setState({open})}
-                    duration={10000}
-                    >
-                    <Toasts.Title>Something went wrong</Toasts.Title>
-                    <Toasts.Description>
-                    <p
-                        aria-live="assertive"
-                        aria-relevant="all"
-                        role="alert"
-                        tabIndex={0}
-                        >The importation of the book has failed
-                    </p>
-                    <button>More info</button>
-                    </Toasts.Description>
-                    <Toasts.Close className={stylesToasts.closeButton} aria-label="close">
-                        <SVG ariaHidden={true} svg={QuitIcon}/>
-                    </Toasts.Close>
-                </Toasts.Root>
-                <Toasts.Viewport style={{
-                            position: "fixed",
-                            bottom: "0",
-                            left: "0",
-                            display: "flex",
-                            flexDirection: "column",
-                            padding: "25px",
-                            gap: "10px",
-                            width: "390px",
-                            maxWidth: "100vw",
-                            margin: "0",
-                            listStyle: "none",
-                            zIndex: "2147483647",
-                            outline: "none"}} />
+                <Toast2 
+                open={this.state.open}
+                onOpenChange={(open: boolean) => this.setState({open})}
+                type={this.props.toast.type}
+                message={this.props.toast.data} />
             </Toasts.Provider>
         );
     }
