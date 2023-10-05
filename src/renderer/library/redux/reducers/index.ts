@@ -20,7 +20,7 @@ import {
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers, Reducer } from "redux";
 
-import { ILibraryRootState } from "../states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import { RouterState } from "redux-first-history";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";

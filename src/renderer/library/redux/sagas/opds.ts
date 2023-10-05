@@ -17,7 +17,7 @@ import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { opdsBrowse } from "readium-desktop/renderer/common/redux/sagas/httpBrowser";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { ContentType } from "readium-desktop/utils/contentType";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects

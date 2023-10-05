@@ -17,7 +17,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
-import { IPickerState } from "../../redux/state/picker";
+import { IPickerState } from "readium-desktop/common/redux/states/renderer/picker";
 import AnnotationPicker from "./Annotation";
 import SearchPicker from "./Search";
 

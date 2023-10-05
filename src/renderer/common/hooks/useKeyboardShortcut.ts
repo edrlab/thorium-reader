@@ -10,7 +10,7 @@ import { TKeyboardShortcutReadOnly, keyboardShortcutsMatch } from "readium-deskt
 import { ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener } from "../keyboard";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ReactReduxContext, ReactReduxContextValue } from "react-redux";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { useSyncExternalStoreWithSelector } from "./useSyncExternalStore";
 
 export function useKeyboardShortcut(ListenForKeyUP: boolean, keyboardShortcut: (s: ICommonRootState["keyboard"]["shortcuts"]) => TKeyboardShortcutReadOnly, callback: () => void) {

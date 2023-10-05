@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { readerLocalActionPicker } from "../actions";
-import { IPickerState } from "../state/picker";
+import { IPickerState } from "readium-desktop/common/redux/states/renderer/picker";
 
 export function pickerReducer(
     state: IPickerState = {open: false, type: "search"},

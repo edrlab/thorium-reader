@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { readerLocalActionSearch } from "../actions";
-import { ISearchState, searchDefaultState } from "../state/search";
+import { ISearchState, searchDefaultState } from "readium-desktop/common/redux/states/renderer/search";
 
 export function searchReducer(
     state: ISearchState = searchDefaultState(),

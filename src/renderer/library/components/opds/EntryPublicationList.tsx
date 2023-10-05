@@ -11,7 +11,7 @@ import { IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/vi
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 import PageNavigation from "./PageNavigation";

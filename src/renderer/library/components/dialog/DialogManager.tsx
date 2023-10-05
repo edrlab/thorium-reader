@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import PublicationInfo from "readium-desktop/renderer/library/components/dialog/publicationInfos/PublicationInfo";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import ApiappAddForm from "./ApiappAddForm";
 
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";

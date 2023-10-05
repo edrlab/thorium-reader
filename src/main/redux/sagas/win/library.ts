@@ -26,6 +26,8 @@ import { IWinSessionReaderState } from "../../states/win/session/reader";
 import { getAppActivateEventChannel } from "../getEventChannel";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
 import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
+import { getCatalog } from "../catalog";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:library";
@@ -93,12 +95,27 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
     const webContents = libWindow.webContents;
     const state = yield* selectTyped((_state: RootState) => _state);
 
+    const payload: Partial<ILibraryRootState> = {
+        win: {
+            identifier,
+        },
+        publication: {
+            catalog: {
+                entries: [],
+            },
+            tag: [],
+        },
+    };
+    try {
+        const publication = yield* callTyped(getCatalog);
+        payload.publication = publication;
+    } catch (e) {
+        error(filename_, e);
+    }
     // Send the id to the new window
     webContents.send(winIpc.CHANNEL, {
         type: winIpc.EventType.IdResponse,
-        payload: {
-            identifier,
-        },
+        payload,
     } as winIpc.EventPayload);
 
     // send on redux library

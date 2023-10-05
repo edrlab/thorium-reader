@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
+import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
@@ -14,7 +14,7 @@ import {
 } from "readium-desktop/renderer/library/redux/actions/opds";
 import {
     IOpdsHeaderState, IOpdsSearchState,
-} from "readium-desktop/renderer/library/redux/states/opds";
+} from "readium-desktop/common/redux/states/renderer/opds";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 // import * as debug_ from "debug";

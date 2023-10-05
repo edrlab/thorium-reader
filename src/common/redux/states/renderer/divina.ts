@@ -5,8 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { TdivinaReadingMode } from "../../components/options-values";
-
+export type TdivinaReadingMode = "single" | "double" | "scroll" | "guided";
 export const defaultReadingMode: TdivinaReadingMode = "single";
 
 export interface IDivinaState {

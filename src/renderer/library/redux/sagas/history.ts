@@ -14,7 +14,7 @@ import { all, put } from "redux-saga/effects";
 import { select as selectTyped } from "typed-redux-saga/macro";
 import { buildOpdsBrowserRoute } from "../../opds/route";
 
-import { ILibraryRootState } from "../states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 function* historyWatcher(action: routerActions.locationChanged.TAction) {
     yield put(winActions.history.build(action.payload.location));

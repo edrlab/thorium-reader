@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
 import { connect } from "react-redux";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

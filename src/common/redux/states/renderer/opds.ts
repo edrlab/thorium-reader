@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
+import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 
 export interface IOpdsSearchState {
     url?: string;
