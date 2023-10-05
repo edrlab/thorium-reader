@@ -15,7 +15,7 @@ import { ToastState } from "readium-desktop/common/redux/states/toast";
 
 const initialState: ToastState = {
     open: false,
-    type: ToastType.Success,
+    type: ToastType.Default,
     data: undefined,
     publicationIdentifier: undefined,
 };

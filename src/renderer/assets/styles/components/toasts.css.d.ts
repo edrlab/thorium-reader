@@ -4,6 +4,7 @@ declare const styles: {
   readonly "start": string;
   readonly "error": string;
   readonly "success": string;
+  readonly "default": string;
   readonly "icon": string;
   readonly "closeButton": string;
   readonly "leave": string;
