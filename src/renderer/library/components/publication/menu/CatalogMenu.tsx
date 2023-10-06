@@ -54,7 +54,7 @@ export class CatalogMenu extends React.Component<IProps, IState> {
             <>
                 <PublicationInfoLibWithRadix
                     trigger={(
-                        <button role="menuitem"
+                        <button
                         >
                             {__("catalog.bookInfo")}
                         </button>
@@ -63,7 +63,7 @@ export class CatalogMenu extends React.Component<IProps, IState> {
                 />
                 <DeletePublicationConfirm
                     trigger={(
-                        <button role="menuitem"
+                        <button
                         >
                             {__("catalog.delete")}
                         </button>
