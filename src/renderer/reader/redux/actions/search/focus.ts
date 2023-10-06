@@ -8,7 +8,7 @@
 import { Action } from "readium-desktop/common/models/redux";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
-import { ISearchState } from "../../state/search";
+import { ISearchState } from "readium-desktop/common/redux/states/renderer/search";
 
 export const ID = "READER_SEARCH_FOCUS";
 

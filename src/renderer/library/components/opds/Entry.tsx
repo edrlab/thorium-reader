@@ -11,7 +11,7 @@ import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

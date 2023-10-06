@@ -16,8 +16,8 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

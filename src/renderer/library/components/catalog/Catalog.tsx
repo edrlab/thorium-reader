@@ -14,7 +14,7 @@ import {
     apiClean, apiDispatch,
 } from "readium-desktop/renderer/common/redux/api/api";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { Dispatch } from "redux";
 

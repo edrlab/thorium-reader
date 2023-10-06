@@ -28,7 +28,7 @@ import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import {
     ensureKeyboardListenerIsInstalled, KEY_CODES, TKeyboardDocument,
 } from "readium-desktop/renderer/common/keyboard";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 

@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IHighlightMounterState } from "../../../state/highlight";
+import { IHighlightMounterState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 export const ID = "READER_HIGHLIGHT_MOUNTER_PUSH";
 

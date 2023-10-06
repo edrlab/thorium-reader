@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IPickerState } from "../../state/picker";
+import { IPickerState } from "readium-desktop/common/redux/states/renderer/picker";
 
 export const ID = "READER_PICKER";
 

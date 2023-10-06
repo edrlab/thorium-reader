@@ -15,7 +15,7 @@ import {
     PublicationInfoContent,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";

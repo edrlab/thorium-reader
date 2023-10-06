@@ -12,9 +12,9 @@ import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 import { Translator } from "readium-desktop/common/services/translator";
 import {
-    diRendererSymbolTable,
+    diLibrarySymbolTable,
 } from "readium-desktop/renderer/library/diSymbolTable";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { type Store } from "redux";
 
@@ -23,19 +23,21 @@ import App from "./components/App";
 // Create container used for dependency injection
 const container = new Container();
 
-// Create store
-const [store, reduxHistory] = initStore();
-container.bind<Store<ILibraryRootState>>(diRendererSymbolTable.store).toConstantValue(store);
+const createStoreFromDi = async (preloadedState: Partial<ILibraryRootState>) => {
 
-container.bind<History & {
-    listenObject: boolean;
-}>(diRendererSymbolTable.history).toConstantValue(reduxHistory);
+    const [store, reduxHistory] = initStore(preloadedState);
+
+    container.bind<Store<ILibraryRootState>>(diLibrarySymbolTable.store).toConstantValue(store);
+    container.bind<History & {listenObject: boolean}>(diLibrarySymbolTable.history).toConstantValue(reduxHistory);
+
+    return store;
+};
 
 // Create translator
 const translator = new Translator();
-container.bind<Translator>(diRendererSymbolTable.translator).toConstantValue(translator);
+container.bind<Translator>(diLibrarySymbolTable.translator).toConstantValue(translator);
 
-container.bind<typeof App>(diRendererSymbolTable["react-library-app"]).toConstantValue(App);
+container.bind<typeof App>(diLibrarySymbolTable["react-library-app"]).toConstantValue(App);
 
 // local interface to force type return
 interface IGet {
@@ -47,7 +49,7 @@ interface IGet {
 
 // export function to get back depedency from container
 // the type any for container.get is overloaded by IGet
-const diGet: IGet = (symbol: keyof typeof diRendererSymbolTable) => container.get<any>(diRendererSymbolTable[symbol]);
+const diGet: IGet = (symbol: keyof typeof diLibrarySymbolTable) => container.get<any>(diLibrarySymbolTable[symbol]);
 
 const {
     lazyInject,
@@ -58,6 +60,7 @@ const {
 
 export {
     diGet as diLibraryGet,
+    createStoreFromDi,
     lazyInject,
     lazyInjectNamed,
     lazyInjectTagged,

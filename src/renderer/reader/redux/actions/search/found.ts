@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { ISearchState } from "../../state/search";
+import { ISearchState } from "readium-desktop/common/redux/states/renderer/search";
 
 export const ID = "READER_SEARCH_FOUND";
 

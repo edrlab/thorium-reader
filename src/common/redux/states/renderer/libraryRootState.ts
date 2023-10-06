@@ -8,7 +8,7 @@
 import { RouterState } from "redux-first-history";
 import { downloadActions } from "readium-desktop/common/redux/actions";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
-import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
+import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { ILoadState } from "readium-desktop/renderer/common/redux/states/load";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 

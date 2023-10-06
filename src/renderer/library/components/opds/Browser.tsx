@@ -11,7 +11,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";

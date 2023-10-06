@@ -20,7 +20,7 @@ import {
 import { readerLocalActionHighlights } from "../../actions";
 import {
     IHighlightBaseState, IHighlightHandlerState, IHighlightMounterState,
-} from "../../state/highlight";
+} from "readium-desktop/common/redux/states/renderer/highlight";
 
 export function* mountHighlight(href: string, handlerState: IHighlightHandlerState[]): SagaIterator {
 
