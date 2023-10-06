@@ -59,7 +59,8 @@
   color: #3b3b3b;
   position: absolute;
   box-sizing: border-box;
-  @media screen and (max-width: 960px) {
+
+  @media screen and (width <= 960px) {
     width: 100vw;
   }
 
