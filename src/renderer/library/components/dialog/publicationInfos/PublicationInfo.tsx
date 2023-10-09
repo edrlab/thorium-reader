@@ -34,55 +34,100 @@ import Cover from "readium-desktop/renderer/common/components/Cover";
 import { useLocation } from "react-router";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 
-export const PublicationInfoLibWithRadix = (props: { publicationView: Pick<PublicationView, "identifier">, trigger: React.ReactNode }) => {
-    const [__] = useTranslator();
+const PublicationInfoLibContext = React.createContext<DialogType[DialogTypeName.PublicationInfoLib] | undefined>(undefined);
+
+export const PublicationInfoLibWithRadix: React.FC<React.PropsWithChildren<{publicationView: Pick<PublicationView, "identifier">}>> = (props) => {
     const defaultOpen = false;
 
     const dispatch = useDispatch();
-
-    const open = useSelector((state: ILibraryRootState) => state.dialog.open);
+    const [open, setOpen] = React.useState(defaultOpen);
     const data = useSelector((state: ILibraryRootState) =>
         state.dialog.type === DialogTypeName.PublicationInfoLib
             ? state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib]
             : undefined);
-
-    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
     return (
-        <Dialog.Root defaultOpen={defaultOpen} open={open} onOpenChange={
-            (open) => {
-                if (open) {
-                    dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib, {
-                        publicationIdentifier: props.publicationView.identifier,
-                    }));
-                } else {
-                    dispatch(dialogActions.closeRequest.build());
-                }
-            }
-        }>
-            <Dialog.Trigger asChild>
-                {props.trigger}
-            </Dialog.Trigger>
-            <Dialog.Portal container={appOverlayElement}>
-                    {/* <Dialog.Overlay className="DialogOverlay" /> */}
-                    <div className={stylesModals.modal_dialog_overlay}></div>
-                    <Dialog.Content className={stylesModals.modal_dialog}>
-                        <div className={stylesModals.modal_dialog_header}>
-                            {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
-                            <h2>{__("catalog.bookInfo")}</h2>
-                            <Dialog.Close asChild>
-                                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                    <SVG ariaHidden={true} svg={QuitIcon} />
-                                </button>
-                            </Dialog.Close>
-                        </div>
-                        <div className={stylesModals.modal_dialog_body}>
-                            <PublicationInfoWithRadixContent publicationViewMaybeOpds={data?.publication} closeDialog={() => dispatch(dialogActions.closeRequest.build())} />
-                        </div>
-                    </Dialog.Content>
-            </Dialog.Portal>
+        <Dialog.Root
+            defaultOpen={defaultOpen}
+            open={open}
+            onOpenChange={
+                (open) => {
+                    if (open) {
+                        dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib, {
+                            publicationIdentifier: props.publicationView.identifier,
+                        }));
+                        setOpen(true);
+                    } else {
+                        dispatch(dialogActions.closeRequest.build());
+                        setOpen(false);
+                    }
+                }}
+        >
+            <PublicationInfoLibContext.Provider value={data}>
+                {props.children}
+            </PublicationInfoLibContext.Provider>
         </Dialog.Root>
     );
 };
+
+export const PublicationInfoLibWithRadixTrigger = Dialog.Trigger;
+PublicationInfoLibWithRadixTrigger.displayName = Dialog.Trigger.displayName;
+export const PublicationInfoLibWithRadixContent = React.forwardRef<HTMLDivElement>(
+    ({ ...props }, forwardRef) => {
+        const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
+        const [__] = useTranslator();
+        const dispatch = useDispatch();
+        return (
+            <Dialog.Portal container={appOverlayElement}>
+                {/* <Dialog.Overlay className="DialogOverlay" /> */}
+                <div className={stylesModals.modal_dialog_overlay}></div>
+                <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef}>
+                    <div className={stylesModals.modal_dialog_header}>
+                        {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
+                        <h2>{__("catalog.bookInfo")}</h2>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                    <div className={stylesModals.modal_dialog_body}>
+                        <PublicationInfoLibContext.Consumer>
+                            {
+                                (data) =>
+                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={data?.publication} closeDialog={() => dispatch(dialogActions.closeRequest.build())} />
+                            }
+                        </PublicationInfoLibContext.Consumer>
+                    </div>
+                </Dialog.Content>
+            </Dialog.Portal>
+        );
+    },
+);
+PublicationInfoLibWithRadixContent.displayName = "PublicationInfoLibWithRadixContent";
+
+// export const PublicationInfoLibWithRadix = (props: { publicationView: Pick<PublicationView, "identifier">, trigger: React.ReactNode }) => {
+//     const [__] = useTranslator();
+
+//     const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
+//     return (
+//         <Dialog.Root defaultOpen={defaultOpen} open={open} onOpenChange={
+//             (open) => {
+//                 if (open) {
+//                     dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib, {
+//                         publicationIdentifier: props.publicationView.identifier,
+//                     }));
+//                 } else {
+//                     dispatch(dialogActions.closeRequest.build());
+//                 }
+//             }
+//         }>
+//             <Dialog.Trigger asChild>
+//                 {props.trigger}
+//             </Dialog.Trigger>
+
+//         </Dialog.Root>
+//     );
+// };
 
 export const PublicationInfoOpdsWithRadix = (props: { opdsPublicationView: IOpdsPublicationView, trigger: React.ReactNode }) => {
     const [__] = useTranslator();
