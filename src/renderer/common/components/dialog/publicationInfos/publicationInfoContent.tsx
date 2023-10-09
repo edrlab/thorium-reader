@@ -30,6 +30,11 @@ import PublicationInfoDescription from "./PublicationInfoDescription";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import * as Dialog from "@radix-ui/react-dialog";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+
+
+
 
 export interface IProps {
     publicationViewMaybeOpds: TPublication;
@@ -332,7 +337,7 @@ const Progression = (props: {
 export const PublicationInfoContent: React.FC<IProps> = (props) => {
 
     // tslint:disable-next-line: max-line-length
-    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, toggleCoverZoomCb, ControlComponent, TagManagerComponent, coverZoom, translator, onClikLinkCb, focusWhereAmI } = props;
+    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, ControlComponent, TagManagerComponent, translator, onClikLinkCb, focusWhereAmI } = props;
     const __ = translator.translate;
 
     const r2Publication = React.useMemo(() => {
@@ -356,14 +361,25 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
             <div className={stylesColumns.row}>
                 <div className={stylesColumns.col_book_img}>
                     <div className={stylesPublications.publication_image_wrapper}>
-                        <Cover
-                            publicationViewMaybeOpds={publicationViewMaybeOpds}
-                            onClick={() => toggleCoverZoomCb(coverZoom)}
-                            onKeyPress={
-                                (e: React.KeyboardEvent<HTMLImageElement>) =>
-                                    e.key === "Enter" && toggleCoverZoomCb(coverZoom)
-                            }
-                        ></Cover>
+                    <Dialog.Root>
+                        <Dialog.Trigger>
+                            <Cover
+                                publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+                                coverType="cover"
+                            />;
+                        </Dialog.Trigger>
+                        <Dialog.Portal>
+                            <div className={stylesModals.modal_dialog_overlay}></div>
+                            <Dialog.Content className={stylesModals.modal_dialog} {...props}>
+                                <div className={stylesModals.modal_dialog_body_cover}>
+                                    <Cover
+                                        publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+                                        coverType="cover"
+                                    />
+                                </div>
+                            </Dialog.Content>
+                        </Dialog.Portal>
+                    </Dialog.Root>
                     </div>
                     { ControlComponent && <ControlComponent /> }
                 </div>

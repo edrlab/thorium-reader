@@ -92,6 +92,14 @@
   }
 }
 
+.modal_dialog_body_cover > img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 570px;
+  max-height: calc(100vh - 200px);
+}
+
 .modal_dialog_header,
 .modal_dialog_footer {
   display: flex;

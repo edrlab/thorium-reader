@@ -181,18 +181,13 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
     }
 
     if (coverZoom) {
-        return <Cover
-            publicationViewMaybeOpds={props.publicationViewMaybeOpds}
-            coverType="cover"
-            onClick={
-                () => setCoverZoom(true)
-            }
-            onKeyPress={
-                (e: React.KeyboardEvent<HTMLImageElement>) =>
-                    e.key === "Enter" && setCoverZoom(true)
-            }
-        />;
-    }
+        return (
+            <Cover
+                publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+                coverType="cover"
+            />
+
+    )}
 
     let controlsComponent = () => (<></>);
 
