@@ -17,7 +17,7 @@ import {
 
 import PublicationExportButton from "./PublicationExportButton";
 import DeletePublicationConfirm from "../../dialog/DeletePublicationConfirm";
-import { PublicationInfoLibWithRadix } from "../../dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -53,14 +53,16 @@ export class CatalogMenu extends React.Component<IProps, IState> {
         return (
             <>
                 <PublicationInfoLibWithRadix
-                    trigger={(
+                    publicationView={this.props.publicationView}
+                >
+                    <PublicationInfoLibWithRadixTrigger asChild>
                         <button
                         >
                             {__("catalog.bookInfo")}
                         </button>
-                    )}
-                    publicationView={this.props.publicationView}
-                />
+                    </PublicationInfoLibWithRadixTrigger>
+                    <PublicationInfoLibWithRadixContent />
+                </PublicationInfoLibWithRadix>
                 <DeletePublicationConfirm
                     trigger={(
                         <button

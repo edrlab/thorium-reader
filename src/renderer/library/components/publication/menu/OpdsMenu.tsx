@@ -6,17 +6,11 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { dialogActions } from "readium-desktop/common/redux/actions/";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { TMouseEventOnButton } from "readium-desktop/typings/react";
-import { TDispatch } from "readium-desktop/typings/redux";
-import { PublicationInfoOpdsWithRadix } from "../../dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -27,7 +21,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps {
 }
 
 export class OpdsMenu extends React.Component<IProps, undefined> {
@@ -46,40 +40,19 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
         return (
             <>
                 <PublicationInfoOpdsWithRadix
-                    trigger={(
-                        <button role="menuitem"
-                            onClick={this.displayPublicationInfo}
-                        >
+                    opdsPublicationView={this.props.opdsPublicationView}
+                >
+                    <PublicationInfoOpdsWithRadixTrigger asChild>
+                        <button>
                             {__("opds.menu.aboutBook")}
                         </button>
-                    )}
-                    opdsPublicationView={this.props.opdsPublicationView}
-                />
+
+                    </PublicationInfoOpdsWithRadixTrigger>
+                    <PublicationInfoOpdsWithRadixContent />
+                </PublicationInfoOpdsWithRadix>
             </>
         );
     }
-
-    private displayPublicationInfo = (e: TMouseEventOnButton) => {
-        e.preventDefault();
-        this.props.displayPublicationInfo();
-    };
 }
 
-const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
-    return {
-        displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoOpds,
-                {
-                    publication: props.opdsPublicationView,
-                },
-            ));
-        },
-    };
-};
-
-const mapStateToProps = (_state: ILibraryRootState, _props: IBaseProps) => {
-    return {
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsMenu));
+export default withTranslator(OpdsMenu);
