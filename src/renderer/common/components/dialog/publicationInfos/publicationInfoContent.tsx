@@ -356,18 +356,29 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
     const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
+    const [openCoverDialog, setOpenCoverDialog] = React.useState(false);
+
     return (
         <>
             <div className={stylesColumns.row}>
                 <div className={stylesColumns.col_book_img}>
                     <div className={stylesPublications.publication_image_wrapper}>
-                    <Dialog.Root>
-                        <Dialog.Trigger>
-                            <CoverWithForwardedRef
-                                publicationViewMaybeOpds={props.publicationViewMaybeOpds}
-                                coverType="cover"
-                            />;
-                        </Dialog.Trigger>
+                        <Dialog.Root open={openCoverDialog} onOpenChange={(open) => {
+                            setOpenCoverDialog(open);
+                        }}>
+                            <Dialog.Trigger asChild>
+                                <CoverWithForwardedRef
+                                    publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+                                    coverType="cover"
+                                    onKeyPress={
+                                        (e) => {
+                                            if (e.key === "Enter") {
+                                                setOpenCoverDialog(true);
+                                            }
+                                        }
+                                    }
+                                />
+                            </Dialog.Trigger>
                         <Dialog.Portal>
                             {/* <div className={stylesModals.modal_dialog_overlay}></div> */}
                             <Dialog.Content className={stylesModals.modal_dialog}>
@@ -375,6 +386,14 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                                     <Cover
                                         publicationViewMaybeOpds={props.publicationViewMaybeOpds}
                                         coverType="cover"
+                                        onClick={() => setOpenCoverDialog(false)}
+                                        onKeyPress={
+                                            (e) => {
+                                                if (e.key === "Enter") {
+                                                    setOpenCoverDialog(false);
+                                                }
+                                            }
+                                        }
                                     />
                                 </div>
                             </Dialog.Content>
