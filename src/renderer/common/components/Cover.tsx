@@ -133,18 +133,17 @@ class Cover extends React.Component<IProps, IState> {
 
 export default withTranslator(Cover);
 
-export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IProps>((props, forwardedRef) => {
+export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IProps>(({publicationViewMaybeOpds, ...props}, forwardedRef) => {
     const [__] = useTranslator();
 
     return (
         <Cover
             // forwardedRef={forwardedRef}
-            publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+            publicationViewMaybeOpds={publicationViewMaybeOpds}
             coverType="cover"
             __={__}
             forwardedRef={forwardedRef}
             imgRadixProp={props}
         />
     );
-})
-
+});
