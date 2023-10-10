@@ -15,7 +15,6 @@ import {
 } from "readium-desktop/preprocessor-directives";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
-import DialogManager from "readium-desktop/renderer/reader/components/dialog/DialogManager";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
 import Reader from "./Reader";
@@ -94,7 +93,6 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
             <Provider store={store}>
                 <TranslatorContext.Provider value={translator}>
                     <Reader />
-                    <DialogManager />
                     <ToastManager />
                 </TranslatorContext.Provider>
             </Provider>
