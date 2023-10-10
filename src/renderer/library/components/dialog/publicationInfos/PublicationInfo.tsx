@@ -39,6 +39,12 @@ export const PublicationInfoLibWithRadix: React.FC<React.PropsWithChildren<{publ
 
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(defaultOpen);
+    const openFromState = useSelector((state: ILibraryRootState) => state.dialog.open);
+    React.useMemo(() => {
+        if (!openFromState) {
+            setOpen(false);
+        }
+    }, [openFromState]);
     const data = useSelector((state: ILibraryRootState) =>
         state.dialog.type === DialogTypeName.PublicationInfoLib
             ? state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib]
@@ -109,6 +115,12 @@ export const PublicationInfoOpdsWithRadix: React.FC<React.PropsWithChildren<{opd
 
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(defaultOpen);
+    const openFromState = useSelector((state: ILibraryRootState) => state.dialog.open);
+    React.useMemo(() => {
+        if (!openFromState) {
+            setOpen(false);
+        }
+    }, [openFromState]);
     return (
         <Dialog.Root
             defaultOpen={defaultOpen}
