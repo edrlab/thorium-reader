@@ -21,7 +21,7 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import Cover from "../../Cover";
+import Cover, { CoverWithForwardedRef } from "../../Cover";
 import { FormatContributorWithLink } from "./FormatContributorWithLink";
 import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
@@ -41,10 +41,10 @@ export interface IProps {
     r2Publication: R2Publication | null;
     manifestUrlR2Protocol: string | null;
     handleLinkUrl: ((url: string) => void) | undefined;
-    toggleCoverZoomCb: (coverZoom: boolean) => void;
+    // toggleCoverZoomCb: (coverZoom: boolean) => void;
     ControlComponent?: React.ComponentType<any>;
     TagManagerComponent: React.ComponentType<any>;
-    coverZoom: boolean;
+    // coverZoom: boolean;
     focusWhereAmI: boolean;
     pdfPlayerNumberOfPages: number | undefined; // super hacky :(
     divinaNumberOfPages: number | undefined; // super hacky :(
@@ -363,14 +363,14 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                     <div className={stylesPublications.publication_image_wrapper}>
                     <Dialog.Root>
                         <Dialog.Trigger>
-                            <Cover
+                            <CoverWithForwardedRef
                                 publicationViewMaybeOpds={props.publicationViewMaybeOpds}
                                 coverType="cover"
                             />;
                         </Dialog.Trigger>
                         <Dialog.Portal>
-                            <div className={stylesModals.modal_dialog_overlay}></div>
-                            <Dialog.Content className={stylesModals.modal_dialog} {...props}>
+                            {/* <div className={stylesModals.modal_dialog_overlay}></div> */}
+                            <Dialog.Content className={stylesModals.modal_dialog}>
                                 <div className={stylesModals.modal_dialog_body_cover}>
                                     <Cover
                                         publicationViewMaybeOpds={props.publicationViewMaybeOpds}

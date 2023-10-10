@@ -41,7 +41,7 @@ class PublicationInfo extends React.Component<IProps> {
 
     public render() {
 
-        const { publication, toggleCoverZoom, closeDialog, coverZoom, open, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation } = this.props;
+        const { publication, closeDialog, open, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation } = this.props;
 
         if (!open) {
             return <></>;
@@ -50,8 +50,8 @@ class PublicationInfo extends React.Component<IProps> {
         return (
             <PublicationInfoManager
                 publicationViewMaybeOpds={publication}
-                coverZoom={coverZoom}
-                toggleCoverZoomCb={toggleCoverZoom}
+                // coverZoom={coverZoom}
+                // toggleCoverZoomCb={toggleCoverZoom}
                 closeDialogCb={closeDialog}
             >
                 <PublicationInfoContent
@@ -59,9 +59,9 @@ class PublicationInfo extends React.Component<IProps> {
                     r2Publication={this.props.r2Publication}
                     manifestUrlR2Protocol={this.props.manifestUrlR2Protocol}
                     handleLinkUrl={this.props.handleLinkUrl}
-                    toggleCoverZoomCb={toggleCoverZoom}
+                    // toggleCoverZoomCb={toggleCoverZoom}
                     TagManagerComponent={TagManager}
-                    coverZoom={coverZoom}
+                    // coverZoom={coverZoom}
                     translator={this.props.translator}
                     focusWhereAmI={focusWhereAmI}
                     pdfPlayerNumberOfPages={pdfPlayerNumberOfPages}

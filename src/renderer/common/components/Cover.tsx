@@ -24,8 +24,9 @@ import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: TPublication;
     coverType?: "cover" | "thumbnail" | undefined;
-    onClick?: () => void;
-    onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
+    // onClick?: () => void;
+    // onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
+    forwardedRef?:  React.ForwardedRef<HTMLImageElement>;
 }
 
 // IProps may typically extend:
@@ -76,13 +77,14 @@ class Cover extends React.Component<IProps, IState> {
         if (this.state.imgUrl) {
             return (
                 <img
-                    tabIndex={this.props.onKeyPress ? 0 : -1}
+                    // tabIndex={this.props.onKeyPress ? 0 : -1}
                     className={stylesImages.cover_img}
-                    onClick={this.props.onClick}
-                    onKeyPress={this.props.onKeyPress}
+                    // onClick={this.props.onClick}
+                    // onKeyPress={this.props.onKeyPress}
                     role="presentation"
-                    alt={this.props.onKeyPress ? this.props.__("publication.cover.img") : ""}
-                    aria-hidden={this.props.onKeyPress ? undefined : true}
+                    // alt={this.props.onKeyPress ? this.props.__("publication.cover.img") : ""}
+                    // aria-hidden={this.props.onKeyPress ? undefined : true}
+                    ref={this.props.forwardedRef}
                     src={this.state.imgUrl}
                     onError={this.imageOnError}
                 />
@@ -127,3 +129,10 @@ class Cover extends React.Component<IProps, IState> {
 }
 
 export default withTranslator(Cover);
+
+export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IProps>((props, forwardedRef) => {
+    return <Cover
+        forwardedRef={forwardedRef}
+        {...props}
+    />;
+});

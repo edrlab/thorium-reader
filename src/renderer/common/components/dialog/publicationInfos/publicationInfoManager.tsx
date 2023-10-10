@@ -12,28 +12,29 @@ import {
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 
-import Cover from "../../Cover";
+// import Cover from "../../Cover";
 import Loader from "../../Loader";
 import Dialog from "../Dialog";
 
 export interface IProps extends TranslatorProps {
     publicationViewMaybeOpds: TPublication;
-    coverZoom: boolean;
-    toggleCoverZoomCb: (coverZoom: boolean) => void;
+    // coverZoom: boolean;
+    // toggleCoverZoomCb: (coverZoom: boolean) => void;
     closeDialogCb: () => void;
 }
 
 const PublicationInfoManager: React.FC<IProps> = (props) => {
 
-    const { publicationViewMaybeOpds, coverZoom, toggleCoverZoomCb, closeDialogCb } = props;
+    const { publicationViewMaybeOpds, closeDialogCb } = props;
 
     return (
         <Dialog
             close={
                 () =>
-                    coverZoom
-                    ? toggleCoverZoomCb(coverZoom)
-                    : closeDialogCb()
+                    // coverZoom
+                    // ? toggleCoverZoomCb(coverZoom)
+                    // : closeDialogCb()
+                    closeDialogCb()
             }
             title={props.__("catalog.bookInfo")}
             noFooter={true}
@@ -41,20 +42,20 @@ const PublicationInfoManager: React.FC<IProps> = (props) => {
                 {
                     publicationViewMaybeOpds?.documentTitle
                         ? (
-                            coverZoom
-                                ? <Cover
-                                    publicationViewMaybeOpds={publicationViewMaybeOpds}
-                                    coverType="cover"
-                                    onClick={
-                                        () => toggleCoverZoomCb(coverZoom)
-                                    }
-                                    onKeyPress={
-                                        (e: React.KeyboardEvent<HTMLImageElement>) =>
-                                            e.key === "Enter" && toggleCoverZoomCb(coverZoom)
-                                    }
-                                >
-                                </Cover>
-                                :
+                            // coverZoom
+                            //     ? <Cover
+                            //         publicationViewMaybeOpds={publicationViewMaybeOpds}
+                            //         coverType="cover"
+                            //         // onClick={
+                            //         //     () => toggleCoverZoomCb(coverZoom)
+                            //         // }
+                            //         // onKeyPress={
+                            //         //     (e: React.KeyboardEvent<HTMLImageElement>) =>
+                            //         //         e.key === "Enter" && toggleCoverZoomCb(coverZoom)
+                            //         // }
+                            //     >
+                            //     </Cover>
+                            //     :
                                 <>
                                     {
                                         props.children

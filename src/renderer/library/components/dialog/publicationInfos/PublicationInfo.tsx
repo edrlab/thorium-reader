@@ -30,7 +30,6 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import Loader from "readium-desktop/renderer/common/components/Loader";
-import Cover from "readium-desktop/renderer/common/components/Cover";
 import { useLocation } from "react-router";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 
@@ -174,20 +173,20 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
     const dispatch = useDispatch();
     const link = dispatchOpdsLink(dispatch);
     const location = useLocation();
-    const [coverZoom, setCoverZoom] = React.useState(false);
+    // const [coverZoom, setCoverZoom] = React.useState(false);
 
     if (!props.publicationViewMaybeOpds?.documentTitle) {
         return <Loader></Loader>;
     }
 
-    if (coverZoom) {
-        return (
-            <Cover
-                publicationViewMaybeOpds={props.publicationViewMaybeOpds}
-                coverType="cover"
-            />
-
-    )}
+    // if (coverZoom) {
+    //     return (
+    //         <Cover
+    //             publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+    //             coverType="cover"
+    //         />
+    //     );
+    // }
 
     let controlsComponent = () => (<></>);
 
@@ -207,10 +206,10 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
             r2Publication={null}
             manifestUrlR2Protocol={null}
             handleLinkUrl={null}
-            toggleCoverZoomCb={() => setCoverZoom(!coverZoom)}
+            // toggleCoverZoomCb={() => setCoverZoom(!coverZoom)}
             ControlComponent={controlsComponent}
             TagManagerComponent={TagManager}
-            coverZoom={coverZoom}
+            // coverZoom={coverZoom}
             translator={translator}
             onClikLinkCb={
                 (_link) => () => link(
