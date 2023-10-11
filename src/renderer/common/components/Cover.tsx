@@ -147,3 +147,6 @@ export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IProps>(
         />
     );
 });
+
+CoverWithForwardedRef.displayName = "CoverWithForwardedRef";
+
