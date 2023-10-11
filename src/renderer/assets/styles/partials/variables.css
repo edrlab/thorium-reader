@@ -1,6 +1,7 @@
 /*
 =-=-= partials/variables.css
 */
+
 @media (prefers-color-scheme: light) {
   :root {
     /* Colors */
@@ -15,6 +16,7 @@
     --reader-fontColor: #000;
   }
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
     /* Colors */
@@ -29,6 +31,7 @@
     --reader-fontColor: #fff;
   }
 }
+
 .___DEBUG___PARTIALS_VARIABLES_CSS {
   display: none;
 }/*# sourceMappingURL=variables.css.map */
