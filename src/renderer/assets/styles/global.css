@@ -1,7 +1,7 @@
 /*
 =-=-= global.css => './partials/variables.css'
 */
-@import url('./partials/variables.css');
+@import url('./partials/variables.scss');
 
 /*
 =-=-= global.css => './partials/mixins.css'
@@ -139,7 +139,7 @@ body {
   padding: 0;
   width: 100%;
   font: 1.1rem "Open Sans", sans-serif;
-  background: #fbfbfb;
+  background: var(--color-secondary);
 }
 
 section {
