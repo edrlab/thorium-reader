@@ -105,7 +105,7 @@ class PublicationCard extends React.Component<IProps> {
                                 opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
                             >
                                 <PublicationInfoOpdsWithRadixTrigger asChild>
-                                    <a aria-hidden
+                                    <a aria-hidden style={{cursor: "pointer"}}
                                         className={stylesPublications.publication_infos}
                                     >
                                         <p aria-hidden className={stylesPublications.publication_title}
@@ -120,7 +120,7 @@ class PublicationCard extends React.Component<IProps> {
                                 <PublicationInfoOpdsWithRadixContent />
                             </PublicationInfoOpdsWithRadix>
                             :
-                            <a aria-hidden onClick={(e) => this.handleBookClick(e)}
+                            <a aria-hidden onClick={(e) => this.handleBookClick(e)} style={{cursor: "pointer"}}
                                 className={stylesPublications.publication_infos}
                             >
                                 <p aria-hidden className={stylesPublications.publication_title}
