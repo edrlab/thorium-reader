@@ -1322,7 +1322,7 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         <PublicationInfoLibWithRadix
             publicationView={{ identifier: props.value.publicationViewIdentifier }}
         >
-            <PublicationInfoLibWithRadixTrigger>
+            <PublicationInfoLibWithRadixTrigger asChild>
                 <a
                     style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
                     tabIndex={0}
