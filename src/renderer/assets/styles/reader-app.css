@@ -86,7 +86,7 @@ body {
   font: 1.1rem "Open Sans", sans-serif;
 }
 
-.menu_option button {
+button {
   background: none;
   border: 0;
   cursor: pointer;
