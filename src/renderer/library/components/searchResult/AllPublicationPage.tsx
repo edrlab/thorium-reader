@@ -584,7 +584,7 @@ const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
             <PublicationInfoLibWithRadixTrigger asChild>
                 <a
                     style={{
-                        cursor: "cross",
+                        cursor: "pointer",
                     }}
                     tabIndex={0}
                     // onClick={(e) => {
