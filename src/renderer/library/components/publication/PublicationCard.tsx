@@ -29,6 +29,7 @@ import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
 
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -65,30 +66,72 @@ class PublicationCard extends React.Component<IProps> {
         // aria-controls="dialog"
         return (
             <div className={stylesPublications.publication_wrapper}>
-                <a
-                    onClick={(e) => this.handleBookClick(e)}
-                    onKeyPress={
-                        (e) =>
-                            (e.key === "Enter") && this.handleBookClick(e)
-                    }
-                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
-                    className={stylesPublications.publication_image_wrapper}
-                    tabIndex={0}
-                >
-                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
-                </a>
-                <div className={stylesPublications.publication_infos_wrapper}>
-                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}
-                        className={stylesPublications.publication_infos}
+
+                {
+                    this.props.isOpds ?
+                        <PublicationInfoOpdsWithRadix
+                            opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
                         >
-                        <p aria-hidden className={stylesPublications.publication_title}
-                            dir={pubTitleIsRTL ? "rtl" : undefined}>
-                            {pubTitleStr}
-                        </p>
-                        <p aria-hidden className={stylesPublications.publication_description}>
-                            {this.truncateAuthors(authors)}
-                        </p>
-                    </a>
+                            <PublicationInfoOpdsWithRadixTrigger asChild>
+                                <a
+                                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                    className={stylesPublications.publication_image_wrapper}
+                                    tabIndex={0}
+                                >
+                                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                                </a>
+                            </PublicationInfoOpdsWithRadixTrigger>
+                            <PublicationInfoOpdsWithRadixContent />
+                        </PublicationInfoOpdsWithRadix>
+                        :
+                        <a
+                            onClick={(e) => this.handleBookClick(e)}
+                            onKeyPress={
+                                (e) =>
+                                    (e.key === "Enter") && this.handleBookClick(e)
+                            }
+                            title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                            className={stylesPublications.publication_image_wrapper}
+                            tabIndex={0}
+                        >
+                            <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                        </a>
+                }
+
+                <div className={stylesPublications.publication_infos_wrapper}>
+                    {
+                        this.props.isOpds ?
+                            <PublicationInfoOpdsWithRadix
+                                opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                            >
+                                <PublicationInfoOpdsWithRadixTrigger asChild>
+                                    <a aria-hidden style={{cursor: "pointer"}}
+                                        className={stylesPublications.publication_infos}
+                                    >
+                                        <p aria-hidden className={stylesPublications.publication_title}
+                                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                            {pubTitleStr}
+                                        </p>
+                                        <p aria-hidden className={stylesPublications.publication_description}>
+                                            {this.truncateAuthors(authors)}
+                                        </p>
+                                    </a>
+                                </PublicationInfoOpdsWithRadixTrigger>
+                                <PublicationInfoOpdsWithRadixContent />
+                            </PublicationInfoOpdsWithRadix>
+                            :
+                            <a aria-hidden onClick={(e) => this.handleBookClick(e)} style={{cursor: "pointer"}}
+                                className={stylesPublications.publication_infos}
+                            >
+                                <p aria-hidden className={stylesPublications.publication_title}
+                                    dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                    {pubTitleStr}
+                                </p>
+                                <p aria-hidden className={stylesPublications.publication_description}>
+                                    {this.truncateAuthors(authors)}
+                                </p>
+                            </a>
+                    }
                     <Menu
                         button={(
                             <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
@@ -111,11 +154,12 @@ class PublicationCard extends React.Component<IProps> {
         e.preventDefault();
         const { publicationViewMaybeOpds } = this.props;
 
-        if (this.props.isOpds) {
-            this.props.openInfosDialog(publicationViewMaybeOpds as IOpdsPublicationView);
-        } else {
+        // if (this.props.isOpds) {
+            // this.props.openInfosDialog(publicationViewMaybeOpds as IOpdsPublicationView);
+            // console.error("ERROR DO NOT ")
+        // } else {
             this.props.openReader(publicationViewMaybeOpds as PublicationView);
-        }
+        // }
     }
 
     /* function Truncate very long titles at 60 characters */
