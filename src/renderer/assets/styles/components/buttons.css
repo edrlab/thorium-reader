@@ -57,6 +57,20 @@ button {
   }
 }
 
+/* READER */
+.main_navigation button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--reader-fontColor) !important;
+  fill: var(--reader-fontColor) !important;
+  height: auto;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .button_outline_accessibility button {
   width: auto;
   height: 40px;

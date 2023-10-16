@@ -86,18 +86,6 @@ body {
   font: 1.1rem "Open Sans", sans-serif;
 }
 
-.menu_option button {
-  background: none;
-  border: 0;
-  cursor: pointer;
-  color: var(--reader-fontColor) !important;
-  fill: var(--reader-fontColor) !important;
-  height: auto;
-
-  &:hover {
-    opacity: 1;
-  }
-}
 
 .root {
   position: absolute;
