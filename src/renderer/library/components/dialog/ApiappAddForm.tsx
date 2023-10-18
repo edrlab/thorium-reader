@@ -11,8 +11,8 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
-import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
+// import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+// import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -23,6 +23,10 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
+import { DialogCloseButton, DialogFooter, DialogHeader, DialogTitle } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+import { StateContextFactory, useStateContextChildren } from "readium-desktop/renderer/common/hooks/useStateContext";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -69,9 +73,9 @@ class ApiappAddForm extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        if (!this.props.open) {
-            return (<></>);
-        }
+        // if (!this.props.open) {
+        //     return (<></>);
+        // }
 
         const { __ } = this.props;
         const listItems = this.state.searchResultView.map((v, idx) =>
@@ -116,56 +120,97 @@ class ApiappAddForm extends React.Component<IProps, IState> {
             </li>);
 
         return (
-            <Dialog
-                id={stylesModals.opds_form_dialog}
-                title={__("opds.addFormApiapp.title")}
-                onSubmitButton={this.add}
-                submitButtonDisabled={false}
-                submitButtonTitle={__("opds.addForm.addButton")}
-                noCentering={true}
-            >
-                <div style={{display:"flex", flexDirection: "column", width: "100%"}}>
-                    <div
-                        style={{ marginBottom: "0" }}
-                        className={stylesInputs.form_group}>
-                        <input
-                            ref={this.inputRef}
-                            type="search"
-                            id="apiapp_search"
-                            placeholder={__("header.searchPlaceholder")}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                    this.search(undefined);
-                                    // e.preventDefault();
-                                    e.stopPropagation();
-                                }
-                            }}
-                        />
-                        <button
-                            onClick={this.search}
-                            className={stylesButtons.button_primary_small}
-                            style={{ fontWeight: "bold" }}
-                            title={__("header.searchTitle")}
-                        >
-                            {__("header.searchPlaceholder")}<SVG ariaHidden={true} svg={magnifyingGlass} />
-                        </button>
-                    </div>
-                    <div >
-                        {
-                            listItems.length
-                                ? <ul style={{
-                                    listStyle: "none",
-                                    padding: 0,
-                                    margin: 0,
-                                }}>
-                                    {listItems}
-                                </ul>
-                                :
-                                this.state.query ? __("apiapp.noLibraryFound", { name: this.state.query }) : <></>
-                        }
-                    </div>
+            // <Dialog
+            //     id={stylesModals.opds_form_dialog}
+            //     title={__("opds.addFormApiapp.title")}
+            //     onSubmitButton={this.add}
+            //     submitButtonDisabled={false}
+            //     submitButtonTitle={__("opds.addForm.addButton")}
+            //     noCentering={true}
+            // >
+                // <div style={{display:"flex", flexDirection: "column", width: "100%"}}>
+                //     <div
+                //         style={{ marginBottom: "0" }}
+                //         className={stylesInputs.form_group}>
+                //         <input
+                //             ref={this.inputRef}
+                //             type="search"
+                //             id="apiapp_search"
+                //             placeholder={__("header.searchPlaceholder")}
+                //             onKeyDown={(e) => {
+                //                 if (e.key === "Enter") {
+                //                     this.search(undefined);
+                //                     // e.preventDefault();
+                //                     e.stopPropagation();
+                //                 }
+                //             }}
+                //         />
+                //         <button
+                //             onClick={this.search}
+                //             className={stylesButtons.button_primary_small}
+                //             style={{ fontWeight: "bold" }}
+                //             title={__("header.searchTitle")}
+                //         >
+                //             {__("header.searchPlaceholder")}<SVG ariaHidden={true} svg={magnifyingGlass} />
+                //         </button>
+                //     </div>
+                //     <div >
+                //         {
+                //             listItems.length
+                //                 ? <ul style={{
+                //                     listStyle: "none",
+                //                     padding: 0,
+                //                     margin: 0,
+                //                 }}>
+                //                     {listItems}
+                //                 </ul>
+                //                 :
+                //                 this.state.query ? __("apiapp.noLibraryFound", { name: this.state.query }) : <></>
+                //         }
+                //     </div>
+                // </div>
+            // </Dialog>
+            <div style={{display:"flex", flexDirection: "column", width: "100%"}}>
+                <div
+                    style={{ marginBottom: "0" }}
+                    className={stylesInputs.form_group}>
+                    <input
+                        ref={this.inputRef}
+                        type="search"
+                        id="apiapp_search"
+                        placeholder={__("header.searchPlaceholder")}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                this.search(undefined);
+                                // e.preventDefault();
+                                e.stopPropagation();
+                            }
+                        }}
+                    />
+                    <button
+                        onClick={this.search}
+                        className={stylesButtons.button_primary_small}
+                        style={{ fontWeight: "bold" }}
+                        title={__("header.searchTitle")}
+                    >
+                        {__("header.searchPlaceholder")}<SVG ariaHidden={true} svg={magnifyingGlass} />
+                    </button>
                 </div>
-            </Dialog>
+                <div >
+                    {
+                        listItems.length
+                            ? <ul style={{
+                                listStyle: "none",
+                                padding: 0,
+                                margin: 0,
+                            }}>
+                                {listItems}
+                            </ul>
+                            :
+                            this.state.query ? __("apiapp.noLibraryFound", { name: this.state.query }) : <></>
+                    }
+                </div>
+            </div>
         );
     }
 
@@ -219,3 +264,65 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ApiappAddForm));
+
+const [myContext, useStateContext] = StateContextFactory("hello world");
+// const [myContext, useStateContext] = StateContextFactory<string>();
+
+const TestComponent = () => {
+    const [state, setState] = useStateContextChildren(myContext);
+
+    return <button onClick={() => setState("hello")}>{state}</button>
+}
+
+export const ApiappAddFormContainer = () => {
+    const [__] = useTranslator();
+    let inputRef: React.RefObject<HTMLInputElement>;
+
+    // const [name, setName] = React.useState(undefined);
+    // const [url, setUrl] = React.useState(undefined);
+    const [selectSearchResult] = React.useState(undefined);
+    const [, setQuery] = React.useState("");
+    const [, addFeedAction] = useApi(undefined, "opds/addFeed");
+    const [, apiAppSearchAction] = useApi(undefined, "apiapp/search");
+    // const searchResultView = resultApiAppSearchAction?.data?.result;
+
+    const [state, setState, StateContextComponent] = useStateContext();
+
+    const add = () => {
+        if (!selectSearchResult?.name || !selectSearchResult?.id || !selectSearchResult?.url) {
+            return;
+        }
+        const title = selectSearchResult.name;
+        const url = `apiapp://${selectSearchResult.id}:apiapp:${selectSearchResult.url}`;
+        addFeedAction({title, url});
+    }
+
+    const search: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+        e?.preventDefault(); // undefined on enter keydown input search
+
+        const value = inputRef?.current?.value;
+        setQuery("");
+
+        if (value && typeof value === "string") {
+            apiAppSearchAction(value);
+        }
+    };
+
+    return (
+        <>
+            <DialogHeader>
+                <DialogTitle>
+                    {__("opds.addFormApiapp.title")}
+                </DialogTitle>
+                <div>
+                    <DialogCloseButton />
+                </div>
+            </DialogHeader>
+            <StateContextComponent>
+                <button onClick={() => setState("world")}>{state}</button>
+                <TestComponent />
+            </StateContextComponent>
+            {/* <DialogFooter></DialogFooter> */}
+        </>
+    )
+}

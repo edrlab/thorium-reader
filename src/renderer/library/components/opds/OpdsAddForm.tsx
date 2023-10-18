@@ -6,66 +6,73 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { TDispatch } from "readium-desktop/typings/redux";
+import { DialogWithRadixContainer, DialogWithRadixTrigger, DialogWithRadix, DialogTitle, DialogHeader, DialogContent, DialogFooter, DialogCloseButton } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
+// import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import ApiappAddForm, { ApiappAddFormContainer } from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
+import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
+
+const OpdsAddForm: React.FC = () => {
+    const [__] = useTranslator();
+
+    return (
+        <section>
+            <DialogWithRadix>
+                <DialogWithRadixTrigger asChild>
+                    <button
+                        className={stylesButtons.button_primary}
+                    >
+                        <SVG ariaHidden={true} svg={AddIcon}/>
+                        <span>{ __("opds.addForm.title")}</span>
+                    </button> 
+                </DialogWithRadixTrigger>
+                <DialogWithRadixContainer>
+                    <DialogHeader >
+                        <DialogTitle>
+                            {__("opds.addForm.title")}
+                        </DialogTitle>
+                        <div>
+                            <DialogCloseButton />
+                        </div>
+                    </DialogHeader>
+                    <DialogContent>
+                        <OpdsFeedAddForm />
+                    </DialogContent>
+                    <DialogFooter />
+                </DialogWithRadixContainer>
+            </DialogWithRadix>
+            <DialogWithRadix>
+                <DialogWithRadixTrigger asChild>
+                    <button
+                        className={stylesButtons.button_primary}
+                    >
+                        <SVG ariaHidden={true} svg={AddIcon} />
+                        <span>{__("opds.addFormApiapp.title")}</span>
+                    </button>
+                </DialogWithRadixTrigger>
+                {/* <DialogWithRadixContainer>
+                    <DialogHeader >
+                        <DialogTitle>
+                            {__("opds.addFormApiapp.title")}
+                        </DialogTitle>
+                        <div>
+                            <DialogCloseButton />
+                        </div>
+                    </DialogHeader>
+                    <DialogContent>
+                        <ApiappAddForm />
+                    </DialogContent>
+                    <DialogFooter />
+                </DialogWithRadixContainer> */}
+                <ApiappAddFormContainer></ApiappAddFormContainer>
+            </DialogWithRadix>
+        </section>
+    );
+
 }
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
-}
 
-export class OpdsAddForm extends React.Component<IProps, undefined> {
-
-    constructor(props: IProps) {
-        super(props);
-    }
-
-    public render(): React.ReactElement<{}>  {
-        const { __ } = this.props;
-        return (
-            <section>
-                <button
-                    onClick={this.props.openOpdsFeedAddForm}
-                    className={stylesButtons.button_primary}
-                >
-                    <SVG ariaHidden={true} svg={AddIcon}/>
-                    <span>{ __("opds.addForm.title")}</span>
-                </button>
-                <button
-                    onClick={this.props.openApiappAddForm}
-                    className={stylesButtons.button_primary}
-                >
-                    <SVG ariaHidden={true} svg={AddIcon} />
-                    <span>{__("opds.addFormApiapp.title")}</span>
-                </button>
-            </section>
-        );
-    }
-}
-
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
-    return {
-        openOpdsFeedAddForm: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.OpdsFeedAddForm, {}));
-        },
-        openApiappAddForm: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.ApiappAddForm, {}));
-        },
-    };
-};
-
-export default connect(undefined, mapDispatchToProps)(withTranslator(OpdsAddForm));
+export default OpdsAddForm;
