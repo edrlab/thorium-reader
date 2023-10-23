@@ -21,7 +21,6 @@ export function useApi<T extends TApiMethodName>(_requestId: string | undefined,
 {
 
     const requestId = _requestId || React.useMemo(() => uuidv4(), []);
-    console.log(apiPath, requestId);
     const { store } = React.useContext(ReactReduxContext);
     React.useEffect(() => {
         return () => {

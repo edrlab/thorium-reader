@@ -9,11 +9,11 @@ import * as React from "react";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { DialogWithRadixContainer, DialogWithRadixTrigger, DialogWithRadix, DialogTitle, DialogHeader, DialogContent, DialogCloseButton } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
+import { DialogWithRadixTrigger, DialogWithRadix, DialogTitle, DialogHeader, DialogContent, DialogCloseButton, DialogWithRadixContent } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
 // import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
-import { ApiappAddFormContainer } from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
+import { ApiappAddFormDialog } from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
 import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator"; 
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
 
 const OpdsAddForm: React.FC = () => {
@@ -25,11 +25,11 @@ const OpdsAddForm: React.FC = () => {
                     <button
                         className={stylesButtons.button_primary}
                     >
-                        <SVG ariaHidden={true} svg={AddIcon}/> 
+                        <SVG ariaHidden={true} svg={AddIcon}/>
                         <span>{ __("opds.addForm.title")}</span>
-                    </button> 
+                    </button>
                 </DialogWithRadixTrigger>
-                <DialogWithRadixContainer>
+                <DialogWithRadixContent>
                     <DialogHeader >
                         <DialogTitle>
                             {__("opds.addForm.title")}
@@ -42,26 +42,12 @@ const OpdsAddForm: React.FC = () => {
                         <OpdsFeedAddForm />
                     </DialogContent>
                     {/* <DialogFooter /> */}
-                </DialogWithRadixContainer>
+                </DialogWithRadixContent>
             </DialogWithRadix>
-
-
-            <DialogWithRadix>
-                <DialogWithRadixTrigger asChild>
-                    <button
-                        className={stylesButtons.button_primary}
-                    >
-                        <SVG ariaHidden={true} svg={AddIcon} />
-                        <span>{__("opds.addFormApiapp.title")}</span>
-                    </button>
-                </DialogWithRadixTrigger>
-                    <DialogWithRadixContainer>
-                        <ApiappAddFormContainer/>
-                    </DialogWithRadixContainer>
-            </DialogWithRadix>
+            <ApiappAddFormDialog/>
         </section>
     );
 
-}
+};
 
 export default OpdsAddForm;

@@ -38,7 +38,7 @@ import classNames from "classnames";
 export const DialogWithRadix: React.FC = (props) => {
     const [open, setOpen] = React.useState(false);
 
-    let openFromState = useSelector((state: ILibraryRootState) => state.dialog.open);
+    const openFromState = useSelector((state: ILibraryRootState) => state.dialog.open);
     React.useMemo(() => {
         if (!openFromState) {
             setOpen(false);
@@ -67,33 +67,32 @@ DialogWithRadixTrigger.displayName = Dialog.Trigger.displayName;
 
 const DialogContext = React.createContext(null);
 
-export const DialogWithRadixContainer : React.FC = (props) => {
-        const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
-        const [__] = useTranslator();
-        const [collapse, setCollapse] = React.useState(false);
+export const DialogWithRadixContent: React.FC = (props) => {
+    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
+    const [__] = useTranslator();
+    const [collapse, setCollapse] = React.useState(false);
 
-        const toggleCollapse = () => {
-            setCollapse(!collapse);
-        };
+    const toggleCollapse = () => {
+        setCollapse(!collapse);
+    };
 
-        return (
-            <Dialog.Portal container={appOverlayElement}>
-                <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog, collapse ? stylesModals["modal_dialog-collapsed"] : undefined)}
+    return (
+        <Dialog.Portal container={appOverlayElement}>
+            <div className={stylesModals.modal_dialog_overlay}></div>
+            <Dialog.Content className={classNames(stylesModals.modal_dialog, collapse ? stylesModals["modal_dialog-collapsed"] : undefined)}
                 style={{
                     backgroundColor: "white",
-                    zIndex: "10000"}}
-                    id="modalContainer">
-                        <DialogContext.Provider value={{collapse: {toggleCollapse, collapse}}}>
-                            {props.children}
-                        </DialogContext.Provider>
-                </Dialog.Content>
-            </Dialog.Portal>
-        )
-    }
-
-
-DialogWithRadixContainer.displayName = "DialogWithRadixContainer";
+                    zIndex: "10000",
+                }}
+                id="modalContainer">
+                <DialogContext.Provider value={{ collapse: { toggleCollapse, collapse } }}>
+                    {props.children}
+                </DialogContext.Provider>
+            </Dialog.Content>
+        </Dialog.Portal>
+    );
+};
+DialogWithRadixContent.displayName = "DialogWithRadixContent";
 
 export const DialogTitle = Dialog.Title;
 DialogTitle.displayName = "DialogTitle";
@@ -105,17 +104,17 @@ export const DialogHeader : React.FC = (props) => {
             {props.children}
 
         </div>
-    )
-}
+    );
+};
 
 export const DialogCollapseButton = () => {
     const {toggleCollapse} = React.useContext(DialogContext);
     return (
         <button style={{width: "20px", height: "20px"}} id="chevronButton" onClick={() => toggleCollapse()}>
             <SVG ariaHidden={true} svg={chevronDownIcon} />
-        </button>   
-    )
-}
+        </button>
+    );
+};
 
 export const DialogCloseButton = () => {
     return (
@@ -124,8 +123,8 @@ export const DialogCloseButton = () => {
                 <SVG ariaHidden={true} svg={QuitIcon} />
             </button>
         </Dialog.Close>
-    )
-}
+    );
+};
 
 export const DialogContent : React.FC = (props) => {
     const {collapse} = React.useContext(DialogContext);
@@ -134,8 +133,8 @@ export const DialogContent : React.FC = (props) => {
         <div className={classNames(stylesModals.modal_dialog_body, collapse ? stylesModals["modal_dialog_body-collapsed"]: undefined)}>
         {props.children}
         </div>
-    )
-}
+    );
+};
 
 export const DialogFooter = (props: any) => {
     const [__] = useTranslator();
@@ -143,8 +142,8 @@ export const DialogFooter = (props: any) => {
             <div className={stylesModals.modal_dialog_footer}>
                     {props.children}
             </div>
-    )
-}
+    );
+};
 
 
 export const DialogClose = Dialog.Close;
