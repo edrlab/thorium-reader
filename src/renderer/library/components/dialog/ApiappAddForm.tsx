@@ -171,3 +171,5 @@ export const ApiappAddFormDialog = () => {
         </DialogWithRadixContent>
     </DialogWithRadix>;
 };
+
+export default ApiappAddFormDialog;
