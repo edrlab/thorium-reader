@@ -128,7 +128,7 @@ export const DialogCloseButton = () => {
 }
 
 export const DialogContent : React.FC = (props) => {
-    const {collapse, submit} = React.useContext(DialogContext);
+    const {collapse} = React.useContext(DialogContext);
 
     return (
         <div className={classNames(stylesModals.modal_dialog_body, collapse ? stylesModals["modal_dialog_body-collapsed"]: undefined)}>
@@ -137,16 +137,14 @@ export const DialogContent : React.FC = (props) => {
     )
 }
 
-// export const DialogFooter = () => {
-//     const [__] = useTranslator();
-//     const {submitForm} = React.useContext(DialogContext);
-//     const [submit, setSubmit] = React.useState(null);
-//     return (
-//             <div className={stylesModals.modal_dialog_footer}>
-//                     <Dialog.Close asChild>
-//                         <button className={stylesButtons.button_primary}>{__("dialog.cancel")}</button>
-//                     </Dialog.Close>
-//                     <button className={stylesButtons.button_secondary}>Save</button>
-//             </div>
-//     )
-// }
+export const DialogFooter = (props: any) => {
+    const [__] = useTranslator();
+    return (
+            <div className={stylesModals.modal_dialog_footer}>
+                    {props.children}
+            </div>
+    )
+}
+
+
+export const DialogClose = Dialog.Close;

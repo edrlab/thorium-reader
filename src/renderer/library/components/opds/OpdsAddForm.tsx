@@ -9,16 +9,15 @@ import * as React from "react";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { DialogWithRadixContainer, DialogWithRadixTrigger, DialogWithRadix, DialogTitle, DialogHeader, DialogContent, DialogFooter, DialogCloseButton } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
+import { DialogWithRadixContainer, DialogWithRadixTrigger, DialogWithRadix, DialogTitle, DialogHeader, DialogContent, DialogCloseButton } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
 // import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
-import ApiappAddForm, { ApiappAddFormContainer } from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
+import { ApiappAddFormContainer } from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
 import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator"; 
 
 
 const OpdsAddForm: React.FC = () => {
     const [__] = useTranslator();
-
     return (
         <section>
             <DialogWithRadix>
@@ -26,7 +25,7 @@ const OpdsAddForm: React.FC = () => {
                     <button
                         className={stylesButtons.button_primary}
                     >
-                        <SVG ariaHidden={true} svg={AddIcon}/>
+                        <SVG ariaHidden={true} svg={AddIcon}/> 
                         <span>{ __("opds.addForm.title")}</span>
                     </button> 
                 </DialogWithRadixTrigger>
@@ -42,9 +41,11 @@ const OpdsAddForm: React.FC = () => {
                     <DialogContent>
                         <OpdsFeedAddForm />
                     </DialogContent>
-                    <DialogFooter />
+                    {/* <DialogFooter /> */}
                 </DialogWithRadixContainer>
             </DialogWithRadix>
+
+
             <DialogWithRadix>
                 <DialogWithRadixTrigger asChild>
                     <button
@@ -54,21 +55,9 @@ const OpdsAddForm: React.FC = () => {
                         <span>{__("opds.addFormApiapp.title")}</span>
                     </button>
                 </DialogWithRadixTrigger>
-                {/* <DialogWithRadixContainer>
-                    <DialogHeader >
-                        <DialogTitle>
-                            {__("opds.addFormApiapp.title")}
-                        </DialogTitle>
-                        <div>
-                            <DialogCloseButton />
-                        </div>
-                    </DialogHeader>
-                    <DialogContent>
-                        <ApiappAddForm />
-                    </DialogContent>
-                    <DialogFooter />
-                </DialogWithRadixContainer> */}
-                <ApiappAddFormContainer></ApiappAddFormContainer>
+                    <DialogWithRadixContainer>
+                        <ApiappAddFormContainer/>
+                    </DialogWithRadixContainer>
             </DialogWithRadix>
         </section>
     );
