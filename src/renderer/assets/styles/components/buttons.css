@@ -49,7 +49,7 @@ button {
   background: none;
   border: 0;
   height: 30px;
-  fill: black;
+  fill: var(--color-primary);
   cursor: pointer;
 
   &:hover {
@@ -88,6 +88,7 @@ button {
     height: 14px;
     margin-right: 8px;
     transition: all 0.2s;
+    fill: var(--color-primary);
   }
 
   &.icon_end {
@@ -121,12 +122,14 @@ button {
     width: 14px;
     vertical-align: -2px;
     margin-left: 5px;
+    fill: var(--color-primary);
+
   }
 
   &.button_icon {
     height: 16px;
     padding: 8px 20px;
-    background: white;
+    background: var(--color-secondary);
     overflow: visible;
 
     & input {
@@ -212,7 +215,7 @@ button {
 .button_transparency,
 .button_transparency_icon {
   display: inline-block;
-  color: #000;
+  color: var(--color-primary);
   transition: all 0.2s;
   border-radius: 5px;
   background: rgba(0, 0, 0, 0);
@@ -220,6 +223,9 @@ button {
   font-family: "Arial", sans-serif;
   font-weight: 600;
   cursor: pointer;
+  & svg {
+    fill: var(--color-primary);
+  }
 
   &:hover {
     background: rgba(0, 0, 0, 0.1);

@@ -79,7 +79,8 @@
       overflow: hidden;
       text-align: center;
       margin: 10px 5%;
-      color: black;
+      color: var(--color-primary);
+      ;
 
       &:not(:first-child) {
         font-size: 90%;
@@ -373,7 +374,8 @@
   & a,
   & span label {
     text-decoration: none;
-    color: black;
+    color: var(--color-primary);
+    ;
     padding: 0.7rem;
     text-align: center;
     cursor: pointer;
@@ -432,7 +434,7 @@
     overflow: hidden;
     text-align: center;
     margin: 10px 5%;
-    color: black;
+    color: var(--color-primary);
   }
 
   & .box {

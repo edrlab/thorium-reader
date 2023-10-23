@@ -1,5 +1,5 @@
 @use "./variable" as c;
-@use "./screenSizes" as s;
+@use "readium-desktop/renderer/assets/styles/partials/screenSizes" as s;
 
 #settings-container {
     display: inline-flex;
@@ -16,7 +16,7 @@
                 background-color: lighten(c.$color-primary, 10%);
                 color: white;
                 }
-                @media only screen and (min-width: s.$large) {
+                @media screen and (min-width: s.$large) {
                     display: grid;
                     grid-template-columns: repeat(5, 1fr);
                     label {
@@ -44,7 +44,7 @@
             text-align: center;
         }
 }
-@media only screen and (min-width: s.$large) {
+@media screen and (min-width: s.$large) {
     display: block;
 }
 }
