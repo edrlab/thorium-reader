@@ -29,6 +29,10 @@ interface IDataPayload {
         readerReadingLocation: LocatorExtended;
         handleLinkUrl: ((url: string) => void) | undefined;
     };
+    [DialogTypeName.ToastInformations]: {
+        toastTitle: string;
+        toastMessage: string;
+    }
 }
 
 type TDialogType = Omit<DialogType, DialogTypeName.PublicationInfoOpds | DialogTypeName.PublicationInfoReader>;

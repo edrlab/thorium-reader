@@ -155,15 +155,18 @@
     },
     "message": {
         "download": {
-            "error": "The download of {{- title}} has failed: [{{- err}}]"
+            "error": "[{{- err}}]",
+            "error2": "The download of {{- title}} has failed: [{{- err}}]"
         },
         "import": {
             "alreadyImport": "{{- title}} was already imported",
-            "fail": "The import of {{- path}} failed. {{- err}}",
+            "fail": "{{- err}}",
+            "fail2": "The import of {{- path}} failed. {{- err}}",
             "success": "The import of {{- title}} is finished."
         },
         "open": {
-            "error": "The publication can't be opened: {{- err}}"
+            "error": "{{- err}}",
+            "error2": "The publication can't be opened: {{- err}}"
         }
     },
     "opds": {

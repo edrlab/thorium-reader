@@ -50,7 +50,7 @@ export function* importFromLink(
         if (alreadyImported) {
             yield put(
                 toastActions.openRequest.build(
-                    ToastType.Success,
+                    ToastType.Default,
                     translate("message.import.alreadyImport",
                         { title: publicationView.documentTitle }),
                 ),
@@ -145,7 +145,7 @@ export function* importFromFs(
                     if (alreadyImported) {
                         yield put(
                             toastActions.openRequest.build(
-                                ToastType.Success,
+                                ToastType.Default,
                                 translate("message.import.alreadyImport",
                                     { title: publicationView.documentTitle }),
                             ),
