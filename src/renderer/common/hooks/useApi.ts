@@ -16,22 +16,23 @@ import { ApiResponse } from "readium-desktop/common/redux/states/api";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { useSyncExternalStore } from "./useSyncExternalStore";
 
-export function useApi<T extends TApiMethodName>(_requestId: string | undefined, apiPath: T, ...requestData: Parameters<TApiMethod[T]>):
-    [ApiResponse<TReturnPromiseOrGeneratorType<TApiMethod[T]>>, () => void]
+export function useApi<T extends TApiMethodName>(_requestId: string | undefined, apiPath: T):
+    [ApiResponse<TReturnPromiseOrGeneratorType<TApiMethod[T]>>, (...requestData: Parameters<TApiMethod[T]>) => void]
 {
 
     const requestId = _requestId || React.useMemo(() => uuidv4(), []);
     const { store } = React.useContext(ReactReduxContext);
-    const apiAction = React.useCallback(() => {
+    React.useEffect(() => {
+        return () => {
+            store.dispatch(apiActions.clean.build(requestId));
+        };
+    }, []);
+    const apiAction = (...requestData: Parameters<TApiMethod[T]>) => {
         const splitPath = apiPath.split("/");
         const moduleId = splitPath[0] as TModuleApi;
         const methodId = splitPath[1] as TMethodApi;
         store.dispatch(apiActions.request.build(requestId, moduleId, methodId, requestData));
-
-        return () => {
-            store.dispatch(apiActions.clean.build(requestId));
-        };
-    }, []); // componentDidMount
+    };
 
     const apiResult = useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
     return [apiResult, apiAction];
