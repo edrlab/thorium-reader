@@ -7,8 +7,8 @@ declare const styles: {
   readonly "AlertDialogDescription": string;
   readonly "AlertDialogButton": string;
   readonly "violet": string;
-  readonly "red": string;
-  readonly "mauve": string;
+  readonly "delete": string;
+  readonly "abort": string;
 };
 export = styles;
 

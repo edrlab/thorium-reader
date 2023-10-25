@@ -251,7 +251,6 @@
     }
   },
   "dependencies": {
-    "@radix-ui/colors": "^3.0.0-rc.5",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-popover": "^1.0.7",

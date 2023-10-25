@@ -42,10 +42,10 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                     </AlertDialog.Description>
                     <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
                         <AlertDialog.Cancel asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.mauve)}>{__("dialog.cancel")}</button>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.red)} onClick={removeAction} type="button">{__("dialog.yes")}</button>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.delete)} onClick={removeAction} type="button">{__("dialog.yes")}</button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>
