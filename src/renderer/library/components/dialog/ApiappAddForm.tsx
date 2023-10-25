@@ -8,6 +8,7 @@
 import * as React from "react";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
@@ -89,7 +90,7 @@ const ApiappAddForm = () => {
     const searchResultView = resultApiAppSearchAction?.data?.result || [];
 
     return (
-        <div style={{display:"flex", flexDirection: "column", width: "100%"}}>
+        <div className={stylesModals.modal_dialog_body}>
                 <div
                     style={{ marginBottom: "0" }}
                     className={stylesInputs.form_group}>

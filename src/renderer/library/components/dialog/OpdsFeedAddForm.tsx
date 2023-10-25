@@ -13,6 +13,7 @@ import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 
 export const ApiappAddFormDialog = () => {
     const [__] = useTranslator();
@@ -45,7 +46,7 @@ export const ApiappAddFormDialog = () => {
                     <DialogCloseButton />
                 </div>
             </DialogHeader>
-            <form>
+            <form className={stylesModals.modal_dialog_body}>
                 <div className={stylesInputs.form_group}>
                     <label htmlFor="title">{__("opds.addForm.name")}</label>
                     <input
@@ -73,7 +74,8 @@ export const ApiappAddFormDialog = () => {
                         required
                     />
                 </div>
-                <DialogFooter>
+            </form>
+            <DialogFooter>
                     <DialogClose asChild>
                         <button className={stylesButtons.button_primary}>{__("dialog.cancel")}</button>
                     </DialogClose>
@@ -81,7 +83,6 @@ export const ApiappAddFormDialog = () => {
                         <button type="submit" disabled={!title || !url} className={stylesButtons.button_secondary} onClick={() => addAction()}>{__("opds.addForm.addButton")}</button>
                     </DialogClose>
                 </DialogFooter>
-            </form>
         </DialogWithRadixContent>
     </DialogWithRadix>;
 };
