@@ -80,10 +80,6 @@ export const DialogWithRadixContent: React.FC = (props) => {
         <Dialog.Portal container={appOverlayElement}>
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={classNames(stylesModals.modal_dialog, collapse ? stylesModals["modal_dialog-collapsed"] : undefined)}
-                style={{
-                    backgroundColor: "white",
-                    zIndex: "10000",
-                }}
                 id="modalContainer">
                 <DialogContext.Provider value={{ collapse: { toggleCollapse, collapse } }}>
                     {props.children}

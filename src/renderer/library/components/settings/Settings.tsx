@@ -15,6 +15,13 @@ import AuthSettings from "./AuthSettings";
 import KeyboardSettings from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
 import SessionSettings from "./SessionSettings";
+import { DialogCloseButton, DialogHeader, DialogTitle, DialogWithRadix, DialogWithRadixContent, DialogWithRadixTrigger } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
+import * as GearIcon from "readium-desktop/renderer/assets/icons/gear.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.css";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as Tabs from "@radix-ui/react-tabs";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -36,10 +43,48 @@ class Settings extends React.Component<IProps, undefined> {
                 <LibraryLayout
                     title={__("header.settings")}
                 >
-                    <LanguageSettings></LanguageSettings>
-                    <SessionSettings></SessionSettings>
-                    <KeyboardSettings></KeyboardSettings>
-                    <AuthSettings></AuthSettings>
+                    <DialogWithRadix>
+                        <DialogWithRadixTrigger asChild>
+                            <button
+                                className={stylesButtons.button_transparency_icon}
+                                style={{border: "none"}}
+                            >
+                                <SVG ariaHidden={true} svg={GearIcon} />
+                            </button>
+                        </DialogWithRadixTrigger>
+                        <DialogWithRadixContent>
+                            <DialogHeader>
+                                <DialogTitle>
+                                {__("header.settings")}
+                                </DialogTitle>
+                                <div>
+                                    <DialogCloseButton />
+                                </div>
+                            </DialogHeader>
+                                <Tabs.Root defaultValue="tab1" data-orientation="vertical" className={stylesSettings.settings_container}>
+                                    <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
+                                        <Tabs.Trigger value="tab1">General</Tabs.Trigger>
+                                        <Tabs.Trigger value="tab2">Appearence</Tabs.Trigger>
+                                        <Tabs.Trigger value="tab3">Reading</Tabs.Trigger>
+                                        <Tabs.Trigger value="tab4">Keyboard Shortcuts</Tabs.Trigger>
+                                    </Tabs.List>
+                                    <div style={{flex: "2"}}>
+                                        <Tabs.Content value="tab1">
+                                            <LanguageSettings></LanguageSettings>
+                                        </Tabs.Content>
+                                        <Tabs.Content value="tab2">
+                                            <AuthSettings></AuthSettings>
+                                        </Tabs.Content>
+                                        <Tabs.Content value="tab3">
+                                            <SessionSettings></SessionSettings>
+                                        </Tabs.Content>
+                                        <Tabs.Content value="tab4">
+                                            <KeyboardSettings></KeyboardSettings>
+                                        </Tabs.Content>
+                                    </div>
+                                </Tabs.Root>
+                        </DialogWithRadixContent>
+                    </DialogWithRadix>
                 </LibraryLayout>
             </>
         );
