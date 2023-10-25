@@ -17,12 +17,12 @@ import { dialogActions } from "readium-desktop/common/redux/actions";
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
-    const [_, remove] = useApi(undefined, "publication/delete", props.publicationView.identifier);
+    const [_, remove] = useApi(undefined, "publication/delete");
     const dispatch = useDispatch();
     const removeAction = React.useCallback(() => {
         dispatch(dialogActions.closeRequest.build());
-        remove();
-    }, [remove]);
+        remove(props.publicationView.identifier);
+    }, [remove, props.publicationView.identifier]);
 
     const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
     return (
