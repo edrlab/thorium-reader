@@ -25,7 +25,7 @@ export const ApiappAddFormDialog = () => {
             return;
         }
         apiAddFeedAction({ title, url });
-    }
+    };
 
     return <DialogWithRadix>
         <DialogWithRadixTrigger asChild>
