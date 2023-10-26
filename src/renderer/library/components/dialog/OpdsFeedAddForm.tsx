@@ -74,8 +74,7 @@ export const ApiappAddFormDialog = () => {
                         required
                     />
                 </div>
-            </form>
-            <DialogFooter>
+                <DialogFooter>
                     <DialogClose asChild>
                         <button className={stylesButtons.button_primary}>{__("dialog.cancel")}</button>
                     </DialogClose>
@@ -83,6 +82,7 @@ export const ApiappAddFormDialog = () => {
                         <button type="submit" disabled={!title || !url} className={stylesButtons.button_secondary} onClick={() => addAction()}>{__("opds.addForm.addButton")}</button>
                     </DialogClose>
                 </DialogFooter>
+            </form>
         </DialogWithRadixContent>
     </DialogWithRadix>;
 };
