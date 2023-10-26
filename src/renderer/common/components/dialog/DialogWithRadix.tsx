@@ -5,9 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as Dialog from "@radix-ui/react-dialog";
 import * as React from "react";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import * as Dialog from "@radix-ui/react-dialog";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -16,11 +15,12 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as chevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import classNames from "classnames";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
 export const DialogWithRadix: React.FC<React.PropsWithChildren<{}>> = (props) => {
     const [open, setOpen] = React.useState(false);
 
-    const openFromState = useSelector((state: ILibraryRootState) => state.dialog.open);
+    const openFromState = useSelector((state: IRendererCommonRootState) => state.dialog.open);
     React.useMemo(() => {
         if (!openFromState) {
             setOpen(false);
