@@ -16,7 +16,7 @@ import KeyboardSettings from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
 import SessionSettings from "./SessionSettings";
 import { DialogCloseButton, DialogHeader, DialogTitle, DialogWithRadix, DialogWithRadixContent, DialogWithRadixTrigger } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
-import * as GearIcon from "readium-desktop/renderer/assets/icons/gear.svg";
+import * as GearIcon from "readium-desktop/renderer/assets/icons/settings.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";

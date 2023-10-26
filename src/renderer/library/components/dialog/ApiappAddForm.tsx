@@ -40,7 +40,7 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                     aria-selected={selectSearchResult === v}
                     tabIndex={0}
                     onClick={() => setSelectSearchResult(v)}
-                    onDoubleClick={(e) => {
+                    onDoubleClick={() => {
                         // e.preventDefault();
                         setSelectSearchResult(v);
                         setTimeout(() => {
@@ -109,7 +109,7 @@ const ApiappAddForm = () => {
                         }}
                     />
                     <button
-                        onClick={(e) => searchInputRef.current?.value ? apiAppSearchAction(searchInputRef.current.value) : ""}
+                        onClick={() => searchInputRef.current?.value ? apiAppSearchAction(searchInputRef.current.value) : ""}
                         className={stylesButtons.button_primary_small}
                         style={{ fontWeight: "bold" }}
                         title={__("header.searchTitle")}
