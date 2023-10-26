@@ -12,6 +12,8 @@
   --color-medium-grey: #e5e5e5;
   --color-accent: rgb(0, 188, 212);
   --color-accent-contrast: #fff;
+  --color-alert-green: #75cb71;
+  --color-abort: #8fc3f6;
   --reader-fontColor: #000;
 }
 

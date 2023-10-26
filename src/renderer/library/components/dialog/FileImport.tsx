@@ -9,13 +9,16 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
-import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import classNames from "classnames";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { dialogActions } from "readium-desktop/common/redux/actions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -25,7 +28,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 class FileImport extends React.Component<IProps, undefined> {
@@ -40,40 +43,51 @@ class FileImport extends React.Component<IProps, undefined> {
         }
 
         const { files } = this.props;
-        return (
-            <Dialog
-                id={stylesModals.add_dialog}
-                title={this.props.__("catalog.addBookToLib")}
-                submitButtonDisabled={false}
-                onSubmitButton={this.importFiles}
-                submitButtonTitle={this.props.__("dialog.yes")}
-                shouldOkRefEnabled={true}
-            >
-                {
-                    (!files || files.length === 0) ?
-                    (
-                        <div className={stylesModals.modal_dialog_body}>
-                            {
-                                this.props.__("dialog.importError", {
-                                    acceptedExtension: acceptedExtensionArray.join(" "),
-                                })
-                            }
-                        </div>
-                    ) : (
-                        <div className={stylesModals.modal_dialog_body}>
-                            <div>
-                                <p>{this.props.__("dialog.import")}</p>
-                                <ul>
-                                    {files.map((file, i) => <li key={i}>{file.name}</li>)}
-                                </ul>
-                            </div>
-                            <div>
-                            </div>
-                        </div>
-                    )
-                }
-            </Dialog>
-        );
+
+        return <AlertDialog.Root defaultOpen={true} onOpenChange={(b) => !b ? this.props.closeDialog() : undefined}>
+            <AlertDialog.Portal container={document.getElementById("app-overlay")}>
+                <div className={stylesAlertModals.AlertDialogOverlay}></div>
+                <AlertDialog.Content className={stylesAlertModals.AlertDialogContent} style={{overflowY: "scroll"}}>
+                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{this.props.__("catalog.addBookToLib")}</AlertDialog.Title>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                        {
+                            // useless ??
+                            (!files || files.length === 0) ?
+                                (
+                                    // <div >
+                                    <>
+                                        {
+                                            this.props.__("dialog.importError", {
+                                                acceptedExtension: acceptedExtensionArray.join(" "),
+                                            })
+                                        }
+                                    </>
+                                    // </div>
+                                ) : (
+                                    // <div className={stylesAlertModals.AlertDialogContent}>
+                                        <div>
+                                            <p>{this.props.__("dialog.import")}</p>
+                                            <ul>
+                                                {files.map((file, i) => <li key={i}>{file.name}</li>)}
+                                            </ul>
+                                        </div>
+                                        // <div>
+                                        // </div>
+                                    // </div>
+                                )
+                        }
+                    </AlertDialog.Description>
+                    <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
+                        <AlertDialog.Cancel asChild>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{this.props.__("dialog.cancel")}</button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.yes)} onClick={() => this.importFiles()}>{this.props.__("dialog.yes")}</button>
+                        </AlertDialog.Action>
+                    </div>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>;
     }
 
     private importFiles = () => {
@@ -93,4 +107,16 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     files: (state.dialog.data as DialogType[DialogTypeName.FileImport]).files,
 });
 
-export default connect(mapStateToProps)(withTranslator(FileImport));
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        closeDialog: () => {
+            dispatch(
+                dialogActions.closeRequest.build(),
+            );
+        },
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(FileImport));

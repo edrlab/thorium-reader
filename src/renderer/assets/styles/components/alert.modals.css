@@ -1,0 +1,83 @@
+
+.AlertDialogOverlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 110;
+}
+
+.AlertDialogContent {
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 500px;
+  max-height: 85vh;
+  padding: 25px;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 110;
+}
+
+.AlertDialogContent:focus {
+  outline: none;
+}
+
+.AlertDialogTitle {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.AlertDialogDescription {
+  margin-bottom: 20px;
+  color: var(--color-primary);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.AlertDialogButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 500;
+  height: 35px;
+}
+
+.AlertDialogButton.yes {
+  color: var(--red-11);
+  border: 2px solid var(--color-alert-green);
+  transition: 200ms;
+}
+
+.AlertDialogButton.yes:hover {
+  background-color: var(--color-alert-green);
+  border: 2px solid var(--color-alert-green);
+}
+
+.AlertDialogButton.yes:focus {
+  background-color: var(--color-alert-green);
+  border: 2px solid var(--color-alert-green);
+}
+
+.AlertDialogButton.abort {
+  color: var(--mauve-11);
+  border: 2px solid var(--color-medium-grey);
+}
+
+.AlertDialogButton.abort:hover {
+  border: 2px solid var(--color-abort);
+}
+
+.AlertDialogButton.abort:focus {
+  border: 2px solid var(--color-abort);
+}
