@@ -306,6 +306,7 @@
     "yazl": "^2.5.1"
   },
   "devDependencies": {
+    "@axe-core/react": "^4.8.1",
     "@babel/generator": "^7.23.0",
     "@electron/notarize": "^2.1.0",
     "@electron/rebuild": "^3.3.0",
@@ -380,7 +381,6 @@
     "postcss-mixins": "^9.0.4",
     "postcss-nesting": "^12.0.1",
     "prettier": "^3.0.3",
-    "react-axe": "^3.5.4",
     "react-svg-loader": "^3.0.3",
     "remote-redux-devtools": "^0.5.16",
     "rimraf": "^5.0.5",
