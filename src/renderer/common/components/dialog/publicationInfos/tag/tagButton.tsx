@@ -20,7 +20,7 @@ export interface IProps {
     onClickLinkCb?: (tag: IOpdsTagView) => () => void | undefined;
 }
 
-export const TagButton: React.FC<IProps> = (props) => {
+export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 
     const { tag, index, __, pubId, onClickDeleteCb, onClickLinkCb } = props;
 
