@@ -7,7 +7,7 @@
 
 import { winActions } from "readium-desktop/renderer/library/redux/actions";
 
-import { THistoryState } from "../states/history";
+import { THistoryState } from "readium-desktop/common/redux/states/renderer/history";
 
 const initialState: THistoryState = [];
 

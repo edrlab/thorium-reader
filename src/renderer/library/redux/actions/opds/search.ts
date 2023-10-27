@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IOpdsSearchState } from "readium-desktop/renderer/library/redux/states/opds";
+import { IOpdsSearchState } from "readium-desktop/common/redux/states/renderer/opds";
 
 export const ID = "OPDS_SEARCH_UPDATE";
 

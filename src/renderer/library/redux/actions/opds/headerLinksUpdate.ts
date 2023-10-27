@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IOpdsHeaderState } from "readium-desktop/renderer/library/redux/states/opds";
+import { IOpdsHeaderState } from "readium-desktop/common/redux/states/renderer/opds";
 
 export const ID = "OPDS_HEADER_LINKS_UPDATE";
 

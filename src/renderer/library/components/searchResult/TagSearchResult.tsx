@@ -18,7 +18,7 @@ import BreadCrumb from "readium-desktop/renderer/library/components/layout/Bread
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, ILibrarySearchText, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { Unsubscribe } from "redux";
 

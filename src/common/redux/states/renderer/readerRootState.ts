@@ -7,10 +7,10 @@
 
 import { ReaderConfig, ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
-import { IDivinaState } from "readium-desktop/renderer/reader/redux/state/divina";
-import { IHighlightHandlerState } from "readium-desktop/renderer/reader/redux/state/highlight";
-import { IPickerState } from "readium-desktop/renderer/reader/redux/state/picker";
-import { ISearchState } from "readium-desktop/renderer/reader/redux/state/search";
+import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
+import { IHighlightHandlerState } from "./highlight";
+import { IPickerState } from "./picker";
+import { ISearchState } from "./search";
 import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";

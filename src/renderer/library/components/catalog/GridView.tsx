@@ -17,7 +17,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import PublicationCard from "readium-desktop/renderer/library/components/publication/PublicationCard";
 import Slider from "readium-desktop/renderer/library/components/utils/Slider";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
