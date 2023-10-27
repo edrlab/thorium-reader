@@ -38,11 +38,14 @@
 }
 
 .modal_dialog {
-  margin: 30px;
-  min-height: 400px;
-  min-width: 700px;
-  max-width: calc(100vw - 60px);
-  max-height: calc(100vh - 60px);
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  min-height: 570px;
+  min-width: 800px;
+  width: 960px;
+  max-width: 960px;
+  max-height: calc(100vh - 200px);
   border-radius: 10px;
   z-index: 102;
   display: flex;
@@ -52,8 +55,12 @@
   overflow-x: hidden;
   align-content: flex-start;
   color: #3b3b3b;
-  position: relative;
+  position: absolute;
   box-sizing: border-box;
+
+  @media screen and (width <= 960px) {
+    width: 100vw;
+  }
 
   &.modal_dialog_full {
     width: calc(100vw - 60px);
@@ -110,6 +117,10 @@
 .modal_dialog_footer {
   justify-content: end;
   border-top: 1px solid var(--color-medium-grey);
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  background-color: var(--color-secondary);
 
   & [type="submit"] {
     min-width: 100px;
@@ -169,5 +180,15 @@
 }
 
 .___DEBUG___COMPONENTS_MODALS_CSS {
+  display: none;
+}
+
+
+.modal_dialog-collapsed {
+  min-height: 0;
+}
+
+.modal_dialog_body-collapsed {
+  height: 0;
   display: none;
 }

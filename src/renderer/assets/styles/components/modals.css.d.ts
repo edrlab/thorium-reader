@@ -3,7 +3,6 @@ declare const styles: {
   readonly "modal_dialog_overlay_hidden": string;
   readonly "modal_dialog": string;
   readonly "modal_dialog_full": string;
-  readonly "modal_dialog_form_wrapper": string;
   readonly "modal_dialog_body": string;
   readonly "modal_dialog_body_centered": string;
   readonly "modal_dialog_header": string;
@@ -14,6 +13,8 @@ declare const styles: {
   readonly "field": string;
   readonly "add_dialog": string;
   readonly "___DEBUG___COMPONENTS_MODALS_CSS": string;
+  readonly "modal_dialog-collapsed": string;
+  readonly "modal_dialog_body-collapsed": string;
 };
 export = styles;
 
