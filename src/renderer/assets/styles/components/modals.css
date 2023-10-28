@@ -57,7 +57,7 @@
   color: #3b3b3b;
   position: fixed;
   box-sizing: border-box;
-  padding: 0 20px;
+  /* padding: 0 20px; */
 
   @media screen and (width <= 960px) {
     width: 100vw;

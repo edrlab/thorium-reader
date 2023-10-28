@@ -9,7 +9,7 @@ import * as React from "react";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
+// import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 
 import AuthSettings from "./AuthSettings";
 import KeyboardSettings from "./KeyboardSettings";
@@ -21,6 +21,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as Tabs from "@radix-ui/react-tabs";
+import Themes from "./Themes";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -39,15 +40,11 @@ class Settings extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <>
-                <LibraryLayout
-                    title={__("header.settings")}
-                >
-                    <DialogWithRadix>
+            <DialogWithRadix>
                         <DialogWithRadixTrigger asChild>
                             <button
                                 className={stylesButtons.button_transparency_icon}
-                                style={{border: "none"}}
+                                style={{border: "none", marginRight: "60px"}}
                             >
                                 <SVG ariaHidden={true} svg={GearIcon} />
                             </button>
@@ -63,30 +60,29 @@ class Settings extends React.Component<IProps, undefined> {
                             </DialogHeader>
                                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" className={stylesSettings.settings_container}>
                                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
-                                        <Tabs.Trigger value="tab1">General</Tabs.Trigger>
-                                        <Tabs.Trigger value="tab2">Appearence</Tabs.Trigger>
-                                        <Tabs.Trigger value="tab3">Reading</Tabs.Trigger>
-                                        <Tabs.Trigger value="tab4">Keyboard Shortcuts</Tabs.Trigger>
+                                        <Tabs.Trigger value="tab1"><p>General</p></Tabs.Trigger>
+                                        <Tabs.Trigger value="tab2"><p>Appearence</p></Tabs.Trigger>
+                                        <Tabs.Trigger value="tab3"><p>Reading</p></Tabs.Trigger>
+                                        <Tabs.Trigger value="tab4"><p>Keyboard Shortcuts</p></Tabs.Trigger>
                                     </Tabs.List>
-                                    <div style={{flex: "2"}}>
+                                    <div style={{flex: "2", boxShadow: "-10px 0 10px -7px #777"}}>
                                         <Tabs.Content value="tab1">
-                                            <LanguageSettings></LanguageSettings>
+                                            <LanguageSettings />
+                                            <AuthSettings />
                                         </Tabs.Content>
                                         <Tabs.Content value="tab2">
-                                            <AuthSettings></AuthSettings>
+                                            <Themes />
                                         </Tabs.Content>
                                         <Tabs.Content value="tab3">
-                                            <SessionSettings></SessionSettings>
+                                            <SessionSettings />
                                         </Tabs.Content>
                                         <Tabs.Content value="tab4">
-                                            <KeyboardSettings></KeyboardSettings>
+                                            <KeyboardSettings />
                                         </Tabs.Content>
                                     </div>
                                 </Tabs.Root>
                         </DialogWithRadixContent>
                     </DialogWithRadix>
-                </LibraryLayout>
-            </>
         );
     }
 }
