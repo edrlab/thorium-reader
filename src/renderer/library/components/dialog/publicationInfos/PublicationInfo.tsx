@@ -169,7 +169,7 @@ export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivEleme
                         <PublicationInfoOpdsContext.Consumer>
                             {
                                 (opdsPublicationView) =>
-                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={opdsPublicationView} closeDialog={() => dispatch(dialogActions.closeRequest.build())} />
+                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={opdsPublicationView} closeDialog={() => dispatch(dialogActions.closeRequest.build())} isOpds={true}/>
                             }
                         </PublicationInfoOpdsContext.Consumer>
                     </div>
