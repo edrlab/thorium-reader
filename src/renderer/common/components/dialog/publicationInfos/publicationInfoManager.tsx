@@ -23,7 +23,7 @@ export interface IProps extends TranslatorProps {
     closeDialogCb: () => void;
 }
 
-const PublicationInfoManager: React.FC<IProps> = (props) => {
+const PublicationInfoManager: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 
     const { publicationViewMaybeOpds, coverZoom, toggleCoverZoomCb, closeDialogCb } = props;
 
