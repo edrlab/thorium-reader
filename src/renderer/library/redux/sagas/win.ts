@@ -6,15 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 
 export function render() {
-    // starting point to mounting React to the DOM
-    ReactDOM.render(
-        React.createElement(
-            diLibraryGet("react-library-app"),
-            null),
-        document.getElementById("app"),
-    );
+    // React 17 --> 18
+    // https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#updates-to-client-rendering-apis
+    // import * as ReactDOM from "react-dom";
+    // ReactDOM.render()
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const root = createRoot(document.getElementById("app")!);
+    root.render(React.createElement(diLibraryGet("react-library-app"), null));
 }
