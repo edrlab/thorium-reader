@@ -42,7 +42,7 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-class Dialog extends React.Component<IProps, undefined> {
+class Dialog extends React.Component<React.PropsWithChildren<IProps>, undefined> {
     private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
@@ -73,7 +73,7 @@ class Dialog extends React.Component<IProps, undefined> {
         this.appOverlayElement.removeChild(this.rootElement);
     }
 
-    public render(): React.ReactElement<{}> {
+    public render(): React.ReactNode {
         const content = this.props.children;
         // const dialogTitle = this.props.children;
         const className = this.props.className;
