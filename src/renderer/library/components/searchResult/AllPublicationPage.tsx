@@ -1658,6 +1658,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("publication.cover.img"),
                 accessor: "colCover",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellCoverImage,
                 // filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
@@ -1665,6 +1667,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("publication.title"),
                 accessor: "colTitle",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellTitle,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
@@ -1672,6 +1676,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("publication.author"),
                 accessor: "colAuthors",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellAuthors,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
@@ -1679,6 +1685,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("catalog.lang"),
                 accessor: "colLanguages",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellLangs,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
@@ -1686,6 +1694,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("catalog.tags"),
                 accessor: "colTags",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellTags,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
@@ -1693,12 +1703,16 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("catalog.format"),
                 accessor: "colFormat",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellFormat,
                 sortType: sortFunction,
             },
             {
                 Header: props.__("catalog.lastRead"),
                 accessor: "colLastReadTimestamp",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellDate,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
@@ -1706,6 +1720,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("catalog.publisher"),
                 accessor: "colPublishers",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellPublishers,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
@@ -1713,6 +1729,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("catalog.released"),
                 accessor: "colPublishedDate",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellDate,
                 filter: "text", // because IColumnValue_BaseString instead of plain string
                 sortType: sortFunction,
@@ -1730,6 +1748,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("catalog.description"),
                 accessor: "colDescription",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellDescription,
                 sortType: sortFunction,
             },
@@ -1737,6 +1757,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             {
                 Header: props.__("catalog.about.button"),
                 accessor: "col_a11y_accessibilitySummary",
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 Cell: CellDescription,
                 sortType: sortFunction,
             },
@@ -1883,6 +1905,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
         columns: tableColumns,
         data: tableRows,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         defaultColumn,
         globalFilter: "globalFilter",
         filterTypes: filterTypes as unknown as FilterTypes<IColumns>, // because typing 'columnIds' instead of 'columnId' in FilterType<D> ?!
