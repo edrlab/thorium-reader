@@ -49,8 +49,6 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
         this.handleRead = this.handleRead.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
         this.exportPublication = this.exportPublication.bind(this);
-
-        this.returnPublicationDialog = this.returnPublicationDialog.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
