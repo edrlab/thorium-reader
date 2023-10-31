@@ -17,7 +17,6 @@ import FileImport from "./FileImport";
 import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 import OpdsFeedUpdateForm from "./OpdsFeedUpdateForm";
-import ReturnLsdConfirm from "./ReturnLsdConfirm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -52,7 +51,6 @@ class DialogManager extends React.Component<IProps, undefined> {
                 <DeletePublicationConfirm></DeletePublicationConfirm>
                 <DeleteOpdsFeedConfirm></DeleteOpdsFeedConfirm>
                 <LcpAuthentication></LcpAuthentication>
-                <ReturnLsdConfirm></ReturnLsdConfirm>
                 <PublicationInfo></PublicationInfo>
             </>
         );

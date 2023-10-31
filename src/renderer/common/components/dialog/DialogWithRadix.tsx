@@ -18,7 +18,7 @@ import classNames from "classnames";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
 export const DialogWithRadix: React.FC<React.PropsWithChildren<{ defaultOpen?: boolean | undefined }>> = (props) => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(props.defaultOpen || false);
 
     const openFromState = useSelector((state: IRendererCommonRootState) => state.dialog.open);
     React.useMemo(() => {

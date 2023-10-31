@@ -64,7 +64,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             <DialogWithRadixContent>
                 <DialogHeader>
                     <DialogTitle>
-                        {__("opds.addMenu")}
+                        {__("library.lcp.password")}
                     </DialogTitle>
                     <div>
                         <DialogCloseButton />
@@ -84,8 +84,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                     </p>
                     <div className={stylesInputs.form_group}>
-                        <label>{__("library.lcp.password")}</label>
+                        <label htmlFor="passphrase">{__("library.lcp.password")}</label>
                         <input
+                            id="passphrase"
                             aria-label={__("library.lcp.password")}
                             type="password"
                             onChange={this.onPasswordChange}
