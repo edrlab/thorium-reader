@@ -537,6 +537,12 @@ class Reader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
+
+        if (oldProps.infoOpen === true && this.props.infoOpen === false) { // close
+            this.setState({shortcutEnable: true});
+        } else if (oldProps.infoOpen === false && this.props.infoOpen === true) { // open
+            this.setState({shortcutEnable: false});
+        }
     }
 
     public componentWillUnmount() {
@@ -1479,13 +1485,6 @@ class Reader extends React.Component<IProps, IState> {
 
     private displayPublicationInfo(focusWhereAmI?: boolean) {
         if (this.props.publicationView) {
-            // TODO: subscribe to Redux action type == CloseRequest
-            // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
-            // So instead we subscribe to DOM event "Thorium:DialogClose", but this is a short-term hack!
-            this.setState({
-                shortcutEnable: false,
-            });
-
             const readerReadingLocation = this.state.currentLocation ? this.state.currentLocation : undefined;
             this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, this.state.divinaContinousEqualTrue, readerReadingLocation, this.handleLinkUrl.bind(this), focusWhereAmI);
         }
