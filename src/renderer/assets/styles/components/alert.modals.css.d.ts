@@ -5,8 +5,8 @@ declare const styles: {
   readonly "contentShow": string;
   readonly "AlertDialogTitle": string;
   readonly "AlertDialogDescription": string;
+  readonly "AlertDialogButtonContainer": string;
   readonly "AlertDialogButton": string;
-  readonly "violet": string;
   readonly "delete": string;
   readonly "abort": string;
 };

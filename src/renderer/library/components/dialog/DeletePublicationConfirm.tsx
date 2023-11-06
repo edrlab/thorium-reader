@@ -14,6 +14,9 @@ import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/compo
 import classNames from "classnames";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions } from "readium-desktop/common/redux/actions";
+import SVG from "../../../common/components/SVG";
+import * as Trash from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
@@ -40,12 +43,12 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
                         {props.publicationView.documentTitle}
                     </AlertDialog.Description>
-                    <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
+                    <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild>
                             <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.delete)} onClick={removeAction} type="button">{__("dialog.yes")}</button>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.delete)} onClick={removeAction} type="button"><SVG ariaHidden svg={Trash} />{__("dialog.yes")}</button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>

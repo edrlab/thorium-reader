@@ -1,3 +1,4 @@
+/* @import url('readium-desktop/renderer/assets/fonts/Nunito.ttf'); */
 
 .AlertDialogOverlay {
   background-color: rgba(0, 0, 0, 0.5);
@@ -10,15 +11,15 @@
 .AlertDialogContent {
   background-color: white;
   border-radius: 6px;
+  border: 2px solid rgba(217, 217, 217, 1);
   box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90vw;
-  max-width: 500px;
-  max-height: 85vh;
-  padding: 25px;
+  width: 477px;
+  /* height: 150px; */
+  padding: 20px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 110;
 }
@@ -30,15 +31,25 @@
 .AlertDialogTitle {
   margin: 0;
   color: var(--color-primary);
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 600;
+  line-height: 20.8px;
+  font-family: "Nunito", sans-serif;
 }
 
 .AlertDialogDescription {
   margin-bottom: 20px;
+  padding-top: 10px;
   color: var(--color-primary);
   font-size: 15px;
   line-height: 1.5;
+  border-top: 1px solid rgba(217, 217, 217, 1);
+}
+
+.AlertDialogButtonContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .AlertDialogButton {
@@ -49,51 +60,41 @@
   padding: 0 15px;
   font-size: 15px;
   line-height: 1;
-  font-weight: 500;
-  height: 35px;
-}
-
-.AlertDialogButton.violet {
-  background-color: white;
-  color: var(--violet-11);
-  box-shadow: 0 2px 10px var(--color-primary);
-}
-
-.AlertDialogButton.violet:hover {
-  background-color: var(--color-accent);
-}
-
-.AlertDialogButton.violet:focus {
-  box-shadow: 0 0 0 2px black;
+  font-weight: 400;
+  height: 30px;
+  transition: 200ms linear;
 }
 
 .AlertDialogButton.delete {
-  color: var(--red-11);
-  border: 2px solid var(--color-alert-red);
+  color: white;
+  background-color: rgb(15, 83, 199);
   transition: 200ms;
+  border-radius: 4px;
+  gap: 4px;
 }
 
 .AlertDialogButton.delete:hover {
-  background-color: var(--color-alert-red);
-  border: 2px solid var(--color-alert-red);
-}
-
-.AlertDialogButton.delete:focus {
-  background-color: var(--color-alert-red);
-  border: 2px solid var(--color-alert-red);
-}
-
-.AlertDialogButton.abort {
-  color: var(--mauve-11);
-  border: 2px solid var(--color-medium-grey);
+  background-color: rgba(15, 83, 199, 70%);
 }
 
 .AlertDialogButton.abort:hover {
-  border: 2px solid var(--color-abort);
+  background-color: rgba(15, 83, 199, 20%);
 }
 
-.AlertDialogButton.abort:focus {
-  border: 2px solid var(--color-abort);
+.AlertDialogButton.delete svg {
+  fill: white;
+  width: 15px;
+  height: 15px;
+}
+
+.AlertDialogButton.delete:hover svg {
+  fill: black;
+}
+
+.AlertDialogButton.abort {
+  color: #1053C8;
+  background-color: rgba(16, 83, 200, 0.05);
+  border: 1px solid #1053C8;
 }
 
 /* @keyframes overlayShow {
