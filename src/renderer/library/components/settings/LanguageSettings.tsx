@@ -12,7 +12,6 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
-import "./_settings.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
