@@ -30,6 +30,7 @@ import { toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
+import Nunito from "readium-desktop/renderer/assets/fonts/Nunito.ttf";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -88,6 +89,21 @@ export default class App extends React.Component<{}, undefined> {
         const store = diLibraryGet("store"); // diRendererSymbolTable.store
         const history = diLibraryGet("history"); // diRendererSymbolTable.history
         const translator = diLibraryGet("translator"); // diRendererSymbolTable.translator
+
+        const css = `
+        @font-face {
+            font-family: "Nunito";
+            font-style: normal;
+            font-weight: normal;
+            src: local("Nunito"),
+            url("${Nunito}") format("truetype");
+        }
+
+                `;
+        const el = document.createElement("style");
+        el.setAttribute("type", "text/css");
+        el.appendChild(document.createTextNode(css));
+        document.head.appendChild(el);
 
         return (
             <Provider store={store} >

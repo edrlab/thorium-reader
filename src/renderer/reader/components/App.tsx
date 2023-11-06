@@ -17,6 +17,7 @@ import ToastManager from "readium-desktop/renderer/common/components/toast/Toast
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import DialogManager from "readium-desktop/renderer/reader/components/dialog/DialogManager";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
+import Nunito from "readium-desktop/renderer/assets/fonts/Nunito.ttf";
 
 import Reader from "./Reader";
 
@@ -79,6 +80,16 @@ font-style: normal;
 font-weight: normal;
 src: local("iAWriterDuospace-Regular"),
 url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Nunito"),
+    url("${Nunito}") format("truetype");
+}
+
         `;
                 el = document.createElement("style");
                 el.setAttribute("id", readiumCssFontFaceStyleID);
