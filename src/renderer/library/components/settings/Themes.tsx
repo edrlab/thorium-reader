@@ -20,8 +20,8 @@ const Themes = () => {
             <div className={stylesGlobal.heading}>
                 <h2>{__("reader.settings.theme.title")}</h2>
             </div>
-            <div>
-                <button className={stylesThemes.theme_preview_button}>
+            <div className={stylesThemes.themes_container}>
+                <button>
                     <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.dark_theme)}>               
                     </div>
                     <p>{__("reader.settings.theme.name.Night")}</p>
@@ -30,6 +30,11 @@ const Themes = () => {
                     <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.light_theme)}>               
                     </div>
                     <p>{__("reader.settings.theme.name.Neutral")}</p>
+                </button>
+                <button>
+                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.auto_theme)}>               
+                    </div>
+                    <p>Auto</p>
                 </button>
             </div>
         </section>

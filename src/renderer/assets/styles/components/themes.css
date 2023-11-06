@@ -1,3 +1,7 @@
+.themes_container {
+    display: flex;
+    justify-content: space-around;
+}
 
 .theme_preview_circle {
     width: 100px;
@@ -19,4 +23,8 @@
 
 .light_theme {
     background-color: var(--color-secondary);
+}
+
+.auto_theme {
+    background-image: linear-gradient(to right, var(--color-primary)40%, var(--color-secondary)60%);
 }
