@@ -36,10 +36,14 @@ class Settings extends React.Component<IProps, undefined> {
                 <LibraryLayout
                     title={__("header.settings")}
                 >
-                    <LanguageSettings></LanguageSettings>
-                    <SessionSettings></SessionSettings>
-                    <KeyboardSettings></KeyboardSettings>
-                    <AuthSettings></AuthSettings>
+                    <div id="settings-container">
+                        <LanguageSettings></LanguageSettings>
+                        <div className="settings-container_right">
+                            <SessionSettings></SessionSettings>
+                            <KeyboardSettings></KeyboardSettings>
+                            <AuthSettings></AuthSettings>
+                        </div>
+                    </div>
                 </LibraryLayout>
             </>
         );

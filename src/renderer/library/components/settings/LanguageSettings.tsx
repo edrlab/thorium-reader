@@ -38,7 +38,7 @@ class LanguageSettings extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <>
-                <section>
+                <section className="settings_language-section">
                     <div className={stylesGlobal.heading}>
                         <h2>{__("settings.language.languageChoice")}</h2>
                     </div>
