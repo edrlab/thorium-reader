@@ -18,7 +18,7 @@ import {
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import LibraryHeader from "./LibraryHeader";
 
@@ -158,7 +158,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
-    dialogOpen: state.dialog.open,
+    // dialogOpen: state.dialog.open, // unused ?
     keyboardShortcuts: state.keyboard.shortcuts,
 });
 

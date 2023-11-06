@@ -13,7 +13,7 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import SVG from "../../../common/components/SVG";

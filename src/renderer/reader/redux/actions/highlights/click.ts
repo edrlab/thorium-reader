@@ -7,7 +7,7 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-import { IHighlightHandlerState } from "../../state/highlight";
+import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 export const ID = "READER_HIGHLIGHT_CLICK";
 

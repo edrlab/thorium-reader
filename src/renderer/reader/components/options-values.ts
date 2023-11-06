@@ -14,6 +14,7 @@ import {
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
+import { TdivinaReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 
 export const fontSize: string[] = [
     "75%",
@@ -122,7 +123,6 @@ export interface IReaderMenuProps {
     openedSection: number | undefined;
 }
 
-export type TdivinaReadingMode = "single" | "double" | "scroll" | "guided";
 export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
     return ["single", "double", "scroll", "guided"].includes(v);
 };

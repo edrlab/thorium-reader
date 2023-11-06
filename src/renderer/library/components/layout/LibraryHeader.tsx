@@ -14,7 +14,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
 
 interface NavigationHeader {

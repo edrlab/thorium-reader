@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IDivinaState } from "../../state/divina";
+import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 
 export const ID = "READER_SET_DIVINA_READING_MODE";
 

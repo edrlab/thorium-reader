@@ -406,7 +406,7 @@ if (nodeEnv !== "production") {
     );
 
     config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ }));
-    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^react-axe$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^@axe-core\/react$/ }));
 
     // Minify and uglify in production environment
     //config.plugins.push(new UglifyJsPlugin());

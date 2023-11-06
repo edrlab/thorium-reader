@@ -6,15 +6,14 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { catalogActions, i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
+import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { put as putTyped } from "typed-redux-saga/macro";
 
-import * as publicationInfoOpds from "../../../common/redux/sagas/dialog/publicationInfoOpds";
-import * as publicationInfoReaderAndLib from "../../../common/redux/sagas/dialog/publicationInfoReaderAndLib";
+import * as publicationInfoOpds from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoOpds";
+import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as history from "./history";
 import * as i18n from "./i18n";
 import * as lcp from "./lcp";
@@ -57,6 +56,4 @@ export function* rootSaga() {
 
         load.saga(),
     ]);
-
-    yield* putTyped(catalogActions.getCatalog.build()); // ask to fill catalog view
 }

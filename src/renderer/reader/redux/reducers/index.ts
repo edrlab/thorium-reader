@@ -20,7 +20,7 @@ import { combineReducers } from "redux";
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 
 import { readerLocalActionBookmarks, readerLocalActionHighlights } from "../actions";
-import { IHighlightHandlerState } from "../state/highlight";
+import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { readerInfoReducer } from "./info";
 import { pickerReducer } from "./picker";
 import { readerConfigReducer } from "./readerConfig";

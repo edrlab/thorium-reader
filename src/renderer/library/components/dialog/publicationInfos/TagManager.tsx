@@ -24,7 +24,7 @@ import {
 import { deleteTag } from "readium-desktop/renderer/common/logics/publicationInfos/tags/deleteTag";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 // Logger

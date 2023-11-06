@@ -108,7 +108,16 @@ export function* init() {
     debug("Main app ready");
 
     if (IS_DEV) {
+        // https://github.com/MarshallOfSound/electron-devtools-installer
+        // https://github.com/facebook/react/issues/25843
+        // https://github.com/electron/electron/issues/36545
+        // https://github.com/mondaychen/react/commit/f7d56173f1b751b0b7e2e47cc79a871887df5483
+
+        // REACT_DEVELOPER_TOOLS ==> fmkadmapgofadopljbjfkapdkoienihi
+        //     const PATH_TO_EXT = path.join(os.homedir(), "/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.27.0_0")
+        //     const PATH_TO_EXT = path.join(os.homedir(), "/Library/Application Support/EDRLab.ThoriumReader/extensions/fmkadmapgofadopljbjfkapdkoienihi")
         // app.whenReady().then(() => {
+        //     require("electron").session.defaultSession.loadExtension(PATH_TO_EXT, { loadExtensionOptions: { allowFileAccess: true } });
         // });
         const {
             default: installExtension,
@@ -118,7 +127,7 @@ export function* init() {
         } = require("electron-devtools-installer");
 
         [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
-            installExtension(extension)
+            installExtension(extension /*, { loadExtensionOptions: { allowFileAccess: true } } */)
             .then((name: string) => debug("electron-devtools-installer OK (app init): ", name))
             .catch((err: Error) => debug("electron-devtools-installer ERROR (app init): ", err));
         });

@@ -45,11 +45,7 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-interface IState {
-    menuOpen: boolean;
-}
-
-export class PublicationListElement extends React.Component<IProps, IState> {
+export class PublicationListElement extends React.Component<IProps> {
     private menuId: string;
     private buttonRef: React.RefObject<HTMLButtonElement>;
 
@@ -58,13 +54,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
         this.buttonRef = React.createRef<HTMLButtonElement>();
 
-        this.state = {
-            menuOpen: false,
-        };
-
         // this.deletePublication = this.deletePublication.bind(this);
-        this.toggleMenu = this.toggleMenu.bind(this);
-        this.openCloseMenu = this.openCloseMenu.bind(this);
         this.focusButton = this.focusButton.bind(this);
 
         this.menuId = "menu-" + uuidv4();
@@ -123,14 +113,12 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                     content={(
                         <div
                             id={this.menuId}
-                            className={(this.state.menuOpen ? stylesDropDown.dropdown_menu : null )}
+                            className={(stylesDropDown.dropdown_menu)}
                         >
                             {this.props.menuContent}
                         </div>
                     )}
-                    open={this.state.menuOpen}
                     dir="left"
-                    toggle={this.openCloseMenu}
                 />
                 {/* <button
                     type="button"
@@ -178,14 +166,6 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                 } */}
             </>
         );
-    }
-
-    private openCloseMenu() {
-        this.setState({ menuOpen: !this.state.menuOpen });
-    }
-
-    private toggleMenu() {
-        this.setState({ menuOpen: !this.state.menuOpen });
     }
 
     private focusButton() {

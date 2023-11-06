@@ -13,12 +13,13 @@ import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { diLibraryGet } from "readium-desktop/renderer/library/di";
+import { createStoreFromDi, diLibraryGet } from "readium-desktop/renderer/library/di";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 if (IS_DEV) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -45,7 +46,7 @@ if (IS_DEV) {
     // devTron = require("devtron");
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    axe = require("react-axe");
+    axe = require("@axe-core/react");
 }
 
 initGlobalConverters_OPDS();
@@ -67,8 +68,12 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
-            const store = diLibraryGet("store");
-            store.dispatch(winActions.initRequest.build(data.payload.identifier));
+            const preloadedState: Partial<ILibraryRootState> = {
+                publication: data.payload.publication,
+            };
+            createStoreFromDi(preloadedState)
+                .then((store) => store.dispatch(winActions.initRequest.build(data.payload.win.identifier)))
+                .catch((e) => console.error("CRITICAL ERROR!!", e));
             break;
     }
 });

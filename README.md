@@ -37,8 +37,8 @@ See: https://github.com/edrlab/thorium-reader/wiki/Localization-(l10n)-language-
 
 ## Prerequisites
 
-1) NodeJS 16 (check with `node --version`)
-2) NPM 8 (check with `npm --version`)
+1) NodeJS 18 (check with `node --version`)
+2) NPM 9 (check with `npm --version`)
 
 ## Technologies
 

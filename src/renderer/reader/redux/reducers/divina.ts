@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { readerLocalActionDivina } from "../actions";
-import { defaultReadingMode, IDivinaState } from "../state/divina";
+import { defaultReadingMode, IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 
 const defaultState: IDivinaState = {
     readingMode: defaultReadingMode,
