@@ -251,6 +251,7 @@
     }
   },
   "dependencies": {
+    "@types/node-sass": "^4.11.5",
     "@xmldom/xmldom": "^0.8.10",
     "classnames": "^2.3.2",
     "commonmark": "^0.30.0",
@@ -272,6 +273,7 @@
     "mime-types": "^2.1.35",
     "nanoid": "^5.0.2",
     "node-fetch": "^3.3.2",
+    "node-sass": "^9.0.0",
     "r2-lcp-js": "^1.0.38",
     "r2-navigator-js": "^1.13.9",
     "r2-opds-js": "^1.0.42",
@@ -293,6 +295,8 @@
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "^0.14.0",
     "rfc6902": "^5.0.1",
+    "sass": "^1.68.0",
+    "sass-loader": "^13.3.2",
     "ta-json-x": "^2.5.3",
     "timeout-signal": "^2.0.0",
     "tmp": "^0.2.1",
