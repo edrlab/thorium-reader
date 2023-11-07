@@ -223,6 +223,7 @@ button {
   font-family: "Arial", sans-serif;
   font-weight: 600;
   cursor: pointer;
+
   & svg {
     fill: var(--color-primary);
   }

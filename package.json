@@ -251,7 +251,6 @@
     }
   },
   "dependencies": {
-    "@types/node-sass": "^4.11.5",
     "@xmldom/xmldom": "^0.8.10",
     "classnames": "^2.3.2",
     "commonmark": "^0.30.0",
@@ -273,7 +272,6 @@
     "mime-types": "^2.1.35",
     "nanoid": "^5.0.2",
     "node-fetch": "^3.3.2",
-    "node-sass": "^9.0.0",
     "r2-lcp-js": "^1.0.38",
     "r2-navigator-js": "^1.13.9",
     "r2-opds-js": "^1.0.42",
