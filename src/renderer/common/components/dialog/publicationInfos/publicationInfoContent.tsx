@@ -14,7 +14,7 @@ import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.css";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
+import "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -353,9 +353,9 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
 
     return (
         <>
-            <div className={stylesColumns.row}>
-                <div className={stylesColumns.col_book_img}>
-                    <div className={stylesPublications.publication_image_wrapper}>
+            <div className="publicationInfo-container">
+                <div className="publicationInfo-leftSide">
+                    <div className="publicationInfo-leftSide-coverWrapper">
                         <Cover
                             publicationViewMaybeOpds={publicationViewMaybeOpds}
                             onClick={() => toggleCoverZoomCb(coverZoom)}
@@ -365,7 +365,9 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             }
                         ></Cover>
                     </div>
+                    <div className="publicationInfo-leftSide-buttonsWrapper">
                     { ControlComponent && <ControlComponent /> }
+                    </div>
                 </div>
                 <div className={stylesColumns.col}>
                     <section>

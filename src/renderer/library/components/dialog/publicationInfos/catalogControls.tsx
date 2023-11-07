@@ -12,6 +12,7 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
 import * as ExportIcon from "readium-desktop/renderer/assets/icons/download.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
@@ -54,6 +55,7 @@ export class CatalogControls extends React.Component<IProps, undefined> {
         return (
             <>
                 <button onClick={this.handleRead} className={stylesButtons.button_primary}>
+                    <SVG svg={ReadBook} ariaHidden />
                     {__("catalog.readBook")}
                 </button>
                 <button onClick={this.deletePublication} className={stylesButtons.button_transparency}>
