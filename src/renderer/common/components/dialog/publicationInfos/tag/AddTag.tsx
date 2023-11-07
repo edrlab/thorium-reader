@@ -12,6 +12,9 @@ import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
+import SVG from "../../../SVG";
+import * as AddTagIcon from "readium-desktop/renderer/assets/icons/addTag-icon.svg";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
@@ -45,18 +48,22 @@ export default class AddTag extends React.Component<IProps, IState> {
         return (
             this.props.pubId
                 ? <form onSubmit={this.addTag}>
-                    <input
-                        type="text"
-                        className={stylesTags.tag_inputs}
-                        title={__("catalog.addTags")}
-                        placeholder={__("catalog.addTags")}
-                        onChange={this.handleChangeName}
-                        value={this.state.newTagName}
-                    />
+                    <div className="form-group">
+                        <label>{__("catalog.tags")}</label>
+                        <input
+                            type="text"
+                            className={stylesTags.tag_inputs}
+                            title={__("catalog.addTags")}
+                            // placeholder={__("catalog.addTags")}
+                            onChange={this.handleChangeName}
+                            value={this.state.newTagName}
+                        />
+                    </div>
                     <button
                         type="submit"
-                        className={stylesButtons.button_primary_small}
+                        className="button_primary"
                     >
+                        <SVG ariaHidden svg={AddTagIcon} />
                         {__("catalog.addTagsButton")}
                     </button>
                 </form>

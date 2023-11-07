@@ -11,9 +11,9 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as SaveAsIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.svg";
+import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
-import * as ExportIcon from "readium-desktop/renderer/assets/icons/download.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
@@ -59,12 +59,12 @@ export class CatalogControls extends React.Component<IProps, undefined> {
                     {__("catalog.readBook")}
                 </button>
                 <button onClick={this.deletePublication} className={stylesButtons.button_transparency}>
-                    <SVG svg={DeleteIcon} ariaHidden />
+                    <SVG svg={TrashIcon} ariaHidden />
                     {__("catalog.deleteBook")}
                 </button>
 
                 <button onClick={this.exportPublication} className={stylesButtons.button_transparency}>
-                    <SVG svg={ExportIcon} ariaHidden />
+                    <SVG svg={SaveAsIcon} ariaHidden />
                     {__("catalog.export")}
                 </button>
             </>

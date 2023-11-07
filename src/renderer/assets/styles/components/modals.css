@@ -43,9 +43,8 @@
   top: 50%;
   min-height: 570px;
   min-width: 800px;
-  width: 960px;
   max-width: 960px;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 100px);
   border-radius: 10px;
   z-index: 102;
   display: flex;
@@ -62,10 +61,10 @@
     width: 100vw;
   }
 
-  &.modal_dialog_full {
+  /* &.modal_dialog_full {
     width: calc(100vw - 60px);
-    height: calc(100vh - 60px);
-  }
+    height: calc(100vh - 100px);
+  } */
 }
 
 /*
@@ -94,7 +93,7 @@
 .modal_dialog_footer {
   display: flex;
   flex: none;
-  padding: 0 20px;
+  margin: 0 20px;
   align-items: center;
   height: 70px;
 }

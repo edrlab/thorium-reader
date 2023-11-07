@@ -341,6 +341,14 @@ if (nodeEnv !== "production") {
         test: /\.css$/,
         use: cssLoaderConfig,
     });
+    config.module.rules.push({
+        test: /\.scss$/,
+        use: [
+            "style-loader",
+            "css-loader",
+            "sass-loader",
+        ],
+    });
 } else {
     config.optimization = {
         ...(config.optimization || {}),
@@ -377,6 +385,14 @@ if (nodeEnv !== "production") {
     config.module.rules.push({
         test: /\.css$/,
         use: cssLoaderConfig,
+    });
+    config.module.rules.push({
+        test: /\.scss$/,
+        use: [
+            MiniCssExtractPlugin.loader,
+            "css-loader",
+            "sass-loader",
+        ],
     });
 }
 
