@@ -31,7 +31,7 @@ import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop
 import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import SVG from "../../SVG";
-import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg"
+import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 
 export interface IProps {
     publicationViewMaybeOpds: TPublication;

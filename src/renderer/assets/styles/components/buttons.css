@@ -51,9 +51,17 @@ button {
   height: 30px;
   fill: var(--color-primary);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 
   &:hover {
     opacity: 1;
+  }
+
+  &[type=submit] svg {
+    width: 10px;
   }
 }
 
@@ -223,6 +231,7 @@ button {
   font-family: "Arial", sans-serif;
   font-weight: 600;
   cursor: pointer;
+
   & svg {
     fill: var(--color-primary);
   }
@@ -280,6 +289,50 @@ button {
   text-underline-offset: 1px;
   cursor: pointer;
   display: inline-block;
+}
+
+.button_primary_blue {
+  border: 1px solid var(--color-button-primary);
+  height: 30px;
+  border-radius: 4px;
+  padding: 5px;
+  min-width: 100px;
+  background-color: var(--color-button-primary);
+  color: white;
+
+  svg {
+    width: 10px;
+    fill: white;
+}
+}
+
+.button_secondary_blue {
+  border: 1px solid var(--color-button-primary);
+  height: 30px;
+  border-radius: 4px;
+  padding: 5px;
+  min-width: 100px;
+  background-color: var(--color-button-secondary);
+  color: var(--color-button-primary);
+
+  svg {
+    width: 15px;
+    fill: var(--color-button-primary);
+  }
+}
+
+.button_catalog_infos {
+  color: var(--color-button-primary);
+  height: 30px;
+  border-radius: 4px;
+  padding: 20px 5px;
+  background-color: var(--color-button-secondary);
+  margin: 30px 0;
+
+  svg {
+    width: 20px;
+    fill: var(--color-button-primary);
+  }
 }
 
 /*

@@ -48,7 +48,7 @@ export default class AddTag extends React.Component<IProps, IState> {
         return (
             this.props.pubId
                 ? <form onSubmit={this.addTag}>
-                    <div className="form-group">
+                    <div className="form_group">
                         <label>{__("catalog.tags")}</label>
                         <input
                             type="text"
@@ -61,7 +61,7 @@ export default class AddTag extends React.Component<IProps, IState> {
                     </div>
                     <button
                         type="submit"
-                        className="button_primary"
+                        className={stylesButtons.button_primary_blue}
                     >
                         <SVG ariaHidden svg={AddTagIcon} />
                         {__("catalog.addTagsButton")}

@@ -41,7 +41,8 @@
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
-  min-height: 570px;
+
+  /* min-height: 570px; */
   min-width: 800px;
   max-width: 960px;
   max-height: calc(100vh - 100px);
@@ -120,6 +121,7 @@
   bottom: 0;
   right: 0;
   background-color: var(--color-secondary);
+  gap: 10px;
 
   & [type="submit"] {
     min-width: 100px;

@@ -15,6 +15,7 @@
   font-size: 16px;
   display: flex;
   align-items: center;
+  
   /* color: rgb(59, 59, 59); */
   color: var(--color-accent);
   position: fixed;

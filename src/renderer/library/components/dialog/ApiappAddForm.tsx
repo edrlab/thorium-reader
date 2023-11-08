@@ -17,6 +17,11 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { nanoid } from "nanoid";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
+import classNames from "classnames";
 
 const context = React.createContext<{
     selectSearchResult: IApiappSearchResultView;
@@ -71,6 +76,7 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
 const ApiappAddForm = () => {
     const [__] = useTranslator();
     const searchInputRef = React.useRef<HTMLInputElement>();
+    const [infoOpen, setInfoOpen] = React.useState(false);
 
     const ItemListWithStyle = () =>
     <div>
@@ -89,16 +95,23 @@ const ApiappAddForm = () => {
     const [resultApiAppSearchAction, apiAppSearchAction] = useApi(undefined, "apiapp/search");
     const searchResultView = resultApiAppSearchAction?.data?.result || [];
 
+    const openInfo = (e: any) => {
+        e.preventDefault();
+        setInfoOpen(!infoOpen);
+    };
+
     return (
         <div className={stylesModals.modal_dialog_body}>
+            <div className={stylesInputs.form_group_wrapper}>
                 <div
                     style={{ marginBottom: "0" }}
-                    className={stylesInputs.form_group}>
+                    className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
+                        <label htmlFor="apiapp-search">{__("header.searchPlaceholder")}</label>
                     <input
                         ref={searchInputRef}
                         type="search"
                         id="apiapp_search"
-                        placeholder={__("header.searchPlaceholder")}
+                        // placeholder={__("header.searchPlaceholder")}
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 const v = searchInputRef.current?.value;
@@ -109,16 +122,37 @@ const ApiappAddForm = () => {
                             }
                         }}
                     />
-                    <button
+                </div>
+                <button
                         onClick={() => searchInputRef.current?.value ? apiAppSearchAction(searchInputRef.current.value) : ""}
-                        className={stylesButtons.button_primary_small}
-                        style={{ fontWeight: "bold" }}
+                        className={stylesButtons.button_secondary_blue}
                         title={__("header.searchTitle")}
                     >
-                        {__("header.searchPlaceholder")}<SVG ariaHidden={true} svg={magnifyingGlass} />
+                        <SVG ariaHidden={true} svg={magnifyingGlass} />
+                        {__("header.searchPlaceholder")}
                     </button>
                 </div>
                 <ItemListWithStyle/>
+                <div>
+                    <button className="button_catalog_infos" onClick={(e) => openInfo(e)}>
+                        <SVG ariaHidden svg={InfoIcon} />
+                        How does it work?
+                        <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
+                    </button>
+                    { infoOpen ?
+                    <div className="catalog_infos_text">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Phasellus elit libero, pharetra vitae cursus sed, tincidunt et elit.
+                            Morbi laoreet iaculis nibh, non condimentum nulla euismod sed.
+                        </p>
+                        <a href="#">
+                            Vivamus quis pharetra eros.
+                            <SVG ariaHidden svg={FollowLinkIcon} />
+                        </a>
+                    </div>
+                    : <></>}
+                </div>
             </div>
     );
 };
@@ -162,10 +196,12 @@ export const ApiappAddFormDialog = () => {
             <ApiappAddForm />
                 <DialogFooter>
                     <DialogClose asChild>
-                        <button className={stylesButtons.button_primary}>{__("dialog.cancel")}</button>
+                        <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                     </DialogClose>
                     <DialogClose asChild>
-                        <button ref={submitButtonRef} className={stylesButtons.button_secondary} onClick={() => addFeedAction()}>{__("opds.addForm.addButton")}</button>
+                        <button ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => addFeedAction()}>
+                            <SVG ariaHidden svg={AddIcon} />
+                            {__("opds.addForm.addButton")}</button>
                     </DialogClose>
                 </DialogFooter>
             </context.Provider>
