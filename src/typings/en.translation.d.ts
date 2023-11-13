@@ -152,6 +152,7 @@ declare namespace typed_i18n {
   readonly "sort": string,
   readonly "tagCount": string,
   readonly "tags": string,
+  readonly "tag": string,
   readonly "update": string
 };
   (_: "catalog.about", __?: {}): { readonly "button": string, readonly "title": string };
@@ -266,7 +267,7 @@ declare namespace typed_i18n {
   (_: "catalog.released", __?: {}): string;
   (_: "catalog.sort", __?: {}): string;
   (_: "catalog.tagCount", __?: {}): string;
-  (_: "catalog.tags", __?: {}): string;
+  (_: "catalog.tags", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "cancel": string,

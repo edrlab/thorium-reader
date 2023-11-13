@@ -244,7 +244,7 @@ select {
       height: 100%;
       margin-left: 30px;
       
-      &[type="search"] {
+      &[type="search"], &[title="Add a tag"] {
         margin: 0;
         width: 100%;
       }

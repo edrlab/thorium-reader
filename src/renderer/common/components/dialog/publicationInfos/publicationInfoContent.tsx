@@ -307,21 +307,20 @@ const Progression = (props: {
 
         return (
             <section className="publicationInfo-progressionWrapper">
-            <div className="publicationInfo-heading">
-                <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h3>
-            </div>
-            <div className="publicationInfo-progressionContainer">
-                <SVG ariaHidden svg={OnGoingBookIcon} />
-                {(txtProgression ? (<p className={stylesBookDetailsDialog.allowUserSelect}>
-                    {txtProgression}
-                </p>) : <></>)}
-                {(txtPagination ? (<p className={stylesBookDetailsDialog.allowUserSelect}>
-                    {txtPagination}
-                </p>) : <></>)}
-                {(txtHeadings ? (<><div style={{lineHeight: "2em"}} className={stylesBookDetailsDialog.allowUserSelect}>
-                    {txtHeadings}
-                </div></>) : <></>)}
-            </div>
+                <div className="publicationInfo-heading">
+                    <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h3>
+                </div>
+                <div className="publicationInfo-progressionContainer">
+                        {(txtProgression ? (<p className={stylesBookDetailsDialog.allowUserSelect}><SVG ariaHidden svg={OnGoingBookIcon} />
+                            {txtProgression}
+                        </p>) : <></>)}
+                    {(txtPagination ? (<p className={stylesBookDetailsDialog.allowUserSelect}>
+                        {txtPagination}
+                    </p>) : <></>)}
+                    {(txtHeadings ? (<><div style={{lineHeight: "2em"}} className={stylesBookDetailsDialog.allowUserSelect}>
+                        {txtHeadings}
+                    </div></>) : <></>)}
+                </div>
             </section>
         );
 
@@ -452,7 +451,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             <PublicationInfoA11y publicationViewMaybeOpds={publicationViewMaybeOpds}></PublicationInfoA11y>
                         </div>
                     </section>
-                    {(publicationViewMaybeOpds.lcp ? <section>
+                    {(publicationViewMaybeOpds.lcp ? <section className="publicationInfo-lcpInfo-content">
                         <LcpInfo publicationLcp={publicationViewMaybeOpds} />
                     </section> : <></>)}
                     <section className="publicationInfo-tagContainer">

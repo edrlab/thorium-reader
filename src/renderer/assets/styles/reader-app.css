@@ -17,6 +17,8 @@
 =-=-= reader-app.css
 */
 
+@import url('./components/inputs.css');
+
 /* :global */
 
 :root.HIDE_CURSOR_CLASS,
@@ -87,11 +89,12 @@ body {
 }
 
 button {
+  display: inline;
   background: none;
   border: 0;
   cursor: pointer;
-  color: var(--reader-fontColor) !important;
-  fill: var(--reader-fontColor) !important;
+  color: var(--reader-fontColor);
+  fill: var(--reader-fontColor);
   height: auto;
 
   &:hover {

@@ -49,7 +49,7 @@ export default class AddTag extends React.Component<IProps, IState> {
             this.props.pubId
                 ? <form onSubmit={this.addTag}>
                     <div className="form_group">
-                        <label>{__("catalog.tags")}</label>
+                        <label>{__("catalog.tag")}</label>
                         <input
                             type="text"
                             className={stylesTags.tag_inputs}

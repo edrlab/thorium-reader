@@ -61,7 +61,7 @@ button {
   }
 
   &[type=submit] svg {
-    width: 10px;
+    width: 13px;
   }
 }
 
@@ -94,7 +94,6 @@ button {
     vertical-align: -2px;
     width: auto;
     height: 14px;
-    margin-right: 8px;
     transition: all 0.2s;
     fill: var(--color-primary);
   }
@@ -201,7 +200,6 @@ button {
     fill: var(--color-accent-contrast);
     width: auto;
     height: 14px;
-    margin-right: 8px;
     transition: all 0.2s;
   }
 
@@ -248,7 +246,6 @@ button {
 
   & svg {
     width: 18px;
-    margin-right: 8px;
     vertical-align: -3px;
     color: var(--color-disabled);
   }
