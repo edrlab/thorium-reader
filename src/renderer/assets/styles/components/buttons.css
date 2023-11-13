@@ -63,6 +63,17 @@ button {
   &[type=submit] svg {
     width: 13px;
   }
+
+  &.disabled,
+  &[disabled] {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+
+    &:hover {
+      background: transparent;
+    }
+  }
 }
 
 .button_outline_accessibility button {
@@ -102,17 +113,6 @@ button {
     & svg {
       margin-right: 0;
       margin-left: 8px;
-    }
-  }
-
-  &.disabled,
-  &[disabled] {
-    opacity: 0.5;
-    cursor: default;
-    pointer-events: none;
-
-    &:hover {
-      background: transparent;
     }
   }
 }
