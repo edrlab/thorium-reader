@@ -22,24 +22,24 @@ const Themes = () => {
             </div>
             <div className={stylesThemes.themes_container}>
                 <button>
-                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.dark_theme)}>               
+                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.dark_theme)}>
                     </div>
                     <p>{__("reader.settings.theme.name.Night")}</p>
                 </button>
                 <button>
-                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.light_theme)}>               
+                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.light_theme)}>
                     </div>
                     <p>{__("reader.settings.theme.name.Neutral")}</p>
                 </button>
                 <button>
-                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.auto_theme)}>               
+                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.auto_theme)}>
                     </div>
                     <p>Auto</p>
                 </button>
             </div>
         </section>
-    )
-}
+    );
+};
 
 
 export default (withTranslator(Themes));
