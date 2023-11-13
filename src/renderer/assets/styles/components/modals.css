@@ -50,12 +50,12 @@
   z-index: 102;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--color-secondary);
   overflow-y: auto;
   overflow-x: hidden;
   align-content: flex-start;
-  color: #3b3b3b;
-  position: fixed;
+  color: var(--color-primary);;
+  position: relative;
   box-sizing: border-box;
   /* padding: 0 20px; */
 
