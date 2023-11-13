@@ -58,6 +58,7 @@ button {
 
   &:hover {
     opacity: 1;
+    background: transparent;
   }
 
   &[type=submit] svg {
@@ -69,10 +70,6 @@ button {
     opacity: 0.5;
     cursor: default;
     pointer-events: none;
-
-    &:hover {
-      background: transparent;
-    }
   }
 }
 
