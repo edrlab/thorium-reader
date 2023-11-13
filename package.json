@@ -72,7 +72,7 @@
     "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en bg ca de el es eu fi fr gl hr it ja ka ko lt nl pt-br pt-pt ru sv zh-cn zh-tw --space \"    \" --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
     "i18n-check": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages bg ca de el es eu fi fr gl hr it ja ka ko lt nl pt-br pt-pt ru sv zh-cn zh-tw --space \"    \" --finalnewline --newkeysempty",
     "i18n-typed": "node ./scripts/locale-wrap.js \"src/resources/locales/en.json\" \"en.json\" && typed_i18n -i \"en.json\" -o src/typings -l typescript && rimraf \"en.json\"",
-    "style-typed": "tcm \"src/renderer/assets/styles\"",
+    "style-typed": "tcm -p \"src/renderer/assets/styles/**/*.{scss,css}\"",
     "ts-unused-exports_": "tcm --namedExports \"src/renderer/assets/styles\" && ts-unused-exports ./tsconfig.json $(find ./src/renderer/assets/styles -name '*.d.ts') || npm run style-typed",
     "ts-unused-exports": "ts-unused-exports ./tsconfig.json --ignoreFiles=\"test/.*\"",
     "ts-prune": "ts-prune --project ./tsconfig.json --ignore \"(/main|/common|/test|/typings|/utils|preprocessor-directives)/.*\"",
