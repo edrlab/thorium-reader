@@ -412,6 +412,12 @@
         }
     },
     "settings": {
+        "tabs": {
+            "general": "General",
+            "appearance": "Appearance",
+            "reading": "Reading",
+            "keyboardShortcuts":"Keyboard shortcuts"
+        },
         "auth": {
             "wipeData": "Wipe authentication data"
         },

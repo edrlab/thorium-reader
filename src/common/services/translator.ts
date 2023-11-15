@@ -182,6 +182,12 @@ export const AvailableLanguages = {
     "hr": "Hrvatski",
 };
 
+export const AvailableThemes = {
+    "neutral": "Neutral",
+    "night": "Night",
+    "auto": "Auto",
+};
+
 interface LocalizedContent {
     [locale: string]: string;
 }

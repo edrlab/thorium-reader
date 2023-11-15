@@ -1,5 +1,9 @@
+$settings_bg : rgba(247, 245, 255, 1);
+$setting_color: rgba(58, 0, 229, 1);
+
 .settings_container {
     display: flex;
+    height: 570px;
 }
 
 .settings_tabslist {
@@ -7,51 +11,135 @@
     flex-direction: column;
     width: 100%;
     flex: 1;
-    border-right: 2px solid var(--color-medium-grey);
-    padding-top: 40px;
-    height: 570px;
+    border-right: 1px solid var(--color-medium-grey);
+    padding-top: 100px;
+    background-color: rgba(246, 246, 246, 0.84);
     button {
         height: 50px;
         transition: 200ms;
-        width: 100%;
-        &:first-child{ 
-            border-top-left-radius: 6 
-        }
-        &:last-child{ 
-            border-top-right-radius: 6 
-        }
+        width: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        margin: 0 10%;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        font-weight: normal;
         &:hover {
             background-color: var(--color-medium-grey);
         }
         &[data-state="active"]{ 
-            color: var(--color-primary);
-            background-color: var(--color-light-grey);
+            color: $setting_color;
+            background-color: $settings_bg;
             font-size: 16px;
-            font-weight: bold;
+            border: 1px solid $setting_color;
+            svg {
+                width: 25px;
+                fill: $setting_color;
+            }
         }
         &:focus {
             position: relative;
-            box-shadow: 0 0 0 2px black;
          }
+        svg {
+            width: 15px;
+            transition: 200ms linear;
+        }
     }
 }
 
-.settings_tab_container {
-    margin: 35px;
+.tablist_reading {
+    height: 80px;
+    display: flex;
+    width: 100%;
+    flex: 1;
+    border-bottom: 1px solid var(--color-medium-grey);
+    button {
+    transition: 200ms;
+    width: 80%;
+    height: 100%;
+    gap: 10px;
+    margin: 0 !important;
+    border-bottom: 1px solid transparent;
+    font-weight: normal;
+        &:hover {
+            background-color: var(--color-medium-grey);
+        }
+        &[data-state="active"]{ 
+            color: $setting_color;
+            background-color: $settings_bg;
+            font-size: 16px;
+            border-bottom: 2px solid $setting_color;
+            svg {
+                width: 30px;
+            }
+        }
+        &:focus {
+            position: relative;
+            }
+        svg {
+            width: 25px;
+            transition: 200ms linear;
+        }
+        p {
+            margin: 10px;
+        }
+    }
 }
 
-.select_language{
+.settings_content {
+    flex: 2;
+    box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
+    overflow: scroll;
+}
+
+.settings_tab {
+    &_container {
+    margin: 35px;
+    &_reading{
+        margin: 0 35px;
+    }
+    h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    }
+    &_title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 35px;
+        button {
+            border: 1px solid $setting_color;
+            background-color: $settings_bg;
+            border-radius: 50%;
+            svg {
+                fill: $setting_color;
+                width: 25px;
+            }
+        }
+    }
+}
+
+.select {
     &_trigger {
-    box-shadow: 2px 2px 5px 3px var(--color-medium-grey);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 30px;
     padding: 0 25px 0 10px;
-    border: 1px solid var(--color-medium-grey);
-    border-radius: 10px;
-    height: 40px;
-    min-width: 300px;
+    border: 1px solid var(--color-primary);
+    border-radius: 4px;
+    height: 35px;
+    min-width: 400px;
+    > div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
     }
     &_icon {
         width: 24px;
@@ -69,17 +157,16 @@
         border-bottom: 1px solid var(--color-medium-grey);
         &:hover {
             cursor: pointer;
-            background-color: var(--color-medium-grey);
+            background-color: $settings_bg;
         }
     }
     &_content {
         overflow: hidden;
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 6px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 4px;
         z-index:200;
         border: 1px solid var(--color-medium-grey);
-        position: absolute;
-        left: 0;
-        width: 250px;
+        width: 400px;
+        max-height: 300px;
     }
 }

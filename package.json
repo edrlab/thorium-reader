@@ -300,6 +300,7 @@
     "timeout-signal": "^2.0.0",
     "tmp": "^0.2.1",
     "typed-redux-saga": "^1.5.0",
+    "typed-scss-modules": "^7.1.4",
     "use-sync-external-store": "^1.2.0",
     "uuid": "^9.0.1",
     "validator": "^13.11.0",

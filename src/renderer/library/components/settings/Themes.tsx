@@ -6,37 +6,69 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as Select from "@radix-ui/react-select";
 import { withTranslator} from "readium-desktop/renderer/common/components/hoc/translator";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import classNames from "classnames";
+import { AvailableThemes } from "readium-desktop/common/services/translator";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
-import * as stylesThemes from "readium-desktop/renderer/assets/styles/components/themes.css";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.css";
 
-const Themes = () => {
+// import * as stylesThemes from "readium-desktop/renderer/assets/styles/components/themes.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
+import * as PaintBrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-icon.svg";
+
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+
+
+interface AvailableThemes {
+    neutral: string,
+    night: string,
+    auto: string,
+}
+
+const SelectItem = React.forwardRef(({ children, ...props }: any, forwardedRef) => {
+    return (
+        <Select.Item {...props} id="itemInner" ref={forwardedRef}
+        className={stylesSettings.select_item}>
+            <Select.ItemText>{children}</Select.ItemText>
+            <Select.ItemIndicator className={stylesSettings.select_icon}>
+                <SVG svg={DoneIcon} ariaHidden/>
+            </Select.ItemIndicator>
+        </Select.Item>
+    );
+});
+
+SelectItem.displayName = "SelectItem";
+
+const Themes = (props: any) => {
     const [ __ ] = useTranslator();
+    const currentTheme: keyof AvailableThemes = props.locale;
     return (
         <section className={stylesSettings.settings_tab_container}>
             <div className={stylesGlobal.heading}>
-                <h2>{__("reader.settings.theme.title")}</h2>
+                <h4>{__("reader.settings.theme.title")}</h4>
             </div>
-            <div className={stylesThemes.themes_container}>
-                <button>
-                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.dark_theme)}>
+            <Select.Root>
+                <Select.Trigger className={stylesSettings.select_trigger}>
+                    <div>
+                    <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={PaintBrushIcon} /></Select.Icon>
+                        <Select.Value placeholder={AvailableThemes[currentTheme]} />
                     </div>
-                    <p>{__("reader.settings.theme.name.Night")}</p>
-                </button>
-                <button>
-                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.light_theme)}>
-                    </div>
-                    <p>{__("reader.settings.theme.name.Neutral")}</p>
-                </button>
-                <button>
-                    <div className={classNames(stylesThemes.theme_preview_circle, stylesThemes.auto_theme)}>
-                    </div>
-                    <p>Auto</p>
-                </button>
-            </div>
+                    <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={ChevronDown} /></Select.Icon>
+                </Select.Trigger>
+                <Select.Portal>
+                    <Select.Content className={stylesSettings.select_content} position="popper" sideOffset={10} sticky="always">
+                        <Select.Viewport role="select">
+                        { ObjectKeys(AvailableThemes).map((theme, i) =>
+                            <SelectItem value={theme} key={i}>{ AvailableThemes[theme] }</SelectItem>,
+                        )}
+                        </Select.Viewport>
+                    </Select.Content>
+                    </Select.Portal>
+            </Select.Root>
         </section>
     );
 };

@@ -1,6 +1,12 @@
 .themes_container {
     display: flex;
     justify-content: space-around;
+    min-width: 100px;
+    border: 1px solid black;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
 }
 
 .theme_preview_circle {
@@ -11,10 +17,9 @@
     box-shadow: 0 5px 10px 5px var(--color-medium-grey);
     transition: 400ms;
     position:relative;
-}
-
-.theme_preview_circle:hover {
-    scale: 1.1;
+    &:hover {
+        scale: 1.1;
+    }
 }
 
 .dark_theme {

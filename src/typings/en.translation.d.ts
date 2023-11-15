@@ -1034,6 +1034,12 @@ declare namespace typed_i18n {
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
   (_: "settings", __?: {}): {
+  readonly "tabs": {
+    readonly "general": string,
+    readonly "appearance": string,
+    readonly "reading": string,
+    readonly "keyboardShortcuts": string
+  },
   readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {
     readonly "advancedMenu": string,
@@ -1054,6 +1060,16 @@ declare namespace typed_i18n {
     readonly "yes": string
   }
 };
+  (_: "settings.tabs", __?: {}): {
+  readonly "general": string,
+  readonly "appearance": string,
+  readonly "reading": string,
+  readonly "keyboardShortcuts": string
+};
+  (_: "settings.tabs.general", __?: {}): string;
+  (_: "settings.tabs.appearance", __?: {}): string;
+  (_: "settings.tabs.reading", __?: {}): string;
+  (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
   (_: "settings.auth", __?: {}): { readonly "wipeData": string };
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {
