@@ -39,6 +39,12 @@ import { readerLocalActionSetConfig } from "../redux/actions";
 import optionsValues, { IReaderOptionsProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
+import TextContent from "./ReaderOptions/TextContent";
+import ThemeContent from "./ReaderOptions/ThemeContent";
+import DisplayContent from "./ReaderOptions/DisplayContent";
+import SpacingContent from "./ReaderOptions/SpacingContent";
+import MediaOverlays from "./ReaderOptions/MediaOverlays";
+import SaveConfig from "./ReaderOptions/SaveConfig";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
@@ -128,11 +134,19 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             sections.push(
                 {
                     title: __("reader.settings.theme.title"),
-                    content: this.themeContent(),
+                    content: <ThemeContent
+                    readerConfig={this.props.readerConfig}
+                    setSettings={this.props.setSettings}
+                    />,
                 },
                 {
                     title: __("reader.settings.text"),
-                    content: this.textContent(),
+                    content: <TextContent 
+                    readerConfig={this.props.readerConfig} 
+                    indexes={this.props.indexes}
+                    handleIndexChange={this.props.handleIndexChange}
+                    handleSettingChange={this.props.handleSettingChange}
+                     />,
                 },
             );
         }
@@ -141,7 +155,10 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             sections.push(
                 {
                     title: __("reader.settings.display"),
-                    content: this.displayContent(),
+                    content: <DisplayContent
+                    readerConfig={this.props.readerConfig}
+                    handleSettingChange={this.props.handleSettingChange}
+                    setSettings={this.props.setSettings} />,
                 },
             );
 
@@ -161,15 +178,21 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             sections.push(
                 {
                     title: __("reader.settings.spacing"),
-                    content: this.spacingContent(),
+                    content: <SpacingContent
+                    readerConfig={this.props.readerConfig}
+                    indexes={this.props.indexes}
+                    handleIndexChange={this.props.handleIndexChange} />,
                 },
                 {
                     title: __("reader.media-overlays.title"),
-                    content: this.mediaOverlays(),
+                    content: <MediaOverlays
+                    readerConfig={this.props.readerConfig}
+                    setSettings={this.props.setSettings} />,
                 },
                 {
                     title: __("reader.settings.save.title"),
-                    content: this.saveConfig(),
+                    content: <SaveConfig
+                    setDefaultConfig={this.props.setDefaultConfig} />,
                 },
             );
         }
