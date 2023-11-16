@@ -101,15 +101,15 @@ Thorium-reader is composed of 3 parts:
 - One library window (chromium renderer)
 - One to N reader window(s) (chromium renderer)
 
-each part run a model-controler and a view for renderer process
+Each part runs a model-controller and a view for the renderer process.
 
 - the model is a state container with [Redux](https://redux.js.org/). It's based on [flux architecture](https://github.com/facebookarchive/flux)
-- the controller is a middleware from Redux named [Redux-saga](https://redux-saga.js.org/). It's handle all side effect and application behaviour.
+- the controller is a middleware from Redux named [Redux-saga](https://redux-saga.js.org/). It handles all side effects and application behaviour.
 - the view for the rendering is React with [class components](https://legacy.reactjs.org/docs/components-and-props.html)
 
-To linked all 3 parts we used :
-- IPC/RPC: we used implementation from [Electron](https://www.electronjs.org/docs/latest/api/ipc-main)
-- React/Redux: We used [connect](https://react-redux.js.org/api/connect) from [react-redux](https://react-redux.js.org/).
+To link these 3 parts we use:
+- IPC/RPC: we use an implementation from [Electron](https://www.electronjs.org/docs/latest/api/ipc-main)
+- React/Redux: We use [connect](https://react-redux.js.org/api/connect) from [react-redux](https://react-redux.js.org/).
 
 ### Diagram
 
@@ -121,10 +121,10 @@ To linked all 3 parts we used :
 
 ### API Concept
 
-To have a type POST request from a renderer process to the main process we used the notion of API.
-It's not an http API but an RPC encapsuled to redux/redux-saga logic with Action and Reducer.
+To have a POST request from a renderer process to the main process, we use the notion of API.
+It's not an http API but an RPC encapsuled one, to redux/redux-saga logic with Action and Reducer.
 
-This is a diagram of the communication:
+Here is a diagram of the communication:
 
 ![api](img/thorium-api.png)
 
@@ -133,7 +133,7 @@ Src:
 - src/common/redux/actions/api/index.ts
 - src/renderer/common/redux/reducers/api.ts
 
-At the moment there are 17 API endpoints from (src/main/redux/sagas/api) :
+At the moment there are 17 API endpoints from (src/main/redux/sagas/api):
 
 library:
 - apiapp:
@@ -141,9 +141,9 @@ library:
 - browser:
   - httpbrowser/browse : browse and parse an opds URL
 - opds:
-  - opds/getFeed : get an opdsFeed with is identifier
+  - opds/getFeed : get an opdsFeed with its identifier
   - opds/findAllFeed: get all opdsFeed saved
-  - opds/deleteFeed: delete an opdsFeed with is identifier
+  - opds/deleteFeed: delete an opdsFeed with its identifier
   - opds/addFeed: add an opdsFeed
   - opds/getUrlWithSearchLinks: get the search URL from an opdsFeed
 - publication: (src/common/api/interface/publicationApi.interface.ts)
@@ -161,18 +161,18 @@ library:
 
 ### ACTION-REDUCER
 
-From main-process to renderer-process or from renderer-process to main-process.
+From the main-process to the renderer-process, or from the renderer-process to the main-process.
 
-List of all Actions in place (src/common/redux/actions) :
+List of all Actions in place (src/common/redux/actions):
 
 - auth: opds authentication
   - cancel
   - done
   - wipeData
 - catalog
-  - getCatalog: ask to rehydrate catalogView in libraryState
+  - getCatalog: ask to rehydrate catalogView in the libraryState
   - setCatalogView: response from getCatalog
-  - setTagView: rehydrate tagStringView in libraryState
+  - setTagView: rehydrate tagStringView in the libraryState
 - dialog: modal dialog view in library,reader
   - closeRequest
   - openRequest
