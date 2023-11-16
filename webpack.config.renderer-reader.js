@@ -156,6 +156,59 @@ const cssLoaderConfig = [
     "postcss-loader",
 ];
 
+const scssLoaderConfig = [
+    {
+        loader: nodeEnv !== "production" ? "style-loader" : MiniCssExtractPlugin.loader,
+        options: {
+            // publicPath: "./styling", // preprocessorDirectives.rendererReaderBaseUrl,
+            // hmr: _enableHot,
+            // reloadAll: true,
+            esModule: false,
+        },
+    },
+    {
+        loader: "css-loader",
+        options: {
+            import: {
+                filter: (url, media, resourcePath) => {
+                    console.log("css-loader IMPORT (READER): ", url, media, resourcePath);
+                    return true;
+                },
+            },
+            importLoaders: 1,
+            modules: {
+                // auto: false,
+                // mode: "local",
+                // exportOnlyLocals: true,
+                // exportGlobals: true,
+                localIdentName: "[local]",
+            },
+            // modules: nodeEnv !== "production" && false ? { // MUST USE STRICT BASE64, NO PATH DEPENDENT (OTHERWISE BREAK CROSS-FILE CSS CLASSES WITH IDENTICAL NAMES, E.G. SUBCLASSES IN NESTED STATEMENTS)
+            //     localIdentName: "[path][name]__[local]--[contenthash:base64:5]",
+            // } : {
+            //     getLocalIdent: (context, localIdentName, localName, options) => {
+            //         // const checkSum = crypto.createHash("sha256");
+            //         // checkSum.update(localName);
+            //         // const hexStr = checkSum.digest("hex");
+            //         // const b64Str = Buffer.from(hexStr, "hex").toString("base64");
+            //         // const h = "z_" + b64Str;
+            //         // console.log("getLocalIdent READER: ", h, context.resourcePath, localName);
+            //         // return h;
+            //         return localName;
+            //     },
+            //     // localIdentName: "[contenthash:base64]",
+            //     // localIdentHashPrefix: "contenthash",
+            //     // localIdentHashSalt: "_",
+            //     // localIdentHashFunction: "md4", // sha256
+            //     // localIdentHashDigest: "hex", // base64
+            //     // localIdentHashDigestLength: 20,
+            // },
+            esModule: false,
+        },
+    },
+    "sass-loader",
+];
+
 let config = Object.assign(
     {},
     {
@@ -343,11 +396,7 @@ if (nodeEnv !== "production") {
     });
     config.module.rules.push({
         test: /\.scss$/,
-        use: [
-            "style-loader",
-            "css-loader",
-            "sass-loader",
-        ],
+        use: scssLoaderConfig,
     });
 } else {
     config.optimization = {
@@ -388,11 +437,7 @@ if (nodeEnv !== "production") {
     });
     config.module.rules.push({
         test: /\.scss$/,
-        use: [
-            MiniCssExtractPlugin.loader,
-            "css-loader",
-            "sass-loader",
-        ],
+        use: scssLoaderConfig,
     });
 }
 
