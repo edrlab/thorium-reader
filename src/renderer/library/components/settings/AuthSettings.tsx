@@ -10,11 +10,15 @@ import { connect } from "react-redux";
 import { authActions } from "readium-desktop/common/redux/actions";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
+
+import SVG from "../../../common/components/SVG";
+import * as BinIcon from "readium-desktop/renderer/assets/icons/bin-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -37,13 +41,14 @@ class AuthSettings extends React.Component<IProps> {
         const { __ } = this.props;
         return (
             <>
-                <section>
+                <section className={stylesSettings.settings_tab_container}>
                     <div className={stylesGlobal.heading}>
-                        <h2>{__("catalog.opds.auth.login")}</h2>
+                        <h4>{__("catalog.opds.auth.login")}</h4>
                     </div>
                     <button
                         className={stylesButtons.button_primary}
                         onClick={() => this.props.wipeData()}>
+                        <SVG ariaHidden svg={BinIcon} />
                         {__("settings.auth.wipeData")}
                     </button>
                 </section>

@@ -1,0 +1,11 @@
+export declare const select_content: string;
+export declare const select_icon: string;
+export declare const select_item: string;
+export declare const select_trigger: string;
+export declare const settings_container: string;
+export declare const settings_content: string;
+export declare const settings_tab_container: string;
+export declare const settings_tab_container_reading: string;
+export declare const settings_tab_title: string;
+export declare const settings_tabslist: string;
+export declare const tablist_reading: string;

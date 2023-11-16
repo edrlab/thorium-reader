@@ -22,6 +22,8 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -92,9 +94,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <>
-                <section>
+                <section className={stylesSettings.settings_tab_container}>
                     <div className={stylesGlobal.heading}>
-                        <h2>{__("settings.keyboard.keyboardShortcuts")}</h2>
+                        <h4>{__("settings.keyboard.keyboardShortcuts")}</h4>
                     </div>
                     <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
                         <button
