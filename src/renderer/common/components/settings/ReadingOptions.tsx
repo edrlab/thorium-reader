@@ -11,9 +11,10 @@ import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.s
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
 import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volup-icon.svg";
 import * as ClockWiseIcon from "readium-desktop/renderer/assets/icons/clockwise-icon.svg";
-import ReadingText from "./Reading/ReadingText";
-import ReadingDisplay from "./Reading/ReadingDisplay";
+import { FontFamily, FontSize } from "./Reading/ReadingText";
 import ReadingTheme from "./Reading/ReadingTheme";
+import ReadingDisplayLayout from "./Reading/ReadingDisplayLayout";
+import ReadingDisplayAlign from "./Reading/ReadingDisplayAlign";
 
 // const TabTitle = (props: any) => {
 //     return (
@@ -52,12 +53,14 @@ const ReadingOptions = () => {
                     </Tabs.Trigger>
                 </Tabs.List>
                 <div>
-                    <Tabs.Content value="tab11" title="General">
-                        <ReadingText />
+                    <Tabs.Content value="tab11">
+                        <FontSize />
+                        <FontFamily />
                     </Tabs.Content>
                     <Tabs.Content value="tab12">
                        <ReadingTheme />
-                       <ReadingDisplay />
+                       <ReadingDisplayLayout />
+                       <ReadingDisplayAlign />
                     </Tabs.Content>
                     <Tabs.Content value="tab13">
                         <p>Go on, keep testing</p>

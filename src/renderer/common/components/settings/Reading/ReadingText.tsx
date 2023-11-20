@@ -13,6 +13,11 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { configSetDefault } from "readium-desktop/common/redux/actions/reader";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { debounce } from "debounce";
 
 const SelectItem = React.forwardRef(({ children, ...props }: any, forwardedRef) => {
     return (
@@ -27,47 +32,70 @@ const SelectItem = React.forwardRef(({ children, ...props }: any, forwardedRef) 
 });
 
 
-const ReadingText = () => {
+export const FontSize = () => {
     const [__] = useTranslator();
-    // const fontSize = React.useState((s: any) => s.reader.defaultConfig.fontSize);
-
-    const readiumCSSFontID = readerConfigInitialState.font;
-    const fontListItem = fontList.find((f) => {
-        return f.id === readiumCSSFontID && f.id !== FONT_ID_VOID;
-    });
-
-    const readiumCSSFontIDToSelect = fontListItem ?
-        fontListItem.id : // readiumCSSFontID
-        FONT_ID_VOID;
-
-
-    const readiumCSSFontName = fontListItem ? fontListItem.label : readiumCSSFontID;
-    const readiumCSSFontPreview = (readiumCSSFontName === FONT_ID_VOID || fontListItem?.id === FONT_ID_DEFAULT) ?
-        " " : readiumCSSFontName;
-    const fontFamily = fontListItem?.fontFamily ? fontListItem.fontFamily : `'${readiumCSSFontName}', serif`;
+    const fontSize = useSelector((s: ICommonRootState) => s.reader.defaultConfig.fontSize);
+    const dispatch = useDispatch();
+    const fontSizeNbr = parseInt(fontSize, 10); // 75%
+    const saveConfigDebounced = React.useMemo(() => {
+        const saveConfig = (value: string) => {
+            dispatch(configSetDefault.build({fontSize: value + "%"}));
+        }
+        return debounce(saveConfig, 500);
+    }, []);
+    const minValue = 75;
+    React.useEffect(() => {
+        return () => saveConfigDebounced.flush();
+    }, [])
 
     return (
         <div className={stylesSettings.settings_reading_text}>
             <section className={stylesSettings.label_fontSize}>
                 <div className={stylesGlobal.heading}>
-                    <h4>{__("reader.settings.fontSize")}
-                    {/* ({fontSize})*/}</h4> 
+                    <h4>{__("reader.settings.fontSize")} ({fontSize})</h4> 
                 </div>
                 <div className={stylesSettings.size_range}>
                     <p>A-</p>
                         <input
                             type="range"
                             aria-labelledby="label_fontSize"
-                            min={0}
-                            step={1}
+                            min={minValue}
+                            max={250}
+                            step={12.5}
                             aria-valuemin={0}
-                            //onChange=(() => //dispatch action setDefaultConfig)
+                            defaultValue={fontSizeNbr}
+                            onChange={(e) => saveConfigDebounced(e.target?.value || `${readerConfigInitialState.fontSize}`)}
                         />
                     <p>A+</p>
                 </div>
             </section>
+        </div>
+    )
+}
 
-            <section>
+
+
+export const FontFamily = () => {
+    const [__] = useTranslator();
+    const readiumCSSFontID = readerConfigInitialState.font;
+    const fontListItem = fontList.find((f) => {
+        return f.id === readiumCSSFontID && f.id !== FONT_ID_VOID;
+    });
+
+    const readiumCSSFontIDToSelect = fontListItem ?
+    fontListItem.id : // readiumCSSFontID
+    FONT_ID_VOID;
+
+
+const readiumCSSFontName = fontListItem ? fontListItem.label : readiumCSSFontID;
+const readiumCSSFontPreview = (readiumCSSFontName === FONT_ID_VOID || fontListItem?.id === FONT_ID_DEFAULT) ?
+    " " : readiumCSSFontName;
+const fontFamily = fontListItem?.fontFamily ? fontListItem.fontFamily : `'${readiumCSSFontName}', serif`;
+
+const defaultFontFamily = useSelector((s: ICommonRootState) => s.reader.defaultConfig.font);
+
+    return (
+        <section>
                 <div className={stylesGlobal.heading}>
                     <h4>{__("reader.settings.font")}</h4>
                 </div>
@@ -75,7 +103,7 @@ const ReadingText = () => {
                     <Select.Trigger className={stylesSettings.select_trigger}>
                         <div>
                             <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={TextAreaIcon} /></Select.Icon>
-                            <Select.Value placeholder={readiumCSSFontIDToSelect} />
+                            <Select.Value placeholder={defaultFontFamily} />
                         </div>
                         <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={ChevronDown} /></Select.Icon>
                     </Select.Trigger>
@@ -101,8 +129,5 @@ const ReadingText = () => {
                     }}>{readiumCSSFontPreview}
                 </span>
             </section>
-        </div>
     )
 }
-
-export default ReadingText;

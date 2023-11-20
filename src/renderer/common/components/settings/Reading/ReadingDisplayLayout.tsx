@@ -9,7 +9,7 @@ import * as ScrollableIcon from "readium-desktop/renderer/assets/icons/Scrollabl
 import * as PaginatedIcon from "readium-desktop/renderer/assets/icons/paginated-icon.svg";
 
 
-const ReadingDisplay = () => {
+const ReadingDisplayLayout = () => {
     const [__] = useTranslator();
     return (
         <section>
@@ -29,4 +29,4 @@ const ReadingDisplay = () => {
         </section>
     )
 }
-export default ReadingDisplay;
+export default ReadingDisplayLayout;

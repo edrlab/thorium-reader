@@ -65,7 +65,7 @@ export interface ReaderConfigBooleans {
     ttsEnableOverlayMode: boolean;
 }
 
-export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans {
+export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, ReaderConfigStringsAdjustables {
 }
 
 // export interface BookmarkCollection {
