@@ -90,7 +90,14 @@ export default class App extends React.Component<{}, undefined> {
         const history = diLibraryGet("history"); // diRendererSymbolTable.history
         const translator = diLibraryGet("translator"); // diRendererSymbolTable.translator
 
-        const css = `
+
+        // FIXME: try a better way to import Nunito in CSS font face instead of in React render function.
+        // One possibility is to add css font in ejs html template file from webpack
+        try {
+            const nunitoFontStyleID = "nunitoFontStyleID";
+            const el = document.getElementById(nunitoFontStyleID);
+            if (!el) {
+                const css = `
         @font-face {
             font-family: "Nunito";
             font-style: normal;
@@ -100,10 +107,14 @@ export default class App extends React.Component<{}, undefined> {
         }
 
                 `;
-        const el = document.createElement("style");
-        el.setAttribute("type", "text/css");
-        el.appendChild(document.createTextNode(css));
-        document.head.appendChild(el);
+                const el = document.createElement("style");
+                el.setAttribute("type", "text/css");
+                el.appendChild(document.createTextNode(css));
+                document.head.appendChild(el);
+            }
+        } catch (e) {
+            console.error("Nunito font face error", e);
+        }
 
         return (
             <Provider store={store} >
