@@ -16,7 +16,7 @@ import {
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
-import Settings from "../settings/Settings";
+import Settings from "../../../common/components/settings/Settings";
 
 interface NavigationHeader {
     route: string;

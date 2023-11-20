@@ -1,7 +1,6 @@
 import * as React from "react";
 // import { DialogCloseButton } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
 
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 import * as Tabs from "@radix-ui/react-tabs";
@@ -12,7 +11,9 @@ import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.s
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
 import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volup-icon.svg";
 import * as ClockWiseIcon from "readium-desktop/renderer/assets/icons/clockwise-icon.svg";
-import classNames from "classnames";
+import ReadingText from "./Reading/ReadingText";
+import ReadingDisplay from "./Reading/ReadingDisplay";
+import ReadingTheme from "./Reading/ReadingTheme";
 
 // const TabTitle = (props: any) => {
 //     return (
@@ -50,18 +51,18 @@ const ReadingOptions = () => {
                         <p>{__("reader.settings.save.title")}</p>
                     </Tabs.Trigger>
                 </Tabs.List>
-                <div className={stylesSettings.settings_content}>
+                <div>
                     <Tabs.Content value="tab11" title="General">
-                        <p>This is a Test</p>
+                        <ReadingText />
                     </Tabs.Content>
                     <Tabs.Content value="tab12">
-                        <p> This is some awesome content</p>
+                       <ReadingTheme />
+                       <ReadingDisplay />
                     </Tabs.Content>
                     <Tabs.Content value="tab13">
                         <p>Go on, keep testing</p>
                     </Tabs.Content>
                     <Tabs.Content value="tab14">
-                        <p>We never know..</p>
                     </Tabs.Content>
                     <Tabs.Content value="tab15">
                         <p>Maybe something is bro..</p>

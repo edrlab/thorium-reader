@@ -56,14 +56,16 @@ $setting_color: rgba(58, 0, 229, 1);
     width: 100%;
     flex: 1;
     border-bottom: 1px solid var(--color-medium-grey);
+    margin-bottom: 20px;
     button {
     transition: 200ms;
-    width: 80%;
     height: 100%;
+    min-width: 100px;
     gap: 10px;
     margin: 0 !important;
     border-bottom: 1px solid transparent;
     font-weight: normal;
+    flex-direction: column;
         &:hover {
             background-color: var(--color-medium-grey);
         }
@@ -74,6 +76,7 @@ $setting_color: rgba(58, 0, 229, 1);
             border-bottom: 2px solid $setting_color;
             svg {
                 width: 30px;
+                height: 30px;
             }
         }
         &:focus {
@@ -81,10 +84,11 @@ $setting_color: rgba(58, 0, 229, 1);
             }
         svg {
             width: 25px;
+            height: 25px;
             transition: 200ms linear;
         }
         p {
-            margin: 10px;
+            margin: 5px;
         }
     }
 }
@@ -99,7 +103,12 @@ $setting_color: rgba(58, 0, 229, 1);
     &_container {
     margin: 35px;
     &_reading{
-        margin: 0 35px;
+        margin: 0 20px;
+        h4 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
     }
     h4 {
         margin: 0;
@@ -111,14 +120,21 @@ $setting_color: rgba(58, 0, 229, 1);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: 10px 35px;
+        margin: 30px 35px 10px;
+        font-size: 16px;
         button {
             border: 1px solid $setting_color;
             background-color: $settings_bg;
             border-radius: 50%;
+            position: relative;
             svg {
+                position: absolute;
+                transform: translate(-50%,-50%);
+                left: 50%;
+                top: 50%;
                 fill: $setting_color;
                 width: 25px;
+                height: 25px;
             }
         }
     }
@@ -161,12 +177,61 @@ $setting_color: rgba(58, 0, 229, 1);
         }
     }
     &_content {
+        background-color: black;
         overflow: hidden;
         background-color: rgb(255, 255, 255);
         border-radius: 4px;
-        z-index:200;
+        z-index:10001;
         border: 1px solid var(--color-medium-grey);
         width: 400px;
         max-height: 300px;
+    }
+}
+
+
+.settings_reading {
+    &_text {
+        font-size: 14px;
+        input[type="range"] {
+            width: 200px;
+        }
+        .label_fontSize, .label_fontFamily {
+            margin: 10px 0 20px 0;
+        }
+        select.form_group {
+            height: 30px !important;
+            width: 300px;
+        }
+    }
+}
+
+.label_fontSize {
+    .size_range {
+        display: flex;
+    }
+}
+
+.display_options {
+    display: flex;
+    font-size: 14px;
+    svg {
+        width: 30px;
+        height: 30px;
+    }
+    &_item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        padding-top: 5px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        transition: 200ms linear;
+        &:hover {
+            border: 1px solid $setting_color;
+            background-color: $settings_bg;
+            cursor: pointer;
+        }
     }
 }

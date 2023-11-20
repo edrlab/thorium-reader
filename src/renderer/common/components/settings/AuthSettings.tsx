@@ -17,7 +17,7 @@ import {
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import SVG from "../../../common/components/SVG";
+import SVG from "../SVG";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/bin-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

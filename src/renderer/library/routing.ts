@@ -15,7 +15,7 @@ import Opds from "./components/opds/Opds";
 import AllPublicationPage from "./components/searchResult/AllPublicationPage";
 import TagSearchResult from "./components/searchResult/TagSearchResult";
 import TextSearchResult from "./components/searchResult/TextSearchResult";
-import Settings from "./components/settings/Settings";
+import Settings from "../common/components/settings/Settings";
 
 interface Route {
     path: string;

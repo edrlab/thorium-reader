@@ -37,7 +37,7 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
-import SVG from "../../../common/components/SVG";
+import SVG from "../SVG";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
