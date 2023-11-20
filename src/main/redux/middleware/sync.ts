@@ -59,6 +59,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     catalogActions.setCatalog.ID, // send new catalogView to library
     catalogActions.setTagView.ID,
+
+    readerActions.configSetDefault.ID, // readerConfig
 ];
 
 export const reduxSyncMiddleware: Middleware
