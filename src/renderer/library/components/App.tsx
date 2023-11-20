@@ -30,6 +30,7 @@ import { toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
+import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -88,6 +89,32 @@ export default class App extends React.Component<{}, undefined> {
         const store = diLibraryGet("store"); // diRendererSymbolTable.store
         const history = diLibraryGet("history"); // diRendererSymbolTable.history
         const translator = diLibraryGet("translator"); // diRendererSymbolTable.translator
+
+
+        // FIXME: try a better way to import Nunito in CSS font face instead of in React render function.
+        // One possibility is to add css font in ejs html template file from webpack
+        try {
+            const nunitoFontStyleID = "nunitoFontStyleID";
+            const el = document.getElementById(nunitoFontStyleID);
+            if (!el) {
+                const css = `
+        @font-face {
+            font-family: "Nunito";
+            font-style: normal;
+            font-weight: normal;
+            src: local("Nunito"),
+            url("${Nunito}") format("truetype");
+        }
+
+                `;
+                const el = document.createElement("style");
+                el.setAttribute("type", "text/css");
+                el.appendChild(document.createTextNode(css));
+                document.head.appendChild(el);
+            }
+        } catch (e) {
+            console.error("Nunito font face error", e);
+        }
 
         return (
             <Provider store={store} >
