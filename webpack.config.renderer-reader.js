@@ -294,6 +294,11 @@ let config = Object.assign(
                     test: /\.svg$/,
                 },
                 {
+                    test: /\.ttf$/,
+                    type: "asset/resource",
+                },
+                // useful ?
+                {
                     exclude: /src/,
                     // loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
                     // type: 'javascript/auto',
