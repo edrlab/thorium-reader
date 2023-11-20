@@ -297,7 +297,7 @@ let config = Object.assign(
                     test: /\.ttf$/,
                     type: "asset/resource",
                 },
-                // useful ? 
+                // useful ?
                 {
                     exclude: /src/,
                     // loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
