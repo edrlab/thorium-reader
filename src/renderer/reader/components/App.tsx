@@ -17,7 +17,7 @@ import ToastManager from "readium-desktop/renderer/common/components/toast/Toast
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import DialogManager from "readium-desktop/renderer/reader/components/dialog/DialogManager";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
-import Nunito from "readium-desktop/renderer/assets/fonts/Nunito.ttf";
+import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
 
 import Reader from "./Reader";
 

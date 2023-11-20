@@ -30,7 +30,7 @@ import { toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
-import Nunito from "readium-desktop/renderer/assets/fonts/Nunito.ttf";
+import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
 
 export default class App extends React.Component<{}, undefined> {
 
