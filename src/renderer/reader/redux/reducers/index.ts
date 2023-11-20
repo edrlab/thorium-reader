@@ -31,6 +31,7 @@ import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueu
 import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeReducer";
 import { readerDivinaReducer } from "./divina";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
+import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
@@ -38,6 +39,7 @@ export const rootReducer = () => {
         api: apiReducer,
         i18n: i18nReducer,
         reader: combineReducers<IReaderStateReader>({ // dehydrated from main process registry (preloaded state)
+            defaultConfig: readerDefaultConfigReducer,
             config: readerConfigReducer,
             info: readerInfoReducer,
             locator: readerLocatorReducer,
