@@ -124,9 +124,9 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         if (isDivina) {
 
             sections.push({
-                    title: __("reader.settings.disposition.title"),
-                    content: this.divinaSetReadingMode(),
-                });
+                title: __("reader.settings.disposition.title"),
+                content: this.divinaSetReadingMode(),
+            });
         }
 
         if (isEpub) {
@@ -135,18 +135,18 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 {
                     title: __("reader.settings.theme.title"),
                     content: <ThemeContent
-                    readerConfig={this.props.readerConfig}
-                    setSettings={this.props.setSettings}
+                        readerConfig={this.props.readerConfig}
+                        setSettings={this.props.setSettings}
                     />,
                 },
                 {
                     title: __("reader.settings.text"),
-                    content: <TextContent 
-                    readerConfig={this.props.readerConfig} 
-                    indexes={this.props.indexes}
-                    handleIndexChange={this.props.handleIndexChange}
-                    handleSettingChange={this.props.handleSettingChange}
-                     />,
+                    content: <TextContent
+                        readerConfig={this.props.readerConfig}
+                        indexes={this.props.indexes}
+                        handleIndexChange={this.props.handleIndexChange}
+                        handleSettingChange={this.props.handleSettingChange}
+                    />,
                 },
             );
         }
@@ -156,9 +156,9 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 {
                     title: __("reader.settings.display"),
                     content: <DisplayContent
-                    readerConfig={this.props.readerConfig}
-                    handleSettingChange={this.props.handleSettingChange}
-                    setSettings={this.props.setSettings} />,
+                        readerConfig={this.props.readerConfig}
+                        handleSettingChange={this.props.handleSettingChange}
+                        setSettings={this.props.setSettings} />,
                 },
             );
 
@@ -179,20 +179,20 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 {
                     title: __("reader.settings.spacing"),
                     content: <SpacingContent
-                    readerConfig={this.props.readerConfig}
-                    indexes={this.props.indexes}
-                    handleIndexChange={this.props.handleIndexChange} />,
+                        readerConfig={this.props.readerConfig}
+                        indexes={this.props.indexes}
+                        handleIndexChange={this.props.handleIndexChange} />,
                 },
                 {
                     title: __("reader.media-overlays.title"),
                     content: <MediaOverlays
-                    readerConfig={this.props.readerConfig}
-                    setSettings={this.props.setSettings} />,
+                        readerConfig={this.props.readerConfig}
+                        setSettings={this.props.setSettings} />,
                 },
                 {
                     title: __("reader.settings.save.title"),
                     content: <SaveConfig
-                    setDefaultConfig={this.props.setDefaultConfig} />,
+                        setDefaultConfig={this.props.setDefaultConfig} />,
                 },
             );
         }
@@ -248,7 +248,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 <button
                     onClick={() => this.props.setDefaultConfig(readerConfig)}
                     aria-hidden={false}
-                    // className={className}
+                // className={className}
                 >
                     {
                         __("reader.settings.save.apply")
@@ -257,7 +257,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                 <button
                     onClick={() => this.props.setDefaultConfig()}
                     aria-hidden={false}
-                    // className={className}
+                // className={className}
                 >
                     {
                         __("reader.settings.save.reset")
@@ -327,7 +327,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         htmlFor={"radio-" + "double"}
                     >
                         {this.props.divinaReadingMode === "double" && <SVG svg={DoneIcon} ariaHidden />}
-                        { "double" }
+                        {"double"}
                     </label>
                 </div>
                 <div>
@@ -345,7 +345,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         aria-disabled={!this.props.divinaReadingModeSupported.includes("guided")}
                         htmlFor={"radio-" + "guided"}
                     >
-                        {this.props.divinaReadingMode === "guided" && <SVG svg={DoneIcon} ariaHidden/>}
+                        {this.props.divinaReadingMode === "guided" && <SVG svg={DoneIcon} ariaHidden />}
                         {"guided"}
                     </label>
                 </div>
@@ -364,7 +364,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         aria-disabled={!this.props.divinaReadingModeSupported.includes("scroll")}
                         htmlFor={"radio-" + "scroll"}
                     >
-                        {this.props.divinaReadingMode === "scroll" && <SVG svg={DoneIcon} ariaHidden/>}
+                        {this.props.divinaReadingMode === "scroll" && <SVG svg={DoneIcon} ariaHidden />}
                         {"scroll"}
                     </label>
                 </div>
@@ -384,7 +384,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         htmlFor={"radio-" + "single"}
                     >
                         {this.props.divinaReadingMode === "single" && <SVG svg={DoneIcon} ariaHidden />}
-                        { "single" }
+                        {"single"}
                     </label>
                 </div>
             </div>
@@ -397,33 +397,33 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         const inputComponent = (scale: IPdfPlayerScale, disabled = false) => {
             return <div>
-                    <input
-                        id={"radio-" + `${scale}`}
-                        type="radio"
-                        name="pdfZoomRadios"
-                        onChange={() => this.props.pdfEventBus.dispatch("scale", scale)}
-                        checked={this.state.pdfScale === scale}
-                        disabled={disabled}
-                    />
-                    <label
-                        aria-disabled={disabled}
-                        htmlFor={"radio-" + `${scale}`}
-                    >
-                        {this.state.pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
-                        {
+                <input
+                    id={"radio-" + `${scale}`}
+                    type="radio"
+                    name="pdfZoomRadios"
+                    onChange={() => this.props.pdfEventBus.dispatch("scale", scale)}
+                    checked={this.state.pdfScale === scale}
+                    disabled={disabled}
+                />
+                <label
+                    aria-disabled={disabled}
+                    htmlFor={"radio-" + `${scale}`}
+                >
+                    {this.state.pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
+                    {
                         scale === 50 ? __("reader.settings.pdfZoom.name.50pct") :
-                        (scale === 100 ? __("reader.settings.pdfZoom.name.100pct") :
-                        (scale === 150 ? __("reader.settings.pdfZoom.name.150pct") :
-                        (scale === 200 ? __("reader.settings.pdfZoom.name.200pct") :
-                        (scale === 300 ? __("reader.settings.pdfZoom.name.300pct") :
-                        (scale === 500 ? __("reader.settings.pdfZoom.name.500pct") :
-                        (scale === "page-fit" ? __("reader.settings.pdfZoom.name.fit") :
-                        (scale === "page-width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
+                            (scale === 100 ? __("reader.settings.pdfZoom.name.100pct") :
+                                (scale === 150 ? __("reader.settings.pdfZoom.name.150pct") :
+                                    (scale === 200 ? __("reader.settings.pdfZoom.name.200pct") :
+                                        (scale === 300 ? __("reader.settings.pdfZoom.name.300pct") :
+                                            (scale === 500 ? __("reader.settings.pdfZoom.name.500pct") :
+                                                (scale === "page-fit" ? __("reader.settings.pdfZoom.name.fit") :
+                                                    (scale === "page-width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
                         // --("reader.settings.pdfZoom.name." + scale as any)
-                        }
-                    </label>
-                </div>;
-                // TODO string inference typescript 4.1
+                    }
+                </label>
+            </div>;
+            // TODO string inference typescript 4.1
         };
 
         return (
@@ -489,7 +489,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     }
 
     private textContent() {
-        const {__, readerConfig} = this.props;
+        const { __, readerConfig } = this.props;
 
         // TODO: https://github.com/rBurgett/system-font-families
         const readiumCSSFontID = readerConfig.font;
@@ -509,7 +509,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             <div className={stylesReader.line_tab_content}>
                 <div id="label_fontSize" className={stylesReader.subheading}>{__("reader.settings.fontSize")}</div>
                 <div className={stylesReader.center_in_tab}>
-                    <span className={stylesReader.slider_marker} style={{fontSize: "150%"}}>a</span>
+                    <span className={stylesReader.slider_marker} style={{ fontSize: "150%" }}>a</span>
                     <input
                         type="range"
                         aria-labelledby="label_fontSize"
@@ -522,7 +522,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         aria-valuemax={optionsValues.fontSize.length - 1}
                         aria-valuenow={this.props.indexes.fontSize}
                     />
-                    <span className={stylesReader.slider_marker} style={{fontSize: "250%"}}>a</span>
+                    <span className={stylesReader.slider_marker} style={{ fontSize: "250%" }}>a</span>
 
                     <span className={stylesReader.reader_settings_value}>
                         {readerConfig.fontSize}
@@ -531,7 +531,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
             </div>
             <div className={stylesReader.line_tab_content}>
                 <div id="fontLabel" className={stylesReader.subheading}>{__("reader.settings.font")}</div>
-                <div className={stylesReader.center_in_tab} style={{flexDirection: "column"}}>
+                <div className={stylesReader.center_in_tab} style={{ flexDirection: "column" }}>
                     <div style={{
                         display: "flex",
                         flexDirection: "row",
@@ -540,66 +540,66 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         justifyContent: "center",
                         alignItems: "center",
                     }}>
-                    <select
-                        title={__("reader.settings.font")}
-                        style={{
-                            width: fontListItem ? "fit-content" : "4em",
-                        }}
-                        onChange={(e) => {
-                            this.props.handleSettingChange(e, "font");
-                        }}
-                        value={readiumCSSFontIDToSelect}
-                    >
-                        {fontList.map((font: Font, id: number) => {
-                            return (
-                                <option
-                                    key={id}
-                                    value={font.id}
-                                >
-                                    {font.label}
-                                </option>
-                            );
-                        })}
-                    </select>
-                    {
-                        !fontListItem &&
-                        <input
-                            style={{width: "10em", marginLeft: "1em"}}
-                            id="fontInput"
-                            aria-labelledby="fontLabel"
-                            type="text"
+                        <select
+                            title={__("reader.settings.font")}
+                            style={{
+                                width: fontListItem ? "fit-content" : "4em",
+                            }}
                             onChange={(e) => {
-                                let val = e.target?.value ? e.target.value.trim() : null;
-                                if (!val) { // includes empty string (falsy)
-                                    val = undefined;
-                                } else {
-                                    // a"b:c    ;d;<e>f'g&h
-                                    val = val.
-                                        replace(/\t/g, "").
-                                        replace(/"/g, "").
-                                        replace(/:/g, "").
-                                        replace(/'/g, "").
-                                        replace(/;/g, "").
-                                        replace(/</g, "").
-                                        replace(/>/g, "").
-                                        replace(/\\/g, "").
-                                        replace(/\//g, "").
-                                        replace(/&/g, "").
-                                        replace(/\n/g, " ").
-                                        replace(/\s\s+/g, " ");
+                                this.props.handleSettingChange(e, "font");
+                            }}
+                            value={readiumCSSFontIDToSelect}
+                        >
+                            {fontList.map((font: Font, id: number) => {
+                                return (
+                                    <option
+                                        key={id}
+                                        value={font.id}
+                                    >
+                                        {font.label}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                        {
+                            !fontListItem &&
+                            <input
+                                style={{ width: "10em", marginLeft: "1em" }}
+                                id="fontInput"
+                                aria-labelledby="fontLabel"
+                                type="text"
+                                onChange={(e) => {
+                                    let val = e.target?.value ? e.target.value.trim() : null;
                                     if (!val) { // includes empty string (falsy)
                                         val = undefined;
+                                    } else {
+                                        // a"b:c    ;d;<e>f'g&h
+                                        val = val.
+                                            replace(/\t/g, "").
+                                            replace(/"/g, "").
+                                            replace(/:/g, "").
+                                            replace(/'/g, "").
+                                            replace(/;/g, "").
+                                            replace(/</g, "").
+                                            replace(/>/g, "").
+                                            replace(/\\/g, "").
+                                            replace(/\//g, "").
+                                            replace(/&/g, "").
+                                            replace(/\n/g, " ").
+                                            replace(/\s\s+/g, " ");
+                                        if (!val) { // includes empty string (falsy)
+                                            val = undefined;
+                                        }
                                     }
-                                }
-                                this.handleSettingChangeDebounced(
-                                    undefined, // e
-                                    "font",
-                                    val);
-                            }}
-                            placeholder={readiumCSSFontPreview ?? __("reader.settings.font")}
-                            alt={readiumCSSFontPreview ?? __("reader.settings.font")}
-                        />
-                    }
+                                    this.handleSettingChangeDebounced(
+                                        undefined, // e
+                                        "font",
+                                        val);
+                                }}
+                                placeholder={readiumCSSFontPreview ?? __("reader.settings.font")}
+                                alt={readiumCSSFontPreview ?? __("reader.settings.font")}
+                            />
+                        }
                     </div>
                     <span
                         aria-hidden
@@ -617,7 +617,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
     }
 
     private displayContent() {
-        const {__, readerConfig, isPdf} = this.props;
+        const { __, readerConfig, isPdf } = this.props;
 
         return <>
             {

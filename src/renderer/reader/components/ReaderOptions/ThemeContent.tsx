@@ -12,8 +12,8 @@ enum themeType {
 }
 
 const ThemeContent = (props: any) => {
-    const {readerConfig } = props;
-    const [ __ ] = useTranslator();
+    const { readerConfig } = props;
+    const [__] = useTranslator();
     const withoutTheme = !readerConfig.sepia && !readerConfig.night;
 
     const handleChooseTheme = (theme: themeType) => {
@@ -35,8 +35,8 @@ const ThemeContent = (props: any) => {
         readerConfig.night = night;
 
         props.setSettings(readerConfig);
-    }
-      
+    };
+
     return (
         <div id={stylesReader.themes_list} role="radiogroup" aria-label={__("reader.settings.theme.title")}>
             <div>

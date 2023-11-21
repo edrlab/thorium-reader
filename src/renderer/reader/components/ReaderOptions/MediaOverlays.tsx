@@ -12,14 +12,14 @@ const MediaOverlays = (props: any) => {
 
         readerConfig.mediaOverlaysEnableSkippability = !readerConfig.mediaOverlaysEnableSkippability;
         props.setSettings(readerConfig);
-    }
+    };
     const toggleTTSEnableSentenceDetection = () => {
         // TODO: smarter clone?
         const readerConfig = JSON.parse(JSON.stringify(props.readerConfig));
 
         readerConfig.ttsEnableSentenceDetection = !readerConfig.ttsEnableSentenceDetection;
         props.setSettings(readerConfig);
-    }
+    };
     const toggleMediaOverlaysEnableCaptionsMode = () => {
         // TODO: smarter clone?
         const readerConfig = JSON.parse(JSON.stringify(props.readerConfig));
@@ -30,7 +30,7 @@ const MediaOverlays = (props: any) => {
         readerConfig.ttsEnableOverlayMode = !readerConfig.ttsEnableOverlayMode;
 
         props.setSettings(readerConfig);
-    }
+    };
 
     return (<>
         <div className={stylesReader.mathml_section}>
@@ -67,6 +67,6 @@ const MediaOverlays = (props: any) => {
             }</label>
         </div>
     </>);
-}
+};
 
 export default MediaOverlays;

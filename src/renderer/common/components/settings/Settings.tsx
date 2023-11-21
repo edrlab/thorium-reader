@@ -52,8 +52,8 @@ const TabTitle = (props: any) => {
             <h2>{props.title}</h2>
             <DialogCloseButton />
         </div>
-    )
-}
+    );
+};
 
 class Settings extends React.Component<IProps, undefined> {
 
@@ -64,52 +64,52 @@ class Settings extends React.Component<IProps, undefined> {
                 <DialogWithRadixTrigger asChild>
                     <button
                         className={stylesButtons.button_transparency_icon}
-                        style={{border: "none", marginRight: "60px"}}
+                        style={{ border: "none", marginRight: "60px" }}
                     >
                         <SVG ariaHidden={true} svg={GearIcon} />
                     </button>
                 </DialogWithRadixTrigger>
                 <DialogWithRadixContent>
-                        <Tabs.Root defaultValue="tab1" data-orientation="vertical" className={stylesSettings.settings_container}>
-                            <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
-                                <Tabs.Trigger value="tab1">
-                                    <SVG ariaHidden svg={CogIcon}/>
-                                    <p>{__("settings.tabs.general")}</p>
-                                    </Tabs.Trigger>
-                                <Tabs.Trigger value="tab2">
-                                    <SVG ariaHidden svg={PaletteIcon}/>
-                                    <p>{__("settings.tabs.appearance")}</p>
-                                </Tabs.Trigger>
-                                <Tabs.Trigger value="tab3">
-                                    <SVG ariaHidden svg={ReadingIcon}/>
-                                    <p>{__("settings.tabs.reading")}</p>
-                                    </Tabs.Trigger>
-                                <Tabs.Trigger value="tab4">
-                                    <SVG ariaHidden svg={KeyReturnIcon} />
-                                    <p>{__("settings.tabs.keyboardShortcuts")}</p>
-                                </Tabs.Trigger>
-                            </Tabs.List>
-                            <div className={stylesSettings.settings_content}>
-                                <Tabs.Content value="tab1" title="General">
-                                    <TabTitle title={__("settings.tabs.general")} />
-                                    <LanguageSettings />
-                                    <SessionSettings />
-                                    <AuthSettings />
-                                </Tabs.Content>
-                                <Tabs.Content value="tab2">
-                                    <TabTitle title={__("settings.tabs.appearance")} />
-                                    <Themes />
-                                </Tabs.Content>
-                                <Tabs.Content value="tab3">
-                                    <TabTitle title={__("settings.tabs.reading")} />
-                                    <ReadingOptions />
-                                </Tabs.Content>
-                                <Tabs.Content value="tab4">
-                                    <TabTitle title={__("settings.tabs.keyboardShortcuts")} />
-                                    <KeyboardSettings />
-                                </Tabs.Content>
-                            </div>
-                        </Tabs.Root>
+                    <Tabs.Root defaultValue="tab1" data-orientation="vertical" className={stylesSettings.settings_container}>
+                        <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
+                            <Tabs.Trigger value="tab1">
+                                <SVG ariaHidden svg={CogIcon} />
+                                <p>{__("settings.tabs.general")}</p>
+                            </Tabs.Trigger>
+                            <Tabs.Trigger value="tab2">
+                                <SVG ariaHidden svg={PaletteIcon} />
+                                <p>{__("settings.tabs.appearance")}</p>
+                            </Tabs.Trigger>
+                            <Tabs.Trigger value="tab3">
+                                <SVG ariaHidden svg={ReadingIcon} />
+                                <p>{__("settings.tabs.reading")}</p>
+                            </Tabs.Trigger>
+                            <Tabs.Trigger value="tab4">
+                                <SVG ariaHidden svg={KeyReturnIcon} />
+                                <p>{__("settings.tabs.keyboardShortcuts")}</p>
+                            </Tabs.Trigger>
+                        </Tabs.List>
+                        <div className={stylesSettings.settings_content}>
+                            <Tabs.Content value="tab1" title="General">
+                                <TabTitle title={__("settings.tabs.general")} />
+                                <LanguageSettings />
+                                <SessionSettings />
+                                <AuthSettings />
+                            </Tabs.Content>
+                            <Tabs.Content value="tab2">
+                                <TabTitle title={__("settings.tabs.appearance")} />
+                                <Themes />
+                            </Tabs.Content>
+                            <Tabs.Content value="tab3">
+                                <TabTitle title={__("settings.tabs.reading")} />
+                                <ReadingOptions />
+                            </Tabs.Content>
+                            <Tabs.Content value="tab4">
+                                <TabTitle title={__("settings.tabs.keyboardShortcuts")} />
+                                <KeyboardSettings />
+                            </Tabs.Content>
+                        </div>
+                    </Tabs.Root>
                 </DialogWithRadixContent>
             </DialogWithRadix>
         );

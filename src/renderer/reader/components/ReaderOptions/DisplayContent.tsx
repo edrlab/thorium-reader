@@ -29,7 +29,7 @@ interface DisplayContentProps {
 }
 
 const DisplayContent: React.FC<DisplayContentProps> = (props: any) => {
-    const { readerConfig, isPdf} = props;
+    const { readerConfig, isPdf } = props;
     const [__] = useTranslator();
     const [pdfView, setPdfView] = React.useState<IPdfPlayerView | undefined>(undefined);
     const [pdfCol, setPdfCol] = React.useState<IPdfPlayerColumn | undefined>(undefined);
@@ -45,7 +45,7 @@ const DisplayContent: React.FC<DisplayContentProps> = (props: any) => {
         }
         props.setSettings(readerConfig);
         setPdfView(readerConfig.enableMathJax ? "scrolled" : "paginated");
-    }
+    };
 
     const toggleReduceMotion = () => {
         // TODO: smarter clone?
@@ -54,7 +54,7 @@ const DisplayContent: React.FC<DisplayContentProps> = (props: any) => {
         readerConfig.reduceMotion = !readerConfig.reduceMotion;
         props.setSettings(readerConfig);
         setPdfCol(readerConfig.reduceMotion ? "1" : "2");
-    }
+    };
 
     const toggleNoFootnotes = () => {
         // TODO: smarter clone?
@@ -62,7 +62,7 @@ const DisplayContent: React.FC<DisplayContentProps> = (props: any) => {
 
         readerConfig.noFootnotes = !readerConfig.noFootnotes;
         props.setSettings(readerConfig);
-    }
+    };
 
     const getButtonClassName = (
         propertyName: keyof ReaderConfig,
@@ -77,7 +77,7 @@ const DisplayContent: React.FC<DisplayContentProps> = (props: any) => {
             classname = stylesReader.notUsed;
         }
         return classNames(classname, additionalClassName);
-    }
+    };
 
     const getButtonClassNamePdf = (
         test: boolean,
@@ -90,7 +90,7 @@ const DisplayContent: React.FC<DisplayContentProps> = (props: any) => {
             classname = stylesReader.notUsed;
         }
         return classNames(classname, additionalClassName);
-    }
+    };
 
     return <>
         {
@@ -316,6 +316,6 @@ const DisplayContent: React.FC<DisplayContentProps> = (props: any) => {
             </div>
         </div>
     </>;
-}
+};
 
 export default DisplayContent;

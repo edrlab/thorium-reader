@@ -15,7 +15,7 @@ const SaveConfig = (props: any) => {
             <button
                 onClick={() => props.setDefaultConfig(readerConfig)}
                 aria-hidden={false}
-                // className={className}
+            // className={className}
             >
                 {
                     __("reader.settings.save.apply")
@@ -24,7 +24,7 @@ const SaveConfig = (props: any) => {
             <button
                 onClick={() => props.setDefaultConfig()}
                 aria-hidden={false}
-                // className={className}
+            // className={className}
             >
                 {
                     __("reader.settings.save.reset")
@@ -32,6 +32,6 @@ const SaveConfig = (props: any) => {
             </button>
         </div>
     );
-}
+};
 
 export default SaveConfig;

@@ -9,7 +9,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 type ThandleSettingChange = IReaderOptionsProps["handleSettingChange"];
 
 const TextContent = (props: any) => {
-    const { readerConfig} = props;
+    const { readerConfig } = props;
     const [__] = useTranslator();
 
     let handleSettingChangeDebounced: ThandleSettingChange;
@@ -32,7 +32,7 @@ const TextContent = (props: any) => {
         <div className={stylesReader.line_tab_content}>
             <div id="label_fontSize" className={stylesReader.subheading}>{__("reader.settings.fontSize")}</div>
             <div className={stylesReader.center_in_tab}>
-                <span className={stylesReader.slider_marker} style={{fontSize: "150%"}}>a</span>
+                <span className={stylesReader.slider_marker} style={{ fontSize: "150%" }}>a</span>
                 <input
                     type="range"
                     aria-labelledby="label_fontSize"
@@ -45,7 +45,7 @@ const TextContent = (props: any) => {
                     aria-valuemax={optionsValues.fontSize.length - 1}
                     aria-valuenow={props.indexes.fontSize}
                 />
-                <span className={stylesReader.slider_marker} style={{fontSize: "250%"}}>a</span>
+                <span className={stylesReader.slider_marker} style={{ fontSize: "250%" }}>a</span>
 
                 <span className={stylesReader.reader_settings_value}>
                     {readerConfig.fontSize}
@@ -54,7 +54,7 @@ const TextContent = (props: any) => {
         </div>
         <div className={stylesReader.line_tab_content}>
             <div id="fontLabel" className={stylesReader.subheading}>{__("reader.settings.font")}</div>
-            <div className={stylesReader.center_in_tab} style={{flexDirection: "column"}}>
+            <div className={stylesReader.center_in_tab} style={{ flexDirection: "column" }}>
                 <div style={{
                     display: "flex",
                     flexDirection: "row",
@@ -63,66 +63,66 @@ const TextContent = (props: any) => {
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
-                <select
-                    title={__("reader.settings.font")}
-                    style={{
-                        width: fontListItem ? "fit-content" : "4em",
-                    }}
-                    onChange={(e) => {
-                        props.handleSettingChange(e, "font");
-                    }}
-                    value={readiumCSSFontIDToSelect}
-                >
-                    {fontList.map((font: Font, id: number) => {
-                        return (
-                            <option
-                                key={id}
-                                value={font.id}
-                            >
-                                {font.label}
-                            </option>
-                        );
-                    })}
-                </select>
-                {
-                    !fontListItem &&
-                    <input
-                        style={{width: "10em", marginLeft: "1em"}}
-                        id="fontInput"
-                        aria-labelledby="fontLabel"
-                        type="text"
+                    <select
+                        title={__("reader.settings.font")}
+                        style={{
+                            width: fontListItem ? "fit-content" : "4em",
+                        }}
                         onChange={(e) => {
-                            let val = e.target?.value ? e.target.value.trim() : null;
-                            if (!val) { // includes empty string (falsy)
-                                val = undefined;
-                            } else {
-                                // a"b:c    ;d;<e>f'g&h
-                                val = val.
-                                    replace(/\t/g, "").
-                                    replace(/"/g, "").
-                                    replace(/:/g, "").
-                                    replace(/'/g, "").
-                                    replace(/;/g, "").
-                                    replace(/</g, "").
-                                    replace(/>/g, "").
-                                    replace(/\\/g, "").
-                                    replace(/\//g, "").
-                                    replace(/&/g, "").
-                                    replace(/\n/g, " ").
-                                    replace(/\s\s+/g, " ");
+                            props.handleSettingChange(e, "font");
+                        }}
+                        value={readiumCSSFontIDToSelect}
+                    >
+                        {fontList.map((font: Font, id: number) => {
+                            return (
+                                <option
+                                    key={id}
+                                    value={font.id}
+                                >
+                                    {font.label}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    {
+                        !fontListItem &&
+                        <input
+                            style={{ width: "10em", marginLeft: "1em" }}
+                            id="fontInput"
+                            aria-labelledby="fontLabel"
+                            type="text"
+                            onChange={(e) => {
+                                let val = e.target?.value ? e.target.value.trim() : null;
                                 if (!val) { // includes empty string (falsy)
                                     val = undefined;
+                                } else {
+                                    // a"b:c    ;d;<e>f'g&h
+                                    val = val.
+                                        replace(/\t/g, "").
+                                        replace(/"/g, "").
+                                        replace(/:/g, "").
+                                        replace(/'/g, "").
+                                        replace(/;/g, "").
+                                        replace(/</g, "").
+                                        replace(/>/g, "").
+                                        replace(/\\/g, "").
+                                        replace(/\//g, "").
+                                        replace(/&/g, "").
+                                        replace(/\n/g, " ").
+                                        replace(/\s\s+/g, " ");
+                                    if (!val) { // includes empty string (falsy)
+                                        val = undefined;
+                                    }
                                 }
-                            }
-                            handleSettingChangeDebounced(
-                                undefined, // e
-                                "font",
-                                val);
-                        }}
-                        placeholder={readiumCSSFontPreview ?? __("reader.settings.font")}
-                        alt={readiumCSSFontPreview ?? __("reader.settings.font")}
-                    />
-                }
+                                handleSettingChangeDebounced(
+                                    undefined, // e
+                                    "font",
+                                    val);
+                            }}
+                            placeholder={readiumCSSFontPreview ?? __("reader.settings.font")}
+                            alt={readiumCSSFontPreview ?? __("reader.settings.font")}
+                        />
+                    }
                 </div>
                 <span
                     aria-hidden
@@ -137,6 +137,6 @@ const TextContent = (props: any) => {
             </div>
         </div>
     </>;
-}
+};
 
-export default TextContent; 
+export default TextContent;

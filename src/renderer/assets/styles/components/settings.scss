@@ -3,7 +3,7 @@ $setting_color: rgba(58, 0, 229, 1);
 
 .settings_container {
     display: flex;
-    height: 570px;
+    height: calc(100vh - 300px);
 }
 
 .settings_tabslist {
@@ -214,6 +214,13 @@ $setting_color: rgba(58, 0, 229, 1);
 .display_options {
     display: flex;
     font-size: 14px;
+    input {
+        display: none;
+        &:checked + label {
+            border: 1px solid $setting_color;
+            background-color: $settings_bg;
+        }
+    }
     svg {
         width: 30px;
         height: 30px;
@@ -234,4 +241,55 @@ $setting_color: rgba(58, 0, 229, 1);
             cursor: pointer;
         }
     }
+}
+
+.settings_font{
+    &_container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        &:hover {
+            border: none transparent;
+            box-shadow: none;
+        }
+        > svg {
+            position: absolute;
+            left: 10px;
+            width: 24px;
+            height: 24px;
+        }
+    }
+    &_selection {
+    padding: 0 0 0 35px;
+    border: 1px solid var(--color-primary);
+    border-radius: 4px;
+    min-width: 400px;
+    > div {
+        width: 100%;
+        border: none;
+        margin-right: 0;
+        &:hover {
+            border: none transparent;
+            box-shadow: none;
+        }
+        }
+        .css-1fdsijx-ValueContainer {
+            padding: 0;
+        }
+        .css-qbdosj-Input input {
+            width: 300px!important;
+        }
+        .css-1nmdiq5-menu {
+            left: 0;
+        }
+    }
+}
+
+.maths_options {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 5px;
 }

@@ -24,7 +24,7 @@ const DivinaSetReadingMode = (props: any) => {
                     htmlFor={"radio-" + "double"}
                 >
                     {props.divinaReadingMode === "double" && <SVG svg={DoneIcon} ariaHidden />}
-                    { "double" }
+                    {"double"}
                 </label>
             </div>
             <div>
@@ -42,7 +42,7 @@ const DivinaSetReadingMode = (props: any) => {
                     aria-disabled={!props.divinaReadingModeSupported.includes("guided")}
                     htmlFor={"radio-" + "guided"}
                 >
-                    {props.divinaReadingMode === "guided" && <SVG svg={DoneIcon} ariaHidden/>}
+                    {props.divinaReadingMode === "guided" && <SVG svg={DoneIcon} ariaHidden />}
                     {"guided"}
                 </label>
             </div>
@@ -61,7 +61,7 @@ const DivinaSetReadingMode = (props: any) => {
                     aria-disabled={!props.divinaReadingModeSupported.includes("scroll")}
                     htmlFor={"radio-" + "scroll"}
                 >
-                    {props.divinaReadingMode === "scroll" && <SVG svg={DoneIcon} ariaHidden/>}
+                    {props.divinaReadingMode === "scroll" && <SVG svg={DoneIcon} ariaHidden />}
                     {"scroll"}
                 </label>
             </div>
@@ -81,11 +81,11 @@ const DivinaSetReadingMode = (props: any) => {
                     htmlFor={"radio-" + "single"}
                 >
                     {props.divinaReadingMode === "single" && <SVG svg={DoneIcon} ariaHidden />}
-                    { "single" }
+                    {"single"}
                 </label>
             </div>
         </div>
     );
-}
+};
 
 export default DivinaSetReadingMode;

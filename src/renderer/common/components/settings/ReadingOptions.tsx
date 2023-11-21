@@ -15,6 +15,8 @@ import { FontFamily, FontSize } from "./Reading/ReadingText";
 import ReadingTheme from "./Reading/ReadingTheme";
 import ReadingDisplayLayout from "./Reading/ReadingDisplayLayout";
 import ReadingDisplayAlign from "./Reading/ReadingDisplayAlign";
+import ReadingDisplayCol from "./Reading/ReadingDisplayCol";
+import ReadingDisplayMathJax from "./Reading/ReadingDisplayMathJax";
 
 // const TabTitle = (props: any) => {
 //     return (
@@ -26,23 +28,23 @@ import ReadingDisplayAlign from "./Reading/ReadingDisplayAlign";
 // }
 
 const ReadingOptions = () => {
-    const [ __ ] = useTranslator();
+    const [__] = useTranslator();
     return (
         <section className={stylesSettings.settings_tab_container_reading}>
             <Tabs.Root defaultValue="tab11" data-orientation="horizontal">
                 <Tabs.List className={stylesSettings.tablist_reading} aria-orientation="horizontal">
                     <Tabs.Trigger value="tab11">
-                        <SVG ariaHidden svg={TextAreaIcon}/>
+                        <SVG ariaHidden svg={TextAreaIcon} />
                         <p>{__("reader.settings.text")}</p>
-                        </Tabs.Trigger>
+                    </Tabs.Trigger>
                     <Tabs.Trigger value="tab12">
-                        <SVG ariaHidden svg={LayoutIcon}/>
+                        <SVG ariaHidden svg={LayoutIcon} />
                         <p>{__("reader.settings.display")}</p>
                     </Tabs.Trigger>
                     <Tabs.Trigger value="tab13">
-                        <SVG ariaHidden svg={AlignLeftIcon}/>
+                        <SVG ariaHidden svg={AlignLeftIcon} />
                         <p>{__("reader.settings.spacing")}</p>
-                        </Tabs.Trigger>
+                    </Tabs.Trigger>
                     <Tabs.Trigger value="tab14">
                         <SVG ariaHidden svg={VolumeUpIcon} />
                         <p>{__("reader.media-overlays.title")}</p>
@@ -58,9 +60,11 @@ const ReadingOptions = () => {
                         <FontFamily />
                     </Tabs.Content>
                     <Tabs.Content value="tab12">
-                       <ReadingTheme />
-                       <ReadingDisplayLayout />
-                       <ReadingDisplayAlign />
+                        <ReadingTheme />
+                        <ReadingDisplayLayout />
+                        <ReadingDisplayAlign />
+                        <ReadingDisplayCol />
+                        <ReadingDisplayMathJax />
                     </Tabs.Content>
                     <Tabs.Content value="tab13">
                         <p>Go on, keep testing</p>
@@ -73,7 +77,7 @@ const ReadingOptions = () => {
                 </div>
             </Tabs.Root>
         </section>
-    )
-}
+    );
+};
 
 export default ReadingOptions;

@@ -7,38 +7,38 @@ import { IPdfPlayerScale, IPdfPlayerView } from "../../pdf/common/pdfReader.type
 const PdfZoom = (props: any) => {
     const { __ } = props;
 
-    const [pdfView, ] = React.useState<IPdfPlayerView | undefined>(undefined);
-    const [pdfScale, ] = React.useState<IPdfPlayerScale | undefined>(undefined);
+    const [pdfView] = React.useState<IPdfPlayerView | undefined>(undefined);
+    const [pdfScale] = React.useState<IPdfPlayerScale | undefined>(undefined);
 
     const inputComponent = (scale: IPdfPlayerScale, disabled = false) => {
         return <div>
-                <input
-                    id={"radio-" + `${scale}`}
-                    type="radio"
-                    name="pdfZoomRadios"
-                    onChange={() => props.pdfEventBus.dispatch("scale", scale)}
-                    checked={pdfScale === scale}
-                    disabled={disabled}
-                />
-                <label
-                    aria-disabled={disabled}
-                    htmlFor={"radio-" + `${scale}`}
-                >
-                    {pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
-                    {
+            <input
+                id={"radio-" + `${scale}`}
+                type="radio"
+                name="pdfZoomRadios"
+                onChange={() => props.pdfEventBus.dispatch("scale", scale)}
+                checked={pdfScale === scale}
+                disabled={disabled}
+            />
+            <label
+                aria-disabled={disabled}
+                htmlFor={"radio-" + `${scale}`}
+            >
+                {pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
+                {
                     scale === 50 ? __("reader.settings.pdfZoom.name.50pct") :
-                    (scale === 100 ? __("reader.settings.pdfZoom.name.100pct") :
-                    (scale === 150 ? __("reader.settings.pdfZoom.name.150pct") :
-                    (scale === 200 ? __("reader.settings.pdfZoom.name.200pct") :
-                    (scale === 300 ? __("reader.settings.pdfZoom.name.300pct") :
-                    (scale === 500 ? __("reader.settings.pdfZoom.name.500pct") :
-                    (scale === "page-fit" ? __("reader.settings.pdfZoom.name.fit") :
-                    (scale === "page-width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
+                        (scale === 100 ? __("reader.settings.pdfZoom.name.100pct") :
+                            (scale === 150 ? __("reader.settings.pdfZoom.name.150pct") :
+                                (scale === 200 ? __("reader.settings.pdfZoom.name.200pct") :
+                                    (scale === 300 ? __("reader.settings.pdfZoom.name.300pct") :
+                                        (scale === 500 ? __("reader.settings.pdfZoom.name.500pct") :
+                                            (scale === "page-fit" ? __("reader.settings.pdfZoom.name.fit") :
+                                                (scale === "page-width" ? __("reader.settings.pdfZoom.name.width") : "Zoom ??!")))))))
                     // --("reader.settings.pdfZoom.name." + scale as any)
-                    }
-                </label>
-            </div>;
-            // TODO string inference typescript 4.1
+                }
+            </label>
+        </div>;
+        // TODO string inference typescript 4.1
     };
 
     return (

@@ -3,7 +3,7 @@ import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app
 import optionsValues from "../options-values";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
-const SpacingContent= (props: any) => {
+const SpacingContent = (props: any) => {
     const { readerConfig } = props;
     const [__] = useTranslator();
 
@@ -15,7 +15,7 @@ const SpacingContent= (props: any) => {
         const nbr = parseFloat(value.replace("%", "").replace("rem", "").replace("em", "").replace("px", ""));
         const roundNumber = (Math.round(nbr * 100) / 100);
         return roundNumber ? roundNumber : " ";
-    }
+    };
 
     return (<>
         <div className={stylesReader.line_tab_content}>
