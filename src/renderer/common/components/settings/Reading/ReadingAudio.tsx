@@ -12,7 +12,6 @@ const ReadingAudio = () => {
     const captions = useSelector((s: ICommonRootState) => s.reader.defaultConfig.mediaOverlaysEnableCaptionsMode);
     const skippability = useSelector((s: ICommonRootState) => s.reader.defaultConfig.mediaOverlaysEnableSkippability);
     const splitTTStext = useSelector((s: ICommonRootState) => s.reader.defaultConfig.ttsEnableSentenceDetection);
-    const enableOverlay = useSelector((s: ICommonRootState) => s.reader.defaultConfig.ttsEnableOverlayMode);
 
     const options = [
         {
@@ -21,7 +20,7 @@ const ReadingAudio = () => {
             parameter: "mediaOverlaysEnableCaptionsMode",
             action: captions,
             label: `${__("reader.media-overlays.captions")}`,
-            description: "Mauris aliquet ligula ac augue aliquet sollicitudin. Nunc eget hendrerit lectus."
+            description: "Mauris aliquet ligula ac augue aliquet sollicitudin. Nunc eget hendrerit lectus.",
         },
         {
             id: "skippability",
@@ -29,7 +28,7 @@ const ReadingAudio = () => {
             parameter: "mediaOverlaysEnableSkippability",
             action: skippability,
             label: `${__("reader.media-overlays.skip")}`,
-            description: "Ut ex justo, rhoncus vitae magna eget, fringilla ullamcorper ligula."
+            description: "Ut ex justo, rhoncus vitae magna eget, fringilla ullamcorper ligula.",
         },
         {
             id: "splitTTStext",
@@ -37,18 +36,9 @@ const ReadingAudio = () => {
             parameter: "ttsEnableSentenceDetection",
             action: splitTTStext,
             label: `${__("reader.tts.sentenceDetect")}`,
-            description: "Nunc at purus ut mauris tincidunt egestas non at velit. In dolor massa, commodo at diam a, dictum faucibus sem."
+            description: "Nunc at purus ut mauris tincidunt egestas non at velit. In dolor massa, commodo at diam a, dictum faucibus sem.",
         },
-        // {
-        //     id: "enableOverlay",
-        //     name: "enableOverlay",
-        //     parameter: "ttsEnableOverlayMode",
-        //     action: enableOverlay,
-        //     label: `${__("reader.tts.activate")}`,
-        //     description: "Vivamus gravida, est vitae lobortis interdum, massa felis suscipit orci, vitae elementum elit nisi a libero. Praesent ut metus leo. In sed commodo leo."
-        // },
-
-    ]
+    ];
 
     const saveConfigDebounced = useSaveConfig();
 
@@ -56,7 +46,6 @@ const ReadingAudio = () => {
         const captionsInput = document.getElementById("captions") as HTMLInputElement;
         const skipInput = document.getElementById("skippability") as HTMLInputElement;
         const ttsSplitInput = document.getElementById("splitTTStext") as HTMLInputElement;
-        const ttsEnableInput = document.getElementById("enableOverlay") as HTMLInputElement;
         if (captions) {
             captionsInput.checked = true;
         }
@@ -65,9 +54,6 @@ const ReadingAudio = () => {
         }
         if (splitTTStext) {
             ttsSplitInput.checked = true;
-        }
-        if (enableOverlay) {
-            ttsEnableInput.checked = true;
         }
     }, []);
 
@@ -80,17 +66,14 @@ const ReadingAudio = () => {
             case ("mediaOverlaysEnableSkippability"):
                 parameter = { mediaOverlaysEnableSkippability: action };
                 break;
-            case ("ttsEnableSentenceDetection"):
-                parameter = { ttsEnableSentenceDetection: action };
-                break;
         }
-        saveConfigDebounced(parameter)
-    }
+        saveConfigDebounced(parameter);
+    };
 
     return (
         <div className={stylesSettings.settings_tab_container_reading_spacing}>
             {options.map((option) => (
-                <section className={stylesSettings.section}>
+                <section className={stylesSettings.section} key={option.id}>
                     <div>
                         <input
                             id={option.id}
@@ -105,8 +88,8 @@ const ReadingAudio = () => {
 
             ))}
         </div>
-    )
-}
+    );
+};
 
 export default ReadingAudio;
 

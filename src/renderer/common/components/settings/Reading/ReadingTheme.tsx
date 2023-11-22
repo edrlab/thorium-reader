@@ -2,7 +2,6 @@ import * as React from "react";
 import * as Select from "@radix-ui/react-select";
 
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -28,6 +27,20 @@ const ReadingTheme = () => {
         defaultTheme = `${__("reader.settings.theme.name.Neutral")}`;
     }
 
+    const themeOptions = [
+        {
+            title: `${__("reader.settings.theme.name.Neutral")}`,
+            value: "neutral",
+        },
+        {
+            title: `${__("reader.settings.theme.name.Sepia")}`,
+            value: "sepia",
+        },
+        {
+            title: `${__("reader.settings.theme.name.Night")}`,
+            value: "night",
+        },
+    ];
 
 
 
@@ -60,36 +73,19 @@ const ReadingTheme = () => {
                 <Select.Portal>
                     <Select.Content className={stylesSettings.select_content} position="popper" sideOffset={10} sticky="always">
                         <Select.Viewport role="select">
-                            <Select.Item
-                                value="neutral"
-                                id="itemInner"
-                                className={stylesSettings.select_item}
-                            >
-                                <Select.ItemText>{__("reader.settings.theme.name.Neutral")}</Select.ItemText>
-                                <Select.ItemIndicator className={stylesSettings.select_icon}>
-                                    <SVG svg={DoneIcon} ariaHidden />
-                                </Select.ItemIndicator>
-                            </Select.Item>
-                            <Select.Item
-                                value="sepia"
-                                id="itemInner2"
-                                className={stylesSettings.select_item}
-                            >
-                                <Select.ItemText>{__("reader.settings.theme.name.Sepia")}</Select.ItemText>
-                                <Select.ItemIndicator className={stylesSettings.select_icon}>
-                                    <SVG svg={DoneIcon} ariaHidden />
-                                </Select.ItemIndicator>
-                            </Select.Item>
-                            <Select.Item
-                                value="night"
-                                id="itemInner3"
-                                className={stylesSettings.select_item}
-                            >
-                                <Select.ItemText>{__("reader.settings.theme.name.Night")}</Select.ItemText>
-                                <Select.ItemIndicator className={stylesSettings.select_icon}>
-                                    <SVG svg={DoneIcon} ariaHidden />
-                                </Select.ItemIndicator>
-                            </Select.Item>
+                            {themeOptions.map((option) => (
+                                <Select.Item
+                                    value={option.value}
+                                    id={option.value}
+                                    className={stylesSettings.select_item}
+                                    key={option.value}
+                                >
+                                    <Select.ItemText>{option.title}</Select.ItemText>
+                                    <Select.ItemIndicator className={stylesSettings.select_icon}>
+                                        <SVG svg={DoneIcon} ariaHidden />
+                                    </Select.ItemIndicator>
+                                </Select.Item>
+                            ))}
                         </Select.Viewport>
                     </Select.Content>
                 </Select.Portal>
