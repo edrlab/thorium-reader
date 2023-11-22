@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
@@ -36,8 +35,8 @@ export const FontSize = () => {
 
     return (
         <div className={stylesSettings.settings_reading_text}>
-            <section className={stylesSettings.label_fontSize}>
-                <div className={stylesGlobal.heading}>
+            <section className={stylesSettings.section}>
+                <div>
                     <h4>{__("reader.settings.fontSize")} ({fontSize})</h4>
                 </div>
                 <div className={stylesSettings.size_range}>
@@ -82,8 +81,8 @@ export const FontFamily = () => {
     const saveConfigDebounced = useSaveConfig();
 
     return (
-        <section>
-            <div className={stylesGlobal.heading}>
+        <section className={stylesSettings.section}>
+            <div>
                 <h4>{__("reader.settings.font")}</h4>
             </div>
             {/* <Select.Root onValueChange={(value) => saveConfigDebounced({font : value})}>

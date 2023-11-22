@@ -346,6 +346,7 @@
                 "two": "2 cols",
                 "twoTitle": "two columns"
             },
+            "options": "Options",
             "display": "Display",
             "disposition": {
                 "title": "Layout"

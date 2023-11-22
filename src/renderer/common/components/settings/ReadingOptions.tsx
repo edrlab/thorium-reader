@@ -17,6 +17,8 @@ import ReadingDisplayLayout from "./Reading/ReadingDisplayLayout";
 import ReadingDisplayAlign from "./Reading/ReadingDisplayAlign";
 import ReadingDisplayCol from "./Reading/ReadingDisplayCol";
 import ReadingDisplayMathJax from "./Reading/ReadingDisplayMathJax";
+import ReadingSpacing from "./Reading/ReadingSpacing";
+import ReadingAudio from "./Reading/ReadingAudio";
 
 // const TabTitle = (props: any) => {
 //     return (
@@ -67,9 +69,10 @@ const ReadingOptions = () => {
                         <ReadingDisplayMathJax />
                     </Tabs.Content>
                     <Tabs.Content value="tab13">
-                        <p>Go on, keep testing</p>
+                        <ReadingSpacing />
                     </Tabs.Content>
                     <Tabs.Content value="tab14">
+                        <ReadingAudio />
                     </Tabs.Content>
                     <Tabs.Content value="tab15">
                         <p>Maybe something is bro..</p>

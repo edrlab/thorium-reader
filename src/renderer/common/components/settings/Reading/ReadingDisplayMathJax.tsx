@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 import { useSaveConfig } from "./useSaveConfig";
@@ -14,6 +13,22 @@ const ReadingDisplayMathJax = () => {
     let mathJax = useSelector((s: ICommonRootState) => s.reader.defaultConfig.enableMathJax);
     let motion = useSelector((s: ICommonRootState) => s.reader.defaultConfig.reduceMotion);
     let footnotes = useSelector((s: ICommonRootState) => s.reader.defaultConfig.noFootnotes);
+
+    React.useEffect(() => {
+        const mathJaxInput = document.getElementById("mathjax") as HTMLInputElement;
+        const motionInput = document.getElementById("reduceMotionCheckBox") as HTMLInputElement;
+        const footnotesInput = document.getElementById("noFootnotesCheckBox") as HTMLInputElement;
+        if (mathJax) {
+            mathJaxInput.checked = true;
+        }
+        if (motion) {
+            motionInput.checked = true;
+        }
+        if (footnotes) {
+            footnotesInput.checked = true;
+        }
+    }, []);
+
 
     const toggleMathJax = () => {
         mathJax = !mathJax;
@@ -34,20 +49,24 @@ const ReadingDisplayMathJax = () => {
     };
 
     return (
-        <section>
-            <div className={stylesGlobal.heading}>
-                <h4>MathJax</h4>
+        <section className={stylesSettings.section}>
+            <div>
+                <h4>{__("reader.settings.options")}</h4>
             </div>
             <div className={stylesSettings.maths_options}>
                 <div>
-                    <input id="mathjax" type="checkbox" name="mathjax" onChange={toggleMathJax} />
-                    <label htmlFor="scroll_option">
-                        MathJax
-                    </label>
+                    <input
+                        id="mathjax"
+                        type="checkbox"
+                        name="mathjax"
+                        onChange={toggleMathJax}
+                    />
+                    <label htmlFor="mathjax"> MathJax</label>
                 </div>
                 <div>
                     <input
                         id="reduceMotionCheckBox"
+                        name="reduceMotionCheckBox"
                         type="checkbox"
                         onChange={toggleReduceMotion}
                     />
@@ -57,6 +76,7 @@ const ReadingDisplayMathJax = () => {
                     <input
                         id="noFootnotesCheckBox"
                         type="checkbox"
+                        name="noFootnotesCheckBox"
                         onChange={toggleNoFootnotes}
                     />
                     <label htmlFor="noFootnotesCheckBox">{__("reader.settings.noFootnotes")}</label>

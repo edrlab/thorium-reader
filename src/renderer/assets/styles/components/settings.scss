@@ -4,6 +4,10 @@ $setting_color: rgba(58, 0, 229, 1);
 .settings_container {
     display: flex;
     height: calc(100vh - 300px);
+    min-height: 570px;
+    input[type='range'], input[type="checkbox"] {
+        accent-color: $setting_color;
+    }
 }
 
 .settings_tabslist {
@@ -53,14 +57,15 @@ $setting_color: rgba(58, 0, 229, 1);
 .tablist_reading {
     height: 80px;
     display: flex;
-    width: 100%;
+    justify-content: center;
+    align-items: center;
     flex: 1;
     border-bottom: 1px solid var(--color-medium-grey);
     margin-bottom: 20px;
     button {
     transition: 200ms;
     height: 100%;
-    min-width: 100px;
+    width: 100px;
     gap: 10px;
     margin: 0 !important;
     border-bottom: 1px solid transparent;
@@ -104,6 +109,40 @@ $setting_color: rgba(58, 0, 229, 1);
     margin: 35px;
     &_reading{
         margin: 0 20px;
+        .size_range {
+            display: flex;
+            align-items: center;
+            height: 30px;
+            gap: 10px;
+        }
+        &_spacing {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            .section {
+                width: 80%!important;
+                label {
+                    font-weight: 600;
+                }
+                p {
+                    font-size: 14px;
+                }
+            }
+        }
+        .section {
+            padding-bottom: 15px ;
+            border-bottom: 3px solid var(--color-light-grey);
+            margin: 10px 0 20px 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            input[type="range"] {
+                width: 175px;
+            }
+            p {
+                margin: 0;
+            }
+        }
         h4 {
             margin: 0;
             font-size: 16px;
@@ -205,15 +244,11 @@ $setting_color: rgba(58, 0, 229, 1);
     }
 }
 
-.label_fontSize {
-    .size_range {
-        display: flex;
-    }
-}
 
 .display_options {
     display: flex;
     font-size: 14px;
+    height: 80px;
     input {
         display: none;
         &:checked + label {

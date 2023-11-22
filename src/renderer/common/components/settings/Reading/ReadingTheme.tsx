@@ -45,8 +45,8 @@ const ReadingTheme = () => {
     };
 
     return (
-        <section>
-            <div className={stylesGlobal.heading}>
+        <section className={stylesSettings.section}>
+            <div>
                 <h4>{__("reader.settings.theme.title")}</h4>
             </div>
             <Select.Root onValueChange={(value) => changeTheme(value)}>

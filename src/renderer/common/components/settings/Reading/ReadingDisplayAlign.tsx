@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 
@@ -35,8 +34,8 @@ const ReadingDisplayAlign = () => {
         }
     }, []);
     return (
-        <section>
-            <div className={stylesGlobal.heading}>
+        <section className={stylesSettings.section}>
+            <div>
                 <h4>{__("reader.settings.justification")}</h4>
             </div>
             <div className={stylesSettings.display_options}>

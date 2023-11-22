@@ -694,6 +694,7 @@ declare namespace typed_i18n {
       readonly "two": string,
       readonly "twoTitle": string
     },
+    readonly "options": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
     readonly "font": string,
@@ -874,6 +875,7 @@ declare namespace typed_i18n {
     readonly "two": string,
     readonly "twoTitle": string
   },
+  readonly "options": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
   readonly "font": string,
@@ -932,6 +934,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.title", __?: {}): string;
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.column.twoTitle", __?: {}): string;
+  (_: "reader.settings.options", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
   (_: "reader.settings.disposition.title", __?: {}): string;

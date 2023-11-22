@@ -42,9 +42,9 @@
   left: 50%;
   top: 50%;
 
-  /* min-height: 570px; */
+  min-height: 570px;
   min-width: 800px;
-  max-width: 960px;
+  width: 50vw;
   max-height: calc(100vh - 100px);
   border-radius: 10px;
   z-index: 102;
