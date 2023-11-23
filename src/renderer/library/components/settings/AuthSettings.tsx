@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { authActions } from "readium-desktop/common/redux/actions";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -37,7 +38,7 @@ class AuthSettings extends React.Component<IProps> {
         const { __ } = this.props;
         return (
             <>
-                <section>
+                <section className={stylesSettings.settings_tab_container}>
                     <div className={stylesGlobal.heading}>
                         <h2>{__("catalog.opds.auth.login")}</h2>
                     </div>

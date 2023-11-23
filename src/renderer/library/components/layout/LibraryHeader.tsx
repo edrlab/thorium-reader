@@ -16,6 +16,7 @@ import {
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
+import Settings from "../settings/Settings";
 
 interface NavigationHeader {
     route: string;
@@ -37,12 +38,12 @@ const headerNav: NavigationHeader[] = [
         matchRoutes: ["/opds"],
         styles: [],
     },
-    {
-        route: "/settings",
-        label: "settings",
-        matchRoutes: ["/settings"],
-        styles: [],
-    },
+    // {
+    //     route: "/settings",
+    //     label: "settings",
+    //     matchRoutes: ["/settings"],
+    //     styles: [],
+    // },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -71,7 +72,7 @@ class Header extends React.Component<IProps, undefined> {
                 anchorId="main-content"
                 label={__("accessibility.skipLink")}
             />
-            <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
+                <nav className={stylesHeader.main_navigation_library} style={{display: "flex", alignItems: "center", justifyContent: "space-between", marginRight: "100px"}} role="navigation" aria-label={__("header.home")}>
                 <ul>
                     {
                         headerNav.map(
@@ -80,6 +81,7 @@ class Header extends React.Component<IProps, undefined> {
                         )
                     }
                 </ul>
+                <Settings />
             </nav>
         </>);
     }
