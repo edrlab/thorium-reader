@@ -141,6 +141,7 @@ body {
   width: 100%;
   font: 1.1rem "Nunito", sans-serif;
   background: var(--color-secondary);
+
 }
 
 section {
@@ -151,7 +152,7 @@ section {
   width: calc(100% - 120px);
   padding: 30px 60px;
   overflow-y: auto;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;

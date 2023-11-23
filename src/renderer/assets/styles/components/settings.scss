@@ -229,6 +229,10 @@ $setting_color:  var(--setting-btn-primary);
     }
 }
 
+div[data-radix-popper-content-wrapper] {
+    position: fixed!important;
+}
+
 
 .settings_reading {
     &_text {
@@ -314,14 +318,17 @@ $setting_color:  var(--setting-btn-primary);
         }
         .css-1fdsijx-ValueContainer {
             padding: 0;
-            
         }
         .css-qbdosj-Input input {
             width: 300px!important;
+            padding-left: 5px!important;
+            &:focus {
+                outline: none!important;
+            }
         }
         .css-1nmdiq5-menu {
             left: 0;
-            > div{
+            > div {
                 border: 1px solid black;
                 color: black;
                 > div:hover {
