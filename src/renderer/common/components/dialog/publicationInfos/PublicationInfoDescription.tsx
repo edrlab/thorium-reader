@@ -12,12 +12,9 @@ import * as React from "react";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-// import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
-// import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-// import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
-import SVG from "../../SVG";
-import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationInfoDescription");
@@ -71,14 +68,15 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
         if (!textSanitize) return <></>;
         return (
             <>
-                <div className="publicationInfo-description-header">
+                <div className={stylesGlobal.heading}>
                     <h3>{__("catalog.description")}</h3>
                 </div>
-                <div className="publicationInfo-description-bloc">
+                <div className={classNames(stylesBlocks.block_line, stylesBlocks.description_see_more)}>
                     <div
                         ref={this.descriptionWrapperRef}
                         className={classNames(
                             stylesBookDetailsDialog.descriptionWrapper,
+                            this.state.needSeeMore && stylesGlobal.mb_30,
                             this.state.needSeeMore && stylesBookDetailsDialog.hideEnd,
                             this.state.seeMore && stylesBookDetailsDialog.seeMore,
                         )}
@@ -92,8 +90,7 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
                     </div>
                     {
                         this.state.needSeeMore &&
-                        <button aria-hidden className="publicationInfo-description-bloc-seeMore" onClick={this.toggleSeeMore}>
-                            <SVG ariaHidden svg={this.state.seeMore ? ChevronUp : ChevronDown} />
+                        <button aria-hidden className={stylesButtons.button_see_more} onClick={this.toggleSeeMore}>
                             {
                                 this.state.seeMore
                                     ? __("publication.seeLess")

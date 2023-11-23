@@ -13,8 +13,8 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-// import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.css";
-import "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -30,8 +30,6 @@ import PublicationInfoDescription from "./PublicationInfoDescription";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import SVG from "../../SVG";
-import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 
 export interface IProps {
     publicationViewMaybeOpds: TPublication;
@@ -306,21 +304,21 @@ const Progression = (props: {
         }
 
         return (
-            <section className="publicationInfo-progressionWrapper">
-                <div className="publicationInfo-heading">
-                    <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h3>
-                </div>
-                <div className="publicationInfo-progressionContainer">
-                        {(txtProgression ? (<p className={stylesBookDetailsDialog.allowUserSelect}><SVG ariaHidden svg={OnGoingBookIcon} />
-                            {txtProgression}
-                        </p>) : <></>)}
-                    {(txtPagination ? (<p className={stylesBookDetailsDialog.allowUserSelect}>
-                        {txtPagination}
-                    </p>) : <></>)}
-                    {(txtHeadings ? (<><div style={{lineHeight: "2em"}} className={stylesBookDetailsDialog.allowUserSelect}>
-                        {txtHeadings}
-                    </div></>) : <></>)}
-                </div>
+            <section>
+            <div className={stylesGlobal.heading}>
+                <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")}: `}</h3>
+            </div>
+            <>
+                {(txtProgression ? (<p><i className={stylesBookDetailsDialog.allowUserSelect}>
+                    {txtProgression}
+                </i></p>) : <></>)}
+                {(txtPagination ? (<p><i className={stylesBookDetailsDialog.allowUserSelect}>
+                    {txtPagination}
+                </i></p>) : <></>)}
+                {(txtHeadings ? (<><div style={{lineHeight: "2em"}} className={stylesBookDetailsDialog.allowUserSelect}>
+                    {txtHeadings}
+                </div></>) : <></>)}
+            </>
             </section>
         );
 
@@ -355,9 +353,9 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
 
     return (
         <>
-            <div className="publicationInfo-container">
-                <div className="publicationInfo-leftSide">
-                    <div className="publicationInfo-leftSide-coverWrapper">
+            <div className={stylesColumns.row}>
+                <div className={stylesColumns.col_book_img}>
+                    <div className={stylesPublications.publication_image_wrapper}>
                         <Cover
                             publicationViewMaybeOpds={publicationViewMaybeOpds}
                             onClick={() => toggleCoverZoomCb(coverZoom)}
@@ -367,11 +365,9 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             }
                         ></Cover>
                     </div>
-                    <div className="publicationInfo-leftSide-buttonsWrapper">
                     { ControlComponent && <ControlComponent /> }
-                    </div>
                 </div>
-                <div className="publicationInfo-rightSide">
+                <div className={stylesColumns.col}>
                     <section>
                         <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10)}
                             dir={pubTitleIsRTL ? "rtl" : undefined}>
@@ -388,43 +384,43 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                         <PublicationInfoDescription publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} translator={props.translator} />
                     </section>
                     <section>
-                        <div className="publicationInfo-heading">
+                        <div className={stylesGlobal.heading}>
                             <h3>{__("catalog.moreInfo")}</h3>
                         </div>
-                        <div className="publicationInfo-moreInfo-content">
+                        <div>
                             <FormatPublisherDate publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} />
                             {
                                 publicationViewMaybeOpds.publishers?.length ?
-                                    <div>
+                                    <>
                                         <strong>{`${__("catalog.publisher")}: `}</strong>
-                                        <span className={stylesBookDetailsDialog.allowUserSelect}>
+                                        <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             <FormatContributorWithLink
                                                 contributors={publicationViewMaybeOpds.publishers}
                                                 translator={translator}
                                                 onClickLinkCb={onClikLinkCb}
                                             />
-                                        </span>
+                                        </i>
                                         <br />
-                                    </div> : undefined
+                                    </> : undefined
                             }
                             {
                                 publicationViewMaybeOpds.languages?.length ?
-                                    <div>
+                                    <>
                                         <strong>{`${__("catalog.lang")}: `}</strong>
                                         <FormatPublicationLanguage publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} />
                                         <br />
-                                    </div> : undefined
+                                    </> : undefined
                             }
                             {
                                 publicationViewMaybeOpds.numberOfPages ?
-                                    <div>
+                                    <>
                                         <strong>{`${__("catalog.numberOfPages")}: `}</strong>
-                                        <span className={stylesBookDetailsDialog.allowUserSelect}>
+                                        <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publicationViewMaybeOpds.numberOfPages}
-                                        </span>
+                                        </i>
                                         <br />
 
-                                    </div> : undefined
+                                    </> : undefined
                             }
                             <Duration
                                 __={__}
@@ -432,30 +428,30 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             />
                             {
                                 publicationViewMaybeOpds.nbOfTracks ?
-                                    <div>
+                                    <>
                                         <strong>{`${__("publication.audio.tracks")}: `}</strong>
                                         <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publicationViewMaybeOpds.nbOfTracks}
                                         </i>
                                         <br />
 
-                                    </div> : undefined
+                                    </> : undefined
                             }
                         </div>
                     </section>
                     <section>
-                        <div className="publicationInfo-heading">
+                        <div className={stylesGlobal.heading}>
                             <h3>{__("publication.accessibility.name")}</h3>
                         </div>
                         <div>
                             <PublicationInfoA11y publicationViewMaybeOpds={publicationViewMaybeOpds}></PublicationInfoA11y>
                         </div>
                     </section>
-                    {(publicationViewMaybeOpds.lcp ? <section className="publicationInfo-lcpInfo-content">
+                    {(publicationViewMaybeOpds.lcp ? <section>
                         <LcpInfo publicationLcp={publicationViewMaybeOpds} />
                     </section> : <></>)}
-                    <section className="publicationInfo-tagContainer">
-                        <div className="publicationInfo-heading">
+                    <section>
+                        <div className={stylesGlobal.heading}>
                             <h3>{__("catalog.tags")}</h3>
                         </div>
                         <TagManagerComponent />

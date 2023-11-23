@@ -102,7 +102,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
         return (
             <>
-                <div className="publicationInfo-heading">
+                <div className={stylesGlobal.heading}>
                     <h3>LCP</h3>
                 </div>
                 <div className={classNames(stylesBookDetailsDialog.allowUserSelect)}>
@@ -134,24 +134,24 @@ class LcpInfo extends React.Component<IProps, undefined> {
                     }
 
                     {lcpRightsStartDateStr && <>
-                        <strong>{__("publication.lcpStart")}: </strong><span>{lcpRightsStartDateStr}</span>
+                        <strong>{__("publication.lcpStart")}: </strong><i>{lcpRightsStartDateStr}</i>
                         <br />
                     </>}
 
                     {lcpRightsEndDateStr && <>
-                        <strong>{__("publication.lcpEnd")}: </strong><span>{lcpRightsEndDateStr}</span>
+                        <strong>{__("publication.lcpEnd")}: </strong><i>{lcpRightsEndDateStr}</i>
                         <br />
                         <br />
                     </>}
 
                     {lcpRightsCopy ? <>
                         <strong>{__("publication.lcpRightsCopy")}: </strong>
-                        <span>{lcpRightsCopies} / {lcpRightsCopy}</span><br />
+                        <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
                     </> : undefined}
 
                     {lcpRightsPrint ? <>
                         <strong>{__("publication.lcpRightsPrint")}: </strong>
-                        <span>0 / {lcpRightsPrint}</span><br />
+                        <i>0 / {lcpRightsPrint}</i><br />
                     </> : undefined}
                 </div>
             </>

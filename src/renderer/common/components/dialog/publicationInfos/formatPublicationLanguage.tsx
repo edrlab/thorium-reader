@@ -45,12 +45,12 @@ export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
                 const note = (lang !== ll) ? ` (${lang})` : "";
                 const suffix = ((index < (publicationViewMaybeOpds.languages.length - 1)) ? ", " : "");
 
-                return (<span
+                return (<i
                     key={"lang-" + index}
                     className={stylesBookDetailsDialog.allowUserSelect}
                 >
                     {ll + note + suffix}
-                </span>);
+                </i>);
 
             });
 

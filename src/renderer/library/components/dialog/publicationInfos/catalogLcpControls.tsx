@@ -12,6 +12,8 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as ExportIcon from "readium-desktop/renderer/assets/icons/download.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
@@ -23,10 +25,6 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
-
-import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
-import * as SaveAsIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.svg";
-import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -85,7 +83,6 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                     onClick={this.handleRead}
                     className={stylesButtons.button_primary}
                 >
-                    <SVG svg={ReadBook} ariaHidden />
                     {__("catalog.readBook")}
                 </button>
                 : <></>
@@ -115,12 +112,12 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                     onClick={ this.deletePublication }
                     className={stylesButtons.button_transparency}
                 >
-                    <SVG svg={TrashIcon} ariaHidden/>
+                    <SVG svg={DeleteIcon} ariaHidden/>
                     {__("catalog.deleteBook")}
                 </button>
 
                 <button onClick={this.exportPublication} className={stylesButtons.button_transparency}>
-                    <SVG svg={SaveAsIcon} ariaHidden />
+                    <SVG svg={ExportIcon} ariaHidden />
                     {__("catalog.export")}
                 </button>
             </>

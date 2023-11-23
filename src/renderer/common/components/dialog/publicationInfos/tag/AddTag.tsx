@@ -12,9 +12,6 @@ import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
-import SVG from "../../../SVG";
-import * as AddTagIcon from "readium-desktop/renderer/assets/icons/addTag-icon.svg";
-
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
@@ -48,22 +45,18 @@ export default class AddTag extends React.Component<IProps, IState> {
         return (
             this.props.pubId
                 ? <form onSubmit={this.addTag}>
-                    <div className="form_group">
-                        <label>{__("catalog.tag")}</label>
-                        <input
-                            type="text"
-                            className={stylesTags.tag_inputs}
-                            title={__("catalog.addTags")}
-                            // placeholder={__("catalog.addTags")}
-                            onChange={this.handleChangeName}
-                            value={this.state.newTagName}
-                        />
-                    </div>
+                    <input
+                        type="text"
+                        className={stylesTags.tag_inputs}
+                        title={__("catalog.addTags")}
+                        placeholder={__("catalog.addTags")}
+                        onChange={this.handleChangeName}
+                        value={this.state.newTagName}
+                    />
                     <button
                         type="submit"
-                        className={stylesButtons.button_primary_blue}
+                        className={stylesButtons.button_primary_small}
                     >
-                        <SVG ariaHidden svg={AddTagIcon} />
                         {__("catalog.addTagsButton")}
                     </button>
                 </form>

@@ -27,7 +27,7 @@ export const FormatPublisherDate: React.FC<IProps> = (props) => {
         if (date) {
             formatedPublishedDateComponent = (
                 <div>
-                    <strong>{__("catalog.released")}: </strong> <span className={stylesBookDetailsDialog.allowUserSelect}>{date}</span>
+                    <strong>{__("catalog.released")}</strong> <i className={stylesBookDetailsDialog.allowUserSelect}>{date}</i>
                 </div>
             );
         }
