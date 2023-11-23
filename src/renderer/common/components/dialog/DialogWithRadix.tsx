@@ -35,7 +35,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as chevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import classNames from "classnames";
 
-export const DialogWithRadix: React.FC = (props) => {
+export const DialogWithRadix: React.FC<React.PropsWithChildren<{}>> = (props) => {
     const [open, setOpen] = React.useState(false);
 
     const openFromState = useSelector((state: ILibraryRootState) => state.dialog.open);
@@ -67,7 +67,7 @@ DialogWithRadixTrigger.displayName = Dialog.Trigger.displayName;
 
 const DialogContext = React.createContext(null);
 
-export const DialogWithRadixContent: React.FC = (props) => {
+export const DialogWithRadixContent: React.FC<React.PropsWithChildren<{}>> = (props) => {
     const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
     const [__] = useTranslator();
     const [collapse, setCollapse] = React.useState(false);
@@ -94,7 +94,7 @@ export const DialogTitle = Dialog.Title;
 DialogTitle.displayName = "DialogTitle";
 
 
-export const DialogHeader : React.FC = (props) => {
+export const DialogHeader: React.FC<React.PropsWithChildren<{}>> = (props) => {
     return (
         <div className={stylesModals.modal_dialog_header}>
             {props.children}
@@ -122,7 +122,7 @@ export const DialogCloseButton = () => {
     );
 };
 
-export const DialogContent : React.FC = (props) => {
+export const DialogContent: React.FC<React.PropsWithChildren<{}>> = (props) => {
     const {collapse} = React.useContext(DialogContext);
 
     return (
@@ -132,7 +132,7 @@ export const DialogContent : React.FC = (props) => {
     );
 };
 
-export const DialogFooter = (props: any) => {
+export const DialogFooter: React.FC<React.PropsWithChildren<{}>> = (props) => {
     const [__] = useTranslator();
     return (
             <div className={stylesModals.modal_dialog_footer}>
