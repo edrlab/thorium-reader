@@ -109,6 +109,7 @@
         "sort": "Sort by",
         "tagCount": "Tag count",
         "tags": "Tags",
+        "tag": "Tag",
         "update": "Edit"
     },
     "dialog": {
@@ -345,6 +346,7 @@
                 "two": "2 cols",
                 "twoTitle": "two columns"
             },
+            "options": "Options",
             "display": "Display",
             "disposition": {
                 "title": "Layout"
@@ -412,6 +414,12 @@
         }
     },
     "settings": {
+        "tabs": {
+            "general": "General",
+            "appearance": "Appearance",
+            "reading": "Reading",
+            "keyboardShortcuts":"Keyboard shortcuts"
+        },
         "auth": {
             "wipeData": "Wipe authentication data"
         },

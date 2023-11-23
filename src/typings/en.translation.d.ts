@@ -152,6 +152,7 @@ declare namespace typed_i18n {
   readonly "sort": string,
   readonly "tagCount": string,
   readonly "tags": string,
+  readonly "tag": string,
   readonly "update": string
 };
   (_: "catalog.about", __?: {}): { readonly "button": string, readonly "title": string };
@@ -266,7 +267,7 @@ declare namespace typed_i18n {
   (_: "catalog.released", __?: {}): string;
   (_: "catalog.sort", __?: {}): string;
   (_: "catalog.tagCount", __?: {}): string;
-  (_: "catalog.tags", __?: {}): string;
+  (_: "catalog.tags", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "cancel": string,
@@ -693,6 +694,7 @@ declare namespace typed_i18n {
       readonly "two": string,
       readonly "twoTitle": string
     },
+    readonly "options": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
     readonly "font": string,
@@ -873,6 +875,7 @@ declare namespace typed_i18n {
     readonly "two": string,
     readonly "twoTitle": string
   },
+  readonly "options": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
   readonly "font": string,
@@ -931,6 +934,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.title", __?: {}): string;
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.column.twoTitle", __?: {}): string;
+  (_: "reader.settings.options", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
   (_: "reader.settings.disposition.title", __?: {}): string;
@@ -1034,6 +1038,12 @@ declare namespace typed_i18n {
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
   (_: "settings", __?: {}): {
+  readonly "tabs": {
+    readonly "general": string,
+    readonly "appearance": string,
+    readonly "reading": string,
+    readonly "keyboardShortcuts": string
+  },
   readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {
     readonly "advancedMenu": string,
@@ -1054,6 +1064,16 @@ declare namespace typed_i18n {
     readonly "yes": string
   }
 };
+  (_: "settings.tabs", __?: {}): {
+  readonly "general": string,
+  readonly "appearance": string,
+  readonly "reading": string,
+  readonly "keyboardShortcuts": string
+};
+  (_: "settings.tabs.general", __?: {}): string;
+  (_: "settings.tabs.appearance", __?: {}): string;
+  (_: "settings.tabs.reading", __?: {}): string;
+  (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
   (_: "settings.auth", __?: {}): { readonly "wipeData": string };
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {

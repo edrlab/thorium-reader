@@ -12,10 +12,10 @@ import { readerConfigInitialState } from "../../states/reader";
 export const ID = "READER_DEFAULT_CONFIG_SET_REQUEST";
 
 export interface Payload {
-    config: ReaderConfig;
+    config: Partial<ReaderConfig>;
 }
 
-export function build(config: ReaderConfig = readerConfigInitialState):
+export function build(config: Partial<ReaderConfig> = readerConfigInitialState):
     Action<typeof ID, Payload> {
 
     return {

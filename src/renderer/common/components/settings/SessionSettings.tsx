@@ -10,14 +10,14 @@ import { connect } from "react-redux";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.css";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import SVG from "../../../common/components/SVG";
+import SVG from "../SVG";
 import { sessionActions } from "readium-desktop/common/redux/actions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -46,7 +46,7 @@ class SessionSettings extends React.Component<IProps> {
             <>
                 <section className={stylesSettings.settings_tab_container}>
                     <div className={stylesGlobal.heading}>
-                        <h2>{__("settings.session.title")}</h2>
+                        <h4>{__("settings.session.title")}</h4>
                     </div>
                     <form className={stylesInputs.radio_list}>
                         <div>

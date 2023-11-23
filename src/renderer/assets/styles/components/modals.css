@@ -43,9 +43,8 @@
   top: 50%;
   min-height: 570px;
   min-width: 800px;
-  width: 960px;
-  max-width: 960px;
-  max-height: calc(100vh - 200px);
+  width: 50vw;
+  max-height: calc(100vh - 100px);
   border-radius: 10px;
   z-index: 102;
   display: flex;
@@ -68,6 +67,11 @@
     width: calc(100vw - 60px);
     height: calc(100vh - 60px);
   }
+
+  /* &.modal_dialog_full {
+    width: calc(100vw - 60px);
+    height: calc(100vh - 100px);
+  } */
 }
 
 /*
@@ -96,7 +100,7 @@
 .modal_dialog_footer {
   display: flex;
   flex: none;
-  padding: 0 20px;
+  margin: 0 20px;
   align-items: center;
   height: 70px;
 }
@@ -123,6 +127,7 @@
   bottom: 0;
   right: 0;
   background-color: var(--color-secondary);
+  gap: 10px;
 
   & [type="submit"] {
     min-width: 100px;

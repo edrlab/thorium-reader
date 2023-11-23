@@ -102,7 +102,7 @@ class Dialog extends React.Component<React.PropsWithChildren<IProps>, undefined>
                         <div
                             role="document"
                             id={this.props.id}
-                            className={classNames(className, stylesModals.modal_dialog, this.props.size === "small" ? undefined : stylesModals.modal_dialog_full )}
+                            className={classNames(className, stylesModals.modal_dialog )}
                         >
                             <div className={stylesModals.modal_dialog_header}>
                                 <h2>{this.props.title}</h2>
@@ -164,7 +164,7 @@ class Dialog extends React.Component<React.PropsWithChildren<IProps>, undefined>
                                                 onClick={(_e) => {
                                                     this.props.closeDialog();
                                                 }}
-                                                className={stylesButtons.button_primary}
+                                                className={stylesButtons.button_secondary_blue}
                                             >
                                                 {__("dialog.cancel")}
                                             </button>
@@ -177,7 +177,7 @@ class Dialog extends React.Component<React.PropsWithChildren<IProps>, undefined>
                                                     this.submitForm(e);
                                                 }}
 
-                                                className={classNames(stylesButtons.button_primary, stylesButtons.button_primary_form_default)}
+                                                className={classNames(stylesButtons.button_primary_blue, stylesButtons.button_primary_form_default)}
                                                 ref={this.okRef}
                                             >
                                                 {this.props.submitButtonTitle}
