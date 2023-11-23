@@ -1,5 +1,5 @@
-$settings_bg : rgba(247, 245, 255, 1);
-$setting_color: rgba(58, 0, 229, 1);
+$settings_bg : var(--setting-btn-secondary);
+$setting_color:  var(--setting-btn-primary);
 
 .settings_container {
     display: flex;
@@ -17,7 +17,7 @@ $setting_color: rgba(58, 0, 229, 1);
     flex: 1;
     border-right: 1px solid var(--color-medium-grey);
     padding-top: 100px;
-    background-color: rgba(246, 246, 246, 0.84);
+    background-color: var(--color-bg-tab);
     button {
         height: 50px;
         transition: 200ms;
@@ -212,13 +212,15 @@ $setting_color: rgba(58, 0, 229, 1);
         border-bottom: 1px solid var(--color-medium-grey);
         &:hover {
             cursor: pointer;
-            background-color: $settings_bg;
+            background-color: #f7f5ff;
+            color: black;
         }
     }
     &_content {
         background-color: black;
         overflow: hidden;
-        background-color: rgb(255, 255, 255);
+        background-color: var(--color-secondary)!important;
+        opacity: 1;
         border-radius: 4px;
         z-index:10001;
         border: 1px solid var(--color-medium-grey);
@@ -304,6 +306,7 @@ $setting_color: rgba(58, 0, 229, 1);
         width: 100%;
         border: none;
         margin-right: 0;
+        background-color: var(--color-secondary);
         &:hover {
             border: none transparent;
             box-shadow: none;
@@ -311,12 +314,25 @@ $setting_color: rgba(58, 0, 229, 1);
         }
         .css-1fdsijx-ValueContainer {
             padding: 0;
+            
         }
         .css-qbdosj-Input input {
             width: 300px!important;
         }
         .css-1nmdiq5-menu {
             left: 0;
+            > div{
+                border: 1px solid black;
+                color: black;
+                > div:hover {
+                        cursor: pointer;
+                        
+                    }
+                
+            }
+        }
+        #react-select-2-input {
+            color: var(--color-primary)!important;
         }
     }
 }

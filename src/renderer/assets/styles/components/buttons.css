@@ -49,6 +49,7 @@ button {
   background: none;
   border: 0;
   height: 30px;
+  color: var(--color-primary);
   fill: var(--color-primary);
   cursor: pointer;
   display: flex;

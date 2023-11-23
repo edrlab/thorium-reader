@@ -64,6 +64,7 @@ input[type="search"] {
   border-left: none;
   border-bottom: 1px solid var(--color-medium-grey);
   border-radius: 0;
+  background-color: var(--color-secondary)!important;
 
   /* outline: inherit; */
   color: var(--color-primary);

@@ -15,6 +15,9 @@
     --reader-fontColor: #000;
     --color-button-primary: rgba(16, 83, 200, 1);
     --color-button-secondary: rgba(16, 83, 200, 0.05);
+    --color-bg-tab: rgba(246, 246, 246, 0.84);
+    --setting-btn-primary: #3a00e5;
+    --setting-btn-secondary: #f7f5ff;
   }
 }
 
@@ -32,6 +35,9 @@
     --reader-fontColor: #fff;
     --color-button-primary: rgba(16, 83, 200, 1);
     --color-button-secondary: rgba(16, 83, 200, 0.05);
+    --color-bg-tab:rgba(16, 18, 22, 0.6);
+    --setting-btn-primary: #fff;
+    --setting-btn-secondary: var(--color-secondary);
 
 
   }
