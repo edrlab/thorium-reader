@@ -32,6 +32,7 @@ const persistStateToFs = async (nextState: RootState) => {
     debug("start of persist reduxState in disk");
 
     const value: PersistRootState = {
+        theme: nextState.theme,
         win: nextState.win,
         publication: nextState.publication,
         reader: nextState.reader,

@@ -12,7 +12,6 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useSaveConfig } from "./useSaveConfig";
 import Creatable from "react-select/creatable";
-import Control from "react-select/dist/declarations/src/components/Control";
 
 export const FontSize = () => {
     const [__] = useTranslator();

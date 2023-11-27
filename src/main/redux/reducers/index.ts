@@ -24,8 +24,10 @@ import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
 import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 
 export const rootReducer = combineReducers<RootState>({
+    theme: themeReducer,
     session: sessionReducer,
     streamer: streamerReducer,
     i18n: i18nReducer,

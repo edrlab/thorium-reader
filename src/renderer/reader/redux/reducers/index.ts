@@ -32,9 +32,11 @@ import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeRed
 import { readerDivinaReducer } from "./divina";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
+import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
+        theme: themeReducer,
         session: sessionReducer,
         api: apiReducer,
         i18n: i18nReducer,
