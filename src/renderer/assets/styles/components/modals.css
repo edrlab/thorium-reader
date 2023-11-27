@@ -57,7 +57,7 @@
   overflow-x: hidden;
   align-content: flex-start;
   color: var(--color-primary);;
-  position: relative;
+  position: fixed;
   box-sizing: border-box;
 
   @media screen and (width <= 960px) {

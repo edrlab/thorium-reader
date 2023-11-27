@@ -1,14 +1,14 @@
 declare const styles: {
-  readonly "AlertDialogOverlay": string;
-  readonly "overlayShow": string;
-  readonly "AlertDialogContent": string;
-  readonly "contentShow": string;
-  readonly "AlertDialogTitle": string;
-  readonly "AlertDialogDescription": string;
-  readonly "AlertDialogButtonContainer": string;
   readonly "AlertDialogButton": string;
-  readonly "delete": string;
+  readonly "AlertDialogButtonContainer": string;
+  readonly "AlertDialogContent": string;
+  readonly "AlertDialogDescription": string;
+  readonly "AlertDialogOverlay": string;
+  readonly "AlertDialogTitle": string;
   readonly "abort": string;
+  readonly "contentShow": string;
+  readonly "delete": string;
+  readonly "overlayShow": string;
 };
 export = styles;
 
