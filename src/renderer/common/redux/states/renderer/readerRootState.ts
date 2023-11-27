@@ -15,4 +15,5 @@ export interface IReaderRootState extends IRendererCommonRootState {
 export interface IReaderStateReader {
     config: ReaderConfig;
     info: ReaderInfo;
+    defaultConfig: ReaderConfig;
 }

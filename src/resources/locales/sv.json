@@ -338,7 +338,7 @@
         },
         "settings": {
             "column": {
-                "auto": "Automatiskt",
+                "auto": "Standard",
                 "one": "1 kol",
                 "oneTitle": "en kolumn",
                 "title": "Kolumner",

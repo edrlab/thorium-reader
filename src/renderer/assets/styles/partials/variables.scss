@@ -1,7 +1,6 @@
 /*
 =-=-= partials/variables.css
 */
-
 @media (prefers-color-scheme: light) {
   :root {
     /* Colors */
@@ -14,6 +13,8 @@
     --color-accent: rgb(0, 188, 212);
     --color-accent-contrast: #fff;
     --reader-fontColor: #000;
+    --color-button-primary: rgba(16, 83, 200, 1);
+    --color-button-secondary: rgba(16, 83, 200, 0.05);
   }
 }
 
@@ -29,6 +30,10 @@
     --color-accent: rgb(0, 188, 212);
     --color-accent-contrast: #fff;
     --reader-fontColor: #fff;
+    --color-button-primary: rgba(16, 83, 200, 1);
+    --color-button-secondary: rgba(16, 83, 200, 0.05);
+
+
   }
 }
 

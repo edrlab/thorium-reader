@@ -452,7 +452,7 @@ body {
       }
 
       & > .active {
-        color: black;
+        color: var(--color-primary);
         border-bottom: 3px solid black;
         padding-bottom: 15px;
       }
@@ -1254,7 +1254,7 @@ input[type=radio] + label {
   left: 50%;
   background: white;
   font-size: 16px;
-  color: black;
+  color: var(--color-primary);
   text-align: center;
   box-shadow: 0 0 46px 0 rgba(0, 0, 0, 0.12);
   transform: translateX(-50%) translateY(0%);
