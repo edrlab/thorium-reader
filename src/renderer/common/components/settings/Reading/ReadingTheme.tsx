@@ -16,15 +16,18 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 const ReadingTheme = () => {
     const [__] = useTranslator();
     const saveConfigDebounced = useSaveConfig();
-    let defaultTheme;
     const nightTheme = useSelector((s: ICommonRootState) => s.reader.defaultConfig.night);
     const sepiaTheme = useSelector((s: ICommonRootState) => s.reader.defaultConfig.sepia);
-    if (nightTheme) {
-        defaultTheme = `${__("reader.settings.theme.name.Night")}`;
-    } if (sepiaTheme) {
-        defaultTheme = `${__("reader.settings.theme.name.Sepia")}`;
-    } else if (!nightTheme && !sepiaTheme) {
-        defaultTheme = `${__("reader.settings.theme.name.Neutral")}`;
+    let defaultTheme;
+    switch (true) {
+        case nightTheme:
+            defaultTheme = __("reader.settings.theme.name.Night");
+            break;
+        case sepiaTheme:
+            defaultTheme = __("reader.settings.theme.name.Sepia");
+            break;
+        default:
+            defaultTheme = __("reader.settings.theme.name.Neutral");
     }
 
     const themeOptions = [

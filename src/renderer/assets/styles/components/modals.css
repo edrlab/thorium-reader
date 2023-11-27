@@ -56,7 +56,6 @@
   color: var(--color-primary);;
   position: fixed;
   box-sizing: border-box;
-
   /* padding: 0 20px; */
 
   @media screen and (width <= 960px) {
@@ -86,13 +85,31 @@
 .modal_dialog_body {
   flex: 1;
   padding: 20px 30px;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: none;
+  transition: 400ms linear;
+
 
   &.modal_dialog_body_centered {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    background: var(--color-secondary);
+  }
+}
+
+.modal_dialog_body:hover {
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-medium-grey);
   }
 }
 

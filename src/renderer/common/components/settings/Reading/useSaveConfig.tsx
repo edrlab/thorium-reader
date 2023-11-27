@@ -4,8 +4,6 @@ import { configSetDefault } from "readium-desktop/common/redux/actions/reader";
 import debounce from "debounce";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 
-
-
 export const useSaveConfig = () => {
     const dispatch = useDispatch();
     const saveConfigDebounced = React.useMemo(() => {

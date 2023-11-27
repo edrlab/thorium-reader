@@ -57,24 +57,24 @@ const ReadingOptions = () => {
                     </Tabs.Trigger>
                 </Tabs.List>
                 <div>
-                    <Tabs.Content value="tab11">
+                    <Tabs.Content value="tab11" tabIndex={-1}>
                         <FontSize />
                         <FontFamily />
                     </Tabs.Content>
-                    <Tabs.Content value="tab12">
+                    <Tabs.Content value="tab12" tabIndex={-1}>
                         <ReadingTheme />
                         <ReadingDisplayLayout />
                         <ReadingDisplayAlign />
                         <ReadingDisplayCol />
                         <ReadingDisplayMathJax />
                     </Tabs.Content>
-                    <Tabs.Content value="tab13">
+                    <Tabs.Content value="tab13" tabIndex={-1}>
                         <ReadingSpacing />
                     </Tabs.Content>
-                    <Tabs.Content value="tab14">
+                    <Tabs.Content value="tab14" tabIndex={-1}>
                         <ReadingAudio />
                     </Tabs.Content>
-                    <Tabs.Content value="tab15">
+                    <Tabs.Content value="tab15" tabIndex={-1}>
                         <p>Maybe something is bro..</p>
                     </Tabs.Content>
                 </div>

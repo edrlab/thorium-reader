@@ -102,6 +102,17 @@ $setting_color:  var(--setting-btn-primary);
     flex: 2;
     box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
     overflow: scroll;
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar {
+    width: 10px;
+    background: var(--color-secondary);
+    }
+    &:hover::-webkit-scrollbar-thumb {
+        background-color: var(--color-medium-grey);
+    }
 }
 
 .settings_tab {
@@ -189,7 +200,7 @@ $setting_color:  var(--setting-btn-primary);
     border: 1px solid var(--color-primary);
     border-radius: 4px;
     height: 35px;
-    min-width: 400px;
+    width: 300px;
     > div {
         display: flex;
         align-items: center;
@@ -224,7 +235,7 @@ $setting_color:  var(--setting-btn-primary);
         border-radius: 4px;
         z-index:10001;
         border: 1px solid var(--color-medium-grey);
-        width: 400px;
+        width: 300px;
         max-height: 300px;
     }
 }
@@ -255,11 +266,24 @@ div[data-radix-popper-content-wrapper] {
     display: flex;
     font-size: 14px;
     height: 80px;
+    list-style-type: none;
     input {
         display: none;
         &:checked + label {
             border: 1px solid $setting_color;
             background-color: $settings_bg;
+        }
+        &:disabled + label {
+            background-color: var(--color-light-grey);
+            &:hover {
+                border: 1px solid transparent;
+            }
+
+        }
+        &:disabled {
+            &:checked + label {
+                border: 1px solid transparent;
+            }
         }
     }
     svg {
@@ -305,41 +329,38 @@ div[data-radix-popper-content-wrapper] {
     padding: 0 0 0 35px;
     border: 1px solid var(--color-primary);
     border-radius: 4px;
-    min-width: 400px;
-    > div {
+    width: 350px;
+    &__control {
+        display: flex;
         width: 100%;
         border: none;
         margin-right: 0;
-        background-color: var(--color-secondary);
+        background-color: var(--color-secondary)!important;
         &:hover {
-            border: none transparent;
             box-shadow: none;
         }
         }
-        .css-1fdsijx-ValueContainer {
+        &__value-container {
             padding: 0;
+            color: var(--color-primary)!important;
         }
-        .css-qbdosj-Input input {
-            width: 300px!important;
+        &__input {
+            width: 220px!important;
             padding-left: 5px!important;
-            &:focus {
-                outline: none!important;
-            }
         }
-        .css-1nmdiq5-menu {
+        &__menu {
             left: 0;
+            background-color: var(--color-secondary)!important;
+            color: var(--color-primary)!important;
+            z-index: 2000000;
             > div {
                 border: 1px solid black;
-                color: black;
                 > div:hover {
                         cursor: pointer;
                         
                     }
                 
             }
-        }
-        #react-select-2-input {
-            color: var(--color-primary)!important;
         }
     }
 }

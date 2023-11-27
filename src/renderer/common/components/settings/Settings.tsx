@@ -70,7 +70,7 @@ class Settings extends React.Component<IProps, undefined> {
                     </button>
                 </DialogWithRadixTrigger>
                 <DialogWithRadixContent>
-                    <Tabs.Root defaultValue="tab1" data-orientation="vertical" className={stylesSettings.settings_container}>
+                    <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                         <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                             <Tabs.Trigger value="tab1">
                                 <SVG ariaHidden svg={CogIcon} />
@@ -90,21 +90,21 @@ class Settings extends React.Component<IProps, undefined> {
                             </Tabs.Trigger>
                         </Tabs.List>
                         <div className={stylesSettings.settings_content}>
-                            <Tabs.Content value="tab1" title="General">
+                            <Tabs.Content value="tab1" title="General" tabIndex={-1}>
                                 <TabTitle title={__("settings.tabs.general")} />
                                 <LanguageSettings />
                                 <SessionSettings />
                                 <AuthSettings />
                             </Tabs.Content>
-                            <Tabs.Content value="tab2">
+                            <Tabs.Content value="tab2" tabIndex={-1}>
                                 <TabTitle title={__("settings.tabs.appearance")} />
                                 <Themes />
                             </Tabs.Content>
-                            <Tabs.Content value="tab3">
+                            <Tabs.Content value="tab3" tabIndex={-1}>
                                 <TabTitle title={__("settings.tabs.reading")} />
                                 <ReadingOptions />
                             </Tabs.Content>
-                            <Tabs.Content value="tab4">
+                            <Tabs.Content value="tab4" tabIndex={-1}>
                                 <TabTitle title={__("settings.tabs.keyboardShortcuts")} />
                                 <KeyboardSettings />
                             </Tabs.Content>

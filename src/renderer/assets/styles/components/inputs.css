@@ -58,7 +58,8 @@ input[type="search"] {
   position: relative;
   width: auto;
   height: 35px;
-  background-color: transparent;
+  
+  /* background-color: transparent; */
   border-top: none;
   border-right: none;
   border-left: none;

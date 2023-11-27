@@ -12,19 +12,7 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useSaveConfig } from "./useSaveConfig";
 import Creatable from "react-select/creatable";
-
-// const SelectItem = React.forwardRef(({ children, ...props }: any, forwardedRef) => {
-//     return (
-//         <Select.Item {...props} id="itemInner" ref={forwardedRef}
-//             className={stylesSettings.select_item}>
-//             <Select.ItemText>{children}</Select.ItemText>
-//             <Select.ItemIndicator className={stylesSettings.select_icon}>
-//                 <SVG svg={DoneIcon} ariaHidden />
-//             </Select.ItemIndicator>
-//         </Select.Item>
-//     );
-// });
-
+import Control from "react-select/dist/declarations/src/components/Control";
 
 export const FontSize = () => {
     const [__] = useTranslator();
@@ -85,30 +73,16 @@ export const FontFamily = () => {
             <div>
                 <h4>{__("reader.settings.font")}</h4>
             </div>
-            {/* <Select.Root onValueChange={(value) => saveConfigDebounced({font : value})}>
-                    <Select.Trigger className={stylesSettings.select_trigger} >
-                        <div>
-                            <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={TextAreaIcon} /></Select.Icon>
-                            <Select.Value placeholder={readiumCSSFontIDToSelect} />
-                        </div>
-                        <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={ChevronDown} /></Select.Icon>
-                    </Select.Trigger>
-                    <Select.Portal>
-                        <Select.Content className={stylesSettings.select_content} position="popper" sideOffset={10} sticky="always">
-                            <Select.Viewport role="select">
-                            {fontList.map((font: Font, id: number) =>
-                                <SelectItem value={font.id} key={id}>{font.label}</SelectItem>,
-                            )}
-                            <input type="text" />
-                            </Select.Viewport>
-                        </Select.Content>
-                        </Select.Portal>
-                </Select.Root> */}
             <div className={stylesSettings.settings_font_container}>
                 <SVG ariaHidden={true} svg={TextAreaIcon} />
                 <Creatable
                     isClearable
                     className={stylesSettings.settings_font_selection}
+                    styles={{
+                        control: () => ({}),
+                    }}
+                    classNamePrefix={stylesSettings.settings_font_selection}
+                    formatCreateLabel={(input) => <p>{input}</p>}
                     defaultValue={({ value: readiumCSSFontIDToSelect, label: readiumCSSFontLabelToSelect })}
                     onChange={(obj) => {
                         if (!obj?.value) return;
