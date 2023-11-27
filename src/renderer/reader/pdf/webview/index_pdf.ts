@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { debounce } from "debounce";
+import debounce from "debounce";
 import { ipcRenderer } from "electron";
 import { PDFDocumentProxy } from "readium-desktop/typings/pdf.js/display/api";
 
