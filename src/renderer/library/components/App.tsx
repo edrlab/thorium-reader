@@ -16,8 +16,6 @@ import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/comm
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
-import * as styleVar from "readium-desktop/renderer/assets/styles/partials/variables.scss";
-styleVar.___DEBUG___PARTIALS_VARIABLES_CSS; // force variables dark/light theme scss loading !!! // TODO improve it
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
