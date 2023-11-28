@@ -56,6 +56,7 @@
   color: var(--color-primary);;
   position: fixed;
   box-sizing: border-box;
+
   /* padding: 0 20px; */
 
   @media screen and (width <= 960px) {
@@ -107,7 +108,6 @@
 }
 
 .modal_dialog_body:hover {
-
   &::-webkit-scrollbar-thumb {
     background-color: var(--color-medium-grey);
   }

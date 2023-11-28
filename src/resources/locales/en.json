@@ -420,6 +420,13 @@
             "reading": "Reading",
             "keyboardShortcuts":"Keyboard shortcuts"
         },
+        "theme": {
+            "title": "Application Theme",
+            "description": "The application theme corresponds to the theme of your operating system.",
+            "auto": "Automatic",
+            "light": "Light",
+            "dark": "Dark"
+        },
         "auth": {
             "wipeData": "Wipe authentication data"
         },
@@ -441,7 +448,8 @@
         "session": {
             "no": "Disable",
             "title": "Save session",
-            "yes": "Enable"
+            "yes": "Enable",
+            "description": "Automatically save your session when you exit the application."
         }
     }
 }

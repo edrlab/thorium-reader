@@ -19,6 +19,8 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import SVG from "../SVG";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/bin-icon.svg";
+import { useTranslator } from "../../hooks/useTranslator";
+import { useDispatch } from "../../hooks/useDispatch";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -70,3 +72,18 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(AuthSettings));
+
+
+export const Auth = () => {
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+
+    return (
+        <button
+            className={stylesSettings.btn_primary}
+            onChange={() => dispatch(authActions.wipeData.build())}>
+            <SVG ariaHidden svg={BinIcon} />
+            {__("settings.auth.wipeData")}
+        </button>
+    );
+};

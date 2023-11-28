@@ -1044,6 +1044,13 @@ declare namespace typed_i18n {
     readonly "reading": string,
     readonly "keyboardShortcuts": string
   },
+  readonly "theme": {
+    readonly "title": string,
+    readonly "description": string,
+    readonly "auto": string,
+    readonly "light": string,
+    readonly "dark": string
+  },
   readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {
     readonly "advancedMenu": string,
@@ -1061,7 +1068,8 @@ declare namespace typed_i18n {
   readonly "session": {
     readonly "no": string,
     readonly "title": string,
-    readonly "yes": string
+    readonly "yes": string,
+    readonly "description": string
   }
 };
   (_: "settings.tabs", __?: {}): {
@@ -1074,6 +1082,18 @@ declare namespace typed_i18n {
   (_: "settings.tabs.appearance", __?: {}): string;
   (_: "settings.tabs.reading", __?: {}): string;
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
+  (_: "settings.theme", __?: {}): {
+  readonly "title": string,
+  readonly "description": string,
+  readonly "auto": string,
+  readonly "light": string,
+  readonly "dark": string
+};
+  (_: "settings.theme.title", __?: {}): string;
+  (_: "settings.theme.description", __?: {}): string;
+  (_: "settings.theme.auto", __?: {}): string;
+  (_: "settings.theme.light", __?: {}): string;
+  (_: "settings.theme.dark", __?: {}): string;
   (_: "settings.auth", __?: {}): { readonly "wipeData": string };
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {
@@ -1100,10 +1120,16 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.show", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
   (_: "settings.language.languageChoice", __?: {}): string;
-  (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
+  (_: "settings.session", __?: {}): {
+  readonly "no": string,
+  readonly "title": string,
+  readonly "yes": string,
+  readonly "description": string
+};
   (_: "settings.session.no", __?: {}): string;
   (_: "settings.session.title", __?: {}): string;
-  (_: "settings.session.yes", __?: {}): string
+  (_: "settings.session.yes", __?: {}): string;
+  (_: "settings.session.description", __?: {}): string
 }
 }
 export = typed_i18n;

@@ -12,6 +12,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as PaintBrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
@@ -21,10 +22,10 @@ import { themesList } from "readium-desktop/common/redux/states/theme";
 const SelectItem = React.forwardRef<HTMLDivElement, React.PropsWithChildren<Select.SelectItemProps>>(({ children, ...props }, forwardedRef) => {
     return (
         <Select.Item {...props} id="itemInner" ref={forwardedRef}
-        className={stylesSettings.select_item}>
+            className={stylesSettings.select_item}>
             <Select.ItemText>{children}</Select.ItemText>
             <Select.ItemIndicator className={stylesSettings.select_icon}>
-                <SVG svg={DoneIcon} ariaHidden/>
+                <SVG svg={DoneIcon} ariaHidden />
             </Select.ItemIndicator>
         </Select.Item>
     );
@@ -33,24 +34,27 @@ const SelectItem = React.forwardRef<HTMLDivElement, React.PropsWithChildren<Sele
 SelectItem.displayName = "SelectItem";
 
 const Themes = () => {
-    const [ __ ] = useTranslator();
+    const [__] = useTranslator();
     const theme = useSelector((s: ICommonRootState) => s.theme);
     const availableThemeList = themesList;
+    const [isSystemTheme, setIsSystemTheme] = React.useState(theme === "system");
 
     const List = () => {
         return availableThemeList.map((v) => <SelectItem value={v} key={v}>{v}</SelectItem>);
-    }
+    };
+
     return (
         <section className={stylesSettings.settings_tab_container}>
             <div className={stylesGlobal.heading}>
-                <h4>{__("reader.settings.theme.title")}</h4>
+                <h4>{__("settings.theme.title")}</h4>
             </div>
             <Select.Root onValueChange={(themeChosen) => {
                 document.body.setAttribute("data-theme", themeChosen);
+                setIsSystemTheme(theme === themeChosen);
             }}>
                 <Select.Trigger className={stylesSettings.select_trigger}>
                     <div>
-                    <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={PaintBrushIcon} /></Select.Icon>
+                        <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={PaintBrushIcon} /></Select.Icon>
                         <Select.Value placeholder={theme} />
                     </div>
                     <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={ChevronDown} /></Select.Icon>
@@ -58,11 +62,19 @@ const Themes = () => {
                 <Select.Portal>
                     <Select.Content className={stylesSettings.select_content} position="popper" sideOffset={10} sticky="always">
                         <Select.Viewport role="select">
-                            <List/>
+                            <List />
                         </Select.Viewport>
                     </Select.Content>
-                    </Select.Portal>
+                </Select.Portal>
             </Select.Root>
+            {isSystemTheme ? (
+                <div className={stylesSettings.session_text}>
+                    <SVG ariaHidden svg={InfoIcon} />
+                    <p>{__("settings.theme.description")}</p>
+                </div>
+            ) : (
+                <></>
+            )}
         </section>
     );
 };

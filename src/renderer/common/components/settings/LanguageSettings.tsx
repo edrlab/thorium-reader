@@ -8,7 +8,6 @@
 import * as React from "react";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as Select from "@radix-ui/react-select";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -36,35 +35,35 @@ const SelectItem = React.forwardRef(({ children, ...props }: any, forwardedRef) 
 SelectItem.displayName = "SelectItem";
 
 const LanguageSettings: React.FC<{}> = () => {
-    const [ __ ] = useTranslator();
+    const [__] = useTranslator();
     const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const dispatch = useDispatch();
     const currentLanguage = locale as keyof typeof AvailableLanguages;
     const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
     return (
-            <section className={stylesSettings.settings_tab_container} style={{position: "relative"}}>
-                <div className={stylesGlobal.heading}>
-                    <h4>{__("settings.language.languageChoice")}</h4>
-                </div>
-                <Select.Root onValueChange={(localeSelected) => dispatch(i18nActions.setLocale.build(localeSelected))}>
-                    <Select.Trigger className={stylesSettings.select_trigger}>
-                        <div>
-                            <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={LanguageIcon} /></Select.Icon>
-                            <Select.Value placeholder={AvailableLanguages[currentLanguage]} />
-                        </div>
-                        <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={ChevronDown} /></Select.Icon>
-                    </Select.Trigger>
-                    <Select.Portal container={appOverlayElement}>
-                        <Select.Content className={stylesSettings.select_content} position="popper" sideOffset={10} sticky="always">
-                            <Select.Viewport role="select">
-                            { ObjectKeys(AvailableLanguages).map((lang, i) =>
-                                <SelectItem value={lang} key={i}>{ AvailableLanguages[lang] }</SelectItem>,
+        <section className={stylesSettings.section} style={{ position: "relative" }}>
+            <div>
+                <h4>{__("settings.language.languageChoice")}</h4>
+            </div>
+            <Select.Root onValueChange={(localeSelected) => dispatch(i18nActions.setLocale.build(localeSelected))}>
+                <Select.Trigger className={stylesSettings.select_trigger}>
+                    <div>
+                        <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={LanguageIcon} /></Select.Icon>
+                        <Select.Value placeholder={AvailableLanguages[currentLanguage]} />
+                    </div>
+                    <Select.Icon className={stylesSettings.select_icon}><SVG ariaHidden={true} svg={ChevronDown} /></Select.Icon>
+                </Select.Trigger>
+                <Select.Portal container={appOverlayElement}>
+                    <Select.Content className={stylesSettings.select_content} position="popper" sideOffset={10} sticky="always">
+                        <Select.Viewport role="select">
+                            {ObjectKeys(AvailableLanguages).map((lang, i) =>
+                                <SelectItem value={lang} key={i}>{AvailableLanguages[lang]}</SelectItem>,
                             )}
-                            </Select.Viewport>
-                        </Select.Content>
-                    </Select.Portal>
-                </Select.Root>
-            </section>
+                        </Select.Viewport>
+                    </Select.Content>
+                </Select.Portal>
+            </Select.Root>
+        </section>
     );
 };
 

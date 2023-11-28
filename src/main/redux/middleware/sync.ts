@@ -61,7 +61,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     catalogActions.setTagView.ID,
 
     readerActions.configSetDefault.ID, // readerConfig
-    
     themeActions.setTheme.ID,
 ];
 

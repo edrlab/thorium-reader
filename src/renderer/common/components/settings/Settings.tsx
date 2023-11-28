@@ -11,11 +11,8 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 // import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-
-import AuthSettings from "./AuthSettings";
 import KeyboardSettings from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
-import SessionSettings from "./SessionSettings";
 import Themes from "./Themes";
 import { DialogCloseButton, DialogWithRadix, DialogWithRadixContent, DialogWithRadixTrigger } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
 
@@ -29,6 +26,7 @@ import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon
 import * as ReadingIcon from "readium-desktop/renderer/assets/icons/reading-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
 import ReadingOptions from "./ReadingOptions";
+import ConnectionSettings from "./Connection";
 
 
 
@@ -50,7 +48,6 @@ const TabTitle = (props: any) => {
     return (
         <div className={stylesSettings.settings_tab_title}>
             <h2>{props.title}</h2>
-            <DialogCloseButton />
         </div>
     );
 };
@@ -90,15 +87,21 @@ class Settings extends React.Component<IProps, undefined> {
                             </Tabs.Trigger>
                         </Tabs.List>
                         <div className={stylesSettings.settings_content}>
+                            <div className={stylesSettings.close_button_div}>
+                                <DialogCloseButton />
+                            </div>
                             <Tabs.Content value="tab1" title="General" tabIndex={-1}>
                                 <TabTitle title={__("settings.tabs.general")} />
-                                <LanguageSettings />
-                                <SessionSettings />
-                                <AuthSettings />
+                                <section className={stylesSettings.settings_tab}>
+                                    <LanguageSettings />
+                                    <ConnectionSettings />
+                                </section>
                             </Tabs.Content>
                             <Tabs.Content value="tab2" tabIndex={-1}>
                                 <TabTitle title={__("settings.tabs.appearance")} />
-                                <Themes />
+                                <section className={stylesSettings.settings_tab}>
+                                    <Themes />
+                                </section>
                             </Tabs.Content>
                             <Tabs.Content value="tab3" tabIndex={-1}>
                                 <TabTitle title={__("settings.tabs.reading")} />

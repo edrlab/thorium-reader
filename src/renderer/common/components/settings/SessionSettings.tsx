@@ -19,6 +19,11 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import SVG from "../SVG";
 import { sessionActions } from "readium-desktop/common/redux/actions";
+import { useTranslator } from "../../hooks/useTranslator";
+import { useSelector } from "../../hooks/useSelector";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { useDispatch } from "../../hooks/useDispatch";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -108,3 +113,29 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SessionSettings));
+
+
+export const Session = () => {
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+    const sessionState = useSelector((state: IRendererCommonRootState) => state.session.state);
+
+    return (
+        <>
+            <form>
+                <input
+                    id={"session-true"}
+                    type="checkbox"
+                    lang={__("settings.session.yes")}
+                    name="language"
+                    onChange={() => dispatch(sessionActions.enable.build(!sessionState))}
+                    checked={sessionState}
+                />
+                <label htmlFor={"session-true"}>{__("settings.session.title")}</label>
+            </form>
+            <div className={stylesSettings.session_text}>
+                <p>{__("settings.session.description")}</p>
+            </div>
+        </>
+    );
+};

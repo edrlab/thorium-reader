@@ -1,7 +1,7 @@
 // @import url("../partials/variables.scss");
 
-$settings_bg : var(--setting-btn-secondary);
-$setting_color:  var(--setting-btn-primary);
+$settings_bg : var(--color-button-secondary);
+$setting_color:  var(--color-button-primary);
 
 .settings_container {
     display: flex;
@@ -9,6 +9,44 @@ $setting_color:  var(--setting-btn-primary);
     min-height: 570px;
     input[type='range'], input[type="checkbox"] {
         accent-color: $setting_color;
+    }
+    .section {
+        padding-bottom: 15px ;
+        border-bottom: 3px solid var(--color-light-grey);
+        margin: 10px 0 20px 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        input[type="range"] {
+            width: 175px;
+        }
+        p {
+            margin: 0;
+        }
+        .btn_primary {
+            width: 300px;
+            height: 35px;
+            border: 1px solid $setting_color;
+            border-radius: 5px;
+            background-color: $settings_bg;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: $setting_color;
+            font-weight: bold;
+            svg {
+                width: 20px;
+                height: 20px;
+                fill: $setting_color;
+            }
+        }
+    }
+    h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
     }
 }
 
@@ -115,24 +153,51 @@ $setting_color:  var(--setting-btn-primary);
     &:hover::-webkit-scrollbar-thumb {
         background-color: var(--color-medium-grey);
     }
+    .close_button_div {
+        display: flex;
+        justify-content: end;
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+    .button_transparency_icon {
+        position: relative;
+        svg {
+            position: absolute;
+            transform: translate(-50%,-50%);
+            left: 50%;
+            top: 50%;
+            fill: $setting_color;
+        }
+    }
 }
 
 .settings_tab {
+    margin: 0 25px;
     &_container {
     margin: 35px;
     &_reading{
-        margin: 0 20px;
+        margin: 0 25px;
         .size_range {
             display: flex;
             align-items: center;
             height: 30px;
             gap: 10px;
+            input {
+                cursor: pointer;
+            }
+            p {
+                padding: 5px;
+                width: 50px;
+                text-align: center;
+                background-color: $settings_bg;
+                border-radius: 5px;
+            }
         }
         &_spacing {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             .section {
-                width: 80%!important;
+                width: 90%!important;
                 label {
                     font-weight: 600;
                 }
@@ -140,54 +205,60 @@ $setting_color:  var(--setting-btn-primary);
                     font-size: 14px;
                 }
             }
-        }
-        .section {
-            padding-bottom: 15px ;
-            border-bottom: 3px solid var(--color-light-grey);
-            margin: 10px 0 20px 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            input[type="range"] {
-                width: 175px;
+            .session_text {
+                display: flex;
+                align-items: start;
+                justify-content: flex-start;
+                gap: 10px;
+                font-size: 14px;
+                background-color: var(--color-light-grey);
+                color: var(--color-primary);
+                padding: 5px 10px;
+                border-radius: 5px;
+                margin: 10px 0;
+                p {
+                    margin: 5px 0;   
+                }
+                svg {
+                    margin-top: 5px;
+                    width: 25px;
+                    height: 25px;
+                    color: $setting_color;
+                }
             }
-            p {
-                margin: 0;
-            }
         }
-        h4 {
-            margin: 0;
-            font-size: 16px;
-            font-weight: 600;
-        }
-    }
-    h4 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 600;
     }
     }
     &_title {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: 30px 35px 10px;
+        margin: 0 35px 10px;
         font-size: 16px;
-        button {
-            border: 1px solid $setting_color;
-            background-color: $settings_bg;
-            border-radius: 50%;
-            position: relative;
-            svg {
-                position: absolute;
-                transform: translate(-50%,-50%);
-                left: 50%;
-                top: 50%;
-                fill: $setting_color;
-                width: 25px;
-                height: 25px;
-            }
+        h2 {
+            margin-top: 0;
+        }
+    }
+    .session_text {
+        display: flex;
+        align-items: start;
+        justify-content: flex-start;
+        gap: 10px;
+        width: 280px;
+        font-size: 14px;
+        background-color: var(--color-light-grey);
+        color: var(--color-primary);
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+        p {
+            margin: 5px 0;   
+        }
+        svg {
+            margin-top: 5px;
+            width: 25px;
+            height: 25px;
+            color: $setting_color;
         }
     }
 }
@@ -223,10 +294,11 @@ $setting_color:  var(--setting-btn-primary);
         padding: 0 35px 0 25px;
         position: relative;
         border-bottom: 1px solid var(--color-medium-grey);
+        color: var(--color-primary);
         &:hover {
             cursor: pointer;
-            background-color: #f7f5ff;
-            color: black;
+            background-color: $settings_bg;
+            color: $setting_color;
         }
     }
     &_content {
@@ -271,12 +343,18 @@ div[data-radix-popper-content-wrapper] {
     list-style-type: none;
     input {
         display: none;
+        transition: 200ms linear;
         &:checked + label {
             border: 1px solid $setting_color;
             background-color: $settings_bg;
+            color: $setting_color;
+            svg {
+            fill: $setting_color;
+            }
         }
         &:disabled + label {
-            background-color: var(--color-light-grey);
+            color: var(--color-medium-grey);
+            cursor: initial;
             &:hover {
                 border: 1px solid transparent;
             }
@@ -332,9 +410,12 @@ div[data-radix-popper-content-wrapper] {
     border: 1px solid var(--color-primary);
     border-radius: 4px;
     width: 350px;
+    height: 35px;
     &__control {
         display: flex;
+        align-items: center;
         width: 100%;
+        height: 30px;
         border: none;
         margin-right: 0;
         background-color: var(--color-secondary)!important;
@@ -345,10 +426,15 @@ div[data-radix-popper-content-wrapper] {
         &__value-container {
             padding: 0;
             color: var(--color-primary)!important;
+            height: 35px;
+        }
+        &__single-value {
+            height: 30px;
         }
         &__input {
             width: 220px!important;
             padding-left: 5px!important;
+            height: 30px!important;
         }
         &__menu {
             left: 0;

@@ -68,7 +68,7 @@ const ReadingAudio = () => {
                             defaultChecked={option.checked}
                         />
                         <label htmlFor={option.id}>{option.label}</label>
-                        <p>{option.description}</p>
+                        <p className={stylesSettings.session_text}>{option.description}</p>
                     </div>
                 </section>
 
