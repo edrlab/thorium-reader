@@ -25,7 +25,6 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
 import PageManager from "readium-desktop/renderer/library/components/PageManager";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
-
 import DownloadsPanel from "./DownloadsPanel";
 import LoaderMainLoad from "./LoaderMainLoad";
 import { toastActions } from "readium-desktop/common/redux/actions";
@@ -33,6 +32,9 @@ import { ToastType } from "readium-desktop/common/models/toast";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
+
+import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
+globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 export default class App extends React.Component<{}, undefined> {
 

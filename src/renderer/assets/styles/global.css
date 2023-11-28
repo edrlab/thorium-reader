@@ -1,10 +1,4 @@
 /*
-=-=-= global.css => './partials/variables.css'
-*/
-
-/* @import url('./partials/variables.scss'); */
-
-/*
 =-=-= global.css => './partials/mixins.css'
 */
 @import url('./partials/mixins.css');
