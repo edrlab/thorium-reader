@@ -10,7 +10,6 @@
 =-=-= components/modals.css
 */
 
-
 .modal_dialog_overlay {
   position: fixed;
   z-index: 102;
@@ -27,7 +26,6 @@
   min-width: 700px;
   align-items: center;
   justify-content: center;
-  height: 100vh;
 }
 
 .modal_dialog_overlay_hidden {
@@ -43,11 +41,12 @@
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
-  min-height: 570px;
+
+  /* min-height: 570px; */
   min-width: 800px;
-  width: 960px;
+  width: calc(100vw - 100px);
   max-width: 960px;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 100px);
   border-radius: 10px;
   z-index: 102;
   display: flex;
@@ -64,10 +63,10 @@
     width: 100vw;
   }
 
-  &.modal_dialog_full {
+  /* &.modal_dialog_full {
     width: calc(100vw - 60px);
-    height: calc(100vh - 60px);
-  }
+    height: calc(100vh - 100px);
+  } */
 }
 
 /*
@@ -104,7 +103,7 @@
 .modal_dialog_footer {
   display: flex;
   flex: none;
-  padding: 0 20px;
+  margin: 0 20px;
   align-items: center;
   height: 70px;
 }
@@ -127,6 +126,11 @@
 .modal_dialog_footer {
   justify-content: end;
   border-top: 1px solid var(--color-medium-grey);
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  background-color: var(--color-secondary);
+  gap: 10px;
 
   & [type="submit"] {
     min-width: 100px;
@@ -186,5 +190,15 @@
 }
 
 .___DEBUG___COMPONENTS_MODALS_CSS {
+  display: none;
+}
+
+
+.modal_dialog-collapsed {
+  min-height: 0;
+}
+
+.modal_dialog_body-collapsed {
+  height: 0;
   display: none;
 }

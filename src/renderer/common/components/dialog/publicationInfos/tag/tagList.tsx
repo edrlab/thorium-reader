@@ -30,7 +30,7 @@ export const TagList: React.FC<IProps> = (props) => {
                     stylesTags.tag,
                     // pointer hover style for IOpdsTagView links
                     typeof tag === "string" || !tag.link?.length ? stylesTags.no_hover : undefined,
-                    )}>
+                )}>
                     {
                         children(tag, index)
                     }

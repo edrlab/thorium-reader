@@ -7,11 +7,13 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as ExportIcon from "readium-desktop/renderer/assets/icons/download.svg";
+import * as SaveAsIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.svg";
+import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
     TranslatorProps, withTranslator,
@@ -20,7 +22,6 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import DeletePublicationConfirm from "../DeletePublicationConfirm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -40,6 +41,7 @@ export class CatalogControls extends React.Component<IProps, undefined> {
         super(props);
 
         this.handleRead = this.handleRead.bind(this);
+        this.deletePublication = this.deletePublication.bind(this);
         this.exportPublication = this.exportPublication.bind(this);
     }
 
@@ -53,26 +55,26 @@ export class CatalogControls extends React.Component<IProps, undefined> {
         return (
             <>
                 <button onClick={this.handleRead} className={stylesButtons.button_primary}>
+                    <SVG svg={ReadBook} ariaHidden />
                     {__("catalog.readBook")}
                 </button>
-                <DeletePublicationConfirm
-                    trigger={(
-                        <button className={stylesButtons.button_transparency}>
-                            <SVG svg={DeleteIcon} ariaHidden />
-                            {__("catalog.deleteBook")}
-                        </button>
+                <button onClick={this.deletePublication} className={stylesButtons.button_transparency}>
+                    <SVG svg={TrashIcon} ariaHidden />
+                    {__("catalog.deleteBook")}
+                </button>
 
-                    )}
-                    publicationView={this.props.publicationView}
-                />
                 <button onClick={this.exportPublication} className={stylesButtons.button_transparency}>
-                    <SVG svg={ExportIcon} ariaHidden />
+                    <SVG svg={SaveAsIcon} ariaHidden />
                     {__("catalog.export")}
                 </button>
             </>
         );
     }
 
+    private deletePublication(e: TMouseEventOnButton) {
+        e.preventDefault();
+        this.props.openDeleteDialog();
+    }
     private exportPublication(e: TMouseEventOnButton) {
         e.preventDefault();
 
@@ -94,6 +96,13 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
         openReader: () => {
             dispatch(dialogActions.closeRequest.build());
             dispatch(readerActions.openRequest.build(props.publicationView.identifier));
+        },
+        openDeleteDialog: () => {
+            dispatch(dialogActions.openRequest.build(DialogTypeName.DeletePublicationConfirm,
+                {
+                    publicationView: props.publicationView,
+                },
+            ));
         },
     };
 };
