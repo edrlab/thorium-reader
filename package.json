@@ -377,7 +377,6 @@
     "mini-css-extract-plugin": "^2.7.6",
     "ncp": "^2.0.0",
     "node-loader": "^2.0.0",
-    "node-sass": "^9.0.0",
     "postcss": "^8.4.31",
     "postcss-import": "^15.1.0",
     "postcss-loader": "^7.3.3",
@@ -387,6 +386,7 @@
     "react-svg-loader": "^3.0.3",
     "remote-redux-devtools": "^0.5.16",
     "rimraf": "^5.0.5",
+    "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
     "stylelint": "^15.11.0",
@@ -410,7 +410,7 @@
   },
   "overrides": {
     "typed-scss-modules": {
-      "node-sass": "$node-sass"
+      "node-sass": "^9.0.0"
     }
   }
 }
