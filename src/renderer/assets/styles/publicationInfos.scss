@@ -13,7 +13,7 @@
         height: 16px;
     }
     section {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
     .button_primary {
         border: 1px solid var(--color-button-primary);
@@ -151,5 +151,24 @@
         display: flex;
         align-items: center;
         gap: 10px;
+    }
+}
+
+.accessibility_infos {
+    line-height: 1.5;
+    display: flex;
+    font-size: 14px;
+    &_left {
+        margin-block-start: 0;
+        flex: 1;
+        padding-left: 20px;
+        list-style-type: "-";
+    }
+    &_right {
+        flex: 1;
+        ul {
+            margin-block-start: 0;
+            padding-left: 0;
+        }
     }
 }

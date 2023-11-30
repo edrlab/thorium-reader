@@ -1,3 +1,6 @@
+export declare const accessibility_infos: string;
+export declare const accessibility_infos_left: string;
+export declare const accessibility_infos_right: string;
 export declare const button_primary: string;
 export declare const button_secondary: string;
 export declare const button_transparency: string;

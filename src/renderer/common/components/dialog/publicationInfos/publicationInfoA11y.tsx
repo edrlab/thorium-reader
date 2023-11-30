@@ -15,6 +15,8 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { convertMultiLangStringToString } from "readium-desktop/renderer/common/language-string";
 import { TranslatorProps, withTranslator } from "../../hoc/translator";
 import isURL from "validator/lib/isURL";
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationA11y");
 debug("_");
@@ -209,7 +211,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
         return (a11y_certifiedBy || a11y_certifierCredential || AccessibilityFeature || AccessibilityConformsTo || AccessibilityConformanceReport || AccessibilitySummary || AccessModeSufficient || AccessibilityHazard || AccessibilityFeatureIsprintPageNumber || AccessibilityFeatureIsDisplayTransformability || AccessibilityFeatureIsSynchronizedAudioText) ?
             <>
                 {(AccessModeSufficient || AccessibilityHazard || AccessibilityFeatureIsprintPageNumber || AccessibilityFeatureIsSynchronizedAudioText || AccessibilityFeatureIsDisplayTransformability) ?
-                    <ul style={{ flex: "1", paddingLeft: "20px" }}>
+                    <ul className={stylePublication.accessibility_infos_left}>
                         {AccessModeSufficient ? AccessModeSufficient : <></>}
                         {AccessibilityFeatureIsprintPageNumber ? AccessibilityFeatureIsprintPageNumber : <></>}
                         {AccessibilityFeatureIsDisplayTransformability ? AccessibilityFeatureIsDisplayTransformability : <></>}
@@ -218,10 +220,10 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                     </ul>
                     : <></>}
                 {(a11y_certifiedBy || a11y_certifierCredential || AccessibilityFeature || AccessibilityConformsTo || AccessibilityConformanceReport || AccessibilitySummary) ?
-                    <div style={{ flex: "1" }}>
+                    <div className={stylePublication.accessibility_infos_right}>
                         {/* <details> */}
                         {/* <summary>{__("publication.accessibility.moreInformation")}</summary> */}
-                        <ul style={{ paddingLeft: "0" }}>
+                        <ul>
                             {AccessibilityFeature ? AccessibilityFeature : <></>}
                             {AccessibilityConformsTo ? AccessibilityConformsTo : <></>}
                             {AccessibilityConformanceReport ? AccessibilityConformanceReport : <></>}

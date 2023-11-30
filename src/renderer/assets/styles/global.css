@@ -134,7 +134,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  font: 1rem "Nunito", sans-serif;
+  font: 16px "Nunito", sans-serif;
   background: var(--color-secondary);
 }
 

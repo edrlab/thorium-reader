@@ -312,7 +312,7 @@ const Progression = (props: {
             return (
                 <section className="publicationInfo-progressionWrapper">
                     <div className={stylePublication.publicationInfo_heading}>
-                        <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h3>
+                        <h3 ref={focusRef} tabIndex={-1}>{`${__("publication.progression.title")} `}</h3>
                     </div>
                     <div className={stylePublication.publicationInfo_progressionContainer}>
                         {(txtProgression ? (<p className={stylesBookDetailsDialog.allowUserSelect}><SVG ariaHidden svg={OnGoingBookIcon} />
@@ -481,7 +481,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                         <div className={stylePublication.publicationInfo_heading}>
                             <h3>{__("publication.accessibility.name")}</h3>
                         </div>
-                        <div style={{ display: "flex" }}>
+                        <div className={stylePublication.accessibility_infos}>
                             <PublicationInfoA11y publicationViewMaybeOpds={publicationViewMaybeOpds}></PublicationInfoA11y>
                         </div>
                     </section>
