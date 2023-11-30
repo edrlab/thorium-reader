@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -79,6 +80,7 @@ export class CatalogControls extends React.Component<IProps, undefined> {
 
     private deletePublication(e: TMouseEventOnButton) {
         e.preventDefault();
+        this.props.openDeleteDialog();
     }
     private exportPublication(e: TMouseEventOnButton) {
         e.preventDefault();
@@ -101,6 +103,13 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
         openReader: () => {
             dispatch(dialogActions.closeRequest.build());
             dispatch(readerActions.openRequest.build(props.publicationView.identifier));
+        },
+        openDeleteDialog: () => {
+            dispatch(dialogActions.openRequest.build(DialogTypeName.DeletePublicationConfirm,
+                {
+                    publicationView: props.publicationView,
+                },
+            ));
         },
     };
 };

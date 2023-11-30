@@ -63,10 +63,10 @@
     width: 100vw;
   }
 
-  &.modal_dialog_full {
+  /* &.modal_dialog_full {
     width: calc(100vw - 60px);
     height: calc(100vh - 100px);
-  }
+  } */
 }
 
 /*
