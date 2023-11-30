@@ -208,7 +208,15 @@ const scssLoaderConfig = [
             esModule: false,
         },
     },
-    "sass-loader",
+    {
+        loader: "sass-loader",
+        options: {
+            // Prefer `dart-sass`
+            implementation: require("sass"),
+            additionalData: `@import "./src/renderer/assets/styles/partials/variables.scss";`,
+            warnRuleAsWarning: true,
+        },
+    },
 ];
 
 let config = Object.assign(
