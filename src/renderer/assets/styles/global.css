@@ -134,7 +134,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  font: 16px "Nunito", sans-serif;
+  font: 14px "Nunito", sans-serif;
   background: var(--color-secondary);
 }
 
@@ -297,7 +297,7 @@ table tr td {
     position: relative;
     font-weight: 700;
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 22px;
   }
 
   & h3 {

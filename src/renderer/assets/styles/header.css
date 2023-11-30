@@ -17,6 +17,7 @@
 
 .main_navigation_library {
   position: fixed;
+  font-size: 22px;
 
   @mixin main_navigation_library;
 

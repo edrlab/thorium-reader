@@ -89,6 +89,8 @@
         flex: 2;
         h2 {
             font-style: italic;
+            font-size: 25px;
+            font-weight: 900;
         }
     }
     &_heading h3 {
@@ -99,7 +101,6 @@
     }
     &_description_bloc {
         position: relative;
-        font-size: 1rem;
         &_seeMore {
             color: var(--color-button-primary);
             text-decoration: underline;
@@ -115,11 +116,11 @@
         }
     }
     &_moreInfo_content, &_lcpInfo_content {
-        font-size: 16px;
         div {
             margin-bottom: 5px;
             strong {
                 font-weight: 600;
+                font-size: 15px;
             }
         }
     }
