@@ -18,6 +18,9 @@ import { TranslatorContext } from "readium-desktop/renderer/common/translator.co
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
 
+import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
+globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
+
 import Reader from "./Reader";
 
 export default class App extends React.Component<{}, undefined> {

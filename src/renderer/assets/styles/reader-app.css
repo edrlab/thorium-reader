@@ -1107,6 +1107,7 @@ input[type=radio] + label {
     margin-left: 2rem;
 
     & button {
+      display: inline;
       border: 0;
       cursor: pointer;
       padding: 0;
@@ -1136,6 +1137,7 @@ input[type=radio] + label {
     margin-right: 2rem;
 
     & button {
+      display: inline;
       border: 0;
       cursor: pointer;
       padding: 0;
