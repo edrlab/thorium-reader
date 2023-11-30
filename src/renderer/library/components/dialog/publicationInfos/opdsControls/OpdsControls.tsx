@@ -95,7 +95,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     ln,
                                     opdsPublicationView,
                                 )}
-                                className={stylesButtons.button_primary}
+                                className={feedLinksList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
                                 disabled={openAccessButtonIsDisabled()}
                             >
                                 {`${__("catalog.addBookToLib")}${typeStr(ln)}`}
@@ -117,7 +117,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     ln,
                                     opdsPublicationView,
                                 )}
-                                className={stylesButtons.button_primary}
+                                className={stylesButtons.button_secondary}
                                 disabled={sampleButtonIsDisabled()}
                             >
                                 <SVG ariaHidden={true} svg={ImportIcon} />
@@ -162,7 +162,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         (ln, idx) =>
                             <div key={`borrowControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                                 <button
-                                    className={stylesButtons.button_primary}
+                                    className={buyList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
@@ -182,7 +182,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         (ln, idx) =>
                             <div key={`subscribeControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                                 <button
-                                    className={stylesButtons.button_primary}
+                                    className={stylesButtons.button_secondary}
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
@@ -200,7 +200,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     orderLinks(opdsPublicationView.revokeLoanLinks).map((ln, idx) => (
                         <div key={`revokeControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                             <button
-                                className={stylesButtons.button_primary}
+                                className={stylesButtons.button_secondary}
                                 onClick={() =>
                                     this.props.link(
                                         ln,
