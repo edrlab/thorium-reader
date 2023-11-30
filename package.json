@@ -69,7 +69,7 @@
     "cli:help": "electron . --help",
     "cli": "cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "i18n-sort": "node ./scripts/locales-sort.js",
-    "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en bg ca de el es eu fi fr gl hr it ja ka ko lt nl pt-br pt-pt ru sv zh-cn zh-tw --space \"    \" --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
+    "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en bg ca da de el es eu fi fr gl hr it ja ka ko lt nl pt-br pt-pt ru sv zh-cn zh-tw --space \"    \" --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
     "i18n-check": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages bg ca da de el es eu fi fr gl hr it ja ka ko lt nl pt-br pt-pt ru sv zh-cn zh-tw --space \"    \" --finalnewline --newkeysempty",
     "i18n-typed": "node ./scripts/locale-wrap.js \"src/resources/locales/en.json\" \"en.json\" && typed_i18n -i \"en.json\" -o src/typings -l typescript && rimraf \"en.json\"",
     "style-typed": "tcm \"src/renderer/assets/styles\" && typed-scss-modules \"src/renderer/assets/styles\" --nameFormat none || echo \"!!failed!!\"",
