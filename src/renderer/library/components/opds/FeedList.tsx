@@ -13,7 +13,7 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as EditIcon from "readium-desktop/renderer/assets/icons/edit.svg";
+// import * as EditIcon from "readium-desktop/renderer/assets/icons/edit.svg";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
@@ -29,6 +29,7 @@ import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 import { DisplayType, IRouterLocationState } from "../../routing";
+import OpdsUpdateForm from "../dialog/OpdsFeedUpdateForm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -89,7 +90,7 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
-                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                                     className={stylesBlocks.block_full}
                                 >
                                     <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
@@ -101,13 +102,15 @@ class FeedList extends React.Component<IProps, IState> {
                                 >
                                     <SVG ariaHidden={true} svg={DeleteIcon} />
                                 </button>
-                                <button
+                                {/* <button
                                     onClick={(e) => this.updateFeed(e, item)}
                                     className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_update)}
                                     title={__("catalog.update")}
                                 >
                                     <SVG ariaHidden={true} svg={EditIcon} />
-                                </button>
+                                </button> */}
+                                <OpdsUpdateForm
+                                    feed={item} />
                             </li>
                         );
                     })}
@@ -124,10 +127,10 @@ class FeedList extends React.Component<IProps, IState> {
         this.props.openDeleteDialog(feed);
     }
 
-    private updateFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
-        event.preventDefault();
-        this.props.openUpdateDialog(feed);
-    }
+    // private updateFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
+    //     event.preventDefault();
+    //     this.props.openUpdateDialog(feed);
+    // }
 
     private async loadFeeds() {
         try {
