@@ -102,7 +102,7 @@ class Dialog extends React.Component<React.PropsWithChildren<IProps>, undefined>
                         <div
                             role="document"
                             id={this.props.id}
-                            className={classNames(className, stylesModals.modal_dialog, this.props.size === "small" ? undefined : stylesModals.modal_dialog)}
+                            className={classNames(className, stylesModals.modal_dialog, this.props.size === "small" ? undefined : stylesModals.modal_dialog_full )}
                         >
                             <div className={stylesModals.modal_dialog_header}>
                                 <h2>{this.props.title}</h2>
@@ -126,10 +126,10 @@ class Dialog extends React.Component<React.PropsWithChildren<IProps>, undefined>
                                 //     ></form>
                                 this.props.noFooter // cf PublicationInfoManager
                                     ? <div
-                                        className={classNames(stylesModals.modal_dialog_body)}
-                                    >
-                                        {content}
-                                    </div>
+                                            className={classNames(stylesModals.modal_dialog_body)}
+                                        >
+                                            {content}
+                                        </div>
                                     : <>
                                         <div
                                             className={classNames(stylesModals.modal_dialog_body, this.props.noCentering ? undefined : stylesModals.modal_dialog_body_centered)}
@@ -140,21 +140,21 @@ class Dialog extends React.Component<React.PropsWithChildren<IProps>, undefined>
                                                 }
                                             }
 
-                                                //                                             onKeyDown={(e) => {
-                                                //                                                 // See onKeyUp below for explanation
-                                                // console.log("DIALOG DIV KEY DOWN ", e.key, (e.target as HTMLElement)?.tagName);
-                                                //                                                 if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT") {
-                                                //                                                     // e.stopPropagation();
-                                                //                                                     e.preventDefault();
-                                                //                                                 }
-                                                //                                             }}
-                                                //                                             onKeyUp={(e) => {
-                                                //                                                 // WARNING: onKeyUp alone here instead of onKeyDown (or onKeyDown alone too) causes the footer cancel button below to trigger when the keyboard focus is located inside a text input!! (crazy Chromium bug? or normal form/submit edge case due to submit button being disabled??) The onKeyDown above fixes this, but a problem remains: keyUp is captured immediately after pressing ENTER (full click event) on the calling site button that opens the popup dialog, resulting in the modal closing immediately! (thus the additional required check for matching keyDown)
-                                                // console.log("DIALOG DIV KEY UP ", e.key, (e.target as HTMLElement)?.tagName);
-                                                //                                                 if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT" && !this.props.submitButtonDisabled) {
-                                                //                                                     this.submitForm(e);
-                                                //                                                 }
-                                                //                                             }}
+//                                             onKeyDown={(e) => {
+//                                                 // See onKeyUp below for explanation
+// console.log("DIALOG DIV KEY DOWN ", e.key, (e.target as HTMLElement)?.tagName);
+//                                                 if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT") {
+//                                                     // e.stopPropagation();
+//                                                     e.preventDefault();
+//                                                 }
+//                                             }}
+//                                             onKeyUp={(e) => {
+//                                                 // WARNING: onKeyUp alone here instead of onKeyDown (or onKeyDown alone too) causes the footer cancel button below to trigger when the keyboard focus is located inside a text input!! (crazy Chromium bug? or normal form/submit edge case due to submit button being disabled??) The onKeyDown above fixes this, but a problem remains: keyUp is captured immediately after pressing ENTER (full click event) on the calling site button that opens the popup dialog, resulting in the modal closing immediately! (thus the additional required check for matching keyDown)
+// console.log("DIALOG DIV KEY UP ", e.key, (e.target as HTMLElement)?.tagName);
+//                                                 if (e.key === "Enter" && (e.target as HTMLElement)?.tagName === "INPUT" && !this.props.submitButtonDisabled) {
+//                                                     this.submitForm(e);
+//                                                 }
+//                                             }}
                                             }
                                         >
                                             {content}
