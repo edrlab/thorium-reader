@@ -244,7 +244,6 @@ button {
   & svg {
     width: 18px;
     vertical-align: -3px;
-    color: var(--color-disabled);
   }
 }
 
@@ -295,21 +294,18 @@ button {
   color: var(--color-secondary);
 
   & svg {
+    width: 10px;
     fill: var(--color-secondary);
   }
 
   &:hover {
     background-color: var(--color-button-secondary);
     color: var(--color-primary);
+    
     & svg {
       fill: var(--color-primary);
     }
   }
-
-  svg {
-    width: 10px;
-    fill: white;
-}
 }
 
 .button_secondary_blue {

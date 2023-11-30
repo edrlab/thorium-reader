@@ -22,6 +22,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
+import DeletePublicationConfirm from "../DeletePublicationConfirm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -58,10 +59,16 @@ export class CatalogControls extends React.Component<IProps, undefined> {
                     <SVG svg={ReadBook} ariaHidden />
                     {__("catalog.readBook")}
                 </button>
-                <button onClick={this.deletePublication} className={stylesButtons.button_transparency}>
-                    <SVG svg={TrashIcon} ariaHidden />
-                    {__("catalog.deleteBook")}
-                </button>
+                <DeletePublicationConfirm
+                    trigger={(
+                        <button className={stylesButtons.button_transparency}>
+                            <SVG svg={TrashIcon} ariaHidden />
+                            {__("catalog.deleteBook")}
+                        </button>
+
+                    )}
+                    publicationView={this.props.publicationView}
+                />
 
                 <button onClick={this.exportPublication} className={stylesButtons.button_transparency}>
                     <SVG svg={SaveAsIcon} ariaHidden />
