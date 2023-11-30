@@ -62,7 +62,7 @@ export default class AddTag extends React.Component<IProps, IState> {
                     </div>
                     <button
                         type="submit"
-                        className={stylesButtons.button_primary_blue}
+                        className={stylesButtons.button_secondary_blue}
                     >
                         <SVG ariaHidden svg={AddTagIcon} />
                         {__("catalog.addTagsButton")}
