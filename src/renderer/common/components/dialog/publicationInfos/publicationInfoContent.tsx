@@ -312,7 +312,7 @@ const Progression = (props: {
             return (
                 <section className="publicationInfo-progressionWrapper">
                     <div className={stylePublication.publicationInfo_heading}>
-                        <h3 ref={focusRef} tabIndex={-1}>{`${__("publication.progression.title")} `}</h3>
+                        <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h3>
                     </div>
                     <div className={stylePublication.publicationInfo_progressionContainer}>
                         {(txtProgression ? (<p className={stylesBookDetailsDialog.allowUserSelect}><SVG ariaHidden svg={OnGoingBookIcon} />
