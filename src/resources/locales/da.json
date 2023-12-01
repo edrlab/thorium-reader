@@ -2,7 +2,7 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Luk",
-        "importFile": "Importér en bog",
+        "importFile": "Importer en bog",
         "leftSlideButton": "Flyt listen til venstre",
         "mainContent": "hovedindhold",
         "rightSlideButton": "Flyt listen til højre",
@@ -46,7 +46,7 @@
             "button": "Mere information",
             "title": "Om {{- appName}}"
         },
-        "addBookToLib": "Importér",
+        "addBookToLib": "Importer",
         "addTags": "Tilføj tag",
         "addTagsButton": "Tilføj",
         "allBooks": "Alle bøger",
@@ -77,7 +77,7 @@
         "noPublicationHelpL1": "Træk en bog hertil",
         "noPublicationHelpL2": "eller brug \"+\" knappen ovenfor.",
         "noPublicationHelpL3": "LCP beskyttede filer understøttes.",
-        "noPublicationHelpL4": "Understøttede udviddelser:",
+        "noPublicationHelpL4": "Understøttede udvidelser:",
         "numberOfPages": "Antal sider",
         "opds": {
             "auth": {
@@ -87,14 +87,14 @@
             "info": {
                 "availableSince": "Siden",
                 "availableState": {
-                    "available": "Tilgængelig",
+                    "available": "Til rådighed",
                     "ready": "Klar",
                     "reserved": "Reserveret",
-                    "unavailable": "Utilgængelig",
+                    "unavailable": "Ikke til rådighed",
                     "unknown": "Ukendt"
                 },
                 "availableUntil": "Indtil",
-                "copyAvalaible": "Tilgængelig",
+                "copyAvalaible": "Til rådighed",
                 "copyTotal": "Kopier",
                 "holdPosition": "Din position på ventelisten",
                 "holdTotal": "På venteliste",
@@ -106,7 +106,7 @@
         "publisher": "Udgiver",
         "readBook": "Læs bog",
         "released": "Udgivelsesdato",
-        "sort": "Sortér efter",
+        "sort": "Sorter efter",
         "tagCount": "Antal tags",
         "tags": "Tags",
         "update": "Rediger"
@@ -115,11 +115,11 @@
         "cancel": "Annuller",
         "closeModalWindow": "Luk vinduet",
         "deleteFeed": "Bekræft at du vil slette dette katalog",
-        "deletePublication": "Bekræft at du vil slette denne bog",
+        "deletePublication": "Bekræft at du vil slette bogen",
         "import": "Bekræft at du vil importere disse filer:",
         "importError": "der skete en fejl, tjek at filernes type er en af ({{acceptedExtension}})",
-        "renew": "Bekræft at du ønsker at forlænge licensen til denne bog",
-        "return": "Bekræft at du ønsker at aflevere dene bog tilbage",
+        "renew": "Bekræft at du ønsker at forlænge licensen til bogen",
+        "return": "Bekræft at du ønsker at aflevere bogen",
         "yes": "Bekræft"
     },
     "error": {
@@ -137,7 +137,7 @@
         "gridTitle": "Gittervisning",
         "home": "Boghylde menu",
         "homeTitle": "hjem",
-        "importTitle": "Importér en bog",
+        "importTitle": "Importer en bog",
         "listTitle": "Listevisning",
         "refreshTitle": "genindlæs",
         "searchPlaceholder": "Søg",
@@ -160,7 +160,7 @@
         "import": {
             "alreadyImport": "{{- title}} er allerede importeret",
             "fail": "Import af {{- path}} fejlede. {{- err}}",
-            "success": "Import af {{- title}} er færdig."
+            "success": "{{- title}} er nu importeret."
         },
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}"
@@ -176,7 +176,7 @@
             "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
-            "title": "Tilføj en biblioteks-konto"
+            "title": "Tilføj en bibliotekskonto"
         },
         "addMenu": "Tilføj OPDS feed",
         "back": "Tilbage",
@@ -186,11 +186,11 @@
         "lastPage": "Sidste",
         "menu": {
             "aboutBook": "Om denne bog",
-            "addExtract": "Importér uddraget",
+            "addExtract": "Importer uddraget",
             "goBuyBook": "Køb denne bog",
             "goLoanBook": "Lån denne bog",
             "goRevokeLoanBook": "Tilbagekald lån",
-            "goSubBook": "Abonnér"
+            "goSubBook": "Abonner"
         },
         "network": {
             "error": "Fejl ved hentning af feed",
@@ -265,9 +265,9 @@
             "title": "Læst"
         },
         "renewButton": "Forny",
-        "returnButton": "Aflever tilbage",
-        "returnedLcp": "Denne bog kan ikke åbnes, da LCP licensen er afleveret tilbage.",
-        "revokedLcp": "Denne bog kan ikke åbnes, da LCP licensen er blevet tilbagekaldt.",
+        "returnButton": "Aflever",
+        "returnedLcp": "Denne bog kan ikke åbnes, da LCP licensen er leveret tilbage.",
+        "revokedLcp": "Denne bog kan ikke åbnes, da LCP licensen er kaldt tilbage.",
         "seeLess": "Se mindre",
         "seeMore": "Se mere",
         "title": "Titel",
@@ -292,7 +292,7 @@
             "toc": "Indholdsfortegnelse"
         },
         "media-overlays": {
-            "activate": "Aktivér oplæsning",
+            "activate": "Start oplæsning",
             "captions": "Undertekster",
             "next": "Næste oplæsnings-stykke",
             "pause": "Pause oplæsning",
@@ -309,7 +309,7 @@
             "currentPage": "Nuværende side: {{- current}}",
             "currentPageTotal": "Nuværende side: {{- current}}/{{- total}}",
             "detachWindowTitle": "vis bibliotek / boghylde vindue",
-            "fullscreenTitle": "åben i fuldskærmstilstand",
+            "fullscreenTitle": "åbn i fuldskærmstilstand",
             "goTo": "Gå til",
             "goToError": "Siden kunne ikke findes",
             "goToPlaceHolder": "Indtast et sidetal",
@@ -353,12 +353,12 @@
             "fontSize": "Skriftstørrelse",
             "justification": "Marginjustering",
             "justify": "Lige margener",
-            "letterSpacing": "Bogstavmellemrum",
-            "lineSpacing": "Linjemellemrum",
+            "letterSpacing": "Bogstav-mellemrum",
+            "lineSpacing": "Linje-mellemrum",
             "margin": "Margin",
             "noFootnotes": "Slå fodnoter fra",
             "paginated": "Sideinddelt",
-            "paraSpacing": "Paragraf mellemrum",
+            "paraSpacing": "Paragraf-mellemrum",
             "pdfZoom": {
                 "name": {
                     "100pct": "100 %",
@@ -367,8 +367,8 @@
                     "300pct": "300 %",
                     "500pct": "500 %",
                     "50pct": "50 %",
-                    "fit": "sidebredde",
-                    "width": "skærmbredde"
+                    "fit": "tilpas side",
+                    "width": "tilpas skærmbredde"
                 },
                 "title": "Zoom"
             },
@@ -399,7 +399,7 @@
             "publicationNoToc": "denne bog har ingen indholdsfortegnelse"
         },
         "tts": {
-            "activate": "Aktivér TTS",
+            "activate": "Aktiver TTS",
             "default": "Stemme: standard",
             "next": "Næste TTS segment",
             "pause": "Pause TTS",
