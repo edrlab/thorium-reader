@@ -181,24 +181,14 @@ export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivEleme
 PublicationInfoOpdsWithRadixContent.displayName = "PublicationInfoOpdsWithRadixContent";
 
 const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPublication | undefined, closeDialog: () => void, isOpds?: boolean}) => {
-    const [, translator] = useTranslator(); // FIXME
+    const [, translator] = useTranslator(); // FIXME in reader.tsx
     const dispatch = useDispatch();
     const link = dispatchOpdsLink(dispatch);
     const location = useLocation();
-    // const [coverZoom, setCoverZoom] = React.useState(false);
 
     if (!props.publicationViewMaybeOpds?.documentTitle) {
         return <Loader></Loader>;
     }
-
-    // if (coverZoom) {
-    //     return (
-    //         <Cover
-    //             publicationViewMaybeOpds={props.publicationViewMaybeOpds}
-    //             coverType="cover"
-    //         />
-    //     );
-    // }
 
     let controlsComponent = () => (<></>);
 
