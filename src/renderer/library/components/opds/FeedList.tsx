@@ -104,7 +104,6 @@ class FeedList extends React.Component<IProps, IState> {
                                 </button>
                                 <OpdsFeedUpdateForm trigger={(
                                     <button
-                                        // onClick={(e) => this.updateFeed(e, item)}
                                         className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_update)}
                                         title={__("catalog.update")}
                                     >
@@ -128,11 +127,6 @@ class FeedList extends React.Component<IProps, IState> {
         event.preventDefault();
         this.props.openDeleteDialog(feed);
     }
-
-    // private updateFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
-    //     event.preventDefault();
-    //     this.props.openUpdateDialog(feed);
-    // }
 
     private async loadFeeds() {
         try {

@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
 // import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 // import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
@@ -16,7 +15,6 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { DialogClose, DialogCloseButton, DialogFooter, DialogHeader, DialogTitle, DialogWithRadix, DialogWithRadixContent, DialogWithRadixTrigger } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
 
@@ -28,7 +26,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps {
     feed: IOpdsFeedView;
     trigger: React.ReactNode;
 }
@@ -105,45 +103,6 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                 </form>
             </DialogWithRadixContent>
         </DialogWithRadix>;
-
-
-        //     <Dialog
-        //         id={stylesModals.opds_form_dialog}
-        //         title={__("opds.updateForm.title")}
-        //         onSubmitButton={this.update}
-        //         submitButtonDisabled={!(name && url)}
-        //         submitButtonTitle={__("opds.updateForm.updateButton")}
-        //         shouldOkRefEnabled={false}
-        //     >
-        //         <div className={stylesGlobal.w_50}>
-        //             <div className={stylesInputs.form_group}>
-        //                 <label>{__("opds.updateForm.name")}</label>
-        //                 <input
-        //                     onChange={(e) => this.setState({
-        //                         name: e.target.value,
-        //                         // url: this.state.url || this.props.feed.url,
-        //                     })}
-        //                     type="text"
-        //                     aria-label={__("opds.updateForm.name")}
-        //                     defaultValue={this.props.feed.title}
-        //                     ref={this.focusRef}
-        //                 />
-        //             </div>
-        //             <div className={stylesInputs.form_group}>
-        //                 <label>{__("opds.updateForm.url")}</label>
-        //                 <input
-        //                     onChange={(e) => this.setState({
-        //                         // name: this.state.name || this.props.feed.title,
-        //                         url: e.target.value,
-        //                     })}
-        //                     type="text"
-        //                     aria-label={__("opds.updateForm.url")}
-        //                     defaultValue={this.props.feed.url}
-        //                 />
-        //             </div>
-        //         </div>
-        //     </Dialog>
-        // );
     }
 
     private update = () => {
@@ -163,9 +122,4 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
 
 }
 
-const mapStateToProps = (_state: ILibraryRootState, _props: IBaseProps) => ({
-    // open: state.dialog.type === DialogTypeName.OpdsFeedUpdateForm,
-    // feed: (state.dialog.data as DialogType[DialogTypeName.DeleteOpdsFeedConfirm]).feed,
-});
-
-export default connect(mapStateToProps)(withTranslator(OpdsFeedUpdateForm));
+export default withTranslator(OpdsFeedUpdateForm);
