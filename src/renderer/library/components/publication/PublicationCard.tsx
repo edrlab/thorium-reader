@@ -85,10 +85,10 @@ class PublicationCard extends React.Component<IProps> {
                         </PublicationInfoOpdsWithRadix>
                         :
                         <a
-                            onClick={(e) => this.handleBookClick(e)}
+                            onClick={(e) => this.handleLocalBookshelfBookClick(e)}
                             onKeyPress={
                                 (e) =>
-                                    (e.key === "Enter") && this.handleBookClick(e)
+                                    (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                             }
                             title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
                             className={stylesPublications.publication_image_wrapper}
@@ -120,7 +120,7 @@ class PublicationCard extends React.Component<IProps> {
                                 <PublicationInfoOpdsWithRadixContent />
                             </PublicationInfoOpdsWithRadix>
                             :
-                            <a aria-hidden onClick={(e) => this.handleBookClick(e)} style={{cursor: "pointer"}}
+                            <a aria-hidden onClick={(e) => this.handleLocalBookshelfBookClick(e)} style={{cursor: "pointer"}}
                                 className={stylesPublications.publication_infos}
                             >
                                 <p aria-hidden className={stylesPublications.publication_title}
@@ -150,16 +150,10 @@ class PublicationCard extends React.Component<IProps> {
         );
     }
 
-    private handleBookClick(e: React.SyntheticEvent) {
+    private handleLocalBookshelfBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
         const { publicationViewMaybeOpds } = this.props;
-
-        // if (this.props.isOpds) {
-            // this.props.openInfosDialog(publicationViewMaybeOpds as IOpdsPublicationView);
-            // console.error("ERROR DO NOT ")
-        // } else {
-            this.props.openReader(publicationViewMaybeOpds as PublicationView);
-        // }
+        this.props.openReader(publicationViewMaybeOpds as PublicationView);
     }
 
     /* function Truncate very long titles at 60 characters */
