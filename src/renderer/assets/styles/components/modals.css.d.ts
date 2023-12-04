@@ -5,7 +5,9 @@ declare const styles: {
   readonly "close_button": string;
   readonly "field": string;
   readonly "modal_dialog": string;
+  readonly "modal_dialog-collapsed": string;
   readonly "modal_dialog_body": string;
+  readonly "modal_dialog_body-collapsed": string;
   readonly "modal_dialog_body_centered": string;
   readonly "modal_dialog_footer": string;
   readonly "modal_dialog_full": string;

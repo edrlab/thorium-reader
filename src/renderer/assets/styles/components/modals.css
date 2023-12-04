@@ -168,6 +168,15 @@
   }
 }
 
+.modal_dialog-collapsed {
+  min-height: 0;
+}
+
+.modal_dialog_body-collapsed {
+  height: 0;
+  display: none;
+}
+
 .___DEBUG___COMPONENTS_MODALS_CSS {
   display: none;
 }
