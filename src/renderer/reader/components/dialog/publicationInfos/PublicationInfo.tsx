@@ -61,11 +61,10 @@ export const PublicationInfoReaderWithRadixTrigger = Dialog.Trigger;
 PublicationInfoReaderWithRadixTrigger.displayName = Dialog.Trigger.displayName;
 export const PublicationInfoReaderWithRadixContent = React.forwardRef<HTMLDivElement>(
     ({ ...props }, forwardRef) => {
-        // const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
+        const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
         const [__] = useTranslator();
         return (
-            // <Dialog.Portal container={appOverlayElement}>
-            <Dialog.Portal>
+            <Dialog.Portal container={appOverlayElement}>
                 {/* <Dialog.Overlay className="DialogOverlay" /> */}
                 <div className={stylesModals.modal_dialog_overlay}></div>
                 <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef}>
