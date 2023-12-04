@@ -353,8 +353,8 @@ const ProgressionDetails = (props: any) => {
             </summary>
             <ul>{details}</ul>
         </details>
-    )
-}
+    );
+};
 
 export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 
