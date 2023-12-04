@@ -7,52 +7,28 @@
 
 import * as React from "react";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
 import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-    opdsPublicationView: IOpdsPublicationView;
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
-}
+const OpdsMenu: React.FC<{opdsPublicationView: IOpdsPublicationView}> = (props) => {
+    const [__] = useTranslator();
 
-export class OpdsMenu extends React.Component<IProps, undefined> {
+    return (
+        <>
+            <PublicationInfoOpdsWithRadix
+                opdsPublicationView={props.opdsPublicationView}
+            >
+                <PublicationInfoOpdsWithRadixTrigger asChild>
+                    <button>
+                        {__("opds.menu.aboutBook")}
+                    </button>
 
-    constructor(props: IProps) {
-        super(props);
+                </PublicationInfoOpdsWithRadixTrigger>
+                <PublicationInfoOpdsWithRadixContent />
+            </PublicationInfoOpdsWithRadix>
+        </>
+    );
 
-    }
+};
 
-    public render(): React.ReactElement<{}> {
-
-        const {
-            __,
-        } = this.props;
-
-        return (
-            <>
-                <PublicationInfoOpdsWithRadix
-                    opdsPublicationView={this.props.opdsPublicationView}
-                >
-                    <PublicationInfoOpdsWithRadixTrigger asChild>
-                        <button>
-                            {__("opds.menu.aboutBook")}
-                        </button>
-
-                    </PublicationInfoOpdsWithRadixTrigger>
-                    <PublicationInfoOpdsWithRadixContent />
-                </PublicationInfoOpdsWithRadix>
-            </>
-        );
-    }
-}
-
-export default withTranslator(OpdsMenu);
+export default (OpdsMenu);
