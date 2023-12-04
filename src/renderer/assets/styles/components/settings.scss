@@ -380,11 +380,13 @@ div[data-radix-popper-content-wrapper] {
         border: 1px solid transparent;
         border-radius: 6px;
         transition: 200ms linear;
+        min-height: 70px;
         &:hover {
             border: 1px solid $setting_color;
             background-color: $settings_bg;
             cursor: pointer;
         }
+
     }
 }
 

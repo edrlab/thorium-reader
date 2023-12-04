@@ -59,7 +59,7 @@
 
   /* padding: 0 20px; */
 
-  @media screen and (width <= 960px) {
+  @media screen and (width <= 800px) {
     width: 100vw;
   }
 

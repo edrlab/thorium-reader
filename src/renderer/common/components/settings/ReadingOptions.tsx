@@ -58,8 +58,8 @@ const ReadingOptions = () => {
                 </Tabs.List>
                 <div>
                     <Tabs.Content value="tab11" tabIndex={-1}>
-                        <FontFamily />
                         <FontSize />
+                        <FontFamily />
                     </Tabs.Content>
                     <Tabs.Content value="tab12" tabIndex={-1}>
                         <ReadingTheme />
