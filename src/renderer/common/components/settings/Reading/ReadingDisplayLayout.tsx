@@ -33,8 +33,8 @@ const ReadingDisplayLayout = () => {
             checked: (layout),
             disabled: false,
             name: "pagination",
-        }
-    ]
+        },
+    ];
 
     const List = () => {
         return options.map((o) => <SettingsRadioBtnTemplate key={o.id} {...o} />);
