@@ -23,13 +23,17 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
 import PageManager from "readium-desktop/renderer/library/components/PageManager";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
-
 import DownloadsPanel from "./DownloadsPanel";
 import LoaderMainLoad from "./LoaderMainLoad";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
+import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
+import NunitoBold from "readium-desktop/renderer/assets/fonts/nunitoBold.ttf";
+
+import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
+globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -88,6 +92,39 @@ export default class App extends React.Component<{}, undefined> {
         const store = diLibraryGet("store"); // diRendererSymbolTable.store
         const history = diLibraryGet("history"); // diRendererSymbolTable.history
         const translator = diLibraryGet("translator"); // diRendererSymbolTable.translator
+
+
+        // FIXME: try a better way to import Nunito in CSS font face instead of in React render function.
+        // One possibility is to add css font in ejs html template file from webpack
+        try {
+            const nunitoFontStyleID = "nunitoFontStyleID";
+            const el = document.getElementById(nunitoFontStyleID);
+            if (!el) {
+                const css = `
+        @font-face {
+            font-family: "Nunito";
+            font-style: normal;
+            font-weight: normal;
+            src: local("Nunito"),
+            url("${Nunito}") format("truetype");
+        }
+        @font-face {
+            font-family: "Nunito";
+            font-style: bold;
+            font-weight: 700;
+            src: local("NunitoBold"),
+            url("${NunitoBold}") format("truetype");
+        }
+
+                `;
+                const el = document.createElement("style");
+                el.setAttribute("type", "text/css");
+                el.appendChild(document.createTextNode(css));
+                document.head.appendChild(el);
+            }
+        } catch (e) {
+            console.error("Nunito font face error", e);
+        }
 
         return (
             <Provider store={store} >

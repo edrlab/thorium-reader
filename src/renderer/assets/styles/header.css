@@ -41,8 +41,8 @@
       margin-right: 60px;
 
       &.active {
-        color: black;
-        border-bottom: 3px solid black;
+        color: var(--color-primary);
+        border-bottom: 3px solid var(--color-primary);
         padding-bottom: 15px;
       }
     }
@@ -87,7 +87,7 @@
     border: none;
     height: 35px;
     background-color: transparent;
-    color: black;
+    color: var(--color-primary);
     font-size: 0.9rem;
   }
 
