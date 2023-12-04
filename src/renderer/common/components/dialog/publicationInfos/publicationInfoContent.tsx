@@ -33,6 +33,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import SVG from "../../SVG";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
+import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 
 
 
@@ -108,22 +110,22 @@ const Progression = (props: {
         // (Audiobooks, PDF, Divina, EPUB FXL and reflow ... page number vs. string types)
         try {
 
-        const isAudio = locatorExt.audioPlaybackInfo
-            // total duration can be undefined with badly-constructed publications,
-            // for example we found some LibriVox W3C LPF audiobooks missing duration property on reading order resources
-            && locatorExt.audioPlaybackInfo.globalDuration
-            && typeof locatorExt.locator.locations.position === "number"; // .progression is local to audio item in reading order playlist
+            const isAudio = locatorExt.audioPlaybackInfo
+                // total duration can be undefined with badly-constructed publications,
+                // for example we found some LibriVox W3C LPF audiobooks missing duration property on reading order resources
+                && locatorExt.audioPlaybackInfo.globalDuration
+                && typeof locatorExt.locator.locations.position === "number"; // .progression is local to audio item in reading order playlist
 
-        const isDivina = r2Publication && isDivinaFn(r2Publication);
-        const isPdf = r2Publication && isPdfFn(r2Publication);
+            const isDivina = r2Publication && isDivinaFn(r2Publication);
+            const isPdf = r2Publication && isPdfFn(r2Publication);
 
-        // locatorExt.docInfo.isFixedLayout
-        const isFixedLayout = r2Publication && // && !r2Publication.PageList
-            r2Publication.Metadata?.Rendition?.Layout === "fixed";
+            // locatorExt.docInfo.isFixedLayout
+            const isFixedLayout = r2Publication && // && !r2Publication.PageList
+                r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
-        let txtProgression: string | undefined;
-        let txtPagination: string | undefined;
-        let txtHeadings: JSX.Element | undefined;
+            let txtProgression: string | undefined;
+            let txtPagination: string | undefined;
+            let txtHeadings: JSX.Element | undefined;
 
         if (isAudio) {
             const percent = Math.round(locatorExt.locator.locations.position * 100);
@@ -250,14 +252,14 @@ const Progression = (props: {
                         // WARNING: .reverse() is in-place same-array mutation! (not a new array)
                         // ...but we're chaining with .filter() so that locatorExt.headings is not modified
 
-                        let k = 0;
-                        const summary = hs.reduce((arr, h, i) => {
-                            return arr.concat(
-                                <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>,
-                                <span key={`_h${k++}`} style={{ fontWeight: "bold" }}>h{h.level} </span>,
-                                <span key={`_h${k++}`} style={{ border: "1px solid grey", padding: "2px" }}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>,
-                            );
-                        }, []);
+                            let k = 0;
+                            const summary = hs.reduce((arr, h, i) => {
+                                return arr.concat(
+                                    <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>,
+                                    <span key={`_h${k++}`} style={{ fontWeight: "bold" }}>h{h.level} </span>,
+                                    <span key={`_h${k++}`}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>,
+                                );
+                            }, []);
 
                         // WARNING: .reverse() is in-place same-array mutation! (not a new array)
                         // ...which is why we use .slice() to create an instance copy
@@ -303,7 +305,7 @@ const Progression = (props: {
                                     </li>);
                             }, []);
 
-                        txtHeadings = <details><summary>{summary}</summary><ul style={{ listStyleType: "none" }}>{details}</ul></details>;
+                        txtHeadings = <ProgressionDetails summary={summary} details={details} />;
                     }
                 }
             }
@@ -315,12 +317,14 @@ const Progression = (props: {
                     <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h3>
                 </div>
                 <div className={stylePublication.publicationInfo_progressionContainer}>
-                    {(txtProgression ? (<p className={stylesBookDetailsDialog.allowUserSelect}><SVG ariaHidden svg={OnGoingBookIcon} />
-                        {txtProgression}
-                    </p>) : <></>)}
-                    {(txtPagination ? (<p className={stylesBookDetailsDialog.allowUserSelect}>
-                        {txtPagination}
-                    </p>) : <></>)}
+                    <div style={{ display: "flex", gap: "10px" }}>
+                        {(txtProgression ? (<p className={stylesBookDetailsDialog.allowUserSelect}><SVG ariaHidden svg={OnGoingBookIcon} />
+                            {txtProgression}
+                        </p>) : <></>)}
+                        {(txtPagination ? (<p className={stylesBookDetailsDialog.allowUserSelect}>
+                            {txtPagination}
+                        </p>) : <></>)}
+                    </div>
                     {(txtHeadings ? (<><div style={{ lineHeight: "2em" }} className={stylesBookDetailsDialog.allowUserSelect}>
                         {txtHeadings}
                     </div></>) : <></>)}
@@ -334,6 +338,23 @@ const Progression = (props: {
     }
     return (<></>);
 };
+
+const ProgressionDetails = (props: any) => {
+    const { summary, details } = props;
+    const [open, setOpen] = React.useState(false);
+    return (
+        <details open={open} onToggle={() => setOpen(!open)}>
+            <summary>
+                {summary}
+                {open ?
+                    <SVG ariaHidden svg={ChevronDown} /> :
+                    <SVG ariaHidden svg={ChevronUp} />
+                }
+            </summary>
+            <ul>{details}</ul>
+        </details>
+    )
+}
 
 export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 

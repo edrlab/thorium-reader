@@ -152,6 +152,29 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        margin: 0;
+    }
+    details {
+        summary {
+            color: var(--color-button-primary);
+            background-color: var(--color-button-secondary);
+            :hover {
+                cursor: pointer;
+            }
+            svg {
+                width: 15px;
+                height: 15px;
+            }
+            &:first-of-type {
+                list-style-type: none;
+            }
+        }
+        ul {
+            list-style-type: none;
+            li a  {
+            color: var(--color-button-primary);
+            }
+        }
     }
 }
 
@@ -159,15 +182,19 @@
     line-height: 1.5;
     display: flex;
     font-size: 14px;
+    @media screen and (width <= 960px) {
+        flex-direction: column;
+    }
     &_left {
         margin-block-start: 0;
         flex: 1;
         padding-left: 20px;
-        list-style-type: "-";
+        list-style-type: "- ";
     }
     &_right {
         flex: 1;
         ul {
+            list-style-type: none;
             margin-block-start: 0;
             padding-left: 0;
         }

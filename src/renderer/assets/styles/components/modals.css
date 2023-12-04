@@ -61,6 +61,7 @@
 
   @media screen and (width <= 960px) {
     width: 100vw;
+    height: 100vh;
   }
 
   &.modal_dialog_full {
