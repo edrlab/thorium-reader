@@ -17,6 +17,7 @@ import ToastManager from "readium-desktop/renderer/common/components/toast/Toast
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
+import NunitoBold from "readium-desktop/renderer/assets/fonts/nunitoBold.ttf";
 
 import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
 globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
@@ -108,6 +109,13 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
     font-weight: normal;
     src: local("Nunito"),
     url("${Nunito}") format("truetype");
+}
+@font-face {
+    font-family: "Nunito";
+    font-style: bold;
+    font-weight: 700;
+    src: local("NunitoBold"),
+    url("${NunitoBold}") format("truetype");
 }
 
                 `;
