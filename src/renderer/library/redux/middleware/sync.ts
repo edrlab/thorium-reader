@@ -39,6 +39,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.unlockPublicationWithPassphrase.ID,
 
     catalogActions.getCatalog.ID, // request to get catalog view
+
+    readerActions.configSetDefault.ID, // readerConfig
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

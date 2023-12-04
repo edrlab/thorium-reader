@@ -85,6 +85,12 @@ jobs:
     - run: node --version && npm --version
     - run: npm --global install npm@^9
     - run: npm --version
+    - run: python --version || echo ok
+    - run: python3 --version || echo ok
+    - run: pip --version || echo ok
+    # PYTHON 3.12 distutils deprecation remediation:
+    #- run: python3 -m pip install packaging || python -m pip install packaging
+    - run: python3 -m pip install setuptools || python -m pip install setuptools
     # - run: npm --global install asar
     - name: package patch 1
       run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
@@ -100,6 +106,8 @@ jobs:
     - run: npm cache verify
     - run: cat package-lock.json | grep -i divina-player-js
     - run: npm ci
+    - run: npm list -g node-gyp || echo ok
+    - run: npm list node-gyp || echo ok
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
       run: npm run build:prod

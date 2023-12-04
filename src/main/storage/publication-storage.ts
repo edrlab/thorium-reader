@@ -188,11 +188,19 @@ export class PublicationStorage {
         throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
-    public copyPublicationToPath(publicationView: PublicationView, destinationPath: string) {
+    public getPublicationFilename(publicationView: PublicationView) {
         const publicationPath = this.getPublicationEpubPath(publicationView.identifier);
         const extension = path.extname(publicationPath);
-        const newFilePath = `${destinationPath}/${slugify(publicationView.documentTitle)}${extension}`;
-        fs.copyFile(publicationPath, newFilePath, async (err) => {
+        const filename = `${slugify(publicationView.documentTitle)}${extension}`;
+        return filename;
+    }
+
+    public copyPublicationToPath(publicationView: PublicationView, filePath: string) {
+        if (!filePath) {
+            throw new Error("no filePath !");
+        }
+        const publicationPath = this.getPublicationEpubPath(publicationView.identifier);
+        fs.copyFile(publicationPath, filePath, async (err) => {
             if (err) {
                 await dialog.showMessageBox({
                     type: "error",

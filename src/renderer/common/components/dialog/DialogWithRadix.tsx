@@ -17,8 +17,8 @@ import * as chevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-
 import classNames from "classnames";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
-export const DialogWithRadix: React.FC<React.PropsWithChildren<{ defaultOpen?: boolean | undefined }>> = (props) => {
-    const [open, setOpen] = React.useState(props.defaultOpen || false);
+export const DialogWithRadix: React.FC<React.PropsWithChildren<{}>> = (props) => {
+    const [open, setOpen] = React.useState(false);
 
     const openFromState = useSelector((state: IRendererCommonRootState) => state.dialog.open);
     React.useMemo(() => {
@@ -29,16 +29,15 @@ export const DialogWithRadix: React.FC<React.PropsWithChildren<{ defaultOpen?: b
 
     return (
         <Dialog.Root
-        defaultOpen={props.defaultOpen}
-        open={open}
-        onOpenChange={
-            (open) => {
-                if (open) {
-                    setOpen(true);
-                } else {
-                    setOpen(false);
-                }
-            }}
+            open={open}
+            onOpenChange={
+                (open) => {
+                    if (open) {
+                        setOpen(true);
+                    } else {
+                        setOpen(false);
+                    }
+                }}
         >
             {props.children}
         </Dialog.Root>
@@ -71,7 +70,6 @@ export const DialogWithRadixContent: React.FC<React.PropsWithChildren<{}>> = (pr
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={classNames(stylesModals.modal_dialog, isCollapsed ? stylesModals["modal_dialog-collapsed"] : undefined)}
                 style={{
-                    backgroundColor: "white",
                     zIndex: "10000",
                 }}
                 id="modalContainer">
@@ -98,9 +96,9 @@ export const DialogHeader: React.FC<React.PropsWithChildren<{}>> = (props) => {
 };
 
 export const DialogCollapseButton: React.FC<{}> = () => {
-    const {collapse: {toggleCollapse}} = React.useContext(DialogContext);
+    const { collapse: { toggleCollapse } } = React.useContext(DialogContext);
     return (
-        <button style={{width: "20px", height: "20px"}} id="chevronButton" onClick={() => toggleCollapse()}>
+        <button style={{ width: "20px", height: "20px" }} id="chevronButton" onClick={() => toggleCollapse()}>
             <SVG ariaHidden={true} svg={chevronDownIcon} />
         </button>
     );
@@ -116,10 +114,10 @@ export const DialogCloseButton: React.FC<{}> = () => {
     );
 };
 
-export const DialogContent : React.FC<React.PropsWithChildren<{}>> = (props) => {
-    const {collapse: {isCollapsed}} = React.useContext(DialogContext);
+export const DialogContent: React.FC<React.PropsWithChildren<{}>> = (props) => {
+    const { collapse: { isCollapsed } } = React.useContext(DialogContext);
     return (
-        <div className={classNames(stylesModals.modal_dialog_body, isCollapsed ? stylesModals["modal_dialog_body-collapsed"]: undefined)}>
+        <div className={classNames(stylesModals.modal_dialog_body, isCollapsed ? stylesModals["modal_dialog_body-collapsed"] : undefined)}>
             {props.children}
         </div>
     );
@@ -127,9 +125,9 @@ export const DialogContent : React.FC<React.PropsWithChildren<{}>> = (props) => 
 
 export const DialogFooter: React.FC<React.PropsWithChildren<{}>> = (props) => {
     return (
-            <div className={stylesModals.modal_dialog_footer}>
-                    {props.children}
-            </div>
+        <div className={stylesModals.modal_dialog_footer}>
+            {props.children}
+        </div>
     );
 };
 

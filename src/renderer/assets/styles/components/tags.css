@@ -57,7 +57,7 @@
   border: none;
   height: 35px;
   background-color: transparent;
-  color: black;
+  color: var(--color-primary);
   font-size: 0.9rem;
   border-bottom: 1px solid #c1c1c1;
 

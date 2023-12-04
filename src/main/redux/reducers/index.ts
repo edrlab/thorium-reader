@@ -16,7 +16,7 @@ import { combineReducers } from "redux";
 
 import { appActions, publicationActions, winActions } from "../actions";
 import { lcpReducer } from "./lcp";
-import { readerDefaultConfigReducer } from "./reader/defaultConfig";
+import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";

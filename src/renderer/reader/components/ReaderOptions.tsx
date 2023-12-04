@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
-import { debounce } from "debounce";
+import debounce from "debounce";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Font } from "readium-desktop/common/models/font";

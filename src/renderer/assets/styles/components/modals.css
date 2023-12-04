@@ -50,12 +50,12 @@
   z-index: 102;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--color-secondary);
   overflow-y: auto;
   overflow-x: hidden;
   align-content: flex-start;
-  color: #3b3b3b;
-  position: absolute;
+  color: var(--color-primary);
+  position: fixed;
   box-sizing: border-box;
 
   @media screen and (width <= 960px) {
@@ -179,16 +179,15 @@
   }
 }
 
-.___DEBUG___COMPONENTS_MODALS_CSS {
-  display: none;
-}
-
-
 .modal_dialog-collapsed {
   min-height: 0;
 }
 
 .modal_dialog_body-collapsed {
   height: 0;
+  display: none;
+}
+
+.___DEBUG___COMPONENTS_MODALS_CSS {
   display: none;
 }
