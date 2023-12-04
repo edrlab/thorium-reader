@@ -17,7 +17,7 @@ import * as chevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-
 import classNames from "classnames";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
-export const DialogWithRadix: React.FC<React.PropsWithChildren<{}>> = (props) => {
+export const DialogWithRadix: React.FC<React.PropsWithChildren<{defaultOpen: boolean}>> = (props) => {
     const [open, setOpen] = React.useState(false);
 
     const openFromState = useSelector((state: IRendererCommonRootState) => state.dialog.open);
@@ -30,6 +30,7 @@ export const DialogWithRadix: React.FC<React.PropsWithChildren<{}>> = (props) =>
     return (
         <Dialog.Root
             open={open}
+            defaultOpen={props.defaultOpen}
             onOpenChange={
                 (open) => {
                     if (open) {
