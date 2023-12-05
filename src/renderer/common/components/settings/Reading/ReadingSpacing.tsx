@@ -7,6 +7,23 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useSaveConfig } from "./useSaveConfig";
+import * as MinusIcon from "readium-desktop/renderer/assets/icons/minusBorder-icon.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/plusBorder-icon.svg";
+import SVG from "../../SVG";
+
+interface ITable {
+    title: string,
+    ariaLabel: string,
+    min: number,
+    max: number,
+    step: number,
+    ariaValuemin: number,
+    defaultValue: string,
+    parameter: string,
+    altParameter: string,
+    rem: boolean,
+}
+
 
 const ReadingSpacing = () => {
     const [__] = useTranslator();
@@ -15,7 +32,7 @@ const ReadingSpacing = () => {
     const letterSpacing = useSelector((s: ICommonRootState) => s.reader.defaultConfig.letterSpacing);
     const paraSpacing = useSelector((s: ICommonRootState) => s.reader.defaultConfig.paraSpacing);
     const lineHeight = useSelector((s: ICommonRootState) => s.reader.defaultConfig.lineHeight);
-    const saveConfigDebounced = useSaveConfig();
+
 
     const spacingOptions = [
         {
@@ -82,25 +99,8 @@ const ReadingSpacing = () => {
 
     return (
         <div className={stylesSettings.settings_tab_container_reading_spacing}>
-            {spacingOptions.map((option) => (
-                <section className={stylesSettings.section} key={option.title}>
-                    <div>
-                        <h4>{option.title}</h4>
-                    </div>
-                    <div className={stylesSettings.size_range}>
-                        <input
-                            type="range"
-                            aria-labelledby={option.ariaLabel}
-                            min={option.min}
-                            max={option.max}
-                            step={option.step}
-                            aria-valuemin={option.ariaValuemin}
-                            defaultValue={option.defaultValue}
-                            onChange={(e) => saveConfigDebounced({ [option.parameter]: (e.target?.value || [option.altParameter]) + (option.rem ? "rem" : "") })}
-                        />
-                        <p>{option.defaultValue}</p>
-                    </div>
-                </section>
+            {spacingOptions.map((option: ITable) => (
+               <Slider {...option} key={option.title} />
             ))}
         </div>
     );
@@ -108,3 +108,51 @@ const ReadingSpacing = () => {
 };
 
 export default ReadingSpacing;
+
+const Slider = (option: ITable) => {
+    const saveConfigDebounced = useSaveConfig();
+    const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
+
+    const click = (direction: string) => {
+        const step = option.step;
+        let newStepValue: number;
+
+        if (direction === "out") {
+            newStepValue = Number(currentSliderValue.replace(/rem/g, '')) - step;
+        } else {
+            newStepValue = Number(currentSliderValue.replace(/rem/g, '')) + step;
+        }
+        const clampedValue = Math.min(Math.max(newStepValue, option.min), option.max);
+        const valueToString = clampedValue.toFixed(2);
+        setCurrentSliderValue(valueToString);
+        saveConfigDebounced({ [option.parameter]: valueToString + (option.rem ? "rem" : "") });
+    };
+
+    return (
+        <section className={stylesSettings.section} key={option.title}>
+            <div>
+                <h4>{option.title}</h4>
+            </div>
+            <div className={stylesSettings.size_range}>
+                <button onClick={() => click("out")}><SVG ariaHidden svg={MinusIcon} /></button>
+                <input
+                    id={option.title}
+                    type="range"
+                    aria-labelledby={option.ariaLabel}
+                    min={option.min}
+                    max={option.max}
+                    step={option.step}
+                    aria-valuemin={option.ariaValuemin}
+                    value={currentSliderValue}
+                    onChange={(e) => {
+                        const newValue = e.target.value;
+                        setCurrentSliderValue(newValue);
+                        saveConfigDebounced({ [option.parameter]: newValue + (option.rem ? "rem" : "") });
+                    }}
+                />
+                <button onClick={() => click("in")}><SVG ariaHidden svg={PlusIcon} /></button>
+                <p>{currentSliderValue + (option.rem ? "rem" : "")}</p>
+            </div>
+        </section>
+    );
+};

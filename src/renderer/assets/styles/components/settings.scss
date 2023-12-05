@@ -19,7 +19,7 @@ $setting_color:  var(--color-button-primary);
         flex-direction: column;
         gap: 10px;
         input[type="range"] {
-            width: 175px;
+            width: 150px;
         }
         p {
             margin: 0;
@@ -185,6 +185,11 @@ $setting_color:  var(--color-button-primary);
             input {
                 cursor: pointer;
             }
+            button {
+                width: 20px;
+                height: 20px;
+                padding: auto;
+            }
             p {
                 padding: 5px;
                 width: 50px;
@@ -331,6 +336,13 @@ div[data-radix-popper-content-wrapper] {
         select.form_group {
             height: 30px !important;
             width: 300px;
+        }
+        .size_range p {
+            font-size: 18px;
+            padding: 0;
+            width: auto;
+            text-align: center;
+            background-color: transparent;
         }
     }
 }

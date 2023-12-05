@@ -43,7 +43,7 @@
   top: 50%;
   min-height: 570px;
   min-width: 800px;
-  width: 50vw;
+  width: 75vw;
   max-height: calc(100vh - 100px);
   border-radius: 10px;
   z-index: 102;
