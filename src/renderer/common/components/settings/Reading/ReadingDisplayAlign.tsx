@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as RadioGroup from "@radix-ui/react-radio-group";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as AlignAutoIcon from "readium-desktop/renderer/assets/icons/align-auto-icon.svg";
@@ -7,48 +8,13 @@ import * as AlignRightIcon from "readium-desktop/renderer/assets/icons/align-rig
 import { useSaveConfig } from "./useSaveConfig";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { SettingsRadioBtnTemplate, TOptions } from "./SettingsRadioBtnTemplate";
+import { SettingsRadioBtnTemplate } from "./SettingsRadioBtnTemplate";
+
 
 const ReadingDisplayAlign = () => {
     const [__] = useTranslator();
     const saveConfigDebounced = useSaveConfig();
     const alignement = useSelector((s: ICommonRootState) => s.reader.defaultConfig.align);
-
-    const options: TOptions = [
-        {
-            id: "align_auto",
-            onChange: () => saveConfigDebounced({ align: "auto" }),
-            svg: AlignAutoIcon,
-            description: `${__("reader.settings.column.auto")}`,
-            checked: (alignement === "auto"),
-            disabled: false,
-            name: "align",
-        },
-        {
-            id: "align_justify",
-            onChange: () => saveConfigDebounced({ align: "justify" }),
-            svg: AlignJustifyIcon,
-            description: `${__("reader.settings.justify")}`,
-            checked: (alignement === "justify"),
-            disabled: false,
-            name: "align",
-
-
-        },
-        {
-            id: "align_right",
-            onChange: () => saveConfigDebounced({ align: "start" }),
-            svg: AlignRightIcon,
-            description: `${__("reader.svg.right")}`,
-            checked: (alignement === "start"),
-            disabled: false,
-            name: "align",
-        },
-    ];
-
-    const List = () => {
-        return options.map((o) => <SettingsRadioBtnTemplate key={o.id} {...o} />);
-    };
 
     return (
         <section className={stylesSettings.section}>
@@ -56,7 +22,13 @@ const ReadingDisplayAlign = () => {
                 <h4>{__("reader.settings.justification")}</h4>
             </div>
             <div className={stylesSettings.display_options}>
-                <List />
+            <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={alignement}
+                    onValueChange={(v) => saveConfigDebounced({align: v})}
+                >
+                    <SettingsRadioBtnTemplate value="auto" description={`${__("reader.settings.column.auto")}`} svg={AlignAutoIcon} disabled={false} />
+                    <SettingsRadioBtnTemplate value="justify" description={`${__("reader.settings.justify")}`} svg={AlignJustifyIcon} disabled={false} />
+                    <SettingsRadioBtnTemplate value="start" description={`${__("reader.svg.right")}`} svg={AlignRightIcon} disabled={false} />
+            </RadioGroup.Root>
             </div>
         </section>
     );

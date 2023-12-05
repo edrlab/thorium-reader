@@ -341,31 +341,6 @@ div[data-radix-popper-content-wrapper] {
     font-size: 14px;
     height: 80px;
     list-style-type: none;
-    input {
-        display: none;
-        transition: 200ms linear;
-        &:checked + label {
-            border: 1px solid $setting_color;
-            background-color: $settings_bg;
-            color: $setting_color;
-            svg {
-            fill: $setting_color;
-            }
-        }
-        &:disabled + label {
-            color: var(--color-medium-grey);
-            cursor: initial;
-            &:hover {
-                border: 1px solid transparent;
-            }
-
-        }
-        &:disabled {
-            &:checked + label {
-                border: 1px solid transparent;
-            }
-        }
-    }
     svg {
         width: 30px;
         height: 30px;
@@ -387,6 +362,19 @@ div[data-radix-popper-content-wrapper] {
             cursor: pointer;
         }
 
+    }
+    div[role="radiogroup"] {
+        button {
+            transition: 200ms linear;
+            &[data-state="checked"] {
+                border: 1px solid $setting_color;
+                background-color: $settings_bg;
+                color: $setting_color;
+                svg {
+                fill: $setting_color;
+                }
+        }
+    }
     }
 }
 

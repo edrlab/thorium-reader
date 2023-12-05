@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as RadioGroup from "@radix-ui/react-radio-group";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as TwoColsIcon from "readium-desktop/renderer/assets/icons/2cols-icon.svg";
@@ -6,7 +7,7 @@ import * as AlignJustifyIcon from "readium-desktop/renderer/assets/icons/align-j
 import { useSaveConfig } from "./useSaveConfig";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { SettingsRadioBtnTemplate, TOptions } from "./SettingsRadioBtnTemplate";
+import { SettingsRadioBtnTemplate } from "./SettingsRadioBtnTemplate";
 
 
 const ReadingDisplayCol = () => {
@@ -21,39 +22,6 @@ const ReadingDisplayCol = () => {
         scrollable ? setState("auto") : setState(colCount);
     }, [scrollable, colCount]);
 
-    const options: TOptions = [
-        {
-            id: "col_auto",
-            onChange: () => saveConfigDebounced({ colCount: "auto" }),
-            svg: AlignJustifyIcon,
-            description: `${__("reader.settings.column.auto")}`,
-            checked: (state === "auto"),
-            disabled: false,
-            name: "column",
-        },
-        {
-            id: "col_one",
-            onChange: () => saveConfigDebounced({ colCount: "1" }),
-            svg: AlignJustifyIcon,
-            description: `${__("reader.settings.column.one")}`,
-            checked: (state === "1"),
-            disabled: (scrollable),
-            name: "column",
-        },
-        {
-            id: "col_two",
-            onChange: () => saveConfigDebounced({ colCount: "2" }),
-            svg: TwoColsIcon,
-            description: `${__("reader.settings.column.two")}`,
-            checked: (state === "2"),
-            disabled: (scrollable),
-            name: "column",
-        },
-    ];
-
-    const List = () => {
-        return options.map((o) => <SettingsRadioBtnTemplate key={o.id} {...o} />);
-    };
 
     return (
         <section className={stylesSettings.section}>
@@ -61,7 +29,13 @@ const ReadingDisplayCol = () => {
                 <h4>{__("reader.settings.column.title")}</h4>
             </div>
             <div className={stylesSettings.display_options}>
-                <List />
+                <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={state}
+                        onValueChange={(v) => saveConfigDebounced({colCount: v})}
+                    >
+                        <SettingsRadioBtnTemplate value="auto" description={`${__("reader.settings.column.auto")}`} svg={AlignJustifyIcon} disabled={false} />
+                        <SettingsRadioBtnTemplate value="1" description={`${__("reader.settings.column.one")}`} svg={AlignJustifyIcon} disabled={scrollable} />
+                        <SettingsRadioBtnTemplate value="2" description={`${__("reader.settings.column.two")}`} svg={TwoColsIcon} disabled={scrollable} />
+                </RadioGroup.Root>
             </div>
         </section>
     );
