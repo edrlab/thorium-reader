@@ -23,6 +23,9 @@ import * as stylesDropDown from "readium-desktop/renderer/assets/styles/componen
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
+
+
 
 import {
     TranslatorProps, withTranslator,
@@ -38,6 +41,9 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
 import SVG from "../SVG";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -95,9 +101,6 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         return (
             <>
                 <section className={stylesSettings.settings_tab_container}>
-                    <div className={stylesGlobal.heading}>
-                        <h4>{__("settings.keyboard.keyboardShortcuts")}</h4>
-                    </div>
                     <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
                         <button
                             className={stylesButtons.button_primary}
@@ -161,61 +164,79 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const def = this.props.keyboardShortcuts[id];
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const frag = <>
-                                    <button
-                                        id={`keyEditButt_${id}`}
-                                        className={stylesButtons.button_primary_small}
-                                        onClick={(_ev) => {
-                                            const id_ = id;
-                                            this.onClickKeyboardShortcutEditCancel(id);
-                                            // const el = ev.currentTarget;
-                                            setTimeout(() => {
-                                                const el = document.getElementById(`keyEditButt_${id_}`);
-                                                el?.blur();
-                                                el?.focus();
-                                            }, 100);
-                                        }}
-                                        aria-label={`${hit ? __("settings.keyboard.cancel") : __("settings.keyboard.edit")} (${id}) ${this.stringifyKeyboardShortcut(def)}`}
-                                        >
-                                        {hit ?
-                                        __("settings.keyboard.cancel") : __("settings.keyboard.edit")}
-                                    </button>
-                                    {
-                                    hit &&
-                                    <button
-                                        className={stylesButtons.button_primary_small}
-                                        onClick={(_ev) => {
-                                            const id_ = id;
-                                            this.onClickKeyboardShortcutSave(id);
-                                            setTimeout(() => {
-                                                const el = document.getElementById(`keyEditButt_${id_}`);
-                                                el?.blur();
-                                                el?.focus();
-                                            }, 100);
-                                        }}
-                                        aria-label={`${__("settings.keyboard.save")} (${id})`}
-                                        >
-                                        {__("settings.keyboard.save")}
-                                    </button>
-                                    }
-
-                                    <strong aria-hidden>{id}</strong>
-                                    <div aria-hidden className={stylesGlobal.text_right}>{
-                                        hit ?
-                                        this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)
-                                        :
-                                        this.prettifyKeyboardShortcut(def)
-                                    }</div>
+                                    <h3 aria-hidden className={stylesKeys.keyshortElement_title}>{id}</h3>
+                                    <div aria-hidden className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
+                                        <div className={stylesKeys.keyshortElement_shortcut}>
+                                            {this.prettifyKeyboardShortcut(def)}
+                                            <button
+                                                id={`keyEditButt_${id}`}
+                                                onClick={(_ev) => {
+                                                    const id_ = id;
+                                                    this.onClickKeyboardShortcutEditCancel(id)
+                                                    // const el = ev.currentTarget;
+                                                    setTimeout(() => {
+                                                        const el = document.getElementById(`keyEditButt_${id_}`);
+                                                        el?.blur();
+                                                        el?.focus();
+                                                    }, 100);
+                                                }}
+                                             ><SVG ariaHidden svg={EditIcon} /></button>
+                                        </div>
+                                        {
+                                        hit &&
+                                        <>
+                                            {this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)}
+                                                <div className={stylesKeys.action_buttons_container}>
+                                                    <button
+                                                        id={`keyCancelButt_${id}`}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={(_ev) => {
+                                                            const id_ = id;
+                                                            this.onClickKeyboardShortcutEditCancel(id);
+                                                            // const el = ev.currentTarget;
+                                                            setTimeout(() => {
+                                                                const el = document.getElementById(`keyEditButt_${id_}`);
+                                                                el?.blur();
+                                                                el?.focus();
+                                                            }, 100);
+                                                        }}
+                                                        aria-label={`${hit ? __("settings.keyboard.cancel") : ""} (${id}) ${this.stringifyKeyboardShortcut(def)}`}
+                                                        >
+                                                        {hit ?
+                                                        __("settings.keyboard.cancel") : ""}
+                                                    </button>
+                                                    <button
+                                                        className={stylesButtons.button_primary_blue}
+                                                        onClick={(_ev) => {
+                                                            const id_ = id;
+                                                            this.onClickKeyboardShortcutSave(id);
+                                                            setTimeout(() => {
+                                                                const el = document.getElementById(`keyEditButt_${id_}`);
+                                                                el?.blur();
+                                                                el?.focus();
+                                                            }, 100);
+                                                        }}
+                                                        aria-label={`${__("settings.keyboard.save")} (${id})`}
+                                                        >
+                                                            <SVG ariaHidden svg={SaveIcon} />
+                                                        {__("settings.keyboard.save")}
+                                                    </button>
+                                                </div>
+                                            </>
+                                        }
+                                    </div>
+                                    <p className={stylesKeys.keyshortElement_description}>Suspendisse varius risus magna, vitae cursus quam fringilla a.</p>
                                 </>;
                                 return <li
                                         aria-hidden={!this.state.editKeyboardShortcutId || hit ? undefined : true}
                                         className={
                                             hit ?
-                                                classNames(stylesBlocks.block_line_edit, stylesGlobal.no_list_style)
+                                                classNames(stylesKeys.keyshortElement_container)
                                             :
                                             this.state.editKeyboardShortcutId ?
-                                            classNames(stylesBlocks.block_line_inactive, stylesBlocks.block_line, stylesGlobal.no_list_style)
+                                            classNames(stylesBlocks.block_line_inactive, stylesKeys.keyshortElement_container)
                                             :
-                                            classNames(stylesBlocks.block_line, stylesGlobal.no_list_style)
+                                            classNames(stylesKeys.keyshortElement_container)
                                         }
                                     key={`key_${id}`}>{
                                     (hit ? <FocusLock
@@ -313,6 +334,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         // this.props.toast(
         //     `${this.props.translator.translate("settings.keyboard.keyboardShortcuts")} ${kstring}`);
     }
+
     private onClickKeyboardShortcutEditCancel(id: TKeyboardShortcutId) {
 
         if (!this.state.editKeyboardShortcutId ||
@@ -346,14 +368,12 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this.props.reloadKeyboardShortcuts(defaults);
     }
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        const alt = def.alt ? <span className={stylesButtons.button_keyboard}>ALT</span> : null;
-        const shift = def.shift ? <span className={stylesButtons.button_keyboard}>SHIFT</span> : null;
-        const control = def.control ? <span className={stylesButtons.button_keyboard}>CTRL</span> : null;
-        const meta = def.meta ? <span className={stylesButtons.button_keyboard}>META</span> : null;
-        const key = <span className={stylesButtons.button_keyboard}>{def.key}</span>;
-        return <>{shift}{control}{alt}{meta}{(def.shift || def.control || def.alt || def.meta) ?
-            (<span className={classNames(stylesGlobal.fw_bold, stylesGlobal.mr_10)}>+</span>) :
-            null}{key}</>;
+        const alt = def.alt ? <span>ALT + </span> : null;
+        const shift = def.shift ? <span>SHIFT + </span> : null;
+        const control = def.control ? <span>CTRL + </span> : null;
+        const meta = def.meta ? <span>META + </span> : null;
+        const key = <span>{def.key}</span>;
+        return <>{shift}{control}{alt}{meta}{key}</>;
     }
     private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
         return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? "ALT " : ""}${def.meta ? "META " : ""}${(def.shift || def.control || def.alt || def.meta) ? "+ " : ""}${def.key}`;
@@ -364,7 +384,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_ALT`}
             type="checkbox"
             checked={def.alt ? true : false}
-            className={stylesInputs.checkbox_keyboard}
+            className={stylesKeys.keyshortElement_shortcut_container_edit_input}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -386,7 +406,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_SHIFT`}
             type="checkbox"
             checked={def.shift ? true : false}
-            className={stylesInputs.checkbox_keyboard}
+            className={stylesKeys.keyshortElement_shortcut_container_edit_input}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -408,7 +428,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_CTRL`}
             type="checkbox"
             checked={def.control ? true : false}
-            className={stylesInputs.checkbox_keyboard}
+            className={stylesKeys.keyshortElement_shortcut_container_edit_input}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -430,7 +450,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id={`idcheckbox_${id}_META`}
             type="checkbox"
             checked={def.meta ? true : false}
-            className={stylesInputs.checkbox_keyboard}
+            className={stylesKeys.keyshortElement_shortcut_container_edit_input}
             onChange={() => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
@@ -453,6 +473,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         }
 
         const keySelect =
+        <>
         <select
             ref={this.selectRef}
             onChange={(ev) => {
@@ -474,7 +495,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 console.log("editifyKeyboardShortcut select FOCUS:", ev.target.value.toString());
             } : null}
             value={def.key}
-            className={stylesButtons.button_keyboard}
+            className={stylesSettings.form_group}
+            id="keySelect"
         >
             {KEY_CODES.map((keyOption, idx) => {
                 return (
@@ -487,6 +509,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 );
             })}
         </select>
+
+        </>
         ;
         const kstring = this.stringifyKeyboardShortcut(def);
         const keySink = <input
@@ -526,7 +550,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             }
         }}
         ></input>;
-        return <>{shift}{control}{alt}{meta}{keySelect}{keySink}</>;
+        return <div className={stylesKeys.keyshortElement_shortcut}>{shift}{control}{alt}{meta}{keySelect}{keySink}</div>;
     }
 }
 
