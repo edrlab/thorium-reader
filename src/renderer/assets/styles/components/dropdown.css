@@ -29,6 +29,16 @@
   border-radius: 5px;
   position: relative;
 
+  &.dropdown_right::after {
+    left: auto;
+    right: 34px;
+  }
+
+  &.dropdown_publication::after {
+    left: auto;
+    right: 25px;
+  }
+
    & > * {
     text-decoration: none;
     color: black;
