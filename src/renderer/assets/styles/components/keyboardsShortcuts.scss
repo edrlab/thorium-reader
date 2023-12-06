@@ -86,3 +86,11 @@
     display: flex;
     gap: 10px;
 }
+
+.advanced_trigger {
+    min-width: 50px!important;
+    width: fit-content!important;
+    &:hover {
+        background-color: transparent;
+    }
+}

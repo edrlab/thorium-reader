@@ -15,7 +15,6 @@ import {
 } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
-import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
@@ -101,28 +100,14 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             <>
                 <section className={stylesSettings.settings_tab_container}>
                     <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
-                        <button
-                            className={stylesButtons.button_primary}
-                            onClick={() => this.onClickKeyboardShortcutsShowHide()}
-                        >
-                            <SVG
-                                ariaHidden={true}
-                                svg={ChevronDownIcon}
-                                className={this.state.displayKeyboardShortcuts ? stylesGlobal.rotate180 : null  }
-                            />
-                            {this.state.displayKeyboardShortcuts ? __("settings.keyboard.hide") : __("settings.keyboard.show")}
-                        </button>
-                        {
-                            (
-                                this.state.displayKeyboardShortcuts && !this.state.editKeyboardShortcutId
-                            ) && (
+                    {!this.state.editKeyboardShortcutId && (
                                 <Menu
                                     button={(
                                         <SVG
                                             title={
                                                 `${__("settings.keyboard.advancedMenu")}`
                                             }
-                                            className={stylesButtons.button_primary_icon}
+                                            className={classNames(stylesButtons.button_secondary_blue, stylesKeys.advanced_trigger)}
                                             svg={MenuIcon}
                                         />
                                     )}>
@@ -139,7 +124,6 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             )
                         }
                     </div>
-                    {this.state.displayKeyboardShortcuts && (
                         <div
                             onKeyUp={this.state.editKeyboardShortcutId ? ((e: React.KeyboardEvent<HTMLDivElement>) => {
                                 if (e.key === "Escape") {
@@ -241,7 +225,6 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             })}
                             </ul>
                         </div>
-                    )}
                 </section>
             </>
         );
@@ -343,14 +326,6 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         }
 
         this.setState({
-            editKeyboardShortcutId: undefined,
-            editKeyboardShortcutData: undefined,
-        });
-    }
-    private onClickKeyboardShortcutsShowHide() {
-        this.setState({
-            displayKeyboardShortcuts: !this.state.displayKeyboardShortcuts,
-
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
         });
