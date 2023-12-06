@@ -19,7 +19,6 @@ import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
@@ -118,30 +117,25 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 this.state.displayKeyboardShortcuts && !this.state.editKeyboardShortcutId
                             ) && (
                                 <Menu
-                                    button={
-                                        (<SVG
+                                    button={(
+                                        <SVG
                                             title={
                                                 `${__("settings.keyboard.advancedMenu")}`
                                             }
                                             className={stylesButtons.button_primary_icon}
                                             svg={MenuIcon}
-                                        />)
-                                    }
-                                    content={(
-                                        <div className={stylesDropDown.dropdown_menu}>
-                                            <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
-                                                {__("settings.keyboard.resetDefaults")}
-                                            </button>
-                                            <button onClick={() => this.onClickKeyboardShortcutsShow()}>
-                                                {__("settings.keyboard.editUserJson")}
-                                            </button>
-                                            <button onClick={() => this.onClickKeyboardShortcutsReload(false)}>
-                                                    {__("settings.keyboard.loadUserJson")}
-                                            </button>
-                                        </div>
-                                    )}
-                                    dir="left"
-                                />
+                                        />
+                                    )}>
+                                        <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
+                                            {__("settings.keyboard.resetDefaults")}
+                                        </button>
+                                        <button onClick={() => this.onClickKeyboardShortcutsShow()}>
+                                            {__("settings.keyboard.editUserJson")}
+                                        </button>
+                                        <button onClick={() => this.onClickKeyboardShortcutsReload(false)}>
+                                                {__("settings.keyboard.loadUserJson")}
+                                        </button>
+                                </Menu>
                             )
                         }
                     </div>

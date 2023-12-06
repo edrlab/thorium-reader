@@ -1,4 +1,6 @@
 export declare const action_buttons_container: string;
+export declare const advance_keyboard: string;
+export declare const form_group: string;
 export declare const keyshortElement_container: string;
 export declare const keyshortElement_description: string;
 export declare const keyshortElement_shortcut: string;

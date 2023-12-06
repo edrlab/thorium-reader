@@ -294,11 +294,16 @@ button {
   min-width: 100px;
   background-color: var(--color-button-primary);
   color: white;
-
+  transition: 200ms linear;
+  
   svg {
     width: 10px;
     fill: white;
-}
+  }
+
+  &:hover {
+    color: var(--color-button-primary);
+  }
 }
 
 .button_secondary_blue {
