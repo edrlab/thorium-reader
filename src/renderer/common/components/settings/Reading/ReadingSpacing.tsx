@@ -100,7 +100,7 @@ const ReadingSpacing = () => {
     return (
         <div className={stylesSettings.settings_tab_container_reading_spacing}>
             {spacingOptions.map((option: ITable) => (
-               <Slider {...option} key={option.title} />
+                <Slider {...option} key={option.title} />
             ))}
         </div>
     );
@@ -118,9 +118,9 @@ const Slider = (option: ITable) => {
         let newStepValue: number;
 
         if (direction === "out") {
-            newStepValue = Number(currentSliderValue.replace(/rem/g, '')) - step;
+            newStepValue = Number(currentSliderValue.replace(/rem/g, "")) - step;
         } else {
-            newStepValue = Number(currentSliderValue.replace(/rem/g, '')) + step;
+            newStepValue = Number(currentSliderValue.replace(/rem/g, "")) + step;
         }
         const clampedValue = Math.min(Math.max(newStepValue, option.min), option.max);
         const valueToString = clampedValue.toFixed(2);

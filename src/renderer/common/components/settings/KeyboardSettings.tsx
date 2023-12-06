@@ -150,7 +150,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                 id={`keyEditButt_${id}`}
                                                 onClick={(_ev) => {
                                                     const id_ = id;
-                                                    this.onClickKeyboardShortcutEditCancel(id)
+                                                    this.onClickKeyboardShortcutEditCancel(id);
                                                     // const el = ev.currentTarget;
                                                     setTimeout(() => {
                                                         const el = document.getElementById(`keyEditButt_${id_}`);
@@ -158,7 +158,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                         el?.focus();
                                                     }, 100);
                                                 }}
-                                             ><SVG ariaHidden svg={EditIcon} /></button>
+                                            ><SVG ariaHidden svg={EditIcon} /></button>
                                         </div>
                                         {
                                         hit &&
