@@ -45,27 +45,51 @@ export const FontSize = () => {
     );
 };
 
-
-
 export const FontFamily = () => {
     const [__] = useTranslator();
     const readiumCSSFontID = useSelector((s: ICommonRootState) => s.reader.defaultConfig.font);
+
+    const options = fontList.map((fontItem) => ({ value: fontItem.id, label: fontItem.label }));
+    const optionsItem = options.find((f) => f.value === readiumCSSFontID) || options[options.length-1];
     const fontListItem = fontList.find((f) => {
         return f.id === readiumCSSFontID && f.id !== FONT_ID_VOID;
     });
 
-    const readiumCSSFontIDToSelect = fontListItem ?
-        fontListItem.id : // readiumCSSFontID
-        FONT_ID_VOID;
-    const readiumCSSFontLabelToSelect = fontListItem ?
-        fontListItem.label :
-        "...";
+    // const readiumCSSFontIDToSelect = fontListItem ?
+    //     fontListItem.id : // readiumCSSFontID
+    //     FONT_ID_VOID;
+    // const readiumCSSFontLabelToSelect = fontListItem ?
+    //     fontListItem.label :
+    //     "...";
     const readiumCSSFontName = fontListItem ? fontListItem.label : readiumCSSFontID;
     const readiumCSSFontPreview = (readiumCSSFontName === FONT_ID_VOID || fontListItem?.id === FONT_ID_DEFAULT) ?
         " " : readiumCSSFontName;
     const fontFamily = fontListItem?.fontFamily ? fontListItem.fontFamily : `'${readiumCSSFontName}', serif`;
 
     const saveConfigDebounced = useSaveConfig();
+
+    const saveFont = (value: string) => {
+
+        let val = value.trim();
+        // a"b:c    ;d;<e>f'g&h
+        val = val.
+            replace(/\t/g, "").
+            replace(/"/g, "").
+            replace(/:/g, "").
+            replace(/'/g, "").
+            replace(/;/g, "").
+            replace(/</g, "").
+            replace(/>/g, "").
+            replace(/\\/g, "").
+            replace(/\//g, "").
+            replace(/&/g, "").
+            replace(/\n/g, " ").
+            replace(/\s\s+/g, " ");
+        if (!val) { // includes empty string (falsy)
+            val = undefined;
+        }
+        saveConfigDebounced({ font: val });
+    }
 
     return (
         <section className={stylesSettings.section}>
@@ -82,30 +106,19 @@ export const FontFamily = () => {
                     }}
                     classNamePrefix={stylesSettings.settings_font_selection}
                     formatCreateLabel={(input) => <p>{input}</p>}
-                    defaultValue={({ value: readiumCSSFontIDToSelect, label: readiumCSSFontLabelToSelect })}
+                    defaultValue={optionsItem}
+                    defaultInputValue={readiumCSSFontName}
+                    onInputChange={(value, action) => {
+                        console.log(value, action);
+                        if (action.action === "input-change") {
+                            saveFont(value);
+                        }
+                    }}
                     onChange={(obj) => {
                         if (!obj?.value) return;
-                        let val = obj.value.trim();
-                        // a"b:c    ;d;<e>f'g&h
-                        val = val.
-                            replace(/\t/g, "").
-                            replace(/"/g, "").
-                            replace(/:/g, "").
-                            replace(/'/g, "").
-                            replace(/;/g, "").
-                            replace(/</g, "").
-                            replace(/>/g, "").
-                            replace(/\\/g, "").
-                            replace(/\//g, "").
-                            replace(/&/g, "").
-                            replace(/\n/g, " ").
-                            replace(/\s\s+/g, " ");
-                        if (!val) { // includes empty string (falsy)
-                            val = undefined;
-                        }
-                        saveConfigDebounced({ font: val });
+                        saveFont(obj.value);
                     }}
-                    options={fontList.map((fontItem) => ({ value: fontItem.id, label: fontItem.label }))}
+                    options={options}
                 />
             </div>
             <span
