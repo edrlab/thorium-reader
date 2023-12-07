@@ -7,6 +7,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import * as Popover from "@radix-ui/react-popover";
 import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
 import {
@@ -18,6 +19,7 @@ import { keyboardActions, toastActions } from "readium-desktop/common/redux/acti
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
@@ -28,7 +30,6 @@ import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/k
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import {
     ensureKeyboardListenerIsInstalled, KEY_CODES, TKeyboardDocument,
 } from "readium-desktop/renderer/common/keyboard";
@@ -96,31 +97,42 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+        const appOverlayElement = document.querySelector(".settings_content") as HTMLElement;
+
         return (
             <>
                 <section className={stylesSettings.settings_tab_container}>
                     <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
                     {!this.state.editKeyboardShortcutId && (
-                                <Menu
-                                    button={(
-                                        <SVG
-                                            title={
-                                                `${__("settings.keyboard.advancedMenu")}`
-                                            }
-                                            className={classNames(stylesButtons.button_secondary_blue, stylesKeys.advanced_trigger)}
-                                            svg={MenuIcon}
-                                        />
-                                    )}>
-                                        <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
-                                            {__("settings.keyboard.resetDefaults")}
-                                        </button>
-                                        <button onClick={() => this.onClickKeyboardShortcutsShow()}>
-                                            {__("settings.keyboard.editUserJson")}
-                                        </button>
-                                        <button onClick={() => this.onClickKeyboardShortcutsReload(false)}>
-                                                {__("settings.keyboard.loadUserJson")}
-                                        </button>
-                                </Menu>
+                        <Popover.Root>
+                            <Popover.Trigger asChild>
+                                <button>
+                                    <SVG
+                                        title={
+                                            `${__("settings.keyboard.advancedMenu")}`
+                                        }
+                                        className={classNames(stylesButtons.button_secondary_blue, stylesKeys.advanced_trigger)}
+                                        svg={MenuIcon}
+                                    />
+                                </button>
+                            </Popover.Trigger>
+                            <Popover.Portal container={appOverlayElement}>
+                                <Popover.Content className="PopoverContent" sideOffset={5} style={{zIndex: "10000"}}>
+                                    <div className={stylesDropDown.dropdown_menu}>
+                                    <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
+                                {__("settings.keyboard.resetDefaults")}
+                            </button>
+                            <button onClick={() => this.onClickKeyboardShortcutsShow()}>
+                                {__("settings.keyboard.editUserJson")}
+                            </button>
+                            <button onClick={() => this.onClickKeyboardShortcutsReload(false)}>
+                                    {__("settings.keyboard.loadUserJson")}
+                            </button>
+                                    </div>
+                                    <Popover.Arrow className="PopoverArrow" aria-hidden />
+                                </Popover.Content>
+                            </Popover.Portal>
+                        </Popover.Root>
                             )
                         }
                     </div>

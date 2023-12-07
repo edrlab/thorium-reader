@@ -8,7 +8,6 @@
 import * as React from "react";
 import * as Select from "@radix-ui/react-select";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
@@ -44,8 +43,8 @@ const Themes = () => {
     };
 
     return (
-        <section className={stylesSettings.settings_tab_container}>
-            <div className={stylesGlobal.heading}>
+        <section className={stylesSettings.section}>
+            <div>
                 <h4>{__("settings.theme.title")}</h4>
             </div>
             <Select.Root onValueChange={(themeChosen) => {
