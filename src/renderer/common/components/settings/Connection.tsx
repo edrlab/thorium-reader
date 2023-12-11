@@ -24,7 +24,7 @@ export const Auth = () => {
             className={stylesSettings.btn_primary}
             onClick={() => dispatch(authActions.wipeData.build())}>
             <SVG ariaHidden svg={BinIcon} />
-            {__("settings.auth.wipeData")}
+            <h3>{__("settings.auth.wipeData")}</h3>
         </button>
     );
 };
@@ -36,7 +36,7 @@ export const Session = () => {
 
     return (
         <>
-            <form>
+            <form style={{display: "flex"}}>
                 <input
                     id={"session-true"}
                     type="checkbox"
@@ -45,10 +45,10 @@ export const Session = () => {
                     defaultChecked={sessionState}
                     onChange={(e) => dispatch(sessionActions.enable.build(e.target.checked))}
                 />
-                <label htmlFor={"session-true"}>{__("settings.session.title")}</label>
+                <label htmlFor={"session-true"}><h4>{__("settings.session.title")}</h4></label>
             </form>
             <div className={stylesSettings.session_text}>
-                <p>{__("settings.session.description")}</p>
+                <h4>{__("settings.session.description")}</h4>
             </div>
         </>
     );
