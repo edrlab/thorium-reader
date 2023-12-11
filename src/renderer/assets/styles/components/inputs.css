@@ -221,8 +221,8 @@ select {
 
 .form_group {
   width: 150px;
-  height: 20px;
-  padding:5px;
+  height: 19px;
+  padding:2px;
   border:1px solid var(--color-primary);
   margin: 0;
   border-radius: 6px;
@@ -232,7 +232,6 @@ select {
 
   & >label{
       position:absolute;
-      font-size: 14px;
       top:-10px;
       left:10px;
       background-color: var(--color-secondary);
@@ -241,7 +240,7 @@ select {
   & >input{
       border:none;
       width: calc(100% - 35px);
-      height: 100%;
+      height: 19px;
       margin-left: 30px;
       
       &[type="search"], &[title="Add a tag"] {

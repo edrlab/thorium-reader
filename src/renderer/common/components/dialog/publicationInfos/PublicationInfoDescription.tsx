@@ -73,7 +73,7 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
         return (
             <>
                 <div className="publicationInfo-description-bloc">
-                    <h3>{__("catalog.description")}</h3>
+                    <h4>{__("catalog.description")}</h4>
                 </div>
                 <div className={stylePublication.publicationInfo_description_bloc}>
                     <div

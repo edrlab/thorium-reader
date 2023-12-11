@@ -43,10 +43,12 @@
   top: 50%;
 
   /* min-height: 570px; */
-  min-width: 800px;
+  /* min-width: 776px;
   width: calc(100vw - 100px);
-  max-width: 960px;
-  max-height: calc(100vh - 100px);
+  max-width: 960px; */
+  width: 776px;
+  /* max-height: calc(100vh - 100px); */
+  height: 597px;
   border-radius: 10px;
   z-index: 102;
   display: flex;
@@ -106,7 +108,7 @@
   flex: none;
   margin: 0 20px;
   align-items: center;
-  height: 70px;
+  height: 50px;
 }
 
 .modal_dialog_header {
@@ -116,7 +118,6 @@
   & h2 {
     font-weight: bold;
     margin: 10px 0;
-    font-size: 22px;
     margin-left: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -169,7 +170,6 @@
     }
 
     & input {
-      font-size: 1rem;
       padding-bottom: 4px;
       padding-left: 0.3rem;
       border: none;

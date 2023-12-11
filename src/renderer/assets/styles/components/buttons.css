@@ -95,7 +95,6 @@ button {
 .button_primary {
   @mixin button_primary;
 
-  font: 1rem Arial, sans-serif;
   padding: 10px 15px;
 
   & svg {
@@ -222,8 +221,6 @@ button {
   transition: all 0.2s;
   border-radius: 5px;
   background: rgba(0, 0, 0, 0);
-  font-size: 1rem;
-  font-family: "Arial", sans-serif;
   font-weight: 600;
   cursor: pointer;
 
@@ -310,7 +307,7 @@ button {
 
 .button_secondary_blue {
   border: 1px solid var(--color-button-primary);
-  height: 30px;
+  height: 24px;
   border-radius: 4px;
   padding: 5px;
   min-width: 100px;

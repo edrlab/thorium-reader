@@ -314,7 +314,7 @@ const Progression = (props: {
         return (
             <section className="publicationInfo-progressionWrapper">
                 <div className={stylePublication.publicationInfo_heading}>
-                    <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h3>
+                    <h4 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h4>
                 </div>
                 <div className={stylePublication.publicationInfo_progressionContainer}>
                     <div style={{ display: "flex", gap: "10px" }}>
@@ -428,7 +428,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                 </div>
                 <div className={stylePublication.publicationInfo_rightSide}>
                     <section>
-                        <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10)}
+                        <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10, stylePublication.book_title)}
                             dir={pubTitleIsRTL ? "rtl" : undefined}>
                             {pubTitleStr}
                         </h2>
@@ -444,7 +444,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                     </section>
                     <section>
                         <div className={stylePublication.publicationInfo_heading}>
-                            <h3>{__("catalog.moreInfo")}</h3>
+                            <h4>{__("catalog.moreInfo")}</h4>
                         </div>
                         <div className={stylePublication.publicationInfo_moreInfo_content}>
                             <FormatPublisherDate publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} />
@@ -500,7 +500,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                     </section>
                     <section>
                         <div className={stylePublication.publicationInfo_heading}>
-                            <h3>{__("publication.accessibility.name")}</h3>
+                            <h4>{__("publication.accessibility.name")}</h4>
                         </div>
                         <div className={stylePublication.accessibility_infos}>
                             <PublicationInfoA11y publicationViewMaybeOpds={publicationViewMaybeOpds}></PublicationInfoA11y>
@@ -509,12 +509,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                     {(publicationViewMaybeOpds.lcp ? <section className={stylePublication.publicationInfo_lcpInfo_content}>
                         <LcpInfo publicationLcp={publicationViewMaybeOpds} />
                     </section> : <></>)}
-                    <section className={stylePublication.publicationInfo_tagContainer}>
-                        <div className={stylePublication.publicationInfo_heading}>
-                            <h3>{__("catalog.tags")}</h3>
-                        </div>
-                        <TagManagerComponent />
-                    </section>
+                    <TagManagerComponent />
                     <Progression
                         __={__}
                         closeDialogCb={closeDialogCb}

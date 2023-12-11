@@ -17,9 +17,9 @@
     }
     .button_primary {
         border: 1px solid var(--color-button-primary);
-        height: 30px;
+        height: 20px;
         border-radius: 4px;
-        padding: 5px;
+        padding: 2px;
         width: 100%;
         display: flex;
         align-items: center;
@@ -32,9 +32,9 @@
     }
     .button_secondary, .button_transparency {
         border: 1px solid var(--color-button-primary);
-        height: 30px;
+        height: 20px;
         border-radius: 4px;
-        padding: 5px;
+        padding: 2px;
         width: 100%;
         display: flex;
         align-items: center;
@@ -59,7 +59,6 @@
         width: 100%;
         position: relative;
         display: flex;
-        min-height: 400px;
         align-items: center;
         background-color: var(--color-light-grey);
         border: 1px solid var(--color-medium-grey);
@@ -87,9 +86,11 @@
     &_rightSide {
         padding: 0 20px;
         flex: 2;
+        .book_title {
+            font-size: 20px;
+        }
         h2 {
             font-style: italic;
-            font-size: 25px;
             font-weight: 900;
         }
     }
@@ -97,14 +98,12 @@
         position: relative;
         font-weight: 600;
         margin-bottom: 10px;
-        font-size: 18px;
     }
     &_description_bloc {
         position: relative;
         &_seeMore {
             color: var(--color-button-primary);
             text-decoration: underline;
-            font-size: 16px;
             display: flex;
             width: 100px;
             align-items: center;
@@ -120,23 +119,30 @@
             margin-bottom: 5px;
             strong {
                 font-weight: 600;
-                font-size: 15px;
             }
         }
     }
 }
 
-.publicationInfo_tagContainer {
-    .tag {
-        font-size: 14px;
+.tag_list {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    h4 {
+        min-width: fit-content;
+        margin-top: 0;
     }
+}
+
+.publicationInfo_tagContainer {
     form {
         display: flex;
         align-items: center;
         gap: 10px;
+        margin-top: 10px;
         button {
-            width: 80px !important;
-            min-width: 80px;
+            width: fit-content;
+            min-width: 50px;
             svg {
                 fill: white;
             }
@@ -162,8 +168,9 @@
                 cursor: pointer;
             }
             svg {
-                width: 15px;
-                height: 15px;
+                width: 12px;
+                height: 12px;
+                margin-left: 2px;
             }
             &:first-of-type {
                 list-style-type: none;
@@ -181,8 +188,7 @@
 .accessibility_infos {
     line-height: 1.5;
     display: flex;
-    font-size: 14px;
-    @media screen and (width <= 960px) {
+    @media screen and (max-width : 960px) {
         flex-direction: column;
     }
     &_left {

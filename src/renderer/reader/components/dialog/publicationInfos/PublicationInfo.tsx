@@ -70,7 +70,7 @@ export const PublicationInfoReaderWithRadixContent = React.forwardRef<HTMLDivEle
                 <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef}>
                     <div className={stylesModals.modal_dialog_header}>
                         {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
-                        <h2>{__("catalog.bookInfo")}</h2>
+                        <h1>{__("catalog.bookInfo")}</h1>
                         <Dialog.Close asChild>
                             <button className={stylesButtons.button_transparency_icon} aria-label="Close">
                                 <SVG ariaHidden={true} svg={QuitIcon} />

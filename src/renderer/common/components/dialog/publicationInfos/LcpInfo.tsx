@@ -105,7 +105,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         return (
             <>
                 <div className={stylePublication.publicationInfo_heading}>
-                    <h3>LCP</h3>
+                    <h4>LCP</h4>
                 </div>
                 <div className={classNames(stylesBookDetailsDialog.allowUserSelect)}>
                     {(lsdStatus &&
