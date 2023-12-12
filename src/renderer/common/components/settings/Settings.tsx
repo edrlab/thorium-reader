@@ -23,9 +23,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as GearIcon from "readium-desktop/renderer/assets/icons/settings.svg";
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
-import * as ReadingIcon from "readium-desktop/renderer/assets/icons/reading-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
-import ReadingOptions from "./ReadingOptions";
 import ConnectionSettings from "./Connection";
 
 
@@ -77,10 +75,6 @@ class Settings extends React.Component<IProps, undefined> {
                                 <SVG ariaHidden svg={PaletteIcon} />
                                 <h4>{__("settings.tabs.appearance")}</h4>
                             </Tabs.Trigger>
-                            <Tabs.Trigger value="tab3">
-                                <SVG ariaHidden svg={ReadingIcon} />
-                                <h4>{__("settings.tabs.reading")}</h4>
-                            </Tabs.Trigger>
                             <Tabs.Trigger value="tab4">
                                 <SVG ariaHidden svg={KeyReturnIcon} />
                                 <h4>{__("settings.tabs.keyboardShortcuts")}</h4>
@@ -102,10 +96,6 @@ class Settings extends React.Component<IProps, undefined> {
                                 <section className={stylesSettings.settings_tab}>
                                     <Themes />
                                 </section>
-                            </Tabs.Content>
-                            <Tabs.Content value="tab3" tabIndex={-1}>
-                                <TabTitle title={__("settings.tabs.reading")} />
-                                <ReadingOptions />
                             </Tabs.Content>
                             <Tabs.Content value="tab4" tabIndex={-1}>
                                 <TabTitle title={__("settings.tabs.keyboardShortcuts")} />

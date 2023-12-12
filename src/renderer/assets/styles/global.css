@@ -134,9 +134,28 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  font: 1.1rem "Nunito", sans-serif;
+  font: 10px "Nunito", sans-serif;
   background: var(--color-secondary);
+}
 
+p, button, input, select {
+  font-size: 10px;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+h3 {
+  font-size: 14px;
+}
+
+h4 {
+  font-size: 12px;
 }
 
 section {
@@ -147,7 +166,7 @@ section {
   width: calc(100% - 120px);
   padding: 30px 60px;
   overflow-y: auto;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;

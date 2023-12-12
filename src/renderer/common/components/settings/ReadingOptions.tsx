@@ -6,6 +6,7 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as Tabs from "@radix-ui/react-tabs";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg"
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
@@ -19,6 +20,9 @@ import ReadingDisplayCol from "./Reading/ReadingDisplayCol";
 import ReadingDisplayMathJax from "./Reading/ReadingDisplayMathJax";
 import ReadingSpacing from "./Reading/ReadingSpacing";
 import ReadingAudio from "./Reading/ReadingAudio";
+import { DialogCloseButton, DialogFooter, DialogHeader, DialogWithRadix, DialogWithRadixContentSettings, DialogWithRadixTrigger } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 // const TabTitle = (props: any) => {
 //     return (
@@ -29,6 +33,37 @@ import ReadingAudio from "./Reading/ReadingAudio";
 //     )
 // }
 
+export const ReaderSettingsDialog = () => {
+    return (
+    <DialogWithRadix>
+        <DialogWithRadixTrigger asChild>
+            <button
+                className={stylesButtons.button_transparency_icon}
+            >
+                <SVG ariaHidden={true} svg={SettingsIcon} />
+            </button>
+        </DialogWithRadixTrigger>
+        <DialogWithRadixContentSettings>
+            <DialogHeader>
+                <DialogTitle>
+                    <h2>Reading Preferences</h2>
+                </DialogTitle>
+                <DialogCloseButton />
+            </DialogHeader>
+            <ReadingOptions />
+            <DialogFooter>
+                <button className={stylesButtons.button_secondary_blue}>
+                    Reverse to original 
+                </button>
+                <button className={stylesButtons.button_primary_blue}>
+                    More options
+                </button>
+            </DialogFooter>
+        </DialogWithRadixContentSettings>
+    </DialogWithRadix>
+    )
+}
+
 const ReadingOptions = () => {
     const [__] = useTranslator();
     return (
@@ -37,19 +72,19 @@ const ReadingOptions = () => {
                 <Tabs.List className={stylesSettings.tablist_reading} aria-orientation="horizontal">
                     <Tabs.Trigger value="tab11">
                         <SVG ariaHidden svg={TextAreaIcon} />
-                        <p>{__("reader.settings.text")}</p>
+                        <h3>{__("reader.settings.text")}</h3>
                     </Tabs.Trigger>
                     <Tabs.Trigger value="tab12">
                         <SVG ariaHidden svg={LayoutIcon} />
-                        <p>{__("reader.settings.display")}</p>
+                        <h3>{__("reader.settings.display")}</h3>
                     </Tabs.Trigger>
                     <Tabs.Trigger value="tab13">
                         <SVG ariaHidden svg={AlignLeftIcon} />
-                        <p>{__("reader.settings.spacing")}</p>
+                        <h3>{__("reader.settings.spacing")}</h3>
                     </Tabs.Trigger>
                     <Tabs.Trigger value="tab14">
                         <SVG ariaHidden svg={VolumeUpIcon} />
-                        <p>{__("reader.media-overlays.title")}</p>
+                        <h3>{__("reader.media-overlays.title")}</h3>
                     </Tabs.Trigger>
                     {/* <Tabs.Trigger value="tab15">
                         <SVG ariaHidden svg={ClockWiseIcon} />
@@ -58,11 +93,11 @@ const ReadingOptions = () => {
                 </Tabs.List>
                 <div>
                     <Tabs.Content value="tab11" tabIndex={-1}>
+                        <ReadingTheme />
                         <FontSize />
                         <FontFamily />
                     </Tabs.Content>
                     <Tabs.Content value="tab12" tabIndex={-1}>
-                        <ReadingTheme />
                         <ReadingDisplayLayout />
                         <ReadingDisplayAlign />
                         <ReadingDisplayCol />
@@ -82,5 +117,3 @@ const ReadingOptions = () => {
         </section>
     );
 };
-
-export default ReadingOptions;

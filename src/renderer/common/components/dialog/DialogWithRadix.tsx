@@ -16,6 +16,8 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as chevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import classNames from "classnames";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+
 
 export const DialogWithRadix: React.FC<React.PropsWithChildren<{}>> = (props) => {
     const [open, setOpen] = React.useState(false);
@@ -56,8 +58,12 @@ const DialogContext = React.createContext<{
 
 export const DialogWithRadixContent: React.FC<React.PropsWithChildren<{}>> = (props) => {
     const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
+    const nightTheme = useSelector((s: any) => s.reader.defaultConfig.night);
+    const sepiaTheme = useSelector((s: any) => s.reader.defaultConfig.sepia);
     const [__] = useTranslator();
     const [isCollapsed, setCollapse] = React.useState(false);
+
+    console.log(nightTheme, sepiaTheme)
 
     const toggleCollapse = () => {
         setCollapse(!isCollapsed);
@@ -68,7 +74,7 @@ export const DialogWithRadixContent: React.FC<React.PropsWithChildren<{}>> = (pr
     return (
         <Dialog.Portal container={appOverlayElement}>
             <div className={stylesModals.modal_dialog_overlay}></div>
-            <Dialog.Content className={classNames(stylesModals.modal_dialog, isCollapsed ? stylesModals["modal_dialog-collapsed"] : undefined)}
+            <Dialog.Content className={classNames(stylesModals.modal_dialog, isCollapsed ? stylesModals["modal_dialog-collapsed"] : undefined, nightTheme ? stylesReader.nightMode : "", sepiaTheme ? stylesReader.sepiaMode : "")}
                 style={{
                     zIndex: "10000",
                 }}
@@ -81,6 +87,38 @@ export const DialogWithRadixContent: React.FC<React.PropsWithChildren<{}>> = (pr
     );
 };
 DialogWithRadixContent.displayName = "DialogWithRadixContent";
+
+export const DialogWithRadixContentSettings: React.FC<React.PropsWithChildren<{}>> = (props) => {
+    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
+    const nightTheme = useSelector((s: any) => s.reader.defaultConfig.night);
+    const sepiaTheme = useSelector((s: any) => s.reader.defaultConfig.sepia);
+    const [__] = useTranslator();
+    const [isCollapsed, setCollapse] = React.useState(false);
+
+    console.log(nightTheme, sepiaTheme)
+
+    const toggleCollapse = () => {
+        setCollapse(!isCollapsed);
+    };
+
+    const dialogContextValue = { collapse: { toggleCollapse, isCollapsed } };
+
+    return (
+        <Dialog.Portal container={appOverlayElement}>
+            <Dialog.Content className={classNames(stylesReader.modal_dialog_settings, isCollapsed ? stylesModals["modal_dialog-collapsed"] : undefined, nightTheme ? stylesReader.nightMode : "", sepiaTheme ? stylesReader.sepiaMode : "")}
+                style={{
+                    zIndex: "10000",
+                }}
+                id="modalContainer">
+                <DialogContext.Provider value={dialogContextValue}>
+                    {props.children}
+                </DialogContext.Provider>
+            </Dialog.Content>
+        </Dialog.Portal>
+    );
+};
+
+DialogWithRadixContentSettings.displayName = "DialogWithRadixContent";
 
 export const DialogTitle = Dialog.Title;
 DialogTitle.displayName = "DialogTitle";

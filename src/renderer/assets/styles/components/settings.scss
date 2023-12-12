@@ -77,7 +77,6 @@ $setting_color:  var(--color-button-primary);
         &[data-state="active"]{ 
             color: $setting_color;
             background-color: $settings_bg;
-            font-size: 16px;
             border: 1px solid $setting_color;
             svg {
                 width: 25px;

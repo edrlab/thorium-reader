@@ -14,6 +14,7 @@ declare const styles: {
   readonly "bookmark_name": string;
   readonly "bookmarks_line": string;
   readonly "button_audio": string;
+  readonly "button_transparency_icon": string;
   readonly "center_in_tab": string;
   readonly "chapter_marker": string;
   readonly "chapter_settings_list": string;
@@ -56,6 +57,8 @@ declare const styles: {
   readonly "menu_button": string;
   readonly "menu_option": string;
   readonly "menu_section_svg": string;
+  readonly "modal_dialog_header": string;
+  readonly "modal_dialog_settings": string;
   readonly "more_information": string;
   readonly "nightMode": string;
   readonly "noAudio": string;
@@ -67,7 +70,6 @@ declare const styles: {
   readonly "option_justif": string;
   readonly "option_start": string;
   readonly "out_of_screen": string;
-  readonly "page_option": string;
   readonly "publication_viewport": string;
   readonly "publication_viewport_container": string;
   readonly "read_settings": string;
@@ -79,10 +81,8 @@ declare const styles: {
   readonly "right": string;
   readonly "root": string;
   readonly "rtlDir": string;
-  readonly "scroll_option": string;
   readonly "sepiaMode": string;
   readonly "settings_action": string;
-  readonly "settings_content": string;
   readonly "settings_icones": string;
   readonly "showInFullScreen": string;
   readonly "side_button": string;

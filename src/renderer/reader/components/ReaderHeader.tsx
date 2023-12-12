@@ -20,7 +20,6 @@ import * as SkipNext from "readium-desktop/renderer/assets/icons/baseline-skip_n
 import * as SkipPrevious from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
 import * as StopIcon from "readium-desktop/renderer/assets/icons/baseline-stop-24px.svg";
 import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
-import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
 import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
@@ -43,7 +42,6 @@ import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.typ
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
-import ReaderOptions from "./ReaderOptions";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
@@ -51,6 +49,7 @@ import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/k
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { ReaderSettingsDialog } from "readium-desktop/renderer/common/components/settings/ReadingOptions";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -711,7 +710,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 <SVG ariaHidden={true} svg={MarkIcon} />
                             </label>
                         </li>
-                        <li
+                        {/* <li
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "rgb(193, 193, 193)" } })}
                         >
@@ -729,6 +728,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 isDivina={this.props.isDivina}
                                 isPdf={this.props.isPdf}
                                 focusSettingMenuButton={this.focusSettingMenuButton} />
+                        </li> */}
+                        <li>
+                            <ReaderSettingsDialog />
                         </li>
                         <li
                             {...(this.props.menuOpen &&
