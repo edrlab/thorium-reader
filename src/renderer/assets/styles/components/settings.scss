@@ -427,15 +427,12 @@ div[data-radix-popper-content-wrapper] {
         &__value-container {
             padding: 0;
             color: var(--color-primary)!important;
-            height: 35px;
-        }
-        &__single-value {
-            height: 30px;
+            height: 25px;
         }
         &__input {
             width: 220px!important;
             padding-left: 5px!important;
-            height: 30px!important;
+            height: 23px!important;
         }
         &__menu {
             left: 0;

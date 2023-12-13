@@ -295,9 +295,12 @@ button {
   background-color: var(--color-button-primary);
   color: white;
   transition: 200ms linear;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   svg {
-    width: 10px;
+    width: 12px;
     fill: white;
   }
 
@@ -314,9 +317,12 @@ button {
   min-width: 100px;
   background-color: var(--color-button-secondary);
   color: var(--color-button-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   svg {
-    width: 15px;
+    width: 12px;
     fill: var(--color-button-primary);
   }
 }

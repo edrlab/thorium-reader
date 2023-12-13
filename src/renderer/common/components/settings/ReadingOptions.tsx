@@ -11,6 +11,8 @@ import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-ic
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
 import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volup-icon.svg";
+import * as ClockIcon from "readium-desktop/renderer/assets/icons/clockwise-icon.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/plusBorder-icon.svg";
 // import * as ClockWiseIcon from "readium-desktop/renderer/assets/icons/clockwise-icon.svg";
 import { FontFamily, FontSize } from "./Reading/ReadingText";
 import ReadingTheme from "./Reading/ReadingTheme";
@@ -46,16 +48,18 @@ export const ReaderSettingsDialog = () => {
         <DialogWithRadixContentSettings>
             <DialogHeader>
                 <DialogTitle>
-                    <h2>Reading Preferences</h2>
+                    Reading Preferences
                 </DialogTitle>
                 <DialogCloseButton />
             </DialogHeader>
             <ReadingOptions />
             <DialogFooter>
                 <button className={stylesButtons.button_secondary_blue}>
+                    <SVG ariaHidden svg={ClockIcon} />
                     Reverse to original 
                 </button>
                 <button className={stylesButtons.button_primary_blue}>
+                    <SVG ariaHidden svg={PlusIcon} />
                     More options
                 </button>
             </DialogFooter>
