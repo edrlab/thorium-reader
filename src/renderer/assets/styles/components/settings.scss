@@ -45,7 +45,6 @@ $setting_color:  var(--color-button-primary);
     }
     h4 {
         margin: 0;
-        font-size: 16px;
         font-weight: 600;
     }
 }
@@ -116,7 +115,6 @@ $setting_color:  var(--color-button-primary);
         &[data-state="active"]{ 
             color: $setting_color;
             background-color: $settings_bg;
-            font-size: 16px;
             border-bottom: 2px solid $setting_color;
             svg {
                 width: 30px;
@@ -207,6 +205,9 @@ $setting_color:  var(--color-button-primary);
                 }
                 p {
                     font-size: 14px;
+                }
+                h4 {
+                    margin: 0;
                 }
             }
             .session_text {
@@ -299,6 +300,7 @@ $setting_color:  var(--color-button-primary);
         position: relative;
         border-bottom: 1px solid var(--color-medium-grey);
         color: var(--color-primary);
+        font-size: 14px;
         &:hover {
             cursor: pointer;
             background-color: $settings_bg;
@@ -315,6 +317,7 @@ $setting_color:  var(--color-button-primary);
         border: 1px solid var(--color-medium-grey);
         width: 300px;
         max-height: 300px;
+        font-size: 14px;
     }
 }
 
