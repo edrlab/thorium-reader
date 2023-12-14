@@ -436,6 +436,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             contributors={publicationViewMaybeOpds.authors}
                             translator={translator}
                             onClickLinkCb={onClikLinkCb}
+                            className={"authors"}
                         />
                     </section>
 

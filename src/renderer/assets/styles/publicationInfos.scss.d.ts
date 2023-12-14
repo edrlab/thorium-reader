@@ -1,6 +1,7 @@
 export declare const accessibility_infos: string;
 export declare const accessibility_infos_left: string;
 export declare const accessibility_infos_right: string;
+export declare const authors: string;
 export declare const book_title: string;
 export declare const button_primary: string;
 export declare const button_secondary: string;

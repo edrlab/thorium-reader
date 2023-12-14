@@ -87,17 +87,20 @@
         padding: 0 20px;
         flex: 2;
         .book_title {
-            font-size: 20px;
+            font-size: 24px;
         }
         h2 {
             font-style: italic;
-            font-weight: 900;
+            font-weight: 700;
+        }
+        .authors {
+            font-size: 18px;
         }
     }
-    &_heading h3 {
+    &_heading h4 {
         position: relative;
         font-weight: 600;
-        margin-bottom: 10px;
+        margin: 5px 0 10px 0;
     }
     &_description_bloc {
         position: relative;
