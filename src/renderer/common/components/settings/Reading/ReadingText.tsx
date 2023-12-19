@@ -27,7 +27,7 @@ export const FontSize = () => {
                     <h4>{__("reader.settings.fontSize")} ({fontSize})</h4>
                 </div>
                 <div className={stylesSettings.size_range}>
-                    <p>A-</p>
+                    <p className={stylesSettings.scale_button}>-</p>
                     <input
                         type="range"
                         aria-labelledby="label_fontSize"
@@ -38,7 +38,7 @@ export const FontSize = () => {
                         defaultValue={fontSizeNbr}
                         onChange={(e) => saveConfigDebounced({ fontSize: (e.target?.value || `${readerConfigInitialState.fontSize}`) + "%" })}
                     />
-                    <p>A+</p>
+                    <p className={stylesSettings.scale_button}>+</p>
                 </div>
             </section>
         </div>

@@ -325,6 +325,24 @@ div[data-radix-popper-content-wrapper] {
     position: fixed!important;
 }
 
+.scale_button {
+    scale: 1.5;
+    color: var(--color-button-primary);
+}
+
+.spacing_heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    p {
+        width: fit-content;
+        padding: 2px 4px;
+        border-radius: 4px;
+        text-align: center;
+        background-color: var(--color-light-grey);
+    }
+}
+
 
 .settings_reading {
     &_text {

@@ -7,9 +7,6 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useSaveConfig } from "./useSaveConfig";
-import * as MinusIcon from "readium-desktop/renderer/assets/icons/minusBorder-icon.svg";
-import * as PlusIcon from "readium-desktop/renderer/assets/icons/plusBorder-icon.svg";
-import SVG from "../../SVG";
 
 interface ITable {
     title: string,
@@ -130,11 +127,12 @@ const Slider = (option: ITable) => {
 
     return (
         <section className={stylesSettings.section} key={option.title}>
-            <div>
+            <div className={stylesSettings.spacing_heading}>
                 <h4>{option.title}</h4>
+                <p>{currentSliderValue + (option.rem ? "rem" : "")}</p>
             </div>
             <div className={stylesSettings.size_range}>
-                <button onClick={() => click("out")}><SVG ariaHidden svg={MinusIcon} /></button>
+                <button onClick={() => click("out")} className={stylesSettings.scale_button}>-</button>
                 <input
                     id={option.title}
                     type="range"
@@ -150,8 +148,7 @@ const Slider = (option: ITable) => {
                         saveConfigDebounced({ [option.parameter]: newValue + (option.rem ? "rem" : "") });
                     }}
                 />
-                <button onClick={() => click("in")}><SVG ariaHidden svg={PlusIcon} /></button>
-                <p>{currentSliderValue + (option.rem ? "rem" : "")}</p>
+                <button onClick={() => click("in")} className={stylesSettings.scale_button}>+</button>
             </div>
         </section>
     );
