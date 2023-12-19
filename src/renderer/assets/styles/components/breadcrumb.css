@@ -15,9 +15,9 @@
   font-size: 16px;
   display: flex;
   align-items: center;
+  font-weight: bold;
 
   /* color: rgb(59, 59, 59); */
-  color: var(--color-accent);
   position: fixed;
   top: 123px;
   width: calc(100% - 120px);
@@ -41,14 +41,14 @@
 
   & .button_transparency {
     font-weight: 500;
-    text-decoration: none;
+    text-decoration: underline;
     font-size: inherit;
     white-space: nowrap;
-
-    &::after {
-      content: "/";
-      margin-left: 10px;
-      margin-right: -5px;
+    padding-right: 5px;
+    
+    & svg {
+      margin: 0 0 0 5px;
+      color: var(--color-button-primary);
     }
 
     & + .button_transparency {
