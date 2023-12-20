@@ -8,8 +8,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 

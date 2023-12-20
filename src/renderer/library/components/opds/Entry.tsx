@@ -51,49 +51,34 @@ class Entry extends React.Component<IProps, undefined> {
         );
 
         return (
-            <>
-                <div>
-                    <Link
-                        className={stylesButtons.button_transparency}
-                        to={{
-                            ...this.props.location,
-                            pathname: route,
-                        }}
-                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    >
-                        <span>
-                            <span title={entry.subtitle ? entry.subtitle : undefined}>{entry.title}</span>
-                            {
-                                (entry.subtitle && entry.subtitle !== entry.title) ?
-                                (<span title={entry.subtitle} aria-label={entry.subtitle}>
-                                    <br/>{entry.subtitle.substr(0, 40) + (entry.subtitle.length > 40 ? "..." : "")}
-                                </span>) :
-                                (<></>)
-                            }
-                        </span>
-                        {
-                            (entry.numberOfItems) ?
-                                (
-                                    <span>
-                                        {entry.numberOfItems}
-                                    </span>
-                                ) :
-                                (<></>)
-                        }
-                    </Link>
-                </div>
-                {/* <Slider
-                    content={
-                        opdsPublicationViews.map((pub) =>
-                            <PublicationCard
-                                key={pub.identifier}
-                                publicationViewMaybeOpds={pub}
-                            />,
-                        )
+            <Link
+                className={stylesButtons.button_transparency}
+                to={{
+                    ...this.props.location,
+                    pathname: route,
+                }}
+                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+            >
+                <span>
+                    <span title={entry.subtitle ? entry.subtitle : undefined}>{entry.title}</span>
+                    {
+                        (entry.subtitle && entry.subtitle !== entry.title) ?
+                        (<span title={entry.subtitle} aria-label={entry.subtitle}>
+                            <br/>{entry.subtitle.substr(0, 40) + (entry.subtitle.length > 40 ? "..." : "")}
+                        </span>) :
+                        (<></>)
                     }
-                    className={styles.flux_slider}
-                /> */}
-            </>
+                </span>
+                {
+                    (entry.numberOfItems) ?
+                        (
+                            <span style={{fontWeight: "400", fontStyle: "italic"}}>
+                                &nbsp;({entry.numberOfItems})
+                            </span>
+                        ) :
+                        (<></>)
+                }
+            </Link>
         );
     }
 }

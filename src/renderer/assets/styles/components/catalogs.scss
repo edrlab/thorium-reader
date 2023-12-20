@@ -117,21 +117,26 @@
         align-items: center;
         justify-content: center;
         width: 200px;
-        height: 100%;
         text-decoration: none;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0);
         transition: all 0.3s;
         position: relative;
         &:after {
             content: "";
+            z-index: -1;
             width: inherit;
-            height: inherit;
+            height: 100%;
             position: absolute;
             top: -8px;
             right: -10px;
             border-radius: 6px;
             border-right: 1px solid var(--color-medium-grey);
             border-top: 1px solid var(--color-medium-grey);
+        }
+        a {
+            width: 100%;
+            height: calc(100% - 15px);
+            align-self: center;
         }
     }
 }
