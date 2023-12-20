@@ -606,7 +606,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         <div className={stylesReader.center_in_tab} role="radiogroup" aria-labelledby="label_disposition">
                             <div className={stylesReader.focus_element}>
                                 <input
-                                    id={stylesReader.scroll_option}
+                                    id={"stylesReader.scroll_option"}
                                     type="radio"
                                     name="disposition"
                                     onChange={(e) => isPdf
@@ -617,7 +617,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                         : !readerConfig.paged}
                                 />
                                 <label
-                                    htmlFor={stylesReader.scroll_option}
+                                    htmlFor={"stylesReader.scroll_option"}
                                     className={isPdf
                                         ? this.getButtonClassNamePdf(this.state.pdfView === "scrolled")
                                         : this.getButtonClassName("paged", false)}
@@ -628,7 +628,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             </div>
                             <div className={stylesReader.focus_element}>
                                 <input
-                                    id={stylesReader.page_option}
+                                    id={"stylesReader.page_option"}
                                     type="radio"
                                     name="disposition"
                                     onChange={(e) => isPdf
@@ -639,7 +639,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                         : readerConfig.paged}
                                 />
                                 <label
-                                    htmlFor={stylesReader.page_option}
+                                    htmlFor={"stylesReader.page_option"}
                                     className={isPdf
                                         ? this.getButtonClassNamePdf(this.state.pdfView === "paginated")
                                         : this.getButtonClassName("paged", true)}
