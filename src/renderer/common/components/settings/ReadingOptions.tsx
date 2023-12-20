@@ -6,7 +6,7 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as Tabs from "@radix-ui/react-tabs";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg"
+import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
@@ -56,7 +56,7 @@ export const ReaderSettingsDialog = () => {
             <DialogFooter>
                 <button className={stylesButtons.button_secondary_blue}>
                     <SVG ariaHidden svg={ClockIcon} />
-                    Reverse to original 
+                    Reverse to original
                 </button>
                 <button className={stylesButtons.button_primary_blue}>
                     <SVG ariaHidden svg={PlusIcon} />
@@ -65,8 +65,8 @@ export const ReaderSettingsDialog = () => {
             </DialogFooter>
         </DialogWithRadixContentSettings>
     </DialogWithRadix>
-    )
-}
+    );
+};
 
 const ReadingOptions = () => {
     const [__] = useTranslator();

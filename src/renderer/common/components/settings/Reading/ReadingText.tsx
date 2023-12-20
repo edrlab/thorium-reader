@@ -89,7 +89,7 @@ export const FontFamily = () => {
             val = undefined;
         }
         saveConfigDebounced({ font: val });
-    }
+    };
 
     return (
         <section className={stylesSettings.section}>
