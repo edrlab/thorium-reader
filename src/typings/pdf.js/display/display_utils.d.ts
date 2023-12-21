@@ -1,4 +1,3 @@
-export type ExternalLinkParameters = any;
 export type PageViewportParameters = {
     /**
      * - The xMin, yMin, xMax and
@@ -56,75 +55,68 @@ export type PageViewportCloneParameters = {
      */
     dontFlip?: boolean | undefined;
 };
-/**
- * @typedef ExternalLinkParameters
- * @typedef {Object} ExternalLinkParameters
- * @property {string} url - An absolute URL.
- * @property {LinkTarget} [target] - The link target. The default value is
- *   `LinkTarget.NONE`.
- * @property {string} [rel] - The link relationship. The default value is
- *   `DEFAULT_LINK_REL`.
- * @property {boolean} [enabled] - Whether the link should be enabled. The
- *   default value is true.
- */
-/**
- * Adds various attributes (href, title, target, rel) to hyperlinks.
- * @param {HTMLLinkElement} link - The link element.
- * @param {ExternalLinkParameters} params
- */
-export function addLinkAttributes(link: HTMLLinkElement, { url, target, rel, enabled }?: any): void;
-export class BaseCanvasFactory {
-    create(width: any, height: any): void;
-    reset(canvasAndContext: any, width: any, height: any): void;
-    destroy(canvasAndContext: any): void;
-}
-export class BaseCMapReaderFactory {
-    constructor({ baseUrl, isCompressed }: {
-        baseUrl?: any;
-        isCompressed?: boolean | undefined;
-    });
-    baseUrl: any;
-    isCompressed: boolean;
-    fetch({ name }: {
-        name: any;
-    }): Promise<any>;
-    /**
-     * @private
-     */
-    private _fetchData;
-}
-export const DEFAULT_LINK_REL: "noopener noreferrer nofollow";
+export const AnnotationPrefix: "pdfjs_internal_id_";
 export function deprecated(details: any): void;
 export class DOMCanvasFactory extends BaseCanvasFactory {
     constructor({ ownerDocument }?: {
         ownerDocument?: Document | undefined;
     });
     _document: Document;
+    /**
+     * @ignore
+     */
+    _createCanvas(width: any, height: any): HTMLCanvasElement;
 }
 export class DOMCMapReaderFactory extends BaseCMapReaderFactory {
-    constructor({ baseUrl, isCompressed }: {
-        baseUrl?: any;
-        isCompressed?: boolean | undefined;
-    });
+    /**
+     * @ignore
+     */
+    _fetchData(url: any, compressionType: any): Promise<{
+        cMapData: any;
+        compressionType: any;
+    }>;
 }
-export class DOMSVGFactory {
-    create(width: any, height: any): SVGElement;
-    createElement(type: any): any;
+export class DOMStandardFontDataFactory extends BaseStandardFontDataFactory {
+    /**
+     * @ignore
+     */
+    _fetchData(url: any): Promise<any>;
 }
+export class DOMSVGFactory extends BaseSVGFactory {
+    /**
+     * @ignore
+     */
+    _createSVG(type: any): any;
+}
+export function getColorValues(colors: any): void;
+export function getCurrentTransform(ctx: any): any[];
+export function getCurrentTransformInverse(ctx: any): any[];
 /**
- * Gets the file name from a given URL.
+ * Gets the filename from a given URL.
  * @param {string} url
+ * @param {boolean} [onlyStripPath]
+ * @returns {string}
  */
-export function getFilenameFromUrl(url: string): string;
-export function isFetchSupported(): boolean;
+export function getFilenameFromUrl(url: string, onlyStripPath?: boolean | undefined): string;
+/**
+ * Returns the filename or guessed filename from the url (see issue 3455).
+ * @param {string} url - The original PDF location.
+ * @param {string} defaultFilename - The value returned if the filename is
+ *   unknown, or the protocol is unsupported.
+ * @returns {string} Guessed PDF filename.
+ */
+export function getPdfFilenameFromUrl(url: string, defaultFilename?: string): string;
+export function getRGB(color: any): any;
+/**
+ * NOTE: This is (mostly) intended to support printing of XFA forms.
+ */
+export function getXfaPageViewport(xfaPage: any, { scale, rotation }: {
+    scale?: number | undefined;
+    rotation?: number | undefined;
+}): PageViewport;
+export function isDataScheme(url: any): boolean;
+export function isPdfFile(filename: any): boolean;
 export function isValidFetchUrl(url: any, baseUrl: any): boolean;
-export namespace LinkTarget {
-    const NONE: number;
-    const SELF: number;
-    const BLANK: number;
-    const PARENT: number;
-    const TOP: number;
-}
 /**
  * @param {string} src
  * @param {boolean} [removeScriptElement]
@@ -228,6 +220,11 @@ export class PDFDateString {
      */
     static toDateObject(input: string): Date | null;
 }
+export class PixelsPerInch {
+    static CSS: number;
+    static PDF: number;
+    static PDF_TO_CSS_UNITS: number;
+}
 declare const RenderingCancelledException_base: any;
 export class RenderingCancelledException extends RenderingCancelledException_base {
     [x: string]: any;
@@ -241,4 +238,8 @@ export class StatTimer {
     timeEnd(name: any): void;
     toString(): string;
 }
+import { BaseCanvasFactory } from "./base_factory.js";
+import { BaseCMapReaderFactory } from "./base_factory.js";
+import { BaseStandardFontDataFactory } from "./base_factory.js";
+import { BaseSVGFactory } from "./base_factory.js";
 export {};

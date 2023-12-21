@@ -25,6 +25,7 @@ declare const AbortException_base: any;
  */
 export class AbortException extends AbortException_base {
     [x: string]: any;
+    constructor(msg: any);
 }
 export namespace AnnotationActionEventType {
     const E: string;
@@ -48,6 +49,21 @@ export namespace AnnotationBorderStyleType {
     const BEVELED: number;
     const INSET: number;
     const UNDERLINE: number;
+}
+export namespace AnnotationEditorParamsType {
+    const FREETEXT_SIZE: number;
+    const FREETEXT_COLOR: number;
+    const FREETEXT_OPACITY: number;
+    const INK_COLOR: number;
+    const INK_THICKNESS: number;
+    const INK_OPACITY: number;
+}
+export const AnnotationEditorPrefix: "pdfjs_internal_editor_";
+export namespace AnnotationEditorType {
+    const DISABLE: number;
+    const NONE: number;
+    const FREETEXT: number;
+    const INK: number;
 }
 export namespace AnnotationFieldFlag {
     const READONLY: number;
@@ -87,16 +103,24 @@ export namespace AnnotationMarkedState {
     const MARKED: string;
     const UNMARKED: string;
 }
+export namespace AnnotationMode {
+    const DISABLE_1: number;
+    export { DISABLE_1 as DISABLE };
+    export const ENABLE: number;
+    export const ENABLE_FORMS: number;
+    export const ENABLE_STORAGE: number;
+}
 export namespace AnnotationReplyType {
     const GROUP: string;
     const REPLY: string;
 }
 export namespace AnnotationReviewState {
-    const ACCEPTED: string;
-    const REJECTED: string;
-    const CANCELLED: string;
-    const COMPLETED: string;
-    const NONE: string;
+    export const ACCEPTED: string;
+    export const REJECTED: string;
+    export const CANCELLED: string;
+    export const COMPLETED: string;
+    const NONE_1: string;
+    export { NONE_1 as NONE };
 }
 export namespace AnnotationStateModelType {
     const MARKED_1: string;
@@ -106,7 +130,8 @@ export namespace AnnotationStateModelType {
 export namespace AnnotationType {
     export const TEXT: number;
     export const LINK: number;
-    export const FREETEXT: number;
+    const FREETEXT_1: number;
+    export { FREETEXT_1 as FREETEXT };
     export const LINE: number;
     export const SQUARE: number;
     export const CIRCLE: number;
@@ -119,7 +144,8 @@ export namespace AnnotationType {
     export const STRIKEOUT: number;
     export const STAMP: number;
     export const CARET: number;
-    export const INK: number;
+    const INK_1: number;
+    export { INK_1 as INK };
     export const POPUP: number;
     export const FILEATTACHMENT: number;
     export const SOUND: number;
@@ -150,14 +176,13 @@ export function assert(cond: any, msg: any): void;
  * @type {any}
  */
 export const BaseException: any;
+export const BASELINE_FACTOR: number;
 export function bytesToString(bytes: any): string;
 export namespace CMapCompressionType {
-    const NONE_1: number;
-    export { NONE_1 as NONE };
+    const NONE_2: number;
+    export { NONE_2 as NONE };
     export const BINARY: number;
-    export const STREAM: number;
 }
-export function createObjectURL(data: any, contentType: any, forceDataSchema?: boolean): string;
 /**
  * Promise Capability object.
  *
@@ -178,10 +203,11 @@ export function createPromiseCapability(): PromiseCapability;
  * Attempts to create a valid absolute URL.
  *
  * @param {URL|string} url - An absolute, or relative, URL.
- * @param {URL|string} baseUrl - An absolute URL.
+ * @param {URL|string} [baseUrl] - An absolute URL.
+ * @param {Object} [options]
  * @returns Either a valid {URL}, or `null` otherwise.
  */
-export function createValidAbsoluteUrl(url: URL | string, baseUrl: URL | string): URL | null;
+export function createValidAbsoluteUrl(url: URL | string, baseUrl?: string | URL | undefined, options?: Object | undefined): URL | null;
 export namespace DocumentActionEventType {
     const WC: string;
     const WS: string;
@@ -189,12 +215,16 @@ export namespace DocumentActionEventType {
     const WP: string;
     const DP: string;
 }
-export function encodeToXmlString(str: any): any;
-export function escapeString(str: any): any;
+export class FeatureTest {
+    static get isLittleEndian(): any;
+    static get isEvalSupported(): any;
+    static get isOffscreenCanvasSupported(): any;
+}
 export const FONT_IDENTITY_MATRIX: number[];
 export namespace FontType {
     const UNKNOWN: string;
     const TYPE1: string;
+    const TYPE1STANDARD: string;
     const TYPE1C: string;
     const CIDFONTTYPE0: string;
     const CIDFONTTYPE0C: string;
@@ -211,6 +241,7 @@ declare const FormatError_base: any;
  */
 export class FormatError extends FormatError_base {
     [x: string]: any;
+    constructor(msg: any);
 }
 export function getModificationDate(date?: Date): string;
 export function getVerbosityLevel(): number;
@@ -224,21 +255,18 @@ export function info(msg: any): void;
 declare const InvalidPDFException_base: any;
 export class InvalidPDFException extends InvalidPDFException_base {
     [x: string]: any;
+    constructor(msg: any);
 }
 export function isArrayBuffer(v: any): boolean;
-export function isArrayEqual(arr1: any, arr2: any): any;
-export function isAscii(str: any): boolean;
-export function isBool(v: any): boolean;
-export namespace IsEvalSupportedCached { }
-export namespace IsLittleEndianCached { }
-export function isNum(v: any): boolean;
-export function isSameOrigin(baseUrl: any, otherUrl: any): boolean;
-export function isString(v: any): boolean;
+export function isArrayEqual(arr1: any, arr2: any): boolean;
+export const LINE_DESCENT_FACTOR: 0.35;
+export const LINE_FACTOR: 1.35;
 declare const MissingPDFException_base: any;
 export class MissingPDFException extends MissingPDFException_base {
     [x: string]: any;
+    constructor(msg: any);
 }
-export function objectFromEntries(iterable: any): any;
+export function objectFromMap(map: any): any;
 export function objectSize(obj: any): number;
 export namespace OPS {
     const dependency: number;
@@ -318,11 +346,8 @@ export namespace OPS {
     const paintFormXObjectEnd: number;
     const beginGroup: number;
     const endGroup: number;
-    const beginAnnotations: number;
-    const endAnnotations: number;
     const beginAnnotation: number;
     const endAnnotation: number;
-    const paintJpegXObject: number;
     const paintImageMaskXObject: number;
     const paintImageMaskXObjectGroup: number;
     const paintImageXObject: number;
@@ -359,12 +384,19 @@ export namespace PermissionFlag {
     export const ASSEMBLE: number;
     export const PRINT_HIGH_QUALITY: number;
 }
-/**
- * @param {string} str
- */
-export function removeNullCharacters(str: string): string;
+export namespace RenderingIntentFlag {
+    export const ANY: number;
+    export const DISPLAY: number;
+    const PRINT_2: number;
+    export { PRINT_2 as PRINT };
+    export const SAVE: number;
+    export const ANNOTATIONS_FORMS: number;
+    export const ANNOTATIONS_STORAGE: number;
+    export const ANNOTATIONS_DISABLE: number;
+    export const OPLIST: number;
+}
 export function setVerbosityLevel(level: any): void;
-export function shadow(obj: any, prop: any, value: any): any;
+export function shadow(obj: any, prop: any, value: any, nonSerializable?: boolean): any;
 export namespace StreamType {
     const UNKNOWN_1: string;
     export { UNKNOWN_1 as UNKNOWN };
@@ -381,7 +413,6 @@ export namespace StreamType {
 export function string32(value: any): string;
 export function stringToBytes(str: any): Uint8Array;
 export function stringToPDFString(str: any): string;
-export function stringToUTF16BEString(str: any): string;
 export function stringToUTF8String(str: any): string;
 export namespace TextRenderingMode {
     export const FILL: number;
@@ -410,12 +441,11 @@ export class UnknownErrorException extends UnknownErrorException_base {
 }
 export function unreachable(msg: any): void;
 export namespace UNSUPPORTED_FEATURES {
-    const unknown: string;
     const forms: string;
     const javaScript: string;
+    const signatures: string;
     const smask: string;
     const shadingPattern: string;
-    const font: string;
     const errorTilingPattern: string;
     const errorExtGState: string;
     const errorXObject: string;
@@ -427,21 +457,24 @@ export namespace UNSUPPORTED_FEATURES {
     const errorOperatorList: string;
     const errorFontToUnicode: string;
     const errorFontLoadNative: string;
+    const errorFontBuildPath: string;
     const errorFontGetPath: string;
     const errorMarkedContent: string;
+    const errorContentSubStream: string;
 }
 export function utf8StringToString(str: any): string;
 export class Util {
     static makeHexColor(r: any, g: any, b: any): string;
+    static scaleMinMax(transform: any, minMax: any): void;
     static transform(m1: any, m2: any): any[];
     static applyTransform(p: any, m: any): any[];
     static applyInverseTransform(p: any, m: any): number[];
     static getAxialAlignedBoundingBox(r: any, m: any): number[];
     static inverseTransform(m: any): number[];
-    static apply3dTransform(m: any, v: any): number[];
     static singularValueDecompose2dScale(m: any): number[];
     static normalizeRect(rect: any): any;
-    static intersect(rect1: any, rect2: any): any[] | null;
+    static intersect(rect1: any, rect2: any): number[] | null;
+    static bezierBoundingBox(x0: any, y0: any, x1: any, y1: any, x2: any, y2: any, x3: any, y3: any): number[];
 }
 export namespace VerbosityLevel {
     const ERRORS: number;

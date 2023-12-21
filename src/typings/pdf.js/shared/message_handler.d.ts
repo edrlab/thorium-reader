@@ -5,7 +5,6 @@ export class MessageHandler {
     comObj: any;
     callbackId: number;
     streamId: number;
-    postMessageTransfers: boolean;
     streamSinks: any;
     streamControllers: any;
     callbackCapabilities: any;
@@ -51,12 +50,5 @@ export class MessageHandler {
      * @private
      */
     private _deleteStreamController;
-    /**
-     * Sends raw message to the comObj.
-     * @param {Object} message - Raw message.
-     * @param transfers List of transfers/ArrayBuffers, or undefined.
-     * @private
-     */
-    private _postMessage;
     destroy(): void;
 }
