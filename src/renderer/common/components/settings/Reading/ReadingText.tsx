@@ -8,6 +8,8 @@ import fontList, { FONT_ID_DEFAULT, FONT_ID_VOID } from "readium-desktop/utils/f
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
+import * as MinusIcon from "readium-desktop/renderer/assets/icons/minus.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useSaveConfig } from "./useSaveConfig";
@@ -16,9 +18,26 @@ import Creatable from "react-select/creatable";
 export const FontSize = () => {
     const [__] = useTranslator();
     const fontSize = useSelector((s: ICommonRootState) => s.reader.defaultConfig.fontSize);
-    const fontSizeNbr = parseInt(fontSize, 10); // 75%
 
     const saveConfigDebounced = useSaveConfig();
+
+    const [currentSliderValue, setCurrentSliderValue] = React.useState(fontSize.replace(/%/g, ""));
+    console.log(fontSize, currentSliderValue)
+
+    const click = (direction: string) => {
+        const step = 12.5
+        let newStepValue: number;
+
+        if (direction === "out") {
+            newStepValue = Number(currentSliderValue.replace(/%/g, "")) - step;
+        } else {
+            newStepValue = Number(currentSliderValue.replace(/%/g, "")) + step;
+        }
+        const clampedValue = Math.min(Math.max(newStepValue, 75), 250);
+        const valueToString = clampedValue.toFixed(1);
+        setCurrentSliderValue(valueToString);
+        saveConfigDebounced({ fontSize: valueToString + "%" });
+    }
 
     return (
         <div className={stylesSettings.settings_reading_text}>
@@ -27,7 +46,7 @@ export const FontSize = () => {
                     <h4>{__("reader.settings.fontSize")} ({fontSize})</h4>
                 </div>
                 <div className={stylesSettings.size_range}>
-                    <p className={stylesSettings.scale_button}>-</p>
+                <button onClick={() => click("out")} className={stylesSettings.scale_button}><span>-</span></button>
                     <input
                         type="range"
                         aria-labelledby="label_fontSize"
@@ -35,10 +54,14 @@ export const FontSize = () => {
                         max={250}
                         step={12.5}
                         aria-valuemin={0}
-                        defaultValue={fontSizeNbr}
-                        onChange={(e) => saveConfigDebounced({ fontSize: (e.target?.value || `${readerConfigInitialState.fontSize}`) + "%" })}
+                        value={currentSliderValue}
+                        onChange={(e) => {
+                            const newValue = e.target.value;
+                            setCurrentSliderValue(newValue);
+                            saveConfigDebounced({ fontSize: (e.target?.value || `${readerConfigInitialState.fontSize}`) + "%" })}
+                        }
                     />
-                    <p className={stylesSettings.scale_button}>+</p>
+                    <button onClick={() => click("in")} className={stylesSettings.scale_button}><span>+</span></button>
                 </div>
             </section>
         </div>

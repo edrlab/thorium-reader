@@ -17,7 +17,7 @@ $setting_color:  var(--color-button-primary);
         width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 5px;
         input[type="range"] {
             width: 150px;
         }
@@ -55,7 +55,7 @@ $setting_color:  var(--color-button-primary);
     width: 100%;
     flex: 1;
     border-right: 1px solid var(--color-medium-grey);
-    padding-top: 100px;
+    padding-top: 50px;
     background-color: var(--color-bg-tab);
     button {
         height: 50px;
@@ -93,8 +93,8 @@ $setting_color:  var(--color-button-primary);
 }
 
 .tablist_reading {
-    height: 80px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex: 1;
@@ -200,6 +200,15 @@ $setting_color:  var(--color-button-primary);
             grid-template-columns: repeat(2, 1fr);
             .section {
                 width: 90%!important;
+                .size_range {
+                    display: flex;
+                    align-content: center;
+                    gap: 10px;
+                    height: 30px;
+                    input[type="range"] {
+                        width: 150px;
+                    }
+                }
                 label {
                     font-weight: 600;
                 }
@@ -238,7 +247,7 @@ $setting_color:  var(--color-button-primary);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: 0 35px 10px;
+        margin: 0 25px 10px;
         font-size: 16px;
         h2 {
             margin-top: 0;
@@ -326,8 +335,25 @@ div[data-radix-popper-content-wrapper] {
 }
 
 .scale_button {
-    scale: 1.5;
+    scale: 2;
     color: var(--color-button-primary);
+    // border: 1px solid transparent;
+    border-radius: 4px;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    border: 1px solid transparent;
+    position: relative;
+    span {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+    }
+    &:active {
+        border: 1px solid var(--color-button-primary);
+        background-color: var(--color-button-secondary)!important;
+    }
 }
 
 .spacing_heading {
@@ -357,12 +383,15 @@ div[data-radix-popper-content-wrapper] {
             height: 30px !important;
             width: 300px;
         }
-        .size_range p {
-            font-size: 18px;
-            padding: 0;
-            width: auto;
-            text-align: center;
-            background-color: transparent;
+        .size_range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            p {
+                padding: 0;
+                text-align: center;
+                background-color: transparent;
+            }
         }
     }
 }
@@ -431,7 +460,7 @@ div[data-radix-popper-content-wrapper] {
     padding: 0 0 0 35px;
     border: 1px solid var(--color-primary);
     border-radius: 4px;
-    width: 350px;
+    width: 300px;
     height: 35px;
     &__control {
         display: flex;
@@ -478,4 +507,87 @@ div[data-radix-popper-content-wrapper] {
     align-items: start;
     justify-content: start;
     gap: 5px;
+}
+
+.toggleCustom {
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    width: 190px;
+    display: flex;
+    align-items: start;
+    border: 0 solid var(--color-button-primary);
+    border-radius: 5px;
+
+    p {
+        font-size: 14px;
+    }
+    label .label {
+    display: inline-block;
+    width: 9em;
+    user-select: none;
+    }
+    
+    label input[role="switch"] {
+    opacity: 0;
+    }
+    
+    label input[role="switch"] ~ .state {
+    display: inline-block;
+    user-select: none;
+    }
+    
+    label input[role="switch"] ~ .state > .container {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    border: 1px solid transparent;
+    width: 30px;
+    height: 18px;
+    border-radius: 11px;
+    background-color: #61646B;
+    cursor: pointer;
+    }
+    
+    label input[role="switch"] ~ .state > .container > .position {
+    position: relative;
+    top: 1px;
+    left: 2px;
+    display: inline-block;
+    border: 2px solid white;
+    border-radius: 9px;
+    width: 12px;
+    height: 12px;
+    background: white;
+    }
+    
+    label input[role="switch"]:not(:checked) ~ .state span.on {
+    display: none;
+    }
+    
+    label input[role="switch"]:checked ~ .state > span.off {
+    display: none;
+    }
+    
+    label input[role="switch"]:checked ~ .state > .container {
+    background-color: #0B8454;
+    > .position {
+        left: 12px;
+        border-color: white;
+        background: white;
+        opacity: 1;
+    }
+    }
+    
+    &.focus,
+    &:hover {
+    border-width: 2px;
+    outline: none;
+    background-color: #def;
+    }
+    
+    &.focus span.container,
+    &:hover span.container {
+    background-color: white;
+    }
 }

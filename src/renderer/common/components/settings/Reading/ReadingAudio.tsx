@@ -56,7 +56,7 @@ const ReadingAudio = () => {
     ];
 
     return (
-        <div className={stylesSettings.settings_tab_container_reading_spacing}>
+        <div>
             {options.map((option) => (
                 <section className={stylesSettings.section} key={option.id}>
                     <div>

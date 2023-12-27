@@ -391,7 +391,9 @@
                 },
                 "title": "Theme"
             },
-            "wordSpacing": "Word spacing"
+            "wordSpacing": "Word spacing",
+            "disabled": "disabled",
+            "customizeReader": "Customise text formatting"
         },
         "svg": {
             "left": "Left",

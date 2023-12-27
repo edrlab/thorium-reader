@@ -41,11 +41,8 @@
   overflow-x: hidden;
   align-content: flex-start;
   background-color: var(--reader-mainColor);
-  width: 550px;
-  min-width: 450px;
-  min-height: 400px;
-  max-height: 500px;
-  max-width: 550px;
+  width: 700px;
+  height: 600px;
   color: var( --reader-fontColor);
 }
 
