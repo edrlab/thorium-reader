@@ -263,7 +263,7 @@ $setting_color:  var(--color-button-primary);
         align-items: start;
         justify-content: flex-start;
         gap: 10px;
-        width: 280px;
+        width: fit-content;
         font-size: 14px;
         background-color: var(--color-light-grey);
         color: var(--color-primary);
@@ -275,8 +275,8 @@ $setting_color:  var(--color-button-primary);
         }
         svg {
             margin-top: 5px;
-            width: 25px;
-            height: 25px;
+            width: 16px;
+            height: 16px;
             color: $setting_color;
         }
     }

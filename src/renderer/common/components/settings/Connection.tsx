@@ -48,7 +48,7 @@ export const Session = () => {
                 <label htmlFor={"session-true"}><h4>{__("settings.session.title")}</h4></label>
             </form>
             <div className={stylesSettings.session_text}>
-                <h4>{__("settings.session.description")}</h4>
+                <p>{__("settings.session.description")}</p>
             </div>
         </>
     );

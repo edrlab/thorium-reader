@@ -17,6 +17,7 @@ import {
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
@@ -148,7 +149,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         return (
             <>
-                <section className={stylesSettings.settings_tab_container}>
+                <section className={stylesSettings.settings_tab}>
                     <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
                     {/* {!this.state.editKeyboardShortcutId && (
                        <AdvancedTrigger 
@@ -157,6 +158,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                         />
                             )
                         } */}
+                        <div className={stylesSettings.session_text}>
+                            <SVG ariaHidden svg={InfoIcon} />
+                            <p>{__("settings.keyboard.disclaimer")}</p>
+                        </div>
                     </div>
                         <div
                             onKeyUp={this.state.editKeyboardShortcutId ? ((e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -237,7 +242,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                             </>
                                         }
                                     </div>
-                                    <p className={stylesKeys.keyshortElement_description}>Suspendisse varius risus magna, vitae cursus quam fringilla a.</p>
+                                    {/* <p className={stylesKeys.keyshortElement_description}>Suspendisse varius risus magna, vitae cursus quam fringilla a.</p> */}
                                 </>;
                                 return <li
                                         aria-hidden={!this.state.editKeyboardShortcutId || hit ? undefined : true}

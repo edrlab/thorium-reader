@@ -442,7 +442,8 @@
             "loadUserJson": "Load from user file",
             "resetDefaults": "Reset (load defaults)",
             "save": "Save",
-            "show": "Show"
+            "show": "Show",
+            "disclaimer": "Keyboard shortcuts are currently based on a QWERTY layout."
         },
         "language": {
             "languageChoice": "Language choice"
