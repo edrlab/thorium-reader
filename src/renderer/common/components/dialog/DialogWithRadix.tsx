@@ -63,7 +63,6 @@ export const DialogWithRadixContent: React.FC<React.PropsWithChildren<{}>> = (pr
     const [__] = useTranslator();
     const [isCollapsed, setCollapse] = React.useState(false);
 
-    console.log(nightTheme, sepiaTheme);
 
     const toggleCollapse = () => {
         setCollapse(!isCollapsed);
@@ -94,8 +93,6 @@ export const DialogWithRadixContentSettings: React.FC<React.PropsWithChildren<{}
     const sepiaTheme = useSelector((s: any) => s.reader.defaultConfig.sepia);
     const [__] = useTranslator();
     const [isCollapsed, setCollapse] = React.useState(false);
-
-    console.log(nightTheme, sepiaTheme);
 
     const toggleCollapse = () => {
         setCollapse(!isCollapsed);

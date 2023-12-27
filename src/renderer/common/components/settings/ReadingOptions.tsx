@@ -142,7 +142,7 @@ const ReadingOptions = () => {
                         </section>
                     </Tabs.Content>
                     <Tabs.Content value="tab14" tabIndex={-1}>
-                        <TabTitle title={__("reader.media-overlays.title")} />
+                        <TabTitle title={__("reader.media-overlays.title")}/>
                         <section className={stylesSettings.settings_tab}>
                             <ReadingAudio />
                         </section>

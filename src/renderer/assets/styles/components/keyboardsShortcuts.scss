@@ -88,9 +88,15 @@
 }
 
 .advanced_trigger {
-    min-width: 50px!important;
+    min-width: 20px!important;
+    height: 20px;
     width: fit-content!important;
-    &:hover {
-        background-color: transparent;
+    border: 1px solid;
+    border-color: transparent;
+    background-color: transparent;
+    transition: 200ms linear;
+    &:hover{
+        background-color: var(--color-button-secondary);
+        border-color: var(--color-button-primary);
     }
 }

@@ -8,8 +8,6 @@ import fontList, { FONT_ID_DEFAULT, FONT_ID_VOID } from "readium-desktop/utils/f
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
-import * as MinusIcon from "readium-desktop/renderer/assets/icons/minus.svg";
-import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useSaveConfig } from "./useSaveConfig";
@@ -22,7 +20,6 @@ export const FontSize = () => {
     const saveConfigDebounced = useSaveConfig();
 
     const [currentSliderValue, setCurrentSliderValue] = React.useState(fontSize.replace(/%/g, ""));
-    console.log(fontSize, currentSliderValue)
 
     const click = (direction: string) => {
         const step = 12.5
@@ -132,7 +129,6 @@ export const FontFamily = () => {
                     defaultValue={optionsItem}
                     defaultInputValue={readiumCSSFontName}
                     onInputChange={(value, action) => {
-                        console.log(value, action);
                         if (action.action === "input-change") {
                             saveFont(value);
                         }

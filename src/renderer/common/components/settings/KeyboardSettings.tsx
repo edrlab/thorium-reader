@@ -42,6 +42,8 @@ import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 import SVG from "../SVG";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+import { useTranslator } from "../../hooks/useTranslator";
+import { useDispatch } from "../../hooks/useDispatch";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -60,6 +62,52 @@ interface IState {
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
 }
+
+export const AdvancedTrigger = () => {
+    const [ __ ]= useTranslator();
+    const appOverlayElement = document.querySelector(".settings_content") as HTMLElement;
+    const dispatch = useDispatch();
+
+    const onClickKeyboardShortcutsShow = () => {
+         dispatch(keyboardActions.showShortcuts.build(true))
+    };
+
+    const onClickKeyboardShortcutsReload = (defaults: boolean) => {
+        dispatch(keyboardActions.reloadShortcuts.build(defaults))
+    };
+
+    return (
+        <Popover.Root>
+            <Popover.Trigger asChild>
+                <button>
+                    <SVG
+                        title={
+                            `${__("settings.keyboard.advancedMenu")}`
+                        }
+                        className={classNames(stylesButtons.button_secondary_blue, stylesKeys.advanced_trigger)}
+                        svg={MenuIcon}
+                    />
+                </button>
+            </Popover.Trigger>
+            <Popover.Portal container={appOverlayElement}>
+                <Popover.Content className="PopoverContent" sideOffset={5} style={{zIndex: "10000"}}>
+                    <div className={stylesDropDown.dropdown_menu}>
+                    <button onClick={() => onClickKeyboardShortcutsReload(true)}>
+                {__("settings.keyboard.resetDefaults")}
+            </button>
+            <button onClick={() => onClickKeyboardShortcutsShow()}>
+                {__("settings.keyboard.editUserJson")}
+            </button>
+            <button onClick={() => onClickKeyboardShortcutsReload(false)}>
+                    {__("settings.keyboard.loadUserJson")}
+            </button>
+                    </div>
+                    <Popover.Arrow className="PopoverArrow" aria-hidden />
+                </Popover.Content>
+            </Popover.Portal>
+        </Popover.Root>
+    )};
+
 
 class KeyboardSettings extends React.Component<IProps, IState> {
 
@@ -97,44 +145,18 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
-        const appOverlayElement = document.querySelector(".settings_content") as HTMLElement;
 
         return (
             <>
                 <section className={stylesSettings.settings_tab_container}>
                     <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
-                    {!this.state.editKeyboardShortcutId && (
-                        <Popover.Root>
-                            <Popover.Trigger asChild>
-                                <button>
-                                    <SVG
-                                        title={
-                                            `${__("settings.keyboard.advancedMenu")}`
-                                        }
-                                        className={classNames(stylesButtons.button_secondary_blue, stylesKeys.advanced_trigger)}
-                                        svg={MenuIcon}
-                                    />
-                                </button>
-                            </Popover.Trigger>
-                            <Popover.Portal container={appOverlayElement}>
-                                <Popover.Content className="PopoverContent" sideOffset={5} style={{zIndex: "10000"}}>
-                                    <div className={stylesDropDown.dropdown_menu}>
-                                    <button onClick={() => this.onClickKeyboardShortcutsReload(true)}>
-                                {__("settings.keyboard.resetDefaults")}
-                            </button>
-                            <button onClick={() => this.onClickKeyboardShortcutsShow()}>
-                                {__("settings.keyboard.editUserJson")}
-                            </button>
-                            <button onClick={() => this.onClickKeyboardShortcutsReload(false)}>
-                                    {__("settings.keyboard.loadUserJson")}
-                            </button>
-                                    </div>
-                                    <Popover.Arrow className="PopoverArrow" aria-hidden />
-                                </Popover.Content>
-                            </Popover.Portal>
-                        </Popover.Root>
+                    {/* {!this.state.editKeyboardShortcutId && (
+                       <AdvancedTrigger 
+                       showKeyboardShortcuts={this.props.showKeyboardShortcuts}
+                       reloadKeyboardShortcuts={this.props.reloadKeyboardShortcuts}
+                        />
                             )
-                        }
+                        } */}
                     </div>
                         <div
                             onKeyUp={this.state.editKeyboardShortcutId ? ((e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -342,12 +364,12 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             editKeyboardShortcutData: undefined,
         });
     }
-    private onClickKeyboardShortcutsShow() {
-        this.props.showKeyboardShortcuts();
-    }
-    private onClickKeyboardShortcutsReload(defaults: boolean) {
-        this.props.reloadKeyboardShortcuts(defaults);
-    }
+    // private onClickKeyboardShortcutsShow() {
+    //     this.props.showKeyboardShortcuts();
+    // }
+    // private onClickKeyboardShortcutsReload(defaults: boolean) {
+    //     this.props.reloadKeyboardShortcuts(defaults);
+    // }
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
         const alt = def.alt ? <span>ALT + </span> : null;
         const shift = def.shift ? <span>SHIFT + </span> : null;

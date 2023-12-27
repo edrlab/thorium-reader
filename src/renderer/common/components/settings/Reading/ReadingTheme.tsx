@@ -19,15 +19,13 @@ const ReadingTheme = () => {
     const nightTheme = useSelector((s: ICommonRootState) => s.reader.defaultConfig.night);
     const sepiaTheme = useSelector((s: ICommonRootState) => s.reader.defaultConfig.sepia);
     let defaultTheme;
-    switch (true) {
-        case nightTheme:
-            defaultTheme = __("reader.settings.theme.name.Night");
-            break;
-        case sepiaTheme:
-            defaultTheme = __("reader.settings.theme.name.Sepia");
-            break;
-        default:
-            defaultTheme = __("reader.settings.theme.name.Neutral");
+
+    if (nightTheme) {
+        defaultTheme = __("reader.settings.theme.name.Night");
+    } else if (sepiaTheme) {
+        defaultTheme = __("reader.settings.theme.name.Sepia");
+    } else {
+        defaultTheme = __("reader.settings.theme.name.Neutral");
     }
 
     const themeOptions = [
@@ -44,8 +42,6 @@ const ReadingTheme = () => {
             value: "night",
         },
     ];
-
-
 
     const changeTheme = (value: string) => {
         switch (value) {

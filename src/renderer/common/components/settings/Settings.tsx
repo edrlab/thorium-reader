@@ -11,7 +11,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 // import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-import KeyboardSettings from "./KeyboardSettings";
+import KeyboardSettings, { AdvancedTrigger } from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
 import Themes from "./Themes";
 import { DialogCloseButton, DialogWithRadix, DialogWithRadixContentSettings, DialogWithRadixTrigger } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
@@ -46,6 +46,7 @@ const TabTitle = (props: any) => {
     return (
         <div className={stylesSettings.settings_tab_title}>
             <h2>{props.title}</h2>
+            {props.button}
         </div>
     );
 };
@@ -98,7 +99,7 @@ class Settings extends React.Component<IProps, undefined> {
                                 </section>
                             </Tabs.Content>
                             <Tabs.Content value="tab4" tabIndex={-1}>
-                                <TabTitle title={__("settings.tabs.keyboardShortcuts")} />
+                                <TabTitle title={__("settings.tabs.keyboardShortcuts")}  button={<AdvancedTrigger />} />
                                 <KeyboardSettings />
                             </Tabs.Content>
                         </div>

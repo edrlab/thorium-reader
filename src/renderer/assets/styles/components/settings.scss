@@ -66,7 +66,7 @@ $setting_color:  var(--color-button-primary);
         justify-content: left;
         margin: 0 10%;
         gap: 10px;
-        padding: 10px;
+        padding: 5px;
         border: 1px solid transparent;
         border-radius: 6px;
         font-weight: normal;
@@ -245,12 +245,17 @@ $setting_color:  var(--color-button-primary);
     }
     &_title {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        align-items: start;
+        justify-content: flex-start;
         margin: 0 25px 10px;
         font-size: 16px;
+        gap: 10px;
         h2 {
             margin-top: 0;
+        }
+        button[data-state="open"] .advanced_trigger {
+            background-color: var(--color-button-secondary);
+            border-color: var(--color-button-primary);
         }
     }
     .session_text {
