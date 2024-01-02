@@ -8,6 +8,7 @@
 import { ISessionState } from "readium-desktop/common/redux/states/session";
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { TTheme } from "./theme";
 
 export interface ICommonRootState {
     session: ISessionState
@@ -15,4 +16,5 @@ export interface ICommonRootState {
     reader: {
         defaultConfig: ReaderConfig,
     };
+    theme: TTheme;
 }

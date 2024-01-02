@@ -36,24 +36,41 @@
 
 /* button */
 
-button,
+/* button,
 .button_primary,
 .button_primary_small {
   &:not(:last-child) {
     margin-right: 10px;
   }
-}
+} */
 
 button {
   padding: 0;
   background: none;
   border: 0;
   height: 30px;
+  color: var(--color-primary);
   fill: var(--color-primary);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 
   &:hover {
     opacity: 1;
+    background: transparent;
+  }
+
+  &[type=submit] svg {
+    width: 13px;
+  }
+
+  &.disabled,
+  &[disabled] {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
   }
 }
 
@@ -86,7 +103,6 @@ button {
     vertical-align: -2px;
     width: auto;
     height: 14px;
-    margin-right: 8px;
     transition: all 0.2s;
     fill: var(--color-primary);
   }
@@ -95,17 +111,6 @@ button {
     & svg {
       margin-right: 0;
       margin-left: 8px;
-    }
-  }
-
-  &.disabled,
-  &[disabled] {
-    opacity: 0.5;
-    cursor: default;
-    pointer-events: none;
-
-    &:hover {
-      background: transparent;
     }
   }
 }
@@ -193,7 +198,6 @@ button {
     fill: var(--color-accent-contrast);
     width: auto;
     height: 14px;
-    margin-right: 8px;
     transition: all 0.2s;
   }
 
@@ -240,7 +244,6 @@ button {
 
   & svg {
     width: 18px;
-    margin-right: 8px;
     vertical-align: -3px;
     color: var(--color-disabled);
   }
@@ -281,6 +284,61 @@ button {
   text-underline-offset: 1px;
   cursor: pointer;
   display: inline-block;
+}
+
+.button_primary_blue {
+  border: 1px solid var(--color-button-primary);
+  height: 30px;
+  border-radius: 4px;
+  padding: 5px;
+  min-width: 100px;
+  background-color: var(--color-button-primary);
+  color: white;
+  transition: 200ms linear;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 12px;
+    fill: white;
+  }
+
+  &:hover {
+    color: var(--color-button-primary);
+  }
+}
+
+.button_secondary_blue {
+  border: 1px solid var(--color-button-primary);
+  height: 30px;
+  border-radius: 4px;
+  padding: 5px;
+  min-width: 100px;
+  background-color: var(--color-button-secondary);
+  color: var(--color-button-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 12px;
+    fill: var(--color-button-primary);
+  }
+}
+
+.button_catalog_infos {
+  color: var(--color-button-primary);
+  height: 30px;
+  border-radius: 4px;
+  padding: 20px 5px;
+  background-color: var(--color-button-secondary);
+  margin: 30px 0;
+
+  svg {
+    width: 20px;
+    fill: var(--color-button-primary);
+  }
 }
 
 /*

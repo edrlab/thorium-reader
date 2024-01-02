@@ -16,7 +16,6 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
-import * as stylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -26,10 +25,12 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { authActions, i18nActions } from "readium-desktop/common/redux/actions";
+import { authActions, i18nActions, themeActions } from "readium-desktop/common/redux/actions";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/bin-icon.svg";
-
-stylesCombobox.focused;
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { TTheme } from "readium-desktop/common/redux/states/theme";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/library/components/settings/KeyboardSettings";
 
 interface ISettingsProps {};
 
@@ -87,6 +88,45 @@ const ConnectionSettings: React.FC<{}> = () => {
     );
 };
 
+
+const Themes = () => {
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+    const theme = useSelector((s: ICommonRootState) => s.theme);
+    const options: Array<{id: number, value: TTheme, name: string}> = [
+        {id: 1, value: 'dark', name: __("settings.theme.dark")},
+        {id: 2, value: 'light', name: __("settings.theme.light")},
+        {id: 3, value: 'system', name: __("settings.theme.auto")},
+    ];
+
+    const setTheme = (themeSelected: React.Key) => {
+
+        if (typeof themeSelected !== "number") return;
+        const { value: themeChosen } = options.find(({ id }) => id === themeSelected) || {};
+        document.body.setAttribute("data-theme", themeChosen);
+        dispatch(themeActions.setTheme.build(themeChosen));
+    }
+    const selectedKey = options.find(({ value }) => value === theme);
+
+    return (
+        <section className={stylesSettings.section}>
+            <h4>{__("settings.theme.title")}</h4>
+            <ComboBox label={__("settings.language.languageChoice")} items={options} selectedKey={selectedKey?.id} onSelectionChange={setTheme}>
+                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+            </ComboBox>
+            {theme === "system" ? (
+                <div className={stylesSettings.session_text}>
+                    <SVG ariaHidden svg={InfoIcon} />
+                    <p>{__("settings.theme.description")}</p>
+                </div>
+            ) : (
+                <></>
+            )}
+        </section>
+    );
+};
+
+
 export const Settings: React.FC<ISettingsProps> = () => {
     const [__] = useTranslator();
     
@@ -127,15 +167,17 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1}>
                             <TabTitle title={__("settings.tabs.appearance")} />
-                            {/* <section className={stylesSettings.settings_tab}>
+                            <div>
                                 <Themes />
-                            </section> */}
+                            </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab4" tabIndex={-1}>
                             <TabTitle title={__("settings.tabs.keyboardShortcuts")}>
-                                {/* <AdvancedTrigger /> */}
+                                <AdvancedTrigger />
                             </TabTitle>
-                            {/* <KeyboardSettings /> */}
+                            <div>
+                                <KeyboardSettings />
+                            </div>
                         </Tabs.Content>
                     </div>
                 </Tabs.Root>
