@@ -203,6 +203,26 @@
   }
 }
 
+#modalContainer {
+  position: fixed;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 1px var( --reader-fontColor);
+  z-index: 102;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  align-content: flex-start;
+  background-color: var(--reader-mainColor);
+  width: 700px;
+  height: 600px;
+  color: var( --reader-fontColor);
+}
+
 .modal_dialog-collapsed {
   min-height: 0;
 }
