@@ -42,11 +42,11 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-const TabTitle = (props: any) => {
+const TabTitle = (props: React.PropsWithChildren<{title: string}>) => {
     return (
         <div className={stylesSettings.settings_tab_title}>
             <h2>{props.title}</h2>
-            {props.button}
+            {props.children}
         </div>
     );
 };
@@ -99,7 +99,9 @@ class Settings extends React.Component<IProps, undefined> {
                                 </section>
                             </Tabs.Content>
                             <Tabs.Content value="tab4" tabIndex={-1}>
-                                <TabTitle title={__("settings.tabs.keyboardShortcuts")}  button={<AdvancedTrigger />} />
+                                <TabTitle title={__("settings.tabs.keyboardShortcuts")}>
+                                    <AdvancedTrigger />
+                                </TabTitle>
                                 <KeyboardSettings />
                             </Tabs.Content>
                         </div>
