@@ -14,7 +14,7 @@ import {
 import KeyboardSettings, { AdvancedTrigger } from "./KeyboardSettings";
 import LanguageSettings from "./LanguageSettings";
 import Themes from "./Themes";
-import { DialogCloseButton, DialogWithRadix, DialogWithRadixContentSettings, DialogWithRadixTrigger } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
+import { DialogCloseButton, DialogWithRadix, DialogWithRadixContent, DialogWithRadixTrigger } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
 
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
@@ -65,7 +65,7 @@ class Settings extends React.Component<IProps, undefined> {
                         <SVG ariaHidden={true} svg={GearIcon} />
                     </button>
                 </DialogWithRadixTrigger>
-                <DialogWithRadixContentSettings>
+                <DialogWithRadixContent>
                     <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                         <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                             <Tabs.Trigger value="tab1">
@@ -106,7 +106,7 @@ class Settings extends React.Component<IProps, undefined> {
                             <DialogCloseButton />
                         </div>
                     </Tabs.Root>
-                </DialogWithRadixContentSettings>
+                </DialogWithRadixContent>
             </DialogWithRadix>
         );
     }
