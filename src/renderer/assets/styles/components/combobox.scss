@@ -32,6 +32,8 @@
     padding: 0;
     font-size: 0.857rem;
     cursor: default;
+    display: inline-block;
+    position: relative;
 
     &[data-pressed] {
       box-shadow: none;
@@ -41,7 +43,8 @@
 }
 
 .react-aria-Popover[data-trigger=ComboBox] {
-  width: var(--trigger-width);
+//   width: 100px;
+  pointer-events: auto;
 
   .react-aria-ListBox {
     display: block;
