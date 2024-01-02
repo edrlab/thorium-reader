@@ -584,8 +584,7 @@ div[data-radix-popper-content-wrapper] {
     }
     }
     
-    &.focus,
-    &:hover {
+    &.focus {
     border-width: 2px;
     outline: none;
     background-color: #def;

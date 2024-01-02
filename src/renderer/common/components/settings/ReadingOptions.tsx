@@ -66,7 +66,15 @@ const ReadingOptions = () => {
     return (
             <Tabs.Root defaultValue="tab11" data-orientation="vertical" className={stylesSettings.settings_container}>
                 <Tabs.List className={stylesSettings.settings_tabslist} aria-orientation="vertical">
-                    <Tabs.Trigger value="tab11" disabled={allowCustom ? false : true}>
+                <Tabs.Trigger value="tab11">
+                        <SVG ariaHidden svg={LayoutIcon} />
+                        <h3>{__("reader.settings.display")}</h3>
+                    </Tabs.Trigger>
+                    <Tabs.Trigger value="tab12">
+                        <SVG ariaHidden svg={VolumeUpIcon} />
+                        <h3>{__("reader.media-overlays.title")}</h3>
+                    </Tabs.Trigger>
+                    <Tabs.Trigger value="tab13" disabled={allowCustom ? false : true}>
                         <SVG ariaHidden svg={TextAreaIcon} />
                         <h3>{__("reader.settings.text")}</h3>
                                                 {!allowCustom ?
@@ -75,7 +83,7 @@ const ReadingOptions = () => {
                         null
                         }
                     </Tabs.Trigger>
-                    <Tabs.Trigger value="tab13" disabled={allowCustom ? false : true}>
+                    <Tabs.Trigger value="tab14" disabled={allowCustom ? false : true}>
                         <SVG ariaHidden svg={AlignLeftIcon} />
                         <h3>{__("reader.settings.spacing")}</h3>
                         {!allowCustom ?
@@ -83,14 +91,6 @@ const ReadingOptions = () => {
                         :
                         null
                         }
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="tab12">
-                        <SVG ariaHidden svg={LayoutIcon} />
-                        <h3>{__("reader.settings.display")}</h3>
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="tab14">
-                        <SVG ariaHidden svg={VolumeUpIcon} />
-                        <h3>{__("reader.media-overlays.title")}</h3>
                     </Tabs.Trigger>
                     {/* <Tabs.Trigger value="tab15">
                         <SVG ariaHidden svg={ClockWiseIcon} />
@@ -115,7 +115,7 @@ const ReadingOptions = () => {
                     </div>
                     {allowCustom ? 
                     <>
-                    <Tabs.Content value="tab11" tabIndex={-1}>
+                    <Tabs.Content value="tab13" tabIndex={-1}>
                         <TabTitle title={__("reader.settings.text")} />
                         <section className={stylesSettings.settings_tab}>
                             <ReadingTheme />
@@ -123,7 +123,7 @@ const ReadingOptions = () => {
                             <FontFamily />
                         </section>
                     </Tabs.Content>
-                    <Tabs.Content value="tab13" tabIndex={-1}>
+                    <Tabs.Content value="tab14" tabIndex={-1}>
                         <TabTitle title={__("reader.settings.spacing")} />
                         <section className={stylesSettings.settings_tab}>
                             <ReadingSpacing />
@@ -132,7 +132,7 @@ const ReadingOptions = () => {
                     </>
                     : null
                     }
-                    <Tabs.Content value="tab12" tabIndex={-1}>
+                    <Tabs.Content value="tab11" tabIndex={-1}>
                         <TabTitle title={__("reader.settings.display")} />
                         <section className={stylesSettings.settings_tab}>
                             <ReadingDisplayLayout />
@@ -141,7 +141,7 @@ const ReadingOptions = () => {
                             <ReadingDisplayMathJax />
                         </section>
                     </Tabs.Content>
-                    <Tabs.Content value="tab14" tabIndex={-1}>
+                    <Tabs.Content value="tab12" tabIndex={-1}>
                         <TabTitle title={__("reader.media-overlays.title")}/>
                         <section className={stylesSettings.settings_tab}>
                             <ReadingAudio />
