@@ -139,6 +139,7 @@ $setting_color:  var(--color-button-primary);
     flex: 2;
     box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
     overflow: scroll;
+    margin-top: 25px;
     &::-webkit-scrollbar-thumb {
         border-radius: 5px;
     }
@@ -150,22 +151,22 @@ $setting_color:  var(--color-button-primary);
     &:hover::-webkit-scrollbar-thumb {
         background-color: var(--color-medium-grey);
     }
-    .close_button_div {
-        display: flex;
-        justify-content: end;
-        margin-top: 20px;
-        margin-right: 20px;
-    }
     .button_transparency_icon {
         position: relative;
         svg {
-            position: absolute;
+            position: fixed;
             transform: translate(-50%,-50%);
             left: 50%;
             top: 50%;
             fill: $setting_color;
         }
     }
+}
+
+.close_button_div {
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
 .settings_tab {

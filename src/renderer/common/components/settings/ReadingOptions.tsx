@@ -64,17 +64,9 @@ const ReadingOptions = () => {
 
 
     return (
-            <Tabs.Root defaultValue="tab11" data-orientation="vertical" className={stylesSettings.settings_container}>
+            <Tabs.Root defaultValue={allowCustom ? "tab13" : "tab11"} data-orientation="vertical" className={stylesSettings.settings_container}>
                 <Tabs.List className={stylesSettings.settings_tabslist} aria-orientation="vertical">
-                <Tabs.Trigger value="tab11">
-                        <SVG ariaHidden svg={LayoutIcon} />
-                        <h3>{__("reader.settings.display")}</h3>
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="tab12">
-                        <SVG ariaHidden svg={VolumeUpIcon} />
-                        <h3>{__("reader.media-overlays.title")}</h3>
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="tab13" disabled={allowCustom ? false : true}>
+                <Tabs.Trigger value="tab13" disabled={allowCustom ? false : true}>
                         <SVG ariaHidden svg={TextAreaIcon} />
                         <h3>{__("reader.settings.text")}</h3>
                                                 {!allowCustom ?
@@ -91,6 +83,14 @@ const ReadingOptions = () => {
                         :
                         null
                         }
+                    </Tabs.Trigger>
+                <Tabs.Trigger value="tab11">
+                        <SVG ariaHidden svg={LayoutIcon} />
+                        <h3>{__("reader.settings.display")}</h3>
+                    </Tabs.Trigger>
+                    <Tabs.Trigger value="tab12">
+                        <SVG ariaHidden svg={VolumeUpIcon} />
+                        <h3>{__("reader.media-overlays.title")}</h3>
                     </Tabs.Trigger>
                     {/* <Tabs.Trigger value="tab15">
                         <SVG ariaHidden svg={ClockWiseIcon} />
@@ -110,9 +110,6 @@ const ReadingOptions = () => {
                     </div>
                 </Tabs.List>
                 <div className={stylesSettings.settings_content}>
-                    <div className={stylesSettings.close_button_div}>
-                        <DialogCloseButton />
-                    </div>
                     {allowCustom ? 
                     <>
                     <Tabs.Content value="tab13" tabIndex={-1}>
@@ -147,6 +144,9 @@ const ReadingOptions = () => {
                             <ReadingAudio />
                         </section>
                     </Tabs.Content>
+                </div>
+                <div className={stylesSettings.close_button_div}>
+                    <DialogCloseButton />
                 </div>
             </Tabs.Root>
     );

@@ -82,9 +82,6 @@ class Settings extends React.Component<IProps, undefined> {
                             </Tabs.Trigger>
                         </Tabs.List>
                         <div className={stylesSettings.settings_content}>
-                            <div className={stylesSettings.close_button_div}>
-                                <DialogCloseButton />
-                            </div>
                             <Tabs.Content value="tab1" title="General" tabIndex={-1}>
                                 <TabTitle title={__("settings.tabs.general")} />
                                 <section className={stylesSettings.settings_tab}>
@@ -104,6 +101,9 @@ class Settings extends React.Component<IProps, undefined> {
                                 </TabTitle>
                                 <KeyboardSettings />
                             </Tabs.Content>
+                        </div>
+                        <div className={stylesSettings.close_button_div}>
+                            <DialogCloseButton />
                         </div>
                     </Tabs.Root>
                 </DialogWithRadixContentSettings>
