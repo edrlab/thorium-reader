@@ -51,11 +51,11 @@ const LanguageSettings: React.FC<{}> = () => {
     const dispatch = useDispatch();
     const [options] = React.useState(() => Object.entries(AvailableLanguages).map(([k,v], i) => ({id: i, name: v, iso: k})));
     const setLang = (localeSelected: React.Key) => {
-       
+
         if (typeof localeSelected !== "number") return;
         const obj = options.find(({id}) => id === localeSelected);
         dispatch(i18nActions.setLocale.build(obj.iso));
-    }
+    };
     const selectedKey = options.find(({name}) => name === currentLanguageString);
     return (
         <ComboBox label={__("settings.language.languageChoice")} items={options} selectedKey={selectedKey?.id} onSelectionChange={setLang}>
@@ -94,9 +94,9 @@ const Themes = () => {
     const dispatch = useDispatch();
     const theme = useSelector((s: ICommonRootState) => s.theme);
     const options: Array<{id: number, value: TTheme, name: string}> = [
-        {id: 1, value: 'dark', name: __("settings.theme.dark")},
-        {id: 2, value: 'light', name: __("settings.theme.light")},
-        {id: 3, value: 'system', name: __("settings.theme.auto")},
+        {id: 1, value: "dark", name: __("settings.theme.dark")},
+        {id: 2, value: "light", name: __("settings.theme.light")},
+        {id: 3, value: "system", name: __("settings.theme.auto")},
     ];
 
     const setTheme = (themeSelected: React.Key) => {
@@ -105,7 +105,7 @@ const Themes = () => {
         const { value: themeChosen } = options.find(({ id }) => id === themeSelected) || {};
         document.body.setAttribute("data-theme", themeChosen);
         dispatch(themeActions.setTheme.build(themeChosen));
-    }
+    };
     const selectedKey = options.find(({ value }) => value === theme);
 
     return (
@@ -129,7 +129,7 @@ const Themes = () => {
 
 export const Settings: React.FC<ISettingsProps> = () => {
     const [__] = useTranslator();
-    
+
     return <Dialog.Root>
         <Dialog.Trigger asChild>
 
@@ -190,5 +190,5 @@ export const Settings: React.FC<ISettingsProps> = () => {
                 </div>
             </Dialog.Content>
         </Dialog.Portal>
-    </Dialog.Root>
-}
+    </Dialog.Root>;
+};

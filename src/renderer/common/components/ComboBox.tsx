@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from 'react';
-import {Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ComboBoxProps, ListBoxItemProps, ValidationResult} from 'react-aria-components';
-import {FieldError, Text} from 'react-aria-components';
+import * as React from "react";
+import {Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ComboBoxProps, ListBoxItemProps, ValidationResult} from "react-aria-components";
+import {FieldError, Text} from "react-aria-components";
 
 interface MyComboBoxProps<T extends object>
-  extends Omit<ComboBoxProps<T>, 'children'> {
+  extends Omit<ComboBoxProps<T>, "children"> {
   label?: string;
   description?: string | null;
   errorMessage?: string | ((validation: ValidationResult) => string);
@@ -18,22 +18,22 @@ interface MyComboBoxProps<T extends object>
 }
 
 export function ComboBox<T extends object>(
-  { label, description, errorMessage, children, ...props }: MyComboBoxProps<T>
+  { label, description, errorMessage, children, ...props }: MyComboBoxProps<T>,
 ) {
   return (
     <ComboBoxReactAria {...props}>
-      <Label>{label}</Label>
-      <div className="my-combobox-container">
+    <Label>{label}</Label>
+    <div className="my-combobox-container">
         <Input />
         <Button>▼</Button>
-      </div>
-      {description && <Text slot="description">{description}</Text>}
-      <FieldError>{errorMessage}</FieldError>
-      <Popover>
+    </div>
+    {description && <Text slot="description">{description}</Text>}
+    <FieldError>{errorMessage}</FieldError>
+    <Popover>
         <ListBox>
-          {children}
+        {children}
         </ListBox>
-      </Popover>
+    </Popover>
     </ComboBoxReactAria>
   );
 }
@@ -41,9 +41,9 @@ export function ComboBox<T extends object>(
 export function ComboBoxItem(props: ListBoxItemProps) {
   return (
     <ListBoxItem
-      {...props}
-      className={({ isFocused, isSelected }) =>
-        `my-item ${isFocused ? 'focused' : ''} ${isSelected ? 'selected' : ''}`}
+    {...props}
+    className={({ isFocused, isSelected }) =>
+        `my-item ${isFocused ? "focused" : ""} ${isSelected ? "selected" : ""}`}
     />
   );
 }

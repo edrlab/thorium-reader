@@ -70,11 +70,11 @@ export const AdvancedTrigger = () => {
     const dispatch = useDispatch();
 
     const onClickKeyboardShortcutsShow = () => {
-         dispatch(keyboardActions.showShortcuts.build(true))
+        dispatch(keyboardActions.showShortcuts.build(true));
     };
 
     const onClickKeyboardShortcutsReload = (defaults: boolean) => {
-        dispatch(keyboardActions.reloadShortcuts.build(defaults))
+        dispatch(keyboardActions.reloadShortcuts.build(defaults));
     };
 
     return (
@@ -107,7 +107,7 @@ export const AdvancedTrigger = () => {
                 </Popover.Content>
             </Popover.Portal>
         </Popover.Root>
-    )};
+    );};
 
 
 class KeyboardSettings extends React.Component<IProps, IState> {
@@ -152,9 +152,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 <section className={stylesSettings.settings_tab}>
                     <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
                     {/* {!this.state.editKeyboardShortcutId && (
-                       <AdvancedTrigger 
-                       showKeyboardShortcuts={this.props.showKeyboardShortcuts}
-                       reloadKeyboardShortcuts={this.props.reloadKeyboardShortcuts}
+                        <AdvancedTrigger
+                        showKeyboardShortcuts={this.props.showKeyboardShortcuts}
+                        reloadKeyboardShortcuts={this.props.reloadKeyboardShortcuts}
                         />
                             )
                         } */}
