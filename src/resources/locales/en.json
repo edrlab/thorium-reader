@@ -109,6 +109,7 @@
         "sort": "Sort by",
         "tagCount": "Tag count",
         "tags": "Tags",
+        "tag": "Tag",
         "update": "Edit"
     },
     "dialog": {
@@ -345,6 +346,7 @@
                 "two": "2 cols",
                 "twoTitle": "two columns"
             },
+            "options": "Options",
             "display": "Display",
             "disposition": {
                 "title": "Layout"
@@ -389,7 +391,9 @@
                 },
                 "title": "Theme"
             },
-            "wordSpacing": "Word spacing"
+            "wordSpacing": "Word spacing",
+            "disabled": "disabled",
+            "customizeReader": "Customise text formatting"
         },
         "svg": {
             "left": "Left",
@@ -412,6 +416,19 @@
         }
     },
     "settings": {
+        "tabs": {
+            "general": "General",
+            "appearance": "Appearance",
+            "reading": "Reading",
+            "keyboardShortcuts":"Keyboard shortcuts"
+        },
+        "theme": {
+            "title": "Application Theme",
+            "description": "The application theme corresponds to the theme of your operating system.",
+            "auto": "Automatic",
+            "light": "Light",
+            "dark": "Dark"
+        },
         "auth": {
             "wipeData": "Wipe authentication data"
         },
@@ -425,7 +442,8 @@
             "loadUserJson": "Load from user file",
             "resetDefaults": "Reset (load defaults)",
             "save": "Save",
-            "show": "Show"
+            "show": "Show",
+            "disclaimer": "Keyboard shortcuts are currently based on a QWERTY layout."
         },
         "language": {
             "languageChoice": "Language choice"
@@ -433,7 +451,8 @@
         "session": {
             "no": "Disable",
             "title": "Save session",
-            "yes": "Enable"
+            "yes": "Enable",
+            "description": "Automatically save your session when you exit the application."
         }
     }
 }
