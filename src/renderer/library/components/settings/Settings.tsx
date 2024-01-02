@@ -26,7 +26,8 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { i18nActions } from "readium-desktop/common/redux/actions";
+import { authActions, i18nActions } from "readium-desktop/common/redux/actions";
+import * as BinIcon from "readium-desktop/renderer/assets/icons/bin-icon.svg";
 
 stylesCombobox.focused;
 
@@ -59,6 +60,30 @@ const LanguageSettings: React.FC<{}> = () => {
         <ComboBox label={__("settings.language.languageChoice")} items={options} selectedKey={selectedKey?.id} onSelectionChange={setLang}>
             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
         </ComboBox>
+    );
+};
+
+export const Auth = () => {
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+
+    return (
+        <button
+            className={stylesSettings.btn_primary}
+            onClick={() => dispatch(authActions.wipeData.build())}>
+            <SVG ariaHidden svg={BinIcon} />
+            <h3>{__("settings.auth.wipeData")}</h3>
+        </button>
+    );
+};
+
+const ConnectionSettings: React.FC<{}> = () => {
+    const [__] = useTranslator();
+    return (
+        <section className={stylesSettings.section} style={{ position: "relative" }}>
+            <h4>{__("catalog.opds.auth.login")}</h4>
+            <Auth />
+        </section>
     );
 };
 
@@ -95,10 +120,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     <div className={stylesSettings.settings_content}>
                         <Tabs.Content value="tab1" title="General" tabIndex={-1}>
                             <TabTitle title={__("settings.tabs.general")} />
-                            <section className={stylesSettings.settings_tab}>
+                            <div>
                                 <LanguageSettings />
-                                {/* <ConnectionSettings /> */}
-                            </section>
+                                <ConnectionSettings />
+                            </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1}>
                             <TabTitle title={__("settings.tabs.appearance")} />
