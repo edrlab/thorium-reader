@@ -111,9 +111,8 @@ const Themes = () => {
     const selectedKey = options.find(({ value }) => value === theme);
 
     return (
-        <section className={stylesSettings.section}>
-            <h4>{__("settings.theme.title")}</h4>
-            <ComboBox label={__("settings.language.languageChoice")} items={options} selectedKey={selectedKey?.id} onSelectionChange={setTheme} svg={BrushIcon}>
+        <div>
+            <ComboBox label={__("settings.theme.title")} items={options} selectedKey={selectedKey?.id} onSelectionChange={setTheme} svg={BrushIcon}>
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </ComboBox>
             {theme === "system" ? (
@@ -124,7 +123,7 @@ const Themes = () => {
             ) : (
                 <></>
             )}
-        </section>
+        </div>
     );
 };
 
