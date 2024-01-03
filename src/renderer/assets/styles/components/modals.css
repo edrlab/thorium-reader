@@ -42,11 +42,12 @@
   left: 50%;
   top: 50%;
 
-  /* min-height: 570px; */
-  /* min-width: 776px;
+  /* min-height: 570px;
+  min-width: 776px;
   width: calc(100vw - 100px);
   max-width: 960px; */
   width: 776px;
+
   /* max-height: calc(100vh - 100px); */
   height: 597px;
   border-radius: 10px;

@@ -72,7 +72,7 @@ class TagManager extends React.Component<IProps> {
             <section className={stylePublication.publicationInfo_tagContainer}>
                 <div className={classNames(stylePublication.publicationInfo_heading,stylePublication.tag_list )}>
                     <h4>{__("catalog.tags")} {this.props.tagArray?.length > 0 ? ":" : ""}</h4>
-                    <TagList tagArray={this.props.tagArray}> 
+                    <TagList tagArray={this.props.tagArray}>
                         {
                             (tag, index) =>
                                 <TagButton
