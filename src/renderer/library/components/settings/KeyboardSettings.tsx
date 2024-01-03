@@ -149,7 +149,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         return (
             <>
-                <section className={stylesSettings.settings_tab}>
+                <section>
                     <div className={classNames(stylesGlobal.d_flex, stylesButtons.button_outline_accessibility)}>
                     {/* {!this.state.editKeyboardShortcutId && (
                         <AdvancedTrigger

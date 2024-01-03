@@ -30,6 +30,8 @@ import * as BinIcon from "readium-desktop/renderer/assets/icons/bin-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as LanguageIcon from "readium-desktop/renderer/assets/icons/language.svg";
+import * as BrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-icon.svg";
 import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/library/components/settings/KeyboardSettings";
 
 interface ISettingsProps {};
@@ -58,7 +60,7 @@ const LanguageSettings: React.FC<{}> = () => {
     };
     const selectedKey = options.find(({name}) => name === currentLanguageString);
     return (
-        <ComboBox label={__("settings.language.languageChoice")} defaultItems={options} defaultSelectedKey={selectedKey?.id} onSelectionChange={setLang}>
+        <ComboBox label={__("settings.language.languageChoice")} defaultItems={options} defaultSelectedKey={selectedKey?.id} onSelectionChange={setLang} svg={LanguageIcon}>
             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
         </ComboBox>
     );
@@ -111,7 +113,7 @@ const Themes = () => {
     return (
         <section className={stylesSettings.section}>
             <h4>{__("settings.theme.title")}</h4>
-            <ComboBox label={__("settings.language.languageChoice")} items={options} selectedKey={selectedKey?.id} onSelectionChange={setTheme}>
+            <ComboBox label={__("settings.language.languageChoice")} items={options} selectedKey={selectedKey?.id} onSelectionChange={setTheme} svg={BrushIcon}>
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </ComboBox>
             {theme === "system" ? (
@@ -160,14 +162,14 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     <div className={stylesSettings.settings_content}>
                         <Tabs.Content value="tab1" title="General" tabIndex={-1}>
                             <TabTitle title={__("settings.tabs.general")} />
-                            <div>
+                            <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
                                 <ConnectionSettings />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1}>
                             <TabTitle title={__("settings.tabs.appearance")} />
-                            <div>
+                            <div className={stylesSettings.settings_tab}>
                                 <Themes />
                             </div>
                         </Tabs.Content>
@@ -175,7 +177,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <TabTitle title={__("settings.tabs.keyboardShortcuts")}>
                                 <AdvancedTrigger />
                             </TabTitle>
-                            <div>
+                            <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
                             </div>
                         </Tabs.Content>

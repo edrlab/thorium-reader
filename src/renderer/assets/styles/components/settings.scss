@@ -25,7 +25,8 @@ $setting_color:  var(--color-button-primary);
             margin: 0;
         }
         .btn_primary {
-            width: 300px;
+            width: fit-content;
+            padding: 0 10px;
             height: 35px;
             border: 1px solid $setting_color;
             border-radius: 5px;

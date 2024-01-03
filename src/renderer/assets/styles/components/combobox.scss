@@ -1,15 +1,36 @@
-
-
 .react-aria-ComboBox {
   color: var(--text-color);
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--color-light-grey);
+  margin: 10px 0 20px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .my-combobox-container {
+    border: 1px solid var(--color-primary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0 10px;
+    svg {
+      width: 20px;
+      
+    }
+  }
+
+  .react-aria-Label {
+    font-weight: 600;
+  }
 
   .react-aria-Input {
     margin: 0;
     font-size: 1.072rem;
-    background: var(--field-background);
+    background: var(--color-secondary);
     color: var(--field-text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
+
     padding: 0.286rem 2rem 0.286rem 0.571rem;
     vertical-align: middle;
 
@@ -21,7 +42,8 @@
   }
 
   .react-aria-Button {
-    background: var(--highlight-background);
+    display: inline-block;
+    background: var(--color-secondary);
     color: var(--highlight-foreground);
     forced-color-adjust: none;
     border-radius: 4px;
@@ -31,20 +53,25 @@
     height: 1.429rem;
     padding: 0;
     font-size: 0.857rem;
-    cursor: default;
-    display: inline-block;
+    cursor: pointer;
     position: relative;
 
     &[data-pressed] {
       box-shadow: none;
-      background: var(--highlight-background);
+      background: var(--color-secondary);
     }
   }
 }
 
 .react-aria-Popover[data-trigger=ComboBox] {
-//   width: 100px;
+  width: var(--trigger-width);
+  background-color: var(--color-secondary);
   pointer-events: auto;
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  height: fit-content;
+  max-height: 350px!important;
+  overflow: auto;
 
   .react-aria-ListBox {
     display: block;
@@ -82,7 +109,7 @@
 
     &[data-focused],
     &[data-pressed] {
-      background: var(--highlight-background);
+      background: var(--color-secondary);
       color: var(--highlight-foreground);
     }
   }
@@ -92,7 +119,7 @@
     padding: 4px 8px 4px 22px;
     border-radius: 6px;
     outline: none;
-    cursor: default;
+    cursor: pointer;
     color: var(--text-color);
     font-size: 1.072rem;
     position: relative;
