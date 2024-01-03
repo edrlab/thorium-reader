@@ -57,6 +57,7 @@
     text-align: center;
     &_coverWrapper {
         width: 100%;
+        min-height: 350px;
         position: relative;
         display: flex;
         align-items: center;
@@ -167,6 +168,10 @@
         summary {
             color: var(--color-button-primary);
             background-color: var(--color-button-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 20px;
             :hover {
                 cursor: pointer;
             }
@@ -190,10 +195,6 @@
 
 .accessibility_infos {
     line-height: 1.5;
-    display: flex;
-    @media screen and (max-width : 960px) {
-        flex-direction: column;
-    }
     &_left {
         margin-block-start: 0;
         flex: 1;
@@ -206,6 +207,13 @@
             list-style-type: none;
             margin-block-start: 0;
             padding-left: 0;
+        }
+        details {
+           color: var(--color-primary);
+           summary {
+            color: var(--color-button-primary);
+            cursor: pointer;
+           }
         }
     }
 }

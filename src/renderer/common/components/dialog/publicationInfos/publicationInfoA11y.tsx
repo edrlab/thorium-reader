@@ -221,8 +221,8 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                     : <></>}
                 {(a11y_certifiedBy || a11y_certifierCredential || AccessibilityFeature || AccessibilityConformsTo || AccessibilityConformanceReport || AccessibilitySummary) ?
                     <div className={stylePublication.accessibility_infos_right}>
-                        {/* <details> */}
-                        {/* <summary>{__("publication.accessibility.moreInformation")}</summary> */}
+                        <details>
+                        <summary>{__("publication.accessibility.moreInformation")}</summary>
                         <ul>
                             {AccessibilityFeature ? AccessibilityFeature : <></>}
                             {AccessibilityConformsTo ? AccessibilityConformsTo : <></>}
@@ -231,7 +231,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                             {a11y_certifierCredential ? a11y_certifierCredential.map((v, i) => (<li key={`kCertCred${i}`} style={{ listStyleType: "none" }}>({v})</li>)) : <></>}
                             {AccessibilitySummary}
                         </ul>
-                        {/* </details> */}
+                        </details>
                     </div>
                     : <></>}
             </>
