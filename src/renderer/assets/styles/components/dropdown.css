@@ -79,6 +79,10 @@
   fill: var(--color-button-primary);
 }
 
+.PopoverContent {
+  z-index: 10000;
+}
+
 .menu {
   height: fit-content;
   width: 180px;
