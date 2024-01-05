@@ -1,0 +1,118 @@
+/* @import url('readium-desktop/renderer/assets/fonts/Nunito.ttf'); */
+
+.AlertDialogOverlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 110;
+}
+
+.AlertDialogContent {
+  background-color: white;
+  border-radius: 6px;
+  border: 2px solid rgba(217, 217, 217, 1);
+  box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 477px;
+  padding: 20px;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 110;
+}
+
+.AlertDialogContent:focus {
+  outline: none;
+}
+
+.AlertDialogTitle {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 20.8px;
+  font-family: "Nunito", sans-serif;
+}
+
+.AlertDialogDescription {
+  margin-bottom: 20px;
+  padding-top: 10px;
+  color: var(--color-primary);
+  font-size: 15px;
+  line-height: 1.5;
+  border-top: 1px solid rgba(217, 217, 217, 1);
+}
+
+.AlertDialogButtonContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.AlertDialogButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 400;
+  height: 30px;
+  transition: 200ms linear;
+}
+
+.AlertDialogButton.delete {
+  color: white;
+  background-color: rgb(15, 83, 199);
+  transition: 200ms;
+  border-radius: 4px;
+  gap: 4px;
+}
+
+.AlertDialogButton.delete:hover {
+  background-color: rgba(15, 83, 199, 70%);
+}
+
+.AlertDialogButton.abort:hover {
+  background-color: rgba(15, 83, 199, 20%);
+}
+
+.AlertDialogButton.delete svg {
+  fill: white;
+  width: 15px;
+  height: 15px;
+}
+
+.AlertDialogButton.delete:hover svg {
+  fill: black;
+}
+
+.AlertDialogButton.abort {
+  color: #1053C8;
+  background-color: rgba(16, 83, 200, 0.05);
+  border: 1px solid #1053C8;
+}
+
+/* @keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} */
+
+/* @keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+*/

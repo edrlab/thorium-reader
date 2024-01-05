@@ -21,17 +21,20 @@
 .tag {
   display: flex;
   align-items: center;
-  background-color: #e7f1fb;
+  background-color: var(--color-button-secondary);
   padding: 2px 6px;
-  font-size: 1.1rem;
   border-radius: 5px;
-  border: 1px solid var(--color-tertiary);
-  color: var(--color-tertiary);
+  border: 0.5px solid var(--color-button-primary);
+  color: var(--color-button-primary);
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s;
   margin-right: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+
+  & svg {
+    fill: var(--color-button-primary);
+  }
 
   &:hover {
     background-color: #d0e2f5;
@@ -43,9 +46,9 @@
   }
 
   & button {
-    width: 21px;
-    height: 21px;
-    margin: 0 0 0 5px;
+    width: 10px;
+    height: 10px;
+    margin: 0 0 0 2px;
   }
 }
 
@@ -58,11 +61,9 @@
   height: 35px;
   background-color: transparent;
   color: var(--color-primary);
-  font-size: 0.9rem;
   border-bottom: 1px solid #c1c1c1;
 
   &::placeholder {
-    font-size: 0.9rem;
     font-weight: 300;
     color: #c1c1c1;
   }

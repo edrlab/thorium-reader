@@ -134,8 +134,28 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  font: 1.1rem "Open Sans", sans-serif;
+  font: 12px "Nunito", sans-serif;
   background: var(--color-secondary);
+}
+
+p, input, select {
+  font-size: 12px;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+h4, button, label {
+  font-size: 14px;
 }
 
 section {

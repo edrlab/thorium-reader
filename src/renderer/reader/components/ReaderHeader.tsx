@@ -51,6 +51,7 @@ import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/k
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { PublicationInfoReaderWithRadix, PublicationInfoReaderWithRadixContent, PublicationInfoReaderWithRadixTrigger } from "./dialog/publicationInfos/PublicationInfo";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -385,14 +386,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     ) : (<></>)
                     }
                     <li>
-                        <button
-                            className={stylesReader.menu_button}
-                            onClick={() => this.props.displayPublicationInfo()}
-                            ref={this.infoMenuButtonRef}
-                            title={__("reader.navigation.infoTitle")}
-                        >
-                            <SVG ariaHidden={true} svg={InfosIcon} />
-                        </button>
+                        <PublicationInfoReaderWithRadix displayPublicationInfo={this.props.displayPublicationInfo}>
+                            <PublicationInfoReaderWithRadixTrigger asChild>
+                                <button
+                                    className={stylesReader.menu_button}
+                                    ref={this.infoMenuButtonRef}
+                                    title={__("reader.navigation.infoTitle")}
+                                >
+                                    <SVG ariaHidden={true} svg={InfosIcon} />
+                                </button>
+                            </PublicationInfoReaderWithRadixTrigger>
+                            <PublicationInfoReaderWithRadixContent />
+                        </PublicationInfoReaderWithRadix>
                     </li>
                     {(this.props.mode === ReaderMode.Attached) ? (
                         <li>

@@ -86,18 +86,6 @@ body {
   font: 1.1rem "Open Sans", sans-serif;
 }
 
-button {
-  background: none;
-  border: 0;
-  cursor: pointer;
-  color: var(--reader-fontColor) !important;
-  fill: var(--reader-fontColor) !important;
-  height: auto;
-
-  &:hover {
-    opacity: 1;
-  }
-}
 
 .root {
   position: absolute;
@@ -1119,6 +1107,7 @@ input[type=radio] + label {
     margin-left: 2rem;
 
     & button {
+      display: inline;
       border: 0;
       cursor: pointer;
       padding: 0;
@@ -1148,6 +1137,7 @@ input[type=radio] + label {
     margin-right: 2rem;
 
     & button {
+      display: inline;
       border: 0;
       cursor: pointer;
       padding: 0;

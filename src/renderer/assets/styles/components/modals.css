@@ -38,11 +38,18 @@
 }
 
 .modal_dialog {
-  margin: 30px;
-  min-height: 400px;
-  min-width: 700px;
-  max-width: calc(100vw - 60px);
-  max-height: calc(100vh - 60px);
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+
+  /* min-height: 570px;
+  min-width: 776px;
+  width: calc(100vw - 100px);
+  max-width: 960px; */
+  width: 776px;
+
+  /* max-height: calc(100vh - 100px); */
+  height: 597px;
   border-radius: 10px;
   z-index: 102;
   display: flex;
@@ -52,12 +59,17 @@
   overflow-x: hidden;
   align-content: flex-start;
   color: var(--color-primary);;
-  position: relative;
+  position: fixed;
   box-sizing: border-box;
+
+  @media screen and (width <= 960px) {
+    width: 100vw;
+    height: 100vh;
+  }
 
   &.modal_dialog_full {
     width: calc(100vw - 60px);
-    height: calc(100vh - 60px);
+    height: calc(100vh - 100px);
   }
 }
 
@@ -83,33 +95,46 @@
   }
 }
 
+.modal_dialog_body_cover > img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 570px;
+  max-height: calc(100vh - 200px);
+}
+
 .modal_dialog_header,
 .modal_dialog_footer {
   display: flex;
   flex: none;
-  padding: 0 20px;
+  margin: 0 20px;
   align-items: center;
-  height: 70px;
+  height: 50px;
 }
 
 .modal_dialog_header {
   justify-content: space-between;
   border-bottom: 1px solid var(--color-medium-grey);
 
-  & h2 {
+  & h1 {
     font-weight: bold;
     margin: 10px 0;
-    font-size: 22px;
     margin-left: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 20px;
   }
 }
 
 .modal_dialog_footer {
   justify-content: end;
   border-top: 1px solid var(--color-medium-grey);
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  background-color: var(--color-secondary);
+  gap: 10px;
 
   & [type="submit"] {
     min-width: 100px;
@@ -147,7 +172,6 @@
     }
 
     & input {
-      font-size: 1rem;
       padding-bottom: 4px;
       padding-left: 0.3rem;
       border: none;
@@ -166,8 +190,4 @@
       list-style: none;
     }
   }
-}
-
-.___DEBUG___COMPONENTS_MODALS_CSS {
-  display: none;
 }

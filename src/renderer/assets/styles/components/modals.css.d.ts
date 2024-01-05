@@ -7,6 +7,7 @@ declare const styles: {
   readonly "modal_dialog": string;
   readonly "modal_dialog_body": string;
   readonly "modal_dialog_body_centered": string;
+  readonly "modal_dialog_body_cover": string;
   readonly "modal_dialog_footer": string;
   readonly "modal_dialog_full": string;
   readonly "modal_dialog_header": string;

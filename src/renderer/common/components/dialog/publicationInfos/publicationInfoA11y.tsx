@@ -15,6 +15,8 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { convertMultiLangStringToString } from "readium-desktop/renderer/common/language-string";
 import { TranslatorProps, withTranslator } from "../../hoc/translator";
 import isURL from "validator/lib/isURL";
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationA11y");
 debug("_");
@@ -81,21 +83,21 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
             const isUnknown = findStrInArray(a11y_accessibilityHazard, "unknown");
 
             return (isFlashing
-            || isMotionSimulation
-            || isSound
-            || isNoFlashing
-            || isNoMotionSimulation
-            || isNoSound
-            || isNone
-            || isUnknown) ? <>
-            {isFlashing ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.flashing")}</li> : <></>}
-            {isMotionSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.motionSimulation")}</li> : <></>}
-            {isSound ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.sound")}</li> : <></>}
-            {isNoFlashing ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noFlashing")}</li> : <></>}
-            {isNoMotionSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noMotionSimulation")}</li> : <></>}
-            {isNoSound ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noSound")}</li> : <></>}
-            {isNone ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.none")}</li> : <></>}
-            {isUnknown ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.unknown")}</li> : <></>}
+                || isMotionSimulation
+                || isSound
+                || isNoFlashing
+                || isNoMotionSimulation
+                || isNoSound
+                || isNone
+                || isUnknown) ? <>
+                {isFlashing ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.flashing")}</li> : <></>}
+                {isMotionSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.motionSimulation")}</li> : <></>}
+                {isSound ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.sound")}</li> : <></>}
+                {isNoFlashing ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noFlashing")}</li> : <></>}
+                {isNoMotionSimulation ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noMotionSimulation")}</li> : <></>}
+                {isNoSound ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.noSound")}</li> : <></>}
+                {isNone ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.none")}</li> : <></>}
+                {isUnknown ? <li>{__("publication.accessibility.accessibilityHazard.name")} {__("publication.accessibility.accessibilityHazard.unknown")}</li> : <></>}
             </> : undefined;
         })();
 
@@ -110,7 +112,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
             }
 
             return textSanitize_a11y ?
-                <div className={classNames(stylesBlocks.block_line, stylesBlocks.description_see_more)}>
+                <div className={classNames(stylesBlocks.description_see_more)}>
                     <div
                         ref={this.descriptionWrapperRef_a11y}
                         className={classNames(
@@ -143,7 +145,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
         })();
         const AccessibilityFeatureIsSynchronizedAudioText = (() => {
 
-            const isSynchronizedAudioText = findStrInArray(a11y_accessibilityFeature, "synchronizedAudioText") ;
+            const isSynchronizedAudioText = findStrInArray(a11y_accessibilityFeature, "synchronizedAudioText");
             return isSynchronizedAudioText ? <li>{__("publication.accessibility.accessibilityFeature.synchronizedAudioText")}</li> : undefined;
 
         })();
@@ -207,33 +209,33 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
         })();
 
         return (a11y_certifiedBy || a11y_certifierCredential || AccessibilityFeature || AccessibilityConformsTo || AccessibilityConformanceReport || AccessibilitySummary || AccessModeSufficient || AccessibilityHazard || AccessibilityFeatureIsprintPageNumber || AccessibilityFeatureIsDisplayTransformability || AccessibilityFeatureIsSynchronizedAudioText) ?
-        <>
-            {(AccessModeSufficient || AccessibilityHazard || AccessibilityFeatureIsprintPageNumber || AccessibilityFeatureIsSynchronizedAudioText || AccessibilityFeatureIsDisplayTransformability) ?
-            <ul>
-                {AccessModeSufficient ? AccessModeSufficient : <></>}
-                {AccessibilityFeatureIsprintPageNumber ? AccessibilityFeatureIsprintPageNumber : <></>}
-                {AccessibilityFeatureIsDisplayTransformability ? AccessibilityFeatureIsDisplayTransformability : <></>}
-                {AccessibilityFeatureIsSynchronizedAudioText ? AccessibilityFeatureIsSynchronizedAudioText : <></>}
-                {AccessibilityHazard ? AccessibilityHazard : <></>}
-            </ul>
-            : <></>}
-            {(a11y_certifiedBy || a11y_certifierCredential || AccessibilityFeature || AccessibilityConformsTo || AccessibilityConformanceReport || AccessibilitySummary) ?
-            <div>
-                <details>
-                    <summary>{__("publication.accessibility.moreInformation")}</summary>
-                    <ul>
-                        {AccessibilityFeature ? AccessibilityFeature : <></>}
-                        {AccessibilityConformsTo ? AccessibilityConformsTo : <></>}
-                        {AccessibilityConformanceReport ? AccessibilityConformanceReport : <></>}
-                        {a11y_certifiedBy ? a11y_certifiedBy.map((v, i) => (<li key={`kCertBy${i}`} style={{listStyleType: "none"}}>({v})</li>)) : <></>}
-                        {a11y_certifierCredential ? a11y_certifierCredential.map((v, i) => (<li key={`kCertCred${i}`} style={{listStyleType: "none"}}>({v})</li>)) : <></>}
-                        {AccessibilitySummary}
+            <>
+                {(AccessModeSufficient || AccessibilityHazard || AccessibilityFeatureIsprintPageNumber || AccessibilityFeatureIsSynchronizedAudioText || AccessibilityFeatureIsDisplayTransformability) ?
+                    <ul className={stylePublication.accessibility_infos_left}>
+                        {AccessModeSufficient ? AccessModeSufficient : <></>}
+                        {AccessibilityFeatureIsprintPageNumber ? AccessibilityFeatureIsprintPageNumber : <></>}
+                        {AccessibilityFeatureIsDisplayTransformability ? AccessibilityFeatureIsDisplayTransformability : <></>}
+                        {AccessibilityFeatureIsSynchronizedAudioText ? AccessibilityFeatureIsSynchronizedAudioText : <></>}
+                        {AccessibilityHazard ? AccessibilityHazard : <></>}
                     </ul>
-                </details>
-            </div>
-            : <></>}
-        </>
-        : <p>{__("publication.accessibility.noA11y")}</p>;
+                    : <></>}
+                {(a11y_certifiedBy || a11y_certifierCredential || AccessibilityFeature || AccessibilityConformsTo || AccessibilityConformanceReport || AccessibilitySummary) ?
+                    <div className={stylePublication.accessibility_infos_right}>
+                        <details>
+                        <summary>{__("publication.accessibility.moreInformation")}</summary>
+                        <ul>
+                            {AccessibilityFeature ? AccessibilityFeature : <></>}
+                            {AccessibilityConformsTo ? AccessibilityConformsTo : <></>}
+                            {AccessibilityConformanceReport ? AccessibilityConformanceReport : <></>}
+                            {a11y_certifiedBy ? a11y_certifiedBy.map((v, i) => (<li key={`kCertBy${i}`} style={{ listStyleType: "none" }}>({v})</li>)) : <></>}
+                            {a11y_certifierCredential ? a11y_certifierCredential.map((v, i) => (<li key={`kCertCred${i}`} style={{ listStyleType: "none" }}>({v})</li>)) : <></>}
+                            {AccessibilitySummary}
+                        </ul>
+                        </details>
+                    </div>
+                    : <></>}
+            </>
+            : <p>{__("publication.accessibility.noA11y")}</p>;
     }
 
 }

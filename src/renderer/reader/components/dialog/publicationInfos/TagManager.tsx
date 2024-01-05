@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -25,6 +26,8 @@ import {
 import { deleteTag } from "readium-desktop/renderer/common/logics/publicationInfos/tags/deleteTag";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TDispatch } from "readium-desktop/typings/redux";
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:components:dialog:publicationInfos:TagManager");
@@ -69,26 +72,29 @@ export class TagManager extends React.Component<IProps> {
                     deleteTag(this.props.tagArray, setTagsCb)(index);
 
         return (
-            <div>
-                <TagList tagArray={this.props.tagArray}>
-                    {
-                        (tag) =>
-                            <TagButton
-                                tag={tag}
-                                __={__}
-                                pubId={this.props.pubId}
-                                onClickDeleteCb={updateTagsCb}
-                            >
-                            </TagButton>
-                    }
-                </TagList>
+            <section className={stylePublication.publicationInfo_tagContainer}>
+                <div className={classNames(stylePublication.publicationInfo_heading,stylePublication.tag_list )}>
+                    <h4>{__("catalog.tags")} {this.props.tagArray.length > 0 ? ":" : ""}</h4>
+                    <TagList tagArray={this.props.tagArray}>
+                        {
+                            (tag) =>
+                                <TagButton
+                                    tag={tag}
+                                    __={__}
+                                    pubId={this.props.pubId}
+                                    onClickDeleteCb={updateTagsCb}
+                                >
+                                </TagButton>
+                        }
+                    </TagList>
+                </div>
                 <AddTag
                     pubId={this.props.pubId}
                     tagArray={this.props.tagArray}
                     __={__}
                     setTags={setTagsCb}
                 />
-            </div>
+            </section>
         );
     }
 }

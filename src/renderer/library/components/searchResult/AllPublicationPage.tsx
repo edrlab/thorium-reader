@@ -78,6 +78,7 @@ import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { ipcRenderer } from "electron";
+import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 
 // import {
 //     formatContributorToString,
@@ -570,59 +571,68 @@ interface IColumnValue_Cover extends IColumnValue_BaseString {
 interface ITableCellProps_Value_Cover {
     value: IColumnValue_Cover;
 }
+
 const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Cover> = (props) => {
     return (<div style={{
         padding: "0",
         margin: "0",
         textAlign: "center",
     }}>
-        <a
-            style={{
-                cursor: "pointer",
-            }}
-            tabIndex={0}
-            onClick={(e) => {
-                e.preventDefault();
-
-                props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                // props.openReader(props.value.publicationViewIdentifier);
-            }}
-            onKeyPress={
-                (e) => {
-                    if (e.key === "Enter") {
-                        e.preventDefault();
-
-                        props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                        // props.openReader(props.value.publicationViewIdentifier);
-                    }
-                }
-            }
-            title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+        <PublicationInfoLibWithRadix
+            publicationView={{ identifier: props.value.publicationViewIdentifier }}
         >
-        <img
-            src={
-                // NOTE! empty string doesn't work with `??` operator, must use ternary!
-                props.value.label
-                ?
-                props.value.label
-                :
-                "data:image/png;base64,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"
-            }
-            alt={""}
-            role="presentation"
-            style={{
+            <PublicationInfoLibWithRadixTrigger asChild>
+                <a
+                    style={{
+                        cursor: "pointer",
+                    }}
+                    tabIndex={0}
+                    // onClick={(e) => {
+                    //     e.preventDefault();
 
-            objectFit: "contain",
-            width: "100%",
-            height: "100%",
+                    //     props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                    //     // props.openReader(props.value.publicationViewIdentifier);
+                    // }}
+                    onKeyPress={
+                        (e) => {
+                            if (e.key === "Enter") {
+                                // e.preventDefault();
 
-            // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
-            // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "50px",
+                                // props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                                // props.openReader(props.value.publicationViewIdentifier);
+                                e.currentTarget?.click();
+                            }
+                        }
+                    }
+                    title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+                >
+                    <img
+                        src={
+                            // NOTE! empty string doesn't work with `??` operator, must use ternary!
+                            props.value.label
+                                ?
+                                props.value.label
+                                :
+                                "data:image/png;base64,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"
+                        }
+                        alt={""}
+                        role="presentation"
+                        style={{
 
-            // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
-            // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
-        }} />
-        </a>
+                            objectFit: "contain",
+                            width: "100%",
+                            height: "100%",
+
+                            // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
+                            // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "50px",
+
+                            // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
+                            // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
+                        }} />
+                </a>
+            </PublicationInfoLibWithRadixTrigger>
+            <PublicationInfoLibWithRadixContent />
+        </PublicationInfoLibWithRadix>
     </div>);
 };
 
@@ -1307,30 +1317,39 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
         // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
     }}
-    dir={pubTitleIsRTL ? "rtl" : undefined}
-    ><a
-        style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
-        tabIndex={0}
-        onClick={(e) => {
-            e.preventDefault();
-
-            props.displayPublicationInfo(props.value.publicationViewIdentifier);
-            // props.openReader(props.value.publicationViewIdentifier);
-        }}
-        onKeyPress={
-            (e) => {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-
-                    props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                    // props.openReader(props.value.publicationViewIdentifier);
-                }
-            }
-        }
-        title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+        dir={pubTitleIsRTL ? "rtl" : undefined}
     >
-        {pubTitleStr}
-        </a>
+        <PublicationInfoLibWithRadix
+            publicationView={{ identifier: props.value.publicationViewIdentifier }}
+        >
+            <PublicationInfoLibWithRadixTrigger asChild>
+                <a
+                    style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
+                    tabIndex={0}
+                    // onClick={(e) => {
+                    //     e.preventDefault();
+
+                    //     props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                    //     // props.openReader(props.value.publicationViewIdentifier);
+                    // }}
+                    onKeyPress={
+                        (e) => {
+                            if (e.key === "Enter") {
+                                // e.preventDefault();
+
+                                // props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                                // props.openReader(props.value.publicationViewIdentifier);
+                                e.currentTarget?.click();
+                            }
+                        }
+                    }
+                    title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+                >
+                    {pubTitleStr}
+                </a>
+            </PublicationInfoLibWithRadixTrigger>
+            <PublicationInfoLibWithRadixContent />
+        </PublicationInfoLibWithRadix>
     </div>);
 };
 
