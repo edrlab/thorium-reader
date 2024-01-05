@@ -26,7 +26,7 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.css";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -181,16 +181,15 @@ const RenewLsdConfirm = (props: { publicationView: PublicationView, trigger: Rea
                 <div className={stylesAlertModals.AlertDialogOverlay}></div>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("publication.renewButton")}</AlertDialog.Title>
-                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                        <p><strong>{__("dialog.renew")}</strong></p>
-                        <p>{props.publicationView.documentTitle}</p>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}> {/* replace with <p></p> */}
+                        <strong>{__("dialog.renew")}</strong> {props.publicationView.documentTitle}
                     </AlertDialog.Description>
                     <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
                         <AlertDialog.Cancel asChild>
                             <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.delete)} onClick={renew} type="button">{__("dialog.yes")}</button>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.ddelete)} onClick={renew} type="button">{__("dialog.yes")}</button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>
@@ -226,7 +225,7 @@ const ReturnLsdConfirm = (props: { publicationView: PublicationView, trigger: Re
                             <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.delete)} onClick={renew} type="button">{__("dialog.yes")}</button>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.ddelete)} onClick={renew} type="button">{__("dialog.yes")}</button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>
