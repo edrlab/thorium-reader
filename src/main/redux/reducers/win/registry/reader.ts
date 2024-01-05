@@ -5,12 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { winActions } from "readium-desktop/main/redux/actions";
 import { IDictWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
 
 const initialState: IDictWinRegistryReaderState = {};
 
-export function winRegistryReaderReducer(
+function winRegistryReaderReducer_(
     state: IDictWinRegistryReaderState = initialState,
     action: winActions.registry.registerReaderPublication.TAction
     | winActions.registry.unregisterReaderPublication.TAction,
@@ -48,3 +50,5 @@ export function winRegistryReaderReducer(
             return state;
     }
 }
+
+export const winRegistryReaderReducer = winRegistryReaderReducer_ as Reducer<ReturnType<typeof winRegistryReaderReducer_>>;

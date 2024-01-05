@@ -5,13 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionSetLocator } from "../actions";
 
-export function readerLocatorReducer(
+function readerLocatorReducer_(
     state: LocatorExtended = locatorInitialState,
     action: readerLocalActionSetLocator.TAction,
 ): LocatorExtended {
@@ -26,3 +28,5 @@ export function readerLocatorReducer(
             return state;
     }
 }
+
+export const readerLocatorReducer = readerLocatorReducer_ as Reducer<ReturnType<typeof readerLocatorReducer_>>;

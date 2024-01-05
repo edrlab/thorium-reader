@@ -10,21 +10,21 @@ import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
+import { UnknownAction, Dispatch, MiddlewareAPI } from "redux";
 
 export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
 
-    return (store: MiddlewareAPI<Dispatch<AnyAction>, IRendererCommonRootState>) =>
-        (next: Dispatch<ActionWithSender>) =>
-            ((action: ActionWithSender) => {
+    return (store: MiddlewareAPI<Dispatch<UnknownAction>, IRendererCommonRootState>) =>
+        (next: (action: unknown) => unknown) => // Dispatch<ActionWithSender>
+            ((action: unknown) => { // ActionWithSender
 
                 // Does this action must be sent to the main process
-                if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
+                if (SYNCHRONIZABLE_ACTIONS.indexOf((action as ActionWithSender).type) === -1) {
                     // Do not send
                     return next(action);
                 }
 
-                if (action.sender && action.sender.type === SenderType.Main) {
+                if ((action as ActionWithSender).sender && (action as ActionWithSender).sender.type === SenderType.Main) {
                     // Do not send in loop an action already sent by main process
                     return next(action);
                 }
@@ -33,7 +33,7 @@ export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
                 ipcRenderer.send(syncIpc.CHANNEL, {
                     type: syncIpc.EventType.RendererAction,
                     payload: {
-                        action: ActionSerializer.serialize(action),
+                        action: ActionSerializer.serialize(action as ActionWithSender),
                     },
                     sender: {
                         type: SenderType.Renderer,

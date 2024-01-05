@@ -11,11 +11,11 @@ import { IHighlightHandlerState } from "readium-desktop/common/redux/states/rend
 export const ID = "READER_HIGHLIGHT_HANDLER_PUSH";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Array<IHighlightHandlerState> {
+export interface Payload extends Array<IHighlightHandlerState> {
 }
 
 export function build(...param: IHighlightHandlerState[]):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

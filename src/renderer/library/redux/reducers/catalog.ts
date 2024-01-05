@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { CatalogView } from "readium-desktop/common/views/catalog";
 import { catalogActions } from "readium-desktop/common/redux/actions";
 
@@ -12,7 +14,7 @@ const initialState: CatalogView = {
     entries: [],
 };
 
-export function catalogViewReducer(
+function catalogViewReducer_(
     state: CatalogView = initialState,
     action: catalogActions.setCatalog.TAction,
 ):  CatalogView {
@@ -25,3 +27,5 @@ export function catalogViewReducer(
             return state;
     }
 }
+
+export const catalogViewReducer = catalogViewReducer_ as Reducer<ReturnType<typeof catalogViewReducer_>>;

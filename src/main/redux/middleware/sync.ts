@@ -14,7 +14,7 @@ import {
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { RootState } from "../states";
 
@@ -64,14 +64,14 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 ];
 
 export const reduxSyncMiddleware: Middleware
-    = (store: MiddlewareAPI<Dispatch<AnyAction>, RootState>) =>
-        (next: Dispatch<ActionWithSender>) =>
-            ((action: ActionWithSender) => {
+    = (store: MiddlewareAPI<Dispatch<UnknownAction>, RootState>) =>
+        (next: (action: unknown) => unknown) => // Dispatch<ActionWithSender>
+            ((action: unknown) => { // ActionWithSender
 
-                debug("### action type", action.type);
+                debug("### action type", (action as ActionWithSender).type);
 
                 // Test if the action must be sent to the rendeder processes
-                if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
+                if (SYNCHRONIZABLE_ACTIONS.indexOf((action as ActionWithSender).type) === -1) {
                     // Do not send
                     return next(action);
                 }
@@ -114,13 +114,13 @@ export const reduxSyncMiddleware: Middleware
 
                         if (
                             !(
-                                action.sender?.type === SenderType.Renderer
-                                && action.sender?.identifier === id
+                                (action as ActionWithSender).sender?.type === SenderType.Renderer
+                                && (action as ActionWithSender).sender?.identifier === id
                             )
                         ) {
 
                             debug("send to", id);
-                            const a = ActionSerializer.serialize(action);
+                            const a = ActionSerializer.serialize(action as ActionWithSender);
                             // debug(a);
                             try {
                                 win.webContents.send(syncIpc.CHANNEL, {

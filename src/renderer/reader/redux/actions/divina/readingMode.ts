@@ -11,11 +11,11 @@ import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divin
 export const ID = "READER_SET_DIVINA_READING_MODE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends IDivinaState {
+export interface Payload extends IDivinaState {
 }
 
 export function build(conf: IDivinaState):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

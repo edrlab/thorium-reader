@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { readerLocalActionPicker } from "../actions";
 import { IPickerState } from "readium-desktop/common/redux/states/renderer/picker";
 
-export function pickerReducer(
+function pickerReducer_(
     state: IPickerState = {open: false, type: "search"},
     action: readerLocalActionPicker.manager.TAction,
 ): IPickerState {
@@ -24,3 +26,5 @@ export function pickerReducer(
             return state;
     }
 }
+
+export const pickerReducer = pickerReducer_ as Reducer<ReturnType<typeof pickerReducer_>>;

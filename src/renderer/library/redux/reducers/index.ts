@@ -20,16 +20,17 @@ import {
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers, Reducer } from "redux";
 
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+// import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import { RouterState } from "redux-first-history";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { catalogViewReducer } from "./catalog";
 import { tagReducer } from "./tag";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
+// import { ReaderConfig } from "readium-desktop/common/models/reader";
 
-export const rootReducer = (routerReducer: Reducer<RouterState>) => {
-    return combineReducers<ILibraryRootState>({
+export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
+    return combineReducers({ // ILibraryRootState
         reader: combineReducers({
             defaultConfig: readerDefaultConfigReducer,
         }),

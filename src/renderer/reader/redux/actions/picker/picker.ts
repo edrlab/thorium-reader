@@ -12,11 +12,11 @@ export const ID = "READER_PICKER";
 
 type TP = Pick<IPickerState, "open"> & Partial<IPickerState>;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends TP {
+export interface Payload extends TP {
 }
 
 export function build(open: IPickerState["open"], type?: IPickerState["type"]):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,
