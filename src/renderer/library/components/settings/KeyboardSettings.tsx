@@ -66,7 +66,6 @@ interface IState {
 
 export const AdvancedTrigger = () => {
     const [ __ ]= useTranslator();
-    const appOverlayElement = document.querySelector(".settings_content") as HTMLElement;
     const dispatch = useDispatch();
 
     const onClickKeyboardShortcutsShow = () => {
@@ -90,24 +89,25 @@ export const AdvancedTrigger = () => {
                     />
                 </button>
             </Popover.Trigger>
-            <Popover.Portal container={appOverlayElement}>
-                <Popover.Content className="PopoverContent" sideOffset={5} style={{zIndex: "10000"}}>
+            <Popover.Portal>
+                <Popover.Content sideOffset={5} style={{ zIndex: "10000" }}>
                     <div className={stylesDropDown.dropdown_menu}>
-                    <button onClick={() => onClickKeyboardShortcutsReload(true)}>
-                {__("settings.keyboard.resetDefaults")}
-            </button>
-            <button onClick={() => onClickKeyboardShortcutsShow()}>
-                {__("settings.keyboard.editUserJson")}
-            </button>
-            <button onClick={() => onClickKeyboardShortcutsReload(false)}>
-                    {__("settings.keyboard.loadUserJson")}
-            </button>
+                        <button onClick={() => onClickKeyboardShortcutsReload(true)}>
+                            {__("settings.keyboard.resetDefaults")}
+                        </button>
+                        <button onClick={() => onClickKeyboardShortcutsShow()}>
+                            {__("settings.keyboard.editUserJson")}
+                        </button>
+                        <button onClick={() => onClickKeyboardShortcutsReload(false)}>
+                            {__("settings.keyboard.loadUserJson")}
+                        </button>
                     </div>
-                    <Popover.Arrow className="PopoverArrow" aria-hidden />
+                    <Popover.Arrow aria-hidden />
                 </Popover.Content>
             </Popover.Portal>
         </Popover.Root>
-    );};
+    );
+};
 
 
 class KeyboardSettings extends React.Component<IProps, IState> {
