@@ -6,17 +6,17 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
-import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -26,83 +26,94 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps {
+    feed: IOpdsFeedView;
+    trigger: React.ReactNode;
 }
 
 interface IState {
-    name: string | undefined;
+    title: string | undefined;
     url: string | undefined;
 }
 
 class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
-    private focusRef: React.RefObject<HTMLInputElement>;
-
     constructor(props: IProps) {
         super(props);
-
-        this.focusRef = React.createRef<HTMLInputElement>();
-
         this.state = {
-            name: props.feed?.title,
+            title: props.feed?.title,
             url: props.feed?.url,
         };
     }
-
-    public componentDidMount() {
-        if (this.focusRef?.current) {
-            this.focusRef.current.focus();
-        }
-    }
-
     public render(): React.ReactElement<{}> {
-        if (!this.props.open) {
-            return (<></>);
-        }
 
         const { __ } = this.props;
-        const { name, url } = this.state;
-        return (
-            <Dialog
-                id={stylesModals.opds_form_dialog}
-                title={__("opds.updateForm.title")}
-                onSubmitButton={this.update}
-                submitButtonDisabled={!(name && url)}
-                submitButtonTitle={__("opds.updateForm.updateButton")}
-                shouldOkRefEnabled={false}
-            >
-                <div className={stylesGlobal.w_50}>
-                    <div className={stylesInputs.form_group}>
-                        <label>{__("opds.updateForm.name")}</label>
-                        <input
-                            onChange={(e) => this.setState({
-                                name: e.target.value,
-                                // url: this.state.url || this.props.feed.url,
-                            })}
-                            type="text"
-                            aria-label={__("opds.updateForm.name")}
-                            defaultValue={this.props.feed.title}
-                            ref={this.focusRef}
-                        />
+        const { title, url } = this.state;
+        return <Dialog.Root>
+            <Dialog.Trigger asChild>
+                {this.props.trigger}
+            </Dialog.Trigger>
+            <Dialog.Portal>
+                <div className={stylesModals.modal_dialog_overlay}></div>
+                <Dialog.Content className={stylesModals.modal_dialog}>
+                    <div className={stylesModals.modal_dialog_header}>
+                        <Dialog.Title>
+                            {__("opds.updateForm.title")}
+                        </Dialog.Title>
+                        <div>
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
+                                </button>
+                            </Dialog.Close>
+                        </div>
                     </div>
-                    <div className={stylesInputs.form_group}>
-                        <label>{__("opds.updateForm.url")}</label>
-                        <input
-                            onChange={(e) => this.setState({
-                                // name: this.state.name || this.props.feed.title,
-                                url: e.target.value,
-                            })}
-                            type="text"
-                            aria-label={__("opds.updateForm.url")}
-                            defaultValue={this.props.feed.url}
-                        />
-                    </div>
-                </div>
-            </Dialog>
-        );
+                    <form className={stylesModals.modal_dialog_body}>
+                        <div className={stylesInputs.form_group}>
+                            <label htmlFor="title">{__("opds.updateForm.name")}</label>
+                            <input
+                                id="title"
+                                value={title}
+                                onChange={(e) => this.setState({
+                                    title: e.target.value,
+                                    // url: this.state.url || this.props.feed.url,
+                                })}
+                                type="text"
+                                aria-label={__("opds.updateForm.name")}
+                                defaultValue={title}
+                                required
+                            />
+                        </div>
+                        <div className={stylesInputs.form_group}>
+                            <label htmlFor="url">{__("opds.updateForm.url")}</label>
+                            <input
+                                id="url"
+                                value={url}
+                                onChange={(e) => this.setState({
+                                    // name: this.state.name || this.props.feed.title,
+                                    url: e.target.value,
+                                })}
+                                type="text"
+                                aria-label={__("opds.updateForm.url")}
+                                defaultValue={url}
+                                required
+                            />
+                        </div>
+                        <div className={stylesModals.modal_dialog_footer}>
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_primary}>{__("dialog.cancel")}</button>
+                            </Dialog.Close>
+                            <Dialog.Close asChild>
+                                <button type="submit" disabled={!title || !url} className={stylesButtons.button_secondary} onClick={() => this.update()}>{__("opds.updateForm.updateButton")}</button>
+                            </Dialog.Close>
+                        </div>
+                    </form>
+                </Dialog.Content>
+            </Dialog.Portal>
+        </Dialog.Root>;
     }
 
     private update = () => {
-        const title = this.state.name;
+        const title = this.state.title;
         const url = this.state.url;
         if (!title || !url) {
             return;
@@ -118,9 +129,4 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
 
 }
 
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
-    open: state.dialog.type === DialogTypeName.OpdsFeedUpdateForm,
-    feed: (state.dialog.data as DialogType[DialogTypeName.DeleteOpdsFeedConfirm]).feed,
-});
-
-export default connect(mapStateToProps)(withTranslator(OpdsFeedUpdateForm));
+export default withTranslator(OpdsFeedUpdateForm);

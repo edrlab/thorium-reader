@@ -25,11 +25,11 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 import { DisplayType, IRouterLocationState } from "../../routing";
 import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
+import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -104,13 +104,16 @@ class FeedList extends React.Component<IProps, IState> {
                                         <SVG ariaHidden={true} svg={DeleteIcon} />
                                     </button>
                                 )} feed={item} />
-                                <button
-                                    onClick={(e) => this.updateFeed(e, item)}
-                                    className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_update)}
-                                    title={__("catalog.update")}
-                                >
-                                    <SVG ariaHidden={true} svg={EditIcon} />
-                                </button>
+                                <OpdsFeedUpdateForm trigger={(
+                                    <button
+                                        className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_update)}
+                                        title={__("catalog.update")}
+                                    >
+                                        <SVG ariaHidden={true} svg={EditIcon} />
+                                    </button>
+                                )}
+                                    feed={item}
+                                />
                             </li>
                         );
                     })}
@@ -126,11 +129,6 @@ class FeedList extends React.Component<IProps, IState> {
     //     event.preventDefault();
     //     this.props.openDeleteDialog(feed);
     // }
-
-    private updateFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
-        event.preventDefault();
-        this.props.openUpdateDialog(feed);
-    }
 
     private async loadFeeds() {
         try {

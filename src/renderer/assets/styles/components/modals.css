@@ -61,6 +61,11 @@
   color: var(--color-primary);;
   position: fixed;
   box-sizing: border-box;
+  padding: 0 20px;
+
+  @media screen and (width <= 960px) {
+    width: 100vw;
+  }
 
   @media screen and (width <= 960px) {
     width: 100vw;
