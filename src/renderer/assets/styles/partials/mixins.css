@@ -25,10 +25,10 @@
 @define-mixin button_primary {
   position: relative;
   display: inline;
-  border: 1px solid black;
+  border: 1px solid var(--color-primary);
   border-radius: 5px;
   text-align: center;
-  color: black;
+  color:  var(--color-primary);
   text-decoration: none;
   overflow: hidden;
   cursor: pointer;

@@ -35,3 +35,8 @@ declare module "*.svg" {
     const props: IProps;
     export default props;
 }
+
+declare module "*.ttf" {
+    const value: any;
+    export default value;
+}
