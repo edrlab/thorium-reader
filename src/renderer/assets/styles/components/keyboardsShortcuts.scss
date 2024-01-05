@@ -1,0 +1,114 @@
+.keyshortElement {
+    &_container {
+        display: flex;
+        flex-direction: column;
+        margin: 10px 0;
+        border-bottom: 1px solid var(--color-light-grey);
+    }
+    &_title {
+        font-size: 16px;
+        margin: 5px;
+        font-weight: bold;
+    }
+    &_shortcut {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        color: var(--color-button-primary);
+        background-color: var(--color-button-secondary);
+        padding: 3px;
+        gap: 5px;
+        width: fit-content;
+        font-size: 16px;
+        &_container {
+            margin-bottom: 10px;
+            svg {
+                color: var(--color-button-primary)!important;
+                width: 15px;
+                height: 15px;
+                padding-bottom: 5px;
+                padding-left: 5px;
+                transition: 200ms;
+                &:hover {
+                    scale: 1.2;
+                }
+            }
+            &_edit {
+                border-left: 2px solid var(--color-button-primary);
+                width: 100%;
+                color: var(--color--primary);
+                background-color: var(--color-button-secondary);
+                padding: 5px;
+                .keyshortElement_shortcut {
+                    color: var(--color--primary);
+                    background-color: transparent;
+                }
+                > * {
+                    margin-left: 5px;
+                }
+                &_input {
+                    position: absolute;
+                    left: -2000px;
+                    &:checked + label {
+                        border: 1px solid var(--color-button-primary);
+                        background-color: white;
+                        color: var(--color-button-primary);
+                        svg {
+                            fill: var(--color-button-primary);
+                        }
+                    }
+                    &:focus + label {
+                        outline: 2px solid blue;
+                    }
+                }
+                label {
+                    border: 1px solid transparent;
+                    border-radius: 6px;
+                    color: var(--color--primary);
+                    padding: 3px;
+                    &:hover {
+                        cursor: pointer;
+                    }
+                    svg {
+                        width: 30px;
+                        height: 30px;
+                    }
+                    &:focus {
+                        outline-color: blue!important;
+                    }
+                }
+                .form_group {
+                    width: 100px;
+                    height: 30px;
+                    margin-bottom: 0!important;
+                }
+                .outline {
+                    background-color: white;
+                    width: 50px;
+                }
+            }
+        }
+    }
+    &_description {
+        font-size: 14px;
+    }
+}
+
+.action_buttons_container {
+    display: flex;
+    gap: 10px;
+}
+
+.advanced_trigger {
+    min-width: 20px!important;
+    height: 20px;
+    width: fit-content!important;
+    border: 1px solid;
+    border-color: transparent;
+    background-color: transparent;
+    transition: 200ms linear;
+    &:hover{
+        background-color: var(--color-button-secondary);
+        border-color: var(--color-button-primary);
+    }
+}

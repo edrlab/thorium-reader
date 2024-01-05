@@ -20,18 +20,28 @@
   width: 180px;
   display: flex;
   flex-direction: column;
-  background-color: white;
   font-size: 0.9rem;
   box-shadow: 0 0 10px 0 var(--color-medium-grey);
   border-width: 1px;
-  border-color: var(--color-primary);
+  border-color: var(--color-button-primary);
   border-style: solid;
   border-radius: 5px;
   position: relative;
+  background-color: var(--color-button-secondary);
+
+  &.dropdown_right::after {
+    left: auto;
+    right: 34px;
+  }
+
+  &.dropdown_publication::after {
+    left: auto;
+    right: 25px;
+  }
 
    & > * {
     text-decoration: none;
-    color: black;
+    color:  var(--color-button-primary);;
     padding: 0.7rem;
     text-align: center;
     cursor: pointer;
@@ -62,6 +72,14 @@
       background-color: var(--color-medium-grey);
     }
   }
+}
+
+.PopoverArrow {
+  fill: var(--color-button-primary);
+}
+
+.PopoverContent {
+  z-index: 10000;
 }
 
 .menu {

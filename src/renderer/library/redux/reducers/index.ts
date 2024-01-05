@@ -27,9 +27,11 @@ import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { catalogViewReducer } from "./catalog";
 import { tagReducer } from "./tag";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
+import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => {
     return combineReducers<ILibraryRootState>({
+        theme: themeReducer,
         reader: combineReducers({
             defaultConfig: readerDefaultConfigReducer,
         }),

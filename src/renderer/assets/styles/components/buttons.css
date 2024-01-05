@@ -49,6 +49,7 @@ button {
   background: none;
   border: 0;
   height: 30px;
+  color: var(--color-primary);
   fill: var(--color-primary);
   cursor: pointer;
   display: flex;
@@ -288,34 +289,36 @@ button {
   padding: 5px;
   min-width: 100px;
   background-color: var(--color-button-primary);
-  color: var(--color-secondary);
+  color: white;
+  transition: 200ms linear;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  & svg {
-    width: 10px;
-    fill: var(--color-secondary);
+  svg {
+    width: 12px;
+    fill: white;
   }
 
   &:hover {
-    background-color: var(--color-button-secondary);
-    color: var(--color-primary);
-    
-    & svg {
-      fill: var(--color-primary);
-    }
+    color: var(--color-button-primary);
   }
 }
 
 .button_secondary_blue {
   border: 1px solid var(--color-button-primary);
-  height: 24px;
+  height: 30px;
   border-radius: 4px;
   padding: 5px;
   min-width: 100px;
   background-color: var(--color-button-secondary);
   color: var(--color-button-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   svg {
-    width: 15px;
+    width: 12px;
     fill: var(--color-button-primary);
   }
 }

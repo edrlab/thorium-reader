@@ -694,6 +694,7 @@ declare namespace typed_i18n {
       readonly "two": string,
       readonly "twoTitle": string
     },
+    readonly "options": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
     readonly "font": string,
@@ -736,7 +737,9 @@ declare namespace typed_i18n {
       },
       readonly "title": string
     },
-    readonly "wordSpacing": string
+    readonly "wordSpacing": string,
+    readonly "disabled": string,
+    readonly "customizeReader": string
   },
   readonly "svg": { readonly "left": string, readonly "right": string },
   readonly "toc": { readonly "publicationNoToc": string },
@@ -874,6 +877,7 @@ declare namespace typed_i18n {
     readonly "two": string,
     readonly "twoTitle": string
   },
+  readonly "options": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
   readonly "font": string,
@@ -916,7 +920,9 @@ declare namespace typed_i18n {
     },
     readonly "title": string
   },
-  readonly "wordSpacing": string
+  readonly "wordSpacing": string,
+  readonly "disabled": string,
+  readonly "customizeReader": string
 };
   (_: "reader.settings.column", __?: {}): {
   readonly "auto": string,
@@ -932,6 +938,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.title", __?: {}): string;
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.column.twoTitle", __?: {}): string;
+  (_: "reader.settings.options", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
   (_: "reader.settings.disposition.title", __?: {}): string;
@@ -1007,6 +1014,8 @@ declare namespace typed_i18n {
   (_: "reader.settings.theme.name.Sepia", __?: {}): string;
   (_: "reader.settings.theme.title", __?: {}): string;
   (_: "reader.settings.wordSpacing", __?: {}): string;
+  (_: "reader.settings.disabled", __?: {}): string;
+  (_: "reader.settings.customizeReader", __?: {}): string;
   (_: "reader.svg", __?: {}): { readonly "left": string, readonly "right": string };
   (_: "reader.svg.left", __?: {}): string;
   (_: "reader.svg.right", __?: {}): string;
@@ -1035,6 +1044,19 @@ declare namespace typed_i18n {
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
   (_: "settings", __?: {}): {
+  readonly "tabs": {
+    readonly "general": string,
+    readonly "appearance": string,
+    readonly "reading": string,
+    readonly "keyboardShortcuts": string
+  },
+  readonly "theme": {
+    readonly "title": string,
+    readonly "description": string,
+    readonly "auto": string,
+    readonly "light": string,
+    readonly "dark": string
+  },
   readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {
     readonly "advancedMenu": string,
@@ -1046,15 +1068,39 @@ declare namespace typed_i18n {
     readonly "loadUserJson": string,
     readonly "resetDefaults": string,
     readonly "save": string,
-    readonly "show": string
+    readonly "show": string,
+    readonly "disclaimer": string
   },
   readonly "language": { readonly "languageChoice": string },
   readonly "session": {
     readonly "no": string,
     readonly "title": string,
-    readonly "yes": string
+    readonly "yes": string,
+    readonly "description": string
   }
 };
+  (_: "settings.tabs", __?: {}): {
+  readonly "general": string,
+  readonly "appearance": string,
+  readonly "reading": string,
+  readonly "keyboardShortcuts": string
+};
+  (_: "settings.tabs.general", __?: {}): string;
+  (_: "settings.tabs.appearance", __?: {}): string;
+  (_: "settings.tabs.reading", __?: {}): string;
+  (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
+  (_: "settings.theme", __?: {}): {
+  readonly "title": string,
+  readonly "description": string,
+  readonly "auto": string,
+  readonly "light": string,
+  readonly "dark": string
+};
+  (_: "settings.theme.title", __?: {}): string;
+  (_: "settings.theme.description", __?: {}): string;
+  (_: "settings.theme.auto", __?: {}): string;
+  (_: "settings.theme.light", __?: {}): string;
+  (_: "settings.theme.dark", __?: {}): string;
   (_: "settings.auth", __?: {}): { readonly "wipeData": string };
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {
@@ -1067,7 +1113,8 @@ declare namespace typed_i18n {
   readonly "loadUserJson": string,
   readonly "resetDefaults": string,
   readonly "save": string,
-  readonly "show": string
+  readonly "show": string,
+  readonly "disclaimer": string
 };
   (_: "settings.keyboard.advancedMenu", __?: {}): string;
   (_: "settings.keyboard.cancel", __?: {}): string;
@@ -1079,12 +1126,19 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.resetDefaults", __?: {}): string;
   (_: "settings.keyboard.save", __?: {}): string;
   (_: "settings.keyboard.show", __?: {}): string;
+  (_: "settings.keyboard.disclaimer", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
   (_: "settings.language.languageChoice", __?: {}): string;
-  (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
+  (_: "settings.session", __?: {}): {
+  readonly "no": string,
+  readonly "title": string,
+  readonly "yes": string,
+  readonly "description": string
+};
   (_: "settings.session.no", __?: {}): string;
   (_: "settings.session.title", __?: {}): string;
-  (_: "settings.session.yes", __?: {}): string
+  (_: "settings.session.yes", __?: {}): string;
+  (_: "settings.session.description", __?: {}): string
 }
 }
 export = typed_i18n;
