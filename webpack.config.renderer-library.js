@@ -213,7 +213,7 @@ const scssLoaderConfig = [
         options: {
             // Prefer `dart-sass`
             implementation: require("sass"),
-            additionalData: `@import "./src/renderer/assets/styles/partials/variables.scss";@import "./src/renderer/assets/styles/components/combobox.scss";`,
+            additionalData: `@import "./src/renderer/assets/styles/partials/variables.scss";`,
             warnRuleAsWarning: true,
         },
     },

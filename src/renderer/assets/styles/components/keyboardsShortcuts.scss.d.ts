@@ -8,3 +8,4 @@ export declare const keyshortElement_shortcut_container: string;
 export declare const keyshortElement_shortcut_container_edit: string;
 export declare const keyshortElement_shortcut_container_edit_input: string;
 export declare const keyshortElement_title: string;
+export declare const outline: string;

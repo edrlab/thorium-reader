@@ -24,23 +24,11 @@
   font-size: 0.9rem;
   box-shadow: 0 0 10px 0 var(--color-medium-grey);
   border-width: 1px;
-  border-color: var(--color-primary);
+  border-color: var(--color-button-primary);
   border-style: solid;
   border-radius: 5px;
-  margin-top: 20px;
   position: relative;
-
-  &::after {
-    content: " ";
-    position: absolute;
-    top: -10px;
-    left: 16px;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 7.5px 10px 7.5px;
-    border-color: transparent transparent var(--color-primary) transparent;
-  }
+  background-color: var(--color-button-secondary);
 
   &.dropdown_right::after {
     left: auto;
@@ -52,9 +40,9 @@
     right: 25px;
   }
 
-  & > * {
+   & > * {
     text-decoration: none;
-    color: black;
+    color:  var(--color-button-primary);;
     padding: 0.7rem;
     text-align: center;
     cursor: pointer;
@@ -85,6 +73,10 @@
       background-color: var(--color-medium-grey);
     }
   }
+}
+
+.PopoverArrow {
+  fill: var(--color-button-primary);
 }
 
 .menu {

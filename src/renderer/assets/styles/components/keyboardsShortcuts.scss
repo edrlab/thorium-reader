@@ -57,6 +57,9 @@
                             fill: var(--color-button-primary);
                         }
                     }
+                    &:focus + label {
+                        outline: 2px solid blue;
+                    }
                 }
                 label {
                     border: 1px solid transparent;
@@ -69,6 +72,9 @@
                     svg {
                         width: 30px;
                         height: 30px;
+                    }
+                    &:focus {
+                        outline-color: blue!important;
                     }
                 }
                 .form_group {

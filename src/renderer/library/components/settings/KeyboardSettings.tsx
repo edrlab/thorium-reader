@@ -90,7 +90,7 @@ export const AdvancedTrigger = () => {
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content sideOffset={5} style={{ zIndex: "10000" }}>
+                <Popover.Content sideOffset={5} className={stylesDropDown.PopoverContent}>
                     <div className={stylesDropDown.dropdown_menu}>
                         <button onClick={() => onClickKeyboardShortcutsReload(true)}>
                             {__("settings.keyboard.resetDefaults")}
@@ -102,7 +102,7 @@ export const AdvancedTrigger = () => {
                             {__("settings.keyboard.loadUserJson")}
                         </button>
                     </div>
-                    <Popover.Arrow aria-hidden />
+                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                 </Popover.Content>
             </Popover.Portal>
         </Popover.Root>

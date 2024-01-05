@@ -1,4 +1,4 @@
-.react-aria-ComboBox {
+.react_aria_ComboBox {
   color: var(--text-color);
   padding-bottom: 15px;
   border-bottom: 3px solid var(--color-light-grey);
@@ -8,7 +8,7 @@
   flex-direction: column;
   gap: 5px;
 
-  .my-combobox-container {
+  .my_combobox_container {
     border: 1px solid var(--color-primary);
     border-radius: 6px;
     display: flex;
@@ -21,11 +21,11 @@
     }
   }
 
-  .react-aria-Label {
+  .react_aria_Label {
     font-weight: 600;
   }
 
-  .react-aria-Input {
+  .react_aria_Input {
     margin: 0;
     font-size: 1.072rem;
     background: var(--color-secondary);
@@ -41,7 +41,7 @@
     }
   }
 
-  .react-aria-Button {
+  .react_aria_Button {
     display: inline-block;
     background: var(--color-secondary);
     color: var(--highlight-foreground);
@@ -63,7 +63,7 @@
   }
 }
 
-.react-aria-Popover[data-trigger=ComboBox] {
+.react_aria_Popover[data-trigger=ComboBox] {
   width: var(--trigger-width);
   background-color: var(--color-secondary);
   pointer-events: auto;
@@ -73,48 +73,19 @@
   max-height: 350px!important;
   overflow: auto;
 
-  .react-aria-ListBox {
+  .react_aria_ListBox {
     display: block;
     width: unset;
     max-height: inherit;
     min-height: unset;
     border: none;
 
-    .react-aria-Header {
+    .react_aria_Header {
       padding-left: 1.571rem;
     }
   }
-
-  .react-aria-ListBoxItem {
-    padding: 0.286rem 0.571rem 0.286rem 1.571rem;
-
-    &[data-focus-visible] {
-      outline: none;
-    }
-
-    &[data-selected] {
-      font-weight: 600;
-      background: unset;
-      color: var(--text-color);
-
-      &::before {
-        content: '✓';
-        content: '✓' / '';
-        alt: ' ';
-        position: absolute;
-        top: 4px;
-        left: 4px;
-      }
-    }
-
-    &[data-focused],
-    &[data-pressed] {
-      background: var(--color-secondary);
-      color: var(--highlight-foreground);
-    }
-  }
 }
-.my-item {
+.my_item {
     margin: 2px;
     padding: 4px 8px 4px 22px;
     border-radius: 6px;
@@ -123,6 +94,7 @@
     color: var(--text-color);
     font-size: 1.072rem;
     position: relative;
+    transition: 100ms;
   
     &.selected {
       font-weight: 600;
@@ -139,13 +111,13 @@
     }
   
     &.focused {
-      background: #e70073;
+      background: var(--color-button-primary);
       color: white;
     }
   }
   
   @media (forced-colors: active) {
-    .my-item.focused {
+    .my_item.focused {
       background: Highlight;
       color: HighlightText;
     }

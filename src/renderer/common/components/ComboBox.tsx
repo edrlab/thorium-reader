@@ -10,6 +10,8 @@ import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxIt
 import { FieldError, Text } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
+import classNames from "classnames";
 
 interface MyComboBoxProps<T extends object>
   extends Omit<ComboBoxProps<T>, "children"> {
@@ -24,19 +26,19 @@ export function ComboBox<T extends object>(
   { label, description, errorMessage, children, svg, ...props }: MyComboBoxProps<T>,
 ) {
   return (
-    <ComboBoxReactAria {...props}>
-    <Label>{label}</Label>
-    <div className="my-combobox-container">
+    <ComboBoxReactAria {...props} className={StylesCombobox.react_aria_ComboBox}>
+    <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
+    <div className={StylesCombobox.my_combobox_container}>
         {svg ? <SVG ariaHidden svg={svg} /> : <></>}
-        <Input />
-        <Button>
+        <Input className={StylesCombobox.react_aria_Input} />
+        <Button className={StylesCombobox.react_aria_Button}>
         <SVG ariaHidden svg={ChevronDown} />
         </Button>
     </div>
     {description ? <Text slot="description">{description}</Text> : <></>}
     <FieldError>{errorMessage}</FieldError>
-    <Popover>
-        <ListBox>
+    <Popover className={StylesCombobox.react_aria_Popover}>
+        <ListBox className={StylesCombobox.react_aria_ListBox}>
         {children}
         </ListBox>
     </Popover>
@@ -49,7 +51,7 @@ export function ComboBoxItem(props: ListBoxItemProps) {
     <ListBoxItem
     {...props}
     className={({ isFocused, isSelected }) =>
-        `my-item ${isFocused ? "focused" : ""} ${isSelected ? "selected" : ""}`}
+        classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
     />
   );
 }
