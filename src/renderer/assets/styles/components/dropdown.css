@@ -101,7 +101,7 @@
   & a,
   & span label {
     text-decoration: none;
-    color: black;
+    color: var(--color-primary);
     padding: 0.7rem;
     text-align: center;
     cursor: pointer;

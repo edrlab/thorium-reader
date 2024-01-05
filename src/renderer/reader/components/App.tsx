@@ -17,6 +17,11 @@ import ToastManager from "readium-desktop/renderer/common/components/toast/Toast
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import DialogManager from "readium-desktop/renderer/reader/components/dialog/DialogManager";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
+import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
+import NunitoBold from "readium-desktop/renderer/assets/fonts/nunitoBold.ttf";
+
+import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
+globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 import Reader from "./Reader";
 
@@ -79,6 +84,8 @@ font-style: normal;
 font-weight: normal;
 src: local("iAWriterDuospace-Regular"),
 url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
+}
+
         `;
                 el = document.createElement("style");
                 el.setAttribute("id", readiumCssFontFaceStyleID);
@@ -88,6 +95,38 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
             }
         } catch (e) {
             console.log("PROBLEM LOADING READER FONT FACE? ", e);
+        }
+
+        // FIXME: try a better way to import Nunito in CSS font face instead of in React render function.
+        // One possibility is to add css font in ejs html template file from webpack
+        try {
+            const nunitoFontStyleID = "nunitoFontStyleID";
+            const el = document.getElementById(nunitoFontStyleID);
+            if (!el) {
+                const css = `
+@font-face {
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Nunito"),
+    url("${Nunito}") format("truetype");
+}
+@font-face {
+    font-family: "Nunito";
+    font-style: bold;
+    font-weight: 700;
+    src: local("NunitoBold"),
+    url("${NunitoBold}") format("truetype");
+}
+
+                `;
+                const el = document.createElement("style");
+                el.setAttribute("type", "text/css");
+                el.appendChild(document.createTextNode(css));
+                document.head.appendChild(el);
+            }
+        } catch (e) {
+            console.error("Nunito font face error", e);
         }
 
         return (

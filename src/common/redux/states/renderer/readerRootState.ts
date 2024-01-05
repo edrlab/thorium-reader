@@ -35,4 +35,5 @@ export interface IReaderStateReader {
         mounter: TMapState<string, IHighlight>;
     };
     divina: IDivinaState;
+    defaultConfig: ReaderConfig; // sync across all app
 }
