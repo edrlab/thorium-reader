@@ -1,5 +1,4 @@
 declare const styles: {
-  readonly "___DEBUG___COMPONENTS_MODALS_CSS": string;
   readonly "add_dialog": string;
   readonly "c_dialog__box": string;
   readonly "close_button": string;
