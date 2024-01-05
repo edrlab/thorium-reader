@@ -172,13 +172,12 @@ const RenewLsdConfirm = (props: { publicationView: PublicationView, trigger: Rea
             dispatch(lcpActions.renewPublicationLicense.build(props.publicationView.identifier));
     };
 
-    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
     return (
         <AlertDialog.Root {...props}>
             <AlertDialog.Trigger asChild>
                 {props.trigger}
             </AlertDialog.Trigger>
-            <AlertDialog.Portal container={appOverlayElement}>
+            <AlertDialog.Portal>
                 <div className={stylesAlertModals.AlertDialogOverlay}></div>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("publication.renewButton")}</AlertDialog.Title>
@@ -209,13 +208,12 @@ const ReturnLsdConfirm = (props: { publicationView: PublicationView, trigger: Re
             dispatch(lcpActions.returnPublication.build(props.publicationView.identifier));
     };
 
-    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
     return (
         <AlertDialog.Root {...props}>
             <AlertDialog.Trigger asChild>
                 {props.trigger}
             </AlertDialog.Trigger>
-            <AlertDialog.Portal container={appOverlayElement}>
+            <AlertDialog.Portal>
                 <div className={stylesAlertModals.AlertDialogOverlay}></div>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("publication.returnButton")}</AlertDialog.Title>

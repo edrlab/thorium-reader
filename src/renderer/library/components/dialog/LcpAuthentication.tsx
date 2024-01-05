@@ -6,8 +6,11 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
@@ -18,7 +21,6 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { TChangeEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { lcpActions } from "readium-desktop/common/redux/actions";
-import { DialogClose, DialogCloseButton, DialogFooter, DialogHeader, DialogTitle, DialogWithRadix, DialogWithRadixContent } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -60,59 +62,66 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         }
 
         const { __ } = this.props;
-        return <DialogWithRadix defaultOpen={true}>
-            <DialogWithRadixContent>
-                <DialogHeader>
-                    <DialogTitle>
-                        {__("library.lcp.password")}
-                    </DialogTitle>
-                    <div>
-                        <DialogCloseButton />
+        return <Dialog.Root defaultOpen={true}>
+            <Dialog.Portal>
+                <div className={stylesModals.modal_dialog_overlay}></div>
+                <Dialog.Content className={stylesModals.modal_dialog}>
+                    <div className={stylesModals.modal_dialog_header}>
+                        <Dialog.Title>
+                            {__("library.lcp.password")}
+                        </Dialog.Title>
+                        <div>
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
+                                </button>
+                            </Dialog.Close>
+                        </div>
                     </div>
-                </DialogHeader>
-                <form className={stylesModals.modal_dialog_body}>
+                    <form className={stylesModals.modal_dialog_body}>
 
-                    <p><strong>{__("library.lcp.sentence")}</strong></p>
-                    {
-                        typeof this.props.message === "string" ?
-                            <p>
-                                <span>{this.props.message}</span>
-                            </p>
-                            : <></>
-                    }
-                    <p>
-                        <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
-                    </p>
-                    <div className={stylesInputs.form_group}>
-                        <label htmlFor="passphrase">{__("library.lcp.password")}</label>
-                        <input
-                            id="passphrase"
-                            aria-label={__("library.lcp.password")}
-                            type="password"
-                            onChange={this.onPasswordChange}
-                            placeholder={__("library.lcp.password")}
-                            ref={this.focusRef}
-                        />
-                    </div>
-                    {
-                        this.props.urlHint?.href
-                            ?
-                            <a href={this.props.urlHint.href}>
-                                {this.props.urlHint.title || __("library.lcp.urlHint")}
-                            </a>
-                            : <></>
-                    }
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <button className={stylesButtons.button_primary}>{__("dialog.cancel")}</button>
-                    </DialogClose>
-                    <DialogClose asChild>
-                        <button type="submit" className={stylesButtons.button_secondary} onClick={() => this.submit()}>{__("opds.addForm.addButton")}</button>
-                    </DialogClose>
-                </DialogFooter>
-            </form>
-        </DialogWithRadixContent>
-    </DialogWithRadix>;
+                        <p><strong>{__("library.lcp.sentence")}</strong></p>
+                        {
+                            typeof this.props.message === "string" ?
+                                <p>
+                                    <span>{this.props.message}</span>
+                                </p>
+                                : <></>
+                        }
+                        <p>
+                            <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
+                        </p>
+                        <div className={stylesInputs.form_group}>
+                            <label htmlFor="passphrase">{__("library.lcp.password")}</label>
+                            <input
+                                id="passphrase"
+                                aria-label={__("library.lcp.password")}
+                                type="password"
+                                onChange={this.onPasswordChange}
+                                placeholder={__("library.lcp.password")}
+                                ref={this.focusRef}
+                            />
+                        </div>
+                        {
+                            this.props.urlHint?.href
+                                ?
+                                <a href={this.props.urlHint.href}>
+                                    {this.props.urlHint.title || __("library.lcp.urlHint")}
+                                </a>
+                                : <></>
+                        }
+                        <div className={stylesModals.modal_dialog_footer}>
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_primary}>{__("dialog.cancel")}</button>
+                            </Dialog.Close>
+                            <Dialog.Close asChild>
+                                <button type="submit" className={stylesButtons.button_secondary} onClick={() => this.submit()}>{__("opds.addForm.addButton")}</button>
+                            </Dialog.Close>
+                        </div>
+                    </form>
+                </Dialog.Content>
+            </Dialog.Portal>
+        </Dialog.Root>;
     }
 
     private onPasswordChange = (e: TChangeEventOnInput) => {
