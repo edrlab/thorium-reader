@@ -16,7 +16,6 @@ interface IBaseProps {
 }
 
 const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
-    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
     return (
         <Popover.Root>
             <Popover.Trigger asChild>
@@ -24,7 +23,7 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
                     {props.button}
                 </button>
             </Popover.Trigger>
-            <Popover.Portal container={appOverlayElement}>
+            <Popover.Portal>
                 <Popover.Content className="PopoverContent" sideOffset={5}>
                     <div className={stylesDropDown.dropdown_menu}>
                         {props.children}

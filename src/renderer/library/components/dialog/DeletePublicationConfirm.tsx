@@ -27,13 +27,12 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
         remove(props.publicationView.identifier);
     }, [remove, props.publicationView.identifier]);
 
-    const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
     return (
         <AlertDialog.Root {...props}>
             <AlertDialog.Trigger asChild>
                 {props.trigger}
             </AlertDialog.Trigger>
-            <AlertDialog.Portal container={appOverlayElement}>
+            <AlertDialog.Portal>
 
                 {/** Overlay Component doesn't work */}
                 {/* <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/> */}

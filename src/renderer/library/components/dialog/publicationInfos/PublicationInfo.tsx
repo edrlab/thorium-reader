@@ -77,11 +77,10 @@ export const PublicationInfoLibWithRadixTrigger = Dialog.Trigger;
 PublicationInfoLibWithRadixTrigger.displayName = Dialog.Trigger.displayName;
 export const PublicationInfoLibWithRadixContent = React.forwardRef<HTMLDivElement>(
     ({ ...props }, forwardRef) => {
-        const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
         const [__] = useTranslator();
         const dispatch = useDispatch();
         return (
-            <Dialog.Portal container={appOverlayElement}>
+            <Dialog.Portal>
                 {/* <Dialog.Overlay className="DialogOverlay" /> */}
                 <div className={stylesModals.modal_dialog_overlay}></div>
                 <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef}>
@@ -148,11 +147,10 @@ export const PublicationInfoOpdsWithRadixTrigger = Dialog.Trigger;
 PublicationInfoOpdsWithRadixTrigger.displayName = Dialog.Trigger.displayName;
 export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivElement>(
     ({ ...props }, forwardRef) => {
-        const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
         const [__] = useTranslator();
         const dispatch = useDispatch();
         return (
-            <Dialog.Portal container={appOverlayElement}>
+            <Dialog.Portal>
                 {/* <Dialog.Overlay className="DialogOverlay" /> */}
                 <div className={stylesModals.modal_dialog_overlay}></div>
                 <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef}>
