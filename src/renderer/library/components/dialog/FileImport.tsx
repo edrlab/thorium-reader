@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.css";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -19,6 +19,8 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import classNames from "classnames";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { dialogActions } from "readium-desktop/common/redux/actions";
+import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -48,7 +50,13 @@ class FileImport extends React.Component<IProps, undefined> {
             <AlertDialog.Portal>
                 <div className={stylesAlertModals.AlertDialogOverlay}></div>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent} style={{overflowY: "scroll"}}>
-                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{this.props.__("catalog.addBookToLib")}</AlertDialog.Title>
+                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
+                        {(files.length > 0) ?
+                            this.props.__("dialog.import")
+                            :
+                            this.props.__("catalog.addBookToLib")
+                        }
+                        </AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
                         {
                             // useless ??
@@ -65,24 +73,25 @@ class FileImport extends React.Component<IProps, undefined> {
                                     // </div>
                                 ) : (
                                     // <div className={stylesAlertModals.AlertDialogContent}>
-                                        <div>
-                                            <p>{this.props.__("dialog.import")}</p>
+                                    <div>
                                             <ul>
                                                 {files.map((file, i) => <li key={i}>{file.name}</li>)}
                                             </ul>
-                                        </div>
+                                    </div>
                                         // <div>
                                         // </div>
                                     // </div>
                                 )
                         }
                     </AlertDialog.Description>
-                    <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
+                    <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild>
                             <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{this.props.__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.yes)} onClick={() => this.importFiles()}>{this.props.__("dialog.yes")}</button>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.yes)} onClick={() => this.importFiles()}>
+                                <SVG ariaHidden svg={AddIcon} />
+                                {this.props.__("catalog.addBookToLib")}</button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>

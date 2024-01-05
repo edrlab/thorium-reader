@@ -10,7 +10,7 @@
 .AlertDialogContent {
   background-color: white;
   border-radius: 6px;
-  box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
+  // box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -30,15 +30,21 @@
 .AlertDialogTitle {
   margin: 0;
   color: var(--color-primary);
-  font-size: 17px;
-  font-weight: 600;
 }
 
 .AlertDialogDescription {
   margin-bottom: 20px;
   color: var(--color-primary);
-  font-size: 15px;
   line-height: 1.5;
+  ul {
+    padding-left: 20px;
+    list-style-type: "- ";
+  }
+}
+
+.AlertDialogButtonContainer {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .AlertDialogButton {
@@ -46,7 +52,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  padding: 0 15px;
+  padding: 0 10px;
   font-size: 15px;
   line-height: 1;
   font-weight: 500;
@@ -54,30 +60,23 @@
 }
 
 .AlertDialogButton.yes {
-  color: var(--red-11);
-  border: 2px solid var(--color-alert-green);
+  color: var(--color-secondary);
+  background-color: var(--color-button-primary);
   transition: 200ms;
-}
-
-.AlertDialogButton.yes:hover {
-  background-color: var(--color-alert-green);
-  border: 2px solid var(--color-alert-green);
-}
-
-.AlertDialogButton.yes:focus {
-  background-color: var(--color-alert-green);
-  border: 2px solid var(--color-alert-green);
+  svg {
+    margin-right: 5px;
+    width: 10px;
+    height: 10px;
+    fill: var(--color-secondary);
+  }
 }
 
 .AlertDialogButton.abort {
-  color: var(--mauve-11);
-  border: 2px solid var(--color-medium-grey);
-}
-
-.AlertDialogButton.abort:hover {
-  border: 2px solid var(--color-abort);
-}
-
-.AlertDialogButton.abort:focus {
-  border: 2px solid var(--color-abort);
+  color: var(--color-button-primary);
+  border: 1px solid var(--color-button-primary);
+  background-color: var(--color-button-secondary);
+  transition: 200ms;
+  &:hover {
+    background-color: white;
+  }
 }
