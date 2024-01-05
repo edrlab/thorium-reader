@@ -51,12 +51,12 @@ class FileImport extends React.Component<IProps, undefined> {
                 <div className={stylesAlertModals.AlertDialogOverlay}></div>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent} style={{overflowY: "scroll"}}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
-                        {(files.length > 0) ?
+                        {(files?.length > 0) ?
                             this.props.__("dialog.import")
                             :
                             this.props.__("catalog.addBookToLib")
                         }
-                        </AlertDialog.Title>
+                    </AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
                         {
                             // useless ??
