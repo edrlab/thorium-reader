@@ -72,5 +72,5 @@ export const rootReducer = combineReducers({ // RootState
     opds: combineReducers({
         catalog: opdsDbReducers,
     }),
-    version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state === undefined ? null : state),
+    version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state?.version ? state.version : null),
 });

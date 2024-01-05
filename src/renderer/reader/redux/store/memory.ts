@@ -31,5 +31,5 @@ export function initStore(preloadedState: Partial<IReaderRootState>): Store<IRea
         ),
     );
     sagaMiddleware.run(rootSaga);
-    return store as Store<IReaderRootState>;
+    return store;
 }

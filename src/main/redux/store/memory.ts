@@ -222,5 +222,5 @@ export async function initStore()
 
     sagaMiddleware.run(rootSaga);
 
-    return [store as Store<RootState>, sagaMiddleware];
+    return [store, sagaMiddleware];
 }
