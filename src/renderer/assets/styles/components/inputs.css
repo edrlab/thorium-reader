@@ -77,6 +77,24 @@ input[type="search"] {
     border: 1px solid var(--color-medium-grey);
   }
 
+  /*
+  &:focus {
+    @mixin R2_MIXIN_FOCUS_OUTLINE;
+  }
+  */
+}
+
+input[type="text"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="number"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="phone"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="email"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="password"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="date"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="time"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="week"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="color"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="url"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
   &:focus {
     @mixin R2_MIXIN_FOCUS_OUTLINE;
   }

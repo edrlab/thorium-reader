@@ -5,11 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { catalogActions } from "readium-desktop/common/redux/actions";
 
 const initialState: string[] = [];
 
-export function tagReducer(
+function tagReducer_(
     state: string[] = initialState,
     action: catalogActions.setTagView.TAction,
 ): string[] {
@@ -23,3 +25,5 @@ export function tagReducer(
 
     }
 }
+
+export const tagReducer = tagReducer_ as Reducer<ReturnType<typeof tagReducer_>>;

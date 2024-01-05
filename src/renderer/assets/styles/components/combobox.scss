@@ -19,6 +19,13 @@
       width: 20px;
       
     }
+
+    &:has(.react_aria_Input[data-focused]) {
+      outline-color: blue !important;
+      outline-style: solid !important;
+      outline-width: 2px !important;
+      outline-offset: -2px;
+    }
   }
 
   .react_aria_Label {
@@ -26,7 +33,7 @@
   }
 
   .react_aria_Input {
-    margin: 0;
+    margin: 2px;
     font-size: 1.072rem;
     background: var(--color-secondary);
     color: var(--field-text-color);
@@ -34,11 +41,13 @@
     padding: 0.286rem 2rem 0.286rem 0.571rem;
     vertical-align: middle;
 
+    /*
+    See R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE class in TSX
+
     &[data-focused] {
-      outline: none;
-      outline: 2px solid var(--focus-ring-color);
-      outline-offset: -1px;
+      outline: none !important;
     }
+    */
   }
 
   .react_aria_Button {

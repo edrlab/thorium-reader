@@ -9,9 +9,9 @@ import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
-import {
-    IReaderRootState, IReaderStateReader,
-} from "readium-desktop/common/redux/states/renderer/readerRootState";
+// import {
+//     IReaderRootState, IReaderStateReader,
+// } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { mapReducer } from "readium-desktop/utils/redux-reducers/map.reducer";
@@ -35,12 +35,13 @@ import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducer
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 
 export const rootReducer = () => {
-    return combineReducers<IReaderRootState>({
+
+    return combineReducers({ // IReaderRootState
         theme: themeReducer,
         session: sessionReducer,
         api: apiReducer,
         i18n: i18nReducer,
-        reader: combineReducers<IReaderStateReader>({ // dehydrated from main process registry (preloaded state)
+        reader: combineReducers({ // IReaderStateReader, dehydrated from main process registry (preloaded state)
             defaultConfig: readerDefaultConfigReducer,
             config: readerConfigReducer,
             info: readerInfoReducer,

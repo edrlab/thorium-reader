@@ -30,7 +30,7 @@ export function ComboBox<T extends object>(
             <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
             <div className={StylesCombobox.my_combobox_container}>
                 {svg ? <SVG ariaHidden svg={svg} /> : <></>}
-                <Input className={StylesCombobox.react_aria_Input} />
+                <Input className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} />
                 <Button className={StylesCombobox.react_aria_Button}>
                     <SVG ariaHidden svg={ChevronDown} />
                 </Button>

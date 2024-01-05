@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { _defaults } from "readium-desktop/common/keyboard";
 import { keyboardActions } from "readium-desktop/common/redux/actions";
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
@@ -13,7 +15,7 @@ const initialState: IKeyboardState = {
     shortcuts: _defaults,
 };
 
-export function keyboardReducer(
+function keyboardReducer_(
     state: IKeyboardState = initialState,
     action:
         keyboardActions.setShortcuts.TAction |
@@ -46,3 +48,5 @@ export function keyboardReducer(
             return state;
     }
 }
+
+export const keyboardReducer = keyboardReducer_ as Reducer<ReturnType<typeof keyboardReducer_>>;

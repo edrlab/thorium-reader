@@ -5,12 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
 const initialState: ReaderMode = ReaderMode.Attached;
 
-export function winModeReducer(
+function winModeReducer_(
     state: ReaderMode = initialState,
     action: readerActions.detachModeRequest.TAction |
         readerActions.attachModeRequest.TAction,
@@ -27,3 +29,5 @@ export function winModeReducer(
             return state;
     }
 }
+
+export const winModeReducer = winModeReducer_ as Reducer<ReturnType<typeof winModeReducer_>>;

@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import * as moment from "moment";
 import { apiActions } from "readium-desktop/common/redux/actions/";
 import {
@@ -16,7 +18,7 @@ const initialState: ApiState<any> = {
 };
 
 // The api reducer.
-export function apiReducer(
+function apiReducer_(
     state: ApiState<any> = initialState,
     action: apiActions.result.TAction |
         apiActions.clean.TAction,
@@ -109,3 +111,5 @@ export function apiReducer(
             return state;
     }
 }
+
+export const apiReducer = apiReducer_ as Reducer<ReturnType<typeof apiReducer_>>;

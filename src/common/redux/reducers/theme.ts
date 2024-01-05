@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { themeActions } from "../actions";
 import { TTheme } from "../states/theme";
 
-export function themeReducer(
+function themeReducer_(
     state: TTheme = "system",
     action: themeActions.setTheme.TAction,
 ): TTheme {
@@ -19,3 +21,5 @@ export function themeReducer(
             return state;
     }
 }
+
+export const themeReducer = themeReducer_ as Reducer<ReturnType<typeof themeReducer_>>;

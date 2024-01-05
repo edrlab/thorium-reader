@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { i18nActions } from "readium-desktop/common/redux/actions";
 
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
@@ -13,7 +15,7 @@ const initialState: I18NState = {
     locale: "en",
 };
 
-export function i18nReducer(
+function i18nReducer_(
     state: I18NState = initialState,
     action: i18nActions.setLocale.TAction,
     ): I18NState {
@@ -26,3 +28,5 @@ export function i18nReducer(
             return state;
     }
 }
+
+export const i18nReducer = i18nReducer_ as Reducer<ReturnType<typeof i18nReducer_>>;
