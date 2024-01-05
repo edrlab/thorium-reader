@@ -6,12 +6,10 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import {Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ComboBoxProps, ListBoxItemProps, ValidationResult} from "react-aria-components";
-import {FieldError, Text} from "react-aria-components";
+import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ComboBoxProps, ListBoxItemProps, ValidationResult } from "react-aria-components";
+import { FieldError, Text } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-
-
 
 interface MyComboBoxProps<T extends object>
   extends Omit<ComboBoxProps<T>, "children"> {
@@ -19,7 +17,7 @@ interface MyComboBoxProps<T extends object>
   description?: string | null;
   errorMessage?: string | ((validation: ValidationResult) => string);
   children: React.ReactNode | ((item: T) => React.ReactNode);
-  svg?:  ISVGProps;
+  svg?: ISVGProps;
 }
 
 export function ComboBox<T extends object>(
@@ -29,13 +27,13 @@ export function ComboBox<T extends object>(
     <ComboBoxReactAria {...props}>
     <Label>{label}</Label>
     <div className="my-combobox-container">
-      <SVG ariaHidden svg={svg} />
-      <Input />
-      <Button>
+        {svg ? <SVG ariaHidden svg={svg} /> : <></>}
+        <Input />
+        <Button>
         <SVG ariaHidden svg={ChevronDown} />
-      </Button>
+        </Button>
     </div>
-    {description && <Text slot="description">{description}</Text>}
+    {description ? <Text slot="description">{description}</Text> : <></>}
     <FieldError>{errorMessage}</FieldError>
     <Popover>
         <ListBox>
