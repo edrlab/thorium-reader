@@ -45,7 +45,7 @@ class FileImport extends React.Component<IProps, undefined> {
         const { files } = this.props;
 
         return <AlertDialog.Root defaultOpen={true} onOpenChange={(b) => !b ? this.props.closeDialog() : undefined}>
-            <AlertDialog.Portal container={document.getElementById("app-overlay")}>
+            <AlertDialog.Portal>
                 <div className={stylesAlertModals.AlertDialogOverlay}></div>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent} style={{overflowY: "scroll"}}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{this.props.__("catalog.addBookToLib")}</AlertDialog.Title>
