@@ -1,0 +1,11 @@
+export declare const abort: string;
+export declare const ddelete: string;
+export declare const AlertDialogButton: string;
+export declare const AlertDialogButtonContainer: string;
+export declare const AlertDialogContent: string;
+export declare const AlertDialogDescription: string;
+export declare const AlertDialogOverlay: string;
+export declare const AlertDialogTitle: string;
+export declare const contentShow: string;
+export declare const overlayShow: string;
+export declare const yes: string;

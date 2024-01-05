@@ -12,7 +12,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.css";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import classNames from "classnames";
 
 const DeleteOpdsFeedConfirm = (props: { feed: IOpdsFeedView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
@@ -36,12 +36,12 @@ const DeleteOpdsFeedConfirm = (props: { feed: IOpdsFeedView, trigger: React.Reac
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
                         {props.feed.title}
                     </AlertDialog.Description>
-                    <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
+                    <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild>
                             <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.delete)} onClick={removeAction} type="button">{__("dialog.yes")}</button>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.ddelete)} onClick={removeAction} type="button">{__("dialog.yes")}</button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>
