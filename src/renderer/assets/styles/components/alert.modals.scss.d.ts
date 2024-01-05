@@ -1,4 +1,5 @@
 export declare const abort: string;
+export declare const ddelete: string;
 export declare const AlertDialogButton: string;
 export declare const AlertDialogButtonContainer: string;
 export declare const AlertDialogContent: string;

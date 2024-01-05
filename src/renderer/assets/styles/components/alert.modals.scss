@@ -80,3 +80,13 @@
     background-color: white;
   }
 }
+
+.AlertDialogButton.ddelete {
+  color: var(--color-button-primary);
+  border: 1px solid var(--color-button-primary);
+  background-color: var(--color-button-secondary);
+  transition: 200ms;
+  &:hover {
+    background-color: white;
+  }
+}

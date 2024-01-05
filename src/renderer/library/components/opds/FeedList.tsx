@@ -29,6 +29,7 @@ import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 import { DisplayType, IRouterLocationState } from "../../routing";
+import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -89,18 +90,20 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
-                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                                     className={stylesBlocks.block_full}
                                 >
                                     <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
                                 </Link>
-                                <button
-                                    onClick={(e) => this.deleteFeed(e, item)}
-                                    className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_close)}
-                                    title={__("catalog.delete")}
-                                >
-                                    <SVG ariaHidden={true} svg={DeleteIcon} />
-                                </button>
+                                <DeleteOpdsFeedConfirm trigger={(
+                                    <button
+                                        // onClick={(e) => this.deleteFeed(e, item)}
+                                        className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_close)}
+                                        title={__("catalog.delete")}
+                                    >
+                                        <SVG ariaHidden={true} svg={DeleteIcon} />
+                                    </button>
+                                )} feed={item} />
                                 <button
                                     onClick={(e) => this.updateFeed(e, item)}
                                     className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_update)}
@@ -119,10 +122,10 @@ class FeedList extends React.Component<IProps, IState> {
         );
     }
 
-    private deleteFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
-        event.preventDefault();
-        this.props.openDeleteDialog(feed);
-    }
+    // private deleteFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
+    //     event.preventDefault();
+    //     this.props.openDeleteDialog(feed);
+    // }
 
     private updateFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
         event.preventDefault();
@@ -141,13 +144,13 @@ class FeedList extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        openDeleteDialog: (feed: IOpdsFeedView) => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.DeleteOpdsFeedConfirm,
-                {
-                    feed,
-                },
-            ));
-        },
+        // openDeleteDialog: (feed: IOpdsFeedView) => {
+        //     dispatch(dialogActions.openRequest.build(DialogTypeName.DeleteOpdsFeedConfirm,
+        //         {
+        //             feed,
+        //         },
+        //     ));
+        // },
         openUpdateDialog: (feed: IOpdsFeedView) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.OpdsFeedUpdateForm,
                 {
