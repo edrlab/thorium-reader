@@ -6,16 +6,16 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
+// import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { readerLocalActionLocatorHrefChanged } from "../actions";
 
 const debug = debug_("readium-desktop:renderer:reader:redux:middleware:locatorHrefWatcher");
 
 const dispatchHref = (
-    store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>,
+    store: MiddlewareAPI<Dispatch<UnknownAction>, IReaderRootState>,
     prevHref: string | undefined,
     nextHref: string | undefined,
     ) => {
@@ -31,9 +31,9 @@ const dispatchHref = (
 };
 
 export const locatorHrefWatcherMiddleware: Middleware
-    = (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) =>
-        (next: Dispatch<ActionWithSender>) =>
-            (action: ActionWithSender) => {
+    = (store: MiddlewareAPI<Dispatch<UnknownAction>, IReaderRootState>) =>
+        (next: (action: unknown) => unknown) => // Dispatch<ActionWithSender>
+            (action: unknown) => { // ActionWithSender
 
                 const prevState = store.getState();
 

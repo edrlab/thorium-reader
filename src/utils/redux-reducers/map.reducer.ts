@@ -5,15 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "redux";
+import { Action, type UnknownAction } from "redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface ActionWithPayload<Type = string>
+interface ActionWithPayload<Type extends string = string>
     extends Action<Type> {
 }
 
 export interface IMapAction<TAction extends
-    ActionWithPayload<ActionType>, Key = number, Value = string, ActionType = string> {
+    ActionWithPayload<ActionType>, Key = number, Value = string, ActionType extends string = string> {
     type: ActionType;
     selector: (action: TAction) => Array<IMapState<Key, Value>>;
 }
@@ -24,7 +24,7 @@ export interface IMapData
     TPopAction extends ActionWithPayload<ActionType>,
     Key = number,
     Value = string,
-    ActionType = string,
+    ActionType extends string = string,
 > {
     push: IMapAction<TPushAction, Key, Value, ActionType>;
     pop: IMapAction<TPopAction, Key, Value, ActionType>;
@@ -40,7 +40,7 @@ export function mapReducer
         TPopAction extends ActionWithPayload<ActionType>,
         Key = number,
         Value = string,
-        ActionType = string,
+        ActionType extends string = string,
     >(
         data: IMapData<TPushAction, TPopAction, Key, Value, ActionType>,
 ) {
@@ -48,7 +48,7 @@ export function mapReducer
     const reducer =
         (
                 queue: TMapState<Key, Value>,
-                action: TPopAction | TPushAction,
+                action: UnknownAction, // TPopAction | TPushAction,
         ): TMapState<Key, Value> => {
 
             if (!queue || !Array.isArray(queue)) {
@@ -57,7 +57,7 @@ export function mapReducer
 
             if (action.type === data.push.type) {
 
-                const selectorItem = data.push.selector(action as TPushAction);
+                const selectorItem = data.push.selector(action as unknown as TPushAction);
                 if (!selectorItem) {
                     return queue;
                 }
@@ -83,7 +83,7 @@ export function mapReducer
 
             } else if (action.type === data.pop.type) {
 
-                const selectorItem = data.pop.selector(action as TPopAction);
+                const selectorItem = data.pop.selector(action as unknown as TPopAction);
                 if (!selectorItem) {
                     return queue;
                 }

@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { loadActions } from "readium-desktop/common/redux/actions";
 
 import { ILoadState } from "../states/load";
@@ -13,7 +15,7 @@ const initialState: ILoadState = {
     state: false,
 };
 
-export function loadReducer(
+function loadReducer_(
     state: ILoadState = initialState,
     action: loadActions.busy.TAction | loadActions.idle.TAction,
     ): ILoadState {
@@ -28,3 +30,5 @@ export function loadReducer(
         }
         return state;
 }
+
+export const loadReducer = loadReducer_ as Reducer<ReturnType<typeof loadReducer_>>;

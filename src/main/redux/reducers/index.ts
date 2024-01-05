@@ -24,8 +24,9 @@ import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
 import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 
-export const rootReducer = combineReducers<RootState>({
+export const rootReducer = combineReducers({ // RootState
     session: sessionReducer,
     streamer: streamerReducer,
     i18n: i18nReducer,
@@ -71,5 +72,5 @@ export const rootReducer = combineReducers<RootState>({
     opds: combineReducers({
         catalog: opdsDbReducers,
     }),
-    version: (state, action) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state === undefined ? null : state),
+    version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state === undefined ? null : state),
 });

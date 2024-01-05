@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions/";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
@@ -20,7 +22,7 @@ const initialState: ToastState = {
     publicationIdentifier: undefined,
 };
 
-export function toastReducer(
+function toastReducer_(
     state: ToastState = initialState,
     action: toastActions.openRequest.TAction | toastActions.closeRequest.TAction,
 ): ToastState {
@@ -45,3 +47,5 @@ export function toastReducer(
             return state;
     }
 }
+
+export const toastReducer = toastReducer_ as Reducer<ReturnType<typeof toastReducer_>>;

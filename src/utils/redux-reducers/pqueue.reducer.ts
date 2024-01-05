@@ -6,15 +6,15 @@
 // ==LICENSE-END==
 
 import { clone } from "ramda";
-import { Action } from "redux";
+import { Action, type UnknownAction } from "redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface ActionWithPayload<Type = string>
+interface ActionWithPayload<Type extends string = string>
     extends Action<Type> {
 }
 
 export interface IPQueueAction<TAction extends
-    ActionWithPayload<ActionType>, Key = number, Value = string, ActionType = string> {
+    ActionWithPayload<ActionType>, Key = number, Value = string, ActionType extends string = string> {
     type: ActionType;
     selector: (action: TAction, queue: Readonly<TPQueueState<Key, Value>>) => IPQueueState<Key, Value>;
 }
@@ -25,7 +25,7 @@ export interface IPQueueData
     TPopAction extends ActionWithPayload<ActionType>,
     Key = number,
     Value = string,
-    ActionType = string,
+    ActionType extends string = string,
     TUpdateAction extends ActionWithPayload<ActionType> = undefined,
 > {
     push: IPQueueAction<TPushAction, Key, Value, ActionType>;
@@ -43,7 +43,7 @@ export function priorityQueueReducer
         TPopAction extends ActionWithPayload<ActionType>,
         Key = number,
         Value = string,
-        ActionType = string,
+        ActionType extends string = string,
         TUpdateAction extends ActionWithPayload<ActionType> = undefined,
     >(
         data: IPQueueData<TPushAction, TPopAction, Key, Value, ActionType, TUpdateAction>,
@@ -52,7 +52,7 @@ export function priorityQueueReducer
     const reducer =
         (
                 queue: TPQueueState<Key, Value>,
-                action: TPopAction | TPushAction | TUpdateAction,
+                action: UnknownAction, // TPopAction | TPushAction | TUpdateAction,
         ): TPQueueState<Key, Value> => {
 
             if (!queue || !Array.isArray(queue)) {
@@ -62,7 +62,7 @@ export function priorityQueueReducer
             if (action.type === data.push.type) {
                 const newQueue = queue.slice();
 
-                const selectorItem = data.push.selector(action as TPushAction, queue);
+                const selectorItem = data.push.selector(action as unknown as TPushAction, queue);
                 if (selectorItem[1]) {
 
                     // find same value
@@ -82,7 +82,7 @@ export function priorityQueueReducer
 
             } else if (action.type === data.pop.type) {
 
-                const selectorItem = data.pop.selector(action as TPopAction, queue);
+                const selectorItem = data.pop.selector(action as unknown as TPopAction, queue);
                 const index = queue.findIndex((item) => item[1] === selectorItem[1]);
                 if (index > -1) {
 
@@ -96,7 +96,7 @@ export function priorityQueueReducer
 
             } else if (action.type === data.update?.type) {
 
-                const [k,v] = data.update.selector(action as TUpdateAction, queue);
+                const [k,v] = data.update.selector(action as unknown as TUpdateAction, queue);
                 const index = queue.findIndex(([_k]) => _k === k);
 
                 if (index > -1) {

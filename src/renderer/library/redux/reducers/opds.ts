@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
@@ -21,7 +23,7 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 // Logger
 // const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
 
-export function opdsBreadcrumbReducer(
+function opdsBreadcrumbReducer_(
     state: IBreadCrumbItem[] = [],
     action: browseRequest.TAction,
 ): IBreadCrumbItem[] {
@@ -53,7 +55,9 @@ export function opdsBreadcrumbReducer(
     }
 }
 
-export function opdsHeaderLinkReducer(
+export const opdsBreadcrumbReducer = opdsBreadcrumbReducer_ as Reducer<ReturnType<typeof opdsBreadcrumbReducer_>>;
+
+function opdsHeaderLinkReducer_(
     state: IOpdsHeaderState = {},
     action: headerLinksUpdate.TAction,
 ): IOpdsHeaderState {
@@ -71,7 +75,9 @@ export function opdsHeaderLinkReducer(
     }
 }
 
-export function opdsSearchLinkReducer(
+export const opdsHeaderLinkReducer = opdsHeaderLinkReducer_ as Reducer<ReturnType<typeof opdsHeaderLinkReducer_>>;
+
+function opdsSearchLinkReducer_(
     state: IOpdsSearchState = {},
     action: search.TAction,
 ): IOpdsSearchState {
@@ -83,3 +89,5 @@ export function opdsSearchLinkReducer(
             return state;
     }
 }
+
+export const opdsSearchLinkReducer = opdsSearchLinkReducer_ as Reducer<ReturnType<typeof opdsSearchLinkReducer_>>;
