@@ -1,0 +1,211 @@
+.publicationInfo_container {
+  display: flex;
+  margin-left: -15px;
+  margin-right: -15px;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.publicationInfo_container button {
+  font-weight: 400;
+  transition: 200ms linear;
+}
+.publicationInfo_container svg {
+  width: 16px;
+  height: 16px;
+}
+.publicationInfo_container section {
+  margin-bottom: 20px;
+}
+.publicationInfo_container .button_primary {
+  border: 1px solid var(--color-button-primary);
+  height: 20px;
+  border-radius: 4px;
+  padding: 2px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-button-primary);
+  color: white;
+}
+.publicationInfo_container .button_primary svg {
+  fill: var(--color-secondary);
+}
+.publicationInfo_container .button_secondary, .publicationInfo_container .button_transparency {
+  border: 1px solid var(--color-button-primary);
+  height: 20px;
+  border-radius: 4px;
+  padding: 2px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-button-secondary);
+  color: var(--color-button-primary);
+}
+.publicationInfo_container .button_secondary svg, .publicationInfo_container .button_transparency svg {
+  fill: var(--color-primary);
+}
+.publicationInfo_container .button_secondary:hover, .publicationInfo_container .button_transparency:hover {
+  background-color: white;
+  color: var(--color-button-primary);
+}
+
+.publicationInfo_leftSide {
+  flex: 1;
+  max-width: 35%;
+  text-align: center;
+}
+.publicationInfo_leftSide_coverWrapper {
+  width: 100%;
+  min-height: 350px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-light-grey);
+  border: 1px solid var(--color-medium-grey);
+  border-radius: 6px;
+}
+.publicationInfo_leftSide_buttonsWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+.publicationInfo_leftSide_buttonsWrapper > div {
+  width: 100%;
+}
+.publicationInfo_leftSide_buttonsWrapper button {
+  flex: 1 0 25%;
+  margin: 5px 0;
+}
+
+.publicationInfo_rightSide {
+  padding: 0 20px;
+  flex: 2;
+}
+.publicationInfo_rightSide .book_title {
+  font-size: 24px;
+}
+.publicationInfo_rightSide h2 {
+  font-style: italic;
+  font-weight: 700;
+}
+.publicationInfo_rightSide .authors {
+  font-size: 18px;
+}
+.publicationInfo_heading h4 {
+  position: relative;
+  font-weight: 600;
+  margin: 5px 0 10px 0;
+}
+.publicationInfo_description_bloc {
+  position: relative;
+}
+.publicationInfo_description_bloc_seeMore {
+  color: var(--color-button-primary);
+  text-decoration: underline;
+  display: flex;
+  width: 100px;
+  align-items: center;
+  justify-content: center;
+}
+.publicationInfo_description_bloc_seeMore svg {
+  width: 20px;
+  margin: auto;
+}
+.publicationInfo_moreInfo_content div, .publicationInfo_lcpInfo_content div {
+  margin-bottom: 5px;
+}
+.publicationInfo_moreInfo_content div strong, .publicationInfo_lcpInfo_content div strong {
+  font-weight: 600;
+}
+
+.tag_list {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.tag_list h4 {
+  min-width: fit-content;
+  margin-top: 0;
+}
+
+.publicationInfo_tagContainer form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.publicationInfo_tagContainer form button {
+  width: fit-content;
+  min-width: 50px;
+}
+.publicationInfo_tagContainer form button svg {
+  fill: white;
+}
+
+.publicationInfo_progressionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.publicationInfo_progressionContainer p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+.publicationInfo_progressionContainer details summary {
+  color: var(--color-button-primary);
+  background-color: var(--color-button-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 20px;
+}
+.publicationInfo_progressionContainer details summary :hover {
+  cursor: pointer;
+}
+.publicationInfo_progressionContainer details summary svg {
+  width: 12px;
+  height: 12px;
+  margin-left: 2px;
+}
+.publicationInfo_progressionContainer details summary:first-of-type {
+  list-style-type: none;
+}
+.publicationInfo_progressionContainer details ul {
+  list-style-type: none;
+}
+.publicationInfo_progressionContainer details ul li a {
+  color: var(--color-button-primary);
+}
+
+.accessibility_infos {
+  line-height: 1.5;
+}
+.accessibility_infos_left {
+  margin-block-start: 0;
+  flex: 1;
+  padding-left: 20px;
+  list-style-type: "- ";
+}
+.accessibility_infos_right {
+  flex: 1;
+}
+.accessibility_infos_right ul {
+  list-style-type: none;
+  margin-block-start: 0;
+  padding-left: 0;
+}
+.accessibility_infos_right details {
+  color: var(--color-primary);
+}
+.accessibility_infos_right details summary {
+  color: var(--color-button-primary);
+  cursor: pointer;
+}/*# sourceMappingURL=publicationInfos.css.map */

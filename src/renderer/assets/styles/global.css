@@ -164,13 +164,15 @@ section {
 
 .main {
   width: calc(100% - 120px);
-  padding: 30px 60px;
+  padding: 30px;
+  padding-right: 60px;
   overflow-y: auto;
-  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   top: 57px;
+  flex: 6;
+  height: 100vh;
 }
 
 nav + nav + .main {
@@ -179,15 +181,6 @@ nav + nav + .main {
 
 nav + nav + .breadcrumb + .main {
   top: 181px;
-}
-
-table > * {
-  background-color: var(--color-light-grey);
-  color: black !important;
-}
-
-table tr td {
-  border-bottom: 1px solid black;
 }
 
 /* ============== FAST CLASS ================= */

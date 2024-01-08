@@ -1,0 +1,112 @@
+.keyshortElement_container {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+  border-bottom: 1px solid var(--color-light-grey);
+}
+.keyshortElement_title {
+  font-size: 16px;
+  margin: 5px;
+  font-weight: bold;
+}
+.keyshortElement_shortcut {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  color: var(--color-button-primary);
+  background-color: var(--color-button-secondary);
+  padding: 3px;
+  gap: 5px;
+  width: fit-content;
+  font-size: 16px;
+}
+.keyshortElement_shortcut_container {
+  margin-bottom: 10px;
+}
+.keyshortElement_shortcut_container svg {
+  color: var(--color-button-primary) !important;
+  width: 15px;
+  height: 15px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  transition: 200ms;
+}
+.keyshortElement_shortcut_container svg:hover {
+  scale: 1.2;
+}
+.keyshortElement_shortcut_container_edit {
+  border-left: 2px solid var(--color-button-primary);
+  width: 100%;
+  color: var(--color--primary);
+  background-color: var(--color-button-secondary);
+  padding: 5px;
+}
+.keyshortElement_shortcut_container_edit .keyshortElement_shortcut {
+  color: var(--color--primary);
+  background-color: transparent;
+}
+.keyshortElement_shortcut_container_edit > * {
+  margin-left: 5px;
+}
+.keyshortElement_shortcut_container_edit_input {
+  position: absolute;
+  left: -2000px;
+}
+.keyshortElement_shortcut_container_edit_input:checked + label {
+  border: 1px solid var(--color-button-primary);
+  background-color: white;
+  color: var(--color-button-primary);
+}
+.keyshortElement_shortcut_container_edit_input:checked + label svg {
+  fill: var(--color-button-primary);
+}
+.keyshortElement_shortcut_container_edit_input:focus + label {
+  outline: 2px solid blue;
+}
+.keyshortElement_shortcut_container_edit label {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--color--primary);
+  padding: 3px;
+}
+.keyshortElement_shortcut_container_edit label:hover {
+  cursor: pointer;
+}
+.keyshortElement_shortcut_container_edit label svg {
+  width: 30px;
+  height: 30px;
+}
+.keyshortElement_shortcut_container_edit label:focus {
+  outline-color: blue !important;
+}
+.keyshortElement_shortcut_container_edit .form_group {
+  width: 100px;
+  height: 30px;
+  margin-bottom: 0 !important;
+}
+.keyshortElement_shortcut_container_edit .outline {
+  background-color: white;
+  width: 50px;
+}
+.keyshortElement_description {
+  font-size: 14px;
+}
+
+.action_buttons_container {
+  display: flex;
+  gap: 10px;
+}
+
+.advanced_trigger {
+  min-width: 20px !important;
+  height: 20px;
+  width: fit-content !important;
+  border: 1px solid;
+  border-color: transparent;
+  background-color: transparent;
+  transition: 200ms linear;
+}
+.advanced_trigger:hover {
+  background-color: var(--color-button-secondary);
+  border-color: var(--color-button-primary);
+}/*# sourceMappingURL=keyboardsShortcuts.css.map */

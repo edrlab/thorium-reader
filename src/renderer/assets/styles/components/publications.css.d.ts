@@ -15,7 +15,7 @@ declare const styles: {
   readonly "menu": string;
   readonly "no_img": string;
   readonly "no_img_wrapper": string;
-  readonly "publication_description": string;
+  readonly "publication_authors": string;
   readonly "publication_image_wrapper": string;
   readonly "publication_infos": string;
   readonly "publication_infos_wrapper": string;
@@ -23,6 +23,7 @@ declare const styles: {
   readonly "publication_list_title_authors": string;
   readonly "publication_list_wrapper": string;
   readonly "publication_title": string;
+  readonly "publication_title_wrapper": string;
   readonly "publication_wrapper": string;
   readonly "title": string;
 };

@@ -1,37 +1,81 @@
 /*
 =-=-= partials/variables.css
+=-=-= globally imported by sass-loader with : { additionalData: `@import "./src/renderer/assets/styles/partials/variables.scss";` }
 */
-
 @media (prefers-color-scheme: light) {
   :root {
     /* Colors */
     --color-primary: #4d4d4d;
     --color-secondary: #fff;
     --color-tertiary: #67a3e0;
-    --color-disabled: #b7b7b7;
+    --color-disabled: #040303;
     --color-light-grey: #f1f1f1;
     --color-medium-grey: #e5e5e5;
     --color-accent: rgb(0, 188, 212);
     --color-accent-contrast: #fff;
     --reader-fontColor: #000;
+    --color-button-primary: rgb(16, 83, 200);
+    --color-button-secondary: #ECF2FD;
+    --color-bg-tab: rgba(246, 246, 246, 0.84);
+    --setting-btn-primary: #3a00e5;
+    --setting-btn-secondary: #f7f5ff;
   }
 }
-
 @media (prefers-color-scheme: dark) {
   :root {
     /* Colors */
-    --color-primary: #fff;
-    --color-secondary: #4d4d4d;
+    --color-primary: #4d4d4d;
+    --color-secondary: #fff;
     --color-tertiary: #67a3e0;
-    --color-disabled: #b7b7b7;
+    --color-disabled: #040303;
     --color-light-grey: #f1f1f1;
     --color-medium-grey: #e5e5e5;
     --color-accent: rgb(0, 188, 212);
     --color-accent-contrast: #fff;
-    --reader-fontColor: #fff;
+    --reader-fontColor: #000;
+    --color-button-primary: rgb(16, 83, 200);
+    --color-button-secondary: #ECF2FD;
+    --color-bg-tab: rgba(246, 246, 246, 0.84);
+    --setting-btn-primary: #3a00e5;
+    --setting-btn-secondary: #f7f5ff;
   }
+}
+[data-theme=light] {
+  /* Colors */
+  --color-primary: #4d4d4d;
+  --color-secondary: #fff;
+  --color-tertiary: #67a3e0;
+  --color-disabled: #040303;
+  --color-light-grey: #f1f1f1;
+  --color-medium-grey: #e5e5e5;
+  --color-accent: rgb(0, 188, 212);
+  --color-accent-contrast: #fff;
+  --reader-fontColor: #000;
+  --color-button-primary: rgb(16, 83, 200);
+  --color-button-secondary: #ECF2FD;
+  --color-bg-tab: rgba(246, 246, 246, 0.84);
+  --setting-btn-primary: #3a00e5;
+  --setting-btn-secondary: #f7f5ff;
+}
+
+[data-theme=dark] {
+  /* Colors */
+  --color-primary: #4d4d4d;
+  --color-secondary: #fff;
+  --color-tertiary: #67a3e0;
+  --color-disabled: #040303;
+  --color-light-grey: #f1f1f1;
+  --color-medium-grey: #e5e5e5;
+  --color-accent: rgb(0, 188, 212);
+  --color-accent-contrast: #fff;
+  --reader-fontColor: #000;
+  --color-button-primary: rgb(16, 83, 200);
+  --color-button-secondary: #ECF2FD;
+  --color-bg-tab: rgba(246, 246, 246, 0.84);
+  --setting-btn-primary: #3a00e5;
+  --setting-btn-secondary: #f7f5ff;
 }
 
 .___DEBUG___PARTIALS_VARIABLES_CSS {
   display: none;
-}
+}/*# sourceMappingURL=variables.css.map */

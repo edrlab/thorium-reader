@@ -14,6 +14,8 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+
 import Cover from "readium-desktop/renderer/common/components/Cover";
 import {
     TranslatorProps, withTranslator,
@@ -62,6 +64,23 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
+        let pubFormat;
+        const pub = (publicationViewMaybeOpds as PublicationView);
+
+        if (pub.isAudio) {
+            pubFormat = "AUDIO";
+        } else if (pub.isDivina) {
+            pubFormat = "DIVINA";
+        } else if (pub.isPDF) {
+            pubFormat = "PDF";
+        } else if (pub.isDaisy) {
+            pubFormat = "DAISY";
+        } else if (pub.isFXL) {
+            pubFormat = "EPUB";
+        } else {
+            pubFormat = "EPUB";
+        }
+
         // aria-haspopup="dialog"
         // aria-controls="dialog"
         return (
@@ -106,13 +125,13 @@ class PublicationCard extends React.Component<IProps> {
                             >
                                 <PublicationInfoOpdsWithRadixTrigger asChild>
                                     <a aria-hidden style={{cursor: "pointer"}}
-                                        className={stylesPublications.publication_infos}
+                                        className={stylesPublications.publication_title_wrapper}
                                     >
                                         <p aria-hidden className={stylesPublications.publication_title}
                                             dir={pubTitleIsRTL ? "rtl" : undefined}>
                                             {pubTitleStr}
                                         </p>
-                                        <p aria-hidden className={stylesPublications.publication_description}>
+                                        <p aria-hidden className={stylesPublications.publication_authors}>
                                             {this.truncateAuthors(authors)}
                                         </p>
                                     </a>
@@ -121,17 +140,19 @@ class PublicationCard extends React.Component<IProps> {
                             </PublicationInfoOpdsWithRadix>
                             :
                             <a aria-hidden onClick={(e) => this.handleLocalBookshelfBookClick(e)} style={{cursor: "pointer"}}
-                                className={stylesPublications.publication_infos}
+                                className={stylesPublications.publication_title_wrapper}
                             >
                                 <p aria-hidden className={stylesPublications.publication_title}
                                     dir={pubTitleIsRTL ? "rtl" : undefined}>
                                     {pubTitleStr}
                                 </p>
-                                <p aria-hidden className={stylesPublications.publication_description}>
+                                <p aria-hidden className={stylesPublications.publication_authors}>
                                     {this.truncateAuthors(authors)}
                                 </p>
                             </a>
                     }
+                    <div className={stylesPublications.publication_infos}>
+                    <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
                     <Menu
                         button={(
                             <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
@@ -145,6 +166,7 @@ class PublicationCard extends React.Component<IProps> {
                                 publicationView={publicationViewMaybeOpds as PublicationView}
                             />}
                     </Menu>
+                    </div>
                 </div>
             </div>
         );

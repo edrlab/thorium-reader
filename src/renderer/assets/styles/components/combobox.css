@@ -1,0 +1,120 @@
+@charset "UTF-8";
+.react_aria_ComboBox {
+  color: var(--text-color);
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--color-light-grey);
+  margin: 10px 0 20px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.react_aria_ComboBox .my_combobox_container {
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0 10px;
+}
+.react_aria_ComboBox .my_combobox_container svg {
+  width: 20px;
+}
+.react_aria_ComboBox .my_combobox_container:has(.react_aria_Input[data-focused]) {
+  outline-color: blue !important;
+  outline-style: solid !important;
+  outline-width: 2px !important;
+  outline-offset: -2px;
+}
+.react_aria_ComboBox .react_aria_Label {
+  font-weight: 600;
+}
+.react_aria_ComboBox .react_aria_Input {
+  margin: 2px;
+  background: var(--color-secondary);
+  color: var(--field-text-color);
+  padding: 0.286rem 2rem 0.286rem 0.571rem;
+  vertical-align: middle;
+  /*
+  See R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE class in TSX
+
+  &[data-focused] {
+    outline: none !important;
+  }
+  */
+}
+.react_aria_ComboBox .react_aria_Button {
+  display: inline-block;
+  background: var(--color-secondary);
+  color: var(--highlight-foreground);
+  forced-color-adjust: none;
+  border-radius: 4px;
+  border: none;
+  margin-left: -1.714rem;
+  width: 1.429rem;
+  height: 1.429rem;
+  padding: 0;
+  font-size: 0.857rem;
+  cursor: pointer;
+  position: relative;
+}
+.react_aria_ComboBox .react_aria_Button[data-pressed] {
+  box-shadow: none;
+  background: var(--color-secondary);
+}
+
+.react_aria_Popover[data-trigger=ComboBox] {
+  width: var(--trigger-width);
+  background-color: var(--color-secondary);
+  pointer-events: auto;
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  height: fit-content;
+  max-height: 350px !important;
+  overflow: auto;
+}
+.react_aria_Popover[data-trigger=ComboBox] .react_aria_ListBox {
+  display: block;
+  width: unset;
+  max-height: inherit;
+  min-height: unset;
+  border: none;
+}
+.react_aria_Popover[data-trigger=ComboBox] .react_aria_ListBox .react_aria_Header {
+  padding-left: 1.571rem;
+}
+
+.my_item {
+  margin: 2px;
+  padding: 4px 8px 4px 22px;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 1.072rem;
+  position: relative;
+  transition: 100ms;
+}
+.my_item.selected {
+  font-weight: 600;
+  background: none;
+}
+.my_item.selected::before {
+  content: "✓";
+  content: "✓"/"";
+  alt: " ";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+.my_item.focused {
+  background: var(--color-button-primary);
+  color: white;
+}
+
+@media (forced-colors: active) {
+  .my_item.focused {
+    background: Highlight;
+    color: HighlightText;
+  }
+}/*# sourceMappingURL=combobox.css.map */
