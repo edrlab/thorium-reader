@@ -1,7 +1,8 @@
 /*
 =-=-= header.css => './partials/mixins.css'
 */
-@import url('./partials/mixins.css');
+
+// @import url('./partials/mixins.css');
 
 /*
 =-=-= header.css => './partials/variables.css'
@@ -16,35 +17,54 @@
 */
 
 .main_navigation_library {
-  position: fixed;
-  font-size: 22px;
-
-  @mixin main_navigation_library;
+  z-index: 102;
+  top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 100vh;
+  background-color: var(--color-figma-grey);
+  // box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
+  border-right: 2px solid var(--color-medium-grey);
+  flex: 1;
 
   & ul {
-    padding-left: 60px;
-    padding-right: 60px;
-    margin: 0;
+    margin-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
 
     & a {
       text-decoration: none;
       color: inherit;
-      padding: 1.125rem 0.3125rem;
+      min-width: 150px;
+      justify-content: start;
+      gap: 10px;
+      display: flex;
+      padding: 5px;
     }
 
     & li {
-      display: inline-block;
-      padding-bottom: 18px;
-      padding-top: 18px;
+      display: block;
+      padding-bottom: 10px;
+      padding-top: 10px;
       font-weight: 600;
       color: var(--color-disabled);
       cursor: pointer;
-      margin-right: 60px;
+      border: 1px solid transparent;
+      height: 30px;
+      border-radius: 4px;
+      min-width: 150px;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: start;
+    
+      svg {
+        width: 12px;
+        fill: var(--color-button-primary);
+      }
 
       &.active {
-        color: var(--color-primary);
-        border-bottom: 3px solid var(--color-primary);
-        padding-bottom: 15px;
+        color: var(--color-button-primary);
       }
     }
   }
@@ -61,18 +81,13 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid var(--color-light-grey);
   background-color: var(--color-secondary);
-  position: fixed;
-  left: 0;
-  width: calc(100% - 120px);
   height: 3.5rem;
-  padding: 5px 60px;
   z-index: 101;
-  top: 57px;
   min-width: 600px;
-  padding-left: 60px;
-  padding-right: 60px;
+  gap: 10px;
 
   & form {
     display: inline-block;

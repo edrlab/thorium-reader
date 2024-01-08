@@ -134,11 +134,8 @@ export const Settings: React.FC<ISettingsProps> = () => {
     return <Dialog.Root>
         <Dialog.Trigger asChild>
 
-            <button
-                className={stylesButtons.button_transparency_icon}
-            >
-                Settings
-            </button>
+            <h3>Settings
+            </h3>
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>

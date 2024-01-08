@@ -103,27 +103,29 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                 >
                     {__("accessibility.toolbar")}
                 </a>
-                <LibraryHeader />
-                { this.props.secondaryHeader }
-                { this.props.breadCrumb }
-                <main
-                    id="main"
-                    aria-label={__("accessibility.mainContent")}
-                    className={classNames(stylesGlobal.main, this.props.mainClassName)}
-                >
-                    <a
-                        role="heading"
-                        className={stylesGlobal.anchor_link}
-                        ref={this.fastLinkRef}
-                        id="main-content"
-                        title={__("accessibility.mainContent")}
+                <div style={{display: "flex"}}>
+                    <LibraryHeader />
+                    <main
+                        id="main"
                         aria-label={__("accessibility.mainContent")}
-                        tabIndex={-1}
+                        className={classNames(stylesGlobal.main, this.props.mainClassName)}
                     >
-                        {__("accessibility.mainContent")}
-                    </a>
-                    { this.props.children }
-                </main>
+                        { this.props.secondaryHeader }
+                        { this.props.breadCrumb }
+                        <a
+                            role="heading"
+                            className={stylesGlobal.anchor_link}
+                            ref={this.fastLinkRef}
+                            id="main-content"
+                            title={__("accessibility.mainContent")}
+                            aria-label={__("accessibility.mainContent")}
+                            tabIndex={-1}
+                        >
+                            {__("accessibility.mainContent")}
+                        </a>
+                        { this.props.children }
+                    </main>
+                </div>
             </div>
         );
     }

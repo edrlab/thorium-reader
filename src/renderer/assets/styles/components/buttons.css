@@ -96,6 +96,7 @@ button {
 .button_primary {
   @mixin button_primary;
 
+  font: 1rem Arial, sans-serif;
   padding: 10px 15px;
 
   & svg {
@@ -222,6 +223,8 @@ button {
   transition: all 0.2s;
   border-radius: 5px;
   background: rgba(0, 0, 0, 0);
+  font-size: 1rem;
+  font-family: "Arial", sans-serif;
   font-weight: 600;
   cursor: pointer;
 
@@ -242,14 +245,16 @@ button {
   & svg {
     width: 18px;
     vertical-align: -3px;
+    color: var(--color-disabled);
   }
 }
 
 .button_transparency_icon,
 .button_transparency_icon_inactive {
-  height: 34px;
-  width: 34px;
+  height: 24px;
+  width: 24px;
   transition-duration: 0ms;
+  fill: var(--color-button-primary);
 
   & svg {
     height: 34px;
@@ -319,8 +324,76 @@ button {
 
   svg {
     width: 12px;
+    height: 12px;
     fill: var(--color-button-primary);
   }
+}
+
+.button_nav_primary {
+  border: 1px solid var(--color-button-primary);
+  height: 20px;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: var(--color-button-secondary);
+  color: var(--color-button-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  width: fit-content;
+  cursor: pointer;
+  gap: 5px;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    fill: var(--color-button-primary);
+  }
+  
+  input {
+    display: none;
+  }
+}
+
+.button_nav_secondary {
+  border: 1px solid transparent;
+  height: 20px;
+  border-radius: 4px;
+  padding: 5px;
+  min-width: 100px;
+  background-color: transparent;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  width: fit-content;
+  cursor: pointer;
+  gap: 5px;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    fill: var(--color-primary);
+  }
+
+  input {
+    display: none;
+  }
+}
+
+.button_format {
+  border: 1px solid var(--color-button-primary);
+  border-radius: 4px;
+  background-color: var(--color-button-secondary);
+  color: var(--color-button-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  min-width: 30px!important;
+  width: fit-content!important;
+  cursor: pointer;
 }
 
 .button_catalog_infos {

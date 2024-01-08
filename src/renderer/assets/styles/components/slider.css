@@ -4,7 +4,6 @@
 
 .slider {
   display: block;
-  width: 100%;
   position: relative;
 }
 
@@ -12,7 +11,7 @@
   position: relative;
   overflow-x: hidden;
   overflow-y: hidden;
-  height: 340px;
+  height: 400px;
 }
 
 .slider_items {
@@ -40,6 +39,18 @@
 .slider_button_next {
   right: -50px;
   transform: translateY(-50%);
+}
+
+.continue_reading {
+  border: 1px solid var(--color-medium-grey);
+  background-color: var(--color-figma-grey);
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.home_section {
+  border: 1px solid transparent;
+  padding: 20px;
 }
 
 .___DEBUG___COMPONENTS_SLIDER_CSS {

@@ -8,7 +8,7 @@
 import { PublicationView } from "./publication";
 
 export interface CatalogEntryView {
-    title: string;
+    id: "continueReading" | "lastAdditions" | "continueReadingAudioBooks" | "continueReadingDivina" | "continueReadingPdf";
     tag?: string;
     totalCount?: number;
     publicationViews?: PublicationView[];
