@@ -15,11 +15,15 @@ import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 // import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
-import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg"; // baseline-arrow_forward_ios-24px -- arrow
+import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 // import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
+import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
+import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { matchSorter } from "match-sorter";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -54,7 +58,7 @@ import {
 } from "react-table";
 import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce } from "react-table";
 import { formatTime } from "readium-desktop/common/utils/time";
-import DOMPurify from "dompurify";
+import * as DOMPurify from "dompurify";
 import * as moment from "moment";
 import { AvailableLanguages, I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import * as React from "react";
@@ -65,7 +69,6 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
-import BreadCrumb from "readium-desktop/renderer/library/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { Unsubscribe } from "redux";
@@ -78,7 +81,9 @@ import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { ipcRenderer } from "electron";
-import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+import PublicationCard from "../publication/PublicationCard";
+import AboutThoriumButton from "../catalog/AboutThoriumButton";
+import classNames from "classnames";
 
 // import {
 //     formatContributorToString,
@@ -183,13 +188,13 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         const title = __("catalog.allBooks");
 
         const secondaryHeader = <Header />;
-        const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
+        // const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
 
         return (
             <LibraryLayout
                 title={`${__("catalog.myBooks")} / ${title}`}
                 secondaryHeader={secondaryHeader}
-                breadCrumb={breadCrumb}
+                // breadCrumb={breadCrumb}
             >
                 {
                     this.state.publicationViews ?
@@ -315,8 +320,8 @@ const commonCellStyles =  (props: ITableCellProps_Column & ITableCellProps_Gener
         // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
 
         padding: "0.4em",
-        overflowY: "auto",
-        textAlign: "center",
+        overflowY: "hidden",
+        textAlign: "left",
         userSelect: "text",
     };
 };
@@ -348,7 +353,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     const onInputChange = useAsyncDebounce((v) => {
 
         // if (v) {}
-        props.setShowColumnFilters(false);
+        props.setShowColumnFilters(true);
 
         props.setGlobalFilter(v);
     }, 500);
@@ -357,34 +362,13 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     // className={classNames(classStyleExample)}
 
     return (
-        <div
-            style={{
-                // border: "1px solid blue",
-                textAlign: "left",
-            }}>
-
+        <div className={stylesInput.form_group}>
             <label
                 id="globalSearchLabel"
-                htmlFor="globalSearchInput"
-                style={{
-                    fontSize: "90%",
-                    fontWeight: "bold",
-                }}>
+                htmlFor="globalSearchInput">
                 {`${props.__("header.searchPlaceholder")}`}
             </label>
-            <div
-                    aria-live="assertive"
-                    style={{
-                        // border: "1px solid red",
-                        marginLeft: "0.4em",
-                        display: "inline-block",
-                        fontSize: "90%",
-                        // width: "4em",
-                        overflow: "visible",
-                        whiteSpace: "nowrap",
-                    }}>
-                {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
-            </div>
+            <i><SVG ariaHidden svg={SearchIcon} /></i>
             {/*
             value={value || ""}
             */}
@@ -402,31 +386,20 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 }}
                 onKeyUp={(e) => {
                     if (props.accessibilitySupportEnabled && e.key === "Enter") {
-                        props.setShowColumnFilters(false);
+                        props.setShowColumnFilters(true);
                         props.setGlobalFilter( // value
                             (props.focusInputRef?.current?.value || "").trim() || undefined);
                     }
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
-                style={{
-                    border: "1px solid gray",
-                    borderRadius: "4px",
-                    margin: "0",
-                    marginLeft: "0.4em",
-                    width: "10em",
-                    padding: "0.2em",
-                }}
                 />
+                <div
+                    aria-live="assertive">
+                {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
+            </div>
             {props.accessibilitySupportEnabled ? <button
-                style={{
-                    border: "1px solid gray",
-                    borderRadius: "4px",
-                    margin: "0",
-                    marginLeft: "0.4em",
-                    padding: "0.6em",
-                }}
                 onClick={() => {
-                    props.setShowColumnFilters(false);
+                    props.setShowColumnFilters(true);
                     props.setGlobalFilter( // value
                         (props.focusInputRef?.current?.value || "").trim() || undefined);
                 }}
@@ -497,10 +470,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
     }, 500);
 
     return props.showColumnFilters ?
-    <div style={{
-        display: "flex",
-        alignItems: "center",
-    }}>
+    <div className={stylesPublication.showColFilters_wrapper}>
         {
             /*
         value={ // props.column.filterValue
@@ -527,33 +497,20 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
         }}
         aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
         placeholder={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
+        className={stylesPublication.showColFilters_input}
         style={{
-            border: "1px solid gray",
-            borderRadius: "4px",
-            margin: "0",
             width: props.accessibilitySupportEnabled ? "calc(100% - 30px)" : "100%",
-            padding: "0.2em",
-            backgroundColor: "white",
         }}
     />
     {
     props.accessibilitySupportEnabled ? <button
         aria-label={`${props.__("header.searchPlaceholder")}`}
-        style={{
-            border: "1px solid gray",
-            borderRadius: "4px",
-            margin: "0",
-            marginLeft: "0.4em",
-            width: "24px",
-            height: "24px",
-            padding: "0.2em",
-        }}
         onClick={() => {
             // value
             props.column.setFilter( // props.column.filterValue
                 (inputRef?.current?.value || "").trim() || undefined);
         }}
-    ><SVG ariaHidden svg={magnifyingGlass} /></button> : <></>
+    ><SVG ariaHidden svg={SearchIcon} /></button> : <></>
     }
     </div>
     : <></>;
@@ -571,68 +528,40 @@ interface IColumnValue_Cover extends IColumnValue_BaseString {
 interface ITableCellProps_Value_Cover {
     value: IColumnValue_Cover;
 }
-
 const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Cover> = (props) => {
-    return (<div style={{
-        padding: "0",
-        margin: "0",
-        textAlign: "center",
-    }}>
-        <PublicationInfoLibWithRadix
-            publicationView={{ identifier: props.value.publicationViewIdentifier }}
-        >
-            <PublicationInfoLibWithRadixTrigger asChild>
-                <a
-                    style={{
-                        cursor: "pointer",
-                    }}
-                    tabIndex={0}
-                    // onClick={(e) => {
-                    //     e.preventDefault();
+    return (<div className={stylesPublication.cell_coverImg}>
+        <a
+            tabIndex={0}
+            onClick={(e) => {
+                e.preventDefault();
 
-                    //     props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                    //     // props.openReader(props.value.publicationViewIdentifier);
-                    // }}
-                    onKeyPress={
-                        (e) => {
-                            if (e.key === "Enter") {
-                                // e.preventDefault();
+                props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                // props.openReader(props.value.publicationViewIdentifier);
+            }}
+            onKeyPress={
+                (e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
 
-                                // props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                                // props.openReader(props.value.publicationViewIdentifier);
-                                e.currentTarget?.click();
-                            }
-                        }
+                        props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                        // props.openReader(props.value.publicationViewIdentifier);
                     }
-                    title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
-                >
-                    <img
-                        src={
-                            // NOTE! empty string doesn't work with `??` operator, must use ternary!
-                            props.value.label
-                                ?
-                                props.value.label
-                                :
-                                "data:image/png;base64,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"
-                        }
-                        alt={""}
-                        role="presentation"
-                        style={{
-
-                            objectFit: "contain",
-                            width: "100%",
-                            height: "100%",
-
-                            // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
-                            // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "50px",
-
-                            // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
-                            // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
-                        }} />
-                </a>
-            </PublicationInfoLibWithRadixTrigger>
-            <PublicationInfoLibWithRadixContent />
-        </PublicationInfoLibWithRadix>
+                }
+            }
+            title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+        >
+        <img
+            src={
+                // NOTE! empty string doesn't work with `??` operator, must use ternary!
+                props.value.label
+                ?
+                props.value.label
+                :
+                "data:image/png;base64,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"
+            }
+            alt={""}
+            role="presentation"/>
+        </a>
     </div>);
 };
 
@@ -653,36 +582,10 @@ const CellFormat: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell 
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesButtons.button_nav_primary} style={{height: "15px", padding: "2px"}}>{t}</a>;
     };
 
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
-
-    return (<div style={{...flexStyle}}>
+    return (<div className={stylesPublication.cell_wrapper}>
         {
         link(props.value)
         }
@@ -712,62 +615,25 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesPublication.cell_link}>{t}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
-
     return props.value.langs?.length ?
     (
     props.value.langs.length === 1 ? (
-        <div style={{...flexStyle}}>
+        <div className={stylesPublication.cell_wrapper}>
         {
         link(props.value.langs[0])
         }
         </div>
     ) : (
-        <ul style={{
-            listStyleType: "none",
-            margin: "0",
-            padding: "0",
-            ...flexStyle,
-        }}>
+        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
         {
         props.value.langs.map((t, i) => {
             return <li
                 key={`k${i}`}
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0",
-                    padding: "0",
-                }}
             >{link(t)}</li>;
         })
         }
@@ -799,62 +665,25 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesPublication.cell_link}>{t}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
-
     return props.value.publishers?.length ?
     (
     props.value.publishers.length === 1 ? (
-        <div style={{...flexStyle}}>
+        <div className={stylesPublication.cell_wrapper}>
         {
         link(props.value.publishers[0])
         }
         </div>
     ) : (
-        <ul style={{
-            listStyleType: "none",
-            margin: "0",
-            padding: "0",
-            ...flexStyle,
-        }}>
+        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
         {
         props.value.publishers.map((t, i) => {
             return <li
                 key={`k${i}`}
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0",
-                    padding: "0",
-                }}
             >{link(t)}</li>;
         })
         }
@@ -886,36 +715,10 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesPublication.cell_link}>{t}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
-
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
 
     return props.value.authors?.length ?
     (
@@ -927,28 +730,17 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
         }}>
         {
     props.value.authors.length === 1 ? (
-        <div style={{...flexStyle}}>
+        <div className={stylesPublication.cell_wrapper}>
         {
         link(props.value.authors[0])
         }
         </div>
     ) : (
-        <ul style={{
-            listStyleType: "none",
-            margin: "0",
-            padding: "0",
-            ...flexStyle,
-        }}>
+        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
         {
         props.value.authors.map((t, i) => {
             return <li
                 key={`k${i}`}
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0",
-                    padding: "0",
-                }}
             >{link(t)}</li>;
         })
         }
@@ -986,59 +778,25 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-            display: "flex",
-            alignItems: "center",
-            textAlign: "center",
-            backgroundColor: "#e7f1fb",
-            padding: "2px 6px",
-            fontSize: "1rem",
-            borderRadius: "5px",
-            border: "1px solid var(--color-tertiary)",
-            color: "var(--color-tertiary)",
-            cursor: "pointer",
-            textDecoration: "none",
-            marginRight: "6px",
-            marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesButtons.button_nav_primary} style={{height: "15px", padding: "2px"}}>{t}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
-
     return props.value.tags?.length ?
     (
     props.value.tags.length === 1 ? (
-        <div style={{...flexStyle}}>
+        <div className={stylesPublication.cell_wrapper}>
         {
         link(props.value.tags[0])
         }
         </div>
     ) : (
-        <ul style={{
-            listStyleType: "none",
-            margin: "0",
-            padding: "0",
-            ...flexStyle,
-        }}>
+        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
         {
         props.value.tags.map((t, i) => {
             return <li
                 key={`k${i}`}
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0",
-                    padding: "0",
-                }}
             >{link(t)}</li>;
         })
         }
@@ -1048,7 +806,9 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
 };
 
 const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
-    return (<div style={{
+    return (<div
+        className={stylesPublication.cell_description}
+        style={{
         ...commonCellStyles(props),
         paddingBottom: "0",
         // marginBottom: "0.4em",
@@ -1061,7 +821,9 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
 
         // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
         textAlign: "start",
-    }} dangerouslySetInnerHTML={{__html: props.value}} />);
+    }}>
+        <p>{props.value}</p>
+        {props.value ? <SVG ariaHidden svg={ChevronDown} /> : ""}</div>);
 };
 
 // interface IColumnValue_A11y_StringArrayArray extends IColumnValue_BaseString {
@@ -1271,24 +1033,7 @@ const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{props.value.date}</a>
+            className={stylesPublication.cell_link}>{props.value.date}</a>
     </div>
     : <></>
     );
@@ -1312,44 +1057,34 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
 
     return (<div style={{
         ...commonCellStyles(props),
-        fontWeight: "bold",
         // minWidth: props.displayType === DisplayType.Grid ? "200px" : undefined,
         // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
         // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
     }}
-        dir={pubTitleIsRTL ? "rtl" : undefined}
+    dir={pubTitleIsRTL ? "rtl" : undefined}
+    ><a
+        className={stylesPublication.cell_bookTitle}
+        tabIndex={0}
+        onClick={(e) => {
+            e.preventDefault();
+
+            props.displayPublicationInfo(props.value.publicationViewIdentifier);
+            // props.openReader(props.value.publicationViewIdentifier);
+        }}
+        onKeyPress={
+            (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+
+                    props.displayPublicationInfo(props.value.publicationViewIdentifier);
+                    // props.openReader(props.value.publicationViewIdentifier);
+                }
+            }
+        }
+        title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
     >
-        <PublicationInfoLibWithRadix
-            publicationView={{ identifier: props.value.publicationViewIdentifier }}
-        >
-            <PublicationInfoLibWithRadixTrigger asChild>
-                <a
-                    style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
-                    tabIndex={0}
-                    // onClick={(e) => {
-                    //     e.preventDefault();
-
-                    //     props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                    //     // props.openReader(props.value.publicationViewIdentifier);
-                    // }}
-                    onKeyPress={
-                        (e) => {
-                            if (e.key === "Enter") {
-                                // e.preventDefault();
-
-                                // props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                                // props.openReader(props.value.publicationViewIdentifier);
-                                e.currentTarget?.click();
-                            }
-                        }
-                    }
-                    title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
-                >
-                    {pubTitleStr}
-                </a>
-            </PublicationInfoLibWithRadixTrigger>
-            <PublicationInfoLibWithRadixContent />
-        </PublicationInfoLibWithRadix>
+        {pubTitleStr}
+        </a>
     </div>);
 };
 
@@ -1427,9 +1162,11 @@ interface ITableCellProps_TableView {
 }
 export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Common> = (props) => {
 
-    const [showColumnFilters, setShowColumnFilters] = React.useState(false);
+    const [showColumnFilters, setShowColumnFilters] = React.useState(true);
 
     const scrollToViewRef = React.useRef(null);
+
+    const {__} =  props;
 
     const renderProps_Filter: ITableCellProps_Filter =
     {
@@ -1774,7 +1511,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             },
 
             {
-                Header: props.__("catalog.about.button"),
+                Header: props.__("publication.accessibility.name"),
                 accessor: "col_a11y_accessibilitySummary",
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-expect-error
@@ -1911,7 +1648,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     // infinite render loop
     // tableInstance.setPageSize(pageSize);
     const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
-        pageSize: 20, // props.displayType === DisplayType.List ? 20 : 10;
+        pageSize: 50, // props.displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
         hiddenColumns: props.displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
@@ -1978,189 +1715,105 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     //         </option>
     //     ))}
     //     </select>
+
+
+
     return (
         <>
-        <div style={{
-            // border: "1px solid red",
-            position: "fixed",
-            // width: "calc(100% - 50px)",
-            zIndex: "101",
-            // position: "absolute",
-            // top: "-5px",
-            // bottom: "0",
-            // left: "0",
-            right: "0",
-            padding: "0",
-            // paddingBottom: "0.1em",
-            margin: "0",
-            marginTop: "-138px",
-            marginRight: "30px",
-            // display: "flex",
-            // flexDirection: "row",
-            // alignItems: "center",
-            // justifyContent: "flex-end",
-            // pointerEvents: "none",
-        }}>
-        <div style={{
-            // pointerEvents: "all",
-            display: "inline-block",
-            fontSize: "90%",
-        }}>
-            {
-            // ${props.__("catalog.opds.info.numberOfItems")}
-            // `(${tableRows.length})`
-            }
-            <CellGlobalFilter
-                    accessibilitySupportEnabled={props.accessibilitySupportEnabled}
-                    preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
-                    globalFilteredRows={tableInstance.globalFilteredRows}
-                    globalFilter={tableInstance.state.globalFilter}
-                    setGlobalFilter={tableInstance.setGlobalFilter}
-                    __={props.__}
-                    translator={props.translator}
-                    displayType={props.displayType}
-                    focusInputRef={props.focusInputRef}
+        <div>
+            <h2 className={stylesPublication.allBooks_header}>{__("catalog.allBooks")}</h2>
+            <div className={stylesPublication.allBooks_header_navigation}>
+                <CellGlobalFilter
+                        accessibilitySupportEnabled={props.accessibilitySupportEnabled}
+                        preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
+                        globalFilteredRows={tableInstance.globalFilteredRows}
+                        globalFilter={tableInstance.state.globalFilter}
+                        setGlobalFilter={tableInstance.setGlobalFilter}
+                        __={props.__}
+                        translator={props.translator}
+                        displayType={props.displayType}
+                        focusInputRef={props.focusInputRef}
 
-                    setShowColumnFilters={(show: boolean) => {
-                        const currentShow = showColumnFilters;
-                        setShowColumnFilters(show);
-                        setTimeout(() => {
-                            if (currentShow && !show) {
-                                for (const col of tableInstance.allColumns) {
-                                    tableInstance.setFilter(col.id, "");
+                        setShowColumnFilters={(show: boolean) => {
+                            const currentShow = showColumnFilters;
+                            setShowColumnFilters(show);
+                            setTimeout(() => {
+                                if (currentShow && !show) {
+                                    for (const col of tableInstance.allColumns) {
+                                        tableInstance.setFilter(col.id, "");
+                                    }
                                 }
-                            }
-                        }, 200);
+                            }, 200);
+                        }}
+                    />
+                <div>
+                    <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p>
+                    <div className={stylesPublication.allBooks_header_pagination_container}>
+                    <button
+                    className={stylesPublication.allBooks_header_pagination_arrow}
+                    aria-label={`${props.__("opds.firstPage")}`}
+                    onClick={() => tableInstance.gotoPage(0)}
+                    disabled={!tableInstance.canPreviousPage}>
+                        <SVG ariaHidden={true} svg={ArrowFirstIcon} />
+                    </button>
+                    <button
+                    className={stylesPublication.allBooks_header_pagination_arrow}
+                    style={{
+                        transform: "rotate(180deg)",
                     }}
-                />
-        </div></div>
-
-        <div style={{
-            // border: "1px solid red",
-            position: "fixed",
-            // width: "calc(100% - 50px)",
-            // zIndex: "9999",
-            // position: "absolute",
-            // top: "-5px",
-            // bottom: "0",
-            // left: "0",
-            right: "0",
-            padding: "0",
-            // paddingBottom: "0.1em",
-            margin: "0",
-            marginTop: "-74px",
-            marginRight: "30px",
-            // display: "flex",
-            // flexDirection: "row",
-            // alignItems: "center",
-            // justifyContent: "flex-end",
-            // pointerEvents: "none",
-        }}>
-            <div style={{
-                // pointerEvents: "all",
-                display: "flex",
-                alignItems: "center",
-            }}>
-            <button
-            style={{
-                margin:"0",
-                padding: "0em",
-                width: "30px",
-                fill: tableInstance.canPreviousPage ? "#333333" : "gray",
-            }}
-            aria-label={`${props.__("opds.firstPage")}`}
-            onClick={() => tableInstance.gotoPage(0)}
-            disabled={!tableInstance.canPreviousPage}>
-                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-            </button>
-            <button
-            style={{
-                margin:"0",
-                padding: "0",
-                transform: "rotate(180deg)",
-                width: "30px",
-                fill: tableInstance.canPreviousPage ? "#333333" : "gray",
-            }}
-            aria-label={`${props.__("opds.previous")}`}
-            onClick={() => tableInstance.previousPage()}
-            disabled={!tableInstance.canPreviousPage}>
-                <SVG ariaHidden={true} svg={ArrowRightIcon} />
-            </button>
-            <select
-                aria-label={`${props.__("reader.navigation.currentPageTotal", {current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length})}`}
-                style={{cursor: "pointer", minWidth: "5em", textAlign: "center", padding: "0.2em", margin: "0", marginLeft: "0em", marginRight: "0em", border: "1px solid gray", borderRadius: "4px"}}
-                value={tableInstance.state.pageIndex}
-                onChange={(e) => {
-                    const pageIndex = e.target.value ? Number(e.target.value) : 0;
-                    tableInstance.gotoPage(pageIndex);
-                }}
-            >
-                {
-                ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
-                    <option
-                        key={`page${i}`}
-                        value={i}>
-                        {i + 1} / {tableInstance.pageOptions.length}
-                    </option>
-                ))
-                }
-            </select>
-            <button
-            style={{
-                margin:"0",
-                padding: "0",
-                width: "30px",
-                fill: tableInstance.canNextPage ? "#333333" : "gray",
-            }}
-            aria-label={`${props.__("opds.next")}`}
-            onClick={() => tableInstance.nextPage()}
-            disabled={!tableInstance.canNextPage}>
-                <SVG ariaHidden={true} svg={ArrowRightIcon} />
-            </button>
-            <button
-            style={{
-                margin:"0",
-                padding: "0em",
-                width: "30px",
-                fill: tableInstance.canNextPage ? "#333333" : "gray",
-            }}
-            aria-label={`${props.__("opds.lastPage")}`}
-            onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
-            disabled={!tableInstance.canNextPage}>
-                <SVG ariaHidden={true} svg={ArrowLastIcon} />
-            </button>
+                    aria-label={`${props.__("opds.previous")}`}
+                    onClick={() => tableInstance.previousPage()}
+                    disabled={!tableInstance.canPreviousPage}>
+                        <SVG ariaHidden={true} svg={ChevronRight} />
+                    </button>
+                    <select
+                        aria-label={`${props.__("reader.navigation.currentPageTotal", {current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length})}`}
+                        className={stylesPublication.allBooks_header_pagination_select}
+                        value={tableInstance.state.pageIndex}
+                        onChange={(e) => {
+                            const pageIndex = e.target.value ? Number(e.target.value) : 0;
+                            tableInstance.gotoPage(pageIndex);
+                        }}
+                    >
+                        {
+                        ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
+                            <option
+                                key={`page${i}`}
+                                value={i}>
+                                {i + 1} / {tableInstance.pageOptions.length}
+                            </option>
+                        ))
+                        }
+                    </select>
+                    <button
+                    className={stylesPublication.allBooks_header_pagination_arrow}
+                    aria-label={`${props.__("opds.next")}`}
+                    onClick={() => tableInstance.nextPage()}
+                    disabled={!tableInstance.canNextPage}>
+                        <SVG ariaHidden={true} svg={ChevronRight} />
+                    </button>
+                    <button
+                    className={stylesPublication.allBooks_header_pagination_arrow}
+                    aria-label={`${props.__("opds.lastPage")}`}
+                    onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
+                    disabled={!tableInstance.canNextPage}>
+                        <SVG ariaHidden={true} svg={ArrowLastIcon} />
+                    </button>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div
-            style={{
-                overflow: "auto",
-                position: "absolute",
-                top: "0",
-                bottom: "0",
-                left: "0",
-                right: "0",
-                padding: "0",
-                marginLeft: "30px",
-                marginRight: "30px",
-                marginTop: "0em",
-                marginBottom: "0.4em",
-            }}>
+        <div className={stylesPublication.allBook_table_wrapper}>
         <span
             ref={scrollToViewRef}
             style={{visibility: "hidden"}}>{" "}</span>
         <table {...tableInstance.getTableProps()}
+            className={stylesPublication.allBook_table}
             style={{
-                fontSize: "90%",
-                border: "solid 1px gray",
-                borderRadius: "8px",
-                padding: "4px",
-                margin: "0",
-                // marginRight: "1em",
-                borderSpacing: "0",
-                // minWidth: "calc(100% - 30px)",
-                width: "100%",
+                display :"table",
             }}>
+            {props.displayType === DisplayType.Grid ? ""
+            :
             <thead>{tableInstance.headerGroups.map((headerGroup, index) =>
                 (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
                 headerGroup.headers.map((col, i) => {
@@ -2175,18 +1828,16 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     const columnIsSortable = column.id !== "colCover";
 
                     const W = column.id === "colCover" ?
-                        (props.displayType === DisplayType.Grid ? "100px" : "40px") :
-                        column.id === "colLCP" ?
                         "60px" :
                         column.id === "colPublishedDate" ?
-                        "120px" :
+                        "100px" :
                         column.id === "colProgression" ?
                         "100px" :
                         column.id === "colDuration" ?
                         "100px" :
                         column.id === "col_a11y_accessibilitySummary" ?
-                        "180px" :
-                        "160px";
+                        "160px" :
+                        "100px";
 
                     return (<th
                         key={`headtrth_${i}`}
@@ -2199,20 +1850,12 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             width: W,
                             minWidth: W,
                             maxWidth: W,
-                            borderBottom: "1px solid #bcbcbc",
-                            borderLeft: "1px solid #bcbcbc",
-                            padding: "0.7em",
-                            margin: "0",
-                            background: "#eeeeee", // columnIsSortable ? "#eeeeee" : "white",
-                            color: "black",
-                            whiteSpace: "nowrap",
-                            // ...{ cursor: columnIsSortable ? "pointer" : undefined },
                         }}
+                        className={stylesPublication.allBook_table_head}
                         >
                         {
                         columnIsSortable ?
                         <><button
-                        style={{height: "auto", padding: "0.2em", margin: "0", fontWeight: "bold", fontSize: "100%"}}
                         onClick={() => {
                             column.toggleSortBy();
                         }}
@@ -2277,8 +1920,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         /><label
                             aria-hidden="true"
                             htmlFor="setShowColumnFiltersCheckbox"
-                            style={{cursor: "pointer", padding: "0.2em", paddingBottom: "0", fill: "black", display: "inline-block", width: "16px", border: showColumnFilters ? "2px solid black" : "1px solid gray", borderRadius: "4px"}}>
-                            <SVG ariaHidden svg={magnifyingGlass} />
+                            style={{cursor: "pointer", padding: "0.2em", color: "var(--color-button-primary)", paddingBottom: "0", display: "inline-block", width: "20px"}}>
+                            <SVG ariaHidden svg={SearchIcon} />
                         </label></>
                         }
                         </th>);
@@ -2303,35 +1946,41 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             // </tr>
             }
 
-            </thead>
-            <tbody {...tableInstance.getTableBodyProps()}>{tableInstance.page.map((row, index) => {
-                tableInstance.prepareRow(row);
+            </thead>}
+            <tbody {...tableInstance.getTableBodyProps()}
+            className={stylesPublication.allBook_table_body}
+            style={{
+                display : props.displayType === DisplayType.Grid ? "grid" : "",
+            }}
+                >
+                {tableInstance.page.map((row, index) => {
+                const id = parseInt(row.id, 10);
 
-                return (<tr key={`bodytr_${index}`} {...row.getRowProps()}
-                style={{
-                    // outlineColor: "#cccccc",
-                    // outlineOffset: "0px",
-                    // outlineStyle: "solid",
-                    // outlineWidth: "1px",
-                    backgroundColor: index % 2 ? "#efefef" : undefined,
-                }}>{row.cells.map((cell, i) =>
-                    {
-                        return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
+                tableInstance.prepareRow(row);
+                    return(
+                        props.displayType === DisplayType.Grid ?
+                        <tr key={index}>
+                            <td><PublicationCard publicationViewMaybeOpds={props.publicationViews[id]} /></td>
+                        </tr>
+                        :
+
+                        <tr key={`bodytr_${index}`} {...row.getRowProps()}
                         style={{
-                            padding: "0",
-                            margin: "0",
-                            // border: "solid 1px #eeeeee",
-                        }}
-                        >{
-                            cell.render("Cell", renderProps_Cell)
-                        }</td>);
-                    },
-                    )}
-                    </tr>
-                );
+                            backgroundColor: index % 2 ? "var(--color-figma-grey)" : undefined,
+                        }}>{row.cells.map((cell, i) =>
+                            {
+                                return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
+                                >{
+                                    cell.render("Cell", renderProps_Cell)
+                                }</td>);
+                            },
+                        )}
+                        </tr>
+                    );
             })}</tbody>
         </table>
         </div>
+        <AboutThoriumButton />
         </>
     );
 };
