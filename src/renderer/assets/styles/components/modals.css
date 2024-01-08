@@ -58,10 +58,11 @@
   overflow-y: auto;
   overflow-x: hidden;
   align-content: flex-start;
-  color: var(--color-primary);;
+  color: var(--color-primary);
   position: fixed;
   box-sizing: border-box;
-  padding: 0 20px;
+
+  /* padding: 0 20px; */
 
   @media screen and (width <= 960px) {
     width: 100vw;

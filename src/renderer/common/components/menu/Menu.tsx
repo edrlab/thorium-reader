@@ -24,11 +24,11 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content className="PopoverContent" sideOffset={5}>
+                <Popover.Content sideOffset={5}>
                     <div className={stylesDropDown.dropdown_menu}>
                         {props.children}
                     </div>
-                    <Popover.Arrow className="PopoverArrow" aria-hidden />
+                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                 </Popover.Content>
             </Popover.Portal>
         </Popover.Root>

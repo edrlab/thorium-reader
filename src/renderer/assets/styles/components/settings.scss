@@ -138,7 +138,8 @@ $setting_color:  var(--color-button-primary);
 
 .settings_content {
     flex: 2;
-    box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
+    
+    // box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
     overflow: scroll;
     margin-top: 25px;
     &::-webkit-scrollbar-thumb {
