@@ -6,13 +6,14 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
-import { DialogCloseButton, DialogHeader, DialogTitle, DialogFooter, DialogClose, DialogWithRadix, DialogWithRadixTrigger, DialogWithRadixContent } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { nanoid } from "nanoid";
@@ -174,39 +175,47 @@ export const ApiappAddFormDialog = () => {
     const submitButtonRef = React.useRef<HTMLButtonElement>();
     const contextValue = {selectSearchResult, setSelectSearchResult, submitAction: () => submitButtonRef.current.click()};
 
-    return <DialogWithRadix>
-        <DialogWithRadixTrigger asChild>
+    return <Dialog.Root>
+        <Dialog.Trigger asChild>
             <button
                 className={stylesButtons.button_primary}
             >
                 <SVG ariaHidden={true} svg={AddIcon} />
                 <span>{__("opds.addFormApiapp.title")}</span>
             </button>
-        </DialogWithRadixTrigger>
-        <DialogWithRadixContent>
-            <DialogHeader>
-                <DialogTitle>
-                    {__("opds.addFormApiapp.title")}
-                </DialogTitle>
-                <div>
-                    <DialogCloseButton />
+        </Dialog.Trigger>
+        <Dialog.Portal>
+            <div className={stylesModals.modal_dialog_overlay}></div>
+            <Dialog.Content>
+
+                <div className={stylesModals.modal_dialog_header}>
+                    <Dialog.Title>
+                        {__("opds.addFormApiapp.title")}
+                    </Dialog.Title>
+                    <div>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
                 </div>
-            </DialogHeader>
-            <context.Provider value={contextValue}>
-            <ApiappAddForm />
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                    </DialogClose>
-                    <DialogClose asChild>
-                        <button ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => addFeedAction()}>
-                            <SVG ariaHidden svg={AddIcon} />
-                            {__("opds.addForm.addButton")}</button>
-                    </DialogClose>
-                </DialogFooter>
-            </context.Provider>
-        </DialogWithRadixContent>
-    </DialogWithRadix>;
+                <context.Provider value={contextValue}>
+                    <ApiappAddForm />
+                    <div className={stylesModals.modal_dialog_footer}>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                        </Dialog.Close>
+                        <Dialog.Close asChild>
+                            <button ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => addFeedAction()}>
+                                <SVG ariaHidden svg={AddIcon} />
+                                {__("opds.addForm.addButton")}</button>
+                        </Dialog.Close>
+                    </div>
+                </context.Provider>
+            </Dialog.Content>
+        </Dialog.Portal>
+    </Dialog.Root>;
 };
 
 export default ApiappAddFormDialog;

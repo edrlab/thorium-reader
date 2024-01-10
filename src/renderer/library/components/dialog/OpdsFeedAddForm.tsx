@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { DialogClose, DialogCloseButton, DialogFooter, DialogHeader, DialogTitle, DialogWithRadix, DialogWithRadixContent, DialogWithRadixTrigger } from "readium-desktop/renderer/common/components/dialog/DialogWithRadix";
+import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
@@ -14,6 +14,7 @@ import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import "readium-desktop/renderer/assets/styles/components/catalog.scss";
 import classNames from "classnames";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
@@ -42,86 +43,93 @@ export const ApiappAddFormDialog = () => {
         setInfoOpen(!infoOpen);
     };
 
-    return <DialogWithRadix>
-        <DialogWithRadixTrigger asChild>
+    return <Dialog.Root>
+        <Dialog.Trigger asChild>
             <button
                 className={stylesButtons.button_primary}
             >
                 <SVG ariaHidden={true} svg={AddIcon} />
                 <span>{__("opds.addMenu")}</span>
             </button>
-        </DialogWithRadixTrigger>
-        <DialogWithRadixContent>
-            <DialogHeader>
-                <DialogTitle>
-                    {__("opds.addMenu")}
-                </DialogTitle>
-                <div>
-                    <DialogCloseButton />
-                </div>
-            </DialogHeader>
-            <form className={stylesModals.modal_dialog_body}>
-                <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
-                    <label htmlFor="title">{__("opds.addForm.name")}</label>
-                    <i><SVG ariaHidden svg={penIcon} /></i>
-                    <input
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e?.target?.value)}
-                        type="text"
-                        aria-label={__("opds.addForm.name")}
-                        // placeholder={__("opds.addForm.namePlaceholder")}
-                        required
-                    />
-                </div>
-                <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
-                    <label htmlFor="url">{__("opds.addForm.url")}</label>
-                    {/* <Form.Control asChild> */}
-                    <i><SVG ariaHidden svg={linkIcon} /></i>
-                    <input
-                        id="url"
-                        value={url}
-                        onChange={(e) => setUrl(e?.target?.value)}
-                        type="text"
-                        aria-label={__("opds.addForm.url")}
-                        // placeholder={__("opds.addForm.urlPlaceholder")}
-                        required
-                    />
-                </div>
-                <div>
-                    <button className="button_catalog_infos" onClick={(e) => openInfo(e)}>
-                        <SVG ariaHidden svg={InfoIcon} />
-                        What is OPDS?
-                        <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
-                    </button>
-                    { infoOpen ?
-                    <div className="catalog_infos_text">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Phasellus elit libero, pharetra vitae cursus sed, tincidunt et elit.
-                            Morbi laoreet iaculis nibh, non condimentum nulla euismod sed.
-                        </p>
-                        <a href="#">
-                            Vivamus quis pharetra eros.
-                            <SVG ariaHidden svg={FollowLinkIcon} />
-                        </a>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+            <div className={stylesModals.modal_dialog_overlay}></div>
+            <Dialog.Content>
+                <div className={stylesModals.modal_dialog_header}>
+                    <Dialog.Title>
+                        {__("opds.addMenu")}
+                    </Dialog.Title>
+                    <div>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
                     </div>
-                    : <></>}
                 </div>
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                    </DialogClose>
-                    <DialogClose asChild>
-                        <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => addAction()}>
-                            <SVG ariaHidden svg={AddIcon} />
-                            {__("opds.addForm.addButton")}
+                <form className={stylesModals.modal_dialog_body}>
+                    <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
+                        <label htmlFor="title">{__("opds.addForm.name")}</label>
+                        <i><SVG ariaHidden svg={penIcon} /></i>
+                        <input
+                            id="title"
+                            value={title}
+                            onChange={(e) => setTitle(e?.target?.value)}
+                            type="text"
+                            aria-label={__("opds.addForm.name")}
+                            // placeholder={__("opds.addForm.namePlaceholder")}
+                            required
+                        />
+                    </div>
+                    <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
+                        <label htmlFor="url">{__("opds.addForm.url")}</label>
+                        {/* <Form.Control asChild> */}
+                        <i><SVG ariaHidden svg={linkIcon} /></i>
+                        <input
+                            id="url"
+                            value={url}
+                            onChange={(e) => setUrl(e?.target?.value)}
+                            type="text"
+                            aria-label={__("opds.addForm.url")}
+                            // placeholder={__("opds.addForm.urlPlaceholder")}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <button className="button_catalog_infos" onClick={(e) => openInfo(e)}>
+                            <SVG ariaHidden svg={InfoIcon} />
+                            What is OPDS?
+                            <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
                         </button>
-                    </DialogClose>
-                </DialogFooter>
-            </form>
-        </DialogWithRadixContent>
-    </DialogWithRadix>;
+                        {infoOpen ?
+                            <div className="catalog_infos_text">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Phasellus elit libero, pharetra vitae cursus sed, tincidunt et elit.
+                                    Morbi laoreet iaculis nibh, non condimentum nulla euismod sed.
+                                </p>
+                                <a href="#">
+                                    Vivamus quis pharetra eros.
+                                    <SVG ariaHidden svg={FollowLinkIcon} />
+                                </a>
+                            </div>
+                            : <></>}
+                    </div>
+                    <div className={stylesModals.modal_dialog_footer}>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                        </Dialog.Close>
+                        <Dialog.Close asChild>
+                            <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => addAction()}>
+                                <SVG ariaHidden svg={AddIcon} />
+                                {__("opds.addForm.addButton")}
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                </form>
+            </Dialog.Content>
+        </Dialog.Portal>
+    </Dialog.Root>;
 };
 
 export default ApiappAddFormDialog;
