@@ -251,6 +251,7 @@
     }
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
     "@xmldom/xmldom": "^0.8.10",
     "classnames": "^2.5.1",
     "commonmark": "^0.30.0",
