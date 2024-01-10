@@ -11,11 +11,11 @@ import { ISearchState } from "readium-desktop/common/redux/states/renderer/searc
 export const ID = "READER_SEARCH_ENABLE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Partial<ISearchState> {
+export interface Payload extends Partial<ISearchState> {
 }
 
 export function build():
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

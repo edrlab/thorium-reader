@@ -22,5 +22,5 @@ export interface WithSender {
 }
 
 // tslint:disable-next-line: max-line-length
-export interface ActionWithSender<Type = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithSender {
+export interface ActionWithSender<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithSender {
 }

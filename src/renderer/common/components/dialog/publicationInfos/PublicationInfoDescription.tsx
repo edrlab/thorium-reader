@@ -7,7 +7,7 @@
 
 import classNames from "classnames";
 import * as debug_ from "debug";
-import * as DOMPurify from "dompurify";
+import DOMPurify from "dompurify";
 import * as React from "react";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";

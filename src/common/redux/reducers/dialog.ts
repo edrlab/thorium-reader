@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions/";
 import { DialogState } from "readium-desktop/common/redux/states/dialog";
@@ -16,7 +18,7 @@ const initialState: DialogState = {
 };
 
 // The dialog reducer.
-export function dialogReducer(
+function dialogReducer_(
     state: DialogState = initialState,
     action: dialogActions.openRequest.TAction |
         dialogActions.closeRequest.TAction |
@@ -67,3 +69,5 @@ export function dialogReducer(
 
     return state;
 }
+
+export const dialogReducer = dialogReducer_ as Reducer<ReturnType<typeof dialogReducer_>>;

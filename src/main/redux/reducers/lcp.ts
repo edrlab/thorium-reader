@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { lcpActions } from "../actions";
 import { ILcpState } from "../states/lcp";
 
@@ -12,7 +14,7 @@ const initialState: ILcpState = {
     publicationFileLocks: {},
 };
 
-export function lcpReducer(
+function lcpReducer_(
     state: ILcpState = initialState,
     action: lcpActions.publicationFileLock.TAction,
 ): ILcpState {
@@ -28,3 +30,5 @@ export function lcpReducer(
             return state;
     }
 }
+
+export const lcpReducer = lcpReducer_ as Reducer<ReturnType<typeof lcpReducer_>>;

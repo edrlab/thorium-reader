@@ -11,13 +11,13 @@ import { PublicationDocument, PublicationDocumentWithoutTimestampable } from "re
 export const ID = "PUBLICATION_ADD";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Array<PublicationDocument> {};
+export interface Payload extends Array<PublicationDocument> {};
 
 /**
  * add or update a publicationDocument in the redux main state database
  */
 export function build(...publicationDocument: (PublicationDocumentWithoutTimestampable | PublicationDocument)[]):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     const pubs = publicationDocument.map((v) => ({
         ...v,

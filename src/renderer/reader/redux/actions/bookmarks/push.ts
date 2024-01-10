@@ -12,11 +12,11 @@ import { v4 as uuidv4 } from "uuid";
 export const ID = "READER_BOOKMARKS_PUSH";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends IBookmarkState {
+export interface Payload extends IBookmarkState {
 }
 
 export function build(param: IBookmarkStateWithoutUUID):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     param.uuid = param.uuid || uuidv4();
 

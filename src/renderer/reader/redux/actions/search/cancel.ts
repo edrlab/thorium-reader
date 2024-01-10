@@ -11,11 +11,11 @@ import { ISearchState, searchDefaultState } from "readium-desktop/common/redux/s
 export const ID = "READER_SEARCH_CANCEL";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Partial<ISearchState> {
+export interface Payload extends Partial<ISearchState> {
 }
 
 export function build():
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

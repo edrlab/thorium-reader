@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { StreamerState } from "readium-desktop/main/redux/states/streamer";
@@ -23,7 +25,7 @@ const initialState: StreamerState = {
     publicationManifestUrl: {},
 };
 
-export function streamerReducer(
+function streamerReducer_(
     state: StreamerState = initialState,
     action: streamerActions.startSuccess.TAction |
         streamerActions.publicationOpenSuccess.TAction |
@@ -110,3 +112,5 @@ export function streamerReducer(
             return state;
     }
 }
+
+export const streamerReducer = streamerReducer_ as Reducer<ReturnType<typeof streamerReducer_>>;

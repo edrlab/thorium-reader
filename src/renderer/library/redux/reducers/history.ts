@@ -5,13 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { winActions } from "readium-desktop/renderer/library/redux/actions";
 
 import { THistoryState } from "readium-desktop/common/redux/states/renderer/history";
 
 const initialState: THistoryState = [];
 
-export function historyReducer(
+export function historyReducer_(
     state: THistoryState = initialState,
     action: winActions.history.TAction,
 ): THistoryState {
@@ -28,3 +30,5 @@ export function historyReducer(
 
     }
 }
+
+export const historyReducer = historyReducer_ as Reducer<ReturnType<typeof historyReducer_>>;

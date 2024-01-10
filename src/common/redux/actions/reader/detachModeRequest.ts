@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { ActionWithSender, WithSender } from "readium-desktop/common/models/sync";
+import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "READER_MODE_DETACH_REQUEST";
 
@@ -14,7 +15,9 @@ export interface Payload {
 }
 
 export function build():
-    Omit<ActionWithSender<typeof ID, Payload>, keyof WithSender> & Partial<WithSender> {
+    Action<typeof ID, Payload>
+    & Omit<ActionWithSender<typeof ID, Payload>, keyof WithSender> & Partial<WithSender>
+    {
 
     return {
         type: ID,

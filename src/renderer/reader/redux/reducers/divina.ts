@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { readerLocalActionDivina } from "../actions";
 import { defaultReadingMode, IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 
@@ -12,7 +14,7 @@ const defaultState: IDivinaState = {
     readingMode: defaultReadingMode,
 };
 
-export function readerDivinaReducer(
+function readerDivinaReducer_(
     state: IDivinaState = defaultState,
     action: readerLocalActionDivina.setReadingMode.TAction,
 ): IDivinaState {
@@ -33,3 +35,5 @@ export function readerDivinaReducer(
 
     return state;
 }
+
+export const readerDivinaReducer = readerDivinaReducer_ as Reducer<ReturnType<typeof readerDivinaReducer_>>;

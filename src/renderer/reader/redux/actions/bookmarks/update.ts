@@ -11,11 +11,11 @@ import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 export const ID = "READER_BOOKMARKS_UPDATE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends IBookmarkState {
+export interface Payload extends IBookmarkState {
 }
 
 export function build(param: IBookmarkState):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,
