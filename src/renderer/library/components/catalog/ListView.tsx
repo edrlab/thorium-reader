@@ -55,7 +55,7 @@ class CatalogListView extends React.Component<IProps, undefined> {
                         <section key={ entryIndex }>
                         {
                             <div className={stylesGlobal.heading}>
-                                <h2>{ entry.title }</h2>
+                                <h2>{ entry.id }</h2>
 
                                 <Link
                                     className={stylesButtons.button_primary_small}
@@ -64,7 +64,7 @@ class CatalogListView extends React.Component<IProps, undefined> {
                                         pathname: "/library/search/all",
                                     }}
                                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                                    title={`${this.props.__("header.allBooks")} (${entry.title})`}
+                                    title={`${this.props.__("header.allBooks")} (${entry.id})`}
                                 >
                                     {this.props.__("header.allBooks")}
                                 </Link>

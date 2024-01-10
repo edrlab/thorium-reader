@@ -171,9 +171,6 @@ function* getPublicationView() {
 export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
     debug("getCatalog");
 
-    const translator = diMainGet("translator");
-    const __ = translator.translate.bind(translator);
-
     const {
         audio: {
             readed: audiobookReaded,
@@ -204,27 +201,27 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
     // Dynamic entries
     const entries: CatalogEntryView[] = [
         {
-            title: __("catalog.entry.lastAdditions"),
+            id: "lastAdditions",
             totalCount: allAdded_.length,
             publicationViews: allAdded_,
         },
         {
-            title: __("catalog.entry.continueReading"),
+            id: "continueReading",
             totalCount: epubReaded_.length,
             publicationViews: epubReaded_,
         },
         {
-            title: __("catalog.entry.continueReadingAudioBooks"),
+            id: "continueReadingAudioBooks",
             totalCount: audiobookReaded_.length,
             publicationViews: audiobookReaded_,
         },
         {
-            title: __("catalog.entry.continueReadingDivina"),
+            id: "continueReadingDivina",
             totalCount: divinaReaded_.length,
             publicationViews: divinaReaded_,
         },
         {
-            title: __("catalog.entry.continueReadingPdf"),
+            id: "continueReadingPdf",
             totalCount: pdfReaded_.length,
             publicationViews: pdfReaded_,
         },

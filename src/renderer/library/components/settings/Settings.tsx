@@ -133,9 +133,9 @@ export const Settings: React.FC<ISettingsProps> = () => {
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
-
-            <h3>Settings
-            </h3>
+        <button> {/* must be a button here*/}
+            <h3>Settings</h3>
+        </button>
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
