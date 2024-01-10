@@ -8,11 +8,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import ApiappAddForm from "./ApiappAddForm";
 
 import FileImport from "./FileImport";
 import LcpAuthentication from "./LcpAuthentication";
-import OpdsFeedAddForm from "./OpdsFeedAddForm";
 import RenewLsdConfirm from "./RenewLsdConfirm";
 import ReturnLsdConfirm from "./ReturnLsdConfirm";
 
@@ -42,8 +40,6 @@ class DialogManager extends React.Component<IProps, undefined> {
 
         return (
             <>
-                <ApiappAddForm></ApiappAddForm>
-                <OpdsFeedAddForm></OpdsFeedAddForm>
                 <FileImport></FileImport>
                 <LcpAuthentication></LcpAuthentication>
                 <RenewLsdConfirm></RenewLsdConfirm>
