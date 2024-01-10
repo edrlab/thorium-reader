@@ -194,7 +194,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => ({
     // tslint:disable-next-line: max-line-length
-    /* Exported variable 'mapDispatchToProps' has or is using name 'IPayload' from external module "/Users/Pierre/Documents/thorium/src/renderer/reader/redux/actions/picker/picker" but cannot be named.ts(4023) */
     closePicker: (type: IPickerState["type"]) => {
         console.log("closepicker", type, props);
         if (type === "search") {

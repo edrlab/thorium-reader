@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 // import * as ramda from "ramda";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+// import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 import { createPatch } from "rfc6902";
 import { winActions } from "../actions";
 import { patchChannel } from "../sagas/patch";
@@ -15,9 +15,9 @@ import { patchChannel } from "../sagas/patch";
 import { PersistRootState, RootState } from "../states";
 
 export const reduxPersistMiddleware: Middleware
-    = (store: MiddlewareAPI<Dispatch<AnyAction>, RootState>) =>
-        (next: Dispatch<ActionWithSender>) =>
-            (action: ActionWithSender) => {
+    = (store: MiddlewareAPI<Dispatch<UnknownAction>, RootState>) =>
+        (next: (action: unknown) => unknown) => // Dispatch<ActionWithSender>
+            (action: unknown): unknown => { // ActionWithSender
 
                 const prevState = store.getState();
 

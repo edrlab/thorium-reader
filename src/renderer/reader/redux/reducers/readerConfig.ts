@@ -5,11 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { readerLocalActionSetConfig } from "../actions";
 
-export function readerConfigReducer(
+function readerConfigReducer_(
     state: ReaderConfig = readerConfigInitialState,
     action: readerLocalActionSetConfig.TAction,
 ): ReaderConfig {
@@ -25,3 +27,5 @@ export function readerConfigReducer(
             return state;
     }
 }
+
+export const readerConfigReducer = readerConfigReducer_ as Reducer<ReturnType<typeof readerConfigReducer_>>;

@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { readerLocalActionSearch } from "../actions";
 import { ISearchState, searchDefaultState } from "readium-desktop/common/redux/states/renderer/search";
 
-export function searchReducer(
+function searchReducer_(
     state: ISearchState = searchDefaultState(),
     action: readerLocalActionSearch.cancel.TAction |
     readerLocalActionSearch.request.TAction |
@@ -54,3 +56,5 @@ export function searchReducer(
             return state;
     }
 }
+
+export const searchReducer = searchReducer_ as Reducer<ReturnType<typeof searchReducer_>>;

@@ -10,11 +10,11 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "READER_SEARCH_PREVIOUS";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload {
+export interface Payload {
 }
 
 export function build():
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

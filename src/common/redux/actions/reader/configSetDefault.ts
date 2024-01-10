@@ -27,3 +27,4 @@ export function build(config: ReaderConfig = readerConfigInitialState):
 }
 build.toString = () => ID; // Redux StringableActionCreator
 export type TAction = ReturnType<typeof build>;
+// export type TActionStr = Action<string, Payload>;

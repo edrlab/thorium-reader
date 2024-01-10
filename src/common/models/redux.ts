@@ -7,10 +7,22 @@
 
 import { Action as ReduxAction } from "redux";
 
-export interface Action<Type = string, Payload = undefined, Meta = undefined>
+export interface Action<Type extends string = string, Payload = undefined, Meta = undefined>
     extends ReduxAction<Type> {
 
     payload?: Payload;
     meta?: Meta;
     error?: boolean;
+
+    // This is to pass the compilation of store.dispatch(),
+    // otherwise we would need to cast/coerce the argument type with "as UnknownAction", EVERYWHERE on the calling site!
+    // Is there a better way to satisfy the TypeScript types published by Redux??
+    //
+    // interface Dispatch<A extends Action = UnknownAction> {
+    //     <T extends A>(action: T, ...extraArgs: any[]): T;
+    // }
+    // interface UnknownAction extends Action {
+    //     [extraProps: string]: unknown;
+    // }
+    [extraProps: string]: unknown;
 }

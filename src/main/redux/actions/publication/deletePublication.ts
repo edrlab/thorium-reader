@@ -9,7 +9,7 @@ import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "PUBLICATION_DELETE";
 
-interface Payload {
+export interface Payload {
     publicationIdentifier: string;
 }
 

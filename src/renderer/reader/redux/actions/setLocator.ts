@@ -11,11 +11,11 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "READER_SET_LOCATOR_IN_RENDERER";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends LocatorExtended {
+export interface Payload extends LocatorExtended {
 }
 
 export function build(locator: LocatorExtended):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,
