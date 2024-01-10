@@ -10,7 +10,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.css";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import classNames from "classnames";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions } from "readium-desktop/common/redux/actions";
@@ -47,7 +47,7 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                             <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.delete)} onClick={removeAction} type="button"><SVG ariaHidden svg={Trash} />{__("dialog.yes")}</button>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.ddelete)} onClick={removeAction} type="button"><SVG ariaHidden svg={Trash} />{__("dialog.yes")}</button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>

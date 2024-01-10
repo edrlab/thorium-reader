@@ -13,7 +13,7 @@ import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import classNames from "classnames";

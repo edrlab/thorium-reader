@@ -30,7 +30,7 @@ import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop
 import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import SVG from "../../SVG";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";

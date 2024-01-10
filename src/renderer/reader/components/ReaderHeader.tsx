@@ -43,7 +43,7 @@ import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.typ
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
-import ReaderOptions from "./ReaderOptions";
+import { ReaderOptions } from "./ReaderOptions";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
@@ -733,7 +733,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             <ReaderOptions {...this.props.readerOptionsProps}
                                 isDivina={this.props.isDivina}
                                 isPdf={this.props.isPdf}
-                                focusSettingMenuButton={this.focusSettingMenuButton} />
+                            />
                         </li>
                         <li
                             {...(this.props.menuOpen &&

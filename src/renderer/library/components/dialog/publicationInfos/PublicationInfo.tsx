@@ -27,7 +27,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import { useLocation } from "react-router";

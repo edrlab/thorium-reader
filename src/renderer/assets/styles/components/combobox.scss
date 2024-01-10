@@ -1,7 +1,7 @@
 .react_aria_ComboBox {
   color: var(--text-color);
   padding-bottom: 15px;
-  border-bottom: 3px solid var(--color-light-grey);
+  // border-bottom: 3px solid var(--color-light-grey);
   margin: 10px 0 20px 0;
   width: 100%;
   display: flex;
@@ -30,17 +30,18 @@
 
   .react_aria_Label {
     font-weight: 600;
+    margin: 0;
   }
 
   .react_aria_Input {
     margin: 2px;
-    
-    // font-size: 1.072rem;
+    font-size: 1.072rem;
     background: var(--color-secondary);
     color: var(--field-text-color);
 
     padding: 0.286rem 2rem 0.286rem 0.571rem;
     vertical-align: middle;
+    border: none;
 
     /*
     See R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE class in TSX

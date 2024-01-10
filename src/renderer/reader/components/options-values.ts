@@ -7,7 +7,7 @@
 
 import { ReaderConfig, ReaderConfigStringsAdjustables } from "readium-desktop/common/models/reader";
 import {
-    TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
+    TChangeEventOnInput, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 
@@ -131,10 +131,10 @@ export interface IReaderOptionsProps {
     indexes: AdjustableSettingsNumber;
     open: boolean;
     readerConfig: ReaderConfig;
-    handleSettingChange: (
-        event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
-        name: keyof ReaderConfig,
-        value?: string | boolean) => void;
+    // handleSettingChange: (
+    //     event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
+    //     name: keyof ReaderConfig,
+    //     value?: string | boolean) => void;
     handleIndexChange: (
         event: TChangeEventOnInput,
         name: keyof ReaderConfigStringsAdjustables) => void;

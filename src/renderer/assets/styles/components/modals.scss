@@ -26,6 +26,15 @@
   min-width: 700px;
   align-items: center;
   justify-content: center;
+
+  &_hidden {
+    position: fixed;
+    z-index: 101;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 }
 
 .modal_dialog_overlay_hidden {
@@ -47,14 +56,21 @@
   width: calc(100vw - 100px);
   max-width: 960px; */
   width: 776px;
-
-  /* max-height: calc(100vh - 100px); */
+/* max-height: calc(100vh - 100px); */
   height: 597px;
+}
+
+.modal_dialog,
+.modal_dialog_reader {
+  margin: 30px;
+  min-height: 400px;
+  min-width: 700px;
+  max-width: calc(100vw - 60px);
+  max-height: calc(100vh - 60px);
   border-radius: 10px;
   z-index: 102;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-secondary);
   overflow-y: auto;
   overflow-x: hidden;
   align-content: flex-start;
@@ -64,18 +80,48 @@
 
   /* padding: 0 20px; */
 
-  @media screen and (width <= 960px) {
+  @media screen and (width <=960px) {
     width: 100vw;
   }
 
-  @media screen and (width <= 960px) {
+  @media screen and (width <=960px) {
     width: 100vw;
     height: 100vh;
   }
 
   &.modal_dialog_full {
-    width: calc(100vw - 60px);
-    height: calc(100vh - 100px);
+    position: relative;
+    box-sizing: border-box;
+
+    &_full {
+      width: calc(100vw - 60px);
+      height: calc(100vh - 100px);
+    }
+  }
+}
+
+.modal_dialog {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+
+  &_reader {
+    .display_options_item {
+      background-color: transparent;
+      color: var(--reader-fontColor);
+    }
+    .settings_container {
+      background-color: var(--reader-secondaryColor);
+    }
+    color: var(--reader-fontColor);
+    .react_aria_ComboBox {
+      .react_aria_Button {
+        background-color: var(--reader-secondaryColor);
+      }
+      .react_aria_Input {
+        background-color: var(--reader-secondaryColor);    
+        color: var(--reader-fontColor);
+      }
+    }
   }
 }
 
@@ -94,7 +140,7 @@
   overflow-x: hidden;
   overflow-y: auto;
 
-  &.modal_dialog_body_centered {
+  &_centered {
     display: flex;
     align-items: center;
     justify-content: center;

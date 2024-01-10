@@ -21,12 +21,11 @@ $setting_color:  var(--color-button-primary);
         input[type="range"] {
             width: 150px;
         }
-        p {
-            margin: 0;
-        }
+        // p {
+        //     margin: 0;
+        // }
         .btn_primary {
-            width: fit-content;
-            padding: 0 10px;
+            width: 300px;
             height: 35px;
             border: 1px solid $setting_color;
             border-radius: 5px;
@@ -91,6 +90,14 @@ $setting_color:  var(--color-button-primary);
             transition: 200ms linear;
         }
     }
+    .allowCustom {
+        display: flex;
+        accent-color: var(--color-button-primary);
+        margin: 10px 10%;
+    }
+    button[data-value="tab-text"], button[data-value="tab-spacing"] {
+        margin-left: 20%;
+    }
 }
 
 .tablist_reading {
@@ -138,8 +145,7 @@ $setting_color:  var(--color-button-primary);
 
 .settings_content {
     flex: 2;
-    
-    // box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
+    box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
     overflow: scroll;
     margin-top: 25px;
     &::-webkit-scrollbar-thumb {
@@ -172,7 +178,7 @@ $setting_color:  var(--color-button-primary);
 }
 
 .settings_tab {
-    margin: 0 25px;
+    margin: 0 25px!important;
     &_container {
     margin: 35px;
     &_reading{
@@ -205,11 +211,12 @@ $setting_color:  var(--color-button-primary);
                 width: 90%!important;
                 .size_range {
                     display: flex;
-                    align-content: center;
+                    align-items: center;
                     gap: 10px;
                     height: 30px;
                     input[type="range"] {
                         width: 150px;
+                        height: 5px;
                     }
                 }
                 label {
@@ -250,7 +257,7 @@ $setting_color:  var(--color-button-primary);
         display: flex;
         align-items: start;
         justify-content: flex-start;
-        margin: 2px 25px 10px;
+        margin: 0 25px 20px;
         font-size: 16px;
         gap: 10px;
         h2 {
@@ -345,10 +352,12 @@ div[data-radix-popper-content-wrapper] {
 .scale_button {
     scale: 2;
     color: var(--color-button-primary);
+
     // border: 1px solid transparent;
     border-radius: 4px;
     width: 15px;
-    height: 15px;
+
+    // height: 15px;
     text-align: center;
     border: 1px solid transparent;
     position: relative;
@@ -380,9 +389,12 @@ div[data-radix-popper-content-wrapper] {
 
 .settings_reading {
     &_text {
-        font-size: 14px;
+        h4 {
+        margin-bottom: 10px;
+        }
         input[type="range"] {
             width: 200px;
+            height: 5px;
         }
         .label_fontSize, .label_fontFamily {
             margin: 10px 0 20px 0;
@@ -425,7 +437,8 @@ div[data-radix-popper-content-wrapper] {
         border-radius: 6px;
         transition: 200ms linear;
         min-height: 70px;
-        &:hover {
+        background-color: #F5F5F5;
+        &:hover:not([disabled])  {
             border: 1px solid $setting_color;
             background-color: $settings_bg;
             cursor: pointer;
@@ -442,8 +455,8 @@ div[data-radix-popper-content-wrapper] {
                 svg {
                 fill: $setting_color;
                 }
+            }
         }
-    }
     }
 }
 

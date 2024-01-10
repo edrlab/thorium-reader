@@ -17,7 +17,7 @@ import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
-    ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings, ReaderConfigStringsAdjustables,
+    ReaderConfig, ReaderConfigStringsAdjustables,
 } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
@@ -47,7 +47,7 @@ import {
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import {
-    TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
+    TChangeEventOnInput, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -568,7 +568,7 @@ class Reader extends React.Component<IProps, IState> {
             open: this.state.settingsOpen,
             indexes: this.props.indexes,
             readerConfig: this.props.readerConfig,
-            handleSettingChange: this.handleSettingChange.bind(this),
+            // handleSettingChange: this.handleSettingChange.bind(this),
             handleIndexChange: this.handleIndexChange.bind(this),
             setSettings: this.setSettings,
             toggleMenu: this.handleSettingsClick,
@@ -2402,34 +2402,34 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private handleSettingChange(
-        event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
-        name: keyof ReaderConfig,
-        givenValue?: string | boolean) {
+    // private handleSettingChange(
+    //     event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
+    //     name: keyof ReaderConfig,
+    //     givenValue?: string | boolean) {
 
-        let value = givenValue;
-        if (value === null || value === undefined) {
-            if (event?.target?.value) {
-                value = event.target.value.toString();
-            } else {
-                return;
-            }
-        }
+    //     let value = givenValue;
+    //     if (value === null || value === undefined) {
+    //         if (event?.target?.value) {
+    //             value = event.target.value.toString();
+    //         } else {
+    //             return;
+    //         }
+    //     }
 
-        const readerConfig = r.clone(this.props.readerConfig);
+    //     const readerConfig = r.clone(this.props.readerConfig);
 
-        const typedName =
-            name as (typeof value extends string ? keyof ReaderConfigStrings : keyof ReaderConfigBooleans);
-        const typedValue =
-            value as (typeof value extends string ? string : boolean);
-        readerConfig[typedName] = typedValue;
+    //     const typedName =
+    //         name as (typeof value extends string ? keyof ReaderConfigStrings : keyof ReaderConfigBooleans);
+    //     const typedValue =
+    //         value as (typeof value extends string ? string : boolean);
+    //     readerConfig[typedName] = typedValue;
 
-        if (readerConfig.paged) {
-            readerConfig.enableMathJax = false;
-        }
+    //     if (readerConfig.paged) {
+    //         readerConfig.enableMathJax = false;
+    //     }
 
-        this.handleSettingsSave(readerConfig);
-    }
+    //     this.handleSettingsSave(readerConfig);
+    // }
 
     private handleIndexChange(event: TChangeEventOnInput, name: keyof ReaderConfigStringsAdjustables) {
 

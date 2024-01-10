@@ -60,14 +60,7 @@ declare const styles: {
   readonly "nightMode": string;
   readonly "noAudio": string;
   readonly "notUsed": string;
-  readonly "option_auto": string;
-  readonly "option_colonne": string;
-  readonly "option_colonne1": string;
-  readonly "option_colonne2": string;
-  readonly "option_justif": string;
-  readonly "option_start": string;
   readonly "out_of_screen": string;
-  readonly "page_option": string;
   readonly "publication_viewport": string;
   readonly "publication_viewport_container": string;
   readonly "read_settings": string;
@@ -79,7 +72,6 @@ declare const styles: {
   readonly "right": string;
   readonly "root": string;
   readonly "rtlDir": string;
-  readonly "scroll_option": string;
   readonly "sepiaMode": string;
   readonly "settings_action": string;
   readonly "settings_content": string;

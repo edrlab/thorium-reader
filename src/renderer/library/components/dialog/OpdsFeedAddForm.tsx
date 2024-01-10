@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,

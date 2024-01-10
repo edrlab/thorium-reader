@@ -11,7 +11,7 @@ import * as ReactDOM from "react-dom";
 import FocusLock from "react-focus-lock";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";

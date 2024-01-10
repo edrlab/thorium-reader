@@ -17,7 +17,8 @@ export const FONT_ID_VOID = "VOID";
 const fontList: Font[] =
 [{
     id: FONT_ID_DEFAULT,
-    label: "Default font",
+    label: "Original font",
+    fontFamily: "",
 }, {
     id: "OLD",
     label: "Old Style",
@@ -47,10 +48,12 @@ const fontList: Font[] =
     id: "MONO",
     label: "Monospace",
     fontFamily: "\"Andale Mono\", Consolas, monospace",
-}, {
-    id: FONT_ID_VOID,
-    label: "...",
-    fontFamily: "Consolas, monospace",
-}];
+},
+// {
+//     id: FONT_ID_VOID,
+//     label: "...",
+//     fontFamily: "Consolas, monospace",
+// }
+];
 
 export default fontList;
