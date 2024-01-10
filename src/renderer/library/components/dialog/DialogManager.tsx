@@ -11,8 +11,6 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 
 import FileImport from "./FileImport";
 import LcpAuthentication from "./LcpAuthentication";
-import RenewLsdConfirm from "./RenewLsdConfirm";
-import ReturnLsdConfirm from "./ReturnLsdConfirm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -42,8 +40,6 @@ class DialogManager extends React.Component<IProps, undefined> {
             <>
                 <FileImport></FileImport>
                 <LcpAuthentication></LcpAuthentication>
-                <RenewLsdConfirm></RenewLsdConfirm>
-                <ReturnLsdConfirm></ReturnLsdConfirm>
             </>
         );
 

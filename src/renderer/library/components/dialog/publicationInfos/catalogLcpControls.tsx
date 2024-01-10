@@ -6,12 +6,10 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { connect, useDispatch } from "react-redux";
+import { lcpActions, readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import {
@@ -23,10 +21,15 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import classNames from "classnames";
 import DeletePublicationConfirm from "../DeletePublicationConfirm";
 import * as SaveAsIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.svg";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
+import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -47,9 +50,6 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
 
         this.handleRead = this.handleRead.bind(this);
         this.exportPublication = this.exportPublication.bind(this);
-
-        this.returnPublicationDialog = this.returnPublicationDialog.bind(this);
-        this.renewPublicationDialog = this.renewPublicationDialog.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -79,42 +79,42 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
         return (
             <>
                 {(!lsdStatus ||
-                    (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready)) ?
-                    <button
-                        onClick={this.handleRead}
-                        className={stylesButtons.button_primary}
-                    >
-                        <SVG svg={ReadBook} ariaHidden />
-                        {__("catalog.readBook")}
-                    </button>
-                    : <></>
+                (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready)) ?
+                <button
+                    onClick={this.handleRead}
+                    className={stylesButtons.button_primary}
+                >
+                    <SVG svg={ReadBook} ariaHidden />
+                    {__("catalog.readBook")}
+                </button>
+                : <></>
                 }
                 {
                     // lsdStatus === StatusEnum.Expired &&
-                    lsdRenewLink &&
-                    <button
-                        onClick={this.renewPublicationDialog}
-                        className={stylesButtons.button_transparency}
-                    >
-                        <SVG svg={LoopIcon} ariaHidden />
-                        {__("publication.renewButton")}
-                    </button>
+                    lsdRenewLink ?
+                        <RenewLsdConfirm publicationView={this.props.publicationView} trigger={(
+                            <button
+                                className={stylesButtons.button_transparency}
+                            >
+                                <SVG svg={LoopIcon} ariaHidden />
+                                {__("publication.renewButton")}
+                            </button>
+                        )} /> : <></>
                 }
                 {
-                    lsdReturnLink &&
-                    <button
-                        onClick={this.returnPublicationDialog}
-                        className={stylesButtons.button_transparency}
-                    >
-                        <SVG svg={ArrowIcon} ariaHidden />
-                        {__("publication.returnButton")}
-                    </button>
+                    lsdReturnLink ?
+                        <ReturnLsdConfirm publicationView={this.props.publicationView} trigger={(
+                            <button
+                                className={stylesButtons.button_transparency}
+                            >
+                                <SVG svg={ArrowIcon} ariaHidden />
+                                {__("publication.returnButton")}
+                            </button>
+                        )} /> : <></>
                 }
                 <DeletePublicationConfirm
                     trigger={(
-                        <button
-                            className={stylesButtons.button_transparency}
-                        >
+                        <button className={stylesButtons.button_transparency}>
                             <SVG svg={TrashIcon} ariaHidden />
                             {__("catalog.deleteBook")}
                         </button>
@@ -131,14 +131,6 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
         );
     }
 
-    private renewPublicationDialog(e: TMouseEventOnButton) {
-        e.preventDefault();
-        this.props.openRenewDialog();
-    }
-    private returnPublicationDialog(e: TMouseEventOnButton) {
-        e.preventDefault();
-        this.props.openReturnDialog();
-    }
     private exportPublication(e: TMouseEventOnButton) {
         e.preventDefault();
 
@@ -161,21 +153,78 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
             dispatch(dialogActions.closeRequest.build());
             dispatch(readerActions.openRequest.build(props.publicationView.identifier));
         },
-        openRenewDialog: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.LsdRenewConfirm,
-                {
-                    publicationView: props.publicationView,
-                },
-            ));
-        },
-        openReturnDialog: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.LsdReturnConfirm,
-                {
-                    publicationView: props.publicationView,
-                },
-            ));
-        },
     };
 };
 
 export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogLcpControls));
+
+const RenewLsdConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+
+    const renew = () => {
+            dispatch(lcpActions.renewPublicationLicense.build(props.publicationView.identifier));
+    };
+
+    return (
+        <AlertDialog.Root {...props}>
+            <AlertDialog.Trigger asChild>
+                {props.trigger}
+            </AlertDialog.Trigger>
+            <AlertDialog.Portal>
+                <div className={stylesAlertModals.AlertDialogOverlay}></div>
+                <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("publication.renewButton")}</AlertDialog.Title>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}> {/* replace with <p></p> */}
+                        <strong>{__("dialog.renew")}</strong> {props.publicationView.documentTitle}
+                    </AlertDialog.Description>
+                    <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
+                        <AlertDialog.Cancel asChild>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{__("dialog.cancel")}</button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.ddelete)} onClick={renew} type="button">{__("dialog.yes")}</button>
+                        </AlertDialog.Action>
+                    </div>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>
+    );
+
+};
+
+const ReturnLsdConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+
+    const renew = () => {
+            dispatch(lcpActions.returnPublication.build(props.publicationView.identifier));
+    };
+
+    return (
+        <AlertDialog.Root {...props}>
+            <AlertDialog.Trigger asChild>
+                {props.trigger}
+            </AlertDialog.Trigger>
+            <AlertDialog.Portal>
+                <div className={stylesAlertModals.AlertDialogOverlay}></div>
+                <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("publication.returnButton")}</AlertDialog.Title>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                        <p><strong>{__("dialog.return")}</strong></p>
+                        <p>{props.publicationView.documentTitle}</p>
+                    </AlertDialog.Description>
+                    <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
+                        <AlertDialog.Cancel asChild>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{__("dialog.cancel")}</button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.ddelete)} onClick={renew} type="button">{__("dialog.yes")}</button>
+                        </AlertDialog.Action>
+                    </div>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>
+    );
+
+};
