@@ -278,6 +278,14 @@ select {
 .form_group_catalog {
   width: 100%;
   height: 30px;
+  margin-top: 30px;
+
+  &:has(#passphrase:focus) {
+    outline-color: blue !important;
+    outline-style: solid !important;
+    outline-width: 2px !important;
+    outline-offset: -2px;
+  }
 }
 
 .form_group_wrapper {
@@ -288,7 +296,7 @@ select {
 
   & button {
     min-width: 100px;
-    height: 42px;
+    height: 35px;
   }
 }
 

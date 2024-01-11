@@ -7,6 +7,7 @@ declare const styles: {
   readonly "form_group_catalog": string;
   readonly "form_group_wrapper": string;
   readonly "outline": string;
+  readonly "passphrase": string;
   readonly "radio_list": string;
 };
 export = styles;

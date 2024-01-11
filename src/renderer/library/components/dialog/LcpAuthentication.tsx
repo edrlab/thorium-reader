@@ -12,8 +12,13 @@ import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalog.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -21,6 +26,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { TChangeEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { lcpActions } from "readium-desktop/common/redux/actions";
+import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -35,6 +41,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     password: string | undefined;
+    infoOpen: boolean;
 }
 
 export class LCPAuthentication extends React.Component<IProps, IState> {
@@ -47,6 +54,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
 
         this.state = {
             password: undefined,
+            infoOpen : false,
         };
     }
 
@@ -61,6 +69,11 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             return <></>;
         }
 
+        const openInfo = (e: any) => {
+            e.preventDefault();
+            this.setState({infoOpen : !this.state.infoOpen});
+        };
+
         const { __ } = this.props;
         return <Dialog.Root defaultOpen={true}>
             <Dialog.Portal>
@@ -68,7 +81,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                 <Dialog.Content className={stylesModals.modal_dialog}>
                     <div className={stylesModals.modal_dialog_header}>
                         <Dialog.Title>
-                            {__("library.lcp.password")}
+                            {__("library.lcp.sentence")}
                         </Dialog.Title>
                         <div>
                             <Dialog.Close asChild>
@@ -78,9 +91,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             </Dialog.Close>
                         </div>
                     </div>
-                    <form className={stylesModals.modal_dialog_body}>
-
-                        <p><strong>{__("library.lcp.sentence")}</strong></p>
+                    <div className={stylesModals.modal_dialog_body}>
                         {
                             typeof this.props.message === "string" ?
                                 <p>
@@ -89,36 +100,56 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 : <></>
                         }
                         <p>
-                            <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
+                            <span className={stylesModals.lcp_hint}>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                         </p>
-                        <div className={stylesInputs.form_group}>
+                        <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
                             <label htmlFor="passphrase">{__("library.lcp.password")}</label>
                             <input
                                 id="passphrase"
                                 aria-label={__("library.lcp.password")}
                                 type="password"
                                 onChange={this.onPasswordChange}
-                                placeholder={__("library.lcp.password")}
                                 ref={this.focusRef}
+                                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                             />
                         </div>
                         {
                             this.props.urlHint?.href
                                 ?
-                                <a href={this.props.urlHint.href}>
+                                <a href={this.props.urlHint.href} className={stylesModals.urlHint}>
                                     {this.props.urlHint.title || __("library.lcp.urlHint")}
                                 </a>
                                 : <></>
                         }
+                        <div>
+                        <button className={stylesButtons.button_catalog_infos} onClick={(e) => openInfo(e)}>
+                            <SVG ariaHidden svg={InfoIcon} />
+                            What is LCP?
+                            <SVG ariaHidden svg={this.state.infoOpen ? ChevronUp : ChevronDown} />
+                        </button>
+                        {this.state.infoOpen ?
+                            <div className={stylesCatalogs.catalog_infos_text}>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Phasellus elit libero, pharetra vitae cursus sed, tincidunt et elit.
+                                    Morbi laoreet iaculis nibh, non condimentum nulla euismod sed.
+                                </p>
+                                <a href="#">
+                                    Vivamus quis pharetra eros.
+                                    <SVG ariaHidden svg={FollowLinkIcon} />
+                                </a>
+                            </div>
+                            : <></>}
+                    </div>
                         <div className={stylesModals.modal_dialog_footer}>
                             <Dialog.Close asChild>
-                                <button className={stylesButtons.button_primary}>{__("dialog.cancel")}</button>
+                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" className={stylesButtons.button_secondary} onClick={() => this.submit()}>{__("opds.addForm.addButton")}</button>
+                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={() => this.submit()}>{__("opds.addForm.addButton")}</button>
                             </Dialog.Close>
                         </div>
-                    </form>
+                    </div>
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>;

@@ -42,7 +42,7 @@
         background-color: var(--color-button-secondary);
         color: var(--color-button-primary);
         svg {
-            fill: var(--color-primary);
+            fill: var(--color--button-primary);
         }
         &:hover {
             background-color: white;

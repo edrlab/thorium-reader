@@ -37,7 +37,7 @@
   transition: all 0.2s;
   flex: none;
 
-  &:hover {
+  :hover {
     background: rgba(0, 0, 0, 0.05);
   }
 }
