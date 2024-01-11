@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
@@ -22,6 +22,7 @@ import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
 import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalog.scss";
 
 export const ApiappAddFormDialog = () => {
     const [__] = useTranslator();
@@ -53,7 +54,7 @@ export const ApiappAddFormDialog = () => {
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
-            <Dialog.Content>
+            <Dialog.Content className={stylesModals.modal_dialog} >
                 <div className={stylesModals.modal_dialog_header}>
                     <Dialog.Title>
                         {__("opds.addMenu")}
@@ -95,13 +96,13 @@ export const ApiappAddFormDialog = () => {
                         />
                     </div>
                     <div>
-                        <button className="button_catalog_infos" onClick={(e) => openInfo(e)}>
+                        <button className={stylesButtons.button_catalog_infos} onClick={(e) => openInfo(e)}>
                             <SVG ariaHidden svg={InfoIcon} />
                             What is OPDS?
                             <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
                         </button>
                         {infoOpen ?
-                            <div className="catalog_infos_text">
+                            <div className={stylesCatalogs.catalog_infos_text}>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                     Phasellus elit libero, pharetra vitae cursus sed, tincidunt et elit.

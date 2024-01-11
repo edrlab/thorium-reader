@@ -1,0 +1,14 @@
+.catalog_infos_text {
+    margin-bottom: 30px;
+    font-size: 14px;
+    max-width: 750px;
+    a {
+        color: var(--color-button-primary);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        svg {
+        width: 14px;
+        }
+    }
+}

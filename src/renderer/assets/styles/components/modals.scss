@@ -60,11 +60,19 @@
   height: 597px;
 }
 
+.modal_dialog_reader {
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  width: 776px;
+}
+
 .modal_dialog,
 .modal_dialog_reader {
-  margin: 30px;
-  min-height: 400px;
-  min-width: 700px;
+
+  // min-height: 400px;
+  // min-width: 700px;
+  height: fit-content;
   max-width: calc(100vw - 60px);
   max-height: calc(100vh - 60px);
   border-radius: 10px;
@@ -77,17 +85,6 @@
   color: var(--color-primary);
   position: fixed;
   box-sizing: border-box;
-
-  /* padding: 0 20px; */
-
-  @media screen and (width <=960px) {
-    width: 100vw;
-  }
-
-  @media screen and (width <=960px) {
-    width: 100vw;
-    height: 100vh;
-  }
 
   &.modal_dialog_full {
     position: relative;
@@ -242,4 +239,15 @@
       list-style: none;
     }
   }
+}
+
+.lcp_hint {
+  color: var(--color-button-primary);
+  background-color: var(--color-button-secondary);
+  padding: 5px;
+}
+
+.urlHint {
+  font-size: 14px;
+  color: var(--color-button-primary);
 }
