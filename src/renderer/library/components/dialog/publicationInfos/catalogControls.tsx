@@ -59,7 +59,7 @@ export class CatalogControls extends React.Component<IProps, undefined> {
                 </button>
                 <DeletePublicationConfirm
                     trigger={(
-                        <button className={stylesButtons.button_transparency}>
+                        <button className={stylesButtons.button_secondary}>
                             <SVG svg={TrashIcon} ariaHidden />
                             {__("catalog.deleteBook")}
                         </button>
@@ -68,7 +68,7 @@ export class CatalogControls extends React.Component<IProps, undefined> {
                     publicationView={this.props.publicationView}
                 />
 
-                <button onClick={this.exportPublication} className={stylesButtons.button_transparency}>
+                <button onClick={this.exportPublication} className={stylesButtons.button_secondary}>
                     <SVG svg={SaveAsIcon} ariaHidden />
                     {__("catalog.export")}
                 </button>
