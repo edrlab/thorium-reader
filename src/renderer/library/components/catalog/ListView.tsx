@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
 import {

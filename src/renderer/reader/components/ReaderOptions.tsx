@@ -29,7 +29,7 @@ import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common
 import { IReaderOptionsProps } from "./options-values";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";

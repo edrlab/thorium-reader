@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { authActions } from "readium-desktop/common/redux/actions";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,

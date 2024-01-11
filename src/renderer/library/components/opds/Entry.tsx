@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";

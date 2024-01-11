@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
 import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.css";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

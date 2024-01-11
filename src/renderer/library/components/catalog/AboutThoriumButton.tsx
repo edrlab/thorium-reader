@@ -13,7 +13,7 @@ import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,

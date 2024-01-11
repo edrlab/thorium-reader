@@ -12,7 +12,7 @@ import { dialogActions, importActions } from "readium-desktop/common/redux/actio
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as CartFillIcon from "readium-desktop/renderer/assets/icons/cart-fill.svg";
 import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,

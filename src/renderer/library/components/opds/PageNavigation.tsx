@@ -15,7 +15,7 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/chevron-bar-left.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/chevron-bar-right.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,

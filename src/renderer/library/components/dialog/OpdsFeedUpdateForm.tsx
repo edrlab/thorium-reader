@@ -9,7 +9,7 @@ import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import {

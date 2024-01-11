@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
@@ -186,7 +186,7 @@ export const ApiappAddFormDialog = () => {
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
-            <Dialog.Content>
+            <Dialog.Content className={stylesModals.modal_dialog}>
 
                 <div className={stylesModals.modal_dialog_header}>
                     <Dialog.Title>

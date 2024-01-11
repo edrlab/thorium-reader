@@ -19,7 +19,7 @@ import { keyboardActions, toastActions } from "readium-desktop/common/redux/acti
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";

@@ -31,7 +31,7 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import { useLocation } from "react-router";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 const PublicationInfoLibContext = React.createContext<DialogType[DialogTypeName.PublicationInfoLib] | undefined>(undefined);
 export const PublicationInfoLibWithRadix: React.FC<React.PropsWithChildren<{publicationView: Pick<PublicationView, "identifier">}>> = (props) => {

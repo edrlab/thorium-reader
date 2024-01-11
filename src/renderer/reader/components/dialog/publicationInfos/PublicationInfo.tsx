@@ -18,7 +18,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { PublicationInfoContent } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
 
 // Logger

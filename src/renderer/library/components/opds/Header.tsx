@@ -14,7 +14,7 @@ import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/house-fill.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

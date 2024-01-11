@@ -15,34 +15,25 @@
 =-=-= components/buttons.css
 */
 
-/*
+@mixin button_primary {
+  position: relative;
+  display: inline;
+  border: 1px solid var(--color-primary);
+  border-radius: 5px;
+  text-align: center;
+  color:  var(--color-primary);
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  transition: all 0.2s;
+  flex: none;
 
-  1. button
-
-  2. .button_primary
-     .button_primary_small
-
-  3. .button_secondary
-
-  4. (x) .button_tertiary
-
-  5. .button_transparency
-     .button_transparency_icon
-     .button_link
-
-  6. .button_keyboard
-
-*/
-
-/* button */
-
-/* button,
-.button_primary,
-.button_primary_small {
-  &:not(:last-child) {
-    margin-right: 10px;
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
   }
-} */
+}
 
 button {
   padding: 0;
@@ -80,24 +71,85 @@ button {
   border-radius: 5px;
 }
 
-/*
-
-  2. .button_primary
-     .button_primary_small
-     .button_primary_icon
-
-*/
-
 .button_primary_form_default {
   border-width: 2px !important;
   font-weight: bold !important;
 }
 
+.button_primary_blue {
+  border: 1px solid var(--color-button-primary);
+  height: 30px;
+  border-radius: 4px;
+  padding: 5px;
+  min-width: 100px;
+  background-color: var(--color-button-primary);
+  color: white;
+  transition: 200ms linear;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 12px;
+    fill: white;
+  }
+
+  &:hover {
+    color: var(--color-button-primary);
+  }
+}
+
 .button_primary {
-  @mixin button_primary;
+  @include button_primary;
 
   font: 1rem Arial, sans-serif;
   padding: 10px 15px;
+
+  &_small {
+    font: 14px Arial, sans-serif;
+    padding: 8px 15px;
+
+    & svg {
+      height: 14px;
+      width: 14px;
+      vertical-align: -2px;
+      margin-left: 5px;
+      fill: var(--color-primary);
+    }
+
+    &.button_icon {
+      height: 16px;
+      padding: 8px 20px;
+      background: var(--color-secondary);
+      overflow: visible;
+  
+      & input {
+        overflow: hidden;
+        z-index: -1;
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: calc(100% + 2px);
+        height: calc(100% + 2px);
+        appearance: none;
+        color: transparent;
+        background: transparent;
+        border-radius: 7px;
+        border: 1px solid transparent;
+      }
+  
+      & svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        vertical-align: 0;
+      }
+    }
+  }
 
   & svg {
     vertical-align: -2px;
@@ -114,66 +166,26 @@ button {
     }
   }
 }
-
-.button_primary_small,
-.heading button {
-  @mixin button_primary;
-
-  font: 14px Arial, sans-serif;
-  padding: 8px 15px;
-
-  & svg {
-    height: 14px;
-    width: 14px;
-    vertical-align: -2px;
-    margin-left: 5px;
-    fill: var(--color-primary);
-
-  }
-
-  &.button_icon {
-    height: 16px;
-    padding: 8px 20px;
-    background: var(--color-secondary);
-    overflow: visible;
-
-    & input {
-      overflow: hidden;
-      z-index: -1;
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      width: calc(100% + 2px);
-      height: calc(100% + 2px);
-      appearance: none;
-      color: transparent;
-      background: transparent;
-      border-radius: 7px;
-      border: 1px solid transparent;
-    }
-
-    & svg {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 18px;
-      height: 18px;
-      margin: 0;
-      vertical-align: 0;
-    }
-  }
-}
-
-.button_primary_icon {
-  @mixin button_primary;
-
-  padding: 10px 15px;
-  width: 18px;
-  height: 18px;
-}
-
 /* 4. .button_secondary */
+
+.button_secondary_blue {
+  border: 1px solid var(--color-button-primary);
+  height: 30px;
+  border-radius: 4px;
+  padding: 5px;
+  min-width: 100px;
+  background-color: var(--color-button-secondary);
+  color: var(--color-button-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    fill: var(--color-button-primary);
+  }
+}
 
 .button_secondary {
   font: 1rem Arial, sans-serif;
@@ -207,14 +219,6 @@ button {
     background-color: var(--color-disabled);
   }
 }
-
-/*
-
-  5. .button_transparncy
-     .button_transparency_icon
-     .button_primary_icon
-
-*/
 
 .button_transparency,
 .button_transparency_icon {
@@ -251,14 +255,15 @@ button {
 
 .button_transparency_icon,
 .button_transparency_icon_inactive {
-  height: 24px;
-  width: 24px;
+  height: 25px;
+  width: 25px;
   transition-duration: 0ms;
   fill: var(--color-button-primary);
 
   & svg {
-    height: 34px;
-    width: 34px;
+    height: 25px;
+    width: 25px;
+    fill: var(--color-button-primary);
     transition: all 0.2s 0.05s;
   }
 
@@ -285,48 +290,6 @@ button {
   text-underline-offset: 1px;
   cursor: pointer;
   display: inline-block;
-}
-
-.button_primary_blue {
-  border: 1px solid var(--color-button-primary);
-  height: 30px;
-  border-radius: 4px;
-  padding: 5px;
-  min-width: 100px;
-  background-color: var(--color-button-primary);
-  color: white;
-  transition: 200ms linear;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    width: 12px;
-    fill: white;
-  }
-
-  &:hover {
-    color: var(--color-button-primary);
-  }
-}
-
-.button_secondary_blue {
-  border: 1px solid var(--color-button-primary);
-  height: 30px;
-  border-radius: 4px;
-  padding: 5px;
-  min-width: 100px;
-  background-color: var(--color-button-secondary);
-  color: var(--color-button-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    width: 12px;
-    height: 12px;
-    fill: var(--color-button-primary);
-  }
 }
 
 .button_nav_primary {

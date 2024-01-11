@@ -10,7 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import {
     TranslatorProps, withTranslator,

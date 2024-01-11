@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
