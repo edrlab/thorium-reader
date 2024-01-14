@@ -319,6 +319,7 @@ nav + nav + .breadcrumb + .main {
     margin: 0;
     font-size: 1.27rem;
   }
+
   & button {
     width: fit-content;
 
