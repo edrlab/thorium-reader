@@ -47,7 +47,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
             <div className={classNames(stylesBreadcrumb.breadcrumb, this.props.className)}>
                 {
                     breadcrumb.length >= 2
-                    && <Link
+                    ? <Link
                         to={{
                             ...this.props.location,
                             pathname: breadcrumb[breadcrumb.length - 2].path,
@@ -58,10 +58,11 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                     >
                         <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
                     </Link>
+                    : <></>
                 }
                 {
                     breadcrumb
-                    && breadcrumb.map(
+                    ? breadcrumb.map(
                         (item, index) =>
                             item.path && index !== breadcrumb.length - 1 ?
                                 <Link
@@ -82,6 +83,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                     {item.name}
                                 </strong>,
                     )
+                    : <></>
                 }
             </div>
         );
