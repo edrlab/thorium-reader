@@ -84,6 +84,9 @@ import { ipcRenderer } from "electron";
 import PublicationCard from "../publication/PublicationCard";
 import AboutThoriumButton from "../catalog/AboutThoriumButton";
 import classNames from "classnames";
+import * as Popover from "@radix-ui/react-popover";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 
 // import {
 //     formatContributorToString,
@@ -148,7 +151,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         ], () => {
             apiAction("publication/findAll")
                 .then((publicationViews) => {
-                    this.setState({publicationViews});
+                    this.setState({ publicationViews });
                     setTimeout(() => {
                         this.onKeyboardFocusSearch();
                     }, 400);
@@ -194,7 +197,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
             <LibraryLayout
                 title={`${__("catalog.myBooks")} / ${title}`}
                 secondaryHeader={secondaryHeader}
-                // breadCrumb={breadCrumb}
+            // breadCrumb={breadCrumb}
             >
                 {
                     this.state.publicationViews ?
@@ -212,7 +215,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                         // (displayType === DisplayType.Grid ?
                         //     <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
                         //     <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
-                    : <></>
+                        : <></>
                 }
             </LibraryLayout>
         );
@@ -311,7 +314,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const commonCellStyles =  (props: ITableCellProps_Column & ITableCellProps_GenericCell): React.CSSProperties => {
+const commonCellStyles = (props: ITableCellProps_Column & ITableCellProps_GenericCell): React.CSSProperties => {
     return {
         // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
         maxHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
@@ -392,9 +395,9 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                     }
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
-                />
-                <div
-                    aria-live="assertive">
+            />
+            <div
+                aria-live="assertive">
                 {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
             </div>
             {props.accessibilitySupportEnabled ? <button
@@ -428,33 +431,33 @@ interface ITableCellProps_Column {
 }
 const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column> = (props) => {
 
-// <span
-// style={{
-//     fontSize: "90%",
-//     fontWeight: "bold",
-// }}>
-// {`${props.__("header.searchPlaceholder")}`}
-// </span>
+    // <span
+    // style={{
+    //     fontSize: "90%",
+    //     fontWeight: "bold",
+    // }}>
+    // {`${props.__("header.searchPlaceholder")}`}
+    // </span>
 
-// <div
-// aria-live="polite"
-// style={{
-//     // border: "1px solid red",
-//     marginLeft: "0.4em",
-//     display: "inline-block",
-//     fontSize: "90%",
-//     // width: "4em",
-//     overflow: "visible",
-//     whiteSpace: "nowrap",
-// }}>
-// {props.column.filteredRows.length !== props.column.preFilteredRows.length ? ` (${props.column.filteredRows.length} / ${props.column.preFilteredRows.length})` : ` (${props.column.preFilteredRows.length})`}
-// </div>
+    // <div
+    // aria-live="polite"
+    // style={{
+    //     // border: "1px solid red",
+    //     marginLeft: "0.4em",
+    //     display: "inline-block",
+    //     fontSize: "90%",
+    //     // width: "4em",
+    //     overflow: "visible",
+    //     whiteSpace: "nowrap",
+    // }}>
+    // {props.column.filteredRows.length !== props.column.preFilteredRows.length ? ` (${props.column.filteredRows.length} / ${props.column.preFilteredRows.length})` : ` (${props.column.preFilteredRows.length})`}
+    // </div>
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useEffect(() => {
         if (inputRef?.current &&
             inputRef.current.value !== props.column.filterValue) {
-                inputRef.current.value = props.column.filterValue || "";
+            inputRef.current.value = props.column.filterValue || "";
         }
     }, [props.column.filterValue]);
     // const [value, setValue] = React.useState(props.column.filterValue); // props.columnFilter
@@ -470,50 +473,50 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
     }, 500);
 
     return props.showColumnFilters ?
-    <div className={stylesPublication.showColFilters_wrapper}>
-        {
-            /*
-        value={ // props.column.filterValue
-            value || ""}
-             */
-        }
-    <input
-        ref={inputRef}
-        type="search"
-        onChange={(e) => {
-            // setValue(e.target.value);
-            // forceReRender(NaN);
-            if (!props.accessibilitySupportEnabled) {
-                onInputChange((e.target.value || "").trim() || undefined);
+        <div className={stylesPublication.showColFilters_wrapper}>
+            {
+                /*
+            value={ // props.column.filterValue
+                value || ""}
+                 */
             }
-        }}
-        onKeyUp={(e) => {
-            if (props.accessibilitySupportEnabled && e.key === "Enter") {
-                // (e.target as EventTarget & HTMLInputElement).value
-                // value
-                props.column.setFilter( // props.column.filterValue
-                    (inputRef?.current?.value || "").trim() || undefined);
+            <input
+                ref={inputRef}
+                type="search"
+                onChange={(e) => {
+                    // setValue(e.target.value);
+                    // forceReRender(NaN);
+                    if (!props.accessibilitySupportEnabled) {
+                        onInputChange((e.target.value || "").trim() || undefined);
+                    }
+                }}
+                onKeyUp={(e) => {
+                    if (props.accessibilitySupportEnabled && e.key === "Enter") {
+                        // (e.target as EventTarget & HTMLInputElement).value
+                        // value
+                        props.column.setFilter( // props.column.filterValue
+                            (inputRef?.current?.value || "").trim() || undefined);
+                    }
+                }}
+                aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
+                placeholder={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
+                className={stylesPublication.showColFilters_input}
+                style={{
+                    width: props.accessibilitySupportEnabled ? "calc(100% - 30px)" : "100%",
+                }}
+            />
+            {
+                props.accessibilitySupportEnabled ? <button
+                    aria-label={`${props.__("header.searchPlaceholder")}`}
+                    onClick={() => {
+                        // value
+                        props.column.setFilter( // props.column.filterValue
+                            (inputRef?.current?.value || "").trim() || undefined);
+                    }}
+                ><SVG ariaHidden svg={SearchIcon} /></button> : <></>
             }
-        }}
-        aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
-        placeholder={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
-        className={stylesPublication.showColFilters_input}
-        style={{
-            width: props.accessibilitySupportEnabled ? "calc(100% - 30px)" : "100%",
-        }}
-    />
-    {
-    props.accessibilitySupportEnabled ? <button
-        aria-label={`${props.__("header.searchPlaceholder")}`}
-        onClick={() => {
-            // value
-            props.column.setFilter( // props.column.filterValue
-                (inputRef?.current?.value || "").trim() || undefined);
-        }}
-    ><SVG ariaHidden svg={SearchIcon} /></button> : <></>
-    }
-    </div>
-    : <></>;
+        </div>
+        : <></>;
 };
 
 interface ITableCellProps_GenericCell extends ITableCellProps_Common {
@@ -530,38 +533,29 @@ interface ITableCellProps_Value_Cover {
 }
 const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Cover> = (props) => {
     return (<div className={stylesPublication.cell_coverImg}>
-        <a
-            tabIndex={0}
-            onClick={(e) => {
-                e.preventDefault();
-
-                props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                // props.openReader(props.value.publicationViewIdentifier);
-            }}
-            onKeyPress={
-                (e) => {
-                    if (e.key === "Enter") {
-                        e.preventDefault();
-
-                        props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                        // props.openReader(props.value.publicationViewIdentifier);
-                    }
-                }
-            }
-            title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+        <PublicationInfoLibWithRadix
+            publicationView={{ identifier: props.value.publicationViewIdentifier }}
         >
-        <img
-            src={
-                // NOTE! empty string doesn't work with `??` operator, must use ternary!
-                props.value.label
-                ?
-                props.value.label
-                :
-                "data:image/png;base64,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"
-            }
-            alt={""}
-            role="presentation"/>
-        </a>
+            <PublicationInfoLibWithRadixTrigger asChild>
+                <a
+                    title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+                >
+                    <img
+                        src={
+                            // NOTE! empty string doesn't work with `??` operator, must use ternary!
+                            props.value.label
+                                ?
+                                props.value.label
+                                :
+                                "data:image/png;base64,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"
+                        }
+                        alt={""}
+                        role="presentation" />
+                </a>
+            </PublicationInfoLibWithRadixTrigger>
+            <PublicationInfoLibWithRadixContent />
+        </PublicationInfoLibWithRadix>
+
     </div>);
 };
 
@@ -571,25 +565,27 @@ const CellFormat: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell 
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            className={stylesButtons.button_nav_primary} style={{height: "15px", padding: "2px"}}>{t}</a>;
+            className={stylesButtons.button_nav_primary} style={{ height: "15px", padding: "2px" }}>{t}</a>;
     };
 
     return (<div className={stylesPublication.cell_wrapper}>
         {
-        link(props.value)
+            link(props.value)
         }
-        </div>);
+    </div>);
 };
 
 interface IColumnValue_Langs extends IColumnValue_BaseString {
@@ -604,11 +600,13 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
@@ -621,25 +619,25 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
     // props.value.label === props.value.tags.join(", ")
 
     return props.value.langs?.length ?
-    (
-    props.value.langs.length === 1 ? (
-        <div className={stylesPublication.cell_wrapper}>
-        {
-        link(props.value.langs[0])
-        }
-        </div>
-    ) : (
-        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
-        {
-        props.value.langs.map((t, i) => {
-            return <li
-                key={`k${i}`}
-            >{link(t)}</li>;
-        })
-        }
-        </ul>
-    ))
-    : <></>;
+        (
+            props.value.langs.length === 1 ? (
+                <div className={stylesPublication.cell_wrapper}>
+                    {
+                        link(props.value.langs[0])
+                    }
+                </div>
+            ) : (
+                <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
+                    {
+                        props.value.langs.map((t, i) => {
+                            return <li
+                                key={`k${i}`}
+                            >{link(t)}</li>;
+                        })
+                    }
+                </ul>
+            ))
+        : <></>;
 };
 
 interface IColumnValue_Publishers extends IColumnValue_BaseString {
@@ -654,11 +652,13 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
@@ -671,25 +671,25 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
     // props.value.label === props.value.tags.join(", ")
 
     return props.value.publishers?.length ?
-    (
-    props.value.publishers.length === 1 ? (
-        <div className={stylesPublication.cell_wrapper}>
-        {
-        link(props.value.publishers[0])
-        }
-        </div>
-    ) : (
-        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
-        {
-        props.value.publishers.map((t, i) => {
-            return <li
-                key={`k${i}`}
-            >{link(t)}</li>;
-        })
-        }
-        </ul>
-    ))
-    : <></>;
+        (
+            props.value.publishers.length === 1 ? (
+                <div className={stylesPublication.cell_wrapper}>
+                    {
+                        link(props.value.publishers[0])
+                    }
+                </div>
+            ) : (
+                <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
+                    {
+                        props.value.publishers.map((t, i) => {
+                            return <li
+                                key={`k${i}`}
+                            >{link(t)}</li>;
+                        })
+                    }
+                </ul>
+            ))
+        : <></>;
 };
 
 interface IColumnValue_Authors extends IColumnValue_BaseString {
@@ -704,11 +704,13 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
@@ -721,35 +723,35 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
     // props.value.label === props.value.tags.join(", ")
 
     return props.value.authors?.length ?
-    (
-        <div style={{
-            ...commonCellStyles(props),
-            // minWidth: props.displayType === DisplayType.Grid ? "200px" : undefined,
-            // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
-            // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
-        }}>
-        {
-    props.value.authors.length === 1 ? (
-        <div className={stylesPublication.cell_wrapper}>
-        {
-        link(props.value.authors[0])
-        }
-        </div>
-    ) : (
-        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
-        {
-        props.value.authors.map((t, i) => {
-            return <li
-                key={`k${i}`}
-            >{link(t)}</li>;
-        })
-        }
-        </ul>
-    )
-        }
-        </div>
-    )
-    : <></>;
+        (
+            <div style={{
+                ...commonCellStyles(props),
+                // minWidth: props.displayType === DisplayType.Grid ? "200px" : undefined,
+                // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
+                // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
+            }}>
+                {
+                    props.value.authors.length === 1 ? (
+                        <div className={stylesPublication.cell_wrapper}>
+                            {
+                                link(props.value.authors[0])
+                            }
+                        </div>
+                    ) : (
+                        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
+                            {
+                                props.value.authors.map((t, i) => {
+                                    return <li
+                                        key={`k${i}`}
+                                    >{link(t)}</li>;
+                                })
+                            }
+                        </ul>
+                    )
+                }
+            </div>
+        )
+        : <></>;
 };
 
 interface IColumnValue_Tags extends IColumnValue_BaseString {
@@ -767,63 +769,78 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            className={stylesButtons.button_nav_primary} style={{height: "15px", padding: "2px"}}>{t}</a>;
+            className={stylesButtons.button_nav_primary} style={{ height: "15px", padding: "2px" }}>{t}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
     return props.value.tags?.length ?
-    (
-    props.value.tags.length === 1 ? (
-        <div className={stylesPublication.cell_wrapper}>
-        {
-        link(props.value.tags[0])
-        }
-        </div>
-    ) : (
-        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
-        {
-        props.value.tags.map((t, i) => {
-            return <li
-                key={`k${i}`}
-            >{link(t)}</li>;
-        })
-        }
-        </ul>
-    ))
-    : <></>;
+        (
+            props.value.tags.length === 1 ? (
+                <div className={stylesPublication.cell_wrapper}>
+                    {
+                        link(props.value.tags[0])
+                    }
+                </div>
+            ) : (
+                <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
+                    {
+                        props.value.tags.map((t, i) => {
+                            return <li
+                                key={`k${i}`}
+                            >{link(t)}</li>;
+                        })
+                    }
+                </ul>
+            ))
+        : <></>;
 };
 
 const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
     return (<div
         className={stylesPublication.cell_description}
         style={{
-        ...commonCellStyles(props),
-        paddingBottom: "0",
-        // marginBottom: "0.4em",
+            ...commonCellStyles(props),
+            paddingBottom: "0",
+            // marginBottom: "0.4em",
 
-        // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
-        // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "100px",
+            // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
+            // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "100px",
 
-        // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
-        // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
+            // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
+            // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
 
-        // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
-        textAlign: "start",
-    }}>
+            // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
+            textAlign: "start",
+        }}>
         <p>{props.value}</p>
-        {props.value ? <SVG ariaHidden svg={ChevronDown} /> : ""}</div>);
+        {props.value ?
+            <Popover.Root>
+                <Popover.Trigger>
+                    <SVG ariaHidden svg={ChevronDown} />
+                </Popover.Trigger>
+                <Popover.Portal>
+                    <Popover.Content>
+                        <p className={stylesDropDown.dropdown_description}>{props.value}</p>
+                        <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                    </Popover.Content>
+                </Popover.Portal>
+            </Popover.Root>
+            : ""}
+    </div>);
 };
 
 // interface IColumnValue_A11y_StringArrayArray extends IColumnValue_BaseString {
@@ -1012,30 +1029,32 @@ interface ITableCellProps_Value_Date {
 }
 const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Date> = (props) => {
     return (
-    props.value.label ?
-    <div style={{
-        ...commonCellStyles(props),
-    }}
-    >
-        <a
-            title={`${props.value.label} (${props.__("header.searchPlaceholder")})`}
-            tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
-
-            onClick={(e) => {
-                e.preventDefault();
-                const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
+        props.value.label ?
+            <div style={{
+                ...commonCellStyles(props),
             }}
-            className={stylesPublication.cell_link}>{props.value.date}</a>
-    </div>
-    : <></>
+            >
+                <a
+                    title={`${props.value.label} (${props.__("header.searchPlaceholder")})`}
+                    tabIndex={0}
+                    onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
+                            // props.column.setFilter(t);
+                            props.setShowColumnFilters(true, props.column.id, t);
+                        }
+                    }}
+
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
+                        // props.column.setFilter(t);
+                        props.setShowColumnFilters(true, props.column.id, t);
+                    }}
+                    className={stylesPublication.cell_link}>{props.value.date}</a>
+            </div>
+            : <></>
     );
 };
 
@@ -1061,30 +1080,21 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
         // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
     }}
-    dir={pubTitleIsRTL ? "rtl" : undefined}
-    ><a
-        className={stylesPublication.cell_bookTitle}
-        tabIndex={0}
-        onClick={(e) => {
-            e.preventDefault();
-
-            props.displayPublicationInfo(props.value.publicationViewIdentifier);
-            // props.openReader(props.value.publicationViewIdentifier);
-        }}
-        onKeyPress={
-            (e) => {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-
-                    props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                    // props.openReader(props.value.publicationViewIdentifier);
-                }
-            }
-        }
-        title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+        dir={pubTitleIsRTL ? "rtl" : undefined}
     >
-        {pubTitleStr}
-        </a>
+        <PublicationInfoLibWithRadix
+            publicationView={{ identifier: props.value.publicationViewIdentifier }}
+        >
+            <PublicationInfoLibWithRadixTrigger asChild>
+                <a
+                className={stylesPublication.cell_bookTitle}
+                title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+                >
+                    {pubTitleStr}
+                </a>
+            </PublicationInfoLibWithRadixTrigger>
+            <PublicationInfoLibWithRadixContent />
+        </PublicationInfoLibWithRadix>
     </div>);
 };
 
@@ -1166,7 +1176,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const scrollToViewRef = React.useRef(null);
 
-    const {__} =  props;
+    const { __ } = props;
 
     const renderProps_Filter: ITableCellProps_Filter =
     {
@@ -1407,190 +1417,190 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const tableColumns = React.useMemo(() => {
         const arr: (Column<IColumns> &
-            UseTableColumnOptions<IColumns>  &
-            UseSortByColumnOptions<IColumns>  &
-            UseGlobalFiltersColumnOptions<IColumns>  &
+            UseTableColumnOptions<IColumns> &
+            UseSortByColumnOptions<IColumns> &
+            UseGlobalFiltersColumnOptions<IColumns> &
             UseFiltersColumnOptions<IColumns>)[] = [
-            {
-                Header: props.__("publication.cover.img"),
-                accessor: "colCover",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellCoverImage,
-                // filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("publication.title"),
-                accessor: "colTitle",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellTitle,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("publication.author"),
-                accessor: "colAuthors",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellAuthors,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.lang"),
-                accessor: "colLanguages",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellLangs,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.tags"),
-                accessor: "colTags",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellTags,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.format"),
-                accessor: "colFormat",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellFormat,
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.lastRead"),
-                accessor: "colLastReadTimestamp",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellDate,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.publisher"),
-                accessor: "colPublishers",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellPublishers,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.released"),
-                accessor: "colPublishedDate",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellDate,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: "DRM",
-                accessor: "colLCP",
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("publication.duration.title"),
-                accessor: "colDuration",
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.description"),
-                accessor: "colDescription",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellDescription,
-                sortType: sortFunction,
-            },
+                {
+                    Header: props.__("publication.cover.img"),
+                    accessor: "colCover",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellCoverImage,
+                    // filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.title"),
+                    accessor: "colTitle",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellTitle,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.author"),
+                    accessor: "colAuthors",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellAuthors,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.lang"),
+                    accessor: "colLanguages",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellLangs,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.tags"),
+                    accessor: "colTags",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellTags,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.format"),
+                    accessor: "colFormat",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellFormat,
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.lastRead"),
+                    accessor: "colLastReadTimestamp",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellDate,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.publisher"),
+                    accessor: "colPublishers",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellPublishers,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.released"),
+                    accessor: "colPublishedDate",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellDate,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: "DRM",
+                    accessor: "colLCP",
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.duration.title"),
+                    accessor: "colDuration",
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.description"),
+                    accessor: "colDescription",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellDescription,
+                    sortType: sortFunction,
+                },
 
-            {
-                Header: props.__("publication.accessibility.name"),
-                accessor: "col_a11y_accessibilitySummary",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellDescription,
-                sortType: sortFunction,
-            },
-            // {
-            //     Header: "accessMode",
-            //     accessor: "col_a11y_accessMode",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "accessModeSufficient",
-            //     accessor: "col_a11y_accessModeSufficient",
-            //     Cell: CellStringArrayArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "accessibilityFeature",
-            //     accessor: "col_a11y_accessibilityFeature",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "accessibilityHazard",
-            //     accessor: "col_a11y_accessibilityHazard",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "certifiedBy",
-            //     accessor: "col_a11y_certifiedBy",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "certifierCredential",
-            //     accessor: "col_a11y_certifierCredential",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "certifierReport",
-            //     accessor: "col_a11y_certifierReport",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "conformsTo",
-            //     accessor: "col_a11y_conformsTo",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
+                {
+                    Header: props.__("publication.accessibility.name"),
+                    accessor: "col_a11y_accessibilitySummary",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellDescription,
+                    sortType: sortFunction,
+                },
+                // {
+                //     Header: "accessMode",
+                //     accessor: "col_a11y_accessMode",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "accessModeSufficient",
+                //     accessor: "col_a11y_accessModeSufficient",
+                //     Cell: CellStringArrayArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "accessibilityFeature",
+                //     accessor: "col_a11y_accessibilityFeature",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "accessibilityHazard",
+                //     accessor: "col_a11y_accessibilityHazard",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "certifiedBy",
+                //     accessor: "col_a11y_certifiedBy",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "certifierCredential",
+                //     accessor: "col_a11y_certifierCredential",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "certifierReport",
+                //     accessor: "col_a11y_certifierReport",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "conformsTo",
+                //     accessor: "col_a11y_conformsTo",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
 
-            // {
-            //     Header: props.__("publication.progression.title"),
-            //     accessor: "colProgression",
-            // sortType: sortFunction,
-            // },
-            // {
-            //     Header: "Identifier",
-            //     accessor: "colIdentifier",
-            // sortType: sortFunction,
-            // },
-            // {
-            //     Header: "Type",
-            //     accessor: "colPublicationType",
-            // sortType: sortFunction,
-            // },
-        ];
+                // {
+                //     Header: props.__("publication.progression.title"),
+                //     accessor: "colProgression",
+                // sortType: sortFunction,
+                // },
+                // {
+                //     Header: "Identifier",
+                //     accessor: "colIdentifier",
+                // sortType: sortFunction,
+                // },
+                // {
+                //     Header: "Type",
+                //     accessor: "colPublicationType",
+                // sortType: sortFunction,
+                // },
+            ];
         return arr;
     }, [props.displayType]);
 
@@ -1604,29 +1614,30 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const filterTypes = React.useMemo(() => ({
 
-            globalFilter: (rows: Row<IColumns>[], columnIds: string[], filterValue: string) => {
-                const set = new Set<Row<IColumns>>();
-                columnIds.forEach((columnId) => {
-                    const subRes = filterTypes.text(rows, columnId, filterValue);
-                    subRes.forEach((r) => {
-                        set.add(r);
-                    });
+        globalFilter: (rows: Row<IColumns>[], columnIds: string[], filterValue: string) => {
+            const set = new Set<Row<IColumns>>();
+            columnIds.forEach((columnId) => {
+                const subRes = filterTypes.text(rows, columnId, filterValue);
+                subRes.forEach((r) => {
+                    set.add(r);
                 });
-                const res = Array.from(set);
-                // console.log(`filterTypes.globalFilter ======= ${rows.length} ${JSON.stringify(columnIds)} ${typeof filterValue} ${res.length}`);
-                return res;
-            },
-            text: (rows: Row<IColumns>[], columnId: string, filterValue: string) => {
-                // const res = rows.filter((row) => {
-                //     let rowValue = row.values[columnId];
-                //     if (typeof rowValue !== "string") {
-                //         rowValue = (rowValue as IColumnValue).label;
-                //     }
-                //     return rowValue
-                //         ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
-                //         : true; // keep (filter in, not out)
-                // });
-                const res = matchSorter<Row<IColumns>>(rows, filterValue, { keys: [(row) => {
+            });
+            const res = Array.from(set);
+            // console.log(`filterTypes.globalFilter ======= ${rows.length} ${JSON.stringify(columnIds)} ${typeof filterValue} ${res.length}`);
+            return res;
+        },
+        text: (rows: Row<IColumns>[], columnId: string, filterValue: string) => {
+            // const res = rows.filter((row) => {
+            //     let rowValue = row.values[columnId];
+            //     if (typeof rowValue !== "string") {
+            //         rowValue = (rowValue as IColumnValue).label;
+            //     }
+            //     return rowValue
+            //         ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
+            //         : true; // keep (filter in, not out)
+            // });
+            const res = matchSorter<Row<IColumns>>(rows, filterValue, {
+                keys: [(row) => {
                     let rowValue = row.values[columnId];
                     if (typeof rowValue !== "string") {
                         rowValue = (rowValue as IColumnValue_BaseString).label;
@@ -1634,12 +1645,13 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     return rowValue;
                 }],
                 // https://github.com/kentcdodds/match-sorter#threshold-number
-                threshold: matchSorter.rankings.CONTAINS});
-                // console.log(`filterTypes.text ======= ${rows.length} ${columnId} ${typeof filterValue} ${res.length}`);
-                return res;
-            },
-        }),
-    []);
+                threshold: matchSorter.rankings.CONTAINS
+            });
+            // console.log(`filterTypes.text ======= ${rows.length} ${columnId} ${typeof filterValue} ${res.length}`);
+            return res;
+        },
+    }),
+        []);
 
     // for (const col of tableInstance.allColumns) {
     //     tableInstance.setFilter(col.id, "");
@@ -1720,10 +1732,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     return (
         <>
-        <div>
-            <h2 className={stylesPublication.allBooks_header}>{__("catalog.allBooks")}</h2>
-            <div className={stylesPublication.allBooks_header_navigation}>
-                <CellGlobalFilter
+            <div>
+                <h2 className={stylesPublication.allBooks_header}>{__("catalog.allBooks")}</h2>
+                <div className={stylesPublication.allBooks_header_navigation}>
+                    <CellGlobalFilter
                         accessibilitySupportEnabled={props.accessibilitySupportEnabled}
                         preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
                         globalFilteredRows={tableInstance.globalFilteredRows}
@@ -1746,241 +1758,240 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             }, 200);
                         }}
                     />
-                <div>
-                    <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p>
-                    <div className={stylesPublication.allBooks_header_pagination_container}>
-                    <button
-                    className={stylesPublication.allBooks_header_pagination_arrow}
-                    aria-label={`${props.__("opds.firstPage")}`}
-                    onClick={() => tableInstance.gotoPage(0)}
-                    disabled={!tableInstance.canPreviousPage}>
-                        <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-                    </button>
-                    <button
-                    className={stylesPublication.allBooks_header_pagination_arrow}
-                    style={{
-                        transform: "rotate(180deg)",
-                    }}
-                    aria-label={`${props.__("opds.previous")}`}
-                    onClick={() => tableInstance.previousPage()}
-                    disabled={!tableInstance.canPreviousPage}>
-                        <SVG ariaHidden={true} svg={ChevronRight} />
-                    </button>
-                    <select
-                        aria-label={`${props.__("reader.navigation.currentPageTotal", {current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length})}`}
-                        className={stylesPublication.allBooks_header_pagination_select}
-                        value={tableInstance.state.pageIndex}
-                        onChange={(e) => {
-                            const pageIndex = e.target.value ? Number(e.target.value) : 0;
-                            tableInstance.gotoPage(pageIndex);
-                        }}
-                    >
-                        {
-                        ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
-                            <option
-                                key={`page${i}`}
-                                value={i}>
-                                {i + 1} / {tableInstance.pageOptions.length}
-                            </option>
-                        ))
-                        }
-                    </select>
-                    <button
-                    className={stylesPublication.allBooks_header_pagination_arrow}
-                    aria-label={`${props.__("opds.next")}`}
-                    onClick={() => tableInstance.nextPage()}
-                    disabled={!tableInstance.canNextPage}>
-                        <SVG ariaHidden={true} svg={ChevronRight} />
-                    </button>
-                    <button
-                    className={stylesPublication.allBooks_header_pagination_arrow}
-                    aria-label={`${props.__("opds.lastPage")}`}
-                    onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
-                    disabled={!tableInstance.canNextPage}>
-                        <SVG ariaHidden={true} svg={ArrowLastIcon} />
-                    </button>
+                    <div>
+                        <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p>
+                        <div className={stylesPublication.allBooks_header_pagination_container}>
+                            <button
+                                className={stylesPublication.allBooks_header_pagination_arrow}
+                                aria-label={`${props.__("opds.firstPage")}`}
+                                onClick={() => tableInstance.gotoPage(0)}
+                                disabled={!tableInstance.canPreviousPage}>
+                                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
+                            </button>
+                            <button
+                                className={stylesPublication.allBooks_header_pagination_arrow}
+                                style={{
+                                    transform: "rotate(180deg)",
+                                }}
+                                aria-label={`${props.__("opds.previous")}`}
+                                onClick={() => tableInstance.previousPage()}
+                                disabled={!tableInstance.canPreviousPage}>
+                                <SVG ariaHidden={true} svg={ChevronRight} />
+                            </button>
+                            <select
+                                aria-label={`${props.__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
+                                className={stylesPublication.allBooks_header_pagination_select}
+                                value={tableInstance.state.pageIndex}
+                                onChange={(e) => {
+                                    const pageIndex = e.target.value ? Number(e.target.value) : 0;
+                                    tableInstance.gotoPage(pageIndex);
+                                }}
+                            >
+                                {
+                                    ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
+                                        <option
+                                            key={`page${i}`}
+                                            value={i}>
+                                            {i + 1} / {tableInstance.pageOptions.length}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+                            <button
+                                className={stylesPublication.allBooks_header_pagination_arrow}
+                                aria-label={`${props.__("opds.next")}`}
+                                onClick={() => tableInstance.nextPage()}
+                                disabled={!tableInstance.canNextPage}>
+                                <SVG ariaHidden={true} svg={ChevronRight} />
+                            </button>
+                            <button
+                                className={stylesPublication.allBooks_header_pagination_arrow}
+                                aria-label={`${props.__("opds.lastPage")}`}
+                                onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
+                                disabled={!tableInstance.canNextPage}>
+                                <SVG ariaHidden={true} svg={ArrowLastIcon} />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div className={stylesPublication.allBook_table_wrapper}>
-        <span
-            ref={scrollToViewRef}
-            style={{visibility: "hidden"}}>{" "}</span>
-        <table {...tableInstance.getTableProps()}
-            className={stylesPublication.allBook_table}
-            style={{
-                display :"table",
-            }}>
-            {props.displayType === DisplayType.Grid ? ""
-            :
-            <thead>{tableInstance.headerGroups.map((headerGroup, index) =>
-                (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
-                headerGroup.headers.map((col, i) => {
-
-                    const column = col as unknown as (
-                        ColumnWithLooseAccessor<IColumns> & // { Header: string } &
-                        UseTableColumnProps<IColumns> &
-                        UseSortByColumnProps<IColumns> &
-                        UseFiltersColumnProps<IColumns>
-                    );
-
-                    const columnIsSortable = column.id !== "colCover";
-
-                    const W = column.id === "colCover" ?
-                        "60px" :
-                        column.id === "colPublishedDate" ?
-                        "100px" :
-                        column.id === "colProgression" ?
-                        "100px" :
-                        column.id === "colDuration" ?
-                        "100px" :
-                        column.id === "col_a11y_accessibilitySummary" ?
-                        "160px" :
-                        "100px";
-
-                    return (<th
-                        key={`headtrth_${i}`}
-                        {...column.getHeaderProps(columnIsSortable ? ({...column.getSortByToggleProps(),
-                            // @ts-expect-error TS2322
-                            title: undefined,
-                            onClick: undefined,
-                        }) : undefined)}
-                        style={{
-                            width: W,
-                            minWidth: W,
-                            maxWidth: W,
-                        }}
-                        className={stylesPublication.allBook_table_head}
-                        >
-                        {
-                        columnIsSortable ?
-                        <><button
-                        onClick={() => {
-                            column.toggleSortBy();
-                        }}
-                        aria-label={
-                            `${column.Header}${
-                            column.isSorted ? (column.isSortedDesc ?
-                            ` (${props.__("catalog.column.descending")})`
-                            :
-                            ` (${props.__("catalog.column.ascending")})`)
-                            :
-                            ` (${props.__("catalog.column.unsorted")})`
-                            }`
-                            }
-                            >
-                            {
-                            column.render("Header")
-                            }
-                            <span>
-                            {
-                            (column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : "")
-                            }
-                            </span>
-                        </button>
-                        {
-                        column.canFilter ?
-                        (<div style={{display: "block"}}>{ column.render("Filter", {
-                            ...renderProps_Filter,
-                            // columnFilter: column.filterValue,
-                        }) }</div>)
-                        : <></>
-                        }
-                        </>
+            <div className={stylesPublication.allBook_table_wrapper}>
+                <span
+                    ref={scrollToViewRef}
+                    style={{ visibility: "hidden" }}>{" "}</span>
+                <table {...tableInstance.getTableProps()}
+                    className={stylesPublication.allBook_table}
+                    style={{
+                        display: "table",
+                    }}>
+                    {props.displayType === DisplayType.Grid ? ""
                         :
-                        // <span
-                        // aria-label={`${column.Header}`}
-                        //     >
-                        //     {
-                        //     // props.displayType === DisplayType.List ? "" : column.render("Header")
-                        //     // column.render("Header")
-                        //     }
-                        // </span>
-                        <><input
-                            aria-label={props.__("header.searchPlaceholder")}
-                            id="setShowColumnFiltersCheckbox"
-                            type="checkbox"
-                            checked={showColumnFilters ? true : false}
-                            onChange={() => {
-                                const show = showColumnFilters;
-                                setShowColumnFilters(!showColumnFilters);
-                                setTimeout(() => {
-                                    if (!show) {
-                                        tableInstance.setGlobalFilter("");
+                        <thead>{tableInstance.headerGroups.map((headerGroup, index) =>
+                        (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
+                            headerGroup.headers.map((col, i) => {
+
+                                const column = col as unknown as (
+                                    ColumnWithLooseAccessor<IColumns> & // { Header: string } &
+                                    UseTableColumnProps<IColumns> &
+                                    UseSortByColumnProps<IColumns> &
+                                    UseFiltersColumnProps<IColumns>
+                                );
+
+                                const columnIsSortable = column.id !== "colCover";
+
+                                const W = column.id === "colCover" ?
+                                    "60px" :
+                                    column.id === "colPublishedDate" ?
+                                        "100px" :
+                                        column.id === "colProgression" ?
+                                            "100px" :
+                                            column.id === "colDuration" ?
+                                                "100px" :
+                                                column.id === "col_a11y_accessibilitySummary" ?
+                                                    "160px" :
+                                                    "100px";
+
+                                return (<th
+                                    key={`headtrth_${i}`}
+                                    {...column.getHeaderProps(columnIsSortable ? ({
+                                        ...column.getSortByToggleProps(),
+                                        // @ts-expect-error TS2322
+                                        title: undefined,
+                                        onClick: undefined,
+                                    }) : undefined)}
+                                    style={{
+                                        width: W,
+                                        minWidth: W,
+                                        maxWidth: W,
+                                    }}
+                                    className={stylesPublication.allBook_table_head}
+                                >
+                                    {
+                                        columnIsSortable ?
+                                            <><button
+                                                onClick={() => {
+                                                    column.toggleSortBy();
+                                                }}
+                                                aria-label={
+                                                    `${column.Header}${column.isSorted ? (column.isSortedDesc ?
+                                                        ` (${props.__("catalog.column.descending")})`
+                                                        :
+                                                        ` (${props.__("catalog.column.ascending")})`)
+                                                        :
+                                                        ` (${props.__("catalog.column.unsorted")})`
+                                                    }`
+                                                }
+                                            >
+                                                {
+                                                    column.render("Header")
+                                                }
+                                                <span>
+                                                    {
+                                                        (column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : "")
+                                                    }
+                                                </span>
+                                            </button>
+                                                {
+                                                    column.canFilter ?
+                                                        (<div style={{ display: "block" }}>{column.render("Filter", {
+                                                            ...renderProps_Filter,
+                                                            // columnFilter: column.filterValue,
+                                                        })}</div>)
+                                                        : <></>
+                                                }
+                                            </>
+                                            :
+                                            // <span
+                                            // aria-label={`${column.Header}`}
+                                            //     >
+                                            //     {
+                                            //     // props.displayType === DisplayType.List ? "" : column.render("Header")
+                                            //     // column.render("Header")
+                                            //     }
+                                            // </span>
+                                            <><input
+                                                aria-label={props.__("header.searchPlaceholder")}
+                                                id="setShowColumnFiltersCheckbox"
+                                                type="checkbox"
+                                                checked={showColumnFilters ? true : false}
+                                                onChange={() => {
+                                                    const show = showColumnFilters;
+                                                    setShowColumnFilters(!showColumnFilters);
+                                                    setTimeout(() => {
+                                                        if (!show) {
+                                                            tableInstance.setGlobalFilter("");
+                                                        }
+                                                        if (show) {
+                                                            for (const col of tableInstance.allColumns) {
+                                                                tableInstance.setFilter(col.id, "");
+                                                            }
+                                                        }
+                                                    }, 200);
+                                                }}
+                                                style={{ position: "absolute", left: "-999px" }}
+                                            /><label
+                                                aria-hidden="true"
+                                                htmlFor="setShowColumnFiltersCheckbox"
+                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-button-primary)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
+                                                    <SVG ariaHidden svg={SearchIcon} />
+                                                </label></>
                                     }
-                                    if (show) {
-                                        for (const col of tableInstance.allColumns) {
-                                            tableInstance.setFilter(col.id, "");
-                                        }
-                                    }
-                                }, 200);
-                            }}
-                            style={{position: "absolute", left: "-999px"}}
-                        /><label
-                            aria-hidden="true"
-                            htmlFor="setShowColumnFiltersCheckbox"
-                            style={{cursor: "pointer", padding: "0.2em", color: "var(--color-button-primary)", paddingBottom: "0", display: "inline-block", width: "20px"}}>
-                            <SVG ariaHidden svg={SearchIcon} />
-                        </label></>
-                        }
-                        </th>);
-                    },
-                )}</tr>),
-            )}
-            {
-            // <tr>
-            // <th
-            //     colSpan={tableInstance.visibleColumns.length}
-            //     >
-            //     <CellGlobalFilter
-            //         preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
-            //         globalFilteredRows={tableInstance.globalFilteredRows}
-            //         globalFilter={tableInstance.state.globalFilter}
-            //         setGlobalFilter={tableInstance.setGlobalFilter}
-            //         __={props.__}
-            //         translator={props.translator}
-            //         displayType={props.displayType}
-            //     />
-            // </th>
-            // </tr>
-            }
-
-            </thead>}
-            <tbody {...tableInstance.getTableBodyProps()}
-            className={stylesPublication.allBook_table_body}
-            style={{
-                display : props.displayType === DisplayType.Grid ? "grid" : "",
-            }}
-                >
-                {tableInstance.page.map((row, index) => {
-                const id = parseInt(row.id, 10);
-
-                tableInstance.prepareRow(row);
-                    return(
-                        props.displayType === DisplayType.Grid ?
-                        <tr key={index}>
-                            <td><PublicationCard publicationViewMaybeOpds={props.publicationViews[id]} /></td>
-                        </tr>
-                        :
-
-                        <tr key={`bodytr_${index}`} {...row.getRowProps()}
-                        style={{
-                            backgroundColor: index % 2 ? "var(--color-figma-grey)" : undefined,
-                        }}>{row.cells.map((cell, i) =>
-                            {
-                                return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
-                                >{
-                                    cell.render("Cell", renderProps_Cell)
-                                }</td>);
+                                </th>);
                             },
+                            )}</tr>),
                         )}
-                        </tr>
-                    );
-            })}</tbody>
-        </table>
-        </div>
-        <AboutThoriumButton />
+                            {
+                                // <tr>
+                                // <th
+                                //     colSpan={tableInstance.visibleColumns.length}
+                                //     >
+                                //     <CellGlobalFilter
+                                //         preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
+                                //         globalFilteredRows={tableInstance.globalFilteredRows}
+                                //         globalFilter={tableInstance.state.globalFilter}
+                                //         setGlobalFilter={tableInstance.setGlobalFilter}
+                                //         __={props.__}
+                                //         translator={props.translator}
+                                //         displayType={props.displayType}
+                                //     />
+                                // </th>
+                                // </tr>
+                            }
+
+                        </thead>}
+                    <tbody {...tableInstance.getTableBodyProps()}
+                        className={stylesPublication.allBook_table_body}
+                        style={{
+                            display: props.displayType === DisplayType.Grid ? "grid" : "",
+                        }}
+                    >
+                        {tableInstance.page.map((row, index) => {
+                            const id = parseInt(row.id, 10);
+
+                            tableInstance.prepareRow(row);
+                            return (
+                                props.displayType === DisplayType.Grid ?
+                                    <tr key={index}>
+                                        <td><PublicationCard publicationViewMaybeOpds={props.publicationViews[id]} /></td>
+                                    </tr>
+                                    :
+
+                                    <tr key={`bodytr_${index}`} {...row.getRowProps()}
+                                        style={{
+                                            backgroundColor: index % 2 ? "var(--color-figma-grey)" : undefined,
+                                        }}>{row.cells.map((cell, i) => {
+                                            return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
+                                            >{
+                                                    cell.render("Cell", renderProps_Cell)
+                                                }</td>);
+                                        },
+                                        )}
+                                    </tr>
+                            );
+                        })}</tbody>
+                </table>
+            </div>
+            <AboutThoriumButton />
         </>
     );
 };

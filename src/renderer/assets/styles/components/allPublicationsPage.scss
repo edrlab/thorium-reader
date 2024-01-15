@@ -147,13 +147,15 @@
     &_multi_langs {
         list-style-type: none;
         margin: 0;
-        padding: 0;
+        padding: 5px;
         display: flex;
         flex-direction: column;
         align-items: start;
         justify-content: center;
         gap: 5px;
         overflow: scroll;
+        max-height: 150px;
+        flex-wrap: nowrap;
         li {
             margin: 0;
             padding: 0;
@@ -165,8 +167,9 @@
             margin-top: 0;
             max-height: 65px;
             overflow: hidden;
+            text-overflow: ellipsis;
         }
-        svg {
+        button {
             position: absolute;
             right: 0;
             bottom: 0;

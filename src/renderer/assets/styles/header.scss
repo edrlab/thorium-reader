@@ -26,9 +26,6 @@
   // box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
   border-right: 2px solid var(--color-medium-grey);
   flex: 1;
-  position: fixed;
-
-  @mixin main_navigation_library;
 
   & ul {
     margin-top: 30px;

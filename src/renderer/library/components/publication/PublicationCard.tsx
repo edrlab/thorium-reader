@@ -93,7 +93,6 @@ class PublicationCard extends React.Component<IProps> {
                             <PublicationInfoOpdsWithRadixTrigger asChild>
                                 <a
                                     title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
-                                    className={stylesPublications.publication_image_wrapper}
                                     tabIndex={0}
                                 >
                                     <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />

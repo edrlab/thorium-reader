@@ -24,7 +24,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import {
     TranslatorProps, withTranslator,
