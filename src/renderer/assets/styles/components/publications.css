@@ -13,10 +13,19 @@
 /* 1. card */
 
 .publication_wrapper {
-  width: 175px;
+  width: 200px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  border: 2px solid transparent;
+  transition: 200ms linear;
+  border-radius: 4px;
+
+  &:hover {
+    border: 2px solid var(--color-button-primary);
+    background-color: var(--color-button-secondary);
+  }
 }
 
 .publication_image_wrapper {
@@ -93,18 +102,21 @@
   width: 100%;
   margin-top: 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
   font-size: 15px;
+  gap: 10px;
 
   & button {
-    width: 30px;
+    width: 20px;
   }
 
-  & .publication_infos {
+  & .publication_title_wrapper {
     flex: 1;
     overflow: hidden;
+    min-height: 30px;
+    width: 100%;
 
     & p {
       margin: 0;
@@ -119,7 +131,7 @@
       line-height: 1.2em;
     }
 
-    & .publication_description {
+    & .publication_authors {
       font-weight: 300;
       overflow-wrap: break-word;
       line-height: 1.2em;
@@ -128,6 +140,31 @@
       text-overflow: ellipsis;
       display: -webkit-box;
       line-clamp: 2;
+    }
+  }
+
+  & .publication_infos {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    & span {
+      height: 20px;
+      padding: 0 2px;
+      width: fit-content;
+      min-width: 30px;
+      font-size: 10px;
+    }
+
+    & svg {
+      fill: var(--color-button-primary);
+      border-radius: 4px;
+      transition: 200ms linear;
+
+      &:hover {
+        scale: 1.3;
+      }
     }
   }
 }
@@ -169,14 +206,20 @@
 
   & .publication_list_title_authors {
     margin-right: 20px;
-    width: calc(60% - 20px);
+    width: 50%;
+    max-width: 300px;
   }
 
   & div:last-child {
-    width: 40%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 50%;
+
+    & p {
+      width: 100px;
+      margin: 0 5px;
+    }
   }
 }
 
