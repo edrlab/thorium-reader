@@ -9,7 +9,8 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
+import * as BreacrmbsNavIcon from "readium-desktop/renderer/assets/icons/breadcrumbsNav-icon.svg";
+import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.css";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
@@ -46,7 +47,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
             <div className={classNames(stylesBreadcrumb.breadcrumb, this.props.className)}>
                 {
                     breadcrumb.length >= 2
-                    && <Link
+                    ? <Link
                         to={{
                             ...this.props.location,
                             pathname: breadcrumb[breadcrumb.length - 2].path,
@@ -55,12 +56,13 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                         title={__("opds.back")}
                         className={stylesButtons.button_transparency_icon}
                     >
-                        <SVG ariaHidden={true} svg={ArrowIcon} />
+                        <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
                     </Link>
+                    : <></>
                 }
                 {
                     breadcrumb
-                    && breadcrumb.map(
+                    ? breadcrumb.map(
                         (item, index) =>
                             item.path && index !== breadcrumb.length - 1 ?
                                 <Link
@@ -74,12 +76,14 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                     className={stylesButtons.button_transparency}
                                 >
                                     {item.name}
+                                    <SVG ariaHidden svg={ChevronRight} />
                                 </Link>
                             :
                                 <strong key={index}>
                                     {item.name}
                                 </strong>,
                     )
+                    : <></>
                 }
             </div>
         );

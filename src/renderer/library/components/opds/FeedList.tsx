@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -14,9 +13,9 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/edit.svg";
-import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as CatalogHeaderContent from "readium-desktop/renderer/assets/icons/catalogContent-header-icon.svg";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -77,10 +76,10 @@ class FeedList extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <section>
-                <ul className={classNames(stylesGlobal.flex_wrap, stylesGlobal.p_0)}>
+                <ul className={stylesCatalogs.catalog_wrapper}>
                     {this.state.feedsResult.map((item, index) => {
                         return (
-                            <li key={"feed-" + index} className={stylesBlocks.block_full_wrapper}>
+                            <li key={"feed-" + index} className={stylesCatalogs.catalog_container}>
                                 <Link
                                     to={{
                                         ...this.props.location,
@@ -90,15 +89,19 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
-                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                    className={stylesBlocks.block_full}
+                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                                    className={stylesCatalogs.catalog_content}
                                 >
-                                    <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
+                                    <SVG ariaHidden svg={CatalogHeaderContent} />
+                                    <div className={stylesCatalogs.catalog_title}>
+                                        <SVG ariaHidden svg={GlobeIcon} />
+                                        <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
+                                    </div>
                                 </Link>
                                 <DeleteOpdsFeedConfirm trigger={(
                                     <button
                                         // onClick={(e) => this.deleteFeed(e, item)}
-                                        className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_close)}
+                                        className={stylesCatalogs.button_delete}
                                         title={__("catalog.delete")}
                                     >
                                         <SVG ariaHidden={true} svg={DeleteIcon} />
@@ -106,7 +109,7 @@ class FeedList extends React.Component<IProps, IState> {
                                 )} feed={item} />
                                 <OpdsFeedUpdateForm trigger={(
                                     <button
-                                        className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_update)}
+                                        className={stylesCatalogs.button_edit}
                                         title={__("catalog.update")}
                                     >
                                         <SVG ariaHidden={true} svg={EditIcon} />

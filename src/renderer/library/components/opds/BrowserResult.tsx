@@ -131,17 +131,19 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     content = (
                         <>
                             {
-                                opds.navigation &&
+                                opds.navigation ?
                                 <EntryList entries={opds.navigation} />
+                                : <></>
                             }
 
                             {
-                                opds.publications &&
+                                opds.publications ?
                                 <EntryPublicationList
                                     opdsPublicationView={opds.publications}
                                     links={opds.links}
                                     pageInfo={opds.metadata}
                                 />
+                                : <></>
                             }
 
                             {
@@ -152,8 +154,9 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
                                         </div>
                                         {
-                                            group.navigation &&
+                                            group.navigation ?
                                             <EntryList entries={group.navigation} />
+                                            : <></>
                                         }
                                         {
                                             group.publications &&

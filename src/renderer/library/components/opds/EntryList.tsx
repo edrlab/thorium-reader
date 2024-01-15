@@ -8,8 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import Entry from "./Entry";
@@ -33,10 +32,10 @@ class EntryList extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         return (
-            <section className={stylesBlocks.block_line}>
-                <ul className={stylesButtons.buttons_list}>
+            <section>
+                <ul className={stylesCatalogs.entryList_ul}>
                     {this.props.entries.map((entry, index) =>
-                        <li key={index} >
+                        <li key={index} className={stylesCatalogs.entryList_item}>
                             <Entry entry={entry} level={this.props.level} />
                         </li>,
                     )}
