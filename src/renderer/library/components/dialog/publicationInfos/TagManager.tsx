@@ -28,6 +28,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 import classNames from "classnames";
+// import GridTagButton from "../../catalog/GridTagButton";
 
 
 // Logger
@@ -87,6 +88,7 @@ class TagManager extends React.Component<IProps> {
                                     }
                                 >
                                 </TagButton>
+                                // <GridTagButton name={tag as string} key={index} />
                         }
                     </TagList>
                 </div>

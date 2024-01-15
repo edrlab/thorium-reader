@@ -11,15 +11,16 @@
 */
 
 .breadcrumb {
-  padding: 10px 60px;
+  padding: 10px;
   font-size: 16px;
   display: flex;
   align-items: center;
 
   /* color: rgb(59, 59, 59); */
-  color: var(--color-accent);
-  position: fixed;
-  top: 123px;
+  color: var(--color-button-primary);
+
+  /* position: fixed;
+  top: 123px; */
   width: calc(100% - 120px);
   border-bottom: 1px solid var(--color-light-grey);
 

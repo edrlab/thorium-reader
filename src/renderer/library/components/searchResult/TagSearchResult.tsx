@@ -22,7 +22,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { DisplayType, ILibrarySearchText, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { Unsubscribe } from "redux";
 
-import Header from "../catalog/Header";
+// import Header from "../catalog/Header";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -83,22 +83,23 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             this.props.location.pathname,
         ).params.value;
 
-        const secondaryHeader = <Header />;
+        // const secondaryHeader = <Header />;
         const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
 
         return (
             <LibraryLayout
                 title={`${__("catalog.myBooks")} / ${title}`}
-                secondaryHeader={secondaryHeader}
+
+                // secondaryHeader={secondaryHeader}
                 breadCrumb={breadCrumb}
             >
-                <div>
-                    {this.state.publicationViews ?
-                        (displayType === DisplayType.Grid ?
-                            <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
-                            <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
-                        : <></>}
-                </div>
+            <div>
+                {this.state.publicationViews ?
+                    (displayType === DisplayType.Grid ?
+                        <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
+                        <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
+                    : <></>}
+            </div>
             </LibraryLayout>
         );
     }
