@@ -33,6 +33,7 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as LanguageIcon from "readium-desktop/renderer/assets/icons/language.svg";
 import * as BrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-icon.svg";
 import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/library/components/settings/KeyboardSettings";
+import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 
 interface ISettingsProps {};
 
@@ -133,9 +134,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
-        <button> {/* must be a button here*/}
-            <h3>Settings</h3>
-        </button>
+        <a role={"button"} title={__("header.settings")}> {/* must be a button here*/}
+            <SVG ariaHidden svg={GearIcon} />
+            <h3>{__("header.settings")}</h3>
+        </a>
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>

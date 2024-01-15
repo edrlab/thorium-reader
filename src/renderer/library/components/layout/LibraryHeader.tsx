@@ -19,7 +19,6 @@ import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
-import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
 import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -99,10 +98,7 @@ class Header extends React.Component<IProps, undefined> {
                         )
                     }
                     <li style={{position: "absolute", bottom: "10px" }}>
-                        <a role={"button"}>
-                            <SVG ariaHidden svg={GearIcon} />
-                            <Settings />
-                        </a>
+                        <Settings />
                     </li>
                 </ul>
             </nav>
@@ -160,6 +156,9 @@ class Header extends React.Component<IProps, undefined> {
                     aria-pressed={active}
                     role={"button"}
                     className={active ? stylesButtons.button_nav_primary : ""}
+                    title={
+                        translate("header." + item.label)
+                    }
                 >
                     <SVG ariaHidden svg={item.svg} />
                     <h3>{
