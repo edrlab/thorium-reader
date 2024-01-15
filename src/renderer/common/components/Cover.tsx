@@ -11,7 +11,7 @@ import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as stylesImages from "readium-desktop/renderer/assets/styles/components/images.css";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";

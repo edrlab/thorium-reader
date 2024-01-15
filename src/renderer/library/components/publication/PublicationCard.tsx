@@ -13,7 +13,7 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import Cover from "readium-desktop/renderer/common/components/Cover";
@@ -85,7 +85,6 @@ class PublicationCard extends React.Component<IProps> {
         // aria-controls="dialog"
         return (
             <div className={stylesPublications.publication_wrapper}>
-
                 {
                     this.props.isOpds ?
                         <PublicationInfoOpdsWithRadix
@@ -98,6 +97,15 @@ class PublicationCard extends React.Component<IProps> {
                                     tabIndex={0}
                                 >
                                     <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                                    <div className={stylesPublications.publication_title_wrapper}>
+                                        <p aria-hidden className={stylesPublications.publication_title}
+                                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                            {pubTitleStr}
+                                        </p>
+                                        <p aria-hidden className={stylesPublications.publication_authors}>
+                                            {this.truncateAuthors(authors)}
+                                        </p>
+                                    </div>
                                 </a>
                             </PublicationInfoOpdsWithRadixTrigger>
                             <PublicationInfoOpdsWithRadixContent />
@@ -110,38 +118,11 @@ class PublicationCard extends React.Component<IProps> {
                                     (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                             }
                             title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
-                            className={stylesPublications.publication_image_wrapper}
+                            className={stylesPublications.publication_main_container}
                             tabIndex={0}
                         >
                             <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
-                        </a>
-                }
-
-                <div className={stylesPublications.publication_infos_wrapper}>
-                    {
-                        this.props.isOpds ?
-                            <PublicationInfoOpdsWithRadix
-                                opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
-                            >
-                                <PublicationInfoOpdsWithRadixTrigger asChild>
-                                    <a aria-hidden style={{cursor: "pointer"}}
-                                        className={stylesPublications.publication_title_wrapper}
-                                    >
-                                        <p aria-hidden className={stylesPublications.publication_title}
-                                            dir={pubTitleIsRTL ? "rtl" : undefined}>
-                                            {pubTitleStr}
-                                        </p>
-                                        <p aria-hidden className={stylesPublications.publication_authors}>
-                                            {this.truncateAuthors(authors)}
-                                        </p>
-                                    </a>
-                                </PublicationInfoOpdsWithRadixTrigger>
-                                <PublicationInfoOpdsWithRadixContent />
-                            </PublicationInfoOpdsWithRadix>
-                            :
-                            <a aria-hidden onClick={(e) => this.handleLocalBookshelfBookClick(e)} style={{cursor: "pointer"}}
-                                className={stylesPublications.publication_title_wrapper}
-                            >
+                            <div className={stylesPublications.publication_title_wrapper}>
                                 <p aria-hidden className={stylesPublications.publication_title}
                                     dir={pubTitleIsRTL ? "rtl" : undefined}>
                                     {pubTitleStr}
@@ -149,23 +130,25 @@ class PublicationCard extends React.Component<IProps> {
                                 <p aria-hidden className={stylesPublications.publication_authors}>
                                     {this.truncateAuthors(authors)}
                                 </p>
-                            </a>
-                    }
+                            </div>
+                        </a>
+                }
+                <div className={stylesPublications.publication_infos_wrapper}>
                     <div className={stylesPublications.publication_infos}>
-                    <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
-                    <Menu
-                        button={(
-                            <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
-                        )}
-                    >
-                        {isOpds ?
-                            <OpdsMenu
-                                opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
-                            /> :
-                            <CatalogMenu
-                                publicationView={publicationViewMaybeOpds as PublicationView}
-                            />}
-                    </Menu>
+                        <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
+                        <Menu
+                            button={(
+                                <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
+                            )}
+                        >
+                            {isOpds ?
+                                <OpdsMenu
+                                    opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                                /> :
+                                <CatalogMenu
+                                    publicationView={publicationViewMaybeOpds as PublicationView}
+                                />}
+                        </Menu>
                     </div>
                 </div>
             </div>

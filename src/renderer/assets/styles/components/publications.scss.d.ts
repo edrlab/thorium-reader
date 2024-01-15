@@ -22,6 +22,7 @@ declare const styles: {
   readonly "publication_list_infos": string;
   readonly "publication_list_title_authors": string;
   readonly "publication_list_wrapper": string;
+  readonly "publication_main_container": string;
   readonly "publication_title": string;
   readonly "publication_title_wrapper": string;
   readonly "publication_wrapper": string;
