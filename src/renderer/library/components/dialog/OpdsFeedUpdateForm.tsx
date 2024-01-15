@@ -79,7 +79,6 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                                 })}
                                 type="text"
                                 aria-label={__("opds.updateForm.name")}
-                                defaultValue={title}
                                 required
                             />
                         </div>
@@ -94,7 +93,6 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                                 })}
                                 type="text"
                                 aria-label={__("opds.updateForm.url")}
-                                defaultValue={url}
                                 required
                             />
                         </div>
