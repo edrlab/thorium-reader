@@ -13,6 +13,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -72,8 +73,8 @@ class Entry extends React.Component<IProps, undefined> {
                 {
                     (entry.numberOfItems) ?
                         (
-                            <span style={{fontWeight: "400", fontStyle: "italic"}}>
-                                &nbsp;({entry.numberOfItems})
+                            <span className={stylesCatalogs.numberOfItems}>
+                                 ({entry.numberOfItems})
                             </span>
                         ) :
                         (<></>)

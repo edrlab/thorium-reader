@@ -6,3 +6,4 @@ export declare const catalog_title: string;
 export declare const catalog_wrapper: string;
 export declare const entryList_item: string;
 export declare const entryList_ul: string;
+export declare const numberOfItems: string;

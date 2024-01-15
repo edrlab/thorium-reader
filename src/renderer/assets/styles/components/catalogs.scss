@@ -122,7 +122,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 200px;
+        width: 250px;
+        height: 70px;
         text-decoration: none;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0);
         transition: all 0.3s;
@@ -143,6 +144,21 @@
             width: 100%;
             height: calc(100% - 15px);
             align-self: center;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
+}
+
+.numberOfItems {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 2px;
 }
