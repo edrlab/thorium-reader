@@ -73,7 +73,27 @@ class Cover extends React.Component<IProps, IState> {
         this.imageOnError = this.imageOnError.bind(this);
     }
 
-    public render()  {
+    public componentDidUpdate(prevProps: Readonly<IProps>): void {
+        if (prevProps.publicationViewMaybeOpds?.cover !== this.props.publicationViewMaybeOpds?.cover) {
+
+            const { cover } = this.props.publicationViewMaybeOpds;
+
+            if (cover) {
+                const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
+                const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
+
+                if (this.props.coverType === "cover") {
+                    this.setState({ imgUrl: coverUrl || thumbnailUrl });
+                } else {
+                    this.setState({ imgUrl: thumbnailUrl || coverUrl });
+                }
+            } else {
+                this.setState({ imgUrl: undefined });
+            }
+        }
+    }
+
+    public render() {
         const { publicationViewMaybeOpds, translator } = this.props;
 
         if (this.state.imgUrl) {

@@ -1645,7 +1645,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     return rowValue;
                 }],
                 // https://github.com/kentcdodds/match-sorter#threshold-number
-                threshold: matchSorter.rankings.CONTAINS
+                threshold: matchSorter.rankings.CONTAINS,
             });
             // console.log(`filterTypes.text ======= ${rows.length} ${columnId} ${typeof filterValue} ${res.length}`);
             return res;
