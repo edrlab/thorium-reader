@@ -98,15 +98,6 @@ class FeedList extends React.Component<IProps, IState> {
                                         <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
                                     </div>
                                 </Link>
-                                <DeleteOpdsFeedConfirm trigger={(
-                                    <button
-                                        // onClick={(e) => this.deleteFeed(e, item)}
-                                        className={stylesCatalogs.button_delete}
-                                        title={__("catalog.delete")}
-                                    >
-                                        <SVG ariaHidden={true} svg={DeleteIcon} />
-                                    </button>
-                                )} feed={item} />
                                 <OpdsFeedUpdateForm trigger={(
                                     <button
                                         className={stylesCatalogs.button_edit}
@@ -117,6 +108,15 @@ class FeedList extends React.Component<IProps, IState> {
                                 )}
                                     feed={item}
                                 />
+                                <DeleteOpdsFeedConfirm trigger={(
+                                    <button
+                                        // onClick={(e) => this.deleteFeed(e, item)}
+                                        className={stylesCatalogs.button_delete}
+                                        title={__("catalog.delete")}
+                                    >
+                                        <SVG ariaHidden={true} svg={DeleteIcon} />
+                                    </button>
+                                )} feed={item} />
                             </li>
                         );
                     })}
