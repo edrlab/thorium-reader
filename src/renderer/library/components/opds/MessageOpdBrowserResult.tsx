@@ -32,7 +32,7 @@ export default class MessageOpdBrowserResult extends React.Component<IProps, und
         return (
             <div className={stylesGlobal.text_center}>
                 <h3>{title}</h3>
-                {message && <p>{message}</p>}
+                {message ? <p>{message}</p> : <p>🙈</p>}
             </div>
         );
     }
