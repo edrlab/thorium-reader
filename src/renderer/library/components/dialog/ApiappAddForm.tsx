@@ -115,6 +115,8 @@ const ApiappAddForm = () => {
                         // placeholder={__("header.searchPlaceholder")}
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
+                                e.stopPropagation();
+                                e.preventDefault();
                                 const v = searchInputRef.current?.value;
                                 if (!v) return ;
                                 apiAppSearchAction(v);
@@ -187,7 +189,6 @@ export const ApiappAddFormDialog = () => {
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={stylesModals.modal_dialog}>
-
                 <div className={stylesModals.modal_dialog_header}>
                     <Dialog.Title>
                         {__("opds.addFormApiapp.title")}
@@ -200,19 +201,21 @@ export const ApiappAddFormDialog = () => {
                         </Dialog.Close>
                     </div>
                 </div>
-                <context.Provider value={contextValue}>
-                    <ApiappAddForm />
-                    <div className={stylesModals.modal_dialog_footer}>
-                        <Dialog.Close asChild>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                        </Dialog.Close>
-                        <Dialog.Close asChild>
-                            <button ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => addFeedAction()}>
-                                <SVG ariaHidden svg={AddIcon} />
-                                {__("opds.addForm.addButton")}</button>
-                        </Dialog.Close>
-                    </div>
-                </context.Provider>
+                <form className={stylesModals.modal_dialog_body}>
+                    <context.Provider value={contextValue}>
+                        <ApiappAddForm />
+                        <div className={stylesModals.modal_dialog_footer}>
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                            </Dialog.Close>
+                            <Dialog.Close asChild>
+                                <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => addFeedAction()}>
+                                    <SVG ariaHidden svg={AddIcon} />
+                                    {__("opds.addForm.addButton")}</button>
+                            </Dialog.Close>
+                        </div>
+                    </context.Provider>
+                </form>
             </Dialog.Content>
         </Dialog.Portal>
     </Dialog.Root>;
