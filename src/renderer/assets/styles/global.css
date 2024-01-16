@@ -164,8 +164,7 @@ section {
 
 .main {
   width: calc(100% - 120px);
-  padding: 30px;
-  padding-right: 60px;
+  padding: 30px 60px 10px 30px;
   overflow-y: auto;
   bottom: 0;
   left: 0;
@@ -173,6 +172,7 @@ section {
   top: 57px;
   flex: 6;
   height: 100vh;
+  box-sizing: border-box;
 }
 
 nav + nav + .main {

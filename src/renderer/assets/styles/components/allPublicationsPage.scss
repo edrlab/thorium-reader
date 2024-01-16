@@ -55,12 +55,18 @@
                 button[disabled] {
                     color: gray;
                 }
+                svg {
+                    width: 20px;
+                }
             }
             &_arrow {
                 margin: 0;
                 padding: 0;
                 width: 20px;
                 color: var(--color-button-primary);
+                a {
+                    color: var(--color-button-primary); 
+                }
             }
             &_select {
                 cursor: pointer;
@@ -74,8 +80,26 @@
                 border-radius: 4px;
                 height: 30px;
             }
+            &_opds_currentPage {
+                height: 30px;
+                min-width: 7em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid gray;
+                border-radius: 4px;
+                height: 30px;
+            }
         }
     }
+}
+
+.opds_publication_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .showColFilters {

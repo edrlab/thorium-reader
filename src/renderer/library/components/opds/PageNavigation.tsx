@@ -5,18 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IOpdsResultView } from "readium-desktop/common/views/opds";
-import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/chevron-bar-left.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/chevron-bar-right.svg";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -26,8 +22,11 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import { buildOpdsBrowserRouteWithLink } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { dispatchHistoryPush, DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import { dispatchHistoryPush, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { TDispatch } from "readium-desktop/typings/redux";
+
+import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 
 interface IBaseProps extends TranslatorProps {
     pageLinks?: IOpdsResultView["links"];
@@ -71,111 +70,103 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
+
+
         return (
-            <div className={classNames(stylesGlobal.justify_content_between, stylesGlobal.mt_30)}>
-                <div>
-                    {
-                        pageLinks?.first[0]?.url ?
+            <div className={stylesPublication.opds_publication_wrapper}>
+                {/* <button className={stylesButtons.button_primary_blue} onClick={() => console.log(pageLinks)}>Log "pageLinks"</button> */}
+                {/* <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p> */}
+                <div className={stylesPublication.allBooks_header_pagination_container}>
+                    <button
+                        className={stylesPublication.allBooks_header_pagination_arrow}
+                        aria-label={`${__("opds.firstPage")}`}
+                        disabled={!pageLinks?.first[0]?.url || pageInfo.currentPage === 0}
+                    >
+                        {pageLinks?.first[0]?.url ?
                             <Link
                                 to={{
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.first[0]),
                                 }}
-                                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                                className={stylesButtons.button_primary}
                             >
                                 <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-                                {__("opds.firstPage")}
-                            </Link>
-                        :
-                            <a
-                                className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
-                                tabIndex={-1}
-                            >
-                                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-                                {__("opds.firstPage")}
-                            </a>
-                    }
-                    {
-                        pageLinks?.previous[0]?.url ?
-                            <Link
-                                to={{
-                                    ...this.props.location,
-                                    pathname: buildRoute(pageLinks.previous[0]),
-                                }}
-                                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                                className={stylesButtons.button_primary}
-                            >
-                                <SVG ariaHidden={true} svg={ArrowLeftIcon} />
-                                {__("opds.previous")}
-                            </Link>
-                        :
-                            <a
-                                className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
-                                tabIndex={-1}
-                            >
-                                <SVG ariaHidden={true} svg={ArrowLeftIcon} />
-                                {__("opds.previous")}
-                            </a>
-                    }
-                </div>
-                {
-                    pageInfo?.currentPage
-                    && pageInfo.numberOfItems
-                    && pageInfo.itemsPerPage
-                    && <span>
+                            </Link> :
+                            <SVG ariaHidden={true} svg={ArrowFirstIcon} />}
+                    </button>
+
+                    <button
+                        className={stylesPublication.allBooks_header_pagination_arrow}
+                        style={{
+                            transform: "rotate(180deg)",
+                        }}
+                        aria-label={`${__("opds.previous")}`}
+                        disabled={!pageLinks?.previous[0]?.url || pageInfo.currentPage === 0}>
                         {
-                            pageInfo.currentPage
-                        } / {
-                            Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)
+                            pageLinks?.previous[0]?.url ?
+                                <Link
+                                    to={{
+                                        ...this.props.location,
+                                        pathname: buildRoute(pageLinks.previous[0]),
+                                    }}
+                                >
+                                    <SVG ariaHidden={true} svg={ChevronRight} />
+                                </Link>
+                                : <SVG ariaHidden={true} svg={ChevronRight} />}
+                    </button>
+
+                    {/* <select
+                        aria-label={`${__("reader.navigation.currentPageTotal", { current: pageInfo?.currentPage, total: pageInfo.numberOfItems })}`}
+                        className={stylesPublication.allBooks_header_pagination_select}
+                        value={pageInfo?.currentPage}
+                        onChange={(e) => {
+                            const pageIndex = e.target.value;
+                            console.log(pageIndex)
+                        }}
+                    >
+                        {
+                            ".".repeat(Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)).split("").map((_s, i) => (
+                                <option
+                                    key={`page${i}`}
+                                    value={i}>
+                                    {i + 1} / {Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}
+                                </option>
+                            ))
                         }
+                    </select> */}
+                    <span className={stylesPublication.allBooks_header_pagination_opds_currentPage}>
+                        {pageInfo.currentPage} / {Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}
                     </span>
-                }
-                <div>
-                    {
-                        pageLinks?.next[0]?.url ?
+                    <button
+                        className={stylesPublication.allBooks_header_pagination_arrow}
+                        aria-label={`${__("opds.next")}`}
+                        disabled={!pageLinks?.next[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}>
+                        {pageLinks?.next[0]?.url ?
                             <Link
                                 to={{
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.next[0]),
                                 }}
-                                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                                className={classNames(stylesButtons.button_primary, stylesButtons.icon_end)}
                             >
-                                {__("opds.next")}
-                                <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                                <SVG ariaHidden={true} svg={ChevronRight} />
                             </Link>
-                        :
-                            <a
-                                className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
-                                tabIndex={-1}
-                            >
-                                {__("opds.next")}
-                                <SVG ariaHidden={true} svg={ArrowRightIcon} />
-                            </a>
-                    }
-                    {
-                        pageLinks?.last[0]?.url ?
-                            <Link
-                                to={{
-                                    ...this.props.location,
-                                    pathname: buildRoute(pageLinks.last[0]),
-                                }}
-                                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                                className={classNames(stylesButtons.button_primary, stylesButtons.icon_end)}
-                            >
-                                {__("opds.lastPage")}
-                                <SVG ariaHidden={true} svg={ArrowLastIcon} />
-                            </Link>
-                        :
-                            <a
-                                className={classNames(stylesButtons.button_primary, stylesButtons.disabled)}
-                                tabIndex={-1}
-                            >
-                                {__("opds.lastPage")}
-                                <SVG ariaHidden={true} svg={ArrowLastIcon} />
-                            </a>
-                    }
+                            : <SVG ariaHidden={true} svg={ChevronRight} />}
+                    </button>
+
+                    <button
+                        className={stylesPublication.allBooks_header_pagination_arrow}
+                        aria-label={`${__("opds.lastPage")}`}
+                        disabled={!pageLinks?.last[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}>
+                        {
+                            pageLinks?.last[0]?.url ?
+                                <Link
+                                    to={{
+                                        ...this.props.location,
+                                        pathname: buildRoute(pageLinks.last[0]),
+                                    }}>
+                                    <SVG ariaHidden={true} svg={ArrowLastIcon} />
+                                </Link>
+                                : <SVG ariaHidden={true} svg={ArrowLastIcon} />}
+                    </button>
                 </div>
             </div>
         );
