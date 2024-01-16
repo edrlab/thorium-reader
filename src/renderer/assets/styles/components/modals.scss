@@ -70,7 +70,7 @@
 .modal_dialog,
 .modal_dialog_reader {
 
-  // min-height: 400px;
+  min-height: 401px;
   // min-width: 700px;
   height: fit-content;
   max-width: calc(100vw - 60px);
@@ -133,9 +133,12 @@
 
 .modal_dialog_body {
   flex: 1;
-  padding: 20px 30px;
+  padding: 0 20px 0 30px;
   overflow-x: hidden;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &_centered {
     display: flex;

@@ -92,6 +92,7 @@ class PublicationCard extends React.Component<IProps> {
                         >
                             <PublicationInfoOpdsWithRadixTrigger asChild>
                                 <a
+                                    className={stylesPublications.publication_main_container}
                                     title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
                                     tabIndex={0}
                                 >

@@ -23,6 +23,7 @@ import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
 import classNames from "classnames";
+import * as LibraryIcon from "readium-desktop/renderer/assets/icons/library-icon.svg";
 
 const context = React.createContext<{
     selectSearchResult: IApiappSearchResultView;
@@ -180,9 +181,9 @@ export const ApiappAddFormDialog = () => {
     return <Dialog.Root>
         <Dialog.Trigger asChild>
             <button
-                className={stylesButtons.button_primary}
+                className={stylesButtons.button_nav_primary}
             >
-                <SVG ariaHidden={true} svg={AddIcon} />
+                <SVG ariaHidden={true} svg={LibraryIcon} />
                 <span>{__("opds.addFormApiapp.title")}</span>
             </button>
         </Dialog.Trigger>
@@ -203,7 +204,9 @@ export const ApiappAddFormDialog = () => {
                 </div>
                 <form className={stylesModals.modal_dialog_body}>
                     <context.Provider value={contextValue}>
+                        <div>
                         <ApiappAddForm />
+                        </div>
                         <div className={stylesModals.modal_dialog_footer}>
                             <Dialog.Close asChild>
                                 <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>

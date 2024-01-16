@@ -107,6 +107,7 @@
     border-color: transparent;
     background-color: transparent;
     transition: 200ms linear;
+    padding: 3px;
     &:hover{
         background-color: var(--color-button-secondary);
         border-color: var(--color-button-primary);

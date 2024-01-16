@@ -10,7 +10,6 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as stylesImages from "readium-desktop/renderer/assets/styles/components/images.css";
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import {
     formatContributorToString,
@@ -100,7 +99,7 @@ class Cover extends React.Component<IProps, IState> {
             return (
                 <img
                     tabIndex={(this.props.imgRadixProp || this.props.onKeyPress) ? 0 : -1}
-                    className={stylesImages.cover_img}
+                    className={stylesPublications.cover_img}
                     onClick={this.props.onClick}
                     onKeyPress={this.props.onKeyPress}
                     role="presentation"

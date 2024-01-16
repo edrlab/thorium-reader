@@ -11,9 +11,6 @@
         list-style-type: none;
         position: relative;
         transition: 200ms ease-in-out;
-        &:hover {
-            scale: 1.1;
-        }
     }
     .catalog_content {
         border-radius: 6px;
@@ -28,6 +25,7 @@
         text-decoration: none;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0);
         transition: all 0.3s;
+        padding: 0;
         &:after {
             content: "";
             width: inherit;
@@ -68,7 +66,13 @@
                 padding-right: 10px;
                 top: 35px;
                 left: -10px;
-                color: var(--color-primary);
+                color: var(--color-primary);                    
+                overflow-wrap: anywhere;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 4;
+                        line-clamp: 4; 
+                -webkit-box-orient: vertical;
             }
         }
     }
