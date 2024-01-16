@@ -280,7 +280,7 @@ select {
   height: 30px;
   margin-top: 30px;
 
-  &:has(#passphrase:focus) {
+  &:has(input:focus) {    
     outline-color: blue !important;
     outline-style: solid !important;
     outline-width: 2px !important;

@@ -110,6 +110,7 @@ const ApiappAddForm = () => {
                     className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
                         <label htmlFor="apiapp-search">{__("header.searchPlaceholder")}</label>
                     <input
+                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                         ref={searchInputRef}
                         type="search"
                         id="apiapp_search"

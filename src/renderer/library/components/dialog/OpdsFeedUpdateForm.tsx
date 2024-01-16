@@ -73,6 +73,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                             <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
                                 <label htmlFor="title">{__("opds.updateForm.name")}</label>
                                 <input
+                                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                     id="title"
                                     value={title}
                                     onChange={(e) => this.setState({
@@ -87,6 +88,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                             <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
                                 <label htmlFor="url">{__("opds.updateForm.url")}</label>
                                 <input
+                                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                     id="url"
                                     value={url}
                                     onChange={(e) => this.setState({

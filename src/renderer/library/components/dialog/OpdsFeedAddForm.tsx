@@ -79,6 +79,7 @@ export const ApiappAddFormDialog = () => {
                                 onChange={(e) => setTitle(e?.target?.value)}
                                 type="text"
                                 aria-label={__("opds.addForm.name")}
+                                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                 // placeholder={__("opds.addForm.namePlaceholder")}
                                 required
                             />
@@ -93,6 +94,7 @@ export const ApiappAddFormDialog = () => {
                                 onChange={(e) => setUrl(e?.target?.value)}
                                 type="text"
                                 aria-label={__("opds.addForm.url")}
+                                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                 // placeholder={__("opds.addForm.urlPlaceholder")}
                                 required
                             />
