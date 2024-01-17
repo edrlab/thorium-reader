@@ -125,7 +125,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                         :
                                         <strong key={index}>
                                             {item.name}
-                                        </strong>,
+                                        </strong>
                             )
                         : <></>
                 }
