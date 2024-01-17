@@ -13,9 +13,8 @@ import Catalog from "./components/catalog/Catalog";
 import Browser from "./components/opds/Browser";
 import Opds from "./components/opds/Opds";
 import AllPublicationPage from "./components/searchResult/AllPublicationPage";
-import TagSearchResult from "./components/searchResult/TagSearchResult";
-import TextSearchResult from "./components/searchResult/TextSearchResult";
-import {Settings} from "./components/settings/Settings";
+// import TagSearchResult from "./components/searchResult/TagSearchResult";
+// import TextSearchResult from "./components/searchResult/TextSearchResult";
 
 interface Route {
     path: string;
@@ -59,30 +58,35 @@ const _routes = {
     //     exact: false,
     //     component: LanguageSettings,
     // } as Route,
-    "/settings": {
-        path: "/settings",
-        // exact: false,
-        component: Settings,
-    } as Route,
-    "/library/search/text": {
-        // ILibrarySearchText
-        path: "/library/search/text/:value",
-        // exact: true,
-        component: TextSearchResult,
-    } as Route,
-    "/library/search/tag": {
-        // ILibrarySearchTag
-        path: "/library/search/tag/:value",
-        // exact: true,
-        component: TagSearchResult,
-    } as Route,
-    "/library/search/all": {
-        path: "/library/search/all",
+    // "/settings": {
+    //     path: "/settings",
+    //     // exact: false,
+    //     component: Settings,
+    // } as Route,
+    // "/library/search/text": {
+    //     // ILibrarySearchText
+    //     path: "/library/search/text/:value",
+    //     // exact: true,
+    //     component: TextSearchResult,
+    // } as Route,
+    // "/library/search/tag": {
+    //     // ILibrarySearchTag
+    //     path: "/library/search/tag/:value",
+    //     // exact: true,
+    //     component: TagSearchResult,
+    // } as Route,
+    // "/library/focus": {
+    //     path: "/library/focus/:focusElement/:value?",
+    //     // exact: true,
+    //     component: AllPublicationPage,
+    // } as Route,
+    "/library": {
+        path: "/library",
         // exact: true,
         component: AllPublicationPage,
     } as Route,
-    "/libray": {
-        path: "/library",
+    "/home": {
+        path: "/home",
         // exact: true,
         component: Catalog,
     } as Route,

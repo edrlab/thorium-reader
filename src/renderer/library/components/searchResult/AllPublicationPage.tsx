@@ -87,6 +87,7 @@ import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+import { useSearchParams } from "react-router-dom";
 
 // import {
 //     formatContributorToString,
@@ -153,11 +154,18 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                 .then((publicationViews) => {
                     this.setState({ publicationViews });
                     setTimeout(() => {
-                        this.onKeyboardFocusSearch();
+                        // this.onKeyboardFocusSearch();
                     }, 400);
                 })
                 .catch((error) => console.error("Error to fetch api publication/findAll", error));
         });
+
+        if (this.props.location.search.indexOf("focus=search") > -1) {
+            console.log("focus=search");
+            setTimeout(() => {
+                this.onKeyboardFocusSearch();
+            }, 400);
+        }
     }
 
     public componentWillUnmount() {
@@ -242,6 +250,8 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     private onKeyboardFocusSearch = () => {
+        console.log("FOCUS SEARCH REQUESTED");
+
         if (!this.focusInputRef?.current) {
             return;
         }
@@ -468,6 +478,29 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
     //     setValue(props.column.filterValue);
     //     return <></>;
     // }
+
+    const [searchParams] = useSearchParams();
+    React.useEffect(() => {
+        if (searchParams.get("focus") === "tags" && props.column.id === "colTags") {
+            console.log("focus=tags");
+            if (!inputRef.current) {
+                console.log("NO REF!");
+                return;
+
+            }
+            inputRef.current.focus();
+            inputRef.current.value = decodeURIComponent(searchParams.get("value") || "");
+            if (!props.accessibilitySupportEnabled) {
+                onInputChange((inputRef.current.value || "").trim() || undefined);
+            }
+            if (props.accessibilitySupportEnabled) {
+                // (e.target as EventTarget & HTMLInputElement).value
+                // value
+                props.column.setFilter( // props.column.filterValue
+                    (inputRef?.current?.value || "").trim() || undefined);
+            }
+        }
+    }, []);
 
     const onInputChange = useAsyncDebounce((v) => {
         props.column.setFilter(v);

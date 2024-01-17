@@ -34,16 +34,16 @@ interface NavigationHeader {
 
 const headerNav: NavigationHeader[] = [
     {
-        route: "/library",
+        route: "/home",
         label: "homeTitle",
-        matchRoutes: ["/", "/library"],
+        matchRoutes: ["/", "/home"],
         styles: [],
         svg: HomeIcon,
     },
     {
-        route: "/library/search/all",
+        route: "/library",
         label: "allBooks",
-        matchRoutes: ["/library/search/all"],
+        matchRoutes: ["/library"],
         styles: [],
         svg: ShelfIcon,
     },
@@ -120,7 +120,7 @@ class Header extends React.Component<IProps, undefined> {
         let active = false;
         for (const matchRoute of item.matchRoutes) {
             if (
-                pathname === (matchRoute)
+                pathname.startsWith(matchRoute)
                 && (
                     (pathname === "/" && matchRoute === pathname)
                     || matchRoute !== "/"
@@ -135,7 +135,7 @@ class Header extends React.Component<IProps, undefined> {
 
         const nextLocation = this.props.history.reduce(
             (pv, cv) =>
-                cv?.pathname === item.route
+                cv?.pathname.startsWith(item.route)
                     ? {
                         ...this.props.location,
                         pathname: cv.pathname,

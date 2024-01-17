@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, IRouterLocationState } from "../../routing";
+import { DisplayType } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -37,9 +37,11 @@ class GridTagButton extends React.Component<IProps, undefined> {
             <Link
                 to={{
                     ...this.props.location,
-                    pathname: `/library/search/tag/${encodeURIComponent_RFC3986(this.props.name)}`,
+                    pathname: "/library",
+                    search: `?focus=tags&value=${encodeURIComponent_RFC3986(this.props.name)}`,
                 }}
-                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                // state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                state = {{displayType: DisplayType.List}}
                 className={stylesTags.tag}
             >
                 {this.props.name}

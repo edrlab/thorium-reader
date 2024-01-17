@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 // import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
+// import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -24,7 +24,7 @@ import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/libr
 
 import PublicationAddButton from "./PublicationAddButton";
 
-import SearchForm from "./SearchForm";
+// import SearchForm from "./SearchForm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -90,7 +90,7 @@ class Header extends React.Component<IProps, undefined> {
                 </div>
                     <div style={{textAlign: "right", display: "flex", gap: "10px"}}>
                     <PublicationAddButton />
-                    {
+                    {/* {
                     window.location.hash.indexOf("search") === -1
                     ?
                     <>
@@ -115,7 +115,7 @@ class Header extends React.Component<IProps, undefined> {
                     </>
                     :
                     <></>
-                    }
+                    } */}
                     </div>
             </SecondaryHeader>
         );
