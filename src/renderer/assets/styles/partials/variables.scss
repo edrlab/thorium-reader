@@ -24,6 +24,23 @@ $color-palette: (
     --setting-btn-secondary: #f7f5ff,
   ),
   dark: (
+    --color-primary: #4d4d4d,
+    --color-secondary: #fff,
+    --color-tertiary: #67a3e0,
+    --color-disabled: #040303,
+    --color-light-grey: #f1f1f1,
+    --color-medium-grey: #e5e5e5,
+    --color-figma-grey: #f5f5f5,
+    --color-accent: rgb(0, 188, 212),
+    --color-accent-contrast: #fff,
+    --reader-fontColor: #000,
+    --color-button-primary: #1053C8,
+    --color-button-secondary: #ECF2FD,
+    --color-bg-tab: rgba(246, 246, 246, 0.84),
+    --setting-btn-primary: #3a00e5,
+    --setting-btn-secondary: #f7f5ff,
+
+  /*
     --color-primary: #fff,
     --color-secondary: #4d4d4d,
     --color-tertiary: #67a3e0,
@@ -38,6 +55,7 @@ $color-palette: (
     --color-bg-tab: rgba(16, 18, 22, 0.6),
     --setting-btn-primary: #fff,
     --setting-btn-secondary: var(--color-secondary),
+        */
   ),
 );
 
