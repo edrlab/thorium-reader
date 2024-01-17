@@ -376,6 +376,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
             value={value || ""}
             */}
             <input
+                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 id="globalSearchInput"
                 aria-labelledby="globalSearchLabel"
                 ref={props.focusInputRef}

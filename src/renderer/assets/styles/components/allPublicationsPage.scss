@@ -14,13 +14,19 @@
                 background-color: white!important;
                 width: 370px!important;
                 height: 30px!important;
+                &:has(input:focus) {    
+                    outline-color: blue !important;
+                    outline-style: solid !important;
+                    outline-width: 2px !important;
+                    outline-offset: -2px;
+                  }
                 * {
                     margin-left: 0.4em;
                     margin: 0;
                 }
                 label {
                     background-color: var(--color-figma-grey);
-                    top: -19px;
+                    top: -18px;
                 }
                 i {
                     position: relative;

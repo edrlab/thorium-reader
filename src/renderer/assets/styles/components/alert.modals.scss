@@ -45,6 +45,7 @@
 .AlertDialogButtonContainer {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 }
 
 .AlertDialogButton {
@@ -81,7 +82,7 @@
   }
 }
 
-.AlertDialogButton.ddelete {
+.AlertDialogButton.delete {
   color: var(--color-button-primary);
   border: 1px solid var(--color-button-primary);
   background-color: var(--color-button-secondary);

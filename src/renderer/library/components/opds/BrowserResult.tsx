@@ -82,7 +82,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             ) {
 
                 const { data: { opds } } = browserResult;
-                console.log(browserData)
+                console.log(browserData);
 
                 if (opds.navigation &&
                     !opds.publications &&

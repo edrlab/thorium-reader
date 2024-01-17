@@ -11,11 +11,11 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-import classNames from "classnames";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import SVG from "../../../common/components/SVG";
 import * as Trash from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
@@ -44,10 +44,13 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>{__("dialog.cancel")}</button>
+                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.ddelete)} onClick={removeAction} type="button"><SVG ariaHidden svg={Trash} />{__("dialog.yes")}</button>
+                            <button className={stylesButtons.button_primary_blue} onClick={removeAction} type="button">
+                                <SVG ariaHidden svg={Trash} />
+                                {__("dialog.yes")}
+                            </button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>

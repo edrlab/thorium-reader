@@ -12,7 +12,6 @@ import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IOpdsResultView } from "readium-desktop/common/views/opds";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

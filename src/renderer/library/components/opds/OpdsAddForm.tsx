@@ -9,7 +9,6 @@ import * as React from "react";
 // import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
 import ApiappAddFormDialog from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
 import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
-import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
 
 const OpdsAddForm: React.FC = () => {
     return (
