@@ -612,7 +612,7 @@ const CellFormat: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell 
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            className={stylesButtons.button_nav_primary} style={{ height: "15px", padding: "2px" }}>{t}</a>;
+            className={stylesButtons.button_nav_primary} style={{ padding: "2px" }}>{t}</a>;
     };
 
     return (<div className={stylesPublication.cell_wrapper}>
@@ -816,7 +816,9 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            className={stylesButtons.button_nav_primary} style={{ height: "15px", padding: "2px" }}>{t}</a>;
+            className={stylesButtons.button_nav_primary} style={{padding: "2px" }}>
+                <p style={{ maxWidth:"100px", overflow: "hidden", textOverflow: "ellipsis", textWrap: "nowrap"}}>{t}</p>
+                </a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
