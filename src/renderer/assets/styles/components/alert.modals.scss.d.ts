@@ -6,6 +6,5 @@ export declare const AlertDialogDescription: string;
 export declare const AlertDialogOverlay: string;
 export declare const AlertDialogTitle: string;
 export declare const contentShow: string;
-export declare const ddelete: string;
 export declare const overlayShow: string;
 export declare const yes: string;

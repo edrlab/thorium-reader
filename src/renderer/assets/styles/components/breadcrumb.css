@@ -11,11 +11,32 @@
 */
 
 .breadcrumb {
-  padding: 10px;
+  /* padding: 10px; */
   font-size: 16px;
   display: flex;
   align-items: center;
   font-weight: bold;
+
+  a {
+    display: flex;
+    max-width: 150px;
+
+    & p {
+      font-size: 14px;
+      max-width: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-wrap: nowrap;
+    }
+
+  }
+
+  & strong {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+  }
 
   /* color: rgb(59, 59, 59); */
   color: var(--color-button-primary);
@@ -29,7 +50,6 @@
     position: relative;
     height: 38px;
     width: 42px;
-    margin-right: 10px;
 
     & svg {
       position: absolute;

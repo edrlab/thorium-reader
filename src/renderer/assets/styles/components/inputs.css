@@ -101,11 +101,19 @@ input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
 }
 
 form[role="search"] {
-  position: relative;
-  width: auto;
-  display: inline-block;
+background-color: white !important;
+    width: 370px !important;
+    height: 30px !important;
 
-  & input[type="search"] {
+    &:has(input:focus) {    
+      outline-color: blue !important;
+      outline-style: solid !important;
+      outline-width: 2px !important;
+      outline-offset: -2px;
+    }
+}
+
+  /* & input[type="search"] {
     width: 225px;
   }
 
@@ -118,7 +126,7 @@ form[role="search"] {
     background-color: transparent;
     margin: 0;
   }
-}
+} */
 
 /* 2. input[type="checkbox"] */
 
@@ -261,10 +269,10 @@ select {
       height: 19px;
       margin-left: 30px;
       
-      &[type="search"], &[title="Add a tag"] {
+      /* &[type="search"], &[title="Add a tag"] {
         margin: 0;
         width: 100%;
-      }
+      } */
   }
 
   & i {

@@ -12,7 +12,7 @@
 
 /* 1. .row */
 .row {
-  margin-left: -15px;
+  /* margin-left: -15px; */
   margin-right: -15px;
   display: flex;
   flex-direction: row;

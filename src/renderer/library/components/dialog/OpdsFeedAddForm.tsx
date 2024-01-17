@@ -22,7 +22,7 @@ import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
 import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalog.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
 
 export const ApiappAddFormDialog = () => {

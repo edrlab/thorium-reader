@@ -18,7 +18,7 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalog.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

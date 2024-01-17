@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -30,6 +31,7 @@ interface IBaseProps extends TranslatorProps {
     breadCrumb?: React.ReactElement;
     title?: string;
     mainClassName?: string;
+    search?: React.ReactElement;
 
     // since React 16.10.0 (was not needed in 16.9.0)
     children?: React.ReactNode; // JSX.Element[] | JSX.Element
@@ -111,7 +113,16 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         className={classNames(stylesGlobal.main, this.props.mainClassName)}
                     >
                         { this.props.secondaryHeader }
-                        { this.props.breadCrumb }
+                        { title === "Catalogs" && this.props.breadCrumb ?
+                        <h2>{title}</h2>
+                        : <></>
+                        }
+                        {this.props.breadCrumb ?
+                        <div className={stylesCatalogs.catalog_breadcrumbSearch_Wrapper}>
+                            { this.props.breadCrumb }
+                            { this.props.search }
+                        </div>
+                        : <></>}
                         <a
                             role="heading"
                             className={stylesGlobal.anchor_link}

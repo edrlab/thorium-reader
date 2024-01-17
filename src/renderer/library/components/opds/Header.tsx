@@ -10,9 +10,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
 import * as RefreshIcon from "readium-desktop/renderer/assets/icons/arrow-clockwise.svg";
-import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/house-fill.svg";
-import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
+import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
+import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
@@ -23,8 +23,10 @@ import SecondaryHeader from "readium-desktop/renderer/library/components/Seconda
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import ApiappAddFormDialog from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
+import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
 
-import SearchForm from "./SearchForm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -52,42 +54,57 @@ class Header extends React.Component<IProps, undefined> {
         // FIXME : css in code
         return (
             <SecondaryHeader>
-                <Link
-                    to={this.props.location}
-                    state = {{displayType: DisplayType.Grid}}
-                    replace={true}
-                    className={(displayType === DisplayType.Grid) ?
-                        stylesButtons.button_transparency_icon :
-                        stylesButtons.button_transparency_icon_inactive
+                <div style={{display: "flex", gap: "10px"}}>
+                    <Link
+                        to={this.props.location}
+                        state = {{displayType: DisplayType.Grid}}
+                        replace={true}
+                        className={(displayType === DisplayType.Grid) ?
+                            stylesButtons.button_nav_primary :
+                            stylesButtons.button_nav_secondary
+                        }
+                        title={__("header.gridTitle")}
+                        aria-pressed={displayType === DisplayType.Grid}
+                        role={"button"}
+                    >
+                        {(displayType === DisplayType.Grid) ?
+                            <SVG svg={CheckIcon} ariaHidden/> :
+                            <SVG svg={GridIcon} ariaHidden/>
+                        }
+                        <h3>{__("header.gridTitle")}</h3>
+                    </Link>
+                    <Link
+                        to={this.props.location}
+                        state = {{displayType: DisplayType.List}}
+                        replace={true}
+                        className={(displayType === DisplayType.List) ?
+                            stylesButtons.button_nav_primary :
+                            stylesButtons.button_nav_secondary
+                        }
+                        title={__("header.listTitle")}
+                        aria-pressed={displayType === DisplayType.List}
+                        role={"button"}
+                    >
+                        {(displayType === DisplayType.List) ?
+                            <SVG svg={CheckIcon} ariaHidden/> :
+                            <SVG svg={ListIcon} ariaHidden/>
+                        }
+                        <h3>{__("header.listTitle")}</h3>
+                    </Link>
+                </div>
+                <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                    <OpdsFeedAddForm />
+                    <ApiappAddFormDialog />
+                    {
+                        this.home()
                     }
-                    aria-pressed={displayType === DisplayType.Grid}
-                    role={"button"}
-                >
-                    <SVG svg={GridIcon} title={__("header.gridTitle")} />
-                </Link>
-                <Link
-                    to={this.props.location}
-                    state = {{displayType: DisplayType.List}}
-                    replace={true}
-                    className={(displayType === DisplayType.List) ?
-                        stylesButtons.button_transparency_icon :
-                        stylesButtons.button_transparency_icon_inactive
+                    {
+                        this.refresh()
                     }
-                    aria-pressed={displayType === DisplayType.List}
-                    role={"button"}
-                >
-                    <SVG svg={ListIcon} title={__("header.listTitle")} />
-                </Link>
-                <SearchForm />
-                {
-                    this.home()
-                }
-                {
-                    this.refresh()
-                }
-                {
-                    this.bookshelf()
-                }
+                    {
+                        this.bookshelf()
+                    }
+                </div>
             </SecondaryHeader>
         );
     }

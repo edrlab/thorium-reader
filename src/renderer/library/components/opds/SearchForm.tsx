@@ -10,7 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { matchPath } from "react-router-dom";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
-import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
+import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -24,6 +24,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.css";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
@@ -75,23 +76,30 @@ class SearchForm extends React.Component<IProps, undefined> {
 
         return (
             <form
+                className={stylesInput.form_group}
                 onSubmit={this.submitSearch}
                 role="search"
             >
+                <label
+                    id="globalSearchLabel"
+                    htmlFor="globalSearchInput">
+                    {`${__("header.searchPlaceholder")}`}
+                </label>
+                <i><SVG ariaHidden svg={SearchIcon} /></i>
                 <input
                     disabled={!this.props.search?.url}
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
                     aria-label={__("header.searchPlaceholder")}
-                    placeholder={__("header.searchPlaceholder")}
+                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 />
-                <button
+                {/* <button
                     disabled={!this.props.search?.url}
                     title={__("header.searchTitle")}
                 >
                     <SVG ariaHidden={true} svg={SearchIcon} />
-                </button>
+                </button> */}
             </form>
         );
     }
@@ -128,12 +136,12 @@ class SearchForm extends React.Component<IProps, undefined> {
             debug("SubmitSearch 2", searchWords, url);
 
             const level = this.props.search.level
-            || parseInt(
-                matchPath<keyof IOpdsBrowse, string>(
-                    routes["/opds/browse"].path,
-                    this.props.location.pathname,
-                ).params.level,
-                10);
+                || parseInt(
+                    matchPath<keyof IOpdsBrowse, string>(
+                        routes["/opds/browse"].path,
+                        this.props.location.pathname,
+                    ).params.level,
+                    10);
 
             this.props.historyPush({
                 ...this.props.location,
