@@ -1,0 +1,12 @@
+.footer_wrapper{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid var(--color-figma-grey);
+    a {
+        font-style: italic;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
