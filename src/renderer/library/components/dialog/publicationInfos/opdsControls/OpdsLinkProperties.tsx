@@ -8,7 +8,7 @@
 import * as moment from "moment";
 import * as React from "react";
 import { IOPDSPropertiesView } from "readium-desktop/common/views/opds";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

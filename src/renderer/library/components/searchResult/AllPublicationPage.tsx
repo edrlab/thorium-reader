@@ -377,8 +377,13 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
         <div className={stylesInput.form_group}>
             <label
                 id="globalSearchLabel"
-                htmlFor="globalSearchInput">
+                htmlFor="globalSearchInput"
+                style={{display: "flex", gap: "5px"}}>
                 {`${props.__("header.searchPlaceholder")}`}
+                <div
+                aria-live="assertive">
+                {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
+            </div>
             </label>
             <i><SVG ariaHidden svg={SearchIcon} /></i>
             {/*
@@ -406,10 +411,6 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
             />
-            <div
-                aria-live="assertive">
-                {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
-            </div>
             {props.accessibilitySupportEnabled ? <button
                 onClick={() => {
                     props.setShowColumnFilters(true);

@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as BreacrmbsNavIcon from "readium-desktop/renderer/assets/icons/breadcrumbsNav-icon.svg";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
-import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.css";
+import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,

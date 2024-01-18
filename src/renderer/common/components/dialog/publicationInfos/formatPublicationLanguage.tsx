@@ -8,7 +8,7 @@
 import * as React from "react";
 import { AvailableLanguages, I18nTyped } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 
 export interface IProps {
     publicationViewMaybeOpds: TPublication;

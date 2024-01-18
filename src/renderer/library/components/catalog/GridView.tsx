@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
-import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

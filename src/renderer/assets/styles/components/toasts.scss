@@ -30,15 +30,15 @@
     border-width: 4px;
   }
 
-  &.error {
+  .error {
     background: #fedbd8;
   }
 
-  &.success {
+  .success {
     background: #f0fed8;
   }
 
-  & p {
+  p {
     margin: 0;
     flex: 1;
     padding-right: 1em;
@@ -46,12 +46,12 @@
     user-select: text;
   }
 
-  & .icon {
+  .icon {
     height: 3rem;
     margin-right: 1rem;
   }
 
-  & .closeButton {
+  .closeButton {
     position: absolute;
     right: 0;
     top: 0;
@@ -60,7 +60,7 @@
     padding: 0;
     margin: 3px;
 
-    & svg {
+    svg {
       height: 100%;
       width: 100%;
     }

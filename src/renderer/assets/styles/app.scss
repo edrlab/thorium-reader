@@ -17,7 +17,7 @@
   padding: 10px;
   z-index: 110;
 
-  & li {
+  li {
     /* backgroundxx: red; */
     display: inline-block;
     width: 100%;
@@ -25,7 +25,7 @@
     margin: 0;
     padding: 0;
 
-    & span.percent {
+    span.percent {
       /* backgroundxx: blue; */
       display: inline-block;
       width: 40px;
@@ -34,7 +34,7 @@
       padding: 3px;
     }
 
-    & progress {
+    progress {
       background-color: green;
       border-radius: 0;
       height: 20px;
@@ -46,17 +46,17 @@
       padding: 0;
     }
 
-    & progress::-webkit-progress-bar {
+    progress::-webkit-progress-bar {
       background-color: silver;
       border-radius: 0;
     }
 
-    & progress::-webkit-progress-value {
+    progress::-webkit-progress-value {
       background-color: black;
       border-radius: 0;
     }
 
-    & span.title {
+    span.title {
       /* backgroundxx: green; */
       display: inline-block;
       width: auto;

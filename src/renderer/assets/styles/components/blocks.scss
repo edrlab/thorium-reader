@@ -84,7 +84,8 @@
   }
 }
 
-.block_full_wrapper {
+.block_full{
+  &_wrapper {
   list-style: none;
   width: 191px;
   height: 191px;
@@ -96,53 +97,52 @@
   margin-right: 15px;
   margin-bottom: 15px;
 
-  &:hover {
-    transform: scale(1.05);
+    &:hover {
+      transform: scale(1.05);
 
-    & .block_full {
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+      & .block_full {
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+      }
     }
   }
-}
+  &_close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    color: #fff;
+    fill: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0);
+    transition: all 0.2s;
+    cursor: pointer;
+    margin-right: 0 !important;
 
-.block_full_close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 2;
-  color: #fff;
-  fill: #fff;
-  font-size: 20px;
-  font-weight: 800;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0);
-  transition: all 0.2s;
-  cursor: pointer;
-  margin-right: 0 !important;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
   }
-}
-
-.block_full_update {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 2;
-  color: #fff;
-  fill: #fff;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0);
-  transition: all 0.2s;
-  cursor: pointer;
-
-  & svg {
-    transform: scale(0.8);
-  }
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
+  &_update {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    color: #fff;
+    fill: #fff;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0);
+    transition: all 0.2s;
+    cursor: pointer;
+  
+    & svg {
+      transform: scale(0.8);
+    }
+  
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
   }
 }
 

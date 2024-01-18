@@ -10,7 +10,7 @@ import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import SVG from "../../../SVG";

@@ -9,7 +9,7 @@ import classNames from "classnames";
 import * as React from "react";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";

@@ -11,7 +11,7 @@ import DOMPurify from "dompurify";
 import * as React from "react";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 // import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
 // import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";

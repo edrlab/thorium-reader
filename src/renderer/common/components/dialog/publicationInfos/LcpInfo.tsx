@@ -10,7 +10,7 @@ import * as debug_ from "debug";
 import * as moment from "moment";
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 

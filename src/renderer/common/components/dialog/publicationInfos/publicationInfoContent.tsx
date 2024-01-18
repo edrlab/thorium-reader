@@ -12,7 +12,7 @@ import { I18nTyped, Translator } from "readium-desktop/common/services/translato
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 

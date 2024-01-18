@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { downloadActions } from "readium-desktop/common/redux/actions";
-import * as stylesApp from "readium-desktop/renderer/assets/styles/app.css";
+import * as stylesApp from "readium-desktop/renderer/assets/styles/app.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

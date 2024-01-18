@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
-import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 import * as debug_ from "debug";
 import DOMPurify from "dompurify";
 import * as React from "react";

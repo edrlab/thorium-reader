@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.css";
+import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import {
     TranslatorProps, withTranslator,

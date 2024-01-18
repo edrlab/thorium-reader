@@ -50,22 +50,22 @@
     height: 10px;
     margin: 0 0 0 2px;
   }
-}
 
-.tag_inputs {
-  position: relative;
-  max-width: 300px;
-  flex: 1;
-  border-radius: 0;
-  border: none;
-  height: 35px;
-  background-color: transparent;
-  color: var(--color-primary);
-  border-bottom: 1px solid #c1c1c1;
-
-  &::placeholder {
-    font-weight: 300;
-    color: #c1c1c1;
+  &_inputs {
+    position: relative;
+    max-width: 300px;
+    flex: 1;
+    border-radius: 0;
+    border: none;
+    height: 35px;
+    background-color: transparent;
+    color: var(--color-primary);
+    border-bottom: 1px solid #c1c1c1;
+  
+    &::placeholder {
+      font-weight: 300;
+      color: #c1c1c1;
+    }
   }
 }
 

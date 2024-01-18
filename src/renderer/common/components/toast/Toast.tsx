@@ -11,7 +11,7 @@ import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
