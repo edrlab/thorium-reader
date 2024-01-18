@@ -82,7 +82,6 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import { ipcRenderer } from "electron";
 import PublicationCard from "../publication/PublicationCard";
-import AboutThoriumButton from "../catalog/AboutThoriumButton";
 import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
@@ -1883,7 +1882,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                             "100px" :
                                             column.id === "colDuration" ?
                                                 "100px" :
-                                                column.id === "col_a11y_accessibilitySummary" ?
+                                                column.id === "col_a11y_accessibilitySummary" || "colAuthors"  ?
                                                     "160px" :
                                                     "100px";
 
