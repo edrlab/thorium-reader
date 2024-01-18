@@ -1882,8 +1882,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                             "100px" :
                                             column.id === "colDuration" ?
                                                 "100px" :
-                                                column.id === "col_a11y_accessibilitySummary" || "colAuthors"  ?
+                                                column.id === "col_a11y_accessibilitySummary"  ?
                                                     "160px" :
+                                                    column.id === "colAuthors" ?
+                                                    "160px":
                                                     "100px";
 
                                 return (<th
