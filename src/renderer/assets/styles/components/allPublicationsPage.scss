@@ -212,13 +212,14 @@
 .allBook_table {
     &_wrapper {
         overflow: auto;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        top: 250px;
+        bottom: 30px;
+        left: 30px;
+        right: 60px;
         padding: 0;
         margin-top: 0em;
         margin-bottom: 0.4em;
+        position: absolute;
     }
     &_head {
         border-bottom: 2px solid var(--color-button-secondary);
@@ -253,4 +254,5 @@
     margin: 0;
     border-spacing: 0;
     width: 100%;
+    position: relative;
 }

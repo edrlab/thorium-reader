@@ -6,6 +6,8 @@ export declare const book_title: string;
 export declare const button_primary: string;
 export declare const button_secondary: string;
 export declare const button_transparency: string;
+export declare const no_img: string;
+export declare const no_img_wrapper: string;
 export declare const publicationInfo_container: string;
 export declare const publicationInfo_description_bloc: string;
 export declare const publicationInfo_description_bloc_seeMore: string;

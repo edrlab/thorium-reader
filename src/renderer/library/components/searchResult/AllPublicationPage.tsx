@@ -2027,7 +2027,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         })}</tbody>
                 </table>
             </div>
-            <AboutThoriumButton />
         </>
     );
 };
